@@ -70,9 +70,13 @@
   hardware.pulseaudio.enable = true;
 
   services.xserver = {
-    displayManager.sddm.enable = true;
-    displayManager.slim.enable = false;
-    desktopManager.plasma5.enable = true;
+    desktopManager = {
+      gnome3.enable = true;
+      default = "gnome3";
+    };
+    displayManager = {
+      gdm.enable = true;
+    };
     enable = true;
     layout = "us,ru";
     libinput = {
