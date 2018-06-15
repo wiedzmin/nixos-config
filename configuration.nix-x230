@@ -1,0 +1,97 @@
+{ config, pkgs, ... }:
+
+{
+  networking.hostName = "x230";
+  networking.hostId = "2ab69157";
+
+  imports = [
+    <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
+    ./hardware/intel.nix
+    ./hardware/laptop.nix
+    ./partitions/x230-laptoptop.nix
+  ];
+
+  boot.loader.grub = {
+    enable = true;
+    version = 2;
+    device = "/dev/sda";
+    configurationLimit = 10;
+  };
+
+  i18n = {
+    # TODO: provide font + keymap
+    defaultLocale = "ru_RU.UTF-8";
+  };
+
+  time.timeZone = "Europe/Moscow";
+
+  nixpkgs.config = {
+    allowUnfree = true;
+  };
+
+  environment.systemPackages = with pkgs; [
+    (pkgs.emacs.override {
+       withGTK2 = false;
+       withGTK3 = false;
+    })
+    git
+    gnupg
+    pass
+    rofi-pass
+    rxvt_unicode
+    sbcl
+    sshuttle
+    tmux
+    vim 
+    wget 
+  ];
+
+  networking.firewall.enable = false;
+  networking.networkmanager.enable = true;
+
+  programs = {
+    mtr.enable = true;
+    gnupg.agent = { enable = true; enableSSHSupport = true; };
+  };
+  
+  services = {
+    printing = {
+      enable = true;
+      drivers = [ pkgs.hplip ];
+    };
+    kmscon = {
+      enable = true;
+      hwRender = true;
+    };
+  };
+
+  # Sound
+  sound.enable = true;
+  hardware.pulseaudio.enable = true;
+
+  services.xserver = {
+    displayManager.sddm.enable = true;
+    displayManager.slim.enable = false;
+    desktopManager.plasma5.enable = true;
+    enable = true;
+    layout = "us,ru";
+    synaptics = {
+      enable = true;
+      twoFingerScroll = true;
+      tapButtons = true;
+    };
+  };
+
+  # users.extraUsers.root.initialHashedPassword = "";
+
+  security.sudo.configFile = ''
+    root ALL=(ALL) ALL
+    %wheel ALL=(ALL) NOPASSWD: ALL
+  '';
+
+  users.extraUsers.alex3rd = {
+    isNormalUser = true;
+    uid = 1000;
+    extraGroups = ["wheel"];
+  };
+}
