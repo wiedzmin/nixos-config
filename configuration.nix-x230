@@ -75,10 +75,10 @@
     desktopManager.plasma5.enable = true;
     enable = true;
     layout = "us,ru";
-    synaptics = {
+    libinput = {
       enable = true;
-      twoFingerScroll = true;
-      tapButtons = true;
+      naturalScrolling = true;
+      disableWhileTyping = true;
     };
   };
 
