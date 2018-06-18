@@ -35,9 +35,11 @@
        withGTK2 = false;
        withGTK3 = false;
     })
+    busybox
     git
     gnupg
     pass
+    psmisc
     rofi-pass
     rxvt_unicode
     sbcl
