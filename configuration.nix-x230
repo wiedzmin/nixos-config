@@ -91,6 +91,8 @@
       enable = true;
       naturalScrolling = true;
       disableWhileTyping = true;
+      tappingDragLock = false;
+      accelSpeed = "0.6";
     };
   };
 
