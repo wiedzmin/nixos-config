@@ -58,6 +58,8 @@
     gnupg.agent = { enable = true; enableSSHSupport = true; };
   };
   
+  virtualisation.docker.enable = true;
+
   services = {
     printing = {
       enable = true;
@@ -106,6 +108,7 @@
       "networkmanager"
       "audio"
       "video"
+      "docker"
     ];
   };
 }
