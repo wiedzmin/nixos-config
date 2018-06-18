@@ -30,11 +30,11 @@
   };
 
   environment.systemPackages = with pkgs; [
-    ansible
     (pkgs.emacs.override {
        withGTK2 = false;
        withGTK3 = false;
     })
+    ansible
     busybox
     git
     gnupg
