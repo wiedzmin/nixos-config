@@ -89,7 +89,7 @@
     };
   };
 
-  # users.extraUsers.root.initialHashedPassword = "";
+  users.extraUsers.root.hashedPassword = "586c56b7b6b6f68fca29c9ff2524e4dc52d51d5b6184a65f707dd3eae075e4c9afa81c9cd4042c26c9fb773d4f3de55fb55f363c6b0f5f6790baf4c4e3f32cb9";
 
   security.sudo.configFile = ''
     root ALL=(ALL) ALL
@@ -98,6 +98,7 @@
 
   users.extraUsers.alex3rd = {
     isNormalUser = true;
+    hashedPassword = "d987d839c92c1955ad1a1d7af5dfed771f257b6bb64d7a9a3572a154f71d7b28378c8f2baca31b8f1089c4ebf70d73503eaf0fcd5a00ab1555b5d1531dbec465";
     uid = 1000;
     extraGroups = ["wheel"];
   };
