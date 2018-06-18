@@ -45,6 +45,7 @@
     sbcl
     sshuttle
     tmux
+    vagrant
     vim 
     wget 
   ];
