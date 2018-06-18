@@ -101,6 +101,11 @@
     isNormalUser = true;
     hashedPassword = "d987d839c92c1955ad1a1d7af5dfed771f257b6bb64d7a9a3572a154f71d7b28378c8f2baca31b8f1089c4ebf70d73503eaf0fcd5a00ab1555b5d1531dbec465";
     uid = 1000;
-    extraGroups = ["wheel"];
+    extraGroups = [
+      "wheel"
+      "networkmanager"
+      "audio"
+      "video"
+    ];
   };
 }
