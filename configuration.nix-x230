@@ -104,6 +104,9 @@
         kmscon = {
             enable = true;
             hwRender = true;
+            extraConfig = ''
+            font-name=Fira Mono
+            '';
         };
         sshd.enable = true;
     };
