@@ -43,6 +43,7 @@
         imapfilter
         isync
         mc
+        mpv                     #  TODO: (alex3rd) make default
         pass
         psmisc
         ripgrep
