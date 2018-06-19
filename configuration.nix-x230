@@ -53,6 +53,27 @@
     wget 
   ];
 
+  fonts = {
+    enableFontDir = true;
+    enableGhostscriptFonts = true;
+    fonts = with pkgs; [
+      anonymousPro
+      corefonts
+      dejavu_fonts
+      font-droid
+      freefont_ttf
+      google-fonts
+      inconsolata
+      iosevka
+      liberation_ttf
+      powerline-fonts
+      source-code-pro
+      terminus_font
+      ttf_bitstream_vera
+      ubuntu_font_family
+    ];
+  };
+
   networking.firewall.enable = false;
   networking.networkmanager.enable = true;
 
