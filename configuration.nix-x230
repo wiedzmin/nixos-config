@@ -36,6 +36,7 @@
         })
         ansible
         busybox
+        exa
         git
         gnupg
         imapfilter
