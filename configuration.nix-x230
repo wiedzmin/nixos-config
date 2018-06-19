@@ -1,145 +1,147 @@
 { config, pkgs, ... }:
 
 {
-  networking.hostName = "x230";
-  networking.hostId = "2ab69157";
+    networking.hostName = "x230";
+    networking.hostId = "2ab69157";
 
-  imports = [
-    <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
-    ./hardware/intel.nix
-    ./hardware/laptop.nix
-    ./partitions/x230-laptoptop.nix
-  ];
-
-  boot.loader.grub = {
-    enable = true;
-    version = 2;
-    device = "/dev/sda";
-    configurationLimit = 10;
-  };
-
-  i18n = {
-    # TODO: provide font + keymap
-    defaultLocale = "ru_RU.UTF-8";
-  };
-
-  time.timeZone = "Europe/Moscow";
-
-  nixpkgs.config = {
-    allowUnfree = true;
-  };
-
-  environment.systemPackages = with pkgs; [
-    (pkgs.emacs.override {
-       withGTK2 = false;
-       withGTK3 = false;
-    })
-    ansible
-    busybox
-    git
-    gnupg
-    imapfilter
-    isync
-    mc
-    pass
-    psmisc
-    ripgrep
-    rofi-pass
-    rxvt_unicode
-    sbcl
-    sshuttle
-    tmux
-    vagrant
-    vim
-    wget
-    zsh
-  ];
-
-  fonts = {
-    enableFontDir = true;
-    enableGhostscriptFonts = true;
-    fonts = with pkgs; [
-      anonymousPro
-      corefonts
-      dejavu_fonts
-      font-droid
-      freefont_ttf
-      google-fonts
-      inconsolata
-      iosevka
-      liberation_ttf
-      powerline-fonts
-      source-code-pro
-      terminus_font
-      ttf_bitstream_vera
-      ubuntu_font_family
+    imports = [
+        <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
+        ./hardware/intel.nix
+        ./hardware/laptop.nix
+        ./partitions/x230-laptoptop.nix
     ];
-  };
 
-  networking.firewall.enable = false;
-  networking.networkmanager.enable = true;
-
-  programs = {
-    mtr.enable = true;
-    gnupg.agent = { enable = true; enableSSHSupport = true; };
-  };
-  
-  virtualisation.docker.enable = true;
-  virtualisation.libvirtd.enable = true;
-  virtualisation.virtualbox.host.enable = true;
-  nixpkgs.config.virtualbox.enableExtensionPack = true;
-
-  services = {
-    printing = {
-      enable = true;
-      drivers = [ pkgs.hplip ];
+    boot.loader.grub = {
+        enable = true;
+        version = 2;
+        device = "/dev/sda";
+        configurationLimit = 10;
     };
-    kmscon = {
-      enable = true;
-      hwRender = true;
+
+    i18n = {
+        # TODO: provide font + keymap
+        defaultLocale = "ru_RU.UTF-8";
     };
-    sshd.enable = true;
-  };
 
-  # Sound
-  sound.enable = true;
-  hardware.pulseaudio.enable = true;
+    time.timeZone = "Europe/Moscow";
 
-  services.xserver = {
-    desktopManager = {
-      gnome3.enable = true;
-      default = "gnome3";
+    nixpkgs.config = {
+        allowUnfree = true;
     };
-    displayManager = {
-      gdm.enable = true;
-    };
-    enable = true;
-    layout = "us,ru";
-    libinput = {
-      enable = true;
-      naturalScrolling = true;
-      disableWhileTyping = true;
-      tappingDragLock = false;
-      accelSpeed = "0.6";
-    };
-  };
 
-  users.extraUsers.root.hashedPassword = "586c56b7b6b6f68fca29c9ff2524e4dc52d51d5b6184a65f707dd3eae075e4c9afa81c9cd4042c26c9fb773d4f3de55fb55f363c6b0f5f6790baf4c4e3f32cb9";
-
-  security.sudo.wheelNeedsPassword = false;
-
-  users.extraUsers.alex3rd = {
-    isNormalUser = true;
-    hashedPassword = "d987d839c92c1955ad1a1d7af5dfed771f257b6bb64d7a9a3572a154f71d7b28378c8f2baca31b8f1089c4ebf70d73503eaf0fcd5a00ab1555b5d1531dbec465";
-    uid = 1000;
-    shell = pkgs.zsh;
-    extraGroups = [
-      "wheel"
-      "networkmanager"
-      "audio"
-      "video"
-      "docker"
-      "vboxusers"
+    environment.systemPackages = with pkgs; [
+        (pkgs.emacs.override {
+             withGTK2 = false;
+             withGTK3 = false;
+        })
+        ansible
+        busybox
+        git
+        gnupg
+        imapfilter
+        isync
+        mc
+        pass
+        psmisc
+        ripgrep
+        rofi-pass
+        rxvt_unicode
+        sbcl
+        sshuttle
+        tmux
+        vagrant
+        vim
+        wget
+        zsh
     ];
-  };
+
+    fonts = {
+        enableFontDir = true;
+        enableGhostscriptFonts = true;
+        fonts = with pkgs; [
+            anonymousPro
+            corefonts
+            dejavu_fonts
+            font-droid
+            freefont_ttf
+            google-fonts
+            inconsolata
+            iosevka
+            liberation_ttf
+            powerline-fonts
+            source-code-pro
+            terminus_font
+            ttf_bitstream_vera
+            ubuntu_font_family
+        ];
+    };
+
+    networking.firewall.enable = false;
+    networking.networkmanager.enable = true;
+
+    programs = {
+        mtr.enable = true;
+        gnupg.agent = {
+            enable = true;
+            enableSSHSupport = true;
+        };
+    };
+
+    virtualisation.docker.enable = true;
+    virtualisation.libvirtd.enable = true;
+    virtualisation.virtualbox.host.enable = true;
+    nixpkgs.config.virtualbox.enableExtensionPack = true;
+
+    services = {
+        printing = {
+            enable = true;
+            drivers = [ pkgs.hplip ];
+        };
+        kmscon = {
+            enable = true;
+            hwRender = true;
+        };
+        sshd.enable = true;
+    };
+
+    sound.enable = true;
+    hardware.pulseaudio.enable = true;
+
+    services.xserver = {
+        desktopManager = {
+            gnome3.enable = true;
+            default = "gnome3";
+        };
+        displayManager = {
+            gdm.enable = true;
+        };
+        enable = true;
+        layout = "us,ru";
+        libinput = {
+            enable = true;
+            naturalScrolling = true;
+            disableWhileTyping = true;
+            tappingDragLock = false;
+            accelSpeed = "0.6";
+        };
+    };
+
+    users.extraUsers.root.hashedPassword = "586c56b7b6b6f68fca29c9ff2524e4dc52d51d5b6184a65f707dd3eae075e4c9afa81c9cd4042c26c9fb773d4f3de55fb55f363c6b0f5f6790baf4c4e3f32cb9";
+
+    security.sudo.wheelNeedsPassword = false;
+
+    users.extraUsers.alex3rd = {
+        isNormalUser = true;
+        hashedPassword = "d987d839c92c1955ad1a1d7af5dfed771f257b6bb64d7a9a3572a154f71d7b28378c8f2baca31b8f1089c4ebf70d73503eaf0fcd5a00ab1555b5d1531dbec465";
+        uid = 1000;
+        shell = pkgs.zsh;
+        extraGroups = [
+            "wheel"
+            "networkmanager"
+            "audio"
+            "video"
+            "docker"
+            "vboxusers"
+        ];
+    };
 }

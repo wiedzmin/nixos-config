@@ -1,8 +1,8 @@
 { lib, pkgs, ... }:
 
 {
-  powerManagement = {
-    enable = true;
-    cpuFreqGovernor = "ondemand";
-  };
+    powerManagement = {
+        enable = true;
+        cpuFreqGovernor = "ondemand";
+    };
 }
