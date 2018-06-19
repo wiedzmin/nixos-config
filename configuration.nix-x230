@@ -37,6 +37,7 @@
         ansible
         busybox
         exa
+        fbreader
         git
         gnupg
         imapfilter
