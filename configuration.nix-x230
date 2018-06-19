@@ -38,6 +38,8 @@
     busybox
     git
     gnupg
+    imapfilter
+    isync
     pass
     psmisc
     ripgrep
