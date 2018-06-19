@@ -63,6 +63,8 @@
   
   virtualisation.docker.enable = true;
   virtualisation.libvirtd.enable = true;
+  virtualisation.virtualbox.host.enable = true;
+  nixpkgs.config.virtualbox.enableExtensionPack = true;
 
   services = {
     printing = {
@@ -116,6 +118,7 @@
       "audio"
       "video"
       "docker"
+      "vboxusers"
     ];
   };
 }
