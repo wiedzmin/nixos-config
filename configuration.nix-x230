@@ -47,6 +47,7 @@
         rofi-pass
         rxvt_unicode
         sbcl
+        skype
         sshuttle
         tmux
         vagrant
