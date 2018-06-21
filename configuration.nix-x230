@@ -57,6 +57,7 @@
         vagrant
         vim
         wget
+        jq
 
         xlibs.xmodmap
     ];
