@@ -65,6 +65,8 @@
         pythonPackages.pip
 
         gnome3.gnome-tweak-tool
+
+        nix-index
     ];
 
     fonts = {
