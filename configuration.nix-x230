@@ -129,6 +129,7 @@
             '';
         };
         enable = true;
+        xkbOptions = "caps:none";
         layout = "us,ru";
         libinput = {
             enable = true;
