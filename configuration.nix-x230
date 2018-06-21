@@ -61,6 +61,8 @@
 
         xlibs.xev
         xlibs.xmodmap
+
+        pythonPackages.pip
     ];
 
     fonts = {
