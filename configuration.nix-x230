@@ -59,6 +59,7 @@
         wget
         jq
 
+        xlibs.xev
         xlibs.xmodmap
     ];
 
