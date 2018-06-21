@@ -56,6 +56,8 @@
         vagrant
         vim
         wget
+
+        xlibs.xmodmap
     ];
 
     fonts = {
@@ -78,6 +80,8 @@
             ubuntu_font_family
         ];
     };
+
+    environment.etc."Xmodmap".text = import ./pkgconfig/xmodmap.nix { };
 
     networking.firewall.enable = false;
     networking.networkmanager.enable = true;
@@ -120,6 +124,9 @@
         };
         displayManager = {
             gdm.enable = true;
+            sessionCommands = ''
+              ${pkgs.xlibs.xmodmap}/bin/xmodmap /etc/Xmodmaprc
+            '';
         };
         enable = true;
         layout = "us,ru";
