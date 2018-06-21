@@ -38,6 +38,7 @@
         busybox
         exa
         fbreader
+        feh
         git
         gnupg
         imapfilter
