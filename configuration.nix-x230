@@ -56,7 +56,6 @@
         vagrant
         vim
         wget
-        zsh
     ];
 
     fonts = {
