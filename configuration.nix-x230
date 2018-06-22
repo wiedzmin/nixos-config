@@ -64,6 +64,8 @@
 
         pythonPackages.pip
 
+        lispPackages.quicklisp
+
         gnome3.gnome-tweak-tool
 
         nix-index
