@@ -66,6 +66,8 @@
 
         lispPackages.quicklisp
 
+        gitAndTools.diff-so-fancy
+
         gnome3.gnome-tweak-tool
 
         nix-index
