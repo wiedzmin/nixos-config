@@ -30,46 +30,67 @@
     };
 
     environment.systemPackages = with pkgs; [
+        # editors
         (pkgs.emacs.override {
              withGTK2 = false;
              withGTK3 = false;
         })
-        ansible
-        busybox
-        exa
+        vim
+
+        # common
         fbreader
-        feh
+        skype
+
+        # development
+        ansible
         git
+        gitAndTools.diff-so-fancy
+        jq
+        ripgrep
+        sbcl
+
+        # shell
+        rxvt_unicode
+        tmux
+
+        # security
         gnupg
+        pass
+        rofi-pass
+
+        # email
         imapfilter
         isync
-        mc
-        mpv                     #  TODO: (alex3rd) make default
-        pass
-        psmisc
-        ripgrep
-        rofi-pass
-        rxvt_unicode
-        sbcl
-        skype
-        sshuttle
-        tmux
-        vagrant
-        vim
-        wget
-        jq
 
+        # misc
+        busybox
+        exa
+        mc
+        psmisc
+        sshuttle
+        wget
+
+        # virtualisation
+        vagrant
+
+        # media
+        feh
+        mpv                     #  TODO: (alex3rd) make default
+
+        # X11 libs and tools
         xlibs.xev
         xlibs.xmodmap
 
+        # Python
         pythonPackages.pip
 
+        # Lisp
         lispPackages.quicklisp
 
-        gitAndTools.diff-so-fancy
-
+        # DE/WM related
         gnome3.gnome-tweak-tool
 
+        # Nix-related
         nix-index
     ];
 
