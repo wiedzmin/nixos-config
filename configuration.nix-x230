@@ -181,4 +181,5 @@
 
     security.sudo.wheelNeedsPassword = false;
 
+    system.nixos.stateVersion = "18.03";
 }
