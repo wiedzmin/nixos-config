@@ -33,6 +33,12 @@
         allowUnfree = true;
     };
 
+    nix.extraOptions = ''
+      gc-keep-outputs = true
+      gc-keep-derivations = true
+      cores = 4
+    '';
+
     environment.systemPackages = with pkgs; [
         # editors
         (pkgs.emacs.override {
