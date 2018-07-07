@@ -161,7 +161,11 @@
             default = "gnome3";
         };
         displayManager = {
-            gdm.enable = true;
+            gdm = {
+                enable = true;
+                autoLogin.enable = true;
+                autoLogin.user = "alex3rd"; # TODO: try to make a SPOT with users definitions
+            };
             sessionCommands = ''
               ${pkgs.xlibs.xmodmap}/bin/xmodmap /etc/Xmodmaprc
             '';
