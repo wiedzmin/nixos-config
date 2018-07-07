@@ -102,6 +102,10 @@
 
         # Nix-related
         nix-index
+        nix-prefetch-scripts
+        nix-repl
+        nix-serve
+        nixops
     ];
 
     fonts = {
