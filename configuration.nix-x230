@@ -58,6 +58,9 @@
         jq
         ripgrep
         sbcl
+        go2nix
+        dep2nix
+        pypi2nix
 
         # shell
         rxvt_unicode
