@@ -5,6 +5,8 @@
     networking.hostId = "2ab69157";
 
     imports = [
+        ./packages/nixpkgs-from-submodule.nix
+        ./packages/use-my-overlays.nix
         <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
         ./hardware/intel.nix
         ./hardware/laptop.nix
