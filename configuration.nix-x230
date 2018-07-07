@@ -86,6 +86,8 @@
         # media
         feh
         mpv                     #  TODO: (alex3rd) make default
+        pasystray
+        pavucontrol
 
         # X11 libs and tools
         xlibs.xev
