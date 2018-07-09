@@ -13,6 +13,7 @@
         ./partitions/x230-laptoptop.nix
         ./users/root.nix
         ./users/alex3rd.nix
+        ./contrib/custom-scripts.nix
     ];
 
     boot.loader.grub = {
@@ -111,6 +112,13 @@
         nix-repl
         nix-serve
         nixops
+
+        # custom shell scripts
+        hddtemp
+        status_bat_info
+        status_cpu_temp
+        status_uptime
+        zip2targz
     ];
 
     fonts = {
