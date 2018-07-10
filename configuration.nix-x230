@@ -32,6 +32,10 @@
 
     nixpkgs.config = {
         allowUnfree = true;
+        packageOverrides = pkgs: {
+           xsaneGimp = pkgs.xsane.override { gimpSupport = true; };
+        };
+        sane.snapscanFirmware = "/etc/nixos/private/firmware/Esfw52.bin";
     };
 
     nix.extraOptions = ''
@@ -103,6 +107,7 @@
         mpv                     #  TODO: (alex3rd) make default
         pasystray
         pavucontrol
+        xsane
 
         # X11 libs and tools
         xlibs.xev
@@ -188,6 +193,9 @@
 
     sound.enable = true;
     hardware.pulseaudio.enable = true;
+
+    hardware.sane.enable = true;
+    hardware.sane.extraBackends = [ pkgs.epkowa ];
 
     services.xserver = {
         desktopManager = {
