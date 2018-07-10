@@ -117,6 +117,7 @@
 
         # media
         feh
+        ffmpeg
         mpv                     #  TODO: (alex3rd) make default
         pasystray
         pavucontrol
