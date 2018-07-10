@@ -42,7 +42,7 @@
 
     environment.systemPackages = with pkgs; [
         # editors
-        (pkgs.emacs.override {
+        (pkgs.emacs.override { # build Lucid version
              withGTK2 = false;
              withGTK3 = false;
         })
