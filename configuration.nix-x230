@@ -206,6 +206,13 @@
             '';
         };
         sshd.enable = true;
+        redshift = {
+            enable = true;
+            latitude = "55.751244";
+            longitude = "37.618423";
+            temperature.day = 5500;
+            temperature.night = 3700;
+        };
     };
 
     sound.enable = true;
