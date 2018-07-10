@@ -82,6 +82,11 @@
         tmux
         fzf
 
+        # system
+        htop
+        iotop
+        powertop
+
         # security
         gnupg
         pass
