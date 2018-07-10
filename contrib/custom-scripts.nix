@@ -62,6 +62,21 @@
                 #Print what we did
                 echo "Converted $1 to $outfilename.gz"
             '';
+            # see https://blog.jeaye.com/2017/07/30/nixos-revisited/
+            optimize-nix = pkgs.writeShellScriptBin "optimize-nix" ''
+                set -eu
+
+                # Delete everything from this profile that isn't currently needed
+                nix-env --delete-generations old
+
+                # Delete generations older than a week
+                nix-collect-garbage
+                nix-collect-garbage --delete-older-than 7d
+
+                # Optimize
+                nix-store --gc --print-dead
+                nix-store --optimise
+            '';
         };
     };
 }
