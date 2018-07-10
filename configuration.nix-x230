@@ -120,6 +120,8 @@
         xlibs.xprop
 
         # Python
+        python3Full
+        python2Full
 
         # Lisp
         lispPackages.quicklisp
