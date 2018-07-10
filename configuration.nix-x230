@@ -112,6 +112,7 @@
         libreoffice
 
         # virtualisation
+        docker_compose
         vagrant
 
         # media
