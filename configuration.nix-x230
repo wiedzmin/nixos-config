@@ -120,7 +120,6 @@
         xlibs.xprop
 
         # Python
-        pythonPackages.pip
 
         # Lisp
         lispPackages.quicklisp
