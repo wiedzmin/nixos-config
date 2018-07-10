@@ -105,6 +105,7 @@
         sshuttle
         tree
         wget
+        appimage-run
 
         # virtualisation
         vagrant
