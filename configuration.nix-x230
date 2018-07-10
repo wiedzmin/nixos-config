@@ -76,6 +76,7 @@
         # shell
         rxvt_unicode
         tmux
+        fzf
 
         # security
         gnupg
