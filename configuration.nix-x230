@@ -107,6 +107,10 @@
         wget
         appimage-run
 
+        # office
+        pandoc
+        libreoffice
+
         # virtualisation
         vagrant
 
