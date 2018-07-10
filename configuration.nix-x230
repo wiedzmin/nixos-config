@@ -60,6 +60,7 @@
         ansible
         git
         gitAndTools.diff-so-fancy
+        gitAndTools.hub
         jq
         ripgrep
         sbcl
