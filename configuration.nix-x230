@@ -103,6 +103,7 @@
         mc
         psmisc
         sshuttle
+        tree
         wget
 
         # virtualisation
