@@ -112,6 +112,7 @@
         # X11 libs and tools
         xlibs.xev
         xlibs.xmodmap
+        xlibs.xprop
 
         # Python
         pythonPackages.pip
