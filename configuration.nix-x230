@@ -62,6 +62,16 @@
         go2nix
         dep2nix
         pypi2nix
+        clang
+        rtags
+        wuzz
+        httplab
+        nodejs
+
+        # devdeps
+        gnumake
+        gcc
+        binutils
 
         # shell
         rxvt_unicode
