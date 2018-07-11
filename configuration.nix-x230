@@ -46,31 +46,15 @@
 
     environment.systemPackages = with pkgs; [
         # editors
-        (pkgs.emacs.override { # build Lucid version
-             withGTK2 = false;
-             withGTK3 = false;
-        })
         vim
 
-        # common
-        fbreader
-        skype
-
         # development
-        ansible
         git
-        gitAndTools.diff-so-fancy
-        gitAndTools.hub
-        jq
-        ripgrep
         sbcl
         go2nix
         dep2nix
         pypi2nix
         clang
-        rtags
-        wuzz
-        httplab
         nodejs
 
         # devdeps
@@ -81,21 +65,11 @@
         # shell
         rxvt_unicode
         tmux
-        fzf
 
         # system
         htop
         iotop
         powertop
-
-        # security
-        gnupg
-        pass
-        rofi-pass
-
-        # email
-        imapfilter
-        isync
 
         # misc
         busybox
@@ -116,17 +90,11 @@
         vagrant
 
         # media
-        feh
-        ffmpeg
-        mpv                     #  TODO: (alex3rd) make default
         pasystray
         pavucontrol
-        xsane
 
         # X11 libs and tools
-        xlibs.xev
         xlibs.xmodmap
-        xlibs.xprop
 
         # Python
         python3Full

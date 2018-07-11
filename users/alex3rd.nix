@@ -37,6 +37,65 @@
     programs.bash.enableCompletion = true;
 
     home-manager.users.alex3rd = {
+        home.packages = with pkgs; [
+            (pkgs.emacs.override { # build Lucid version
+                withGTK2 = false;
+                withGTK3 = false;
+            })
+
+            # common
+            chromium
+            fbreader
+            qbittorrent
+            skype
+            tdesktop
+
+            # development
+            ansible
+            gitAndTools.diff-so-fancy
+            gitAndTools.hub
+            httplab
+            jq
+            ripgrep
+            rtags
+            wuzz
+
+            # email
+            imapfilter
+            isync
+
+            # shell
+            bc
+            direnv
+            fzf
+
+            # security
+            gnupg
+            pass
+            rofi-pass
+
+            # media
+            feh
+            ffmpeg
+            gimp
+            mpv                     #  TODO: (alex3rd) make default
+            xsane
+
+            # X11 libs and tools
+            arandr
+            xlibs.xev
+            xlibs.xprop
+
+            # Python
+            #python2Packages.jedi
+            #python3Packages.jedi
+            python3Packages.jedi
+            python3Packages.notebook
+            python3Packages.virtualenv
+
+            # NodeJS
+            # nodePackages.truffle
+        ];
         programs.git = {
             enable = true;
             userName = "Alex Ermolov";
