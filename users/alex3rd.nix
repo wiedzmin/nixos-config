@@ -44,6 +44,7 @@
             qbittorrent
             skype
             tdesktop
+            slack
 
             # development
             ansible
