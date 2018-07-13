@@ -406,5 +406,20 @@
             enableZshIntegration = true;
         };
         programs.feh.enable = true;
+        programs.firefox = {
+            enable = true;
+            enableIcedTea = true;
+        };
+        programs.lesspipe.enable = true;
+        programs.man.enable = true;
+        programs.info.enable = true;
+        programs.rofi = {
+            enable = true;
+            fullscreen = true;
+        };
+        programs.command-not-found.enable = true;
+        services.unclutter.enable = true;
+        services.udiskie.enable = true;
+        services.dunst.enable = true;
     };
 }
