@@ -65,6 +65,7 @@
             # shell
             bc
             direnv
+            replace
 
             # security
             gnupg
