@@ -67,7 +67,6 @@
         tmux
 
         # system
-        htop
         iotop
         powertop
 

@@ -394,5 +394,6 @@
                 epkgs.yatemplate
             ];
         };
+        programs.htop.enable = true;
     };
 }
