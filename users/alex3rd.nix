@@ -56,6 +56,7 @@
             ripgrep
             rtags
             wuzz
+            pkgs.idea.pycharm-community
 
             # email
             imapfilter
