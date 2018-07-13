@@ -183,6 +183,7 @@
             temperature.day = 5500;
             temperature.night = 3700;
         };
+        locate.enable = true;
     };
 
     sound.enable = true;
