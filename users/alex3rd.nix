@@ -62,7 +62,6 @@
             # shell
             bc
             direnv
-            fzf
 
             # security
             gnupg
@@ -70,7 +69,6 @@
             rofi-pass
 
             # media
-            feh
             ffmpeg
             gimp
             mpv                     #  TODO: (alex3rd) make default
@@ -395,5 +393,10 @@
             ];
         };
         programs.htop.enable = true;
+        programs.fzf = {
+            enable = true;
+            enableZshIntegration = true;
+        };
+        programs.feh.enable = true;
     };
 }
