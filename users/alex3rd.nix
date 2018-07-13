@@ -89,6 +89,10 @@
             python3Packages.jedi
             python3Packages.notebook
             python3Packages.virtualenv
+            python3Packages.pylint
+            python3Packages.flake8
+            python3Packages.isort
+            python3Packages.pep8
 
             # NodeJS
             # nodePackages.truffle
