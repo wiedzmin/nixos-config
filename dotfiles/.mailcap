@@ -1,0 +1,15 @@
+application/pdf; zathura %s; test=test "$DISPLAY" != ""; description=Portable Document Format; nametemplate=%s.pdf; copiousoutput
+application/x-pdf; zathura %s; test=test "$DISPLAY" != ""; description=Portable Document Format; nametemplate=%s.pdf
+image/gif; feh %s; test=test "$DISPLAY" != ""; description=GIF Format; nametemplate=%s.gif; copiousoutput
+image/jpeg; feh %s; test=test "$DISPLAY" != ""; description=JPEG Format; nametemplate=%s.jpeg; copiousoutput
+image/jpeg; feh %s; test=test "$DISPLAY" != ""; description=JPEG Format; nametemplate=%s.jpg; copiousoutput
+image/png; feh %s; test=test "$DISPLAY" != ""; description=PNG Format; nametemplate=%s.png; copiousoutput
+image/vnd.djvu; zathura %s; test=test "$DISPLAY" != ""; description=DjVu Format; nametemplate=%s.djvu; copiousoutput
+image/x-djvu; zathura %s; test=test "$DISPLAY" != ""; description=DjVu Format; nametemplate=%s.djvu; copiousoutput
+text/html; w3m -I %{charset} -dump %s; test=test "$DISPLAY" != ""; description=HyperText; nametemplate=%s.html; copiousoutput
+video/avi; mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.avi
+video/mp4; mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.mp4
+video/mpeg; mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.mpeg
+video/x-flv; mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.flv
+video/x-matroska; mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.mkv
+video/x-ms-wmv; mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.wmv

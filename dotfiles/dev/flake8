@@ -1,0 +1,5 @@
+[flake8]
+max-line-length = 120
+exclude=.git,__pycache__
+# E201, E128, E203, E124, E211 - to accept leading punctuation
+ignore = E201, E128, E203, E124, E211

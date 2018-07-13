@@ -1,0 +1,70 @@
+[global]
+    alignment = left
+    allow_markup = yes
+    always_run_script = true
+    bounce_freq = 0
+    browser = firefox -new-tab
+    dmenu = /usr/bin/dmenu -p dunst:
+    ellipsize = middle
+    follow = keyboard
+    font = Hack 10 # TODO: templatize
+    force_xinerama = false
+    format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\n%b"
+    frame_color = "#232323"
+    frame_width = 1
+    geometry = "300x5-15+15" # was "300x5-30+20"
+    hide_duplicates_count = false
+    history_length = 20
+    horizontal_padding = 10 # was "8"
+    icon_path = /usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/ # was "icon_folders"
+    icon_position = left # was "off"
+    idle_threshold = 120
+    ignore_newline = no
+    indicate_hidden = yes
+    line_height = 0
+    markup = full
+    max_icon_size = 32
+    monitor = 0
+    notification_height = 0
+    padding = 10 # was "8"
+    separator_color = frame
+    separator_height = 2
+    show_age_threshold = 60
+    show_indicators = yes
+    shrink = no
+    sort = yes
+    stack_duplicates = true
+    startup_notification = false
+    sticky_history = yes
+    transparency = 0
+    verbosity = mesg
+    word_wrap = yes
+
+[frame]
+    width = 3
+    color = "#aaaaaa"
+
+[shortcuts]
+    close = ctrl+space
+    close_all = ctrl+shift+space
+    history = ctrl+grave
+    context = ctrl+shift+period
+
+[urgency_low]
+    background = "#232323" # "#222222"
+    foreground = "#A8A8A8" # "#888888"
+    timeout = 10
+
+[urgency_normal]
+    background = "#285577"
+    foreground = "#ffffff"
+    timeout = 10
+
+[urgency_critical]
+    background = "#D64E4E" # "#900000"
+    foreground = "#F0E0E0" # "#ffffff"
+    frame_color = "#D64E4E"
+    timeout = 0
+    icon = /usr/share/icons/gentoo/32x32/dia.png
+
+# vim: ft=cfg

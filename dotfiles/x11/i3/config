@@ -1,0 +1,57 @@
+#bar {
+#  position top
+#  status_command i3status
+#}
+
+# vim:filetype=i3conf
+
+set $mod Mod4
+
+# font for window titles. ISO 10646 = Unicode
+font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
+
+# Use Mouse+$mod to drag floating windows to their wanted position
+floating_modifier $mod
+
+# class                 border  backgr. text    indicator
+client.focused          #dfdbd0 #002b36 #ffffff #292d2e
+client.focused_inactive #dfdbd0 #073542 #dfdbd0 #484e50
+client.unfocused        #dfdbd0 #586e75 #dfdbd0 #2e9ef4
+client.urgent           #F47421 #F47421 #ffffff #F47421
+
+# start a terminal
+bindsym $mod+Return exec --no-startup-id urxvt
+bindsym $mod+t exec --no-startup-id urxvt
+
+# kill focused window
+bindsym $mod+Shift+c kill
+
+# change focus
+# bindsym $mod+h focus left
+# bindsym $mod+j focus down
+# bindsym $mod+k focus up
+# bindsym $mod+l focus right
+
+# alternatively, you can use the cursor keys:
+bindsym $mod+Left focus left
+bindsym $mod+Down focus down
+bindsym $mod+Up focus up
+bindsym $mod+Right focus right
+
+bindsym $mod+Shift+f exec firefox
+bindsym $mod+Shift+e exec emacs
+
+# restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
+bindsym $mod+Shift+q restart
+
+bindsym $mod+Shift+2 split h
+bindsym $mod+3 split vertical
+
+bindsym $mod+Shift+s layout tabbing
+
+bindsym $mod+s focus output VGA1
+bindsym $mod+l exec vlc
+
+bindsym $mod+f fullscreen
+
+bindsym Control+backslash exec --no-startup-id urxvt

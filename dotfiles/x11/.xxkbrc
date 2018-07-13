@@ -1,0 +1,9 @@
+XXkb.group.base: 1
+XXkb.group.alt: 2
+XXkb.mainwindow.geometry: 15x15+1585+0
+XXkb.mainwindow.type: tray
+XXkb.mainwindow.xpm.1: en15.xpm
+XXkb.mainwindow.xpm.2: ru15.xpm
+XXkb.button.enable: no
+XXkb.controls.focusout: yes
+XXkb.controls.mainwindow_delete: no
