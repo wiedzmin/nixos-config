@@ -50,6 +50,7 @@
             ansible
             gitAndTools.diff-so-fancy
             gitAndTools.hub
+            gitAndTools.git-quick-stats
             httplab
             jq
             ripgrep
