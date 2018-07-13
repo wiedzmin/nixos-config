@@ -207,6 +207,7 @@
               ${pkgs.xlibs.xmodmap}/bin/xmodmap /etc/Xmodmaprc
             '';
         };
+        windowManager.xmonad.enable = true;
         enable = true;
         xkbOptions = "caps:none";
         layout = "us,ru";
