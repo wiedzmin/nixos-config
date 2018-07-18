@@ -2,6 +2,7 @@
 {
     imports = [
         <home-manager/nixos>
+        ../packages/solidity-flattener.nix
     ];
 
     users.extraUsers = {
@@ -93,6 +94,7 @@
             python3Packages.flake8
             python3Packages.isort
             python3Packages.pep8
+            solidity-flattener
 
             # NodeJS
             # nodePackages.truffle
