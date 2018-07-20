@@ -100,6 +100,7 @@
             python3Packages.flake8
             python3Packages.isort
             python3Packages.pep8
+            python3Packages.virtualenvwrapper
             solidity-flattener
 
             # NodeJS
