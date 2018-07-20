@@ -39,6 +39,10 @@
 
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
+            # base
+            file
+            glibcLocales
+
             # common
             chromium
             fbreader
