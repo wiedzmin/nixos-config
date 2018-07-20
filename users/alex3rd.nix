@@ -558,6 +558,7 @@
             enable = true;
             fullscreen = true;
         };
+        programs.browserpass.enable = true;
         programs.command-not-found.enable = true;
         services.unclutter.enable = true;
         services.udiskie.enable = true;
