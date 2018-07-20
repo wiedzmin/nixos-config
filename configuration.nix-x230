@@ -67,6 +67,7 @@
         # shell
         rxvt_unicode
         tmux
+        ripgrep
 
         # system
         iotop
