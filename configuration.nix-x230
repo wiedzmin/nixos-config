@@ -85,7 +85,6 @@
 
         # office
         pandoc
-        libreoffice
 
         # virtualisation
         docker_compose
