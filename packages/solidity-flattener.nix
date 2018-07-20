@@ -1,7 +1,7 @@
 {pkgs, stdenv, ...}:
 
 let
-  solidity-flattener = pkgs.pythonPackages.buildPythonPackage rec {
+  solidity-flattener = pkgs.python3Packages.buildPythonPackage rec {
     version = "master";
     pname = "solidity-flattener";
 
