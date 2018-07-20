@@ -63,6 +63,7 @@
             rtags
             wuzz
             pkgs.idea.pycharm-community
+            solc
 
             # email
             imapfilter
