@@ -14,27 +14,6 @@
             extraGroups = [ "audio" "docker" "lp" "networkmanager" "scanner" "vboxusers" "video" "wheel" ];
         };
     };
-    programs.zsh = {
-        enable = true;
-        ohMyZsh = {
-            enable = true;
-            plugins = [
-                "colored-man-pages"
-                "dirpersist"
-            ];
-            theme = "simple";
-        };
-        autosuggestions.enable = true;
-        enableCompletion = true;
-        interactiveShellInit = ''
-            PATH=$PATH:${pkgs.autojump}/bin
-            . ${pkgs.autojump}/share/autojump/autojump.zsh
-        '';
-    };
-    programs.zsh.zsh-autoenv = {
-        enable = true;
-        package = pkgs.zsh-autoenv;
-    };
     programs.bash.enableCompletion = true;
 
     home-manager.users.alex3rd = {
@@ -106,6 +85,163 @@
             # NodeJS
             # nodePackages.truffle
         ];
+        home.file = {
+            ".zsh/functions.zsh".source = ../dotfiles/shell/functions.zsh;
+            "common_settings".source = ../dotfiles/shell/common_settings;
+        };
+        programs.zsh = {
+            enable = true;
+            oh-my-zsh = {
+                enable = true;
+                plugins = [
+                    "colored-man-pages"
+                    "dirpersist"
+                    "emacs"
+                    "urltools"
+                    "virtualenv"
+                    "virtualenvwrapper"
+                ];
+                theme = "agnoster";
+            };
+            enableAutosuggestions = true;
+            enableCompletion = true;
+            history = {
+                size = 10000;
+                save = 10000;
+                path = ".histfile";
+                ignoreDups = true;
+                expireDuplicatesFirst = true;
+                extended = true;
+                share = true;
+            };
+            initExtra = ''
+                #PATH=$PATH:${pkgs.autojump}/bin
+                #. ${pkgs.autojump}/share/autojump/autojump.zsh
+
+                if [ `uname -s` = "Linux" ]; then
+                    eval `dircolors -b`
+                fi
+                umask 0077
+
+                #setopt BEEP
+                setopt APPEND_HISTORY
+                setopt BRACECCL
+                setopt CORRECT_ALL
+                setopt EXTENDED_HISTORY
+                setopt HIST_EXPIRE_DUPS_FIRST
+                setopt HIST_FIND_NO_DUPS
+                setopt HIST_IGNORE_ALL_DUPS
+                setopt HIST_IGNORE_DUPS
+                setopt HIST_IGNORE_SPACE
+                setopt HIST_NO_STORE
+                setopt HIST_SAVE_NO_DUPS
+                setopt SHARE_HISTORY
+                setopt autocd
+                setopt correctall
+                setopt extended_glob
+                setopt inc_append_history
+                setopt menucomplete
+
+                autoload -Uz compinit && compinit
+                autoload -Uz promptinit && promptinit
+                autoload -Uz colors && colors
+                autoload -Uz vcs_info
+                autoload -U dot
+                autoload -U predict-on
+                autoload run-help
+                zmodload zsh/complist
+
+                source ~/.zsh/functions.zsh
+
+                bindkey "\e[3~" delete-char
+                bindkey "^qs" fuzzy-search-and-edit
+                bindkey ' ' magic-space # also do history expansion on space
+                bindkey -e
+                bindkey -r "^g"
+
+                zle -N jump && bindkey "^xjj" jump
+                zle -N dot && bindkey . dot
+                zle -N fbr && bindkey "^]c" fbr
+                zle -N fco && bindkey "^]t" fco
+                zle -N fcoc && bindkey "^]l" fcoc
+                zle -N fe && bindkey "^qe" fe
+                zle -N fshow && bindkey "^]s" fshow
+                zle -N fzf-history-widget && bindkey "^R" fzf-history-widget
+                zle -N predict-off
+                zle -N predict-on
+
+                #eval "$(direnv hook zsh)"
+            '';
+            sessionVariables = {
+                GREP_OPTIONS = "--color=auto";
+                GREP_COLOR = "1;32";
+                XAUTHORITY = "$HOME/.Xauthority";
+                FZF_MARKS_FILE = "$HOME/.bookmarks";
+                GTAGSLIBPATH = "$HOME/.gtags/";
+                WORKON_HOME = "$HOME/.virtualenvs";
+            };
+            shellAliases = {
+                dud = "(setopt globdots; du -mhs * | sort -hr)";
+                "-g grep" = "grep --color=auto --perl-regexp";
+                # ERR = "2>>( sed -ue 's/.*/$fg_bold[red]&$reset_color/' 1>&2 )";
+                "-g X" = "| xargs";
+                "-g L" = "| less";
+                "-g G" = "| grep";
+                "-g H" = "| head";
+                "-g T" = "| tail";
+                "-g fnd" = "findname";
+                "-g findgrep" = "find_in_files";
+                git = "hub";
+                DSH = "docker_shell(){ docker exec -it $1 /bin/bash }; docker_shell";
+                DRM = "docker_stop_rm(){ docker stop $@ && docker rm $@ }; docker_stop_rm";
+                DI = "docker inspect";
+                DP = "docker ps";
+                DPA = "docker ps -a";
+                DL = "docker logs";
+                DPI = "docker_name_ip(){ docker ps --format '{{.Names}}' | grep $@ | xargs docker inspect -f '{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | column -t -s' ' }; docker_name_ip";
+                DIM = "docker inspect -f '{{ .Mounts }}'";
+                # dubc = "sudo find . -name '__pycache__' -or -name '*.pyc' -exec rm -rf {} + && docker-compose up --build";
+                jcurl = "curl_jq(){ curl $@ | jq . }; curl_jq";
+                df = "dfc";
+                shroot = "ssh_root(){ ssh root@$@}; ssh_root";
+                shme = "ssh_whoami(){ ssh `whoami`@$@}; ssh_whoami";
+                TF = "tail -f";
+                untar = "tar xvvf";
+
+                ls = "exa -F --color=auto";
+                ll = "exa -l";
+                la = "exa -A";
+                li = "exa -ial";
+                lsd = "exa -ld *(-/DN)";
+                lsa = "exa -ld .*";
+                #handy patching aliases
+                ptch = "patch -Ntbp0 < ";
+                uptch = "patch -NRtbp0 < ";
+                clptch = "find . -name \*.orig -o -name \*.rej | xargs rm";
+                zr = ". ~/.zshrc";
+            };
+            plugins = [
+                {
+                    name = "fzf-marks";
+                    file = "fzf-marks.plugin.zsh";
+                    src = pkgs.fetchgit {
+                        url = "https://github.com/urbainvaes/fzf-marks";
+                        rev = "1.1";
+                        sha256 = "0wfh267kfvyx7vcyqpqv7qgi6vcffxziq5avqddnbkm3z51br0n4";
+                    };
+                }
+                {
+                    name = "enhancd";
+                    file = "init.sh";
+                    src = pkgs.fetchFromGitHub {
+                        owner = "b4b4r07";
+                        repo = "enhancd";
+                        rev = "v2.2.1";
+                        sha256 = "0iqa9j09fwm6nj5rpip87x3hnvbbz9w9ajgm6wkrd5fls8fn8i5g";
+                    };
+                }
+            ];
+        };
         programs.git = {
             enable = true;
             userName = "Alex Ermolov";
