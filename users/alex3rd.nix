@@ -46,6 +46,7 @@
             # common
             chromium
             fbreader
+            firefox
             qbittorrent
             skype
             tdesktop
@@ -412,10 +413,6 @@
             enableZshIntegration = true;
         };
         programs.feh.enable = true;
-        programs.firefox = {
-            enable = true;
-            enableIcedTea = true;
-        };
         programs.lesspipe.enable = true;
         programs.man.enable = true;
         programs.info.enable = true;
