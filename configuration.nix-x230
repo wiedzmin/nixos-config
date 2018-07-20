@@ -96,6 +96,7 @@
 
         # X11 libs and tools
         xlibs.xmodmap
+        xorg.xhost
 
         # Python
         python3Full
