@@ -176,7 +176,10 @@
             font-name=Fira Mono
             '';
         };
-        sshd.enable = true;
+        openssh = {
+            enable = true;
+            forwardX11 = true;
+        };
         redshift = {
             enable = true;
             latitude = "55.751244";
