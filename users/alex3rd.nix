@@ -121,7 +121,6 @@
                 if [ `uname -s` = "Linux" ]; then
                     eval `dircolors -b`
                 fi
-                umask 0077
 
                 #setopt BEEP
                 setopt APPEND_HISTORY
