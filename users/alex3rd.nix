@@ -70,8 +70,6 @@
             xlibs.xprop
 
             # Python
-            #python2Packages.jedi
-            #python3Packages.jedi
             python3Packages.jedi
             python3Packages.notebook
             python3Packages.virtualenv
