@@ -7,7 +7,7 @@
         description = "Imapfilter";
         after = [ "network.target" "suspend.target" ];
         wantedBy = [ "graphical-session.target" ];
-        path = [ pkgs.imapfilter pkgs.gnupg ];
+        path = [ pkgs.imapfilter pkgs.gnupg pkgs.notmuch pkgs.isync ];
         serviceConfig = {
             PIDFile = "/var/run/imapfilter.pid";
             Restart = "always";

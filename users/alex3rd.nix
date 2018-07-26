@@ -46,8 +46,6 @@
             solc
 
             # email
-            imapfilter
-            isync
 
             # shell
             bc
