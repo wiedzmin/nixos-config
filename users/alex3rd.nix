@@ -181,7 +181,6 @@
             sessionVariables = {
                 GREP_OPTIONS = "--color=auto";
                 GREP_COLOR = "1;32";
-                XAUTHORITY = "$HOME/.Xauthority";
                 FZF_MARKS_FILE = "$HOME/.bookmarks";
                 GTAGSLIBPATH = "$HOME/.gtags/";
                 WORKON_HOME = "$HOME/.virtualenvs";
