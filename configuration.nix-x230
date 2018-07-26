@@ -46,6 +46,7 @@
       gc-keep-derivations = true
       cores = 4
     '';
+    nix.trustedUsers = [ "root" "alex3rd" ];
 
     environment.systemPackages = with pkgs; [
         # editors
