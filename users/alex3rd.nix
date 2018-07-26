@@ -3,6 +3,7 @@
     imports = [
         <home-manager/nixos>
         ../packages/solidity-flattener.nix
+        ../packages/git-quick-stats.nix
     ];
 
     users.extraUsers = {
@@ -35,7 +36,7 @@
             ansible
             gitAndTools.diff-so-fancy
             gitAndTools.hub
-            gitAndTools.git-quick-stats
+            git-quick-stats
             httplab
             jq
             ripgrep
