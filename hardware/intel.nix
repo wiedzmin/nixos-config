@@ -9,4 +9,5 @@
     #options iwlwifi 11n_disable=1 power_save=0
     '';
     nix.maxJobs = lib.mkDefault 4;
+    nix.buildCores = lib.mkDefault 4;
 }
