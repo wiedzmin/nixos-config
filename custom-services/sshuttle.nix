@@ -3,9 +3,9 @@
 {
     systemd.services."sshuttle" = {
         enable = true;
-        description = "start sshuttle tunnel to remote server";
-        after = [ "network.target" ];
-        wantedBy = [ "default.target" ];
+        description = "sshuttle tunnel to remote server";
+        after = [ "network.target" "suspend.target" ];
+        wantedBy = [ "graphical-session.target" ];
         path = [ pkgs.sshuttle pkgs.logger ];
         serviceConfig = {
             Type = "forking";
