@@ -16,6 +16,7 @@
         ./contrib/custom-scripts.nix
         ./custom-services/sshuttle.nix
         ./private/sshuttle.nix
+        ./custom-services/imapfilter.nix
     ];
 
     boot.loader.grub = {
