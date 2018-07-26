@@ -146,7 +146,7 @@
         ];
     };
 
-    environment.etc."Xmodmap".text = import ./pkgconfig/xmodmap.nix { };
+    environment.etc."Xmodmap".source = ./dotfiles/x11/xmodmaprc;
 
     networking.firewall.enable = false;
     networking.networkmanager.enable = true;
