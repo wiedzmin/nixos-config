@@ -86,6 +86,7 @@
 
         # office
         pandoc
+        texlive.combined.scheme-full
 
         # virtualisation
         docker_compose
