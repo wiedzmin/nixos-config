@@ -94,6 +94,7 @@
         home.file = {
             ".zsh/functions.zsh".source = ../dotfiles/shell/functions.zsh;
             "common_settings".source = ../dotfiles/shell/common_settings;
+            ".Xresources".source = ../dotfiles/x11/Xresources;
         };
         programs.zsh = {
             enable = true;
