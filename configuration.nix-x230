@@ -160,6 +160,7 @@
 
     programs = {
         mtr.enable = true;
+        # TODO: check extra config / think of moving to home-manager.services.gpg-agent (check if it affects imapfilter.service )
         gnupg.agent = {
             enable = true;
             enableSSHSupport = true;
@@ -174,6 +175,8 @@
     nixpkgs.config.virtualbox.enableExtensionPack = true;
 
     services = {
+        # TODO: dropbox / compare with syncthing
+        # TODO: arbtt (broken)
         printing = {
             enable = true;
             drivers = [ pkgs.hplip ];
