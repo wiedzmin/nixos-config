@@ -86,11 +86,24 @@
             python3Packages.virtualenvwrapper
             python3Packages.yapf
 
+            # Lisp
+            lispPackages.quicklisp
         ];
         home.file = {
             ".zsh/functions.zsh".source = ../dotfiles/shell/functions.zsh;
             "common_settings".source = ../dotfiles/shell/common_settings;
             ".Xresources".source = ../dotfiles/x11/Xresources;
+            ".sbclrc".text = ''
+                #-quicklisp
+                (let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
+                                                       (user-homedir-pathname))))
+                  (when (probe-file quicklisp-init)
+                    (load quicklisp-init)))
+
+                (ql:quickload :cffi)
+                (pushnew #P"/home/alex3rd/.nix-profile/lib/" # TODO: parameterize username
+                    cffi:*foreign-library-directories*)
+            '';
         };
         programs.zsh = {
             enable = true;

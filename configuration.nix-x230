@@ -104,9 +104,6 @@
         python3Full
         python2Full
 
-        # Lisp
-        lispPackages.quicklisp
-
         # DE/WM related
         gnome3.gnome-tweak-tool
 
