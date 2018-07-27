@@ -197,6 +197,9 @@
             temperature.night = 3700;
         };
         locate.enable = true;
+        journald.extraConfig = ''
+            MaxRetentionSec=2day
+        '';
     };
 
     sound.enable = true;
