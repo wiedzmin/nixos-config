@@ -199,10 +199,16 @@
     };
 
     sound.enable = true;
-    hardware.pulseaudio.enable = true;
-
-    hardware.sane.enable = true;
-    hardware.sane.extraBackends = [ pkgs.epkowa ];
+    # TODO: maybe move under "hardware"
+    hardware = {
+        pulseaudio = {
+            enable = true;
+        };
+        sane = {
+            enable = true;
+            extraBackends = [ pkgs.epkowa ];
+        };
+    };
 
     services.xserver = {
         desktopManager = {
