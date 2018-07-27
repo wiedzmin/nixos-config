@@ -214,6 +214,7 @@
     };
 
     services.xserver = {
+        videoDrivers = [ "modesetting" ]; # TODO: maybe also add / substitute with "intel"
         desktopManager = {
             gnome3.enable = true;
             default = "gnome3";
