@@ -2,7 +2,6 @@
 {
     imports = [
         <home-manager/nixos>
-        ../packages/solidity-flattener.nix
         ../packages/git-quick-stats.nix
     ];
 
@@ -86,10 +85,7 @@
             python3Packages.virtualenv
             python3Packages.virtualenvwrapper
             python3Packages.yapf
-            solidity-flattener
 
-            # NodeJS
-            # nodePackages.truffle
         ];
         home.file = {
             ".zsh/functions.zsh".source = ../dotfiles/shell/functions.zsh;
@@ -517,7 +513,6 @@
                 epkgs.smooth-scrolling
                 epkgs.socyl
                 epkgs.solarized-theme
-                epkgs.solidity-mode
                 epkgs.spaceline
                 epkgs.speed-type
                 epkgs.sunburn-theme
