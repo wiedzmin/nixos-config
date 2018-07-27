@@ -132,12 +132,20 @@
             anonymousPro
             corefonts
             dejavu_fonts
+            fantasque-sans-mono
+            fira-code
+            fira-mono
             font-droid
             freefont_ttf
+            go-font
             google-fonts
+            # hack # FIXME: maybe wrong derivation name
             inconsolata
+            # input-fonts # NOTE: no automated download, should prefetch manually
             iosevka
             liberation_ttf
+            mononoki
+            noto-fonts
             powerline-fonts
             source-code-pro
             terminus_font
