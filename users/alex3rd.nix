@@ -43,6 +43,8 @@
             wuzz
             pkgs.idea.pycharm-community
             solc
+            leiningen
+            clojure
 
             # email
             notmuch
