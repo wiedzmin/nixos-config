@@ -45,6 +45,8 @@
             solc
 
             # email
+            notmuch
+            msmtp
 
             # shell
             bc
