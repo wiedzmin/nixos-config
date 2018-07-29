@@ -62,7 +62,7 @@ Emacs.menuBar: 0
 Emacs.toolBar: 0
 Emacs.verticalScrollBars: off
 URxvt.depth: 32
-URxvt.font: xft:Iosevka:weight=Bold:size=11
+URxvt.font: xft:Iosevka:weight=Bold:size=12
 URxvt.geometry: 80x27
 URxvt.lineSpace: 0
 URxvt.letterSpace: -1
