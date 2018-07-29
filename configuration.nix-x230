@@ -14,10 +14,10 @@
         ./users/root.nix
         ./users/alex3rd.nix
         ./contrib/custom-scripts.nix
-        ./custom-services/sshuttle.nix
+        ./services/sshuttle.nix
         ./private/sshuttle.nix
-        ./custom-services/imapfilter.nix
-        ./custom-services/vpn.nix
+        ./services/imapfilter.nix
+        ./services/vpn.nix
     ];
 
     boot.loader.grub = {
