@@ -91,6 +91,7 @@
 
         # virtualisation
         docker_compose
+        docker-machine
         vagrant
 
         # media
@@ -121,6 +122,8 @@
         status_cpu_temp
         status_uptime
         zip2targz
+        docker-machine-export
+        docker-machine-import
     ];
 
     fonts = {
