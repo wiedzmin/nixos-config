@@ -49,6 +49,21 @@
            xsaneGimp = pkgs.xsane.override { gimpSupport = true; };
         };
         sane.snapscanFirmware = "/etc/nixos/private/firmware/Esfw52.bin";
+        nixpkgs.config.allowUnfree = true;
+        nixpkgs.config.dmenu.enableXft = true;
+        nixpkgs.config.firefox = {
+            enableAdobeFlash = true;
+            enableAdobeFlashDRM = true;
+            enableDjvu = true;
+            enableGnomeExtensions = true;
+            enableGoogleTalkPlugin = true;
+            jre = false;
+            icedtea = true;
+        };
+        nixpkgs.config.chromium = {
+            enablePepperFlash = true;
+            enablePepperPDF = true;
+        };
     };
 
     nix.extraOptions = ''
@@ -57,6 +72,10 @@
       cores = 4
     '';
     nix.trustedUsers = [ "root" "alex3rd" ];
+    nix.trustedBinaryCaches = [
+        "http://hydra.nixos.org"
+        "http://cache.nixos.org"
+    ];
 
     environment.systemPackages = with pkgs; [
         # editors
