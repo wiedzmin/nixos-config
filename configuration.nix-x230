@@ -78,18 +78,42 @@
         "http://cache.nixos.org"
     ];
 
-    environment.systemPackages = with pkgs; [
+    environment.systemPackages = with pkgs; let exe = haskell.lib.justStaticExecutables; in [
         # editors
         vim
 
         # development
-        git
-        sbcl
-        go2nix
-        dep2nix
-        pypi2nix
+        atom
         clang
+        ctop
+        dep2nix
+        doxygen
+        gdb
+        gdbgui
+        git
+        git-lfs
+        gitAndTools.git-annex-remote-rclone
+        gitAndTools.git-imerge
+        gitAndTools.git-secret
+        gitAndTools.git-secrets
+        gitAndTools.gitflow
+        gitAndTools.hub
+        gitstats
+        global
+        go2nix
+        highlight
+        llvm
+        ninja
         nodejs
+        patch
+        patchutils
+        pypi2nix
+        reflex
+        rtags
+        sbcl
+        sloccount
+        vscode
+        zeal
 
         # devdeps
         gnumake
@@ -97,26 +121,59 @@
         binutils
 
         # shell
-        rxvt_unicode
-        tmux
+        alacritty
+        direnv
+        fd # TODO: make `find` alias to this
+        findutils
+        multitail
+        nix-bash-completions
+        nix-zsh-completions
+        pv
+        renameutils
         ripgrep
+        rxvt_unicode-with-plugins
+        tmux
 
         # system
         iotop
         powertop
 
         # misc
+        (exe gitAndTools.git-annex)
+        appimage-run
         busybox
         exa
+        idutils
         mc
         psmisc
         tree
         wget
-        appimage-run
 
-        # office
+        # networking
+        iperf
+        lynx
+        mosh
+        netcat
+        nethogs
+        networkmanagerapplet
+        nix-prefetch-scripts
+        rclone
+        telegram-cli
+        w3m
+        wget
+        youtube-dl
+
+        # documents and publishing
         pandoc
         texlive.combined.scheme-full
+        aspell
+        aspellDicts.en
+        aspellDicts.ru
+        ditaa
+        pdf2djvu
+        pdftk
+        plantuml
+        zathura
 
         # virtualisation
         docker_compose
@@ -126,10 +183,19 @@
         # media
         pasystray
         pavucontrol
+        exif
+
+        # archives
+        gnutar
+        unrar
+        unzip
+        zip
+        p7zip
 
         # X11 libs and tools
         xlibs.xmodmap
         xorg.xhost
+        xorg.xdpyinfo
 
         # Python
         python3Full
