@@ -26,6 +26,7 @@
         device = "/dev/sda";
         configurationLimit = 10;
     };
+    boot.plymouth.enable = true;
 
     i18n = {
         consoleFont = "Lat2-Terminus16";
