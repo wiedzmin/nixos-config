@@ -285,6 +285,10 @@
             enable = true;
             enableSSHSupport = true;
         };
+        wireshark = {
+            enable = true;
+            package = pkgs.wireshark-gtk;
+        };
     };
 
     virtualisation.docker.enable = true;
