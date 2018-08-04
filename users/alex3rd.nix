@@ -2,7 +2,6 @@
 {
     imports = [
         <home-manager/nixos>
-        ../packages/git-quick-stats.nix
     ];
 
     users.extraUsers = {
@@ -14,7 +13,11 @@
             extraGroups = [ "audio" "docker" "lp" "networkmanager" "scanner" "vboxusers" "video" "wheel" ];
         };
     };
+
+    nix.trustedUsers = [ "alex3rd" ];
+
     programs.bash.enableCompletion = true;
+    programs.zsh.enable = true;
 
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
@@ -23,75 +26,11 @@
             glibcLocales
 
             # common
-            chromium
             fbreader
-            firefox
-            qbittorrent
-            skype
-            tdesktop
-            slack
-
-            # development
-            ansible
-            gitAndTools.diff-so-fancy
-            gitAndTools.hub
-            git-quick-stats
-            httplab
-            jq
-            ripgrep
-            rtags
-            wuzz
-            pkgs.idea.pycharm-community
-            solc
-            leiningen
-            clojure
 
             # email
             notmuch
             msmtp
-
-            # shell
-            bc
-            direnv
-            replace
-
-            # security
-            gnupg
-            pass
-            rofi-pass
-
-            # media
-            ffmpeg
-            gimp
-            mpv                     #  TODO: (alex3rd) make default
-            xsane
-
-            # X11 libs and tools
-            arandr
-            xlibs.xev
-            xlibs.xprop
-
-            # Python
-            # python3Packages.rst2pdf # TODO: add derivation
-            # python3Packages.traad # TODO: add derivation
-            python3Packages.GitPython
-            python3Packages.autopep8
-            python3Packages.flake8
-            python3Packages.importmagic
-            python3Packages.isort
-            python3Packages.jedi
-            python3Packages.jmespath
-            python3Packages.notebook
-            python3Packages.olefile
-            python3Packages.pep8
-            python3Packages.pylint
-            python3Packages.snakeviz
-            python3Packages.virtualenv
-            python3Packages.virtualenvwrapper
-            python3Packages.yapf
-
-            # Lisp
-            lispPackages.quicklisp
         ];
         home.file = {
             ".zsh/functions.zsh".source = ../dotfiles/shell/functions.zsh;
@@ -199,43 +138,22 @@
                 WORKON_HOME = "$HOME/.virtualenvs";
             };
             shellAliases = {
-                dud = "(setopt globdots; du -mhs * | sort -hr)";
+                "-g findgrep" = "find_in_files";
+                "-g fnd" = "findname";
                 "-g grep" = "grep --color=auto --perl-regexp";
                 # ERR = "2>>( sed -ue 's/.*/$fg_bold[red]&$reset_color/' 1>&2 )";
-                "-g X" = "| xargs";
-                "-g L" = "| less";
-                "-g G" = "| grep";
-                "-g H" = "| head";
-                "-g T" = "| tail";
-                "-g fnd" = "findname";
-                "-g findgrep" = "find_in_files";
-                git = "hub";
-                DSH = "docker_shell(){ docker exec -it $1 /bin/bash }; docker_shell";
-                DRM = "docker_stop_rm(){ docker stop $@ && docker rm $@ }; docker_stop_rm";
-                DI = "docker inspect";
-                DP = "docker ps";
-                DPA = "docker ps -a";
-                DL = "docker logs";
-                DPI = "docker_name_ip(){ docker ps --format '{{.Names}}' | grep $@ | xargs docker inspect -f '{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | column -t -s' ' }; docker_name_ip";
-                DIM = "docker inspect -f '{{ .Mounts }}'";
                 # dubc = "sudo find . -name '__pycache__' -or -name '*.pyc' -exec rm -rf {} + && docker-compose up --build";
-                jcurl = "curl_jq(){ curl $@ | jq . }; curl_jq";
-                df = "dfc";
-                shroot = "ssh_root(){ ssh root@$@}; ssh_root";
-                shme = "ssh_whoami(){ ssh `whoami`@$@}; ssh_whoami";
                 TF = "tail -f";
-                untar = "tar xvvf";
+                df = "dfc";
+                dud = "(setopt globdots; du -mhs * | sort -hr)";
+                git = "${pkgs.gitAndTools.hub}/bin/hub";
+                jcurl = "curl_jq(){ ${pkgs.curl}/bin/curl $@ | ${pkgs.jq}/bin/jq . }; curl_jq";
+                shme = "ssh_whoami(){ ssh `whoami`@$@}; ssh_whoami";
+                shroot = "ssh_root(){ ssh root@$@}; ssh_root";
 
-                ls = "exa -F --color=auto";
-                ll = "exa -l";
-                la = "exa -A";
-                li = "exa -ial";
-                lsd = "exa -ld *(-/DN)";
-                lsa = "exa -ld .*";
-                #handy patching aliases
-                ptch = "patch -Ntbp0 < ";
-                uptch = "patch -NRtbp0 < ";
-                clptch = "find . -name \*.orig -o -name \*.rej | xargs rm";
+                ls = "${pkgs.exa}/bin/exa -F --color=auto";
+                ll = "${pkgs.exa}/bin/exa -l";
+                la = "${pkgs.exa}/bin/exa -A";
                 zr = ". ~/.zshrc";
             };
             plugins = [
@@ -281,8 +199,8 @@
                 diff.algorithm = "patience";
                 gpg.program = "gpg2";
                 init.templatedir = "${config.users.extraUsers.alex3rd.home}/.git/templates";
-                pager.diff = "diff-so-fancy | less --tabs=4 -RFX";
-                pager.show = "diff-so-fancy | less --tabs=4 -RFX";
+                pager.diff = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
+                pager.show = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
                 push.default = "current";
             };
             aliases = {
@@ -308,7 +226,7 @@
                 updated = "show --name-only --oneline";
 
                 # TODO: think of using --patience
-                d = "!git diff --patch-with-stat --color $@ | diff-so-fancy";
+                d = "!git diff --patch-with-stat --color $@ | ${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy";
                 dc = "diff --cached";
                 df = "diff --patch-with-stat --color --color-words --abbrev";
                 fpd = "diff --no-prefix -s -p >";

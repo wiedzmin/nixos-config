@@ -10,14 +10,40 @@
         <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
         ./hardware/intel.nix
         ./hardware/laptop.nix
+        ./hardware/bluetooth.nix
         ./partitions/x230-laptoptop.nix
         ./users/root.nix
         ./users/alex3rd.nix
         ./contrib/custom-scripts.nix
-        ./services/sshuttle.nix
+        ./services/custom/sshuttle.nix
         ./private/sshuttle.nix
-        ./services/imapfilter.nix
-        ./services/vpn.nix
+        ./services/custom/imapfilter.nix
+        ./services/custom/vpn.nix
+        ./services/printing.nix
+        ./services/kmscon.nix
+        ./services/openssh.nix
+        ./services/common.nix
+        ./modules/scanner.nix
+        ./modules/sound.nix
+        ./modules/security.nix
+        ./modules/nixopts.nix
+        ./profiles/virt.nix
+        ./profiles/dev/common.nix
+        ./profiles/dev/ccpp.nix
+        ./profiles/dev/python.nix
+        ./profiles/dev/cl.nix
+        ./profiles/dev/go.nix
+        ./profiles/dev/clojure.nix
+        ./profiles/shell.nix
+        ./profiles/archive.nix
+        ./profiles/media.nix
+        ./profiles/textworks.nix
+        ./profiles/networking.nix
+        ./profiles/nixtools.nix
+        ./profiles/misc.nix
+        ./services/xserver/common.nix
+        ./services/xserver/fonts.nix
+        ./services/xserver/redshift.nix
     ];
 
     boot.loader.grub = {
@@ -44,232 +70,7 @@
 
     time.timeZone = "Europe/Moscow";
 
-    nixpkgs.config = {
-        allowUnfree = true;
-        packageOverrides = pkgs: {
-           xsaneGimp = pkgs.xsane.override { gimpSupport = true; };
-        };
-        sane.snapscanFirmware = "/etc/nixos/private/firmware/Esfw52.bin";
-        nixpkgs.config.allowUnfree = true;
-        nixpkgs.config.dmenu.enableXft = true;
-        nixpkgs.config.firefox = {
-            enableAdobeFlash = true;
-            enableAdobeFlashDRM = true;
-            enableDjvu = true;
-            enableGnomeExtensions = true;
-            enableGoogleTalkPlugin = true;
-            jre = false;
-            icedtea = true;
-        };
-        nixpkgs.config.chromium = {
-            enablePepperFlash = true;
-            enablePepperPDF = true;
-        };
-    };
-
-    nix.extraOptions = ''
-      gc-keep-outputs = true
-      gc-keep-derivations = true
-      cores = 4
-    '';
-    nix.trustedUsers = [ "root" "alex3rd" ];
-    nix.trustedBinaryCaches = [
-        "http://hydra.nixos.org"
-        "http://cache.nixos.org"
-    ];
-
-    environment.systemPackages = with pkgs; let exe = haskell.lib.justStaticExecutables; in [
-        # editors
-        vim
-
-        # development
-        atom
-        clang
-        ctop
-        dep2nix
-        doxygen
-        gdb
-        gdbgui
-        git
-        git-lfs
-        gitAndTools.git-annex-remote-rclone
-        gitAndTools.git-imerge
-        gitAndTools.git-secret
-        gitAndTools.git-secrets
-        gitAndTools.gitflow
-        gitAndTools.hub
-        gitstats
-        global
-        go2nix
-        highlight
-        llvm
-        ninja
-        nodejs
-        patch
-        patchutils
-        pypi2nix
-        reflex
-        rtags
-        sbcl
-        sloccount
-        vscode
-        zeal
-
-        # devdeps
-        gnumake
-        gcc
-        binutils
-
-        # shell
-        alacritty
-        direnv
-        fd # TODO: make `find` alias to this
-        findutils
-        multitail
-        nix-bash-completions
-        nix-zsh-completions
-        pv
-        renameutils
-        ripgrep
-        rxvt_unicode-with-plugins
-        tmux
-
-        # system
-        iotop
-        powertop
-
-        # misc
-        (exe gitAndTools.git-annex)
-        appimage-run
-        busybox
-        exa
-        idutils
-        mc
-        psmisc
-        tree
-        wget
-
-        # networking
-        iperf
-        lynx
-        mosh
-        netcat
-        nethogs
-        networkmanagerapplet
-        nix-prefetch-scripts
-        rclone
-        telegram-cli
-        w3m
-        wget
-        youtube-dl
-
-        # documents and publishing
-        pandoc
-        texlive.combined.scheme-full
-        aspell
-        aspellDicts.en
-        aspellDicts.ru
-        ditaa
-        pdf2djvu
-        pdftk
-        plantuml
-        zathura
-
-        # virtualisation
-        docker_compose
-        docker-machine
-        vagrant
-
-        # media
-        pasystray
-        pavucontrol
-        exif
-
-        # archives
-        gnutar
-        unrar
-        unzip
-        zip
-        p7zip
-
-        # X11 libs and tools
-        xlibs.xmodmap
-        xorg.xhost
-        xorg.xdpyinfo
-
-        # Python
-        python3Full
-        python2Full
-
-        # DE/WM related
-        gnome3.gnome-tweak-tool
-
-        # Nix-related
-        nix-index
-        nix-prefetch-scripts
-        nix-repl
-        nix-serve
-        nixops
-
-        # custom shell scripts
-        hddtemp
-        status_bat_info
-        status_cpu_temp
-        status_uptime
-        zip2targz
-        docker-machine-export
-        docker-machine-import
-    ];
-
-    fonts = {
-        fontconfig = {
-            enable = true;
-            useEmbeddedBitmaps = true;
-        };
-        enableFontDir = true;
-        enableGhostscriptFonts = true;
-        fonts = with pkgs; [
-            # input-fonts # NOTE: no automated download, should prefetch manually
-            anonymousPro
-            corefonts
-            dejavu_fonts
-            dosemu_fonts
-            emacs-all-the-icons-fonts
-            emojione
-            fantasque-sans-mono
-            fira
-            fira-code
-            fira-mono
-            font-awesome-ttf
-            font-droid
-            freefont_ttf
-            go-font
-            gohufont
-            google-fonts
-            hack-font
-            inconsolata
-            iosevka
-            liberation_ttf
-            mononoki
-            mplus-outline-fonts
-            noto-fonts
-            noto-fonts-emoji
-            powerline-fonts
-            powerline-fonts
-            proggyfonts
-            roboto
-            roboto-mono
-            roboto-slab
-            source-code-pro
-            terminus_font
-            terminus_font
-            terminus_font_ttf
-            ttf_bitstream_vera
-            ubuntu_font_family
-            unifont
-            vistafonts
-        ];
-    };
+    nixpkgs.config.allowUnfree = true;
 
     environment.etc."Xmodmap".source = ./dotfiles/x11/xmodmaprc;
 
@@ -290,98 +91,6 @@
             package = pkgs.wireshark-gtk;
         };
     };
-
-    virtualisation.docker.enable = true;
-    virtualisation.docker.storageDriver = "overlay2";
-
-    virtualisation.libvirtd.enable = true;
-    virtualisation.virtualbox.host.enable = true;
-    nixpkgs.config.virtualbox.enableExtensionPack = true;
-
-    services = {
-        # TODO: dropbox / compare with syncthing
-        # TODO: arbtt (broken)
-        printing = {
-            enable = true;
-            drivers = [ pkgs.hplip ];
-        };
-        kmscon = {
-            enable = true;
-            hwRender = true;
-            extraConfig = ''
-            font-name=Fira Mono
-            '';
-        };
-        openssh = {
-            enable = true;
-            forwardX11 = true;
-        };
-        redshift = {
-            enable = true;
-            latitude = "55.751244";
-            longitude = "37.618423";
-            temperature.day = 5500;
-            temperature.night = 3700;
-        };
-        locate.enable = true;
-        journald.extraConfig = ''
-            MaxRetentionSec=2day
-        '';
-    };
-
-    sound.enable = true;
-    # TODO: maybe move under "hardware"
-    hardware = {
-        pulseaudio = {
-            enable = true;
-            support32Bit = true;
-        };
-        sane = {
-            enable = true;
-            extraBackends = [ pkgs.epkowa ];
-        };
-        bluetooth.enable = true;
-    };
-
-    services.xserver = {
-        videoDrivers = [ "modesetting" "intel" ];
-        desktopManager = {
-            gnome3.enable = true;
-            default = "gnome3";
-        };
-        displayManager = {
-            gdm = {
-                enable = true;
-                autoLogin.enable = true;
-                autoLogin.user = "alex3rd"; # TODO: try to make a SPOT with users definitions
-            };
-            sessionCommands = ''
-              ${pkgs.xlibs.xmodmap}/bin/xmodmap /etc/Xmodmaprc
-            '';
-        };
-        windowManager.xmonad.enable = true;
-        enable = true;
-        xkbOptions = "caps:none";
-        layout = "us,ru";
-        libinput = {
-            enable = true;
-            naturalScrolling = true;
-            disableWhileTyping = true;
-            tappingDragLock = false;
-            accelSpeed = "0.6";
-        };
-    };
-
-    security.sudo.wheelNeedsPassword = false;
-    security.polkit.extraConfig = ''
-        /* Allow users in wheel group to manage systemd units without authentication */
-        polkit.addRule(function(action, subject) {
-            if (action.id == "org.freedesktop.systemd1.manage-units" &&
-                subject.isInGroup("wheel")) {
-                return polkit.Result.YES;
-            }
-        });
-    '';
 
     system.nixos.stateVersion = "18.03";
 }
