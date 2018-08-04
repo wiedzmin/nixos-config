@@ -570,7 +570,6 @@
                 epkgs.recentf-ext
                 epkgs.recursive-narrow
                 epkgs.regex-tool
-                epkgs.regex-tool
                 epkgs.region-bindings-mode
                 epkgs.restart-emacs
                 epkgs.reverse-im
