@@ -2,6 +2,7 @@
 {
     imports = [
         <home-manager/nixos>
+        ../contrib/custom-scripts.nix
     ];
 
     users.extraUsers = {
@@ -46,6 +47,141 @@
                 (ql:quickload :cffi)
                 (pushnew #P"/home/alex3rd/.nix-profile/lib/" # TODO: parameterize username
                     cffi:*foreign-library-directories*)
+            '';
+            ".tmux.conf".text = ''
+                set -g base-index 1             # first window index
+                set -g renumber-windows on
+                set -g history-limit 102400
+                setw -g pane-base-index 1
+                setw -g automatic-rename on
+                setw -g aggressive-resize on
+
+                set-option -g default-shell ${pkgs.zsh}/bin/zsh
+
+                set-option -sg escape-time 0 # faster functioning for Esc-bound apps (ex. Vim)
+                set-option -g repeat-time 500 # Repeat time limit (ms)
+
+                # set -g update-environment "DISPLAY SSH_ASKPASS SSH_AUTH_SOCK SSH_AGENT_PID SSH_CONNECTION WINDOWID XAUTHORITY"
+
+                # window titles
+                set -g set-titles on
+                set -g set-titles-string "#h.#I.#T[#W]"
+
+                # activity
+                set -g bell-action any
+                set -g visual-activity off
+                set-option -g visual-bell off
+                set-option -g visual-silence off
+                setw -g monitor-activity on
+
+                # kill confirmations
+                bind k confirm kill-window
+                bind K confirm kill-server
+
+                # statusbar
+                set -g display-time 2000
+                set -g display-panes-time 2000
+                set -g status on
+                set -g status-interval 1
+                set -g status-justify centre
+                set -g status-left-length 30
+                set -g status-right-length 140
+                setw -g window-status-format '#[fg=cyan,dim]#I#[fg=blue]:#[default]#W#[fg=grey,dim]#F'
+                setw -g window-status-current-format '#[bg=blue,fg=cyan,bold]#I#[bg=blue,fg=cyan]:#[fg=colour230]#T#[fg=dim]#F'
+                set -g status-left '#[fg=green](#S) #(whoami)@#H'
+                set -g status-right '#[fg=yellow,dim,bg=default]#(${pkgs.status_uptime}/bin/status_uptime) #[fg=white,bg=default]%a %k:%M:%S %p#[default] #[fg=blue,bright]%Y-%m-%d #[fg=red,bg=default,bright]#(${pkgs.status_bat_info}/bin/status_bat_info)'
+                setw -g clock-mode-style 24
+
+                # colors
+                set -g status-fg white
+                set -g status-bg default
+                set -g status-attr default
+                setw -g window-status-fg cyan
+                setw -g window-status-bg default
+                setw -g window-status-attr dim
+                setw -g window-status-current-fg colour166 # TODO was white, check if it works somewhere else
+                setw -g window-status-current-bg default
+                setw -g window-status-current-attr bright
+                set -g message-fg white
+                set -g message-bg black
+                set -g message-attr bright
+                setw -g window-status-current-bg red
+                set -g pane-border-fg colour235 #base02
+                set -g pane-active-border-fg colour240 #base01
+                set -g pane-border-bg default
+                set -g pane-active-border-bg default
+                setw -g clock-mode-colour green #green
+                set -g default-terminal "screen-256color"
+                set-option -ga terminal-overrides 'xterm*:smcup@:rmcup@,xterm-256color:Tc'
+
+                # keybindings
+                unbind C-b
+                unbind %
+                unbind '"'
+                unbind l
+                set-option -g prefix M-x
+                set -sg escape-time 0
+                set -g status-keys emacs
+                setw -g mode-keys emacs
+                bind -n C-left prev
+                bind -n C-right next
+                bind -n S-left swap-window -t -1
+                bind -n S-right swap-window -t +1
+                bind X next-layout
+                bind Z previous-layout
+                bind b set-option status
+                bind '#' split-window -h
+                bind '@' split-window -v
+                bind -n M-Left select-pane -L
+                bind -n M-Right select-pane -R
+                bind -n M-Up select-pane -U
+                bind -n M-Down select-pane -D
+                bind -r H resize-pane -L 5
+                bind -r J resize-pane -D 5
+                bind -r K resize-pane -U 5
+                bind -r L resize-pane -R 5
+                bind L choose-session
+                bind l refresh-client
+                bind N command-prompt -p "New session name:" "rename-session %%"
+                bind A command-prompt -p "rename-window %%"
+                bind '~' split-window "exec ${pkgs.htop}/bin/htop"
+                bind '!' split-window "exec sudo ${pkgs.iotop}/bin/iotop"
+                bind '#' split-window "exec ${pkgs.networkmanager}/bin/nmtui"
+                bind '-' split-window "exec ${pkgs.bc}/bin/bc"
+                bind -n C-x send-prefix     # prefix commands for nested tmux sessions
+                bind C-m command-prompt -p "Open man page for:" "new-window 'exec man %%'" # open %% man page
+                bind T neww -n "Tmux manual" "exec man tmux"
+                bind * list-clients
+                bind t set status
+
+                # pane/window movement
+                bind j command-prompt -p "join pane from:" "join-pane -s '%%'"
+                bind b break-pane
+                bind s choose-window "join-pane -h -t '%%'"
+                bind S command-prompt -p "swap window with:" "swap-window -t ':%%'"
+                bind m command-prompt -p "move window to:" "move-window -t ':%%'"
+
+                bind-key BSpace last-window
+
+                # bind-key -t emacs-copy -n M-w copy-pipe "${pkgs.xclip}/bin/xclip -i -selection clipboard" # FIXME fails
+                bind C-y run "tmux set-buffer \"$(${pkgs.xclip}/bin/xclip -o -b -sel)\"; tmux paste-buffer"
+
+                bind r source-file ~/.tmux.conf \; display "  Config reloaded..."
+
+                bind-key y set-window-option synchronize-panes
+
+                # set -g mouse-utf8 on
+                # set -g mouse on
+                # bind -n WheelUpPane   select-pane -t= \; copy-mode -e \; send-keys -M
+                # set -g @plugin 'tmux-plugins/tmux-copycat'
+                # set -g @plugin 'tmux-plugins/tmux-yank'
+                # set -g @plugin 'tmux-plugins/tmux-open'
+                # set -g @plugin 'tmux-plugins/tmux-sessionist'
+                # set -g @plugin 'tmux-plugins/tmux-resurrect'
+                # set -g @plugin 'tmux-plugins/tmux-continuum'
+                # set -g @plugin 'tmux-plugins/tmux-urlview'
+                # set -g @plugin 'tmux-plugins/tpm'
+                # run '~/.tmux/plugins/tpm/tpm'
             '';
         };
         programs.zsh = {
