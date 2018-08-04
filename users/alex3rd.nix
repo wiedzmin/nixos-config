@@ -292,7 +292,7 @@
                 la = "${pkgs.exa}/bin/exa -A";
                 zr = ". ~/.zshrc";
             };
-            plugins = [
+            plugins = [ # TODO: bring back other plugins from old system
                 {
                     name = "fzf-marks";
                     file = "fzf-marks.plugin.zsh";
@@ -322,7 +322,7 @@
                 key = "alex3rd <aaermolov@gmail.com>";
                 signByDefault = true;
             };
-            extraConfig = {
+            extraConfig = { # TODO: resurrect some incompatible config entries using literal config
                 color.diff = "auto";
                 color.status = "auto";
                 color.ui = "always";
