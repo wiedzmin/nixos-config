@@ -48,6 +48,9 @@
                 (pushnew #P"/home/alex3rd/.nix-profile/lib/" # TODO: parameterize username
                     cffi:*foreign-library-directories*)
             '';
+            "git-assets/git-commit-template".source = ../dotfiles/dev/git-assets/git-commit-template;
+            "git-assets/.gitignore".source = ../dotfiles/dev/git-assets/gitignore;
+            "git-assets/templates/hooks/pre-push".source = ../dotfiles/dev/git-assets/templates/hooks/pre-push;
             ".tmux.conf".text = ''
                 set -g base-index 1             # first window index
                 set -g renumber-windows on
@@ -327,14 +330,14 @@
                 color.status = "auto";
                 color.ui = "always";
                 commit.gpgSign = true;
-                commit.template = "${config.users.extraUsers.alex3rd.home}/.git/git-commit-template";
+                commit.template = "${config.users.extraUsers.alex3rd.home}/git-assets/git-commit-template";
                 core.autocrlf = false;
-                core.excludesfile = "${config.users.extraUsers.alex3rd.home}/.git/.gitignore";
+                core.excludesfile = "${config.users.extraUsers.alex3rd.home}/git-assets/.gitignore";
                 core.quotepath = false;
                 credential.helper = "cache --timeout=3600";
                 diff.algorithm = "patience";
-                gpg.program = "gpg2";
-                init.templatedir = "${config.users.extraUsers.alex3rd.home}/.git/templates";
+                gpg.program = "${pkgs.gnupg}/bin/gpg2";
+                init.templatedir = "${config.users.extraUsers.alex3rd.home}/git-assets/templates";
                 pager.diff = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
                 pager.show = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
                 push.default = "current";
