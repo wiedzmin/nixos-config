@@ -10,4 +10,5 @@
     services.journald.extraConfig = ''
         MaxRetentionSec=2day
     '';
+    services.mpd.enable = true;
 }
