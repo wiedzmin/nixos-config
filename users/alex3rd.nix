@@ -51,6 +51,10 @@
             "git-assets/git-commit-template".source = ../dotfiles/dev/git-assets/git-commit-template;
             "git-assets/.gitignore".source = ../dotfiles/dev/git-assets/gitignore;
             "git-assets/templates/hooks/pre-push".source = ../dotfiles/dev/git-assets/templates/hooks/pre-push;
+            ".pylintrc".source = ../dotfiles/dev/python/pylintrc;
+            ".isort.cfg".source = ../dotfiles/dev/python/isort.cfg;
+            ".config/flake8".source = ../dotfiles/dev/python/flake8;
+            ".config/pep8".source = ../dotfiles/dev/python/pep8;
             ".tmux.conf".text = ''
                 set -g base-index 1             # first window index
                 set -g renumber-windows on
