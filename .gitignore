@@ -1,4 +1,5 @@
 *zshrc
+.xsession
 common_settings*
 configuration.nix
 notice
