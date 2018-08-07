@@ -45,7 +45,7 @@
                     (load quicklisp-init)))
 
                 (ql:quickload :cffi)
-                (pushnew #P"/home/alex3rd/.nix-profile/lib/" # TODO: parameterize username
+                (pushnew #P"/home/alex3rd/.nix-profile/lib/" ;; TODO: parameterize username
                     cffi:*foreign-library-directories*)
             '';
             "git-assets/git-commit-template".source = ../dotfiles/dev/git-assets/git-commit-template;
