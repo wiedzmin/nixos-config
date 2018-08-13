@@ -575,10 +575,8 @@
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
                 epkgs.anaphora
-                epkgs.archive-rpm
                 epkgs.atomic-chrome
                 epkgs.auto-compile
-                epkgs.auto-yasnippet
                 epkgs.avy
                 epkgs.avy-flycheck
                 epkgs.backup-each-save
@@ -603,8 +601,6 @@
                 epkgs.company-statistics
                 epkgs.copy-as-format
                 epkgs.counsel
-                epkgs.counsel-gtags
-                epkgs.counsel-gtags
                 epkgs.counsel-notmuch
                 epkgs.counsel-projectile
                 epkgs.counsel-tramp
@@ -688,11 +684,9 @@
                 epkgs.jinja2-mode
                 epkgs.kaolin-themes
                 epkgs.keychain-environment
-                epkgs.keyfreq
                 epkgs.labburn-theme
                 epkgs.link-hint
                 epkgs.lua-mode
-                epkgs.macro-math
                 epkgs.magit
                 epkgs.magit-filenotify
                 epkgs.magithub
@@ -726,7 +720,6 @@
                 epkgs.org-super-agenda
                 epkgs.orgit
                 epkgs.orglink
-                epkgs.page-break-lines
                 epkgs.paradox
                 epkgs.pass
                 epkgs.pcre2el
@@ -755,7 +748,6 @@
                 epkgs.region-bindings-mode
                 epkgs.restart-emacs
                 epkgs.reverse-im
-                epkgs.rpm-spec-mode
                 epkgs.russian-holidays
                 epkgs.rust-mode
                 epkgs.savekill
@@ -766,7 +758,6 @@
                 epkgs.socyl
                 epkgs.solarized-theme
                 epkgs.spaceline
-                epkgs.speed-type
                 epkgs.sunburn-theme
                 epkgs.swiper
                 epkgs.tide
@@ -782,7 +773,6 @@
                 epkgs.vdiff-magit
                 epkgs.vimrc-mode
                 epkgs.virtualenvwrapper
-                epkgs.volatile-highlights
                 epkgs.w3m
                 epkgs.web-mode
                 epkgs.webpaste
