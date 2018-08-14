@@ -574,6 +574,7 @@
                 epkgs.ace-window
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
+                epkgs.amx
                 epkgs.anaphora
                 epkgs.atomic-chrome
                 epkgs.auto-compile
@@ -586,6 +587,8 @@
                 epkgs.blockdiag-mode
                 epkgs.bug-hunter
                 epkgs.c-eldoc
+                epkgs.cider
+                epkgs.clojure-mode
                 epkgs.comment-dwim-2
                 epkgs.common-lisp-snippets
                 epkgs.company
@@ -625,6 +628,7 @@
                 epkgs.edit-server
                 epkgs.editorconfig
                 epkgs.ein
+                epkgs.el-get
                 epkgs.eldoc-eval
                 epkgs.elfeed
                 epkgs.elfeed-goodies
@@ -645,6 +649,7 @@
                 epkgs.fic-mode
                 epkgs.flycheck
                 epkgs.flycheck-clang-analyzer
+                epkgs.flycheck-gometalinter
                 epkgs.flycheck-pos-tip
                 epkgs.flycheck-pycheckers
                 epkgs.function-args
@@ -655,6 +660,7 @@
                 epkgs.go-mode
                 epkgs.go-playground
                 epkgs.go-tag
+                epkgs.godoctor
                 epkgs.golden-ratio
                 epkgs.google-translate
                 epkgs.gorepl-mode
@@ -663,6 +669,7 @@
                 epkgs.graphql-mode
                 epkgs.hc-zenburn-theme
                 epkgs.highlight-stages
+                epkgs.hl-todo
                 epkgs.httprepl
                 epkgs.hungry-delete
                 epkgs.hydra
@@ -692,6 +699,7 @@
                 epkgs.magithub
                 epkgs.markdown-mode
                 epkgs.mc-extras
+                epkgs.melpaStablePackages.slime
                 epkgs.mingus
                 epkgs.multi-compile
                 epkgs.multiple-cursors
@@ -699,6 +707,7 @@
                 epkgs.names
                 epkgs.nginx-mode
                 epkgs.nix-mode
+                epkgs.nixos-options
                 epkgs.no-littering
                 epkgs.nord-theme
                 epkgs.notmuch
@@ -723,6 +732,7 @@
                 epkgs.paradox
                 epkgs.pass
                 epkgs.pcre2el
+                epkgs.pdf-tools
                 epkgs.persistent-scratch
                 epkgs.phi-search
                 epkgs.phi-search-mc
