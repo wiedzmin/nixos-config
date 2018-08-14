@@ -2,15 +2,15 @@
 
 {
     environment.systemPackages = with pkgs; [
-        pandoc
-        texlive.combined.scheme-full
         aspell
         aspellDicts.en
         aspellDicts.ru
         ditaa
+        pandoc
         pdf2djvu
         pdftk
         plantuml
+        texlive.combined.scheme-full
         zathura
     ];
 }
