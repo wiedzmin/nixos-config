@@ -651,7 +651,6 @@
                 epkgs.flycheck-clang-analyzer
                 epkgs.flycheck-gometalinter
                 epkgs.flycheck-pos-tip
-                epkgs.flycheck-pycheckers
                 epkgs.function-args
                 epkgs.git-msg-prefix
                 epkgs.gitignore-mode
@@ -676,7 +675,6 @@
                 epkgs.ialign
                 epkgs.ibuffer-vc
                 epkgs.imenu-anywhere
-                epkgs.importmagic
                 epkgs.info-buffer
                 epkgs.info-colors
                 epkgs.ini-mode
@@ -742,10 +740,6 @@
                 epkgs.popwin
                 epkgs.prog-fill
                 epkgs.projectile
-                epkgs.py-autopep8
-                epkgs.py-isort
-                epkgs.python-environment
-                epkgs.python-mode
                 epkgs.quelpa
                 epkgs.quelpa-use-package
                 epkgs.rainbow-delimiters
@@ -782,7 +776,6 @@
                 epkgs.vagrant-tramp
                 epkgs.vdiff-magit
                 epkgs.vimrc-mode
-                epkgs.virtualenvwrapper
                 epkgs.w3m
                 epkgs.web-mode
                 epkgs.webpaste
