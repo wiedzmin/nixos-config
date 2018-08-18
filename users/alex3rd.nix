@@ -446,7 +446,6 @@
                 zle -N predict-off
                 zle -N predict-on
 
-                #eval "$(direnv hook zsh)"
             '';
             sessionVariables = {
                 GREP_OPTIONS = "--color=auto";
@@ -834,5 +833,9 @@
         services.unclutter.enable = true;
         services.udiskie.enable = true;
         services.dunst.enable = true;
+        programs.direnv = {
+            enable = true;
+            enableZshIntegration = true;
+        };
     };
 }
