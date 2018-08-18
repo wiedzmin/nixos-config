@@ -11,11 +11,6 @@ dot() {
     fi
 }
 
-# edit file with root privs
-function eed() {
-    emacsclient -c -a emacs "/sudo:root@localhost:$1"
-}
-
 # see https://github.com/junegunn/fzf/wiki/examples
 # fbr - checkout git branch (including remote branches)
 fbr() {
