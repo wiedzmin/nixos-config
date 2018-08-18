@@ -504,23 +504,49 @@
                 key = "alex3rd <aaermolov@gmail.com>";
                 signByDefault = true;
             };
-            extraConfig = { # TODO: resurrect some incompatible config entries using literal config
-                color.diff = "auto";
-                color.status = "auto";
-                color.ui = "always";
-                commit.gpgSign = true;
-                commit.template = "${config.users.extraUsers.alex3rd.home}/git-assets/git-commit-template";
-                core.autocrlf = false;
-                core.excludesfile = "${config.users.extraUsers.alex3rd.home}/git-assets/.gitignore";
-                core.quotepath = false;
-                credential.helper = "cache --timeout=3600";
-                diff.algorithm = "patience";
-                gpg.program = "${pkgs.gnupg}/bin/gpg2";
-                init.templatedir = "${config.users.extraUsers.alex3rd.home}/git-assets/templates";
-                pager.diff = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
-                pager.show = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
-                push.default = "current";
-            };
+            extraConfig = ''
+                [color]
+                    diff = auto
+                    status = auto
+                    ui = always
+                [color "branch"]
+                    current = yellow reverse
+                    local = yellow
+                    remote = green
+                [color "diff"]
+                    commit = cyan bold
+                    frag = magenta bold
+                    meta = yellow bold
+                    new = green bold
+                    old = red bold
+                    whitespace = red reverse
+                [color "diff-highlight"]
+                    newHighlight = green bold 22
+                    newNormal = green bold
+                    oldHighlight = red bold 52
+                    oldNormal = red bold
+                [color "status"]
+                    added = green
+                    changed = yellow
+                    untracked = red
+                [commit]
+                    template = ${config.users.extraUsers.alex3rd.home}/git-assets/git-commit-template
+                [core]
+                    autocrlf = false
+                    excludesfile = ${config.users.extraUsers.alex3rd.home}/git-assets/.gitignore
+                    quotepath = false
+                [credential]
+                    helper = cache --timeout=3600
+                [diff]
+                    algorithm = patience
+                [init]
+                    templatedir = ${config.users.extraUsers.alex3rd.home}/git-assets/templates
+                [pager]
+                    diff = ${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX
+                    show = ${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX
+                [push]
+                    default = current
+            '';
             aliases = {
                 co = "checkout";
                 cwo = "checkout -b origin/"; # fetch branch from primary remote, eliminates ambiguity
