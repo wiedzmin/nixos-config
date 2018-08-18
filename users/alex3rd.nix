@@ -373,7 +373,6 @@
                 plugins = [
                     "colored-man-pages"
                     "dirpersist"
-                    "emacs"
                     "urltools"
                     "virtualenv"
                     "virtualenvwrapper"
