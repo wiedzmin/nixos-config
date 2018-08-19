@@ -33,6 +33,10 @@
         vscode
         wuzz
         zeal
+
+        # reveng
+        radare2
+        radare2-cutter
     ];
 
     environment.shellAliases = {
