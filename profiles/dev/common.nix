@@ -18,7 +18,9 @@
         gitAndTools.git-secret
         gitAndTools.git-secrets
         gitAndTools.gitflow
+        gitAndTools.git-extras
         gitstats
+        mercurial
         global
         highlight
         httplab
