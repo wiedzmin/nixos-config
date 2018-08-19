@@ -391,8 +391,8 @@
                 share = true;
             };
             initExtra = ''
-                #PATH=$PATH:${pkgs.autojump}/bin
-                #. ${pkgs.autojump}/share/autojump/autojump.zsh
+                PATH=$PATH:${pkgs.autojump}/bin
+                . ${pkgs.autojump}/share/autojump/autojump.zsh
 
                 if [ `uname -s` = "Linux" ]; then
                     eval `dircolors -b`
