@@ -11,6 +11,7 @@
         djvulibre
         ghostscript
         mupdf
+        noweb
         pandoc
         pdf2djvu
         pdf2djvu
