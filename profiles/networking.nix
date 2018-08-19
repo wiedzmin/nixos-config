@@ -26,6 +26,7 @@
         rclone
         skype
         slack
+        socat
         tdesktop
         telegram-cli
         w3m
