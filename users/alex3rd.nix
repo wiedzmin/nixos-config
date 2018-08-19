@@ -436,15 +436,14 @@
 
                 zle -N jump && bindkey "^[xjj" jump
                 zle -N dot && bindkey . dot
-                zle -N fbr && bindkey "^]c" fbr
-                zle -N fco && bindkey "^]t" fco
-                zle -N fcoc && bindkey "^]l" fcoc
+                zle -N fbr && bindkey "^]bb" fbr
+                zle -N fco && bindkey "^]ba" fco
+                zle -N fcoc && bindkey "^]cc" fcoc
                 zle -N fe && bindkey "^qe" fe
-                zle -N fshow && bindkey "^]s" fshow
+                zle -N fshow && bindkey "^]ll" fshow
                 zle -N fzf-history-widget && bindkey "^R" fzf-history-widget
                 zle -N predict-off
                 zle -N predict-on
-
             '';
             sessionVariables = {
                 GREP_OPTIONS = "--color=auto";
