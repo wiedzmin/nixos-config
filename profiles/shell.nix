@@ -18,6 +18,7 @@
         replace
         ripgrep
         rxvt_unicode-with-plugins
+        shellcheck
         tmux
         tree
     ];
