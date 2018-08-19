@@ -29,8 +29,8 @@
         DRM = "docker_stop_rm(){ docker stop $@ && docker rm $@ }; docker_stop_rm";
         DPA = "docker ps -a";
         DL = "docker logs";
-        DPI = "docker_name_ip(){ docker ps --format '{{.Names}}' | grep $@ | xargs docker inspect -f '{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' | column -t -s' ' }; docker_name_ip";
-        DIM = "docker inspect -f '{{ .Mounts }}'";
+        DPI = ''docker_name_ip(){ docker ps  --format "{{.Names}}" | grep $@ | xargs docker inspect -f "{{.Name}} {{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}" | column -t -s" " }; docker_name_ip'';
+        DIM = ''docker inspect -f "{{ .Mounts }}"'';
     };
 
     programs.zsh.shellAliases = {
