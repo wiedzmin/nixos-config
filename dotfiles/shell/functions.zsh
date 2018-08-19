@@ -15,55 +15,64 @@ dot() {
 # fbr - checkout git branch (including remote branches)
 fbr() {
     local branches branch
-    branches=$(git branch --all | grep -v HEAD) &&
-        branch=$(echo "$branches" |
-                     fzf-tmux -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
-        if [ "x$branch" != "x" ]
-        then
-            git checkout $(echo "$branch" | sed "s/.* //" | sed "s#remotes/[^/]*/##")
-        fi
-}
+    if [[ ! -z $(git rev-parse --git-dir 2> /dev/null) ]]; then
+        branches=$(git branch --all -vv) &&
+            branch=$(echo "$branches" |
+                         fzf-tmux -- --ansi -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+            if [ "x$branch" != "x" ]
+            then
+                echo
+                git checkout $(echo "$branch" | awk '{print $1}'| sed "s/.* //" | sed "s#remotes/[^/]*/##")
+            fi
+    fi
+} # TODO: make it not asking for extra manual CR in the end somehow
 
 # fco - checkout git branch/tag
 fco() {
     local tags branches target
-    tags=$(
-        git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') || return
-    branches=$(
-        git branch --all | grep -v HEAD             |
-            sed "s/.* //"    | sed "s#remotes/[^/]*/##" |
-            sort -u          | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
-    target=$(
-        (echo "$tags"; echo "$branches") |
-            fzf-tmux -- --no-hscroll --ansi +m -d "\t" -n 2) || return
-    if [ "x$target" != "x" ]
-    then
-        git checkout $(echo "$target" | awk '{print $2}')
+    if [[ ! -z $(git rev-parse --git-dir 2> /dev/null) ]]; then
+        tags=$(
+            git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') || return
+        branches=$(
+            git branch --all | grep -v HEAD             |
+                sed "s/.* //"    | sed "s#remotes/[^/]*/##" |
+                sort -u          | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
+        target=$(
+            (echo "$tags"; echo "$branches") |
+                fzf-tmux -- --no-hscroll --ansi +m -d "\t" -n 2) || return
+        if [ "x$target" != "x" ]
+        then
+            git checkout $(echo "$target" | awk '{print $2}')
+        fi
     fi
 }
 
 # fcoc - checkout git commit
 fcoc() {
     local commits commit
-    commits=$(git log --pretty=oneline --abbrev-commit --reverse)
-    commit=$(echo "$commits" | fzf --tac +s +m -e)
-    if [ "x$commit" != "x" ]
-    then
-        git checkout $(echo "$commit" | sed "s/ .*//")
+    if [[ ! -z $(git rev-parse --git-dir 2> /dev/null) ]]; then
+        commits=$(git log --pretty=oneline --abbrev-commit --reverse)
+        commit=$(echo "$commits" | fzf --tac +s +m -e)
+        if [ "x$commit" != "x" ]
+        then
+            git checkout $(echo "$commit" | sed "s/ .*//")
+        fi
     fi
 }
 
 # fshow - git commit browser
 fshow() {
     local out sha q
-    while out=$(
-            git log --decorate=short --graph --oneline --color=always |
-                fzf --ansi --multi --no-sort --reverse --query="$q" --print-query); do
-        q=$(head -1 <<< "$out")
-        while read sha; do
-            [ -n "$sha" ] && git show --color=always $sha | less -R
-        done < <(sed '1d;s/^[^a-z0-9]*//;/^$/d' <<< "$out" | awk '{print $1}')
-    done
+    if [[ ! -z $(git rev-parse --git-dir 2> /dev/null) ]]; then
+        while out=$(
+                git log --decorate=short --graph --oneline --color=always |
+                    fzf --ansi --multi --no-sort --reverse --query="$q" --print-query); do
+            q=$(head -1 <<< "$out")
+            while read sha; do
+                [ -n "$sha" ] && git show --color=always $sha | less -R
+            done < <(sed '1d;s/^[^a-z0-9]*//;/^$/d' <<< "$out" | awk '{print $1}')
+        done
+    fi
 }
 
 # fkill - kill process
