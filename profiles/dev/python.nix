@@ -2,9 +2,9 @@
 
 {
     environment.systemPackages = with pkgs; [
-        python3Full
-        python2Full
         pypi2nix
+        python2Full
+        python3Full
 
         # python3Packages.rst2pdf # TODO: add derivation
         # python3Packages.traad # TODO: add derivation
