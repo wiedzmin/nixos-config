@@ -1,7 +1,7 @@
 mkd(){ mkdir "$1" && cd "$1"; }
 rmd(){ local P="`pwd`"; cd .. && rmdir "$P" || cd "$P"; }
-findname() { pattern=$1; find . -name "${pattern}" }
-find_in_files() { fnpattern=$1; grpattern=$2; find . -name "${fnpattern}" -exec grep "${grpattern}" -n {} + }
+findname() { pattern=$1; find . -name "${pattern}"; }
+find_in_files() { fnpattern=$1; grpattern=$2; find . -name "${fnpattern}" -exec grep "${grpattern}" -n {} +; }
 
 dot() {
     if [[ $LBUFFER = *.. ]]; then
