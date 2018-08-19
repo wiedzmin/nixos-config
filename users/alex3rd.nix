@@ -434,7 +434,7 @@
                 bindkey -e
                 bindkey -r "^g"
 
-                zle -N jump && bindkey "^xjj" jump
+                zle -N jump && bindkey "^[xjj" jump
                 zle -N dot && bindkey . dot
                 zle -N fbr && bindkey "^]c" fbr
                 zle -N fco && bindkey "^]t" fco
