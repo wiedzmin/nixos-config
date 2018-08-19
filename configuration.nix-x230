@@ -82,6 +82,7 @@
     programs = {
         mtr.enable = true;
         # TODO: check extra config / think of moving to home-manager.services.gpg-agent (check if it affects imapfilter.service )
+        # TODO: https://github.com/rycee/home-manager/commit/97ee4578c9b305b9497ee5b0bb7c2b1d1278c2d7
         gnupg.agent = {
             enable = true;
             enableSSHSupport = true;
