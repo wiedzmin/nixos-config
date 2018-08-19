@@ -5,6 +5,7 @@
         exif
         ffmpeg
         gimp
+        maim
         mpv
     ];
 }
