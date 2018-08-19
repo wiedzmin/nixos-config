@@ -91,6 +91,7 @@
             enable = true;
             package = pkgs.wireshark-gtk;
         };
+        light.enable = true; # TODO: bind commands to keys in WMs
     };
 
     system.nixos.stateVersion = "18.03";
