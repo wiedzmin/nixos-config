@@ -832,6 +832,7 @@
         services.unclutter.enable = true;
         services.udiskie.enable = true;
         services.dunst.enable = true;
+        services.network-manager-applet.enable = true;
         programs.direnv = {
             enable = true;
             enableZshIntegration = true;
