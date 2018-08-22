@@ -1,0 +1,21 @@
+with import <nixpkgs> {};
+with pkgs.python{{ python_version }}Packages;
+
+stdenv.mkDerivation {
+    name = "{{ project_path | basename }}";
+    buildInputs = [
+        # these packages are required for virtualenv and pip to work:
+        python{{ python_version }}Full
+        python{{ python_version }}Packages.virtualenv
+        python{{ python_version }}Packages.pip
+        # add non-python deps below
+        # Ex: libxml2 libxslt
+    ];
+    src = null;
+    shellHook = ''
+        # set SOURCE_DATE_EPOCH so that we can use python wheels
+        SOURCE_DATE_EPOCH=$(date +%s)
+        virtualenv --no-setuptools {{ virtualenv_home }}/{{ project_path | basename }}
+        export PATH={{ virtualenv_home }}/{{ project_path | basename }}/bin:$PATH
+        pip install -r requirements.txt
+  ''; }

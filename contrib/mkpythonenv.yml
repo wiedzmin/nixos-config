@@ -1,0 +1,12 @@
+---
+- hosts: localhost
+
+  vars:
+    virtualenv_home: "{{ ansible_env.WORKON_HOME if 'WORKON_HOME' in ansible_env else ansible_env.HOME + '.virtualenvs' }}"
+
+  tasks:
+
+    - name: create default.nix given project and python version
+      copy:
+        content: "{{ lookup('template', 'pythonenv.j2') }}"
+        dest: "{{ project_path }}/default.nix"
