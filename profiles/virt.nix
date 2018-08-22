@@ -8,7 +8,7 @@
     virtualisation.docker.enable = true;
     virtualisation.docker.storageDriver = "overlay2";
 
-    virtualisation.libvirtd.enable = true;
+    virtualisation.libvirtd.enable = false;
     virtualisation.virtualbox.host.enable = true;
     nixpkgs.config.virtualbox.enableExtensionPack = true;
 
