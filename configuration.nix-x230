@@ -94,5 +94,5 @@
         light.enable = true; # TODO: bind commands to keys in WMs
     };
 
-    system.nixos.stateVersion = "18.03";
+    system.stateVersion = "18.03";
 }
