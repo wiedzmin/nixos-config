@@ -3,20 +3,25 @@
     services.xserver = {
         videoDrivers = [ "modesetting" "intel" ];
         desktopManager = {
+            xterm.enable = false;
             gnome3.enable = true;
-            default = "gnome3";
+            default = "none";
         };
         displayManager = {
-            gdm = {
+            lightdm = {
                 enable = true;
-                autoLogin.enable = true;
-                autoLogin.user = "alex3rd"; # TODO: try to make a SPOT with users definitions
             };
             sessionCommands = ''
               ${pkgs.xlibs.xmodmap}/bin/xmodmap /etc/Xmodmaprc
             '';
         };
-        windowManager.xmonad.enable = true;
+        windowManager = {
+            default = "xmonad";
+            xmonad = {
+                enable = true;
+                enableContribAndExtras = true;
+            };
+        };
         enable = true;
         xkbOptions = "caps:none";
         layout = "us,ru";
