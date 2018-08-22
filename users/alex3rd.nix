@@ -594,6 +594,9 @@
                 withGTK3 = false;
             });
             extraPackages = epkgs: [
+                # epkgs.magit-filenotify
+                # epkgs.magithub
+                # epkgs.vdiff-magit
                 epkgs.ace-window
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
@@ -716,8 +719,6 @@
                 epkgs.link-hint
                 epkgs.lua-mode
                 epkgs.magit
-                epkgs.magit-filenotify
-                epkgs.magithub
                 epkgs.markdown-mode
                 epkgs.mc-extras
                 epkgs.melpaStablePackages.slime
@@ -797,7 +798,6 @@
                 epkgs.unicode-fonts
                 epkgs.use-package-el-get
                 epkgs.vagrant-tramp
-                epkgs.vdiff-magit
                 epkgs.vimrc-mode
                 epkgs.w3m
                 epkgs.web-mode
