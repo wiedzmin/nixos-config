@@ -215,7 +215,7 @@
                   italic:
                     family: Iosevka
                     style: Italic
-                  size: 12.0
+                  size: 11.0
                 render_timer: false
                 custom_cursor_colors: false
                 # Colors (Oxide)
