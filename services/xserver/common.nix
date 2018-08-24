@@ -52,11 +52,17 @@
 
     environment.systemPackages = with pkgs; [
         arandr
+        dmenu2
+        gmrun
+        haskellPackages.xmobar
+        haskellPackages.yeganesh
+        i3lock-color
         xlibs.xev
         xlibs.xmodmap
         xlibs.xprop
         xorg.xdpyinfo
         xorg.xhost
+        xosd
 
         gnome3.gnome-tweak-tool
     ];
