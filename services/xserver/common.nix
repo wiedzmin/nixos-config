@@ -48,6 +48,11 @@
         };
     };
 
+    services.autorandr = {
+        enable = true;
+        defaultTarget = "mobile";
+    };
+
     nixpkgs.config.dmenu.enableXft = true;
 
     environment.systemPackages = with pkgs; [
