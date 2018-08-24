@@ -366,6 +366,33 @@
                   - { key: F11,      mods: Super,   chars: "\x1b[23;3~"                  }
                   - { key: F12,      mods: Super,   chars: "\x1b[24;3~"                  }
             '';
+            ".config/xmobar/xmobarrc".text = ''
+                Config { font = "xft:DejaVu Sans YuanTi:pixelsize=12"
+                       , bgColor = "black"
+                       , fgColor = "grey"
+                       , position = TopW L 95
+                       , lowerOnStart = True
+                       , allDesktops = True
+                       , commands = [ Run Date "%a %d/%m/%y %H:%M:%S" "date" 10
+                                    , Run StdinReader
+                                    , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
+                                                             "<fc=green>On</fc> - ", "-o", "", "-L", "-15", "-H", "-5", "-l", "red",
+                                                             "-m", "blue", "-h", "green"] 200
+                                    , Run DiskU [("/", "<free>")] ["-L", "20", "-H", "50", "-m", "1", "-p", "3"] 20
+                                    , Run Cpu ["-t", "<total>%", "-m", "3"] 20
+                                    , Run Memory ["-t", "<usedratio>% (<cache>M)", "-m", "3"] 20
+                                    , Run CoreTemp ["-t","<core0>|<core1>°C",
+                                                    "-L","40","-H","60",
+                                                    "-l","lightblue",
+                                                    "-n","gray90","-h","red"] 50
+                                    , Run Wireless "wlan0" ["-t","wlan0: %","-L","0","-H","32","--normal","green","--high","red"] 10
+                                    , Run Com "${pkgs.hddtemp}/bin/hddtemp" [] "hddtemp" 10
+                                    ]
+                       , sepChar = "%"
+                       , alignSep = "}{"
+                       , template = "%StdinReader% }{ | %battery% | / : %disku% | %cpu% (%coretemp%) | %memory% | %wlan0wi% | hdd: %hddtemp%°C | <fc=#ee9a00>%date%</fc>"
+                       }
+            '';
         };
         programs.zsh = {
             enable = true;
