@@ -720,6 +720,7 @@
                 epkgs.gotest
                 epkgs.govet
                 epkgs.graphql-mode
+                epkgs.haskell-mode
                 epkgs.hc-zenburn-theme
                 epkgs.highlight-stages
                 epkgs.hl-todo
