@@ -5,7 +5,7 @@
         enable = true;
         hwRender = true;
         extraConfig = ''
-            font-name=Fira Mono
+            font-name=Iosevka Bold
         '';
     };
 }
