@@ -4,7 +4,7 @@
     config = {
         nixpkgs.config.packageOverrides = super: {
             hddtemp = pkgs.writeShellScriptBin "hddtemp" ''
-                nc localhost 7634 | awk -F\| '{print ($4)}'
+                ${pkgs.netcat}/bin/nc localhost 7634 | ${pkgs.gawk}/bin/awk -F\| '{print ($4)}'
             '';
             status_bat_info = pkgs.writeShellScriptBin "status_bat_info" ''
                 BAT_NAME="BAT0"
@@ -42,23 +42,23 @@
                 echo "$t°C"
             '';
             status_uptime = pkgs.writeShellScriptBin "status_uptime" ''
-                uptime | cut -f 4-7 -d " " | cut -f 1-2 -d ","
+                ${pkgs.coreutils}/bin/uptime | ${pkgs.coreutils}/bin/cut -f 4-7 -d " " | ${pkgs.coreutils}/bin/cut -f 1-2 -d ","
             '';
             zip2targz = pkgs.writeShellScriptBin "zip2targz" ''
-                tmpdir=`mktemp -d`
+                tmpdir=`${pkgs.coreutils}/bin/mktemp -d`
                 #Copy the zip to the temporary directory
-                cp "$1" $tmpdir/
+                ${pkgs.coreutils}/bin/cp "$1" $tmpdir/
                 #Unzip
-                (cd $tmpdir && unzip -q "$1")
+                (cd $tmpdir && ${pkgs.unzip}/bin/unzip -q "$1")
                 #Remove the original zipfile because we don't want that to be tar'd
-                rm "$tmpdir/$1"
+                ${pkgs.coreutils}/bin/rm "$tmpdir/$1"
                 #Tar the files
-                outfilename=$(echo "$1" | rev | cut -d. -f2- | rev).tar
-                (cd $tmpdir && tar cf "$outfilename" *)
-                mv "$tmpdir/$outfilename" .
-                gzip ./$outfilename
+                outfilename=$(echo "$1" | ${pkgs.util-linux}/bin/rev | ${pkgs.coreutils}/bin/cut -d. -f2- | ${pkgs.util-linux}/bin/rev).tar
+                (cd $tmpdir && ${pkgs.gnutar}/bin/tar cf "$outfilename" *)
+                ${pkgs.coreutils}/bin/mv "$tmpdir/$outfilename" .
+                ${pkgs.gzip}/bin/gzip ./$outfilename
                 #Remove the temporary directory
-                rm -rf $tmpdir
+                ${pkgs.coreutils}/bin/rm -rf $tmpdir
                 #Print what we did
                 echo "Converted $1 to $outfilename.gz"
             '';
@@ -101,18 +101,18 @@
                 tmp_path="/tmp/machine-export-$(date +%s%3)"
 
                 # copy to /tmp and strip out $MACHINE_STORAGE_PATH
-                mkdir -p $tmp_path
-                cp -r "$machine_path" "$tmp_path"
+                ${pkgs.coreutils}/bin/mkdir -p $tmp_path
+                ${pkgs.coreutils}/bin/cp -r "$machine_path" "$tmp_path"
                 ${pkgs.perl}/bin/perl -pi -e "s|$MACHINE_STORAGE_PATH|__MACHINE__STORAGE_PATH__|g" $tmp_path/$machine_name/config.json
 
                 # create zip
-                rm -f "$machine_name.zip"
-                zip -rj "$machine_name.zip" "$tmp_path/$machine_name" > /dev/null
+                ${pkgs.coreutils}/bin/rm -f "$machine_name.zip"
+                ${pkgs.zip}/bin/zip -rj "$machine_name.zip" "$tmp_path/$machine_name" > /dev/null
 
                 echo "Exported machine to $machine_name.zip"
 
                 # cleanup
-                rm -rf $tmp_path
+                ${pkgs.coreutils}/bin/rm -rf $tmp_path
             '';
             docker-machine-import = pkgs.writeShellScriptBin "docker-machine-import" ''
                 set -e
@@ -135,10 +135,10 @@
                   exit 1
                 fi
 
-                rm -rf "$machine_name"
+                ${pkgs.coreutils}/bin/rm -rf "$machine_name"
                 ${pkgs.unzip}/bin/unzip "$machine_archive" -d "$machine_name" > /dev/null
                 ${pkgs.perl}/bin/perl -pi -e "s|__MACHINE__STORAGE_PATH__|$MACHINE_STORAGE_PATH|g" $machine_name/config.json
-                mv "$machine_name" "$MACHINE_STORAGE_PATH/machines"
+                ${pkgs.coreutils}/bin/mv "$machine_name" "$MACHINE_STORAGE_PATH/machines"
 
                 echo "Imported $machine_name to docker-machine ($machine_path)"
             '';
