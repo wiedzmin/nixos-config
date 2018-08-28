@@ -54,7 +54,7 @@
             ".pylintrc".source = ../dotfiles/dev/python/pylintrc;
             ".isort.cfg".source = ../dotfiles/dev/python/isort.cfg;
             ".config/flake8".source = ../dotfiles/dev/python/flake8;
-            ".config/pep8".source = ../dotfiles/dev/python/pep8;
+            ".config/pycodestyle".source = ../dotfiles/dev/python/pycodestyle;
             "tmux-sessions".source = ../dotfiles/shell/tmux-sessions;
             ".tmux.conf".text = ''
                 set -g base-index 1             # first window index
