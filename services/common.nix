@@ -6,7 +6,6 @@
 
     services.locate.enable = true;
     services.urxvtd.enable = true;
-    # services.autorandr.enable = true;
     services.journald.extraConfig = ''
         MaxRetentionSec=2day
     '';
