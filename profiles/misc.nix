@@ -3,8 +3,9 @@
 {
     environment.systemPackages = with pkgs; [
         appimage-run
+        gcalcli
         gitAndTools.git-annex
         gitAndTools.git-annex-remote-rclone
-        gcalcli
+        wirelesstools
     ];
 }

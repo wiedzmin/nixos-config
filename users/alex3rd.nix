@@ -367,10 +367,10 @@
                   - { key: F12,      mods: Super,   chars: "\x1b[24;3~"                  }
             '';
             ".config/xmobar/xmobarrc".text = ''
-                Config { font = "xft:DejaVu Sans YuanTi:pixelsize=12"
+                Config { font = "xft:Iosevka:style=Bold:pixelsize=16"
                        , bgColor = "black"
                        , fgColor = "grey"
-                       , position = TopW L 95
+                       , position = TopW L 100
                        , lowerOnStart = True
                        , allDesktops = True
                        , commands = [ Run Date "%a %d/%m/%y %H:%M:%S" "date" 10
@@ -385,12 +385,11 @@
                                                     "-L","40","-H","60",
                                                     "-l","lightblue",
                                                     "-n","gray90","-h","red"] 50
-                                    , Run Wireless "wlan0" ["-t","wlan0: %","-L","0","-H","32","--normal","green","--high","red"] 10
-                                    , Run Com "${pkgs.hddtemp}/bin/hddtemp" [] "hddtemp" 10
+                                    , Run Com "${pkgs.wifi-status}/bin/wifi-status" ["|", "<fc=#ffff00>", "</fc>"] "wifi" 60
                                     ]
                        , sepChar = "%"
                        , alignSep = "}{"
-                       , template = "%StdinReader% }{ | %battery% | / : %disku% | %cpu% (%coretemp%) | %memory% | %wlan0wi% | hdd: %hddtemp%°C | <fc=#ee9a00>%date%</fc>"
+                       , template = "%StdinReader% }{ %battery% /:%disku% %cpu% (%coretemp%) %memory% | %wifi% | <fc=#ee9a00>%date%</fc>"
                        }
             '';
         };

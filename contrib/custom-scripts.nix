@@ -142,6 +142,11 @@
 
                 echo "Imported $machine_name to docker-machine ($machine_path)"
             '';
+            wifi-status = pkgs.writeShellScriptBin "wifi-status" ''
+                essid=`${pkgs.wirelesstools}/bin/iwgetid -r`
+                strength=`awk 'NR==3 {print $3 "00%"}' /proc/net/wireless`
+                echo $essid: $strength
+            '';
         };
     };
 }
