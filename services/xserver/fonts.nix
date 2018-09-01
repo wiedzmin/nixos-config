@@ -35,6 +35,7 @@
             noto-fonts-emoji
             powerline-fonts
             powerline-fonts
+            profont
             proggyfonts
             roboto
             roboto-mono
