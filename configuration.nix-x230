@@ -31,6 +31,7 @@
         ./profiles/dev/cl.nix
         ./profiles/dev/go.nix
         ./profiles/dev/clojure.nix
+        ./profiles/dev/hardware.nix
         ./profiles/shell.nix
         ./profiles/archive.nix
         ./profiles/media.nix
