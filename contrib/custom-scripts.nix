@@ -147,6 +147,25 @@
                 strength=`awk 'NR==3 {print $3 "00%"}' /proc/net/wireless`
                 echo $essid: $strength
             '';
+            systemctl-status = pkgs.writeShellScriptBin "systemctl-status" ''
+                if [ -z "$1" ]
+                then
+                    echo -e ""
+                else
+                    status=`${pkgs.systemd}/bin/systemctl status $1 | awk 'NR==3 {print $2}'`
+                    if [ $status == "inactive" ]
+                    then
+                        echo -e ""
+                    else
+                        if [ -z "$2" ]
+                        then
+                            echo -e "[*]"
+                        else
+                            echo -e $2
+                        fi
+                    fi
+                fi
+            '';
         };
     };
 }
