@@ -3,7 +3,7 @@
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
-            hddtemp = pkgs.writeShellScriptBin "hddtemp" ''
+            hddtemp-script = pkgs.writeShellScriptBin "hddtemp-script" ''
                 ${pkgs.netcat}/bin/nc localhost 7634 | ${pkgs.gawk}/bin/awk -F\| '{print ($4)}'
             '';
             status_bat_info = pkgs.writeShellScriptBin "status_bat_info" ''
