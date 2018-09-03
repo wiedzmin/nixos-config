@@ -386,11 +386,13 @@
                                                     "-L","40","-H","60",
                                                     "-l","lightblue",
                                                     "-n","gray90","-h","red"] 50
-                                    , Run Com "${pkgs.wifi-status}/bin/wifi-status" ["|", "<fc=#ffff00>", "</fc>"] "wifi" 60
+                                    , Run Com "${pkgs.wifi-status}/bin/wifi-status" [] "wifi" 60
+                                    , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["openvpn-jobvpn.service", "[V]"] "vpn" 30
+                                    , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["sshuttle.service", "[S]"] "sshuttle" 30
                                     ]
                        , sepChar = "%"
                        , alignSep = "}{"
-                       , template = "%StdinReader% }{ %battery% /:%disku% %cpu% (%coretemp%) %memory% | %wifi% | <fc=#ee9a00>%date%</fc>"
+                       , template = "%StdinReader% }{ %battery% /:%disku% %cpu% (%coretemp%) %memory% | %wifi% %sshuttle% %vpn% | <fc=#ee9a00>%date%</fc>"
                        }
             '';
         };
