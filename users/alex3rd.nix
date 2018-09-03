@@ -56,6 +56,7 @@
             ".config/flake8".source = ../dotfiles/dev/python/flake8;
             ".config/pycodestyle".source = ../dotfiles/dev/python/pycodestyle;
             "tmux-sessions".source = ../dotfiles/shell/tmux-sessions;
+            ".arbtt/categorize.cfg".source = ../dotfiles/x11/categorize.cfg;
             ".tmux.conf".text = ''
                 set -g base-index 1             # first window index
                 set -g renumber-windows on

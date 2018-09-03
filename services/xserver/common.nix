@@ -12,7 +12,6 @@
                 enable = true;
             };
             sessionCommands = ''
-              # arbtt-capture &
               ${pkgs.autocutsel}/bin/autocutsel -fork -buttonup
               ${pkgs.autocutsel}/bin/autocutsel -fork -buttonup -selection PRIMARY
 
@@ -27,6 +26,7 @@
               source ~/common_settings
 
               ${pkgs.xorg.xrdb}/bin/xrdb -merge .Xresources
+              arbtt-capture & # installed nondeclaratively, is broken otherwise
             '';
         };
         windowManager = {
