@@ -3,6 +3,7 @@
 {
     imports = [
         ../contrib/custom-scripts.nix
+        ../private/private_env.nix
     ];
 
     virtualisation.docker.enable = true;
