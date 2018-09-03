@@ -2,9 +2,6 @@
 
 {
     nixpkgs.config = {
-        packageOverrides = pkgs: {
-           xsaneGimp = pkgs.xsane.override { gimpSupport = true; };
-        };
         sane.snapscanFirmware = "/etc/nixos/private/firmware/Esfw52.bin";
     };
 
@@ -14,6 +11,8 @@
     };
 
     environment.systemPackages = with pkgs; [
-        xsane
+        xsane # temporarily kept for debug
+        simple-scan
+        scantailor-advanced
     ];
 }
