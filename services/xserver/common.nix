@@ -27,7 +27,6 @@
               source ~/common_settings
 
               ${pkgs.xorg.xrdb}/bin/xrdb -merge .Xresources
-              # ${pkgs.feh}/bin/feh --bg-fill ${config.users.extraUsers.alex3rd.home}/blobs/wallpaper/alena-aenami-7p-m-1k.jpg
             '';
         };
         windowManager = {

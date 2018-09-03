@@ -860,6 +860,11 @@
         services.udiskie.enable = true;
         services.dunst.enable = true;
         services.network-manager-applet.enable = true;
+        services.random-background = {
+            enable = true;
+            imageDirectory = "%h/blobs/wallpaper";
+            interval = "1w";
+        };
         programs.direnv = {
             enable = true;
             enableZshIntegration = true;
