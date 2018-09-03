@@ -13,7 +13,8 @@
             };
             sessionCommands = ''
               # arbtt-capture &
-              ${pkgs.autocutsel}/bin/autocutsel -buttonup &
+              ${pkgs.autocutsel}/bin/autocutsel -fork -buttonup
+              ${pkgs.autocutsel}/bin/autocutsel -fork -buttonup -selection PRIMARY
 
               ${pkgs.xlibs.xmodmap}/bin/xmodmap /etc/Xmodmaprc
               ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
