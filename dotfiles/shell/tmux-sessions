@@ -8,11 +8,7 @@ tmux has-session -t 'housekeeping' 2>/dev/null
 if [ "$?" -eq 1 ] ; then
     tmux new-session -d -s 'housekeeping'
 fi
-tmux has-session -t 'self' 2>/dev/null
-if [ "$?" -eq 1 ] ; then
-    tmux new-session -d -s 'self' -d 'mc'
-fi
 
-tmux attach -t self
+tmux attach -t housekeeping
 
 # TODO: implement https://gist.github.com/algesten/b1dae6873f8dcfec87c7ea8502cff8ed
