@@ -406,7 +406,7 @@
                     "virtualenv"
                     "virtualenvwrapper"
                 ];
-                theme = "agnoster";
+                theme = "muse";
             };
             enableAutosuggestions = true;
             enableCompletion = true;
