@@ -7,6 +7,7 @@
         aspellDicts.en
         aspellDicts.ru
         ditaa
+        djview
         djvu2pdf
         djvulibre
         ghostscript
