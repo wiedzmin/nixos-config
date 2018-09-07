@@ -8,9 +8,8 @@
             default = "none";
         };
         displayManager = {
-            lightdm = {
-                enable = true;
-            };
+            lightdm.enable = true;
+            gdm.enable = false;
             sessionCommands = ''
               ${pkgs.autocutsel}/bin/autocutsel -fork -buttonup
               ${pkgs.autocutsel}/bin/autocutsel -fork -buttonup -selection PRIMARY
