@@ -166,6 +166,25 @@
                     fi
                 fi
             '';
+            tmux-sessions = pkgs.writeShellScriptBin "tmux-sessions" ''
+                #!${pkgs.bash}/bin/bash
+
+                # if not inside a tmux session, and if no session is started, initialize sessions
+                if [ -z "$TMUX" ]; then
+                    ${pkgs.tmux}/bin/tmux has-session -t 'work' 2>/dev/null
+                    if [ "$?" -eq 1 ] ; then
+                        ${pkgs.tmux}/bin/tmux new-session -d -s 'work' -d 'mc'
+                    fi
+                    ${pkgs.tmux}/bin/tmux has-session -t 'housekeeping' 2>/dev/null
+                    if [ "$?" -eq 1 ] ; then
+                        ${pkgs.tmux}/bin/tmux new-session -d -s 'housekeeping'
+                    fi
+                    ${pkgs.tmux}/bin/tmux attach -t housekeeping
+                fi
+            '';
+            alacritty-tmux = pkgs.writeShellScriptBin "alacritty-tmux" ''
+                ${pkgs.alacritty}/bin/alacritty -e tmux-sessions
+            '';
         };
     };
 }
