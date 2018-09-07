@@ -18,7 +18,6 @@
     nix.trustedUsers = [ "alex3rd" ];
 
     programs.bash.enableCompletion = true;
-    programs.zsh.enable = true;
 
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
