@@ -47,7 +47,7 @@ Xmessage*Buttons:               Quit
 Xmessage*defaultButton:         Quit
 Xmessage*international:         true
 #ifndef XFTMONOFONT
-  #define XFTMONOFONT Iosevka:weight=Bold:size=16
+  #define XFTMONOFONT Iosevka:weight=Bold:size=14
 #endif
 
 !Emacs*useXIM:false
