@@ -8,6 +8,7 @@
         ./hardware/intel.nix
         ./hardware/laptop.nix
         ./hardware/bluetooth.nix
+        ./hardware/misc.nix
         ./partitions/x230-laptoptop.nix
         ./users/root.nix
         ./users/alex3rd.nix
