@@ -61,6 +61,8 @@
         haskellPackages.xmobar
         haskellPackages.yeganesh
         i3lock-color
+        xclip
+        xdotool
         xlibs.xev
         xlibs.xmodmap
         xlibs.xprop
