@@ -409,7 +409,7 @@
                     dmenu = "/usr/bin/dmenu -p dunst:";
                     ellipsize = "middle";
                     follow = "keyboard";
-                    font = "Iosevka 10";
+                    font = "Iosevka Bold 10";
                     force_xinerama = "false";
                     format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\n%b";
                     frame_color = "#232323";
