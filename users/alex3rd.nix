@@ -151,6 +151,10 @@
                 bind -r K resize-pane -U 5
                 bind -r L resize-pane -R 5
                 bind L choose-session
+                # TODO: investigate how session names may be templated in Nix
+                bind M-w switch -t work
+                bind M-h switch -t housekeeping
+                bind M-r switch -t remote
                 bind l refresh-client
                 bind N command-prompt -p "New session name:" "rename-session %%"
                 bind A command-prompt -p "rename-window %%"
