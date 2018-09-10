@@ -179,6 +179,10 @@
                     if [ "$?" -eq 1 ] ; then
                         ${pkgs.tmux}/bin/tmux new-session -d -s 'housekeeping'
                     fi
+                    ${pkgs.tmux}/bin/tmux has-session -t 'remote' 2>/dev/null
+                    if [ "$?" -eq 1 ] ; then
+                        ${pkgs.tmux}/bin/tmux new-session -d -s 'remote'
+                    fi
                     ${pkgs.tmux}/bin/tmux attach -t housekeeping
                 fi
             '';

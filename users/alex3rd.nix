@@ -168,6 +168,7 @@
                 bind j command-prompt -p "join pane from:" "join-pane -s '%%'"
                 bind b break-pane
                 bind s choose-window "join-pane -h -t '%%'"
+                bind R move-window -t remote
                 bind S command-prompt -p "swap window with:" "swap-window -t ':%%'"
                 bind m command-prompt -p "move window to:" "move-window -t ':%%'"
 
