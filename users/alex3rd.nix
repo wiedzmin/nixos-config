@@ -378,8 +378,9 @@
                        , bgColor = "black"
                        , fgColor = "grey"
                        , position = TopW L 100
-                       , lowerOnStart = True
+                       , lowerOnStart = False
                        , allDesktops = True
+                       , persistent = True
                        , commands = [ Run Date "%a %d/%m/%y %H:%M:%S" "date" 10
                                     , Run StdinReader
                                     , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
