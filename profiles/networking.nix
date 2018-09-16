@@ -14,6 +14,7 @@
 
     environment.systemPackages = with pkgs; [
         # TODO: maybe split even further
+        afpfs-ng
         chromium
         firefox
         iperf
