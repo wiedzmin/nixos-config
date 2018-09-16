@@ -1,0 +1,5 @@
+style "default" {
+    font_name = "Iosevka Bold 9"
+}
+
+widget "Taffybar*" style "default"

@@ -33,6 +33,7 @@
             xmonad = {
                 enable = true;
                 enableContribAndExtras = true;
+                extraPackages = p: [ p.taffybar p.dbus p.monad-logger p.lens ];
             };
         };
         enable = true;
@@ -61,6 +62,7 @@
         haskellPackages.xmobar
         haskellPackages.yeganesh
         i3lock-color
+        taffybar
         xclip
         xdotool
         xlibs.xev

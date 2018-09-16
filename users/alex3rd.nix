@@ -39,6 +39,8 @@
             ".zsh/functions.zsh".source = ../dotfiles/shell/functions.zsh;
             "common_settings".source = ../dotfiles/shell/common_settings;
             ".Xresources".source = ../dotfiles/x11/Xresources;
+            ".config/taffybar/taffybar.hs".source = ../dotfiles/x11/taffybar/taffybar.hs;
+            ".config/taffybar/taffybar.rc".source = ../dotfiles/x11/taffybar/taffybar.rc;
             ".sbclrc".text = ''
                 #-quicklisp
                 (let ((quicklisp-init (merge-pathnames "quicklisp/setup.lisp"
