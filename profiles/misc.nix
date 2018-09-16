@@ -8,5 +8,6 @@
         gitAndTools.git-annex-remote-rclone
         wirelesstools
         nrg2iso
+        lsof # TODO: think of moving appropriately
     ];
 }
