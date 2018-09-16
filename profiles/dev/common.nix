@@ -14,20 +14,21 @@
         git
         git-lfs
         git-quick-stats
+        gitAndTools.git-extras
         gitAndTools.git-imerge
         gitAndTools.git-secret
         gitAndTools.git-secrets
         gitAndTools.gitflow
-        gitAndTools.git-extras
         gitstats
-        mercurial
         global
         highlight
         httplab
         idutils
         jq
+        mercurial
         patchutils
         reflex
+        skopeo
         sloccount
         vim
         vscode
