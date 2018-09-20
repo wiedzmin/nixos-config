@@ -53,6 +53,14 @@
         defaultTarget = "mobile";
     };
 
+    services.compton = {
+        enable = true;
+        backend = "glx";
+        vSync = "opengl-swc";
+        opacityRules = [];
+        package = pkgs.compton-git;
+    };
+
     nixpkgs.config.dmenu.enableXft = true;
 
     environment.systemPackages = with pkgs; [
