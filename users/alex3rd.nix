@@ -188,7 +188,7 @@
                 bind S command-prompt -p "swap window with:" "swap-window -t ':%%'"
                 bind m command-prompt -p "move window to:" "move-window -t ':%%'"
 
-                bind-key BSpace last-window
+                bind BSpace last-window
 
                 bind -n C-y run -b "exec </dev/null; ${pkgs.xclip}/bin/xclip -o | tmux load-buffer - ; tmux paste-buffer"
                 bind -T copy-mode M-w send-keys -X copy-pipe "${pkgs.xclip}/bin/xclip -i -selection clipboard"
@@ -196,7 +196,7 @@
 
                 bind r source-file ~/.tmux.conf \; display "  Config reloaded..."
 
-                bind-key y set-window-option synchronize-panes
+                bind y set-window-option synchronize-panes
 
                 # set -g mouse-utf8 on
                 # set -g mouse on
