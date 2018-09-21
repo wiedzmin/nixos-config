@@ -63,10 +63,12 @@
     environment.systemPackages = with pkgs; [
         arandr
         dmenu2
+        edid-decode
         gmrun
         haskellPackages.xmobar
         haskellPackages.yeganesh
         i3lock-color
+        read-edid
         taffybar
         xclip
         xdotool
