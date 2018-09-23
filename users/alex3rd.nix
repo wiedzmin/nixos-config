@@ -430,6 +430,8 @@
                        , template = "%StdinReader% }{ %battery% /:%disku% %cpu% (%coretemp%) %memory% | %wifi% %sshuttle% %vpn% | <fc=#ee9a00>%date%</fc>"
                        }
             '';
+            ".config/tridactyl/tridactylrc".source = ../dotfiles/x11/tridactylrc;
+            "tridactylrc".source = ../dotfiles/x11/tridactylrc;
         };
         services.dunst = {
             enable = true;
