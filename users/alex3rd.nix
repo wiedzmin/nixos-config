@@ -3,6 +3,7 @@
     imports = [
         <home-manager/nixos>
         ../contrib/custom-scripts.nix
+        ../private/hometraits.nix
     ];
 
     users.extraUsers = {
@@ -41,6 +42,20 @@
             ".Xresources".source = ../dotfiles/x11/Xresources;
             ".config/taffybar/taffybar.hs".source = ../dotfiles/x11/taffybar/taffybar.hs;
             ".config/taffybar/taffybar.rc".source = ../dotfiles/x11/taffybar/taffybar.rc;
+            ".config/autorandr/predetect" = {
+                executable = true;
+                text = ''
+                    #!${pkgs.bash}/bin/bash
+                    pkill -f compton
+                '';
+            };
+            ".config/autorandr/postswitch" = {
+                executable = true;
+                text = ''
+                    #!${pkgs.bash}/bin/bash
+                    ${pkgs.feh}/bin/feh --bg-fill ${config.x11.wallpapers_dir}/${config.x11.current_wallpaper}
+                '';
+            };
             ".config/autorandr/mobile/config".source = ../hardware/autorandr/x230/mobile/config;
             ".config/autorandr/mobile/setup".source = ../hardware/autorandr/x230/mobile/setup;
             ".config/autorandr/docked-home/config".source = ../hardware/autorandr/x230/docked-home/config;
