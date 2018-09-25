@@ -33,6 +33,9 @@
             notmuch
             msmtp
 
+            # dev
+            pass-git-helper
+
             # custom tmux
             alacritty-tmux
             tmux-sessions
@@ -80,6 +83,13 @@
             "git-assets/git-commit-template".source = ../dotfiles/dev/git-assets/git-commit-template;
             "git-assets/.gitignore".source = ../dotfiles/dev/git-assets/gitignore;
             "git-assets/templates/hooks/pre-push".source = ../dotfiles/dev/git-assets/templates/hooks/pre-push;
+            ".config/pass-git-helper/git-pass-mapping.ini".text = ''
+                [github.com*]
+                target=webservices/social/programming/github
+
+                [bitbucket.org*]
+                target=webservices/social/programming/bitbucket
+            '';
             ".pylintrc".source = ../dotfiles/dev/python/pylintrc;
             ".isort.cfg".source = ../dotfiles/dev/python/isort.cfg;
             ".config/flake8".source = ../dotfiles/dev/python/flake8;
@@ -679,7 +689,7 @@
                     quotepath = false
                     askPass = ""
                 [credential]
-                    helper = cache --timeout=3600
+                    helper = ${pkgs.pass-git-helper}/bin/pass-git-helper
                 [diff]
                     algorithm = patience
                 [init]
