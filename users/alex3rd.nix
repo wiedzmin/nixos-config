@@ -33,9 +33,11 @@
             notmuch
             msmtp
 
+            # custom tmux
             alacritty-tmux
             tmux-sessions
 
+            # custom
             rescale-wallpaper
         ];
         home.file = {
