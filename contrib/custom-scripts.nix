@@ -1,6 +1,9 @@
 {config, pkgs, ...}:
 
 {
+    imports = [
+        ../private/hometraits.nix
+    ];
     config = {
         nixpkgs.config.packageOverrides = super: {
             hddtemp-script = pkgs.writeShellScriptBin "hddtemp-script" ''
@@ -188,6 +191,9 @@
             '';
             alacritty-tmux = pkgs.writeShellScriptBin "alacritty-tmux" ''
                 ${pkgs.alacritty}/bin/alacritty -e tmux-sessions
+            '';
+            rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
+                ${pkgs.feh}/bin/feh --bg-fill ${config.x11.wallpapers_dir}/${config.x11.current_wallpaper}
             '';
         };
     };

@@ -35,6 +35,8 @@
 
             alacritty-tmux
             tmux-sessions
+
+            rescale-wallpaper
         ];
         home.file = {
             ".zsh/functions.zsh".source = ../dotfiles/shell/functions.zsh;
