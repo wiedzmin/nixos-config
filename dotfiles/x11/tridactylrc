@@ -127,4 +127,7 @@ keymap Ю >
 keymap <C-х> <C-[>
 keymap пш gi
 keymap пп gg
+keymap нн yy
+keymap нс yc
+
 keymap . /
