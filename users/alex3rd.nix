@@ -675,6 +675,7 @@
                     autocrlf = false
                     excludesfile = ${config.users.extraUsers.alex3rd.home}/git-assets/.gitignore
                     quotepath = false
+                    askPass = ""
                 [credential]
                     helper = cache --timeout=3600
                 [diff]
