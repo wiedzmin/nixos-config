@@ -35,7 +35,14 @@ js tri.browserBg.runtime.getPlatformInfo().then(os=>{const editorcmd = os.os=="l
 
 " Sane hinting mode
 set hintfiltermode vimperator-reflow
-set hintchars asdfghjkl
+set hintchars 4327895610
+set hintuppercase false
+set hintnames numeric
+
+set tabopenpos last
+
+set yankto both
+set putfrom clipboard
 
 " Make Tridactyl work on more sites at the expense of some security
 set csp clobber
@@ -48,9 +55,6 @@ quickmark t https://github.com/tridactyl/tridactyl
 "
 " URL redirects
 "
-
-" New reddit is bad
-autocmd DocStart www.reddit.com js tri.excmds.urlmodify("-t", "www", "old")
 
 " Map keys between layouts
 keymap ё `
