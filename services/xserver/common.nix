@@ -32,6 +32,8 @@
                 enableContribAndExtras = true;
                 extraPackages = p: [ p.taffybar p.dbus p.monad-logger p.lens ];
             };
+            #default = "stumpwm";
+            #stumpwm.enable = true;
         };
         enable = true;
         xkbOptions = "caps:none";
