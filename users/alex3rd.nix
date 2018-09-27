@@ -446,6 +446,14 @@
             '';
             ".config/tridactyl/tridactylrc".source = ../dotfiles/x11/tridactylrc;
             "tridactylrc".source = ../dotfiles/x11/tridactylrc;
+            ".local/share/applications/org-protocol.desktop".text = ''
+                [Desktop Entry]
+                Name=Emacs Client
+                Exec=sh -c "emacsclient %u"
+                Type=Application
+                Terminal=false
+                MimeType=x-scheme-handler/org-protocol;
+            '';
         };
         services.dunst = {
             enable = true;
