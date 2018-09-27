@@ -218,7 +218,7 @@
 
                 bind -n C-y run -b "exec </dev/null; ${pkgs.xclip}/bin/xclip -o -selection clipboard | tmux load-buffer - ; tmux paste-buffer"
                 bind -T copy-mode M-w send-keys -X copy-pipe "${pkgs.xclip}/bin/xclip -i -selection clipboard"
-                bind -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "${pkgs.xclip}/bin/xclip -in -selection clipboard"
+                bind -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "${pkgs.xclip}/bin/xclip -in"
 
                 bind r source-file ~/.tmux.conf \; display "  Config reloaded..."
 
