@@ -220,6 +220,8 @@
                 bind -T copy-mode M-w send-keys -X copy-pipe "${pkgs.xclip}/bin/xclip -i -selection clipboard"
                 bind -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "${pkgs.xclip}/bin/xclip -in"
 
+                bind -T copy-mode F7 send-keys -X copy-pipe "${pkgs.shell-capture}/bin/shell-capture"
+
                 bind r source-file ~/.tmux.conf \; display "  Config reloaded..."
 
                 bind y set-window-option synchronize-panes
