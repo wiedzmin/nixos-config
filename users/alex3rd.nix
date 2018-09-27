@@ -39,6 +39,7 @@
             # custom tmux
             alacritty-tmux
             tmux-sessions
+            shell-capture
 
             # custom
             rescale-wallpaper

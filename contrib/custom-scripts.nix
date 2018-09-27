@@ -195,6 +195,26 @@
             rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
                 ${pkgs.feh}/bin/feh --bg-fill ${config.x11.wallpapers_dir}/${config.x11.current_wallpaper}
             '';
+            shell-capture = pkgs.writeShellScriptBin "shell-capture" ''
+                TITLE="$*"
+                if [[ -n $TMUX ]]
+                then
+                    TITLE=$(tmux display-message -p '#S')
+                fi
+
+                CONTENT="
+                     #+BEGIN_EXAMPLE
+                $(cat | sed 's/^/     /g')
+                     #+END_EXAMPLE
+                "
+
+                if [[ -n $TITLE ]]
+                then
+                    emacsclient -n "org-protocol://capture?body=$CONTENT"
+                else
+                    emacsclient -n "org-protocol://capture?body=$CONTENT&title=$TITLE"
+                fi
+            '';
         };
     };
 }
