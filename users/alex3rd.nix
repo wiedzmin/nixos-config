@@ -755,9 +755,6 @@
                 withGTK3 = false;
             });
             extraPackages = epkgs: [
-                # epkgs.magit-filenotify
-                # epkgs.magithub
-                # epkgs.vdiff-magit
                 epkgs.ace-window
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
@@ -785,13 +782,16 @@
                 epkgs.company-go
                 epkgs.company-jedi
                 epkgs.company-lua
+                epkgs.company-nixos-options
                 epkgs.company-quickhelp
                 epkgs.company-restclient
                 epkgs.company-shell
                 epkgs.company-statistics
+                epkgs.company-web
                 epkgs.copy-as-format
                 epkgs.counsel
                 epkgs.counsel-notmuch
+                epkgs.counsel-org-clock
                 epkgs.counsel-projectile
                 epkgs.counsel-tramp
                 epkgs.crux
@@ -814,6 +814,7 @@
                 epkgs.edebug-x
                 epkgs.edit-server
                 epkgs.editorconfig
+                epkgs.eglot
                 epkgs.ein
                 epkgs.el-get
                 epkgs.eldoc-eval
@@ -838,6 +839,7 @@
                 epkgs.flycheck-clang-analyzer
                 epkgs.flycheck-gometalinter
                 epkgs.flycheck-pos-tip
+                epkgs.format-all
                 epkgs.function-args
                 epkgs.git-msg-prefix
                 epkgs.gitignore-mode
@@ -873,8 +875,10 @@
                 epkgs.ivy-pass
                 epkgs.ivy-rich
                 epkgs.ivy-xref
+                epkgs.ivy-yasnippet
                 epkgs.jedi-core
                 epkgs.jinja2-mode
+                epkgs.jsonrpc
                 epkgs.kaolin-themes
                 epkgs.keychain-environment
                 epkgs.labburn-theme
@@ -900,6 +904,7 @@
                 epkgs.ob-blockdiag
                 epkgs.org-alert
                 epkgs.org-bullets
+                epkgs.org-capture-pop-frame
                 epkgs.org-clock-today
                 epkgs.org-dashboard
                 epkgs.org-link-minor-mode
@@ -926,6 +931,7 @@
                 epkgs.popwin
                 epkgs.prog-fill
                 epkgs.projectile
+                epkgs.pyvenv
                 epkgs.quelpa
                 epkgs.quelpa-use-package
                 epkgs.rainbow-delimiters
@@ -960,9 +966,13 @@
                 epkgs.unicode-fonts
                 epkgs.use-package-el-get
                 epkgs.vagrant-tramp
+                epkgs.vdiff
                 epkgs.vimrc-mode
                 epkgs.w3m
+                epkgs.web-completion-data
                 epkgs.web-mode
+                epkgs.web-mode-edit-element
+                epkgs.web-narrow-mode
                 epkgs.webpaste
                 epkgs.wgrep
                 epkgs.which-key
