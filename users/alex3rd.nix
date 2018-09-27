@@ -197,10 +197,6 @@
                 bind l refresh-client
                 bind N command-prompt -p "New session name:" "rename-session %%"
                 bind A command-prompt -p "rename-window %%"
-                bind '~' split-window "exec ${pkgs.htop}/bin/htop"
-                bind '!' split-window "exec sudo ${pkgs.iotop}/bin/iotop"
-                bind '#' split-window "exec ${pkgs.networkmanager}/bin/nmtui"
-                bind '-' split-window "exec ${pkgs.bc}/bin/bc"
                 bind -n C-x send-prefix     # prefix commands for nested tmux sessions
                 bind C-m command-prompt -p "Open man page for:" "new-window 'exec man %%'" # open %% man page
                 bind T neww -n "Tmux manual" "exec man tmux"

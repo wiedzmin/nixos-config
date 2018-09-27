@@ -22,6 +22,7 @@
         mosh
         netcat
         nethogs
+        networkmanager
         networkmanagerapplet
         qbittorrent
         rclone

@@ -8,6 +8,8 @@
         exa
         fd # TODO: make `find` alias to this
         findutils
+        htop
+        iotop
         mc
         multitail
         nix-bash-completions
