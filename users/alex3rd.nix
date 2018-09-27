@@ -629,6 +629,7 @@
                 ls = "${pkgs.exa}/bin/exa -F --color=auto";
                 ll = "${pkgs.exa}/bin/exa -l";
                 la = "${pkgs.exa}/bin/exa -A";
+                cat = "bat";
                 zr = ". ~/.zshrc";
             };
             plugins = [ # TODO: bring back other plugins from old system

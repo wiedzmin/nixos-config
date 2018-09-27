@@ -3,6 +3,7 @@
 {
     environment.systemPackages = with pkgs; [
         alacritty
+        bat
         bc
         direnv
         exa
