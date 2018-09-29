@@ -33,9 +33,6 @@
             notmuch
             msmtp
 
-            # dev
-            pass-git-helper
-
             # custom tmux
             alacritty-tmux
             tmux-sessions
@@ -697,7 +694,7 @@
                     quotepath = false
                     askPass = ""
                 [credential]
-                    helper = ${pkgs.pass-git-helper}/bin/pass-git-helper
+                    helper = ${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper
                 [diff]
                     algorithm = patience
                 [init]
