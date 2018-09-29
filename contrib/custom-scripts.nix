@@ -210,9 +210,9 @@
 
                 if [[ -n $TITLE ]]
                 then
-                    emacsclient -n "org-protocol://capture?body=$CONTENT"
+                    emacsclient -n "org-protocol://capture?template=s&body=$CONTENT&title=$TITLE"
                 else
-                    emacsclient -n "org-protocol://capture?body=$CONTENT&title=$TITLE"
+                    emacsclient -n "org-protocol://capture?template=s&body=$CONTENT"
                 fi
             '';
         };
