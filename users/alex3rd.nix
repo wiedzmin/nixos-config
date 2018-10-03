@@ -83,10 +83,10 @@
             "git-assets/templates/hooks/pre-push".source = ../dotfiles/dev/git-assets/templates/hooks/pre-push;
             ".config/pass-git-helper/git-pass-mapping.ini".text = ''
                 [github.com*]
-                target=webservices/social/programming/github
+                target=alex3rd/webservices/social/programming/github.com
 
                 [bitbucket.org*]
-                target=webservices/social/programming/bitbucket
+                target=alex3rd/webservices/social/programming/bitbucket.com
             '';
             ".pylintrc".source = ../dotfiles/dev/python/pylintrc;
             ".isort.cfg".source = ../dotfiles/dev/python/isort.cfg;
