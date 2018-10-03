@@ -217,7 +217,10 @@
                 bind -T copy-mode M-w send-keys -X copy-pipe "${pkgs.xclip}/bin/xclip -i -selection clipboard"
                 bind -T copy-mode MouseDragEnd1Pane send-keys -X copy-pipe-and-cancel "${pkgs.xclip}/bin/xclip -in"
 
-                bind -T copy-mode F7 send-keys -X copy-pipe "${pkgs.shell-capture}/bin/shell-capture"
+                bind -T copy-mode N send-keys -X copy-pipe "${pkgs.shell-capture}/bin/shell-capture ns"
+                bind -T copy-mode E send-keys -X copy-pipe "${pkgs.shell-capture}/bin/shell-capture es"
+                bind -T copy-mode X send-keys -X copy-pipe "${pkgs.shell-capture}/bin/shell-capture xs"
+                bind -T copy-mode J send-keys -X copy-pipe "${pkgs.shell-capture}/bin/shell-capture js"
 
                 bind r source-file ~/.tmux.conf \; display "  Config reloaded..."
 

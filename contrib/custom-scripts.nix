@@ -197,22 +197,26 @@
             '';
             shell-capture = pkgs.writeShellScriptBin "shell-capture" ''
                 TITLE="$*"
+                TEMPLATE="$1"
                 if [[ -n $TMUX ]]
                 then
                     TITLE=$(tmux display-message -p '#S')
                 fi
+                if [[ ! -n $TEMPLATE ]]
+                then
+                    exit 1
+                fi
 
-                CONTENT="
-                     #+BEGIN_EXAMPLE
-                $(cat | sed 's/^/     /g')
-                     #+END_EXAMPLE
+                CONTENT="#+BEGIN_EXAMPLE
+                $(cat | sed 's/^/    /g')
+                  #+END_EXAMPLE
                 "
 
                 if [[ -n $TITLE ]]
                 then
-                    emacsclient -n "org-protocol://capture?template=s&body=$CONTENT&title=$TITLE"
+                    emacsclient -n "org-protocol://capture?template=$TEMPLATE&&body=$CONTENT&title=$TITLE"
                 else
-                    emacsclient -n "org-protocol://capture?template=s&body=$CONTENT"
+                    emacsclient -n "org-protocol://capture?template=$TEMPLATE&body=$CONTENT"
                 fi
             '';
         };
