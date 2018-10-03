@@ -891,6 +891,7 @@
                 epkgs.link-hint
                 epkgs.lua-mode
                 epkgs.magit
+                epkgs.magithub
                 epkgs.markdown-mode
                 epkgs.mc-extras
                 epkgs.melpaStablePackages.slime
