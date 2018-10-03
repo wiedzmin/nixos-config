@@ -434,10 +434,13 @@
                                     , Run Com "${pkgs.wifi-status}/bin/wifi-status" [] "wifi" 60
                                     , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["openvpn-jobvpn.service", "[V]"] "vpn" 30
                                     , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["sshuttle.service", "[S]"] "sshuttle" 30
+                                    , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
+                                              , ("ru", "<fc=green>ru</fc>")
+                                              ]
                                     ]
                        , sepChar = "%"
                        , alignSep = "}{"
-                       , template = "%StdinReader% }{ %battery% /:%disku% %cpu% (%coretemp%) %memory% | %wifi% %sshuttle% %vpn% | <fc=#ee9a00>%date%</fc>"
+                       , template = "%StdinReader% }{ %battery% /:%disku% %cpu% (%coretemp%) %memory% | %wifi% %sshuttle% %vpn% | <fc=#ee9a00>%date%</fc> |%kbd%"
                        }
             '';
             ".config/tridactyl/tridactylrc".source = ../dotfiles/x11/tridactylrc;
