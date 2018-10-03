@@ -9,6 +9,8 @@
 " here makes the setting disappear, uncomment the line below.
 "sanitise tridactyllocal tridactylsync
 
+set storageloc local
+
 set historyresults 100
 
 colorscheme dark
