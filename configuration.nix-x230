@@ -25,21 +25,21 @@
         ./modules/sound.nix
         ./modules/security.nix
         ./modules/nixopts.nix
-        ./profiles/virt.nix
-        ./profiles/dev/common.nix
-        ./profiles/dev/ccpp.nix
-        ./profiles/dev/python.nix
-        ./profiles/dev/cl.nix
-        ./profiles/dev/go.nix
-        ./profiles/dev/clojure.nix
-        ./profiles/dev/hardware.nix
-        ./profiles/shell.nix
-        ./profiles/archive.nix
-        ./profiles/media.nix
-        ./profiles/textworks.nix
-        ./profiles/networking.nix
-        ./profiles/nixtools.nix
-        ./profiles/misc.nix
+        ./facets/virt.nix
+        ./facets/dev/common.nix
+        ./facets/dev/ccpp.nix
+        ./facets/dev/python.nix
+        ./facets/dev/cl.nix
+        ./facets/dev/go.nix
+        ./facets/dev/clojure.nix
+        ./facets/dev/hardware.nix
+        ./facets/shell.nix
+        ./facets/archive.nix
+        ./facets/media.nix
+        ./facets/textworks.nix
+        ./facets/networking.nix
+        ./facets/nixtools.nix
+        ./facets/misc.nix
         ./services/xserver/common.nix
         ./services/xserver/fonts.nix
         ./services/xserver/redshift.nix
