@@ -3,6 +3,7 @@
     imports = [
         <home-manager/nixos>
         ../contrib/custom-scripts.nix
+        ../contrib/custom-desktop-items.nix
         ../private/hometraits.nix
     ];
 
@@ -40,6 +41,8 @@
 
             # custom
             rescale-wallpaper
+
+            org-protocol.desktop
         ];
         home.file = {
             ".zsh/functions.zsh".source = ../dotfiles/shell/functions.zsh;
@@ -448,14 +451,6 @@
             '';
             ".config/tridactyl/tridactylrc".source = ../dotfiles/x11/tridactylrc;
             "tridactylrc".source = ../dotfiles/x11/tridactylrc;
-            ".local/share/applications/org-protocol.desktop".text = ''
-                [Desktop Entry]
-                Name=Emacs Client
-                Exec=sh -c "emacsclient %u"
-                Type=Application
-                Terminal=false
-                MimeType=x-scheme-handler/org-protocol;
-            '';
         };
         services.dunst = {
             enable = true;
