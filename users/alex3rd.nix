@@ -1,4 +1,10 @@
 {config, pkgs, ...}:
+
+let
+    # TODO: try to make simpler / more concise
+    currentArch = pkgs.lib.lists.last (pkgs.lib.lists.init (pkgs.lib.strings.splitString "-" builtins.currentSystem));
+    currentOs = pkgs.lib.lists.last (pkgs.lib.strings.splitString "-" builtins.currentSystem);
+in
 {
     imports = [
         <home-manager/nixos>
@@ -20,6 +26,13 @@
     nix.trustedUsers = [ "alex3rd" ];
 
     programs.bash.enableCompletion = true;
+
+    system.activationScripts.removeOldTaffybarBinary = ''
+        TAFFYBAR_CACHED_BINARY=${config.users.extraUsers.alex3rd.home}/.cache/taffybar/taffybar-${currentOs}-${currentArch}
+        if [ -f $TAFFYBAR_CACHED_BINARY ]; then
+            rm $TAFFYBAR_CACHED_BINARY
+        fi
+    '';
 
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
