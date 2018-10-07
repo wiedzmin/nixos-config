@@ -9,6 +9,7 @@
         exa
         fd # TODO: make `find` alias to this
         findutils
+        fpp
         htop
         iotop
         mc
