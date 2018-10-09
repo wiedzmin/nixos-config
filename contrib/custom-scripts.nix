@@ -196,27 +196,23 @@
                 ${pkgs.feh}/bin/feh --bg-fill ${config.x11.wallpapers_dir}/${config.x11.current_wallpaper}
             '';
             shell-capture = pkgs.writeShellScriptBin "shell-capture" ''
-                TITLE="$*"
                 TEMPLATE="$1"
-                if [[ -n $TMUX ]]
-                then
-                    TITLE=$(tmux display-message -p '#S')
-                fi
                 if [[ ! -n $TEMPLATE ]]
                 then
                     exit 1
                 fi
-
-                CONTENT="#+BEGIN_EXAMPLE
-                $(cat | sed 's/^/    /g')
-                  #+END_EXAMPLE
-                "
+                TITLE="$*"
+                if [[ -n $TMUX ]]
+                then
+                    TITLE=$(tmux display-message -p '#S')
+                    tmux send -X copy-pipe-and-cancel "xclip -i -selection primary"
+                fi
 
                 if [[ -n $TITLE ]]
                 then
-                    emacsclient -n "org-protocol://capture?template=$TEMPLATE&&body=$CONTENT&title=$TITLE"
+                    emacsclient -n "org-protocol://capture?template=$TEMPLATE&title=$TITLE"
                 else
-                    emacsclient -n "org-protocol://capture?template=$TEMPLATE&body=$CONTENT"
+                    emacsclient -n "org-protocol://capture?template=$TEMPLATE"
                 fi
             '';
         };

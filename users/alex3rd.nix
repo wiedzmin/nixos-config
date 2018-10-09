@@ -206,10 +206,10 @@ in
 
                 bind -n C-y run -b "exec </dev/null; ${pkgs.xclip}/bin/xclip -o -selection clipboard | tmux load-buffer - ; tmux paste-buffer"
 
-                bind -T copy-mode M-e send-keys -X copy-pipe "${pkgs.shell-capture}/bin/shell-capture es"
-                bind -T copy-mode M-j send-keys -X copy-pipe "${pkgs.shell-capture}/bin/shell-capture js"
-                bind -T copy-mode M-n send-keys -X copy-pipe "${pkgs.shell-capture}/bin/shell-capture ns"
-                bind -T copy-mode M-x send-keys -X copy-pipe "${pkgs.shell-capture}/bin/shell-capture xs"
+                bind -T copy-mode M-e run-shell "${pkgs.shell-capture}/bin/shell-capture es"
+                bind -T copy-mode M-j run-shell "${pkgs.shell-capture}/bin/shell-capture js"
+                bind -T copy-mode M-n run-shell "${pkgs.shell-capture}/bin/shell-capture ns"
+                bind -T copy-mode M-x run-shell "${pkgs.shell-capture}/bin/shell-capture xs"
 
                 bind r source-file ~/.tmux.conf \; display "  Config reloaded..."
                 bind y set-window-option synchronize-panes
