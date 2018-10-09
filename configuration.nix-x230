@@ -15,8 +15,10 @@
         ./contrib/custom-scripts.nix
         ./services/custom/sshuttle.nix
         ./private/sshuttle.nix
+        ./private/jobtraits.nix
         ./services/custom/imapfilter.nix
         ./services/custom/vpn.nix
+        ./services/custom/git-fetch-updates.nix
         ./services/printing.nix
         ./services/kmscon.nix
         ./services/openssh.nix

@@ -215,6 +215,24 @@
                     emacsclient -n "org-protocol://capture?template=$TEMPLATE"
                 fi
             '';
+            git-fetch-batch = pkgs.writeShellScriptBin "git-fetch-batch" ''
+                BASE_PATH=$1
+                if [[ ! -n $BASE_PATH ]]
+                then
+                    exit 1
+                fi
+
+                for item in $(find $BASE_PATH -type d -name ".git")
+                do
+                  cd $item/..
+                  echo "Processing $(basename `pwd`)..." 2>&1
+                  REMOTES=$(${pkgs.git}/bin/git remote)
+                  if [[ "origin" =~ $REMOTES ]]; then
+                      ${pkgs.git}/bin/git fetch origin &
+                      wait $!
+                  fi
+                done
+            '';
         };
     };
 }
