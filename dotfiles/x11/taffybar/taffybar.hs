@@ -17,14 +17,14 @@ cpuLoadCallback = do
   return [ userLoad, totalLoad, systemLoad ]
 
 cpuTempCallback = do
-  cpuTemp <- getCpuTemp ["cpu0"]
+  cpuTemp <- getCPUTemp ["cpu0"]
   return cpuTemp
 
 main = do
   args <- getArgs
   -- let chosenMonitorNumber = fromMaybe 0 $ readMaybe $ headDef "0" args
   let cpuCfg = defaultGraphConfig { graphDataColors = [ (0, 1, 0, 1), (1, 0, 1, 0.5)]
-                                  , graphLabel = "" -- Just ""
+                                  , graphLabel = Just ""
                                   }
       clock = textClockNew Nothing "<span fgcolor='orange'>%a %b %_d %H:%M</span>" 1
       pager = taffyPagerNew defaultPagerConfig
@@ -34,5 +34,4 @@ main = do
       battery = batteryBarNew defaultBatteryConfig 30
   defaultTaffybar defaultTaffybarConfig { startWidgets = [ pager ]
                                         , endWidgets = [ tray, clock, cpuLoad, battery ] -- cpuTemp
-                                        -- , monitorNumber = chosenMonitorNumber
                                         }
