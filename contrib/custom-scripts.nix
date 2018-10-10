@@ -224,13 +224,13 @@
 
                 for item in $(find $BASE_PATH -type d -name ".git")
                 do
-                  cd $item/..
-                  echo "Processing $(basename `pwd`)..." 2>&1
-                  REMOTES=$(${pkgs.git}/bin/git remote)
-                  if [[ "origin" =~ $REMOTES ]]; then
-                      ${pkgs.git}/bin/git fetch origin &
-                      wait $!
-                  fi
+                    cd $item/..
+                    echo "Processing $(basename `pwd`)..."
+                    REMOTES=$(${pkgs.git}/bin/git remote)
+                    if [[ "origin" =~ $REMOTES ]]; then
+                        ${pkgs.git}/bin/git fetch origin &
+                        wait $!
+                    fi
                 done
             '';
         };
