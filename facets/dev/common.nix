@@ -20,6 +20,7 @@
         gitAndTools.git-secrets
         gitAndTools.gitflow
         gitAndTools.pass-git-helper
+        gitAndTools.stgit
         gitstats
         global
         highlight
