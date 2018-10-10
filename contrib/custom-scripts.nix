@@ -237,11 +237,22 @@
                 done
             '';
             git-save-wip-batch = pkgs.writeShellScriptBin "git-save-wip-batch" ''
-                BASE_PATH=$1
-                if [[ ! -n $BASE_PATH ]]
-                then
-                    exit 1
-                fi
+                GIT_REPOS=
+                ADJUST_GIT_REPOS=
+                case $# in
+                    0 )
+                        exit 1
+                        ;;
+                    1 )
+                        BASE_PATH=$1
+                        GIT_REPOS=$(find $BASE_PATH -type d -name ".git")
+                        ADJUST_GIT_REPOS=1
+                        ;;
+                    * )
+                        GIT_REPOS=$@
+                        ADJUST_GIT_REPOS=0
+                        ;;
+                esac
 
                 if [[ $(DISPLAY=:0 ${pkgs.xprintidle-ng}/bin/xprintidle-ng) -lt $((3600*1000)) ]]; then
                     exit 0
@@ -249,9 +260,14 @@
 
                 set -x
 
-                for item in $(find $BASE_PATH -type d -name ".git")
+                for item in $GIT_REPOS
                 do
-                    cd $item/..
+                    echo "$item"
+                    if [[ $ADJUST_GIT_REPOS -eq 1 ]]; then
+                         cd $item/..
+                    else
+                         cd $item
+                    fi
                     echo "Processing $(basename `pwd`)..."
                     ${pkgs.gitAndTools.stgit}/bin/stg init
 
