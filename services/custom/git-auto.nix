@@ -39,4 +39,23 @@
             OnUnitActiveSec = "30min";
         };
     };
+    systemd.services."git-save-wip-pets" = {
+        description = "Commit WIP changes to pet projects' repos";
+        path = [ pkgs.pass pkgs.gitAndTools.pass-git-helper pkgs.gitAndTools.stgit ];
+        serviceConfig = {
+            Type = "oneshot";
+            User = "alex3rd"; # TODO: think of abstracting away
+            ExecStart = "${pkgs.git-save-wip-batch}/bin/git-save-wip-batch" + (lib.concatMapStrings (loc: " ${loc}") config.dev.pet_project_locations);
+            StandardOutput = "journal+console";
+            StandardError = "inherit";
+        };
+    };
+    systemd.timers."git-save-wip-pets" = {
+        description = "Commit WIP changes to pet projects' repos";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+            OnBootSec = "1min";
+            OnUnitActiveSec = "30min";
+        };
+    };
 }
