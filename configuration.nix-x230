@@ -18,7 +18,7 @@
         ./private/jobtraits.nix
         ./services/custom/imapfilter.nix
         ./services/custom/vpn.nix
-        ./services/custom/git-fetch-updates.nix
+        ./services/custom/git-auto.nix
         ./services/printing.nix
         ./services/kmscon.nix
         ./services/openssh.nix
