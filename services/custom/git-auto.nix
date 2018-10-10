@@ -7,7 +7,7 @@
         serviceConfig = {
             Type = "oneshot";
             User = "alex3rd"; # TODO: think of abstracting away
-            ExecStart = "${pkgs.git-fetch-batch}/bin/git-fetch-batch ${config.job_workspace_path}";
+            ExecStart = "${pkgs.git-fetch-batch}/bin/git-fetch-batch ${config.job.workspace_path}";
             StandardOutput = "journal+console";
             StandardError = "inherit";
         };
@@ -26,7 +26,7 @@
         serviceConfig = {
             Type = "oneshot";
             User = "alex3rd"; # TODO: think of abstracting away
-            ExecStart = "${pkgs.git-save-wip-batch}/bin/git-save-wip-batch ${config.job_workspace_path}";
+            ExecStart = "${pkgs.git-save-wip-batch}/bin/git-save-wip-batch ${config.job.workspace_path}";
             StandardOutput = "journal+console";
             StandardError = "inherit";
         };
