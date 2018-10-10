@@ -216,11 +216,14 @@
                 fi
             '';
             git-fetch-batch = pkgs.writeShellScriptBin "git-fetch-batch" ''
+                set -euo pipefail
                 BASE_PATH=$1
                 if [[ ! -n $BASE_PATH ]]
                 then
                     exit 1
                 fi
+
+                set -x
 
                 for item in $(find $BASE_PATH -type d -name ".git")
                 do
