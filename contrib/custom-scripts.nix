@@ -236,6 +236,32 @@
                     fi
                 done
             '';
+            git-save-wip-batch = pkgs.writeShellScriptBin "git-save-wip-batch" ''
+                BASE_PATH=$1
+                if [[ ! -n $BASE_PATH ]]
+                then
+                    exit 1
+                fi
+
+                if [[ $(DISPLAY=:0 ${pkgs.xprintidle-ng}/bin/xprintidle-ng) -lt $((3600*1000)) ]]; then
+                    exit 0
+                fi
+
+                set -x
+
+                for item in $(find $BASE_PATH -type d -name ".git")
+                do
+                    cd $item/..
+                    echo "Processing $(basename `pwd`)..."
+                    ${pkgs.gitAndTools.stgit}/bin/stg init
+
+                    if [[ ! -z $(${pkgs.git}/bin/git status --porcelain) ]]; then
+                        PATCH_DESC="WIP $(date -R)"
+                        ${pkgs.gitAndTools.stgit}/bin/stg new -m "$PATCH_DESC"
+                        ${pkgs.gitAndTools.stgit}/bin/stg refresh
+                    fi
+                done
+            '';
         };
     };
 }
