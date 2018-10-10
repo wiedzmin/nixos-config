@@ -818,6 +818,7 @@ in
                 epkgs.format-all
                 epkgs.function-args
                 epkgs.git-msg-prefix
+                epkgs.git-timemachine
                 epkgs.gitignore-mode
                 epkgs.go-eldoc
                 epkgs.go-guru
@@ -861,6 +862,7 @@ in
                 epkgs.link-hint
                 epkgs.lua-mode
                 epkgs.magit
+                epkgs.magit-filenotify
                 epkgs.magithub
                 epkgs.markdown-mode
                 epkgs.mc-extras
@@ -932,6 +934,7 @@ in
                 epkgs.solarized-theme
                 epkgs.spaceline
                 epkgs.sunburn-theme
+                epkgs.super-save
                 epkgs.swiper
                 epkgs.tide
                 epkgs.tile
@@ -944,6 +947,7 @@ in
                 epkgs.use-package-el-get
                 epkgs.vagrant-tramp
                 epkgs.vdiff
+                epkgs.vdiff-magit
                 epkgs.vimrc-mode
                 epkgs.w3m
                 epkgs.web-completion-data
