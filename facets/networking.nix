@@ -34,5 +34,6 @@
         w3m
         wget
         youtube-dl
+        networkmanager_dmenu
     ];
 }
