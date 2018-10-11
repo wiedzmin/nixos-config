@@ -20,5 +20,6 @@
         plantuml
         texlive.combined.scheme-full
         zathura
+        ansifilter
     ];
 }
