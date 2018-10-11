@@ -270,6 +270,7 @@
                     fi
                     echo "Processing $(basename `pwd`)..."
                     ${pkgs.gitAndTools.stgit}/bin/stg init
+                    ${pkgs.gitAndTools.stgit}/bin/stg repair
 
                     if [[ ! -z $(${pkgs.git}/bin/git status --porcelain) ]]; then
                         PATCH_DESC="WIP $(date -R)"
