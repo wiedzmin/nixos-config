@@ -35,5 +35,7 @@
         wget
         youtube-dl
         networkmanager_dmenu
+        tdlib
+        telega-server
     ];
 }
