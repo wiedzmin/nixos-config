@@ -2,8 +2,8 @@
 
 {
     imports = [
-        ./packages/custom-nixpath.nix
-        ./packages/overlays.nix
+        ./pkgsetup/custom-nixpath.nix
+        ./pkgsetup/overlays.nix
         <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
         ./hardware/intel.nix
         ./hardware/laptop.nix

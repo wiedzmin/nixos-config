@@ -1,10 +1,6 @@
 { config, pkgs, ... }:
 
 {
-    imports = [
-        ../../packages/git-quick-stats.nix
-    ];
-
     environment.systemPackages = with pkgs; [
         ansible
         atom
