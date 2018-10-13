@@ -9,6 +9,7 @@
         resumeCommands = (lib.concatMapStrings
                           (service: "${pkgs.systemd}/bin/systemctl try-restart ${service}\n")
                           config.sys.services_to_survive_suspend);
+        powertop.enable = true;
     };
     services.tlp.enable = true;
     services.acpid.enable = true;
