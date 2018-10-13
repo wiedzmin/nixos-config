@@ -273,6 +273,7 @@
                     ${pkgs.gitAndTools.stgit}/bin/stg repair
 
                     if [[ ! -z $(${pkgs.git}/bin/git status --porcelain) ]]; then
+                        ${pkgs.git}/bin/git add .
                         PATCH_DESC="WIP $(date -R)"
                         ${pkgs.gitAndTools.stgit}/bin/stg new -m "$PATCH_DESC"
                         ${pkgs.gitAndTools.stgit}/bin/stg refresh
