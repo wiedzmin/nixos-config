@@ -71,12 +71,17 @@ in
             # custom
             rescale-wallpaper
 
+            # NAS
+            mount_nas_volume
+            unmount_nas_volume
+
             org-protocol.desktop
         ];
         home.file = {
             ".zsh/functions.zsh".source = ../dotfiles/shell/functions.zsh;
             "common_settings".source = ../dotfiles/shell/common_settings;
             ".bookmarks".source = ../private/fzf-bookmarks;
+            "nas_volumes".source = ../private/catscan_volumes; # NAS volumes list
             ".Xresources".source = ../dotfiles/x11/Xresources;
             ".config/taffybar/taffybar.hs".source = ../dotfiles/x11/taffybar/taffybar.hs;
             ".config/taffybar/taffybar.rc".source = ../dotfiles/x11/taffybar/taffybar.rc;
@@ -605,6 +610,7 @@ in
                 ll = "${pkgs.exa}/bin/exa -l";
                 la = "${pkgs.exa}/bin/exa -A";
                 cat = "bat";
+                cat_raw = "${pkgs.coreutils}/bin/cat";
                 zr = ". ~/.zshrc";
             };
             plugins = [ # TODO: bring back other plugins from old system

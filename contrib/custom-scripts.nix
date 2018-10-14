@@ -280,6 +280,28 @@
                     fi
                 done
             '';
+            mount_nas_volume = pkgs.writeShellScriptBin "mount_nas_volume" ''
+                VOLUME=$1
+                ALREADY_MOUNTED=$(cat /etc/mtab | grep catscan | cut -d ' '  -f 1 | grep $VOLUME)
+                if [[ ! -z $ALREADY_MOUNTED ]]; then
+                    ${pkgs.libnotify}/bin/notify-send -u critical "Volume '$VOLUME' already mounted"
+                    exit 1
+                fi
+                mkdir -p ${config.fs.storage.local_mount_base}/$VOLUME
+                ${pkgs.afpfs-ng}/bin/mount_afp \
+                    afp://${config.fs.storage.primary_user}:${config.fs.storage.primary_user_password}@${config.fs.storage.hostname}/$VOLUME \
+                    ${config.fs.storage.local_mount_base}/$VOLUME
+                if [[ -z $? ]]; then
+                    ${pkgs.libnotify}/bin/notify-send "Volume '$VOLUME' succesfully mounted"
+                else
+                    ${pkgs.libnotify}/bin/notify-send -u critical "Error mounting volume '$VOLUME'"
+                fi
+            '';
+            unmount_nas_volume = pkgs.writeShellScriptBin "unmount_nas_volume" ''
+                VOLUME=$1
+                fusermount -u ${config.fs.storage.local_mount_base}/$VOLUME
+                ${pkgs.libnotify}/bin/notify-send "Volume $VOLUME succesfully unmounted!"
+            '';
         };
     };
 }
