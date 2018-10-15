@@ -5,5 +5,6 @@
         go
         dep2nix
         go2nix
+        go-langserver
     ];
 }
