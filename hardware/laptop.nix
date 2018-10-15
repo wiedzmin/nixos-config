@@ -8,7 +8,7 @@
         enable = true;
         resumeCommands = (lib.concatMapStrings
                           (service: "${pkgs.systemd}/bin/systemctl try-restart ${service}\n")
-                          config.sys.services_to_survive_suspend);
+                          config.sys.services_sleepless);
         powertop.enable = true;
     };
     services.tlp.enable = true;
