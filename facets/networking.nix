@@ -12,6 +12,11 @@
         enablePepperPDF = true;
     };
 
+    services.psd = {
+        enable = true;
+        resyncTimer = "30min";
+    };
+
     environment.systemPackages = with pkgs; [
         # TODO: maybe split even further
         afpfs-ng
