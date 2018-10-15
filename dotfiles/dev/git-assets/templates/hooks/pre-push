@@ -16,7 +16,7 @@ IS_CLEAN=true
 
 for i in "${src_stop_words[@]}"
 do
-    RESULTS=$(git grep -l "$i");
+    RESULTS=$(git grep -l "$i" -- `git ls-files | grep -v hook`);
     if [[ ! -z "$RESULTS" ]]; then
         IS_CLEAN=false;
         echo "Found $i in file:\n$RESULTS\n";
