@@ -533,6 +533,8 @@ in
                 PATH=$PATH:${pkgs.autojump}/bin
                 . ${pkgs.autojump}/share/autojump/autojump.zsh
 
+                ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
+
                 if [ `uname -s` = "Linux" ]; then
                     eval `dircolors -b`
                 fi
