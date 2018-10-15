@@ -739,6 +739,9 @@ in
                 withGTK3 = false;
             });
             extraPackages = epkgs: [
+                # epkgs.lsp-dockerfile
+                # epkgs.lsp-javascript
+                # epkgs.lsp-sh
                 epkgs.ace-window
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
@@ -765,6 +768,7 @@ in
                 epkgs.company-flx
                 epkgs.company-go
                 epkgs.company-jedi
+                epkgs.company-lsp
                 epkgs.company-lua
                 epkgs.company-nixos-options
                 epkgs.company-quickhelp
@@ -798,7 +802,6 @@ in
                 epkgs.edebug-x
                 epkgs.edit-server
                 epkgs.editorconfig
-                epkgs.eglot
                 epkgs.ein
                 epkgs.el-get
                 epkgs.eldoc-eval
@@ -868,6 +871,12 @@ in
                 epkgs.keychain-environment
                 epkgs.labburn-theme
                 epkgs.link-hint
+                epkgs.lsp-go
+                epkgs.lsp-haskell
+                epkgs.lsp-java
+                epkgs.lsp-mode
+                epkgs.lsp-python
+                epkgs.lsp-ui
                 epkgs.lua-mode
                 epkgs.magit
                 epkgs.magit-filenotify
