@@ -6,8 +6,6 @@
         python2Full
         python3Full
 
-        # python3Packages.rst2pdf # TODO: add derivation
-        # python3Packages.traad # TODO: add derivation
         python3Packages.GitPython
         python3Packages.autopep8
         python3Packages.flake8
