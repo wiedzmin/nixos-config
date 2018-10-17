@@ -41,6 +41,7 @@
             enable = true;
             naturalScrolling = true;
             disableWhileTyping = true;
+            tapping = false;
             tappingDragLock = false;
             accelSpeed = "0.6";
         };
