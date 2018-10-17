@@ -22,7 +22,6 @@
               source ~/common_settings
 
               ${pkgs.xorg.xrdb}/bin/xrdb -merge .Xresources
-              arbtt-capture & # installed nondeclaratively, is broken otherwise
             '';
         };
         windowManager = {
@@ -46,6 +45,8 @@
             accelSpeed = "0.6";
         };
     };
+
+    services.arbtt.enable = true;
 
     services.autorandr = {
         enable = true;
