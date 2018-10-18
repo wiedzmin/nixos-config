@@ -2,10 +2,13 @@
 
 {
     environment.systemPackages = with pkgs; [
+        # infra
         pypi2nix
         python2Full
         python3Full
 
+        # dev
+        idea.pycharm-community
         python3Packages.GitPython
         python3Packages.autopep8
         python3Packages.black
@@ -31,7 +34,5 @@
         python3Packages.virtualenv
         python3Packages.virtualenvwrapper
         python3Packages.yapf
-
-        pkgs.idea.pycharm-community
     ];
 }
