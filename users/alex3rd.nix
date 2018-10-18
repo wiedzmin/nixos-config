@@ -233,7 +233,7 @@ in
                 set -g display-panes-time 2000
                 set -g display-time 2000
                 set -g status on
-                set -g status-interval 5
+                set -g status-interval 1
                 set -g status-justify centre
                 set -g status-left '#{prefix_highlight}#[fg=green](#S) #(whoami)@#H'
                 set -g status-left-length 30
