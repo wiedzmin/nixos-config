@@ -213,6 +213,7 @@ in
 
                 # misc
                 set -g default-shell ${pkgs.zsh}/bin/zsh
+                set -g repeat-time 1000
                 set -g history-limit 102400
                 set -g mouse on
                 set -g prefix M-x
