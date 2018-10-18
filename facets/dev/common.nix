@@ -36,6 +36,7 @@
         # reveng
         radare2
         radare2-cutter
+        retdec
     ];
 
     environment.shellAliases = {
