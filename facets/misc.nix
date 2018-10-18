@@ -5,7 +5,6 @@
         appimage-run
         dateutils
         dex
-        digikam
         duc
         gcalcli
         gitAndTools.git-annex
