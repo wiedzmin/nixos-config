@@ -9,6 +9,7 @@
 
         # dev
         idea.pycharm-community
+        pyre
         python3Packages.GitPython
         python3Packages.autopep8
         python3Packages.black
