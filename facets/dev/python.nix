@@ -8,6 +8,7 @@
 
         python3Packages.GitPython
         python3Packages.autopep8
+        python3Packages.black
         python3Packages.flake8
         python3Packages.importmagic
         python3Packages.isort
@@ -21,6 +22,7 @@
         python3Packages.pydocstyle
         python3Packages.pyflakes
         python3Packages.pylint
+        python3Packages.pyls-black
         python3Packages.pyls-isort
         python3Packages.pyls-mypy
         python3Packages.python-language-server
