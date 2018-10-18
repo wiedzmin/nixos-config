@@ -19,6 +19,7 @@
         python3Packages.jedi
         python3Packages.jmespath
         python3Packages.mccabe
+        python3Packages.mypy
         python3Packages.notebook
         python3Packages.olefile
         python3Packages.pep8
