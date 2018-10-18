@@ -302,6 +302,19 @@
                 fusermount -u ${config.fs.storage.local_mount_base}/$VOLUME
                 ${pkgs.libnotify}/bin/notify-send "Volume $VOLUME succesfully unmounted!"
             '';
+            maybe_ssh_host = pkgs.writeShellScriptBin "maybe_ssh_host" ''
+                # tmux: pane_tty: pts/5
+                pane_tty=$(${pkgs.tmux}/bin/tmux display-message -p '#{pane_tty}' | ${pkgs.coreutils}/bin/cut -c 6-)
+
+                # get IP/hostname according to pane_tty
+                remote_session=$(${pkgs.procps}/bin/pgrep -t $pane_tty -a -f "ssh " | ${pkgs.gawk}/bin/awk 'NF>1{print $NF}')
+
+                if [[ "$remote_session" != "" ]]; then
+                    echo $remote_session
+                else
+                    echo $(whoami)@$(${pkgs.nettools}/bin/hostname)
+                fi
+            '';
         };
     };
 }

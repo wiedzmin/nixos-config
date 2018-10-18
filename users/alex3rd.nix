@@ -221,6 +221,8 @@ in
                 setw -g aggressive-resize on
                 setw -g automatic-rename on
                 setw -g mode-keys emacs
+                set -g set-titles on
+                set -g set-titles-string '#(${pkgs.maybe_ssh_host}/bin/maybe_ssh_host):#(pwd="#{pane_current_path}"; echo $pwd)'
 
                 # activity
                 set -g bell-action any
