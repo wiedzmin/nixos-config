@@ -237,6 +237,8 @@ in
                 set -g status-justify centre
                 set -g status-left '#{prefix_highlight}#[fg=green](#S) #(whoami)@#H'
                 set -g status-left-length 30
+                set -g @route_to_ping_string 'github.com'
+                set -g @ping_timeout_default '4'
                 set -g status-right '#{online_status} #[fg=blue,bright]%k:%M:%S %d/%m/%Y \
                 #{cpu_fg_color}#{cpu_icon}#{cpu_percentage} |#{battery_status_fg} \
                 #{battery_percentage}'
