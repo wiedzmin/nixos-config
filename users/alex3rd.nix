@@ -11,7 +11,6 @@ let
         tmuxPlugins.fpp
         tmuxPlugins.fzf-tmux-url
         tmuxPlugins.logging
-        tmuxPlugins.online-status
         tmuxPlugins.pain-control
         tmuxPlugins.prefix-highlight
         tmuxPlugins.resurrect
@@ -240,11 +239,8 @@ in
                 set -g status-justify centre
                 set -g status-left '#{prefix_highlight}#[fg=green](#S) #(whoami)@#H'
                 set -g status-left-length 30
-                set -g @route_to_ping_string 'github.com'
-                set -g @ping_timeout_default '4'
-                set -g status-right '#{online_status} #[fg=blue,bright]%k:%M:%S %d/%m/%Y \
-                #{cpu_fg_color}#{cpu_icon}#{cpu_percentage} |#{battery_status_fg} \
-                #{battery_percentage}'
+                set -g status-right '#[fg=blue,bright]%k:%M:%S %d/%m/%Y \
+                | #{cpu_fg_color}#{cpu_icon}#{cpu_percentage}'
                 set -g status-right-length 140
                 setw -g clock-mode-style 24
                 setw -g window-status-current-format \
@@ -316,6 +312,9 @@ in
                        , persistent = True
                        , commands = [ Run Date "%a %d/%m/%y %H:%M:%S" "date" 10
                                     , Run StdinReader
+                                    , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
+                                                             "<fc=green>On</fc> - ", "-o", "", "-L", "-15", "-H", "-5", "-l", "red",
+                                                             "-m", "blue", "-h", "green"] 200
                                     , Run DiskU [("/", "<free>")] ["-L", "20", "-H", "50", "-m", "1", "-p", "3"] 20
                                     , Run CoreTemp ["-t","<core0>/<core1>°C",
                                                     "-L","40","-H","60",
@@ -330,7 +329,7 @@ in
                                     ]
                        , sepChar = "%"
                        , alignSep = "}{"
-                       , template = "%StdinReader% }{ %disku% | %coretemp% | %wifi% %sshuttle% %vpn% | <fc=#ee9a00>%date%</fc> |%kbd%"
+                       , template = "%StdinReader% }{| %battery% | %disku% | %coretemp% | %wifi% %sshuttle% %vpn% | <fc=#ee9a00>%date%</fc> |%kbd%"
                        }
             '';
             ".config/tridactyl/tridactylrc".source = ../dotfiles/x11/tridactylrc;
