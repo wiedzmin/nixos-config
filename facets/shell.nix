@@ -1,6 +1,20 @@
 { config, pkgs, ... }:
 
 {
+    services.kmscon = {
+        enable = true;
+        hwRender = true;
+        extraConfig = ''
+            font-name=Iosevka Bold
+            font-size=14
+        '';
+        extraOptions = "--term xterm-256color";
+        autologinUser = "alex3rd";
+    };
+
+    services.locate.enable = true;
+    services.urxvtd.enable = true;
+
     environment.systemPackages = with pkgs; [
         alacritty
         bat

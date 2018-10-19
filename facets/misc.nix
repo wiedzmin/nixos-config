@@ -1,6 +1,8 @@
 { config, pkgs, ... }:
 
 {
+    services.mpd.enable = true;
+
     environment.systemPackages = with pkgs; [
         appimage-run
         dateutils

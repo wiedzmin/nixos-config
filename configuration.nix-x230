@@ -19,14 +19,9 @@
         ./services/custom/imapfilter.nix
         ./services/custom/vpn.nix
         ./services/custom/git-auto.nix
-        ./services/printing.nix
-        ./services/kmscon.nix
-        ./services/openssh.nix
-        ./services/common.nix
-        ./modules/scanner.nix
         ./modules/sound.nix
         ./modules/security.nix
-        ./modules/nixopts.nix
+        ./modules/system.nix
         ./facets/virt.nix
         ./facets/dev/common.nix
         ./facets/dev/ccpp.nix
@@ -44,7 +39,6 @@
         ./facets/misc.nix
         ./services/xserver/common.nix
         ./services/xserver/fonts.nix
-        ./services/xserver/redshift.nix
     ];
 
     boot.loader.grub = {

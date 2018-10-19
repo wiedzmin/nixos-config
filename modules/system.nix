@@ -1,6 +1,9 @@
 { config, pkgs, ...}:
 
 {
+    services.journald.extraConfig = ''
+        MaxRetentionSec=2day
+    '';
     nix.extraOptions = ''
         gc-keep-outputs = true
         gc-keep-derivations = true

@@ -17,6 +17,11 @@
         resyncTimer = "30min";
     };
 
+    services.openssh = {
+        enable = true;
+        forwardX11 = true;
+    };
+
     environment.systemPackages = with pkgs; [
         # TODO: maybe split even further
         afpfs-ng
