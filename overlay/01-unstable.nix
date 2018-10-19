@@ -1,9 +1,9 @@
 self: super:
-let nixpkgs = import ../nixpkgs-master {
+let nixpkgs = import ../nixpkgs-channels {
       config = {
         allowUnfree = true;
       };
     };
 in {
-  bleeding = nixpkgs.pkgs;
+  unstable = nixpkgs.pkgs;
 }
