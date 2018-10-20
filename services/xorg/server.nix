@@ -1,28 +1,12 @@
 { config, pkgs, ... }:
 {
     services.xserver = {
+        enable = true;
         videoDrivers = [ "modesetting" "intel" ];
         desktopManager = {
             xterm.enable = false;
             gnome3.enable = true;
             default = "none";
-        };
-        displayManager = {
-            lightdm.enable = true;
-            gdm.enable = false;
-            sessionCommands = ''
-              ${pkgs.xlibs.xmodmap}/bin/xmodmap /etc/Xmodmaprc
-              ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
-
-              export CURRENT_WM=${config.services.xserver.windowManager.default}
-              export TZ="${config.time.timeZone}"
-
-              ${pkgs.wmname}/bin/wmname LG3D
-
-              source ~/common_settings
-
-              ${pkgs.xorg.xrdb}/bin/xrdb -merge .Xresources
-            '';
         };
         windowManager = {
             default = "xmonad";
@@ -34,7 +18,23 @@
             #default = "stumpwm";
             #stumpwm.enable = true;
         };
-        enable = true;
+        displayManager = {
+            lightdm.enable = true;
+            gdm.enable = false;
+            sessionCommands = ''
+                ${pkgs.xlibs.xmodmap}/bin/xmodmap /etc/Xmodmaprc
+                ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
+
+                export CURRENT_WM=${config.services.xserver.windowManager.default}
+                export TZ="${config.time.timeZone}"
+
+                ${pkgs.wmname}/bin/wmname LG3D
+
+                source ~/common_settings
+
+                ${pkgs.xorg.xrdb}/bin/xrdb -merge .Xresources
+            '';
+        };
         xkbOptions = "caps:none";
         layout = "us,ru";
         libinput = {
@@ -57,30 +57,7 @@
         };
     };
 
-    services.redshift = {
-        enable = true;
-        latitude = "55.751244"; # TODO: extract constant
-        longitude = "37.618423"; # TODO: extract constant
-        temperature.day = 5500;
-        temperature.night = 3700;
-    };
-
-    services.arbtt.enable = true;
-
-    services.autorandr = {
-        enable = true;
-        defaultTarget = "mobile";
-    };
-
-    services.compton = {
-        enable = true;
-        backend = "glx";
-        vSync = "opengl-swc";
-        opacityRules = [];
-        package = pkgs.compton-git;
-    };
-
-    nixpkgs.config.dmenu.enableXft = true;
+    environment.etc."Xmodmap".source = ../../dotfiles/x11/xmodmaprc;
 
     environment.systemPackages = with pkgs; [
         arandr

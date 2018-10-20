@@ -34,14 +34,12 @@
             noto-fonts
             noto-fonts-emoji
             powerline-fonts
-            powerline-fonts
             profont
             proggyfonts
             roboto
             roboto-mono
             roboto-slab
             source-code-pro
-            terminus_font
             terminus_font
             terminus_font_ttf
             ttf_bitstream_vera

@@ -37,8 +37,9 @@
         ./facets/networking.nix
         ./facets/nixtools.nix
         ./facets/misc.nix
-        ./services/xserver/common.nix
-        ./services/xserver/fonts.nix
+        ./services/xorg/server.nix
+        ./services/xorg/aux.nix
+        ./services/xorg/fonts.nix
     ];
 
     boot.loader.grub = {
@@ -67,8 +68,6 @@
 
     nixpkgs.config.allowUnfree = true;
 
-    environment.etc."Xmodmap".source = ./dotfiles/x11/xmodmaprc;
-
     networking = {
         hostName = "x230";
         hostId = "2ab69157";
@@ -82,21 +81,6 @@
             enable = true;
             unmanaged = [ "interface-name:ve-*" ];
         };
-    };
-
-    programs = {
-        mtr.enable = true;
-        # TODO: check extra config / think of moving to home-manager.services.gpg-agent (check if it affects imapfilter.service )
-        # TODO: https://github.com/rycee/home-manager/commit/97ee4578c9b305b9497ee5b0bb7c2b1d1278c2d7
-        gnupg.agent = {
-            enable = true;
-            enableSSHSupport = true;
-        };
-        wireshark = {
-            enable = true;
-            package = pkgs.wireshark-gtk;
-        };
-        light.enable = true; # TODO: bind commands to keys in WMs
     };
 
     system.stateVersion = "18.03";

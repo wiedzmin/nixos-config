@@ -8,18 +8,24 @@
         jre = false;
         icedtea = true;
     };
-    nixpkgs.config.chromium = {
-        enablePepperPDF = true;
+
+    services = {
+        psd = {
+            enable = true;
+            resyncTimer = "30min";
+        };
+        openssh = {
+            enable = true;
+            forwardX11 = true;
+        };
     };
 
-    services.psd = {
-        enable = true;
-        resyncTimer = "30min";
-    };
-
-    services.openssh = {
-        enable = true;
-        forwardX11 = true;
+    programs = {
+        mtr.enable = true;
+        wireshark = {
+            enable = true;
+            package = pkgs.wireshark-gtk;
+        };
     };
 
     environment.systemPackages = with pkgs; [
