@@ -33,6 +33,7 @@
         netcat
         nethogs
         networkmanager
+        networkmanager_dmenu
         networkmanagerapplet
         qbittorrent
         rclone
@@ -40,12 +41,11 @@
         slack
         socat
         tdesktop
+        tdlib
+        telega-server
         telegram-cli
         w3m
         wget
         youtube-dl
-        networkmanager_dmenu
-        tdlib
-        telega-server
     ];
 }
