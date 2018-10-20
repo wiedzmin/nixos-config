@@ -11,6 +11,7 @@
         gcalcli
         gitAndTools.git-annex
         gitAndTools.git-annex-remote-rclone
+        gotop
         lsof
         plan9port
         pscircle
