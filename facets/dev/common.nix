@@ -18,13 +18,14 @@
         gitAndTools.gitflow
         gitAndTools.pass-git-helper
         gitAndTools.stgit
-        gitstats
         gitinspector
+        gitstats
         global
         highlight
         httplab
         idutils
         jq
+        lazygit
         mercurial
         patchutils
         reflex
