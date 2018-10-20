@@ -18,6 +18,7 @@
         gitAndTools.pass-git-helper
         gitAndTools.stgit
         gitstats
+        gitinspector
         global
         highlight
         httplab
