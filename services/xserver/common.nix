@@ -53,7 +53,7 @@
             nowlocker = "${pkgs.xkblayout-state}/bin/xkblayout-state set 0; ${pkgs.i3lock-color}/bin/i3lock-color -c 232729; ${pkgs.xorg.xset}/bin/xset dpms force off";
             notify = 20;
             notifier = "${pkgs.libnotify}/bin/notify-send -u critical \"Locking in 10 seconds\"";
-            extraOptions = ["-lockaftersleep" "-detectsleep"];
+            extraOptions = ["-detectsleep"];
         };
     };
 
