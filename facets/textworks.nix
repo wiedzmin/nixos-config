@@ -36,6 +36,7 @@
         texlive.combined.scheme-full
         zathura
         ansifilter
+        par
     ] ++ [ # scanner
         xsane # temporarily kept for debug
         simple-scan
