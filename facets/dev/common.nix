@@ -3,6 +3,7 @@
 {
     environment.systemPackages = with pkgs; [
         ansible
+        ansible-lint
         atom
         doxygen
         gdb
