@@ -32,9 +32,12 @@
         mosh
         netcat
         nethogs
+        netsniff-ng
         networkmanager
         networkmanager_dmenu
         networkmanagerapplet
+        nload
+        pcapfix
         qbittorrent
         rclone
         skype
