@@ -885,6 +885,7 @@ in
                 epkgs.yaml-mode
                 epkgs.yasnippet
                 epkgs.yatemplate
+                epkgs.ivy-historian
             ];
         };
         programs.htop.enable = true;
