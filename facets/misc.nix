@@ -12,6 +12,7 @@
         gitAndTools.git-annex
         gitAndTools.git-annex-remote-rclone
         gotop
+        homebank
         inotify-tools
         lsof
         plan9port
