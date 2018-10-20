@@ -17,6 +17,9 @@
         (pass.withExtensions (ext: with ext; [ pass-audit pass-import pass-update ]))
         ejson
         gnupg
+        kbfs
+        keybase
+        keybase-gui
         paperkey
         rofi-pass
         srm
