@@ -283,6 +283,28 @@ in
                 bind l refresh-client
                 bind m select-pane -m
 
+                bind M-0 select-window -t :10
+                bind M-1 select-window -t :11
+                bind M-2 select-window -t :12
+                bind M-3 select-window -t :13
+                bind M-4 select-window -t :14
+                bind M-5 select-window -t :15
+                bind M-6 select-window -t :16
+                bind M-7 select-window -t :17
+                bind M-8 select-window -t :18
+                bind M-9 select-window -t :19
+
+                bind F10 select-window -t :20
+                bind F1 select-window -t :21
+                bind F2 select-window -t :22
+                bind F3 select-window -t :23
+                bind F4 select-window -t :24
+                bind F5 select-window -t :25
+                bind F6 select-window -t :26
+                bind F7 select-window -t :27
+                bind F8 select-window -t :28
+                bind F9 select-window -t :29
+
                 bind BSpace last-window
 
                 bind -n C-y run -b "exec </dev/null; ${pkgs.xclip}/bin/xclip -o -selection clipboard | tmux load-buffer - ; tmux paste-buffer"
