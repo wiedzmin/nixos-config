@@ -335,8 +335,8 @@ in
                        , commands = [ Run Date "%a %d/%m/%y %H:%M:%S" "date" 10
                                     , Run StdinReader
                                     , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
-                                                             "<fc=green>On</fc> - ", "-o", "", "-L", "-15", "-H", "-5", "-l", "red",
-                                                             "-m", "blue", "-h", "green"] 200
+                                                             "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
+                                                             "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
                                     , Run CoreTemp ["-t","<core0>/<core1>°C",
                                                     "-L","40","-H","60",
                                                     "-l","lightblue",
