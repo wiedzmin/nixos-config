@@ -6,5 +6,8 @@
         nix-prefetch-scripts
         nix-serve
         nixops
+
+        # custom
+        optimize-nix
     ];
 }
