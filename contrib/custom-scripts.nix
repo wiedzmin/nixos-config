@@ -335,6 +335,25 @@
                 echo $(${pkgs.pass}/bin/pass $PASS_ENTRY | ${pkgs.coreutils}/bin/tr '\n' ' ' | \
                      ${pkgs.gawk}/bin/awk '{print $3 ":" $1}')
             '';
+            bitbucket_team_contributor_repos = pkgs.writeShellScriptBin "bitbucket_team_contributor_repos" ''
+                # TODO: think of keyword args or likewise
+                TEAM=$1
+                PROJECTS_EXCLUDE=$2
+                CREDENTIALS=$(${pkgs.pass_curl_helper}/bin/pass_curl_helper alex3rd/webservices/social/programming/bitbucket.com.web)
+                RESULT=$(${pkgs.curl}/bin/curl -s -u \
+                       $CREDENTIALS "https://api.bitbucket.org/2.0/repositories?role=contributor&pagelen=200" | \
+                       ${pkgs.jq}/bin/jq -r '.values[] | select(.project.name != null) | "\(.links.clone[0].href)~\(.project.name)"')
+                if [[ ! -z $TEAM ]]; then
+                    RESULT=$(printf "%s\n" $RESULT | grep $TEAM)
+                fi
+                if [[ ! -z $PROJECTS_EXCLUDE ]]; then
+                    GREP_CLAUSES=$(echo $PROJECTS_EXCLUDE | ${pkgs.gnused}/bin/sed "s/,/\|/g")
+                    RESULT=$(printf "%s\n" $RESULT | grep -i -v -E $GREP_CLAUSES)
+                fi
+                for repo in $RESULT; do
+                    echo $repo | ${pkgs.coreutils}/bin/cut -f1 -d~
+                done
+            '';
         };
     };
 }
