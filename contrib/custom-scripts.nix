@@ -45,7 +45,7 @@
                 echo "$t°C"
             '';
             status_uptime = pkgs.writeShellScriptBin "status_uptime" ''
-                ${pkgs.coreutils}/bin/uptime | ${pkgs.coreutils}/bin/cut -f 4-7 -d " " | ${pkgs.coreutils}/bin/cut -f 1-2 -d ","
+                ${pkgs.procps}/bin/w | ${pkgs.gnused}/bin/sed -r '1 s/.*up *(.*),.*user.*/\1/g;q'
             '';
             zip2targz = pkgs.writeShellScriptBin "zip2targz" ''
                 tmpdir=`${pkgs.coreutils}/bin/mktemp -d`
