@@ -330,6 +330,11 @@
                     echo $(whoami)@$(${pkgs.nettools}/bin/hostname)
                 fi
             '';
+            pass_curl_helper = pkgs.writeShellScriptBin "pass_curl_helper" ''
+                PASS_ENTRY=$1
+                echo $(${pkgs.pass}/bin/pass $PASS_ENTRY | ${pkgs.coreutils}/bin/tr '\n' ' ' | \
+                     ${pkgs.gawk}/bin/awk '{print $3 ":" $1}')
+            '';
         };
     };
 }
