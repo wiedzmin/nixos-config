@@ -762,7 +762,7 @@ in
                 epkgs.format-all
                 epkgs.function-args
                 epkgs.git-msg-prefix
-                epkgs.git-timemachine
+                epkgs.git-wip-timemachine
                 epkgs.gitignore-mode
                 epkgs.go-eldoc
                 epkgs.go-guru
