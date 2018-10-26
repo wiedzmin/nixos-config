@@ -792,6 +792,7 @@ in
                 epkgs.iqa
                 epkgs.ivy
                 epkgs.ivy-dired-history
+                epkgs.ivy-historian
                 epkgs.ivy-hydra
                 epkgs.ivy-pass
                 epkgs.ivy-rich
@@ -914,7 +915,6 @@ in
                 epkgs.yaml-mode
                 epkgs.yasnippet
                 epkgs.yatemplate
-                epkgs.ivy-historian
             ];
         };
         programs.htop.enable = true;
