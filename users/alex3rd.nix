@@ -315,6 +315,8 @@ in
                 bind -T copy-mode M-n run-shell "${pkgs.shell-capture}/bin/shell-capture ns"
                 bind -T copy-mode M-x run-shell "${pkgs.shell-capture}/bin/shell-capture xs"
 
+                bind F12 send-key "${pkgs.hr}/bin/hr" Enter
+
                 bind r source-file ~/.tmux.conf \; display "  Config reloaded..."
                 bind y set-window-option synchronize-panes
 
