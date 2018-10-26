@@ -54,6 +54,7 @@
         dmenu2
         edid-decode
         gmrun
+        haskellPackages.arbtt
         haskellPackages.xmobar
         haskellPackages.yeganesh
         i3lock-color
