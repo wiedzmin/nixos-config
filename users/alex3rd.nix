@@ -614,6 +614,10 @@ in
                     show = ${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX
                 [push]
                     default = current
+                [ghq]
+                    root = ${config.users.extraUsers.alex3rd.home}/workspace/repos
+                [ghq "import"]
+                    bbcontribs = ${pkgs.bitbucket_team_contributor_repos}/bin/bitbucket_team_contributor_repos
             '';
             aliases = {
                 co = "checkout";

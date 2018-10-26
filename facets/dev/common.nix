@@ -11,6 +11,7 @@
         git
         git-lfs
         git-quick-stats
+        gitAndTools.ghq
         gitAndTools.git-extras
         gitAndTools.git-imerge
         gitAndTools.git-secret
