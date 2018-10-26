@@ -1,5 +1,8 @@
 { config, pkgs, ... }:
 {
+    imports = [
+        ./xmonad.nix
+    ];
     services.xserver = {
         enable = true;
         videoDrivers = [ "modesetting" "intel" ];
@@ -7,16 +10,6 @@
             xterm.enable = false;
             gnome3.enable = true;
             default = "none";
-        };
-        windowManager = {
-            default = "xmonad";
-            xmonad = {
-                enable = true;
-                enableContribAndExtras = true;
-                extraPackages = p: [ p.taffybar p.dbus p.monad-logger p.lens p.split ];
-            };
-            #default = "stumpwm";
-            #stumpwm.enable = true;
         };
         displayManager = {
             lightdm.enable = true;
