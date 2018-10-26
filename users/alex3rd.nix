@@ -530,6 +530,7 @@ in
                 df = "dfc";
                 dud = "(setopt globdots; du -mhs * | sort -hr)";
                 git = "${pkgs.gitAndTools.hub}/bin/hub";
+                gop = "git open";
                 jcurl = "curl_jq(){ ${pkgs.curl}/bin/curl $@ | ${pkgs.jq}/bin/jq . }; curl_jq";
                 shme = "ssh_whoami(){ ssh `whoami`@$@}; ssh_whoami";
                 shroot = "ssh_root(){ ssh root@$@}; ssh_root";

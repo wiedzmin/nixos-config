@@ -14,6 +14,7 @@
         gitAndTools.ghq
         gitAndTools.git-extras
         gitAndTools.git-imerge
+        gitAndTools.git-open
         gitAndTools.git-secret
         gitAndTools.git-secrets
         gitAndTools.gitflow
