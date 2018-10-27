@@ -1,6 +1,9 @@
 {config, pkgs, lib, ...}:
 
 {
+    imports = [
+        ../private/jobtraits.nix
+    ];
     systemd.services."git-fetch-updates-work" = {
         description = "Fetch updates from work git repos";
         path = [ pkgs.pass pkgs.gitAndTools.pass-git-helper ];

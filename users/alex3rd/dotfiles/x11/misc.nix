@@ -115,7 +115,7 @@
                 month $now == month $date ==> tag current-month,
                 year $now == year $date ==> tag current-year,
 
-                ${builtins.readFile "/etc/nixos/private/categorize_private.cfg"}
+                ${builtins.readFile "/etc/nixos/users/alex3rd/private/categorize.cfg"}
             '';
             ".config/xmobar/xmobarrc".text = ''
                 Config { font = "xft:Iosevka:style=Bold:pixelsize=16"

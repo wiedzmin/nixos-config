@@ -13,12 +13,6 @@
         ./users/root.nix
         ./users/alex3rd/default.nix
         ./contrib/custom-scripts.nix
-        ./services/custom/sshuttle.nix
-        ./private/sshuttle.nix
-        ./private/jobtraits.nix
-        ./services/custom/imapfilter.nix
-        ./services/custom/vpn.nix
-        ./services/custom/git-auto.nix
         ./modules/sound.nix
         ./modules/security.nix
         ./modules/system.nix
@@ -72,7 +66,6 @@
         hostName = "x230";
         hostId = "2ab69157";
         firewall.enable = false;
-        extraHosts = builtins.readFile ./private/extra_hosts;
         usePredictableInterfaceNames = true;
         wlanInterfaces = {
             "wlan0" = { device = "wlp3s0"; };

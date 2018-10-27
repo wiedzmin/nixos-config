@@ -21,6 +21,27 @@ in
             tmuxp
         ];
         home.file = {
+            "tmuxp/housekeeping.yml".text = ''
+                session_name: housekeeping
+                windows:
+                  - window_name: configuration.nix
+                    start_directory: /etc/nixos
+                    panes:
+                      -
+                  - window_name: nixpkgs
+                    start_directory: /etc/nixos/pkgs/nixpkgs-channels
+                    panes:
+                      -
+                  - window_name: Nix REPL
+                    start_directory: /etc/nixos/pkgs/nixpkgs-channels
+                    panes:
+                      - shell_command:
+                        - nix repl '<nixpkgs/nixos>'
+                  - window_name: xmonad
+                    start_directory: ''${HOME}/.xmonad
+                    panes:
+                      -
+            '';
             ".tmux.conf".text = ''
                 # indexes
                 set -g base-index 1             # first window index

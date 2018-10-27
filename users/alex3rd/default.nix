@@ -17,6 +17,10 @@
         ./dotfiles/dev/git.nix
         ./dotfiles/dev/lisp.nix
         ./dotfiles/dev/python.nix
+        ./services/sshuttle.nix
+        ./services/imapfilter.nix
+        ./services/vpn.nix
+        ./services/git-auto.nix
     ];
 
     users.extraUsers = {
@@ -30,6 +34,9 @@
     };
 
     nix.trustedUsers = [ "alex3rd" ];
+
+    networking.extraHosts = (builtins.concatStringsSep
+                             "\n" (lib.mapAttrsToList (ip: names: ip + "   " + names) config.job.extra_hosts));
 
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [

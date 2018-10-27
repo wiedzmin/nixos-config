@@ -305,7 +305,7 @@
                 FZF_MARKS_FILE = "$HOME/.bookmarks";
                 GTAGSLIBPATH = "$HOME/.gtags/";
                 WORKON_HOME = "$HOME/.virtualenvs";
-                TMUXP_CONFIGDIR = "/etc/nixos/private/tmuxp";
+                TMUXP_CONFIGDIR = "${config.users.extraUsers.alex3rd.home}/tmuxp";
             };
             shellAliases = {
                 "-g findgrep" = "find_in_files";
