@@ -33,6 +33,7 @@
         afpfs-ng
         chromium
         firefox-bin
+        speedtest-cli
         iperf
         lynx
         mosh
