@@ -1,34 +1,32 @@
 {config, pkgs, lib, ...}:
 
+let
+    editors = "emacsclient vim vi";
+in
 {
     programs.bash.enableCompletion = true;
 
     home-manager.users.alex3rd = {
         home.file = {
             ".common_settings".text = ''
-                #!/usr/bin/env bash
+                #!${pkgs.bash}/bin/bash
 
                 BIN_DIRS=(
-                    /home/alex3rd/scripts
-                    $HOME/tools/bin
-                    /usr/lib/go/bin
-                    $HOME/workspace/gocode/bin
-                    $HOME/.local/bin
+                    ${config.users.extraUsers.alex3rd.home}/scripts
+                    ${config.users.extraUsers.alex3rd.home}/tools/bin
+                    ${config.users.extraUsers.alex3rd.home}/.local/bin
                 )
 
                 export GREP_OPTIONS=--color=auto
                 export GREP_COLOR='1;32'
-                export SHELL=/bin/bash
-                export GOROOT=/usr/lib/go
-                export GOPATH=$HOME/workspace/gocode
-                export XAUTHORITY=$HOME/.Xauthority
-                export FZF_MARKS_FILE=/home/alex3rd/.bookmarks
-                export GTAGSLIBPATH=$HOME/.gtags/
-                export FZF_ZSH=/usr/share/zsh/site-contrib/fzf.zsh
-                export CURRENT_WM=stumpwm
-                export WORKON_HOME=$HOME/.virtualenvs
-                export PROJECT_HOME=/home/alex3rd/workspace/python
-                export PROJECTS=/home/alex3rd/workspace/foss
+                export SHELL=${pkgs.bash}/bin/bash
+                export XAUTHORITY=${config.users.extraUsers.alex3rd.home}/.Xauthority
+                export FZF_MARKS_FILE=${config.users.extraUsers.alex3rd.home}/.bookmarks
+                export GTAGSLIBPATH=${config.users.extraUsers.alex3rd.home}/.gtags/
+                export CURRENT_WM=${config.services.xserver.windowManager.default}
+                export WORKON_HOME=${config.users.extraUsers.alex3rd.home}/.virtualenvs
+                export PROJECT_HOME=${config.users.extraUsers.alex3rd.home}/workspace/python
+                export PROJECTS=${config.users.extraUsers.alex3rd.home}/workspace/foss
 
                 # Remove dupes from 'path', which is array tied to 'PATH'
                 # typeset -U path
@@ -38,7 +36,7 @@
                     fi
                 done
 
-                for candidate in emacsclient vim vi; do
+                for candidate in ${editors}; do
                     if [[ ! -z $(which $candidate) ]]; then
                         export VISUAL=$candidate
                         export EDITOR=$candidate

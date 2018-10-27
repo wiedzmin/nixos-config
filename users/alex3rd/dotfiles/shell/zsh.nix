@@ -1,14 +1,12 @@
 {config, pkgs, lib, ...}:
 
+let
+    editors = "emacsclient vim vi";
+in
 {
     home-manager.users.alex3rd = {
         home.file = {
             ".zsh/functions.zsh".text = ''
-                mkd(){ mkdir "$1" && cd "$1"; }
-                rmd(){ local P="`pwd`"; cd .. && rmdir "$P" || cd "$P"; }
-                findname() { pattern=$1; find . -name "''${pattern}" }
-                find_in_files() { fnpattern=$1; grpattern=$2; find . -name "''${fnpattern}" -exec grep "''${grpattern}" -n {} + }
-
                 dot() {
                     if [[ $LBUFFER = *.. ]]; then
                         LBUFFER+=/..
@@ -21,14 +19,14 @@
                 # fbr - checkout git branch (including remote branches)
                 fbr() {
                     local branches branch
-                    if [[ ! -z $(git rev-parse --git-dir 2> /dev/null) ]]; then
-                        branches=$(git branch --all -vv) &&
-                            branch=$(echo "$branches" |
-                                         fzf-tmux -- --ansi -d $(( 2 + $(wc -l <<< "$branches") )) +m) &&
+                    if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
+                        branches=$(${pkgs.git}/bin/git branch --all -vv) &&
+                            branch=$(echo "$branches" | ${pkgs.fzf}/bin/fzf-tmux -- \
+                                          --ansi -d $(( 2 + $(wc -l <<< "$branches") )) +m) || return
                             if [ "x$branch" != "x" ]
                             then
-                                echo
-                                git checkout $(echo "$branch" | awk '{print $1}'| sed "s/.* //" | sed "s#remotes/[^/]*/##")
+                                ${pkgs.git}/bin/git checkout $(echo "$branch" | ${pkgs.gawk}/bin/awk '{print $1}' |
+                                ${pkgs.gnused}/bin/sed "s/.* //" | ${pkgs.gnused}/bin/sed "s#remotes/[^/]*/##")
                             fi
                     fi
                 } # TODO: make it not asking for extra manual CR in the end somehow
@@ -36,19 +34,17 @@
                 # fco - checkout git branch/tag
                 fco() {
                     local tags branches target
-                    if [[ ! -z $(git rev-parse --git-dir 2> /dev/null) ]]; then
-                        tags=$(
-                            git tag | awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') || return
-                        branches=$(
-                            git branch --all | grep -v HEAD             |
-                                sed "s/.* //"    | sed "s#remotes/[^/]*/##" |
-                                sort -u          | awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
-                        target=$(
-                            (echo "$tags"; echo "$branches") |
-                                fzf-tmux -- --no-hscroll --ansi +m -d "\t" -n 2) || return
+                    if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
+                        tags=$(${pkgs.git}/bin/git tag | ${pkgs.gawk}/bin/awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') \
+                             || return
+                        branches=$(${pkgs.git}/bin/git branch --all | grep -v HEAD | ${pkgs.gnused}/bin/sed "s/.* //" |
+                                   ${pkgs.gnused}/bin/sed "s#remotes/[^/]*/##" | sort -u |
+                                   ${pkgs.gawk}/bin/awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
+                        target=$((echo "$tags"; echo "$branches") | ${pkgs.fzf}/bin/fzf-tmux -- \
+                               --no-hscroll --ansi +m -d "\t" -n 2) || return
                         if [ "x$target" != "x" ]
                         then
-                            git checkout $(echo "$target" | awk '{print $2}')
+                            ${pkgs.git}/bin/git checkout $(echo "$target" | ${pkgs.gawk}/bin/awk '{print $2}')
                         fi
                     fi
                 }
@@ -56,34 +52,35 @@
                 # fcoc - checkout git commit
                 fcoc() {
                     local commits commit
-                    if [[ ! -z $(git rev-parse --git-dir 2> /dev/null) ]]; then
-                        commits=$(git log --pretty=oneline --abbrev-commit --reverse)
-                        commit=$(echo "$commits" | fzf --tac +s +m -e)
+                    if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
+                        commits=$(${pkgs.git}/bin/git log --pretty=oneline --abbrev-commit --reverse)
+                        commit=$(echo "$commits" | ${pkgs.fzf}/bin/fzf --tac +s +m -e)
                         if [ "x$commit" != "x" ]
                         then
-                            git checkout $(echo "$commit" | sed "s/ .*//")
+                            ${pkgs.git}/bin/git checkout $(echo "$commit" | ${pkgs.gnused}/bin/sed "s/ .*//")
                         fi
                     fi
                 }
 
-                # fshow - git commit browser
+                # fshow - ${pkgs.git}/bin/git commit browser
                 fshow() {
                     local out sha q
-                    if [[ ! -z $(git rev-parse --git-dir 2> /dev/null) ]]; then
-                        while out=$(
-                                git log --decorate=short --graph --oneline --color=always |
-                                    fzf --ansi --multi --no-sort --reverse --query="$q" --print-query); do
+                    if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
+                        while out=$(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always |
+                                    ${pkgs.fzf}/bin/fzf --ansi --multi --no-sort --reverse --query="$q" --print-query);
+                                    do
                             q=$(head -1 <<< "$out")
                             while read sha; do
-                                [ -n "$sha" ] && git show --color=always $sha | less -R
-                            done < <(sed '1d;s/^[^a-z0-9]*//;/^$/d' <<< "$out" | awk '{print $1}')
+                                [ -n "$sha" ] && ${pkgs.git}/bin/git show --color=always $sha | less -R
+                            done < <(${pkgs.gnused}/bin/sed '1d;s/^[^a-z0-9]*//;/^$/d' <<< "$out" |
+                            ${pkgs.gawk}/bin/awk '{print $1}')
                         done
                     fi
                 }
 
                 # fkill - kill process
                 fkill() {
-                    pid=$(ps -ef | sed 1d | fzf | awk '{print $2}')
+                    pid=$(ps -ef | ${pkgs.gnused}/bin/sed 1d | ${pkgs.fzf}/bin/fzf | ${pkgs.gawk}/bin/awk '{print $2}')
 
                     if [ "x$pid" != "x" ]
                     then
@@ -94,7 +91,7 @@
                 # fj - changing directory with fasd
                 fj() {
                     local dir
-                    dir=$(fasd -Rdl | peco --initial-filter SmartCase) && cd "$dir"
+                    dir=$(${pkgs.fasd}/bin/fasd -Rdl | ${pkgs.fzf}/bin/fzf) && cd "$dir"
                 }
 
                 __fzf_use_tmux__() {
@@ -103,7 +100,7 @@
 
                 __fzfcmd() {
                     __fzf_use_tmux__ &&
-                        echo "fzf-tmux -d''${FZF_TMUX_HEIGHT:-40%}" || echo "fzf"
+                        echo "${pkgs.fzf}/bin/fzf-tmux -d''${FZF_TMUX_HEIGHT:-40%}" || echo "fzf"
                 }
 
                 fzf-history-widget() {
@@ -136,8 +133,8 @@
                 # A Cleaner Print of your current IP
                 #--------------------------------------------------------------------------
                 function ip() {
-                    ifconfig eth0 | grep 'inet ' | sed -e 's/:/ /' | awk '{print "eth0 (IPv4): " $2 " " $3 " " $4 " " $5 " " $6}'
-                    ifconfig wlan0 | grep 'inet ' | sed -e 's/ / /'| awk '{print "wlan0 (IPv4): " $2 " " $3 " " $4 " " $5 " " $6}'
+                    ifconfig eth0 | grep 'inet ' | ${pkgs.gnused}/bin/sed -e 's/:/ /' | ${pkgs.gawk}/bin/awk '{print "eth0 (IPv4): " $2 " " $3 " " $4 " " $5 " " $6}'
+                    ifconfig wlan0 | grep 'inet ' | ${pkgs.gnused}/bin/sed -e 's/ / /'| ${pkgs.gawk}/bin/awk '{print "wlan0 (IPv4): " $2 " " $3 " " $4 " " $5 " " $6}'
                 }
 
                 safeload () {
@@ -157,33 +154,26 @@
                 }
             '';
             ".common_settings".text = ''
-                #!/usr/bin/env zsh
+                #!${pkgs.zsh}/bin/zsh
 
                 BIN_DIRS=(
-                    /home/alex3rd/scripts
-                    $HOME/tools/bin
-                    /usr/lib/go/bin
-                    $HOME/workspace/gocode/bin
-                    $HOME/.local/bin
+                    ${config.users.extraUsers.alex3rd.home}/scripts
+                    ${config.users.extraUsers.alex3rd.home}/tools/bin
+                    ${config.users.extraUsers.alex3rd.home}/.local/bin
                 )
 
                 ZSH_EXT_DIRS=(
-                    $HOME/.zsh/completion
+                    ${config.users.extraUsers.alex3rd.home}/.zsh/completion
                 )
 
                 export GREP_OPTIONS=--color=auto
                 export GREP_COLOR='1;32'
-                # export SHELL=/bin/bash
-                export GOROOT=/usr/lib/go
-                export GOPATH=$HOME/workspace/gocode
-                export XAUTHORITY=$HOME/.Xauthority
-                export FZF_MARKS_FILE=/home/alex3rd/.bookmarks
-                export GTAGSLIBPATH=$HOME/.gtags/
-                export FZF_ZSH=/usr/share/zsh/site-contrib/fzf.zsh
-                export CURRENT_WM=stumpwm
-                export WORKON_HOME=$HOME/.virtualenvs
-                export PROJECT_HOME=/home/alex3rd/workspace/python
-                export PROJECTS=/home/alex3rd/workspace/foss
+                export SHELL=${pkgs.zsh}/bin/zsh
+                export XAUTHORITY=${config.users.extraUsers.alex3rd.home}/.Xauthority
+                export FZF_MARKS_FILE=${config.users.extraUsers.alex3rd.home}/.bookmarks
+                export GTAGSLIBPATH=${config.users.extraUsers.alex3rd.home}/.gtags/
+                export CURRENT_WM=${config.services.xserver.windowManager.default}
+                export WORKON_HOME=${config.users.extraUsers.alex3rd.home}/.virtualenvs
 
                 # Remove dupes from 'path', which is array tied to 'PATH'
                 typeset -U path
@@ -205,7 +195,7 @@
                     done
                 done
 
-                for candidate in emacsclient vim vi ; do
+                for candidate in ${editors} ; do
                     if [[ ! -z $(which $candidate) ]]; then
                         export VISUAL=$candidate
                         export EDITOR=$candidate
@@ -243,10 +233,9 @@
                 share = true;
             };
             initExtra = ''
-                PATH=$PATH:${pkgs.autojump}/bin
-                . ${pkgs.autojump}/share/autojump/autojump.zsh
-
                 ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
+
+                eval "$(${pkgs.fasd}/bin/fasd --init auto)"
 
                 if [ `uname -s` = "Linux" ]; then
                     eval `dircolors -b`
@@ -302,20 +291,16 @@
             sessionVariables = {
                 GREP_OPTIONS = "--color=auto";
                 GREP_COLOR = "1;32";
-                FZF_MARKS_FILE = "$HOME/.bookmarks";
-                GTAGSLIBPATH = "$HOME/.gtags/";
-                WORKON_HOME = "$HOME/.virtualenvs";
+                FZF_MARKS_FILE = "${config.users.extraUsers.alex3rd.home}/.bookmarks";
+                GTAGSLIBPATH = "${config.users.extraUsers.alex3rd.home}/.gtags/";
+                WORKON_HOME = "${config.users.extraUsers.alex3rd.home}/.virtualenvs";
                 TMUXP_CONFIGDIR = "${config.users.extraUsers.alex3rd.home}/tmuxp";
             };
             shellAliases = {
-                "-g findgrep" = "find_in_files";
-                "-g fnd" = "findname";
-                "-g grep" = "grep --color=auto --perl-regexp";
-                # ERR = "2>>( sed -ue 's/.*/$fg_bold[red]&$reset_color/' 1>&2 )";
-                # dubc = "sudo find . -name '__pycache__' -or -name '*.pyc' -exec rm -rf {} + && docker-compose up --build";
-                TF = "tail -f";
-                df = "dfc";
-                dud = "(setopt globdots; du -mhs * | sort -hr)";
+                dubc = "sudo ${pkgs.findutils}/bin/find . -name __pycache__ -or -name \"*.pyc\" -exec ${pkgs.coreutils}/bin/rm -rf {} + && ${pkgs.docker_compose}/bin/docker-compose up --build";
+                TF = "${pkgs.coreutils}/bin/tail -f";
+                df = "${pkgs.dfc}/bin/dfc";
+                dud = "(setopt globdots; ${pkgs.coreutils}/bin/du -mhs * | ${pkgs.coreutils}/bin/sort -hr)";
                 git = "${pkgs.gitAndTools.hub}/bin/hub";
                 gop = "git open";
                 jcurl = "curl_jq(){ ${pkgs.curl}/bin/curl $@ | ${pkgs.jq}/bin/jq . }; curl_jq";

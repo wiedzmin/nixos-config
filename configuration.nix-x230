@@ -2,38 +2,34 @@
 
 {
     imports = [
-        ./pkgsetup/custom-nixpath.nix
-        ./pkgsetup/overlays.nix
+        ./pkgs/setup.nix
         <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
-        ./hardware/intel.nix
-        ./hardware/laptop.nix
-        ./hardware/bluetooth.nix
-        ./hardware/misc.nix
-        ./partitions/x230-laptoptop.nix
-        ./users/root.nix
-        ./users/alex3rd/default.nix
         ./contrib/custom-scripts.nix
-        ./modules/sound.nix
-        ./modules/security.nix
-        ./modules/system.nix
-        ./facets/virt.nix
-        ./facets/dev/common.nix
-        ./facets/dev/ccpp.nix
-        ./facets/dev/python.nix
-        ./facets/dev/cl.nix
-        ./facets/dev/go.nix
-        ./facets/dev/clojure.nix
-        ./facets/dev/hardware.nix
-        ./facets/shell.nix
         ./facets/archive.nix
+        ./facets/dev/ccpp.nix
+        ./facets/dev/cl.nix
+        ./facets/dev/clojure.nix
+        ./facets/dev/common.nix
+        ./facets/dev/go.nix
+        ./facets/dev/hardware.nix
+        ./facets/dev/python.nix
         ./facets/media.nix
-        ./facets/textworks.nix
+        ./facets/misc.nix
         ./facets/networking.nix
         ./facets/nixtools.nix
-        ./facets/misc.nix
-        ./services/xorg/server.nix
-        ./services/xorg/aux.nix
-        ./services/xorg/fonts.nix
+        ./facets/security.nix
+        ./facets/shell.nix
+        ./facets/textworks.nix
+        ./facets/virt.nix
+        ./hardware/bluetooth.nix
+        ./hardware/intel.nix
+        ./hardware/laptop.nix
+        ./hardware/misc.nix
+        ./hardware/sound.nix
+        ./partitions/x230-laptoptop.nix
+        ./services/xserver.nix
+        ./users/alex3rd/default.nix
+        ./users/root.nix
     ];
 
     boot.loader.grub = {

@@ -11,7 +11,7 @@
                     (load quicklisp-init)))
 
                 (ql:quickload :cffi)
-                (pushnew #P"/home/alex3rd/.nix-profile/lib/" ;; TODO: parameterize username
+                (pushnew #P"${config.users.extraUsers.alex3rd.home}/.nix-profile/lib/" ;; TODO: parameterize username
                          cffi:*foreign-library-directories*)
             '';
             ".guile".text = ''

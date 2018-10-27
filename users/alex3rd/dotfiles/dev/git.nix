@@ -1,5 +1,17 @@
 {config, pkgs, lib, ...}:
 
+let
+    warningsOrgFile = "${config.users.extraUsers.alex3rd.home}/docs/org/tasks.org";
+    gitSrcStopSnippets = [
+        "ipdb"
+        "wdb"
+        "^\\s*print("
+    ];
+    gitCommitStopWords = [
+        "wip"
+        "WIP"
+    ];
+in
 {
     home-manager.users.alex3rd = {
         home.file = {
@@ -92,87 +104,66 @@
                 .agignore
                 .dir-locals.el
             '';
-            "git-assets/templates/hooks/post-commit".text = ''
-                #!/usr/bin/env bash
-                #
-                # An example hook script that is called after a successful
-                # commit is made.
-                #
-                # To enable this hook, rename this file to "post-commit".
+            "git-assets/templates/hooks/post-commit" = {
+                executable = true;
+                text = ''
+                    #!${pkgs.bash}/bin/bash
 
-                ## current/last commit:
-                CURRENT_REV=`git rev-parse HEAD`
+                    CURRENT_REV=`${pkgs.git}/bin/git rev-parse HEAD`
+                    PREVIOUS_REV=`${pkgs.git}/bin/git rev-parse HEAD^1`
 
-                ## the commit before:
-                PREVIOUS_REV=`git rev-parse HEAD^1`
+                    OUTFILE="${warningsOrgFile}"
+                    THRESHOLD=250
 
-                ## the file where the message(s) are being written to:
-                OUTFILE="''${HOME}/org/errors_orgmode_commits.org"
+                    MESSAGE="** commit ''${CURRENT_REV} deleted more than ''${THRESHOLD} lines in a file!"
 
-                ## number of lines that are OK to be deleted in one single file:
-                THRESHOLD=250
+                    DETAILS="#+BEGIN_SRC sh :results output
+                    cd ${builtins.dirOf warningsOrgFile}
+                    echo \"commit ''${CURRENT_REV}\"
+                    ${pkgs.git}/bin/git diff --stat \"''${PREVIOUS_REV}\" \"''${CURRENT_REV}\"
+                    #+END_SRC"
 
+                    ${pkgs.git}/bin/git diff --numstat "''${PREVIOUS_REV}" "''${CURRENT_REV}" | \
+                      cut -f 2 | \
+                      while read line
+                        do test "$line" -gt "''${THRESHOLD}" && \
+                          echo "''${MESSAGE}\n<`date '+%Y-%m-%d %H:%M'` +1d>\n\n''${DETAILS}\n" >> \
+                          "''${OUTFILE}"; \
+                        done
+                '';
+            };
+            "git-assets/templates/hooks/pre-push" = {
+                executable = true;
+                text = ''
+                    #!${pkgs.bash}/bin/bash
 
-                MESSAGE="** commit ''${CURRENT_REV} deleted more than ''${THRESHOLD} lines in a file!"
+                    IS_CLEAN=true
 
-                DETAILS="#+BEGIN_SRC sh :results output
-                cd ''${HOME}/org
-                echo \"commit ''${CURRENT_REV}\"
-                git diff --stat \"''${PREVIOUS_REV}\" \"''${CURRENT_REV}\"
-                #+END_SRC"
-
-                ## manual test with:
-                ##  git diff --stat `git rev-parse HEAD^1` `git rev-parse HEAD`
-
-                git diff --numstat "''${PREVIOUS_REV}" "''${CURRENT_REV}" | \
-                  cut -f 2 | \
-                  while read line
-                    do test "$line" -gt "''${THRESHOLD}" && \
-                      echo "''${MESSAGE}\n<`date '+%Y-%m-%d %H:%M'` +1d>\n\n''${DETAILS}\n" >> \
-                      "''${OUTFILE}"; \
+                    for i in ${lib.concatMapStringsSep " " (w: "\"" + w + "\"") gitSrcStopSnippets}
+                    do
+                        RESULTS=$(${pkgs.git}/bin/git grep -C 2 -n -G "$i" -- `${pkgs.git}/bin/git ls-files | grep -v hook`);
+                        if [[ ! -z "$RESULTS" ]]; then
+                            IS_CLEAN=false
+                            echo "Found stop snippets:"
+                            echo "$RESULTS"
+                        fi
                     done
 
-                #end
-            '';
-            "git-assets/templates/hooks/pre-push".text = ''
-                #!/bin/sh
-                # Called by "git push" after it has checked the remote status, but before anything has been
-                # pushed.  If this script exits with a non-zero status nothing will be pushed.
+                    for i in ${lib.concatMapStringsSep " " (w: "\"" + w + "\"") gitCommitStopWords}
+                    do
+                        RESULTS=$(${pkgs.git}/bin/git shortlog "@{u}.." | grep "$i");
+                        if [[ ! -z "$RESULTS" ]]; then
+                            IS_CLEAN=false
+                            echo "Found commits with stop snippets:"
+                            echo "$RESULTS"
+                        fi
+                    done
 
-                src_stop_words=(
-                   ipdb
-                   wdb
-                );
-
-                commit_stop_words=(
-                   [wip]
-                   [WIP]
-                )
-
-                IS_CLEAN=true
-
-                for i in "''${src_stop_words[@]}"
-                do
-                    RESULTS=$(git grep -l "$i" -- `git ls-files | grep -v hook`);
-                    if [[ ! -z "$RESULTS" ]]; then
-                        IS_CLEAN=false;
-                        echo "Found $i in file:\n$RESULTS\n";
+                    if [[ "$IS_CLEAN" = false ]]; then
+                        exit 1;
                     fi
-                done
-
-                for i in "''${commit_stop_words[@]}"
-                do
-                    RESULTS=$(git shortlog "@{u}.." | grep "$i");
-                    if [[ ! -z "$RESULTS" ]]; then
-                        IS_CLEAN=false;
-                        echo "Found '$i' in commits:\n$RESULTS\n";
-                    fi
-                done
-
-                if [[ "$IS_CLEAN" = false ]]; then
-                    exit 1;
-                fi
-            '';
+                '';
+            };
             ".config/pass-git-helper/git-pass-mapping.ini".text = ''
                 [github.com*]
                 target=alex3rd/webservices/social/programming/github.com
@@ -183,10 +174,10 @@
         };
         programs.git = {
             enable = true;
-            userName = "Alex Ermolov";
-            userEmail = "aaermolov@gmail.com";
+            userName = config.common.userName;
+            userEmail = config.common.userEmail;
             signing = {
-                key = "alex3rd <aaermolov@gmail.com>";
+                key = config.common.primaryGpgKeyID;
                 signByDefault = true;
             };
             extraConfig = {
@@ -237,9 +228,13 @@
                 "init" = {
                     templatedir = "${config.users.extraUsers.alex3rd.home}/git-assets/templates";
                 };
+                "clone" = {
+                    templatedir = "${config.users.extraUsers.alex3rd.home}/git-assets/templates";
+                };
                 "pager" = {
                     diff = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
                     show = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
+                    log = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
                 };
                 "push" = {
                     default = "current";

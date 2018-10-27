@@ -115,7 +115,11 @@
                 month $now == month $date ==> tag current-month,
                 year $now == year $date ==> tag current-year,
 
-                ${builtins.readFile "/etc/nixos/users/alex3rd/private/categorize.cfg"}
+                ${builtins.concatStringsSep "\n"
+                    (lib.mapAttrsToList (ip: name:
+                        "current window ($program == \"" +
+                        config.misc.default_shell_class + "\" && $title =~ /" + name + "/) ==> tag ssh:" + name + ",")
+                    config.job.extra_hosts)}
             '';
             ".config/xmobar/xmobarrc".text = ''
                 Config { font = "xft:Iosevka:style=Bold:pixelsize=16"
@@ -147,8 +151,286 @@
                        , template = "%StdinReader% }{| %battery% | %coretemp% | %wifi% %sshuttle% %vpn% | %uptime% | <fc=#ee9a00>%date%</fc> |%kbd%"
                        }
             '';
-            ".config/tridactyl/tridactylrc".source = ./tridactylrc;
-            "tridactylrc".source = ./tridactylrc;
+            ".config/rofi/oxide.rasi".text = ''
+                /**
+                 * Oxide Color theme
+                 * Author: Diki Ananta <diki1aap@gmail.com>
+                 * Repository: https://github.com/dikiaap/dotfiles
+                 * License: MIT
+                 **/
+                * {
+                    selected-normal-foreground:  @lightfg;
+                    foreground:                  rgba ( 196, 202, 212, 100 % );
+                    normal-foreground:           @foreground;
+                    alternate-normal-background: rgba ( 42, 42, 42, 100 % );
+                    red:                         rgba ( 194, 65, 65, 100 % );
+                    selected-urgent-foreground:  @lightfg;
+                    blue:                        rgba ( 43, 131, 166, 100 % );
+                    urgent-foreground:           @lightfg;
+                    alternate-urgent-background: @red;
+                    active-foreground:           @lightfg;
+                    lightbg:                     @foreground;
+                    selected-active-foreground:  @lightfg;
+                    alternate-active-background: @blue;
+                    background:                  rgba ( 33, 33, 33, 100 % );
+                    alternate-normal-foreground: @foreground;
+                    normal-background:           @background;
+                    lightfg:                     rgba ( 249, 249, 249, 100 % );
+                    selected-normal-background:  rgba ( 90, 90, 90, 100 % );
+                    border-color:                @foreground;
+                    spacing:                     2;
+                    separatorcolor:              rgba ( 183, 183, 183, 100 % );
+                    urgent-background:           @red;
+                    selected-urgent-background:  rgba ( 214, 78, 78, 100 % );
+                    alternate-urgent-foreground: @urgent-foreground;
+                    background-color:            rgba ( 0, 0, 0, 0 % );
+                    alternate-active-foreground: @active-foreground;
+                    active-background:           @blue;
+                    selected-active-background:  rgba ( 39, 141, 182, 100 % );
+                }
+                window {
+                    background-color: @background;
+                    border:           0;
+                    padding:          8;
+                }
+                mainbox {
+                    border:  0;
+                    padding: 0;
+                }
+                message {
+                    border:       2px dash 0px 0px;
+                    border-color: @separatorcolor;
+                    padding:      1px;
+                }
+                textbox {
+                    text-color: @foreground;
+                }
+                listview {
+                    fixed-height: 0;
+                    border:       0;
+                    border-color: @separatorcolor;
+                    spacing:      2px;
+                    scrollbar:    true;
+                    padding:      2px 0px 0px;
+                }
+                element {
+                    border:  0;
+                    padding: 1px;
+                }
+                element normal.normal {
+                    background-color: @normal-background;
+                    text-color:       @normal-foreground;
+                }
+                element normal.urgent {
+                    background-color: @urgent-background;
+                    text-color:       @urgent-foreground;
+                }
+                element normal.active {
+                    background-color: @active-background;
+                    text-color:       @active-foreground;
+                }
+                element selected.normal {
+                    background-color: @selected-normal-background;
+                    text-color:       @selected-normal-foreground;
+                }
+                element selected.urgent {
+                    background-color: @selected-urgent-background;
+                    text-color:       @selected-urgent-foreground;
+                }
+                element selected.active {
+                    background-color: @selected-active-background;
+                    text-color:       @selected-active-foreground;
+                }
+                element alternate.normal {
+                    background-color: @alternate-normal-background;
+                    text-color:       @alternate-normal-foreground;
+                }
+                element alternate.urgent {
+                    background-color: @alternate-urgent-background;
+                    text-color:       @alternate-urgent-foreground;
+                }
+                element alternate.active {
+                    background-color: @alternate-active-background;
+                    text-color:       @alternate-active-foreground;
+                }
+                scrollbar {
+                    width:        4px;
+                    border:       0;
+                    handle-color: rgba ( 85, 85, 85, 100 % );
+                    handle-width: 8px;
+                    padding:      0;
+                }
+                sidebar {
+                    border:       2px dash 0px 0px;
+                    border-color: @separatorcolor;
+                }
+                button {
+                    spacing:    0;
+                    text-color: @normal-foreground;
+                }
+                button selected {
+                    background-color: @selected-normal-background;
+                    text-color:       @selected-normal-foreground;
+                }
+                inputbar {
+                    spacing:    0px;
+                    text-color: @normal-foreground;
+                    padding:    1px;
+                    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+                }
+                case-indicator {
+                    spacing:    0;
+                    text-color: @normal-foreground;
+                }
+                entry {
+                    spacing:    0;
+                    text-color: @normal-foreground;
+                }
+                prompt {
+                    spacing:    0;
+                    text-color: @normal-foreground;
+                }
+                textbox-prompt-colon {
+                    expand:     false;
+                    str:        ":";
+                    margin:     0px 0.3000em 0.0000em 0.0000em;
+                    text-color: inherit;
+                }
+            '';
+            ".gmrunrc".text = ''
+                # gmrun configuration file
+                # gmrun is (C) Mihai Bazon, <mishoo@infoiasi.ro>
+                # GPL v2.0 applies
+
+                # Set terminal
+                Terminal = urxvt
+                TermExec = ''${Terminal} -e
+                AlwaysInTerm = ssh telnet ftp lynx mc vi vim pine centericq perldoc man
+
+                # Set window geometry (except height)
+                Width = 400
+                Top = 100
+                Left = 200
+
+                # History size
+                History = 1024
+
+                # Shows last history line selected when invoked
+                ShowLast = 1
+
+                # Show files starting with '.'
+                # Default is 0 (off), set it to 1 if you want "hidden" files to show up
+                # in the completion window
+                ShowDotFiles = 1
+
+                # Timeout (in milliseconds) after which gmrun will simulate a TAB press
+                # Set this to NULL if don't like this feature.
+                TabTimeout = 0
+
+                # URL handlers
+                # If the entered text is "http://www.google.com" then:
+                #   - %u gets replaced with the whole URL ("http://www.google.com")
+                #   - %s gets replaced with "//www.google.com".  This is useful for URL-s
+                #     like "man:printf" --> %s will get replaced with "printf"
+                URL_http = firefox -remote "openURL(%u, new-window)"
+                URL_mailto = firefox -remote "mailto(%s)"
+                URL_man = ''${TermExec} 'man %s'
+                URL_info = ''${TermExec} 'info %s'
+                URL_pd = ''${TermExec} 'perldoc %s'
+                URL_file = nautilus %s
+                URL_readme = ''${TermExec} 'less /usr/doc/%s/README'
+                URL_info = ''${TermExec} 'info %s'
+                URL_sh = sh -c '%s'
+
+                # extension handlers
+                EXT:doc,rtf = AbiWord %s
+                EXT:txt,cc,cpp,h,java,html,htm,epl,tex,latex,js,css,xml,xsl,am = emacs %s
+                EXT:ps = zathura %s
+                EXT:pdf = zathura %s
+            '';
+            # TODO: check/Nixify paths
+            ".i3status.conf".text = ''
+                # i3status configuration file.
+                # see "man i3status" for documentation.
+
+                # It is important that this file is edited as UTF-8.
+                # The following line should contain a sharp s:
+                # ß
+                # If the above line is not correctly displayed, fix your editor first!
+
+                general {
+                        output_format = "dzen2"
+                        colors = true
+                        interval = 5
+                }
+
+                order += "tztime local"
+                order += "cpu_usage"
+                order += "cpu_temperature 0"
+                order += "load"
+                order += "disk /"
+                order += "run_watch DHCP"
+                order += "path_exists VPN"
+                order += "wireless _first_"
+                order += "battery 0"
+                order += "volume master"
+
+                wireless _first_ {
+                         format_up = "W: %quality, %essid"
+                         format_down = "W: down"
+                }
+
+                battery 0 {
+                        format = "%status %percentage %remaining"
+                }
+
+                battery 0 {
+                        format = "%status %percentage %remaining"
+                        format_down = "No battery"
+                        status_chr = "⚇ CHR"
+                        status_bat = "⚡ BAT"
+                        status_full = "☻ FULL"
+                        path = "/sys/class/power_supply/BAT%d/uevent"
+                        low_threshold = 10
+                }
+
+                run_watch DHCP {
+                          pidfile = "/var/run/dhclient*.pid"
+                }
+
+                path_exists VPN {
+                            path = "/proc/sys/net/ipv4/conf/tun0"
+                }
+
+                tztime local {
+                       format = "%H:%M:%S %d-%m-%Y"
+                }
+
+                load {
+                     format = "%1min"
+                }
+
+                disk "/" {
+                     format = "%free"
+                }
+
+                cpu_temperature 0 {
+                                format = "/ %degrees °C"
+                                path = "/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp2_input"
+                }
+
+                volume master {
+                       format = "♪: %volume"
+                       format_muted = "♪: muted (%volume)"
+                       device = "pulse"
+                       mixer = "Master"
+                       mixer_idx = 0
+                }
+
+                cpu_usage {
+                          format = "CPU: %usage"
+                }
+            '';
         };
         services.dunst = {
             enable = true;
@@ -228,6 +510,138 @@
         programs.rofi = {
             enable = true;
             fullscreen = true;
+            borderWidth = 1;
+            colors = {
+                window = {
+                    background = "#fdf6e3";
+                    border = "#002b36";
+                    separator = "#eee8d5";
+                };
+                rows = {
+                    active = {
+                        background = "#fdf6e3";
+                        foreground = "#268bd2";
+                        backgroundAlt = "#eee8d5";
+                        highlight = {
+                            background = "#268bd2";
+                            foreground = "#fdf6e3";
+                        };
+                    };
+                    normal = {
+                        background = "#fdf6e3";
+                        foreground = "#002b36";
+                        backgroundAlt = "#eee8d5";
+                        highlight = {
+                            background = "#586e75";
+                            foreground = "#eee8d5";
+                        };
+                    };
+                    urgent = {
+                        background = "#fdf6e3";
+                        foreground = "#dc322f";
+                        backgroundAlt = "#eee8d5";
+                        highlight = {
+                            background = "#dc322f";
+                            foreground = "#fdf6e3";
+                        };
+                    };
+
+                };
+            };
+            cycle = true;
+            rowHeight = 1;
+            # scrollbar = true;
+            lines = 15;
+            location = "center";
+            padding = 5;
+            # separator = "dash";
+            separator = "none";
+            terminal = "alacritty";
+            width = 80;
+            xoffset = 0;
+            yoffset = 0;
+            font = "Iosevka Bold 12"; # TODO: templatize
+            theme = "${config.users.extraUsers.alex3rd.home}/.config/rofi/oxide.rasi";
+            # TODO: review https://davedavenport.github.io/rofi/manpage.html
+            extraConfig = ''
+                rofi.line-margin:                    3
+                rofi.scroll-method:                  1
+                rofi.scrollbar-width:                8
+                rofi.hide-scrollbar:                 true
+
+                rofi.modi:                           combi,drun,keys,run,ssh,window
+                rofi.combi-modi:                     window,run,ssh
+                rofi.matching:                       fuzzy
+                rofi.tokenize:                       true
+                rofi.disable-history:                false
+                rofi.levenshtein-sort:               true
+                rofi.threads:                        0
+
+                rofi.run-command:                    {cmd}
+                rofi.run-shell-command:              {terminal} -e {cmd}
+                rofi.window-command:                 xkill -id {window}
+                rofi.window-format:                  {w}   {c}   {t}
+
+                rofi.parse-hosts:                    true
+                rofi.parse-known-hosts:              false
+                rofi.ssh-client:                     ssh
+                rofi.ssh-command:                    {terminal} -e {ssh-client} {host}
+
+                rofi.kb-accept-alt:                  Shift+Return
+                rofi.kb-accept-custom:               Control+Return
+                rofi.kb-accept-entry:                Control+j,Control+m,Return,KP_Enter
+                rofi.kb-cancel:                      Escape,Control+g,Control+bracketleft
+                rofi.kb-clear-line:                  Control+w
+                rofi.kb-custom-10:                   Alt+0
+                rofi.kb-custom-11:                   Alt+exclam
+                rofi.kb-custom-12:                   Alt+at
+                rofi.kb-custom-13:                   Alt+numbersign
+                rofi.kb-custom-14:                   Alt+dollar
+                rofi.kb-custom-15:                   Alt+percent
+                rofi.kb-custom-16:                   Alt+dead_circumflex
+                rofi.kb-custom-17:                   Alt+ampersand
+                rofi.kb-custom-18:                   Alt+asterisk
+                rofi.kb-custom-19:                   Alt+parenleft
+                rofi.kb-custom-1:                    Alt+1
+                rofi.kb-custom-2:                    Alt+2
+                rofi.kb-custom-3:                    Alt+3
+                rofi.kb-custom-4:                    Alt+4
+                rofi.kb-custom-5:                    Alt+5
+                rofi.kb-custom-6:                    Alt+6
+                rofi.kb-custom-7:                    Alt+7
+                rofi.kb-custom-8:                    Alt+8
+                rofi.kb-custom-9:                    Alt+9
+                rofi.kb-delete-entry:                Shift+Delete
+                rofi.kb-mode-next:                   Shift+Right,Control+Tab
+                rofi.kb-mode-previous:               Shift+Left,Control+Shift+Tab
+                rofi.kb-move-char-back:              Left,Control+b
+                rofi.kb-move-char-forward:           Right,Control+f
+                rofi.kb-move-end:                    Control+e
+                rofi.kb-move-front:                  Control+a
+                rofi.kb-move-word-back:              Alt+b
+                rofi.kb-move-word-forward:           Alt+f
+                rofi.kb-page-next:                   Page_Down
+                rofi.kb-page-prev:                   Page_Up
+                rofi.kb-primary-paste:               Control+V,Shift+Insert
+                rofi.kb-remove-char-back:            BackSpace,Control+h
+                rofi.kb-remove-char-forward:         Delete,Control+d
+                rofi.kb-remove-to-eol:               Control+k
+                rofi.kb-remove-to-sol:               Control+u
+                rofi.kb-remove-word-back:            Control+Alt+h,Control+BackSpace
+                rofi.kb-remove-word-forward:         Control+Alt+d
+                rofi.kb-row-down:                    Down,Control+n
+                rofi.kb-row-first:                   Home,KP_Home
+                rofi.kb-row-last:                    End,KP_End
+                rofi.kb-row-left:                    Control+Page_Up
+                rofi.kb-row-right:                   Control+Page_Down
+                rofi.kb-row-select:                  Control+space
+                rofi.kb-row-tab:                     Tab
+                rofi.kb-row-up:                      Up,Control+p,Shift+Tab,Shift+ISO_Left_Tab
+                rofi.kb-screenshot:                  Alt+S
+                rofi.kb-secondary-paste:             Control+v,Insert
+                rofi.kb-toggle-case-sensitivity:     grave,dead_grave
+                rofi.kb-toggle-sort:                 Alt+grave
+            '';
         };
         programs.browserpass.enable = true;
         services.unclutter.enable = true;

@@ -1,5 +1,23 @@
 {config, pkgs, lib, ...}:
 
+let
+    maxLineLength = 120;
+    excludes = [
+        ".git"
+        "__pycache__"
+    ];
+    ignoredCodes = [
+        "E124"
+        "E128"
+        "E201"
+        "E203"
+        "E211"
+        "E251"
+        "W503"
+        "W504"
+        "C901"
+    ];
+in
 {
     home-manager.users.alex3rd = {
         home.file = {
@@ -178,7 +196,7 @@
                 [FORMAT]
 
                 # Maximum number of characters on a single line.
-                max-line-length=120
+                max-line-length=${builtins.toString maxLineLength}
 
                 # Regexp for a line that is allowed to be longer than the limit.
                 ignore-long-lines=^\s*(# )?<?https?://\S+>?$
@@ -386,7 +404,7 @@
             '';
             ".isort.cfg".text = ''
                 [settings]
-                line_length=120
+                line_length=${builtins.toString maxLineLength}
                 indent='    '
                 multi_line_output=2
                 sections=FUTURE,STDLIB,FIRSTPARTY,THIRDPARTY,LOCALFOLDER
@@ -395,16 +413,16 @@
                 default_section=FIRSTPARTY           '';
             ".config/flake8".text = ''
                 [flake8]
-                max-line-length = 120
-                exclude=.git,__pycache__
-                ignore = E124, E128, E201, E203, E211, E251, W503, W504, C901
+                max-line-length = ${builtins.toString maxLineLength}
+                exclude=${lib.concatStringsSep "," excludes}
+                ignore = ${lib.concatStringsSep ", " ignoredCodes}
            '';
             ".config/pycodestyle".text = ''
                 [pycodestyle]
-                exclude=.git,__pycache__
-                max-line-length = 160
+                exclude=${lib.concatStringsSep "," excludes}
+                max-line-length = ${builtins.toString maxLineLength}
                 count = False
-                ignore = E124, E128, E201, E203, E211, E251, W503, W504
+                ignore = ${lib.concatStringsSep ", " ignoredCodes}
                 statistics = True
             '';
         };

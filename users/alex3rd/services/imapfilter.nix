@@ -1,7 +1,7 @@
 {pkgs, ...}:
 
 {
-    environment.etc."imapfilter_config.lua".source = "/etc/nixos/users/alex3rd/private/imapfilter_config.lua";
+    environment.etc."imapfilter_config.lua".source = "/etc/nixos/users/alex3rd/private/raw/imapfilter_config.lua";
     systemd.services."imapfilter" = {
         enable = true;
         description = "Imapfilter";

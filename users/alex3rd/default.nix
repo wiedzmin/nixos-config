@@ -13,6 +13,8 @@
         ./dotfiles/x11/misc.nix
         ./dotfiles/x11/taffybar.nix
         ./dotfiles/x11/xresources.nix
+        ./dotfiles/x11/browser.nix
+        ./dotfiles/mail.nix
         ./dotfiles/dev/editor.nix
         ./dotfiles/dev/git.nix
         ./dotfiles/dev/lisp.nix
