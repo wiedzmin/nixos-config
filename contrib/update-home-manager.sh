@@ -4,7 +4,7 @@ set -x
 
 branch=master
 
-cd /etc/nixos/home-manager/
+cd /etc/nixos/pkgs/home-manager/
 git checkout $branch
 
 git fetch origin

@@ -1,5 +1,5 @@
 self: super:
-let nixpkgs = import ../nixpkgs-channels {
+let nixpkgs = import ../pkgs/nixpkgs-channels {
       config = {
         allowUnfree = true;
       };

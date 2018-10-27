@@ -4,7 +4,7 @@ set -x
 
 branch=nixos-unstable
 
-cd /etc/nixos/nixpkgs-channels
+cd /etc/nixos/pkgs/nixpkgs-channels
 git checkout $branch
 
 git fetch origin
