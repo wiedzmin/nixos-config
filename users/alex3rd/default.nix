@@ -1,0 +1,41 @@
+{config, pkgs, lib, ...}:
+
+{
+    imports = [
+        <home-manager/nixos>
+        ../../contrib/custom-scripts.nix
+        ../../contrib/custom-desktop-items.nix
+        ./dotfiles/shell/common.nix
+        ./dotfiles/shell/term.nix
+        ./dotfiles/shell/tmux.nix
+        ./dotfiles/shell/zsh.nix
+        ./dotfiles/x11/autorandr.nix
+        ./dotfiles/x11/misc.nix
+        ./dotfiles/x11/taffybar.nix
+        ./dotfiles/x11/xresources.nix
+        ./dotfiles/dev/editor.nix
+        ./dotfiles/dev/git.nix
+        ./dotfiles/dev/lisp.nix
+        ./dotfiles/dev/python.nix
+    ];
+
+    users.extraUsers = {
+        alex3rd = {
+            isNormalUser = true;
+            uid = 1000;
+            description = "Alex Ermolov";
+            shell = pkgs.zsh;
+            extraGroups = [ "audio" "docker" "lp" "networkmanager" "scanner" "vboxusers" "video" "wheel" ];
+        };
+    };
+
+    nix.trustedUsers = [ "alex3rd" ];
+
+    home-manager.users.alex3rd = {
+        home.packages = with pkgs; [
+            # base
+            file
+            glibcLocales
+        ];
+    };
+}

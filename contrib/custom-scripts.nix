@@ -1,9 +1,6 @@
 {config, pkgs, ...}:
 
 {
-    imports = [
-        ../private/hometraits.nix
-    ];
     config = {
         nixpkgs.config.packageOverrides = super: {
             hddtemp-script = pkgs.writeShellScriptBin "hddtemp-script" ''

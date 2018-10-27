@@ -11,7 +11,7 @@
         ./hardware/misc.nix
         ./partitions/x230-laptoptop.nix
         ./users/root.nix
-        ./users/alex3rd.nix
+        ./users/alex3rd/default.nix
         ./contrib/custom-scripts.nix
         ./services/custom/sshuttle.nix
         ./private/sshuttle.nix

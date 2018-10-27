@@ -1,6 +1,0 @@
-[pycodestyle]
-exclude=.git,__pycache__
-max-line-length = 160
-count = False
-ignore = E124, E128, E201, E203, E211, E251, W503, W504
-statistics = True

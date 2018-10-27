@@ -1,9 +1,5 @@
 { config, pkgs, ... }:
 {
-    imports = [
-        ../../private/hometraits.nix
-    ];
-
     services = {
         redshift = {
             enable = true;

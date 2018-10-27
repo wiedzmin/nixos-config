@@ -26,6 +26,7 @@
         djview
         djvu2pdf
         djvulibre
+        fbreader
         ghostscript
         mupdf
         noweb

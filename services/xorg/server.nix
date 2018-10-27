@@ -47,8 +47,6 @@
         };
     };
 
-    environment.etc."Xmodmap".source = ../../dotfiles/x11/xmodmaprc;
-
     environment.systemPackages = with pkgs; [
         arandr
         dmenu2

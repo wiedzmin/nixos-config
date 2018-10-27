@@ -1,9 +1,6 @@
 { config, pkgs, lib, ... }:
 
 {
-    imports = [
-        ../private/hometraits.nix
-    ];
     powerManagement = {
         enable = true;
         resumeCommands = (lib.concatMapStrings
