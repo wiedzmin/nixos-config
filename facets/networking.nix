@@ -32,7 +32,7 @@
         # TODO: maybe split even further
         afpfs-ng
         chromium
-        firefox
+        firefox-bin
         iperf
         lynx
         mosh
