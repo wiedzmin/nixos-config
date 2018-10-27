@@ -18,6 +18,7 @@
 
     environment.systemPackages = with pkgs; [
         # TODO: unoconv
+        ansifilter
         aspell
         aspellDicts.en
         aspellDicts.ru
@@ -29,14 +30,13 @@
         mupdf
         noweb
         pandoc
+        par
         pdf2djvu
         pdf2djvu
         pdftk
         plantuml
         texlive.combined.scheme-full
         zathura
-        ansifilter
-        par
     ] ++ [ # scanner
         xsane # temporarily kept for debug
         simple-scan
