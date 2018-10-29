@@ -189,54 +189,68 @@
                 key = "alex3rd <aaermolov@gmail.com>";
                 signByDefault = true;
             };
-            extraConfig = ''
-                [color]
-                    diff = auto
-                    status = auto
-                    ui = always
-                [color "branch"]
-                    current = yellow reverse
-                    local = yellow
-                    remote = green
-                [color "diff"]
-                    commit = cyan bold
-                    frag = magenta bold
-                    meta = yellow bold
-                    new = green bold
-                    old = red bold
-                    whitespace = red reverse
-                [color "diff-highlight"]
-                    newHighlight = green bold 22
-                    newNormal = green bold
-                    oldHighlight = red bold 52
-                    oldNormal = red bold
-                [color "status"]
-                    added = green
-                    changed = yellow
-                    untracked = red
-                [commit]
-                    template = ${config.users.extraUsers.alex3rd.home}/git-assets/git-commit-template
-                [core]
-                    autocrlf = false
-                    excludesfile = ${config.users.extraUsers.alex3rd.home}/git-assets/.gitignore
-                    quotepath = false
-                    askPass = ""
-                [credential]
-                    helper = ${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper
-                [diff]
-                    algorithm = patience
-                [init]
-                    templatedir = ${config.users.extraUsers.alex3rd.home}/git-assets/templates
-                [pager]
-                    diff = ${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX
-                    show = ${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX
-                [push]
-                    default = current
-                [ghq]
-                    root = ${config.users.extraUsers.alex3rd.home}/workspace/repos
-                [ghq "import"]
-                    bbcontribs = ${pkgs.bitbucket_team_contributor_repos}/bin/bitbucket_team_contributor_repos
-            '';
+            extraConfig = {
+                "color" = {
+                    diff = "auto";
+                    status = "auto";
+                    ui = "always";
+                };
+                "color \"branch\"" = {
+                    current = "yellow reverse";
+                    local = "yellow";
+                    remote = "green";
+                };
+                "color \"diff\"" = {
+                    commit = "cyan bold";
+                    frag = "magenta bold";
+                    meta = "yellow bold";
+                    new = "green bold";
+                    old = "red bold";
+                    whitespace = "red reverse";
+                };
+                "color \"diff-highlight\"" = {
+                    newHighlight = "green bold 22";
+                    newNormal = "green bold";
+                    oldHighlight = "red bold 52";
+                    oldNormal = "red bold";
+                };
+                "color \"status\"" = {
+                    added = "green";
+                    changed = "yellow";
+                    untracked = "red";
+                };
+                "commit" = {
+                    template = "${config.users.extraUsers.alex3rd.home}/git-assets/git-commit-template";
+                };
+                "core" = {
+                    autocrlf = false;
+                    excludesfile = "${config.users.extraUsers.alex3rd.home}/git-assets/.gitignore";
+                    quotepath = false;
+                    askPass = "";
+                };
+                "credential" = {
+                    helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper";
+                };
+                "diff" = {
+                    algorithm = "patience";
+                };
+                "init" = {
+                    templatedir = "${config.users.extraUsers.alex3rd.home}/git-assets/templates";
+                };
+                "pager" = {
+                    diff = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
+                    show = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
+                };
+                "push" = {
+                    default = "current";
+                };
+                "ghq" = {
+                    root = "${config.users.extraUsers.alex3rd.home}/workspace/repos";
+                };
+                "ghq \"import\"" = {
+                    bbcontribs = "${pkgs.bitbucket_team_contributor_repos}/bin/bitbucket_team_contributor_repos";
+                };
+            };
             aliases = {
                 co = "checkout";
                 cwo = "checkout -b origin/"; # fetch branch from primary remote, eliminates ambiguity
