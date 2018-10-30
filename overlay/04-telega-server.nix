@@ -23,7 +23,7 @@ telega-server = with super; stdenv.mkDerivation rec {
     meta = with stdenv.lib; {
         description = "Telega.el server part";
         homepage = "https://github.com/zevlg/telega.el";
-        license = [ pkgs.stdenv.lib.licenses.gpl ];
+        license = [ pkgs.stdenv.lib.licenses.gpl3 ];
         platforms = with pkgs.stdenv.lib.platforms; linux;
     };
 };
