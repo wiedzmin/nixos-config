@@ -328,6 +328,32 @@
                     echo $repo | ${pkgs.coreutils}/bin/cut -f1 -d~
                 done
             '';
+            tar_encrypt = pkgs.writeShellScriptBin "tar_encrypt" ''
+                # encrypts files/directory with default key identity to tar stream
+
+                IN=$1
+                if [[ -z $IN ]]; then
+                    echo "no input file provided, exiting"
+                    exit 1
+                fi
+                SOURCE_BASENAME=''${IN%.*}
+                ${pkgs.gnupg}/bin/gpgtar -r "${config.common.primaryGpgKeyID}" -u "${config.common.primaryGpgKeyID}" \
+                                         -e $IN > $SOURCE_BASENAME.tar.gpg
+            '';
+            tar_decrypt = pkgs.writeShellScriptBin "tar_decrypt" ''
+                # decrypts files/directory from tar stream with default key identity
+
+                IN=$1
+                if [[ -z $IN ]]; then
+                    echo "no input file provided, exiting"
+                    exit 1
+                fi
+                WD=`pwd`
+                SOURCE_BASENAME=''${IN%.*}
+                ${pkgs.gnupg}/bin/gpg --output $WD/$SOURCE_BASENAME_decrypted.tar --decrypt $IN && \
+                                        tar xf $WD/$SOURCE_BASENAME_decrypted.tar && \
+                                        rm $WD/$SOURCE_BASENAME_decrypted.tar
+            '';
         };
     };
 }
