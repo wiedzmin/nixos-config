@@ -218,6 +218,7 @@ in
                     excludesfile = "${config.users.extraUsers.alex3rd.home}/git-assets/.gitignore";
                     quotepath = false;
                     askPass = "";
+                    hooksPath = "${config.users.extraUsers.alex3rd.home}/git-assets/templates/hooks";
                 };
                 "credential" = {
                     helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper";
