@@ -16,6 +16,7 @@
         ctop
         docker-machine
         docker_compose
+        skopeo
         vagrant
 
         docker-machine-export

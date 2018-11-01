@@ -31,7 +31,6 @@
         mercurial
         patchutils
         reflex
-        skopeo
         sloccount
         vim
         vscode
