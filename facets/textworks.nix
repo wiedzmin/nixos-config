@@ -34,7 +34,6 @@
         pandoc
         par
         pdf2djvu
-        pdf2djvu
         pdftk
         plantuml
         texlive.combined.scheme-full
