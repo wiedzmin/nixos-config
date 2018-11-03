@@ -571,7 +571,7 @@
 
                 rofi.modi:                           combi,drun,keys,run,ssh,window
                 rofi.combi-modi:                     window,run,ssh
-                rofi.matching:                       fuzzy
+                rofi.matching:                       normal
                 rofi.tokenize:                       true
                 rofi.disable-history:                false
                 rofi.levenshtein-sort:               true
