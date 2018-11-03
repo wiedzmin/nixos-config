@@ -30,6 +30,7 @@
         ghostscript
         mupdf
         noweb
+        ntangle
         pandoc
         par
         pdf2djvu
