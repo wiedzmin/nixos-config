@@ -554,7 +554,6 @@
             lines = 15;
             location = "center";
             padding = 5;
-            # separator = "dash";
             separator = "none";
             terminal = "alacritty";
             width = 80;
