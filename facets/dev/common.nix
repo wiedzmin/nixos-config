@@ -36,7 +36,6 @@
         vscode
         wuzz
         zeal
-        git-wip
 
         # reveng
         radare2

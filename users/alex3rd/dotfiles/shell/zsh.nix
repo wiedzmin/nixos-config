@@ -1,10 +1,23 @@
 {config, pkgs, lib, ...}:
 
 let
-    editors = "emacsclient vim vi";
+    zshOptions = [
+        "braceccl"
+        "correctall"
+        "extendedglob"
+        "menucomplete"
+    ];
+    binDirs = [
+        "${config.users.extraUsers.alex3rd.home}/scripts"
+        "${config.users.extraUsers.alex3rd.home}/tools/bin"
+        "${config.users.extraUsers.alex3rd.home}/.local/bin"
+    ];
 in
 {
     home-manager.users.alex3rd = {
+        home.packages = with pkgs; [
+            pkgs.libnotify
+        ];
         home.file = {
             ".zsh/functions.zsh".text = ''
                 dot() {
@@ -14,198 +27,6 @@ in
                         LBUFFER+=.
                     fi
                 }
-
-                # see https://github.com/junegunn/fzf/wiki/examples
-                # fbr - checkout git branch (including remote branches)
-                fbr() {
-                    local branches branch
-                    if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
-                        branches=$(${pkgs.git}/bin/git branch --all -vv) &&
-                            branch=$(echo "$branches" | ${pkgs.fzf}/bin/fzf-tmux -- \
-                                          --ansi -d $(( 2 + $(wc -l <<< "$branches") )) +m) || return
-                            if [ "x$branch" != "x" ]
-                            then
-                                ${pkgs.git}/bin/git checkout $(echo "$branch" | ${pkgs.gawk}/bin/awk '{print $1}' |
-                                ${pkgs.gnused}/bin/sed "s/.* //" | ${pkgs.gnused}/bin/sed "s#remotes/[^/]*/##")
-                            fi
-                    fi
-                } # TODO: make it not asking for extra manual CR in the end somehow
-
-                # fco - checkout git branch/tag
-                fco() {
-                    local tags branches target
-                    if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
-                        tags=$(${pkgs.git}/bin/git tag | ${pkgs.gawk}/bin/awk '{print "\x1b[31;1mtag\x1b[m\t" $1}') \
-                             || return
-                        branches=$(${pkgs.git}/bin/git branch --all | grep -v HEAD | ${pkgs.gnused}/bin/sed "s/.* //" |
-                                   ${pkgs.gnused}/bin/sed "s#remotes/[^/]*/##" | sort -u |
-                                   ${pkgs.gawk}/bin/awk '{print "\x1b[34;1mbranch\x1b[m\t" $1}') || return
-                        target=$((echo "$tags"; echo "$branches") | ${pkgs.fzf}/bin/fzf-tmux -- \
-                               --no-hscroll --ansi +m -d "\t" -n 2) || return
-                        if [ "x$target" != "x" ]
-                        then
-                            ${pkgs.git}/bin/git checkout $(echo "$target" | ${pkgs.gawk}/bin/awk '{print $2}')
-                        fi
-                    fi
-                }
-
-                # fcoc - checkout git commit
-                fcoc() {
-                    local commits commit
-                    if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
-                        commits=$(${pkgs.git}/bin/git log --pretty=oneline --abbrev-commit --reverse)
-                        commit=$(echo "$commits" | ${pkgs.fzf}/bin/fzf --tac +s +m -e)
-                        if [ "x$commit" != "x" ]
-                        then
-                            ${pkgs.git}/bin/git checkout $(echo "$commit" | ${pkgs.gnused}/bin/sed "s/ .*//")
-                        fi
-                    fi
-                }
-
-                # fshow - ${pkgs.git}/bin/git commit browser
-                fshow() {
-                    local out sha q
-                    if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
-                        while out=$(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always |
-                                    ${pkgs.fzf}/bin/fzf --ansi --multi --no-sort --reverse --query="$q" --print-query);
-                                    do
-                            q=$(head -1 <<< "$out")
-                            while read sha; do
-                                [ -n "$sha" ] && ${pkgs.git}/bin/git show --color=always $sha | less -R
-                            done < <(${pkgs.gnused}/bin/sed '1d;s/^[^a-z0-9]*//;/^$/d' <<< "$out" |
-                            ${pkgs.gawk}/bin/awk '{print $1}')
-                        done
-                    fi
-                }
-
-                # fkill - kill process
-                fkill() {
-                    pid=$(ps -ef | ${pkgs.gnused}/bin/sed 1d | ${pkgs.fzf}/bin/fzf | ${pkgs.gawk}/bin/awk '{print $2}')
-
-                    if [ "x$pid" != "x" ]
-                    then
-                        kill -''${1:-9} $pid
-                    fi
-                }
-
-                # fj - changing directory with fasd
-                fj() {
-                    local dir
-                    dir=$(${pkgs.fasd}/bin/fasd -Rdl | ${pkgs.fzf}/bin/fzf) && cd "$dir"
-                }
-
-                __fzf_use_tmux__() {
-                    [ -n "$TMUX_PANE" ] && [ "''${FZF_TMUX:-0}" != 0 ] && [ ''${LINES:-40} -gt 15 ]
-                }
-
-                __fzfcmd() {
-                    __fzf_use_tmux__ &&
-                        echo "${pkgs.fzf}/bin/fzf-tmux -d''${FZF_TMUX_HEIGHT:-40%}" || echo "fzf"
-                }
-
-                fzf-history-widget() {
-                    local selected num
-                    setopt localoptions noglobsubst noposixbuiltins pipefail 2> /dev/null
-                    selected=( $(fc -l 1 |
-                                     FZF_DEFAULT_OPTS="--height ''${FZF_TMUX_HEIGHT:-40%} $FZF_DEFAULT_OPTS --tac -n2..,.. --tiebreak=index --bind=ctrl-r:toggle-sort $FZF_CTRL_R_OPTS --query=''${(q)LBUFFER} +m" $(__fzfcmd)) )
-                    local ret=$?
-                    if [ -n "$selected" ]; then
-                        num=$selected[1]
-                        if [ -n "$num" ]; then
-                            zle vi-fetch-history -n $num
-                        fi
-                    fi
-                    zle redisplay
-                    typeset -f zle-line-init >/dev/null && zle zle-line-init
-                    return $ret
-                }
-
-                # fe [FUZZY PATTERN] - Open the selected file with the default editor
-                # - Bypass fuzzy finder if there's only one match (--select-1)
-                # - Exit if there's no match (--exit-0)
-                fe() {
-                    local openfile
-                    openfile=$(rg -g "*" --files | $(__fzfcmd))
-                    [[ -n "$openfile" ]] && ''${EDITOR:-vim} "''${openfile}"
-                }
-
-                #--------------------------------------------------------------------------
-                # A Cleaner Print of your current IP
-                #--------------------------------------------------------------------------
-                function ip() {
-                    ifconfig eth0 | grep 'inet ' | ${pkgs.gnused}/bin/sed -e 's/:/ /' | ${pkgs.gawk}/bin/awk '{print "eth0 (IPv4): " $2 " " $3 " " $4 " " $5 " " $6}'
-                    ifconfig wlan0 | grep 'inet ' | ${pkgs.gnused}/bin/sed -e 's/ / /'| ${pkgs.gawk}/bin/awk '{print "wlan0 (IPv4): " $2 " " $3 " " $4 " " $5 " " $6}'
-                }
-
-                safeload () {
-                    [ -f $1 ] && source $1
-                }
-
-                man() {
-                    env \
-                    LESS_TERMCAP_mb=$(printf "\e[1;31m") \
-                    LESS_TERMCAP_md=$(printf "\e[1;31m") \
-                    LESS_TERMCAP_me=$(printf "\e[0m") \
-                    LESS_TERMCAP_se=$(printf "\e[0m") \
-                    LESS_TERMCAP_so=$(printf "\e[1;44;33m") \
-                    LESS_TERMCAP_ue=$(printf "\e[0m") \
-                    LESS_TERMCAP_us=$(printf "\e[1;32m") \
-                    man "$@"
-                }
-            '';
-            ".common_settings".text = ''
-                #!${pkgs.zsh}/bin/zsh
-
-                BIN_DIRS=(
-                    ${config.users.extraUsers.alex3rd.home}/scripts
-                    ${config.users.extraUsers.alex3rd.home}/tools/bin
-                    ${config.users.extraUsers.alex3rd.home}/.local/bin
-                )
-
-                ZSH_EXT_DIRS=(
-                    ${config.users.extraUsers.alex3rd.home}/.zsh/completion
-                )
-
-                export GREP_OPTIONS=--color=auto
-                export GREP_COLOR='1;32'
-                export SHELL=${pkgs.zsh}/bin/zsh
-                export XAUTHORITY=${config.users.extraUsers.alex3rd.home}/.Xauthority
-                export FZF_MARKS_FILE=${config.users.extraUsers.alex3rd.home}/.bookmarks
-                export GTAGSLIBPATH=${config.users.extraUsers.alex3rd.home}/.gtags/
-                export CURRENT_WM=${config.services.xserver.windowManager.default}
-                export WORKON_HOME=${config.users.extraUsers.alex3rd.home}/.virtualenvs
-
-                # Remove dupes from 'path', which is array tied to 'PATH'
-                typeset -U path
-                for ((i=1; i<= $#BIN_DIRS; i++)) do
-                    for dir in $BIN_DIRS[i]; do
-                        if [ -d $dir ] ; then
-                            path=($dir "$path[@]")
-                        fi
-                    done
-                done
-
-                # Remove dupes from 'fpath', which is array tied to 'FPATH'
-                typeset -U fpath
-                for ((i=1; i<= $#ZSH_EXT_DIRS; i++)) do
-                    for dir in $ZSH_EXT_DIRS[i]; do
-                        if [ -d $dir ] ; then
-                            fpath=($dir "$fpath[@]")
-                        fi
-                    done
-                done
-
-                for candidate in ${editors} ; do
-                    if [[ ! -z $(which $candidate) ]]; then
-                        export VISUAL=$candidate
-                        export EDITOR=$candidate
-                        break
-                    fi
-                done
-
-                export ZBEEP=$'\e[?5h\e[?5l'
-
-                unset GREP_OPTIONS
             '';
         };
         programs.zsh = {
@@ -234,67 +55,29 @@ in
             };
             initExtra = ''
                 ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
-
                 eval "$(${pkgs.fasd}/bin/fasd --init auto)"
 
-                if [ `uname -s` = "Linux" ]; then
-                    eval `dircolors -b`
-                fi
-
-                #setopt BEEP
-                setopt APPEND_HISTORY
-                setopt BRACECCL
-                setopt CORRECT_ALL
-                setopt EXTENDED_HISTORY
-                setopt HIST_EXPIRE_DUPS_FIRST
-                setopt HIST_FIND_NO_DUPS
-                setopt HIST_IGNORE_ALL_DUPS
-                setopt HIST_IGNORE_DUPS
-                setopt HIST_IGNORE_SPACE
-                setopt HIST_NO_STORE
-                setopt HIST_SAVE_NO_DUPS
-                setopt SHARE_HISTORY
-                setopt autocd
-                setopt correctall
-                setopt extended_glob
-                setopt inc_append_history
-                setopt menucomplete
-
-                autoload -Uz compinit && compinit
-                autoload -Uz promptinit && promptinit
-                autoload -Uz colors && colors
-                autoload -Uz vcs_info
-                autoload -U dot
-                autoload -U predict-on
-                autoload run-help
-                zmodload zsh/complist
+                ${lib.concatMapStrings (opt: "setopt ${opt}\n") zshOptions}
 
                 source ~/.zsh/functions.zsh
 
-                bindkey "\e[3~" delete-char
-                bindkey "^qs" fuzzy-search-and-edit
-                bindkey ' ' magic-space # also do history expansion on space
-                bindkey -e
-                bindkey -r "^g"
-
-                zle -N jump && bindkey "^[xjj" jump
                 zle -N dot && bindkey . dot
-                zle -N fbr && bindkey "^]bb" fbr
-                zle -N fco && bindkey "^]ba" fco
-                zle -N fcoc && bindkey "^]cc" fcoc
-                zle -N fe && bindkey "^qe" fe
-                zle -N fshow && bindkey "^]ll" fshow
-                zle -N fzf-history-widget && bindkey "^R" fzf-history-widget
-                zle -N predict-off
-                zle -N predict-on
+                bindkey '^P' fuzzy-search-and-edit
             '';
             sessionVariables = {
-                GREP_OPTIONS = "--color=auto";
-                GREP_COLOR = "1;32";
+                CURRENT_WM = "${config.services.xserver.windowManager.default}";
+                EDITOR = "${pkgs.emacs}/bin/emacsclient";
                 FZF_MARKS_FILE = "${config.users.extraUsers.alex3rd.home}/.bookmarks";
+                FZF_MARKS_JUMP = "^[xjj";
+                GREP_COLOR = "1;32";
+                GREP_OPTIONS = "--color=auto";
                 GTAGSLIBPATH = "${config.users.extraUsers.alex3rd.home}/.gtags/";
-                WORKON_HOME = "${config.users.extraUsers.alex3rd.home}/.virtualenvs";
+                SHELL = "${pkgs.zsh}/bin/zsh";
                 TMUXP_CONFIGDIR = "${config.users.extraUsers.alex3rd.home}/tmuxp";
+                VISUAL = "${pkgs.emacs}/bin/emacsclient";
+                WORKON_HOME = "${config.users.extraUsers.alex3rd.home}/.virtualenvs";
+                XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
+                PATH = "$PATH:${lib.concatStringsSep ":" (lib.unique binDirs)}";
             };
             shellAliases = {
                 dubc = "sudo ${pkgs.findutils}/bin/find . -name __pycache__ -or -name \"*.pyc\" -exec ${pkgs.coreutils}/bin/rm -rf {} + && ${pkgs.docker_compose}/bin/docker-compose up --build";
@@ -314,7 +97,7 @@ in
                 cat_raw = "${pkgs.coreutils}/bin/cat";
                 zr = ". ~/.zshrc";
             };
-            plugins = [ # TODO: bring back other plugins from old system
+            plugins = [
                 {
                     name = "fzf-marks";
                     file = "fzf-marks.plugin.zsh";
@@ -332,6 +115,88 @@ in
                         repo = "enhancd";
                         rev = "v2.2.1";
                         sha256 = "0iqa9j09fwm6nj5rpip87x3hnvbbz9w9ajgm6wkrd5fls8fn8i5g";
+                    };
+                }
+                {
+                    # FIXME: no notifier program found
+                    name = "zsh-notify";
+                    file = "notify.plugin.zsh";
+                    src = pkgs.fetchFromGitHub {
+                        owner = "marzocchi";
+                        repo = "zsh-notify";
+                        rev = "853bc9434771b99b028f069b95e13ecdf06901d0";
+                        sha256 = "0bhmv1xfjzmci9b4dy3mix2s31zj0kayrl44xx5xb8rgzlf0qbvr";
+                    };
+                }
+                {
+                    # TODO: try to integrate with fzf-based utils, expecially commit browser
+                    name = "browse-commit";
+                    file = "browse-commit.plugin.zsh";
+                    src = pkgs.fetchFromGitHub {
+                        owner = "wiedzmin";
+                        repo = "browse-commit";
+                        rev = "cf28b2eeba622545ae751ec99532b6b60e58b845";
+                        sha256 = "15c9qxxa7l47w5r28pazs0gv0016lv52mncn45s6g1d3120k5fx0";
+                    };
+                }
+                {
+                    name = "pass-zsh-completion";
+                    file = "pass-zsh-completion.plugin.zsh";
+                    src = pkgs.fetchFromGitHub {
+                        owner = "ninrod";
+                        repo = "pass-zsh-completion";
+                        rev = "e4d8d2c27d8999307e8f34bf81b2e15df4b76177";
+                        sha256 = "1z83hgdljl7yqd1lqb10an8zkrv7s01khky27mgc1wargkslkxi9";
+                    };
+                }
+                {
+                    name = "zsh-async";
+                    file = "async.plugin.zsh";
+                    src = pkgs.fetchFromGitHub {
+                        owner = "mafredri";
+                        repo = "zsh-async";
+                        rev = "e6d937228729f934f2033039bb54c3a18f5f1358";
+                        sha256 = "0f0bqm4245ghx31x30ircfp4njji834495g25wvrd93k2r96a669";
+                    };
+                }
+                {
+                    name = "git-extra-commands";
+                    file = "git-extra-commands.plugin.zsh";
+                    src = pkgs.fetchFromGitHub {
+                        owner = "unixorn";
+                        repo = "git-extra-commands";
+                        rev = "f03ff8ffce9f3e488b6a0265cb09288cc29899fe";
+                        sha256 = "1qlbjn0q87jgjir3k7w4m8p6wqgjl2c7jnilczf7c205fgwksdhi";
+                    };
+                }
+                {
+                    name = "zsh-reentry-hook";
+                    file = "zsh-reentry-hook.plugin.zsh";
+                    src = pkgs.fetchFromGitHub {
+                        owner = "RobSis";
+                        repo = "zsh-reentry-hook";
+                        rev = "8587186df8f08b8a57ae7f87ab0bc7d503909031";
+                        sha256 = "1jgin1gmw05vxf7vw414zvhq9dg06yzlzxas723f710vs58mf11a";
+                    };
+                }
+                {
+                    name = "zsh-fuzzy-search-and-edit";
+                    file = "plugin.zsh";
+                    src = pkgs.fetchFromGitHub {
+                        owner = "seletskiy";
+                        repo = "zsh-fuzzy-search-and-edit";
+                        rev = "4fbb3d351b75f1007df0d5cb09292bb2321f903a";
+                        sha256 = "1shhmda1iqwz79y2ianmjs5623zabckxfj2hqw4gl2axpkwnj1ib";
+                    };
+                }
+                { # NOTE: should be last in the list
+                    name = "zsh-syntax-highlighting";
+                    file = "zsh-syntax-highlighting.plugin.zsh";
+                    src = pkgs.fetchFromGitHub {
+                        owner = "zsh-users";
+                        repo = "zsh-syntax-highlighting";
+                        rev = "e900ad8bad53501689afcb050456400d7a8466e5";
+                        sha256 = "1dfy5wvkmnp2zzk81fhc7qlywgn0j6z0vjch5ak5r3j2kqv61cmi";
                     };
                 }
             ];

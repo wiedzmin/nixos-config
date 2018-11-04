@@ -354,6 +354,59 @@
                                         tar xf $WD/$SOURCE_BASENAME_decrypted.tar && \
                                         rm $WD/$SOURCE_BASENAME_decrypted.tar
             '';
-        };
+            git_checkout_fuzzy = pkgs.writeShellScriptBin "git_checkout_fuzzy" ''
+                # checkout git branch (including remotes)
+                if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
+                    branches=$(${pkgs.git}/bin/git branch --all -vv) &&
+                        branch=$(echo "$branches" | ${pkgs.fzf}/bin/fzf-tmux -- \
+                                      --ansi -d $(( 2 + $(wc -l <<< "$branches") )) +m) || exit
+                        if [ "x$branch" != "x" ]
+                        then
+                            ${pkgs.git}/bin/git checkout $(echo "$branch" | ${pkgs.gawk}/bin/awk '{print $1}' |
+                            ${pkgs.gnused}/bin/sed "s/.* //" | ${pkgs.gnused}/bin/sed "s#remotes/[^/]*/##")
+                        fi
+                fi
+            '';
+            git_checkout_commit_fuzzy = pkgs.writeShellScriptBin "git_checkout_commit_fuzzy" ''
+                # checkout git commit
+                if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
+                    commits=$(${pkgs.git}/bin/git log --pretty=oneline --abbrev-commit --reverse)
+                    commit=$(echo "$commits" | ${pkgs.fzf}/bin/fzf --tac +s +m -e)
+                    if [ "x$commit" != "x" ]
+                    then
+                        ${pkgs.git}/bin/git checkout $(echo "$commit" | ${pkgs.gnused}/bin/sed "s/ .*//")
+                    fi
+                fi
+            '';
+            git_browse_commits_fuzzy = pkgs.writeShellScriptBin "git_browse_commits_fuzzy" ''
+                # git commit browser
+                if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
+                    while out=$(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always |
+                                ${pkgs.fzf}/bin/fzf --ansi --multi --no-sort --reverse --query="$q" --print-query);
+                                do
+                        q=$(head -1 <<< "$out")
+                        while read sha; do
+                            [ -n "$sha" ] && ${pkgs.git}/bin/git show --color=always $sha | less -R
+                        done < <(${pkgs.gnused}/bin/sed '1d;s/^[^a-z0-9]*//;/^$/d' <<< "$out" |
+                        ${pkgs.gawk}/bin/awk '{print $1}')
+                    done
+                fi
+            '';
+            kill_process_fuzzy = pkgs.writeShellScriptBin "kill_process_fuzzy" ''
+                # kill process
+                pid=$(ps -ef | ${pkgs.gnused}/bin/sed 1d | ${pkgs.fzf}/bin/fzf | ${pkgs.gawk}/bin/awk '{print $2}')
+                if [ "x$pid" != "x" ]
+                then
+                    kill -''${1:-9} $pid
+                fi
+            '';
+            edit_file_fuzzy = pkgs.writeShellScriptBin "edit_file_fuzzy" ''
+                # Open the selected file with the default editor
+                # - Bypass fuzzy finder if there's only one match (--select-1)
+                # - Exit if there's no match (--exit-0)
+                openfile=$(${pkgs.ripgrep}/bin/rg -g "*" --files | ${pkgs.fzf}/bin/fzf-tmux -d''${FZF_TMUX_HEIGHT:-40%})
+                [[ -n "$openfile" ]] && ''${EDITOR:-vim} "''${openfile}"
+            '';
+       };
     };
 }
