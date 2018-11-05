@@ -222,6 +222,8 @@
                     if [[ "origin" =~ $REMOTES ]]; then
                         ${pkgs.git}/bin/git fetch origin &
                         wait $!
+                        ${pkgs.git}/bin/git rebase --autostash &
+                        wait $!
                     fi
                 done
             '';
