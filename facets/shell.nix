@@ -20,7 +20,7 @@
         bat
         bc
         exa
-        fd # TODO: make `find` alias to this
+        fd
         findutils
         fpp
         htop

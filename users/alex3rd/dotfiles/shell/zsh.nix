@@ -93,8 +93,9 @@ in
                 ls = "${pkgs.exa}/bin/exa -F --color=auto";
                 ll = "${pkgs.exa}/bin/exa -l";
                 la = "${pkgs.exa}/bin/exa -A";
-                cat = "bat";
+                cat = "${pkgs.bat}/bin/bat";
                 cat_raw = "${pkgs.coreutils}/bin/cat";
+                find = "${pkgs.fd}/bin/fd";
                 zr = ". ~/.zshrc";
             };
             plugins = [
