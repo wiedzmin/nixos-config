@@ -19,15 +19,15 @@
                 draw_bold_text_with_bright_colors: true
                 font:
                   normal:
-                    family: Iosevka
-                    style: Bold
+                    family: ${config.visual.fontMainName}
+                    style: ${config.visual.fontMainWeight}
                   bold:
-                    family: Iosevka
-                    style: Bold
+                    family: ${config.visual.fontMainName}
+                    style: ${config.visual.fontMainWeight}
                   italic:
-                    family: Iosevka
+                    family: ${config.visual.fontMainName}
                     style: Italic
-                  size: 11.0
+                  size: ${config.visual.fontMainSizeAlacritty}
                 render_timer: false
                 custom_cursor_colors: false
                 # Colors (Oxide)
