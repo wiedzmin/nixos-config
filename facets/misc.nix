@@ -17,5 +17,6 @@
         pscircle
         wirelesstools
         youtube-dl
+        tealdeer
     ];
 }
