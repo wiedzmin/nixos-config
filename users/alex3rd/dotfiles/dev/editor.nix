@@ -109,6 +109,7 @@
                 epkgs.csv-mode
                 epkgs.darcula-theme
                 epkgs.darkburn-theme
+                epkgs.deadgrep
                 epkgs.delight
                 epkgs.diff-hl
                 epkgs.dired-filetype-face
@@ -168,7 +169,6 @@
                 epkgs.haskell-mode
                 epkgs.hc-zenburn-theme
                 epkgs.highlight-stages
-                epkgs.hl-todo
                 epkgs.httprepl
                 epkgs.hungry-delete
                 epkgs.hydra
