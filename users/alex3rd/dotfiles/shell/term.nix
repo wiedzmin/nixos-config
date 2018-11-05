@@ -66,7 +66,7 @@
                 mouse:
                   double_click: { threshold: 300 }
                   triple_click: { threshold: 300 }
-                  faux_scrollback_lines: 1
+                  faux_scrolling_lines: 1
                 selection:
                   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
                 dynamic_title: true
