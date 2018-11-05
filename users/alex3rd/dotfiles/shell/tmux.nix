@@ -42,6 +42,7 @@ in
                     panes:
                       -
             '';
+            # TODO: divide into "local" and "remote" parts, where the latter is subset of the former, with remote-friendly settings (i.e. without plugins, etc.)
             ".tmux.conf".text = ''
                 # indexes
                 set -g base-index 1             # first window index
