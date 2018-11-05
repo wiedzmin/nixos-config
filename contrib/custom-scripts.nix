@@ -1,5 +1,9 @@
 {config, pkgs, ...}:
 
+let
+    bookshelfPath = "${config.users.extraUsers.alex3rd.home}/bookshelf";
+    bookReaderUsePdftools = true;
+in
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
@@ -408,6 +412,33 @@
                 # - Exit if there's no match (--exit-0)
                 openfile=$(${pkgs.ripgrep}/bin/rg -g "*" --files | ${pkgs.fzf}/bin/fzf-tmux -d''${FZF_TMUX_HEIGHT:-40%})
                 [[ -n "$openfile" ]] && ''${EDITOR:-vim} "''${openfile}"
+            '';
+            list_bookshelf_reader = pkgs.writeShellScriptBin "rofi_list_bookshelf" ''
+                if [ -n "$1" ]
+                then
+                    coproc (${pkgs.zathura}/bin/zathura "$1" & >& /dev/null &)
+                    exit;
+                fi
+
+                ${pkgs.findutils}/bin/find ${bookshelfPath} -name "*.pdf" -o -name "*.djvu"
+            '';
+            list_bookshelf_pdftools = pkgs.writeShellScriptBin "list_bookshelf_pdftools" ''
+                if [ -n "$1" ]
+                then
+                    coproc (${pkgs.emacs}/bin/emacsclient --eval "(find-file \"$1\")" >& /dev/null)
+                    sleep 0.5
+                    ${pkgs.wmctrl}/bin/wmctrl -l | grep -E "emacs.+(pdf|djvu)$" | ${pkgs.gawk}/bin/awk '{print $1}' | ${pkgs.findutils}/bin/xargs ${pkgs.wmctrl}/bin/wmctrl -i -a
+                    exit;
+                fi
+
+                ${pkgs.findutils}/bin/find ${bookshelfPath} -name "*.pdf" -o -name "*.djvu"
+            '';
+            rofi_list_bookshelf = pkgs.writeShellScriptBin "rofi_list_bookshelf" ''
+                ${if bookReaderUsePdftools then ''
+                    rofi -modi books:${pkgs.list_bookshelf_pdftools}/bin/list_bookshelf_pdftools -show books
+                '' else ''
+                    rofi -modi books:${pkgs.list_bookshelf_reader}/bin/list_bookshelf_reader -show books:list_bookshelf_reader
+                ''}
             '';
        };
     };

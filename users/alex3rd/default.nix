@@ -45,6 +45,9 @@
             # base
             file
             glibcLocales
+
+            # script for WMs
+            rofi_list_bookshelf
         ];
     };
 }
