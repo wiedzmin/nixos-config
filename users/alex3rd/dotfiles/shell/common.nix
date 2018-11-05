@@ -2,7 +2,7 @@
 
 {
     imports = [
-        ../../private/hometraits.nix
+        ../../private/traits.nix
     ];
 
     system.activationScripts.refreshNASVolumes = "echo '" +
