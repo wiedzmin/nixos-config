@@ -96,6 +96,7 @@ in
                 cat = "${pkgs.bat}/bin/bat";
                 cat_raw = "${pkgs.coreutils}/bin/cat";
                 find = "${pkgs.fd}/bin/fd";
+                gpg = "${pkgs.gnupg}/bin/gpg2";
                 zr = ". ~/.zshrc";
             };
             plugins = [
