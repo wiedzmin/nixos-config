@@ -47,6 +47,7 @@
         pcapfix
         qbittorrent
         rclone
+        rclone-browser
         skype
         slack
         socat
