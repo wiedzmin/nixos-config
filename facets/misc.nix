@@ -17,7 +17,6 @@
         lsof
         plan9port
         pscircle
-        whipper
         wirelesstools
         youtube-dl
     ];
