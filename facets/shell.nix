@@ -26,6 +26,7 @@
         fpp
         htop
         iotop
+        kitty # TODO: review and compare with Alacritty
         mc
         multitail
         nix-bash-completions
