@@ -19,7 +19,6 @@
         alacritty
         bat
         bc
-        direnv
         exa
         fd # TODO: make `find` alias to this
         findutils
