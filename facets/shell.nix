@@ -19,6 +19,7 @@
         alacritty
         bat
         bc
+        eternal-terminal
         exa
         fd
         findutils
