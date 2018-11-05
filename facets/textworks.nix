@@ -37,6 +37,7 @@
         pdftk
         plantuml
         texlive.combined.scheme-full
+        visidata
         zathura
     ] ++ [ # scanner
         xsane # temporarily kept for debug
