@@ -5,6 +5,7 @@
         ansible
         ansible-lint
         atom
+        cloc
         doxygen
         gdb
         gdbgui
