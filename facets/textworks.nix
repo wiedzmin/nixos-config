@@ -37,6 +37,7 @@
         pdftk
         plantuml
         texlive.combined.scheme-full
+        ttyplot
         visidata
         zathura
     ] ++ [ # scanner
