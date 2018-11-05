@@ -38,7 +38,7 @@
     nix.trustedUsers = [ "alex3rd" ];
 
     networking.extraHosts = (builtins.concatStringsSep
-                             "\n" (lib.mapAttrsToList (ip: names: ip + "   " + names) config.job.extra_hosts));
+                             "\n" (lib.mapAttrsToList (ip: names: ip + "   " + names) (config.job.extra_hosts // config.misc.extra_hosts)));
 
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
