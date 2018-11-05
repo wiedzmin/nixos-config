@@ -24,6 +24,7 @@
             enableZshIntegration = true;
         };
         programs.direnv = {
+            # NOTE: fails on 'use nix;' on call to virtualenv
             enable = true;
             enableZshIntegration = true;
         };
