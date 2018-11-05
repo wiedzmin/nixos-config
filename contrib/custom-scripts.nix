@@ -208,6 +208,12 @@ in
                     emacsclient -n "org-protocol://capture?template=$TEMPLATE"
                 fi
             '';
+            ghlp-repo = pkgs.writeShellScriptBin "ghlp-repo" ''
+                 ${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null
+            '';
+            ghlp-commits = pkgs.writeShellScriptBin "ghlp-commits" ''
+                 ${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always
+            '';
             git-fetch-batch = pkgs.writeShellScriptBin "git-fetch-batch" ''
                 set -euo pipefail
                 BASE_PATH=$1
@@ -362,7 +368,7 @@ in
             '';
             git_checkout_fuzzy = pkgs.writeShellScriptBin "git_checkout_fuzzy" ''
                 # checkout git branch (including remotes)
-                if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
+                if [[ ! -z $(${pkgs.ghlp-repo}/bin/ghlp-repo) ]]; then
                     branches=$(${pkgs.git}/bin/git branch --all -vv) &&
                         branch=$(echo "$branches" | ${pkgs.fzf}/bin/fzf-tmux -- \
                                       --ansi -d $(( 2 + $(wc -l <<< "$branches") )) +m) || exit
@@ -386,8 +392,8 @@ in
             '';
             git_browse_commits_fuzzy = pkgs.writeShellScriptBin "git_browse_commits_fuzzy" ''
                 # git commit browser
-                if [[ ! -z $(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null) ]]; then
-                    while out=$(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always |
+                if [[ ! -z $(${pkgs.ghlp-repo}/bin/ghlp-repo) ]]; then
+                    while out=$(${pkgs.ghlp-commits}/bin/ghlp-commits |
                                 ${pkgs.fzf}/bin/fzf --ansi --multi --no-sort --reverse --query="$q" --print-query);
                                 do
                         q=$(head -1 <<< "$out")
