@@ -146,8 +146,11 @@ in
 
                 bind BSpace last-window
 
-                bind -n C-y run -b "exec </dev/null; ${pkgs.xclip}/bin/xclip -o -selection clipboard | tmux load-buffer - ; tmux paste-buffer"
-                bind s split-window -v "tmux list-sessions | sed -E 's/:.*$//' | grep -v \"^$(tmux display-message -p '#S')\$\" | ${pkgs.fzf}/bin/fzf --reverse | xargs tmux switch-client -t"
+                bind -n C-y run -b "exec </dev/null; ${pkgs.xclip}/bin/xclip -o -selection clipboard | tmux load-buffer - ; \
+                                    tmux paste-buffer"
+                bind s split-window -v "tmux list-sessions | sed -E 's/:.*$//' | \
+                                        grep -v \"^$(tmux display-message -p '#S')\$\" | \
+                                        ${pkgs.fzf}/bin/fzf --reverse | xargs tmux switch-client -t"
 
                 bind -T copy-mode M-e run-shell "${pkgs.shell-capture}/bin/shell-capture es"
                 bind -T copy-mode M-j run-shell "${pkgs.shell-capture}/bin/shell-capture js"
@@ -155,6 +158,18 @@ in
                 bind -T copy-mode M-x run-shell "${pkgs.shell-capture}/bin/shell-capture xs"
 
                 bind F12 send-key "${pkgs.hr}/bin/hr" Enter
+
+                bind z split-window -v "${pkgs.procps}/bin/ps -ef | \
+                                        ${pkgs.gnused}/bin/sed 1d | \
+                                        ${pkgs.fzf}/bin/fzf | ${pkgs.gawk}/bin/awk '{print $2}' | xargs kill -15"
+                bind Z split-window -v "${pkgs.procps}/bin/ps -ef | \
+                                        ${pkgs.gnused}/bin/sed 1d | \
+                                        ${pkgs.fzf}/bin/fzf | ${pkgs.gawk}/bin/awk '{print $2}' | xargs kill -9"
+
+                bind b split-window -c '#{pane_current_path}' \
+                                    -v "${pkgs.is-git-repo}/bin/is-git-repo && ${pkgs.git}/bin/git -p show --color=always \
+                                        $(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always | \
+                                        ${pkgs.fzf}/bin/fzf --ansi +m +s | ${pkgs.gawk}/bin/awk '{print $2}') | less -R"
 
                 bind r source-file ~/.tmux.conf \; display "  Config reloaded..."
                 bind y set-window-option synchronize-panes
