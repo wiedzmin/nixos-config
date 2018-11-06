@@ -363,7 +363,7 @@ in
                                         tar xf $WD/$SOURCE_BASENAME_decrypted.tar && \
                                         rm $WD/$SOURCE_BASENAME_decrypted.tar
             '';
-            list_bookshelf_reader = pkgs.writeShellScriptBin "rofi_list_bookshelf" ''
+            list_bookshelf_reader = pkgs.writeShellScriptBin "list_bookshelf_reader" ''
                 if [ -n "$1" ]
                 then
                     coproc (${pkgs.zathura}/bin/zathura "$1" & >& /dev/null &)
