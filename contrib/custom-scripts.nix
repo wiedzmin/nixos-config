@@ -148,20 +148,17 @@ in
             '';
             wifi-status = pkgs.writeShellScriptBin "wifi-status" ''
                 essid=`${pkgs.wirelesstools}/bin/iwgetid -r`
-                strength=`awk 'NR==3 {print substr($3, 1, length($3)-1)}' /proc/net/wireless`
+                strength=$((`awk 'NR==3 {print substr($3, 1, length($3)-1)}' /proc/net/wireless`*100/70))
                 quality_color=
                 case 1 in
-                    $((strength < 25)))
+                    $((strength < 30)))
                         quality_color=red
                         ;;
-                    $((strength >= 25 && strength < 50)))
+                    $((strength >= 30 && strength < 70)))
                         quality_color=yellow
                         ;;
-                    $((strength >= 50 && strength < 70)))
+                    $((strength >= 70 && strength <= 100)))
                         quality_color=green
-                        ;;
-                    $((strength >= 70)))
-                        quality_color=purple
                         ;;
                 esac
                 echo $essid: "<fc=$quality_color>$strength</fc>%"
