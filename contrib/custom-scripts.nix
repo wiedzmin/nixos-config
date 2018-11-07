@@ -2,6 +2,7 @@
 
 let
     bookshelfPath = "${config.users.extraUsers.alex3rd.home}/bookshelf";
+    autorandrProfilesPath = "${config.users.extraUsers.alex3rd.home}/.config/autorandr";
     bookReaderUsePdftools = true;
 in
 {
@@ -386,6 +387,20 @@ in
                 '' else ''
                     rofi -modi books:${pkgs.list_bookshelf_reader}/bin/list_bookshelf_reader -show books:list_bookshelf_reader
                 ''}
+            '';
+            list_autorandr_profiles = pkgs.writeShellScriptBin "list_autorandr_profiles" ''
+                if [ -n "$1" ]
+                then
+                    coproc (${pkgs.autorandr}/bin/autorandr --load "$1" & >& /dev/null)
+                    exit;
+                fi
+
+                # TODO: think of migrating to `fd`
+                ${pkgs.findutils}/bin/find ${autorandrProfilesPath} -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
+            '';
+            rofi_list_autorandr_profiles = pkgs.writeShellScriptBin "rofi_list_autorandr_profiles" ''
+                ${pkgs.rofi}/bin/rofi -modi autorandr:${pkgs.list_autorandr_profiles}/bin/list_autorandr_profiles \
+                                      -show autorandr
             '';
        };
     };
