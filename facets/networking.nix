@@ -57,6 +57,5 @@
         telegram-cli
         w3m
         wget
-        youtube-dl
     ];
 }
