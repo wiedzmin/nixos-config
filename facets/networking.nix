@@ -26,6 +26,7 @@
             enable = true;
             package = pkgs.wireshark-gtk;
         };
+        wavemon.enable = true;
     };
 
     environment.systemPackages = with pkgs; [
