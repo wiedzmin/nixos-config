@@ -23,6 +23,7 @@
         ./services/imapfilter.nix
         ./services/vpn.nix
         ./services/git-auto.nix
+        ./services/collect-garbage.nix
     ];
 
     users.extraUsers = {
