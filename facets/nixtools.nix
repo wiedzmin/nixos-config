@@ -7,6 +7,7 @@
         nix-prefetch-github
         nix-serve
         nixops
+        nix-du
 
         # custom
         optimize-nix
