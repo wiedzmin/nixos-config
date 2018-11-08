@@ -383,9 +383,9 @@ in
             '';
             rofi_list_bookshelf = pkgs.writeShellScriptBin "rofi_list_bookshelf" ''
                 ${if bookReaderUsePdftools then ''
-                    rofi -modi books:${pkgs.list_bookshelf_pdftools}/bin/list_bookshelf_pdftools -show books
+                    ${pkgs.rofi}/bin/rofi -modi books:${pkgs.list_bookshelf_pdftools}/bin/list_bookshelf_pdftools -show books
                 '' else ''
-                    rofi -modi books:${pkgs.list_bookshelf_reader}/bin/list_bookshelf_reader -show books:list_bookshelf_reader
+                    ${pkgs.rofi}/bin/rofi -modi books:${pkgs.list_bookshelf_reader}/bin/list_bookshelf_reader -show books
                 ''}
             '';
             list_autorandr_profiles = pkgs.writeShellScriptBin "list_autorandr_profiles" ''
