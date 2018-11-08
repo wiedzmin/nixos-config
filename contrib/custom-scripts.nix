@@ -31,42 +31,8 @@ in
                 esac
                 echo $st$UPOWER_PERCENTAGE
             '';
-            status_cpu_temp = pkgs.writeShellScriptBin "status_cpu_temp" ''
-                t=$(${pkgs.lm_sensors}/bin/sensors | ${pkgs.gawk}/bin/awk '/Core\ 0/ {gsub(/\+/,"",$3); gsub(/\..+/,"",$3)    ; print $3}')
-                tc=$C0
-                case 1 in
-                    $((t <= 50)))
-                        tc=$C2
-                        ;;
-                    $((t >= 87)))
-                        tc=$C3
-                        ;;
-                    $((t >= 105)))
-                        tc=$C4
-                        ;;
-                esac
-                echo "$t°C"
-            '';
             status_uptime = pkgs.writeShellScriptBin "status_uptime" ''
                 ${pkgs.procps}/bin/w | ${pkgs.gnused}/bin/sed -r '1 s/.*up *(.*),.*user.*/\1/g;q'
-            '';
-            zip2targz = pkgs.writeShellScriptBin "zip2targz" ''
-                tmpdir=`${pkgs.coreutils}/bin/mktemp -d`
-                #Copy the zip to the temporary directory
-                ${pkgs.coreutils}/bin/cp "$1" $tmpdir/
-                #Unzip
-                (cd $tmpdir && ${pkgs.unzip}/bin/unzip -q "$1")
-                #Remove the original zipfile because we don't want that to be tar'd
-                ${pkgs.coreutils}/bin/rm "$tmpdir/$1"
-                #Tar the files
-                outfilename=$(echo "$1" | ${pkgs.util-linux}/bin/rev | ${pkgs.coreutils}/bin/cut -d. -f2- | ${pkgs.util-linux}/bin/rev).tar
-                (cd $tmpdir && ${pkgs.gnutar}/bin/tar cf "$outfilename" *)
-                ${pkgs.coreutils}/bin/mv "$tmpdir/$outfilename" .
-                ${pkgs.gzip}/bin/gzip ./$outfilename
-                #Remove the temporary directory
-                ${pkgs.coreutils}/bin/rm -rf $tmpdir
-                #Print what we did
-                echo "Converted $1 to $outfilename.gz"
             '';
             # see https://blog.jeaye.com/2017/07/30/nixos-revisited/
             optimize-nix = pkgs.writeShellScriptBin "optimize-nix" ''
