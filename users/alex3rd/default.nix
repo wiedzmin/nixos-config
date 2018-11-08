@@ -52,6 +52,8 @@
             rofi_list_bookshelf
             rofi_list_tmuxp_sessions
             rofi_ssh_custom_user
+
+            rofi_webjumps
         ];
     };
 }

@@ -413,6 +413,35 @@ in
 
                 exit 0
             '';
+            rofi_webjumps = pkgs.writeShellScriptBin "rofi_webjumps" ''
+                declare -A webjumps
+
+                webjumps=(
+                ${(builtins.concatStringsSep
+                   "\n" (pkgs.stdenv.lib.mapAttrsToList
+                              (url: browsercmd: "  [\"" + url + "\"]=\"" + browsercmd + "\"")
+                              (config.job.webjumps // config.misc.webjumps)))}
+
+                )
+
+                list_webjumps() {
+                    for i in "''${!webjumps[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    webjump=$( (list_webjumps) | ${pkgs.rofi}/bin/rofi -dmenu -p "Jump to: " )
+                    if [ -n "$webjump" ]; then
+                        ''${webjumps[$webjump]} "$webjump"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
        };
     };
 }
