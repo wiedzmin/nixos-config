@@ -5,6 +5,8 @@ let
     autorandrProfilesPath = "${config.users.extraUsers.alex3rd.home}/.config/autorandr";
     tmuxpSessionsPath = "${config.users.extraUsers.alex3rd.home}/tmuxp";
     bookReaderUsePdftools = true;
+    currentUser = "alex3rd";
+    previousUser = "octocat";
 in
 {
     config = {
@@ -383,6 +385,33 @@ in
             rofi_list_tmuxp_sessions = pkgs.writeShellScriptBin "rofi_list_tmuxp_sessions" ''
                 ${pkgs.rofi}/bin/rofi -modi tmuxp:${pkgs.list_tmuxp_sessions}/bin/list_tmuxp_sessions \
                                       -show tmuxp
+            '';
+            rofi_ssh_custom_user = pkgs.writeShellScriptBin "rofi_ssh_custom_user" ''
+                # TODO: provide freeform option or predefined list on Nix level
+                USERS=(
+                  "root"
+                  "${currentUser}"
+                  "${previousUser}"
+                )
+
+                ask_for_user() {
+                    for i in "''${USERS[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    USER=$( (ask_for_user) | ${pkgs.rofi}/bin/rofi -dmenu -p "User: " )
+                    HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Host: " )
+                    if [ -n "$HOST" ]; then
+                        ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et $USER@$HOST"
+                    fi
+                }
+
+                main
+
+                exit 0
             '';
        };
     };

@@ -47,9 +47,10 @@
             glibcLocales
 
             # helper scripts for WMs
-            rofi_list_bookshelf
             rofi_list_autorandr_profiles
+            rofi_list_bookshelf
             rofi_list_tmuxp_sessions
+            rofi_ssh_custom_user
         ];
     };
 }
