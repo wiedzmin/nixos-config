@@ -3,6 +3,7 @@
 let
     bookshelfPath = "${config.users.extraUsers.alex3rd.home}/bookshelf";
     autorandrProfilesPath = "${config.users.extraUsers.alex3rd.home}/.config/autorandr";
+    tmuxpSessionsPath = "${config.users.extraUsers.alex3rd.home}/tmuxp";
     bookReaderUsePdftools = true;
 in
 {
@@ -401,6 +402,21 @@ in
             rofi_list_autorandr_profiles = pkgs.writeShellScriptBin "rofi_list_autorandr_profiles" ''
                 ${pkgs.rofi}/bin/rofi -modi autorandr:${pkgs.list_autorandr_profiles}/bin/list_autorandr_profiles \
                                       -show autorandr
+            '';
+            # TODO: think of moving under user(s)
+            list_tmuxp_sessions = pkgs.writeShellScriptBin "list_tmuxp_sessions" ''
+                if [ -n "$1" ]
+                then
+                    ${pkgs.tmuxp}/bin/tmuxp load -y -d ${tmuxpSessionsPath}/$1.yml >/dev/null 2>&1 &
+                    exit;
+                else
+                    # TODO: think of migrating to `fd`
+                    ${pkgs.findutils}/bin/find ${tmuxpSessionsPath} -mindepth 1 -maxdepth 1 -type l -exec basename {} .yml \;
+                fi
+            '';
+            rofi_list_tmuxp_sessions = pkgs.writeShellScriptBin "rofi_list_tmuxp_sessions" ''
+                ${pkgs.rofi}/bin/rofi -modi tmuxp:${pkgs.list_tmuxp_sessions}/bin/list_tmuxp_sessions \
+                                      -show tmuxp
             '';
        };
     };
