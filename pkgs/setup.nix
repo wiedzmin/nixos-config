@@ -14,7 +14,7 @@ in {
       (builtins.filter (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (path + ("/" + n + "/default.nix")))
         (lib.attrNames content));
   services.journald.extraConfig = ''
-      MaxRetentionSec=2day
+      MaxRetentionSec=7day
   '';
   nix.extraOptions = ''
       gc-keep-outputs = true
