@@ -86,6 +86,7 @@
         xlibs.xprop
         xorg.xdpyinfo
         xorg.xhost
+        xorg.xmessage
         xosd
 
         gnome3.gnome-tweak-tool
