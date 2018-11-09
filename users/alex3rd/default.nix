@@ -24,6 +24,7 @@
         ./services/vpn.nix
         ./services/git-auto.nix
         ./services/collect-garbage.nix
+        ./services/watch-dunst.nix
     ];
 
     users.extraUsers = {

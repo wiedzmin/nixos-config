@@ -442,6 +442,14 @@ in
 
                 exit 0
             '';
+            watch_dunst = pkgs.writeShellScriptBin "watch_dunst" ''
+                DUNST_COUNT=$(${pkgs.procps}/bin/pgrep -x -c .dunst-wrapped)
+                if [ $DUNST_COUNT -gt 1 ]; then
+                    ${pkgs.logger}/bin/logger "Too much dunsts ($DUNST_COUNT), shooting down..."
+                    pkill -x -KILL .dunst-wrapped
+                    exit 0
+                fi
+            '';
        };
     };
 }
