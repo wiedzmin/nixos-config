@@ -18,12 +18,16 @@
 
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
-            # custom
+            # helper scripts for WMs
             rescale-wallpaper
-
-            # NAS
-            mount_nas_volume
-            unmount_nas_volume
+            rofi_list_autorandr_profiles
+            rofi_list_bookshelf
+            rofi_list_tmuxp_sessions
+            rofi_mount_nas_volume
+            rofi_searchengines
+            rofi_ssh_custom_user
+            rofi_unmount_nas_volume
+            rofi_webjumps
         ];
         home.file = {
             ".arbtt/categorize.cfg".text = ''
