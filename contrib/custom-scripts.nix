@@ -461,6 +461,50 @@ in
                     exit 0
                 fi
             '';
+            rofi_mount_nas_volume = pkgs.writeShellScriptBin "rofi_mount_nas_volume" ''
+                nas_volumes=(
+                ${builtins.concatStringsSep "\n" config.misc.nas_volumes}
+                )
+
+                list_nas_volumes() {
+                    for i in "''${nas_volumes[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    selected_volume=$( (list_nas_volumes) | ${pkgs.rofi}/bin/rofi -dmenu -p "Mount: " )
+                    if [ -n "$selected_volume" ]; then
+                        ${pkgs.mount_nas_volume}/bin/mount_nas_volume "$selected_volume"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
+            rofi_unmount_nas_volume = pkgs.writeShellScriptBin "rofi_unmount_nas_volume" ''
+                mounted_nas_volumes=$(cat /etc/mtab | grep catscan | cut -d ' '  -f 1)
+
+                list_mounted_volumes() {
+                    for i in "''${mounted_nas_volumes[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    selected_volume=$( (list_mounted_volumes) | ${pkgs.rofi}/bin/rofi -dmenu -p "Unmount: " )
+                    if [ -n "$selected_volume" ]; then
+                        ${pkgs.unmount_nas_volume}/bin/unmount_nas_volume "$selected_volume"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
        };
     };
 }

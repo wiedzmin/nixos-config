@@ -5,9 +5,6 @@
         ../../private/traits.nix
     ];
 
-    system.activationScripts.refreshNASVolumes = "echo '" +
-        (builtins.concatStringsSep "\n" config.misc.nas_volumes) +
-        "' > ${config.users.extraUsers.alex3rd.home}/nas_volumes";
     system.activationScripts.refreshShellBookmarks = "echo '" +
         (builtins.concatStringsSep "\n"
              (lib.mapAttrsToList (bmk: path: bmk + " : " + path) config.misc.shell_bookmarks)) +
