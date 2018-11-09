@@ -505,6 +505,33 @@ in
 
                 exit 0
             '';
+            rofi_searchengines = pkgs.writeShellScriptBin "rofi_searchengines" ''
+                declare -a searchengines
+
+                searchengines=(
+                ${pkgs.stdenv.lib.concatMapStrings (engine: "  \"${engine}\"\n") config.misc.searchEngines}
+                )
+
+                list_searchengines() {
+                    for i in "''${searchengines[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    selected_engine=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -p "Search: " )
+                    query=$( (echo ) | rofi  -dmenu -matching fuzzy -location 0 -p "Query: " )
+                    if [ -n "$query" ]; then
+                        url="$selected_engine$query"
+                        ${config.misc.defaultBrowserCmd} "$url"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
        };
     };
 }
