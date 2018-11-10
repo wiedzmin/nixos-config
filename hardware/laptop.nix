@@ -3,9 +3,11 @@
 {
     powerManagement = {
         enable = true;
-        resumeCommands = (lib.concatMapStrings
-                          (service: "${pkgs.systemd}/bin/systemctl try-restart ${service}\n")
-                          config.sys.services_sleepless);
+        # FIXME: ${pkgs.systemd}/bin/systemctl --user restart dunst.service
+        resumeCommands = ''
+            ${pkgs.systemd}/bin/systemctl restart imapfilter.service
+            ${pkgs.systemd}/bin/systemctl try-restart sshuttle.service
+        '';
         powertop.enable = true;
     };
     services.tlp.enable = true;
