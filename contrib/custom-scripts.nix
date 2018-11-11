@@ -457,9 +457,13 @@ in
                 exit 0
             '';
             watch_dunst = pkgs.writeShellScriptBin "watch_dunst" ''
+                FORCE=$1
                 DUNST_COUNT=$(${pkgs.procps}/bin/pgrep -x -c .dunst-wrapped)
                 if [ $DUNST_COUNT -gt 1 ]; then
                     ${pkgs.logger}/bin/logger "Too much dunsts ($DUNST_COUNT), shooting down..."
+                    pkill -x -KILL .dunst-wrapped
+                    exit 0
+                elif [ "$FORCE" == "force" ]; then
                     pkill -x -KILL .dunst-wrapped
                     exit 0
                 fi
