@@ -28,7 +28,6 @@
         djvulibre
         fbreader
         ghostscript
-        mupdf
         noweb
         ntangle
         pandoc
@@ -39,7 +38,6 @@
         texlive.combined.scheme-full
         ttyplot
         visidata
-        zathura
     ] ++ [ # scanner
         xsane # temporarily kept for debug
         simple-scan
