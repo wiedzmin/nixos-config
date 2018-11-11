@@ -40,6 +40,7 @@
         shellcheck
         tmux
         tree
+        miller
     ];
 
     environment.shellAliases = {
