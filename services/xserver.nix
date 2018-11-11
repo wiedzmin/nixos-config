@@ -80,7 +80,6 @@
         gmrun
         haskellPackages.arbtt
         haskellPackages.xmobar
-        haskellPackages.yeganesh
         i3lock-color
         taffybar
         xclip
