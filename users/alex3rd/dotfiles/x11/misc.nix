@@ -29,6 +29,7 @@
             rofi_ssh_custom_user
             rofi_unmount_nas_volume
             rofi_webjumps
+            show_uptime_info
         ];
         home.file = {
             ".arbtt/categorize.cfg".text = ''
@@ -139,21 +140,16 @@
                                     , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
                                                              "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
                                                              "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
-                                    , Run CoreTemp ["-t","<core0>/<core1>°C",
-                                                    "-L","40","-H","60",
-                                                    "-l","lightblue",
-                                                    "-n","gray90","-h","red"] 50
                                     , Run Com "${pkgs.wifi-status}/bin/wifi-status" [] "wifi" 60
                                     , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["openvpn-jobvpn.service", "[V]"] "vpn" 30
                                     , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["sshuttle.service", "[S]"] "sshuttle" 30
-                                    , Run Com "${pkgs.status_uptime}/bin/status_uptime" [] "uptime" 600
                                     , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
                                               , ("ru", "<fc=green>ru</fc>")
                                               ]
                                     ]
                        , sepChar = "%"
                        , alignSep = "}{"
-                       , template = "%StdinReader% }{| %battery% | %coretemp% | %wifi% %sshuttle% %vpn% | %uptime% | <fc=#ee9a00>%date%</fc> |%kbd%"
+                       , template = "%StdinReader% }{| %battery% | %wifi% %sshuttle% %vpn% | <fc=#ee9a00>%date%</fc> |%kbd%"
                        }
             '';
             ".config/rofi/oxide.rasi".text = ''
