@@ -581,6 +581,7 @@
                 rofi.run-shell-command:              {terminal} -e {cmd}
                 rofi.window-command:                 xkill -id {window}
                 rofi.window-format:                  {w}   {c}   {t}
+                rofi.window-match-fields:            title,class
 
                 rofi.parse-hosts:                    true
                 rofi.parse-known-hosts:              false
