@@ -28,6 +28,7 @@
         djvulibre
         fbreader
         ghostscript
+        gron
         noweb
         ntangle
         pandoc
