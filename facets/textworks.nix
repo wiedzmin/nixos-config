@@ -36,6 +36,7 @@
         pdf2djvu
         pdftk
         plantuml
+        tabula
         texlive.combined.scheme-full
         ttyplot
         visidata
