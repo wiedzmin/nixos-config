@@ -25,6 +25,7 @@
             rofi_list_tmuxp_sessions
             rofi_mount_nas_volume
             rofi_searchengines_prompt
+            rofi_searchengines_selection
             rofi_ssh_custom_user
             rofi_unmount_nas_volume
             rofi_webjumps

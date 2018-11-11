@@ -543,6 +543,41 @@ in
 
                 exit 0
             '';
+            rofi_searchengines_selection = pkgs.writeShellScriptBin "rofi_searchengines_selection" ''
+                declare -A searchengines
+
+                searchengines=(
+                ${(builtins.concatStringsSep
+                   "\n" (pkgs.stdenv.lib.mapAttrsToList
+                              (title: searchengine: "  [\"" + title + "\"]=\"" + searchengine + "\"")
+                              config.misc.searchEngines))}
+                )
+
+                list_searchengines() {
+                    index=1
+                    for i in "''${!searchengines[@]}"
+                    do
+                        echo "$index $i"
+                        (( index++ ))
+                    done
+                }
+
+                main() {
+                    selected_engine=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search: " | ${pkgs.gawk}/bin/awk '{print $2}')
+                    if [ ! -n "$selected_engine" ]; then
+                        exit 1
+                    fi
+                    query=$(${pkgs.xclip}/bin/xclip -o)
+                    if [ -n "$query" ]; then
+                        url="''${searchengines[$selected_engine]}$query"
+                        ${config.misc.defaultBrowserCmd} "$url"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
        };
     };
 }
