@@ -6,24 +6,6 @@ in
 {
     home-manager.users.alex3rd = {
         home.file = {
-            # TODO: create something "default" traits for browser, pdf reader and whatever and reference them below
-            ".mailcap".text = ''
-                application/pdf; ${pkgs.zathura}/bin/zathura %s; test=test "$DISPLAY" != ""; description=Portable Document Format; nametemplate=%s.pdf; copiousoutput
-                application/x-pdf; ${pkgs.zathura}/bin/zathura %s; test=test "$DISPLAY" != ""; description=Portable Document Format; nametemplate=%s.pdf
-                image/gif; ${pkgs.feh}/bin/feh %s; test=test "$DISPLAY" != ""; description=GIF Format; nametemplate=%s.gif; copiousoutput
-                image/jpeg; ${pkgs.feh}/bin/feh %s; test=test "$DISPLAY" != ""; description=JPEG Format; nametemplate=%s.jpeg; copiousoutput
-                image/jpeg; ${pkgs.feh}/bin/feh %s; test=test "$DISPLAY" != ""; description=JPEG Format; nametemplate=%s.jpg; copiousoutput
-                image/png; ${pkgs.feh}/bin/feh %s; test=test "$DISPLAY" != ""; description=PNG Format; nametemplate=%s.png; copiousoutput
-                image/vnd.djvu; ${pkgs.zathura}/bin/zathura %s; test=test "$DISPLAY" != ""; description=DjVu Format; nametemplate=%s.djvu; copiousoutput
-                image/x-djvu; ${pkgs.zathura}/bin/zathura %s; test=test "$DISPLAY" != ""; description=DjVu Format; nametemplate=%s.djvu; copiousoutput
-                text/html; w3m -I %{charset} -dump %s; test=test "$DISPLAY" != ""; description=HyperText; nametemplate=%s.html; copiousoutput
-                video/avi; ${pkgs.mpv}/bin/mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.avi
-                video/mp4; ${pkgs.mpv}/bin/mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.mp4
-                video/mpeg; ${pkgs.mpv}/bin/mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.mpeg
-                video/x-flv; ${pkgs.mpv}/bin/mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.flv
-                video/x-matroska; ${pkgs.mpv}/bin/mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.mkv
-                video/x-ms-wmv; ${pkgs.mpv}/bin/mpv %s; test=test "$DISPLAY" != "" ; description=Video; nametemplate=%s.wmv
-            '';
             ".mbsyncrc".text = ''
                 SyncState *
 
