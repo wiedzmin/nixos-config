@@ -33,6 +33,9 @@
             rofi_ssh_custom_user
             rofi_unmount_nas_volume
             rofi_webjumps
+            screenshot_active_window
+            screenshot_full
+            screenshot_region
             show_uptime_info
         ];
         home.file = {

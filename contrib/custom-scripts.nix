@@ -7,6 +7,7 @@ let
     bookReaderUsePdftools = true;
     currentUser = "alex3rd";
     previousUser = "octocat";
+    screenshotDateFormat = "%Y-%m-%d-%T";
 in
 {
     config = {
@@ -647,6 +648,21 @@ in
                 do
                     ${pkgs.unmount_nas_volume}/bin/unmount_nas_volume "$i"
                 done
+            '';
+            screenshot_active_window = pkgs.writeShellScriptBin "screenshot_active_window" ''
+                ${pkgs.maim}/bin/maim -o -i $(xdotool getactivewindow) --format png /dev/stdout | \
+                    tee " ++ Profile.screenshotsPath ++ "/screenshot-$(date +\"${screenshotDateFormat}\" | \
+                    tr -d '[:cntrl:]') | ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
+            '';
+            screenshot_region = pkgs.writeShellScriptBin "screenshot_region" ''
+                ${pkgs.maim}/bin/maim -o -s --format png /dev/stdout | \
+                    tee " ++ Profile.screenshotsPath ++ "/screenshot-$(date +\"${screenshotDateFormat}\" | \
+                    tr -d '[:cntrl:]') | ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
+            '';
+            screenshot_full = pkgs.writeShellScriptBin "screenshot_full" ''
+                ${pkgs.maim}/bin/maim -o --format png /dev/stdout | \
+                    tee " ++ Profile.screenshotsPath ++ "/screenshot-$(date +\"${screenshotDateFormat}\" | \
+                    tr -d '[:cntrl:]') | ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
             '';
        };
     };
