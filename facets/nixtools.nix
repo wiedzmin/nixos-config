@@ -8,8 +8,5 @@
         nix-serve
         nixops
         nix-du
-
-        # custom
-        optimize-nix
     ];
 }

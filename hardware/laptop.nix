@@ -1,6 +1,10 @@
 { config, pkgs, lib, ... }:
 
 {
+    imports = [
+        ../scripts/nas.nix
+    ];
+
     powerManagement = {
         enable = true;
         # FIXME: ${pkgs.systemd}/bin/systemctl --user restart dunst.service

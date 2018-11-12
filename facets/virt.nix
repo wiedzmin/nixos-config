@@ -2,7 +2,7 @@
 
 {
     imports = [
-        ../contrib/custom-scripts.nix
+        ../scripts/virt.nix
     ];
 
     virtualisation.docker.enable = true;

@@ -1,6 +1,10 @@
 {config, pkgs, lib, ...}:
 
 {
+    imports = [
+        ../scripts/nix.nix
+    ];
+
     systemd.services."collect-nix-garbage" = {
         description = "Collect garbage in running system";
         serviceConfig = {

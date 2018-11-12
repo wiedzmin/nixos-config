@@ -11,6 +11,10 @@
         "' > ${config.users.extraUsers.alex3rd.home}/.bookmarks";
 
     home-manager.users.alex3rd = {
+        home.packages = with pkgs; [
+            optimize-nix
+        ];
+
         programs.htop.enable = true;
         programs.command-not-found.enable = true;
         programs.lesspipe.enable = true;

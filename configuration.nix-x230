@@ -4,7 +4,6 @@
     imports = [
         ./pkgs/setup.nix
         <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
-        ./contrib/custom-scripts.nix
         ./facets/archive.nix
         ./facets/dev/ccpp.nix
         ./facets/dev/cl.nix

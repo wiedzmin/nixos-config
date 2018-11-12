@@ -1,6 +1,10 @@
 {config, pkgs, lib, ...}:
 
 {
+    imports = [
+        ../scripts/misc.nix
+    ];
+
     systemd.services."watch-dunst" = {
         description = "Keep dunst running properly";
         path = [ pkgs.logger ];

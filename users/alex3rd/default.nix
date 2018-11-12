@@ -3,8 +3,7 @@
 {
     imports = [
         <home-manager/nixos>
-        ../../contrib/custom-scripts.nix
-        ../../contrib/custom-desktop-items.nix
+        ./desktop/org_protocol.nix
         ./dotfiles/shell/common.nix
         ./dotfiles/shell/term.nix
         ./dotfiles/shell/tmux.nix

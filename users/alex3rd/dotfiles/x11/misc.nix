@@ -1,6 +1,11 @@
 {config, pkgs, lib, ...}:
 
 {
+    imports = [
+        ../../scripts/statuses.nix
+        ../../scripts/navigation.nix
+    ];
+
     system.activationScripts.ensureBacklightPermissions = ''
         chmod a+w /sys/class/backlight/intel_backlight/brightness
     '';
