@@ -25,6 +25,7 @@
         ./services/git-auto.nix
         ./services/collect-garbage.nix
         ./services/watch-dunst.nix
+        ./services/nixpkgs-update-status.nix
     ];
 
     users.extraUsers = {

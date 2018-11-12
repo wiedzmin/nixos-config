@@ -585,6 +585,33 @@ in
             show_uptime_info = pkgs.writeShellScriptBin "show_uptime_info" ''
                 ${pkgs.libnotify}/bin/notify-send -t 7000 "Uptime: $(${pkgs.status_uptime}/bin/status_uptime)"
             '';
+            watch_git_remote_status = pkgs.writeShellScriptBin "watch_git_remote_status" ''
+                GIT_REPO=''${1:-'.'}
+                cd $GIT_REPO
+                if [ -z "$(${pkgs.is-git-repo}/bin/is-git-repo)" ]; then
+                    echo "Not a git repo"
+                    exit 1
+                fi
+                UPSTREAM=''${2:-'@{u}'}
+                LOCAL=$(git rev-parse @)
+                REMOTE=$(git rev-parse "$UPSTREAM")
+                BASE=$(git merge-base @ "$UPSTREAM")
+
+                if [ $LOCAL = $REMOTE ]; then
+                    echo ''${UPTODATE_MESSAGE:-"Up-to-date"}
+                elif [ $LOCAL = $BASE ]; then
+                    echo ''${NEEDFETCH_MESSAGE:-"Need to fetch"}
+                elif [ $REMOTE = $BASE ]; then
+                    echo ''${NEEDPUSH_MESSAGE:-"Need to push"}
+                else
+                    echo ''${DIVERGED_MESSAGE:-"Diverged"}
+                fi
+           '';
+            watch_nixpkgs_updates = pkgs.writeShellScriptBin "watch_nixpkgs_updates" ''
+                if [ ! -z "$(${pkgs.watch_git_remote_status}/bin/watch_git_remote_status /etc/nixos/pkgs/nixpkgs-channels | grep available)" ]; then
+                    ${pkgs.libnotify}/bin/notify-send -t 30000 "Nixpkgs updated, consider install!"
+                fi
+           '';
        };
     };
 }
