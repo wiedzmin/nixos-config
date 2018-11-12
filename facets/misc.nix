@@ -18,5 +18,6 @@
         wirelesstools
         youtube-dl
         tealdeer
+        # ocz-ssd-guru # add as an overlay and fix hash (and installation instructions)
     ];
 }
