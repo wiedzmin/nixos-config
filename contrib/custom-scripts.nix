@@ -612,6 +612,35 @@ in
                     ${pkgs.libnotify}/bin/notify-send -t 30000 "Nixpkgs updated, consider install!"
                 fi
            '';
+            rofi_ref_extra_hosts = pkgs.writeShellScriptBin "rofi_ref_extra_hosts" ''
+                declare -A extra_hosts
+
+                extra_hosts=(
+                ${builtins.concatStringsSep
+                           "\n"
+                           (pkgs.stdenv.lib.mapAttrsToList
+                                (ip: names: "  [\"${names}\"]=\"${ip}\"")
+                                (config.job.extra_hosts // config.misc.extra_hosts))}
+                )
+
+                list_extra_hosts() {
+                    for i in "''${!extra_hosts[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    selected_host=$( (list_extra_hosts) | ${pkgs.rofi}/bin/rofi -dmenu -p "Select" )
+                    if [ -n "$selected_host" ]; then
+                        echo -n "$selected_host ''${extra_hosts[$selected_host]}" | xclip -i -selection clipboard
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
        };
     };
 }

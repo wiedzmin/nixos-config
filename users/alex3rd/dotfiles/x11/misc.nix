@@ -24,6 +24,7 @@
             rofi_list_bookshelf
             rofi_list_tmuxp_sessions
             rofi_mount_nas_volume
+            rofi_ref_extra_hosts
             rofi_searchengines_prompt
             rofi_searchengines_selection
             rofi_ssh_custom_user
