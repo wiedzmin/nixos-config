@@ -1,6 +1,10 @@
 {config, pkgs, lib, ...}:
 
 {
+    system.activationScripts.ensureBacklightPermissions = ''
+        chmod a+w /sys/class/backlight/intel_backlight/brightness
+    '';
+
     environment.etc."Xmodmap".text = ''
         clear mod1
         clear mod4
@@ -14,7 +18,6 @@
         add mod4 = Super_L
         add mod5 = Hyper_L
     '';
-
 
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
