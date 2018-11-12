@@ -641,6 +641,13 @@ in
 
                 exit 0
             '';
+            force_unmount_nas = pkgs.writeShellScriptBin "force_unmount_nas" ''
+                mounted_nas_volumes=$(cat /etc/mtab | grep ${config.fs.storage.hostname} | cut -d ' '  -f 1)
+                for i in "''${mounted_nas_volumes[@]}"
+                do
+                    ${pkgs.unmount_nas_volume}/bin/unmount_nas_volume "$i"
+                done
+            '';
        };
     };
 }
