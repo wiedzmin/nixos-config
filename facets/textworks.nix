@@ -8,7 +8,7 @@
 
     # scanner
     nixpkgs.config = {
-        sane.snapscanFirmware = "/etc/nixos/private/firmware/Esfw52.bin";
+        sane.snapscanFirmware = "/etc/nixos/contrib/blobs/Esfw52.bin";
     };
 
     hardware.sane = {
