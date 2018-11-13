@@ -4,6 +4,7 @@
     imports = [
         <home-manager/nixos>
         ./desktop/org_protocol.nix
+        ./scripts/services.nix
         ./dotfiles/shell/common.nix
         ./dotfiles/shell/term.nix
         ./dotfiles/shell/tmux.nix
@@ -48,6 +49,12 @@
             # base
             file
             glibcLocales
+
+            backlightctl
+            jobvpnctl
+            sshuttlectl
+            volumectl
+            wifictl
         ];
     };
 }
