@@ -21,6 +21,9 @@ in
             tmuxp
         ];
         home.file = {
+            "shell_snippets".text = ''
+                ${lib.concatStringsSep "\n" config.misc.shell_snippets}
+            '';
             "tmuxp/housekeeping.yml".text = ''
                 session_name: housekeeping
                 windows:
@@ -170,6 +173,8 @@ in
                                     -v "${pkgs.is-git-repo}/bin/is-git-repo && ${pkgs.git}/bin/git -p show --color=always \
                                         $(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always | \
                                         ${pkgs.fzf}/bin/fzf --ansi +m +s | ${pkgs.gawk}/bin/awk '{print $2}') | less -R"
+
+                bind I split-window -v "${pkgs.fzf}/bin/fzf +m +s --cycle < $HOME/shell_snippets | tr -d '\n' | ${pkgs.xsel}/bin/xsel -i --clipboard"
 
                 bind r source-file ~/.tmux.conf \; display "  Config reloaded..."
                 bind y set-window-option synchronize-panes
