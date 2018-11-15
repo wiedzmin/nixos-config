@@ -1,14 +1,6 @@
 { config, pkgs, ... }:
 
 {
-    nixpkgs.config.firefox = {
-        enableAdobeFlashDRM = true;
-        enableDjvu = true;
-        enableGnomeExtensions = true;
-        jre = false;
-        icedtea = true;
-    };
-
     services = {
         psd = {
             enable = true;
@@ -33,7 +25,6 @@
         # TODO: maybe split even further
         afpfs-ng
         chromium
-        firefox-bin
         speedtest-cli
         iperf
         lynx
