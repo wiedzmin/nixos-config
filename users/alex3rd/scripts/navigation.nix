@@ -84,11 +84,11 @@ in
                 }
 
                 main() {
-                    USER=$( (ask_for_user) | ${pkgs.rofi}/bin/rofi -dmenu -p "User: " )
+                    USER=$( (ask_for_user) | ${pkgs.rofi}/bin/rofi -dmenu -p "User" )
                     if [ ! -n "$USER" ]; then
                         exit 1
                     fi
-                    HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Host: " )
+                    HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
                     if [ -n "$HOST" ]; then
                         ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et $USER@$HOST"
                     fi
@@ -117,7 +117,7 @@ in
                 }
 
                 main() {
-                    webjump=$( (list_webjumps) | ${pkgs.rofi}/bin/rofi -dmenu -p "Jump to: " )
+                    webjump=$( (list_webjumps) | ${pkgs.rofi}/bin/rofi -dmenu -p "Jump to" )
                     if [ -n "$webjump" ]; then
                         ''${webjumps[$webjump]} "$webjump"
                     fi
@@ -147,11 +147,11 @@ in
                 }
 
                 main() {
-                    selected_engine=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search: " | ${pkgs.gawk}/bin/awk '{print $2}')
+                    selected_engine=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search" | ${pkgs.gawk}/bin/awk '{print $2}')
                     if [ ! -n "$selected_engine" ]; then
                         exit 1
                     fi
-                    query=$( (echo ) | rofi  -dmenu -matching fuzzy -location 0 -p "Query: " )
+                    query=$( (echo ) | rofi  -dmenu -matching fuzzy -location 0 -p "Query" )
                     if [ -n "$query" ]; then
                         url="''${searchengines[$selected_engine]}$query"
                         ${config.misc.defaultBrowserCmd} "$url"
@@ -182,7 +182,7 @@ in
                 }
 
                 main() {
-                    selected_engine=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search: " | ${pkgs.gawk}/bin/awk '{print $2}')
+                    selected_engine=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search" | ${pkgs.gawk}/bin/awk '{print $2}')
                     if [ ! -n "$selected_engine" ]; then
                         exit 1
                     fi
