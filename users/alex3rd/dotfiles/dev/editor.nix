@@ -122,6 +122,8 @@
                 epkgs.docker-tramp
                 epkgs.dockerfile-mode
                 epkgs.dtrt-indent
+                epkgs.easy-kill
+                epkgs.easy-kill-extras
                 epkgs.edebug-x
                 epkgs.edit-server
                 epkgs.editorconfig
