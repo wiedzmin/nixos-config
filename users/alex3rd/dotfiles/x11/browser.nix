@@ -4,8 +4,6 @@
     home-manager.users.alex3rd = {
         programs.firefox = {
             enable = true;
-            enableAdobeFlash = true;
-            enableGoogleTalk = true;
             enableIcedTea = true;
         };
         home.file = {
