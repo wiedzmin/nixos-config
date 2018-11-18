@@ -26,6 +26,7 @@
         ./services/collect-garbage.nix
         ./services/watch-dunst.nix
         ./services/nixpkgs-update-status.nix
+        ./services/xkeysnail.nix
     ];
 
     users.extraUsers = {
@@ -34,7 +35,7 @@
             uid = 1000;
             description = "Alex Ermolov";
             shell = pkgs.zsh;
-            extraGroups = [ "audio" "docker" "lp" "networkmanager" "scanner" "vboxusers" "video" "wheel" ];
+            extraGroups = [ "audio" "docker" "input" "lp" "networkmanager" "scanner" "vboxusers" "video" "wheel" ];
         };
     };
 
