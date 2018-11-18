@@ -25,8 +25,6 @@
 
                     ${pkgs.wmname}/bin/wmname LG3D
 
-                    source ~/common_settings
-
                     ${pkgs.xorg.xrdb}/bin/xrdb -merge .Xresources
                 '';
             };
