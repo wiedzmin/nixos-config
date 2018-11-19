@@ -9,6 +9,7 @@
         doxygen
         gdb
         gdbgui
+        gist
         git
         git-lfs
         git-quick-stats
