@@ -56,6 +56,8 @@
             sshuttlectl
             volumectl
             wifictl
+
+            job-mysql-cli
         ];
     };
 }

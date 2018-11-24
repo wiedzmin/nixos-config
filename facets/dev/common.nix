@@ -7,6 +7,7 @@
         atom
         cloc
         doxygen
+        elfinfo
         gdb
         gdbgui
         gist
@@ -32,12 +33,16 @@
         idutils
         jq
         lazygit
+        ltrace
         mercurial
+        mycli
         patchutils
+        pgcli
         reflex
         sloccount
         vim
         vscode
+        watchexec
         wuzz
         zeal
 
