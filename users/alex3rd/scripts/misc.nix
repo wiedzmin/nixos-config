@@ -94,6 +94,9 @@ in
                     tee ${screenshotsPath}/screenshot-$(date ${screenshotDateFormat}.png | tr -d '[:cntrl:]') | \
                     ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
             '';
+            lockscreen = pkgs.writeShellScriptBin "lockscreen" ''
+                ${pkgs.xkblayout-state}/bin/xkblayout-state set 0; ${pkgs.i3lock-color}/bin/i3lock-color -c 232729; ${pkgs.xorg.xset}/bin/xset dpms force off
+            '';
        };
     };
 }

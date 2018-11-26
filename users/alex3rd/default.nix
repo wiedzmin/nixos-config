@@ -56,6 +56,7 @@
             sshuttlectl
             volumectl
             wifictl
+            lockscreen
 
             job-mysql-cli
         ];

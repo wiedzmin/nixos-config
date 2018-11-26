@@ -26,6 +26,11 @@
                     ${pkgs.wmname}/bin/wmname LG3D
 
                     ${pkgs.xorg.xrdb}/bin/xrdb -merge .Xresources
+
+                    ${pkgs.xidlehook}/bin/xidlehook --not-when-audio --not-when-fullscreen\
+                          --timer normal 150 '${pkgs.libnotify}/bin/notify-send -t 7000 -u critical "Locking in 30 seconds"' ''' \
+                          --timer primary 30 '${pkgs.lockscreen}/bin/lockscreen' ''' \
+                          --timer normal 3600 '${pkgs.systemd}/bin/systemctl suspend' ''' &
                 '';
             };
             xkbOptions = "caps:none";
@@ -37,13 +42,6 @@
                 tapping = false;
                 tappingDragLock = false;
                 accelSpeed = "0.6";
-            };
-            xautolock = {
-                enable = true;
-                time = 3;
-                locker = "${pkgs.xkblayout-state}/bin/xkblayout-state set 0; ${pkgs.i3lock-color}/bin/i3lock-color -c 232729; ${pkgs.xorg.xset}/bin/xset dpms force off";
-                nowlocker = "${pkgs.xkblayout-state}/bin/xkblayout-state set 0; ${pkgs.i3lock-color}/bin/i3lock-color -c 232729; ${pkgs.xorg.xset}/bin/xset dpms force off";
-                extraOptions = ["-detectsleep" "-lockaftersleep"];
             };
         };
         redshift = {
