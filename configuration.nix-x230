@@ -27,6 +27,7 @@
         ./hardware/sound.nix
         ./partitions/x230-laptoptop.nix
         ./services/xserver.nix
+        ./services/misc.nix
         ./users/alex3rd/default.nix
         ./users/root.nix
     ];
