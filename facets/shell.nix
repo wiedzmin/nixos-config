@@ -19,6 +19,7 @@
         alacritty
         bat
         bc
+        doitlive
         eternal-terminal
         exa
         fd
@@ -28,6 +29,7 @@
         iotop
         kitty # TODO: review and compare with Alacritty
         mc
+        miller
         multitail
         nix-bash-completions
         nix-zsh-completions
@@ -40,7 +42,7 @@
         shellcheck
         tmux
         tree
-        miller
+        up
     ];
 
     environment.shellAliases = {
