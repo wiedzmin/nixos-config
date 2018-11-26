@@ -6,7 +6,7 @@
         description = "sshuttle tunnel to remote server";
         after = [ "network.target" "suspend.target" ];
         wantedBy = [ "graphical-session.target" ];
-        path = [ pkgs.sshuttle pkgs.logger ];
+        path = [ pkgs.logger ];
         serviceConfig = {
             Type = "forking";
             Restart = "always";
