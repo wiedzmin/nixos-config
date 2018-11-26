@@ -4,8 +4,7 @@
     systemd.services."xkeysnail" = {
         enable = true;
         description = "Xkeysnail";
-        wantedBy = [ "graphical-session.target" ];
-        path = [ pkgs.xkeysnail ];
+        wantedBy = [ "graphical.target" ];
         environment = {
             DISPLAY = ":0";
             XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
@@ -14,7 +13,6 @@
             PIDFile = "/var/run/xkeysnail.pid";
             Restart = "always";
             RestartSec = 1;
-            User="root";
             ExecStart = "${pkgs.xkeysnail}/bin/xkeysnail ${config.users.extraUsers.alex3rd.home}/.config/xkeysnail/config.py";
         };
     };
