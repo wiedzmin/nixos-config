@@ -24,7 +24,6 @@
         gitAndTools.git-secrets
         gitAndTools.gitflow
         gitAndTools.pass-git-helper
-        gitAndTools.stgit
         gitinspector
         gitstats
         global
@@ -40,6 +39,7 @@
         pgcli
         reflex
         sloccount
+        stgit
         vim
         vscode
         watchexec

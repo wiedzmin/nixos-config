@@ -62,14 +62,14 @@
                          cd $item
                     fi
                     echo "Processing $(basename `pwd`)..."
-                    ${pkgs.gitAndTools.stgit}/bin/stg init
-                    ${pkgs.gitAndTools.stgit}/bin/stg repair
+                    ${pkgs.stgit}/bin/stg init
+                    ${pkgs.stgit}/bin/stg repair
 
                     if [[ ! -z $(${pkgs.git}/bin/git status --porcelain) ]]; then
                         ${pkgs.git}/bin/git add .
                         PATCH_DESC="WIP $(date -R)"
-                        ${pkgs.gitAndTools.stgit}/bin/stg new -m "$PATCH_DESC"
-                        ${pkgs.gitAndTools.stgit}/bin/stg refresh
+                        ${pkgs.stgit}/bin/stg new -m "$PATCH_DESC"
+                        ${pkgs.stgit}/bin/stg refresh
                     fi
                 done
             '';

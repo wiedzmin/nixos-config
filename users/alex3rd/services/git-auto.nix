@@ -26,7 +26,7 @@
     };
     systemd.services."git-save-wip-work" = {
         description = "Commit WIP changes to work repos";
-        path = [ pkgs.pass pkgs.gitAndTools.pass-git-helper pkgs.gitAndTools.stgit ];
+        path = [ pkgs.pass pkgs.gitAndTools.pass-git-helper pkgs.stgit ];
         serviceConfig = {
             Type = "oneshot";
             User = "alex3rd"; # TODO: think of abstracting away
@@ -45,7 +45,7 @@
     };
     systemd.services."git-save-wip-pets" = {
         description = "Commit WIP changes to pet projects' repos";
-        path = [ pkgs.pass pkgs.gitAndTools.pass-git-helper pkgs.gitAndTools.stgit ];
+        path = [ pkgs.pass pkgs.gitAndTools.pass-git-helper pkgs.stgit ];
         serviceConfig = {
             Type = "oneshot";
             User = "alex3rd"; # TODO: think of abstracting away
