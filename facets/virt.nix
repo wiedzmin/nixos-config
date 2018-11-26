@@ -5,8 +5,10 @@
         ../scripts/virt.nix
     ];
 
-    virtualisation.docker.enable = true;
-    virtualisation.docker.storageDriver = "overlay2";
+    virtualisation.docker = {
+        enable = true;
+        storageDriver = "overlay2";
+    };
 
     virtualisation.libvirtd.enable = true;
     virtualisation.virtualbox.host.enable = true;
