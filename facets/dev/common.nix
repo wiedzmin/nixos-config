@@ -28,6 +28,7 @@
         gitinspector
         gitstats
         global
+        gtm
         highlight
         httplab
         idutils
