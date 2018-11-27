@@ -226,6 +226,36 @@ in
 
                 exit 0
             '';
-       };
+            rofi_view_service_journal = pkgs.writeShellScriptBin "rofi_view_service_journal" ''
+                SERVICE_CONTEXTS=(
+                  "system"
+                  "user"
+                )
+
+                ask_for_context() {
+                    for i in "''${SERVICE_CONTEXTS[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    CONTEXT=$( (ask_for_context) | ${pkgs.rofi}/bin/rofi -dmenu -p "Context" )
+                    if [ ! -n "$CONTEXT" ]; then
+                        exit 1
+                    fi
+                    SERVICE=$(${pkgs.systemd}/bin/systemctl $([[ "$CONTEXT" == "user" ]] && echo --user) list-unit-files | \
+                              grep -v target | ${pkgs.gawk}/bin/awk '{print $1}' | \
+                              ${pkgs.rofi}/bin/rofi -dmenu -p "Service")
+                    if [ -n "$SERVICE" ]; then
+                        ${pkgs.tmux}/bin/tmux new-window "${pkgs.systemd}/bin/journalctl $([[ "$CONTEXT" == "user" ]] && echo --user) -u $SERVICE"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
+        };
     };
 }

@@ -53,6 +53,7 @@
 
             backlightctl
             jobvpnctl
+            rofi_view_service_journal
             sshuttlectl
             volumectl
             wifictl
