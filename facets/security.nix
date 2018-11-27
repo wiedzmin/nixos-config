@@ -28,6 +28,7 @@
         kbfs
         keybase
         keybase-gui
+        lynis
         paperkey
         rofi-pass
         srm

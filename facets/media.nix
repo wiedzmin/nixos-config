@@ -7,5 +7,8 @@
         gimp
         maim
         mpv
+        perlPackages.ImageExifTool
+        rapid-photo-downloader
+        youtube-dl
     ];
 }

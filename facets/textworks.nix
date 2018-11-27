@@ -36,8 +36,11 @@
         pdf2djvu
         pdftk
         plantuml
+        polar-bookshelf
+        rubber
         tabula
         texlive.combined.scheme-full
+        texmaker
         ttyplot
         visidata
     ] ++ [ # scanner

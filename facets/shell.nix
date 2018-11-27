@@ -29,6 +29,7 @@
 
         # view/search/transform
         bat
+        bcat
         exa
         fd
         findutils
@@ -49,6 +50,7 @@
         replace
         shellcheck
         tree
+        unicode-paracode
     ];
 
     environment.shellAliases = {

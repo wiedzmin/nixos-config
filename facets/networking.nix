@@ -25,6 +25,7 @@
         # TODO: maybe split even further
         afpfs-ng
         chromium
+        httpie
         iperf
         lynx
         mosh
@@ -34,6 +35,7 @@
         networkmanager
         networkmanager_dmenu
         networkmanagerapplet
+        ngrep
         nload
         pcapfix
         qbittorrent
@@ -50,5 +52,6 @@
         w3m
         wget
         wirelesstools
+        you-get
     ];
 }
