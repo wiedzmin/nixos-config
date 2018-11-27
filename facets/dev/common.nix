@@ -5,6 +5,7 @@
         ansible
         ansible-lint
         atom
+        binutils
         cloc
         doxygen
         elfinfo
@@ -35,6 +36,7 @@
         ltrace
         mercurial
         mycli
+        patchelf
         patchutils
         pgcli
         reflex
