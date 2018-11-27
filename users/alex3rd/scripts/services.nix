@@ -103,6 +103,9 @@ in
                          dec)
                              ${pkgs.light}/bin/light -U $AMOUNT
                              ;;
+                         full)
+                             ${pkgs.light}/bin/light -S 100
+                             ;;
                          *)
                              echo "Unknown action: $ACTION"
                              exit 1
