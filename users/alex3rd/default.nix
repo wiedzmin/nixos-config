@@ -53,11 +53,11 @@
 
             backlightctl
             jobvpnctl
+            lockscreen
             rofi_view_service_journal
             sshuttlectl
             volumectl
             wifictl
-            lockscreen
 
             job-mysql-cli
         ];
