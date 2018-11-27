@@ -25,7 +25,6 @@
         # TODO: maybe split even further
         afpfs-ng
         chromium
-        speedtest-cli
         iperf
         lynx
         mosh
@@ -43,11 +42,13 @@
         skype
         slack
         socat
+        speedtest-cli
         tdesktop
         tdlib
         telega-server
         telegram-cli
         w3m
         wget
+        wirelesstools
     ];
 }

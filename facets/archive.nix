@@ -3,10 +3,10 @@
 {
     environment.systemPackages = with pkgs; [
         gnutar
+        p7zip
         unrar
         unzip
         zip
-        p7zip
     ];
 
     environment.shellAliases = {

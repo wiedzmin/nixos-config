@@ -16,33 +16,39 @@
     services.urxvtd.enable = true;
 
     environment.systemPackages = with pkgs; [
+        # terminals
         alacritty
-        bat
-        bc
-        doitlive
         eternal-terminal
+        kitty # TODO: review and compare with Alacritty
+        rxvt_unicode-with-plugins
+        tmux
+
+        # nix-related
+        nix-bash-completions
+        nix-zsh-completions
+
+        # view/search/transform
+        bat
         exa
         fd
         findutils
         fpp
-        htop
-        iotop
-        kitty # TODO: review and compare with Alacritty
-        mc
         miller
-        multitail
-        nix-bash-completions
-        nix-zsh-completions
-        psmisc
-        pv
+        ripgrep
+        tealdeer
+
+        # misc
+        bc
+        dateutils
+        dex
+        doitlive
+        gcalcli
+        mc
+        plan9port
         renameutils
         replace
-        ripgrep
-        rxvt_unicode-with-plugins
         shellcheck
-        tmux
         tree
-        up
     ];
 
     environment.shellAliases = {
