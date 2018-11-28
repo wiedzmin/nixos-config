@@ -43,6 +43,7 @@
         texmaker
         ttyplot
         visidata
+        zathura
     ] ++ [ # scanner
         xsane # temporarily kept for debug
         simple-scan
