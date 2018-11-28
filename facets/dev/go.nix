@@ -4,7 +4,6 @@
     environment.systemPackages = with pkgs; [
         go
         dep2nix
-        go2nix
 
         # TODO: wait for/find/dismiss github.com/davecheney/graphpkg in nixpkgs
         # TODO: wait for/find/dismiss github.com/davecheney/prdeps in nixpkgs
