@@ -718,7 +718,7 @@
         programs.feh.enable = true;
         programs.rofi = {
             enable = true;
-            fullscreen = true;
+            fullscreen = false;
             borderWidth = 1;
             colors = {
                 window = {
