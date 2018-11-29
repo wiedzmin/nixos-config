@@ -104,10 +104,8 @@
                 epkgs.counsel-org-clock
                 epkgs.counsel-projectile
                 epkgs.counsel-tramp
-                epkgs.crux
                 epkgs.css-eldoc
                 epkgs.csv-mode
-                epkgs.darcula-theme
                 epkgs.darkburn-theme
                 epkgs.deadgrep
                 epkgs.delight
@@ -184,7 +182,6 @@
                 epkgs.ivy
                 epkgs.ivy-dired-history
                 epkgs.ivy-historian
-                epkgs.ivy-hydra
                 epkgs.ivy-pass
                 epkgs.ivy-rich
                 epkgs.ivy-xref
@@ -194,7 +191,6 @@
                 epkgs.jsonrpc
                 epkgs.kaolin-themes
                 epkgs.keychain-environment
-                epkgs.labburn-theme
                 epkgs.link-hint
                 epkgs.lsp-go
                 epkgs.lsp-haskell
@@ -275,7 +271,6 @@
                 epkgs.socyl
                 epkgs.solarized-theme
                 epkgs.spaceline
-                epkgs.sunburn-theme
                 epkgs.super-save
                 epkgs.swiper
                 epkgs.tide
