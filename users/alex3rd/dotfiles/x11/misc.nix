@@ -318,27 +318,34 @@
                 import re
                 from xkeysnail.transform import *
 
-                # [Conditional modmap] Change modifier keys in certain applications
                 define_conditional_modmap(re.compile(r'Emacs'), {
                     Key.RIGHT_CTRL: Key.ESC,
                 })
 
-                # Keybindings for Firefox/Chrome
-                define_keymap(re.compile("Firefox|Google-chrome"), {
-                    # Ctrl+Alt+j/k to switch next/previous tab
-                    K("C-M-j"): K("C-TAB"),
-                    K("C-M-k"): K("C-Shift-TAB"),
-                    # Type C-j to focus to the content
-                    K("C-j"): K("C-f6"),
+                define_keymap(re.compile("Firefox"), {
+                    K("C-j"): K("C-f6"), # Type C-j to focus to the content
+                    K("C-g"): K("f5"),
+                    K("C-Shift-Right"): K("C-TAB"),
+                    K("C-Shift-Left"): K("C-Shift-TAB"),
+                    K("C-Shift-comma"): Combo(Modifier.ALT, Key.KEY_1),
+                    K("C-Shift-dot"): Combo(Modifier.ALT, Key.KEY_9),
                     K("C-n"): K("C-g"),
                     K("C-Shift-n"): K("C-Shift-g"),
-                }, "Firefox and Chrome")
+                    K("M-comma"): K("M-Left"),
+                    K("M-dot"): K("M-Right"),
+                    K("C-x"): {
+                        K("b"): K("b"),
+                        K("k"): K("C-w"),
+                        K("C-c"): K("C-q"),
+                    },
+                }, "Firefox")
 
-                # Keybindings for Zeal https://github.com/zealdocs/zeal/
-                define_keymap(re.compile("Zeal"), {
-                    # Ctrl+s to focus search area
-                    K("C-s"): K("C-k"),
-                }, "Zeal")
+                define_keymap(re.compile("TelegramDesktop"), {
+                    K("C-x"): {
+                        K("C-c"): K("C-q"),
+                    },
+                    K("C-s"): K("Esc"),
+                }, "Telegram")
 
                 # Emacs-like keybindings in non-Emacs applications
                 define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Alacritty"), {
