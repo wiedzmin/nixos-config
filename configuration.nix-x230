@@ -12,6 +12,7 @@
         ./facets/dev/go.nix
         ./facets/dev/hardware.nix
         ./facets/dev/python.nix
+        ./facets/dev/rust.nix
         ./facets/media.nix
         ./facets/misc.nix
         ./facets/networking.nix

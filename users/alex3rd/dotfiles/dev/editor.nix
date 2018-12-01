@@ -64,6 +64,7 @@
                 # epkgs.lsp-dockerfile
                 # epkgs.lsp-javascript
                 # epkgs.lsp-sh
+                # epkgs.rustic - broken in nixpkgs
                 epkgs.ace-window
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
@@ -95,6 +96,7 @@
                 epkgs.company-lua
                 epkgs.company-nixos-options
                 epkgs.company-quickhelp
+                epkgs.company-racer
                 epkgs.company-restclient
                 epkgs.company-shell
                 epkgs.company-statistics
@@ -200,6 +202,7 @@
                 epkgs.lsp-java
                 epkgs.lsp-mode
                 epkgs.lsp-python
+                epkgs.lsp-rust
                 epkgs.lsp-ui
                 epkgs.lua-mode
                 epkgs.magit
@@ -254,6 +257,7 @@
                 epkgs.pyvenv
                 epkgs.quelpa
                 epkgs.quelpa-use-package
+                epkgs.racer
                 epkgs.rainbow-delimiters
                 epkgs.rainbow-identifiers
                 epkgs.rainbow-mode
