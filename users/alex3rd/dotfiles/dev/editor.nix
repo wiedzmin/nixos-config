@@ -69,6 +69,7 @@
                 epkgs.aggressive-indent
                 epkgs.amx
                 epkgs.anaphora
+                epkgs.ansible-doc
                 epkgs.atomic-chrome
                 epkgs.auto-compile
                 epkgs.avy
@@ -120,6 +121,7 @@
                 epkgs.docker-tramp
                 epkgs.dockerfile-mode
                 epkgs.dtrt-indent
+                epkgs.dynamic-ruler
                 epkgs.easy-kill
                 epkgs.easy-kill-extras
                 epkgs.edebug-x
@@ -174,6 +176,7 @@
                 epkgs.hydra
                 epkgs.ialign
                 epkgs.ibuffer-vc
+                epkgs.iedit
                 epkgs.imenu-anywhere
                 epkgs.info-buffer
                 epkgs.info-colors
