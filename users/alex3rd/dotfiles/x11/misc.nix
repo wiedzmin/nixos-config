@@ -138,7 +138,7 @@
                 ${builtins.concatStringsSep "\n"
                     (lib.mapAttrsToList (ip: name:
                         "current window ($program == \"" +
-                        config.misc.default_shell_class + "\" && $title =~ /" + name + "/) ==> tag ssh:" + name + ",")
+                        config.sys.default_shell_class + "\" && $title =~ /" + name + "/) ==> tag ssh:" + name + ",")
                     config.job.extra_hosts)}
             '';
             ".config/xmobar/xmobarrc".text = ''

@@ -14,7 +14,7 @@ in
     config = {
         nixpkgs.config.packageOverrides = super: {
             rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
-                ${pkgs.feh}/bin/feh --bg-fill ${config.x11.wallpapers_dir}/${config.x11.current_wallpaper}
+                ${pkgs.feh}/bin/feh --bg-fill ${config.sys.wallpapers_dir}/${config.sys.current_wallpaper}
             '';
             shell-capture = pkgs.writeShellScriptBin "shell-capture" ''
                 TEMPLATE="$1"

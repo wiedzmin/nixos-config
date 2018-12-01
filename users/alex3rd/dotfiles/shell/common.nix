@@ -2,12 +2,14 @@
 
 {
     imports = [
-        ../../private/traits.nix
+        ../../private/traits/common.nix
+        ../../private/traits/job.nix
     ];
 
     system.activationScripts.refreshShellBookmarks = "echo '" +
         (builtins.concatStringsSep "\n"
-             (lib.mapAttrsToList (bmk: path: bmk + " : " + path) config.misc.shell_bookmarks)) +
+             (lib.mapAttrsToList (bmk: path: bmk + " : " + path)
+             (config.common.shell_bookmarks // config.job.shell_bookmarks))) +
         "' > ${config.users.extraUsers.alex3rd.home}/.bookmarks";
 
     home-manager.users.alex3rd = {

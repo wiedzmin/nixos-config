@@ -22,7 +22,7 @@ in
         ];
         home.file = {
             "shell_snippets".text = ''
-                ${lib.concatStringsSep "\n" config.misc.shell_snippets}
+                ${lib.concatStringsSep "\n" config.dev.shell_snippets}
             '';
             "tmuxp/housekeeping.yml".text = ''
                 session_name: housekeeping
