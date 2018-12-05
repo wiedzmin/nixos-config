@@ -22,11 +22,11 @@
         aspell
         aspellDicts.en
         aspellDicts.ru
+        calibre
         ditaa
         djview
         djvu2pdf
         djvulibre
-        fbreader
         ghostscript
         gron
         noweb
