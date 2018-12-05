@@ -25,6 +25,7 @@
         ejson
         gnupg
         gpa
+        hashcat
         kbfs
         keybase
         keybase-gui
@@ -33,5 +34,6 @@
         rofi-pass
         srm
         sslscan
+        twa
    ];
 }
