@@ -91,7 +91,6 @@
                 epkgs.company-c-headers
                 epkgs.company-flx
                 epkgs.company-go
-                epkgs.company-jedi
                 epkgs.company-lsp
                 epkgs.company-lua
                 epkgs.company-nixos-options
@@ -129,7 +128,6 @@
                 epkgs.edebug-x
                 epkgs.edit-server
                 epkgs.editorconfig
-                epkgs.ein
                 epkgs.el-get
                 epkgs.eldoc-eval
                 epkgs.elfeed
@@ -138,13 +136,6 @@
                 epkgs.elisp-slime-nav
                 epkgs.emamux
                 epkgs.emmet-mode
-                epkgs.emms
-                epkgs.emms-info-mediainfo
-                epkgs.emms-mark-ext
-                epkgs.emms-mode-line-cycle
-                epkgs.emms-player-simple-mpv
-                epkgs.emms-soundcloud
-                epkgs.emms-state
                 epkgs.exec-path-from-shell
                 epkgs.expand-region
                 epkgs.f
@@ -172,10 +163,8 @@
                 epkgs.graphql-mode
                 epkgs.haskell-mode
                 epkgs.hc-zenburn-theme
-                epkgs.highlight-stages
                 epkgs.httprepl
                 epkgs.hungry-delete
-                epkgs.hydra
                 epkgs.ialign
                 epkgs.ibuffer-vc
                 epkgs.iedit
@@ -209,11 +198,9 @@
                 epkgs.magit-filenotify
                 epkgs.magithub
                 epkgs.markdown-mode
-                epkgs.mc-extras
                 epkgs.melpaStablePackages.slime
                 epkgs.mingus
                 epkgs.multi-compile
-                epkgs.multiple-cursors
                 epkgs.mwim
                 epkgs.names
                 epkgs.nginx-mode
@@ -246,8 +233,6 @@
                 epkgs.pcre2el
                 epkgs.pdf-tools
                 epkgs.persistent-scratch
-                epkgs.phi-search
-                epkgs.phi-search-mc
                 epkgs.pip-requirements
                 epkgs.plantuml-mode
                 epkgs.po-mode
@@ -258,8 +243,6 @@
                 epkgs.quelpa
                 epkgs.quelpa-use-package
                 epkgs.racer
-                epkgs.rainbow-delimiters
-                epkgs.rainbow-identifiers
                 epkgs.rainbow-mode
                 epkgs.rebox2
                 epkgs.recentf-ext
@@ -284,7 +267,6 @@
                 epkgs.tile
                 epkgs.transpose-frame
                 epkgs.twittering-mode
-                epkgs.typescript-mode
                 epkgs.undo-tree
                 epkgs.unfill
                 epkgs.unicode-fonts
