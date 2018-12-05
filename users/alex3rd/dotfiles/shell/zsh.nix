@@ -12,6 +12,7 @@ let
         "${config.users.extraUsers.alex3rd.home}/tools/bin"
         "${config.users.extraUsers.alex3rd.home}/.local/bin"
     ];
+    zshHistFilename = ".histfile";
 in
 {
     home-manager.users.alex3rd = {
@@ -47,7 +48,7 @@ in
             history = {
                 size = 10000;
                 save = 10000;
-                path = ".histfile";
+                path = "${zshHistFilename}";
                 ignoreDups = true;
                 expireDuplicatesFirst = true;
                 extended = true;
@@ -78,6 +79,7 @@ in
                 WORKON_HOME = "${config.users.extraUsers.alex3rd.home}/.virtualenvs";
                 XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
                 PATH = "$PATH:${lib.concatStringsSep ":" (lib.unique binDirs)}";
+                HISTFILE = "${zshHistFilename}";
             };
             shellAliases = {
                 dubc = "sudo ${pkgs.findutils}/bin/find . -name __pycache__ -or -name \"*.pyc\" -exec ${pkgs.coreutils}/bin/rm -rf {} + && ${pkgs.docker_compose}/bin/docker-compose up --build";
