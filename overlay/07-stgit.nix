@@ -1,6 +1,6 @@
 let
   name = "stgit-${version}";
-  version = "0.18";
+  version = "0.19";
 in
 self: super: {
 
@@ -11,7 +11,7 @@ stgit = with super; stdenv.mkDerivation rec {
         owner = "ctmarinas";
         repo = "stgit";
         rev = "v${version}";
-        sha256 = "0ydgg744m671nkhg7h4q2z3b9vpbc9914rbc0wcgimqfqsxkxx2y";
+        sha256 = "1dzl6cnyzwbzysp82x7w1yc03g25kwan3h0zpnzhhfhg6c904sis";
     };
 
     buildInputs = [ python2 git makeWrapper];
