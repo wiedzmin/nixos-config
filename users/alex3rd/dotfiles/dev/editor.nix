@@ -142,6 +142,7 @@
                 epkgs.fic-mode
                 epkgs.flycheck
                 epkgs.flycheck-clang-analyzer
+                epkgs.flycheck-flow
                 epkgs.flycheck-gometalinter
                 epkgs.flycheck-pos-tip
                 epkgs.format-all
