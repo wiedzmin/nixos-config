@@ -29,6 +29,7 @@
         djvulibre
         ghostscript
         gron
+        help2man
         noweb
         ntangle
         pandoc
@@ -38,6 +39,7 @@
         plantuml
         polar-bookshelf
         rubber
+        scdoc
         tabula
         texlive.combined.scheme-full
         texmaker
