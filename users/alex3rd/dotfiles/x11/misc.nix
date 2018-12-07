@@ -26,7 +26,6 @@
 
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
-            xkeysnail
 
             # helper scripts for WMs
             rescale-wallpaper
