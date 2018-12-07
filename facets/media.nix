@@ -8,7 +8,7 @@
         maim
         mpv
         perlPackages.ImageExifTool
-        rapid-photo-downloader
+        # rapid-photo-downloader
         youtube-dl
     ];
 }
