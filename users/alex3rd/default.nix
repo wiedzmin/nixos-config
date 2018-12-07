@@ -27,6 +27,7 @@
         ./services/watch-dunst.nix
         ./services/nixpkgs-update-status.nix
         ./services/xkeysnail.nix
+        ./services/fusuma.nix
     ];
 
     users.extraUsers = {

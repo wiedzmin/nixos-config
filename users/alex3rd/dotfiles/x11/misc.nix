@@ -315,6 +315,45 @@
                     text-color: inherit;
                 }
             '';
+            ".config/fusuma/config.yml".text = ''
+                swipe:
+                  3:
+                    left:
+                      command: '${pkgs.xdotool}/bin/xdotool key alt+Left'
+                    right:
+                      command: '${pkgs.xdotool}/bin/xdotool key alt+Right'
+                    up:
+                      command: '${pkgs.xdotool}/bin/xdotool key ctrl+t'
+                      threshold: 1.5
+                    down:
+                      command: '${pkgs.xdotool}/bin/xdotool key ctrl+w'
+                      threshold: 1.5
+                  4:
+                    left:
+                      command: '${pkgs.xdotool}/bin/xdotool key super+Left'
+                    right:
+                      command: '${pkgs.xdotool}/bin/xdotool key super+Right'
+                    up:
+                      command: '${pkgs.xdotool}/bin/xdotool key super+a'
+                    down:
+                      command: '${pkgs.xdotool}/bin/xdotool key super+s'
+                pinch:
+                  2:
+                    in:
+                      command: '${pkgs.xdotool}/bin/xdotool key ctrl+plus'
+                      threshold: 0.1
+                    out:
+                      command: '${pkgs.xdotool}/bin/xdotool key ctrl+minus'
+                      threshold: 0.1
+
+                threshold:
+                  swipe: 1
+                  pinch: 1
+
+                interval:
+                  swipe: 1
+                  pinch: 1
+            '';
             ".config/xkeysnail/config.py".text = ''
                 # -*- coding: utf-8 -*-
 
