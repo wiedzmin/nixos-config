@@ -51,6 +51,7 @@
         shellcheck
         tree
         unicode-paracode
+        wtf
     ];
 
     environment.shellAliases = {

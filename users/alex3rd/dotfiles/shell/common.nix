@@ -13,6 +13,71 @@
         "' > ${config.users.extraUsers.alex3rd.home}/.bookmarks";
 
     home-manager.users.alex3rd = {
+        home.file = {
+            ".config/wtf/config.yml".text = ''
+                wtf:
+                  colors:
+                    border:
+                      focusable: darkslateblue
+                      focused: orange
+                      normal: gray
+                  grid:
+                    columns: [40, 40]
+                    rows: [13, 13, 4]
+                  refreshInterval: 1
+                  mods:
+                    clocks:
+                      colors:
+                        rows:
+                          even: "lightblue"
+                          odd: "white"
+                      enabled: true
+                      locations:
+                        ${builtins.concatStringsSep "\n        "
+                            (lib.mapAttrsToList (caption: timezone: caption + ": " + timezone) config.common.worldClocks)}
+                      position:
+                        top: 0
+                        left: 0
+                        height: 1
+                        width: 1
+                      refreshInterval: 15
+                      sort: "alphabetical"
+                    security:
+                      enabled: true
+                      position:
+                        top: 1
+                        left: 0
+                        height: 1
+                        width: 1
+                      refreshInterval: 3600
+                    status:
+                      enabled: true
+                      position:
+                        top: 2
+                        left: 0
+                        height: 1
+                        width: 2
+                      refreshInterval: 1
+                    system:
+                      enabled: true
+                      position:
+                        top: 0
+                        left: 1
+                        height: 1
+                        width: 1
+                      refreshInterval: 3600
+                    textfile:
+                      enabled: true
+                      filePath: "~/.config/wtf/config.yml"
+                      position:
+                        top: 1
+                        left: 1
+                        height: 1
+                        width: 1
+                      refreshInterval: 30
+            '';
+        };
+
         home.packages = with pkgs; [
             optimize-nix
         ];
