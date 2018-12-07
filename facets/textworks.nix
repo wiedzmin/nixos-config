@@ -28,6 +28,7 @@
         djvu2pdf
         djvulibre
         ghostscript
+        git-latexdiff
         gron
         help2man
         noweb
