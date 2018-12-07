@@ -377,6 +377,7 @@
                     K("C-x"): {
                         K("b"): K("b"),
                         K("k"): K("C-w"),
+                        K("C-s"): K("C-s"),
                         K("C-c"): K("C-q"),
                     },
                 }, "Firefox")
@@ -442,7 +443,7 @@
                         # C-x C-f (open)
                         K("C-f"): K("C-o"),
                         # C-x C-s (save)
-                        K("C-s"): K("C-s"),
+                        # K("C-s"): K("C-s"),
                         # C-x k (kill tab)
                         K("k"): K("C-f4"),
                         # C-x C-c (exit)
