@@ -46,6 +46,9 @@
             show_uptime_info
         ];
         home.file = {
+            "${config.common.snippetsFile}".text = ''
+                ${lib.concatStringsSep "\n" config.common.snippets}
+            '';
             ".arbtt/categorize.cfg".text = ''
                 aliases (
                         "Navigator" -> "Firefox",

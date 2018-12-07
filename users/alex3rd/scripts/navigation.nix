@@ -256,6 +256,28 @@ in
 
                 exit 0
             '';
+            rofi_insert_snippet = pkgs.writeShellScriptBin "rofi_insert_snippet" ''
+                ask_for_snippets() {
+                    SNIPPETS=$(<${config.users.extraUsers.alex3rd.home}/${config.common.snippetsFile})
+                    for i in "''${SNIPPETS[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    SNIPPET=$( (ask_for_snippets) | ${pkgs.rofi}/bin/rofi -dmenu -p "Snippet" )
+                    if [ ! -n "$SNIPPET" ]; then
+                        exit 1
+                    fi
+                    echo $SNIPPET | tr -d '\n' | ${pkgs.xsel}/bin/xsel -i --clipboard
+                    ${pkgs.xdotool}/bin/xdotool type -- "$(${pkgs.xsel}/bin/xsel -bo)"
+                }
+
+                main
+
+                exit 0
+            '';
         };
     };
 }

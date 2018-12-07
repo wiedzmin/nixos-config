@@ -54,6 +54,7 @@
             backlightctl
             jobvpnctl
             lockscreen
+            rofi_insert_snippet
             rofi_view_service_journal
             sshuttlectl
             volumectl
