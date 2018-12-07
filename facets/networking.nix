@@ -25,9 +25,11 @@
         # TODO: maybe split even further
         afpfs-ng
         chromium
+        http-prompt
         httpie
         iperf
         lynx
+        miniserve
         mosh
         netcat
         nethogs
@@ -45,6 +47,7 @@
         slack
         socat
         speedtest-cli
+        ssh-agents
         tdesktop
         tdlib
         telega-server
