@@ -61,6 +61,7 @@
             wifictl
 
             job-mysql-cli
+            rofi_list_job_docker_stacks_ps
         ];
     };
 }

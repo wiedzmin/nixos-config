@@ -8,6 +8,9 @@ let
     currentUser = "alex3rd";
     previousUser = "octocat";
     screenshotDateFormat = "%Y-%m-%d-%T";
+    dockerStackPsCustomFormat = "{{.Name}}   {{.Image}}   {{.Node}} {{.DesiredState}}   {{.CurrentState}}";
+    useDockerStackPsCustomFormat = false;
+    dockerStackShowOnlyRunning = true;
 in
 {
     config = {
@@ -272,6 +275,31 @@ in
                     fi
                     echo $SNIPPET | tr -d '\n' | ${pkgs.xsel}/bin/xsel -i --clipboard
                     ${pkgs.xdotool}/bin/xdotool type -- "$(${pkgs.xsel}/bin/xsel -bo)"
+                }
+
+                main
+
+                exit 0
+            '';
+            rofi_list_job_docker_stacks_ps = pkgs.writeShellScriptBin "rofi_list_job_docker_stacks_ps" ''
+                ask_for_stacks() {
+                    STACKS=$(ls ${config.job.infra.stacks_path} | grep yml | cut -f1 -d.)
+                    for i in "''${STACKS[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    STACK=$( (ask_for_stacks) | ${pkgs.rofi}/bin/rofi -dmenu -p "View stack status" )
+                    if [ -n "$STACK" ]; then
+                       ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
+                       ${config.job.infra.default_remote_user}@${config.job.infra.docker_swarm_manager_host} \
+                       -c 'docker stack ps $STACK \
+                       ${ if dockerStackShowOnlyRunning then "--filter \\\"desired-state=Running\\\"" else ""} \
+                       ${ if useDockerStackPsCustomFormat then "--format \\\"${dockerStackPsCustomFormat}\\\"" else ""} \
+                       '; read"
+                    fi
                 }
 
                 main
