@@ -73,6 +73,7 @@
 
     environment.systemPackages = with pkgs; [
         arandr
+        ckbcomp
         dmenu2
         edid-decode
         gmrun
