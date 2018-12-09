@@ -9,6 +9,7 @@
         cloc
         doxygen
         elfinfo
+        flamegraph
         gdb
         gdbgui
         gist

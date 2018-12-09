@@ -12,5 +12,6 @@
         jdupes
         skrooge
         super
+        inkscape
     ];
 }
