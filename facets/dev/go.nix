@@ -15,6 +15,7 @@
         # TODO: wait for/find/dismiss gorename in nixpkgs
         # TODO: wait for/find/dismiss unbed in nixpkgs
         asmfmt
+        govers
         deadcode
         dep
         errcheck
