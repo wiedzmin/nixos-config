@@ -56,16 +56,4 @@
         retdec
         rr
     ];
-
-    environment.shellAliases = {
-        ptch = "${pkgs.patch}/bin/patch -Ntbp0 < ";
-        uptch = "${pkgs.patch}/bin/patch -NRtbp0 < ";
-        clptch = "${pkgs.findutils}/bin/find . -name \*.orig -o -name \*.rej | xargs rm";
-    };
-
-    programs.zsh.shellAliases = {
-        ptch = "${pkgs.patch}/bin/patch -Ntbp0 < ";
-        uptch = "${pkgs.patch}/bin/patch -NRtbp0 < ";
-        clptch = "${pkgs.findutils}/bin/find . -name \*.orig -o -name \*.rej | xargs rm";
-    };
 }

@@ -11,12 +11,4 @@
         unzip
         zip
     ];
-
-    environment.shellAliases = {
-        untar = "tar xvvf";
-    };
-
-    programs.zsh.shellAliases = {
-        untar = "tar xvvf";
-    };
 }

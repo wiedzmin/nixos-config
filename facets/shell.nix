@@ -53,16 +53,4 @@
         unicode-paracode
         wtf
     ];
-
-    environment.shellAliases = {
-        li = "${pkgs.exa}/bin/exa -ial";
-        lsd = "${pkgs.exa}/bin/exa -ld *(-/DN)";
-        lsa = "${pkgs.exa}/bin/exa -ld .*";
-    };
-
-    programs.zsh.shellAliases = {
-        li = "${pkgs.exa}/bin/exa -ial";
-        lsd = "${pkgs.exa}/bin/exa -ld *(-/DN)";
-        lsa = "${pkgs.exa}/bin/exa -ld .*";
-    };
 }

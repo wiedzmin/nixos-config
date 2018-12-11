@@ -82,24 +82,32 @@ in
                 XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
             };
             shellAliases = {
-                dubc = "sudo ${pkgs.findutils}/bin/find . -name __pycache__ -or -name \"*.pyc\" -exec ${pkgs.coreutils}/bin/rm -rf {} + && ${pkgs.docker_compose}/bin/docker-compose up --build";
-                TF = "${pkgs.coreutils}/bin/tail -f";
-                df = "${pkgs.dfc}/bin/dfc";
-                dud = "(setopt globdots; ${pkgs.coreutils}/bin/du -mhs * | ${pkgs.coreutils}/bin/sort -hr)";
-                git = "${pkgs.gitAndTools.hub}/bin/hub";
-                gop = "git open";
-                jcurl = "curl_jq(){ ${pkgs.curl}/bin/curl $@ | ${pkgs.jq}/bin/jq . }; curl_jq";
-                shme = "ssh_whoami(){ ssh `whoami`@$@}; ssh_whoami";
-                shroot = "ssh_root(){ ssh root@$@}; ssh_root";
-
-                ls = "${pkgs.exa}/bin/exa -F --color=auto";
-                ll = "${pkgs.exa}/bin/exa -l";
-                la = "${pkgs.exa}/bin/exa -A";
                 cat = "${pkgs.bat}/bin/bat";
                 cat_raw = "${pkgs.coreutils}/bin/cat";
+
+                df = "${pkgs.dfc}/bin/dfc";
+                dud = "(setopt globdots; ${pkgs.coreutils}/bin/du -mhs * | ${pkgs.coreutils}/bin/sort -hr)";
                 find = "${pkgs.fd}/bin/fd";
+
+                git = "${pkgs.gitAndTools.hub}/bin/hub";
+                gop = "git open";
+
                 gpg = "${pkgs.gnupg}/bin/gpg2";
+
+                li = "${pkgs.exa}/bin/exa -ial";
+                ls = "${pkgs.exa}/bin/exa -F --color=auto";
+                lsa = "${pkgs.exa}/bin/exa -ld .*";
+                lsd = "${pkgs.exa}/bin/exa -ld *(-/DN)";
+                lso = "${pkgs.coreutils}/bin/ls";
+
+                untar = "tar xvvf";
+
                 zr = ". ~/.zshrc";
+
+                DI = "${pkgs.docker}/bin/docker inspect";
+                DL = "${pkgs.docker}/bin/docker logs";
+                DP = "${pkgs.docker}/bin/docker ps";
+                DPA = "${pkgs.docker}/bin/docker ps -a";
             };
             plugins = [
                 {
