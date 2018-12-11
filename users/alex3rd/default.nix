@@ -63,6 +63,7 @@
 
             job-mysql-cli
             rofi_list_job_docker_stacks_ps
+            rofi_docker_show_container_traits
         ];
     };
 }

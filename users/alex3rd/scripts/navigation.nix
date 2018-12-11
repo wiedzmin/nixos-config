@@ -306,6 +306,56 @@ in
 
                 exit 0
             '';
+            rofi_docker_show_container_traits = pkgs.writeShellScriptBin "rofi_docker_show_container_traits" ''
+                declare -A container_traits
+
+                container_traits=(
+                  ["created"]='{{.Created}}'
+                  ["path + args"]='{{.Path}} :: {{.Args}}'
+                  ["stats"]='{{println .State.Status}} {{.State.StartedAt}} <--> {{println .State.FinishedAt}} restarts: {{.RestartCount}}'
+                  ["ports"]='{{range $port, $mappings :=.NetworkSettings.Ports}}{{$port}} --> {{range $ifnum, $ifdef:=$mappings}}{{$ifnum}}) {{$ifdef.HostIp}}:{{$ifdef.HostPort}}{{end}}{{end}}'
+                  ["mounts"]='{{range $i, $mountpoint :=.Mounts}}{{with $mountpoint}}{{.Type}} {{.Destination}} --> {{.Source}} RW:{{.RW}}{{end}}{{end}}'
+                  ["env"]='{{range $entry :=.Config.Env}}{{with $entry}}{{println .}}{{end}}{{end}}'
+                  ["cmd"]='{{index .Config.Cmd 0}}'
+                  ["image"]='{{.Config.Image}}'
+                  ["volumes"]='{{range $vol, $data :=.Config.Volumes}}{{$vol}}: {{$data}}{{end}}'
+                  ["entrypoint"]='{{index .Config.Entrypoint 0}}'
+                  ["labels"]='{{range $name, $value :=.Config.Labels}}{{$name}}: {{println $value}}{{end}}'
+                  ["net: ip"]='{{range $network, $settings :=.NetworkSettings.Networks}}{{$settings.IPAddress}}{{end}}'
+                  ["net: gateway"]='{{range $network, $settings :=.NetworkSettings.Networks}}{{$settings.Gateway}}{{end}}'
+                  ["net: names"]='{{range $network, $settings :=.NetworkSettings.Networks}}{{$network}}/{{println $settings.Aliases}}{{end}}'
+                )
+
+                list_container_traits() {
+                    for i in "''${!container_traits[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/uniq | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
+                    if [ -n $HOST ]; then
+                        if [ "$HOST" == "localhost" ]; then
+                            eval $(${pkgs.docker-machine}/bin/docker-machine env -u)
+                        else
+                            eval $(${pkgs.docker-machine}/bin/docker-machine env $HOST)
+                        fi
+                    selected_container=$( ${pkgs.docker}/bin/docker ps -a --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                    if [ -n "$selected_container" ]; then
+                        selected_trait=$( (list_container_traits) | ${pkgs.rofi}/bin/rofi -dmenu -p "Inspect" )
+                        if [ -n "$selected_trait" ]; then
+                            inspect_command="${pkgs.docker}/bin/docker inspect $selected_container --format='"''${container_traits[$selected_trait]}"'"
+                            eval `echo $inspect_command` | ${pkgs.xclip}/bin/xclip -i -r -selection clipboard
+                        fi
+                    fi
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
         };
     };
 }
