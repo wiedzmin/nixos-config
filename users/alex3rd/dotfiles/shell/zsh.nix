@@ -73,13 +73,13 @@ in
                 GREP_COLOR = "1;32";
                 GREP_OPTIONS = "--color=auto";
                 GTAGSLIBPATH = "${config.users.extraUsers.alex3rd.home}/.gtags/";
+                HISTFILE = "${zshHistFilename}";
+                PATH = "$PATH:${lib.concatStringsSep ":" (lib.unique binDirs)}";
                 SHELL = "${pkgs.zsh}/bin/zsh";
                 TMUXP_CONFIGDIR = "${config.users.extraUsers.alex3rd.home}/tmuxp";
                 VISUAL = "${pkgs.emacs}/bin/emacsclient";
                 WORKON_HOME = "${config.users.extraUsers.alex3rd.home}/.virtualenvs";
                 XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
-                PATH = "$PATH:${lib.concatStringsSep ":" (lib.unique binDirs)}";
-                HISTFILE = "${zshHistFilename}";
             };
             shellAliases = {
                 dubc = "sudo ${pkgs.findutils}/bin/find . -name __pycache__ -or -name \"*.pyc\" -exec ${pkgs.coreutils}/bin/rm -rf {} + && ${pkgs.docker_compose}/bin/docker-compose up --build";
