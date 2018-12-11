@@ -356,6 +356,29 @@ in
 
                 exit 0
             '';
+            rofi_view_remote_docker_logs = pkgs.writeShellScriptBin "rofi_view_remote_docker_logs" ''
+                # TODO: abstract away creds/hosts details and rework accordingly
+                ask_for_logs() {
+                    LOGS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@${config.job.infra.logs_host} "find ${config.job.infra.remote_docker_logs_path}/ -maxdepth 1 -size +0 -type f | grep -v gz")
+                    for i in "''${LOGS[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    LOG=$( (ask_for_logs) | ${pkgs.rofi}/bin/rofi -dmenu -p "View log" )
+                    if [ -n "$LOG" ]; then
+                       ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
+                       ${config.job.infra.default_remote_user}@${config.job.infra.logs_host} \
+                       -c 'tail -f $LOG'"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
         };
     };
 }
