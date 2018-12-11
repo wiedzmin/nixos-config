@@ -13,5 +13,6 @@
         skrooge
         super
         inkscape
+        todoman
     ];
 }

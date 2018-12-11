@@ -34,9 +34,12 @@
         fd
         findutils
         fpp
+        glogg
         miller
+        rdfind
         ripgrep
         tealdeer
+        xsv
 
         # misc
         bc
@@ -44,6 +47,7 @@
         dex
         doitlive
         gcalcli
+        loop
         mc
         plan9port
         renameutils
