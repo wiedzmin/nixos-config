@@ -72,26 +72,12 @@
     programs.light.enable = true;
 
     environment.systemPackages = with pkgs; [
-        arandr
         ckbcomp
-        dmenu2
-        edid-decode
         gmrun
-        haskellPackages.arbtt
-        haskellPackages.xmobar
-        i3lock-color
-        taffybar
-        xclip
-        xdotool
         xlibs.xev
-        xlibs.xmodmap
         xlibs.xprop
-        xorg.xdpyinfo
         xorg.xhost
         xorg.xmessage
-        xosd
-
-        gnome3.gnome-tweak-tool
     ];
     fonts = {
         fontconfig = {
