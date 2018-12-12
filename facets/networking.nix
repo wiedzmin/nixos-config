@@ -56,5 +56,6 @@
         wget
         wirelesstools
         you-get
+        zoom-us
     ];
 }
