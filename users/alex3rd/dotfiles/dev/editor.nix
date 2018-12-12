@@ -218,6 +218,7 @@
                 epkgs.org-capture-pop-frame
                 epkgs.org-clock-today
                 epkgs.org-dashboard
+                epkgs.org-download
                 epkgs.org-link-minor-mode
                 epkgs.org-mru-clock
                 epkgs.org-plus-contrib
