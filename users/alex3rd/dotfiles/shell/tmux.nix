@@ -157,7 +157,7 @@ in
                 bind -T copy-mode M-n run-shell "${pkgs.shell-capture}/bin/shell-capture ns"
                 bind -T copy-mode M-x run-shell "${pkgs.shell-capture}/bin/shell-capture xs"
 
-                bind F12 send-key "${pkgs.hr}/bin/hr" Enter
+                bind F12 send-key "#############################################################################################"
 
                 bind z split-window -v "${pkgs.procps}/bin/ps -ef | \
                                         ${pkgs.gnused}/bin/sed 1d | \
