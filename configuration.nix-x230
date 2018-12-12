@@ -18,6 +18,7 @@
         ./facets/networking.nix
         ./facets/nixtools.nix
         ./facets/security.nix
+        ./facets/monitoring.nix
         ./facets/shell.nix
         ./facets/textworks.nix
         ./facets/virt.nix
