@@ -207,7 +207,8 @@ in
                 ${builtins.concatStringsSep
                            "\n"
                            (pkgs.stdenv.lib.mapAttrsToList
-                                (ip: names: "  [\"${names}\"]=\"${ip}\"")
+                                (ip: meta: builtins.concatStringsSep "\n"
+                                           (map (hostname: "  [\"${hostname}\"]=\"${ip}\"") meta.hostNames))
                                 (config.job.extra_hosts // config.misc.extra_hosts))}
                 )
 

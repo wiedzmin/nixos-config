@@ -138,10 +138,14 @@
                 year $now == year $date ==> tag current-year,
 
                 ${builtins.concatStringsSep "\n"
-                    (lib.mapAttrsToList (ip: name:
-                        "current window ($program == \"" +
-                        config.sys.default_shell_class + "\" && $title =~ /" + name + "/) ==> tag ssh:" + name + ",")
-                    config.job.extra_hosts)}
+                           (pkgs.stdenv.lib.mapAttrsToList
+                                 (ip: meta: builtins.concatStringsSep "\n"
+                                            (map (hostname: "current window ($program == \"" +
+                                                            config.sys.default_shell_class + "\" && $title =~ /" +
+                                                            hostname + "/) ==> tag ssh:" + hostname + ",")
+                                                 meta.hostNames))
+                                 (config.job.extra_hosts // config.misc.extra_hosts))}
+
             '';
             ".config/xmobar/xmobarrc".text = ''
                 Config { font = "xft:Iosevka:style=Bold:pixelsize=16"
