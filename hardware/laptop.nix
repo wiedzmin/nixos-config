@@ -2,7 +2,7 @@
 
 {
     imports = [
-        ../scripts/nas.nix
+        ../toolbox/nas/scripts.nix
     ];
 
     powerManagement = {

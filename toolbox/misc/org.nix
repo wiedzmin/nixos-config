@@ -2,7 +2,9 @@
 
 {
     environment.systemPackages = with pkgs; [
-        sbcl
-        lispPackages.quicklisp
+        fpart
+        gtm
+        jdupes
+        todoman
     ];
 }

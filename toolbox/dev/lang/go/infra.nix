@@ -2,6 +2,9 @@
 
 {
     environment.systemPackages = with pkgs; [
-        flow
+        dep
+        dep2nix
+        glide
+        go
     ];
 }

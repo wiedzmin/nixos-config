@@ -2,11 +2,15 @@
 
 {
     environment.systemPackages = with pkgs; [
+        nix-du
         nix-index
-        nix-prefetch-scripts
         nix-prefetch-github
+        nix-prefetch-scripts
         nix-serve
         nixops
-        nix-du
+
+        # shell completions
+        nix-bash-completions
+        nix-zsh-completions
     ];
 }

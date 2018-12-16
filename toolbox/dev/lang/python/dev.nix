@@ -2,13 +2,8 @@
 
 {
     environment.systemPackages = with pkgs; [
-        # infra
-        pypi2nix
-        python2Full
-        python3Full
-
-        # dev
         idea.pycharm-community
+        pyflame
         pyre
         python3Packages.notebook
         python3Packages.pyls-black
@@ -17,6 +12,5 @@
         python3Packages.python-language-server
         python3Packages.snakeviz
         python3Packages.virtualenvwrapper
-        pyflame
     ];
 }
