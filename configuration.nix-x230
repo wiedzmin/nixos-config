@@ -8,6 +8,7 @@
         ./facets/dev/ccpp.nix
         ./facets/dev/cl.nix
         ./facets/dev/clojure.nix
+        ./facets/dev/js.nix
         ./facets/dev/common.nix
         ./facets/dev/go.nix
         ./facets/dev/hardware.nix
