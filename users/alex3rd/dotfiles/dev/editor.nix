@@ -61,9 +61,9 @@
                 withGTK3 = false;
             });
             extraPackages = epkgs: [
-                # epkgs.lsp-dockerfile
-                # epkgs.lsp-javascript
-                # epkgs.lsp-sh
+                # epkgs.lsp-dockerfile // https://github.com/emacs-lsp/lsp-dockerfile
+                # epkgs.lsp-javascript-typescript // read https://github.com/emacs-lsp/lsp-javascript for server side setup also
+                # epkgs.lsp-sh // https://github.com/emacs-lsp/lsp-sh
                 epkgs.ace-window
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
