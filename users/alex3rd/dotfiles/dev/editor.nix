@@ -146,6 +146,7 @@
                 epkgs.flycheck-pos-tip
                 epkgs.format-all
                 epkgs.function-args
+                epkgs.general
                 epkgs.git-msg-prefix
                 epkgs.git-timemachine
                 epkgs.gitignore-mode
