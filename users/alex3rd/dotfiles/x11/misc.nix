@@ -606,6 +606,15 @@
                           format = "CPU: %usage"
                 }
             '';
+            ".config/networkmanager-dmenu/config.ini".text= ''
+                [dmenu]
+                dmenu_command = ${pkgs.rofi}/bin/rofi
+                rofi_highlight = True
+
+                [editor]
+                terminal = ${pkgs.alacritty}/bin/alacritty
+                gui_if_available = True
+            '';
             ".config/rofi-pass/config".text = ''
                 # permanently set alternative root dir. Use ":" to separate multiple roots
                 # which can be switched at runtime with shift+left/right

@@ -108,6 +108,8 @@
             rofi_docker_show_container_traits
             rofi_list_job_docker_stacks_ps
             rofi_view_remote_docker_logs
+
+            networkmanager_dmenu # using rofi, despite naming
         ];
     };
 }
