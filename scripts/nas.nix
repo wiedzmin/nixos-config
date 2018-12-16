@@ -1,14 +1,23 @@
 {config, pkgs, ...}:
 
+let
+    nasConfigPath = "$HOME/.config/synology/nas.yml";
+in
 {
-    imports = [
-        # TODO: decouple from user, make orthogonal
-        ../users/alex3rd/private/traits/nas.nix
-    ];
     config = {
         nixpkgs.config.packageOverrides = super: {
             mount_nas_volume = pkgs.writeShellScriptBin "mount_nas_volume" ''
-                NAS_ONLINE=$(${pkgs.netcat}/bin/nc -z ${config.nas.hostname} 22 2 -w 2 2>&1)
+                CONFIGFILE=${nasConfigPath}
+                if [[ ! -f $CONFIGFILE ]]; then
+                    ${pkgs.libnotify}/bin/notify-send -t 5000 -u critical "Missing config file, exiting"
+                    exit 1
+                fi
+                NAS_HOSTNAME=$(${pkgs.shyaml}/bin/shyaml -gy nas.hostname $CONFIGFILE)
+                NAS_ADMIN_LOGIN=$(${pkgs.shyaml}/bin/shyaml -gy nas.users.admin.login $CONFIGFILE)
+                NAS_ADMIN_PASSWORD=$(${pkgs.shyaml}/bin/shyaml -gy nas.users.admin.password $CONFIGFILE)
+                NAS_MOUNT_PATH=$(${pkgs.shyaml}/bin/shyaml -gy nas.mount.basedir $CONFIGFILE)
+
+                NAS_ONLINE=$(${pkgs.netcat}/bin/nc -z $NAS_HOSTNAME 22 2 -w 2 2>&1)
                 if [ -z "$NAS_ONLINE" ]; then
                     ${pkgs.libnotify}/bin/notify-send -t 7000 -u critical "Cannot access NAS, network error"
                     exit 1
@@ -20,10 +29,9 @@
                     ${pkgs.libnotify}/bin/notify-send -t 5000 -u critical "Volume '$VOLUME' already mounted"
                     exit 1
                 fi
-                mkdir -p ${config.nas.local_mount_base}/$VOLUME
-                ${pkgs.afpfs-ng}/bin/mount_afp \
-                    afp://${config.nas.primary_user}:${config.nas.primary_user_password}@${config.nas.hostname}/$VOLUME \
-                    ${config.nas.local_mount_base}/$VOLUME
+                mkdir -p $NAS_MOUNT_PATH/$VOLUME
+                ${pkgs.afpfs-ng}/bin/mount_afp afp://$NAS_ADMIN_LOGIN:$NAS_ADMIN_PASSWORD@$NAS_HOSTNAME/$VOLUME \
+                    $NAS_MOUNT_PATH/$VOLUME
                 if [[ $? -eq 0 ]]; then
                     ${pkgs.libnotify}/bin/notify-send -t 3000 "Volume '$VOLUME' succesfully mounted"
                 else
@@ -31,18 +39,32 @@
                 fi
             '';
             unmount_nas_volume = pkgs.writeShellScriptBin "unmount_nas_volume" ''
+                CONFIGFILE=${nasConfigPath}
+                if [[ ! -f $CONFIGFILE ]]; then
+                    ${pkgs.libnotify}/bin/notify-send -t 5000 -u critical "Missing config file, exiting"
+                    exit 1
+                fi
+                NAS_MOUNT_PATH=$(${pkgs.shyaml}/bin/shyaml -gy nas.mount.basedir $CONFIGFILE)
+
                 VOLUME=$1
                 YET_MOUNTED=$(cat /etc/mtab | grep catscan | cut -d ' '  -f 1 | grep $VOLUME)
                 if [[ ! -z $YET_MOUNTED ]]; then
-                    fusermount -u ${config.nas.local_mount_base}/$VOLUME
+                    fusermount -u $NAS_MOUNT_PATH/$VOLUME
                     ${pkgs.libnotify}/bin/notify-send -t 3000 "Volume $VOLUME succesfully unmounted!"
                 else
                     ${pkgs.libnotify}/bin/notify-send -t 7000 "Volume '$VOLUME' already unmounted!"
                 fi
             '';
             rofi_mount_nas_volume = pkgs.writeShellScriptBin "rofi_mount_nas_volume" ''
+                CONFIGFILE=${nasConfigPath}
+                if [[ ! -f $CONFIGFILE ]]; then
+                    ${pkgs.libnotify}/bin/notify-send -t 5000 -u critical "Missing config file, exiting"
+                    exit 1
+                fi
+                NAS_VOLUMES=$(${pkgs.shyaml}/bin/shyaml -gy nas.volumes $CONFIGFILE)
+
                 nas_volumes=(
-                ${builtins.concatStringsSep "\n" config.nas.volumes}
+                $NAS_VOLUMES
                 )
 
                 list_nas_volumes() {
@@ -85,7 +107,14 @@
                 exit 0
             '';
             force_unmount_nas = pkgs.writeShellScriptBin "force_unmount_nas" ''
-                mounted_nas_volumes=$(cat /etc/mtab | grep ${config.nas.hostname} | cut -d ' '  -f 1)
+                CONFIGFILE=${nasConfigPath}
+                if [[ ! -f $CONFIGFILE ]]; then
+                    ${pkgs.libnotify}/bin/notify-send -t 5000 -u critical "Missing config file, exiting"
+                    exit 1
+                fi
+                NAS_HOSTNAME=$(${pkgs.shyaml}/bin/shyaml -gy nas.hostname $CONFIGFILE)
+
+                mounted_nas_volumes=$(cat /etc/mtab | grep $NAS_HOSTNAME | cut -d ' '  -f 1)
                 for i in "''${mounted_nas_volumes[@]}"
                 do
                     ${pkgs.unmount_nas_volume}/bin/unmount_nas_volume "$i"

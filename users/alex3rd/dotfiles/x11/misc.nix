@@ -4,6 +4,7 @@
     imports = [
         ../../scripts/statuses.nix
         ../../scripts/navigation.nix
+        ../../private/traits/nas.nix
     ];
 
     system.activationScripts.ensureBacklightPermissions = ''
@@ -356,6 +357,18 @@
                 interval:
                   swipe: 1
                   pinch: 1
+            '';
+            ".config/synology/nas.yml".text = ''
+                nas:
+                  hostname: ${config.nas.hostname}
+                  users:
+                    admin:
+                      login: ${config.nas.primary_user}
+                      password: ${config.nas.primary_user_password}
+                  # FIXME: use more versatile parser, because those implemented with bash have limited functionality
+                  volumes: ${builtins.concatStringsSep " " config.nas.volumes}
+                  mount:
+                    basedir: ${config.nas.local_mount_base}
             '';
             ".config/xkeysnail/config.py".text = ''
                 # -*- coding: utf-8 -*-
