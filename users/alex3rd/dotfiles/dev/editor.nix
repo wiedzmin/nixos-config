@@ -64,7 +64,6 @@
                 # epkgs.lsp-dockerfile
                 # epkgs.lsp-javascript
                 # epkgs.lsp-sh
-                # epkgs.rustic - broken in nixpkgs
                 epkgs.ace-window
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
@@ -255,6 +254,7 @@
                 epkgs.reverse-im
                 epkgs.russian-holidays
                 epkgs.rust-mode
+                epkgs.rustic
                 epkgs.savekill
                 epkgs.skeletor
                 epkgs.slime-company
