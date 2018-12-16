@@ -213,6 +213,9 @@ in
                 "commit" = {
                     template = "${config.users.extraUsers.alex3rd.home}/git-assets/git-commit-template";
                 };
+                "rebase" = {
+                    autoSquash = true;
+                };
                 "core" = {
                     autocrlf = false;
                     excludesfile = "${config.users.extraUsers.alex3rd.home}/git-assets/.gitignore";
