@@ -311,6 +311,7 @@ in
                 declare -A container_traits
 
                 container_traits=(
+                  ["name"]='{{index (split .Name "/") 1}}'
                   ["created"]='{{.Created}}'
                   ["path + args"]='{{.Path}} :: {{.Args}}'
                   ["stats"]='{{println .State.Status}} {{.State.StartedAt}} <--> {{println .State.FinishedAt}} restarts: {{.RestartCount}}'
