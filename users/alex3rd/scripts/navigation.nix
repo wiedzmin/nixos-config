@@ -15,61 +15,84 @@ in
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
-            list_bookshelf_reader = pkgs.writeShellScriptBin "list_bookshelf_reader" ''
-                if [ -n "$1" ]
-                then
-                    coproc (${pkgs.zathura}/bin/zathura "$1" & >& /dev/null &)
-                    exit;
-                fi
-
-                ${pkgs.findutils}/bin/find ${bookshelfPath} -name "*.pdf" -o -name "*.djvu"
-            '';
-            list_bookshelf_pdftools = pkgs.writeShellScriptBin "list_bookshelf_pdftools" ''
-                if [ -n "$1" ]
-                then
-                    coproc (${pkgs.emacs}/bin/emacsclient --eval "(find-file \"$1\")" >& /dev/null)
-                    sleep 0.5
-                    ${pkgs.wmctrl}/bin/wmctrl -l | grep -E "emacs.+(pdf|djvu)$" | ${pkgs.gawk}/bin/awk '{print $1}' | ${pkgs.findutils}/bin/xargs ${pkgs.wmctrl}/bin/wmctrl -i -a
-                    exit;
-                fi
-
-                ${pkgs.findutils}/bin/find ${bookshelfPath} -name "*.pdf" -o -name "*.djvu"
-            '';
             rofi_list_bookshelf = pkgs.writeShellScriptBin "rofi_list_bookshelf" ''
-                ${if bookReaderUsePdftools then ''
-                    ${pkgs.rofi}/bin/rofi -modi books:${pkgs.list_bookshelf_pdftools}/bin/list_bookshelf_pdftools -show books
-                '' else ''
-                    ${pkgs.rofi}/bin/rofi -modi books:${pkgs.list_bookshelf_reader}/bin/list_bookshelf_reader -show books
-                ''}
-            '';
-            list_autorandr_profiles = pkgs.writeShellScriptBin "list_autorandr_profiles" ''
-                if [ -n "$1" ]
-                then
-                    coproc (${pkgs.autorandr}/bin/autorandr --load "$1" & >& /dev/null)
-                    exit;
-                fi
+                books=(
+                $(${pkgs.findutils}/bin/find ${bookshelfPath} -name "*.pdf" -o -name "*.djvu")
+                )
 
-                # TODO: think of migrating to `fd`
-                ${pkgs.findutils}/bin/find ${autorandrProfilesPath} -mindepth 1 -maxdepth 1 -type d -exec basename {} \;
+                list_books() {
+                    for i in "''${books[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    selected_book=$( (list_books) | ${pkgs.rofi}/bin/rofi -dmenu -p "EBook " )
+                    if [ -n "$selected_book" ]; then
+                    ${if bookReaderUsePdftools then ''
+                        ${pkgs.emacs}/bin/emacsclient --eval "(find-file \"$selected_book\")" >& /dev/null
+                        sleep 0.5
+                        ${pkgs.wmctrl}/bin/wmctrl -l | grep -E "emacs.+(pdf|djvu)$" | ${pkgs.gawk}/bin/awk '{print $1}' | \
+                                                       ${pkgs.findutils}/bin/xargs ${pkgs.wmctrl}/bin/wmctrl -i -a
+                    '' else ''
+                        ${pkgs.zathura}/bin/zathura "$selected_book" & >& /dev/null
+                    ''}
+                    fi
+                }
+
+                main
+
+                exit 0
             '';
             rofi_list_autorandr_profiles = pkgs.writeShellScriptBin "rofi_list_autorandr_profiles" ''
-                ${pkgs.rofi}/bin/rofi -modi autorandr:${pkgs.list_autorandr_profiles}/bin/list_autorandr_profiles \
-                                      -show autorandr
+                # TODO: think of migrating to `fd`
+                autorandr_profiles=(
+                $(${pkgs.findutils}/bin/find ${autorandrProfilesPath} -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
+                )
+
+                list_autorandr_profiles() {
+                    for i in "''${autorandr_profiles[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    selected_profile=$( (list_autorandr_profiles) | ${pkgs.rofi}/bin/rofi -dmenu -p "Profile " )
+                    if [ -n "$selected_profile" ]; then
+                        ${pkgs.autorandr}/bin/autorandr --load "$selected_profile" & >& /dev/null
+                    fi
+                }
+
+                main
+
+                exit 0
             '';
             # TODO: think of moving under user(s)
-            list_tmuxp_sessions = pkgs.writeShellScriptBin "list_tmuxp_sessions" ''
-                if [ -n "$1" ]
-                then
-                    ${pkgs.tmuxp}/bin/tmuxp load -y -d ${tmuxpSessionsPath}/$1.yml >/dev/null 2>&1 &
-                    exit;
-                else
-                    # TODO: think of migrating to `fd`
-                    ${pkgs.findutils}/bin/find ${tmuxpSessionsPath} -mindepth 1 -maxdepth 1 -type l -exec basename {} .yml \;
-                fi
-            '';
             rofi_list_tmuxp_sessions = pkgs.writeShellScriptBin "rofi_list_tmuxp_sessions" ''
-                ${pkgs.rofi}/bin/rofi -modi tmuxp:${pkgs.list_tmuxp_sessions}/bin/list_tmuxp_sessions \
-                                      -show tmuxp
+                # TODO: think of migrating to `fd`
+                tmuxp_sessions=(
+                $(${pkgs.findutils}/bin/find ${tmuxpSessionsPath} -mindepth 1 -maxdepth 1 -type l -exec basename {} .yml \;)
+                )
+
+                list_tmuxp_sessions() {
+                    for i in "''${tmuxp_sessions[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    selected_session=$( (list_tmuxp_sessions) | ${pkgs.rofi}/bin/rofi -dmenu -p "Profile " )
+                    if [ -n "$selected_session" ]; then
+                        ${pkgs.tmuxp}/bin/tmuxp load -y -d ${tmuxpSessionsPath}/$selected_session.yml >/dev/null 2>&1 &
+                    fi
+                }
+
+                main
+
+                exit 0
             '';
             rofi_ssh_custom_user = pkgs.writeShellScriptBin "rofi_ssh_custom_user" ''
                 # TODO: provide freeform option or predefined list on Nix level
