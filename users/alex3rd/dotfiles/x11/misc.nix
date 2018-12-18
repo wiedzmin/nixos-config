@@ -735,7 +735,7 @@
                     dmenu = "/usr/bin/dmenu -p dunst:";
                     ellipsize = "middle";
                     follow = "keyboard";
-                    font = "Iosevka Bold 10";
+                    font = "${config.sys.fontMainName} ${config.sys.fontMainWeight} ${config.sys.fontMainSizeDunst}";
                     force_xinerama = "false";
                     format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\n%b";
                     frame_color = "#232323";
