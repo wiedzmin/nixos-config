@@ -15,7 +15,7 @@ in
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
-            rofi_list_bookshelf = pkgs.writeShellScriptBin "rofi_list_bookshelf" ''
+            rofi_bookshelf = pkgs.writeShellScriptBin "rofi_bookshelf" ''
                 books=(
                 $(${pkgs.findutils}/bin/find ${bookshelfPath} -name "*.pdf" -o -name "*.djvu")
                 )
@@ -45,7 +45,7 @@ in
 
                 exit 0
             '';
-            rofi_list_autorandr_profiles = pkgs.writeShellScriptBin "rofi_list_autorandr_profiles" ''
+            rofi_autorandr_profiles = pkgs.writeShellScriptBin "rofi_autorandr_profiles" ''
                 # TODO: think of migrating to `fd`
                 autorandr_profiles=(
                 $(${pkgs.findutils}/bin/find ${autorandrProfilesPath} -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
@@ -70,7 +70,7 @@ in
                 exit 0
             '';
             # TODO: think of moving under user(s)
-            rofi_list_tmuxp_sessions = pkgs.writeShellScriptBin "rofi_list_tmuxp_sessions" ''
+            rofi_tmuxp_sessions = pkgs.writeShellScriptBin "rofi_tmuxp_sessions" ''
                 # TODO: think of migrating to `fd`
                 tmuxp_sessions=(
                 $(${pkgs.findutils}/bin/find ${tmuxpSessionsPath} -mindepth 1 -maxdepth 1 -type l -exec basename {} .yml \;)
@@ -223,7 +223,7 @@ in
 
                 exit 0
             '';
-            rofi_ref_extra_hosts = pkgs.writeShellScriptBin "rofi_ref_extra_hosts" ''
+            rofi_extra_hosts_traits = pkgs.writeShellScriptBin "rofi_extra_hosts_traits" ''
                 declare -A extra_hosts
 
                 extra_hosts=(
@@ -253,7 +253,7 @@ in
 
                 exit 0
             '';
-            rofi_view_service_journal = pkgs.writeShellScriptBin "rofi_view_service_journal" ''
+            rofi_service_journal = pkgs.writeShellScriptBin "rofi_service_journal" ''
                 SERVICE_CONTEXTS=(
                   "system"
                   "user"
@@ -305,7 +305,7 @@ in
 
                 exit 0
             '';
-            rofi_list_job_docker_stacks_ps = pkgs.writeShellScriptBin "rofi_list_job_docker_stacks_ps" ''
+            rofi_docker_stacks_info = pkgs.writeShellScriptBin "rofi_docker_stacks_info" ''
                 swarm_nodes=(
                 ${builtins.concatStringsSep "\n"
                            (lib.mapAttrsToList (ip: meta: builtins.head meta.hostNames)
@@ -340,7 +340,7 @@ in
 
                 exit 0
             '';
-            rofi_docker_show_container_traits = pkgs.writeShellScriptBin "rofi_docker_show_container_traits" ''
+            rofi_docker_container_traits = pkgs.writeShellScriptBin "rofi_docker_container_traits" ''
                 declare -A container_traits
 
                 container_traits=(
@@ -394,7 +394,7 @@ in
 
                 exit 0
             '';
-            rofi_view_remote_docker_logs = pkgs.writeShellScriptBin "rofi_view_remote_docker_logs" ''
+            rofi_remote_docker_logs = pkgs.writeShellScriptBin "rofi_remote_docker_logs" ''
                 # TODO: abstract away creds/hosts details and rework accordingly
                 ask_for_logs() {
                     LOGS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@${config.job.infra.logs_host} "find ${config.job.infra.remote_docker_logs_path}/ -maxdepth 1 -size +0 -type f | grep -v gz")

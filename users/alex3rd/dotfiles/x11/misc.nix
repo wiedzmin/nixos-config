@@ -30,11 +30,11 @@
 
             # helper scripts for WMs
             rescale-wallpaper
-            rofi_list_autorandr_profiles
-            rofi_list_bookshelf
-            rofi_list_tmuxp_sessions
+            rofi_autorandr_profiles
+            rofi_bookshelf
+            rofi_tmuxp_sessions
             rofi_mount_nas_volume
-            rofi_ref_extra_hosts
+            rofi_extra_hosts_traits
             rofi_searchengines_prompt
             rofi_searchengines_selection
             rofi_ssh_custom_user
