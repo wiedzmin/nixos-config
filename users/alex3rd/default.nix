@@ -76,7 +76,17 @@
             uid = 1000;
             description = "Alex Ermolov";
             shell = pkgs.zsh;
-            extraGroups = [ "audio" "docker" "input" "lp" "networkmanager" "scanner" "vboxusers" "video" "wheel" ];
+            extraGroups = [
+                "audio"
+                "docker"
+                "input"
+                "lp"
+                "networkmanager"
+                "scanner"
+                "vboxusers"
+                "video"
+                "wheel"
+            ];
         };
     };
 
