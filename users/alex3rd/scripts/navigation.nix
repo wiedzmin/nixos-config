@@ -1,4 +1,4 @@
-{config, pkgs, ...}:
+{config, pkgs, lib, ...}:
 
 let
     bookshelfPath = "${config.users.extraUsers.alex3rd.home}/bookshelf";
@@ -306,8 +306,19 @@ in
                 exit 0
             '';
             rofi_list_job_docker_stacks_ps = pkgs.writeShellScriptBin "rofi_list_job_docker_stacks_ps" ''
+                swarm_nodes=(
+                ${builtins.concatStringsSep "\n"
+                           (lib.mapAttrsToList (ip: meta: builtins.head meta.hostNames)
+                                               (lib.filterAttrs (n: v: v.inSwarm == true)
+                                                                 config.job.extra_hosts))}
+                )
+                swarm_nodes_count=''${#swarm_nodes[@]}
+                selected_node=''${swarm_nodes[$(( ( RANDOM % $swarm_nodes_count ) ))]}
+
                 ask_for_stacks() {
-                    STACKS=$(ls ${config.job.infra.stacks_path} | grep yml | cut -f1 -d.)
+                    STACKS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$selected_node \
+                                                     "docker stack ls | awk '{if(NR>1)print $1}'" | \
+                                                     ${pkgs.gawk}/bin/awk '{print $1}')
                     for i in "''${STACKS[@]}"
                     do
                         echo "$i"
@@ -317,12 +328,11 @@ in
                 main() {
                     STACK=$( (ask_for_stacks) | ${pkgs.rofi}/bin/rofi -dmenu -p "View stack status" )
                     if [ -n "$STACK" ]; then
-                       ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
-                       ${config.job.infra.default_remote_user}@${config.job.infra.docker_swarm_manager_host} \
-                       -c 'docker stack ps $STACK \
+                       ${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$selected_node \
+                       "docker stack ps $STACK \
                        ${ if dockerStackShowOnlyRunning then "--filter \\\"desired-state=Running\\\"" else ""} \
-                       ${ if useDockerStackPsCustomFormat then "--format \\\"${dockerStackPsCustomFormat}\\\"" else ""} \
-                       '; read"
+                       ${ if useDockerStackPsCustomFormat then "--format \\\"${dockerStackPsCustomFormat}\\\"" else ""}" | \
+                       ${pkgs.yad}/bin/yad --text-info # FIXME: output is too wide
                     fi
                 }
 
