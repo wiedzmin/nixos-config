@@ -376,14 +376,17 @@ in
                         else
                             eval $(${pkgs.docker-machine}/bin/docker-machine env $HOST)
                         fi
-                    selected_container=$( ${pkgs.docker}/bin/docker ps -a --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
-                    if [ -n "$selected_container" ]; then
-                        selected_trait=$( (list_container_traits) | ${pkgs.rofi}/bin/rofi -dmenu -p "Inspect" )
-                        if [ -n "$selected_trait" ]; then
-                            inspect_command="${pkgs.docker}/bin/docker inspect $selected_container --format='"''${container_traits[$selected_trait]}"'"
-                            eval `echo $inspect_command` | ${pkgs.xclip}/bin/xclip -i -r -selection clipboard
+                        selected_container=$( ${pkgs.docker}/bin/docker ps -a --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                        if [ -n "$selected_container" ]; then
+                            selected_trait=$( (list_container_traits) | ${pkgs.rofi}/bin/rofi -dmenu -p "Inspect" )
+                            if [ -n "$selected_trait" ]; then
+                                inspect_command="${pkgs.docker}/bin/docker inspect $selected_container --format='"''${container_traits[$selected_trait]}"'"
+                                eval `echo $inspect_command` | ${pkgs.xclip}/bin/xclip -i -r -selection clipboard
+                                eval `echo $inspect_command` > /tmp/docker_traits
+                                ${pkgs.yad}/bin/yad --filename /tmp/docker_traits --text-info
+                                rm /tmp/docker_traits
+                            fi
                         fi
-                    fi
                     fi
                 }
 
