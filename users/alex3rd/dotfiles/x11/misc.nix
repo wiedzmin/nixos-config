@@ -716,6 +716,13 @@
                 insert_pass="Alt+n"
             '';
         };
+        gtk = {
+            enable = true;
+            font = {
+                package = pkgs.dejavu_fonts;
+                name = "${config.sys.fontMainName} ${config.sys.fontMainWeight} ${config.sys.fontMainSizeDunst}";
+            };
+        };
         services.dunst = {
             enable = true;
             settings = {
