@@ -118,6 +118,7 @@
             rofi_docker_container_traits
             rofi_docker_stacks_info
             rofi_remote_docker_logs
+            rofi_docker_shell
 
             networkmanager_dmenu # using rofi, despite naming
         ];

@@ -12,6 +12,7 @@ let
     useDockerStackPsCustomFormat = false;
     dockerStackShowOnlyRunning = true;
     sedPlaceholderChar = "_";
+    dockerContainerShellExecutable = "/bin/bash";
 in
 {
     config = {
@@ -472,6 +473,28 @@ in
                        ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
                        ${config.job.infra.default_remote_user}@${config.job.infra.logs_host} \
                        -c 'tail -f $LOG'"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
+            rofi_docker_shell = pkgs.writeShellScriptBin "rofi_docker_shell" ''
+                main() {
+                    HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/uniq | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
+                    if [ -n $HOST ]; then
+                        if [ "$HOST" == "localhost" ]; then
+                            eval $(${pkgs.docker-machine}/bin/docker-machine env -u)
+                        else
+                            eval $(${pkgs.docker-machine}/bin/docker-machine env $HOST)
+                        fi
+                        selected_container=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                        if [ -n "$selected_container" ]; then
+                            ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
+                            ${config.job.infra.default_remote_user}@$HOST \
+                            -c 'docker exec -it $selected_container ${dockerContainerShellExecutable}'"
+                        fi
                     fi
                 }
 
