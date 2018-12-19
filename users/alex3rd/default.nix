@@ -114,11 +114,11 @@
 
             docker-machine-export
             docker-machine-import
-            job-mysql-cli
             rofi_docker_container_traits
             rofi_docker_stacks_info
             rofi_remote_docker_logs
             rofi_docker_shell
+            rofi_dbms
 
             networkmanager_dmenu # using rofi, despite naming
         ];

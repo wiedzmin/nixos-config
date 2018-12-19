@@ -502,6 +502,45 @@ in
 
                 exit 0
             '';
+            # TODO: think of free-form option(s)
+            rofi_dbms = pkgs.writeShellScriptBin "rofi_dbms" ''
+                declare -A dbms_traits
+
+                dbms_traits=(
+                ${builtins.concatStringsSep "\n"
+                  (pkgs.stdenv.lib.mapAttrsToList
+                      (ip: meta: "  [\"${meta.alias}\"]=\"${ip} ${meta.command} ${meta.user} ${meta.passwordPassPath}\"")
+                        (config.job.dbms_traits))}
+                )
+
+                mycli_binary=${pkgs.mycli}/bin/mycli
+                pgcli_binary=${pkgs.pgcli}/bin/pgcli
+
+                list_dbms_traits() {
+                    for i in "''${!dbms_traits[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                main() {
+                    DBMS_META="''${dbms_traits[$( (list_dbms_traits) | ${pkgs.rofi}/bin/rofi -dmenu -p "Connect" )]}"
+                    if [ -n "$DBMS_META" ]; then
+                        DBMS_IP=$(echo $DBMS_META | ${pkgs.coreutils}/bin/cut -f1 -d\ )
+                        DBMS_COMMAND=$(echo $DBMS_META | ${pkgs.coreutils}/bin/cut -f2 -d\ )
+                        DBMS_USER=$(echo $DBMS_META | ${pkgs.coreutils}/bin/cut -f3 -d\ )
+                        DBMS_PASSWORD_PASS_PATH=$(echo $DBMS_META | ${pkgs.coreutils}/bin/cut -f4 -d\ )
+                        DBMS_PASSWORD=$(${pkgs.pass}/bin/pass $DBMS_PASSWORD_PASS_PATH)
+                        CLI_BINARY_VARNAME="''${DBMS_COMMAND}_binary"
+                        CLI_EXECUTABLE="''${!CLI_BINARY_VARNAME}"
+                        ${pkgs.tmux}/bin/tmux new-window "$CLI_EXECUTABLE --host $DBMS_IP --user $DBMS_USER --password $DBMS_PASSWORD"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
         };
     };
 }
