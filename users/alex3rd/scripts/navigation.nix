@@ -316,6 +316,7 @@ in
 
                 exit 0
             '';
+            # TODO: think of decoupling from job infra
             rofi_docker_stacks_info = pkgs.writeShellScriptBin "rofi_docker_stacks_info" ''
                 swarm_nodes=(
                 ${builtins.concatStringsSep "\n"
@@ -324,9 +325,28 @@ in
                                                                  config.job.extra_hosts))}
                 )
                 swarm_nodes_count=''${#swarm_nodes[@]}
-                selected_node=''${swarm_nodes[$(( ( RANDOM % $swarm_nodes_count ) ))]}
+                # selected_node=''${swarm_nodes[$(( ( RANDOM % $swarm_nodes_count ) ))]}
+                selected_node=${config.job.infra.docker_swarm_leader_host}
 
-                ask_for_stacks() {
+                docker_stack_ps_params() {
+                    echo ${ if dockerStackShowOnlyRunning then "--filter \\\"desired-state=Running\\\"" else ""}
+                         ${ if useDockerStackPsCustomFormat then " --format \\\"${dockerStackPsCustomFormat}\\\""
+                            else "" }
+                }
+
+                MODES=(
+                  "status"
+                  "logs"
+                )
+
+                ask_for_mode() {
+                    for i in "''${MODES[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
+                ask_for_stack() {
                     STACKS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$selected_node \
                                                      "docker stack ls | awk '{if(NR>1)print $1}'" | \
                                                      ${pkgs.gawk}/bin/awk '{print $1}')
@@ -336,15 +356,46 @@ in
                     done
                 }
 
+                show_stack_status() {
+                    STACK=$1
+                    ${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$selected_node \
+                    "docker stack ps $STACK $(docker_stack_ps_params)" > /tmp/docker_stack_status
+                    ${pkgs.yad}/bin/yad --filename /tmp/docker_stack_status --text-info
+                    rm /tmp/docker_stack_status
+                }
+
+                ask_for_stack_task() {
+                    STACK=$1
+                    TASKS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$selected_node \
+                    "docker stack ps $STACK $(docker_stack_ps_params)" | awk '{if(NR>1)print $0}')
+                    SERVICE=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$selected_node \
+                    "docker service ls --format='{{.Name}}' | grep $STACK ")
+                    TASKS="''${SERVICE}
+                ''${TASKS}"
+                    for i in "''${TASKS[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
                 main() {
-                    STACK=$( (ask_for_stacks) | ${pkgs.rofi}/bin/rofi -dmenu -p "View stack status" )
-                    if [ -n "$STACK" ]; then
-                       ${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$selected_node \
-                       "docker stack ps $STACK \
-                       ${ if dockerStackShowOnlyRunning then "--filter \\\"desired-state=Running\\\"" else ""} \
-                       ${ if useDockerStackPsCustomFormat then "--format \\\"${dockerStackPsCustomFormat}\\\"" else ""}" | \
-                       ${pkgs.yad}/bin/yad --text-info # FIXME: output is too wide
-                    fi
+                    MODE=$( (ask_for_mode) | ${pkgs.rofi}/bin/rofi -dmenu -p "Mode" )
+                    STACK=$( (ask_for_stack) | ${pkgs.rofi}/bin/rofi -dmenu -p "Stack" )
+                    case "$MODE" in
+                        status)
+                            show_stack_status $STACK
+                            ;;
+                        logs)
+                            TASK=$( (ask_for_stack_task $STACK) | ${pkgs.rofi}/bin/rofi -dmenu -p "Task" | ${pkgs.gawk}/bin/awk '{print $1}' )
+                            ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
+                                                              ${config.job.infra.default_remote_user}@$selected_node \
+                                                              -c 'docker service logs --follow $TASK'"
+                            ;;
+                        *)
+                            echo "Unknown mode: $MODE"
+                            exit 1
+                            ;;
+                    esac
                 }
 
                 main
