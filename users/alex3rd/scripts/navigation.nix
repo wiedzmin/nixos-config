@@ -11,6 +11,7 @@ let
     dockerStackPsCustomFormat = "{{.Name}}   {{.Image}}   {{.Node}} {{.DesiredState}}   {{.CurrentState}}";
     useDockerStackPsCustomFormat = false;
     dockerStackShowOnlyRunning = true;
+    sedPlaceholderChar = "_";
 in
 {
     config = {
@@ -227,12 +228,14 @@ in
                 declare -A extra_hosts
 
                 extra_hosts=(
-                ${builtins.concatStringsSep
-                           "\n"
-                           (pkgs.stdenv.lib.mapAttrsToList
-                                (ip: meta: builtins.concatStringsSep "\n"
-                                           (map (hostname: "  [\"${hostname}\"]=\"${ip}\"") meta.hostNames))
-                                (config.job.extra_hosts // config.misc.extra_hosts))}
+                ${builtins.concatStringsSep "\n"
+                  (pkgs.stdenv.lib.mapAttrsToList
+                      (ip: meta: builtins.concatStringsSep "\n"
+                        (map (hostname: "  [\"${hostname}\"]=\"IP:${sedPlaceholderChar}${ip} ${
+                          if meta.hasDocker then "Docker:${sedPlaceholderChar}✓" else "Docker:${sedPlaceholderChar}✗"} ${
+                          if meta.inSwarm then "Swarm:${sedPlaceholderChar}✓" else "Swarm:${sedPlaceholderChar}✗"}\"")
+                          meta.hostNames))
+                   (config.job.extra_hosts // config.misc.extra_hosts))}
                 )
 
                 list_extra_hosts() {
@@ -245,7 +248,15 @@ in
                 main() {
                     selected_host=$( (list_extra_hosts) | ${pkgs.rofi}/bin/rofi -dmenu -p "Select" )
                     if [ -n "$selected_host" ]; then
-                        echo -n "$selected_host ''${extra_hosts[$selected_host]}" | xclip -i -selection clipboard
+                        result="$selected_host ''${extra_hosts[$selected_host]}"
+                        result_newlines=$(echo $result | ${pkgs.gnused}/bin/sed 's/ /\n/g' | \
+                                                         ${pkgs.gnused}/bin/sed 's/${sedPlaceholderChar}/ /g')
+                        ip=$(echo $result | ${pkgs.gawk}/bin/awk '{print $2}' | \
+                                            ${pkgs.gnused}/bin/sed 's/${sedPlaceholderChar}/ /g')
+                        echo "$result_newlines" > /tmp/extra_host
+                        echo "$ip" | ${pkgs.gawk}/bin/awk '{print $2}'| ${pkgs.xclip}/bin/xclip -i -r -selection clipboard
+                        ${pkgs.yad}/bin/yad --filename /tmp/extra_host --text-info
+                        rm /tmp/extra_host
                     fi
                 }
 
