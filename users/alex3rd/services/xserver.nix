@@ -2,7 +2,7 @@
 {
     imports = [
         ../private/traits/sys.nix
-        ./wm/xmonad.nix
+        ../../../toolbox/wm/xmonad.nix
     ];
     services = {
         xserver = {

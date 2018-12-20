@@ -9,7 +9,7 @@
         ../hardware/laptop.nix
         ../hardware/misc.nix
         ../hardware/sound.nix
-        ../users/alex3rd/gui/xserver.nix
+        ../users/alex3rd/services/xserver.nix
         ../users/alex3rd/default.nix
         <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];

@@ -43,7 +43,7 @@
         ../../toolbox/virt/misc.nix
         ../../toolbox/virt/scripts.nix
         ../../toolbox/virt/vm.nix
-        ./gui/desktop/org_protocol.nix
+        ../../toolbox/desktop/org_protocol.nix
         ./dotfiles/dev/editor.nix
         ./dotfiles/dev/git.nix
         ./dotfiles/dev/lisp.nix
