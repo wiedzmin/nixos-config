@@ -11,7 +11,6 @@
         ../hardware/sound.nix
         ../users/alex3rd/gui/xserver.nix
         ../users/alex3rd/default.nix
-        ../users/root.nix
         <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];
 
@@ -38,6 +37,9 @@
     };
 
     security.sudo.wheelNeedsPassword = false;
+
+    users.extraUsers.root.hashedPassword = "586c56b7b6b6f68fca29c9ff2524e4dc52d51d5b6184a65f707dd3eae075e4c9afa81c9cd4042c26c9fb773d4f3de55fb55f363c6b0f5f6790baf4c4e3f32cb9";
+    nix.trustedUsers = [ "root" ];
 
     security.polkit.extraConfig = ''
         /* Allow users in wheel group to manage systemd units without authentication */
