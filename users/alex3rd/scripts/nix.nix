@@ -22,6 +22,22 @@
                     ${pkgs.libnotify}/bin/notify-send -t 30000 "Nixpkgs updated, consider install!"
                 fi
             '';
+            watch_home_manager_updates = pkgs.writeShellScriptBin "watch_home_manager_updates" ''
+                if [ ! -z "$(${pkgs.watch_git_remote_status}/bin/watch_git_remote_status /etc/nixos/pkgs/home-manager | grep available)" ]; then
+                    ${pkgs.libnotify}/bin/notify-send -t 30000 "Home-manager updated, consider install!"
+                fi
+            '';
+            show_nixpkgs_updates = pkgs.writeShellScriptBin "show_nixpkgs_updates" ''
+                echo "$(${pkgs.watch_git_remote_status}/bin/watch_git_remote_status /etc/nixos/pkgs/nixpkgs-channels)" > /tmp/nixpkgs-channels-git-status
+                ${pkgs.yad}/bin/yad --filename /tmp/nixpkgs-channels-git-status --text-info
+                rm /tmp/nixpkgs-channels-git-status
+
+            '';
+            show_home_manager_updates = pkgs.writeShellScriptBin "show_home_manager_updates" ''
+                echo "$(${pkgs.watch_git_remote_status}/bin/watch_git_remote_status /etc/nixos/pkgs/home-manager)" > /tmp/home-manager-git-status
+                ${pkgs.yad}/bin/yad --filename /tmp/home-manager-git-status --text-info
+                rm /tmp/home-manager-git-status
+            '';
        };
     };
 }
