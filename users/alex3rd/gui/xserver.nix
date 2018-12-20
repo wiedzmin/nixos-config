@@ -1,8 +1,7 @@
 { config, pkgs, ... }:
 {
     imports = [
-        # TODO: decouple from user, make orthogonal
-        ../users/alex3rd/private/traits/sys.nix
+        ../private/traits/sys.nix
         ./wm/xmonad.nix
     ];
     services = {
