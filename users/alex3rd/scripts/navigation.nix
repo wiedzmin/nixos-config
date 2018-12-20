@@ -13,6 +13,8 @@ let
     dockerStackShowOnlyRunning = true;
     sedPlaceholderChar = "_";
     dockerContainerShellExecutable = "/bin/bash";
+    firefoxOpenPageCmd = "${pkgs.firefox-bin}/bin/firefox --new-window";
+    chromiumOpenPageCmd = "${pkgs.chromium}/bin/chromium";
 in
 {
     config = {
@@ -534,6 +536,22 @@ in
                         CLI_BINARY_VARNAME="''${DBMS_COMMAND}_binary"
                         CLI_EXECUTABLE="''${!CLI_BINARY_VARNAME}"
                         ${pkgs.tmux}/bin/tmux new-window "$CLI_EXECUTABLE --host $DBMS_IP --user $DBMS_USER --password $DBMS_PASSWORD"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
+            rofi_containerized_services_discovery = pkgs.writeShellScriptBin "rofi_containerized_services_discovery" ''
+                # TODO: think how to restrict networks/ports output (maybe pick first ones)
+                main() {
+                    eval $(${pkgs.docker-machine}/bin/docker-machine env -u) # ensure we cosidering only local containers
+                    selected_container=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                    if [ ! -z "$selected_container" ]; then
+                        CONTAINER_IP=$(${pkgs.docker}/bin/docker inspect $selected_container --format='{{range $network, $settings :=.NetworkSettings.Networks}}{{$settings.IPAddress}}{{end}}')
+                        EXPOSED_PORT=$(${pkgs.docker}/bin/docker inspect $selected_container --format='{{range $port, $mappings :=.NetworkSettings.Ports}}{{$port}}{{end}}' | ${pkgs.coreutils}/bin/cut -f1 -d/)
+                        ${firefoxOpenPageCmd} http://$CONTAINER_IP:$EXPOSED_PORT
                     fi
                 }
 

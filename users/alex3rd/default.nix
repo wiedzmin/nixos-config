@@ -119,6 +119,7 @@
             rofi_remote_docker_logs
             rofi_docker_shell
             rofi_dbms
+            rofi_containerized_services_discovery
 
             networkmanager_dmenu # using rofi, despite naming
         ];
