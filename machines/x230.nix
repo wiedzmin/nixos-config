@@ -98,5 +98,5 @@
         };
     };
 
-    system.stateVersion = "18.03";
+    system.stateVersion = "19.03";
 }
