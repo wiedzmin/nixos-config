@@ -426,6 +426,18 @@ in
                   ["net: names"]='{{range $network, $settings :=.NetworkSettings.Networks}}{{$network}}/{{println $settings.Aliases}}{{end}}'
                 )
 
+                container_statuses=(
+                  "alive"
+                  "all"
+                )
+
+                list_container_statuses() {
+                    for i in "''${container_statuses[@]}"
+                    do
+                        echo "$i"
+                    done
+                }
+
                 list_container_traits() {
                     for i in "''${!container_traits[@]}"
                     do
@@ -435,13 +447,21 @@ in
 
                 main() {
                     HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/uniq | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
-                    if [ -n $HOST ]; then
+                    if [ ! -z "$HOST" ]; then
                         if [ "$HOST" == "localhost" ]; then
                             eval $(${pkgs.docker-machine}/bin/docker-machine env -u)
                         else
                             eval $(${pkgs.docker-machine}/bin/docker-machine env $HOST)
                         fi
-                        selected_container=$( ${pkgs.docker}/bin/docker ps -a --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                        container_status=$( (list_container_statuses) | ${pkgs.rofi}/bin/rofi -dmenu -p "Status" )
+                        if [ -z "$container_status" ]; then
+                            exit 1
+                        fi
+                        if [ "$container_status" == "all" ]; then
+                            selected_container=$( ${pkgs.docker}/bin/docker ps -a --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                        else
+                            selected_container=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                        fi
                         if [ -n "$selected_container" ]; then
                             selected_trait=$( (list_container_traits) | ${pkgs.rofi}/bin/rofi -dmenu -p "Inspect" )
                             if [ -n "$selected_trait" ]; then
