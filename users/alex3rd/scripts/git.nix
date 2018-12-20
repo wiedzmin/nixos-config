@@ -100,9 +100,9 @@
                     exit 1
                 fi
                 UPSTREAM=''${2:-'@{u}'}
-                LOCAL=$(git rev-parse @)
-                REMOTE=$(git rev-parse "$UPSTREAM")
-                BASE=$(git merge-base @ "$UPSTREAM")
+                LOCAL=$(${pkgs.git}/bin/git rev-parse @)
+                REMOTE=$(${pkgs.git}/bin/git rev-parse "$UPSTREAM")
+                BASE=$(${pkgs.git}/bin/git merge-base @ "$UPSTREAM")
 
                 if [ $LOCAL = $REMOTE ]; then
                     echo ''${UPTODATE_MESSAGE:-"Up-to-date"}
