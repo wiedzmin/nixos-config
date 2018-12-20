@@ -16,9 +16,9 @@
 
                 set -x
 
-                for item in $(find $BASE_PATH -type d -name ".git")
+                for ITEM in $(${pkgs.findutils}/bin/find $BASE_PATH -type d -name ".git")
                 do
-                    cd $item/..
+                    cd $ITEM/..
                     echo "Processing $(basename `pwd`)..."
                     REMOTES=$(${pkgs.git}/bin/git remote)
                     if [[ "origin" =~ $REMOTES ]]; then
@@ -38,7 +38,7 @@
                         ;;
                     1 )
                         BASE_PATH=$1
-                        GIT_REPOS=$(find $BASE_PATH -type d -name ".git")
+                        GIT_REPOS=$(${pkgs.findutils}/bin/find $BASE_PATH -type d -name ".git")
                         ADJUST_GIT_REPOS=1
                         ;;
                     * )
@@ -53,13 +53,13 @@
 
                 set -x
 
-                for item in $GIT_REPOS
+                for ITEM in $GIT_REPOS
                 do
-                    echo "$item"
+                    echo "$ITEM"
                     if [[ $ADJUST_GIT_REPOS -eq 1 ]]; then
-                         cd $item/..
+                         cd $ITEM/..
                     else
-                         cd $item
+                         cd $ITEM
                     fi
                     echo "Processing $(basename `pwd`)..."
                     ${pkgs.stgit}/bin/stg init
@@ -74,7 +74,6 @@
                 done
             '';
             bitbucket_team_contributor_repos = pkgs.writeShellScriptBin "bitbucket_team_contributor_repos" ''
-                # TODO: think of keyword args or likewise
                 TEAM=$1
                 PROJECTS_EXCLUDE=$2
                 CREDENTIALS=$(${pkgs.pass_curl_helper}/bin/pass_curl_helper alex3rd/webservices/social/programming/bitbucket.com.web)
@@ -82,14 +81,14 @@
                        $CREDENTIALS "https://api.bitbucket.org/2.0/repositories?role=contributor&pagelen=200" | \
                        ${pkgs.jq}/bin/jq -r '.values[] | select(.project.name != null) | "\(.links.clone[0].href)~\(.project.name)"')
                 if [[ ! -z $TEAM ]]; then
-                    RESULT=$(printf "%s\n" $RESULT | grep $TEAM)
+                    RESULT=$(printf "%s\n" $RESULT | ${pkgs.gnugrep}/bin/grep $TEAM)
                 fi
                 if [[ ! -z $PROJECTS_EXCLUDE ]]; then
                     GREP_CLAUSES=$(echo $PROJECTS_EXCLUDE | ${pkgs.gnused}/bin/sed "s/,/\|/g")
-                    RESULT=$(printf "%s\n" $RESULT | grep -i -v -E $GREP_CLAUSES)
+                    RESULT=$(printf "%s\n" $RESULT | ${pkgs.gnugrep}/bin/grep -i -v -E $GREP_CLAUSES)
                 fi
-                for repo in $RESULT; do
-                    echo $repo | ${pkgs.coreutils}/bin/cut -f1 -d~
+                for REPO in $RESULT; do
+                    echo $REPO | ${pkgs.coreutils}/bin/cut -f1 -d~
                 done
             '';
             watch_git_remote_status = pkgs.writeShellScriptBin "watch_git_remote_status" ''

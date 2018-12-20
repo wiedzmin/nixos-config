@@ -25,8 +25,8 @@ in
                 TITLE="$*"
                 if [[ -n $TMUX ]]
                 then
-                    TITLE=$(tmux display-message -p '#S')
-                    tmux send -X copy-pipe-and-cancel "xclip -i -selection primary"
+                    TITLE=$(${pkgs.tmux}/bin/tmux display-message -p '#S')
+                    ${pkgs.tmux}/bin/tmux send -X copy-pipe-and-cancel "${pkgs.xclip}/bin/xclip -i -selection primary"
                 fi
 
                 if [[ -n $TITLE ]]
@@ -64,7 +64,7 @@ in
                 WD=`pwd`
                 SOURCE_BASENAME=''${IN%.*}
                 ${pkgs.gnupg}/bin/gpg --output $WD/$SOURCE_BASENAME_decrypted.tar --decrypt $IN && \
-                                        tar xf $WD/$SOURCE_BASENAME_decrypted.tar && \
+                                        ${pkgs.gnutar}/bin/tar xf $WD/$SOURCE_BASENAME_decrypted.tar && \
                                         rm $WD/$SOURCE_BASENAME_decrypted.tar
             '';
             watch_dunst = pkgs.writeShellScriptBin "watch_dunst" ''
@@ -72,26 +72,26 @@ in
                 DUNST_COUNT=$(${pkgs.procps}/bin/pgrep -x -c .dunst-wrapped)
                 if [ $DUNST_COUNT -gt 1 ]; then
                     ${pkgs.logger}/bin/logger "Too much dunsts ($DUNST_COUNT), shooting down..."
-                    pkill -x -KILL .dunst-wrapped
+                    ${pkgs.procps}/bin/pkill -x -KILL .dunst-wrapped
                     exit 0
                 elif [ "$FORCE" == "force" ]; then
-                    pkill -x -KILL .dunst-wrapped
+                    ${pkgs.procps}/bin/pkill -x -KILL .dunst-wrapped
                     exit 0
                 fi
             '';
             screenshot_active_window = pkgs.writeShellScriptBin "screenshot_active_window" ''
-                ${pkgs.maim}/bin/maim -o -i $(xdotool getactivewindow) --format png /dev/stdout | \
-                    tee ${screenshotsPath}/screenshot-$(date ${screenshotDateFormat}.png | tr -d '[:cntrl:]') | \
+                ${pkgs.maim}/bin/maim -o -i $(${pkgs.xdotool}/bin/xdotool getactivewindow) --format png /dev/stdout | \
+                    ${pkgs.coreutils}/bin/tee ${screenshotsPath}/screenshot-$(date ${screenshotDateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
                     ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
             '';
             screenshot_region = pkgs.writeShellScriptBin "screenshot_region" ''
                 ${pkgs.maim}/bin/maim -o -s --format png /dev/stdout | \
-                    tee ${screenshotsPath}/screenshot-$(date ${screenshotDateFormat}.png | tr -d '[:cntrl:]') | \
+                    ${pkgs.coreutils}/bin/tee ${screenshotsPath}/screenshot-$(date ${screenshotDateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
                     ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
             '';
             screenshot_full = pkgs.writeShellScriptBin "screenshot_full" ''
                 ${pkgs.maim}/bin/maim -o --format png /dev/stdout | \
-                    tee ${screenshotsPath}/screenshot-$(date ${screenshotDateFormat}.png | tr -d '[:cntrl:]') | \
+                    ${pkgs.coreutils}/bin/tee ${screenshotsPath}/screenshot-$(date ${screenshotDateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
                     ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
             '';
             lockscreen = pkgs.writeShellScriptBin "lockscreen" ''

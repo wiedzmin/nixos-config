@@ -20,27 +20,27 @@ in
     config = {
         nixpkgs.config.packageOverrides = super: {
             rofi_bookshelf = pkgs.writeShellScriptBin "rofi_bookshelf" ''
-                books=(
+                BOOKS=(
                 $(${pkgs.findutils}/bin/find ${bookshelfPath} -name "*.pdf" -o -name "*.djvu")
                 )
 
                 list_books() {
-                    for i in "''${books[@]}"
+                    for i in "''${BOOKS[@]}"
                     do
                         echo "$i"
                     done
                 }
 
                 main() {
-                    selected_book=$( (list_books) | ${pkgs.rofi}/bin/rofi -dmenu -p "EBook " )
-                    if [ -n "$selected_book" ]; then
+                    SELECTED_BOOK=$( (list_books) | ${pkgs.rofi}/bin/rofi -dmenu -p "EBook " )
+                    if [ -n "$SELECTED_BOOK" ]; then
                     ${if bookReaderUsePdftools then ''
                         ${pkgs.emacs}/bin/emacsclient --eval "(find-file \"$selected_book\")" >& /dev/null
                         sleep 0.5
                         ${pkgs.wmctrl}/bin/wmctrl -l | grep -E "emacs.+(pdf|djvu)$" | ${pkgs.gawk}/bin/awk '{print $1}' | \
                                                        ${pkgs.findutils}/bin/xargs ${pkgs.wmctrl}/bin/wmctrl -i -a
                     '' else ''
-                        ${pkgs.zathura}/bin/zathura "$selected_book" & >& /dev/null
+                        ${pkgs.zathura}/bin/zathura "$SELECTED_BOOK" & >& /dev/null
                     ''}
                     fi
                 }
@@ -50,22 +50,21 @@ in
                 exit 0
             '';
             rofi_autorandr_profiles = pkgs.writeShellScriptBin "rofi_autorandr_profiles" ''
-                # TODO: think of migrating to `fd`
-                autorandr_profiles=(
+                AUTORANDR_PROFILES=(
                 $(${pkgs.findutils}/bin/find ${autorandrProfilesPath} -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
                 )
 
                 list_autorandr_profiles() {
-                    for i in "''${autorandr_profiles[@]}"
+                    for i in "''${AUTORANDR_PROFILES[@]}"
                     do
                         echo "$i"
                     done
                 }
 
                 main() {
-                    selected_profile=$( (list_autorandr_profiles) | ${pkgs.rofi}/bin/rofi -dmenu -p "Profile " )
-                    if [ -n "$selected_profile" ]; then
-                        ${pkgs.autorandr}/bin/autorandr --load "$selected_profile" & >& /dev/null
+                    SELECTED_PROFILE=$( (list_autorandr_profiles) | ${pkgs.rofi}/bin/rofi -dmenu -p "Profile " )
+                    if [ -n "$SELECTED_PROFILE" ]; then
+                        ${pkgs.autorandr}/bin/autorandr --load "$SELECTED_PROFILE" & >& /dev/null
                     fi
                 }
 
@@ -73,24 +72,22 @@ in
 
                 exit 0
             '';
-            # TODO: think of moving under user(s)
             rofi_tmuxp_sessions = pkgs.writeShellScriptBin "rofi_tmuxp_sessions" ''
-                # TODO: think of migrating to `fd`
-                tmuxp_sessions=(
+                TMUXP_SESSIONS=(
                 $(${pkgs.findutils}/bin/find ${tmuxpSessionsPath} -mindepth 1 -maxdepth 1 -type l -exec basename {} .yml \;)
                 )
 
                 list_tmuxp_sessions() {
-                    for i in "''${tmuxp_sessions[@]}"
+                    for i in "''${TMUXP_SESSIONS[@]}"
                     do
                         echo "$i"
                     done
                 }
 
                 main() {
-                    selected_session=$( (list_tmuxp_sessions) | ${pkgs.rofi}/bin/rofi -dmenu -p "Profile " )
-                    if [ -n "$selected_session" ]; then
-                        ${pkgs.tmuxp}/bin/tmuxp load -y -d ${tmuxpSessionsPath}/$selected_session.yml >/dev/null 2>&1 &
+                    SELECTED_SESSION=$( (list_tmuxp_sessions) | ${pkgs.rofi}/bin/rofi -dmenu -p "Profile " )
+                    if [ -n "$SELECTED_SESSION" ]; then
+                        ${pkgs.tmuxp}/bin/tmuxp load -y -d ${tmuxpSessionsPath}/$SELECTED_SESSION.yml >/dev/null 2>&1 &
                     fi
                 }
 
@@ -129,9 +126,9 @@ in
                 exit 0
             '';
             rofi_webjumps = pkgs.writeShellScriptBin "rofi_webjumps" ''
-                declare -A webjumps
+                declare -A WEBJUMPS
 
-                webjumps=(
+                WEBJUMPS=(
                 ${(builtins.concatStringsSep
                    "\n" (pkgs.stdenv.lib.mapAttrsToList
                               (url: browsercmd: "  [\"" + url + "\"]=\"" + browsercmd + "\"")
@@ -140,16 +137,16 @@ in
                 )
 
                 list_webjumps() {
-                    for i in "''${!webjumps[@]}"
+                    for i in "''${!WEBJUMPS[@]}"
                     do
                         echo "$i"
                     done
                 }
 
                 main() {
-                    webjump=$( (list_webjumps) | ${pkgs.rofi}/bin/rofi -dmenu -p "Jump to" )
-                    if [ -n "$webjump" ]; then
-                        ''${webjumps[$webjump]} "$webjump"
+                    WEBJUMP=$( (list_webjumps) | ${pkgs.rofi}/bin/rofi -dmenu -p "Jump to" )
+                    if [ -n "$WEBJUMP" ]; then
+                        ''${WEBJUMPS[$WEBJUMP]} "$WEBJUMP"
                     fi
                 }
 
@@ -158,9 +155,9 @@ in
                 exit 0
             '';
             rofi_searchengines_prompt = pkgs.writeShellScriptBin "rofi_searchengines_prompt" ''
-                declare -A searchengines
+                declare -A SEARCHENGINES
 
-                searchengines=(
+                SEARCHENGINES=(
                 ${(builtins.concatStringsSep
                    "\n" (pkgs.stdenv.lib.mapAttrsToList
                               (title: searchengine: "  [\"" + title + "\"]=\"" + searchengine + "\"")
@@ -168,23 +165,23 @@ in
                 )
 
                 list_searchengines() {
-                    index=1
-                    for i in "''${!searchengines[@]}"
+                    INDEX=1
+                    for i in "''${!SEARCHENGINES[@]}"
                     do
-                        echo "$index $i"
-                        (( index++ ))
+                        echo "$INDEX $i"
+                        (( INDEX++ ))
                     done
                 }
 
                 main() {
-                    selected_engine=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search" | ${pkgs.gawk}/bin/awk '{print $2}')
-                    if [ ! -n "$selected_engine" ]; then
+                    SELECTED_ENGINE=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search" | ${pkgs.gawk}/bin/awk '{print $2}')
+                    if [ ! -n "$SELECTED_ENGINE" ]; then
                         exit 1
                     fi
-                    query=$( (echo ) | rofi  -dmenu -matching fuzzy -location 0 -p "Query" )
-                    if [ -n "$query" ]; then
-                        url="''${searchengines[$selected_engine]}$query"
-                        ${config.misc.defaultBrowserCmd} "$url"
+                    QUERY=$( (echo ) | rofi  -dmenu -matching fuzzy -location 0 -p "Query" )
+                    if [ -n "$QUERY" ]; then
+                        URL="''${SEARCHENGINES[$SELECTED_ENGINE]}$QUERY"
+                        ${config.misc.defaultBrowserCmd} "$URL"
                     fi
                 }
 
@@ -193,9 +190,9 @@ in
                 exit 0
             '';
             rofi_searchengines_selection = pkgs.writeShellScriptBin "rofi_searchengines_selection" ''
-                declare -A searchengines
+                declare -A SEARCHENGINES
 
-                searchengines=(
+                SEARCHENGINES=(
                 ${(builtins.concatStringsSep
                    "\n" (pkgs.stdenv.lib.mapAttrsToList
                               (title: searchengine: "  [\"" + title + "\"]=\"" + searchengine + "\"")
@@ -203,23 +200,23 @@ in
                 )
 
                 list_searchengines() {
-                    index=1
-                    for i in "''${!searchengines[@]}"
+                    INDEX=1
+                    for i in "''${!SEARCHENGINES[@]}"
                     do
-                        echo "$index $i"
-                        (( index++ ))
+                        echo "$INDEX $i"
+                        (( INDEX++ ))
                     done
                 }
 
                 main() {
-                    selected_engine=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search" | ${pkgs.gawk}/bin/awk '{print $2}')
-                    if [ ! -n "$selected_engine" ]; then
+                    SELECTED_ENGINE=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search" | ${pkgs.gawk}/bin/awk '{print $2}')
+                    if [ ! -n "$SELECTED_ENGINE" ]; then
                         exit 1
                     fi
-                    query=$(${pkgs.xclip}/bin/xclip -o)
-                    if [ -n "$query" ]; then
-                        url="''${searchengines[$selected_engine]}$query"
-                        ${config.misc.defaultBrowserCmd} "$url"
+                    QUERY=$(${pkgs.xclip}/bin/xclip -o)
+                    if [ -n "$QUERY" ]; then
+                        URL="''${SEARCHENGINES[$SELECTED_ENGINE]}$QUERY"
+                        ${config.misc.defaultBrowserCmd} "$URL"
                     fi
                 }
 
@@ -228,9 +225,9 @@ in
                 exit 0
             '';
             rofi_extra_hosts_traits = pkgs.writeShellScriptBin "rofi_extra_hosts_traits" ''
-                declare -A extra_hosts
+                declare -A EXTRA_HOSTS
 
-                extra_hosts=(
+                EXTRA_HOSTS=(
                 ${builtins.concatStringsSep "\n"
                   (pkgs.stdenv.lib.mapAttrsToList
                       (ip: meta: builtins.concatStringsSep "\n"
@@ -242,22 +239,22 @@ in
                 )
 
                 list_extra_hosts() {
-                    for i in "''${!extra_hosts[@]}"
+                    for i in "''${!EXTRA_HOSTS[@]}"
                     do
                         echo "$i"
                     done
                 }
 
                 main() {
-                    selected_host=$( (list_extra_hosts) | ${pkgs.rofi}/bin/rofi -dmenu -p "Select" )
-                    if [ -n "$selected_host" ]; then
-                        result="$selected_host ''${extra_hosts[$selected_host]}"
-                        result_newlines=$(echo $result | ${pkgs.gnused}/bin/sed 's/ /\n/g' | \
+                    SELECTED_HOST=$( (list_extra_hosts) | ${pkgs.rofi}/bin/rofi -dmenu -p "Select" )
+                    if [ -n "$SELECTED_HOST" ]; then
+                        RESULT="$SELECTED_HOST ''${EXTRA_HOSTS[$SELECTED_HOST]}"
+                        RESULT_NEWLINES=$(echo $RESULT | ${pkgs.gnused}/bin/sed 's/ /\n/g' | \
                                                          ${pkgs.gnused}/bin/sed 's/${sedPlaceholderChar}/ /g')
-                        ip=$(echo $result | ${pkgs.gawk}/bin/awk '{print $2}' | \
+                        IP=$(echo $RESULT | ${pkgs.gawk}/bin/awk '{print $2}' | \
                                             ${pkgs.gnused}/bin/sed 's/${sedPlaceholderChar}/ /g')
-                        echo "$result_newlines" > /tmp/extra_host
-                        echo "$ip" | ${pkgs.gawk}/bin/awk '{print $2}'| ${pkgs.xclip}/bin/xclip -i -r -selection clipboard
+                        echo "$RESULT_NEWLINES" > /tmp/extra_host
+                        echo "$IP" | ${pkgs.gawk}/bin/awk '{print $2}'| ${pkgs.xclip}/bin/xclip -i -r -selection clipboard
                         ${pkgs.yad}/bin/yad --filename /tmp/extra_host --text-info
                         rm /tmp/extra_host
                     fi
@@ -321,15 +318,15 @@ in
             '';
             # TODO: think of decoupling from job infra
             rofi_docker_stacks_info = pkgs.writeShellScriptBin "rofi_docker_stacks_info" ''
-                swarm_nodes=(
+                SWARM_NODES=(
                 ${builtins.concatStringsSep "\n"
                            (lib.mapAttrsToList (ip: meta: builtins.head meta.hostNames)
                                                (lib.filterAttrs (n: v: v.inSwarm == true)
                                                                  config.job.extra_hosts))}
                 )
-                swarm_nodes_count=''${#swarm_nodes[@]}
-                # selected_node=''${swarm_nodes[$(( ( RANDOM % $swarm_nodes_count ) ))]}
-                selected_node=${config.job.infra.docker_swarm_leader_host}
+                SWARM_NODES_COUNT=''${#SWARM_NODES[@]}
+                # SELECTED_NODE=''${SWARM_NODES[$(( ( RANDOM % $SWARM_NODES_COUNT ) ))]}
+                SELECTED_NODE=${config.job.infra.docker_swarm_leader_host}
 
                 docker_stack_ps_params() {
                     echo ${ if dockerStackShowOnlyRunning then "--filter \\\"desired-state=Running\\\"" else ""}
@@ -350,7 +347,7 @@ in
                 }
 
                 ask_for_stack() {
-                    STACKS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$selected_node \
+                    STACKS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$SELECTED_NODE \
                                                      "docker stack ls | awk '{if(NR>1)print $1}'" | \
                                                      ${pkgs.gawk}/bin/awk '{print $1}')
                     for i in "''${STACKS[@]}"
@@ -361,7 +358,7 @@ in
 
                 show_stack_status() {
                     STACK=$1
-                    ${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$selected_node \
+                    ${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$SELECTED_NODE \
                     "docker stack ps $STACK $(docker_stack_ps_params)" > /tmp/docker_stack_status
                     ${pkgs.yad}/bin/yad --filename /tmp/docker_stack_status --text-info
                     rm /tmp/docker_stack_status
@@ -369,9 +366,9 @@ in
 
                 ask_for_stack_task() {
                     STACK=$1
-                    TASKS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$selected_node \
+                    TASKS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$SELECTED_NODE \
                     "docker stack ps $STACK $(docker_stack_ps_params)" | awk '{if(NR>1)print $0}')
-                    SERVICE=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$selected_node \
+                    SERVICE=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$SELECTED_NODE \
                     "docker service ls --format='{{.Name}}' | grep $STACK ")
                     TASKS="''${SERVICE}
                 ''${TASKS}"
@@ -391,7 +388,7 @@ in
                         logs)
                             TASK=$( (ask_for_stack_task $STACK) | ${pkgs.rofi}/bin/rofi -dmenu -p "Task" | ${pkgs.gawk}/bin/awk '{print $1}' )
                             ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
-                                                              ${config.job.infra.default_remote_user}@$selected_node \
+                                                              ${config.job.infra.default_remote_user}@$SELECTED_NODE \
                                                               -c 'docker service logs --follow $TASK'"
                             ;;
                         *)
@@ -406,9 +403,9 @@ in
                 exit 0
             '';
             rofi_docker_container_traits = pkgs.writeShellScriptBin "rofi_docker_container_traits" ''
-                declare -A container_traits
+                declare -A CONTAINER_TRAITS
 
-                container_traits=(
+                CONTAINER_TRAITS=(
                   ["name"]='{{index (split .Name "/") 1}}'
                   ["created"]='{{.Created}}'
                   ["path + args"]='{{.Path}} :: {{.Args}}'
@@ -426,20 +423,20 @@ in
                   ["net: names"]='{{range $network, $settings :=.NetworkSettings.Networks}}{{$network}}/{{println $settings.Aliases}}{{end}}'
                 )
 
-                container_statuses=(
+                CONTAINER_STATUSES=(
                   "alive"
                   "all"
                 )
 
                 list_container_statuses() {
-                    for i in "''${container_statuses[@]}"
+                    for i in "''${CONTAINER_STATUSES[@]}"
                     do
                         echo "$i"
                     done
                 }
 
                 list_container_traits() {
-                    for i in "''${!container_traits[@]}"
+                    for i in "''${!CONTAINER_TRAITS[@]}"
                     do
                         echo "$i"
                     done
@@ -453,21 +450,21 @@ in
                         else
                             eval $(${pkgs.docker-machine}/bin/docker-machine env $HOST)
                         fi
-                        container_status=$( (list_container_statuses) | ${pkgs.rofi}/bin/rofi -dmenu -p "Status" )
+                        CONTAINER_STATUS=$( (list_container_statuses) | ${pkgs.rofi}/bin/rofi -dmenu -p "Status" )
                         if [ -z "$container_status" ]; then
                             exit 1
                         fi
-                        if [ "$container_status" == "all" ]; then
-                            selected_container=$( ${pkgs.docker}/bin/docker ps -a --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                        if [ "$CONTAINER_STATUS" == "all" ]; then
+                            SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps -a --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
                         else
-                            selected_container=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                            SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
                         fi
-                        if [ -n "$selected_container" ]; then
-                            selected_trait=$( (list_container_traits) | ${pkgs.rofi}/bin/rofi -dmenu -p "Inspect" )
-                            if [ -n "$selected_trait" ]; then
-                                inspect_command="${pkgs.docker}/bin/docker inspect $selected_container --format='"''${container_traits[$selected_trait]}"'"
-                                eval `echo $inspect_command` | ${pkgs.xclip}/bin/xclip -i -r -selection clipboard
-                                eval `echo $inspect_command` > /tmp/docker_traits
+                        if [ -n "$SELECTED_CONTAINER" ]; then
+                            SELECTED_TRAIT=$( (list_container_traits) | ${pkgs.rofi}/bin/rofi -dmenu -p "Inspect" )
+                            if [ -n "$SELECTED_TRAIT" ]; then
+                                INSPECT_COMMAND="${pkgs.docker}/bin/docker inspect $SELECTED_CONTAINER --format='"''${CONTAINER_TRAITS[$SELECTED_TRAIT]}"'"
+                                eval `echo $INSPECT_COMMAND` | ${pkgs.xclip}/bin/xclip -i -r -selection clipboard
+                                eval `echo $INSPECT_COMMAND` > /tmp/docker_traits
                                 ${pkgs.yad}/bin/yad --filename /tmp/docker_traits --text-info
                                 rm /tmp/docker_traits
                             fi
@@ -511,11 +508,11 @@ in
                         else
                             eval $(${pkgs.docker-machine}/bin/docker-machine env $HOST)
                         fi
-                        selected_container=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
-                        if [ -n "$selected_container" ]; then
+                        SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                        if [ -n "$SELECTED_CONTAINER" ]; then
                             ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
                             ${config.job.infra.default_remote_user}@$HOST \
-                            -c 'docker exec -it $selected_container ${dockerContainerShellExecutable}'"
+                            -c 'docker exec -it $SELECTED_CONTAINER ${dockerContainerShellExecutable}'"
                         fi
                     fi
                 }
@@ -526,34 +523,34 @@ in
             '';
             # TODO: think of free-form option(s)
             rofi_dbms = pkgs.writeShellScriptBin "rofi_dbms" ''
-                declare -A dbms_traits
+                declare -A DBMS_TRAITS
 
-                dbms_traits=(
+                DBMS_TRAITS=(
                 ${builtins.concatStringsSep "\n"
                   (pkgs.stdenv.lib.mapAttrsToList
                       (ip: meta: "  [\"${meta.alias}\"]=\"${ip} ${meta.command} ${meta.user} ${meta.passwordPassPath}\"")
                         (config.job.dbms_traits))}
                 )
 
-                mycli_binary=${pkgs.mycli}/bin/mycli
-                pgcli_binary=${pkgs.pgcli}/bin/pgcli
+                MYCLI_BINARY=${pkgs.mycli}/bin/mycli
+                PGCLI_BINARY=${pkgs.pgcli}/bin/pgcli
 
                 list_dbms_traits() {
-                    for i in "''${!dbms_traits[@]}"
+                    for i in "''${!DBMS_TRAITS[@]}"
                     do
                         echo "$i"
                     done
                 }
 
                 main() {
-                    DBMS_META="''${dbms_traits[$( (list_dbms_traits) | ${pkgs.rofi}/bin/rofi -dmenu -p "Connect" )]}"
+                    DBMS_META="''${DBMS_TRAITS[$( (list_dbms_traits) | ${pkgs.rofi}/bin/rofi -dmenu -p "Connect" )]}"
                     if [ -n "$DBMS_META" ]; then
                         DBMS_IP=$(echo $DBMS_META | ${pkgs.coreutils}/bin/cut -f1 -d\ )
                         DBMS_COMMAND=$(echo $DBMS_META | ${pkgs.coreutils}/bin/cut -f2 -d\ )
                         DBMS_USER=$(echo $DBMS_META | ${pkgs.coreutils}/bin/cut -f3 -d\ )
                         DBMS_PASSWORD_PASS_PATH=$(echo $DBMS_META | ${pkgs.coreutils}/bin/cut -f4 -d\ )
                         DBMS_PASSWORD=$(${pkgs.pass}/bin/pass $DBMS_PASSWORD_PASS_PATH)
-                        CLI_BINARY_VARNAME="''${DBMS_COMMAND}_binary"
+                        CLI_BINARY_VARNAME="''${DBMS_COMMAND}_BINARY"
                         CLI_EXECUTABLE="''${!CLI_BINARY_VARNAME}"
                         ${pkgs.tmux}/bin/tmux new-window "$CLI_EXECUTABLE --host $DBMS_IP --user $DBMS_USER --password $DBMS_PASSWORD"
                     fi
@@ -567,10 +564,10 @@ in
                 # TODO: think how to restrict networks/ports output (maybe pick first ones)
                 main() {
                     eval $(${pkgs.docker-machine}/bin/docker-machine env -u) # ensure we cosidering only local containers
-                    selected_container=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
-                    if [ ! -z "$selected_container" ]; then
-                        CONTAINER_IP=$(${pkgs.docker}/bin/docker inspect $selected_container --format='{{range $network, $settings :=.NetworkSettings.Networks}}{{$settings.IPAddress}}{{end}}')
-                        EXPOSED_PORT=$(${pkgs.docker}/bin/docker inspect $selected_container --format='{{range $port, $mappings :=.NetworkSettings.Ports}}{{$port}}{{end}}' | ${pkgs.coreutils}/bin/cut -f1 -d/)
+                    SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                    if [ ! -z "$SELECTED_CONTAINER" ]; then
+                        CONTAINER_IP=$(${pkgs.docker}/bin/docker inspect $SELECTED_CONTAINER --format='{{range $network, $settings :=.NetworkSettings.Networks}}{{$settings.IPAddress}}{{end}}')
+                        EXPOSED_PORT=$(${pkgs.docker}/bin/docker inspect $SELECTED_CONTAINER --format='{{range $port, $mappings :=.NetworkSettings.Ports}}{{$port}}{{end}}' | ${pkgs.coreutils}/bin/cut -f1 -d/)
                         ${firefoxOpenPageCmd} http://$CONTAINER_IP:$EXPOSED_PORT
                     fi
                 }
