@@ -3,6 +3,7 @@
 {
     imports = [
         <home-manager/nixos>
+        ../../toolbox/desktop/org_protocol.nix
         ../../toolbox/dev/common/clients.nix
         ../../toolbox/dev/common/forensics.nix
         ../../toolbox/dev/common/misc.nix
@@ -28,6 +29,9 @@
         ../../toolbox/network/misc.nix
         ../../toolbox/network/system.nix
         ../../toolbox/nix.nix
+        ../../toolbox/scripts/inventory.nix
+        ../../toolbox/scripts/services.nix
+        ../../toolbox/scripts/virt.nix
         ../../toolbox/security.nix
         ../../toolbox/shell/convert.nix
         ../../toolbox/shell/misc.nix
@@ -41,9 +45,7 @@
         ../../toolbox/text/view.nix
         ../../toolbox/virt/docker.nix
         ../../toolbox/virt/misc.nix
-        ../../toolbox/virt/scripts.nix
         ../../toolbox/virt/vm.nix
-        ../../toolbox/desktop/org_protocol.nix
         ./dotfiles/dev/editor.nix
         ./dotfiles/dev/git.nix
         ./dotfiles/dev/lisp.nix
@@ -58,7 +60,6 @@
         ./dotfiles/x11/misc.nix
         ./dotfiles/x11/taffybar.nix
         ./dotfiles/x11/xresources.nix
-        ./scripts/services.nix
         ./services/collect-garbage.nix
         ./services/fusuma.nix
         ./services/git-auto.nix
@@ -93,9 +94,8 @@
     nix.trustedUsers = [ "alex3rd" ];
 
     networking.extraHosts = (builtins.concatStringsSep "\n"
-                                      (lib.mapAttrsToList (ip: meta: ip + "   " +
-                                                                     (builtins.concatStringsSep " " meta.hostNames))
-                                      (config.job.extra_hosts // config.misc.extra_hosts)));
+                                      (map (host: host.ip + "   " + (builtins.concatStringsSep " " host.hostNames))
+                                      (config.job.extra_hosts ++ config.misc.extra_hosts)));
 
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [

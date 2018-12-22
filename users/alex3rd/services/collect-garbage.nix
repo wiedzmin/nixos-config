@@ -2,7 +2,7 @@
 
 {
     imports = [
-        ../scripts/nix.nix
+        ../../../toolbox/scripts/nix.nix
     ];
 
     systemd.services."collect-nix-garbage" = {

@@ -1,21 +1,8 @@
 {config, pkgs, ...}:
 
-let
-    bookshelfPath = "${config.users.extraUsers.alex3rd.home}/bookshelf";
-    autorandrProfilesPath = "${config.users.extraUsers.alex3rd.home}/.config/autorandr";
-    tmuxpSessionsPath = "${config.users.extraUsers.alex3rd.home}/tmuxp";
-    bookReaderUsePdftools = true;
-    currentUser = "alex3rd";
-    previousUser = "octocat";
-    screenshotsPath = "${config.users.extraUsers.alex3rd.home}/screenshots";
-    screenshotDateFormat = "+%Y-%m-%d_%H:%M:%S";
-in
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
-            rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
-                ${pkgs.feh}/bin/feh --bg-fill ${config.sys.wallpapers_dir}/${config.sys.current_wallpaper}
-            '';
             shell-capture = pkgs.writeShellScriptBin "shell-capture" ''
                 TEMPLATE="$1"
                 if [[ ! -n $TEMPLATE ]]
@@ -41,32 +28,6 @@ in
                 echo $(${pkgs.pass}/bin/pass $PASS_ENTRY | ${pkgs.coreutils}/bin/tr '\n' ' ' | \
                      ${pkgs.gawk}/bin/awk '{print $3 ":" $1}')
             '';
-            tar_encrypt = pkgs.writeShellScriptBin "tar_encrypt" ''
-                # encrypts files/directory with default key identity to tar stream
-
-                IN=$1
-                if [[ -z $IN ]]; then
-                    echo "no input file provided, exiting"
-                    exit 1
-                fi
-                SOURCE_BASENAME=''${IN%.*}
-                ${pkgs.gnupg}/bin/gpgtar -r "${config.common.primaryGpgKeyID}" -u "${config.common.primaryGpgKeyID}" \
-                                         -e $IN > $SOURCE_BASENAME.tar.gpg
-            '';
-            tar_decrypt = pkgs.writeShellScriptBin "tar_decrypt" ''
-                # decrypts files/directory from tar stream with default key identity
-
-                IN=$1
-                if [[ -z $IN ]]; then
-                    echo "no input file provided, exiting"
-                    exit 1
-                fi
-                WD=`pwd`
-                SOURCE_BASENAME=''${IN%.*}
-                ${pkgs.gnupg}/bin/gpg --output $WD/$SOURCE_BASENAME_decrypted.tar --decrypt $IN && \
-                                        ${pkgs.gnutar}/bin/tar xf $WD/$SOURCE_BASENAME_decrypted.tar && \
-                                        rm $WD/$SOURCE_BASENAME_decrypted.tar
-            '';
             watch_dunst = pkgs.writeShellScriptBin "watch_dunst" ''
                 FORCE=$1
                 DUNST_COUNT=$(${pkgs.procps}/bin/pgrep -x -c .dunst-wrapped)
@@ -79,23 +40,54 @@ in
                     exit 0
                 fi
             '';
+            lockscreen = pkgs.writeShellScriptBin "lockscreen" ''
+                ${pkgs.xkblayout-state}/bin/xkblayout-state set 0; ${pkgs.i3lock-color}/bin/i3lock-color -c 232729; ${pkgs.xorg.xset}/bin/xset dpms force off
+            '';
+            tar_encrypt = pkgs.writeShellScriptBin "tar_encrypt" ''
+                IN=$1
+                KEY_ID=$2
+                if [[ -z $IN ]]; then
+                    echo "no input file provided, exiting"
+                    exit 1
+                fi
+                SOURCE_BASENAME=''${IN%.*}
+                ${pkgs.gnupg}/bin/gpgtar -r "$KEY_ID" -u "$KEY_ID" -e $IN > $SOURCE_BASENAME.tar.gpg
+            '';
+            tar_decrypt = pkgs.writeShellScriptBin "tar_decrypt" ''
+                IN=$1
+                if [[ -z $IN ]]; then
+                    echo "no input file provided, exiting"
+                    exit 1
+                fi
+                WD=`pwd`
+                SOURCE_BASENAME=''${IN%.*}
+                ${pkgs.gnupg}/bin/gpg --output $WD/$SOURCE_BASENAME_decrypted.tar --decrypt $IN && \
+                                        ${pkgs.gnutar}/bin/tar xf $WD/$SOURCE_BASENAME_decrypted.tar && \
+                                        rm $WD/$SOURCE_BASENAME_decrypted.tar
+            '';
             screenshot_active_window = pkgs.writeShellScriptBin "screenshot_active_window" ''
+                CONFIGFILE=''${1:-$HOME/.config/screenshots/screenshots.yml}
+                SCREENSHOTS_PATH=$(${pkgs.shyaml}/bin/shyaml -gy screenshots.path $CONFIGFILE)
+                DATE_FORMAT=$(${pkgs.shyaml}/bin/shyaml -gy screenshots.date_format $CONFIGFILE)
                 ${pkgs.maim}/bin/maim -o -i $(${pkgs.xdotool}/bin/xdotool getactivewindow) --format png /dev/stdout | \
-                    ${pkgs.coreutils}/bin/tee ${screenshotsPath}/screenshot-$(date ${screenshotDateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
+                    ${pkgs.coreutils}/bin/tee $SCREENSHOTS_PATH/screenshot-$(date $DATE_FORMAT.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
                     ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
             '';
             screenshot_region = pkgs.writeShellScriptBin "screenshot_region" ''
+                CONFIGFILE=''${1:-$HOME/.config/screenshots/screenshots.yml}
+                SCREENSHOTS_PATH=$(${pkgs.shyaml}/bin/shyaml -gy screenshots.path $CONFIGFILE)
+                DATE_FORMAT=$(${pkgs.shyaml}/bin/shyaml -gy screenshots.date_format $CONFIGFILE)
                 ${pkgs.maim}/bin/maim -o -s --format png /dev/stdout | \
-                    ${pkgs.coreutils}/bin/tee ${screenshotsPath}/screenshot-$(date ${screenshotDateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
+                    ${pkgs.coreutils}/bin/tee $SCREENSHOTS_PATH/screenshot-$(date $DATE_FORMAT.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
                     ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
             '';
             screenshot_full = pkgs.writeShellScriptBin "screenshot_full" ''
+                CONFIGFILE=''${1:-$HOME/.config/screenshots/screenshots.yml}
+                SCREENSHOTS_PATH=$(${pkgs.shyaml}/bin/shyaml -gy screenshots.path $CONFIGFILE)
+                DATE_FORMAT=$(${pkgs.shyaml}/bin/shyaml -gy screenshots.date_format $CONFIGFILE)
                 ${pkgs.maim}/bin/maim -o --format png /dev/stdout | \
-                    ${pkgs.coreutils}/bin/tee ${screenshotsPath}/screenshot-$(date ${screenshotDateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
+                    ${pkgs.coreutils}/bin/tee $SCREENSHOTS_PATH/screenshot-$(date $DATE_FORMAT.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
                     ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
-            '';
-            lockscreen = pkgs.writeShellScriptBin "lockscreen" ''
-                ${pkgs.xkblayout-state}/bin/xkblayout-state set 0; ${pkgs.i3lock-color}/bin/i3lock-color -c 232729; ${pkgs.xorg.xset}/bin/xset dpms force off
             '';
        };
     };

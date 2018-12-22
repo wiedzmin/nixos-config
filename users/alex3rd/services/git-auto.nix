@@ -4,7 +4,7 @@
     imports = [
         ../private/traits/job.nix
         ../private/traits/dev.nix
-        ../scripts/git.nix
+        ../../../toolbox/scripts/git.nix
     ];
     systemd.services."git-fetch-updates-work" = {
         description = "Fetch updates from work git repos";

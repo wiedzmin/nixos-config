@@ -13,6 +13,9 @@ let
     ];
 in
 {
+    imports = [
+        ../../../../toolbox/scripts/git.nix
+    ];
     home-manager.users.alex3rd = {
         home.file = {
             "git-assets/git-commit-template".text = ''

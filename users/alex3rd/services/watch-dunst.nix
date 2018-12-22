@@ -2,7 +2,7 @@
 
 {
     imports = [
-        ../scripts/misc.nix
+        ../../../toolbox/scripts/misc.nix
     ];
 
     systemd.services."watch-dunst" = {

@@ -2,7 +2,7 @@
 
 {
     imports = [
-        ../../scripts/statuses.nix
+        ../../../../toolbox/scripts/statuses.nix
         ../../scripts/navigation.nix
         ../../private/traits/nas.nix
     ];
@@ -29,7 +29,6 @@
         home.packages = with pkgs; [
 
             # helper scripts for WMs
-            rescale-wallpaper
             rofi_autorandr_profiles
             rofi_bookshelf
             rofi_tmuxp_sessions
@@ -138,15 +137,14 @@
                 month $now == month $date ==> tag current-month,
                 year $now == year $date ==> tag current-year,
 
+                # TODO: generalize and find way to extract to module/lib
                 ${builtins.concatStringsSep "\n"
-                           (pkgs.stdenv.lib.mapAttrsToList
-                                 (ip: meta: builtins.concatStringsSep "\n"
-                                            (map (hostname: "current window ($program == \"" +
-                                                            config.sys.default_shell_class + "\" && $title =~ /" +
-                                                            hostname + "/) ==> tag ssh:" + hostname + ",")
-                                                 meta.hostNames))
-                                 (config.job.extra_hosts // config.misc.extra_hosts))}
-
+                           (map (meta: builtins.concatStringsSep "\n"
+                                       (map (hostname: "current window ($program == \"" +
+                                            config.sys.default_shell_class + "\" && $title =~ /" +
+                                            hostname + "/) ==> tag ssh:" + hostname + ",")
+                                            meta.hostNames))
+                                (config.job.extra_hosts ++ config.misc.extra_hosts))}
             '';
             ".config/xmobar/xmobarrc".text = ''
                 Config { font = "xft:Iosevka:style=Bold:pixelsize=16"
@@ -714,6 +712,11 @@
                 help="Alt+h"
                 switch="Alt+x"
                 insert_pass="Alt+n"
+            '';
+            ".config/screenshots/screenshots.yml".text = ''
+                screenshots:
+                  path: ${config.users.extraUsers.alex3rd.home}/screenshots
+                  date_format: +%Y-%m-%d_%H:%M:%S
             '';
         };
         gtk = {
