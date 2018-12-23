@@ -7,6 +7,7 @@
     };
 
     environment.systemPackages = with pkgs; [
+        arion
         ctop
         docker-machine
         docker_compose
