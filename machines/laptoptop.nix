@@ -3,7 +3,7 @@
 {
     imports = [
         ../pkgs/setup.nix
-        ../partitions/x230-laptoptop.nix
+        ../partitions/laptoptop-ssd-512.nix
         ../hardware/bluetooth.nix
         ../hardware/intel.nix
         ../hardware/laptop.nix
@@ -85,7 +85,7 @@
     nixpkgs.config.allowUnfree = true;
 
     networking = {
-        hostName = "x230";
+        hostName = "laptoptop";
         hostId = "2ab69157";
         firewall.enable = false;
         usePredictableInterfaceNames = true;
