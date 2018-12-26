@@ -9,7 +9,7 @@
     system.activationScripts.refreshShellBookmarks = "echo '" +
         (builtins.concatStringsSep "\n"
              (lib.mapAttrsToList (bmk: path: bmk + " : " + path)
-             (config.common.shell_bookmarks // config.job.shell_bookmarks))) +
+             (config.common.shellBookmarks // config.job.shellBookmarks))) +
         "' > ${config.users.extraUsers.alex3rd.home}/.bookmarks";
 
     home-manager.users.alex3rd = {

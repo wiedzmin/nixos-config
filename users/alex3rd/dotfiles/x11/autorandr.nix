@@ -14,7 +14,7 @@
                 executable = true;
                 text = ''
                     #!${pkgs.bash}/bin/bash
-                    ${pkgs.feh}/bin/feh --bg-fill ${config.sys.wallpapers_dir}/${config.sys.current_wallpaper}
+                    ${pkgs.feh}/bin/feh --bg-fill ${config.sys.wallpaper.baseDir}/${config.sys.wallpaper.current}
                 '';
             };
             # TODO: actualize list below

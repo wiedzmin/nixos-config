@@ -186,7 +186,7 @@ in
             rofi_extra_hosts_traits = pkgs.writeShellScriptBin "rofi_extra_hosts_traits" ''
                 ${listOfSetsToShellHashtable
                     (unfoldListOfSetsByAttr
-                        (config.job.extra_hosts ++ config.misc.extra_hosts)
+                        (config.job.extraHosts ++ config.misc.extraHosts)
                         "hostNames")
                     "hostNames"
                     "EXTRA_HOSTS"
@@ -220,7 +220,7 @@ in
             '';
             rofi_insert_snippet = pkgs.writeShellScriptBin "rofi_insert_snippet" ''
                 ask_for_snippets() {
-                    SNIPPETS=$(<${config.users.extraUsers.alex3rd.home}/${config.common.snippetsFile})
+                    SNIPPETS=$(<${config.users.extraUsers.alex3rd.home}/${config.common.snippets.file})
                     for i in "''${SNIPPETS[@]}"
                     do
                         echo "$i"
@@ -246,11 +246,11 @@ in
                 ${builtins.concatStringsSep "\n"
                            (map (host: builtins.head host.hostNames)
                                 (builtins.filter (host: host.swarm == true)
-                                                 config.job.extra_hosts))}
+                                                 config.job.extraHosts))}
                 )
                 SWARM_NODES_COUNT=''${#SWARM_NODES[@]}
                 # SELECTED_NODE=''${SWARM_NODES[$(( ( RANDOM % $SWARM_NODES_COUNT ) ))]}
-                SELECTED_NODE=${config.job.infra.docker_swarm_leader_host}
+                SELECTED_NODE=${config.job.infra.dockerSwarmLeaderHost}
 
                 docker_stack_ps_params() {
                     echo ${ if dockerStackShowOnlyRunning then "--filter \\\"desired-state=Running\\\"" else ""}
@@ -271,7 +271,7 @@ in
                 }
 
                 ask_for_stack() {
-                    STACKS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$SELECTED_NODE \
+                    STACKS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.defaultRemoteUser}@$SELECTED_NODE \
                                                      "docker stack ls | awk '{if(NR>1)print $1}'" | \
                                                      ${pkgs.gawk}/bin/awk '{print $1}')
                     for i in "''${STACKS[@]}"
@@ -282,7 +282,7 @@ in
 
                 show_stack_status() {
                     STACK=$1
-                    ${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$SELECTED_NODE \
+                    ${pkgs.openssh}/bin/ssh ${config.job.infra.defaultRemoteUser}@$SELECTED_NODE \
                     "docker stack ps $STACK $(docker_stack_ps_params)" > /tmp/docker_stack_status
                     ${pkgs.yad}/bin/yad --filename /tmp/docker_stack_status --text-info
                     rm /tmp/docker_stack_status
@@ -290,9 +290,9 @@ in
 
                 ask_for_stack_task() {
                     STACK=$1
-                    TASKS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$SELECTED_NODE \
+                    TASKS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.defaultRemoteUser}@$SELECTED_NODE \
                     "docker stack ps $STACK $(docker_stack_ps_params)" | awk '{if(NR>1)print $0}')
-                    SERVICE=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@$SELECTED_NODE \
+                    SERVICE=$(${pkgs.openssh}/bin/ssh ${config.job.infra.defaultRemoteUser}@$SELECTED_NODE \
                     "docker service ls --format='{{.Name}}' | grep $STACK ")
                     TASKS="''${SERVICE}
                 ''${TASKS}"
@@ -312,7 +312,7 @@ in
                         logs)
                             TASK=$( (ask_for_stack_task $STACK) | ${pkgs.rofi}/bin/rofi -dmenu -p "Task" | ${pkgs.gawk}/bin/awk '{print $1}' )
                             ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
-                                                              ${config.job.infra.default_remote_user}@$SELECTED_NODE \
+                                                              ${config.job.infra.defaultRemoteUser}@$SELECTED_NODE \
                                                               -c 'docker service logs --follow $TASK'"
                             ;;
                         *)
@@ -329,7 +329,7 @@ in
             rofi_remote_docker_logs = pkgs.writeShellScriptBin "rofi_remote_docker_logs" ''
                 # TODO: abstract away creds/hosts details and rework accordingly
                 ask_for_logs() {
-                    LOGS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.default_remote_user}@${config.job.infra.logs_host} "find ${config.job.infra.remote_docker_logs_path}/ -maxdepth 1 -size +0 -type f | grep -v gz")
+                    LOGS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.defaultRemoteUser}@${config.job.infra.logsHost} "find ${config.job.infra.remoteDockerLogsPath}/ -maxdepth 1 -size +0 -type f | grep -v gz")
                     for i in "''${LOGS[@]}"
                     do
                         echo "$i"
@@ -340,7 +340,7 @@ in
                     LOG=$( (ask_for_logs) | ${pkgs.rofi}/bin/rofi -dmenu -p "View log" )
                     if [ -n "$LOG" ]; then
                        ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
-                       ${config.job.infra.default_remote_user}@${config.job.infra.logs_host} \
+                       ${config.job.infra.defaultRemoteUser}@${config.job.infra.logsHost} \
                        -c 'tail -f $LOG'"
                     fi
                 }
@@ -357,7 +357,7 @@ in
                 ${builtins.concatStringsSep "\n"
                   (pkgs.stdenv.lib.mapAttrsToList
                       (ip: meta: "  [\"${meta.alias}\"]=\"${ip} ${meta.command} ${meta.user} ${meta.passwordPassPath}\"")
-                        (config.job.dbms_traits))}
+                        (config.job.dbmsTraits))}
                 )
 
                 MYCLI_BINARY=${pkgs.mycli}/bin/mycli

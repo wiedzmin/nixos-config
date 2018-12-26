@@ -95,7 +95,7 @@
 
     networking.extraHosts = (builtins.concatStringsSep "\n"
                                       (map (host: host.ip + "   " + (builtins.concatStringsSep " " host.hostNames))
-                                      (config.job.extra_hosts ++ config.misc.extra_hosts)));
+                                      (config.job.extraHosts ++ config.misc.extraHosts)));
 
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [

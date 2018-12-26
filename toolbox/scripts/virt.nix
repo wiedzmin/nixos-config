@@ -159,7 +159,7 @@ in
                         SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
                         if [ -n "$SELECTED_CONTAINER" ]; then
                             ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
-                            ${config.job.infra.default_remote_user}@$HOST \
+                            ${config.job.infra.defaultRemoteUser}@$HOST \
                             -c 'docker exec -it $SELECTED_CONTAINER ${dockerContainerShellExecutable}'"
                         fi
                     fi

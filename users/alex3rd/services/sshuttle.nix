@@ -16,7 +16,7 @@
             RestartSec = 2;
             ExecStart = "-${pkgs.sshuttle}/bin/sshuttle -D --dns -r ${config.network.sshuttle.remote}" +
                         (lib.concatMapStrings (subnet: " -x ${subnet}") config.network.sshuttle.exclude) +
-                        " 0/0 --pidfile=/var/run/sshuttle.pid -e 'ssh -i ${config.network.sshuttle.ssh_identity_file}'";
+                        " 0/0 --pidfile=/var/run/sshuttle.pid -e 'ssh -i ${config.network.sshuttle.sshIdentityFile}'";
             ExecStartPost = "${pkgs.systemd}/bin/systemctl try-restart imapfilter.service"; # TODO: invent a global list of services that needs to be restarted this way
             ExecStopPost = "${pkgs.systemd}/bin/systemctl try-restart imapfilter.service";
         };

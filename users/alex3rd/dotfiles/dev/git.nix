@@ -177,10 +177,10 @@ in
         };
         programs.git = {
             enable = true;
-            userName = config.common.userName;
-            userEmail = config.common.userEmail;
+            userName = config.common.userTraits.fullName;
+            userEmail = config.common.userTraits.email;
             signing = {
-                key = config.common.primaryGpgKeyID;
+                key = config.common.userTraits.primaryGpgKeyID;
                 signByDefault = true;
             };
             extraConfig = {

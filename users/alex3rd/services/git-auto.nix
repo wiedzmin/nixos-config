@@ -12,7 +12,7 @@
         serviceConfig = {
             Type = "oneshot";
             User = "alex3rd"; # TODO: think of abstracting away
-            ExecStart = "${pkgs.git-fetch-batch}/bin/git-fetch-batch ${config.job.workspace_path}";
+            ExecStart = "${pkgs.git-fetch-batch}/bin/git-fetch-batch ${config.job.workspacePath}";
             StandardOutput = "journal+console";
             StandardError = "inherit";
         };
@@ -31,7 +31,7 @@
         serviceConfig = {
             Type = "oneshot";
             User = "alex3rd"; # TODO: think of abstracting away
-            ExecStart = "${pkgs.git-save-wip-batch}/bin/git-save-wip-batch ${config.job.workspace_path}";
+            ExecStart = "${pkgs.git-save-wip-batch}/bin/git-save-wip-batch ${config.job.workspacePath}";
             StandardOutput = "journal+console";
             StandardError = "inherit";
         };
@@ -50,7 +50,7 @@
         serviceConfig = {
             Type = "oneshot";
             User = "alex3rd"; # TODO: think of abstracting away
-            ExecStart = "${pkgs.git-save-wip-batch}/bin/git-save-wip-batch" + (lib.concatMapStrings (loc: " ${loc}") config.dev.pet_project_locations);
+            ExecStart = "${pkgs.git-save-wip-batch}/bin/git-save-wip-batch" + (lib.concatMapStrings (loc: " ${loc}") config.dev.petProjectLocations);
             StandardOutput = "journal+console";
             StandardError = "inherit";
         };

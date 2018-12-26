@@ -45,8 +45,8 @@
             show_uptime_info
         ];
         home.file = {
-            "${config.common.snippetsFile}".text = ''
-                ${lib.concatStringsSep "\n" config.common.snippets}
+            "${config.common.snippets.file}".text = ''
+                ${lib.concatStringsSep "\n" config.common.snippets.inventory}
             '';
             ".arbtt/categorize.cfg".text = ''
                 aliases (
@@ -141,10 +141,10 @@
                 ${builtins.concatStringsSep "\n"
                            (map (meta: builtins.concatStringsSep "\n"
                                        (map (hostname: "current window ($program == \"" +
-                                            config.sys.default_shell_class + "\" && $title =~ /" +
+                                            config.sys.defaultShellClass + "\" && $title =~ /" +
                                             hostname + "/) ==> tag ssh:" + hostname + ",")
                                             meta.hostNames))
-                                (config.job.extra_hosts ++ config.misc.extra_hosts))}
+                                (config.job.extraHosts ++ config.misc.extraHosts))}
             '';
             ".config/xmobar/xmobarrc".text = ''
                 Config { font = "xft:${config.sys.fonts.main.name}:style=${config.sys.fonts.main.weight}:pixelsize=${config.sys.fonts.size.Dzen}"
@@ -361,12 +361,12 @@
                   hostname: ${config.nas.hostname}
                   users:
                     admin:
-                      login: ${config.nas.primary_user}
-                      password: ${config.nas.primary_user_password}
+                      login: ${config.nas.primaryUser}
+                      password: ${config.nas.primaryUserPassword}
                   # FIXME: use more versatile parser, because those implemented with bash have limited functionality
                   volumes: ${builtins.concatStringsSep " " config.nas.volumes}
                   mount:
-                    basedir: ${config.nas.local_mount_base}
+                    basedir: ${config.nas.localMountBase}
             '';
             ".config/xkeysnail/config.py".text = ''
                 # -*- coding: utf-8 -*-
