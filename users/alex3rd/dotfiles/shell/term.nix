@@ -19,15 +19,15 @@
                 draw_bold_text_with_bright_colors: true
                 font:
                   normal:
-                    family: ${config.sys.fontMainName}
-                    style: ${config.sys.fontMainWeight}
+                    family: ${config.sys.fonts.term.name}
+                    style: ${config.sys.fonts.term.weight}
                   bold:
-                    family: ${config.sys.fontMainName}
-                    style: ${config.sys.fontMainWeight}
+                    family: ${config.sys.fonts.term.name}
+                    style: ${config.sys.fonts.term.weight}
                   italic:
-                    family: ${config.sys.fontMainName}
+                    family: ${config.sys.fonts.term.name}
                     style: Italic
-                  size: ${config.sys.fontMainSizeAlacritty}
+                  size: ${config.sys.fonts.size.Alacritty}
                 render_timer: false
                 custom_cursor_colors: false
                 # Colors (Oxide)

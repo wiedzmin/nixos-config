@@ -14,21 +14,26 @@ let
     ];
 in
 {
+    # TODO: search for existing solution
+    system.activationScripts.updateXresources = ''
+        ${pkgs.xorg.xrdb}/bin/xrdb -merge ${config.users.extraUsers.alex3rd.home}/.Xresources
+    '';
+
     home-manager.users.alex3rd = {
         xresources.properties = {
             "Xmessage*Buttons" = "Quit";
             "Xmessage*defaultButton" = "Quit";
-            "Xmessage*faceName" = "${config.sys.fontMainName}";
-            "Xmessage*faceSize" = "${config.sys.fontMainSizeXmessage}";
-            "Xmessage*faceWeight" = "${config.sys.fontMainWeight}";
+            "Xmessage*faceName" = "${config.sys.fonts.main.name}";
+            "Xmessage*faceSize" = "${config.sys.fonts.size.Xmessage}";
+            "Xmessage*faceWeight" = "${config.sys.fonts.main.weight}";
             "Xmessage*international" = true;
 
-            "dzen2.font" = "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeDzen}";
+            "dzen2.font" = "${config.sys.fonts.main.name}:weight=${config.sys.fonts.main.weight}:size=${config.sys.fonts.size.Dzen}";
 
-            "Emacs*XlwMenu.font" = "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeEmacs}";
-            "Emacs.Font" = "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeEmacs}";
+            "Emacs*XlwMenu.font" = "${config.sys.fonts.code.name}:weight=${config.sys.fonts.code.weight}:size=${config.sys.fonts.size.Emacs}";
+            "Emacs.Font" = "${config.sys.fonts.code.name}:weight=${config.sys.fonts.code.weight}:size=${config.sys.fonts.size.Emacs}";
             "Emacs.FontBackend" = "xft,x";
-            "Emacs.dialog*.font" = "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeEmacs}";
+            "Emacs.dialog*.font" = "${config.sys.fonts.code.name}:weight=${config.sys.fonts.code.weight}:size=${config.sys.fonts.size.Emacs}";
             "Emacs.menuBar" = "0";
             "Emacs.toolBar" = "0";
             "Emacs.verticalScrollBars" = false;
@@ -66,7 +71,7 @@ in
             "URxvt.externalBorder" = "3";
             "URxvt.fadeColor" = "#666666";
             "URxvt.fading" = "40";
-            "URxvt.font" = "xft:${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeURxvt}";
+            "URxvt.font" = "xft:${config.sys.fonts.main.name}:weight=${config.sys.fonts.main.weight}:size=${config.sys.fonts.size.URxvt}";
             "URxvt.geometry" = "80x27";
             "URxvt.internalBorder" = "3";
             "URxvt.keysym.C-Delete" = "perl:matcher:last";

@@ -147,7 +147,7 @@
                                 (config.job.extra_hosts ++ config.misc.extra_hosts))}
             '';
             ".config/xmobar/xmobarrc".text = ''
-                Config { font = "xft:Iosevka:style=Bold:pixelsize=16"
+                Config { font = "xft:${config.sys.fonts.main.name}:style=${config.sys.fonts.main.weight}:pixelsize=${config.sys.fonts.size.Dzen}"
                        , bgColor = "black"
                        , fgColor = "grey"
                        , position = TopW L 100
@@ -723,7 +723,7 @@
             enable = true;
             font = {
                 package = pkgs.dejavu_fonts;
-                name = "${config.sys.fontMainName} ${config.sys.fontMainWeight} ${config.sys.fontMainSizeDunst}";
+                name = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.Dunst}";
             };
         };
         services.dunst = {
@@ -738,7 +738,7 @@
                     dmenu = "/usr/bin/dmenu -p dunst:";
                     ellipsize = "middle";
                     follow = "keyboard";
-                    font = "${config.sys.fontMainName} ${config.sys.fontMainWeight} ${config.sys.fontMainSizeDunst}";
+                    font = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.Dunst}";
                     force_xinerama = "false";
                     format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\n%b";
                     frame_color = "#232323";
@@ -853,7 +853,7 @@
             width = 80;
             xoffset = 0;
             yoffset = 0;
-            font = "Iosevka Bold 12"; # TODO: templatize
+            font = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.URxvt}";
             theme = "${config.users.extraUsers.alex3rd.home}/.config/rofi/oxide.rasi";
             # TODO: review https://davedavenport.github.io/rofi/manpage.html
             extraConfig = ''
