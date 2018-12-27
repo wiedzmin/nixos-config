@@ -9,6 +9,7 @@
         httplab
         insomnia
         mycli
+        nodePackages.elasticdump
         pgcli
         wuzz
         zeal
