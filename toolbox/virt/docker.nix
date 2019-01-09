@@ -11,6 +11,7 @@
         ctop
         docker-machine
         docker_compose
+        img
         kind
         skopeo
     ];
