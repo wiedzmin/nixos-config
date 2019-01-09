@@ -14,11 +14,6 @@ let
     ];
 in
 {
-    # TODO: search for existing solution
-    system.activationScripts.updateXresources = ''
-        ${pkgs.xorg.xrdb}/bin/xrdb -merge ${config.users.extraUsers.alex3rd.home}/.Xresources
-    '';
-
     home-manager.users.alex3rd = {
         xresources.properties = {
             "Xmessage*Buttons" = "Quit";
