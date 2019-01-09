@@ -17,9 +17,6 @@ let
 in
 {
     home-manager.users.alex3rd = {
-        home.packages = with pkgs; [
-            tmuxp
-        ];
         home.file = {
             "tmuxp/housekeeping.yml".text = ''
                 session_name: housekeeping
