@@ -23,6 +23,7 @@
     boot.plymouth.enable = true;
     boot.tmpOnTmpfs = true;
 
+    boot.kernelPackages = pkgs.linuxPackages_4_14;
     services = {
         irqbalance.enable = true;
         mpd.enable = true;
