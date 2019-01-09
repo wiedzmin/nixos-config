@@ -21,6 +21,7 @@
         configurationLimit = 10;
     };
     boot.plymouth.enable = true;
+    boot.tmpOnTmpfs = true;
 
     services = {
         irqbalance.enable = true;
