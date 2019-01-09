@@ -26,7 +26,7 @@
 
                     ${pkgs.wmname}/bin/wmname LG3D
 
-                    ${pkgs.xorg.xrdb}/bin/xrdb -merge .Xresources
+                    ${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources
 
                     ${pkgs.xidlehook}/bin/xidlehook --not-when-audio --not-when-fullscreen\
                           --timer normal 150 '${pkgs.libnotify}/bin/notify-send -t 7000 -u critical "Locking in 30 seconds"' ''' \
