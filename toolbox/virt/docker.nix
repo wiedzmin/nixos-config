@@ -13,6 +13,7 @@
         docker_compose
         img
         kind
+        libcgroup
         skopeo
     ];
 }
