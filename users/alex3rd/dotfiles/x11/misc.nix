@@ -403,6 +403,7 @@
                         K("C-c"): K("C-q"),
                     },
                     K("C-s"): K("Esc"),
+                    K("C-t"): [K("Shift-Left"), K("C-x"), K("Left"), K("C-v"), K("Right")],
                 }, "Telegram")
 
                 # Emacs-like keybindings in non-Emacs applications
