@@ -748,7 +748,6 @@
                     hide_duplicates_count = "false";
                     history_length = 20;
                     horizontal_padding = 10;
-                    icon_path = "/usr/share/icons/gnome/16x16/status/:/usr/share/icons/gnome/16x16/devices/";
                     icon_position = "left";
                     idle_threshold = 120;
                     ignore_newline = "no";
