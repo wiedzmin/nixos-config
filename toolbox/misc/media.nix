@@ -14,6 +14,7 @@
         mpv
         playerctl
         squashfsTools
+        vlc
         xorriso
     ];
 }
