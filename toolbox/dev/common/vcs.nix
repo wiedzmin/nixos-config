@@ -18,6 +18,7 @@
         gitAndTools.pass-git-helper
         gitinspector
         gitstats
+        icdiff
         mercurial
         stgit
     ];

@@ -8,6 +8,7 @@
         ffmpeg
         geteltorito
         gimp
+        handbrake
         inkscape
         maim
         mpv

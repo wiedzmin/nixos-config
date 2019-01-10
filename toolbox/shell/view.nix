@@ -8,6 +8,7 @@
         bcat
         fpp
         glogg
+        pspg
         tealdeer
     ];
 }

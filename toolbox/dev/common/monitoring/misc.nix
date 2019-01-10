@@ -11,6 +11,7 @@
     };
 
     environment.systemPackages = with pkgs; [
+        eventstat
         inotify-tools
         multitail
         ntfy
