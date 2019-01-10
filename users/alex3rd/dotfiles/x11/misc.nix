@@ -938,7 +938,6 @@
             '';
         };
         programs.browserpass.enable = true;
-        services.unclutter.enable = true;
         services.udiskie.enable = true;
         services.network-manager-applet.enable = true;
         services.random-background = {
@@ -946,5 +945,15 @@
             imageDirectory = "%h/blobs/wallpaper";
             interval = "1w";
         };
+    };
+    services.unclutter-xfixes = {
+        enable = true;
+        timeout = 2;
+        threshold = 15;
+        extraOptions = [
+            "exclude-root"
+            "fork"
+            "ignore-scrolling"
+        ];
     };
 }
