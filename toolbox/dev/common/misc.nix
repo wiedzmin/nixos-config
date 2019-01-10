@@ -13,5 +13,6 @@
         sloccount
         vim
         weighttp
+        pciutils
     ];
 }
