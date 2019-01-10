@@ -123,5 +123,14 @@
 
             networkmanager_dmenu # using rofi, despite naming
         ];
+        programs.ssh = {
+            enable = true;
+            forwardAgent = true;
+            userKnownHostsFile = "~/.ssh/known_hosts";
+            controlMaster = "auto";
+            controlPath = "~/.ssh/sockets/%r@%h:%p";
+            controlPersist = "4h"; # was 5m in imperative config
+            serverAliveInterval = 30;
+        };
     };
 }
