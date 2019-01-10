@@ -11,5 +11,10 @@
         fsType = "ext2";
     };
 
+    fileSystems."${config.services.syncthing.dataDir}/bookshelf" = {
+        device = "${config.users.extraUsers.alex3rd.home}/bookshelf";
+        options = [ "bind" ];
+    };
+
     swapDevices = [ ];
 }

@@ -36,7 +36,15 @@
             enable = true;
             forwardX11 = true;
         };
+        syncthing = {
+            enable = true;
+        };
     };
+
+    system.activationScripts.ensureSyncthingDataSymlinks = ''
+        mkdir -p ${config.services.syncthing.dataDir}/bookshelf
+        chown -R ${config.services.syncthing.user}:${config.services.syncthing.group} ${config.services.syncthing.dataDir}/bookshelf
+    '';
 
     security.sudo.wheelNeedsPassword = false;
 
