@@ -64,6 +64,7 @@
                 # epkgs.lsp-dockerfile // https://github.com/emacs-lsp/lsp-dockerfile
                 # epkgs.lsp-javascript-typescript // read https://github.com/emacs-lsp/lsp-javascript for server side setup also
                 # epkgs.lsp-sh // https://github.com/emacs-lsp/lsp-sh
+                epkgs.ace-jump-buffer
                 epkgs.ace-window
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
@@ -78,6 +79,7 @@
                 epkgs.backup-walker
                 epkgs.banner-comment
                 epkgs.beginend
+                epkgs.bln-mode
                 epkgs.blockdiag-mode
                 epkgs.bug-hunter
                 epkgs.c-eldoc
@@ -143,6 +145,7 @@
                 epkgs.flycheck-clang-analyzer
                 epkgs.flycheck-flow
                 epkgs.flycheck-gometalinter
+                epkgs.flycheck-inline
                 epkgs.flycheck-pos-tip
                 epkgs.format-all
                 epkgs.function-args
@@ -164,6 +167,7 @@
                 epkgs.graphql-mode
                 epkgs.haskell-mode
                 epkgs.hc-zenburn-theme
+                epkgs.highlight-indent-guides
                 epkgs.httprepl
                 epkgs.hungry-delete
                 epkgs.ialign
@@ -213,6 +217,7 @@
                 epkgs.nov
                 epkgs.ob-async
                 epkgs.ob-blockdiag
+                epkgs.on-screen
                 epkgs.org-alert
                 epkgs.org-bullets
                 epkgs.org-capture-pop-frame
