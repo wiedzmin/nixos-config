@@ -67,7 +67,6 @@
         ./services/nixpkgs-update-status.nix
         ./services/sshuttle.nix
         ./services/vpn.nix
-        ./services/watch-dunst.nix
         ./services/xkeysnail.nix
     ];
 

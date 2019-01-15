@@ -28,18 +28,6 @@
                 echo $(${pkgs.pass}/bin/pass $PASS_ENTRY | ${pkgs.coreutils}/bin/tr '\n' ' ' | \
                      ${pkgs.gawk}/bin/awk '{print $3 ":" $1}')
             '';
-            watch_dunst = pkgs.writeShellScriptBin "watch_dunst" ''
-                FORCE=$1
-                DUNST_COUNT=$(${pkgs.procps}/bin/pgrep -x -c .dunst-wrapped)
-                if [ $DUNST_COUNT -gt 1 ]; then
-                    ${pkgs.logger}/bin/logger "Too much dunsts ($DUNST_COUNT), shooting down..."
-                    ${pkgs.procps}/bin/pkill -x -KILL .dunst-wrapped
-                    exit 0
-                elif [ "$FORCE" == "force" ]; then
-                    ${pkgs.procps}/bin/pkill -x -KILL .dunst-wrapped
-                    exit 0
-                fi
-            '';
             lockscreen = pkgs.writeShellScriptBin "lockscreen" ''
                 ${pkgs.xkblayout-state}/bin/xkblayout-state set 0; ${pkgs.i3lock-color}/bin/i3lock-color -c 232729; ${pkgs.xorg.xset}/bin/xset dpms force off
             '';
