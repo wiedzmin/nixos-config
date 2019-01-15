@@ -7,7 +7,6 @@
 
     powerManagement = {
         enable = true;
-        # FIXME: ${pkgs.systemd}/bin/systemctl --user restart dunst.service
         powerDownCommands = ''
             ${pkgs.force_unmount_nas}/bin/force_unmount_nas
         '';
