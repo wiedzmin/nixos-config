@@ -78,7 +78,7 @@
                 fi
             '';
             show_uptime_info = pkgs.writeShellScriptBin "show_uptime_info" ''
-                ${pkgs.libnotify}/bin/notify-send -t 7000 "Uptime: $(${pkgs.status_uptime}/bin/status_uptime)"
+                ${pkgs.dunst}/bin/dunstify -t 7000 "Uptime: $(${pkgs.status_uptime}/bin/status_uptime)"
             '';
        };
     };

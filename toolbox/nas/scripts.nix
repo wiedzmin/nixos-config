@@ -9,7 +9,7 @@ in
             mount_nas_volume = pkgs.writeShellScriptBin "mount_nas_volume" ''
                 CONFIGFILE=${nasConfigPath}
                 if [[ ! -f $CONFIGFILE ]]; then
-                    ${pkgs.libnotify}/bin/notify-send -t 5000 -u critical "Missing config file, exiting"
+                    ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "Missing config file, exiting"
                     exit 1
                 fi
                 NAS_HOSTNAME=$(${pkgs.shyaml}/bin/shyaml -gy nas.hostname $CONFIGFILE)
@@ -19,29 +19,29 @@ in
 
                 NAS_ONLINE=$(${pkgs.netcat}/bin/nc -z $NAS_HOSTNAME 22 2 -w 2 2>&1)
                 if [ -z "$NAS_ONLINE" ]; then
-                    ${pkgs.libnotify}/bin/notify-send -t 7000 -u critical "Cannot access NAS, network error"
+                    ${pkgs.dunst}/bin/dunstify -t 7000 -u critical "Cannot access NAS, network error"
                     exit 1
                 fi
 
                 VOLUME=$1
                 ALREADY_MOUNTED=$(cat /etc/mtab | grep catscan | cut -d ' '  -f 1 | grep $VOLUME)
                 if [[ ! -z $ALREADY_MOUNTED ]]; then
-                    ${pkgs.libnotify}/bin/notify-send -t 5000 -u critical "Volume '$VOLUME' already mounted"
+                    ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "Volume '$VOLUME' already mounted"
                     exit 1
                 fi
                 mkdir -p $NAS_MOUNT_PATH/$VOLUME
                 ${pkgs.afpfs-ng}/bin/mount_afp afp://$NAS_ADMIN_LOGIN:$NAS_ADMIN_PASSWORD@$NAS_HOSTNAME/$VOLUME \
                     $NAS_MOUNT_PATH/$VOLUME
                 if [[ $? -eq 0 ]]; then
-                    ${pkgs.libnotify}/bin/notify-send -t 3000 "Volume '$VOLUME' succesfully mounted"
+                    ${pkgs.dunst}/bin/dunstify -t 3000 "Volume '$VOLUME' succesfully mounted"
                 else
-                    ${pkgs.libnotify}/bin/notify-send -t 5000 -u critical "Error mounting volume '$VOLUME'"
+                    ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "Error mounting volume '$VOLUME'"
                 fi
             '';
             unmount_nas_volume = pkgs.writeShellScriptBin "unmount_nas_volume" ''
                 CONFIGFILE=${nasConfigPath}
                 if [[ ! -f $CONFIGFILE ]]; then
-                    ${pkgs.libnotify}/bin/notify-send -t 5000 -u critical "Missing config file, exiting"
+                    ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "Missing config file, exiting"
                     exit 1
                 fi
                 NAS_MOUNT_PATH=$(${pkgs.shyaml}/bin/shyaml -gy nas.mount.basedir $CONFIGFILE)
@@ -50,15 +50,15 @@ in
                 YET_MOUNTED=$(cat /etc/mtab | grep catscan | cut -d ' '  -f 1 | grep $VOLUME)
                 if [[ ! -z $YET_MOUNTED ]]; then
                     fusermount -u $NAS_MOUNT_PATH/$VOLUME
-                    ${pkgs.libnotify}/bin/notify-send -t 3000 "Volume $VOLUME succesfully unmounted!"
+                    ${pkgs.dunst}/bin/dunstify -t 3000 "Volume $VOLUME succesfully unmounted!"
                 else
-                    ${pkgs.libnotify}/bin/notify-send -t 7000 "Volume '$VOLUME' already unmounted!"
+                    ${pkgs.dunst}/bin/dunstify -t 7000 "Volume '$VOLUME' already unmounted!"
                 fi
             '';
             rofi_mount_nas_volume = pkgs.writeShellScriptBin "rofi_mount_nas_volume" ''
                 CONFIGFILE=${nasConfigPath}
                 if [[ ! -f $CONFIGFILE ]]; then
-                    ${pkgs.libnotify}/bin/notify-send -t 5000 -u critical "Missing config file, exiting"
+                    ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "Missing config file, exiting"
                     exit 1
                 fi
                 NAS_VOLUMES=$(${pkgs.shyaml}/bin/shyaml -gy nas.volumes $CONFIGFILE)
@@ -109,7 +109,7 @@ in
             force_unmount_nas = pkgs.writeShellScriptBin "force_unmount_nas" ''
                 CONFIGFILE=${nasConfigPath}
                 if [[ ! -f $CONFIGFILE ]]; then
-                    ${pkgs.libnotify}/bin/notify-send -t 5000 -u critical "Missing config file, exiting"
+                    ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "Missing config file, exiting"
                     exit 1
                 fi
                 NAS_HOSTNAME=$(${pkgs.shyaml}/bin/shyaml -gy nas.hostname $CONFIGFILE)

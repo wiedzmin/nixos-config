@@ -19,12 +19,12 @@
             '';
             watch_nixpkgs_updates = pkgs.writeShellScriptBin "watch_nixpkgs_updates" ''
                 if [ ! -z "$(${pkgs.watch_git_remote_status}/bin/watch_git_remote_status /etc/nixos/pkgs/nixpkgs-channels | grep available)" ]; then
-                    ${pkgs.libnotify}/bin/notify-send -t 30000 "Nixpkgs updated, consider install!"
+                    ${pkgs.dunst}/bin/dunstify -t 30000 "Nixpkgs updated, consider install!"
                 fi
             '';
             watch_home_manager_updates = pkgs.writeShellScriptBin "watch_home_manager_updates" ''
                 if [ ! -z "$(${pkgs.watch_git_remote_status}/bin/watch_git_remote_status /etc/nixos/pkgs/home-manager | grep available)" ]; then
-                    ${pkgs.libnotify}/bin/notify-send -t 30000 "Home-manager updated, consider install!"
+                    ${pkgs.dunst}/bin/dunstify -t 30000 "Home-manager updated, consider install!"
                 fi
             '';
             show_nixpkgs_updates = pkgs.writeShellScriptBin "show_nixpkgs_updates" ''
