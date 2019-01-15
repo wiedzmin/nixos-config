@@ -29,7 +29,7 @@
 
                     ${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources
 
-                    ${pkgs.xpointerbarrier}/bin/xpointerbarrier 47 7 7 27
+                    ${pkgs.xpointerbarrier}/bin/xpointerbarrier 20 0 0 0 &
 
                     ${pkgs.xidlehook}/bin/xidlehook --not-when-audio --not-when-fullscreen\
                           --timer normal 150 '${pkgs.dunst}/bin/dunstify -t 7000 -u critical "Locking in 30 seconds"' ''' \
