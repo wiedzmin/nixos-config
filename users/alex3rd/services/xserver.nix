@@ -28,6 +28,8 @@
 
                     ${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources
 
+                    ${pkgs.xpointerbarrier}/bin/xpointerbarrier 47 7 7 27
+
                     ${pkgs.xidlehook}/bin/xidlehook --not-when-audio --not-when-fullscreen\
                           --timer normal 150 '${pkgs.libnotify}/bin/notify-send -t 7000 -u critical "Locking in 30 seconds"' ''' \
                           --timer primary 30 '${pkgs.lockscreen}/bin/lockscreen' ''' &
