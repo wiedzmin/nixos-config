@@ -12,7 +12,7 @@
         '';
         resumeCommands = ''
             ${pkgs.systemd}/bin/systemctl restart imapfilter.service
-            ${pkgs.systemd}/bin/systemctl try-restart sshuttle.service
+            ${pkgs.systemd}/bin/systemctl restart sshuttle.service
         '';
         powertop.enable = true;
     };
