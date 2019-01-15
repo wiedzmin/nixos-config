@@ -733,18 +733,17 @@
             settings = {
                 global = {
                     alignment = "left";
-                    allow_markup = "yes";
                     always_run_script = "true";
                     bounce_freq = 0;
-                    browser = "firefox -new-tab";
-                    dmenu = "/usr/bin/dmenu -p dunst:";
+                    browser = "${pkgs.firefox-unwrapped}/bin/firefox -new-tab";
+                    dmenu = "${pkgs.dmenu}/bin/dmenu -p dunst:";
                     ellipsize = "middle";
                     follow = "keyboard";
                     font = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.Dunst}";
                     force_xinerama = "false";
-                    format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\n%b";
+                    format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\\n%b";
                     frame_color = "#232323";
-                    frame_width = 1;
+                    frame_width = 3;
                     geometry = "300x5-15+15";
                     hide_duplicates_count = "false";
                     history_length = 20;
@@ -771,10 +770,6 @@
                     transparency = 0;
                     verbosity = "mesg";
                     word_wrap = "yes";
-                };
-                frame = {
-                    width = 3;
-                    color = "#aaaaaa";
                 };
                 shortcuts = {
                     close = "ctrl+space";
