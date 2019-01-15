@@ -6,6 +6,7 @@
         ansible-lint
         buck
         cloc
+        dotnet-sdk
         doxygen
         global
         highlight
