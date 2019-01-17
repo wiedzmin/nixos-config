@@ -5,11 +5,10 @@
         xmonad = {
             enable = true;
             enableContribAndExtras = true;
-            extraPackages = p: [ p.taffybar p.dbus p.monad-logger p.lens p.split ];
+            extraPackages = p: [ p.dbus p.monad-logger p.lens p.split ];
         };
     };
     environment.systemPackages = with pkgs; [
         haskellPackages.xmobar
-        taffybar
     ];
 }
