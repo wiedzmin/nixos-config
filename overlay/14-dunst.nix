@@ -26,7 +26,7 @@ dunst = with super; stdenv.mkDerivation rec {
         xorg.libXScrnSaver
         xorg.libXinerama
         xorg.libXrandr
-        xorg.xproto
+        xorg.xorgproto
     ];
 
     outputs = [ "out" "man" ];
