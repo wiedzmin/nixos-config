@@ -7,7 +7,6 @@
                  ${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null
             '';
             git-fetch-batch = pkgs.writeShellScriptBin "git-fetch-batch" ''
-                set -euo pipefail
                 BASE_PATH=$1
                 if [[ ! -n $BASE_PATH ]]
                 then
@@ -22,8 +21,19 @@
                     echo "Processing $(basename `pwd`)..."
                     REMOTES=$(${pkgs.git}/bin/git remote)
                     if [[ "origin" =~ $REMOTES ]]; then
-                        ${pkgs.git}/bin/git fetch origin &
-                        wait $!
+                        SLEEPSEC=2
+                        RET=1
+                        until [ ''${RET} -eq 0 ]; do
+                            ${pkgs.git}/bin/git fetch origin &
+                            wait $!
+                            RET=$?
+                            # TODO: maybe constraint attempts count after trial
+                            if [ ''${RET} -ne 0 ]; then
+                                echo Failed fetching origin, retrying in $SLEEPSEC seconds...
+                                sleep $SLEEPSEC
+                                SLEEPSEC="$((SLEEPSEC * 2))"
+                            fi
+                        done
                         ${pkgs.git}/bin/git rebase --autostash &
                         wait $!
                     fi
