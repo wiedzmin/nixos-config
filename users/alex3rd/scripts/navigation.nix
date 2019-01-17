@@ -378,7 +378,8 @@ in
                         DBMS_USER=$(echo $DBMS_META | ${pkgs.coreutils}/bin/cut -f3 -d\ )
                         DBMS_PASSWORD_PASS_PATH=$(echo $DBMS_META | ${pkgs.coreutils}/bin/cut -f4 -d\ )
                         DBMS_PASSWORD=$(${pkgs.pass}/bin/pass $DBMS_PASSWORD_PASS_PATH)
-                        CLI_BINARY_VARNAME="''${DBMS_COMMAND}_BINARY"
+                        CLI_BINARY_VARNAME="''${DBMS_COMMAND^^}_BINARY"
+                        CLI_EXECUTABLE="''${!CLI_BINARY_VARNAME}"
                         CLI_EXECUTABLE="''${!CLI_BINARY_VARNAME}"
                         ${pkgs.tmux}/bin/tmux new-window "$CLI_EXECUTABLE --host $DBMS_IP --user $DBMS_USER --password $DBMS_PASSWORD"
                     fi
