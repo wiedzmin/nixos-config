@@ -14,7 +14,7 @@
                   padding:
                     x: 2
                     y: 2
-                  decorations: true
+                  decorations: full
                 tabspaces: 8
                 draw_bold_text_with_bright_colors: true
                 font:
@@ -29,7 +29,6 @@
                     style: Italic
                   size: ${config.sys.fonts.size.Alacritty}
                 render_timer: false
-                custom_cursor_colors: false
                 # Colors (Oxide)
                 colors:
                   primary:
@@ -67,11 +66,12 @@
                   double_click: { threshold: 300 }
                   triple_click: { threshold: 300 }
                   faux_scrolling_lines: 1
+                  hide_when_typing: false
                 selection:
                   semantic_escape_chars: ",│`|:\"' ()[]{}<>"
                 dynamic_title: true
-                hide_cursor_when_typing: false
-                cursor_style: Beam
+                cursor:
+                  style: Beam
                 live_config_reload: true
                 key_bindings:
                   - { key: V,        mods: Control|Shift,    action: Paste               }
