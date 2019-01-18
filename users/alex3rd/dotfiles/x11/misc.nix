@@ -1,5 +1,17 @@
 {config, pkgs, lib, ...}:
 
+let
+    genIni = lib.generators.toINI {
+        mkKeyValue = key: value:
+            let
+                mvalue =
+                    if builtins.isBool value then (if value then "true" else "false")
+                    else if (builtins.isString value && key != "include-file") then value
+                    else builtins.toString value;
+            in
+                "${key}=${mvalue}";
+    };
+in
 {
     imports = [
         ../../../../toolbox/scripts/statuses.nix
@@ -45,6 +57,31 @@
             show_uptime_info
         ];
         home.file = {
+            ".mozilla/firefox/profiles.ini".text = genIni {
+                General.StartWithLastProfile = 1;
+                Profile0 = {
+                    Name = "default";
+                    IsRelative = 1;
+                    Path = "profile.default";
+                    Default = 1;
+                };
+            };
+            ".mozilla/firefox/profile.default/user.js".text = ''
+                pref("extensions.autoDisableScopes", 0);
+            '';
+            ".mozilla/firefox/profile.default/extensions/display-anchors@robwu.nl.xpi".source = builtins.fetchurl {
+                url = "https://addons.mozilla.org/firefox/downloads/file/584272/display_anchors-1.3-an+fx.xpi";
+                sha256 = "1f761sccxl2wqd174fhzyg36ldkvz062shzkiidj55fi74z19liw";
+            };
+            ".mozilla/firefox/profile.default/extensions/tridactyl.vim@cmcaine.co.uk.xpi".source = builtins.fetchurl {
+                url = "https://addons.mozilla.org/firefox/downloads/file/1181475/tridactyl-1.14.6-an+fx.xpi";
+                sha256 = "1sjvhp9dhmhdvvccmpmgdwkmdicfqkmcv8arxd0dsax3dg0d0jpd";
+            };
+            ".mozilla/firefox/profile.default/extensions/{d47d18bc-d6ba-4f96-a144-b3016175f3a7}.xpi".source = builtins.fetchurl {
+                url = "https://addons.mozilla.org/firefox/downloads/file/736244/url_protocolhostnamepath_in_title-1.0-an+fx.xpi";
+                sha256 = "1a69ka4044gda6gcf1pvjslhjqgnssh0rgm5bf56azrikkid2x11";
+            };
+
             "${config.common.snippets.file}".text = ''
                 ${lib.concatStringsSep "\n" config.common.snippets.inventory}
             '';
