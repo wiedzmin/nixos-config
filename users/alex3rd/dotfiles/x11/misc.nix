@@ -25,10 +25,6 @@ in
         ../../private/traits/nas.nix
     ];
 
-    system.activationScripts.ensureBacklightPermissions = ''
-        chmod a+w /sys/class/backlight/intel_backlight/brightness
-    '';
-
     environment.etc."Xmodmaprc".text = ''
         clear mod1
         clear mod4

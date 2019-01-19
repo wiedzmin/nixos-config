@@ -12,4 +12,8 @@
     '';
     nix.maxJobs = lib.mkDefault 4;
     nix.buildCores = lib.mkDefault 4;
+
+    system.activationScripts.ensureBacklightPermissions = ''
+        chmod a+w /sys/class/backlight/intel_backlight/brightness
+    '';
 }
