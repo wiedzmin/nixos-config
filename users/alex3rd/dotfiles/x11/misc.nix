@@ -1,5 +1,6 @@
 {config, pkgs, lib, ...}:
 
+with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make more declarative
 let
     genIni = lib.generators.toINI {
         mkKeyValue = key: value:
@@ -10,6 +11,11 @@ let
                     else builtins.toString value;
             in
                 "${key}=${mvalue}";
+    };
+    tridactylNativeInstaller = pkgs.fetchurl {
+        url = "https://raw.githubusercontent.com/tridactyl/tridactyl/master/native/install.sh";
+        sha256 = "19hwg61zp85nv3nm5x5h6n4ya41gzkfsfpribkm5s8r0ppg8vdhl";
+        executable = true;
     };
 in
 {
@@ -38,7 +44,11 @@ in
     '';
 
     home-manager.users.alex3rd = {
+        home.activation.installTridactylNativeClient = dagEntryAfter ["linkGeneration"] ( ''
+            ${pkgs.bash}/bin/bash -c "${tridactylNativeInstaller}"
+        '' );
         home.packages = with pkgs; [
+            xclip               # for firefox native clients
 
             # helper scripts for WMs
             rofi_autorandr_profiles
@@ -57,6 +67,7 @@ in
             show_uptime_info
         ];
         home.file = {
+            # TODO: think of moving firefox-related setup to browser dotfiles
             ".mozilla/firefox/profiles.ini".text = genIni {
                 General.StartWithLastProfile = 1;
                 Profile0 = {
@@ -68,6 +79,15 @@ in
             };
             ".mozilla/firefox/profile.default/user.js".text = ''
                 pref("extensions.autoDisableScopes", 0);
+
+                pref("browser.ctrlTab.recentlyUsedOrder", false);
+                pref("browser.download.dir", "/home/alex3rd/Downloads");
+                pref("browser.link.open_newwindow", 2);
+                pref("browser.sessionstore.restore_on_demand", true);
+                pref("browser.sessionstore.restore_tabs_lazily", true);
+                pref("browser.shell.checkDefaultBrowser", true);
+                pref("browser.startup.page", 3);
+                pref("lightweightThemes.selectedThemeID", "firefox-compact-dark@mozilla.org");
             '';
             ".mozilla/firefox/profile.default/extensions/display-anchors@robwu.nl.xpi".source = builtins.fetchurl {
                 url = "https://addons.mozilla.org/firefox/downloads/file/584272/display_anchors-1.3-an+fx.xpi";
@@ -82,6 +102,31 @@ in
                 sha256 = "1a69ka4044gda6gcf1pvjslhjqgnssh0rgm5bf56azrikkid2x11";
             };
 
+            ".mozilla/firefox/profile.default/handlers.json".text = builtins.toJSON {
+                defaultHandlersVersion = {
+                    "en-US" = 4;
+                };
+                mimeTypes = {
+                    "application/pdf" = {
+                        action = 3;
+                    };
+                };
+                schemes = {
+                    mailto = {
+                        action = 4;
+                        handlers = [
+                            null
+                            {
+                                name = "Gmail";
+                                uriTemplate = "https://mail.google.com/mail/?extsrc=mailto&url=%s";
+                            }
+                        ];
+                    };
+                    "org-protocol" = {
+                        action = 4;
+                    };
+                };
+            };
             "${config.common.snippets.file}".text = ''
                 ${lib.concatStringsSep "\n" config.common.snippets.inventory}
             '';
