@@ -44,7 +44,7 @@ in
             ${pkgs.bash}/bin/bash -c "${tridactylNativeInstaller}"
         '' );
         home.packages = with pkgs; [
-            xclip               # for firefox native clients
+            xsel # for firefox native clients
 
             # helper scripts for WMs
             rofi_autorandr_profiles
