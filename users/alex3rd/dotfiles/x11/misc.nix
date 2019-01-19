@@ -40,6 +40,12 @@ in
     '';
 
     home-manager.users.alex3rd = {
+        home.activation.ensureFFContentHandlersSymlinked = dagEntryBefore ["linkGeneration"] ( ''
+            FF_HANDLERS_FILE=/home/alex3rd/.mozilla/firefox/profile.default/handlers.json
+            if [[ ! -L "$FF_HANDLERS_FILE" ]]; then
+                rm $FF_HANDLERS_FILE
+            fi
+        '' );
         home.activation.installTridactylNativeClient = dagEntryAfter ["linkGeneration"] ( ''
             ${pkgs.bash}/bin/bash -c "${tridactylNativeInstaller}"
         '' );
