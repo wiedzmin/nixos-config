@@ -3,8 +3,10 @@
 {
     environment.systemPackages = with pkgs; [
         chromium
+        luakit
         lynx
         qbittorrent
+        qutebrowser
         skype
         slack
         tdesktop
