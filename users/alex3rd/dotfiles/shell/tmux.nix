@@ -21,23 +21,18 @@ in
             "tmuxp/housekeeping.yml".text = ''
                 session_name: housekeeping
                 windows:
-                  - window_name: configuration.nix
+                  - window_name: system
+                    layout: 9295,152x109,0,0[152x64,0,0,134,152x44,0,65,135]
                     start_directory: /etc/nixos
                     panes:
-                      -
-                  - window_name: nixpkgs
-                    start_directory: /etc/nixos/pkgs/nixpkgs-channels
-                    panes:
-                      -
-                  - window_name: Nix REPL
-                    start_directory: /etc/nixos/pkgs/nixpkgs-channels
-                    panes:
+                      - null
                       - shell_command:
+                        - cd /etc/nixos/pkgs/nixpkgs-channels
                         - nix repl '<nixpkgs/nixos>'
-                  - window_name: xmonad
-                    start_directory: ''${HOME}/.xmonad
+                  - window_name: mc
+                    start_directory: /home/alex3rd
                     panes:
-                      -
+                      - mc
             '';
             # TODO: divide into "local" and "remote" parts, where the latter is subset of the former, with remote-friendly settings (i.e. without plugins, etc.)
             ".tmux.conf".text = ''
