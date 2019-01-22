@@ -54,6 +54,7 @@ in
                 setw -g mode-keys emacs
                 set -g set-titles on
                 set -g set-titles-string '#(${pkgs.maybe_ssh_host}/bin/maybe_ssh_host):#(pwd="#{pane_current_path}"; echo $pwd)'
+                setenv EDITOR ${pkgs.emacs}/bin/emacsclient
 
                 # activity
                 set -g bell-action any
