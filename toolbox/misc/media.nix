@@ -11,6 +11,7 @@
         handbrake
         inkscape
         maim
+        mimeo
         mpv
         playerctl
         squashfsTools
