@@ -6,5 +6,6 @@
         dep2nix
         glide
         go
+        vgo2nix
     ];
 }
