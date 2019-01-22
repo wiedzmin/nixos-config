@@ -48,6 +48,7 @@
         ./services/nixpkgs-update-status.nix
         ./services/watch-dunst.nix
         ./services/xkeysnail.nix
+        ./private/traits/network.nix
     ];
 
     users.extraUsers = {
@@ -83,20 +84,10 @@
             backlightctl
             jobvpnctl
             lockscreen
-            rofi_insert_snippet
             rofi_service_journal
             sshuttlectl
             volumectl
             wifictl
-
-            docker-machine-export
-            docker-machine-import
-            rofi_docker_container_traits
-            rofi_docker_stacks_info
-            rofi_remote_docker_logs
-            rofi_docker_shell
-            rofi_dbms
-            rofi_containerized_services_discovery
 
             networkmanager_dmenu # using rofi, despite naming
         ];

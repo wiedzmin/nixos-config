@@ -5,12 +5,6 @@
         ../../private/traits/common.nix
     ];
 
-    system.activationScripts.refreshShellBookmarks = "echo '" +
-        (builtins.concatStringsSep "\n"
-             (lib.mapAttrsToList (bmk: path: bmk + " : " + path)
-             (config.common.shell_bookmarks))) +
-        "' > $HOME/.bookmarks";
-
     home-manager.users.kotya = {
         home.packages = with pkgs; [
             optimize-nix

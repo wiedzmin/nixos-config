@@ -72,7 +72,7 @@ in
                 exit 0
             '';
             rofi_webjumps = pkgs.writeShellScriptBin "rofi_webjumps" ''
-                ${listOfSetsToShellHashtable (config.job.webjumps ++ config.misc.webjumps) "url" "WEBJUMPS" true}
+                ${listOfSetsToShellHashtable (config.misc.webjumps) "url" "WEBJUMPS" true}
 
                 list_webjumps() {
                     for i in "''${!WEBJUMPS[@]}"
@@ -151,7 +151,7 @@ in
             rofi_extra_hosts_traits = pkgs.writeShellScriptBin "rofi_extra_hosts_traits" ''
                 ${listOfSetsToShellHashtable
                     (unfoldListOfSetsByAttr
-                        (config.job.extra_hosts ++ config.misc.extra_hosts)
+                        (config.misc.extra_hosts)
                         "hostNames")
                     "hostNames"
                     "EXTRA_HOSTS"

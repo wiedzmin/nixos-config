@@ -29,7 +29,6 @@
         home.packages = with pkgs; [
             # helper scripts for WMs
             rofi_autorandr_profiles
-            rofi_bookshelf
             rofi_tmuxp_sessions
             rofi_mount_nas_volume
             rofi_extra_hosts_traits
@@ -44,9 +43,6 @@
             show_uptime_info
         ];
         home.file = {
-            "${config.common.snippetsFile}".text = ''
-                ${lib.concatStringsSep "\n" config.common.snippets}
-            '';
             ".arbtt/categorize.cfg".text = ''
                 aliases (
                         "Navigator" -> "Firefox",
@@ -747,7 +743,7 @@
                 rofi.parse-hosts:                    true
                 rofi.parse-known-hosts:              false
                 rofi.ssh-client:                     ${pkgs.eternal-terminal}/bin/et
-                rofi.ssh-command:                    ${pkgs.tmux}/bin/tmux new-window '{ssh-client} ${config.network.defaultRemoteUser}@{host}'
+                rofi.ssh-command:                    ${pkgs.tmux}/bin/tmux new-window '{ssh-client} root@{host}'
 
                 rofi.kb-accept-alt:                  Shift+Return
                 rofi.kb-accept-custom:               Control+Return
