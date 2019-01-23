@@ -2,11 +2,11 @@
 
 let
     tmuxPluginsBundle = with pkgs; [
+        fzf-tmux-url-with-history # patched version, see overlays
         tmuxPlugins.battery
         tmuxPlugins.copycat
         tmuxPlugins.cpu
         tmuxPlugins.fpp
-        tmuxPlugins.fzf-tmux-url
         tmuxPlugins.logging
         tmuxPlugins.pain-control
         tmuxPlugins.prefix-highlight
@@ -168,7 +168,7 @@ in
                 bind y set-window-option synchronize-panes
 
                 # plugins settings
-
+                set -g @fzf-url-bind 'o'
                 # add all the plugins
                 ${lib.concatStrings (map (x: "run-shell ${x.rtp}\n") tmuxPluginsBundle)}
             '';
