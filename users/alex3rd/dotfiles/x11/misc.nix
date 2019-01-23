@@ -12,11 +12,60 @@ let
             in
                 "${key}=${mvalue}";
     };
-    tridactylNativeInstaller = pkgs.fetchurl {
-        url = "https://raw.githubusercontent.com/tridactyl/tridactyl/master/native/install.sh";
-        sha256 = "19hwg61zp85nv3nm5x5h6n4ya41gzkfsfpribkm5s8r0ppg8vdhl";
-        executable = true;
+    ffAddonsMetadata = {
+        displayanchors = {
+            title = "Display #Anchors";
+            description = ''
+                Displays anchors for all content in the current web page
+                without breaking the layout.
+            '';
+            id = "display-anchors@robwu.nl";
+            url = "https://addons.mozilla.org/firefox/downloads/file/584272/display_anchors-1.3-an+fx.xpi";
+            sha256 = "1f761sccxl2wqd174fhzyg36ldkvz062shzkiidj55fi74z19liw";
+            settings = {};
+        };
+        tridactyl = {
+            title = "Tridactyl";
+            description = ''
+                Replace Firefox's control mechanism with one modelled on Vim.
+
+                This addon is very usable, but is in an early stage of development.
+                We intend to implement the majority of Vimperator's features.
+            '';
+            id = "tridactyl.vim@cmcaine.co.uk";
+            url = "https://addons.mozilla.org/firefox/downloads/file/1181475/tridactyl-1.14.6-an+fx.xpi";
+            sha256 = "1sjvhp9dhmhdvvccmpmgdwkmdicfqkmcv8arxd0dsax3dg0d0jpd";
+            settings = {};
+            custom = {
+                tridactylNativeInstallerTraits = {
+                    url = "https://raw.githubusercontent.com/tridactyl/tridactyl/master/native/install.sh";
+                    sha256 = "19hwg61zp85nv3nm5x5h6n4ya41gzkfsfpribkm5s8r0ppg8vdhl";
+                    executable = true;
+                };
+            };
+        };
+        urltitleetc = {
+            title = "URL (protocol, hostname, path) in title";
+            description = ''
+                Adds the URL of the tab to the windows title:
+                * optional delimiter (e.g. ' - ')
+                * optional protocol (e.g. 'http://')
+                * hostname (e.g. 'foo.org')
+                * optional path (e.g. '/foo.php')
+
+                This is for instance useful for keepass/keepassX.
+            '';
+            id = "{d47d18bc-d6ba-4f96-a144-b3016175f3a7}";
+            url = "https://addons.mozilla.org/firefox/downloads/file/736244/url_protocolhostnamepath_in_title-1.0-an+fx.xpi";
+            sha256 = "1a69ka4044gda6gcf1pvjslhjqgnssh0rgm5bf56azrikkid2x11";
+            settings = {
+                protocol = false;
+                path = true;
+                delimiter = " // ";
+            };
+        };
     };
+    tridactylNativeInstaller = pkgs.fetchurl ffAddonsMetadata.tridactyl.custom.tridactylNativeInstallerTraits;
 in
 {
     imports = [
@@ -38,13 +87,23 @@ in
         add mod4 = Super_L
         add mod5 = Hyper_L
     '';
-
     home-manager.users.alex3rd = {
-        home.activation.ensureFFContentHandlersSymlinked = dagEntryBefore ["linkGeneration"] ( ''
-            FF_HANDLERS_FILE=/home/alex3rd/.mozilla/firefox/profile.default/handlers.json
-            if [[ ! -L "$FF_HANDLERS_FILE" ]]; then
-                rm $FF_HANDLERS_FILE
-            fi
+        home.activation.cleanupImperativeFFConfigs = dagEntryBefore ["linkGeneration"] ( ''
+            PATHS_TO_CLEAN=(
+                "/home/alex3rd/.mozilla/firefox/profile.default/handlers.json"
+                ${lib.concatStringsSep "\n    "
+                      (lib.mapAttrsToList (name: meta:
+                          "\"/home/alex3rd/.mozilla/firefox/profile.default/browser-extension-data/" +
+                          meta.id + "/storage.js\"")
+                      ffAddonsMetadata)}
+            )
+
+            for path in "''${PATHS_TO_CLEAN[@]}"
+            do
+                if [ -f $path ] && [ ! -L "$path" ]; then
+                    rm "$path"
+                fi
+            done
         '' );
         home.activation.installTridactylNativeClient = dagEntryAfter ["linkGeneration"] ( ''
             ${pkgs.bash}/bin/bash -c "${tridactylNativeInstaller}"
@@ -91,19 +150,6 @@ in
                 pref("browser.startup.page", 3);
                 pref("lightweightThemes.selectedThemeID", "firefox-compact-dark@mozilla.org");
             '';
-            ".mozilla/firefox/profile.default/extensions/display-anchors@robwu.nl.xpi".source = builtins.fetchurl {
-                url = "https://addons.mozilla.org/firefox/downloads/file/584272/display_anchors-1.3-an+fx.xpi";
-                sha256 = "1f761sccxl2wqd174fhzyg36ldkvz062shzkiidj55fi74z19liw";
-            };
-            ".mozilla/firefox/profile.default/extensions/tridactyl.vim@cmcaine.co.uk.xpi".source = builtins.fetchurl {
-                url = "https://addons.mozilla.org/firefox/downloads/file/1181475/tridactyl-1.14.6-an+fx.xpi";
-                sha256 = "1sjvhp9dhmhdvvccmpmgdwkmdicfqkmcv8arxd0dsax3dg0d0jpd";
-            };
-            ".mozilla/firefox/profile.default/extensions/{d47d18bc-d6ba-4f96-a144-b3016175f3a7}.xpi".source = builtins.fetchurl {
-                url = "https://addons.mozilla.org/firefox/downloads/file/736244/url_protocolhostnamepath_in_title-1.0-an+fx.xpi";
-                sha256 = "1a69ka4044gda6gcf1pvjslhjqgnssh0rgm5bf56azrikkid2x11";
-            };
-
             ".mozilla/firefox/profile.default/handlers.json".text = builtins.toJSON {
                 defaultHandlersVersion = {
                     "en-US" = 4;
@@ -127,8 +173,25 @@ in
                     "org-protocol" = {
                         action = 4;
                     };
+                    "tg" = {
+                        action = 4;
+                    };
                 };
             };
+            # TODO: try to find the way to generate from initial attrset
+            ".mozilla/firefox/profile.default/extensions/${ffAddonsMetadata.displayanchors.id}.xpi".source = builtins.fetchurl {
+                url = ffAddonsMetadata.displayanchors.url;
+                sha256 = ffAddonsMetadata.displayanchors.sha256;
+            };
+            ".mozilla/firefox/profile.default/extensions/${ffAddonsMetadata.tridactyl.id}.xpi".source = builtins.fetchurl {
+                url = ffAddonsMetadata.tridactyl.url;
+                sha256 = ffAddonsMetadata.tridactyl.sha256;
+            };
+            ".mozilla/firefox/profile.default/extensions/${ffAddonsMetadata.urltitleetc.id}.xpi".source = builtins.fetchurl {
+                url = ffAddonsMetadata.urltitleetc.url;
+                sha256 = ffAddonsMetadata.urltitleetc.sha256;
+            };
+            ".mozilla/firefox/profile.default/browser-extension-data/${ffAddonsMetadata.urltitleetc.id}/storage.js".text = builtins.toJSON ffAddonsMetadata.urltitleetc.settings;
             "${config.common.snippets.file}".text = ''
                 ${lib.concatStringsSep "\n" config.common.snippets.inventory}
             '';
