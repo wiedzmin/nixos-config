@@ -19,6 +19,7 @@
         keybase-gui
         lynis
         paperkey
+        pinentry
         rofi-pass
         srm
         sslscan
