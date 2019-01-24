@@ -14,6 +14,7 @@
         img
         kind
         libcgroup
+        oci-image-tool
         skopeo
     ];
 }
