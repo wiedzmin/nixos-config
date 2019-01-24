@@ -13,7 +13,7 @@
                 if [[ -n $TMUX ]]
                 then
                     TITLE=$(${pkgs.tmux}/bin/tmux display-message -p '#S')
-                    ${pkgs.tmux}/bin/tmux send -X copy-pipe-and-cancel "${pkgs.xclip}/bin/xclip -i -selection primary"
+                    ${pkgs.tmux}/bin/tmux send -X copy-pipe-and-cancel "${pkgs.xsel}/bin/xsel -i --primary"
                 fi
 
                 if [[ -n $TITLE ]]
@@ -53,6 +53,7 @@
                                         ${pkgs.gnutar}/bin/tar xf $WD/$SOURCE_BASENAME_decrypted.tar && \
                                         rm $WD/$SOURCE_BASENAME_decrypted.tar
             '';
+            # working with screenshots requires xclip, since xsel is MIME-agnostic
             screenshot_active_window = pkgs.writeShellScriptBin "screenshot_active_window" ''
                 CONFIGFILE=''${1:-$HOME/.config/screenshots/screenshots.yml}
                 SCREENSHOTS_PATH=$(${pkgs.shyaml}/bin/shyaml -gy screenshots.path $CONFIGFILE)

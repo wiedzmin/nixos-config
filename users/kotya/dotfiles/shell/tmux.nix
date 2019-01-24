@@ -146,7 +146,7 @@ in
 
                 bind BSpace last-window
 
-                bind -n C-y run -b "exec </dev/null; ${pkgs.xclip}/bin/xclip -o -selection clipboard | tmux load-buffer - ; \
+                bind -n C-y run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o --clipboard | tmux load-buffer - ; \
                                     tmux paste-buffer"
                 bind s split-window -v "tmux list-sessions | sed -E 's/:.*$//' | \
                                         grep -v \"^$(tmux display-message -p '#S')\$\" | \

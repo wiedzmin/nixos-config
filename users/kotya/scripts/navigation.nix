@@ -137,7 +137,7 @@ in
                     if [ ! -n "$SELECTED_ENGINE" ]; then
                         exit 1
                     fi
-                    QUERY=$(${pkgs.xclip}/bin/xclip -o)
+                    QUERY=$(${pkgs.xsel}/bin/xsel -o)
                     if [ -n "$QUERY" ]; then
                         URL="''${SEARCHENGINES[$SELECTED_ENGINE]}$QUERY"
                         ${config.misc.defaultBrowserCmd} "$URL"
@@ -173,7 +173,7 @@ in
                         IP=$(echo $RESULT | ${pkgs.gawk}/bin/awk '{print $2}' | \
                                             ${pkgs.gnused}/bin/sed 's/${sedPlaceholderChar}/ /g')
                         echo "$RESULT_NEWLINES" > /tmp/extra_host
-                        echo "$IP" | ${pkgs.gawk}/bin/awk '{print $2}'| ${pkgs.xclip}/bin/xclip -i -r -selection clipboard
+                        echo "$IP" | ${pkgs.gawk}/bin/awk '{print $2}'| ${pkgs.xsel}/bin/xsel -i --clipboard
                         ${pkgs.yad}/bin/yad --filename /tmp/extra_host --text-info
                         rm /tmp/extra_host
                     fi
