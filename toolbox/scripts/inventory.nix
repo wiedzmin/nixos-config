@@ -5,7 +5,6 @@ let
     bookReaderUsePdftools = true;
     currentUser = "alex3rd";
     previousUser = "octocat";
-    screenshotDateFormat = "%Y-%m-%d-%T";
     dockerStackPsCustomFormat = "{{.Name}}   {{.Image}}   {{.Node}} {{.DesiredState}}   {{.CurrentState}}";
     useDockerStackPsCustomFormat = false;
     dockerStackShowOnlyRunning = true;
