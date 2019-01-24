@@ -4,7 +4,7 @@
     systemd.services."xkeysnail" = {
         enable = true;
         description = "Xkeysnail";
-        wantedBy = [ "graphical.target" ];
+        wantedBy = [ "default.target" ];
         environment = {
             DISPLAY = ":0";
             XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
