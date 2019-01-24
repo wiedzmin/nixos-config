@@ -9,7 +9,6 @@ let
         tmuxPlugins.fpp
         tmuxPlugins.logging
         tmuxPlugins.prefix-highlight
-        tmuxPlugins.resurrect
         tmuxPlugins.yank
         tmuxPlugins.sessionist
     ];
