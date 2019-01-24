@@ -8,7 +8,6 @@ let
         tmuxPlugins.cpu
         tmuxPlugins.fpp
         tmuxPlugins.logging
-        tmuxPlugins.pain-control
         tmuxPlugins.prefix-highlight
         tmuxPlugins.resurrect
         tmuxPlugins.yank
@@ -114,6 +113,13 @@ in
                 bind T neww -n "Tmux manual" "exec man tmux"
                 bind l refresh-client
                 bind m select-pane -m
+
+                bind-key "|" split-window -h -c "#{pane_current_path}"
+                bind-key "\\" split-window -fh -c "#{pane_current_path}"
+                bind-key "-" split-window -v -c "#{pane_current_path}"
+                bind-key "_" split-window -fv -c "#{pane_current_path}"
+                bind-key "#" split-window -h -c "#{pane_current_path}"
+                bind-key '@' split-window -v -c "#{pane_current_path}"
 
                 bind M-0 select-window -t :10
                 bind M-1 select-window -t :11
