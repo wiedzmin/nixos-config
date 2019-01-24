@@ -55,6 +55,8 @@ in
                 set -g set-titles-string '#(${pkgs.maybe_ssh_host}/bin/maybe_ssh_host):#(pwd="#{pane_current_path}"; echo $pwd)'
                 setenv EDITOR ${pkgs.emacs}/bin/emacsclient
 
+                set-hook -g after-select-pane "run-shell \"tmux set -g window-active-style "bg='brightblack'" && sleep .05 && tmux set -g window-active-style '''\""
+
                 # activity
                 set -g bell-action any
                 set -g visual-activity off
