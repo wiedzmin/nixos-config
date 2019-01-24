@@ -131,5 +131,16 @@
             controlPersist = "4h"; # was 5m in imperative config
             serverAliveInterval = 30;
         };
+        services.gpg-agent = {
+            enable = true;
+            defaultCacheTtl = 34560000;
+            defaultCacheTtlSsh = 34560000;
+            maxCacheTtl = 34560000;
+            enableSshSupport = true;
+            extraConfig = ''
+                allow-emacs-pinentry
+                allow-loopback-pinentry
+            '';
+        };
     };
 }
