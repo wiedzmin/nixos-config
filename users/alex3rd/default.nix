@@ -68,6 +68,7 @@
         ./services/sshuttle.nix
         ./services/vpn.nix
         ./services/xkeysnail.nix
+        ./services/screenshots.nix
     ];
 
     users.extraUsers = {
@@ -121,6 +122,8 @@
             rofi_containerized_services_discovery
 
             networkmanager_dmenu # using rofi, despite naming
+
+            order_screenshots
         ];
         programs.ssh = {
             enable = true;

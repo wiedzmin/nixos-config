@@ -1,5 +1,8 @@
 {config, pkgs, ...}:
 
+let
+    screenshotsPath = "/home/alex3rd/screenshots";
+in
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
@@ -77,6 +80,37 @@
                 ${pkgs.maim}/bin/maim -o --format png /dev/stdout | \
                     ${pkgs.coreutils}/bin/tee $SCREENSHOTS_PATH/screenshot-$(date $DATE_FORMAT.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
                     ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
+            '';
+            order_screenshots = pkgs.writeShellScriptBin "order_screenshots" ''
+                declare -A REGEXP_TO_DATECMD
+                REGEXP_TO_DATECMD=(
+                  ["screenshot-[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}_[0-9]\{2\}\:[0-9]\{2\}\:[0-9]\{2\}"]='echo ''${FILENAME:11:4} ''${FILENAME:16:2} ''${FILENAME:19:2}'
+                  ["screenshot-[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{2\}\:[0-9]\{2\}\:[0-9]\{2\}"]='echo ''${FILENAME:11:4} ''${FILENAME:16:2} ''${FILENAME:19:2}'
+                  ["[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}_[0-9]\{2\}\:[0-9]\{2\}\:[0-9]\{2\}_[0-9]\+x[0-9]\+_scrot"]='echo ''${FILENAME:0:4} ''${FILENAME:5:2} ''${FILENAME:8:2}'
+                  ["[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{6\}_[0-9]\+x[0-9]\+_scrot"]='echo ''${FILENAME:0:4} ''${FILENAME:5:2} ''${FILENAME:8:2}'
+                  ["screenshot-[0-9]\{2\}-[0-9]\{2\}-[0-9]\{4\}-[0-9]\{2\}\:[0-9]\{2\}\:[0-9]\{2\}"]='echo ''${FILENAME:17:4} ''${FILENAME:14:2} ''${FILENAME:11:2}'
+                  # ["screenshot-[0-9]\{2\}\:[0-9]\{2\}\:[0-9]\{2\}\\ [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}"]='echo ''${FILENAME:20:4} ''${FILENAME:25:2} ''${FILENAME:28:2}'
+                  ["screenshot-[0-9]\{2\}\:[0-9]\{2\}\:[0-9]\{2\}_[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}"]='echo ''${FILENAME:20:4} ''${FILENAME:25:2} ''${FILENAME:28:2}'
+                )
+
+                for regexp in "''${!REGEXP_TO_DATECMD[@]}"
+                do
+                    FILELIST=$(ls -a ${screenshotsPath} | grep -e $regexp)
+                    DATECMD=''${REGEXP_TO_DATECMD[$regexp]}
+                    for FILENAME in $FILELIST
+                    do
+                        DATE_PART=($(eval $DATECMD))
+                        YEAR=''${DATE_PART[0]}
+                        MONTH=''${DATE_PART[1]}
+                        DAY=''${DATE_PART[2]}
+                        DEST_PATH=${screenshotsPath}/$YEAR/$MONTH/$DAY
+                        mkdir -p ${screenshotsPath}/$YEAR/$MONTH/$DAY
+                        echo "moving $FILENAME to $DEST_PATH"
+                        mv ${screenshotsPath}/$FILENAME ${screenshotsPath}/$YEAR/$MONTH/$DAY
+                    done
+                done
+
+                exit 0
             '';
        };
     };
