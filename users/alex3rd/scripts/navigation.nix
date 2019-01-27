@@ -12,6 +12,7 @@ let
     firefoxOpenPageCmd = "${pkgs.firefox-bin}/bin/firefox --new-window";
     chromiumOpenPageCmd = "${pkgs.chromium}/bin/chromium";
     # TODO: generalize and find way to extract to module/lib
+    hostTraitsIpOutputPosition = 4;
     prettifyValue = value:
        if builtins.typeOf value == "int" then
           builtins.toString value
@@ -205,10 +206,10 @@ in
                         RESULT="$SELECTED_HOST ''${EXTRA_HOSTS[$SELECTED_HOST]}"
                         RESULT_NEWLINES=$(echo $RESULT | ${pkgs.gnused}/bin/sed 's/ /\n/g' | \
                                                          ${pkgs.gnused}/bin/sed 's/${sedPlaceholderChar}/ /g')
-                        IP=$(echo $RESULT | ${pkgs.gawk}/bin/awk '{print $2}' | \
+                        IP=$(echo $RESULT | ${pkgs.gawk}/bin/awk '{print ${"$" + builtins.toString hostTraitsIpOutputPosition}}' | \
                                             ${pkgs.gnused}/bin/sed 's/${sedPlaceholderChar}/ /g')
                         echo "$RESULT_NEWLINES" > /tmp/extra_host
-                        echo "$IP" | ${pkgs.gawk}/bin/awk '{print $2}'| ${pkgs.xsel}/bin/xsel -i --clipboard
+                        echo "$IP" | ${pkgs.gawk}/bin/awk '{print $2}'| tr -d '\n' | ${pkgs.xsel}/bin/xsel -i --clipboard
                         ${pkgs.yad}/bin/yad --filename /tmp/extra_host --text-info
                         rm /tmp/extra_host
                     fi

@@ -122,7 +122,7 @@ in
                             eval $(${pkgs.docker-machine}/bin/docker-machine env $HOST)
                         fi
                         CONTAINER_STATUS=$( (list_container_statuses) | ${pkgs.rofi}/bin/rofi -dmenu -p "Status" )
-                        if [ -z "$container_status" ]; then
+                        if [ -z "$CONTAINER_STATUS" ]; then
                             exit 1
                         fi
                         if [ "$CONTAINER_STATUS" == "all" ]; then
@@ -134,7 +134,7 @@ in
                             SELECTED_TRAIT=$( (list_container_traits) | ${pkgs.rofi}/bin/rofi -dmenu -p "Inspect" )
                             if [ -n "$SELECTED_TRAIT" ]; then
                                 INSPECT_COMMAND="${pkgs.docker}/bin/docker inspect $SELECTED_CONTAINER --format='"''${CONTAINER_TRAITS[$SELECTED_TRAIT]}"'"
-                                eval `echo $INSPECT_COMMAND` | ${pkgs.xsel}/bin/xsel -i --clipboard
+                                eval `echo $INSPECT_COMMAND` | tr -d '\n' | ${pkgs.xsel}/bin/xsel -i --clipboard
                                 eval `echo $INSPECT_COMMAND` > /tmp/docker_traits
                                 ${pkgs.yad}/bin/yad --filename /tmp/docker_traits --text-info
                                 rm /tmp/docker_traits
