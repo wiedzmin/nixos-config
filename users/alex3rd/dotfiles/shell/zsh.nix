@@ -89,6 +89,7 @@ in
                 df = "${pkgs.dfc}/bin/dfc";
                 dud = "(setopt globdots; ${pkgs.coreutils}/bin/du -mhs * | ${pkgs.coreutils}/bin/sort -hr)";
                 find = "${pkgs.fd}/bin/fd";
+                findo = "${pkgs.findutils}/bin/find";
 
                 git = "${pkgs.gitAndTools.hub}/bin/hub";
                 gop = "git open";
