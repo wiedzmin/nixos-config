@@ -1,9 +1,10 @@
 *zshrc
 .xsession
+/.gtm/
+/overlay/inactive
 common_settings*
 configuration.nix
 notice
 private
 result
 todo.org
-/.gtm/
