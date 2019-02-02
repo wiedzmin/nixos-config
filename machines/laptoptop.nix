@@ -89,7 +89,7 @@
 
     hardware.sane = {
         enable = true;
-        # extraBackends = [ pkgs.epkowa ];
+        extraBackends = [ pkgs.epkowa ];
     };
 
     nixpkgs.config.allowUnfree = true;
