@@ -14,6 +14,7 @@
         eventstat
         inotify-tools
         multitail
+        lnav
         ntfy
         pv
         reflex
