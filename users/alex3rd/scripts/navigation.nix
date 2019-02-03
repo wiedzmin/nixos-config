@@ -406,6 +406,32 @@ in
 
                 exit 0
             '';
+            rofi_ctop = pkgs.writeShellScriptBin "rofi_ctop" ''
+                main() {
+                    HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
+                    if [ -n "$HOST" ]; then
+                        ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
+                        ${config.job.infra.defaultRemoteUser}@$HOST -c 'ctop'"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
+            rofi_jnettop = pkgs.writeShellScriptBin "rofi_jnettop" ''
+                main() {
+                    HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
+                    if [ -n "$HOST" ]; then
+                        ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
+                        ${config.job.infra.defaultRemoteUser}@$HOST -c 'jnettop'"
+                    fi
+                }
+
+                main
+
+                exit 0
+            '';
         };
     };
 }
