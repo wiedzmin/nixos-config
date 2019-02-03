@@ -54,7 +54,7 @@
             temperature.day = 5500;
             temperature.night = 3700;
         };
-        arbtt.enable = true;
+        # arbtt.enable = true; # FIXME: construct overlay
         autorandr = {
             enable = true;
             defaultTarget = "mobile";
