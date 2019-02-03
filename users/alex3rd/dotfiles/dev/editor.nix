@@ -171,7 +171,6 @@
                 epkgs.hungry-delete
                 epkgs.ialign
                 epkgs.ibuffer-vc
-                epkgs.iedit
                 epkgs.imenu-anywhere
                 epkgs.info-buffer
                 epkgs.info-colors
@@ -205,6 +204,7 @@
                 epkgs.melpaStablePackages.slime
                 epkgs.mingus
                 epkgs.multi-compile
+                epkgs.multiple-cursors
                 epkgs.mwim
                 epkgs.names
                 epkgs.nginx-mode
