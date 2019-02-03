@@ -5,6 +5,7 @@
         fpart
         gtm
         jdupes
+        rmlint
         todoman
     ];
 }
