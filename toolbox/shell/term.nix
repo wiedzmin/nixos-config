@@ -17,7 +17,6 @@
     environment.systemPackages = with pkgs; [
         alacritty
         eternal-terminal
-        kitty # TODO: review and compare with Alacritty
         rxvt_unicode-with-plugins
         tmux
     ];
