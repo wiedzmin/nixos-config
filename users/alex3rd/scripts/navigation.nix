@@ -48,9 +48,9 @@ in
     config = {
         nixpkgs.config.packageOverrides = super: {
             rofi_bookshelf = pkgs.writeShellScriptBin "rofi_bookshelf" ''
-                BOOKS=(
-                $(${pkgs.findutils}/bin/find ${bookshelfPath} -name "*.pdf" -o -name "*.djvu")
-                )
+                IFS=$'\n'
+                BOOKS=$(${pkgs.findutils}/bin/find ${bookshelfPath} -name "*.pdf"${ if !bookReaderUsePdftools then
+                        " -o -name \"*.djvu\"" else ""})
 
                 list_books() {
                     for i in "''${BOOKS[@]}"
@@ -63,9 +63,9 @@ in
                     SELECTED_BOOK=$( (list_books) | ${pkgs.rofi}/bin/rofi -dmenu -p "EBook " )
                     if [ -n "$SELECTED_BOOK" ]; then
                     ${if bookReaderUsePdftools then ''
-                        ${pkgs.emacs}/bin/emacsclient --eval "(find-file \"$selected_book\")" >& /dev/null
+                        ${pkgs.emacs}/bin/emacsclient --eval "(find-file \"$SELECTED_BOOK\")" >& /dev/null
                         sleep 0.5
-                        ${pkgs.wmctrl}/bin/wmctrl -l | grep -E "emacs.+(pdf|djvu)$" | ${pkgs.gawk}/bin/awk '{print $1}' | \
+                        ${pkgs.wmctrl}/bin/wmctrl -l -x | grep -E "emacs\.Emacs.+(pdf|djvu)$" | ${pkgs.gawk}/bin/awk '{print $1}' | \
                                                        ${pkgs.findutils}/bin/xargs ${pkgs.wmctrl}/bin/wmctrl -i -a
                     '' else ''
                         ${pkgs.zathura}/bin/zathura "$SELECTED_BOOK" & >& /dev/null
