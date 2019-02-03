@@ -88,7 +88,7 @@ in
         add mod5 = Hyper_L
     '';
     home-manager.users.alex3rd = {
-        home.activation.cleanupImperativeFFConfigs = dagEntryBefore ["linkGeneration"] ( ''
+        home.activation.cleanupImperativeFFConfigs = dagEntryBefore ["checkLinkTargets"] ( ''
             PATHS_TO_CLEAN=(
                 "/home/alex3rd/.mozilla/firefox/profile.default/handlers.json"
                 ${lib.concatStringsSep "\n    "
