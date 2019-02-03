@@ -9,6 +9,7 @@
         skype
         slack
         tdesktop
+        teamviewer
         telegram-cli
         w3m
         wget
