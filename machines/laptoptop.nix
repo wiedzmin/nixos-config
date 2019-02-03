@@ -28,10 +28,6 @@
         irqbalance.enable = true;
         mpd.enable = true;
         chrony.enable = true;
-        psd = {
-            enable = true;
-            resyncTimer = "30min";
-        };
         openssh = {
             enable = true;
             forwardX11 = true;
