@@ -122,6 +122,7 @@
             rofi_containerized_services_discovery
             rofi_ctop
             rofi_jnettop
+            rofi_entrypoint
 
             networkmanager_dmenu # using rofi, despite naming
 
