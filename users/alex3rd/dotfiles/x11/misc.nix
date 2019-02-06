@@ -90,7 +90,9 @@ in
     home-manager.users.alex3rd = {
         home.activation.cleanupImperativeFFConfigs = dagEntryBefore ["checkLinkTargets"] ( ''
             PATHS_TO_CLEAN=(
+                "/home/alex3rd/.mozilla/firefox/profiles.ini"
                 "/home/alex3rd/.mozilla/firefox/profile.default/handlers.json"
+                "/home/alex3rd/.mozilla/firefox/profile.default/chrome/userChrome.css"
                 ${lib.concatStringsSep "\n    "
                       (lib.mapAttrsToList (name: meta:
                           "\"/home/alex3rd/.mozilla/firefox/profile.default/browser-extension-data/" +
@@ -149,6 +151,48 @@ in
                 pref("browser.shell.checkDefaultBrowser", true);
                 pref("browser.startup.page", 3);
                 pref("lightweightThemes.selectedThemeID", "firefox-compact-dark@mozilla.org");
+            '';
+            ".mozilla/firefox/profile.default/chrome/userChrome.css".text = ''
+                @namespace url("http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul");
+
+                statuspanel[type="overLink"],
+                #statuspanel[type="overLink"] {
+                  display: none !important;
+                }
+
+                :root:not([customizing]) #navigator-toolbox:not(:hover):not(:focus-within) {
+                  max-height: 1px;
+                  min-height: calc(0px);
+                  overflow: hidden;
+                }
+
+                :root:not([customizing]) #navigator-toolbox:not(:hover):not(:focus-within) #nav-bar {
+                  max-height: 0;
+                  min-height: 0!important;
+                  --tridactyl-auto-show-zone: 10px;
+                  margin-bottom: calc(-1 * var(--tridactyl-auto-show-zone));
+                  opacity: 0;
+                }
+
+                #navigator-toolbox::after {
+                  display: none !important;
+                }
+
+                #titlebar {
+                  display: none !important;
+                }
+
+                #navigator-toolbox:not(:hover):not(:focus-within) #toolbar-menubar > * {
+                  background-color: rgb(232, 232, 231);
+                }
+
+                #main-window[sizemode="maximized"] #content-deck {
+                  padding-top: 8px;
+                }
+
+                :root:not([customizing]) #navigator-toolbox:not(:hover):not(:focus-within) #TabsToolbar {
+                  visibility: collapse;
+                }
             '';
             ".mozilla/firefox/profile.default/handlers.json".text = builtins.toJSON {
                 defaultHandlersVersion = {
