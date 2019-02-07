@@ -16,5 +16,6 @@
         tree
         unicode-paracode
         wtf
+        tmsu
     ];
 }
