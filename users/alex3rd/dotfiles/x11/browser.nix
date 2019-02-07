@@ -23,10 +23,9 @@
 
                 colorscheme dark
 
-                guiset_quiet gui none
                 guiset_quiet tabs autohide
                 guiset_quiet navbar autohide
-
+                guiset_quiet hoverlink top-right
 
                 "
                 " Binds
