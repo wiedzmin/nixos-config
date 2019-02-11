@@ -68,6 +68,7 @@
         ./services/sshuttle.nix
         ./services/vpn.nix
         ./services/xkeysnail.nix
+        ./services/xsuspender.nix
         ./services/screenshots.nix
     ];
 

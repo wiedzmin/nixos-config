@@ -3,6 +3,7 @@
     imports = [
         ../private/traits/sys.nix
         ../../../toolbox/wm/xmonad.nix
+        ../../../toolbox/wm/misc.nix
         ../../../toolbox/scripts/misc.nix
     ];
     services = {

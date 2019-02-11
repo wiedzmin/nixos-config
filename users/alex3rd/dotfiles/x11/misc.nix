@@ -1,5 +1,18 @@
 {config, pkgs, lib, ...}:
 
+let
+    # FIXME: copypaste
+    genIni = lib.generators.toINI {
+        mkKeyValue = key: value:
+            let
+                mvalue =
+                    if builtins.isBool value then (if value then "true" else "false")
+                    else if (builtins.isString value && key != "include-file") then value
+                    else builtins.toString value;
+            in
+                "${key}=${mvalue}";
+    };
+in
 {
     imports = [
         ../../../../toolbox/scripts/statuses.nix
@@ -716,6 +729,31 @@
                   path: ${config.users.extraUsers.alex3rd.home}/screenshots
                   date_format: +%Y-%m-%d_%H:%M:%S
             '';
+            ".config/xsuspender.conf".text = genIni {
+                Default = {
+                    suspend_delay = 10;
+                    resume_every = 50;
+                    resume_for = 5;
+                    only_on_battery = true;
+                    auto_suspend_on_battery = true;
+                    send_signals = true;
+                };
+                VirtualBox = {
+                    match_wm_class_contains = "VirtualBox";
+                    send_signals = false;
+                    exec_suspend = ''VBoxManage controlvm "$(ps -o args= -q $PID | sed -E ’s/.*--startvm ([a-f0-9-]+).*/\1/’)" pause'';
+                    exec_resume  = ''VBoxManage controlvm "$(ps -o args= -q $PID | sed -E ’s/.*--startvm ([a-f0-9-]+).*/\1/’)" resume'';
+                };
+                Firefox = {
+                    match_wm_class_contains = "Firefox";
+                };
+                Chromium = {
+                    match_wm_class_contains = "Chromium-browser";
+                };
+                Insomnia = {
+                    match_wm_class_contains = "Insomnia";
+                };
+            };
         };
         gtk = {
             enable = true;
