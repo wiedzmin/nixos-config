@@ -114,6 +114,7 @@ in
                 pref("browser.sessionstore.restore_tabs_lazily", true);
                 pref("browser.shell.checkDefaultBrowser", true);
                 pref("browser.startup.page", 3);
+                pref("extensions.pocket.enabled", false);
                 pref("lightweightThemes.selectedThemeID", "firefox-compact-dark@mozilla.org");
             '';
             ".mozilla/firefox/profile.default/handlers.json".text = builtins.toJSON {
