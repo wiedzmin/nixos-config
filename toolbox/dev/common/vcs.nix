@@ -3,7 +3,6 @@
 {
     environment.systemPackages = with pkgs; [
         git
-        git-lfs
         git-quick-stats
         git-sizer
         gitAndTools.ghq
@@ -11,15 +10,12 @@
         gitAndTools.git-extras
         gitAndTools.git-imerge
         gitAndTools.git-open
-        gitAndTools.git-recent
         gitAndTools.git-secret
         gitAndTools.git-secrets
-        gitAndTools.gitflow
         gitAndTools.pass-git-helper
-        gitinspector
-        gitstats
         icdiff
-        mercurial
         stgit
     ];
 }
+
+# TODO: https://github.com/awslabs/git-secrets add to hooks

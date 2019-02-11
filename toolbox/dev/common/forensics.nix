@@ -20,8 +20,6 @@
         pcapfix
         radare2
         radare2-cutter
-        retdec
-        rr
         valgrind
     ];
 }

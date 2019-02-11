@@ -11,9 +11,7 @@
     };
 
     environment.systemPackages = with pkgs; [
-        eventstat
         inotify-tools
-        multitail
         lnav
         ntfy
         pv

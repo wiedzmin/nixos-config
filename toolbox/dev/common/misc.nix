@@ -4,7 +4,6 @@
     environment.systemPackages = with pkgs; [
         ansible
         ansible-lint
-        buck
         cloc
         dotnet-sdk
         doxygen

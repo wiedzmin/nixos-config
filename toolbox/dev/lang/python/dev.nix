@@ -2,9 +2,7 @@
 
 {
     environment.systemPackages = with pkgs; [
-        idea.pycharm-community
         pyflame
-        pyre
         (python3.withPackages (ps: with ps; [
            python-language-server
            python3Packages.pyls-black
