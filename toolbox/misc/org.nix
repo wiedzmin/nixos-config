@@ -2,6 +2,7 @@
 
 {
     environment.systemPackages = with pkgs; [
+        buku
         fpart
         gtm
         jdupes

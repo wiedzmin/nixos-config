@@ -2,6 +2,7 @@
 
 {
     environment.systemPackages = with pkgs; [
+        gping
         jnettop
         nethogs
         nload

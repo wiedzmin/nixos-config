@@ -6,8 +6,10 @@
         http-prompt
         httplab
         insomnia
+        litecli # TODO: shell automation: fzf for selecting db file, you get the idea
         mycli
         nodePackages.elasticdump
+        pgcenter
         pgcli
         wuzz
         zeal

@@ -5,6 +5,7 @@
         ansible
         ansible-lint
         cloc
+        crex
         dotnet-sdk
         doxygen
         global
