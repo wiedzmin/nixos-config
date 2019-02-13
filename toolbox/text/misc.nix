@@ -8,7 +8,7 @@
         pdfgrep
         tabula
         ttyplot
-        visidata
+        # visidata # TODO: make overlay
         xidel
         xurls
     ];
