@@ -9,6 +9,7 @@
         tabula
         ttyplot
         visidata
+        xidel
         xurls
     ];
 }
