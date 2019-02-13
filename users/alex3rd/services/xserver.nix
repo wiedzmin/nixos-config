@@ -39,13 +39,37 @@
             };
             xkbOptions = "caps:none";
             layout = "us,ru";
-            libinput = {
+            libinput.enable = false;
+            multitouch = {
                 enable = true;
-                naturalScrolling = true;
-                disableWhileTyping = true;
-                tapping = false;
-                tappingDragLock = false;
-                accelSpeed = "0.6";
+                invertScroll = true;
+                ignorePalm = true;
+                tapButtons = false;
+                additionalOptions = ''
+                    # Option        "ScrollCoastDuration" "500"
+                    # Option        "ScrollCoastEnableSpeed" ".3"
+                    Option        "ButtonIntegrated" "true"
+                    Option        "ButtonMoveEmulate" "false"
+                    Option        "ClickTime" "25"
+                    Option        "EdgeBottomSize" "5"
+                    Option        "FingerHigh" "5"
+                    Option        "FingerLow" "1"
+                    Option        "Hold1Move1StationaryMaxMove" "1000"
+                    Option        "IgnoreThumb" "true"
+                    Option        "ScrollCoastDuration" "600"
+                    Option        "ScrollCoastEnableSpeed" "0.05"
+                    Option        "ScrollDistance" "100"
+                    Option        "ScrollSensitivity" "0"
+                    Option        "Sensitivity" "0.3"
+                    Option        "SwipeDistance" "700"
+                    Option        "SwipeDownButton" "0"
+                    Option        "SwipeLeftButton" "8"
+                    Option        "SwipeRightButton" "9"
+                    Option        "SwipeUpButton" "0"
+                    Option        "TapButton4" "0"
+                    Option        "ThumbRatio" "70"
+                    Option        "ThumbSize" "25"
+                '';
             };
         };
         redshift = {
