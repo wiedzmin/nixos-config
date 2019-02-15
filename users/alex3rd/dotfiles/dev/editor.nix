@@ -69,6 +69,7 @@
                 epkgs.aggressive-indent
                 epkgs.amx
                 epkgs.anaphora
+                epkgs.ansible
                 epkgs.ansible-doc
                 epkgs.atomic-chrome
                 epkgs.auto-compile
@@ -123,6 +124,7 @@
                 epkgs.docker-compose-mode
                 epkgs.docker-tramp
                 epkgs.dockerfile-mode
+                epkgs.doom-modeline
                 epkgs.dtrt-indent
                 epkgs.dynamic-ruler
                 epkgs.easy-kill
@@ -135,6 +137,7 @@
                 epkgs.elfeed
                 epkgs.elfeed-goodies
                 epkgs.elfeed-org
+                epkgs.elisp-refs
                 epkgs.elisp-slime-nav
                 epkgs.emamux
                 epkgs.emmet-mode
@@ -168,10 +171,13 @@
                 epkgs.graphql-mode
                 epkgs.haskell-mode
                 epkgs.hc-zenburn-theme
+                epkgs.help-find-org-mode
+                epkgs.helpful
                 epkgs.highlight-indent-guides
                 epkgs.httprepl
                 epkgs.hungry-delete
                 epkgs.ialign
+                epkgs.ibuffer-project
                 epkgs.ibuffer-vc
                 epkgs.imenu-anywhere
                 epkgs.info-buffer
@@ -191,6 +197,7 @@
                 epkgs.kaolin-themes
                 epkgs.keychain-environment
                 epkgs.link-hint
+                epkgs.loop
                 epkgs.lsp-go
                 epkgs.lsp-haskell
                 epkgs.lsp-java
@@ -244,6 +251,8 @@
                 epkgs.pip-requirements
                 epkgs.plantuml-mode
                 epkgs.po-mode
+                epkgs.poly-ansible
+                epkgs.polymode
                 epkgs.popwin
                 epkgs.prog-fill
                 epkgs.projectile
@@ -263,6 +272,8 @@
                 epkgs.rust-mode
                 epkgs.rustic
                 epkgs.savekill
+                epkgs.shrink-path
+                epkgs.shut-up
                 epkgs.skeletor
                 epkgs.slime-company
                 epkgs.smartparens
