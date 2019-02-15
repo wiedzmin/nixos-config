@@ -158,6 +158,7 @@ in
                 bind -T copy-mode M-x run-shell "${pkgs.shell-capture}/bin/shell-capture xs"
 
                 bind F12 send-key "#############################################################################################"
+                bind F11 send-key "git open" "Enter"
 
                 bind z split-window -v "${pkgs.procps}/bin/ps -ef | \
                                         ${pkgs.gnused}/bin/sed 1d | \
