@@ -61,9 +61,11 @@
                 withGTK3 = false;
             });
             extraPackages = epkgs: [
+                # epkgs.kibit-helper # TODO: setup kibit first
                 # epkgs.lsp-dockerfile // https://github.com/emacs-lsp/lsp-dockerfile
                 # epkgs.lsp-javascript-typescript // read https://github.com/emacs-lsp/lsp-javascript for server side setup also
                 # epkgs.lsp-sh // https://github.com/emacs-lsp/lsp-sh
+                # epkgs.magit-imerge # TODO: fix derivation (cannot find git binary)
                 epkgs.ace-window
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
