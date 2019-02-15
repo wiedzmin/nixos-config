@@ -83,6 +83,7 @@
                 epkgs.blockdiag-mode
                 epkgs.bug-hunter
                 epkgs.c-eldoc
+                epkgs.ccls
                 epkgs.cider
                 epkgs.clojure-mode
                 epkgs.comment-dwim-2

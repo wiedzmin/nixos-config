@@ -4,7 +4,7 @@
     environment.systemPackages = with pkgs; [
         clang
         cmake
-        cquery
+        ccls
         llvm
     ];
 }
