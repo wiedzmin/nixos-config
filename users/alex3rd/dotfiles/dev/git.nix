@@ -220,6 +220,7 @@ in
                 };
                 "rebase" = {
                     autoSquash = true;
+                    autoStash = true;
                 };
                 "core" = {
                     autocrlf = false;
