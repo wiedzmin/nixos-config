@@ -106,6 +106,8 @@ in
                 *.patch
                 .agignore
                 .dir-locals.el
+
+                .mypy_cache/*
             '';
             "git-assets/templates/hooks/post-commit" = {
                 executable = true;
