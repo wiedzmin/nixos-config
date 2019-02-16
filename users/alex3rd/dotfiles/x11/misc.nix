@@ -16,7 +16,7 @@ in
 {
     imports = [
         ../../../../toolbox/scripts/statuses.nix
-        ../../scripts/navigation.nix
+        ../../scripts/default.nix
         ../../private/traits/nas.nix
     ];
 
