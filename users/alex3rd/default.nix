@@ -54,31 +54,30 @@
             backlightctl
             jobvpnctl
             lockscreen
-            rofi_insert_snippet
-            rofi_service_journal
             sshuttlectl
             volumectl
             wifictl
 
+            networkmanager_dmenu # using rofi, despite naming
+            order_screenshots
+
             docker-machine-export
             docker-machine-import
-            rofi_docker_container_traits
-            rofi_docker_stacks_info
-            rofi_remote_docker_logs
-            rofi_docker_shell
-            rofi_dbms
             rofi_buku_add
             rofi_buku_entrypoint
             rofi_buku_search_tag
             rofi_buku_search_url
             rofi_containerized_services_discovery
             rofi_ctop
-            rofi_jnettop
+            rofi_dbms
+            rofi_docker_container_traits
+            rofi_docker_shell
+            rofi_docker_stacks_info
             rofi_entrypoint
-
-            networkmanager_dmenu # using rofi, despite naming
-
-            order_screenshots
+            rofi_insert_snippet
+            rofi_jnettop
+            rofi_remote_docker_logs
+            rofi_service_journal
         ];
         programs.ssh = {
             enable = true;
