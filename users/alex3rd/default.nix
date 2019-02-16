@@ -67,6 +67,10 @@
             rofi_remote_docker_logs
             rofi_docker_shell
             rofi_dbms
+            rofi_buku_add
+            rofi_buku_entrypoint
+            rofi_buku_search_tag
+            rofi_buku_search_url
             rofi_containerized_services_discovery
             rofi_ctop
             rofi_jnettop
