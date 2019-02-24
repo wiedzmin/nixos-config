@@ -6,5 +6,6 @@
         ./finance.nix
         ./media.nix
         ./org.nix
+        ./staging.nix
     ];
 }

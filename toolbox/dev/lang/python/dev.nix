@@ -2,7 +2,6 @@
 
 {
     environment.systemPackages = with pkgs; [
-        pyflame
         (python3.withPackages (ps: with ps; [
            python-language-server
            python3Packages.pyls-black

@@ -8,7 +8,6 @@
         gitAndTools.ghq
         gitAndTools.git-absorb
         gitAndTools.git-extras
-        gitAndTools.git-imerge
         gitAndTools.git-open
         gitAndTools.git-secret
         gitAndTools.git-secrets
