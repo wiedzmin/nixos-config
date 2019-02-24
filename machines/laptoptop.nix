@@ -74,7 +74,7 @@
     time.timeZone = "Europe/Moscow";
 
     services.printing = {
-        enable = true;
+        enable = false;
         drivers = [ pkgs.hplip ];
     };
 
