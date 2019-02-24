@@ -12,7 +12,7 @@
             videoDrivers = [ "modesetting" "intel" ];
             desktopManager = {
                 xterm.enable = false;
-                gnome3.enable = true;
+                gnome3.enable = false;
                 default = "none";
             };
             displayManager = {
