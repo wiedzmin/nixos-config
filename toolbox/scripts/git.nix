@@ -95,11 +95,11 @@
                 REMOTE=$(${pkgs.git}/bin/git rev-parse "$UPSTREAM")
                 BASE=$(${pkgs.git}/bin/git merge-base @ "$UPSTREAM")
 
-                if [ $LOCAL = $REMOTE ]; then
+                if [ "$LOCAL" == "$REMOTE" ]; then
                     echo ''${UPTODATE_MESSAGE:-"Up-to-date"}
-                elif [ $LOCAL = $BASE ]; then
+                elif [ "$LOCAL" == "$BASE" ]; then
                     echo ''${NEEDFETCH_MESSAGE:-"Need to fetch"}
-                elif [ $REMOTE = $BASE ]; then
+                elif [ "$REMOTE" == "$BASE" ]; then
                     echo ''${NEEDPUSH_MESSAGE:-"Need to push"}
                 else
                     echo ''${DIVERGED_MESSAGE:-"Diverged"}
