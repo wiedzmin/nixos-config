@@ -282,8 +282,12 @@ in
                         DBMS_PASSWORD=$(${pkgs.pass}/bin/pass $DBMS_PASSWORD_PASS_PATH)
                         CLI_BINARY_VARNAME="''${DBMS_COMMAND^^}_BINARY"
                         CLI_EXECUTABLE="''${!CLI_BINARY_VARNAME}"
-                        CLI_EXECUTABLE="''${!CLI_BINARY_VARNAME}"
-                        ${pkgs.tmux}/bin/tmux new-window "$CLI_EXECUTABLE --host $DBMS_IP --user $DBMS_USER --password $DBMS_PASSWORD"
+                        if [ "$DBMS_COMMAND" == "mycli" ]; then
+                            ${pkgs.tmux}/bin/tmux new-window "$CLI_EXECUTABLE --host $DBMS_IP --user $DBMS_USER --password $DBMS_PASSWORD"
+                        elif [ "$DBMS_COMMAND" == "pgcli" ]; then
+                            ${pkgs.tmux}/bin/tmux new-window "PGPASSWORD=$DBMS_PASSWORD $CLI_EXECUTABLE --host $DBMS_IP --user $DBMS_USER"
+                        fi
+
                     fi
                 }
 
