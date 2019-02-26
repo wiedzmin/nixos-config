@@ -249,6 +249,7 @@
                 epkgs.pcre2el
                 epkgs.pdf-tools
                 epkgs.persistent-scratch
+                epkgs.phi-search
                 epkgs.pip-requirements
                 epkgs.plantuml-mode
                 epkgs.po-mode
