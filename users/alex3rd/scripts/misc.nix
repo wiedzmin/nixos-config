@@ -258,7 +258,7 @@ in
                 DBMS_TRAITS=(
                 ${builtins.concatStringsSep "\n"
                   (pkgs.stdenv.lib.mapAttrsToList
-                      (ip: meta: "  [\"${meta.alias}\"]=\"${ip} ${meta.command} ${meta.user} ${meta.passwordPassPath}\"")
+                      (alias: meta: "  [\"${alias}\"]=\"${meta.ip} ${meta.command} ${meta.user} ${meta.passwordPassPath}\"")
                         (config.job.dbmsTraits))}
                 )
 
