@@ -45,7 +45,8 @@ pgcli = super.python3Packages.buildPythonApplication rec {
 
   propagatedBuildInputs = with super.python3Packages; [
     cli-helpers click configobj humanize prompt_toolkit psycopg2
-    pygments sqlparse pgspecial setproctitle keyring
+    pygments sqlparse pgspecial setproctitle
+    # removed keyring, not really needed in nixos setup
   ];
 
   checkInputs = with super.python3Packages; [ pytest mock ];
