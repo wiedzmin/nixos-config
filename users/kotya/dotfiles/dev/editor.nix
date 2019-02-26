@@ -156,7 +156,6 @@
                 epkgs.google-translate
                 epkgs.gorepl-mode
                 epkgs.gotest
-                epkgs.govet
                 epkgs.graphql-mode
                 epkgs.haskell-mode
                 epkgs.hc-zenburn-theme
