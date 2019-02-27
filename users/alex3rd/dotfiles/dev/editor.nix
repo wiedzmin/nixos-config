@@ -226,6 +226,7 @@
                 epkgs.nov
                 epkgs.ob-async
                 epkgs.ob-blockdiag
+                epkgs.ob-restclient
                 epkgs.on-screen
                 epkgs.org-alert
                 epkgs.org-bullets
@@ -258,6 +259,7 @@
                 epkgs.popwin
                 epkgs.prog-fill
                 epkgs.projectile
+                epkgs.py-yapf
                 epkgs.pyvenv
                 epkgs.quelpa
                 epkgs.quelpa-use-package
@@ -297,6 +299,7 @@
                 epkgs.vdiff
                 epkgs.vdiff-magit
                 epkgs.vimrc-mode
+                epkgs.vlf
                 epkgs.w3m
                 epkgs.web-completion-data
                 epkgs.web-mode
