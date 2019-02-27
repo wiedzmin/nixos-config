@@ -65,7 +65,7 @@
                 # epkgs.lsp-dockerfile // https://github.com/emacs-lsp/lsp-dockerfile
                 # epkgs.lsp-javascript-typescript // read https://github.com/emacs-lsp/lsp-javascript for server side setup also
                 # epkgs.lsp-sh // https://github.com/emacs-lsp/lsp-sh
-                # epkgs.magit-imerge # TODO: fix derivation (cannot find git binary)
+                # epkgs.magit-imerge # TODO: fix derivation (cannot find git binary) / check if magit version in nixpkgs already depends on `transient` library
                 epkgs.ace-window
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
