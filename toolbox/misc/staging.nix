@@ -9,10 +9,11 @@
         # pyflame
         bbe
         clerk
+        gitAndTools.git-ignore
         gitAndTools.git-imerge
-        gitAndTools.gita # TODO: review https://github.com/nosarthur/gita + some respective rofi scripts
-        gitAndTools.tig
+        jsonnet
         k6
         nix-prefetch
+        sysdig
     ];
 }
