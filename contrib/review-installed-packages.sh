@@ -32,17 +32,17 @@ list_packages_system() {
 
 main() {
     cd /etc/nixos/pkgs/nixpkgs-channels || return
-    git checkout $nixpkgs_branch
+    git checkout -q $nixpkgs_branch
     current_system_commit_hash=$(readlink -f /run/current-system | cut -f4 -d.)
     previous_state_sha=${1:-$current_system_commit_hash}
     git_log=$(git log --pretty=oneline "$nixpkgs_branch...$previous_state_sha" | grep -v Merge)
-    for pname in $(list_packages_system)
+    for pname in $(list_packages_system | sort | uniq | grep -v "^python$" | grep -v "^python3$")
     do
-        echo "$git_log" | grep "$pname"
+        echo "$git_log" | grep -sw "$pname:" | grep -v init
     done
     for pname in $(list_packages_hm)
     do
-        echo "$git_log" | grep "$pname"
+        echo "$git_log" | grep -sw "$pname:" | grep -v init
     done
 }
 
