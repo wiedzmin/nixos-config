@@ -81,7 +81,6 @@
                 epkgs.backup-walker
                 epkgs.banner-comment
                 epkgs.beginend
-                epkgs.blacken
                 epkgs.bln-mode
                 epkgs.blockdiag-mode
                 epkgs.bug-hunter
