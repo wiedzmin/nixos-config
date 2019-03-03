@@ -32,7 +32,7 @@ in
                      ${pkgs.gawk}/bin/awk '{print $3 ":" $1}')
             '';
             lockscreen = pkgs.writeShellScriptBin "lockscreen" ''
-                ${pkgs.xkblayout-state}/bin/xkblayout-state set 0; ${pkgs.i3lock-color}/bin/i3lock-color -c 232729; ${pkgs.xorg.xset}/bin/xset dpms force off
+                ${pkgs.xkb-switch}/bin/xkb-switch -s us && ${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off
             '';
             tar_encrypt = pkgs.writeShellScriptBin "tar_encrypt" ''
                 IN=$1
