@@ -83,6 +83,7 @@
                 epkgs.beginend
                 epkgs.bln-mode
                 epkgs.blockdiag-mode
+                epkgs.browse-at-remote
                 epkgs.bug-hunter
                 epkgs.c-eldoc
                 epkgs.ccls
@@ -314,6 +315,7 @@
                 epkgs.yaml-mode
                 epkgs.yasnippet
                 epkgs.yatemplate
+                epkgs.carbon-now-sh
             ];
         };
     };
