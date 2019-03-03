@@ -75,15 +75,14 @@ in
                     ${pkgs.rofi}/bin/rofi -dmenu -i -no-levenshtein-sort -width 1000 "$@"
                 }
 
-                # TODO: check if we can enter tags being substrings ov existing ones
                 collect_tags () {
                     taglist=()
                     sep=''${1:-,}
                     tagcloud=$(${pkgs.buku}/bin/buku --np --st | \
                                ${pkgs.gawk}/bin/awk '{$NF=""; print $0}' | \
-                               ${pkgs.coreutils}/bin/cut -d ' ' -f2-)
+                               ${pkgs.coreutils}/bin/cut -d ' ' -f2 | sort -u )
                     while true; do
-                        tag=$(echo $tagcloud | tr ' ' '\n' | _rofi -p '> ' -mesg "Add tag")
+                        tag=$(echo $tagcloud | tr ' ' '\n' | _rofi -p '> ' -mesg "Add tag" -custom)
                         keep_going=$?
                         if [[ $keep_going -ne 0 ]]; then
                             break
