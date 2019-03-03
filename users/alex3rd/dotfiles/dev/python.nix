@@ -2,6 +2,7 @@
 
 let
     maxLineLength = 120;
+    indentWidth = 4;
     excludes = [
         ".git"
         "__pycache__"
@@ -424,6 +425,25 @@ in
                 count = False
                 ignore = ${lib.concatStringsSep ", " ignoredCodes}
                 statistics = True
+            '';
+            ".config/yapf/style".text = ''
+                [style]
+                based_on_style = pep8
+
+                align_closing_bracket_with_visual_indent = True
+                allow_split_before_default_or_named_assigns = True
+                arithmetic_precedence_indication = True
+                blank_line_before_nested_class_or_def = True
+                blank_lines_around_top_level_definition = 2
+                coalesce_brackets = True
+                column_limit = ${builtins.toString maxLineLength}
+                each_dict_entry_on_separAte_Line = True
+                indent_width = ${builtins.toString indentWidth}
+                spaces_before_comment = 15,25
+                split_before_logical_operator = True
+                split_before_named_assigns = True
+                split_complex_comprehension = True
+                SPLIT_BEFORE_FIRST_ARGUMENT = true
             '';
         };
     };

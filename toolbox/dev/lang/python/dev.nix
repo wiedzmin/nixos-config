@@ -10,5 +10,6 @@
         python3Packages.pyls-mypy
         python3Packages.snakeviz
         python3Packages.virtualenvwrapper
+        yapf
     ];
 }
