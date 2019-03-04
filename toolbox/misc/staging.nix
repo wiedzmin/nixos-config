@@ -3,6 +3,7 @@
 {
     environment.systemPackages = with pkgs; [
         # broot
+        # cdimgtools
         # go-check
         # gscan2pdf
         # nix-gitignore
