@@ -55,6 +55,18 @@ in
                 share = true;
             };
             initExtra = ''
+                setopt APPEND_HISTORY
+                setopt BRACE_CCL
+                setopt HIST_FIND_NO_DUPS
+                setopt HIST_IGNORE_ALL_DUPS
+                setopt HIST_IGNORE_SPACE
+                setopt HIST_NO_STORE
+                setopt HIST_SAVE_NO_DUPS
+                setopt AUTO_CD
+                setopt EXTENDED_GLOB
+                setopt INC_APPEND_HISTORY
+                setopt MENU_COMPLETE
+
                 ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
                 eval "$(${pkgs.fasd}/bin/fasd --init auto)"
 
