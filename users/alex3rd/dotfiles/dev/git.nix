@@ -255,6 +255,9 @@ in
                 "ghq \"import\"" = {
                     bbcontribs = "${pkgs.bitbucket_team_contributor_repos}/bin/bitbucket_team_contributor_repos";
                 };
+                "github" = {
+                    user = "wiedzmin";
+                };
             };
             aliases = {
                 co = "checkout";
