@@ -750,9 +750,6 @@ in
                 Chromium = {
                     match_wm_class_contains = "Chromium-browser";
                 };
-                Insomnia = {
-                    match_wm_class_contains = "Insomnia";
-                };
             };
         };
         gtk = {

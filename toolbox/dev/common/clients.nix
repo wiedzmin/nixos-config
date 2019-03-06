@@ -5,7 +5,6 @@
         corgi # TODO: make custom script to open fuzzy seaching of snippets in new tmux pane
         http-prompt
         httplab
-        insomnia
         litecli # TODO: shell automation: fzf for selecting db file, you get the idea
         mycli
         nodePackages.elasticdump
