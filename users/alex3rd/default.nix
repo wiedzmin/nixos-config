@@ -53,13 +53,15 @@
 
             backlightctl
             jobvpnctl
-            lockscreen
             sshuttlectl
             volumectl
             wifictl
 
+            i3lock-color
             networkmanager_dmenu # using rofi, despite naming
             order_screenshots
+            xkb-switch
+            xorg.xset
 
             docker-machine-export
             docker-machine-import

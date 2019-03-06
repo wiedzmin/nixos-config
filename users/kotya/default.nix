@@ -83,7 +83,6 @@
 
             backlightctl
             jobvpnctl
-            lockscreen
             rofi_service_journal
             sshuttlectl
             volumectl
