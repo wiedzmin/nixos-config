@@ -4,7 +4,8 @@
     systemd.services."xsuspender" = {
         enable = true;
         description = "XSuspender";
-        wantedBy = [ "default.target" ];
+        wantedBy = [ "graphical.target" ];
+        partOf = [ "graphical.target" ];
         environment = {
             DISPLAY = ":0";
             XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";

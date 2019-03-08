@@ -5,6 +5,7 @@
         enable = true;
         description = "Xkeysnail";
         wantedBy = [ "graphical.target" ];
+        partOf = [ "graphical.target" ];
         environment = {
             DISPLAY = ":0";
             XAUTHORITY = "${config.users.extraUsers.kotya.home}/.Xauthority";

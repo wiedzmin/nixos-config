@@ -5,6 +5,7 @@
         enable = true;
         description = "Fusuma";
         wantedBy = [ "graphical.target" ];
+        partOf = [ "graphical.target" ];
         environment = {
             DISPLAY = ":0";
             XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
