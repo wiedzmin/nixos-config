@@ -439,7 +439,7 @@ in
                 column_limit = ${builtins.toString maxLineLength}
                 each_dict_entry_on_separate_line = True
                 indent_width = ${builtins.toString indentWidth}
-                spaces_before_comment = 15,25
+                spaces_before_comment = 2
                 split_before_logical_operator = True
                 split_before_named_assigns = True
                 split_complex_comprehension = True
