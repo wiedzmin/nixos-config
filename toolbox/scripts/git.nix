@@ -109,7 +109,7 @@ in
                     echo ''${DIVERGED_MESSAGE:-"Diverged"}
                 fi
            '';
-             bitbucket_team_contributor_repos = pkgs.writeShellScriptBin "bitbucket_team_contributor_repos" ''
+           bitbucket_team_contributor_repos = pkgs.writeShellScriptBin "bitbucket_team_contributor_repos" ''
                 PASS_PATH=$1
                 if [ -z "PASS_PATH" ]; then
                     echo "No credentials provided"
