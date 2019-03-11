@@ -1,5 +1,9 @@
 {config, pkgs, ...}:
 
+let
+    gitRepoHooks = ".hooks";
+    shortCircuitGitHooks = false;
+in
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
@@ -127,6 +131,39 @@
                 for REPO in $RESULT; do
                     echo $REPO | ${pkgs.coreutils}/bin/cut -f1 -d~
                 done
+            '';
+           git_hooks_lib = pkgs.writeShellScriptBin "git_hooks_lib" ''
+                execute_hook_items() {
+                    hook=$1
+
+                    if [ -z $hook ]; then
+                        echo "no hook provided, exiting"
+                        exit 1
+                    fi
+
+                    IS_CLEAN=true
+                    TARGET_DIR="$(pwd)/${gitRepoHooks}/$hook"
+
+                    shopt -s execfail
+
+                    for TARGET_PATH in $(${pkgs.findutils}/bin/find $TARGET_DIR -mindepth 1 -maxdepth 1 -type f | ${pkgs.coreutils}/bin/sort)
+                    do
+                        if [ -x "$TARGET_PATH" ]; then # Run as an executable file
+                            "$TARGET_PATH" "$@"
+                        elif [ -f "$TARGET_PATH" ]; then  # Run as a Shell script
+                            ${pkgs.bash}/bin/bash "$TARGET_PATH" "$@"
+                        fi
+                        exitcode=$?
+                        if (( exitcode != 0 )); then
+                            IS_CLEAN=false
+                            ${if shortCircuitGitHooks then "return $exitcode" else ""}
+                        fi
+                    done
+                    if [[ "$IS_CLEAN" == "false" ]]; then
+                        return 1;
+                    fi
+                    return 0;
+                }
             '';
        };
     };

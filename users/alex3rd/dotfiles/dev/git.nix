@@ -11,6 +11,7 @@ let
         "wip"
         "WIP"
     ];
+    gitRepoHooks = ".hooks";
 in
 {
     imports = [
@@ -108,8 +109,10 @@ in
                 .dir-locals.el
 
                 .mypy_cache/*
+
+                ${gitRepoHooks}
             '';
-            "git-assets/templates/hooks/post-commit" = {
+            "git-assets/templates/hooks/post-commit" = { # TODO: move appropriately, according to new hooks harness
                 executable = true;
                 text = ''
                     #!${pkgs.bash}/bin/bash
@@ -141,32 +144,10 @@ in
                 executable = true;
                 text = ''
                     #!${pkgs.bash}/bin/bash
-
-                    IS_CLEAN=true
-
-                    for i in ${lib.concatMapStringsSep " " (w: "\"" + w + "\"") gitSrcStopSnippets}
-                    do
-                        RESULTS=$(${pkgs.git}/bin/git grep -C 2 -n -G "$i" -- `${pkgs.git}/bin/git ls-files | grep -v hook`);
-                        if [[ ! -z "$RESULTS" ]]; then
-                            IS_CLEAN=false
-                            echo "Found stop snippets:"
-                            echo "$RESULTS"
-                        fi
-                    done
-
-                    for i in ${lib.concatMapStringsSep " " (w: "\"" + w + "\"") gitCommitStopWords}
-                    do
-                        RESULTS=$(${pkgs.git}/bin/git shortlog "@{u}.." | grep "$i");
-                        if [[ ! -z "$RESULTS" ]]; then
-                            IS_CLEAN=false
-                            echo "Found commits with stop snippets:"
-                            echo "$RESULTS"
-                        fi
-                    done
-
-                    if [[ "$IS_CLEAN" = false ]]; then
-                        exit 1;
-                    fi
+                    # TODO: templatize further
+                    . ${pkgs.git_hooks_lib}/bin/git_hooks_lib
+                    execute_hook_items pre-push
+                    exit $?;
                 '';
             };
             ".config/pass-git-helper/git-pass-mapping.ini".text = ''
