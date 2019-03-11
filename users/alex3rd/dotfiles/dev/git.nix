@@ -23,13 +23,10 @@ in
         user = "alex3rd";
         group = "users";
         text = ''
-            RESULTS=$(${pkgs.git}/bin/git shortlog "@{u}.." | grep wip);
-            if [[ ! -z "$RESULTS" ]]; then
-                echo "Found commits with stop snippets:"
-                echo "$RESULTS"
-                exit 1
-            fi
-            exit 0
+            . ${pkgs.git_hooks_lib}/bin/git_hooks_lib
+
+            check_for_wip
+            exit $?
         '';
     };
     home-manager.users.alex3rd = {

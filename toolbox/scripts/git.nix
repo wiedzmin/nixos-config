@@ -133,6 +133,8 @@ in
                 done
             '';
            git_hooks_lib = pkgs.writeShellScriptBin "git_hooks_lib" ''
+                WIP_TOKEN=wip
+
                 execute_hook_items() {
                     hook=$1
 
@@ -160,6 +162,16 @@ in
                         fi
                     done
                     if [[ "$IS_CLEAN" == "false" ]]; then
+                        return 1;
+                    fi
+                    return 0;
+                }
+
+                check_for_wip() {
+                    RESULTS=$(${pkgs.git}/bin/git shortlog "@{u}.." | ${pkgs.gnugrep}/bin/grep $WIP_TOKEN);
+                    if [[ ! -z "$RESULTS" ]]; then
+                        echo "Found commits with stop snippets:"
+                        echo "$RESULTS"
                         return 1;
                     fi
                     return 0;
