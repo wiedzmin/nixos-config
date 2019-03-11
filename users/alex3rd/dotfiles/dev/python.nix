@@ -437,13 +437,13 @@ in
                 blank_lines_around_top_level_definition = 2
                 coalesce_brackets = True
                 column_limit = ${builtins.toString maxLineLength}
-                each_dict_entry_on_separAte_Line = True
+                each_dict_entry_on_separate_line = True
                 indent_width = ${builtins.toString indentWidth}
                 spaces_before_comment = 15,25
                 split_before_logical_operator = True
                 split_before_named_assigns = True
                 split_complex_comprehension = True
-                SPLIT_BEFORE_FIRST_ARGUMENT = true
+                split_before_first_argument = true
             '';
         };
     };
