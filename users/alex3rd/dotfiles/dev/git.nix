@@ -17,6 +17,21 @@ in
     imports = [
         ../../../../toolbox/scripts/git.nix
     ];
+
+    environment.etc."nixos/.hooks/pre-push/stop-wip" = {
+        mode = "0644";
+        user = "alex3rd";
+        group = "users";
+        text = ''
+            RESULTS=$(${pkgs.git}/bin/git shortlog "@{u}.." | grep wip);
+            if [[ ! -z "$RESULTS" ]]; then
+                echo "Found commits with stop snippets:"
+                echo "$RESULTS"
+                exit 1
+            fi
+            exit 0
+        '';
+    };
     home-manager.users.alex3rd = {
         home.file = {
             "git-assets/git-commit-template".text = ''
