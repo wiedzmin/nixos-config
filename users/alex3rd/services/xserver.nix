@@ -72,13 +72,6 @@
                 '';
             };
         };
-        redshift = {
-            enable = true;
-            latitude = "${config.sys.redshift.latitude}";
-            longitude = "${config.sys.redshift.longitude}";
-            temperature.day = 5500;
-            temperature.night = 3700;
-        };
         # arbtt.enable = true; # FIXME: construct overlay
         autorandr = {
             enable = true;

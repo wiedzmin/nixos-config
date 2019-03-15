@@ -839,6 +839,19 @@ in
                 focus-exclude '_NET_WM_NAME@:s = "rofi"'
             '';
         };
+        services.redshift = {
+            enable = true;
+            latitude = "${config.sys.redshift.latitude}";
+            longitude = "${config.sys.redshift.longitude}";
+            temperature.day = 5500;
+            temperature.night = 3700;
+            brightness.day = "1.0";
+            brightness.night = "0.7";
+            extraOptions = [
+                "-v"
+                "-m randr"
+            ];
+        };
         programs.rofi = {
             enable = true;
             fullscreen = false;
