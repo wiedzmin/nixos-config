@@ -84,17 +84,6 @@
             enable = true;
             defaultTarget = "mobile";
         };
-        compton = {
-            enable = true;
-            backend = "glx";
-            vSync = "opengl-swc";
-            opacityRules = [];
-            package = pkgs.compton-git;
-            extraOptions = ''
-                inactive-dim 0.3
-                focus-exclude '_NET_WM_NAME@:s = "rofi"'
-            '';
-        };
     };
     programs.light.enable = true;
 

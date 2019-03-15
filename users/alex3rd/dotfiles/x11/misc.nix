@@ -829,6 +829,16 @@ in
             };
         };
         programs.feh.enable = true;
+        services.compton = {
+            enable = true;
+            backend = "glx";
+            vSync = "opengl-swc";
+            package = pkgs.compton-git;
+            extraOptions = ''
+                inactive-dim 0.3
+                focus-exclude '_NET_WM_NAME@:s = "rofi"'
+            '';
+        };
         programs.rofi = {
             enable = true;
             fullscreen = false;
