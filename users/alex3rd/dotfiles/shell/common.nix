@@ -82,7 +82,23 @@
             optimize-nix
         ];
 
-        programs.htop.enable = true;
+        programs.htop = {
+            enable = true;
+            fields = [
+                "USER"
+                "PRIORITY"
+                "NICE"
+                "M_SIZE"
+                "STATE"
+                "PERCENT_CPU"
+                "PERCENT_MEM"
+                "TIME"
+                "COMM"
+            ];
+            meters.left = [ "AllCPUs" "Memory" ];
+            colorScheme = 0;
+            detailedCpuTime = true;
+        };
         programs.command-not-found.enable = true;
         programs.lesspipe.enable = true;
         programs.man.enable = true;
