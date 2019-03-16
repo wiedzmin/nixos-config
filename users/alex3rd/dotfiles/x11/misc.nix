@@ -844,7 +844,7 @@ in
             latitude = "${config.sys.redshift.latitude}";
             longitude = "${config.sys.redshift.longitude}";
             temperature.day = 5500;
-            temperature.night = 3700;
+            temperature.night = 3100;
             brightness.day = "1.0";
             brightness.night = "0.7";
             extraOptions = [
