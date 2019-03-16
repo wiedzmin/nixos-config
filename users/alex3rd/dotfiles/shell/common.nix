@@ -105,6 +105,18 @@
         programs.info.enable = true;
         programs.fzf = {
             enable = true;
+            historyWidgetOptions = [
+                "--sort"
+                "--exact"
+            ];
+            defaultOptions = [
+                "--height 40%"
+                "--border"
+            ];
+            fileWidgetCommand = "${pkgs.fd}/bin/fd --type f";
+            fileWidgetOptions = [ "--preview 'head {}'" ];
+            changeDirWidgetCommand = "${pkgs.fd}/bin/fd --type d";
+            changeDirWidgetOptions = [ "--preview 'tree -C {} | head -200'" ];
             enableZshIntegration = true;
         };
         programs.direnv = {
