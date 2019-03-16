@@ -107,5 +107,9 @@ in
             "Xft.lcdfilter" = "lcddefault";
             "Xft.rgba" = "none";
         };
+        xsession.pointerCursor = {
+            package = pkgs.vanilla-dmz;
+            name = "Vanilla-DMZ";
+        };
     };
 }
