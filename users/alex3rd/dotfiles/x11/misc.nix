@@ -952,7 +952,12 @@ in
             '';
         };
         programs.browserpass.enable = true;
-        services.udiskie.enable = true;
+        services.udiskie = {
+            enable = true;
+            automount = true;
+            notify = true;
+            tray = "never";
+        };
         services.network-manager-applet.enable = true;
         services.random-background = {
             enable = true;
