@@ -18,7 +18,6 @@
             displayManager = {
                 lightdm.enable = true;
                 gdm.enable = false;
-                # TODO: think of migrating to home-manager "xsession" module (beware that it is more versatile)
                 sessionCommands = ''
                     ${pkgs.xlibs.xmodmap}/bin/xmodmap /etc/Xmodmaprc
                     ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
