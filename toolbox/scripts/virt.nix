@@ -148,12 +148,15 @@ in
                 exit 0
             '';
             rofi_docker_shell = pkgs.writeShellScriptBin "rofi_docker_shell" ''
+                . ${pkgs.misc_lib}/bin/misc_lib
+
                 main() {
                     HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/uniq | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
                     if [ -n $HOST ]; then
                         if [ "$HOST" == "localhost" ]; then
                             eval $(${pkgs.docker-machine}/bin/docker-machine env -u)
                         else
+                            enforce_vpn
                             eval $(${pkgs.docker-machine}/bin/docker-machine env $HOST)
                         fi
                         SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )

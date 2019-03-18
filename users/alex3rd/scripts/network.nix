@@ -183,6 +183,8 @@ in
                 exit 0
             '';
             rofi_jnettop = pkgs.writeShellScriptBin "rofi_jnettop" ''
+                . ${pkgs.misc_lib}/bin/misc_lib
+
                 main() {
                     HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
                     if [ -n "$HOST" ]; then
@@ -190,6 +192,8 @@ in
                         ${config.job.infra.defaultRemoteUser}@$HOST -c 'jnettop'"
                     fi
                 }
+
+                enforce_vpn
 
                 main
 

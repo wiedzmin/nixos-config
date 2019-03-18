@@ -252,6 +252,10 @@ in
             '';
             # TODO: think of free-form option(s)
             rofi_dbms = pkgs.writeShellScriptBin "rofi_dbms" ''
+                . ${pkgs.misc_lib}/bin/misc_lib
+
+                enforce_vpn
+
                 declare -A DBMS_TRAITS
 
                 DBMS_TRAITS=(

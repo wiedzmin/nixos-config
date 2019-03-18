@@ -19,6 +19,10 @@ in
         nixpkgs.config.packageOverrides = super: {
             # TODO: think of decoupling from job infra
             rofi_docker_stacks_info = pkgs.writeShellScriptBin "rofi_docker_stacks_info" ''
+                . ${pkgs.misc_lib}/bin/misc_lib
+
+                enforce_vpn
+
                 SWARM_NODES=(
                 ${builtins.concatStringsSep "\n"
                            (map (host: builtins.head host.hostNames)
@@ -105,6 +109,10 @@ in
             '';
             rofi_remote_docker_logs = pkgs.writeShellScriptBin "rofi_remote_docker_logs" ''
                 # TODO: abstract away creds/hosts details and rework accordingly
+                . ${pkgs.misc_lib}/bin/misc_lib
+
+                enforce_vpn
+
                 ask_for_logs() {
                     LOGS=$(${pkgs.openssh}/bin/ssh ${config.job.infra.defaultRemoteUser}@${config.job.infra.logsHost} "find ${config.job.infra.remoteDockerLogsPath}/ -maxdepth 1 -size +0 -type f | grep -v gz")
                     for i in "''${LOGS[@]}"
@@ -143,9 +151,12 @@ in
                 exit 0
             '';
             rofi_ctop = pkgs.writeShellScriptBin "rofi_ctop" ''
+                . ${pkgs.misc_lib}/bin/misc_lib
+
                 main() {
                     HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
                     if [ -n "$HOST" ]; then
+                        enforce_vpn
                         ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
                         ${config.job.infra.defaultRemoteUser}@$HOST -c 'ctop'"
                     fi
