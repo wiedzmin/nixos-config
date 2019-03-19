@@ -7,6 +7,5 @@
         gtm
         jdupes
         rmlint
-        todoman
     ];
 }
