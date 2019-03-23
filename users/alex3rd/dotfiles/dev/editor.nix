@@ -3,10 +3,6 @@
 {
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
-            # email
-            notmuch
-            msmtp
-
             org-protocol.desktop
         ];
         home.file = {

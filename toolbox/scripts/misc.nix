@@ -31,6 +31,10 @@ in
                 echo $(${pkgs.pass}/bin/pass $PASS_ENTRY | ${pkgs.coreutils}/bin/tr '\n' ' ' | \
                      ${pkgs.gawk}/bin/awk '{print $3 ":" $1}')
             '';
+            pass_imap_helper = pkgs.writeShellScriptBin "pass_imap_helper" ''
+                PASS_ENTRY=$1
+                echo $(${pkgs.pass}/bin/pass $PASS_ENTRY | ${pkgs.coreutils}/bin/head -n 1)
+            '';
             tar_encrypt = pkgs.writeShellScriptBin "tar_encrypt" ''
                 IN=$1
                 KEY_ID=$2

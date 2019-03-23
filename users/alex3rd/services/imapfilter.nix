@@ -1,19 +1,23 @@
 {pkgs, ...}:
 
 {
-    environment.etc."imapfilter_config.lua".source = "/etc/nixos/users/alex3rd/private/raw/imapfilter_config.lua";
     systemd.services."imapfilter" = {
-        enable = true;
-        description = "Imapfilter";
-        after = [ "network.target" "suspend.target" ];
-        wantedBy = [ "graphical-session.target" ];
-        path = [ pkgs.imapfilter pkgs.gnupg pkgs.notmuch pkgs.isync ];
+        description = "Ordering mailbox through IMAP";
         serviceConfig = {
-            PIDFile = "/var/run/imapfilter.pid";
-            Restart = "always";
-            RestartSec = 2;
-            User="alex3rd";
+            Type = "oneshot";
+            User = "alex3rd";
             ExecStart = "${pkgs.imapfilter}/bin/imapfilter -c /etc/imapfilter_config.lua -v";
+            StandardOutput = "journal+console";
+            StandardError = "inherit";
         };
     };
+    systemd.timers."imapfilter" = {
+        description = "Ordering mailbox through IMAP";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+            OnBootSec = "1min";
+            OnUnitActiveSec = "30min";
+        };
+    };
+
 }
