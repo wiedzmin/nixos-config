@@ -148,7 +148,7 @@ in
 
                     shopt -s execfail
 
-                    for TARGET_PATH in $(${pkgs.findutils}/bin/find $TARGET_DIR -mindepth 1 -maxdepth 1 -type f | ${pkgs.coreutils}/bin/sort)
+                    for TARGET_PATH in $(${pkgs.findutils}/bin/find -L $TARGET_DIR -mindepth 1 -maxdepth 1 -type f | ${pkgs.coreutils}/bin/sort)
                     do
                         if [ -x "$TARGET_PATH" ]; then # Run as an executable file
                             "$TARGET_PATH" "$@"
