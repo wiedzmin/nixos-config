@@ -115,11 +115,10 @@ in
 
                 gpg = "${pkgs.gnupg}/bin/gpg2";
 
-                li = "${pkgs.exa}/bin/exa -ial";
-                ls = "${pkgs.exa}/bin/exa -F --color=auto";
-                lsa = "${pkgs.exa}/bin/exa -ld .*";
-                lsd = "${pkgs.exa}/bin/exa -ld *(-/DN)";
-                lso = "${pkgs.coreutils}/bin/ls";
+                li = "${pkgs.lsd}/bin/lsd -ial --group-dirs first";
+                ls = "${pkgs.lsd}/bin/lsd -F --color=auto --group-dirs first";
+                lsa = "${pkgs.lsd}/bin/lsd -ld .* --group-dirs first";
+                lsd = "${pkgs.lsd}/bin/lsd -ld *(-/DN) --group-dirs first";
 
                 untar = "tar xvvf";
 
