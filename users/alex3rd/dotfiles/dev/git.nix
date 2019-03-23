@@ -2,15 +2,6 @@
 
 let
     warningsOrgFile = "${config.users.extraUsers.alex3rd.home}/docs/org/tasks.org";
-    gitSrcStopSnippets = [
-        "ipdb"
-        "wdb"
-        "^\\s*print("
-    ];
-    gitCommitStopWords = [
-        "wip"
-        "WIP"
-    ];
     gitRepoHooks = ".hooks";
 in
 {
