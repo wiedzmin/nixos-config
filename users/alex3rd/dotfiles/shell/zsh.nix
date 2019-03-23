@@ -30,6 +30,13 @@ in
                 }
             '';
         };
+        programs.bat = {
+            enable = true;
+            config = {
+                theme = "TwoDark";
+                pager = "less -FR";
+            };
+        };
         programs.zsh = {
             enable = true;
             oh-my-zsh = {
@@ -96,7 +103,7 @@ in
             };
             shellAliases = {
                 cat = "${pkgs.bat}/bin/bat";
-                cat_raw = "${pkgs.coreutils}/bin/cat";
+                cato = "${pkgs.coreutils}/bin/cat";
 
                 df = "${pkgs.dfc}/bin/dfc";
                 dud = "(setopt globdots; ${pkgs.coreutils}/bin/du -mhs * | ${pkgs.coreutils}/bin/sort -hr)";
