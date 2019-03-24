@@ -2,7 +2,7 @@
 
 {
     imports = [
-        ../private/traits/network.nix
+        ../private/network.nix
     ];
     systemd.services."sshuttle" = {
         enable = true;

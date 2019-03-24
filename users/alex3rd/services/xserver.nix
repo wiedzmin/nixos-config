@@ -1,7 +1,7 @@
 { config, pkgs, ... }:
 {
     imports = [
-        ../private/traits/sys.nix
+        ../private/sys.nix
         ../../../toolbox/wm/xmonad.nix
         ../../../toolbox/wm/misc.nix
         ../../../toolbox/scripts/misc.nix

@@ -2,8 +2,8 @@
 
 {
     imports = [
-        ../../private/traits/common.nix
-        ../../private/traits/job.nix
+        ../../private/common.nix
+        ../../private/job.nix
     ];
 
     system.activationScripts.refreshShellBookmarks = "echo '" +

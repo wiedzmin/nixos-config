@@ -17,7 +17,7 @@ in
     imports = [
         ../../../../toolbox/scripts/statuses.nix
         ../../scripts/default.nix
-        ../../private/traits/nas.nix
+        ../../private/nas.nix
     ];
 
     environment.etc."Xmodmaprc".text = ''

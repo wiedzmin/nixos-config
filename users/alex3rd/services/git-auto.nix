@@ -2,8 +2,8 @@
 
 {
     imports = [
-        ../private/traits/job.nix
-        ../private/traits/dev.nix
+        ../private/job.nix
+        ../private/dev.nix
         ../../../toolbox/scripts/git.nix
     ];
     systemd.services."git-fetch-updates-work" = {
