@@ -75,6 +75,16 @@ in
                     ${pkgs.rofi}/bin/rofi -dmenu -i -no-levenshtein-sort -width 1000 "$@"
                 }
 
+                is_url () {
+                    url_regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
+                    url_candidate=$1
+                    if [[ $url_candidate =~ $url_regex ]]
+                    then
+                        return 0
+                    fi
+                    return 1
+                }
+
                 collect_tags () {
                     taglist=()
                     sep=''${1:-,}
@@ -103,6 +113,12 @@ in
                     if [[ $? -ne 0 ]]; then
                         exit
                     fi
+                    is_url $inserturl
+                    if [[ $? -ne 0 ]]; then
+                        ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "URL is not valid, exiting"
+                        exit
+                    fi
+
                     add_tags
                 }
 
@@ -118,6 +134,7 @@ in
                 main() {
                     sleep $sleep_sec
                     add_mark
+                    ${pkgs.dunst}/bin/dunstify -t 5000 "Bookmark added: $inserturl"
                 }
 
                 main
