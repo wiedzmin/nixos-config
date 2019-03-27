@@ -133,14 +133,20 @@ with import ../const.nix {inherit config pkgs;};
 
                 execute_hook_items() {
                     hook=$1
+                    hooks_basedir=$(pwd)/${gitRepoHooks}
 
                     if [ -z $hook ]; then
                         echo "no hook provided, exiting"
                         exit 1
                     fi
 
+                    if [ ! -d "$hooks_basedir" ]; then
+                        # repo hooks were not initialized, simply exit with success
+                        exit 0
+                    fi
+
                     IS_CLEAN=true
-                    TARGET_DIR="$(pwd)/${gitRepoHooks}/$hook"
+                    TARGET_DIR="$hooks_basedir/$hook"
 
                     shopt -s execfail
 
