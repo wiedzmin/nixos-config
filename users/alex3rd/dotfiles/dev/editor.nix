@@ -82,6 +82,7 @@
                 epkgs.browse-at-remote
                 epkgs.bug-hunter
                 epkgs.c-eldoc
+                epkgs.carbon-now-sh
                 epkgs.ccls
                 epkgs.cider
                 epkgs.clojure-mode
@@ -312,7 +313,6 @@
                 epkgs.yaml-mode
                 epkgs.yasnippet
                 epkgs.yatemplate
-                epkgs.carbon-now-sh
             ];
         };
     };
