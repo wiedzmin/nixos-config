@@ -27,7 +27,6 @@ with import ../const.nix {inherit config pkgs;};
                             ${pkgs.git}/bin/git fetch origin &
                             wait $!
                             RET=$?
-                            # TODO: maybe constraint attempts count after trial
                             if [ ''${RET} -ne 0 ]; then
                                 echo Failed fetching origin, retrying in $SLEEPSEC seconds...
                                 sleep $SLEEPSEC

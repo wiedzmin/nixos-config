@@ -2,7 +2,6 @@
 
 {
     environment.systemPackages = with pkgs; [
-        # TODO: unoconv
         ansifilter
         ditaa
         djvu2pdf
