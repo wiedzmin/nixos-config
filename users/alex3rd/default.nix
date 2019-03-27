@@ -19,24 +19,22 @@
         ./services
     ];
 
-    users.extraUsers = {
-        alex3rd = {
-            isNormalUser = true;
-            uid = 1000;
-            description = "Alex Ermolov";
-            shell = pkgs.zsh;
-            extraGroups = [
-                "audio"
-                "docker"
-                "input"
-                "lp"
-                "networkmanager"
-                "scanner"
-                "vboxusers"
-                "video"
-                "wheel"
-            ];
-        };
+    users.extraUsers.alex3rd = {
+        isNormalUser = true;
+        uid = 1000;
+        description = "Alex Ermolov";
+        shell = pkgs.zsh;
+        extraGroups = [
+            "audio"
+            "docker"
+            "input"
+            "lp"
+            "networkmanager"
+            "scanner"
+            "vboxusers"
+            "video"
+            "wheel"
+        ];
     };
 
     nix.trustedUsers = [ "alex3rd" ];

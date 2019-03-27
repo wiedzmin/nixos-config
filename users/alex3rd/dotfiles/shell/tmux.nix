@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../../const.nix {inherit config pkgs;};
 let
     tmuxPluginsBundle = with pkgs; [
         fzf-tmux-url-with-history # patched version, see overlays
@@ -28,7 +28,7 @@ in
                         - cd /etc/nixos/pkgs/nixpkgs-channels
                         - nix repl '<nixpkgs/nixos>'
                   - window_name: mc
-                    start_directory: /home/alex3rd
+                    start_directory: /home/${userName}
                     panes:
                       - mc
             '';

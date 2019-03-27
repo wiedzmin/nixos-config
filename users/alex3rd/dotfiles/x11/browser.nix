@@ -1,17 +1,9 @@
 {config, pkgs, lib, ...}:
 
 with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make more declarative
+with import ../../../../toolbox/util.nix {inherit lib config pkgs;};
+with import ../../const.nix {inherit config pkgs;};
 let
-    genIni = lib.generators.toINI {
-        mkKeyValue = key: value:
-            let
-                mvalue =
-                    if builtins.isBool value then (if value then "true" else "false")
-                    else if (builtins.isString value && key != "include-file") then value
-                    else builtins.toString value;
-            in
-                "${key}=${mvalue}";
-    };
     ffAddonsMetadata = {
         displayanchors = {
             title = "Display #Anchors";
@@ -75,11 +67,11 @@ in
         };
         home.activation.cleanupImperativeFFConfigs = dagEntryBefore ["checkLinkTargets"] ( ''
             PATHS_TO_CLEAN=(
-                "/home/alex3rd/.mozilla/firefox/profiles.ini"
-                "/home/alex3rd/.mozilla/firefox/profile.default/handlers.json"
+                "/home/${userName}/.mozilla/firefox/profiles.ini"
+                "/home/${userName}/.mozilla/firefox/profile.default/handlers.json"
                 ${lib.concatStringsSep "\n    "
                       (lib.mapAttrsToList (name: meta:
-                          "\"/home/alex3rd/.mozilla/firefox/profile.default/browser-extension-data/" +
+                          "\"/home/${userName}/.mozilla/firefox/profile.default/browser-extension-data/" +
                           meta.id + "/storage.js\"")
                       ffAddonsMetadata)}
             )
@@ -108,7 +100,7 @@ in
                 pref("extensions.autoDisableScopes", 0);
 
                 pref("browser.ctrlTab.recentlyUsedOrder", false);
-                pref("browser.download.dir", "/home/alex3rd/Downloads");
+                pref("browser.download.dir", "/home/${userName}/Downloads");
                 pref("browser.link.open_newwindow", 2);
                 pref("browser.sessionstore.restore_on_demand", true);
                 pref("browser.sessionstore.restore_tabs_lazily", true);

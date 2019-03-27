@@ -1,5 +1,5 @@
 {config, pkgs, ...}:
-
+with import ../const.nix {inherit config pkgs;};
 {
     systemd.services."xkeysnail" = {
         enable = true;
@@ -8,13 +8,13 @@
         partOf = [ "graphical.target" ];
         environment = {
             DISPLAY = ":0";
-            XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
+            XAUTHORITY = "/home/${userName}/.Xauthority";
         };
         serviceConfig = {
             PIDFile = "/var/run/xkeysnail.pid";
             Restart = "always";
             RestartSec = 1;
-            ExecStart = "${pkgs.xkeysnail}/bin/xkeysnail ${config.users.extraUsers.alex3rd.home}/.config/xkeysnail/config.py";
+            ExecStart = "${pkgs.xkeysnail}/bin/xkeysnail /home/${userName}/.config/xkeysnail/config.py";
         };
     };
 }

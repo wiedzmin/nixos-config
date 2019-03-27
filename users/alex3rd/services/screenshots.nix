@@ -1,11 +1,11 @@
 {config, pkgs, lib, ...}:
-
+with import ../const.nix {inherit config pkgs;};
 {
     systemd.services."order-screenshots" = {
         description = "Timely order screenshots";
         serviceConfig = {
             Type = "oneshot";
-            User = "alex3rd"; # TODO: think of abstracting away
+            User = "${userName}";
             ExecStart = "${pkgs.order_screenshots}/bin/order_screenshots";
             StandardOutput = "journal+console";
             StandardError = "inherit";

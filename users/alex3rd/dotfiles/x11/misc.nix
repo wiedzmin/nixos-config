@@ -1,18 +1,6 @@
 {config, pkgs, lib, ...}:
-
-let
-    # FIXME: copypaste
-    genIni = lib.generators.toINI {
-        mkKeyValue = key: value:
-            let
-                mvalue =
-                    if builtins.isBool value then (if value then "true" else "false")
-                    else if (builtins.isString value && key != "include-file") then value
-                    else builtins.toString value;
-            in
-                "${key}=${mvalue}";
-    };
-in
+with import ../../../../toolbox/util.nix {inherit lib config pkgs;};
+with import ../../const.nix {inherit config pkgs;};
 {
     imports = [
         ../../../../toolbox/scripts/statuses.nix
@@ -73,17 +61,17 @@ in
                 tag apps:$current.program, -- just tags the current program
 
                 -- projects at work
-                current window ($program == "emacs" && $title =~ m!(?:~|home/alex3rd)/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
+                current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
                   ==> tag project:$1-$2,
-                current window ($program == "Alacritty" && $title =~ m!(?:~|home/alex3rd)/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
+                current window ($program == "Alacritty" && $title =~ m!(?:~|home/${userName})/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
                   ==> tag project:$1-$2,
 
                 -- personal projects
-                current window ($program == "emacs" && $title =~ m!(?:~|home/alex3rd)/workspace/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/!)
+                current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/workspace/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/!)
                   ==> tag project:$1-$2,
-                current window ($program == "emacs" && $title =~ m!(?:~|home/alex3rd)/.xmonad/!) ==> tag project:xmonad-config,
-                current window ($program == "Alacritty" && $title =~ m!(?:~|home/alex3rd)/.xmonad/!) ==> tag project:xmonad-config,
-                current window ($program == "emacs" && $title =~ m!(?:~|home/alex3rd)/.emacs.d/!) ==> tag project:emacs-config,
+                current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/.xmonad/!) ==> tag project:xmonad-config,
+                current window ($program == "Alacritty" && $title =~ m!(?:~|home/${userName})/.xmonad/!) ==> tag project:xmonad-config,
+                current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/.emacs.d/!) ==> tag project:emacs-config,
                 current window ($program == "emacs" && $title =~ m!(?:/etc)/nixos/!) ==> tag project:nixos-config,
 
                 current window ($program == "Navigator" && $title =~ /Facebook/) ==> tag site:facebook,
@@ -704,7 +692,7 @@ in
 
                 # default_user is also used for password files that have no user field.
                 #default_user="''${ROFI_PASS_DEFAULT_USER-$(whoami)}"
-                #default_user2=alex3rd
+                #default_user2=${userName}
                 #password_length=12
 
                 # Custom Keybindings
@@ -727,7 +715,7 @@ in
             '';
             ".config/screenshots/screenshots.yml".text = ''
                 screenshots:
-                  path: ${config.users.extraUsers.alex3rd.home}/screenshots
+                  path: /home/${userName}/screenshots
                   date_format: +%Y-%m-%d_%H:%M:%S
             '';
             ".config/xsuspender.conf".text = genIni {
@@ -868,7 +856,7 @@ in
             xoffset = 0;
             yoffset = 0;
             font = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.URxvt}";
-            theme = "${config.users.extraUsers.alex3rd.home}/.config/rofi/oxide.rasi";
+            theme = "/home/${userName}/.config/rofi/oxide.rasi";
             # TODO: review https://davedavenport.github.io/rofi/manpage.html
             extraConfig = ''
                 rofi.line-margin:                    3

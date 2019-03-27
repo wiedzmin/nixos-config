@@ -10,5 +10,6 @@
         intelmetool
         me_cleaner
         smartmontools
+        config.boot.kernelPackages.perf
     ];
 }

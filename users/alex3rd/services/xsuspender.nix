@@ -1,5 +1,5 @@
 {config, pkgs, ...}:
-
+with import ../const.nix {inherit config pkgs;};
 {
     systemd.services."xsuspender" = {
         enable = true;
@@ -8,10 +8,10 @@
         partOf = [ "graphical.target" ];
         environment = {
             DISPLAY = ":0";
-            XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
+            XAUTHORITY = "/home/${userName}/.Xauthority";
         };
         serviceConfig = {
-            User = "alex3rd"; # TODO: think of abstracting away
+            User = "${userName}";
             PIDFile = "/var/run/xsuspender.pid";
             Restart = "always";
             RestartSec = 1;

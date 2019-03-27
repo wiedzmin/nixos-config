@@ -5,11 +5,11 @@
         enable = true;
         hwRender = true;
         extraConfig = ''
-            font-name=Iosevka Bold # TODO: templatize
-            font-size=14
+            font-name=${config.sys.fonts.term.name}
+            font-size=${config.sys.fonts.size.Alacritty}
         '';
         extraOptions = "--term xterm-256color";
-        autologinUser = "alex3rd";
+        autologinUser = "${config.sys.kmscon.autologinUser}";
     };
 
     services.urxvtd.enable = true;

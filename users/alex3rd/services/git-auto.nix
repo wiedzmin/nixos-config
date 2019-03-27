@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../const.nix {inherit config pkgs;};
 {
     imports = [
         ../private/job.nix
@@ -11,7 +11,7 @@
         path = [ pkgs.pass pkgs.gitAndTools.pass-git-helper ];
         serviceConfig = {
             Type = "oneshot";
-            User = "alex3rd"; # TODO: think of abstracting away
+            User = "${userName}";
             ExecStart = "${pkgs.git-fetch-batch}/bin/git-fetch-batch ${config.job.workspacePath}";
             StandardOutput = "journal+console";
             StandardError = "inherit";
@@ -30,7 +30,7 @@
         path = [ pkgs.pass pkgs.gitAndTools.pass-git-helper pkgs.stgit ];
         serviceConfig = {
             Type = "oneshot";
-            User = "alex3rd"; # TODO: think of abstracting away
+            User = "${userName}";
             ExecStart = "${pkgs.git-save-wip-batch}/bin/git-save-wip-batch ${config.job.workspacePath}";
             StandardOutput = "journal+console";
             StandardError = "inherit";
@@ -49,7 +49,7 @@
         path = [ pkgs.pass pkgs.gitAndTools.pass-git-helper pkgs.stgit ];
         serviceConfig = {
             Type = "oneshot";
-            User = "alex3rd"; # TODO: think of abstracting away
+            User = "${userName}";
             ExecStart = "${pkgs.git-save-wip-batch}/bin/git-save-wip-batch" + (lib.concatMapStrings (loc: " ${loc}") config.dev.petProjectLocations);
             StandardOutput = "journal+console";
             StandardError = "inherit";

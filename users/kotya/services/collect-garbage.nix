@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../const.nix {inherit config pkgs;};
 {
     imports = [
         ../../../toolbox/scripts/nix.nix
@@ -9,7 +9,7 @@
         description = "Collect garbage in running system";
         serviceConfig = {
             Type = "oneshot";
-            User = "alex3rd"; # TODO: think of abstracting away
+            User = "root";
             ExecStart = "${pkgs.optimize-nix}/bin/optimize-nix";
             StandardOutput = "journal+console";
             StandardError = "inherit";

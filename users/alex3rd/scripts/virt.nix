@@ -1,18 +1,9 @@
 {config, pkgs, lib, ...}:
-
+with import ../../../toolbox/util.nix {inherit lib config pkgs;};
 let
     dockerStackPsCustomFormat = "{{.Name}}   {{.Image}}   {{.Node}} {{.DesiredState}}   {{.CurrentState}}";
     useDockerStackPsCustomFormat = false;
     dockerStackShowOnlyRunning = true;
-    firefoxOpenPageCmd = "${pkgs.firefox-bin}/bin/firefox --new-window";
-    chromiumOpenPageCmd = "${pkgs.chromium}/bin/chromium";
-    # TODO: generalize and find way to extract to module/lib
-    unfoldListOfSetsByAttr = list: attr:
-        let
-            v = if builtins.length list == 0 then {${attr} = [];} else builtins.head list;
-        in
-        (map (elem: v // {${attr} = elem;} ) v.${attr}) ++
-             (if builtins.length list == 0 then [] else (unfoldListOfSetsByAttr (builtins.tail list) attr));
 in
 {
     config = {

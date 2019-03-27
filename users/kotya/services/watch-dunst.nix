@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../const.nix {inherit config pkgs;};
 {
     imports = [
         ../../../toolbox/scripts/misc.nix
@@ -10,7 +10,7 @@
         path = [ pkgs.logger ];
         serviceConfig = {
             Type = "oneshot";
-            User = "alex3rd"; # TODO: think of abstracting away
+            User = "${userName}";
             ExecStart = "${pkgs.watch_dunst}/bin/watch_dunst";
             StandardOutput = "journal+console";
             StandardError = "inherit";

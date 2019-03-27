@@ -51,22 +51,20 @@
         ./private/traits/network.nix
     ];
 
-    users.extraUsers = {
-        kotya = {
-            isNormalUser = true;
-            uid = 1000;
-            description = "Ekaterina Ermolova";
-            shell = pkgs.zsh;
-            extraGroups = [
-                "audio"
-                "input"
-                "lp"
-                "networkmanager"
-                "vboxusers"
-                "video"
-                "wheel"
-            ];
-        };
+    users.extraUsers.kotya = {
+        isNormalUser = true;
+        uid = 1000;
+        description = "Ekaterina Ermolova";
+        shell = pkgs.zsh;
+        extraGroups = [
+            "audio"
+            "input"
+            "lp"
+            "networkmanager"
+            "vboxusers"
+            "video"
+            "wheel"
+        ];
     };
 
     nix.trustedUsers = [ "kotya" ];

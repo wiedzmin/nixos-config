@@ -1,8 +1,8 @@
 {config, pkgs, lib, ...}:
-
+with import ../../../../toolbox/const.nix {inherit config pkgs;};
+with import ../../const.nix {inherit config pkgs;};
 let
-    warningsOrgFile = "${config.users.extraUsers.alex3rd.home}/docs/org/tasks.org";
-    gitRepoHooks = ".hooks";
+    warningsOrgFile = "$HOME/docs/org/tasks.org";
 in
 {
     imports = [
@@ -11,7 +11,7 @@ in
 
     environment.etc."nixos/.hooks/pre-push/stop-wip" = {
         mode = "0644";
-        user = "alex3rd";
+        user = "${userName}";
         group = "users";
         text = ''
             . ${pkgs.git_hooks_lib}/bin/git_hooks_lib
@@ -200,7 +200,7 @@ in
                     untracked = "red";
                 };
                 "commit" = {
-                    template = "${config.users.extraUsers.alex3rd.home}/git-assets/git-commit-template";
+                    template = "/home/${userName}/git-assets/git-commit-template";
                 };
                 "rebase" = {
                     autoSquash = true;
@@ -208,10 +208,10 @@ in
                 };
                 "core" = {
                     autocrlf = false;
-                    excludesfile = "${config.users.extraUsers.alex3rd.home}/git-assets/.gitignore";
+                    excludesfile = "/home/${userName}/git-assets/.gitignore";
                     quotepath = false;
                     askPass = "";
-                    hooksPath = "${config.users.extraUsers.alex3rd.home}/git-assets/templates/hooks";
+                    hooksPath = "/home/${userName}/git-assets/templates/hooks";
                 };
                 "credential" = {
                     helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper";
@@ -220,10 +220,10 @@ in
                     algorithm = "patience";
                 };
                 "init" = {
-                    templatedir = "${config.users.extraUsers.alex3rd.home}/git-assets/templates";
+                    templatedir = "/home/${userName}/git-assets/templates";
                 };
                 "clone" = {
-                    templatedir = "${config.users.extraUsers.alex3rd.home}/git-assets/templates";
+                    templatedir = "/home/${userName}/git-assets/templates";
                 };
                 "pager" = {
                     diff = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | less --tabs=4 -RFX";
@@ -234,7 +234,7 @@ in
                     default = "current";
                 };
                 "ghq" = {
-                    root = "${config.users.extraUsers.alex3rd.home}/workspace/repos";
+                    root = "/home/${userName}/workspace/repos";
                 };
                 "ghq \"import\"" = {
                     bbcontribs = "${pkgs.bitbucket_team_contributor_repos}/bin/bitbucket_team_contributor_repos";

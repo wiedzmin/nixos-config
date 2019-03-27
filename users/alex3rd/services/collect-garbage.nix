@@ -1,5 +1,6 @@
 {config, pkgs, lib, ...}:
 
+# TODO: think of moving to system level
 {
     imports = [
         ../../../toolbox/scripts/nix.nix

@@ -12,7 +12,7 @@
     };
 
     fileSystems."${config.services.syncthing.dataDir}/bookshelf" = {
-        device = "${config.users.extraUsers.alex3rd.home}/bookshelf";
+        device = "${config.users.extraUsers.alex3rd.home}/bookshelf"; # TODO: check if we could use env var or substitution here
         options = [ "bind" ];
     };
 

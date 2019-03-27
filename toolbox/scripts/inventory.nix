@@ -1,17 +1,5 @@
 {config, pkgs, lib, ...}:
 
-let
-    bookshelfPath = "${config.users.extraUsers.alex3rd.home}/bookshelf";
-    bookReaderUsePdftools = true;
-    currentUser = "alex3rd";
-    previousUser = "octocat";
-    dockerStackPsCustomFormat = "{{.Name}}   {{.Image}}   {{.Node}} {{.DesiredState}}   {{.CurrentState}}";
-    useDockerStackPsCustomFormat = false;
-    dockerStackShowOnlyRunning = true;
-    sedPlaceholderChar = "_";
-    firefoxOpenPageCmd = "${pkgs.firefox-bin}/bin/firefox --new-window";
-    chromiumOpenPageCmd = "${pkgs.chromium}/bin/chromium";
-in
 {
     config = {
         nixpkgs.config.packageOverrides = super: {

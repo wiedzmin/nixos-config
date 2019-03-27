@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../../const.nix {inherit config pkgs;};
 {
     home-manager.users.alex3rd = {
         home.file = {
@@ -11,7 +11,7 @@
                     (load quicklisp-init)))
 
                 (ql:quickload :cffi)
-                (pushnew #P"${config.users.extraUsers.alex3rd.home}/.nix-profile/lib/" ;; TODO: parameterize username
+                (pushnew #P"/home/${userName}/.nix-profile/lib/"
                          cffi:*foreign-library-directories*)
             '';
             ".guile".text = ''

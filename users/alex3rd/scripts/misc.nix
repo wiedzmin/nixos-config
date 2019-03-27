@@ -1,41 +1,10 @@
 {config, pkgs, lib, ...}:
-
+with import ../../../toolbox/util.nix {inherit lib config pkgs;};
+with import ../const.nix {inherit config pkgs;};
 let
-    bookshelfPath = "${config.users.extraUsers.alex3rd.home}/bookshelf";
+    bookshelfPath = "/home/${userName}/bookshelf";
     bookReaderUsePdftools = true;
-    sedPlaceholderChar = "_";
     buku_batch_open_treshold = 20;
-    # TODO: generalize and find way to extract to module/lib
-    prettifyValue = value:
-       if builtins.typeOf value == "int" then
-          builtins.toString value
-       else if builtins.typeOf value == "bool" then
-          if value == true then "✓"
-          else "✗"
-       else builtins.toString value;
-    setToBashKeyValue = set: keyname: valueSep: omitKey:
-        let
-            keyValue = set.${keyname};
-            strippedSet = builtins.removeAttrs set [keyname];
-        in
-            "[\"" + keyValue + "\"]=\"" +
-                  (builtins.concatStringsSep valueSep
-                            (pkgs.stdenv.lib.mapAttrsToList
-                                  (key: value: if omitKey then "${prettifyValue value}"
-                                                          else "${key}:${sedPlaceholderChar}${prettifyValue value}")
-                                  strippedSet)) + "\"";
-    unfoldListOfSetsByAttr = list: attr:
-        let
-            v = if builtins.length list == 0 then {${attr} = [];} else builtins.head list;
-        in
-        (map (elem: v // {${attr} = elem;} ) v.${attr}) ++
-             (if builtins.length list == 0 then [] else (unfoldListOfSetsByAttr (builtins.tail list) attr));
-    listOfSetsToShellHashtable = list: keyname: tablename: omitKey:
-        "declare -A ${tablename}" + "\n" +
-        "${tablename}=(" + "\n" +
-            (builtins.concatStringsSep
-                "\n" (map (attrs: setToBashKeyValue attrs keyname " " omitKey) list))
-        +"\n" + ")";
 in
 {
     config = {
@@ -247,7 +216,7 @@ in
             '';
             rofi_insert_snippet = pkgs.writeShellScriptBin "rofi_insert_snippet" ''
                 ask_for_snippets() {
-                    SNIPPETS=$(<${config.users.extraUsers.alex3rd.home}/${config.common.snippets.file})
+                    SNIPPETS=$(</home/${userName}/${config.common.snippets.file})
                     for i in "''${SNIPPETS[@]}"
                     do
                         echo "$i"

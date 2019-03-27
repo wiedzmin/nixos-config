@@ -1,8 +1,5 @@
 {config, pkgs, ...}:
 
-let
-    screenshotsPath = "/home/alex3rd/screenshots";
-in
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
@@ -93,10 +90,12 @@ in
                   # ["screenshot-[0-9]\{2\}\:[0-9]\{2\}\:[0-9]\{2\}\\ [0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}"]='echo ''${FILENAME:20:4} ''${FILENAME:25:2} ''${FILENAME:28:2}'
                   ["screenshot-[0-9]\{2\}\:[0-9]\{2\}\:[0-9]\{2\}_[0-9]\{4\}-[0-9]\{2\}-[0-9]\{2\}"]='echo ''${FILENAME:20:4} ''${FILENAME:25:2} ''${FILENAME:28:2}'
                 )
+                CONFIGFILE=''${1:-$HOME/.config/screenshots/screenshots.yml}
+                SCREENSHOTS_PATH=$(${pkgs.shyaml}/bin/shyaml -gy screenshots.path $CONFIGFILE)
 
                 for regexp in "''${!REGEXP_TO_DATECMD[@]}"
                 do
-                    FILELIST=$(ls -a ${screenshotsPath} | grep -e $regexp)
+                    FILELIST=$(ls -a $SCREENSHOTS_PATH | grep -e $regexp)
                     DATECMD=''${REGEXP_TO_DATECMD[$regexp]}
                     for FILENAME in $FILELIST
                     do
@@ -104,10 +103,10 @@ in
                         YEAR=''${DATE_PART[0]}
                         MONTH=''${DATE_PART[1]}
                         DAY=''${DATE_PART[2]}
-                        DEST_PATH=${screenshotsPath}/$YEAR/$MONTH/$DAY
-                        mkdir -p ${screenshotsPath}/$YEAR/$MONTH/$DAY
+                        DEST_PATH=$SCREENSHOTS_PATH/$YEAR/$MONTH/$DAY
+                        mkdir -p $SCREENSHOTS_PATH/$YEAR/$MONTH/$DAY
                         echo "moving $FILENAME to $DEST_PATH"
-                        mv ${screenshotsPath}/$FILENAME ${screenshotsPath}/$YEAR/$MONTH/$DAY
+                        mv $SCREENSHOTS_PATH/$FILENAME $SCREENSHOTS_PATH/$YEAR/$MONTH/$DAY
                     done
                 done
 

@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../const.nix {inherit config pkgs;};
 let
     # TODO: try to make simpler / more concise
     currentArch = pkgs.lib.lists.last (pkgs.lib.lists.init (pkgs.lib.strings.splitString "-" builtins.currentSystem));
@@ -7,7 +7,7 @@ let
 in
 {
     system.activationScripts.removeOldTaffybarBinary = ''
-        TAFFYBAR_CACHED_BINARY=${config.users.extraUsers.alex3rd.home}/.cache/taffybar/taffybar-${currentOs}-${currentArch}
+        TAFFYBAR_CACHED_BINARY=/home/${userName}/.cache/taffybar/taffybar-${currentOs}-${currentArch}
         if [ -f $TAFFYBAR_CACHED_BINARY ]; then
             rm $TAFFYBAR_CACHED_BINARY
         fi

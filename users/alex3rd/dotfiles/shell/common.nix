@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../../const.nix {inherit config pkgs;};
 {
     imports = [
         ../../private/common.nix
@@ -10,7 +10,7 @@
         (builtins.concatStringsSep "\n"
              (lib.mapAttrsToList (bmk: path: bmk + " : " + path)
              (config.common.shellBookmarks // config.job.shellBookmarks))) +
-        "' > ${config.users.extraUsers.alex3rd.home}/.bookmarks";
+        "' > /home/${userName}/.bookmarks";
 
     home-manager.users.alex3rd = {
         home.file = {

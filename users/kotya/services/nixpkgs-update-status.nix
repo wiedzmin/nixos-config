@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../const.nix {inherit config pkgs;};
 {
     systemd.services."nixpkgs-update-status" = {
         description = "Timely check for nixpkgs updates";
@@ -9,7 +9,7 @@
         };
         serviceConfig = {
             Type = "oneshot";
-            User = "alex3rd"; # TODO: think of abstracting away
+            User = "${userName}";
             ExecStart = "${pkgs.watch_nixpkgs_updates}/bin/watch_nixpkgs_updates";
             StandardOutput = "journal+console";
             StandardError = "inherit";

@@ -1,9 +1,7 @@
-{config, pkgs, ...}:
-
+{config, pkgs, lib, ...}:
+with import ../util.nix {inherit lib config pkgs;};
 let
     dockerContainerShellExecutable = "/bin/bash";
-    firefoxOpenPageCmd = "${pkgs.firefox-bin}/bin/firefox --new-window";
-    chromiumOpenPageCmd = "${pkgs.chromium}/bin/chromium";
 in
 {
     config = {

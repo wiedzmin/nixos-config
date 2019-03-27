@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../../const.nix {inherit config pkgs;};
 let
     zshOptions = [
         "braceccl"
@@ -8,9 +8,9 @@ let
         "menucomplete"
     ];
     binDirs = [
-        "${config.users.extraUsers.alex3rd.home}/scripts"
-        "${config.users.extraUsers.alex3rd.home}/tools/bin"
-        "${config.users.extraUsers.alex3rd.home}/.local/bin"
+        "/home/${userName}/scripts"
+        "/home/${userName}/tools/bin"
+        "/home/${userName}/.local/bin"
     ];
     zshHistFilename = ".histfile";
 in
@@ -87,19 +87,19 @@ in
             sessionVariables = {
                 CURRENT_WM = "${config.services.xserver.windowManager.default}";
                 EDITOR = "${pkgs.emacs}/bin/emacsclient";
-                FZF_MARKS_FILE = "${config.users.extraUsers.alex3rd.home}/.bookmarks";
+                FZF_MARKS_FILE = "/home/${userName}/.bookmarks";
                 FZF_MARKS_JUMP = "^[xjj";
                 ZSH_COMMAND_TIME_COLOR = "cyan";
                 GREP_COLOR = "1;32";
                 GREP_OPTIONS = "--color=auto";
-                GTAGSLIBPATH = "${config.users.extraUsers.alex3rd.home}/.gtags/";
+                GTAGSLIBPATH = "/home/${userName}/.gtags/";
                 HISTFILE = "${zshHistFilename}";
                 PATH = "$PATH:${lib.concatStringsSep ":" (lib.unique binDirs)}";
                 SHELL = "${pkgs.zsh}/bin/zsh";
-                TMUXP_CONFIGDIR = "${config.users.extraUsers.alex3rd.home}/tmuxp";
+                TMUXP_CONFIGDIR = "/home/${userName}/tmuxp";
                 VISUAL = "${pkgs.emacs}/bin/emacsclient";
-                WORKON_HOME = "${config.users.extraUsers.alex3rd.home}/.virtualenvs";
-                XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
+                WORKON_HOME = "/home/${userName}/.virtualenvs";
+                XAUTHORITY = "/home/${userName}/.Xauthority";
             };
             shellAliases = {
                 cat = "${pkgs.bat}/bin/bat";

@@ -1,9 +1,5 @@
 {config, pkgs, ...}:
-
-let
-    gitRepoHooks = ".hooks";
-    shortCircuitGitHooks = false;
-in
+with import ../const.nix {inherit config pkgs;};
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
