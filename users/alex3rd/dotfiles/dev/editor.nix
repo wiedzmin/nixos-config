@@ -177,6 +177,7 @@
                 epkgs.ibuffer-project
                 epkgs.ibuffer-vc
                 epkgs.imenu-anywhere
+                epkgs.indium
                 epkgs.info-buffer
                 epkgs.info-colors
                 epkgs.ini-mode

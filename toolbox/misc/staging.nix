@@ -19,5 +19,7 @@
         nix-prefetch
         sysdig
         websocat
+
+        nodePackages.indium
     ];
 }
