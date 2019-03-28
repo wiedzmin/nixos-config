@@ -38,6 +38,10 @@
                 ${pkgs.yad}/bin/yad --filename /tmp/home-manager-git-status --text-info
                 rm /tmp/home-manager-git-status
             '';
+            show_current_system_hash = pkgs.writeShellScriptBin "show_current_system_hash" ''
+                current_system_commit_hash=`${pkgs.coreutils}/bin/readlink -f /run/current-system | ${pkgs.coreutils}/bin/cut -f4 -d.`
+                ${pkgs.dunst}/bin/dunstify -t 7000 "Current system: $current_system_commit_hash"
+            '';
        };
     };
 }

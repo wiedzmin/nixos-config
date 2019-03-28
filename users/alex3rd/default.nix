@@ -54,6 +54,7 @@
             sshuttlectl
             volumectl
             wifictl
+            show_current_system_hash
 
             i3lock-color
             networkmanager_dmenu # using rofi, despite naming
