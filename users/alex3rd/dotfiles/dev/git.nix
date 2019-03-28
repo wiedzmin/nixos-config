@@ -153,6 +153,16 @@ in
                     exit $?;
                 '';
             };
+            "git-assets/templates/hooks/pre-commit" = {
+                executable = true;
+                text = ''
+                    #!${pkgs.bash}/bin/bash
+                    # TODO: templatize further
+                    . ${pkgs.git_hooks_lib}/bin/git_hooks_lib
+                    execute_hook_items pre-commit
+                    exit $?;
+                '';
+            };
             ".config/pass-git-helper/git-pass-mapping.ini".text = ''
                 [github.com*]
                 target=alex3rd/webservices/social/programming/github.com
