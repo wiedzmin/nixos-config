@@ -1,5 +1,5 @@
 {config, pkgs, ...}:
-
+with import ../const.nix {inherit config pkgs;};
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
@@ -40,7 +40,13 @@
             '';
             show_current_system_hash = pkgs.writeShellScriptBin "show_current_system_hash" ''
                 current_system_commit_hash=`${pkgs.coreutils}/bin/readlink -f /run/current-system | ${pkgs.coreutils}/bin/cut -f4 -d.`
-                ${pkgs.dunst}/bin/dunstify -t 7000 "Current system: $current_system_commit_hash"
+                cd ${nixpkgsFullPath}
+                nixpkgs_current_branch=$(${pkgs.git}/bin/git symbolic-ref --short HEAD)
+                cd ${homeManagerFullPath}
+                hm_current_branch=$(${pkgs.git}/bin/git symbolic-ref --short HEAD)
+                hm_current_hash=$(${pkgs.git}/bin/git rev-parse --short HEAD)
+                ${pkgs.dunst}/bin/dunstify -t 15000 "nixpkgs: $current_system_commit_hash/$nixpkgs_current_branch
+                HM: $hm_current_hash/$hm_current_branch"
             '';
        };
     };
