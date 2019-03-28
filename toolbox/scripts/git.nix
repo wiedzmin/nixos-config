@@ -177,6 +177,16 @@ with import ../const.nix {inherit config pkgs;};
                     fi
                     return 0;
                 }
+
+                check_for_secrets() {
+                    RESULTS=$(${pkgs.gitAndTools.git-secrets}/bin/git-secrets --scan --cached 2>&1)
+                    if [[ -z "$RESULTS" ]]; then
+                        return 0;
+                    fi
+                    echo "Found secret snippets:"
+                    echo "$RESULTS"
+                    return 1;
+                }
             '';
        };
     };
