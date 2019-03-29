@@ -829,8 +829,8 @@ with import ../../const.nix {inherit config pkgs;};
         };
         services.redshift = {
             enable = true;
-            latitude = "${config.sys.redshift.latitude}";
-            longitude = "${config.sys.redshift.longitude}";
+            latitude = "${config.common.redshift.latitude}";
+            longitude = "${config.common.redshift.longitude}";
             temperature.day = 5500;
             temperature.night = 3100;
             brightness.day = "1.0";
