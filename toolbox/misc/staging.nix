@@ -19,6 +19,7 @@
         nix-prefetch
         sysdig
         websocat
+        vmtouch
 
         nodePackages.indium
     ];
