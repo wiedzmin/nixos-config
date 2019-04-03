@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make more declarative
 {
     imports = [
         <home-manager/nixos>
@@ -100,5 +100,8 @@
                 allow-loopback-pinentry
             '';
         };
+        home.activation.ensureNoOlderGnupgServer = dagEntryAfter ["checkLinkTargets"] ( ''
+            ${pkgs.gnupg}/bin/gpgconf --kill gpg-agent
+        '' );
     };
 }
