@@ -25,6 +25,8 @@ with import ../../const.nix {inherit config pkgs;};
         home.packages = with pkgs; [
             xsel # for firefox native clients
 
+            haskellPackages.arbtt
+
             # helper scripts for WMs
             rofi_autorandr_profiles
             rofi_bookshelf

@@ -71,7 +71,7 @@
                 '';
             };
         };
-        # arbtt.enable = true; # FIXME: construct overlay
+        arbtt.enable = true;
         autorandr = {
             enable = true;
             defaultTarget = "mobile";
