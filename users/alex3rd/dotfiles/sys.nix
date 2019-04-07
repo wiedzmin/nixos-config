@@ -25,7 +25,6 @@ with lib;
                  "mongolia_2.jpg"
             ];
         };
-        # TODO: move fonts settings to public
         sys.fonts = rec {
             main = {
                 name = mkOption {
