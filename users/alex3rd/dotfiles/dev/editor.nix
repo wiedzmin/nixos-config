@@ -270,6 +270,7 @@
                 epkgs.region-bindings-mode
                 epkgs.restart-emacs
                 epkgs.reverse-im
+                epkgs.rg
                 epkgs.russian-holidays
                 epkgs.rust-mode
                 epkgs.rustic
@@ -280,7 +281,6 @@
                 epkgs.slime-company
                 epkgs.smartparens
                 epkgs.smooth-scrolling
-                epkgs.socyl
                 epkgs.solarized-theme
                 epkgs.spaceline
                 epkgs.super-save
