@@ -100,8 +100,5 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
                 allow-loopback-pinentry
             '';
         };
-        home.activation.ensureNoOlderGnupgServer = dagEntryAfter ["checkLinkTargets"] ( ''
-            ${pkgs.gnupg}/bin/gpgconf --kill gpg-agent
-        '' );
     };
 }
