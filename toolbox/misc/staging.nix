@@ -8,6 +8,7 @@
         # gscan2pdf
         # nix-gitignore
         # pyflame
+        anbox
         bbe
         clerk
         findnewest
@@ -16,10 +17,15 @@
         gitAndTools.git-imerge
         jsonnet
         k6
+        libwhich
         nix-prefetch
+        pdfsandwich
+        semver-tool
         sysdig
-        websocat
         vmtouch
+        websocat
+        xtruss
+        zzuf
 
         nodePackages.indium
     ];
