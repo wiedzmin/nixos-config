@@ -136,12 +136,11 @@ with import ../../const.nix {inherit config pkgs;};
                 month $now == month $date ==> tag current-month,
                 year $now == year $date ==> tag current-year,
 
-                # TODO: generalize and find way to extract to module/lib
                 ${builtins.concatStringsSep "\n"
                            (map (meta: builtins.concatStringsSep "\n"
                                        (map (hostname: "current window ($program == \"" +
                                             config.sys.defaultShellClass + "\" && $title =~ /" +
-                                            hostname + "/) ==> tag ssh:" + hostname + ",")
+                                            hostname + "/) ==> tag ssh:" + builtins.replaceStrings ["."] ["_"] hostname + ",")
                                             meta.hostNames))
                                 (config.job.extraHosts ++ config.misc.extraHosts))}
             '';
