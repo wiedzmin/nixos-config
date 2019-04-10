@@ -23,7 +23,7 @@ in
             "Xmessage*faceWeight" = "${config.sys.fonts.main.weight}";
             "Xmessage*international" = true;
 
-            "dzen2.font" = "${config.sys.fonts.main.name}:weight=${config.sys.fonts.main.weight}:size=${config.sys.fonts.size.Dzen}";
+            "dzen2.font" = "${config.sys.fonts.main.name}:${config.sys.fonts.main.weightKeyword}=${config.sys.fonts.main.weight}:${config.sys.fonts.main.sizeKeyword}=${config.sys.fonts.size.Dzen}";
 
             "Emacs*XlwMenu.font" = "${config.sys.fonts.code.name}:weight=${config.sys.fonts.code.weight}:size=${config.sys.fonts.size.Emacs}";
             "Emacs.Font" = "${config.sys.fonts.code.name}:weight=${config.sys.fonts.code.weight}:size=${config.sys.fonts.size.Emacs}";

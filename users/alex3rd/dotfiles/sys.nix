@@ -27,39 +27,69 @@ with lib;
         };
         sys.fonts = rec {
             main = {
-                name = mkOption {
-                    type = types.str;
+                name = mkOption { type = types.str; description = "Main font's family";
                     default = builtins.elemAt inventory 7;
-                    description = "Main font's family";
                 };
-                weight = mkOption {
-                    type = types.str;
+                weight = mkOption { type = types.str; description = "Main font's weight";
                     default = "Bold";
-                    description = "Main font's weight";
+                };
+                weightKeyword = mkOption { type = types.str; description = "Main font's weight keyword";
+                    default = "weight";
+                };
+                useWeight = mkOption { type = types.bool; description = "Whether to use weight value in font's definition";
+                    default = true;
+                };
+                sizeKeyword = mkOption { type = types.str; description = "XFT keyword to use for size definition";
+                    default = "size";
+                };
+                antialias = mkOption { type = types.bool; description = "Antialias value for selected font";
+                    default = false;
+                };
+                useAntialias = mkOption { type = types.bool; description = "Whether to use antialias value in font's definition";
+                    default = false;
                 };
             };
             code = {
-                name = mkOption {
-                    type = types.str;
+                name = mkOption { type = types.str; description = "Code font's family";
                     default = builtins.elemAt inventory 7;
-                    description = "Code font's family";
                 };
-                weight = mkOption {
-                    type = types.str;
+                weight = mkOption { type = types.str; description = "Code font's weight";
                     default = "Bold";
-                    description = "Code font's weight";
+                };
+                weightKeyword = mkOption { type = types.str; description = "Code font's weight keyword";
+                    default = "weight";
+                };
+                useWeight = mkOption { type = types.bool; description = "Whether to use weight value in font's definition";
+                    default = true;
+                };
+                sizeKeyword = mkOption { type = types.str; description = "XFT keyword to use for size definition";
+                    default = "size";
+                };
+                antialias = mkOption { type = types.bool; description = "Antialias value for selected font";
+                    default = false;
+                };
+                useAntialias = mkOption { type = types.bool; description = "Whether to use antialias value in font's definition";
+                    default = false;
                 };
             };
             term = {
-                name = mkOption {
-                    type = types.str;
+                name = mkOption { type = types.str; description = "Terminal font's family";
                     default = builtins.elemAt inventory 7;
-                    description = "Code font's family";
                 };
-                weight = mkOption {
-                    type = types.str;
+                weight = mkOption { type = types.str; description = "Terminal font's weight";
                     default = "Bold";
-                    description = "Code font's weight";
+                };
+                useWeight = mkOption { type = types.bool; description = "Whether to use weight value in font's definition";
+                    default = true;
+                };
+                sizeKeyword = mkOption { type = types.str; description = "XFT keyword to use for size definition";
+                    default = "size";
+                };
+                antialias = mkOption { type = types.bool; description = "Antialias value for selected font";
+                    default = false;
+                };
+                useAntialias = mkOption { type = types.bool; description = "Whether to use antialias value in font's definition";
+                    default = false;
                 };
             };
             inventory = [
@@ -78,52 +108,34 @@ with lib;
                 "Unifont"
             ];
             size = {
-                Xmessage = mkOption {
-                    type = types.str;
+                Xmessage = mkOption { type = types.str; description = "Main font's size for Xmessage";
                     default = "16";
-                    description = "Main font's size for Xmessage";
                 };
-                Dzen = mkOption {
-                    type = types.str;
+                Dzen = mkOption { type = types.str; description = "Main font's size for Dzen2";
                     default = "16";
-                    description = "Main font's size for Dzen2";
                 };
-                Emacs = mkOption {
-                    type = types.str;
+                Emacs = mkOption { type = types.str; description = "Main font's size for GUI Emacs";
                     default = "14";
-                    description = "Main font's size for GUI Emacs";
                 };
-                URxvt = mkOption {
-                    type = types.str;
+                URxvt = mkOption { type = types.str; description = "Main font's size for URxvt";
                     default = "12";
-                    description = "Main font's size for URxvt";
                 };
-                Alacritty = mkOption {
-                    type = types.str;
+                Alacritty = mkOption { type = types.str; description = "Main font's size for Alacritty";
                     default = "11.0";
-                    description = "Main font's size for Alacritty";
                 };
-                Dunst = mkOption {
-                    type = types.str;
+                Dunst = mkOption { type = types.str; description = "Main font's size for Dunst";
                     default = "10";
-                    description = "Main font's size for Dunst";
                 };
             };
         };
-        sys.defaultShellClass = mkOption { # TODO: generalize in some way
-            type = types.str;
-            default = "Alacritty";
-            description = "Default shell program WM_CLASS, for arbtt tagging";
+        sys.defaultShellClass = mkOption { type = types.str; description = "Default shell program WM_CLASS, for arbtt tagging";
+            default = "Alacritty"; # TODO: generalize in some way
         };
-        sys.defaultBrowserCmd = mkOption {
-            type = types.str;
+        sys.defaultBrowserCmd = mkOption { type = types.str; description = "Default browser command for new webpages";
             default = "${firefoxOpenPageCmd}";
-            description = "Default browser command for new webpages";
         };
-        sys.kmscon.autologinUser = mkOption {
-            type = types.str;
+        sys.kmscon.autologinUser = mkOption { type = types.str; description = "user to log into automatically in kmscon";
             default = "${userName}";
-            description = "user to log into automatically in kmscon";
         };
     };
 }

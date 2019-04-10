@@ -146,7 +146,7 @@ with import ../../const.nix {inherit config pkgs;};
                                 (config.job.extraHosts ++ config.misc.extraHosts))}
             '';
             ".config/xmobar/xmobarrc".text = ''
-                Config { font = "xft:${config.sys.fonts.main.name}:style=${config.sys.fonts.main.weight}:pixelsize=${config.sys.fonts.size.Dzen}"
+                Config { font = "xft:${config.sys.fonts.main.name}:${config.sys.fonts.main.weightKeyword}=${config.sys.fonts.main.weight}:${config.sys.fonts.main.sizeKeyword}=${config.sys.fonts.size.Dunst}"
                        , bgColor = "black"
                        , fgColor = "grey"
                        , position = TopW L 100
