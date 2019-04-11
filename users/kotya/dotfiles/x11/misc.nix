@@ -669,43 +669,6 @@
             enable = true;
             fullscreen = false;
             borderWidth = 1;
-            colors = {
-                window = {
-                    background = "#fdf6e3";
-                    border = "#002b36";
-                    separator = "#eee8d5";
-                };
-                rows = {
-                    active = {
-                        background = "#fdf6e3";
-                        foreground = "#268bd2";
-                        backgroundAlt = "#eee8d5";
-                        highlight = {
-                            background = "#268bd2";
-                            foreground = "#fdf6e3";
-                        };
-                    };
-                    normal = {
-                        background = "#fdf6e3";
-                        foreground = "#002b36";
-                        backgroundAlt = "#eee8d5";
-                        highlight = {
-                            background = "#586e75";
-                            foreground = "#eee8d5";
-                        };
-                    };
-                    urgent = {
-                        background = "#fdf6e3";
-                        foreground = "#dc322f";
-                        backgroundAlt = "#eee8d5";
-                        highlight = {
-                            background = "#dc322f";
-                            foreground = "#fdf6e3";
-                        };
-                    };
-
-                };
-            };
             cycle = true;
             rowHeight = 1;
             # scrollbar = true;
