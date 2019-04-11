@@ -46,7 +46,6 @@
         ./dotfiles/x11/xresources.nix
         ./services/collect-garbage.nix
         ./services/nixpkgs-update-status.nix
-        ./services/watch-dunst.nix
         ./services/xkeysnail.nix
         ./private/traits/network.nix
     ];
