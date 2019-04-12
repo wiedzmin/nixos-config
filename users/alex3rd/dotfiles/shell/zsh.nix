@@ -16,9 +16,6 @@ let
 in
 {
     home-manager.users.alex3rd = {
-        home.packages = with pkgs; [
-            pkgs.libnotify
-        ];
         home.file = {
             ".zsh/functions.zsh".text = ''
                 dot() {

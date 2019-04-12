@@ -31,7 +31,6 @@ with import ../const.nix {inherit config pkgs;};
                 echo "$(${pkgs.watch_git_remote_status}/bin/watch_git_remote_status /etc/nixos/pkgs/nixpkgs-channels)" > /tmp/nixpkgs-channels-git-status
                 ${pkgs.yad}/bin/yad --filename /tmp/nixpkgs-channels-git-status --text-info
                 rm /tmp/nixpkgs-channels-git-status
-
             '';
             show_home_manager_updates = pkgs.writeShellScriptBin "show_home_manager_updates" ''
                 echo "$(${pkgs.watch_git_remote_status}/bin/watch_git_remote_status /etc/nixos/pkgs/home-manager)" > /tmp/home-manager-git-status
