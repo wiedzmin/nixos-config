@@ -64,7 +64,7 @@ with import ../../const.nix {inherit config pkgs;};
                                  , "M-S-j"        ~> windows W.swapDown
                                  , "M-S-k"        ~> windows W.swapUp
                                  , "M-S-q"        ~> io (exitWith ExitSuccess)
-                                 , "M-b"          ~> sendMessage (XkbToggle (Just 0)) >> spawn "rofi -show window"
+                                 , "M-b"          ~> sendMessage (XkbToggle (Just 0)) >> spawn "${pkgs.rofi}/bin/rofi -show window"
                                  , "M-h"          ~> sendMessage Shrink
                                  , "M-l"          ~> sendMessage Expand
                                  , "M-m"          ~> windows W.focusMaster
@@ -74,41 +74,41 @@ with import ../../const.nix {inherit config pkgs;};
                                  , "M-x k"        ~> killAllOtherCopies -- @@ Toggle window state back
                                  , "M-r"          ~> WS.placeWorkplaces
                                  --
-                                 , "<Print>"      ~> spawn "screenshot_active_window"
-                                 , "<XF86ScreenSaver>" ~> spawn "i3lock-color -c 232729 && xset dpms force off"
-                                 , "C-<Print>"    ~> spawn "screenshot_full"
-                                 , "M-<Print>"    ~> spawn "screenshot_region"
+                                 , "<Print>"      ~> spawn "${pkgs.screenshot_active_window}/bin/screenshot_active_window"
+                                 , "<XF86ScreenSaver>" ~> spawn "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off"
+                                 , "C-<Print>"    ~> spawn "${pkgs.screenshot_full}/bin/screenshot_full"
+                                 , "M-<Print>"    ~> spawn "${pkgs.screenshot_region}/bin/screenshot_region"
                                  -- workspace-dependent bindings
-                                 , "M-/"          ~> spawn "rofi_searchengines_selection" >> WS.showWSOnProperScreen "web"
-                                 , "M-C-/"        ~> spawn "rofi_searchengines_prompt" >> WS.showWSOnProperScreen "web"
-                                 , "M-C-d"        ~> spawn "rofi_docker_shell" >> WS.showWSOnProperScreen "shell"
-                                 , "M-C-j"        ~> spawn "rofi_service_journal" >> WS.showWSOnProperScreen "shell"
-                                 , "M-C-l"        ~> spawn "rofi_remote_docker_logs" >> WS.showWSOnProperScreen "shell"
-                                 , "M-C-s"        ~> spawn "rofi_docker_stacks_info" >> WS.showWSOnProperScreen "shell"
-                                 , "M-C-y"        ~> spawn "rofi_dbms" >> WS.showWSOnProperScreen "shell"
-                                 , "M-S-d"        ~> spawn "rofi_ssh_custom_user" >> WS.showWSOnProperScreen "shell"
-                                 , "M-S-s"        ~> spawn "rofi -show ssh" >> WS.showWSOnProperScreen "shell"
-                                 , "M-j"          ~> spawn "rofi_webjumps" >> WS.showWSOnProperScreen "web"
+                                 , "M-/"          ~> spawn "${pkgs.rofi_searchengines_selection}/bin/rofi_searchengines_selection" >> WS.showWSOnProperScreen "web"
+                                 , "M-C-/"        ~> spawn "${pkgs.rofi_searchengines_prompt}/bin/rofi_searchengines_prompt" >> WS.showWSOnProperScreen "web"
+                                 , "M-C-d"        ~> spawn "${pkgs.rofi_docker_shell}/bin/rofi_docker_shell" >> WS.showWSOnProperScreen "shell"
+                                 , "M-C-j"        ~> spawn "${pkgs.rofi_service_journal}/bin/rofi_service_journal" >> WS.showWSOnProperScreen "shell"
+                                 , "M-C-l"        ~> spawn "${pkgs.rofi_remote_docker_logs}/bin/rofi_remote_docker_logs" >> WS.showWSOnProperScreen "shell"
+                                 , "M-C-s"        ~> spawn "${pkgs.rofi_docker_stacks_info}/bin/rofi_docker_stacks_info" >> WS.showWSOnProperScreen "shell"
+                                 , "M-C-y"        ~> spawn "${pkgs.rofi_dbms}/bin/rofi_dbms" >> WS.showWSOnProperScreen "shell"
+                                 , "M-S-d"        ~> spawn "${pkgs.rofi_ssh_custom_user}/bin/rofi_ssh_custom_user" >> WS.showWSOnProperScreen "shell"
+                                 , "M-S-s"        ~> spawn "${pkgs.rofi}/bin/rofi -show ssh" >> WS.showWSOnProperScreen "shell"
+                                 , "M-j"          ~> spawn "${pkgs.rofi_webjumps}/bin/rofi_webjumps" >> WS.showWSOnProperScreen "web"
                                  --
                                  , "M-C-q"        ~> spawn "xmonad --recompile; xmonad --restart"
                                  , "M-q"          ~> spawn "xmonad --restart"
-                                 , "M-S-p"        ~> spawn "rofi -combi-modi drun,run -show combi -modi combi"
-                                 , "M-S-h"        ~> spawn "show_current_system_hash"
-                                 , "M-M1-w"       ~> spawn "networkmanager_dmenu" -- using rofi, despite naming
-                                 , "M-M1-q"       ~> spawn "xrdb -merge $HOME/.Xresources"
+                                 , "M-S-p"        ~> spawn "${pkgs.rofi}/bin/rofi -combi-modi drun,run -show combi -modi combi"
+                                 , "M-S-h"        ~> spawn "${pkgs.show_current_system_hash}/bin/show_current_system_hash"
+                                 , "M-M1-w"       ~> spawn "${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu" -- using rofi, despite naming
+                                 , "M-M1-q"       ~> spawn "${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources"
                                  --
-                                 , "M-C-a"        ~> spawn "rofi_autorandr_profiles"
-                                 , "M-C-c"        ~> spawn "rofi_docker_container_traits"
-                                 , "M-C-h"        ~> spawn "rofi_extra_hosts_traits"
-                                 , "M-C-i"        ~> spawn "rofi_insert_snippet"
-                                 , "M-C-m"        ~> spawn "rofi_mount_nas_volume"
-                                 , "M-C-t"        ~> spawn "rofi_tmuxp_sessions"
-                                 , "M-C-u"        ~> spawn "rofi_unmount_nas_volume"
-                                 , "M-S-b"        ~> spawn "rofi_bookshelf"
-                                 , "M-S-n"        ~> spawn "rofi_nixos_packages_status"
-                                 , "M-S-u"        ~> spawn "show_uptime_info"
-                                 , "M-e"          ~> spawn "rofi_entrypoint"
-                                 , "M-y"          ~> spawn "rofi_buku_add"
+                                 , "M-C-a"        ~> spawn "${pkgs.rofi_autorandr_profiles}/bin/rofi_autorandr_profiles"
+                                 , "M-C-c"        ~> spawn "${pkgs.rofi_docker_container_traits}/bin/rofi_docker_container_traits"
+                                 , "M-C-h"        ~> spawn "${pkgs.rofi_extra_hosts_traits}/bin/rofi_extra_hosts_traits"
+                                 , "M-C-i"        ~> spawn "${pkgs.rofi_insert_snippet}/bin/rofi_insert_snippet"
+                                 , "M-C-m"        ~> spawn "${pkgs.rofi_mount_nas_volume}/bin/rofi_mount_nas_volume"
+                                 , "M-C-t"        ~> spawn "${pkgs.rofi_tmuxp_sessions}/bin/rofi_tmuxp_sessions"
+                                 , "M-C-u"        ~> spawn "${pkgs.rofi_unmount_nas_volume}/bin/rofi_unmount_nas_volume"
+                                 , "M-S-b"        ~> spawn "${pkgs.rofi_bookshelf}/bin/rofi_bookshelf"
+                                 , "M-S-u"        ~> spawn "${pkgs.show_uptime_info}/bin/show_uptime_info"
+                                 , "M-e"          ~> spawn "${pkgs.rofi_entrypoint}/bin/rofi_entrypoint"
+                                 , "M-y"          ~> spawn "${pkgs.rofi_buku_add}/bin/rofi_buku_add"
+                                 , "M-C-b"        ~> spawn "${pkgs.rofi_buku_entrypoint}/bin/rofi_buku_entrypoint"
                                  -- TODO: consider adding keybinding for restarting xkeysnail service, it turned out it could stick some functonality (for example, copy to clipboard twice)
                                  ]
 
@@ -117,27 +117,27 @@ with import ../../const.nix {inherit config pkgs;};
                           , "M-a 3"        ~> namedScratchpadAction scratchpads "gotop"
                           , "M-a 4"        ~> namedScratchpadAction scratchpads "bc"
                           --
-                          , "M-a S-w"      ~> spawn "wifictl jog"
-                          , "M-a c"        ~> spawn "systemctl --user restart compton.service"
-                          , "M-a q"        ~> spawn "rofi-pass"
-                          , "M-a w"        ~> spawn "rescale-wallpaper"
+                          , "M-a S-w"      ~> spawn "${pkgs.wifictl}/bin/wifictl jog"
+                          , "M-a c"        ~> spawn "${pkgs.systemd}/bin/systemctl --user restart compton.service"
+                          , "M-a q"        ~> spawn "${pkgs.rofi-pass}/bin/rofi-pass"
+                          , "M-a w"        ~> spawn "${pkgs.rescale-wallpaper}/bin/rescale-wallpaper"
                           ]
 
                 -- TODO: recall and add "multiple app windows"-aware raising
                 appKeys = [ "M-w <Backspace>" ~> nextMatch History (return True)
-                          , "M-w S-e"      ~> spawn "pkill -SIGUSR2 emacs"
+                          , "M-w S-e"      ~> spawn "${pkgs.procps}/bin/pkill -SIGUSR2 emacs"
                           ]
 
-                servicesKeys = [ "M-s s <Up>" ~> spawn "sshuttlectl start"
-                               , "M-s s <Down>" ~> spawn "sshuttlectl stop"
-                               , "M-s v <Up>" ~> spawn "jobvpnctl start"
-                               , "M-s v <Down>" ~> spawn "jobvpnctl stop"
-                               , "M-s x <Up>" ~> spawn "systemctl restart xsuspender.service"
-                               , "M-s x <Down>" ~> spawn "systemctl stop xsuspender.service"
+                servicesKeys = [ "M-s s <Up>" ~> spawn "${pkgs.sshuttlectl}/bin/sshuttlectl start"
+                               , "M-s s <Down>" ~> spawn "${pkgs.sshuttlectl}/bin/sshuttlectl stop"
+                               , "M-s v <Up>" ~> spawn "${pkgs.jobvpnctl}/bin/jobvpnctl start"
+                               , "M-s v <Down>" ~> spawn "${pkgs.jobvpnctl}/bin/jobvpnctl stop"
+                               , "M-s x <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart xsuspender.service"
+                               , "M-s x <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop xsuspender.service"
                                ]
 
-                multimediaKeys = [ "<XF86AudioRaiseVolume>" ~> spawn "volumectl inc"
-                                 , "<XF86AudioLowerVolume>" ~> spawn "volumectl dec"
+                multimediaKeys = [ "<XF86AudioRaiseVolume>" ~> spawn "${pkgs.volumectl}/bin/volumectl inc"
+                                 , "<XF86AudioLowerVolume>" ~> spawn "${pkgs.volumectl}/bin/volumectl dec"
                                  ]
 
                 windowKeys = [ "M-S-w M-S-n"       ~> moveTo Next EmptyWS -- find a free workspace
@@ -158,16 +158,16 @@ with import ../../const.nix {inherit config pkgs;};
                              , "M-<Down>"      ~> windowGo D True
                              ]
 
-                mpdKeys = [ "<XF86AudioPrev>" ~> spawn "mpc prev"
-                          , "<XF86AudioPlay>" ~> spawn "mpc toggle"
-                          , "<XF86AudioNext>" ~> spawn "mpc next"
-                          , "<XF86AudioMute>" ~> spawn "volumectl tog"
-                          , "M-<XF86AudioNext>" ~> spawn "mpc seek +2%"
-                          , "M-<XF86AudioPrev>" ~> spawn "mpc seek -2%"
+                mpdKeys = [ "<XF86AudioPrev>" ~> spawn "${pkgs.mpc_cli}/bin/mpc prev"
+                          , "<XF86AudioPlay>" ~> spawn "${pkgs.mpc_cli}/bin/mpc toggle"
+                          , "<XF86AudioNext>" ~> spawn "${pkgs.mpc_cli}/bin/mpc next"
+                          , "<XF86AudioMute>" ~> spawn "${pkgs.volumectl}/bin/volumectl tog"
+                          , "M-<XF86AudioNext>" ~> spawn "${pkgs.mpc_cli}/bin/mpc seek +2%"
+                          , "M-<XF86AudioPrev>" ~> spawn "${pkgs.mpc_cli}/bin/mpc seek -2%"
                           ]
 
-                backlightKeys = [ "<XF86MonBrightnessUp>" ~> spawn "backlightctl inc"
-                                , "<XF86MonBrightnessDown>" ~> spawn "backlightctl dec"
+                backlightKeys = [ "<XF86MonBrightnessUp>" ~> spawn "${pkgs.backlightctl}/bin/backlightctl inc"
+                                , "<XF86MonBrightnessDown>" ~> spawn "${pkgs.backlightctl}/bin/backlightctl dec"
                                 ]
 
                 switchScreenKeys = [ "M-" ++ m ++ key ~> f sc
@@ -334,12 +334,12 @@ with import ../../const.nix {inherit config pkgs;};
                 barCreatorXmobar :: DynamicStatusBar
                 barCreatorXmobar (S sid) = do
                     trace ("CREATING " ++ show sid)
-                    spawnPipe ("xmobar $HOME/.config/xmobar/xmobarrc --screen " ++ show sid)
 
                 barCreatorTaffybar :: DynamicStatusBar
                 barCreatorTaffybar (S sid) = do
                     trace ("CREATING " ++ show sid)
                     spawnPipe ("taffybar " ++ show sid)
+                    spawnPipe ("${pkgs.xmobar}/bin/xmobar $HOME/.config/xmobar/xmobarrc --screen " ++ show sid)
 
                 barDestroyer :: DynamicStatusBarCleanup
                 barDestroyer = return ()
