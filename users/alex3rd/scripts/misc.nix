@@ -290,18 +290,20 @@ in
                 # TODO: try to make more declarative
                 ROFI_SCRIPTS=(
                   ["rofi_bookshelf"]="${pkgs.rofi_bookshelf}/bin/rofi_bookshelf"
-                  ["rofi_ssh_custom_user"]="${pkgs.rofi_ssh_custom_user}/bin/rofi_ssh_custom_user"
-                  ["rofi_webjumps"]="${pkgs.rofi_webjumps}/bin/rofi_webjumps"
-                  ["rofi_searchengines_prompt"]="${pkgs.rofi_searchengines_prompt}/bin/rofi_searchengines_prompt"
-                  ["rofi_searchengines_selection"]="${pkgs.rofi_searchengines_selection}/bin/rofi_searchengines_selection"
-                  ["rofi_extra_hosts_traits"]="${pkgs.rofi_extra_hosts_traits}/bin/rofi_extra_hosts_traits"
-                  ["rofi_insert_snippet"]="${pkgs.rofi_insert_snippet}/bin/rofi_insert_snippet"
-                  ["rofi_docker_stacks_info"]="${pkgs.rofi_docker_stacks_info}/bin/rofi_docker_stacks_info"
-                  ["rofi_remote_docker_logs"]="${pkgs.rofi_remote_docker_logs}/bin/rofi_remote_docker_logs"
-                  ["rofi_dbms"]="${pkgs.rofi_dbms}/bin/rofi_dbms"
+                  ["rofi_buku_search_tag"]="${pkgs.rofi_buku_search_tag}/bin/rofi_buku_search_tag"
+                  ["rofi_buku_search_url"]="${pkgs.rofi_buku_search_url}/bin/rofi_buku_search_url"
                   ["rofi_containerized_services_discovery"]="${pkgs.rofi_containerized_services_discovery}/bin/rofi_containerized_services_discovery"
                   ["rofi_ctop"]="${pkgs.rofi_ctop}/bin/rofi_ctop"
+                  ["rofi_dbms"]="${pkgs.rofi_dbms}/bin/rofi_dbms"
+                  ["rofi_docker_stacks_info"]="${pkgs.rofi_docker_stacks_info}/bin/rofi_docker_stacks_info"
+                  ["rofi_extra_hosts_traits"]="${pkgs.rofi_extra_hosts_traits}/bin/rofi_extra_hosts_traits"
+                  ["rofi_insert_snippet"]="${pkgs.rofi_insert_snippet}/bin/rofi_insert_snippet"
                   ["rofi_jnettop"]="${pkgs.rofi_jnettop}/bin/rofi_jnettop"
+                  ["rofi_remote_docker_logs"]="${pkgs.rofi_remote_docker_logs}/bin/rofi_remote_docker_logs"
+                  ["rofi_searchengines_prompt"]="${pkgs.rofi_searchengines_prompt}/bin/rofi_searchengines_prompt"
+                  ["rofi_searchengines_selection"]="${pkgs.rofi_searchengines_selection}/bin/rofi_searchengines_selection"
+                  ["rofi_ssh_custom_user"]="${pkgs.rofi_ssh_custom_user}/bin/rofi_ssh_custom_user"
+                  ["rofi_webjumps"]="${pkgs.rofi_webjumps}/bin/rofi_webjumps"
                 )
 
                 list_rofi_scripts() {
