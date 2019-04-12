@@ -6,5 +6,6 @@
         ./browser.nix
         ./misc.nix
         ./xresources.nix
+        ./xmonad
     ];
 }
