@@ -334,11 +334,6 @@ with import ../../const.nix {inherit config pkgs;};
                 barCreatorXmobar :: DynamicStatusBar
                 barCreatorXmobar (S sid) = do
                     trace ("CREATING " ++ show sid)
-
-                barCreatorTaffybar :: DynamicStatusBar
-                barCreatorTaffybar (S sid) = do
-                    trace ("CREATING " ++ show sid)
-                    spawnPipe ("taffybar " ++ show sid)
                     spawnPipe ("${pkgs.xmobar}/bin/xmobar $HOME/.config/xmobar/xmobarrc --screen " ++ show sid)
 
                 barDestroyer :: DynamicStatusBarCleanup
