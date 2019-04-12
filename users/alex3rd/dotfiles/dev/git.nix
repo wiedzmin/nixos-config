@@ -107,7 +107,6 @@ in
                 *.swp
                 cache/*
                 page_cache/*
-                *.patch
                 .agignore
                 .dir-locals.el
 
