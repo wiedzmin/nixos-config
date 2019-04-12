@@ -6,10 +6,10 @@
             enable = true;
             hooks = {
                 postswitch = {
-                    "rescale-wallpaper" = "${pkgs.feh}/bin/feh --bg-fill ${config.sys.wallpaper.baseDir}/${config.sys.wallpaper.current}";
+                    "rescale-wallpaper" = "${pkgs.rescale-wallpaper}/bin/rescale-wallpaper";
                 };
                 predetect = {
-                    "kill-compton" = "${pkgs.procps}/bin/pkill -f compton";
+                    "kill-compton" = "${pkgs.kill-compton}/bin/kill-compton";
                 };
             };
             profiles = {

@@ -322,6 +322,12 @@ in
 
                 exit 0
             '';
+            rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
+                ${pkgs.feh}/bin/feh --bg-fill ${config.sys.wallpaper.baseDir}/${config.sys.wallpaper.current}
+            '';
+            kill-compton = pkgs.writeShellScriptBin "kill-compton" ''
+                ${pkgs.procps}/bin/pkill -f compton
+            '';
         };
     };
 }
