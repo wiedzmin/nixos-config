@@ -24,24 +24,7 @@ with import ../../const.nix {inherit config pkgs;};
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
             xsel # for firefox native clients
-
             haskellPackages.arbtt
-
-            # helper scripts for WMs
-            rofi_autorandr_profiles
-            rofi_bookshelf
-            rofi_tmuxp_sessions
-            rofi_mount_nas_volume
-            rofi_extra_hosts_traits
-            rofi_searchengines_prompt
-            rofi_searchengines_selection
-            rofi_ssh_custom_user
-            rofi_unmount_nas_volume
-            rofi_webjumps
-            screenshot_active_window
-            screenshot_full
-            screenshot_region
-            show_uptime_info
         ];
         home.file = {
             "${config.common.snippets.file}".text = ''

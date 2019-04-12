@@ -49,36 +49,9 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
             file
             glibcLocales
 
-            backlightctl
-            jobvpnctl
-            sshuttlectl
-            volumectl
-            wifictl
-            show_current_system_hash
-
-            i3lock-color
-            networkmanager_dmenu # using rofi, despite naming
             order_screenshots
-            xkb-switch
-            xorg.xset
-
             docker-machine-export
             docker-machine-import
-            rofi_buku_add
-            rofi_buku_entrypoint
-            rofi_buku_search_tag
-            rofi_buku_search_url
-            rofi_containerized_services_discovery
-            rofi_ctop
-            rofi_dbms
-            rofi_docker_container_traits
-            rofi_docker_shell
-            rofi_docker_stacks_info
-            rofi_entrypoint
-            rofi_insert_snippet
-            rofi_jnettop
-            rofi_remote_docker_logs
-            rofi_service_journal
         ];
         programs.ssh = {
             enable = true;
