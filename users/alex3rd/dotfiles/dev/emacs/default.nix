@@ -5,51 +5,6 @@
         home.packages = with pkgs; [
             org-protocol.desktop
         ];
-        home.file = {
-            "workspace/.editorconfig".text = ''
-                # top-most EditorConfig file
-                root = true
-
-                # Unix-style newlines with a newline ending every file
-                [*]
-                end_of_line = lf
-                insert_final_newline = true
-                indent_style = space
-                charset = utf-8
-                trim_trailing_whitespace = true
-
-                # Matches multiple files with brace expansion notation
-                # Set default charset
-                [*.{js,py,go}]
-                charset = utf-8
-
-                # 4 space indentation
-                [*.py]
-                indent_style = space
-                indent_size = 4
-
-                # Tab indentation (no size specified)
-                [Makefile]
-                indent_style = tab
-
-                # Indentation override for all JS under lib directory
-                [lib/**.js]
-                indent_style = space
-                indent_size = 2
-
-                # Matches the exact files either package.json or .travis.yml
-                [{package.json,.travis.yml}]
-                indent_style = space
-                indent_size = 2
-
-                [*.{json,yml}]
-                indent_style = space
-                indent_size = 2
-
-                [*.md]
-                trim_trailing_whitespace = false
-            '';
-        };
         programs.emacs = {
             enable = true;
             package = (pkgs.emacs26.override { # build Lucid version
@@ -314,6 +269,93 @@
                 epkgs.yasnippet
                 epkgs.yatemplate
             ];
+        };
+        home.file = {
+            "workspace/.editorconfig".text = ''
+                # top-most EditorConfig file
+                root = true
+
+                # Unix-style newlines with a newline ending every file
+                [*]
+                end_of_line = lf
+                insert_final_newline = true
+                indent_style = space
+                charset = utf-8
+                trim_trailing_whitespace = true
+
+                # Matches multiple files with brace expansion notation
+                # Set default charset
+                [*.{js,py,go}]
+                charset = utf-8
+
+                # 4 space indentation
+                [*.py]
+                indent_style = space
+                indent_size = 4
+
+                # Tab indentation (no size specified)
+                [Makefile]
+                indent_style = tab
+
+                # Indentation override for all JS under lib directory
+                [lib/**.js]
+                indent_style = space
+                indent_size = 2
+
+                # Matches the exact files either package.json or .travis.yml
+                [{package.json,.travis.yml}]
+                indent_style = space
+                indent_size = 2
+
+                [*.{json,yml}]
+                indent_style = space
+                indent_size = 2
+
+                [*.md]
+                trim_trailing_whitespace = false
+            '';
+            ".emacs.d/.gitignore".text = ''
+                */#*#
+                *~
+                .python-environments
+                config.el
+                credentials.el.gpg
+                customizations.el
+                data
+                dired-history
+                elpa
+                quelpa
+                todo.org
+            '';
+            ".emacs.d/init.el".text = ''
+                (setq debug-on-error t)
+                (setq debug-on-quit t)
+
+                (setq load-prefer-newer t)
+                (setq message-log-max t) ;; we don't want to lose any startup log info
+                (setq shell-file-name "${pkgs.bash}/bin/bash")
+
+                ${builtins.readFile ./base.el}
+                ${builtins.readFile ./security.el}
+                ${builtins.readFile ./appearance.el}
+                ${builtins.readFile ./context.el}
+                ${builtins.readFile ./navigation.el}
+                ${builtins.readFile ./editing.el}
+                ${builtins.readFile ./majormodes.el}
+                ${builtins.readFile ./programming.el}
+                ${builtins.readFile ./clients.el}
+                ${builtins.readFile ./orgmode.el}
+                ${builtins.readFile ./help.el}
+
+                (setq debug-on-error nil)
+                (setq debug-on-quit nil)
+            '';
+            ".emacs.d/resources/yasnippet" = {
+                source = ./yasnippet-snippets;
+                recursive = true;
+            };
+            ".emacs.d/credentials.el.gpg".source = ../../../private/credentials.el.gpg;
+            ".emacs.d/resources/ditaa0_9.jar".source = ../../../../../contrib/blobs/ditaa0_9.jar;
         };
     };
 }

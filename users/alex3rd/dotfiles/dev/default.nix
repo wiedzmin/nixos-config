@@ -2,7 +2,7 @@
 {
     imports =
     [
-        ./editor.nix
+        ./emacs
         ./git.nix
         ./lisp.nix
         ./python.nix

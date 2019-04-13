@@ -4,3 +4,6 @@
 [submodule "nixpkgs-channels"]
 	path = pkgs/nixpkgs-channels
 	url = https://github.com/NixOS/nixpkgs-channels
+[submodule "users/alex3rd/dotfiles/dev/emacs/yasnippet-snippets"]
+	path = users/alex3rd/dotfiles/dev/emacs/yasnippet-snippets
+	url = https://github.com/wiedzmin/yasnippet-snippets
