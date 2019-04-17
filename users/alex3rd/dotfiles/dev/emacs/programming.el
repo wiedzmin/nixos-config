@@ -172,6 +172,9 @@
   (magit-post-refresh-hook . diff-hl-magit-post-refresh)
   (dired-mode-hook . diff-hl-dired-mode)
   :config
+  (diff-hl-margin-mode 1)
+  (diff-hl-amend-mode 1)
+  (diff-hl-flydiff-mode 1)
   (global-diff-hl-mode 1))
 
 (use-package git-msg-prefix
