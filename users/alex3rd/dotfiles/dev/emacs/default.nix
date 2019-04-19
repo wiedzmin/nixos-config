@@ -152,12 +152,9 @@
                 epkgs.keychain-environment
                 epkgs.link-hint
                 epkgs.loop
-                epkgs.lsp-go
                 epkgs.lsp-haskell
                 epkgs.lsp-java
                 epkgs.lsp-mode
-                epkgs.lsp-python
-                epkgs.lsp-rust
                 epkgs.lsp-ui
                 epkgs.lua-mode
                 epkgs.magit
