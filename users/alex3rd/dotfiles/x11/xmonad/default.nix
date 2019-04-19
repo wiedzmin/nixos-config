@@ -533,6 +533,7 @@ with import ../../const.nix {inherit config pkgs;};
                                    , ([ (wM_CLASS, any ("scantailor-advanced" ==))], pmP (viewShift "scratch"))
                                    , ([ (wM_CLASS, any ("zoom" ==))], pmP (viewShift "im"))
                                    , ([ (wM_CLASS, any ("Soffice" ==))], pmP (viewShift "read"))
+                                   , ([ (wM_CLASS, any ("Code" ==))], pmP (viewShift "work"))
                                    ]
                       where
                         viewShift = liftM2 (.) W.view W.shift
