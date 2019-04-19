@@ -328,6 +328,8 @@
                 todo.org
             '';
             ".emacs.d/init.el".text = ''
+                ;; -*- lexical-binding: t -*-
+
                 (setq debug-on-error t)
                 (setq debug-on-quit t)
 
