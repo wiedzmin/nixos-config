@@ -335,6 +335,17 @@
                 (setq message-log-max t) ;; we don't want to lose any startup log info
                 (setq shell-file-name "${pkgs.bash}/bin/bash")
 
+                (setq gc-cons-percentage 0.3)
+
+                (setq gc-cons-threshold most-positive-fixnum)
+                (add-hook 'after-init-hook #'(lambda ()
+                                               (setq gc-cons-threshold 800000)))
+
+                (add-hook 'minibuffer-setup-hook (lambda () (setq gc-cons-threshold most-positive-fixnum)))
+                (add-hook 'minibuffer-exit-hook (lambda () (setq gc-cons-threshold 800000)))
+
+                (add-hook 'focus-out-hook #'garbage-collect)
+
                 ${builtins.readFile ./base.el}
                 ${builtins.readFile ./security.el}
                 ${builtins.readFile ./appearance.el}

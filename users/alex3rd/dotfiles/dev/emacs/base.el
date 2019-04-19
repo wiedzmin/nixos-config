@@ -207,17 +207,6 @@
   :custom
   (custom-file (at-config-basedir "customizations.el")))
 
-(setq gc-cons-percentage 0.3)
-
-(setq gc-cons-threshold most-positive-fixnum)
-(add-hook 'after-init-hook #'(lambda ()
-                               (setq gc-cons-threshold 800000)))
-
-(add-hook 'minibuffer-setup-hook (lambda () (setq gc-cons-threshold most-positive-fixnum)))
-(add-hook 'minibuffer-exit-hook (lambda () (setq gc-cons-threshold 800000)))
-
-(add-hook 'focus-out-hook #'garbage-collect)
-
 (use-package server
   :defer 2
   :preface
