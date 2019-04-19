@@ -2,7 +2,7 @@
 
 {
     environment.systemPackages = with pkgs; [
-        rls
+        # rls                     # broken upstream
         rustfmt
         rustracer
         rustup
