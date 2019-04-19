@@ -7,7 +7,7 @@
                 AUTORANDR_PROFILES_PATH=''${1:-$HOME/.config/autorandr}
 
                 AUTORANDR_PROFILES=(
-                $(${pkgs.findutils}/bin/find $AUTORANDR_PROFILES_PATH -mindepth 1 -maxdepth 1 -type d -exec basename {} \;)
+                $(${pkgs.findutils}/bin/find $AUTORANDR_PROFILES_PATH -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | ${pkgs.gnugrep}/bin/grep -ve "\.d")
                 )
 
                 list_autorandr_profiles() {
