@@ -2,6 +2,7 @@
 
 {
     environment.systemPackages = with pkgs; [
+        apktool
         archiver # TODO: add to shell aliases or like
         cabextract
         gnutar

@@ -11,8 +11,12 @@
         global
         highlight
         hyperfine
+        jsonnet
+        k6
         sloccount
+        tcpreplay
         vim
+        vscode
         weighttp
         pciutils
     ];

@@ -4,6 +4,7 @@
     environment.systemPackages = with pkgs; [
         nix-du
         nix-index
+        nix-prefetch
         nix-prefetch-github
         nix-prefetch-scripts
         nix-serve

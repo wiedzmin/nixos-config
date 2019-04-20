@@ -2,6 +2,7 @@
 
 {
     environment.systemPackages = with pkgs; [
+        bbe
         binutils
         datefudge
         diffoscope
@@ -20,6 +21,9 @@
         pcapfix
         radare2
         radare2-cutter
+        sysdig
         valgrind
+        vmtouch
+        vulnix
     ];
 }

@@ -36,5 +36,6 @@
         manul
         reftools
         unconvert
+        go-check
     ];
 }

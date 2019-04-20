@@ -5,9 +5,12 @@
         git
         git-quick-stats
         git-sizer
+        git-town
         gitAndTools.ghq
         gitAndTools.git-absorb
         gitAndTools.git-extras
+        gitAndTools.git-ignore
+        gitAndTools.git-imerge
         gitAndTools.git-open
         gitAndTools.git-secret
         gitAndTools.git-secrets

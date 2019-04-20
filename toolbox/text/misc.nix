@@ -6,6 +6,7 @@
         aspellDicts.en
         aspellDicts.ru
         pdfgrep
+        pdfsandwich
         tabula
         ttyplot
         # visidata # TODO: make overlay

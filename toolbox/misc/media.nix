@@ -12,6 +12,7 @@
         mimeo
         mpv
         playerctl
+        python3Packages.mps-youtube
         squashfsTools
         vlc
         xorriso

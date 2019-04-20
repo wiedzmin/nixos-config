@@ -4,6 +4,8 @@
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
             org-protocol.desktop
+
+            nodePackages.indium
         ];
         programs.emacs = {
             enable = true;
