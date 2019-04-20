@@ -69,29 +69,6 @@ in
                  fi
                  exit 1
             '';
-            volumectl = pkgs.writeShellScriptBin "volumectl" ''
-                 ACTION=$1
-                 AMOUNT=''${2:-${toString volumeAmount}}%
-                 if [ ! -z "$ACTION" ]; then
-                     case "$ACTION" in
-                         inc)
-                             ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 +$AMOUNT
-                             ;;
-                         dec)
-                             ${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 -$AMOUNT
-                             ;;
-                         tog)
-                             ${pkgs.pulseaudio}/bin/pactl set-sink-mute 0 toggle
-                             ;;
-                         *)
-                             echo "Unknown action: $ACTION"
-                             exit 1
-                             ;;
-                     esac
-                     exit 0
-                 fi
-                 exit 1
-            '';
             backlightctl = pkgs.writeShellScriptBin "backlightctl" ''
                  ACTION=$1
                  AMOUNT=''${2:-${toString backlightAmount}}

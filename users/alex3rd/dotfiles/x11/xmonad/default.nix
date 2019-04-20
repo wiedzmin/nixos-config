@@ -2,7 +2,7 @@
 
 with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make more declarative
 with import ../../../../toolbox/util.nix {inherit lib config pkgs;};
-with import ../../const.nix {inherit config pkgs;};
+with import ../../../const.nix {inherit config pkgs;};
 {
     home-manager.users.alex3rd = {
         home.file = {
@@ -137,8 +137,8 @@ with import ../../const.nix {inherit config pkgs;};
                                    , "M-s x <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop xsuspender.service"
                                    ]
 
-                    multimediaKeys = [ "<XF86AudioRaiseVolume>" ~> spawn "${pkgs.volumectl}/bin/volumectl inc"
-                                     , "<XF86AudioLowerVolume>" ~> spawn "${pkgs.volumectl}/bin/volumectl dec"
+                    multimediaKeys = [ "<XF86AudioRaiseVolume>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString volumeDeltaPercents}+"
+                                     , "<XF86AudioLowerVolume>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString volumeDeltaPercents}-"
                                      ]
 
                     windowKeys = [ "M-S-w M-S-n"       ~> moveTo Next EmptyWS -- find a free workspace
@@ -159,12 +159,12 @@ with import ../../const.nix {inherit config pkgs;};
                                  , "M-<Down>"      ~> windowGo D True
                                  ]
 
-                    mpdKeys = [ "<XF86AudioPrev>" ~> spawn "${pkgs.mpc_cli}/bin/mpc prev"
-                              , "<XF86AudioPlay>" ~> spawn "${pkgs.mpc_cli}/bin/mpc toggle"
-                              , "<XF86AudioNext>" ~> spawn "${pkgs.mpc_cli}/bin/mpc next"
-                              , "<XF86AudioMute>" ~> spawn "${pkgs.volumectl}/bin/volumectl tog"
-                              , "M-<XF86AudioNext>" ~> spawn "${pkgs.mpc_cli}/bin/mpc seek +2%"
-                              , "M-<XF86AudioPrev>" ~> spawn "${pkgs.mpc_cli}/bin/mpc seek -2%"
+                    mpdKeys = [ "<XF86AudioPrev>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players previous"
+                              , "<XF86AudioPlay>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players play-pause"
+                              , "<XF86AudioNext>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players next"
+                              , "<XF86AudioMute>" ~> spawn "${pkgs.pulseaudio}/bin/pactl set-sink-mute 0 toggle"
+                              , "M-<XF86AudioNext>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString playerDeltaSeconds}+"
+                              , "M-<XF86AudioPrev>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString playerDeltaSeconds}-"
                               ]
 
                     backlightKeys = [ "<XF86MonBrightnessUp>" ~> spawn "${pkgs.backlightctl}/bin/backlightctl inc"
