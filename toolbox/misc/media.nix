@@ -2,6 +2,9 @@
 
 {
     environment.systemPackages = with pkgs; [
+        (mpv-with-scripts.override ({
+            scripts = [ mpvScripts.mpris ];
+        }))
         android-file-transfer
         cdrkit
         exif
@@ -10,7 +13,6 @@
         gimp
         maim
         mimeo
-        mpv
         playerctl
         python3Packages.mps-youtube
         squashfsTools
