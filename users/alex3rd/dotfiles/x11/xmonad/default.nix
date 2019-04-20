@@ -490,6 +490,7 @@ with import ../../../const.nix {inherit config pkgs;};
                     secondaryWorkspaces =
                       [ ("shell", Just "<F3>", True, True)
                       , ("read", Just "4", True, True)
+                      , ("media", Just "5", True, True)
                       , ("im", Just "3", True, True)
                       ]
 
@@ -534,6 +535,7 @@ with import ../../../const.nix {inherit config pkgs;};
                                    , ([ (wM_CLASS, any ("zoom" ==))], pmP (viewShift "im"))
                                    , ([ (wM_CLASS, any ("Soffice" ==))], pmP (viewShift "read"))
                                    , ([ (wM_CLASS, any ("Code" ==))], pmP (viewShift "work"))
+                                   , ([ (wM_CLASS, any ("mpv" ==))], pmP (viewShift "media"))
                                    ]
                       where
                         viewShift = liftM2 (.) W.view W.shift
