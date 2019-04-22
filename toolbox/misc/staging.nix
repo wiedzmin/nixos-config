@@ -5,6 +5,7 @@
         cdimgtools
         libwhich
         semver-tool
+        sit
         websocat
         xtruss
         zzuf
