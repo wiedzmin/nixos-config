@@ -267,6 +267,7 @@
                 epkgs.yaml-mode
                 epkgs.yasnippet
                 epkgs.yatemplate
+                epkgs.zop-to-char
             ];
         };
         home.file = {
