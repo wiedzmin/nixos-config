@@ -47,7 +47,7 @@ if [ ! -z "$ACTION" ]; then
             exit 0
             ;;
         installed)
-            git checkout -q _branch
+            git checkout -q $branch
             previous_state_sha=${2:-$current_system_commit_hash}
             git_log=$(git log --pretty=oneline "$branch...$previous_state_sha" | grep -v Merge)
             for pname in $(list_packages_system | sort | uniq | grep -v "^python$" | grep -v "^python3$")
