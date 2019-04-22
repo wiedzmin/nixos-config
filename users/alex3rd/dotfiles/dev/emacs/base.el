@@ -129,8 +129,6 @@
 
 (defvar enable-experimental-packages nil)
 
-(load (at-config-basedir "credentials.el.gpg"))
-
 (use-package auto-compile
   :ensure t
   :config

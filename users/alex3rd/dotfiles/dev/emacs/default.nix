@@ -337,16 +337,25 @@
                 (setq message-log-max t) ;; we don't want to lose any startup log info
                 (setq shell-file-name "${pkgs.bash}/bin/bash")
 
+
                 (setq gc-cons-percentage 0.3)
 
                 (setq gc-cons-threshold most-positive-fixnum)
+
+                (defvar temp/file-name-handler-alist file-name-handler-alist)
+
                 (add-hook 'after-init-hook #'(lambda ()
-                                               (setq gc-cons-threshold 800000)))
+                                               (setq gc-cons-threshold 800000)
+                                               (setq file-name-handler-alist temp/file-name-handler-alist)
+                                               ))
 
                 (add-hook 'minibuffer-setup-hook (lambda () (setq gc-cons-threshold most-positive-fixnum)))
                 (add-hook 'minibuffer-exit-hook (lambda () (setq gc-cons-threshold 800000)))
 
                 (add-hook 'focus-out-hook #'garbage-collect)
+
+                (load "/home/alex3rd/.emacs.d/credentials.el.gpg")
+                (setq file-name-handler-alist nil)
 
                 ${builtins.readFile ./base.el}
                 ${builtins.readFile ./security.el}
