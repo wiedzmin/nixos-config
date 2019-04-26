@@ -355,6 +355,7 @@
 
                 (setq file-name-handler-alist nil)
 
+                ${builtins.readFile ./bootstrap.el}
                 ${builtins.readFile ./base.el}
                 ${builtins.readFile ./security.el}
                 ${builtins.readFile ./appearance.el}
