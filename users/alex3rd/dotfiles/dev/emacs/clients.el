@@ -186,6 +186,12 @@
     :config
     (advice-add 'pdf-annot-edit-contents-commit :after 'save-buffer)))
 
+(use-package pdf-view-restore
+  :ensure t
+  :after (pdf-tools)
+  :hook (pdf-view-mode-hook . pdf-view-restore-mode)
+  :custom
+  (pdf-view-restore-filename (at-user-data-dir ".pdf-view-restore")))
 
 (use-package pass
   :ensure t
