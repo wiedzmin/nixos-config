@@ -32,6 +32,13 @@ in
                     panes:
                       - mc
             '';
+            "tmuxp/media.yml".text = ''
+                session_name: media
+                windows:
+                  - window_name: mps-youtube
+                    panes:
+                      - mpsyt
+            '';
             # TODO: divide into "local" and "remote" parts, where the latter is subset of the former, with remote-friendly settings (i.e. without plugins, etc.)
             ".tmux.conf".text = ''
                 # indexes
