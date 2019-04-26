@@ -806,10 +806,6 @@ with import ../../const.nix {inherit config pkgs;};
             backend = "glx";
             vSync = "opengl-swc";
             package = pkgs.compton-git;
-            extraOptions = ''
-                inactive-dim 0.3
-                focus-exclude '_NET_WM_NAME@:s = "rofi"'
-            '';
         };
         services.redshift = {
             enable = true;
