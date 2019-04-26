@@ -115,14 +115,12 @@
                                            (if (eq (widget-type (widget-at)) 'editable-field)
                                                (beginning-of-line)))))
          (message-setup-hook . mml-secure-message-sign-pgpmime))  ;; Crypto Settings
+  :secret "notmuch.el.gpg"
   :custom
   (mm-text-html-renderer 'w3m)
   (notmuch-mua-compose-in 'current-window)
-  (notmuch-identities private/gmail-accounts)
-  (notmuch-fcc-dirs private/notmuch-fcc-dirs)
   (notmuch-search-line-faces '(("unread" . (:foreground "white"))
                                ("deleted" . (:foreground "red" :background "blue"))))
-  (notmuch-saved-searches private/notmuch-saved-searches)
   (notmuch-crypto-process-mime t) ; Automatically check signatures
   (notmuch-hello-hide-tags (quote ("killed")))
   (notmuch-address-command "notmuch-addrlookup")

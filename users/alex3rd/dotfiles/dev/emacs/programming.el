@@ -100,12 +100,12 @@
     (let ((buffers (magit-mode-get-buffers)))
       (magit-restore-window-configuration)
       (mapc #'kill-buffer buffers)))
+  :secret "vcs.el.gpg"
   :custom
   (magit-completing-read-function 'ivy-completing-read)
   (magit-blame-heading-format "%H %-20a %C %s")
   (magit-diff-refine-hunk t)
   (magit-display-buffer-function 'magit-display-buffer-fullframe-status-topleft-v1)
-  (magit-repository-directories private/magit-repositories)
   :config
   (use-package magit-filenotify
     :ensure t

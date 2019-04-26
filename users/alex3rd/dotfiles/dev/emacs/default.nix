@@ -319,7 +319,6 @@
                 *~
                 .python-environments
                 config.el
-                credentials.el.gpg
                 customizations.el
                 data
                 dired-history
@@ -354,7 +353,6 @@
 
                 (add-hook 'focus-out-hook #'garbage-collect)
 
-                (load "/home/alex3rd/.emacs.d/credentials.el.gpg")
                 (setq file-name-handler-alist nil)
 
                 ${builtins.readFile ./base.el}
@@ -376,8 +374,12 @@
                 source = ./yasnippet-snippets;
                 recursive = true;
             };
-            ".emacs.d/credentials.el.gpg".source = ../../../private/credentials.el.gpg;
             ".emacs.d/resources/ditaa0_9.jar".source = ../../../../../contrib/blobs/ditaa0_9.jar;
+            ".emacs.d/secrets/email.el.gpg".source = ../../../private/emacs-secrets/email.el.gpg;
+            ".emacs.d/secrets/ibuffer.el.gpg".source = ../../../private/emacs-secrets/ibuffer.el.gpg;
+            ".emacs.d/secrets/identity.el.gpg".source = ../../../private/emacs-secrets/identity.el.gpg;
+            ".emacs.d/secrets/media.el.gpg".source = ../../../private/emacs-secrets/media.el.gpg;
+            ".emacs.d/secrets/vcs.el.gpg".source = ../../../private/emacs-secrets/vcs.el.gpg;
         };
     };
 }

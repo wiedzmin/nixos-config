@@ -30,6 +30,7 @@
   (setq truncate-partial-width-windows nil))
 
 (use-package ibuffer
+  :secret "ibuffer.el.gpg"
   :commands ibuffer
   :general
   ([remap list-buffers] 'ibuffer)
@@ -53,8 +54,7 @@
      ("orgmode" ((mode . org-mode)))
      ("elisp" ((mode . emacs-lisp-mode)))
      ("fundamental" ((mode . fundamental-mode)))
-     ("haskell" ((mode . haskell-mode)))))
-  (ibuffer-saved-filter-groups custom/ibuffer-saved-filter-groups))
+     ("haskell" ((mode . haskell-mode))))))
 
 (use-package ibuffer-vc
   :ensure t
@@ -251,19 +251,10 @@
     "Browse video using mpv."
     (interactive (browse-url-interactive-arg "URL: "))
     (start-process (concat "mpv --loop-file=inf" url) nil "mpv" "--loop-file=inf" url))
+  :secret "media.el.gpg"
   :custom
   (browse-url-browser-function 'browse-url-generic)
-  (browse-url-generic-program "xdg-open")
-  :config
-  (setq browse-url-browser-function
-        (append
-         (mapcar (lambda (re)
-                   (cons re #'eww-browse-url))
-                 private/browse-url-images-re)
-         (mapcar (lambda (re)
-                   (cons re #'mpv-browse))
-                 private/browse-url-videos-re)
-         '(("." . browse-url-xdg-open)))))
+  (browse-url-generic-program "xdg-open"))
 
 (use-package beginend
   :ensure t

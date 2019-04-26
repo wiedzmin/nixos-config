@@ -151,6 +151,7 @@
   :general
   ("M-\"" 'eval-region)
   ([remap kill-buffer] 'kill-this-buffer)
+  :secret "identity.el.gpg"
   :config
   (fset 'yes-or-no-p 'y-or-n-p)
   (setq scalable-fonts-allowed t)
@@ -180,7 +181,6 @@
   (setq-default indicate-empty-lines t)
   (setq-default truncate-lines t)
   (setq x-stretch-cursor t)
-  (setq user-full-name (capitalize private/real-name))
   ;; print symbols
   (setq print-circle t)
   (setq print-gensym t)
@@ -265,12 +265,12 @@
 (use-package paradox
   :ensure t
   :after (seq let-alist spinner)
+  :secret "vcs.el.gpg"
   :commands paradox-list-packages
   :custom
   (paradox-execute-asynchronously t)
   (paradox-column-width-package 27)
   (paradox-column-width-version 13)
-  (paradox-github-token private/paradox-github-token)
   :config
   (remove-hook 'paradox-after-execute-functions #'paradox--report-buffer-print))
 
