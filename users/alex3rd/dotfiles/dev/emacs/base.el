@@ -171,6 +171,13 @@
   (version-control t)
   (save-abbrevs 'silently))
 
+(use-package amx
+  :ensure t
+  :general ("M-x" 'amx)
+  :custom
+  (amx-backend 'ivy)
+  (amx-save-file (at-user-data-dir "amx-items")))
+
 (use-package paradox
   :ensure t
   :after (seq let-alist spinner)
