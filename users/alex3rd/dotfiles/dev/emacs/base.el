@@ -152,38 +152,24 @@
   :config
   (setq disabled-command-function nil))
 
-;; for some reason feature 'files' provided with use-package
-;; brings more headache than it deserves, so a little bit of
-;; dirty imperative style below (still hope on fixing it later)
-(defun custom/untabify-buffer ()
-  (when (member major-mode '(haskell-mode
-                             emacs-lisp-mode
-                             lisp-mode
-                             python-mode))
-    (untabify (point-min) (point-max))))
-(add-hook 'before-save-hook #'delete-trailing-whitespace)
-(add-hook 'before-save-hook #'custom/untabify-buffer)
-(when (> emacs-major-version 25) (auto-save-visited-mode 1))
-(setq require-final-newline t)
-(setq enable-local-variables nil)
-;; backup settings
-(setq auto-save-default nil)
-(setq backup-by-copying t)
-(setq backup-by-copying-when-linked t)
-(setq backup-directory-alist '(("." . "~/.cache/emacs/backups")))
-(setq delete-old-versions -1)
-(setq kept-new-versions 6)
-(setq kept-old-versions 2)
-(setq version-control t)
-(setq save-abbrevs 'silently)
-(global-set-key (kbd "C-x f") 'find-file) ; I never use set-fill-column and I hate hitting it by accident.
-
-(use-package amx
-  :ensure t
-  :general ("M-x" 'amx)
+(use-package files
+  :hook
+  (before-save-hook . delete-trailing-whitespace)
+  :general
+  ("C-x f" 'find-file) ; I never use set-fill-column and I hate hitting it by accident.
   :custom
-  (amx-backend 'ivy)
-  (amx-save-file (at-user-data-dir "amx-items")))
+  (require-final-newline t)
+  (enable-local-variables nil)
+  ;; backup settings
+  (auto-save-default nil)
+  (backup-by-copying t)
+  (backup-by-copying-when-linked t)
+  (backup-directory-alist '(("." . "~/.cache/emacs/backups")))
+  (delete-old-versions -1)
+  (kept-new-versions 6)
+  (kept-old-versions 2)
+  (version-control t)
+  (save-abbrevs 'silently))
 
 (use-package paradox
   :ensure t
