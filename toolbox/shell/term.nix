@@ -6,7 +6,7 @@
         hwRender = true;
         extraConfig = ''
             font-name=${config.sys.fonts.term.name}
-            font-size=${config.sys.fonts.size.Alacritty}
+            font-size=${builtins.toString config.sys.fonts.size.Alacritty}
         '';
         extraOptions = "--term xterm-256color";
         autologinUser = "${config.sys.kmscon.autologinUser}";
