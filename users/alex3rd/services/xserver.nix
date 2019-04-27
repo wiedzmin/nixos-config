@@ -9,7 +9,7 @@
     services = {
         xserver = {
             enable = true;
-            videoDrivers = [ "modesetting" "intel" ];
+            videoDrivers = [ "modesetting" ];
             desktopManager = {
                 xterm.enable = false;
                 gnome3.enable = false;
