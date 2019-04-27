@@ -8,7 +8,7 @@ with import ../const.nix {inherit config pkgs;};
         partOf = [ "graphical.target" ];
         environment = {
             DISPLAY = ":0";
-            XAUTHORITY = "${userName}/.Xauthority";
+            XAUTHORITY = "/home/${userName}/.Xauthority";
         };
         serviceConfig = {
             User = "${userName}";
