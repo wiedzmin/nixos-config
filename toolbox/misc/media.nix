@@ -6,6 +6,7 @@
             scripts = [ mpvScripts.mpris ];
         }))
         android-file-transfer
+        aria2
         cdrkit
         exif
         ffmpeg
