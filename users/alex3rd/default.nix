@@ -59,7 +59,7 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
             userKnownHostsFile = "~/.ssh/known_hosts";
             controlMaster = "auto";
             controlPath = "~/.ssh/sockets/%r@%h:%p";
-            controlPersist = "4h"; # was 5m in imperative config
+            controlPersist = "4h";
             serverAliveInterval = 30;
         };
         services.gpg-agent = {
