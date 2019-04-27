@@ -35,7 +35,7 @@
   (doom-modeline-major-mode-icon nil)
   (doom-modeline-minor-modes nil)
   :config
-  (doom-modeline 1))
+  (doom-modeline-mode 1))
 
 ;; Also some other good-looking theme is "material-theme"
 (use-package nord-theme :ensure t :config (load-theme 'nord t) :disabled)
