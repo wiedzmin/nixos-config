@@ -12,7 +12,9 @@
         highlight
         hyperfine
         jsonnet
+        just
         k6
+        mkcert
         sloccount
         tcpreplay
         vim
