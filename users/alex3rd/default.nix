@@ -44,6 +44,7 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
                                       (config.job.extraHosts ++ config.misc.extraHosts)));
 
     home-manager.users.alex3rd = {
+        nixpkgs.config.allowUnfree = true;
         home.packages = with pkgs; [
             # base
             file
