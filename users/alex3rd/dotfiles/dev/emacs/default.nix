@@ -78,7 +78,6 @@
                 epkgs.dired-narrow
                 epkgs.dired-quick-sort
                 epkgs.diredfl
-                epkgs.docker
                 epkgs.docker-compose-mode
                 epkgs.docker-tramp
                 epkgs.dockerfile-mode

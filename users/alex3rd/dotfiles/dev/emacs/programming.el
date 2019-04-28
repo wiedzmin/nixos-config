@@ -601,17 +601,6 @@
 (use-package poly-ansible
   :ensure t)
 
-(use-package docker
-  :ensure t
-  :after (dash docker-tramp s tablist json-mode)
-  :delight docker-mode
-  :custom
-  (docker-containers-show-all t)
-  :config
-  ;;TODO: bind keys
-  ;;FIXME: epkgs.docker is something another then the original - investigate this
-  (docker-global-mode 1))
-
 (use-package regex-tool
   :ensure t
   :commands regex-tool
