@@ -1,3 +1,8 @@
+(use-package calendar
+  :defer t
+  :custom
+  (calendar-week-start-day 1))
+
 (use-package org
   :defer t
   :ensure org-plus-contrib
@@ -456,6 +461,14 @@
    'org-mode
    `(("^[ \t]*\\(?:[-+*]\\|[0-9]+[).]\\)[ \t]+\\(\\(?:\\[@\\(?:start:\\)?[0-9]+\\][ \t]*\\)?\\[\\(?:X\\|\\([0-9]+\\)/\\2\\)\\][^\n]*\n\\)" 1 'org-headline-done prepend))
    'append))
+
+(use-package org-bullets
+  :ensure t
+  :custom
+  (org-bullets-bullet-list '("•"))
+  (org-ellipsis "…")
+  :hook
+  (org-mode . org-bullets-mode))
 
 (use-package org-protocol
   :after (org server))

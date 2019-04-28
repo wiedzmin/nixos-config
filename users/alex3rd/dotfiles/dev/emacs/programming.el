@@ -201,6 +201,14 @@
   (:keymaps 'mode-specific-map
             ";" 'custom/git-timemachine))
 
+(use-package gitconfig-mode
+  :ensure t
+  :defer t)
+
+(use-package gitignore-mode
+  :ensure t
+  :defer t)
+
 (use-package diff-hl
   :ensure t
   :hook

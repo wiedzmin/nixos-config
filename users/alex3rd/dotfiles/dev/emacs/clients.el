@@ -271,3 +271,24 @@
   :ensure t
   :config
   (edit-server-start))
+
+(use-package net-utils
+  :bind
+  (:map mode-specific-map
+        :prefix-map net-utils-prefix-map
+        :prefix "n"
+        ("p" . ping)
+        ("i" . ifconfig)
+        ("w" . iwconfig)
+        ("n" . netstat)
+        ("p" . ping)
+        ("a" . arp)
+        ("r" . route)
+        ("h" . nslookup-host)
+        ("d" . dig)
+        ("s" . smbclient)
+        ("t" . traceroute)))
+
+(use-package imgbb
+  :ensure t
+  :defer t)

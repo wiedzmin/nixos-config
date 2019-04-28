@@ -1,3 +1,10 @@
+(use-package gcmh
+  :quelpa
+  (gcmh :repo "koral/gcmh" :fetcher gitlab)
+  :delight " \ufe0f"
+  :config
+  (gcmh-mode 1))
+
 (use-package iqa
   :ensure t
   :init
@@ -116,10 +123,23 @@
 
 (use-package notifications :defer t)
 
+(use-package alert
+  :ensure t
+  :commands alert
+  :custom
+  (alert-default-style 'libnotify))
+
 (use-package cus-edit
   :hook (kill-emacs-hook . (lambda () (delete-file custom-file)))
   :custom
   (custom-file (at-config-basedir "customizations.el")))
+
+(use-package vlf
+  :ensure t
+  :defer t
+  :after (ivy counsel)
+  :config
+  (ivy-add-actions 'counsel-find-file '(("l" vlf "view large file"))))
 
 (use-package server
   :defer 2

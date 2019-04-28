@@ -75,6 +75,15 @@
   :config
   (global-hl-line-mode 1))
 
+(use-package highlight-numbers
+  :ensure t
+  :hook
+  (prog-mode . highlight-numbers-mode))
+
+(use-package highlight-escape-sequences
+  :ensure t
+  :config (hes-mode))
+
 (use-package time
   :defer t
   :config

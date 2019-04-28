@@ -11,6 +11,7 @@
         tdesktop
         teamviewer
         telegram-cli
+        traceroute
         w3m
         wget
         you-get

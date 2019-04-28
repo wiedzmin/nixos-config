@@ -19,6 +19,7 @@
                 # epkgs.lsp-javascript-typescript // read https://github.com/emacs-lsp/lsp-javascript for server side setup also
                 # epkgs.lsp-sh // https://github.com/emacs-lsp/lsp-sh
                 # epkgs.magit-imerge # TODO: fix derivation (cannot find git binary) / check if magit version in nixpkgs already depends on `transient` library
+                epkgs.ace-link
                 epkgs.ace-window
                 epkgs.actionscript-mode
                 epkgs.aggressive-indent
@@ -30,6 +31,7 @@
                 epkgs.auto-compile
                 epkgs.avy
                 epkgs.avy-flycheck
+                epkgs.avy-zap
                 epkgs.backup-each-save
                 epkgs.backup-walker
                 epkgs.banner-comment
@@ -108,8 +110,11 @@
                 epkgs.flycheck-inline
                 epkgs.flycheck-pos-tip
                 epkgs.format-all
+                epkgs.free-keys
                 epkgs.function-args
                 epkgs.general
+                epkgs.gitconfig-mode
+                epkgs.gitignore-mode
                 epkgs.git-msg-prefix
                 epkgs.git-timemachine
                 epkgs.gitignore-mode
@@ -129,12 +134,15 @@
                 epkgs.help-find-org-mode
                 epkgs.helpful
                 epkgs.highlight-indent-guides
+                epkgs.highlight-escape-sequences
+                epkgs.highlight-numbers
                 epkgs.httprepl
                 epkgs.hungry-delete
                 epkgs.ialign
                 epkgs.ibuffer-project
                 epkgs.ibuffer-vc
                 epkgs.imenu-anywhere
+                epkgs.imgbb
                 epkgs.indium
                 epkgs.info-buffer
                 epkgs.info-colors
@@ -198,6 +206,7 @@
                 epkgs.orgit
                 epkgs.orglink
                 epkgs.paradox
+                epkgs.parent-mode
                 epkgs.pass
                 epkgs.pcre2el
                 epkgs.pdf-tools
@@ -209,6 +218,7 @@
                 epkgs.poly-ansible
                 epkgs.polymode
                 epkgs.popwin
+                epkgs.posframe
                 epkgs.prog-fill
                 epkgs.projectile
                 epkgs.py-yapf
@@ -234,6 +244,7 @@
                 epkgs.skeletor
                 epkgs.slime-company
                 epkgs.smartparens
+                epkgs.smart-comment
                 epkgs.smooth-scrolling
                 epkgs.solarized-theme
                 epkgs.spaceline
@@ -243,6 +254,7 @@
                 epkgs.tile
                 epkgs.transpose-frame
                 epkgs.twittering-mode
+                epkgs.undo-propose
                 epkgs.unfill
                 epkgs.unicode-fonts
                 epkgs.use-package-el-get
@@ -263,6 +275,7 @@
                 epkgs.windsize
                 epkgs.ws-butler
                 epkgs.wttrin
+                epkgs.xr
                 epkgs.yaml-mode
                 epkgs.yasnippet
                 epkgs.yatemplate

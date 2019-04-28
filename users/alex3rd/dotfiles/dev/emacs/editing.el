@@ -179,6 +179,10 @@
   (:keymaps 'mode-specific-map
             "/" 'comment-box))
 
+(use-package smart-comment
+  :ensure t
+  :bind ("M-;" . smart-comment))
+
 (use-package select
   :custom
   (select-enable-clipboard t)

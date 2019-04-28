@@ -68,6 +68,11 @@
   :custom
   (which-key-posframe-poshandler 'posframe-poshandler-frame-center))
 
+(use-package free-keys
+  :ensure t
+  :defer t
+  :commands free-keys)
+
 (use-package help-find-org-mode
   :ensure t
   :pin melpa-stable

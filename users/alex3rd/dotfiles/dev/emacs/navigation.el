@@ -227,6 +227,15 @@
   :custom
   (link-hint-avy-style 'de-bruijn))
 
+(use-package ace-link
+  :ensure t
+  :after (link-hint) ; to use prefix keymap
+  :general
+  (:keymaps 'link-hint-keymap
+            "l" 'counsel-ace-link)
+  :config
+  (ace-link-setup-default))
+
 (use-package browse-url
   :if (and (eq system-type 'gnu/linux)
            (eq window-system 'x))
@@ -396,6 +405,15 @@
               "r" 'wdired-change-to-wdired-mode)
     :custom
     (wdired-allow-to-change-permissions 'advanced))
+  (use-package dired-launch
+    :ensure t
+    :hook
+    (dired-mode . dired-launch-mode))
+  (use-package dired-git-info
+    :ensure t
+    :bind
+    (:map dired-mode-map
+          (")" . dired-git-info-mode)))
   (use-package dired-narrow
     :ensure t
     :general
@@ -512,3 +530,8 @@
   :custom-face (avy-goto-char-timer-face ((nil (:foreground "green" :weight bold))))
   :config
   (avy-setup-default))
+
+(use-package avy-zap
+  :ensure t
+  :general
+  ([remap zap-to-char] 'avy-zap-to-char-dwim))
