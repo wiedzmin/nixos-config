@@ -134,7 +134,9 @@
 
 (use-package company-restclient
   :ensure t
-  :after (restclient company))
+  :after (company restclient)
+  :config
+  (add-to-list 'company-backends 'company-restclient))
 
 (use-package plantuml-mode
   :ensure t

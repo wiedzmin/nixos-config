@@ -79,7 +79,9 @@
     (setq mode-line-format nil) ;; removes mode-line
     (set-window-margins (get-buffer-window) 20 20) ;; increases size of margins
     (redraw-display) ;; apply mode-line changes
-    (eww-reload 'local))) ;; apply eww-header changes
+    (eww-reload 'local))
+  :custom
+  (eww-search-prefix "https://duckduckgo.com/html/?kd=-1&q="))
 
 (use-package footnote)
 
@@ -233,8 +235,12 @@
   :custom
   (atomic-chrome-buffer-open-style 'frame)
   (atomic-chrome-server-ghost-text-port 4001)
+  (atomic-chrome-url-major-mode-alist
+   '(("reddit\\.com" . markdown-mode)
+     ("github\\.com" . gfm-mode)
+     ("redmine" . textile-mode))
+   "Major modes for URLs.")
   :config
-  ;; TODO: (alex3rd) make use of atomic-chrome-url-major-mode-alist
   (atomic-chrome-start-server))
 
 (use-package carbon-now-sh

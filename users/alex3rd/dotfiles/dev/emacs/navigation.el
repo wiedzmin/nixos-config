@@ -217,11 +217,13 @@
   :ensure t
   :general
   (:keymaps 'mode-specific-map
-            "o s" 'custom/open-url-current-buffer
-            "o f" 'link-hint-open-link
-            "o y" 'link-hint-copy-link
-            "o F" 'link-hint-open-multiple-links
-            "o Y" 'link-hint-copy-multiple-links)
+            :prefix-map 'link-hint-keymap
+            :prefix "o"
+            "s" 'custom/open-url-current-buffer
+            "f" 'link-hint-open-link
+            "y" 'link-hint-copy-link
+            "F" 'link-hint-open-multiple-links
+            "Y" 'link-hint-copy-multiple-links)
   :custom
   (link-hint-avy-style 'de-bruijn))
 
@@ -289,6 +291,11 @@
   (projectile-completion-system 'ivy)
   (projectile-track-known-projects-automatically t)
   (projectile-switch-project-action 'projectile-commander)
+  (projectile-project-root-files-functions
+   '(projectile-root-local
+     projectile-root-top-down
+     projectile-root-bottom-up
+     projectile-root-top-down-recurring))
   :hook
   (after-init-hook . projectile-mode))
 
@@ -400,12 +407,14 @@
     (dired-quick-sort-setup))
   (use-package diredfl
     :ensure t
-    :config
-    (diredfl-global-mode))
+    :hook
+    (dired-mode . diredfl-mode))
   (use-package dired-x
-    :config
+    :general
+    ([remap list-directory] 'dired-jump)
+    :custom
     ;; do not bind C-x C-j, it may be binded later
-    (setq dired-bind-jump nil))
+    (dired-bind-jump nil))
   (use-package dired-hide-dotfiles
     :ensure t
     :after (dired)

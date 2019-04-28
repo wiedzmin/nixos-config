@@ -443,6 +443,8 @@
   (add-hook 'org-after-refile-insert-hook 'save-buffer)
   (add-hook 'org-capture-mode-hook
             (lambda () (setq-local org-complete-tags-always-offer-all-agenda-tags t)))
+  (add-hook 'org-mode 'variable-pitch-mode)
+  (add-hook 'org-mode 'visual-line-mode)
   ;; run some commands
   (org-add-link-type "tag" 'custom/follow-tag-link)
   (org-clock-persistence-insinuate) ;; Resume clocking tasks when emacs is restarted

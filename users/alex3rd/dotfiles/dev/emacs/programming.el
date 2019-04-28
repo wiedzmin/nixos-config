@@ -76,6 +76,34 @@
   (:keymaps 'magit-status-mode-map
             "E" 'magit-rebase-interactive
             "q" 'custom/magit-kill-buffers)
+  ;;TODO: review
+  ;; (:map mode-specific-map
+  ;;       :prefix-map magit-prefix-map
+  ;;       :prefix "m"
+  ;;       (("a" . magit-stage-file) ; the closest analog to git add
+  ;;        ("b" . magit-blame)
+  ;;        ("B" . magit-branch)
+  ;;        ("c" . magit-checkout)
+  ;;        ("C" . magit-commit)
+  ;;        ("d" . magit-diff)
+  ;;        ("D" . magit-discard)
+  ;;        ("f" . magit-fetch)
+  ;;        ("g" . vc-git-grep)  ;;        ("G" . magit-gitignore)
+  ;;        ("i" . magit-init)
+  ;;        ("l" . magit-log)
+  ;;        ("m" . magit)
+  ;;        ("M" . magit-merge)
+  ;;        ("n" . magit-notes-edit)
+  ;;        ("p" . magit-pull-branch)
+  ;;        ("P" . magit-push-current)
+  ;;        ("r" . magit-reset)
+  ;;        ("R" . magit-rebase)
+  ;;        ("s" . magit-status)
+  ;;        ("S" . magit-stash)
+  ;;        ("t" . magit-tag)
+  ;;        ("T" . magit-tag-delete)
+  ;;        ("u" . magit-unstage)
+  ;;        ("U" . magit-update-index)))
   :preface
   (defun open-global-repos-list ()
     (interactive)
@@ -131,8 +159,15 @@
   :disabled
   :ensure t
   :after (magit)
+  ;;TODO: review
+  ;; :general
+  ;; (:keymaps 'magit-prefix-map
+  ;;           "h b" 'magithub-browse
+  ;;           "h c" 'magithub-clone
+  ;;           "h C" 'magithub-create
+  ;;           "h f" 'magithub-fork)
   :custom
-  (magithub-clone-default-directory (at-workspace-dir "foss"))
+  (magithub-clone-default-directory (at-workspace-dir "workspace/repos/github.com"))
   :config
   (magithub-feature-autoinject t))
 
@@ -169,8 +204,10 @@
 (use-package diff-hl
   :ensure t
   :hook
-  (magit-post-refresh-hook . diff-hl-magit-post-refresh)
   (dired-mode-hook . diff-hl-dired-mode)
+  (magit-post-refresh-hook . diff-hl-magit-post-refresh)
+  (org-mode-hook . diff-hl-mode)
+  (prog-mode . diff-hl-mode)
   :config
   (diff-hl-margin-mode 1)
   (diff-hl-amend-mode 1)
@@ -188,9 +225,11 @@
 
 (use-package browse-at-remote
   :ensure t
+  :after (link-hint)
   :general
-  (:keymaps 'mode-specific-map
-            "g g" 'browse-at-remote)
+  (:keymaps 'link-hint-keymap
+            "r" 'browse-at-remote
+            "k" 'browse-at-remote-kill)
   (:keymaps 'magit-status-mode-map
             "o" 'browse-at-remote)
   :custom
@@ -575,11 +614,25 @@
   :ensure t)
 (use-package fic-mode :ensure t)
 
+<<<<<<< HEAD
+=======
+;; *** try 3rdparty packages
+;; **** https://github.com/nsf/gocode
+;; **** https://github.com/sebastiw/distel-completion
+;; **** https://github.com/iquiw/company-ghc
+;; **** https://github.com/iquiw/company-cabal
+;; **** https://github.com/iquiw/company-restclient
+;; **** https://github.com/Valloric/ycmd + https://github.com/abingham/emacs-ycmd
+>>>>>>> fbba7cd... fixup update
 (use-package restclient
   :ensure t
   :mode
   ("\\.http\\'" . restclient-mode))
 
+<<<<<<< HEAD
+=======
+;; *** BACKLOG [#A] find some way (maybe smth like spacemacs dashboard) to represent the states of repos from some list (either hardcoded or created dynamically), with unstaged/unpushed/whatever_useful info displayed
+>>>>>>> fbba7cd... fixup update
 (use-package restclient-test
   :ensure t
   :hook

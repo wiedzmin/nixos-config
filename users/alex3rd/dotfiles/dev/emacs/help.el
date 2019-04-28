@@ -55,6 +55,7 @@
 
 (use-package which-key
   :ensure t
+  :delight which-key-mode
   :config
   (which-key-setup-side-window-right)
   (which-key-mode))

@@ -2,7 +2,13 @@
   :ensure t
   :if (not (member (getenv "CURRENT_WM") '("stumpwm" "xmonad")))
   :config
-  (reverse-im-activate "russian-computer"))
+  (add-to-list 'load-path "~/.xkb/contrib")
+  (add-to-list 'reverse-im-modifiers 'super)
+  (add-to-list 'reverse-im-input-methods
+               (if (require 'unipunct nil t)
+                   "russian-unipunct"
+                 "russian-computer"))
+  (reverse-im-mode t))
 
 (use-package mule
   :config
@@ -13,8 +19,6 @@
   (set-terminal-coding-system 'utf-8)
   (set-clipboard-coding-system 'utf-8)
   (set-keyboard-coding-system 'utf-8))
-
-(setq default-input-method 'russian-computer)
 
 (use-package wgrep
   :ensure t
