@@ -12,5 +12,6 @@
         pgcli
         wuzz
         zeal
+        redis-tui
     ];
 }
