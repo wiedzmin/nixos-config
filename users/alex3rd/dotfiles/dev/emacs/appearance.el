@@ -29,13 +29,13 @@
 
 (use-package doom-modeline
   :ensure t
+  :hook
+  (after-init-hook . doom-modeline-init)
   :custom
   (doom-modeline-height 25)
   (doom-modeline-icon t)
   (doom-modeline-major-mode-icon nil)
-  (doom-modeline-minor-modes nil)
-  :config
-  (doom-modeline-mode 1))
+  (doom-modeline-minor-modes nil))
 
 ;; Also some other good-looking theme is "material-theme"
 (use-package nord-theme :ensure t :config (load-theme 'nord t) :disabled)
