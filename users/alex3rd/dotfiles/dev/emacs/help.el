@@ -87,6 +87,13 @@
   (defalias 'man 'woman) ;'Woman' offers completion better than 'man'.
   (setenv "MANPATH" "/usr/share/man:/usr/local/man"))
 
+(use-package man
+  :custom
+  (Man-notify-method 'pushy "show manpage HERE")
+  :custom-face
+  (Man-overstrike ((t (:inherit font-lock-type-face :bold t))))
+  (Man-underline ((t (:inherit font-lock-keyword-face :underline t)))))
+
 (use-package apropos
   :general
   (:keymaps 'mode-specific-map
