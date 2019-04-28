@@ -69,51 +69,50 @@
   ("M-\"" 'eval-region)
   ([remap kill-buffer] 'kill-this-buffer)
   :secret "identity.el.gpg"
+  :custom
+  (scalable-fonts-allowed t)
+  (use-dialog-box nil)
+  (enable-recursive-minibuffers t)
+  (minibuffer-prompt-properties
+        '(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt))
+  (auto-window-vscroll nil)
+  (undo-limit 1000000)
+  (indent-tabs-mode nil)
+  (mark-even-if-inactive nil)
+  (x-stretch-cursor t)
+  (print-circle t)
+  (print-gensym t)
+  (locale-coding-system 'utf-8)
+  (sentence-end-double-space nil)
+  (tab-always-indent t)
+  (frame-inhibit-implied-resize nil)
+  (split-width-threshold nil)
+  (split-height-threshold nil)
+  (same-window-buffer-names
+        '("*Help*"))
+  (scroll-preserve-screen-position 'always)
   :config
   (fset 'yes-or-no-p 'y-or-n-p)
-  (setq scalable-fonts-allowed t)
-  (setq use-dialog-box nil)
-  (setq enable-recursive-minibuffers t)
   ;; don't let the cursor go into minibuffer prompt
-  (setq minibuffer-prompt-properties
-        '(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt))
   (when (eq system-type 'gnu-linux)
     (setq x-alt-keysym 'meta))
+  (set-default 'indent-tabs-mode nil);; Never insert tabs, !!!DO NOT REMOVE!!!
+  (setq-default tab-width 4)
+  (setq-default fill-column 200)
+  (setq-default indicate-empty-lines t)
+  (setq-default truncate-lines t)
+  (setq-default buffer-file-coding-system 'utf-8-unix)
   (put 'downcase-region 'disabled nil)
   (put 'erase-buffer 'disabled nil)
   (put 'narrow-to-region 'disabled nil)
   (put 'scroll-left 'disabled nil)
   (put 'scroll-right 'disabled nil)
   (put 'upcase-region 'disabled nil)
-  (setq scroll-preserve-screen-position 'always)
   ;; reduce point movement lag, see https://emacs.stackexchange.com/questions/28736/emacs-pointcursor-movement-lag/28746
-  (setq auto-window-vscroll nil)
-  (setq undo-limit 1000000)
   (advice-add 'undo-auto--last-boundary-amalgamating-number :override #'ignore) ;; https://stackoverflow.com/a/41560712/2112489
-  (setq indent-tabs-mode nil)
-  (set-default 'indent-tabs-mode nil);; Never insert tabs, !!!DO NOT REMOVE!!!
-  (setq-default tab-width 4)
-  (setq mark-even-if-inactive nil)
-  (setq-default fill-column 200)
-  (setq-default indicate-empty-lines t)
-  (setq-default truncate-lines t)
-  (setq x-stretch-cursor t)
-  ;; print symbols
-  (setq print-circle t)
-  (setq print-gensym t)
-  ;; encodings
-  (setq locale-coding-system 'utf-8)
   (define-coding-system-alias 'UTF-8 'utf-8)
   (define-coding-system-alias 'utf-8-emacs 'utf-8) ; needed by bbdb...
-  (define-coding-system-alias 'utf_8 'utf-8)
-  (set-default buffer-file-coding-system 'utf-8-unix)
-  (setq sentence-end-double-space nil)
-  (setq tab-always-indent t)
-  (setq frame-inhibit-implied-resize nil)
-  (setq split-width-threshold nil)
-  (setq split-height-threshold nil)
-  (setq same-window-buffer-names
-        '("*Help*")))
+  (define-coding-system-alias 'utf_8 'utf-8))
 
 (use-package notifications :defer t)
 
@@ -143,8 +142,8 @@
   (advice-add 'save-buffers-kill-terminal :before 'custom/save-buffer-clients-on-exit))
 
 (use-package novice
-  :config
-  (setq disabled-command-function nil))
+  :custom
+  (disabled-command-function nil))
 
 (use-package files
   :hook

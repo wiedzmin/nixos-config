@@ -1,9 +1,12 @@
 (use-package tramp
   :defer t
   :config
-  (setq tramp-default-method "ssh")
-  (setq tramp-ssh-controlmaster-options "")
-  (setq tramp-default-proxies-alist nil))
+  (put 'temporary-file-directory 'standard-value '("/tmp"))
+  :custom
+  (tramp-backup-directory-alist backup-directory-alist)
+  (tramp-default-method "ssh")
+  (tramp-default-proxies-alist nil)
+  (tramp-ssh-controlmaster-options ""))
 
 (use-package docker-tramp :ensure t)
 
