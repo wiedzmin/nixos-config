@@ -368,6 +368,10 @@
     "If FILENAME matches `custom/large-file-ok-types', do not abort."
     (unless (string-match-p custom/large-file-ok-types (ad-get-arg 2))
       ad-do-it))
+  (defadvice dired-do-rename (after revert-buffer activate)
+    (revert-buffer))
+  (defadvice dired-create-directory (after revert-buffer activate)
+    (revert-buffer))
   :custom
   (dired-recursive-deletes 'top) ;; Allows recursive deletes
   (dired-dwim-target t)
@@ -377,6 +381,9 @@
   (ad-activate 'abort-if-file-too-large)
   (use-package dired-filetype-face :ensure t)
   (use-package wdired
+    :preface
+    (defadvice wdired-abort-changes (after revert-buffer activate)
+      (revert-buffer))
     :general
     (:keymaps 'dired-mode-map
               "r" 'wdired-change-to-wdired-mode)
@@ -407,13 +414,6 @@
               "." 'dired-hide-dotfiles-mode)
     :hook
     (dired-mode . dired-hide-dotfiles-mode)))
-
-;; Reload dired after making changes
-(--each '(dired-do-rename
-          dired-create-directory
-          wdired-abort-changes)
-  (eval `(defadvice ,it (after revert-buffer activate)
-           (revert-buffer))))
 
 (use-package rg
   :ensure t
