@@ -620,7 +620,11 @@
 
 (use-package xr
   :ensure t)
-(use-package fic-mode :ensure t)
+
+(use-package fic-mode
+  :ensure t
+  :hook
+  (prog-mode . fic-mode))
 
 (use-package restclient
   :ensure t
