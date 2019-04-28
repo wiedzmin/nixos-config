@@ -627,5 +627,3 @@
   :config
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((blockdiag . t))))
-
-;; try https://github.com/abrochard/org-sync-snippets

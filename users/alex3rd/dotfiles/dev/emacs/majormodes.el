@@ -120,7 +120,6 @@
   :ensure t
   :mode ("\\.graphql$" . graphql-mode))
 
-
 (use-package css-mode
   :mode ("\\.scss$" . css-mode))
 

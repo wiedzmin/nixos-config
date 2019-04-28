@@ -23,7 +23,7 @@
   :config
   (info-initialize)
   (setq Info-additional-directory-list
-        (list (concat home-directory "/help/info")))
+        (list (at-homedir "help/info")))
   (add-to-list 'Info-directory-list "/usr/share/info")
   (add-to-list 'Info-directory-list
                (format "%selpa/%s"

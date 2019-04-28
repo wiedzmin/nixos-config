@@ -17,13 +17,6 @@
   :custom
   (no-littering-var-directory (expand-file-name "data/" user-emacs-directory)))
 
-(use-package subr-x)
-
-(setq home-directory (getenv "HOME"))
-(setq config-basedir
-      (file-name-directory
-       (or (buffer-file-name) load-file-name)))
-
 (defun concat-normalize-slashes (prefix suffix)
   (concat "/"
           (string-join
@@ -31,7 +24,7 @@
             (string-join (list prefix suffix) "/") "/" t) "/")))
 
 (defun at-homedir (&optional suffix)
-  (concat-normalize-slashes home-directory suffix))
+  (concat-normalize-slashes (getenv "HOME") suffix))
 
 (defun at-org-dir (&optional suffix)
   (concat-normalize-slashes (at-homedir "/docs/org")
@@ -42,7 +35,9 @@
                             suffix))
 
 (defun at-config-basedir (&optional suffix)
-  (concat-normalize-slashes config-basedir suffix))
+  (concat-normalize-slashes
+   (file-name-directory
+    (or (buffer-file-name) load-file-name)) suffix))
 
 (defun at-user-data-dir (&optional suffix)
   (concat-normalize-slashes no-littering-var-directory suffix))
@@ -65,7 +60,6 @@
   :ensure t
   :after (s dash))
 
-(use-package names :ensure t)
 (use-package anaphora :ensure t)
 
 (use-package delight :ensure t)

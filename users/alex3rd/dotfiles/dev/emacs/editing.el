@@ -301,7 +301,6 @@
   (hippie-expand-try-functions-list . yas-hippie-try-expand)
   (after-save-hook . custom/update-yasnippets-on-save)
   :config
-  ;; snippets editing mode
   (use-package ivy-yasnippet
     :after (dash ivy yasnippet)
     :ensure t)
@@ -471,8 +470,3 @@
   :after (flycheck)
   :config
   (flycheck-pos-tip-mode 1))
-
-(use-package zop-to-char
-  :ensure t
-  :general
-  ([remap zap-to-char] 'zop-to-char))

@@ -37,8 +37,6 @@
   (quelpa-use-package-inhibit-loading-quelpa
    t "Improve startup performance"))
 
-(require 'subr-x)
-
 (use-package use-package-secrets
   :custom
   (use-package-secrets-default-directory "/home/alex3rd/.emacs.d/secrets")

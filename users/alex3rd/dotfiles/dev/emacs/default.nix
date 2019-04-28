@@ -243,7 +243,6 @@
                 epkgs.tile
                 epkgs.transpose-frame
                 epkgs.twittering-mode
-                epkgs.undo-tree
                 epkgs.unfill
                 epkgs.unicode-fonts
                 epkgs.use-package-el-get
@@ -267,7 +266,6 @@
                 epkgs.yaml-mode
                 epkgs.yasnippet
                 epkgs.yatemplate
-                epkgs.zop-to-char
             ];
         };
         home.file = {
