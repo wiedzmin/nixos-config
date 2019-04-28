@@ -455,7 +455,7 @@
 (use-package doom-todo-ivy
   :quelpa
   (doom-todo-ivy :repo "jsmestad/doom-todo-ivy" :fetcher github)
-  :hook (after-init . doom-todo-ivy))
+  :commands doom/ivy-tasks)
 
 (use-package ace-window
   :ensure t
