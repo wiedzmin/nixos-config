@@ -622,25 +622,11 @@
   :ensure t)
 (use-package fic-mode :ensure t)
 
-<<<<<<< HEAD
-=======
-;; *** try 3rdparty packages
-;; **** https://github.com/nsf/gocode
-;; **** https://github.com/sebastiw/distel-completion
-;; **** https://github.com/iquiw/company-ghc
-;; **** https://github.com/iquiw/company-cabal
-;; **** https://github.com/iquiw/company-restclient
-;; **** https://github.com/Valloric/ycmd + https://github.com/abingham/emacs-ycmd
->>>>>>> fbba7cd... fixup update
 (use-package restclient
   :ensure t
   :mode
   ("\\.http\\'" . restclient-mode))
 
-<<<<<<< HEAD
-=======
-;; *** BACKLOG [#A] find some way (maybe smth like spacemacs dashboard) to represent the states of repos from some list (either hardcoded or created dynamically), with unstaged/unpushed/whatever_useful info displayed
->>>>>>> fbba7cd... fixup update
 (use-package restclient-test
   :ensure t
   :hook
