@@ -1,4 +1,5 @@
 (use-package tramp
+  :defer t
   :config
   (setq tramp-default-method "ssh")
   (setq tramp-ssh-controlmaster-options "")
@@ -11,6 +12,7 @@
 ;;TODO: rebind to something
 (use-package counsel-tramp
   :ensure t
+  :defer t
   :after (docker-tramp vagrant-tramp))
 
 
@@ -18,6 +20,7 @@
 
 (use-package emamux
   :ensure t
+  :defer t
   :general
   (:prefix "<f12>"
            "n" 'emamux:new-window
@@ -64,6 +67,7 @@
                '("emacs-wiki" "http://www.emacswiki.org/cgi-bin/wiki.pl?search=%s")))
 
 (use-package eww
+  :defer t
   :preface
   (defun eww-more-readable () ;;TODO: add to appropriate hook
     "Makes eww more pleasant to use. Run it after eww buffer is loaded."
@@ -207,6 +211,7 @@
 (use-package wttrin
   :ensure t
   :after (xterm-color)
+  :commands wttrin
   :custom
   (wttrin-default-cities '("Moscow")))
 
@@ -221,6 +226,7 @@
 
 (use-package atomic-chrome
   :ensure t
+  :defer t
   :custom
   (atomic-chrome-buffer-open-style 'frame)
   (atomic-chrome-server-ghost-text-port 4001)
@@ -229,6 +235,7 @@
   (atomic-chrome-start-server))
 
 (use-package carbon-now-sh
+  :defer t
   :quelpa
   (carbon-now-sh :repo "wiedzmin/carbon-now-sh.el" :fetcher github))
 

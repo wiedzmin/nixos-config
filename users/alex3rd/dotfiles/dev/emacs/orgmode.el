@@ -1,4 +1,5 @@
 (use-package org
+  :defer t
   :ensure org-plus-contrib
   :after (f)
   :mode (("\\.org$" . org-mode)
@@ -530,6 +531,7 @@
 
 (use-package ob-async
   :ensure t
+  :defer t
   :after (org ob))
 
 (use-package ob-restclient

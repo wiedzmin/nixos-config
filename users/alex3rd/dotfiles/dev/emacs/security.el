@@ -5,6 +5,7 @@
   (auth-sources '("~/.authinfo.gpg")))
 
 (use-package epa
+  :defer t
   :after (epg)
   :config
   (epa-file-enable)
@@ -13,6 +14,7 @@
 
 (use-package epg-config
   :after (epg)
+  :defer t
   :custom
   (epg-gpg-program "gpg2")
   (epg-gpg-home-directory "~/.gnupg"))
@@ -24,5 +26,5 @@
 
 (use-package keychain-environment
   :ensure t
-  :config
-  (keychain-refresh-environment))
+  :hook
+  (after-init-hook . keychain-refresh-environment))

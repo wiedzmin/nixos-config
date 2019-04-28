@@ -58,7 +58,7 @@
   :mode ("[Mm]akefile" . makefile-mode))
 
 ;; TODO: (alex3rd) extend setup
-(use-package format-all :ensure t)
+(use-package format-all :ensure t :defer t)
 
 (use-package gitignore-mode
   :ensure t

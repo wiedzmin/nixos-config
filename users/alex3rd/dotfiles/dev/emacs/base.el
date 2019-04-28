@@ -121,7 +121,7 @@
   (setq same-window-buffer-names
         '("*Help*")))
 
-(use-package notifications)
+(use-package notifications :defer t)
 
 (use-package cus-edit
   :hook (kill-emacs-hook . (lambda () (delete-file custom-file)))
@@ -180,6 +180,7 @@
 
 (use-package paradox
   :ensure t
+  :defer t
   :after (seq let-alist spinner)
   :secret "vcs.el.gpg"
   :commands paradox-list-packages

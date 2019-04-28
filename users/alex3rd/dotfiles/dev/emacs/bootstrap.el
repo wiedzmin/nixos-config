@@ -30,12 +30,7 @@
 (setq use-package-hook-name-suffix "")
 (put 'use-package 'lisp-indent-function 1)
 
-(unless (require 'quelpa nil t) ;;TODO: consider trying self-upgrades
-  (with-temp-buffer
-    (url-insert-file-contents "https://raw.github.com/quelpa/quelpa/master/bootstrap.el")
-    (eval-buffer)))
-
-(use-package quelpa :ensure t)
+(use-package quelpa :ensure t :defer t)
 (use-package quelpa-use-package
   :ensure t
   :custom
@@ -69,5 +64,6 @@
 
 (use-package use-package-el-get
   :ensure t
+  :defer t
   :config
   (use-package-el-get-setup))

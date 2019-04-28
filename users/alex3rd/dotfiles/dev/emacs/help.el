@@ -32,6 +32,7 @@
 
 (use-package helpful
   :ensure t
+  :defer t
   :general
   ;;TODO: investigate more concise way
   ;;TODO: use C-u version (catch up TAPs)

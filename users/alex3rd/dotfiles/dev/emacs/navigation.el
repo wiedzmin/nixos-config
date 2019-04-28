@@ -76,6 +76,7 @@
 
 (use-package ibuffer-project
   :ensure t
+  :defer t
   :hook ((ibuffer-hook . (lambda () (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))))
          (ibuffer-hook . (lambda ()
                            (setq ibuffer-filter-groups (ibuffer-project-generate-filter-groups))
@@ -197,6 +198,7 @@
 
 (use-package ivy-xref
   :ensure t
+  :defer t
   :custom
   (xref-show-xrefs-function #'ivy-xref-show-xrefs "Use Ivy to show xrefs"))
 
@@ -270,6 +272,7 @@
 
 (use-package bln-mode
   :ensure t
+  :defer t
   :general
   (:keymaps 'mode-specific-map
             "h" 'bln-backward-half
@@ -285,9 +288,9 @@
   (projectile-require-project-root nil)
   (projectile-completion-system 'ivy)
   (projectile-track-known-projects-automatically t)
-  :config
-  (setq projectile-switch-project-action 'projectile-commander)
-  (projectile-mode 1))
+  (projectile-switch-project-action 'projectile-commander)
+  :hook
+  (after-init-hook . projectile-mode))
 
 (use-package counsel-projectile
   :ensure t

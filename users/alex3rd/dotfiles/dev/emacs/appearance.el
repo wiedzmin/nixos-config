@@ -1,6 +1,6 @@
 (use-package font-core
-  :config
-  (global-font-lock-mode 1))
+  :hook
+  (after-init-hook . (lambda () (global-font-lock-mode 1))))
 
 (use-package font-lock
   :preface
@@ -24,8 +24,8 @@
 (use-package unicode-fonts
   :ensure t
   :after (persistent-soft)
-  :config
-  (unicode-fonts-setup))
+  :hook
+  (after-init-hook . unicode-fonts-setup))
 
 (use-package doom-modeline
   :ensure t
@@ -76,6 +76,7 @@
   (global-hl-line-mode 1))
 
 (use-package time
+  :defer t
   :config
   (display-time)
   :custom
