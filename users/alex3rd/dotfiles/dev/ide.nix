@@ -5,7 +5,7 @@ with import ../../const.nix {inherit config pkgs;};
         programs.vscode = {
             enable = true;
             userSettings = {
-                "update.channel" = "none";
+                "update.mode" = "none";
                 "[nix]"."editor.tabSize" = 4;
                 "workbench.iconTheme" = "vscode-icons";
                 "workbench.colorTheme" = "Zenburn";
@@ -13,7 +13,7 @@ with import ../../const.nix {inherit config pkgs;};
                 "python.jediEnabled" = false;
                 "editor.fontSize" = 11;
                 "editor.fontFamily" = "Iosevka";
-                "editor.fontWeight" = "Bold";
+                "editor.fontWeight" = "bold";
                 "python.venvPath" = "/home/${userName}/.virtualenvs";
                 "editor.cursorBlinking" = "smooth";
             };
