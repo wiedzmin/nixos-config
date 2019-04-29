@@ -168,6 +168,7 @@
                 epkgs.lua-mode
                 epkgs.magit
                 epkgs.magit-filenotify
+                epkgs.magit-popup # *
                 epkgs.magithub
                 epkgs.markdown-mode
                 epkgs.melpaStablePackages.slime
@@ -387,3 +388,7 @@
         };
     };
 }
+
+# * it seems some magit-dependent packages yet depend on magit-popup in some path, so we introduced
+#   this explicit dependency and will keep it until transition to "transient" library is fully done
+#   by all affected packages. (or some other root cause of "magit-popup"" will pop up)
