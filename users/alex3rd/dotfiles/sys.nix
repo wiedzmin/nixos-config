@@ -12,7 +12,7 @@ with lib;
             };
             current = mkOption {
                 type = types.str;
-                default = builtins.elemAt inventory 6;
+                default = builtins.elemAt inventory 7;
                 description = "Current wallpaper image file";
             };
             inventory = [
@@ -23,6 +23,7 @@ with lib;
                  "mountain.jpg"
                  "westernmongolia.jpg"
                  "mongolia_2.jpg"
+                 "mongolia_desert.jpg"
             ];
         };
         sys.fonts = rec {
