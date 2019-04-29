@@ -110,7 +110,7 @@ with import ../../../const.nix {inherit config pkgs;};
                                      , "M-e"          ~> spawn "${pkgs.rofi_entrypoint}/bin/rofi_entrypoint"
                                      , "M-y"          ~> spawn "${pkgs.rofi_buku_add}/bin/rofi_buku_add"
                                      , "M-C-b"        ~> spawn "${pkgs.rofi_buku_entrypoint}/bin/rofi_buku_entrypoint"
-                                     -- TODO: consider adding keybinding for restarting xkeysnail service, it turned out it could stick some functonality (for example, copy to clipboard twice)
+                                     , "M-S-x"        ~> spawn "${pkgs.systemd}/bin/systemctl restart xkeysnail.service"
                                      ]
 
                     auxKeys = [ "M-a 1"        ~> namedScratchpadAction scratchpads "htop"
