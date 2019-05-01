@@ -4,7 +4,7 @@
     [
         ./convert.nix
         ./misc.nix
-        ./scanner.nix
+        # ./scanner.nix
         ./tex.nix
         ./view.nix
     ];

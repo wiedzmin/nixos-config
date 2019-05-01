@@ -88,12 +88,12 @@
     };
 
     # scanner
-    nixpkgs.config = {
-        sane.snapscanFirmware = "/etc/nixos/contrib/blobs/Esfw52.bin";
-    };
+    # nixpkgs.config = {
+    #     sane.snapscanFirmware = "/etc/nixos/contrib/blobs/Esfw52.bin";
+    # };
 
     hardware.sane = {
-        enable = true;
+        enable = false;
         extraBackends = [ pkgs.epkowa ];
     };
 
