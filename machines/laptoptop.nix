@@ -23,7 +23,15 @@
     boot.plymouth.enable = true;
     boot.tmpOnTmpfs = true;
 
-    boot.kernelPackages = pkgs.linuxPackages_4_14;
+    boot.kernelPackages = pkgs.linuxPackages_custom {
+        version = "4.14.114";
+        configfile = ../overlay/kernel.config;
+        src = pkgs.fetchurl {
+            url = "https://cdn.kernel.org/pub/linux/kernel/v4.x/linux-4.14.114.tar.xz";
+            sha256 = "05cyq4id1l3z8hhfs7ril9qc92pfx9h9pgvwl18q1lf8mg7ispmp";
+        };
+    };
+
     services = {
         irqbalance.enable = true;
         mpd.enable = true;
