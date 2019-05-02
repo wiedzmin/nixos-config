@@ -39,6 +39,14 @@ in
                     panes:
                       - mpsyt
             '';
+            "tmuxp/dev.yml".text = ''
+                session_name: dev
+                windows:
+                  - window_name: mc
+                    start_directory: ${config.dev.workspacePath}/github.com/wiedzmin
+                    panes:
+                      - mc
+            '';
             # TODO: divide into "local" and "remote" parts, where the latter is subset of the former, with remote-friendly settings (i.e. without plugins, etc.)
             ".tmux.conf".text = ''
                 # indexes
