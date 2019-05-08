@@ -35,7 +35,7 @@ in
             "tmuxp/media.yml".text = ''
                 session_name: media
                 windows:
-                  - window_name: mps-youtube
+                  - window_name: youtube
                     panes:
                       - mpsyt
             '';
