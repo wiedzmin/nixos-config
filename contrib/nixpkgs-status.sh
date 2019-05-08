@@ -35,7 +35,7 @@ if [ ! -z "$ACTION" ]; then
 
     branch=nixos-unstable
     fallback_branch=nixos-unstable-working
-    current_system_commit_hash=$(readlink -f /run/current-system | cut -f4 -d.)
+    current_system_commit_hash=$(readlink -f /run/current-system | cut -f4 -d. | sed 's/M$//')
     case "$ACTION" in
         update)
             git branch -f $fallback_branch $current_system_commit_hash
