@@ -24,6 +24,8 @@
     boot.tmpOnTmpfs = true;
 
     boot.kernelPackages = pkgs.linuxPackages_4_14;
+    boot.kernelParams = [ "scsi_mod.use_blk_mq=1" ];
+    boot.kernelModules = [ "bfq" ];
 
     services = {
         irqbalance.enable = true;
@@ -37,6 +39,9 @@
         syncthing = {
             enable = true;
         };
+        udev.extraRules = ''
+            ACTION=="add|change", KERNEL=="sd*[!0-9]|sr*", ATTR{queue/scheduler}="bfq"
+        '';
     };
 
     system.activationScripts.ensureSyncthingDataSymlinks = ''
