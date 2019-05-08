@@ -24,6 +24,7 @@
 
                     export CURRENT_WM=${config.services.xserver.windowManager.default}
                     export TZ="${config.time.timeZone}"
+                    export _JAVA_AWT_WM_NONREPARENTING=1
 
                     ${pkgs.wmname}/bin/wmname LG3D
 

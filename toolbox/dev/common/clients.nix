@@ -10,6 +10,7 @@
         nodePackages.elasticdump
         pgcenter
         pgcli
+        soapui
         wuzz
         zeal
         redis-tui
