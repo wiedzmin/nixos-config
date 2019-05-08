@@ -15,6 +15,7 @@
          ("bash_completion$" . shell-script-mode)
          (".powenv$" . shell-script-mode)
          ("\\zsh\\'" . shell-script-mode))
+  :hook (sh-mode . lsp)
   :config
   ;; zsh
   (setq system-uses-terminfo nil))

@@ -2,6 +2,7 @@
 
 {
     environment.systemPackages = with pkgs; [
+        bash-language-server
         corgi # TODO: make custom script to open fuzzy seaching of snippets in new tmux pane
         http-prompt
         httplab
