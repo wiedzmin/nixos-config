@@ -835,7 +835,7 @@ with import ../../const.nix {inherit config pkgs;};
             width = 80;
             xoffset = 0;
             yoffset = 0;
-            font = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.URxvt}";
+            font = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.Dunst}";
             theme = "/home/${userName}/.config/rofi/oxide.rasi";
             # TODO: review https://davedavenport.github.io/rofi/manpage.html
             extraConfig = ''
