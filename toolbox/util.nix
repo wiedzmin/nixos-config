@@ -14,6 +14,17 @@ rec {
             in
                 "${key}=${mvalue}";
     };
+    genIniHum = lib.generators.toINI {
+        mkKeyValue = key: value:
+            let
+                mvalue =
+                    if builtins.isBool value then (if value then "yes" else "no")
+                    else if builtins.isList value then (builtins.concatStringsSep "," value)
+                    else if (builtins.isString value && key != "include-file") then value
+                    else builtins.toString value;
+            in
+                "${key} = ${mvalue}";
+    };
     prettifyValue = value:
        if builtins.typeOf value == "int" then
           builtins.toString value
@@ -44,4 +55,7 @@ rec {
             (builtins.concatStringsSep
                 "\n" (map (attrs: setToBashKeyValue attrs keyname " " omitKey) list))
         +"\n" + ")";
+    addBuildInputs = pkg: inputs: pkg.overrideAttrs (attrs: {
+        buildInputs = attrs.buildInputs ++ inputs;
+    });
 }
