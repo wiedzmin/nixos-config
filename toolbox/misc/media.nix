@@ -16,6 +16,7 @@
         mimeo
         playerctl
         python3Packages.mps-youtube
+        minitube
         squashfsTools
         vlc
         xorriso
