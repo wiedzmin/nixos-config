@@ -217,6 +217,16 @@ in
                         sha256 = "1bvyjgz6bhgg1nwr56r50p6fblgah6yiql55pgm5abnn2h876fjq";
                     };
                 }
+                {
+                    name = "zsh-nix-shell";
+                    file = "nix-shell.plugin.zsh";
+                    src = pkgs.fetchFromGitHub {
+                        owner = "chisui";
+                        repo = "zsh-nix-shell";
+                        rev = "b2609ca787803f523a18bb9f53277d0121e30389";
+                        sha256 = "01w59zzdj12p4ag9yla9ycxx58pg3rah2hnnf3sw4yk95w3hlzi6";
+                    };
+                }
                 { # NOTE: should be last in the list
                     name = "zsh-syntax-highlighting";
                     file = "zsh-syntax-highlighting.plugin.zsh";
