@@ -484,7 +484,7 @@ with import ../../../const.nix {inherit config pkgs;};
                     primaryWorkspaces =
                       [ ("web", Just "<F1>", True, True)
                       , ("work", Just "<F2>", True, True)
-                      , ("virt", Just "<F4>", True, True)
+                      , ("tools", Just "<F4>", True, True)
                       ]
 
                     secondaryWorkspaces =
@@ -522,7 +522,7 @@ with import ../../../const.nix {inherit config pkgs;};
                                    , ([ (wM_CLASS, any ("TelegramDesktop" ==))], pmP (viewShift "im"))
                                    , ([ (wM_CLASS, any ("URxvt" ==))], pmP (viewShift "shell"))
                                    , ([ (wM_CLASS, any ("Virt-manager" ==))], pmP (viewShift "scratch"))
-                                   , ([ (wM_CLASS, any ("VirtualBox" ==))], pmP (viewShift "virt"))
+                                   , ([ (wM_CLASS, any ("VirtualBox" ==))], pmP (viewShift "tools"))
                                    , ([ (wM_CLASS, any ("Xsane" ==))], pmP (viewShift "scratch"))
                                    , ([ (wM_CLASS, any ("aft-linux-qt" ==))], pmP (viewShift "scratch"))
                                    , ([ (wM_CLASS, any ("athura" `isInfixOf`))], pmP (viewShift "read"))
@@ -536,6 +536,7 @@ with import ../../../const.nix {inherit config pkgs;};
                                    , ([ (wM_CLASS, any ("Soffice" ==))], pmP (viewShift "read"))
                                    , ([ (wM_CLASS, any ("Code" ==))], pmP (viewShift "work"))
                                    , ([ (wM_CLASS, any ("mpv" ==))], pmP (viewShift "media"))
+                                   , ([ (wM_CLASS, any ("com-eviware-soapui-SoapUI" ==))], pmP (viewShift "tools"))
                                    ]
                       where
                         viewShift = liftM2 (.) W.view W.shift
