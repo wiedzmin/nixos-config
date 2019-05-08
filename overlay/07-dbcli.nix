@@ -148,6 +148,8 @@ litecli = super.python3Packages.buildPythonApplication rec {
     echo "litecli is awesome!" > tests/test.txt
   '';
 
+  doCheck = false;
+
   meta = with super.stdenv.lib; {
     description = "Command-line interface for SQLite";
     longDescription = ''
