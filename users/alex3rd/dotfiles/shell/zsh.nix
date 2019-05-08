@@ -72,7 +72,7 @@ in
                 setopt MENU_COMPLETE
 
                 ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
-                eval "$(${pkgs.fasd}/bin/fasd --init auto)"
+                eval "$(${pkgs.pazi}/bin/pazi init zsh)" # TODO: think of keybindings
 
                 ${lib.concatMapStrings (opt: "setopt ${opt}\n") zshOptions}
 
