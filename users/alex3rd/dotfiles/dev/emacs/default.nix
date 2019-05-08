@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
 {
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
@@ -18,7 +18,7 @@
                 # epkgs.lsp-dockerfile // https://github.com/emacs-lsp/lsp-dockerfile
                 # epkgs.lsp-javascript-typescript // read https://github.com/emacs-lsp/lsp-javascript for server side setup also
                 # epkgs.lsp-sh // https://github.com/emacs-lsp/lsp-sh
-                # epkgs.magit-imerge # TODO: fix derivation (cannot find git binary) / check if magit version in nixpkgs already depends on `transient` library
+                (addBuildInputs epkgs.magit-imerge [ pkgs.git ])
                 epkgs.ace-link
                 epkgs.ace-window
                 epkgs.actionscript-mode
