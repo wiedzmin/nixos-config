@@ -58,4 +58,6 @@ rec {
     addBuildInputs = pkg: inputs: pkg.overrideAttrs (attrs: {
         buildInputs = attrs.buildInputs ++ inputs;
     });
+    withPatches = pkg: patches:
+        lib.overrideDerivation pkg (attrs: { inherit patches; });
 }
