@@ -130,6 +130,7 @@
       (mapc #'kill-buffer buffers)))
   :secret "vcs.el.gpg"
   :custom
+  (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
   (magit-completing-read-function 'ivy-completing-read)
   (magit-blame-heading-format "%H %-20a %C %s")
   (magit-diff-refine-hunk t)
