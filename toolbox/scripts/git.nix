@@ -128,7 +128,7 @@ with import ../const.nix {inherit config pkgs;};
                 done
             '';
            git_hooks_lib = pkgs.writeShellScriptBin "git_hooks_lib" ''
-                WIP_TOKEN=wip
+                WIP_RE=wip
 
                 execute_hook_items() {
                     hook=$1
@@ -169,7 +169,7 @@ with import ../const.nix {inherit config pkgs;};
                 }
 
                 check_for_wip() {
-                    RESULTS=$(${pkgs.git}/bin/git shortlog "@{u}.." | ${pkgs.gnugrep}/bin/grep $WIP_TOKEN);
+                    RESULTS=$(${pkgs.git}/bin/git shortlog "@{u}.." | ${pkgs.gnugrep}/bin/grep -w $WIP_RE);
                     if [[ ! -z "$RESULTS" ]]; then
                         echo "Found commits with stop snippets:"
                         echo "$RESULTS"
