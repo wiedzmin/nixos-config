@@ -172,6 +172,10 @@
   :config
   (magithub-feature-autoinject t))
 
+(use-package magit-imerge
+  :ensure t
+  :after (magit))
+
 (use-package git-timemachine
   :ensure t
   :after (ivy)
