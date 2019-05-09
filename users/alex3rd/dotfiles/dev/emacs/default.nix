@@ -16,7 +16,6 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
             extraPackages = epkgs: [
                 # epkgs.kibit-helper # TODO: setup kibit first
                 # epkgs.lsp-dockerfile // https://github.com/emacs-lsp/lsp-dockerfile
-                # epkgs.lsp-javascript-typescript // read https://github.com/emacs-lsp/lsp-javascript for server side setup also
                 (addBuildInputs epkgs.magit-imerge [ pkgs.git ])
                 epkgs.ace-link
                 epkgs.ace-window
