@@ -506,8 +506,8 @@
   (defun custom/swiper (&optional tap)
     (interactive "P")
     (if tap
-        (swiper (thing-at-point 'symbol))
-      (swiper)))
+        (swiper-isearch (thing-at-point 'symbol))
+      (swiper-isearch)))
   :general
   ("C-s" 'custom/swiper)
   :config
