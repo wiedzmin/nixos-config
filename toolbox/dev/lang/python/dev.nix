@@ -9,6 +9,7 @@
         python3Packages.python-language-server
         python3Packages.snakeviz
         python3Packages.virtualenvwrapper
+        python3Packages.virtualenv
         yapf
     ];
 }
