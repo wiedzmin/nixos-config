@@ -10,7 +10,6 @@ in
     home-manager.users.alex3rd = {
         programs.firefox = {
             enable = true;
-            enableIcedTea = true;
             extensions = with firefox-addons; [
                 display-anchors
                 tridactyl
