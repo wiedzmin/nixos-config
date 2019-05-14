@@ -86,7 +86,6 @@ in
                 EDITOR = "${pkgs.emacs}/bin/emacsclient";
                 FZF_MARKS_FILE = "/home/${userName}/.bookmarks";
                 FZF_MARKS_JUMP = "^[xjj";
-                ZSH_COMMAND_TIME_COLOR = "cyan";
                 GREP_COLOR = "1;32";
                 GREP_OPTIONS = "--color=auto";
                 GTAGSLIBPATH = "/home/${userName}/.gtags/";
@@ -97,6 +96,7 @@ in
                 VISUAL = "${pkgs.emacs}/bin/emacsclient";
                 WORKON_HOME = "/home/${userName}/.virtualenvs";
                 XAUTHORITY = "/home/${userName}/.Xauthority";
+                ZSH_COMMAND_TIME_COLOR = "cyan";
             };
             shellAliases = {
                 cat = "${pkgs.bat}/bin/bat";
