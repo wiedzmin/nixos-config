@@ -23,7 +23,7 @@
     boot.plymouth.enable = true;
     boot.tmpOnTmpfs = true;
 
-    boot.kernelPackages = pkgs.linuxPackages_4_14;
+    boot.kernelPackages = pkgs.linuxPackages_4_19;
     boot.kernelParams = [ "scsi_mod.use_blk_mq=1" ];
     boot.kernelModules = [ "bfq" ];
 
