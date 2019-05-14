@@ -40,7 +40,7 @@
             enable = true;
         };
         udev.extraRules = ''
-            ACTION=="add|change", KERNEL=="sd*[!0-9]|sr*", ATTR{queue/scheduler}="bfq"
+            ACTION=="add|change", KERNEL=="sd*[!0-9]|sr*", ATTR{queue/scheduler}="kyber"
         '';
     };
 
