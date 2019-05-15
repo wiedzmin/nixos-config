@@ -11,8 +11,6 @@
     };
 
     environment.systemPackages = with pkgs; [
-        inotify-tools
-        lnav
         ntfy
         pv
         reflex

@@ -4,6 +4,5 @@
     [
         ./common
         ./lang
-        ./hardware.nix
     ];
 }

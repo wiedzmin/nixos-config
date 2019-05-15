@@ -3,7 +3,6 @@
 {
     environment.systemPackages = with pkgs; [
         bash-language-server
-        corgi # TODO: make custom script to open fuzzy seaching of snippets in new tmux pane
         http-prompt
         httplab
         litecli # TODO: shell automation: fzf for selecting db file, you get the idea

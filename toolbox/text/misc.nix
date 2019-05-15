@@ -2,15 +2,10 @@
 
 {
     environment.systemPackages = with pkgs; [
-        aspell
-        aspellDicts.en
-        aspellDicts.ru
         pdfgrep
         pdfsandwich
-        tabula
         ttyplot
-        # visidata # TODO: make overlay
-        xidel
+        visidata # TODO: make overlay
         xurls
     ];
 }

@@ -3,7 +3,6 @@
     imports = [
         ../dotfiles/sys.nix
         ../../../toolbox/wm/xmonad.nix
-        ../../../toolbox/wm/misc.nix
         ../../../toolbox/scripts/misc.nix
     ];
     services = {
@@ -110,8 +109,6 @@
             inconsolata
             iosevka
             mononoki
-            noto-fonts
-            noto-fonts-emoji
             powerline-fonts
             profont
             roboto-mono

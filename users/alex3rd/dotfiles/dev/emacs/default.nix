@@ -6,6 +6,7 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
             org-protocol.desktop
 
             nodePackages.indium
+            ripgrep
         ];
         programs.emacs = {
             enable = true;

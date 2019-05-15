@@ -7,18 +7,13 @@
         }))
         android-file-transfer
         aria2
-        cdrkit
         exif
         ffmpeg
-        geteltorito
         gimp
         maim
         mimeo
         playerctl
         python3Packages.mps-youtube
         minitube
-        squashfsTools
-        vlc
-        xorriso
     ];
 }

@@ -16,6 +16,11 @@ in
                 url-in-title
             ];
         };
+        programs.chromium = {
+            enable = true;
+            # TODO: find extensions
+            # extensions = [];
+        };
         home.activation.cleanupImperativeFFConfigs = dagEntryBefore ["checkLinkTargets"] ( ''
             PATHS_TO_CLEAN=(
                 "/home/${userName}/.mozilla/firefox/profiles.ini"

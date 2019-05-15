@@ -2,24 +2,17 @@
 
 {
     environment.systemPackages = with pkgs; [
-        ansible
-        ansible-lint
         cloc
-        crex
-        dotnet-sdk
-        doxygen
-        global
-        highlight
+        dotnet-sdk              # for building some binary releases
         hyperfine
-        jsonnet
         just
         k6
         mkcert
+        pciutils
         sloccount
         tcpreplay
         vim
         vscode
         weighttp
-        pciutils
     ];
 }

@@ -1,8 +1,19 @@
 {config, pkgs, ...}:
 with import ../const.nix {inherit config pkgs;};
+let
+    nixDuBasedir = "/tmp";
+    nixDuFilename = "nix-du";
+    nixDuFileFormat = "svg";
+    nixDuSizeThreshold = "500MB";
+in
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
+            gen-nix-du = pkgs.writeShellScriptBin "gen-nix-du" ''
+                set -eu
+
+                ${pkgs.nix-du}/bin/nix-du -s ${nixDuSizeThreshold} | ${pkgs.graphviz}/bin/dot -T${nixDuFileFormat} > ${nixDuBasedir}/${nixDuFilename}.${nixDuFileFormat}
+            '';
             optimize-nix = pkgs.writeShellScriptBin "optimize-nix" ''
                 set -eu
 

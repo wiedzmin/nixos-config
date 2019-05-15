@@ -2,15 +2,12 @@
 
 {
     environment.systemPackages = with pkgs; [
-        nix-du
-        nix-index
+        gen-nix-du
+        nix-index # TODO: maybe make easier shell alias
         nix-prefetch
         nix-prefetch-github
         nix-prefetch-scripts
-        nix-serve
 
-        # shell completions
-        nix-bash-completions
         nix-zsh-completions
     ];
 }
