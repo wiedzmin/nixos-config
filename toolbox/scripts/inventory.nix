@@ -7,7 +7,7 @@
                 AUTORANDR_PROFILES_PATH=''${1:-$HOME/.config/autorandr}
 
                 AUTORANDR_PROFILES=(
-                $(${pkgs.findutils}/bin/find $AUTORANDR_PROFILES_PATH -mindepth 1 -maxdepth 1 -type d -exec basename {} \; | ${pkgs.gnugrep}/bin/grep -ve "\.d")
+                $(${pkgs.fd}/bin/fd --type d . $AUTORANDR_PROFILES_PATH -x echo '{/}' | ${pkgs.gnugrep}/bin/grep -ve "\.d")
                 )
 
                 list_autorandr_profiles() {
@@ -32,7 +32,7 @@
                 TMUXP_SESSIONS_PATH=''${1:-$HOME/tmuxp}
 
                 TMUXP_SESSIONS=(
-                $(${pkgs.findutils}/bin/find $TMUXP_SESSIONS_PATH -mindepth 1 -maxdepth 1 -type l -exec basename {} .yml \;)
+                $(${pkgs.fd}/bin/fd --maxdepth 1 --type l '.yml' $TMUXP_SESSIONS_PATH -x echo '{/.}')
                 )
 
                 list_tmuxp_sessions() {

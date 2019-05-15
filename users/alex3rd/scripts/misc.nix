@@ -11,9 +11,8 @@ in
         nixpkgs.config.packageOverrides = super: {
             rofi_bookshelf = pkgs.writeShellScriptBin "rofi_bookshelf" ''
                 IFS=$'\n'
-                BOOKS=$(${pkgs.findutils}/bin/find ${bookshelfPath} -name "*.pdf"${ if !bookReaderUsePdftools then
-                        " -o -name \"*.djvu\"" else ""})
-
+                BOOKS=$(${pkgs.fd}/bin/fd --full-path ${bookshelfPath} -e pdf${ if !bookReaderUsePdftools then
+                        "-e djvu" else ""})
                 list_books() {
                     for i in "''${BOOKS[@]}"
                     do

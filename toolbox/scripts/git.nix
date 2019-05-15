@@ -15,7 +15,7 @@ with import ../const.nix {inherit config pkgs;};
 
                 set -x
 
-                for ITEM in $(${pkgs.findutils}/bin/find $BASE_PATH -type d -name ".git")
+                for ITEM in $(${pkgs.fd}/bin/fd ".git" --type d -H $BASE_PATH)
                 do
                     cd $ITEM/..
                     echo "Processing $(basename `pwd`)..."
@@ -47,7 +47,7 @@ with import ../const.nix {inherit config pkgs;};
                         ;;
                     1 )
                         BASE_PATH=$1
-                        GIT_REPOS=$(${pkgs.findutils}/bin/find $BASE_PATH -type d -name ".git")
+                        GIT_REPOS=$(${pkgs.fd}/bin/fd ".git" --type d -H $BASE_PATH)
                         ADJUST_GIT_REPOS=1
                         ;;
                     * )
@@ -149,7 +149,7 @@ with import ../const.nix {inherit config pkgs;};
 
                     shopt -s execfail
 
-                    for TARGET_PATH in $(${pkgs.findutils}/bin/find -L $TARGET_DIR -mindepth 1 -maxdepth 1 -type f | ${pkgs.coreutils}/bin/sort)
+                    for TARGET_PATH in $(${pkgs.fd}/bin/fd . -L --max-depth 1 --type f $TARGET_DIR | ${pkgs.coreutils}/bin/sort)
                     do
                         if [ -x "$TARGET_PATH" ]; then # Run as an executable file
                             "$TARGET_PATH" "$@"
