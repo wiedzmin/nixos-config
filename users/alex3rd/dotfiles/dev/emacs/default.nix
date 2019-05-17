@@ -126,6 +126,7 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.google-translate
                 epkgs.gorepl-mode
                 epkgs.gotest
+                epkgs.gotham-theme
                 epkgs.graphql-mode
                 epkgs.haskell-mode
                 epkgs.hc-zenburn-theme
