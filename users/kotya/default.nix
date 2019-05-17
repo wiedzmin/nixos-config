@@ -3,7 +3,6 @@
 {
     imports = [
         <home-manager/nixos>
-        ../../toolbox/desktop/org_protocol.nix
         ../../toolbox/dev/common/clients.nix
         ../../toolbox/dev/common/misc.nix
         ../../toolbox/dev/common/monitoring/misc.nix

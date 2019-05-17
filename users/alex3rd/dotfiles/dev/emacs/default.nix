@@ -3,7 +3,17 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
 {
     home-manager.users.alex3rd = {
         home.packages = with pkgs; [
-            org-protocol.desktop
+            # org-protocol.desktop
+            (makeDesktopItem {
+                name = "org-protocol";
+                exec = "${emacs}/bin/emacsclient %U";
+                comment = "";
+                desktopName = "Custom org-protocol handler";
+                categories = "System";
+                mimeType = stdenv.lib.concatStringsSep ";" [
+                    "x-scheme-handler/org-protocol"
+                ];
+            })
 
             nodePackages.indium
             ripgrep

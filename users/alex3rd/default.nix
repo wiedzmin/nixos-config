@@ -3,7 +3,6 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
 {
     imports = [
         <home-manager/nixos>
-        ../../toolbox/desktop/org_protocol.nix
         ../../toolbox/dev
         ../../toolbox/misc
         ../../toolbox/network
