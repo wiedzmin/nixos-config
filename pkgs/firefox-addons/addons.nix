@@ -203,4 +203,17 @@
              platforms = platforms.all;
         };
     };
+    "midnight-lizard" = buildFirefoxXpiAddon {
+        pname = "midnight-lizard";
+        version = "10.3.6";
+        addonId = "{8fbc7259-8015-4172-9af1-20e1edfbbd3a}"; # TODO: make variable somehow
+        url = "https://addons.mozilla.org/firefox/downloads/file/1713409/midnight_lizard-10.3.6-an+fx.xpi";
+        sha256 = "1d4rh5d4dx6723z3ldnfrrnx0zzzzz6rcr48jd7gyy79s6pz28c7";
+        meta = with stdenv.lib; {
+             homepage = "https://midnight-lizard.org/home";
+             description = ''Custom color schemes for all websites: night mode, dark themes, blue light filter, screen shader, high contrast, grayscale, etc.'';
+             license = licenses.mit;
+             platforms = platforms.all;
+        };
+    };
 }

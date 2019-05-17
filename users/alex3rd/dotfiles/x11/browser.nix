@@ -14,6 +14,7 @@ in
                 display-anchors
                 tridactyl
                 url-in-title
+                midnight-lizard
             ];
         };
         programs.chromium = {
