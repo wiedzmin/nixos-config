@@ -13,3 +13,4 @@
     ];
 }
 
+# TODO: some shell implementation (maybe also in emacs/wm) of entrypoint of various tools above
