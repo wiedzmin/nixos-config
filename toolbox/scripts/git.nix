@@ -127,7 +127,8 @@ with import ../const.nix {inherit config pkgs;};
                     echo $REPO | ${pkgs.coreutils}/bin/cut -f1 -d~
                 done
             '';
-           git_hooks_lib = pkgs.writeShellScriptBin "git_hooks_lib" ''
+            # TODO: add secrets pre-commit checking
+            git_hooks_lib = pkgs.writeShellScriptBin "git_hooks_lib" ''
                 WIP_RE=wip
 
                 execute_hook_items() {
