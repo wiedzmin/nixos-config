@@ -24,7 +24,14 @@
     boot.tmpOnTmpfs = true;
 
     boot.kernelPackages = pkgs.linuxPackages_4_19;
-    boot.kernelParams = [ "scsi_mod.use_blk_mq=1" ];
+    boot.kernelParams = [
+        "scsi_mod.use_blk_mq=1"
+        "pti=off"
+        "nospectre_v1"
+        "nospectre_v2"
+        "l1tf=off"
+        "nospec_store_bypass_disable"
+    ];
     boot.kernelModules = [ "bfq" ];
 
     services = {
