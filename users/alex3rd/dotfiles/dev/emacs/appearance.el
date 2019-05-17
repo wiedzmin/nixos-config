@@ -40,10 +40,10 @@
 ;; Also some other good-looking theme is "material-theme"
 (use-package nord-theme :ensure t :config (load-theme 'nord t) :disabled)
 (use-package kaolin-themes :ensure t :config (load-theme 'kaolin-dark t) :disabled)
-(use-package hc-zenburn-theme :ensure t :config (load-theme 'hc-zenburn t) :disabled)
+(use-package hc-zenburn-theme :ensure t :config (load-theme 'hc-zenburn t))
 (use-package darkburn-theme :ensure t :config (load-theme 'darkburn t) :disabled)
 (use-package solarized-theme :ensure t :config (load-theme 'solarized-dark t) :disabled)
-(use-package gotham-theme :ensure t :config (load-theme 'gotham t))
+(use-package gotham-theme :ensure t :config (load-theme 'gotham t) :disabled)
 
 ;; Providing dark enough colors, unless we are using an appropriate theme, Darkburn, for example
 (when (boundp 'zenburn-colors-alist)
