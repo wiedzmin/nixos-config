@@ -136,7 +136,6 @@
 
 (use-package vlf
   :ensure t
-  :defer t
   :after (ivy counsel)
   :config
   (ivy-add-actions 'counsel-find-file '(("l" vlf "view large file"))))
