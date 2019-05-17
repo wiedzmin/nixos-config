@@ -99,32 +99,19 @@ in
                 ZSH_COMMAND_TIME_COLOR = "cyan";
             };
             shellAliases = {
-                cat = "${pkgs.bat}/bin/bat";
-                cato = "${pkgs.coreutils}/bin/cat";
+                cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
 
                 df = "${pkgs.dfc}/bin/dfc";
-                dud = "(setopt globdots; ${pkgs.coreutils}/bin/du -mhs * | ${pkgs.coreutils}/bin/sort -hr)";
-                find = "${pkgs.fd}/bin/fd";
-                findo = "${pkgs.findutils}/bin/find";
+                du = "${pkgs.duc}/bin/duc";
 
                 git = "${pkgs.gitAndTools.hub}/bin/hub";
-                gop = "git open";
 
-                gpg = "${pkgs.gnupg}/bin/gpg2";
-
-                li = "${pkgs.lsd}/bin/lsd -ial --group-dirs first";
+                li = "${pkgs.lsd}/bin/lsd -ial";
                 ls = "${pkgs.lsd}/bin/lsd -F --color=auto --group-dirs first";
-                lsa = "${pkgs.lsd}/bin/lsd -ld .* --group-dirs first";
-                lsd = "${pkgs.lsd}/bin/lsd -ld *(-/DN) --group-dirs first";
-
-                untar = "tar xvvf";
+                lsa = "${pkgs.lsd}/bin/lsd -l .* --group-dirs first";
+                lsd = "${pkgs.lsd}/bin/lsd -l *(-/DN) --group-dirs first";
 
                 zr = ". ~/.zshrc";
-
-                DI = "${pkgs.docker}/bin/docker inspect";
-                DL = "${pkgs.docker}/bin/docker logs";
-                DP = "${pkgs.docker}/bin/docker ps";
-                DPA = "${pkgs.docker}/bin/docker ps -a";
             };
             plugins = [
                 {
