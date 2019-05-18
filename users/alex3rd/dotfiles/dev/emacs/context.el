@@ -73,3 +73,8 @@
   ;; (vc-handled-backends nil)
   :config
   (global-auto-revert-mode 1))
+
+(use-package hl-todo
+  :ensure t
+  :config
+  (global-hl-todo-mode))

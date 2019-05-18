@@ -145,6 +145,7 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.highlight-indent-guides
                 epkgs.highlight-escape-sequences
                 epkgs.highlight-numbers
+                epkgs.hl-todo
                 epkgs.httprepl
                 epkgs.hungry-delete
                 epkgs.ialign
