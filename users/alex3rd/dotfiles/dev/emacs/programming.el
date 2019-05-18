@@ -17,12 +17,6 @@
 (use-package compile)
 (use-package multi-compile :ensure t)
 
-(use-package prog-fill
-  :ensure t
-  :general
-  (:keymaps 'prog-mode-map
-            "M-q" 'prog-fill))
-
 (use-package diff-mode
   :mode ("diff" . diff-mode))
 
@@ -545,12 +539,6 @@
   :config
   (add-to-list 'company-backends 'company-nixos-options))
 
-(use-package rustic
-  :ensure t
-  :hook (rust-mode-hook . lsp)
-  :custom (rustic-rls-pkg 'lsp-mode)
-  :mode ("\\.rs" . rustic-mode))
-
 (use-package clojure-mode
   :defer t
   :config
@@ -596,15 +584,6 @@
   :custom
   (emmet-move-cursor-between-quotes t)
   (emmet-indentation 2))
-
-(use-package company-ansible
-  :ensure t
-  :after (company)
-  :config
-  (add-to-list 'company-backends 'company-ansible))
-
-(use-package poly-ansible
-  :ensure t)
 
 (use-package regex-tool
   :ensure t

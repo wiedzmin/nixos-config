@@ -30,12 +30,9 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 (addBuildInputs epkgs.magit-imerge [ pkgs.git ])
                 epkgs.ace-link
                 epkgs.ace-window
-                epkgs.actionscript-mode
                 epkgs.aggressive-indent
                 epkgs.amx
                 epkgs.anaphora
-                epkgs.ansible
-                epkgs.ansible-doc
                 epkgs.atomic-chrome
                 epkgs.auto-compile
                 epkgs.avy
@@ -57,7 +54,6 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.comment-dwim-2
                 epkgs.common-lisp-snippets
                 epkgs.company
-                epkgs.company-ansible
                 epkgs.company-c-headers
                 epkgs.company-flx
                 epkgs.company-go
@@ -65,7 +61,6 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.company-lua
                 epkgs.company-nixos-options
                 epkgs.company-quickhelp
-                epkgs.company-racer
                 epkgs.company-restclient
                 epkgs.company-shell
                 epkgs.company-statistics
@@ -79,7 +74,6 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.css-eldoc
                 epkgs.csv-mode
                 epkgs.darkburn-theme
-                epkgs.deadgrep
                 epkgs.delight
                 epkgs.diff-hl
                 epkgs.dired-filetype-face
@@ -91,24 +85,16 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.docker-tramp
                 epkgs.dockerfile-mode
                 epkgs.doom-modeline
-                epkgs.dtrt-indent
-                epkgs.dynamic-ruler
                 epkgs.easy-kill
                 epkgs.easy-kill-extras
                 epkgs.edebug-x
                 epkgs.edit-server
                 epkgs.editorconfig
-                epkgs.el-get
                 epkgs.eldoc-eval
-                epkgs.elfeed
-                epkgs.elfeed-goodies
-                epkgs.elfeed-org
                 epkgs.elisp-refs
                 epkgs.elisp-slime-nav
                 epkgs.emamux
                 epkgs.emmet-mode
-                epkgs.exec-path-from-shell
-                epkgs.expand-region
                 epkgs.f
                 epkgs.fic-mode
                 epkgs.flycheck
@@ -165,9 +151,7 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.ivy-rich
                 epkgs.ivy-xref
                 epkgs.ivy-yasnippet
-                epkgs.jedi-core
                 epkgs.jinja2-mode
-                epkgs.jsonrpc
                 epkgs.kaolin-themes
                 epkgs.keychain-environment
                 epkgs.link-hint
@@ -183,18 +167,15 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.magithub
                 epkgs.markdown-mode
                 epkgs.melpaStablePackages.slime
-                epkgs.mingus
                 epkgs.multi-compile
                 epkgs.multiple-cursors
                 epkgs.mwim
                 epkgs.names
                 epkgs.nginx-mode
                 epkgs.nix-mode
-                epkgs.nixos-options
                 epkgs.no-littering
                 epkgs.nord-theme
                 epkgs.notmuch
-                epkgs.nov
                 epkgs.ob-async
                 epkgs.ob-blockdiag
                 epkgs.ob-restclient
@@ -226,17 +207,14 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.pip-requirements
                 epkgs.plantuml-mode
                 epkgs.po-mode
-                epkgs.poly-ansible
                 epkgs.polymode
                 epkgs.popwin
                 epkgs.posframe
-                epkgs.prog-fill
                 epkgs.projectile
                 epkgs.py-yapf
                 epkgs.pyvenv
                 epkgs.quelpa
                 epkgs.quelpa-use-package
-                epkgs.racer
                 epkgs.rainbow-mode
                 epkgs.rebox2
                 epkgs.recentf-ext
@@ -244,15 +222,9 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.regex-tool
                 epkgs.region-bindings-mode
                 epkgs.restart-emacs
-                epkgs.reverse-im
                 epkgs.rg
                 epkgs.russian-holidays
-                epkgs.rust-mode
-                epkgs.rustic
                 epkgs.savekill
-                epkgs.shrink-path
-                epkgs.shut-up
-                epkgs.skeletor
                 epkgs.slime-company
                 epkgs.smartparens
                 epkgs.smart-comment
@@ -261,14 +233,10 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.spaceline
                 epkgs.super-save
                 epkgs.swiper
-                epkgs.tide
-                epkgs.tile
-                epkgs.transpose-frame
                 epkgs.twittering-mode
                 epkgs.undo-propose
                 epkgs.unfill
                 epkgs.unicode-fonts
-                epkgs.use-package-el-get
                 epkgs.vagrant-tramp
                 epkgs.vdiff
                 epkgs.vdiff-magit

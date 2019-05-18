@@ -1,4 +1,3 @@
-
 (use-package rst
   :mode ("\\.rst$" . rst-mode))
 
@@ -64,10 +63,6 @@
 (use-package gitignore-mode
   :ensure t
   :mode ("^.gitignore$" . gitignore-mode))
-
-(use-package actionscript-mode
-  :ensure t
-  :mode ("\\.actionscript" . actionscript-mode))
 
 (use-package json-mode
   :after (json-reformat json-snatcher)

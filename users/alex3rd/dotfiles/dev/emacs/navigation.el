@@ -56,24 +56,6 @@
      ("fundamental" ((mode . fundamental-mode)))
      ("haskell" ((mode . haskell-mode))))))
 
-(use-package ibuffer-vc
-  :ensure t
-  :disabled
-  :hook (ibuffer-hook . (lambda ()
-                          (ibuffer-vc-set-filter-groups-by-vc-root)
-                          (unless (eq ibuffer-sorting-mode 'alphabetic)
-                            (ibuffer-do-sort-by-alphabetic))))
-  :custom
-  (ibuffer-formats
-   '((mark modified read-only vc-status-mini " "
-           (name 18 18 :left :elide)
-           " "
-           (size 9 -1 :right)
-           " "
-           (mode 16 16 :left :elide)
-           " "
-           filename-and-process)) "include vc status info"))
-
 (use-package ibuffer-project
   :ensure t
   :defer t
@@ -329,17 +311,9 @@
             (not (projectile-project-p)))
         (ivy-switch-buffer)
       (counsel-projectile-switch-to-buffer)))
-  (defun custom/search-deadgrep ()
-    (interactive)
-    (let ((term (read-from-minibuffer "Search term: ")))
-      (deadgrep term)))
   (defun counsel-projectile-switch-project-action-open-todos (project)
     "Open project's TODOs."
     (let ((projectile-switch-project-action #'custom/open-project-todos))
-      (counsel-projectile-switch-project-by-name project)))
-  (defun counsel-projectile-switch-project-action-deadgrep (project)
-    "Search in project with deadgrep."
-    (let ((projectile-switch-project-action #'custom/search-deadgrep))
       (counsel-projectile-switch-project-by-name project)))
   :general
   (:keymaps 'ctl-x-map
@@ -358,8 +332,6 @@
   (counsel-projectile-mode 1)
   (add-to-list 'counsel-projectile-switch-project-action
                '("t" counsel-projectile-switch-project-action-open-todos "open project's todos") t)
-  (add-to-list 'counsel-projectile-switch-project-action
-               '("d" counsel-projectile-switch-project-action-deadgrep "search project with deadgrep") t)
   (setq projectile-switch-project-action 'counsel-projectile-switch-project))
 
 (use-package dired

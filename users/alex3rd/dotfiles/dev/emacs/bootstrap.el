@@ -59,9 +59,3 @@
                   (find-file (concat user-emacs-directory "init.el"))
                   (use-package-lint)))
 (global-set-key (kbd "C-x C-,") #'goto-char)
-
-(use-package use-package-el-get
-  :ensure t
-  :defer t
-  :config
-  (use-package-el-get-setup))
