@@ -4,35 +4,75 @@
     imports = [
         ../pkgs/setup.nix
         ../partitions/laptoptop-ssd-512.nix
-        ../hardware/bluetooth.nix
-        ../hardware/intel.nix
-        ../hardware/laptop.nix
-        ../hardware/misc.nix
-        ../hardware/sound.nix
-        ../users/alex3rd/services/xserver.nix
-        ../users/alex3rd/default.nix
+        ../users/alex3rd
         <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];
 
-    boot.loader.grub = {
-        enable = true;
-        version = 2;
-        device = "/dev/sda";
-        configurationLimit = 10;
-    };
-    boot.plymouth.enable = true;
-    boot.tmpOnTmpfs = true;
+    nix.maxJobs = lib.mkDefault 4;
+    nix.buildCores = lib.mkDefault 4;
 
-    boot.kernelPackages = pkgs.linuxPackages_4_19;
-    boot.kernelParams = [
-        "scsi_mod.use_blk_mq=1"
-        "pti=off"
-        "nospectre_v1"
-        "nospectre_v2"
-        "l1tf=off"
-        "nospec_store_bypass_disable"
+    system.activationScripts.ensureBacklightPermissions = ''
+        chmod a+w /sys/class/backlight/intel_backlight/brightness
+    '';
+
+    hardware = {
+        cpu.intel.updateMicrocode = true;
+        enableAllFirmware = true;
+        pulseaudio = {
+            enable = true;
+            support32Bit = true;
+        };
+    };
+
+    boot = {
+        loader.grub = {
+            enable = true;
+            version = 2;
+            device = "/dev/sda";
+            configurationLimit = 10;
+        };
+        initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sdhci_pci" ];
+        plymouth.enable = true;
+        extraModprobeConfig = ''
+            #options iwlwifi 11n_disable=1 power_save=0
+        '';
+        extraModulePackages = with config.boot.kernelPackages; [ exfat-nofuse ];
+        tmpOnTmpfs = true;
+        kernelPackages = pkgs.linuxPackages_4_19;
+        kernelParams = [
+            "scsi_mod.use_blk_mq=1"
+            "pti=off"
+            "nospectre_v1"
+            "nospectre_v2"
+            "l1tf=off"
+            "nospec_store_bypass_disable"
+        ];
+        kernelModules = [
+            "bfq"
+            "kvm-intel"
+        ];
+        kernel.sysctl = {
+            "fs.inotify.max_user_instances" = 512;
+            "fs.inotify.max_user_watches" = 1048576;
+        };
+    };
+
+    sound.enable = true;
+
+    environment.systemPackages = with pkgs; [
+        pasystray
+        pavucontrol
+        # ocz-ssd-guru # add as an overlay and fix hash (and installation instructions)
+        intelmetool
+        me_cleaner
+        smartmontools
+        config.boot.kernelPackages.perf
     ];
-    boot.kernelModules = [ "bfq" ];
+
+    powerManagement = {
+        enable = true;
+        powertop.enable = true;
+    };
 
     services = {
         irqbalance.enable = true;
@@ -49,6 +89,9 @@
         udev.extraRules = ''
             ACTION=="add|change", KERNEL=="sd*[!0-9]|sr*", ATTR{queue/scheduler}="kyber"
         '';
+        upower.enable = true;
+        tlp.enable = true;
+        acpid.enable = true;
     };
 
     system.activationScripts.ensureSyncthingDataSymlinks = ''
@@ -101,6 +144,8 @@
         enable = false;
         extraBackends = [ pkgs.epkowa ];
     };
+
+    hardware.bluetooth.enable = true;
 
     nixpkgs.config.allowUnfree = true;
 

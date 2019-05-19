@@ -3,19 +3,10 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
 {
     imports = [
         <home-manager/nixos>
-        ../../toolbox/dev
-        ../../toolbox/misc
-        ../../toolbox/network
-        ../../toolbox/nix.nix
-        ../../toolbox/scripts/inventory.nix
-        ../../toolbox/scripts/services.nix
-        ../../toolbox/scripts/virt.nix
-        ../../toolbox/security.nix
-        ../../toolbox/shell
-        ../../toolbox/text
-        ../../toolbox/virt
-        ./dotfiles
+        ./config
+        ./packages.nix
         ./services
+        ../scripts.nix
     ];
 
     users.extraUsers.alex3rd = {
@@ -36,6 +27,12 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
         ];
     };
 
+    system.activationScripts.saveCurrentHMVersion = ''
+        cd /etc/nixos/pkgs/home-manager
+        hm_revision=$(${pkgs.git}/bin/git rev-parse --short HEAD)
+        echo "$hm_revision" > /etc/current-home-manager
+    '';
+
     nix.trustedUsers = [ "alex3rd" ];
 
     networking.extraHosts = (builtins.concatStringsSep "\n"
@@ -48,30 +45,6 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
             # base
             file
             glibcLocales
-
-            order_screenshots
-            docker-machine-export
-            docker-machine-import
         ];
-        programs.ssh = {
-            enable = true;
-            forwardAgent = true;
-            userKnownHostsFile = "~/.ssh/known_hosts";
-            controlMaster = "auto";
-            controlPath = "~/.ssh/sockets/%r@%h:%p";
-            controlPersist = "4h";
-            serverAliveInterval = 30;
-        };
-        services.gpg-agent = {
-            enable = true;
-            defaultCacheTtl = 34560000;
-            defaultCacheTtlSsh = 34560000;
-            maxCacheTtl = 34560000;
-            enableSshSupport = true;
-            extraConfig = ''
-                allow-emacs-pinentry
-                allow-loopback-pinentry
-            '';
-        };
     };
 }

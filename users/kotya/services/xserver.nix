@@ -2,7 +2,6 @@
 {
     imports = [
         ../private/traits/sys.nix
-        ../../../toolbox/wm/xmonad.nix
     ];
     services = {
         xserver = {
@@ -98,7 +97,6 @@
             fira-code
             fira-mono
             font-awesome-ttf
-            font-droid
             freefont_ttf
             go-font
             gohufont
@@ -123,7 +121,6 @@
             ttf_bitstream_vera
             ubuntu_font_family
             unifont
-            vistafonts
         ];
     };
 }

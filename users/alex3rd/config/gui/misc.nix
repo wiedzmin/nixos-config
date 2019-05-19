@@ -1,13 +1,11 @@
 {config, pkgs, lib, ...}:
-
+with import ../../../../util.nix {inherit lib config pkgs;};
+with import ../../const.nix {inherit config pkgs;};
 {
     imports = [
-        ../../private/traits/nas.nix
+        ../../scripts/default.nix
+        ../../private/nas.nix
     ];
-
-    system.activationScripts.ensureBacklightPermissions = ''
-        chmod a+w /sys/class/backlight/intel_backlight/brightness
-    '';
 
     environment.etc."Xmodmaprc".text = ''
         clear mod1
@@ -22,9 +20,11 @@
         add mod4 = Super_L
         add mod5 = Hyper_L
     '';
-
-    home-manager.users.kotya = {
+    home-manager.users.alex3rd = {
         home.file = {
+            "${config.common.snippets.file}".text = ''
+                ${lib.concatStringsSep "\n" config.common.snippets.inventory}
+            '';
             ".arbtt/categorize.cfg".text = ''
                 aliases (
                         "Navigator" -> "Firefox",
@@ -41,17 +41,17 @@
                 tag apps:$current.program, -- just tags the current program
 
                 -- projects at work
-                current window ($program == "emacs" && $title =~ m!(?:~|home/kotya)/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
+                current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
                   ==> tag project:$1-$2,
-                current window ($program == "Alacritty" && $title =~ m!(?:~|home/kotya)/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
+                current window ($program == "Alacritty" && $title =~ m!(?:~|home/${userName})/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
                   ==> tag project:$1-$2,
 
                 -- personal projects
-                current window ($program == "emacs" && $title =~ m!(?:~|home/kotya)/workspace/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/!)
+                current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/workspace/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/!)
                   ==> tag project:$1-$2,
-                current window ($program == "emacs" && $title =~ m!(?:~|home/kotya)/.xmonad/!) ==> tag project:xmonad-config,
-                current window ($program == "Alacritty" && $title =~ m!(?:~|home/kotya)/.xmonad/!) ==> tag project:xmonad-config,
-                current window ($program == "emacs" && $title =~ m!(?:~|home/kotya)/.emacs.d/!) ==> tag project:emacs-config,
+                current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/.xmonad/!) ==> tag project:xmonad-config,
+                current window ($program == "Alacritty" && $title =~ m!(?:~|home/${userName})/.xmonad/!) ==> tag project:xmonad-config,
+                current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/.emacs.d/!) ==> tag project:emacs-config,
                 current window ($program == "emacs" && $title =~ m!(?:/etc)/nixos/!) ==> tag project:nixos-config,
 
                 current window ($program == "Navigator" && $title =~ /Facebook/) ==> tag site:facebook,
@@ -113,9 +113,36 @@
 
                 month $now == month $date ==> tag current-month,
                 year $now == year $date ==> tag current-year,
+
+                ${builtins.concatStringsSep "\n"
+                           (map (meta: builtins.concatStringsSep "\n"
+                                       (map (hostname: "current window ($program == \"" +
+                                            config.sys.defaultShellClass + "\" && $title =~ /" +
+                                            hostname + "/) ==> tag ssh:" + builtins.replaceStrings ["."] ["_"] hostname + ",")
+                                            meta.hostNames))
+                                (config.job.extraHosts ++ config.misc.extraHosts))}
             '';
-            ".config/xmobar/xmobarrc".text = ''
-                Config { font = "xft:Iosevka:style=Bold:pixelsize=16"
+            ".config/xmobar/xmobarrc".text = let
+                wifi-status = pkgs.writeShellScriptBin "wifi-status" ''
+                    ESSID=`${pkgs.wirelesstools}/bin/iwgetid -r`
+                    STRENGTH=$((`awk 'NR==3 {print substr($3, 1, length($3)-1)}' /proc/net/wireless`*100/70))
+                    QUALITY_COLOR=
+                    case 1 in
+                        $((STRENGTH < 30)))
+                            QUALITY_COLOR=red
+                            ;;
+                        $((STRENGTH >= 30 && STRENGTH < 70)))
+                            QUALITY_COLOR=yellow
+                            ;;
+                        $((STRENGTH >= 70 && STRENGTH <= 100)))
+                            QUALITY_COLOR=green
+                            ;;
+                    esac
+                    echo $ESSID: "<fc=$QUALITY_COLOR>$STRENGTH</fc>%"
+                '';
+            in
+            ''
+                Config { font = "xft:${config.sys.fonts.main.name}:${config.sys.fonts.main.weightKeyword}=${config.sys.fonts.main.weight}:${config.sys.fonts.main.sizeKeyword}=${config.sys.fonts.size.Dunst}"
                        , bgColor = "black"
                        , fgColor = "grey"
                        , position = TopW L 100
@@ -127,13 +154,17 @@
                                     , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
                                                              "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
                                                              "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
+                                    , Run Com "${wifi-status}/bin/wifi-status" [] "wifi" 60
+                                    , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["openvpn-jobvpn.service", "[V]"] "vpn" 30
+                                    , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["sshuttle.service", "[S]"] "sshuttle" 30
+                                    , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["xsuspender.service", "[X]"] "xsuspender" 30
                                     , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
                                               , ("ru", "<fc=green>ru</fc>")
                                               ]
                                     ]
                        , sepChar = "%"
                        , alignSep = "}{"
-                       , template = "%StdinReader% }{| %battery% | %wifi% %sshuttle% %vpn% | <fc=#ee9a00>%date%</fc> |%kbd%"
+                       , template = "%StdinReader% }{| %battery% | %wifi% %sshuttle% %vpn% %xsuspender% | <fc=#ee9a00>%date%</fc> |%kbd%"
                        }
             '';
             ".config/rofi/oxide.rasi".text = ''
@@ -282,17 +313,56 @@
                     text-color: inherit;
                 }
             '';
+            ".config/fusuma/config.yml".text = ''
+                swipe:
+                  3:
+                    left:
+                      command: '${pkgs.xdotool}/bin/xdotool key alt+Left'
+                    right:
+                      command: '${pkgs.xdotool}/bin/xdotool key alt+Right'
+                    up:
+                      command: '${pkgs.xdotool}/bin/xdotool key ctrl+t'
+                      threshold: 1.5
+                    down:
+                      command: '${pkgs.xdotool}/bin/xdotool key ctrl+w'
+                      threshold: 1.5
+                  4:
+                    left:
+                      command: '${pkgs.xdotool}/bin/xdotool key super+Left'
+                    right:
+                      command: '${pkgs.xdotool}/bin/xdotool key super+Right'
+                    up:
+                      command: '${pkgs.xdotool}/bin/xdotool key super+a'
+                    down:
+                      command: '${pkgs.xdotool}/bin/xdotool key super+s'
+                pinch:
+                  2:
+                    in:
+                      command: '${pkgs.xdotool}/bin/xdotool key ctrl+plus'
+                      threshold: 0.1
+                    out:
+                      command: '${pkgs.xdotool}/bin/xdotool key ctrl+minus'
+                      threshold: 0.1
+
+                threshold:
+                  swipe: 1
+                  pinch: 1
+
+                interval:
+                  swipe: 1
+                  pinch: 1
+            '';
             ".config/synology/nas.yml".text = ''
                 nas:
                   hostname: ${config.nas.hostname}
                   users:
                     admin:
-                      login: ${config.nas.primary_user}
-                      password: ${config.nas.primary_user_password}
+                      login: ${config.nas.primaryUser}
+                      password: ${config.nas.primaryUserPassword}
                   # FIXME: use more versatile parser, because those implemented with bash have limited functionality
                   volumes: ${builtins.concatStringsSep " " config.nas.volumes}
                   mount:
-                    basedir: ${config.nas.local_mount_base}
+                    basedir: ${config.nas.localMountBase}
             '';
             ".config/xkeysnail/config.py".text = ''
                 # -*- coding: utf-8 -*-
@@ -318,6 +388,7 @@
                     K("C-x"): {
                         K("b"): K("b"),
                         K("k"): K("C-w"),
+                        K("u"): K("C-Shift-t"),
                         K("C-s"): K("C-s"),
                         K("C-c"): K("C-q"),
                     },
@@ -328,6 +399,7 @@
                         K("C-c"): K("C-q"),
                     },
                     K("C-s"): K("Esc"),
+                    K("C-t"): [K("Shift-Left"), K("C-x"), K("Left"), K("C-v"), K("Right")],
                 }, "Telegram")
 
                 # Emacs-like keybindings in non-Emacs applications
@@ -447,6 +519,89 @@
                 EXT:ps = zathura %s
                 EXT:pdf = zathura %s
             '';
+            # TODO: check/Nixify paths
+            ".i3status.conf".text = ''
+                # i3status configuration file.
+                # see "man i3status" for documentation.
+
+                # It is important that this file is edited as UTF-8.
+                # The following line should contain a sharp s:
+                # ß
+                # If the above line is not correctly displayed, fix your editor first!
+
+                general {
+                        output_format = "dzen2"
+                        colors = true
+                        interval = 5
+                }
+
+                order += "tztime local"
+                order += "cpu_usage"
+                order += "cpu_temperature 0"
+                order += "load"
+                order += "disk /"
+                order += "run_watch DHCP"
+                order += "path_exists VPN"
+                order += "wireless _first_"
+                order += "battery 0"
+                order += "volume master"
+
+                wireless _first_ {
+                         format_up = "W: %quality, %essid"
+                         format_down = "W: down"
+                }
+
+                battery 0 {
+                        format = "%status %percentage %remaining"
+                }
+
+                battery 0 {
+                        format = "%status %percentage %remaining"
+                        format_down = "No battery"
+                        status_chr = "⚇ CHR"
+                        status_bat = "⚡ BAT"
+                        status_full = "☻ FULL"
+                        path = "/sys/class/power_supply/BAT%d/uevent"
+                        low_threshold = 10
+                }
+
+                run_watch DHCP {
+                          pidfile = "/var/run/dhclient*.pid"
+                }
+
+                path_exists VPN {
+                            path = "/proc/sys/net/ipv4/conf/tun0"
+                }
+
+                tztime local {
+                       format = "%H:%M:%S %d-%m-%Y"
+                }
+
+                load {
+                     format = "%1min"
+                }
+
+                disk "/" {
+                     format = "%free"
+                }
+
+                cpu_temperature 0 {
+                                format = "/ %degrees °C"
+                                path = "/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp2_input"
+                }
+
+                volume master {
+                       format = "♪: %volume"
+                       format_muted = "♪: muted (%volume)"
+                       device = "pulse"
+                       mixer = "Master"
+                       mixer_idx = 0
+                }
+
+                cpu_usage {
+                          format = "CPU: %usage"
+                }
+            '';
             ".config/networkmanager-dmenu/config.ini".text= ''
                 [dmenu]
                 dmenu_command = ${pkgs.rofi}/bin/rofi
@@ -535,7 +690,7 @@
 
                 # default_user is also used for password files that have no user field.
                 #default_user="''${ROFI_PASS_DEFAULT_USER-$(whoami)}"
-                #default_user2=kotya
+                #default_user2=${userName}
                 #password_length=12
 
                 # Custom Keybindings
@@ -558,15 +713,37 @@
             '';
             ".config/screenshots/screenshots.yml".text = ''
                 screenshots:
-                  path: ${config.users.extraUsers.kotya.home}/screenshots
+                  path: /home/${userName}/screenshots
                   date_format: +%Y-%m-%d_%H:%M:%S
             '';
+            ".config/xsuspender.conf".text = genIni {
+                Default = {
+                    suspend_delay = 10;
+                    resume_every = 50;
+                    resume_for = 5;
+                    only_on_battery = true;
+                    auto_suspend_on_battery = true;
+                    send_signals = true;
+                };
+                VirtualBox = {
+                    match_wm_class_contains = "VirtualBox";
+                    send_signals = false;
+                    exec_suspend = ''VBoxManage controlvm "$(ps -o args= -q $PID | sed -E ’s/.*--startvm ([a-f0-9-]+).*/\1/’)" pause'';
+                    exec_resume  = ''VBoxManage controlvm "$(ps -o args= -q $PID | sed -E ’s/.*--startvm ([a-f0-9-]+).*/\1/’)" resume'';
+                };
+                Firefox = {
+                    match_wm_class_contains = "Firefox";
+                };
+                Chromium = {
+                    match_wm_class_contains = "Chromium-browser";
+                };
+            };
         };
         gtk = {
             enable = true;
             font = {
                 package = pkgs.dejavu_fonts;
-                name = "${config.sys.fontMainName} ${config.sys.fontMainWeight} ${config.sys.fontMainSizeDunst}";
+                name = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.Dunst}";
             };
         };
         services.dunst = {
@@ -574,18 +751,17 @@
             settings = {
                 global = {
                     alignment = "left";
-                    allow_markup = "yes";
                     always_run_script = "true";
                     bounce_freq = 0;
-                    browser = "firefox -new-tab";
-                    dmenu = "/usr/bin/dmenu -p dunst:";
+                    browser = "${pkgs.firefox-unwrapped}/bin/firefox -new-tab";
+                    dmenu = "${pkgs.dmenu}/bin/dmenu -p dunst:";
                     ellipsize = "middle";
                     follow = "keyboard";
-                    font = "${config.sys.fontMainName} ${config.sys.fontMainWeight} ${config.sys.fontMainSizeDunst}";
+                    font = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.Dunst}";
                     force_xinerama = "false";
-                    format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\n%b";
+                    format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\\n%b";
                     frame_color = "#232323";
-                    frame_width = 1;
+                    frame_width = 3;
                     geometry = "300x5-15+15";
                     hide_duplicates_count = "false";
                     history_length = 20;
@@ -613,10 +789,6 @@
                     verbosity = "mesg";
                     word_wrap = "yes";
                 };
-                frame = {
-                    width = 3;
-                    color = "#aaaaaa";
-                };
                 shortcuts = {
                     close = "ctrl+space";
                     close_all = "ctrl+shift+space";
@@ -643,6 +815,25 @@
             };
         };
         programs.feh.enable = true;
+        services.compton = {
+            enable = true;
+            backend = "glx";
+            vSync = "opengl-swc";
+            package = pkgs.compton-git;
+        };
+        services.redshift = {
+            enable = true;
+            latitude = "${config.common.redshift.latitude}";
+            longitude = "${config.common.redshift.longitude}";
+            temperature.day = 5500;
+            temperature.night = 3100;
+            brightness.day = "1.0";
+            brightness.night = "0.7";
+            extraOptions = [
+                "-v"
+                "-m randr"
+            ];
+        };
         programs.rofi = {
             enable = true;
             fullscreen = false;
@@ -658,8 +849,8 @@
             width = 80;
             xoffset = 0;
             yoffset = 0;
-            font = "Iosevka Bold 12"; # TODO: templatize
-            theme = "${config.users.extraUsers.kotya.home}/.config/rofi/oxide.rasi";
+            font = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.Dunst}";
+            theme = "/home/${userName}/.config/rofi/oxide.rasi";
             # TODO: review https://davedavenport.github.io/rofi/manpage.html
             extraConfig = ''
                 rofi.line-margin:                    3
@@ -684,7 +875,7 @@
                 rofi.parse-hosts:                    true
                 rofi.parse-known-hosts:              false
                 rofi.ssh-client:                     ${pkgs.eternal-terminal}/bin/et
-                rofi.ssh-command:                    ${pkgs.tmux}/bin/tmux new-window '{ssh-client} root@{host}'
+                rofi.ssh-command:                    ${pkgs.tmux}/bin/tmux new-window '{ssh-client} ${config.network.defaultRemoteUser}@{host}'
 
                 rofi.kb-accept-alt:                  Shift+Return
                 rofi.kb-accept-custom:               Control+Return
@@ -743,13 +934,27 @@
             '';
         };
         programs.browserpass.enable = true;
-        services.unclutter.enable = true;
-        services.udiskie.enable = true;
+        services.udiskie = {
+            enable = true;
+            automount = true;
+            notify = true;
+            tray = "never";
+        };
         services.network-manager-applet.enable = true;
         services.random-background = {
             enable = true;
             imageDirectory = "%h/blobs/wallpaper";
             interval = "1w";
         };
+    };
+    services.unclutter-xfixes = {
+        enable = true;
+        timeout = 2;
+        threshold = 15;
+        extraOptions = [
+            "exclude-root"
+            "fork"
+            "ignore-scrolling"
+        ];
     };
 }

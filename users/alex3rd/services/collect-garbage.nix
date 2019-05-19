@@ -2,10 +2,6 @@
 
 # TODO: think of moving to system level
 {
-    imports = [
-        ../../../toolbox/scripts/nix.nix
-    ];
-
     systemd.services."collect-nix-garbage" = {
         description = "Collect garbage in running system";
         serviceConfig = {
@@ -20,8 +16,8 @@
         description = "Collect garbage in running system";
         wantedBy = [ "timers.target" ];
         timerConfig = {
-            OnBootSec = "1day";
-            OnUnitActiveSec = "1week";
+            OnBootSec = "1hour";
+            OnUnitActiveSec = "1day";
         };
     };
 }

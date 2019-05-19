@@ -19,5 +19,4 @@ with import ../const.nix {inherit config pkgs;};
             OnUnitActiveSec = "30min";
         };
     };
-
 }

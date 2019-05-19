@@ -1,46 +1,84 @@
 {config, pkgs, lib, ...}:
-
+with import ../../const.nix {inherit config pkgs;};
 let
+    shell-capture = pkgs.writeShellScriptBin "shell-capture" ''
+        TEMPLATE="$1"
+        if [[ ! -n $TEMPLATE ]]
+        then
+            exit 1
+        fi
+        TITLE="$*"
+        if [[ -n $TMUX ]]
+        then
+            TITLE=$(${pkgs.tmux}/bin/tmux display-message -p '#S')
+            ${pkgs.tmux}/bin/tmux send -X copy-pipe-and-cancel "${pkgs.xsel}/bin/xsel -i --primary"
+        fi
+
+        if [[ -n $TITLE ]]
+        then
+            emacsclient -n "org-protocol://capture?template=$TEMPLATE&title=$TITLE"
+        else
+            emacsclient -n "org-protocol://capture?template=$TEMPLATE"
+        fi
+    '';
+    maybe_ssh_host = pkgs.writeShellScriptBin "maybe_ssh_host" ''
+        # tmux: pane_tty: pts/5
+        PANE_TTY=$(${pkgs.tmux}/bin/tmux display-message -p '#{pane_tty}' | ${pkgs.coreutils}/bin/cut -c 6-)
+
+        # get IP/hostname according to pane_tty
+        REMOTE_SESSION=$(${pkgs.procps}/bin/pgrep -t $pane_tty -a -f "ssh " | ${pkgs.gawk}/bin/awk 'NF>1{print $NF}')
+
+        if [[ "$REMOTE_SESSION" != "" ]]; then
+            echo $REMOTE_SESSION
+        else
+            echo $(whoami)@$(${pkgs.nettools}/bin/hostname)
+        fi
+    '';
     tmuxPluginsBundle = with pkgs; [
+        fzf-tmux-url-with-history # patched version, see overlays
         tmuxPlugins.battery
         tmuxPlugins.copycat
         tmuxPlugins.cpu
         tmuxPlugins.fpp
-        tmuxPlugins.fzf-tmux-url
         tmuxPlugins.logging
-        tmuxPlugins.pain-control
         tmuxPlugins.prefix-highlight
-        tmuxPlugins.resurrect
-        tmuxPlugins.yank
         tmuxPlugins.sessionist
+        tmuxPlugins.yank
     ];
 in
 {
-    home-manager.users.kotya = {
-        home.packages = with pkgs; [
-            tmuxp
-        ];
+    home-manager.users.alex3rd = {
         home.file = {
             "tmuxp/housekeeping.yml".text = ''
                 session_name: housekeeping
                 windows:
-                  - window_name: configuration.nix
+                  - window_name: system
+                    layout: 9295,152x109,0,0[152x64,0,0,134,152x44,0,65,135]
                     start_directory: /etc/nixos
                     panes:
-                      -
-                  - window_name: nixpkgs
-                    start_directory: /etc/nixos/pkgs/nixpkgs-channels
-                    panes:
-                      -
-                  - window_name: Nix REPL
-                    start_directory: /etc/nixos/pkgs/nixpkgs-channels
-                    panes:
+                      - null
                       - shell_command:
+                        - cd /etc/nixos/pkgs/nixpkgs-channels
                         - nix repl '<nixpkgs/nixos>'
-                  - window_name: xmonad
-                    start_directory: ''${HOME}/.xmonad
+                  - window_name: mc
+                    start_directory: /home/${userName}
                     panes:
-                      -
+                      - mc
+            '';
+            "tmuxp/media.yml".text = ''
+                session_name: media
+                windows:
+                  - window_name: youtube
+                    panes:
+                      - mpsyt
+            '';
+            "tmuxp/dev.yml".text = ''
+                session_name: dev
+                windows:
+                  - window_name: mc
+                    start_directory: ${config.dev.workspacePath}/github.com/wiedzmin
+                    panes:
+                      - mc
             '';
             # TODO: divide into "local" and "remote" parts, where the latter is subset of the former, with remote-friendly settings (i.e. without plugins, etc.)
             ".tmux.conf".text = ''
@@ -61,6 +99,10 @@ in
                 setw -g automatic-rename on
                 setw -g mode-keys emacs
                 set -g set-titles on
+                set -g set-titles-string '#(${maybe_ssh_host}/bin/maybe_ssh_host):#(pwd="#{pane_current_path}"; echo $pwd)'
+                setenv EDITOR ${pkgs.emacs}/bin/emacsclient
+
+                set-hook -g after-select-pane "run-shell \"tmux set -g window-active-style "bg='brightblack'" && sleep .05 && tmux set -g window-active-style '''\""
 
                 # activity
                 set -g bell-action any
@@ -121,6 +163,13 @@ in
                 bind l refresh-client
                 bind m select-pane -m
 
+                bind-key "|" split-window -h -c "#{pane_current_path}"
+                bind-key "\\" split-window -fh -c "#{pane_current_path}"
+                bind-key "-" split-window -v -c "#{pane_current_path}"
+                bind-key "_" split-window -fv -c "#{pane_current_path}"
+                bind-key "#" split-window -h -c "#{pane_current_path}"
+                bind-key '@' split-window -v -c "#{pane_current_path}"
+
                 bind M-0 select-window -t :10
                 bind M-1 select-window -t :11
                 bind M-2 select-window -t :12
@@ -151,7 +200,13 @@ in
                                         grep -v \"^$(tmux display-message -p '#S')\$\" | \
                                         ${pkgs.fzf}/bin/fzf --reverse | xargs tmux switch-client -t"
 
+                bind -T copy-mode M-e run-shell "${shell-capture}/bin/shell-capture es"
+                bind -T copy-mode M-j run-shell "${shell-capture}/bin/shell-capture js"
+                bind -T copy-mode M-n run-shell "${shell-capture}/bin/shell-capture ns"
+                bind -T copy-mode M-x run-shell "${shell-capture}/bin/shell-capture xs"
+
                 bind F12 send-key "#############################################################################################"
+                bind F11 send-key "git open" "Enter"
 
                 bind z split-window -v "${pkgs.procps}/bin/ps -ef | \
                                         ${pkgs.gnused}/bin/sed 1d | \
@@ -169,10 +224,12 @@ in
                 bind y set-window-option synchronize-panes
 
                 # plugins settings
-
+                set -g @fzf-url-bind 'o'
                 # add all the plugins
                 ${lib.concatStrings (map (x: "run-shell ${x.rtp}\n") tmuxPluginsBundle)}
             '';
         };
     };
 }
+
+# TODO: some impl/binding for ix.io posts

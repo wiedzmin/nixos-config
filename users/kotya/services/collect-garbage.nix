@@ -1,10 +1,6 @@
 {config, pkgs, lib, ...}:
 with import ../const.nix {inherit config pkgs;};
 {
-    imports = [
-        ../../../toolbox/scripts/nix.nix
-    ];
-
     systemd.services."collect-nix-garbage" = {
         description = "Collect garbage in running system";
         serviceConfig = {

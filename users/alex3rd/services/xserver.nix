@@ -1,9 +1,8 @@
 { config, pkgs, ... }:
 {
     imports = [
-        ../dotfiles/sys.nix
-        ../../../toolbox/wm/xmonad.nix
-        ../../../toolbox/scripts/misc.nix
+        ../config/sys.nix
+        ./wm/xmonad.nix
     ];
     services = {
         xserver = {
