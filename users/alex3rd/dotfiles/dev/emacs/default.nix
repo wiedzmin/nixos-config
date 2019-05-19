@@ -77,7 +77,9 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.delight
                 epkgs.diff-hl
                 epkgs.dired-filetype-face
+                epkgs.dired-git-info
                 epkgs.dired-hide-dotfiles
+                epkgs.dired-launch
                 epkgs.dired-narrow
                 epkgs.dired-quick-sort
                 epkgs.diredfl
@@ -107,10 +109,10 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.free-keys
                 epkgs.function-args
                 epkgs.general
-                epkgs.gitconfig-mode
-                epkgs.gitignore-mode
                 epkgs.git-msg-prefix
                 epkgs.git-timemachine
+                epkgs.gitconfig-mode
+                epkgs.gitignore-mode
                 epkgs.gitignore-mode
                 epkgs.go-eldoc
                 epkgs.go-guru
@@ -128,8 +130,8 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.hc-zenburn-theme
                 epkgs.help-find-org-mode
                 epkgs.helpful
-                epkgs.highlight-indent-guides
                 epkgs.highlight-escape-sequences
+                epkgs.highlight-indent-guides
                 epkgs.highlight-numbers
                 epkgs.hl-todo
                 epkgs.httprepl
@@ -164,6 +166,7 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.magit
                 epkgs.magit-filenotify
                 epkgs.magit-popup # *
+                epkgs.magit-todos
                 epkgs.magithub
                 epkgs.markdown-mode
                 epkgs.melpaStablePackages.slime
@@ -222,12 +225,13 @@ with import ../../../../../toolbox/util.nix {inherit lib config pkgs;};
                 epkgs.regex-tool
                 epkgs.region-bindings-mode
                 epkgs.restart-emacs
+                epkgs.restclient-test
                 epkgs.rg
                 epkgs.russian-holidays
                 epkgs.savekill
                 epkgs.slime-company
-                epkgs.smartparens
                 epkgs.smart-comment
+                epkgs.smartparens
                 epkgs.smooth-scrolling
                 epkgs.solarized-theme
                 epkgs.spaceline
