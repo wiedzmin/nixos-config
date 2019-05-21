@@ -22,31 +22,47 @@
 
 (use-package lsp-mode
   :ensure t
-  :hook (lsp-after-open-hook . lsp-enable-imenu)
+  :hook (lsp-mode . company-mode)
   :custom
-  (lsp-message-project-root-warning t)
+  (lsp-before-save-edits t)
+  (lsp-eldoc-render-all nil)
+  (lsp-highlight-symbol-at-point nil)
   (lsp-inhibit-message t)
+  (lsp-message-project-root-warning t)
   (lsp-prefer-flymake nil)
   :config
   (use-package lsp-clients))
 
 (use-package lsp-ui
   :ensure t
-  :after (lsp-mode)
-  :hook (lsp-mode-hook . lsp-ui-mode)
+  :after (lsp-mode avy)
+  :hook
+  (lsp-mode-hook . lsp-ui-mode)
+  (lsp-after-open-hook . lsp-enable-imenu)
   :general
   (:keymaps 'lsp-ui-mode-map
             [remap xref-find-definitions] 'lsp-ui-peek-find-definitions
             [remap xref-find-references] 'lsp-ui-peek-find-references)
   (:keymaps 'mode-specific-map
-            "R" 'lsp-restart-workspace))
+            "R" 'lsp-restart-workspace)
+  (:keymaps 'custom-goto-map
+            "i" 'lsp-ui-imenu)
+  :custom
+  (lsp-ui-sideline-enable t)
+  (lsp-ui-sideline-ignore-duplicate t)
+  (lsp-ui-sideline-show-code-actions t)
+  (lsp-ui-sideline-show-hover t)
+  (lsp-ui-sideline-show-symbol t)
+  (lsp-ui-sideline-update-mode 'point))
 
 (use-package company-lsp
   :ensure t
+  :after (lsp-ui)
   :custom
-  (company-lsp-cache-candidates 'auto)
   (company-lsp-async t)
+  (company-lsp-cache-candidates 'auto)
   (company-lsp-enable-recompletion t)
+  (company-lsp-enable-snippet t)
   :config
   (push 'company-lsp company-backends))
 
