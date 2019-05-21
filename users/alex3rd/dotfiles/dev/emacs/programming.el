@@ -166,6 +166,12 @@
     (setcdr (assoc ?E (plist-get magit-dispatch-popup :actions))
             '("vdiff popup" 'vdiff-magit-popup))))
 
+;;TODO: review readme and set per-repo settings (especially for nixos-config to exclude submodules paths)
+(use-package magit-todos
+  :ensure t
+  :after (magit)
+  :hook (magit-status-mode-hook . magit-todos-mode))
+
 (use-package magithub
   :disabled
   :ensure t
