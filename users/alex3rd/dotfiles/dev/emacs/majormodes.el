@@ -138,7 +138,7 @@
   :ensure t
   :mode ("\\.plantuml\\'" . plantuml-mode)
   :custom
-  (plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar")
+  (plantuml-jar-path "/usr/share/plantuml/lib/plantuml.jar") ;; FIXME: provide Nix store path somehow
   (org-plantuml-jar-path plantuml-jar-path)
   :config
   (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
