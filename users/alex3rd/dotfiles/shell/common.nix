@@ -123,5 +123,10 @@ with import ../../const.nix {inherit config pkgs;};
             enable = true;
             enableZshIntegration = true;
         };
+        programs.z-lua = {
+            enable = true;
+            enableZshIntegration = true;
+            options = [ "fzf" ];
+        };
     };
 }
