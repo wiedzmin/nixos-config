@@ -369,8 +369,85 @@
   :ensure t
   :after (yasnippet))
 
+;;TODO: extract to quelpa-used package
 (use-package python
   :mode ("\\.py$" . python-mode)
+  :preface
+  (defvar lsp-python-ms-extra-paths '()
+    "A list of additional paths to search for python packages
+     This should be a list of paths corresponding to additional python
+     library directories you want to search for completions.  Paths
+     should be as they are (or would appear) in sys.path.  Paths will
+     be prepended to the search path, and so will shadow duplicate
+     names in search paths returned by the interpreter.")
+  (defvar lsp-render-markdown-markup-content)
+  (defvar lsp-python-ms-cache-dir
+    (directory-file-name (locate-user-emacs-file ".lsp-python/"))
+    "Path to directory where the server will write cache files.
+     If this is nil, the language server will write cache files in a directory
+     sibling to the root of every project you visit")
+  (defun lsp-python-ms--filter-nbsp (str)
+    "Filter nbsp entities from STR."
+    (let ((rx "&nbsp;"))
+      (when (eq system-type 'windows-nt)
+        (setq rx (concat rx "\\|\r")))
+      (when str
+        (replace-regexp-in-string rx " " str))))
+  (defun lsp-python-ms--language-server-started-callback (workspace _params)
+    "Handle the python/languageServerStarted message.
+     WORKSPACE is just used for logging and _PARAMS is unused."
+    (lsp-workspace-status "::Started" workspace)
+    (message "Python language server started"))
+  ;; it's crucial that we send the correct Python version to MS PYLS,
+  ;; else it returns no docs in many cases furthermore, we send the
+  ;; current Python's (can be virtualenv) sys.path as searchPaths
+  (defun lsp-python-ms--get-python-ver-and-syspath (workspace-root)
+    "Return list with pyver-string and list of python search paths.
+     The WORKSPACE-ROOT will be prepended to the list of python search
+     paths and then the entire list will be json-encoded."
+    (let ((python (executable-find "python"))
+          (init "from __future__ import print_function; import sys; import json;")
+          (ver "print(\"%s.%s\" % (sys.version_info[0], sys.version_info[1]));")
+          (sp (concat "sys.path.insert(0, '" workspace-root "'); print(json.dumps(sys.path))")))
+      (with-temp-buffer
+        (call-process python nil t nil "-c" (concat init ver sp))
+        (cl-subseq (split-string (buffer-string) "\n") 0 2))))
+  (defun lsp-python-ms--workspace-root ()
+    "Get the path of the root of the current workspace.
+     Use `lsp-workspace-root', which is pressent in the \"new\"
+     lsp-mode and works when there's an active session.  Next try ffip
+     or projectile, or just return `default-directory'."
+    (cond
+     ((and (fboundp #'lsp-workspace-root) (lsp-workspace-root)))
+     ((fboundp #'ffip-get-project-root-directory) (ffip-get-project-root-directory))
+     ((fboundp #'projectile-project-root)) (projectile-project-root)
+     (t default-directory)))
+  ;; Mostly based on the vs.code implementation:
+  ;; https://github.com/Microsoft/vscode-python/blob/master/src/client/activation/languageServer/languageServer.ts#L219
+  (defun lsp-python-ms--extra-init-params (&optional workspace)
+    "Return form describing parameters for language server.
+     Old lsp will pass in a WORKSPACE, new lsp has a global
+     lsp-workspace-root function that finds the current buffer's
+     workspace root.  If nothing works, default to the current file's
+     directory"
+    (let ((workspace-root (if workspace (lsp--workspace-root workspace) (lsp-python-ms--workspace-root))))
+      (cl-destructuring-bind (pyver pysyspath)
+          (lsp-python-ms--get-python-ver-and-syspath workspace-root)
+        `(:interpreter
+          (:properties (:InterpreterPath
+                        ,(executable-find "python")
+                        ;; this database dir will be created if required
+                        :DatabasePath ,(expand-file-name (directory-file-name lsp-python-ms-cache-dir))
+                        :Version ,pyver))
+          ;; preferredFormat "markdown" or "plaintext"
+          ;; experiment to find what works best -- over here mostly plaintext
+          :displayOptions (
+                           :preferredFormat "plaintext"
+                           :trimDocumentationLines :json-false
+                           :maxDocumentationLineLength 0
+                           :trimDocumentationText :json-false
+                           :maxDocumentationTextLength 0)
+          :searchPaths ,(vconcat lsp-python-ms-extra-paths (json-read-from-string pysyspath))))))
   :hook
   (python-mode-hook . (lambda ()
                         (setq indent-tabs-mode nil)
@@ -383,7 +460,7 @@
                         (highlight-lines-matching-regexp "ipdb.set_trace()")
                         (highlight-lines-matching-regexp "import wdb")
                         (highlight-lines-matching-regexp "wdb.set_trace()")))
-  (python-mode-hook . lsp)
+  ;; (python-mode-hook . lsp)
   (python-mode-hook . flycheck-mode)
   :general
   (:keymaps 'python-mode-map
@@ -391,7 +468,29 @@
             "M-+" 'python-indent-shift-right)
   :config
   (add-function :before-until (local 'eldoc-documentation-function)
-                #'(lambda () "")))
+                #'(lambda () ""))
+  ;; this gets called when we do lsp-describe-thing-at-point
+  ;; see lsp-methods.el. As always, remove Microsoft's unwanted entities :(
+  (setq lsp-render-markdown-markup-content #'lsp-python-ms--filter-nbsp)
+  ;; lsp-ui-doc--extract gets called when hover docs are requested
+  ;; as always, we have to remove Microsoft's unnecessary &nbsp; entities
+  (advice-add 'lsp-ui-doc--extract :filter-return #'lsp-python-ms--filter-nbsp)
+  ;; lsp-ui-sideline--format-info gets called when lsp-ui wants to show
+  ;; hover info in the sideline again &nbsp; has to be removed
+  (advice-add 'lsp-ui-sideline--format-info :filter-return #'lsp-python-ms--filter-nbsp)
+  (lsp-register-client
+   (make-lsp-client
+    :new-connection (lsp-stdio-connection "mspyls")
+    :major-modes '(python-mode)
+    :server-id 'mspyls
+    :priority 1
+    :initialization-options 'lsp-python-ms--extra-init-params
+    :notification-handlers (lsp-ht ("python/languageServerStarted" 'lsp-python-ms--language-server-started-callback)
+                                   ("telemetry/event" 'ignore)
+                                   ;; TODO handle this more gracefully
+                                   ("python/reportProgress" 'ignore)
+                                   ("python/beginProgress" 'ignore)
+                                   ("python/endProgress" 'ignore)))))
 
 (use-package py-yapf :ensure t)
 
