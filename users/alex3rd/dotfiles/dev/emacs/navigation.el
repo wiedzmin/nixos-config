@@ -495,7 +495,9 @@
   :ensure t
   :general
   ("C-:" 'avy-goto-char)
-  ("M-s M-s" 'avy-goto-word-0)
+  (:prefix "M-s"
+           :prefix-map 'custom-goto-map
+           "M-s" 'avy-goto-word-0)
   :custom
   (avy-timeout-seconds 0.5)
   (avy-keys '(?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
