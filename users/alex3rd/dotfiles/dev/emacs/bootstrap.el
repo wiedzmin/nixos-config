@@ -23,7 +23,7 @@
        (package-refresh-contents))
      (package-install package)))
  ;;base system packages for bootstrapping
- '(use-package el-get))
+ '(use-package))
 
 (setq use-package-compute-statistics t)
 (setq use-package-verbose t)
