@@ -153,7 +153,7 @@
         hostName = "laptoptop";
         hostId = "2ab69157";
         firewall.enable = false;
-        usePredictableInterfaceNames = true;
+        usePredictableInterfaceNames = lib.mkForce true;
         wlanInterfaces = {
             "wlan0" = { device = "wlp3s0"; };
         };
