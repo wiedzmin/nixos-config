@@ -169,6 +169,7 @@
 ;;TODO: review readme and set per-repo settings (especially for nixos-config to exclude submodules paths)
 (use-package magit-todos
   :ensure t
+  :if enable-experimental-packages
   :after (magit)
   :hook (magit-status-mode-hook . magit-todos-mode))
 
