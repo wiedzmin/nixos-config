@@ -4,6 +4,8 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
 with import ../../../../../util.nix {inherit lib config pkgs;};
 with import ../../../const.nix {inherit config pkgs;};
 let
+    volumeAmount = 10;
+    backlightAmount = 10;
     dockerContainerShellExecutable = "/bin/bash";
     rofi_autorandr_profiles = pkgs.writeShellScriptBin "rofi_autorandr_profiles" ''
         AUTORANDR_PROFILES_PATH=''${1:-$HOME/.config/autorandr}
@@ -581,7 +583,7 @@ in
                               , "M-a 3"        ~> namedScratchpadAction scratchpads "gotop"
                               , "M-a 4"        ~> namedScratchpadAction scratchpads "bc"
                               --
-                              , "M-a S-w"      ~> spawn "${pkgs.wifictl}/bin/wifictl jog"
+                              , "M-a S-w"      ~> spawn "${pkgs.networkmanager}/bin/nmcli radio wifi off && ${pkgs.networkmanager}/bin/nmcli radio wifi on"
                               , "M-a c"        ~> spawn "${pkgs.systemd}/bin/systemctl --user restart compton.service"
                               , "M-a q"        ~> spawn "${pkgs.rofi-pass}/bin/rofi-pass"
                               ]
@@ -591,10 +593,10 @@ in
                               , "M-w S-e"      ~> spawn "${pkgs.procps}/bin/pkill -SIGUSR2 emacs"
                               ]
 
-                    servicesKeys = [ "M-s s <Up>" ~> spawn "${pkgs.sshuttlectl}/bin/sshuttlectl start"
-                                   , "M-s s <Down>" ~> spawn "${pkgs.sshuttlectl}/bin/sshuttlectl stop"
-                                   , "M-s v <Up>" ~> spawn "${pkgs.jobvpnctl}/bin/jobvpnctl start"
-                                   , "M-s v <Down>" ~> spawn "${pkgs.jobvpnctl}/bin/jobvpnctl stop"
+                    servicesKeys = [ "M-s s <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart sshuttle.service"
+                                   , "M-s s <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop sshuttle.service"
+                                   , "M-s v <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart openvpn-jobvpn.service"
+                                   , "M-s v <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop openvpn-jobvpn.service"
                                    , "M-s x <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart xsuspender.service"
                                    , "M-s x <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop xsuspender.service"
                                    ]
@@ -629,8 +631,10 @@ in
                               , "M-<XF86AudioPrev>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString playerDeltaSeconds}-"
                               ]
 
-                    backlightKeys = [ "<XF86MonBrightnessUp>" ~> spawn "${pkgs.backlightctl}/bin/backlightctl inc"
-                                    , "<XF86MonBrightnessDown>" ~> spawn "${pkgs.backlightctl}/bin/backlightctl dec"
+                    backlightKeys = [ "<XF86MonBrightnessUp>" ~> spawn "${pkgs.light}/bin/light -A ${toString backlightAmount}"
+                                    , "<XF86MonBrightnessDown>" ~> spawn "${pkgs.light}/bin/light -U ${toString backlightAmount}"
+                                    , "C-<XF86MonBrightnessUp>" ~> spawn "${pkgs.light}/bin/light -S 100"
+                                    , "C-<XF86MonBrightnessDown>" ~> spawn "${pkgs.light}/bin/light -S 20"
                                     ]
 
                     switchScreenKeys = [ "M-" ++ m ++ key ~> f sc
