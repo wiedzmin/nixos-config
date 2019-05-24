@@ -23,7 +23,7 @@
        (package-refresh-contents))
      (package-install package)))
  ;;base system packages for bootstrapping
- '(use-package))
+ '(use-package pinentry))
 
 (setq use-package-compute-statistics t)
 (setq use-package-verbose t)
@@ -36,6 +36,8 @@
   :custom
   (quelpa-use-package-inhibit-loading-quelpa
    t "Improve startup performance"))
+
+(pinentry-start)
 
 (use-package use-package-secrets
   :custom

@@ -214,6 +214,7 @@ with import ../../../../../util.nix {inherit lib config pkgs;};
                 epkgs.pdf-tools
                 epkgs.persistent-scratch
                 epkgs.phi-search
+                epkgs.pinentry
                 epkgs.pip-requirements
                 epkgs.plantuml-mode
                 epkgs.po-mode
