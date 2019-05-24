@@ -129,7 +129,6 @@ with import ../../../../../util.nix {inherit lib config pkgs;};
                 epkgs.go-tag
                 epkgs.godoctor
                 epkgs.golden-ratio
-                epkgs.google-translate
                 epkgs.gorepl-mode
                 epkgs.gotest
                 epkgs.gotham-theme
