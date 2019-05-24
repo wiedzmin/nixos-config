@@ -129,25 +129,14 @@ in
 
                 # colors
                 set -g default-terminal "screen-256color"
-                set -g message-attr bright
-                set -g message-bg black
-                set -g message-fg white
-                set -g pane-active-border-bg default
-                set -g pane-active-border-fg colour240 #base01
-                set -g pane-border-bg default
-                set -g pane-border-fg colour235 #base02
-                set -g status-attr default
-                set -g status-bg default
-                set -g status-fg white
+                set -g message-style fg=white,bg=black,bright
+                set -g pane-active-border-style fg=colour240,bg=default
+                set -g pane-border-style fg=colour235,bg=default
+                set -g status-style fg=white,bg=default,default
                 set -ga terminal-overrides 'xterm*:smcup@:rmcup@,xterm-256color:Tc'
                 setw -g clock-mode-colour green #green
-                setw -g window-status-attr dim
-                setw -g window-status-bg default
-                setw -g window-status-current-attr bright
-                setw -g window-status-current-bg default
-                setw -g window-status-current-bg red
-                setw -g window-status-current-fg colour166 # TODO was white, check if it works somewhere else
-                setw -g window-status-fg cyan
+                setw -g window-status-style fg=cyan,bg=default,dim
+                setw -g window-status-current-style fg=colour166,bg=red,bright
 
                 # TODO: investigate how session names may be templated in Nix
                 # keybindings
