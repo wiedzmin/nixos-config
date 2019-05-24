@@ -167,15 +167,6 @@ in
                     fi
                 fi
             '';
-            misc_lib = pkgs.writeShellScriptBin "misc_lib" ''
-                enforce_vpn() {
-                    VPN_STATUS=$(${pkgs.systemctl-status}/bin/systemctl-status openvpn-jobvpn.service)
-                    if [[ "$VPN_STATUS" == "" ]]; then
-                        ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "VPN is off, turn it on and retry"
-                        exit 1
-                    fi
-                }
-            '';
         };
     };
 }

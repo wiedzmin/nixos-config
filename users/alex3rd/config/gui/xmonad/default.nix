@@ -8,21 +8,16 @@ let
     backlightAmount = 10;
     dockerContainerShellExecutable = "/bin/bash";
     rofi_autorandr_profiles = pkgs.writeShellScriptBin "rofi_autorandr_profiles" ''
+        . ${pkgs.misc_lib}/bin/misc_lib
+
         AUTORANDR_PROFILES_PATH=''${1:-$HOME/.config/autorandr}
 
         AUTORANDR_PROFILES=(
         $(${pkgs.fd}/bin/fd --type d . $AUTORANDR_PROFILES_PATH -x echo '{/}' | ${pkgs.gnugrep}/bin/grep -ve "\.d")
         )
 
-        list_autorandr_profiles() {
-            for i in "''${AUTORANDR_PROFILES[@]}"
-            do
-                echo "$i"
-            done
-        }
-
         main() {
-            SELECTED_PROFILE=$( (list_autorandr_profiles) | ${pkgs.rofi}/bin/rofi -dmenu -p "Profile " )
+            SELECTED_PROFILE=$( (show_list "''${AUTORANDR_PROFILES[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "Profile " )
             if [ -n "$SELECTED_PROFILE" ]; then
                 ${pkgs.autorandr}/bin/autorandr --load "$SELECTED_PROFILE" & >& /dev/null
             fi
@@ -33,21 +28,16 @@ let
         exit 0
     '';
     rofi_tmuxp_sessions = pkgs.writeShellScriptBin "rofi_tmuxp_sessions" ''
+        . ${pkgs.misc_lib}/bin/misc_lib
+
         TMUXP_SESSIONS_PATH=''${1:-$HOME/tmuxp}
 
         TMUXP_SESSIONS=(
         $(${pkgs.fd}/bin/fd --maxdepth 1 --type l '.yml' $TMUXP_SESSIONS_PATH -x echo '{/.}')
         )
 
-        list_tmuxp_sessions() {
-            for i in "''${TMUXP_SESSIONS[@]}"
-            do
-                echo "$i"
-            done
-        }
-
         main() {
-            SELECTED_SESSION=$( (list_tmuxp_sessions) | ${pkgs.rofi}/bin/rofi -dmenu -p "Profile " )
+            SELECTED_SESSION=$( (show_list "''${TMUXP_SESSIONS[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "Profile " )
             if [ -n "$SELECTED_SESSION" ]; then
                 ${pkgs.tmuxp}/bin/tmuxp load -y -d $TMUXP_SESSIONS_PATH/$SELECTED_SESSION.yml >/dev/null 2>&1 &
             fi
@@ -58,20 +48,15 @@ let
         exit 0
     '';
     rofi_service_journal = pkgs.writeShellScriptBin "rofi_service_journal" ''
+        . ${pkgs.misc_lib}/bin/misc_lib
+
         SERVICE_CONTEXTS=(
           "system"
           "user"
         )
 
-        ask_for_context() {
-            for i in "''${SERVICE_CONTEXTS[@]}"
-            do
-                echo "$i"
-            done
-        }
-
         main() {
-            CONTEXT=$( (ask_for_context) | ${pkgs.rofi}/bin/rofi -dmenu -p "Context" )
+            CONTEXT=$( (show_list "''${SERVICE_CONTEXTS[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "Context" )
             if [ ! -n "$CONTEXT" ]; then
                 exit 1
             fi
@@ -87,7 +72,10 @@ let
 
         exit 0
     '';
+    # TODO: review and fix
     rofi_docker_container_traits = pkgs.writeShellScriptBin "rofi_docker_container_traits" ''
+        . ${pkgs.misc_lib}/bin/misc_lib
+
         declare -A CONTAINER_TRAITS
 
         CONTAINER_TRAITS=(
@@ -113,20 +101,6 @@ let
           "all"
         )
 
-        list_container_statuses() {
-            for i in "''${CONTAINER_STATUSES[@]}"
-            do
-                echo "$i"
-            done
-        }
-
-        list_container_traits() {
-            for i in "''${!CONTAINER_TRAITS[@]}"
-            do
-                echo "$i"
-            done
-        }
-
         main() {
             HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/uniq | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
             if [ ! -z "$HOST" ]; then
@@ -135,7 +109,7 @@ let
                 else
                     eval $(${pkgs.docker-machine}/bin/docker-machine env $HOST)
                 fi
-                CONTAINER_STATUS=$( (list_container_statuses) | ${pkgs.rofi}/bin/rofi -dmenu -p "Status" )
+                CONTAINER_STATUS=$( (show_list "''${CONTAINER_STATUSES[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "Status" )
                 if [ -z "$CONTAINER_STATUS" ]; then
                     exit 1
                 fi
@@ -145,7 +119,7 @@ let
                     SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
                 fi
                 if [ -n "$SELECTED_CONTAINER" ]; then
-                    SELECTED_TRAIT=$( (list_container_traits) | ${pkgs.rofi}/bin/rofi -dmenu -p "Inspect" )
+                    SELECTED_TRAIT=$( (show_mapping_keys "$(declare -p CONTAINER_TRAITS)") | ${pkgs.rofi}/bin/rofi -dmenu -p "Inspect" )
                     if [ -n "$SELECTED_TRAIT" ]; then
                         INSPECT_COMMAND="${pkgs.docker}/bin/docker inspect $SELECTED_CONTAINER --format='"''${CONTAINER_TRAITS[$SELECTED_TRAIT]}"'"
                         eval `echo $INSPECT_COMMAND` | tr -d '\n' | ${pkgs.xsel}/bin/xsel -i --clipboard
@@ -189,18 +163,14 @@ let
     bookshelfPath = "/home/${userName}/bookshelf";
     bookReaderUsePdftools = true;
     rofi_bookshelf = pkgs.writeShellScriptBin "rofi_bookshelf" ''
+        . ${pkgs.misc_lib}/bin/misc_lib
+
         IFS=$'\n'
         BOOKS=$(${pkgs.fd}/bin/fd --full-path ${bookshelfPath} -e pdf${ if !bookReaderUsePdftools then
                 "-e djvu" else ""})
-        list_books() {
-            for i in "''${BOOKS[@]}"
-            do
-                echo "$i"
-            done
-        }
 
         main() {
-            SELECTED_BOOK=$( (list_books) | ${pkgs.rofi}/bin/rofi -dmenu -p "EBook " )
+            SELECTED_BOOK=$( (show_list "''${BOOKS[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "EBook " )
             if [ -n "$SELECTED_BOOK" ]; then
             ${if bookReaderUsePdftools then ''
                 ${pkgs.emacs}/bin/emacsclient --eval "(find-file \"$SELECTED_BOOK\")" >& /dev/null
@@ -299,6 +269,8 @@ let
         fi
     '';
     rofi_mount_nas_volume = pkgs.writeShellScriptBin "rofi_mount_nas_volume" ''
+        . ${pkgs.misc_lib}/bin/misc_lib
+
         CONFIGFILE=${nasConfigPath}
         if [[ ! -f $CONFIGFILE ]]; then
             ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "Missing config file, exiting"
@@ -310,15 +282,8 @@ let
         $NAS_VOLUMES
         )
 
-        list_nas_volumes() {
-            for i in "''${nas_volumes[@]}"
-            do
-                echo "$i"
-            done
-        }
-
         main() {
-            selected_volume=$( (list_nas_volumes) | ${pkgs.rofi}/bin/rofi -dmenu -p "Mount: " )
+            selected_volume=$( (show_list "''${nas_volumes[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "Mount: " )
             if [ -n "$selected_volume" ]; then
                 ${mount_nas_volume}/bin/mount_nas_volume "$selected_volume"
             fi
@@ -329,17 +294,12 @@ let
         exit 0
     '';
     rofi_unmount_nas_volume = pkgs.writeShellScriptBin "rofi_unmount_nas_volume" ''
+        . ${pkgs.misc_lib}/bin/misc_lib
+
         mounted_nas_volumes=$(cat /etc/mtab | grep catscan | cut -d ' '  -f 1)
 
-        list_mounted_volumes() {
-            for i in "''${mounted_nas_volumes[@]}"
-            do
-                echo "$i"
-            done
-        }
-
         main() {
-            selected_volume=$( (list_mounted_volumes) | ${pkgs.rofi}/bin/rofi -dmenu -p "Unmount: " )
+            selected_volume=$( (show_list "''${mounted_nas_volumes[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "Unmount: " )
             if [ -n "$selected_volume" ]; then
                 ${unmount_nas_volume}/bin/unmount_nas_volume "$selected_volume"
             fi
@@ -364,6 +324,8 @@ let
         done
     '';
     rofi_ssh_custom_user = pkgs.writeShellScriptBin "rofi_ssh_custom_user" ''
+        . ${pkgs.misc_lib}/bin/misc_lib
+
         # TODO: provide freeform option or predefined list on Nix level
         USERS=(
           "root"
@@ -371,15 +333,8 @@ let
           "${userNamePrevious}"
         )
 
-        ask_for_user() {
-            for i in "''${USERS[@]}"
-            do
-                echo "$i"
-            done
-        }
-
         main() {
-            USER=$( (ask_for_user) | ${pkgs.rofi}/bin/rofi -dmenu -p "User" )
+            USER=$( (show_list "''${USERS[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "User" )
             if [ ! -n "$USER" ]; then
                 exit 1
             fi
@@ -394,17 +349,12 @@ let
         exit 0
     '';
     rofi_webjumps = pkgs.writeShellScriptBin "rofi_webjumps" ''
+        . ${pkgs.misc_lib}/bin/misc_lib
+
         ${listOfSetsToShellHashtable (config.job.webjumps ++ config.misc.webjumps) "url" "WEBJUMPS" true}
 
-        list_webjumps() {
-            for i in "''${!WEBJUMPS[@]}"
-            do
-                echo "$i"
-            done
-        }
-
         main() {
-            WEBJUMP=$( (list_webjumps) | ${pkgs.rofi}/bin/rofi -dmenu -p "Jump to" )
+            WEBJUMP=$( (show_mapping_keys "$(declare -p WEBJUMPS)") | ${pkgs.rofi}/bin/rofi -dmenu -p "Jump to" )
             if [ -n "$WEBJUMP" ]; then
                 ''${WEBJUMPS[$WEBJUMP]} "$WEBJUMP"
             fi

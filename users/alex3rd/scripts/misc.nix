@@ -34,6 +34,22 @@ in
                         exit 1
                     fi
                 }
+
+                function show_list() {
+                    contents=("$@")
+                    for i in "''${contents[@]}";
+                    do
+                        echo "$i"
+                    done
+                }
+
+                function show_mapping_keys() {
+                    eval "declare -A contents="''${1#*=}
+                    for i in "''${!contents[@]}";
+                    do
+                        echo "$i"
+                    done
+                }
             '';
             rofi_buku_functions = pkgs.writeShellScriptBin "rofi_buku_functions" ''
                 _rofi () {
