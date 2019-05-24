@@ -154,6 +154,7 @@
         hostId = "2ab69157";
         firewall.enable = false;
         usePredictableInterfaceNames = lib.mkForce true;
+        dnsExtensionMechanism = false;
         wlanInterfaces = {
             "wlan0" = { device = "wlp3s0"; };
         };
