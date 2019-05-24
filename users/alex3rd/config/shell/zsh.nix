@@ -110,6 +110,9 @@ in
                 lsa = "${pkgs.lsd}/bin/lsd -l .* --group-dirs first";
                 lsd = "${pkgs.lsd}/bin/lsd -l *(-/DN) --group-dirs first";
 
+                zz = "z -I";
+                zb = "z -b";
+
                 zr = ". ~/.zshrc";
             };
             plugins = [
