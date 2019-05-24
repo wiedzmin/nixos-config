@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 
 rec {
-    firefoxOpenPageCmd = "${pkgs.firefox-bin}/bin/firefox --new-window"; # TODO: check packages version and sync with user level
+    firefoxOpenPageCmd = "${pkgs.firefox-unwrapped}/bin/firefox --new-window";
     chromiumOpenPageCmd = "${pkgs.chromium}/bin/chromium";
     sedPlaceholderChar = "_";
     genIni = lib.generators.toINI {
