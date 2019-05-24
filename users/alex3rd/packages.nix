@@ -2,14 +2,17 @@
 let
     staging = with pkgs; [
         # paperless // see docs
-        alttab
         amber
-        bemenu
         cdimgtools
+        certigo
+        dnsenum
+        dnsrecon
         extrace
+        fierce
         gallery-dl
         glxinfo
         hdparm
+        jd-gui
         jump
         libwhich
         lifelines
@@ -30,7 +33,6 @@ let
         zzuf
     ];
     debug = with pkgs; [ # binaries for PATH
-        dmenu2
         fd
         lsd
         xdotool
