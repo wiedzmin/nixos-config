@@ -772,65 +772,15 @@ in
                     import XMonad.Prompt
                     import XMonad.Prompt.FuzzyMatch (fuzzyMatch)
 
-                    -- Font definitions
-                    fontDejavuSans2       = "xft:DejaVu Sans Mono:pixelsize=14"
-                    fontDjvuSans          = "xft:DejaVu Sans:size=10"
-                    fontDjvuSansMono      = "xft:Dejavu Sans Mono-8"
-                    fontInconsolata       = "xft:inconsolata-14"
-                    fontIosevkaMain       = "xft:Iosevka:style=Bold:pixelsize=16"
-                    fontMonospace         = "xft:monospace:size=8"
-                    fontMonospaceSmall    = "xft:monospace:size=5"
-                    fontProfont           = "xft:Profont:pixelsize=15:autohint=true"
-                    fontTerminusNormal    = "xft:Terminus:size=12"
-
-                    fontDmenu             = fontIosevkaMain
-                    fontPrompt            = fontIosevkaMain
-                    fontTabbed            = fontIosevkaMain
-
-                    ------------------------------------------------------------------------
-                    -- Various color settings
-                    ------------------------------------------------------------------------
-
                     -- This mimics the "zenburn" style as found for vim and Emacs.
-                    colorDarkRed      = "#705050"
-                    colorDarkGreen    = "#507060" -- Original zenburn: "#60b48a"
-                    colorDarkYellow   = "#dfaf8f"
-                    colorDarkBlue     = "#506070"
-                    colorDarkMagenta  = "#dc8cc3"
-                    colorDarkCyan     = "#8cd0d3"
-                    colorDarkGray     = "#3f3f3f"
-                    colorLightRed     = "#dca3a3"
-                    colorLightGreen   = "#c3bf9f"
-                    colorLightYellow  = "#f0dfaf"
-                    colorLightBlue    = "#94bff3"
-                    colorLightMagenta = "#ec93d3"
-                    colorLightCyan    = "#93e0e3"
-                    colorLightGray    = "#dcdccc"
-                    colorWhite        = "#ffffff"
-                    colorYellow       = "#ffff00"
-
-                    -- Status Bar colors
-                    -- Actually, the definitions for BG and FG colors are used differently
-                    -- sometimes. dmenu (used for launching apps) turns them around, making the
-                    -- change in the status bar location easily visible.
-
-                    curGlobalBGColor      = colorDarkBlue
-                    curGlobalFGColor      = colorLightGray
-                    curNormalBGColor      = colorDarkGreen
-                    curNormalFGColor      = colorLightGray
-                    curTitleFGColor       = colorLightYellow
-                    curUrgentBGColor      = colorDarkRed
-                    curUrgentFGColor      = colorLightRed
-
-                    curFocusedBGColor     = curGlobalFGColor
-                    curFocusedFGColor     = curGlobalBGColor
-                    curSeparatorColor     = curGlobalFGColor
-                    curTitleBGColor       = curGlobalBGColor
+                    curNormalBGColor      = "#507060" -- Original zenburn: "#60b48a"
+                    curNormalFGColor      = "#dcdccc"
+                    curTitleFGColor       = "#f0dfaf"
 
                     -- intended to be an example of all used params
                     -- should not be used unless filled with appropriate param values
                     xpConfigFullPH :: XPConfig
-                    xpConfigFullPH = def { font        = fontPrompt
+                    xpConfigFullPH = def { font        = "${config.sys.fonts.main.name}:${config.sys.fonts.main.weightKeyword}=${config.sys.fonts.main.weight}:${config.sys.fonts.main.sizeKeyword}=${config.sys.fonts.size.Dzen}"
                                          , bgColor     = ""
                                          , fgColor     = ""
                                          , fgHLight    = ""
@@ -858,7 +808,7 @@ in
 
                     -- Hint: default theme can be substituted by any from Util.Themes
                     tabbedConf = def {
-                      fontName = fontTabbed
+                      fontName = "${config.sys.fonts.main.name}:${config.sys.fonts.main.weightKeyword}=${config.sys.fonts.main.weight}:${config.sys.fonts.main.sizeKeyword}=${config.sys.fonts.size.Dzen}"
                       }
                 '';
                 onChange = ''xmonad --recompile'';
@@ -1193,7 +1143,7 @@ in
                         borderWidth        = 3,
                         modMask            = mod4Mask,
                         workspaces         = map WS.wsName $ filter WS.wsEnabled $ WS.mergedWorkspaces,
-                        normalBorderColor  = T.colorDarkGreen,
+                        normalBorderColor  = "#507060",
                         focusedBorderColor = "orange",
                         keys               = C.myKeys,
                         mouseBindings      = C.myMouseBindings,
