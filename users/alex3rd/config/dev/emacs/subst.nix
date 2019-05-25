@@ -1,5 +1,5 @@
-{config, ...}:
-with import ../../../const.nix {inherit config;};
+{config, pkgs, ...}:
+with import ../../../const.nix {inherit config pkgs;};
 rec {
     emacsAmxSaveFile = "${emacsDataDir}/amx-items";
     emacsCustomFile = "/home/${userName}/.emacs.d/customizations.el";
@@ -13,7 +13,7 @@ rec {
     emacsOrgBrowserTabs = "${emacsOrgDir}/browser-tabs.org";
     emacsOrgDefaultNotesFile = "${emacsOrgDir}/refile.org";
     emacsOrgDir = "/home/${userName}/docs/org";
-    emacsOrgDitaaJarPath = "${emacsResourcesDir}/ditaa0_9.jar";
+    emacsOrgDitaaJarPath = "${pkgs.ditaa}/lib/ditaa.jar";
     emacsOrgJournalFile = "${emacsOrgDir}/journal.org";
     emacsOrgJournalsDir = "${emacsOrgDir}/journals";
     emacsOrgKbDir = "/home/${userName}/docs/org-kb";

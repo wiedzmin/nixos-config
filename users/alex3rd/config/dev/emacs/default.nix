@@ -17,7 +17,6 @@ with import ../../../../../util.nix {inherit lib config pkgs;};
 
             bash-language-server
             ccls
-            ditaa
             flow
             ms-pyls
             nodePackages.indium
@@ -350,29 +349,29 @@ with import ../../../../../util.nix {inherit lib config pkgs;};
 
                 (add-hook 'focus-out-hook #'garbage-collect)
 
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./bootstrap.el; })) }
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./base.el; })) }
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./security.el; })) }
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./appearance.el; })) }
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./context.el; })) }
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./navigation.el; })) }
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./editing.el; })) }
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./majormodes.el; })) }
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./programming.el; })) }
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./clients.el; })) }
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./orgmode.el; })) }
-                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./help.el; })) }
 
                 (setq debug-on-error nil)
@@ -382,7 +381,6 @@ with import ../../../../../util.nix {inherit lib config pkgs;};
                 source = ./yasnippet-snippets;
                 recursive = true;
             };
-            ".emacs.d/resources/ditaa0_9.jar".source = ../../../../../contrib/blobs/ditaa0_9.jar;
             ".emacs.d/secrets/email.el.gpg".source = ../../../private/emacs-secrets/email.el.gpg;
             ".emacs.d/secrets/ibuffer.el.gpg".source = ../../../private/emacs-secrets/ibuffer.el.gpg;
             ".emacs.d/secrets/identity.el.gpg".source = ../../../private/emacs-secrets/identity.el.gpg;
