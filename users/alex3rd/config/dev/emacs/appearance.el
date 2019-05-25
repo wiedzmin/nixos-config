@@ -35,11 +35,6 @@
 (use-package solarized-theme :ensure t :config (load-theme 'solarized-dark t) :disabled)
 (use-package gotham-theme :ensure t :config (load-theme 'gotham t) :disabled)
 
-;; Providing dark enough colors, unless we are using an appropriate theme, Darkburn, for example
-(when (boundp 'zenburn-colors-alist)
-  (set-face-attribute 'default nil :background "#1A1A1A")
-  (set-face-attribute 'region nil :background (cdr (assoc "zenburn-bg-2" zenburn-colors-alist))))
-
 (use-package tooltip
   :config
   (tooltip-mode 0))

@@ -181,7 +181,6 @@
   (dolist (orgfile (directory-files (at-org-dir "/journals") t "journal") )
     (setq org-agenda-files
           (delete orgfile org-agenda-files)))
-  (add-to-list 'org-agenda-files (at-config-basedir "config.org"))
   ;; agenda customizations
   (setq org-confirm-elisp-link-not-regexp "org-tags-view")
   (setf org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :narrow 60))
@@ -413,22 +412,13 @@
   (setq org-habit-following-days 4)
   (setq org-habit-show-habits-only-for-today nil)
   ;; org-capture
+  ;; TODO: actualize todos sinks / templates
   (setq org-capture-templates
         `(("n" "NixOS")
           ("nt" "NixOS" entry (file "/etc/nixos/todo.org") "* BACKLOG %?[[%:link][%:description]] %U\n  %:initial")
           ("nc" "NixOS code snippet" entry (file "/etc/nixos/todo.org")
            "* %^{title} :nix:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC nix\n %i%?\n#+END_SRC\n")
           ("ns" "NixOS shell excerpt" entry (file "/etc/nixos/todo.org") "* %? %U :%:description:\n  %:initial")
-          ("e" "Emacs")
-          ("et" "Emacs" entry (file ,(at-config-basedir "/todo.org")) "* BACKLOG %?[[%:link][%:description]] %U\n  %:initial")
-          ("ec" "Emacs code snippet" entry (file ,(at-config-basedir "/todo.org"))
-           "* %^{title} :emacs:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC emacs-lisp\n %i%?\n#+END_SRC\n")
-          ("es" "NixOS shell excerpt" entry (file ,(at-config-basedir "/todo.org")) "* %? %U :%:description:\n  %:initial")
-          ("x" "XMonad")
-          ("xt" "XMonad" entry (file ,(at-homedir "/.xmonad/todo.org")) "* BACKLOG %?[[%:link][%:description]] %U\n  %:initial")
-          ("xc" "XMonad code snippet" entry (file ,(at-homedir "/.xmonad/todo.org"))
-           "* %^{title} :xmonad:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC haskell\n %i%?\n#+END_SRC\n")
-          ("xs" "XMonad shell excerpt" entry (file ,(at-homedir "/.xmonad/todo.org")) "* %? %U :%:description:\n  %:initial")
           ("d" "deferred tabs" entry (file+olp custom/org-browser-tabs "groups" "deferred tabs") "* %?%:link %U :deferred:")
           ("p" "projects")
           ("pi" "project ideas" entry (file ,(at-org-dir "/projects.org")) "* %? %U :@project:idea:")
