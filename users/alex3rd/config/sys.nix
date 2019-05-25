@@ -12,18 +12,15 @@ with lib;
             };
             current = mkOption {
                 type = types.str;
-                default = builtins.elemAt inventory 7;
+                default = builtins.elemAt inventory 4;
                 description = "Current wallpaper image file";
             };
             inventory = [
-                 "alena-aenami-7p-m-1k.jpg"
-                 "alena-aenami-from-this-moment-1k.png"
-                 "alena-aenami-over-the-city-1k.jpg"
-                 "homeland__8_00_am_by_alexandreev_dapgzdw.jpg"
                  "mountain.jpg"
                  "westernmongolia.jpg"
                  "mongolia_2.jpg"
                  "mongolia_desert.jpg"
+                 "512445_orkhon-falls_mongolia_reki_1920x1200_www.Gde-Fon.com.jpg"
             ];
         };
         sys.fonts = rec {
