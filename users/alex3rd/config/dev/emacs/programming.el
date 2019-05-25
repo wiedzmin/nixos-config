@@ -185,7 +185,7 @@
   ;;           "h C" 'magithub-create
   ;;           "h f" 'magithub-fork)
   :custom
-  (magithub-clone-default-directory (at-workspace-dir "workspace/repos/github.com"))
+  (magithub-clone-default-directory "@emacsMagithubCloneDefaultDirectory@")
   :config
   (magithub-feature-autoinject t))
 

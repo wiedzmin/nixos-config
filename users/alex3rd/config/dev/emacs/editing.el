@@ -241,13 +241,13 @@
   :ensure t
   :demand t
   :delight yas-minor-mode
-  :mode (("yasnippet/snippets" . snippet-mode)
+  :mode (("@emacsCustomYasnippetsDir@" . snippet-mode)
          ("\\.yasnippet$" . snippet-mode))
   :preface
   ;; hook for automatic reloading of changed snippets
   (defun custom/update-yasnippets-on-save ()
-    (when (string-match "/resources/yasnippet" buffer-file-name)
-      (yas-load-directory (at-config-basedir "resources/"))))
+    (when (string-match "@emacsCustomYasnippetsDir@" buffer-file-name)
+      (yas-load-directory "@emacsResourcesDir@/")))
   ;; Inter-field navigation
   (defun custom/yas-goto-end-of-active-field ()
     (interactive)
@@ -302,7 +302,7 @@
     :ensure t)
   (setq yas-snippet-dirs nil)
   (push yas-installed-snippets-dir yas-snippet-dirs)
-  (push (at-config-basedir "resources/yasnippet/") yas-snippet-dirs)
+  (push "@emacsCustomYasnippetsDir@" yas-snippet-dirs)
   (setq yas-key-syntaxes '("w" "w_" "w_." "^ " "w_.()" yas-try-key-from-whitespace))
   (setq yas-expand-only-for-last-commands '(self-insert-command))
   (setq yas-prompt-functions

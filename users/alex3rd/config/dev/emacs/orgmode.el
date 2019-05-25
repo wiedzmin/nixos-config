@@ -15,8 +15,6 @@
     (let ((inhibit-read-only t))
       (remove-text-properties (region-beginning) (region-end)
                               '(read-only t))))
-  (defvar custom/org-journal-file (at-org-dir "/journal.org"))
-  (defvar custom/org-browser-tabs (at-org-dir "/browser-tabs.org"))
   (defun custom/verify-refile-target () ;; Exclude DONE state tasks from refile targets
     "Exclude todo keywords with a done state from refile targets"
     (not (member (nth 2 (org-heading-components)) org-done-keywords)))
@@ -153,7 +151,7 @@
 
     :config
   (use-package org-capture-pop-frame :ensure t)
-  (setq org-archive-location (concat custom/org-journal-file "::datetree/"))
+  (setq org-archive-location "@emacsOrgJournalFile@/::datetree/")
   (setq org-contrib-base '(org-agenda org-archive org-attach org-bbdb
                            org-bibtex org-clock org-docview org-habit
                            org-id org-info org-inlinetask org-irc
@@ -172,13 +170,13 @@
   (add-to-list 'org-speed-commands-user '("i" call-interactively 'org-clock-in))
   (add-to-list 'org-speed-commands-user '("o" call-interactively 'org-clock-out))
   (add-to-list 'org-speed-commands-user '("$" call-interactively 'org-archive-subtree))
-  (f-entries (at-org-dir)
+  (f-entries "@emacsOrgDir@"
              (lambda (entry) (when (and (f-file? entry)
                                         (s-suffix? "org" entry)
                                         (file-exists-p entry))
                                (push entry org-agenda-files)))
              t)
-  (dolist (orgfile (directory-files (at-org-dir "/journals") t "journal") )
+  (dolist (orgfile (directory-files "@emacsOrgJournalsDir@" t "journal") )
     (setq org-agenda-files
           (delete orgfile org-agenda-files)))
   ;; agenda customizations
@@ -314,7 +312,7 @@
   (setq calendar-date-style 'european)
   (setq org-M-RET-may-split-line '((default . nil)))
   (setq org-align-all-tags t)
-  (setq org-attach-directory (at-org-dir "/org-attach-data"))
+  (setq org-attach-directory "@emacsOrgAttachDir@")
   (setq org-blank-before-new-entry '((heading) (plain-list-item . auto)))
   (setq org-columns-default-format "%42ITEM %TODO %3Effort(E){:} %3CLOCKSUM_T(R) %SCHEDULED")
   (setq org-confirm-elisp-link-function 'y-or-n-p)
@@ -322,8 +320,8 @@
   (setq org-cycle-include-plain-lists 'integrate)
   (setq org-cycle-separator-lines 0)
   (setq org-deadline-warning-days 30)
-  (setq org-default-notes-file (at-org-dir "/refile.org"))
-  (setq org-ditaa-jar-path (at-config-basedir "resources/ditaa0_9.jar"))
+  (setq org-default-notes-file "@emacsOrgDefaultNotesFile@")
+  (setq org-ditaa-jar-path "@emacsOrgDitaaJarPath@")
   (setq org-element-use-cache nil)
   (setq org-enforce-todo-checkbox-dependencies t)
   (setq org-enforce-todo-dependencies t)  ;;TODO: try ORDERED/NOBLOCKING props : org-toggle-ordered-property
@@ -419,11 +417,11 @@
           ("nc" "NixOS code snippet" entry (file "/etc/nixos/todo.org")
            "* %^{title} :nix:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC nix\n %i%?\n#+END_SRC\n")
           ("ns" "NixOS shell excerpt" entry (file "/etc/nixos/todo.org") "* %? %U :%:description:\n  %:initial")
-          ("d" "deferred tabs" entry (file+olp custom/org-browser-tabs "groups" "deferred tabs") "* %?%:link %U :deferred:")
+          ("d" "deferred tabs" entry (file+olp "@emacsOrgBrowserTabs@" "groups" "deferred tabs") "* %?%:link %U :deferred:")
           ("p" "projects")
-          ("pi" "project ideas" entry (file ,(at-org-dir "/projects.org")) "* %? %U :@project:idea:")
-          ("pn" "new project" entry (file ,(at-org-dir "/projects.org")) "* %? %U :@project:")
-          ("m" "mastering" entry (file+headline ,(at-org-dir "/mastering.org") "inbox") "* %? %U")
+          ("pi" "project ideas" entry (file "@emacsOrgProjectsFile@") "* %? %U :@project:idea:")
+          ("pn" "new project" entry (file "@emacsOrgProjectsFile@") "* %? %U :@project:")
+          ("m" "mastering" entry (file+headline "@emacsOrgMasteringFile@" "inbox") "* %? %U")
           ))
   ;; holidays
   (setq holiday-orthodox-holidays nil) ; Orthodox holidays to some extent
@@ -579,7 +577,7 @@
   :ensure t
   :disabled
   :custom
-  (org-recent-headings-save-file (at-user-data-dir "org-recent-headings"))
+  (org-recent-headings-save-file "@emacsOrgRecentHeadingsSaveFile@")
   :config
   (org-recent-headings-mode 1))
 

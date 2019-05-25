@@ -23,12 +23,12 @@
   :config
   (info-initialize)
   (setq Info-additional-directory-list
-        (list (at-homedir "help/info")))
+        (list "@emacsCustomInfoDir@"))
   (add-to-list 'Info-directory-list "/usr/share/info")
   (add-to-list 'Info-directory-list
                (format "%selpa/%s"
                        user-emacs-directory
-                       (car (directory-files (at-config-basedir "elpa") nil "^use-package-")))))
+                       (car (directory-files "@emacsElpaDir@" nil "^use-package-")))))
 
 (use-package helpful
   :ensure t

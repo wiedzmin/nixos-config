@@ -200,7 +200,7 @@
   :after (pdf-tools)
   :hook (pdf-view-mode-hook . pdf-view-restore-mode)
   :custom
-  (pdf-view-restore-filename (at-user-data-dir ".pdf-view-restore")))
+  (pdf-view-restore-filename "@emacsPdfViewRestoreFilename@"))
 
 (use-package pass
   :ensure t

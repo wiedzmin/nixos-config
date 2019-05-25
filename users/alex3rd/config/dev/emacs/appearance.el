@@ -78,7 +78,7 @@
   (display-time-day-and-date t)
   ;; (display-time-form-list (list 'time 'load))
   (display-time-world-list
-   '(("Europe/Moscow" "Moscow")))
+   '(("@timeZone@" "@timeZone@")))
   (display-time-mail-file t)
   (display-time-default-load-average nil)
   (display-time-24hr-format t)

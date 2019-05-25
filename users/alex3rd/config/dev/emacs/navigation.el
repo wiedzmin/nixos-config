@@ -113,7 +113,7 @@
   (defun custom/open-org-file ()
     (interactive)
     (ivy-read "Org files: "
-              (funcall #'(lambda () (f-files (at-org-dir) nil t)))
+              (funcall #'(lambda () (f-files "@emacsOrgDir@" nil t)))
               :action #'(lambda (candidate)
                           (find-file candidate))
               :require-match t
@@ -121,7 +121,7 @@
   (defun custom/open-org-kb-file ()
     (interactive)
     (ivy-read "Org files: "
-              (funcall #'(lambda () (f-files (at-org-kb-dir) nil t)))
+              (funcall #'(lambda () (f-files "@emacsOrgKbDir@" nil t)))
               :action #'(lambda (candidate)
                           (find-file candidate))
               :require-match t

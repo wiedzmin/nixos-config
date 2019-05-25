@@ -8,7 +8,7 @@
 (use-package iqa
   :ensure t
   :init
-  (setq iqa-user-init-file (concat user-emacs-directory "init.el"))
+  (setq iqa-user-init-file "@emacsInitFile@")
   :config
   (iqa-setup-default))
 
@@ -22,35 +22,7 @@
 (use-package no-littering
   :ensure t
   :custom
-  (no-littering-var-directory (expand-file-name "data/" user-emacs-directory)))
-
-(defun concat-normalize-slashes (prefix suffix)
-  (concat "/"
-          (string-join
-           (split-string
-            (string-join (list prefix suffix) "/") "/" t) "/")))
-
-(defun at-homedir (&optional suffix)
-  (concat-normalize-slashes (getenv "HOME") suffix))
-
-(defun at-org-dir (&optional suffix)
-  (concat-normalize-slashes (at-homedir "/docs/org")
-                            suffix))
-
-(defun at-org-kb-dir (&optional suffix)
-  (concat-normalize-slashes (at-homedir "/docs/org-kb")
-                            suffix))
-
-(defun at-config-basedir (&optional suffix)
-  (concat-normalize-slashes
-   (file-name-directory
-    (or (buffer-file-name) load-file-name)) suffix))
-
-(defun at-user-data-dir (&optional suffix)
-  (concat-normalize-slashes no-littering-var-directory suffix))
-
-(defun at-workspace-dir (&optional suffix)
-  (concat-normalize-slashes (at-homedir "/workspace") suffix))
+  (no-littering-var-directory "@emacsDataDir@/"))
 
 (defvar enable-experimental-packages nil)
 
@@ -132,7 +104,7 @@
 (use-package cus-edit
   :hook (kill-emacs-hook . (lambda () (delete-file custom-file)))
   :custom
-  (custom-file (at-config-basedir "customizations.el")))
+  (custom-file "@emacsCustomFile@"))
 
 (use-package vlf
   :ensure t
@@ -188,7 +160,7 @@
   :general ("M-x" 'amx)
   :custom
   (amx-backend 'ivy)
-  (amx-save-file (at-user-data-dir "amx-items")))
+  (amx-save-file "@emacsAmxSaveFile@"))
 
 (use-package paradox
   :ensure t

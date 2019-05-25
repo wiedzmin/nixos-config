@@ -350,18 +350,30 @@ with import ../../../../../util.nix {inherit lib config pkgs;};
 
                 (add-hook 'focus-out-hook #'garbage-collect)
 
-                ${builtins.readFile ./bootstrap.el}
-                ${builtins.readFile ./base.el}
-                ${builtins.readFile ./security.el}
-                ${builtins.readFile ./appearance.el}
-                ${builtins.readFile ./context.el}
-                ${builtins.readFile ./navigation.el}
-                ${builtins.readFile ./editing.el}
-                ${builtins.readFile ./majormodes.el}
-                ${builtins.readFile ./programming.el}
-                ${builtins.readFile ./clients.el}
-                ${builtins.readFile ./orgmode.el}
-                ${builtins.readFile ./help.el}
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./bootstrap.el; })) }
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./base.el; })) }
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./security.el; })) }
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./appearance.el; })) }
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./context.el; })) }
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./navigation.el; })) }
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./editing.el; })) }
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./majormodes.el; })) }
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./programming.el; })) }
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./clients.el; })) }
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./orgmode.el; })) }
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config; }) //
+                    { src = ./help.el; })) }
 
                 (setq debug-on-error nil)
                 (setq debug-on-quit nil)
