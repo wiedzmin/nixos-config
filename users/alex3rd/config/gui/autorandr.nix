@@ -10,6 +10,9 @@ let
 in
 {
     home-manager.users.alex3rd = {
+        home.packages = with pkgs; [
+            rescale-wallpaper
+        ];
         programs.autorandr = {
             enable = true;
             hooks = {
