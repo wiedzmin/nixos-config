@@ -71,12 +71,11 @@
   :config (hes-mode))
 
 (use-package time
-  :defer t
   :config
   (display-time)
   :custom
   (display-time-day-and-date t)
-  ;; (display-time-form-list (list 'time 'load))
+  (display-time-form-list (list 'time 'load))
   (display-time-world-list
    '(("@timeZone@" "@timeZone@")))
   (display-time-mail-file t)
