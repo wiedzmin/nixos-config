@@ -551,8 +551,10 @@ in
                                    , "M-s x <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop xsuspender.service"
                                    ]
 
-                    multimediaKeys = [ "<XF86AudioRaiseVolume>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString volumeDeltaPercents}+"
-                                     , "<XF86AudioLowerVolume>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString volumeDeltaPercents}-"
+                    multimediaKeys = [ "<XF86AudioRaiseVolume>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString volumeDeltaFraction}+"
+                                     , "<XF86AudioLowerVolume>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString volumeDeltaFraction}-"
+                                     , "C-<XF86AudioRaiseVolume>" ~> spawn "${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 +${builtins.toString volumeDeltaPercents}%"
+                                     , "C-<XF86AudioLowerVolume>" ~> spawn "${pkgs.pulseaudio}/bin/pactl set-sink-volume 0 -${builtins.toString volumeDeltaPercents}%"
                                      ]
 
                     windowKeys = [ "M-S-w M-S-n"       ~> moveTo Next EmptyWS -- find a free workspace

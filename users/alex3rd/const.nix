@@ -3,6 +3,7 @@
 {
     userName = "alex3rd";
     userNamePrevious = "octocat";
-    volumeDeltaPercents = 0.1;
+    volumeDeltaFraction = 0.1;
+    volumeDeltaPercents = 10;
     playerDeltaSeconds = 10;
 }
