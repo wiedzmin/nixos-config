@@ -419,7 +419,7 @@
   :config
   (pyvenv-mode 1)
   :hook ((projectile-after-switch-project-hook . custom/switch-python-project-context)
-         (python-mode . custom/switch-python-project-context)))
+         (python-mode-hook . custom/switch-python-project-context)))
 
 (use-package pip-requirements
   :ensure t
