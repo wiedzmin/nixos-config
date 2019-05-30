@@ -8,6 +8,9 @@ let
 in
 {
     home-manager.users.alex3rd = {
+        home.packages = with pkgs; [
+            tridactyl-native
+        ];
         programs.firefox = {
             enable = true;
             extensions = with firefox-addons; [

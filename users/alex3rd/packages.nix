@@ -1,50 +1,52 @@
 { config, pkgs, ... }:
 let
-    staging = with pkgs; [
-        # paperless // see docs
-        amber
-        cdimgtools
-        certigo
-        dnsenum
-        dnsrecon
-        extrace
-        fierce
-        gallery-dl
-        glxinfo
-        hdparm
-        jd-gui
-        jump
-        libwhich
-        lifelines
-        mp3cat
-        parinfer-rust
-        pforth
-        procs
-        rmount
-        semver-tool
-        shell-hist
-        sit
-        termshark
-        usbutils
-        websocat
-        whatstyle
-        xtruss
-        zmap
-        zzuf
+    # TODO: write script to query keywords which would provide packages names either from installed or whole nixpkgs
+    stagingInactive = with pkgs; [
+        # https://github.com/lotabout/rargs - make overlay
+        genymotion
+        git-tbdiff # make overlay
+        handbrake # + service
+        nq # for mp3 encoding
+        paperless # see docs
+        update-resolv-conf # review
     ];
-    debug = with pkgs; [ # binaries for PATH
+    stagingCommon = with pkgs; [
+        inetutils               # + network
+
+        trash-cli # misc # TODO: think of automating trash emptying
+        moreutils               # + misc
+    ];
+    stagingWork = with pkgs; [
+        drone
+        drone-cli
+        jenkins
+        terraform
+    ];
+    sandbox = with pkgs; [ # binaries for PATH
+        # transmission + service
+        deluge
         fd
+        gnuplot                 # ? misc
+        hstr                    # ? misc shell
+        k2pdfopt
         lsd
+        ncmpcpp
+        rtorrent
+        skim                    # ? investigate/compare workflows with fzf
+        uget
+        unison
         xdotool
         xlibs.xwininfo
         xorg.xdpyinfo
+        xprintidle-ng
     ];
-    langClojure = with pkgs; [
+    devClojure = with pkgs; [
+        boot
         cfr
         clojure
         leiningen
     ];
-    langGolangDevTools = with pkgs; [
+    devGolangTools = with pkgs; [
         # TODO: wait for/find/dismiss github.com/davecheney/graphpkg in nixpkgs
         # TODO: wait for/find/dismiss github.com/davecheney/prdeps in nixpkgs
         # TODO: wait for/find/dismiss github.com/motemen/gore in nixpkgs
@@ -81,37 +83,17 @@ let
         unconvert
         go-check
     ];
-    langGolangInfraTools = with pkgs; [
+    devGolangInfra = with pkgs; [
         dep
         dep2nix
         glide
         go
         vgo2nix
     ];
-    langPythonDevTools = with pkgs; [
+    devPythonTools = with pkgs; [
         python3Packages.virtualenv
         python3Packages.virtualenvwrapper
         yapf
-    ];
-    forensics = with pkgs; [
-        bbe
-        binutils
-        elfinfo
-        flamegraph
-        gdb
-        gdbgui
-        jid
-        netsniff-ng
-        ngrep
-        patchelf
-        patchutils
-        pcapfix
-        radare2
-        radare2-cutter
-        sysdig
-        valgrind
-        vmtouch
-        vulnix
     ];
     devClients = with pkgs; [
         http-prompt
@@ -126,7 +108,7 @@ let
         wuzz
         zeal
     ];
-    vcsGit = with pkgs; [
+    devVcsGit = with pkgs; [
         git-quick-stats
         git-sizer
         gitAndTools.ghq
@@ -134,55 +116,121 @@ let
         gitAndTools.git-extras
         gitAndTools.git-imerge
         gitAndTools.pass-git-helper
+        gitAndTools.topGit
+        gitstats
     ];
-    ide = with pkgs; [
-        vim
+    forensics = with pkgs; [
+        bbe
+        binutils
+        elfinfo
+        flamegraph
+        gdb
+        gdbgui
+        jd-gui
+        jid
+        netsniff-ng
+        ngrep
+        patchelf
+        patchutils
+        pcapfix
+        radare2
+        radare2-cutter
+        sysdig
+        valgrind
+        vmtouch
+        vulnix
+    ];
+    devIde = with pkgs; [
         icdiff
+        vimHugeX
+    ];
+    vim_plugins = with pkgs.vimPlugins; [
+        bufexplorer
+        command-t
+        direnv-vim
+        editorconfig-vim
+        emmet-vim
+        fastfold
+        fzf-vim
+        jedi-vim
+        vim-addon-nix
+        vim-fugitive
+        vim-gitbranch
+        vim-gitgutter
+        vim-go
+        vim-indent-object
+        vim-isort
+        vim-javascript
+        vim-jinja
+        vim-json
+        vim-jsonnet
+        vim-lastplace
+        vim-nerdtree-tabs
+        vim-nix
+        vim-parinfer
+        vim-projectionist
+        vim-repeat
+        vim-snipmate
+        vim-surround
+        vim-yapf
+        youcompleteme
+        zenburn
     ];
     devMisc = with pkgs; [
+        certigo
         cloc
+        dnsrecon
         dotnet-sdk              # for building some binary releases
+        extrace
         glogg
         gron
         hyperfine
+        ipcalc
         just
         k6
+        libwhich
+        ltrace
         miniserve
         mkcert
-        pciutils
+        mr
+        patchutils
         sloccount
         socat
         sslscan
         tcpreplay
-        traceroute
-        ttyplot
-        visidata # TODO: make overlay
+        tokei
+        vcstool
         websocat
         weighttp
-        wirelesstools
+        wiggle
+        xtruss
         xurls
     ];
     monitoring = with pkgs; [
-        reflex
-        watchexec
+        bmon
+        gotop
         gping
+        iotop
         jnettop
+        lsof
+        nethogs
         nethogs
         nload
-        speedtest-cli
-        gotop
-        iotop
-        lsof
+        pagemon
         psmisc
+        python3Packages.glances
+        reflex
+        speedtest-cli
+        watchexec
     ];
-    clients = with pkgs; [
+    miscClients = with pkgs; [
         aria2
         qbittorrent
         skype
         slack
         tdesktop
         teamviewer
-        w3m
+        w3m-full
         zoom-us
     ];
     scanner = with pkgs; [ # enable when needed
@@ -191,30 +239,56 @@ let
         simple-scan
         xsane # temporarily kept for debug
     ];
-    mediaMisc = with pkgs; [
+    org = with pkgs; [
+        remind # + rem2ics (make overlay)
+        wyrd
+    ];
+    miscMedia = with pkgs; [
         (mpv-with-scripts.override ({
             scripts = [ mpvScripts.mpris ];
         }))
         android-file-transfer
+        bup
+        clipgrab
         exif
+        exiv2
         ffmpeg
-        gimp
+        gallery-dl
         haskellPackages.arbtt
+        imv
+        jmtpfs # consider providing some (shell) automation
         maim
         mimeo
         minitube
         playerctl
-        python3Packages.mps-youtube
+        python3Packages.mps-youtube # TODO: make script + service to backup playlists data
+        testdisk
         xsel # for firefox native clients
         you-get
         youtube-dl
+        ytcc
+    ] ++ [
+        gimp
+        ttyplot
+        visidata # TODO: make overlay
+    ];
+    system =  with pkgs; [
+        acpitool
+        dmidecode
+        iw
+        lshw
+        pciutils
+        usbutils
+        wirelesstools
     ];
     shell = with pkgs; [
         archiver
-        cabextract
         fpart
         jdupes
+        pbzip2
+        pigz
         rmlint
+        unar
         unshield
     ] ++ [
         xsv
@@ -227,19 +301,23 @@ let
         loop
         mc
         plan9port
-        renameutils
         replace
         shellcheck
+        tmsu
         tree
         unicode-paracode
         wtf
-        tmsu
     ] ++ [
         rdfind
     ] ++ [
+        most
         ntfy
+        procs
+        progress
         pv
+        shell-hist
         up
+        xe
     ] ++ [
         optimize-nix
     ] ++ [
@@ -247,21 +325,27 @@ let
     ] ++ [
         fpp
         tmux
+        peco # maybe substitute fzf or so
+    ] ++ [
+        tmatrix
     ];
     text = with pkgs; [
         calibre
         djview
         djvulibre
+        enca
         ghostscript
         pandoc
         pdfgrep
         pdfsandwich
         pdftk
+        python3Packages.weasyprint
         zathura
     ];
     security = with pkgs; [
         (pass.withExtensions (ext: with ext; [ pass-audit pass-import pass-update ]))
         gnupg
+        gpa
         paperkey
         pinentry
         rofi-pass
@@ -281,23 +365,24 @@ let
 in
 {
     home-manager.users.alex3rd = {
-        home.packages = langClojure ++
-                        langGolangDevTools ++
-                        langGolangInfraTools ++
-                        langPythonDevTools ++
-                        forensics ++
-                        devClients ++
-                        vcsGit ++
-                        ide ++
+        home.packages = devClients ++
+                        devClojure ++
+                        devGolangInfra ++
+                        devGolangTools ++
+                        devIde ++
                         devMisc ++
+                        devPythonTools ++
+                        devVcsGit ++
+                        forensics ++
+                        miscClients ++
+                        miscMedia ++
                         monitoring ++
-                        clients ++
-                        mediaMisc ++
-                        shell ++
-                        text ++
-                        security ++
                         nix ++
-                        debug ++
-                        staging;
+                        sandbox ++
+                        security ++
+                        shell ++
+                        stagingCommon ++
+                        stagingWork ++
+                        text;
     };
 }

@@ -69,6 +69,7 @@
     ] ++ [
         perf
         cpupower
+        hotspot
     ];
     powerManagement = {
         enable = true;
