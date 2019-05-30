@@ -5,6 +5,7 @@ let
     nixDuFilename = "nix-du";
     nixDuFileFormat = "svg";
     nixDuSizeThreshold = "500MB";
+    warningsOrgFile = "$HOME/warnings.org";
 in
 {
     config = {
@@ -97,6 +98,30 @@ in
                     echo "Found secret snippets:"
                     echo "$RESULTS"
                     return 1;
+                }
+
+                check_org_delete_treshold() {
+                    CURRENT_REV=`${pkgs.git}/bin/git rev-parse HEAD`
+                    PREVIOUS_REV=`${pkgs.git}/bin/git rev-parse HEAD^1`
+
+                    OUTFILE="${warningsOrgFile}"
+                    THRESHOLD=250
+
+                    MESSAGE="** commit ''${CURRENT_REV} deleted more than ''${THRESHOLD} lines in a file!"
+
+                    DETAILS="#+BEGIN_SRC sh :results output
+                    cd ${builtins.dirOf warningsOrgFile}
+                    echo \"commit ''${CURRENT_REV}\"
+                    ${pkgs.git}/bin/git diff --stat \"''${PREVIOUS_REV}\" \"''${CURRENT_REV}\"
+                    #+END_SRC"
+
+                    ${pkgs.git}/bin/git diff --numstat "''${PREVIOUS_REV}" "''${CURRENT_REV}" | \
+                      cut -f 2 | \
+                      while read line
+                        do test "$line" -gt "''${THRESHOLD}" && \
+                          echo "''${MESSAGE}\n<`date '+%Y-%m-%d %H:%M'` +1d>\n\n''${DETAILS}\n" >> \
+                          "''${OUTFILE}"; \
+                        done
                 }
             '';
             gen-nix-du = pkgs.writeShellScriptBin "gen-nix-du" ''

@@ -2,9 +2,6 @@
 with import ../../../../util.nix {inherit config pkgs lib;};
 with import ../../../../const.nix {inherit config pkgs;};
 with import ../../const.nix {inherit config pkgs;};
-let
-    warningsOrgFile = "$HOME/docs/org/tasks.org";
-in
 {
     environment.etc."nixos/.hooks/pre-push/stop-wip" = {
         mode = "0644";
@@ -122,34 +119,6 @@ in
 
                 ${gitRepoHooks}
             '';
-            "git-assets/templates/hooks/post-commit" = { # TODO: move appropriately, according to new hooks harness
-                executable = true;
-                text = ''
-                    #!${pkgs.bash}/bin/bash
-
-                    CURRENT_REV=`${pkgs.git}/bin/git rev-parse HEAD`
-                    PREVIOUS_REV=`${pkgs.git}/bin/git rev-parse HEAD^1`
-
-                    OUTFILE="${warningsOrgFile}"
-                    THRESHOLD=250
-
-                    MESSAGE="** commit ''${CURRENT_REV} deleted more than ''${THRESHOLD} lines in a file!"
-
-                    DETAILS="#+BEGIN_SRC sh :results output
-                    cd ${builtins.dirOf warningsOrgFile}
-                    echo \"commit ''${CURRENT_REV}\"
-                    ${pkgs.git}/bin/git diff --stat \"''${PREVIOUS_REV}\" \"''${CURRENT_REV}\"
-                    #+END_SRC"
-
-                    ${pkgs.git}/bin/git diff --numstat "''${PREVIOUS_REV}" "''${CURRENT_REV}" | \
-                      cut -f 2 | \
-                      while read line
-                        do test "$line" -gt "''${THRESHOLD}" && \
-                          echo "''${MESSAGE}\n<`date '+%Y-%m-%d %H:%M'` +1d>\n\n''${DETAILS}\n" >> \
-                          "''${OUTFILE}"; \
-                        done
-                '';
-            };
             "git-assets/templates/hooks/pre-push" = {
                 executable = true;
                 text = ''
