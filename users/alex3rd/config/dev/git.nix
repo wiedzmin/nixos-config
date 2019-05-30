@@ -1,4 +1,5 @@
 {config, pkgs, lib, ...}:
+with import ../../../../util.nix {inherit config pkgs lib;};
 with import ../../../../const.nix {inherit config pkgs;};
 with import ../../const.nix {inherit config pkgs;};
 let
@@ -18,6 +19,17 @@ in
     };
     home-manager.users.alex3rd = {
         home.file = {
+            ".mrtrust".text = ''
+                ${config.job.workspacePath}/.mrconfig
+            '';
+            ".mrconfig".text = genIni {
+                "DEFAULT" = {
+                    "update" = "${pkgs.git}/bin/git fetch origin && ${pkgs.git}/bin/git rebase origin/$(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD)";
+                    "savewip" = "[[ ! -z $(${pkgs.git}/bin/git status --porcelain) ]] && ${pkgs.git}/bin/git add . && ${pkgs.git}/bin/git commit -m \"WIP $(${pkgs.coreutils}/bin/date -R)\" || return 0";
+                };
+            } + ''
+                include = cat ${config.job.workspacePath}/.mrconfig
+            '';
             "git-assets/git-commit-template".text = ''
 
 
