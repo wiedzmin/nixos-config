@@ -34,6 +34,18 @@ in
                 pager = "less -FR";
             };
         };
+        programs.jq = {
+            enable = true;
+            colors = {
+                null = "1;30";
+                false = "0;91";
+                true = "0;92";
+                numbers = "0;36";
+                strings = "1;96";
+                arrays = "1;94";
+                objects = "1;33";
+            };
+        };
         programs.lsd = {
             enable = true;
             enableAliases = true;
