@@ -338,7 +338,6 @@ let
         pdfsandwich
         pdftk
         python3Packages.weasyprint
-        zathura
     ];
     security = with pkgs; [
         (pass.withExtensions (ext: with ext; [ pass-audit pass-import pass-update ]))
