@@ -6,12 +6,6 @@ with import ../../const.nix {inherit config pkgs;};
         ../../private/job.nix
     ];
 
-    system.activationScripts.refreshShellBookmarks = "echo '" +
-        (builtins.concatStringsSep "\n"
-             (lib.mapAttrsToList (bmk: path: bmk + " : " + path)
-             (config.common.shellBookmarks // config.job.shellBookmarks))) +
-        "' > /home/${userName}/.bookmarks";
-
     home-manager.users.alex3rd = {
         home.file = {
             ".config/wtf/config.yml".text = ''

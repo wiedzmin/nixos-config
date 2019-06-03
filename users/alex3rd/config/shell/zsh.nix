@@ -83,8 +83,6 @@ in
             sessionVariables = {
                 CURRENT_WM = "${config.services.xserver.windowManager.default}";
                 EDITOR = "${pkgs.emacs}/bin/emacsclient";
-                FZF_MARKS_FILE = "/home/${userName}/.bookmarks";
-                FZF_MARKS_JUMP = "^[xjj";
                 GREP_COLOR = "1;32";
                 GREP_OPTIONS = "--color=auto";
                 GTAGSLIBPATH = "/home/${userName}/.gtags/";
@@ -116,15 +114,6 @@ in
                 zr = ". ~/.zshrc";
             };
             plugins = [
-                {
-                    name = "fzf-marks";
-                    file = "fzf-marks.plugin.zsh";
-                    src = pkgs.fetchgit {
-                        url = "https://github.com/urbainvaes/fzf-marks";
-                        rev = "1.1";
-                        sha256 = "0wfh267kfvyx7vcyqpqv7qgi6vcffxziq5avqddnbkm3z51br0n4";
-                    };
-                }
                 {
                     name = "zsh-notify";
                     file = "notify.plugin.zsh";
