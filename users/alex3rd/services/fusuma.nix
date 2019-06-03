@@ -10,6 +10,7 @@ with import ../const.nix {inherit config pkgs;};
             DISPLAY = ":0";
             XAUTHORITY = "/home/${userName}/.Xauthority";
         };
+        path = with pkgs; [ xdotool ];
         serviceConfig = {
             User = "${userName}";
             PIDFile = "/var/run/fusuma.pid";
