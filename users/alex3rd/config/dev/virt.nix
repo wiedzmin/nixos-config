@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }:
-with import ../../../util.nix {inherit lib config pkgs;};
+with import ../../../../util.nix {inherit lib config pkgs;};
 let
     dockerStackPsCustomFormat = "{{.Name}}   {{.Image}}   {{.Node}} {{.DesiredState}}   {{.CurrentState}}";
     useDockerStackPsCustomFormat = false;
