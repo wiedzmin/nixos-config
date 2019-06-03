@@ -29,8 +29,6 @@ let
       inherit pluginName unpackPhase postPatch configurePhase buildPhase addonInfo preInstall postInstall;
 
       installPhase = ''
-        runHook postPatch
-
         runHook preInstall
 
         target=$out/${rtpPath}/${path}
@@ -62,6 +60,8 @@ in rec {
     # we should have access not only to visible pane's content
     postPatch = ''
       substituteInPlace fzf-url.sh --replace "capture-pane -J -p" "capture-pane -S -${builtins.toString paneHistoryDepthLines} -J -p"
+      substituteInPlace fzf-url.sh --replace "fzf-tmux" "${super.skim}/bin/sk-tmux"
+      substituteInPlace fzf-url.sh --replace "--no-preview" ""
     '';
   };
 }

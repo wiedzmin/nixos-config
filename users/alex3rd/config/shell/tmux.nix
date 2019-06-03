@@ -151,7 +151,7 @@ let
                             tmux paste-buffer"
         bind s split-window -v "tmux list-sessions | sed -E 's/:.*$//' | \
                                 grep -v \"^$(tmux display-message -p '#S')\$\" | \
-                                ${pkgs.fzf}/bin/fzf --reverse | xargs tmux switch-client -t"
+                                ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"
 
         bind -T copy-mode M-e run-shell "${shell-capture}/bin/shell-capture es"
         bind -T copy-mode M-j run-shell "${shell-capture}/bin/shell-capture js"
@@ -163,7 +163,7 @@ let
         bind b split-window -c '#{pane_current_path}' \
                             -v "${pkgs.is-git-repo}/bin/is-git-repo && ${pkgs.git}/bin/git -p show --color=always \
                                 $(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always | \
-                                ${pkgs.fzf}/bin/fzf --ansi +m +s | ${pkgs.gawk}/bin/awk '{print $2}') | less -R"
+                                ${pkgs.skim}/bin/sk --ansi -m | ${pkgs.gawk}/bin/awk '{print $2}') | less -R"
     '';
     tmuxPluginsSetup = ''
         set -g @fzf-url-bind 'o'

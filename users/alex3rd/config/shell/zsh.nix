@@ -108,7 +108,7 @@ in
                 lsa = "${pkgs.lsd}/bin/lsd -l .* --group-dirs first";
                 lsd = "${pkgs.lsd}/bin/lsd -l *(-/DN) --group-dirs first";
 
-                zz = "z -I";
+                zz = "cd $(z -i | ${pkgs.skim}/bin/sk --nth 2 --reverse --inline-info --tac | ${pkgs.gawk}/bin/awk '{print $2}')";
                 zb = "z -b";
 
                 zr = ". ~/.zshrc";
@@ -125,7 +125,7 @@ in
                     };
                 }
                 {
-                    # TODO: try to integrate with fzf-based utils, expecially commit browser
+                    # TODO: try to integrate with fzf-based/skim utils, expecially commit browser
                     name = "browse-commit";
                     file = "browse-commit.plugin.zsh";
                     src = pkgs.fetchFromGitHub {

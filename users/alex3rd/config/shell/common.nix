@@ -92,15 +92,14 @@ with import ../../const.nix {inherit config pkgs;};
         programs.lesspipe.enable = true;
         programs.man.enable = true;
         programs.info.enable = true;
-        programs.fzf = {
+        programs.skim = {
             enable = true;
             historyWidgetOptions = [
-                "--sort"
                 "--exact"
             ];
             defaultOptions = [
                 "--height 40%"
-                "--border"
+                "--prompt ⟫"
             ];
             fileWidgetCommand = "${pkgs.fd}/bin/fd --type f";
             fileWidgetOptions = [ "--preview 'head {}'" ];

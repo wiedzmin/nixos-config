@@ -32,7 +32,6 @@ let
         lsd
         ncmpcpp
         rtorrent
-        skim                    # ? investigate/compare workflows with fzf
         uget
         unison
         xdotool
@@ -98,7 +97,7 @@ let
     devClients = with pkgs; [
         http-prompt
         httplab
-        litecli # TODO: shell automation: fzf for selecting db file, you get the idea
+        litecli # TODO: shell automation: skim for selecting db file, you get the idea
         mycli
         nodePackages.elasticdump
         pgcenter
@@ -151,7 +150,6 @@ let
         editorconfig-vim
         emmet-vim
         fastfold
-        fzf-vim
         jedi-vim
         vim-addon-nix
         vim-fugitive
@@ -324,8 +322,8 @@ let
         eternal-terminal
     ] ++ [
         fpp
+        skim
         tmux
-        peco # maybe substitute fzf or so
     ] ++ [
         tmatrix
     ];
