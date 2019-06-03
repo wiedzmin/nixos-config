@@ -160,6 +160,10 @@ let
 
         bind F12 send-key "#############################################################################################"
 
+        bind F11 new-window "fq; $SHELL"
+        bind S-F11 run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o --clipboard | \
+                                            ${pkgs.xe}/bin/xe ${pkgs.nq}/bin/nq ${pkgs.you-get}/bin/you-get"
+
         bind b split-window -c '#{pane_current_path}' \
                             -v "${pkgs.is-git-repo}/bin/is-git-repo && ${pkgs.git}/bin/git -p show --color=always \
                                 $(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always | \
