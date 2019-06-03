@@ -34,6 +34,10 @@ in
                 pager = "less -FR";
             };
         };
+        programs.lsd = {
+            enable = true;
+            enableAliases = true;
+        };
         programs.zsh = {
             enable = true;
             oh-my-zsh = {
@@ -103,10 +107,6 @@ in
 
                 git = "${pkgs.gitAndTools.hub}/bin/hub";
 
-                li = "${pkgs.lsd}/bin/lsd -ial";
-                ls = "${pkgs.lsd}/bin/lsd -F --color=auto --group-dirs first";
-                lsa = "${pkgs.lsd}/bin/lsd -l .* --group-dirs first";
-                lsd = "${pkgs.lsd}/bin/lsd -l *(-/DN) --group-dirs first";
 
                 zz = "cd $(z -i | ${pkgs.skim}/bin/sk --nth 2 --reverse --inline-info --tac | ${pkgs.gawk}/bin/awk '{print $2}')";
                 zb = "z -b";
