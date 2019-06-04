@@ -161,25 +161,16 @@ let
         exit 0
     '';
     bookshelfPath = "/home/${userName}/bookshelf";
-    bookReaderUsePdftools = true;
     rofi_bookshelf = pkgs.writeShellScriptBin "rofi_bookshelf" ''
         . ${pkgs.misc_lib}/bin/misc_lib
 
         IFS=$'\n'
-        BOOKS=$(${pkgs.fd}/bin/fd --full-path ${bookshelfPath} -e pdf${ if !bookReaderUsePdftools then
-                "-e djvu" else ""})
+        BOOKS=$(${pkgs.fd}/bin/fd --full-path ${bookshelfPath} -e pdf -e djvu)
 
         main() {
             SELECTED_BOOK=$( (show_list "''${BOOKS[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "EBook " )
             if [ -n "$SELECTED_BOOK" ]; then
-            ${if bookReaderUsePdftools then ''
-                ${pkgs.emacs}/bin/emacsclient --eval "(find-file \"$SELECTED_BOOK\")" >& /dev/null
-                sleep 0.5
-                ${pkgs.wmctrl}/bin/wmctrl -l -x | grep -E "emacs\.Emacs.+(pdf|djvu)$" | ${pkgs.gawk}/bin/awk '{print $1}' | \
-                                               ${pkgs.findutils}/bin/xargs ${pkgs.wmctrl}/bin/wmctrl -i -a
-            '' else ''
                 ${pkgs.zathura}/bin/zathura "$SELECTED_BOOK" & >& /dev/null
-            ''}
             fi
         }
 
