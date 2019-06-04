@@ -7,3 +7,9 @@
 [submodule "users/alex3rd/dotfiles/dev/emacs/yasnippet-snippets"]
 	path = users/alex3rd/config/dev/emacs/yasnippet-snippets/yasnippet-snippets
 	url = https://github.com/wiedzmin/yasnippet-snippets
+[submodule "home-manager-proposed"]
+	path = pkgs/home-manager-proposed
+	url = https://github.com/wiedzmin/home-manager
+[submodule "pkgs/nixpkgs-proposed"]
+	path = pkgs/nixpkgs-proposed
+	url = https://github.com/wiedzmin/nixpkgs
