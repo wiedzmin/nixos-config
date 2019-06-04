@@ -402,6 +402,12 @@ with import ../../const.nix {inherit config pkgs;};
                     K("C-t"): [K("Shift-Left"), K("C-x"), K("Left"), K("C-v"), K("Right")],
                 }, "Telegram")
 
+                define_keymap(re.compile("Alacritty"), {
+                    K("C-x"): {
+                        K("k"): K("C-d"),
+                    },
+                }, "Alacritty")
+
                 # Emacs-like keybindings in non-Emacs applications
                 define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Alacritty"), {
                     # Cursor
