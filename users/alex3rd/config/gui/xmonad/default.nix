@@ -677,18 +677,15 @@ in
 
                     layouts = onWorkspace "scratch" gimpLayout $
                               onWorkspace "im" imLayout $
-                              onWorkspace "web" (renamed [Replace "Grid"] Grid |||
-                                                 renamed [Replace "OneBig"] (OneBig (3/4) (3/4))) $
-                              onWorkspace "work" (renamed [Replace "Tiled"] (autoMaster 1 (1/100) customHintedTile) |||
+                              onWorkspace "web" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4))) $
+                              onWorkspace "work" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4)) |||
                                                   renamed [Replace "Dishes"] (Dishes 2 (1/6)) |||
-                                                  renamed [Replace "Mirror"] (Mirror customHintedTile) |||
                                                   renamed [Replace "Grid"] Grid |||
-                                                  renamed [Replace "OneBig"] (OneBig (3/4) (3/4))) $
+                                                  renamed [Replace "Tiled"] (autoMaster 1 (1/100) customHintedTile)) $
                               onWorkspace "shell" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4))) $
                               renamed [Replace "OneBig"] (OneBig (3/4) (3/4))
 
                     layoutMappings = [ ("g", "Grid")
-                                     , ("m", "Mirror")
                                      , ("b", "OneBig")
                                      , ("d", "Dishes")
                                      , ("t", "Tiled")
