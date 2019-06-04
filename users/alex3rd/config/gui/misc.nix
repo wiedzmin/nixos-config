@@ -317,9 +317,9 @@ with import ../../const.nix {inherit config pkgs;};
                 swipe:
                   3:
                     left:
-                      command: '${pkgs.xdotool}/bin/xdotool key alt+Left'
+                      command: '${pkgs.xdotool}/bin/xdotool key alt+.'
                     right:
-                      command: '${pkgs.xdotool}/bin/xdotool key alt+Right'
+                      command: '${pkgs.xdotool}/bin/xdotool key alt+,'
                     up:
                       command: '${pkgs.xdotool}/bin/xdotool key ctrl+t'
                       threshold: 1.5
