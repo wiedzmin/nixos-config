@@ -19,76 +19,59 @@ in
                 url-in-title
                 midnight-lizard
             ];
+            profiles = {
+                default = {
+                    name = "profile.default";
+                    path = "profile.default";
+                    settings = {
+                        "extensions.autoDisableScopes" = 0;
+                        "browser.ctrlTab.recentlyUsedOrder" = false;
+                        "browser.download.dir" = "/home/${userName}/Downloads";
+                        "browser.link.open_newwindow" = 2;
+                        "browser.sessionstore.restore_on_demand" = true;
+                        "browser.sessionstore.restore_tabs_lazily" = true;
+                        "browser.shell.checkDefaultBrowser" = true;
+                        "browser.startup.page" = 3;
+                        "extensions.pocket.enabled" = false;
+                        "lightweightThemes.selectedThemeID" = "firefox-compact-dark@mozilla.org";
+                    };
+                    handlers = {
+                        defaultHandlersVersion = {
+                            "en-US" = 4;
+                        };
+                        mimeTypes = {
+                            "application/pdf" = {
+                                action = 3;
+                            };
+                        };
+                        schemes = {
+                            mailto = {
+                                action = 4;
+                                handlers = [
+                                    null
+                                    {
+                                        name = "Gmail";
+                                        uriTemplate = "https://mail.google.com/mail/?extsrc=mailto&url=%s";
+                                    }
+                                ];
+                            };
+                            "org-protocol" = {
+                                action = 4;
+                            };
+                            "tg" = {
+                                action = 4;
+                            };
+                        };
+                    };
+                };
+            };
         };
         programs.chromium = {
             enable = true;
             # TODO: find extensions
             # extensions = [];
         };
-        home.activation.cleanupImperativeFFConfigs = dagEntryBefore ["checkLinkTargets"] ( ''
-            PATHS_TO_CLEAN=(
-                "/home/${userName}/.mozilla/firefox/profiles.ini"
-                "/home/${userName}/.mozilla/firefox/profile.default/handlers.json"
-            )
-
-            for path in "''${PATHS_TO_CLEAN[@]}"
-            do
-                if [ -f $path ] && [ ! -L "$path" ]; then
-                    rm "$path"
-                fi
-            done
-        '' );
         home.file = {
-            ".mozilla/firefox/profiles.ini".text = genIni {
-                General.StartWithLastProfile = 1;
-                Profile0 = {
-                    Name = "default";
-                    IsRelative = 1;
-                    Path = "profile.default";
-                    Default = 1;
-                };
-            };
-            ".mozilla/firefox/profile.default/user.js".text = ''
-                pref("extensions.autoDisableScopes", 0);
-
-                pref("browser.ctrlTab.recentlyUsedOrder", false);
-                pref("browser.download.dir", "/home/${userName}/Downloads");
-                pref("browser.link.open_newwindow", 2);
-                pref("browser.sessionstore.restore_on_demand", true);
-                pref("browser.sessionstore.restore_tabs_lazily", true);
-                pref("browser.shell.checkDefaultBrowser", true);
-                pref("browser.startup.page", 3);
-                pref("extensions.pocket.enabled", false);
-                pref("lightweightThemes.selectedThemeID", "firefox-compact-dark@mozilla.org");
-            '';
-            ".mozilla/firefox/profile.default/handlers.json".text = builtins.toJSON {
-                defaultHandlersVersion = {
-                    "en-US" = 4;
-                };
-                mimeTypes = {
-                    "application/pdf" = {
-                        action = 3;
-                    };
-                };
-                schemes = {
-                    mailto = {
-                        action = 4;
-                        handlers = [
-                            null
-                            {
-                                name = "Gmail";
-                                uriTemplate = "https://mail.google.com/mail/?extsrc=mailto&url=%s";
-                            }
-                        ];
-                    };
-                    "org-protocol" = {
-                        action = 4;
-                    };
-                    "tg" = {
-                        action = 4;
-                    };
-                };
-            };
             ".mozilla/firefox/profile.default/browser-extension-data/{d47d18bc-d6ba-4f96-a144-b3016175f3a7}/storage.js".text = builtins.toJSON {
                 protocol = false;
                 path = true;
