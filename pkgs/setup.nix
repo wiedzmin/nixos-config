@@ -9,7 +9,7 @@ in {
       "nixpkgs=/etc/nixos/pkgs/nixpkgs-channels"
       "nixpkgs-overlays=/etc/nixos/overlay"
       "nixos-config=/etc/nixos/configuration.nix"
-      "home-manager=/etc/nixos/pkgs/home-manager"
+      "home-manager=/etc/nixos/pkgs/home-manager-proposed"
   ];
   # For nixos-rebuild
   nixpkgs.overlays = map (n: import (path + ("/" + n)))
