@@ -2,7 +2,7 @@ self: super:
 
 let
     nodejs = super."nodejs-10_x";
-    nodeEnv = import ../pkgs/nixpkgs-channels/pkgs/development/node-packages/node-env.nix {
+    nodeEnv = import ../nixpkgs-channels/pkgs/development/node-packages/node-env.nix {
         inherit (super) stdenv python2 utillinux runCommand writeTextFile;
         inherit nodejs;
         libtool = if super.stdenv.isDarwin then super.darwin.cctools else null;

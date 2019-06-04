@@ -1,13 +1,13 @@
 {config, lib, options, modulesPath}:
 
 let
-    path = ../overlay;
+    path = ./overlay;
     content = builtins.readDir path;
 in {
   # For interactive usage
   nix.nixPath = [
       "nixpkgs=/etc/nixos/pkgs/nixpkgs-channels"
-      "nixpkgs-overlays=/etc/nixos/overlay"
+      "nixpkgs-overlays=/etc/nixos/pkgs/overlay"
       "nixos-config=/etc/nixos/configuration.nix"
       "home-manager=/etc/nixos/pkgs/home-manager-proposed"
   ];
