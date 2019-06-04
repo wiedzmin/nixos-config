@@ -22,6 +22,7 @@
             defaultCacheTtlSsh = 34560000;
             maxCacheTtl = 34560000;
             enableSshSupport = true;
+            enableExtraSocket = true;
             extraConfig = ''
                 allow-emacs-pinentry
                 allow-loopback-pinentry
