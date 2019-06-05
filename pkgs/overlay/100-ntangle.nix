@@ -1,10 +1,12 @@
 self: super: {
 
 ntangle = with super; stdenv.mkDerivation rec {
-    name = "ntangle-0.6.3";
+    pname = "ntangle";
+    version = "0.6.3";
 
     src = fetchurl {
-        url = "https://github.com/OrgTangle/ntangle/releases/download/v0.6.3/ntangle-v0.6.3.Linux_64bit_musl.tar.xz";
+        # TODO: check available platforms
+        url = "https://github.com/OrgTangle/ntangle/releases/download/v${version}/ntangle-v${version}.Linux_64bit_musl.tar.xz";
         sha256 = "0qcqbal9fsgq28jxn0gbpxxxw010cbs9jvnzyqagd1s7cyjh40ih";
     };
 
@@ -20,10 +22,10 @@ ntangle = with super; stdenv.mkDerivation rec {
     '';
 
     meta = with stdenv.lib; {
-        description = "Command-line utility for Tangling of Org documents — programmed in Nim. ";
+        description = "Command-line utility for Tangling of Org documents — programmed in Nim";
         homepage = "https://github.com/OrgTangle/ntangle";
-        license = [ pkgs.stdenv.lib.licenses.mit ];
-        platforms = with pkgs.stdenv.lib.platforms; linux;
+        license = licenses.mit;
+        platforms = platforms.linux;
     };
 };
 

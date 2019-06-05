@@ -19,7 +19,7 @@ img = with super; stdenv.mkDerivation rec {
     '';
 
     meta = with stdenv.lib; {
-        description = "Standalone, daemon-less, unprivileged Dockerfile and OCI compatible container image builder.";
+        description = "Standalone, daemon-less, unprivileged Dockerfile and OCI compatible container image builder";
         homepage = "https://github.com/genuinetools/img";
         license = [ pkgs.stdenv.lib.licenses.mit ];
         platforms = with pkgs.stdenv.lib.platforms; unix;

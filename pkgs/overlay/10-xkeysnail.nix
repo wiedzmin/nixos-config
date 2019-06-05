@@ -15,11 +15,11 @@ xkeysnail = super.python3Packages.buildPythonPackage rec {
 
     doCheck = false;
 
-    meta = {
+    meta = with super.stdenv.lib; {
         description = "Yet another keyboard remapping tool for X environment";
         homepage = https://github.com/mooz/xkeysnail;
-        license = super.stdenv.lib.licenses.gpl3;
-        platforms = with super.stdenv.lib.platforms; unix;
+        license = licenses.gpl3;
+        platforms = platforms.unix;
     };
 };
 
