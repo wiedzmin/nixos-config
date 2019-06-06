@@ -77,6 +77,61 @@ in
                 path = true;
                 delimiter = " // ";
             };
+            ".config/imv/config".text = genIni {
+                "options" = {
+                    # Suppress built-in key bindings, and specify them explicitly in this
+                    # config file.
+                    "suppress_default_binds" = true;
+                };
+                "aliases" = {
+                    "q" = "quit";
+                    "next" = "select_rel 1";
+                    "previous" = "select_rel -1";
+                    "n" = "select_rel 1";
+                    "p" = "select_rel -1";
+                };
+                "binds" = {
+                    "q" = "quit";
+
+                    # Image navigation
+                    "<Left>" = "select_rel -1";
+                    "<LeftSquareBracket>" = "select_rel -1";
+                    "<Right>" = "select_rel 1";
+                    "<RightSquareBracket>" = "select_rel 1";
+                    "gg" = "select_abs 0";
+                    "<Shift+g>" = "select_abs -1";
+
+                    # Panning
+                    "j" = "pan 0 -50";
+                    "k" = "pan 0 50";
+                    "h" = "pan 50 0";
+                    "l" = "pan -50 0";
+
+                    # Zooming
+                    "<Up>" = "zoom 1";
+                    "i" = "zoom 1";
+                    "<Down>" = "zoom -1";
+                    "o" = "zoom -1";
+
+                    # Other commands
+                    "x" = "close";
+                    "f" = "fullscreen";
+                    "d" = "overlay";
+                    "p" = "exec echo $imv_current_file";
+                    "c" = "center";
+                    "s" = "scaling_mode next";
+                    "a" = "zoom actual";
+                    "r" = "reset";
+
+                    # Gif playback
+                    "." = "next_frame";
+                    "<Space>" = "toggle_playing";
+
+                    # Slideshow control
+                    "t" = "slideshow_duration +1";
+                    "<Shift+t>" = "slideshow_duration -1";
+                };
+            };
             ".config/tridactyl/tridactylrc".text = ''
                 " Move this to $XDG_CONFIG_DIR/tridactyl/tridactylrc (that's
                 " ~/.config/tridactyl/tridactylrc to mere mortals) or ~/.tridactylrc and
