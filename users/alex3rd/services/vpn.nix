@@ -12,4 +12,12 @@ with import ../const.nix {inherit config pkgs;};
             };
         };
     };
+    systemd.services."openvpn-restart-after-suspend" = {
+        description = "Restart OpenVPN after suspend";
+        after = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
+        wantedBy = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
+        script = ''
+          ${pkgs.systemd}/bin/systemctl try-restart openvpn-jobvpn.service
+        '';
+    };
 }
