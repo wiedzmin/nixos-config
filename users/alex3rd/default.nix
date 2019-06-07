@@ -4,6 +4,7 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
     imports = [
         <home-manager/nixos>
         ./config
+        ./modules
         ./packages.nix
         ./services
         ../scripts.nix
