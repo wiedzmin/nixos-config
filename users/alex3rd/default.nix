@@ -17,16 +17,16 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
         shell = pkgs.zsh;
         extraGroups = [
             "audio"
-            "docker"
             "input"
             "lp"
             "networkmanager"
             "scanner"
-            "vboxusers"
             "video"
             "wheel"
         ];
     };
+
+    systemd.user.services.lowbatt.enable = true;
 
     system.activationScripts.saveCurrentHMVersion = ''
         cd /etc/nixos/pkgs/home-manager

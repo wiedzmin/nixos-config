@@ -1,5 +1,6 @@
 { config, pkgs, lib, ... }:
 with import ../../../../util.nix {inherit lib config pkgs;};
+with import ../../const.nix {inherit config pkgs;};
 let
     dockerStackPsCustomFormat = "{{.Name}}   {{.Image}}   {{.Node}} {{.DesiredState}}   {{.CurrentState}}";
     useDockerStackPsCustomFormat = false;
@@ -14,6 +15,8 @@ in
     virtualisation.libvirtd.enable = true;
     virtualisation.virtualbox.host.enable = true;
     virtualisation.virtualbox.host.enableExtensionPack = true;
+
+    users.extraUsers."${userName}".extraGroups = [ "docker" "libvirtd" "vboxusers" ];
 
     nixpkgs.config.packageOverrides = super: {
         docker-machine-export = pkgs.writeShellScriptBin "docker-machine-export" ''
