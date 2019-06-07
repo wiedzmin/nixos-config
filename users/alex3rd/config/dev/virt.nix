@@ -10,9 +10,17 @@ in
     virtualisation.docker = {
         enable = true;
         storageDriver = "overlay2";
-
     };
-    virtualisation.libvirtd.enable = true;
+
+    virtualisation.libvirtd = {
+        enable = true;
+        qemuVerbatimConfig = ''
+            namespaces = []
+            user = "user"
+            group = "users"
+        '';
+    };
+
     virtualisation.virtualbox.host.enable = true;
     virtualisation.virtualbox.host.enableExtensionPack = true;
 
