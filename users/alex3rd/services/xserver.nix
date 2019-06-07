@@ -1,4 +1,5 @@
 { config, pkgs, ... }:
+with import ../const.nix {inherit config pkgs;};
 {
     imports = [
         ../config/sys.nix
@@ -14,7 +15,14 @@
                 default = "none";
             };
             displayManager = {
-                lightdm.enable = true;
+                lightdm = {
+                    enable = true;
+                    background = "black";
+                    greeters.mini = {
+                        enable = true;
+                        user = userName;
+                    };
+                };
                 gdm.enable = false;
                 sessionCommands = ''
                     ${pkgs.xlibs.xmodmap}/bin/xmodmap /etc/Xmodmaprc
