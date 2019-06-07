@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../../const.nix {inherit config pkgs;};
 let
     rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
         ${pkgs.feh}/bin/feh --bg-fill ${config.sys.wallpaper.baseDir}/${config.sys.wallpaper.current}
@@ -9,7 +9,7 @@ let
     '';
 in
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         home.packages = with pkgs; [
             rescale-wallpaper
         ];

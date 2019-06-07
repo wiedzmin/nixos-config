@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../../const.nix {inherit config pkgs;};
 let
     maxLineLength = 120;
     indentWidth = 4;
@@ -20,7 +20,7 @@ let
     ];
 in
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         home.file = {
             ".pylintrc".text = ''
                 [MASTER]

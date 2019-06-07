@@ -1,4 +1,5 @@
 {config, pkgs, ...}:
+with import ../const.nix {inherit config pkgs;};
 {
     imports =
     [
@@ -14,7 +15,7 @@
         ./xsuspender.nix
     ];
 
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         services.gpg-agent = {
             enable = true;
             defaultCacheTtl = 34560000;

@@ -1,5 +1,6 @@
 {config, pkgs, lib, ...}:
 with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make more declarative
+with import ./const.nix {inherit config pkgs;};
 {
     imports = [
         <home-manager/nixos>
@@ -10,7 +11,7 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
         ../scripts.nix
     ];
 
-    users.extraUsers.alex3rd = {
+    users.extraUsers."${userName}" = {
         isNormalUser = true;
         uid = 1000;
         description = "Alex Ermolov";
@@ -34,13 +35,13 @@ with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make mo
         echo "$hm_revision" > /etc/current-home-manager
     '';
 
-    nix.trustedUsers = [ "alex3rd" ];
+    nix.trustedUsers = [ userName ];
 
     networking.extraHosts = (builtins.concatStringsSep "\n"
                                       (map (host: host.ip + "   " + (builtins.concatStringsSep " " host.hostNames))
                                       (config.job.extraHosts ++ config.misc.extraHosts)));
 
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         nixpkgs.config.allowUnfree = true;
         home.packages = with pkgs; [
             # base

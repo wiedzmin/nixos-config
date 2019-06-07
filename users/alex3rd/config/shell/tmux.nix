@@ -176,7 +176,7 @@ let
     '';
 in
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         home.file = {
             "tmuxp/housekeeping.yml".text = ''
                 session_name: housekeeping

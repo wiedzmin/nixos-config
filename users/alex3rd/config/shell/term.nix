@@ -1,7 +1,7 @@
 {config, pkgs, lib, ...}:
-
+with import ../../const.nix {inherit config pkgs;};
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         programs.alacritty = {
             enable = true;
             settings = {

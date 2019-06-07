@@ -1,4 +1,5 @@
 { config, pkgs, ... }:
+with import ./const.nix {inherit config pkgs;};
 let
     # TODO: write script to query keywords which would provide packages names either from installed or whole nixpkgs
     stagingInactive = with pkgs; [
@@ -359,7 +360,7 @@ let
     ];
 in
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         home.packages = devClients ++
                         devClojure ++
                         devGolangInfra ++

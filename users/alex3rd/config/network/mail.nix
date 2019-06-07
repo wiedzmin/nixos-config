@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../../const.nix {inherit config pkgs;};
 let
     imapfilterOptionsTimeout = 120;
     imapfilterOptionsSubscribe = true;
@@ -14,7 +14,7 @@ let
     '';
 in
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         accounts.email = {
             accounts."personal" = {
                 address = "${config.common.userTraits.email}";

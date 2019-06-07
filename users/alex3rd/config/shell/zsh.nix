@@ -15,7 +15,7 @@ let
     zshHistFilename = ".histfile";
 in
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         home.file = {
             ".zsh/functions.zsh".text = ''
                 dot() {

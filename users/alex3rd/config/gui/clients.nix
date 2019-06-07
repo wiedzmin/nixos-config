@@ -7,7 +7,7 @@ let
     firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../../../pkgs/firefox-addons { });
 in
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         home.packages = with pkgs; [
             tridactyl-native
         ];

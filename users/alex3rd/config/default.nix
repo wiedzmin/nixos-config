@@ -1,4 +1,5 @@
 {config, pkgs, ...}:
+with import ../const.nix {inherit config pkgs;};
 {
     imports =
     [
@@ -8,7 +9,7 @@
         ./shell
     ];
 
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         programs.ssh = {
             enable = true;
             forwardAgent = true;

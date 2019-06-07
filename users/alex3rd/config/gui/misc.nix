@@ -20,7 +20,7 @@ with import ../../const.nix {inherit config pkgs;};
         add mod4 = Super_L
         add mod5 = Hyper_L
     '';
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         home.file = {
             "${config.common.snippets.file}".text = ''
                 ${lib.concatStringsSep "\n" config.common.snippets.inventory}

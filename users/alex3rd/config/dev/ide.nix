@@ -764,7 +764,7 @@ let
         # "python.analysis.typeshedPaths" = [];
         # "python.analysis.warnings" = [];
         "python.autoComplete.addBrackets" = true;
-        "python.autoComplete.extraPaths" = [ "/home/alex3rd/.virtualenvs/emias-middlend/lib" ];
+        "python.autoComplete.extraPaths" = [ "/home/${userName}/.virtualenvs/emias-middlend/lib" ];
         "python.autoComplete.showAdvancedMembers" = true;
         # "python.autoComplete.typeshedPaths" = [];
         "python.autoUpdateLanguageServer" = false;
@@ -859,7 +859,7 @@ let
     };
 in
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         programs.vscode = {
             enable = true;
             userSettings = vcsNix //

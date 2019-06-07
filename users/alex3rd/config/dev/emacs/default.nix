@@ -1,7 +1,8 @@
 {config, pkgs, lib, ...}:
 with import ../../../../../util.nix {inherit lib config pkgs;};
+with import ../../../const.nix {inherit config pkgs;};
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         home.packages = with pkgs; [
             # org-protocol.desktop
             (makeDesktopItem {

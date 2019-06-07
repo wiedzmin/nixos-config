@@ -14,7 +14,7 @@ with import ../../const.nix {inherit config pkgs;};
             exit $?
         '';
     };
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         home.file = {
             ".mrtrust".text = ''
                 ${config.job.workspacePath}/.mrconfig
@@ -141,10 +141,10 @@ with import ../../const.nix {inherit config pkgs;};
             };
             ".config/pass-git-helper/git-pass-mapping.ini".text = ''
                 [github.com*]
-                target=alex3rd/webservices/social/programming/github.com
+                target=${userName}/webservices/social/programming/github.com
 
                 [bitbucket.org*]
-                target=alex3rd/webservices/social/programming/bitbucket.com
+                target=${userName}/webservices/social/programming/bitbucket.com
             '';
         };
         programs.git = {

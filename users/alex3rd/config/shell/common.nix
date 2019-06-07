@@ -6,7 +6,7 @@ with import ../../const.nix {inherit config pkgs;};
         ../../private/job.nix
     ];
 
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         home.file = {
             ".config/wtf/config.yml".text = ''
                 wtf:

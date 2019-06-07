@@ -413,7 +413,7 @@ let
     '';
 in
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         home.file = {
             ".xmonad/lib/Extensions/Xkb.hs".source = ./lib/Xkb.hs;
             ".xmonad/lib/Extensions/ExtraCombinators.hs".source = ./lib/ExtraCombinators.hs;

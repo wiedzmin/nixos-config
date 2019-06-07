@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-
+with import ../../const.nix {inherit config pkgs;};
 let
     urxvtUrlLauncher = "${pkgs.xdg_utils}/bin/xdg-open";
     urxvtPerlExtensions = [
@@ -14,7 +14,7 @@ let
     ];
 in
 {
-    home-manager.users.alex3rd = {
+    home-manager.users."${userName}" = {
         xresources.properties = {
             "Xmessage*Buttons" = "Quit";
             "Xmessage*defaultButton" = "Quit";
