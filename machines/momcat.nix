@@ -12,6 +12,10 @@
     nix.maxJobs = lib.mkDefault 4;
     nix.buildCores = lib.mkDefault 4;
 
+    nix.optimise.automatic = true;
+    nix.gc.automatic = true;
+    nix.gc.options = "--delete-older-than 7d";
+
     system.activationScripts.ensureBacklightPermissions = ''
         chmod a+w /sys/class/backlight/intel_backlight/brightness
     '';

@@ -2,7 +2,6 @@
 {
     imports =
     [
-        ./collect-garbage.nix
         ./fusuma.nix
         ./git-auto.nix
         ./imapfilter.nix

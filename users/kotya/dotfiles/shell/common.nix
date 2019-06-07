@@ -6,10 +6,6 @@
     ];
 
     home-manager.users.kotya = {
-        home.packages = with pkgs; [
-            optimize-nix
-        ];
-
         programs.htop.enable = true;
         programs.command-not-found.enable = true;
         programs.lesspipe.enable = true;

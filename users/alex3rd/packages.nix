@@ -317,8 +317,6 @@ let
         up
         xe
     ] ++ [
-        optimize-nix
-    ] ++ [
         eternal-terminal
     ] ++ [
         fpp

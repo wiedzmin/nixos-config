@@ -17,20 +17,6 @@ in
 
                 ${pkgs.nix-du}/bin/nix-du -s ${nixDuSizeThreshold} | ${pkgs.graphviz}/bin/dot -T${nixDuFileFormat} > ${nixDuBasedir}/${nixDuFilename}.${nixDuFileFormat}
             '';
-            optimize-nix = pkgs.writeShellScriptBin "optimize-nix" ''
-                set -eu
-
-                # Delete everything from this profile that isn't currently needed
-                ${pkgs.nix}/bin/nix-env --delete-generations old
-
-                # Delete generations older than a week
-                ${pkgs.nix}/bin/nix-collect-garbage
-                ${pkgs.nix}/bin/nix-collect-garbage --delete-older-than 7d
-
-                # Optimize
-                ${pkgs.nix}/bin/nix-store --gc --print-dead
-                ${pkgs.nix}/bin/nix-store --optimise
-            '';
             watch_nixpkgs_updates = pkgs.writeShellScriptBin "watch_nixpkgs_updates" ''
                 if [ ! -z "$(${pkgs.watch_git_remote_status}/bin/watch_git_remote_status /etc/nixos/pkgs/nixpkgs-channels | grep $NEEDFETCH_MESSAGE)" ]; then
                     ${pkgs.dunst}/bin/dunstify -t 30000 "Nixpkgs updated, consider install!"
