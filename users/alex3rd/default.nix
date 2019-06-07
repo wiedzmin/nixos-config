@@ -1,5 +1,5 @@
 {config, pkgs, lib, ...}:
-with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make more declarative
+with import <home-manager/modules/lib/dag.nix> { inherit lib; };
 with import ./const.nix {inherit config pkgs;};
 {
     imports = [
