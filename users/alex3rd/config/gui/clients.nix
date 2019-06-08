@@ -68,8 +68,11 @@ in
         };
         programs.chromium = {
             enable = true;
-            # TODO: find extensions
-            # extensions = [];
+            extensions = [
+                "gfbliohnnapiefjpjlpjnehglfpaknnc" # surfingkeys
+                "ignpacbgnbnkaiooknalneoeladjnfgb" # url in title
+                "poahndpaaanbpbeafbkploiobpiiieko" # display anchors
+            ];
         };
         home.file = {
             ".mozilla/firefox/profile.default/browser-extension-data/{d47d18bc-d6ba-4f96-a144-b3016175f3a7}/storage.js".text = builtins.toJSON {
