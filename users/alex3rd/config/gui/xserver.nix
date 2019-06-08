@@ -1,8 +1,7 @@
 { config, pkgs, ... }:
-with import ../const.nix {inherit config pkgs;};
+with import ../../const.nix {inherit config pkgs;};
 {
     imports = [
-        ../config/sys.nix
         ./wm/xmonad.nix
     ];
     services = {

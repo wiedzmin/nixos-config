@@ -11,7 +11,6 @@ with import ../const.nix {inherit config pkgs;};
         ./sshuttle.nix
         ./vpn.nix
         ./xkeysnail.nix
-        ./xserver.nix
         ./xsuspender.nix
     ];
 
