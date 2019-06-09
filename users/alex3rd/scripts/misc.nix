@@ -7,50 +7,6 @@ in
 {
     config = {
         nixpkgs.config.packageOverrides = super: {
-            systemctl-status = pkgs.writeShellScriptBin "systemctl-status" ''
-                if [ -z "$1" ]
-                then
-                    echo -e ""
-                else
-                    STATUS=`${pkgs.systemd}/bin/systemctl status $1 | awk 'NR==3 {print $2}'`
-                    if [ $STATUS == "inactive" ]
-                    then
-                        echo -e ""
-                    else
-                        if [ -z "$2" ]
-                        then
-                            echo -e "[*]"
-                        else
-                            echo -e $2
-                        fi
-                    fi
-                fi
-            '';
-            misc_lib = pkgs.writeShellScriptBin "misc_lib" ''
-                enforce_vpn() {
-                    VPN_STATUS=$(${pkgs.systemctl-status}/bin/systemctl-status openvpn-jobvpn.service)
-                    if [[ "$VPN_STATUS" == "" ]]; then
-                        ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "VPN is off, turn it on and retry"
-                        exit 1
-                    fi
-                }
-
-                function show_list() {
-                    contents=("$@")
-                    for i in "''${contents[@]}";
-                    do
-                        echo "$i"
-                    done
-                }
-
-                function show_mapping_keys() {
-                    eval "declare -A contents="''${1#*=}
-                    for i in "''${!contents[@]}";
-                    do
-                        echo "$i"
-                    done
-                }
-            '';
             rofi_buku_functions = pkgs.writeShellScriptBin "rofi_buku_functions" ''
                 _rofi () {
                     ${pkgs.rofi}/bin/rofi -dmenu -i -no-levenshtein-sort -width 1000 "$@"
