@@ -143,7 +143,7 @@ with import ../../const.nix {inherit config pkgs;};
                                                              "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
                                     , Run Com "${wifi-status}/bin/wifi-status" [] "wifi" 60
                                     , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["openvpn-jobvpn.service", "[V]"] "vpn" 30
-                                    , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["sshuttle.service", "[S]"] "sshuttle" 30
+                                    , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["sshuttle.service", "[S]", "user"] "sshuttle" 30
                                     , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["xsuspender.service", "[X]"] "xsuspender" 30
                                     , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
                                               , ("ru", "<fc=green>ru</fc>")

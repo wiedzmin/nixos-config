@@ -534,8 +534,8 @@ in
                               , "M-w S-e"      ~> spawn "${pkgs.procps}/bin/pkill -SIGUSR2 emacs"
                               ]
 
-                    servicesKeys = [ "M-s s <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart sshuttle.service"
-                                   , "M-s s <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop sshuttle.service"
+                    servicesKeys = [ "M-s s <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl --user restart sshuttle.service"
+                                   , "M-s s <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl --user stop sshuttle.service"
                                    , "M-s v <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart openvpn-jobvpn.service"
                                    , "M-s v <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop openvpn-jobvpn.service"
                                    , "M-s x <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart xsuspender.service"
