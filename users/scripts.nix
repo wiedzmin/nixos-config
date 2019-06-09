@@ -160,11 +160,18 @@ in
                 HM: $hm_current_hash/$hm_current_branch"
             '';
             systemctl-status = pkgs.writeShellScriptBin "systemctl-status" ''
-                if [ -z "$1" ]
-                then
+                if [ $# -le 1 ]; then
                     echo -e ""
                 else
-                    STATUS=`${pkgs.systemd}/bin/systemctl status $1 | awk 'NR==3 {print $2}'`
+                    if [[ $# == 2 ]]; then
+                        if [[ $2 =~ ^\[ ]]; then
+                            STATUS=`${pkgs.systemd}/bin/systemctl status $1 | ${pkgs.gawk}/bin/awk 'NR==3 {print $2}'`
+                        else
+                            echo -e ""
+                        fi
+                    elif [[ $# == 3 ]]; then
+                        STATUS=`${pkgs.systemd}/bin/systemctl --user status $1 | ${pkgs.gawk}/bin/awk 'NR==3 {print $2}'`
+                    fi
                     if [ $STATUS == "inactive" ]
                     then
                         echo -e ""
