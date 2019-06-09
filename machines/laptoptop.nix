@@ -121,6 +121,11 @@
         wrappers = {
             pmount.source = "${pkgs.pmount}/bin/pmount";
             pumount.source = "${pkgs.pmount}/bin/pumount";
+            sudo = {
+                source = "${pkgs.sudo}/bin/sudo";
+                owner = "root";
+                permissions = "u+s";
+            };
         };
         allowUserNamespaces = true;
         allowSimultaneousMultithreading = true;

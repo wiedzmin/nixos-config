@@ -1,7 +1,7 @@
 {config, pkgs, ...}:
 with import ../const.nix {inherit config pkgs;};
 {
-    systemd.services."xkeysnail" = {
+    systemd.user.services."xkeysnail" = {
         enable = true;
         description = "Xkeysnail";
         wantedBy = [ "graphical.target" ];
@@ -14,7 +14,7 @@ with import ../const.nix {inherit config pkgs;};
             PIDFile = "/var/run/xkeysnail.pid";
             Restart = "always";
             RestartSec = 1;
-            ExecStart = "${pkgs.xkeysnail}/bin/xkeysnail /home/${userName}/.config/xkeysnail/config.py";
+            ExecStart = "/run/wrappers/bin/sudo ${pkgs.xkeysnail}/bin/xkeysnail /home/${userName}/.config/xkeysnail/config.py";
         };
     };
 }
