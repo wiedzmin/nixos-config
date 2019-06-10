@@ -17,11 +17,6 @@ in
 
                 ${pkgs.nix-du}/bin/nix-du -s ${nixDuSizeThreshold} | ${pkgs.graphviz}/bin/dot -T${nixDuFileFormat} > ${nixDuBasedir}/${nixDuFilename}.${nixDuFileFormat}
             '';
-            watch_nixpkgs_updates = pkgs.writeShellScriptBin "watch_nixpkgs_updates" ''
-                if [ ! -z "$(${pkgs.watch_git_remote_status}/bin/watch_git_remote_status /etc/nixos/pkgs/nixpkgs-channels | grep $NEEDFETCH_MESSAGE)" ]; then
-                    ${pkgs.dunst}/bin/dunstify -t 30000 "Nixpkgs updated, consider install!"
-                fi
-            '';
             watch_home_manager_updates = pkgs.writeShellScriptBin "watch_home_manager_updates" ''
                 if [ ! -z "$(${pkgs.watch_git_remote_status}/bin/watch_git_remote_status /etc/nixos/pkgs/home-manager | grep $NEEDFETCH_MESSAGE)" ]; then
                     ${pkgs.dunst}/bin/dunstify -t 30000 "Home-manager updated, consider install!"

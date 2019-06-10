@@ -1,14 +1,15 @@
 {config, pkgs, lib, ...}:
 with import <home-manager/modules/lib/dag.nix> { inherit lib; };
 with import ./const.nix {inherit config pkgs;};
+with import ./private/sshuttle.nix {inherit config pkgs lib;};
 {
     imports = [
         <home-manager/nixos>
         ./config
         ./modules
         ./packages.nix
-        ./services
         ../scripts.nix
+        ./private/network.nix
     ];
 
     users.extraUsers."${userName}" = {
@@ -27,7 +28,72 @@ with import ./const.nix {inherit config pkgs;};
         ];
     };
 
-    systemd.user.services.lowbatt.enable = true;
+    services.batteryNotifier = {
+        enable = true;
+        notifyCapacity = 20;
+        suspendCapacity = 10;
+    };
+
+    services.fusuma = {
+        enable = true;
+        userName = "alex3rd";   # TODO: templatize
+    };
+
+    services.order-screenshots = {
+        enable = true;
+        baseDir = "/home/alex3rd/screenshots";    # TODO: templatize
+    };
+
+    services.sshuttle = {
+        enable = true;
+        remote = sshuttleRemote;
+        excludeSubnets = sshuttleExcludes;
+        sshIdentity = sshuttleIdentity;
+    };
+
+    services.xkeysnail = {
+        enable = true;
+        userName = "alex3rd";   # TODO: templatize
+    };
+
+    services.openvpn = {
+        servers = {
+            jobvpn = {
+                # TODO: make more declarative, i.e. to hide private part and automate all the rest
+                config = ''config /etc/nixos/users/${userName}/private/vpn/job.current/office.ovpn'';
+                autoStart = false;
+                up = "${pkgs.update-resolv-conf}/libexec/openvpn/update-resolv-conf";
+                down = "${pkgs.update-resolv-conf}/libexec/openvpn/update-resolv-conf";
+            };
+        };
+    };
+
+    services.keep-vpn = {
+        enable = true;
+        vpnName = "jobvpn";   # TODO: templatize
+    };
+
+    services.xsuspender = {
+        enable = true;
+        userName = "alex3rd";   # TODO: templatize
+    };
+
+    services.git-fetch-updates = {
+        enable = true;
+        bootTimespec = "1min";
+        activeTimespec = "30min";
+    };
+
+    services.git-push-updates = {
+        enable = false;
+        calendarTimespec = "*-*-* 18:00:00";
+    };
+
+    services.git-save-wip = {
+        enable = false;
+        bootTimespec = "30sec";
+        activeTimespec = "1hour";
+    };
 
     system.activationScripts.saveCurrentHMVersion = ''
         cd /etc/nixos/pkgs/home-manager
@@ -48,5 +114,17 @@ with import ./const.nix {inherit config pkgs;};
             file
             glibcLocales
         ];
+        services.gpg-agent = {
+            enable = true;
+            defaultCacheTtl = 34560000;
+            defaultCacheTtlSsh = 34560000;
+            maxCacheTtl = 34560000;
+            enableSshSupport = true;
+            enableExtraSocket = true;
+            extraConfig = ''
+                allow-emacs-pinentry
+                allow-loopback-pinentry
+            '';
+        };
     };
 }

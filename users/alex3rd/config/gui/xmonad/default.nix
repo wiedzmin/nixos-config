@@ -538,8 +538,8 @@ in
                                    , "M-s s <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl --user stop sshuttle.service"
                                    , "M-s v <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart openvpn-jobvpn.service"
                                    , "M-s v <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop openvpn-jobvpn.service"
-                                   , "M-s x <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart xsuspender.service"
-                                   , "M-s x <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop xsuspender.service"
+                                   , "M-s x <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl --user restart xsuspender.service"
+                                   , "M-s x <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl --user stop xsuspender.service"
                                    ]
 
                     multimediaKeys = [ "<XF86AudioRaiseVolume>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString volumeDeltaFraction}+"
