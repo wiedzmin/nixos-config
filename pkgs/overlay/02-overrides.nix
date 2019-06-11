@@ -5,6 +5,16 @@ in
 self: super: {
     dunst = super.dunst.overrideAttrs (attrs: {
         buildFlags = attrs.buildFlags ++ [ "dunstify" ];
+
+        buildInputs = attrs.buildInputs ++ (with super; [
+            libxdg_basedir
+        ]);
+        postInstall = ''
+            install -Dm755 dunstify $out/bin
+
+            wrapProgram $out/bin/dunst \
+                --set GDK_PIXBUF_MODULE_FILE "$GDK_PIXBUF_MODULE_FILE"
+        '';
     });
     pinentry = super.pinentry.overrideAttrs (attrs: {
         configureFlags = attrs.configureFlags ++ [ (mkEnable true "pinentry-emacs") ];
