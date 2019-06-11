@@ -2,6 +2,7 @@
 {
     imports =
     [
+        ./clean-trash.nix
         ./fusuma.nix
         ./git-fetch-updates.nix
         ./git-push-updates.nix

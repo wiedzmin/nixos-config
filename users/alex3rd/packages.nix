@@ -6,8 +6,6 @@ let
         paperless # see docs
     ];
     stagingCommon = with pkgs; [
-
-        trash-cli # misc # TODO: think of automating trash emptying
     ];
     stagingWork = with pkgs; [
         drone

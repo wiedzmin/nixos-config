@@ -95,6 +95,11 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
         activeTimespec = "1hour";
     };
 
+    services.clean-trash = {
+        enable = true;
+        calendarTimespec = "*-*-* 23:00:00";
+    };
+
     system.activationScripts.saveCurrentHMVersion = ''
         cd /etc/nixos/pkgs/home-manager
         hm_revision=$(${pkgs.git}/bin/git rev-parse --short HEAD)
