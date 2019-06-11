@@ -157,7 +157,7 @@
                            org-id org-info org-inlinetask org-irc
                            org-mouse org-protocol org-timer org-w3m))
   (setq org-contrib-extra '(org-bookmark org-checklist org-collector
-                            org-drill org-expiry org-index org-interactive-query
+                            org-drill org-expiry org-interactive-query
                             org-man org-velocity))
   (setq org-modules `(,@org-contrib-base ,@org-contrib-extra))
   (add-to-list 'file-coding-system-alist (cons "\\.\\(org\\|org_archive\\|/TODO\\)$"  'utf-8))
