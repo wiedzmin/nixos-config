@@ -58,6 +58,8 @@
         kernel.sysctl = {
             "fs.inotify.max_user_instances" = 512;
             "fs.inotify.max_user_watches" = 1048576;
+            "net.ipv4.ip_forward" = 1; # for VMs forwarding
+            "net.ipv4.ip_default_ttl" = 65;
         };
     };
 
