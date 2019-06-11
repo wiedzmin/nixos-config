@@ -132,7 +132,6 @@
         lockKernelModules = false;
     };
 
-
     i18n = {
         consoleFont = "Lat2-Terminus16";
         defaultLocale = "ru_RU.UTF-8";
