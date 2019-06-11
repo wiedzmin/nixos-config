@@ -242,19 +242,4 @@ in
             exit 0
         '';
     };
-
-    environment.systemPackages = with pkgs; [
-        appimage-run
-        ctop
-        dive
-        docker-machine
-        docker_compose
-        libcgroup
-        promoter
-        skopeo
-        vagrant
-
-        docker-machine-export
-        docker-machine-import
-    ];
 }

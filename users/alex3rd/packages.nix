@@ -108,6 +108,25 @@ let
         gitAndTools.topGit
         gitstats
     ];
+    virt = with pkgs; [
+        appimage-run
+        ctop
+        dive
+        docker-machine
+        docker_compose
+        kvm
+        libcgroup
+        promoter
+        skopeo
+        spice
+        spice-gtk
+        tigervnc
+        vagrant
+        virtmanager
+        virtviewer
+        docker-machine-export
+        docker-machine-import
+    ];
     forensics = with pkgs; [
         bbe
         binutils
@@ -363,6 +382,7 @@ in
                         devMisc ++
                         devPythonTools ++
                         devVcsGit ++
+                        virt ++
                         forensics ++
                         miscClients ++
                         miscMedia ++
