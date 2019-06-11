@@ -47,7 +47,7 @@
 
                 echo "actually installing"
                 # home-manager and nixpkgs paths are either absent in NIX_PATH or point to wrong locations
-                nixos-install --root /mnt -I home-manager=/mnt/etc/nixos/pkgs/home-manager -I nixpkgs=/mnt/etc/nixos/pkgs/nixpkgs-channels
+                nixos-install --root /mnt -I home-manager=/mnt/etc/nixos/pkgs/home-manager-proposed -I nixpkgs=/mnt/etc/nixos/pkgs/nixpkgs-channels
             '';
         };
         environment.systemPackages = with pkgs; [
