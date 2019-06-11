@@ -36,6 +36,7 @@
                 cd /mnt/etc/nixos && git submodule init && git submodule update
                 echo "fetching private user data"
                 # TODO: make more declarative/self-contained
+                # TODO: harden in terms of security
                 cd "/mnt/etc/nixos/users/$USERNAME" && wget "http://$PRIVATE_STORAGE_HOST:$PRIVATE_STORAGE_HOST_PORT/''${USERNAME}_private.tar.gz"
                 if [ $? -ne 0 ]; then
                     echo "Error fetching private data, check manually"
