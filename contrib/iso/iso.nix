@@ -43,7 +43,7 @@
                 fi
 
                 echo "symlinking configuration root"
-                cd /mnt/etc/nixos && ln -rsvf "/mnt/etc/nixos/machines/$MACHINE" configuration.nix
+                cd /mnt/etc/nixos && ln -rsvf "machines/$MACHINE.nix" ./configuration.nix
 
                 echo "actually installing"
                 # home-manager and nixpkgs paths are either absent in NIX_PATH or point to wrong locations
