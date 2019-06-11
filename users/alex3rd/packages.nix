@@ -98,7 +98,7 @@ let
         zeal
     ];
     devVcsGit = with pkgs; [
-        git-quick-stats
+        proposed.gitAndTools.git-quick-stats
         git-sizer
         gitAndTools.ghq
         gitAndTools.git-absorb # TODO: review abilities and maybe use in some automation
