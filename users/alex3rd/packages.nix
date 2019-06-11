@@ -3,19 +3,11 @@ with import ./const.nix {inherit config pkgs;};
 let
     # TODO: write script to query keywords which would provide packages names either from installed or whole nixpkgs
     stagingInactive = with pkgs; [
-        # https://github.com/lotabout/rargs - make overlay
-        genymotion
-        git-tbdiff # make overlay
-        handbrake # + service
-        nq # for mp3 encoding
         paperless # see docs
-        update-resolv-conf # review
     ];
     stagingCommon = with pkgs; [
-        inetutils               # + network
 
         trash-cli # misc # TODO: think of automating trash emptying
-        moreutils               # + misc
     ];
     stagingWork = with pkgs; [
         drone
@@ -24,17 +16,14 @@ let
         terraform
     ];
     sandbox = with pkgs; [ # binaries for PATH
-        # transmission + service
-        deluge
+        # transmission + service https://transmissionbt.com/
         fd
         gnuplot                 # ? misc
         hstr                    # ? misc shell
         k2pdfopt
         lsd
         ncmpcpp
-        rtorrent
         uget
-        unison
         xdotool
         xlibs.xwininfo
         xorg.xdpyinfo
@@ -138,6 +127,7 @@ let
         sysdig
         valgrind
         vmtouch
+        vnstat
         vulnix
     ];
     devIde = with pkgs; [
@@ -224,6 +214,7 @@ let
     ];
     miscClients = with pkgs; [
         aria2
+        inetutils
         qbittorrent
         skype
         slack
@@ -247,8 +238,8 @@ let
             scripts = [ mpvScripts.mpris ];
         }))
         android-file-transfer
-        bup
         clipgrab
+        desktop-file-utils
         exif
         exiv2
         ffmpeg
@@ -261,6 +252,7 @@ let
         minitube
         playerctl
         python3Packages.mps-youtube # TODO: make script + service to backup playlists data
+        shared-mime-info
         testdisk
         xsel # for firefox native clients
         you-get
@@ -284,6 +276,8 @@ let
         archiver
         fpart
         jdupes
+        moreutils
+        nq
         pbzip2
         pigz
         rmlint
@@ -373,6 +367,7 @@ in
                         miscClients ++
                         miscMedia ++
                         monitoring ++
+                        org ++
                         nix ++
                         sandbox ++
                         security ++
