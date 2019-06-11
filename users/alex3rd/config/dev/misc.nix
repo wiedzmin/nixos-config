@@ -1,5 +1,6 @@
 { config, pkgs, lib, ... }:
 with import ../../../../util.nix {inherit lib config pkgs;};
+with import ../../const.nix {inherit lib config pkgs;};
 let
     hostTraitsIpOutputPosition = 4;
 in
@@ -12,6 +13,7 @@ in
         };
         wavemon.enable = true;
     };
+    users.extraUsers."${userName}".extraGroups = [ "wireshark" ];
 
     nixpkgs.config.packageOverrides = {
         rofi_extra_hosts_traits = pkgs.writeShellScriptBin "rofi_extra_hosts_traits" ''
