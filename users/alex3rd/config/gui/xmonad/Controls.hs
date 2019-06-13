@@ -121,11 +121,23 @@ servicesKeys = [ "M-s s <Up>" ~> spawn "@sctlUserRestart@ sshuttle.service"
                , "M-s x <Down>" ~> spawn "@sctlUserStop@ xsuspender.service"
                ]
 
-multimediaKeys = [ "<XF86AudioRaiseVolume>" ~> spawn "@pctlRaiseVolume@"
-                 , "<XF86AudioLowerVolume>" ~> spawn "@pctlLowerVolume@"
-                 , "C-<XF86AudioRaiseVolume>" ~> spawn "@pulseRaiseVolume@"
-                 , "C-<XF86AudioLowerVolume>" ~> spawn "@pulseLowerVolume@"
-                 ]
+hardwareKeys = [ "<XF86AudioRaiseVolume>" ~> spawn "@pctlRaiseVolume@"
+               , "<XF86AudioLowerVolume>" ~> spawn "@pctlLowerVolume@"
+               , "C-<XF86AudioRaiseVolume>" ~> spawn "@pulseRaiseVolume@"
+               , "C-<XF86AudioLowerVolume>" ~> spawn "@pulseLowerVolume@"
+               , "<XF86AudioPrev>" ~> spawn "@pctl@ previous"
+               , "<XF86AudioPlay>" ~> spawn "@pctl@ play-pause"
+               , "<XF86AudioNext>" ~> spawn "@pctl@ next"
+               , "<XF86AudioMute>" ~> spawn "@pactl@ set-sink-mute 1 toggle"
+               , "<XF86AudioMicMute>" ~> spawn "@pactl@ set-source-mute 2 toggle"
+               , "M-<XF86AudioNext>" ~> spawn "@pctlSeekForward@"
+               , "M-<XF86AudioPrev>" ~> spawn "@pctlSeekBackward@"
+               , "<XF86MonBrightnessUp>" ~> spawn "@brightnessUp@"
+               , "<XF86MonBrightnessDown>" ~> spawn "@brightnessDown@"
+               , "C-<XF86MonBrightnessUp>" ~> spawn "@brightnessMax@"
+               , "C-<XF86MonBrightnessDown>" ~> spawn "@brightnessMin@"
+               , "<XF86Launch1>" ~> spawn "@rofiCombiRun@"
+               ]
 
 windowKeys = [ "M-S-w M-S-n"       ~> moveTo Next EmptyWS -- find a free workspace
              , "M-S-w M-S-<Up>"    ~> shiftToPrev
@@ -144,20 +156,6 @@ layoutKeys = [ "M-; " ++ keys ~> sendMessage $ JumpToLayout $ layout | (keys, la
              , "M-<Up>"        ~> windowGo U True
              , "M-<Down>"      ~> windowGo D True
              ]
-
-mpdKeys = [ "<XF86AudioPrev>" ~> spawn "@pctl@ previous"
-          , "<XF86AudioPlay>" ~> spawn "@pctl@ play-pause"
-          , "<XF86AudioNext>" ~> spawn "@pctl@ next"
-          , "<XF86AudioMute>" ~> spawn "@pactl@ set-sink-mute 0 toggle"
-          , "M-<XF86AudioNext>" ~> spawn "@pctlSeekForward@"
-          , "M-<XF86AudioPrev>" ~> spawn "@pctlSeekBackward@"
-          ]
-
-backlightKeys = [ "<XF86MonBrightnessUp>" ~> spawn "@brightnessUp@"
-                , "<XF86MonBrightnessDown>" ~> spawn "@brightnessDown@"
-                , "C-<XF86MonBrightnessUp>" ~> spawn "@brightnessMax@"
-                , "C-<XF86MonBrightnessDown>" ~> spawn "@brightnessMin@"
-                ]
 
 switchScreenKeys = [ "M-" ++ m ++ key ~> f sc
                    | (f, m) <- [(viewScreen WS.naturalScreenOrderer, "C-"), (sendToScreen def, "M1-")]
@@ -182,11 +180,9 @@ switchWorkspaceKeys conf = [ m ++ k ~> windows $ a i
 myKeys = \conf -> mkKeymap conf $
          appKeys ++
          auxKeys ++
-         backlightKeys ++
+         hardwareKeys ++
          basicKeys conf ++
          layoutKeys ++
-         mpdKeys ++
-         multimediaKeys ++
          servicesKeys ++
          switchScreenKeys ++
          switchWorkspaceKeys conf ++
