@@ -3,9 +3,12 @@ with import ./const.nix {inherit config pkgs;};
 let
     # TODO: write script to query keywords which would provide packages names either from installed or whole nixpkgs
     stagingInactive = with pkgs; [
+        # sensu-go-{cli,agent,backend}
         paperless # see docs
+        ulauncher
     ];
     stagingCommon = with pkgs; [
+        aerc
     ];
     stagingWork = with pkgs; [
         drone
@@ -107,7 +110,6 @@ let
         gitstats
     ];
     virt = with pkgs; [
-        appimage-run
         ctop
         dive
         docker-machine
