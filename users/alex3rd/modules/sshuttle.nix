@@ -59,6 +59,8 @@ in {
                     ExecStart = "-/run/wrappers/bin/sudo ${pkgs.sshuttle}/bin/sshuttle -D --dns -r ${cfg.remote}" +
                                 (lib.concatMapStrings (subnet: " -x ${subnet}") cfg.excludeSubnets) +
                                 " 0/0 --pidfile=/var/run/sshuttle.pid -e 'ssh -i ${cfg.sshIdentity}'";
+                    ExecStop = "/run/wrappers/bin/sudo ${pkgs.procps}/bin/pkill -SIGTERM -f sshuttle";
+                    KillMode = "mixed";
                 };
             };
         })
