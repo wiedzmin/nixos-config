@@ -21,9 +21,6 @@ in
         '';
     };
 
-    virtualisation.virtualbox.host.enable = true;
-    virtualisation.virtualbox.host.enableExtensionPack = true;
-
     users.extraUsers."${userName}".extraGroups = [ "docker" "libvirtd" "vboxusers" ];
 
     nixpkgs.config.packageOverrides = super: {
