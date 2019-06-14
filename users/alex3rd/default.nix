@@ -131,5 +131,13 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
                 allow-loopback-pinentry
             '';
         };
+        programs.gpg = {
+            enable = true;
+            settings = {
+                keyserver = "hkp://keys.gnupg.net";
+                require-cross-certification = true;
+                use-agent = true;
+            };
+        };
     };
 }
