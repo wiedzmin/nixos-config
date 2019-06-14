@@ -16,7 +16,7 @@ with import ../../../const.nix {inherit config pkgs;};
                 ];
             })
 
-            bash-language-server
+            nodePackages.bash-language-server
             ccls
             flow
             ms-pyls
