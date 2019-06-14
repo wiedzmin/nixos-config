@@ -42,7 +42,6 @@
                 elif [ "$DBMS_COMMAND" == "pgcli" ]; then
                     ${pkgs.tmux}/bin/tmux new-window "PGPASSWORD=$DBMS_PASSWORD $CLI_EXECUTABLE --host $DBMS_IP --user $DBMS_USER"
                 fi
-
             fi
         }
 
