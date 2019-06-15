@@ -139,5 +139,6 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
                 use-agent = true;
             };
         };
+        home.stateVersion = "19.09";
     };
 }
