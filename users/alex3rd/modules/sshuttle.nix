@@ -1,8 +1,6 @@
 { config, lib, pkgs, ...}:
-with import ../const.nix {inherit config pkgs;};
 with lib;
 
-# TODO: think of adding more options
 let
     cfg = config.services.sshuttle;
 in {
@@ -17,8 +15,8 @@ in {
                 '';
             };
             remote = mkOption {
-                type = types.str;
-                default = "";
+                type = types.nullOr types.str;
+                default = null;
                 example = "root@example.com";
                 description = ''
                     remote sshuttle server identity.
@@ -36,33 +34,47 @@ in {
                 default = "/home/${userName}/.ssh/id_rsa";
                 description = "SSH identity file";
             };
+            # TODO: if disabled, find out how to turn off service before suspend
+            keep = mkOption {
+                type = types.bool;
+                default = false;
+                description = ''
+                    Whether to keep sshuttle up and running between suspends.
+                '';
+            };
         };
     };
 
-    config = mkMerge [
-        {
-            assertions = [ # FIXME: assertion condition fires before this at "compile" time
-                { assertion = cfg.remote != ""; message = "Must provide remote identity."; }
-                { assertion = cfg.sshIdentity != ""; message = "Must provide local identity."; }
-            ];
-        }
+    config = mkIf cfg.enable {
+        assertions = [
+            { assertion = cfg.remote != null; message = "Must provide remote identity."; }
+        ];
 
-        (mkIf cfg.enable {
-            systemd.user.services."sshuttle" = {
-                description = "sshuttle tunnel to remote server";
-                after = [ "network.target" "suspend.target" ];
-                path = [ pkgs.logger ];
-                serviceConfig = {
-                    Type = "forking";
-                    Restart = "always";
-                    RestartSec = 2;
-                    ExecStart = "-/run/wrappers/bin/sudo ${pkgs.sshuttle}/bin/sshuttle -D --dns -r ${cfg.remote}" +
-                                (lib.concatMapStrings (subnet: " -x ${subnet}") cfg.excludeSubnets) +
-                                " 0/0 --pidfile=/var/run/sshuttle.pid -e 'ssh -i ${cfg.sshIdentity}'";
-                    ExecStop = "/run/wrappers/bin/sudo ${pkgs.procps}/bin/pkill -SIGTERM -f sshuttle";
-                    KillMode = "mixed";
-                };
+        systemd.user.services."sshuttle" = {
+            description = "sshuttle tunnel to remote server";
+            after = [ "network.target" "suspend.target" ];
+            path = [ pkgs.logger ];
+            serviceConfig = {
+                Type = "forking";
+                Restart = "always";
+                RestartSec = 2;
+                ExecStart = "-/run/wrappers/bin/sudo ${pkgs.sshuttle}/bin/sshuttle -D --dns -r ${cfg.remote}" +
+                            (lib.concatMapStrings (subnet: " -x ${subnet}") cfg.excludeSubnets) +
+                            " 0/0 --pidfile=/var/run/sshuttle.pid -e 'ssh -i ${cfg.sshIdentity}'";
+                ExecStop = "/run/wrappers/bin/sudo ${pkgs.procps}/bin/pkill -SIGTERM -f sshuttle";
+                KillMode = "mixed";
             };
-        })
-    ];
+        };
+
+        systemd.user.services."keep-sshuttle" = mkIf cfg.keep {
+            description = "Restart Sshuttle after suspend";
+            after = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
+            partOf = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ]; # check if it needed/useful
+            wantedBy = [ "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
+            serviceConfig = {
+                Type = "oneshot";
+                ExecStart = "${pkgs.systemd}/bin/systemctl --user try-restart sshuttle.service";
+            };
+        };
+    };
 }

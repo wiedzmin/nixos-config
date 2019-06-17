@@ -1,6 +1,4 @@
-# trash-cli # misc # TODO: think of automating trash emptying https://github.com/andreafrancia/trash-cli
 { config, lib, pkgs, ...}:
-with import ../const.nix {inherit config pkgs;};
 with lib;
 
 let
@@ -24,6 +22,20 @@ in {
                     Days to keep trash.
                 '';
             };
+            bootTimespec = mkOption {
+                type = types.str;
+                default = "";
+                description = ''
+                    Interval to activate service after system boot (in systemd format).
+                '';
+            };
+            activeTimespec = mkOption {
+                type = types.str;
+                default = "";
+                description = ''
+                    Interval to activate service while system runs (in systemd format).
+                '';
+            };
             calendarTimespec = mkOption {
                 type = types.str;
                 default = "";
@@ -37,8 +49,9 @@ in {
     config = mkIf cfg.enable {
         assertions = [
             {
-                assertion = cfg.calendarTimespec != "";
-                message = "Must provide calendarTimespec.";
+                assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "") ||
+                            (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
+                message = "Clean trash: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
             }
         ];
 
@@ -54,7 +67,10 @@ in {
         systemd.user.timers."clean-trash" = {
             description = "Clean trash";
             wantedBy = [ "timers.target" ];
-            timerConfig = {
+            timerConfig = if (cfg.bootTimespec != null) then {
+                OnBootSec = cfg.bootTimespec;
+                OnUnitActiveSec = cfg.activeTimespec;
+            } else {
                 OnCalendar = cfg.calendarTimespec;
             };
         };

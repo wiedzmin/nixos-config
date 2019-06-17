@@ -1,5 +1,4 @@
 { config, lib, pkgs, ...}:
-with import ../const.nix {inherit config pkgs;};
 with lib;
 
 let
@@ -17,6 +16,13 @@ in {
                 example = true;
                 description = ''
                     Whether to enable fetching updates from upstream(s).
+                '';
+            };
+            workDir = mkOption {
+                type = types.str;
+                default = "";
+                description = ''
+                    Path to check for Myrepos configuration(s).
                 '';
             };
             bootTimespec = mkOption {
@@ -46,9 +52,13 @@ in {
     config = mkIf cfg.enable {
         assertions = [
             {
+                assertion = cfg.workDir != "";
+                message = "git-fetch-updates: Must provide path to working directory.";
+            }
+            {
                 assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "") ||
                             (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
-                message = "Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
+                message = "git-fetch-updates: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
             }
         ];
 
@@ -58,6 +68,7 @@ in {
             serviceConfig = {
                 Type = "oneshot";
                 ExecStart = "${pkgs.mr}/bin/mr update";
+                WorkingDirectory = cfg.workDir;
                 StandardOutput = "journal+console";
                 StandardError = "inherit";
             };
@@ -65,9 +76,10 @@ in {
         systemd.user.timers."git-fetch-updates" = {
             description = "Fetch updates from registered git upstream(s)";
             wantedBy = [ "timers.target" ];
-            timerConfig = {
+            timerConfig = if (cfg.bootTimespec != null) then {
                 OnBootSec = cfg.bootTimespec;
                 OnUnitActiveSec = cfg.activeTimespec;
+            } else {
                 OnCalendar = cfg.calendarTimespec;
             };
         };

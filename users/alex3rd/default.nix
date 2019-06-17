@@ -34,14 +34,12 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
         suspendCapacity = 10;
     };
 
-    services.fusuma = {
-        enable = true;
-        userName = "alex3rd";   # TODO: templatize
-    };
+    services.fusuma.enable = true;
 
     services.order-screenshots = {
         enable = true;
-        baseDir = "/home/alex3rd/screenshots";    # TODO: templatize
+        baseDir = "/home/${userName}/screenshots";
+        calendarTimespec = "*-*-* 00:05:00";
     };
 
     services.sshuttle = {
@@ -53,33 +51,21 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
 
     services.xkeysnail = {
         enable = true;
-        userName = "alex3rd";   # TODO: templatize
+        configFile = "/home/${userName}/.config/xkeysnail/config.py";
     };
 
-    services.openvpn = {
-        servers = {
-            jobvpn = {
-                # TODO: make more declarative, i.e. to hide private part and automate all the rest
-                config = ''config /etc/nixos/users/${userName}/private/vpn/job.current/office.ovpn'';
-                autoStart = false;
-                up = "${pkgs.update-resolv-conf}/libexec/openvpn/update-resolv-conf";
-                down = "${pkgs.update-resolv-conf}/libexec/openvpn/update-resolv-conf";
-            };
-        };
-    };
-
-    services.keep-vpn = {
+    services.vpn-client = {
         enable = true;
-        vpnName = "jobvpn";   # TODO: templatize
+        name = "jobvpn";   # TODO: templatize
+        keep = true;
+        configPath = "/etc/nixos/users/${userName}/private/vpn/job.current/office.ovpn";
     };
 
-    services.xsuspender = {
-        enable = true;
-        userName = "alex3rd";   # TODO: templatize
-    };
+    services.xsuspender.enable = true;
 
     services.git-fetch-updates = {
         enable = true;
+        workDir = "/home/${userName}";
         bootTimespec = "1min";
         activeTimespec = "30min";
     };

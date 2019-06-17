@@ -19,9 +19,16 @@ in {
                     Whether to enable fetching updates from upstream(s).
                 '';
             };
+            workDir = mkOption {
+                type = types.str;
+                default = "";
+                description = ''
+                    Path to check for Myrepos configuration(s).
+                '';
+            };
             bootTimespec = mkOption {
                 type = types.str;
-                default = false;
+                default = "";
                 description = ''
                     Interval to activate service after system boot (in systemd format).
                 '';
@@ -46,9 +53,13 @@ in {
     config = mkIf cfg.enable {
         assertions = [
             {
+                assertion = cfg.workDir != "";
+                message = "git-push-updates: Must provide path to working directory.";
+            }
+            {
                 assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "") ||
                             (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
-                message = "Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
+                message = "git-push-updates: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
             }
         ];
 
@@ -58,6 +69,7 @@ in {
             serviceConfig = {
                 Type = "oneshot";
                 ExecStart = "${pkgs.mr}/bin/mr push";
+                WorkingDirectory = cfg.workDir;
                 StandardOutput = "journal+console";
                 StandardError = "inherit";
             };
@@ -65,9 +77,10 @@ in {
         systemd.timers."git-push-updates" = {
             description = "Push updates to registered git upstream(s)";
             wantedBy = [ "timers.target" ];
-            timerConfig = {
+            timerConfig = if (cfg.bootTimespec != null) then {
                 OnBootSec = cfg.bootTimespec;
                 OnUnitActiveSec = cfg.activeTimespec;
+            } else {
                 OnCalendar = cfg.calendarTimespec;
             };
         };

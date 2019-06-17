@@ -1,8 +1,6 @@
 { config, lib, pkgs, ...}:
-with import ../const.nix {inherit config pkgs;};
 with lib;
 
-# TODO: think of adding more options
 let
     cfg = config.services.order-screenshots;
 
@@ -49,43 +47,67 @@ in {
                 '';
             };
             baseDir = mkOption {
-                type = types.str;
-                default = "";
+                type = types.nullOr types.str;
+                default = null;
                 example = "$HOME/screenshots";
                 description = ''
                     Screenshots base directory.
                 '';
             };
+            bootTimespec = mkOption {
+                type = types.str;
+                default = "";
+                description = ''
+                    Interval to activate service after system boot (in systemd format).
+                '';
+            };
+            activeTimespec = mkOption {
+                type = types.str;
+                default = "";
+                description = ''
+                    Interval to activate service while system runs (in systemd format).
+                '';
+            };
+            calendarTimespec = mkOption {
+                type = types.str;
+                default = "";
+                description = ''
+                    Timestamp of service activation (in systemd format).
+                '';
+            };
         };
     };
 
-    config = mkMerge [
-        {
-            assertions = [ # FIXME: assertion condition fires before this at "compile" time
-                { assertion = cfg.baseDir != ""; message = "Must provide path to screenshots dir."; }
-            ];
-        }
+    config = mkIf cfg.enable {
+        assertions = [
+            { assertion = cfg.baseDir != null; message = "Must provide path to screenshots dir."; }
+            {
+                assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "") ||
+                            (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
+                message = "order-screenshots: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
+            }
+        ];
 
-        (mkIf cfg.enable {
-            systemd.user.services."order-screenshots" = {
-                description = "Screenshots ordering";
-                wantedBy = [ "graphical.target" ];
-                partOf = [ "graphical.target" ];
-                serviceConfig = {
-                    Type = "oneshot";
-                    ExecStart = "${order_screenshots}";
-                    StandardOutput = "journal+console";
-                    StandardError = "inherit";
-                };
+        systemd.user.services."order-screenshots" = {
+            description = "Screenshots ordering";
+            wantedBy = [ "graphical.target" ];
+            partOf = [ "graphical.target" ];
+            serviceConfig = {
+                Type = "oneshot";
+                ExecStart = "${order_screenshots}";
+                StandardOutput = "journal+console";
+                StandardError = "inherit";
             };
-            systemd.timers."order-screenshots" = {
-                description = "Screenshots ordering";
-                wantedBy = [ "timers.target" ];
-                timerConfig = {
-                    OnBootSec = "5min";
-                    OnUnitActiveSec = "1d"; # TODO: use onCalendar
-                };
+        };
+        systemd.user.timers."order-screenshots" = {
+            description = "Screenshots ordering";
+            wantedBy = [ "timers.target" ];
+            timerConfig = if (cfg.bootTimespec != null) then {
+                OnBootSec = cfg.bootTimespec;
+                OnUnitActiveSec = cfg.activeTimespec;
+            } else {
+                OnCalendar = cfg.calendarTimespec;
             };
-        })
-    ];
+        };
+    };
 }
