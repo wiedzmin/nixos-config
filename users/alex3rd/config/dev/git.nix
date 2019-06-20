@@ -19,10 +19,28 @@ with import ../../const.nix {inherit config pkgs;};
             ".mrtrust".text = ''
                 ${config.job.workspacePath}/.mrconfig
             '';
-            ".mrconfig".text = genIni {
+            # TODO: review https://github.com/RichiH/myrepos/blob/master/mrconfig.complex
+            ".mrconfig".text = genIniHum {
                 "DEFAULT" = {
-                    "update" = "${pkgs.git}/bin/git fetch origin && ${pkgs.git}/bin/git rebase origin/$(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD)";
-                    "savewip" = "[[ ! -z $(${pkgs.git}/bin/git status --porcelain) ]] && ${pkgs.git}/bin/git add . && ${pkgs.git}/bin/git commit -m \"WIP $(${pkgs.coreutils}/bin/date -R)\" || return 0";
+                    "update" = indentedLines [
+                        "${pkgs.git}/bin/git fetch origin"
+                        "${pkgs.git}/bin/git rebase origin/$(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD)"
+                    ] "    ";
+                    "savewip" = indentedLines [
+                        "if [[ ! -z $(${pkgs.git}/bin/git status --porcelain) ]]; then"
+                        "    ${pkgs.git}/bin/git add ."
+                        "    ${pkgs.git}/bin/git commit -m \"WIP $(${pkgs.coreutils}/bin/date -R)\""
+                        "else"
+                        "    return 0"
+                        "fi"
+                    ] "    ";
+                    "push" = indentedLines [
+                        "if [[ $(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD) =~ master ]]; then"
+                        "    echo master is active, skipping..."
+                        "else"
+                        "    ${pkgs.git}/bin/git push origin $(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD)"
+                        "fi"
+                    ] "    ";
                 };
             } + ''
                 include = cat ${config.job.workspacePath}/.mrconfig

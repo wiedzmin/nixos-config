@@ -30,6 +30,8 @@ rec {
           if value == true then "✓"
           else "✗"
        else builtins.toString value;
+    indentedLines = lines: indentation:
+       "\n${indentation}" + builtins.concatStringsSep "\n${indentation}" lines;
     setToBashKeyValue = set: keyname: valueSep: omitKey:
         let
             keyValue = set.${keyname};
