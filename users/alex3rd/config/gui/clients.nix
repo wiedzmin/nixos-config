@@ -8,11 +8,11 @@ let
 in
 {
     home-manager.users."${userName}" = {
-        home.packages = with pkgs; [
-            tridactyl-native
-        ];
         programs.firefox = {
             enable = true;
+            package = pkgs.firefox.overrideAttrs (attrs: {
+                enableTridactylNative = true;
+            });
             extensions = with firefox-addons; [
                 display-anchors
                 tridactyl
