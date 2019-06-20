@@ -96,7 +96,7 @@
             enable = true;
         };
         udev.extraRules = ''
-            ACTION=="add|change", KERNEL=="sd*[!0-9]|sr*", ATTR{queue/scheduler}="kyber"
+            ACTION=="add|change", KERNEL=="sd[ab][!0-9]", ATTR{queue/scheduler}="kyber"
         '';
         upower.enable = true;
         tlp.enable = true;
