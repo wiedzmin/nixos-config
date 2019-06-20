@@ -41,6 +41,8 @@ secondaryWorkspaces =
   , ("read", Just "4", True, True)
   , ("media", Just "5", True, True)
   , ("im", Just "3", True, True)
+  , ("web2", Just "1", True, True)
+  , ("web3", Just "`", True, True)
   ]
 
 scratchpadWorkspace :: WSData

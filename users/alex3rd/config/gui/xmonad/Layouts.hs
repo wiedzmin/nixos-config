@@ -21,6 +21,8 @@ import qualified XMonad.Layout.HintedTile as HT
 
 import Themes (tabbedConf)
 
+import XMonad.Layout.StackTile
+
 
 customHintedTile = HT.HintedTile nmaster delta ratio HT.TopLeft HT.Tall
   where
@@ -48,6 +50,8 @@ isGimpMessage = And (ClassName "Gimp") (Role "gimp-message")
 layouts = onWorkspace "scratch" gimpLayout $
           onWorkspace "im" imLayout $
           onWorkspace "web" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4))) $
+          onWorkspace "web2" (StackTile 1 (3/100) (1/2)) $
+          onWorkspace "web3" (StackTile 1 (3/100) (1/2)) $
           onWorkspace "work" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4)) |||
                               renamed [Replace "Dishes"] (Dishes 2 (1/6)) |||
                               renamed [Replace "Grid"] Grid |||
