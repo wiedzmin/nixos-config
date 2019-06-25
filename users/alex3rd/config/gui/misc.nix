@@ -835,7 +835,7 @@ with import ../../const.nix {inherit config pkgs;};
             xoffset = 0;
             yoffset = 0;
             font = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.Dunst}";
-            theme = "/home/${userName}/.config/rofi/oxide.rasi";
+            theme = "sidebar";
             # TODO: review https://davedavenport.github.io/rofi/manpage.html
             extraConfig = ''
                 rofi.line-margin:                    3
