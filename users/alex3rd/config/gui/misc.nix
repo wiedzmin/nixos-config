@@ -792,9 +792,19 @@ with import ../../const.nix {inherit config pkgs;};
         };
         services.compton = {
             enable = true;
+            fade = true;
+            fadeDelta = 5;
+            fadeSteps = ["0.04" "0.04"];
             backend = "glx";
             vSync = "opengl-swc";
             package = pkgs.compton-git;
+            extraOptions = ''
+                clear-shadow = true;
+                glx-no-rebind-pixmap = true;
+                glx-no-stencil = true;
+                paint-on-overlay = true;
+                xrender-sync-fence = true;
+            '';
         };
         services.redshift = {
             enable = true;
