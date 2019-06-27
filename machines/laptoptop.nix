@@ -8,12 +8,17 @@
         <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];
 
-    nix.maxJobs = lib.mkDefault 4;
-    nix.buildCores = lib.mkDefault 4;
+    nix = { # per-machine settings
+        maxJobs = lib.mkDefault 4;
+        buildCores = lib.mkDefault 4;
+        optimise.automatic = true;
+        gc = {
+            automatic = true;
+            dates = "weekly";
+            options = "--delete-older-than 7d";
+        };
+    };
 
-    nix.optimise.automatic = true;
-    nix.gc.automatic = true;
-    nix.gc.options = "--delete-older-than 7d";
 
     system.activationScripts.ensureBacklightPermissions = ''
         chmod a+w /sys/class/backlight/intel_backlight/brightness
@@ -95,6 +100,9 @@
         syncthing = {
             enable = true;
         };
+        journald.extraConfig = ''
+            MaxRetentionSec=7day
+        '';
         udev.extraRules = ''
             ACTION=="add|change", KERNEL=="sd[ab][!0-9]", ATTR{queue/scheduler}="kyber"
         '';

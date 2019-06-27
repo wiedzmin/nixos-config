@@ -9,12 +9,16 @@
         <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
     ];
 
-    nix.maxJobs = lib.mkDefault 4;
-    nix.buildCores = lib.mkDefault 4;
-
-    nix.optimise.automatic = true;
-    nix.gc.automatic = true;
-    nix.gc.options = "--delete-older-than 7d";
+    nix = { # per-machine settings
+        maxJobs = lib.mkDefault 4;
+        buildCores = lib.mkDefault 4;
+        optimise.automatic = true;
+        gc = {
+            automatic = true;
+            dates = "weekly";
+            options = "--delete-older-than 7d";
+        };
+    };
 
     system.activationScripts.ensureBacklightPermissions = ''
         chmod a+w /sys/class/backlight/intel_backlight/brightness
