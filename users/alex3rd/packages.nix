@@ -269,13 +269,12 @@ let
         maim
         mimeo
         minitube
+        mps-youtube # TODO: make script + service to backup playlists data
         playerctl
-        python3Packages.mps-youtube # TODO: make script + service to backup playlists data
         shared-mime-info
         testdisk
         xsel # for firefox native clients
         you-get
-        youtube-dl
         ytcc
     ] ++ [
         gimp
