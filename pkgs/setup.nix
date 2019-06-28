@@ -1,4 +1,4 @@
-{config, lib, options, modulesPath}:
+{config, pkgs, lib, options, modulesPath}:
 
 let
     path = ./overlay;
