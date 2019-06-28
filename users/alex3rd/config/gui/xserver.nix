@@ -7,7 +7,10 @@ with import ../../const.nix {inherit config pkgs;};
     services = {
         xserver = {
             enable = true;
+            startDbusSession = true;
             videoDrivers = [ "modesetting" ];
+            useGlamor = true;
+            exportConfiguration = true;
             desktopManager = {
                 xterm.enable = false;
                 gnome3.enable = false;
