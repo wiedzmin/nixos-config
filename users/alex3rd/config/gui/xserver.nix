@@ -117,32 +117,28 @@ with import ../../const.nix {inherit config pkgs;};
     fonts = {
         fontconfig = {
             enable = true;
+            antialias = true;
             useEmbeddedBitmaps = true;
+            dpi = 115;
+            defaultFonts = {
+                monospace = [ "Iosevka" ];
+            };
         };
         enableFontDir = true;
         enableGhostscriptFonts = true;
         fonts = with pkgs; [
             anonymousPro
             corefonts
-            dejavu_fonts
-            dosemu_fonts
             emacs-all-the-icons-fonts
             fantasque-sans-mono
             fira-code
-            fira-mono
             font-awesome-ttf
             go-font
             hack-font
-            inconsolata
             iosevka
-            mononoki
             powerline-fonts
-            profont
-            roboto-mono
-            source-code-pro
             terminus_font
             terminus_font_ttf
-            unifont
         ];
     };
 }
