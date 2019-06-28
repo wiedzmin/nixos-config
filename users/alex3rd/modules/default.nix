@@ -2,12 +2,12 @@
 {
     imports =
     [
+        ./battery-notifier.nix
         ./clean-trash.nix
         ./fusuma.nix
         ./git-fetch-updates.nix
         ./git-push-updates.nix
         ./git-save-wip.nix
-        ./battery-notifier.nix
         ./order-screenshots.nix
         ./sshuttle.nix
         ./vpn.nix
