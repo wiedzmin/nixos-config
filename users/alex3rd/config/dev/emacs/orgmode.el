@@ -581,11 +581,6 @@
   :config
   (org-recent-headings-mode 1))
 
-(use-package org-link-minor-mode
-  :ensure t
-  :config
-  (org-link-minor-mode t))
-
 (use-package org-randomnote
   :ensure t
   :general

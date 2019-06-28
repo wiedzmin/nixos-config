@@ -196,7 +196,6 @@ with import ../../../const.nix {inherit config pkgs;};
                 epkgs.org-clock-today
                 epkgs.org-dashboard
                 epkgs.org-download
-                epkgs.org-link-minor-mode
                 epkgs.org-mru-clock
                 epkgs.org-plus-contrib
                 epkgs.org-pomodoro
