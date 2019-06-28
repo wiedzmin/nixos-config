@@ -56,6 +56,12 @@
                 vaapiVdpau
             ];
         };
+        trackpoint = {
+            enable = true;
+            sensitivity = 255;
+            speed = 200;
+            emulateWheel = true;
+        };
         pulseaudio = {
             enable = true;
             support32Bit = true;
