@@ -25,6 +25,7 @@ with import ../../../const.nix {inherit config pkgs;};
             ntangle
             plantuml
             ripgrep
+            irony-server # TODO: play with it
         ];
         programs.emacs = {
             enable = true;
