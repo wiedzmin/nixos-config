@@ -3,18 +3,33 @@ with import ./const.nix {inherit config pkgs;};
 let
     # TODO: write script to query keywords which would provide packages names either from installed or whole nixpkgs
     stagingInactive = with pkgs; [
-        # sensu-go-{cli,agent,backend}
+        # kvmgt service
+        # waf.io
+        dia
+        gimp-with-plugins
+        gopass
+        keychain
+        libvirt # for `vagrant plugin install vagrant-libvirt`
+        nfs-utils # for vagrant
         paperless # see docs
-        ulauncher
+        quassel
+        quilt
+        xdg-user-dirs
+        xlsfonts
     ];
     stagingCommon = with pkgs; [
         aerc
+        checkbashism
+        grab-site # https://github.com/ArchiveTeam/grab-site
+        pciutils
+        quilt
     ];
     stagingWork = with pkgs; [
         drone
         drone-cli
         jenkins
         terraform
+        tflint
     ];
     sandbox = with pkgs; [ # binaries for PATH
         # transmission + service https://transmissionbt.com/
@@ -260,6 +275,7 @@ let
         clipgrab
         desktop-file-utils
         exif
+        exiftool
         exiv2
         ffmpeg
         gallery-dl
