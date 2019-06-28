@@ -72,8 +72,9 @@
             "kvm-intel"
         ];
         kernel.sysctl = {
-            "fs.inotify.max_user_instances" = 512;
+            "fs.inotify.max_user_instances" = 1024;
             "fs.inotify.max_user_watches" = 1048576;
+            "fs.inotify.max_queued_events" = 32768;
             "net.ipv4.ip_forward" = 1; # for VMs forwarding
             "net.ipv4.ip_default_ttl" = 65;
             "net.ipv4.tcp_sack" = 0;
