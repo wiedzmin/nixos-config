@@ -61,6 +61,8 @@ with import ../../const.nix {inherit config pkgs;};
                           --timer primary 30 '${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off' ''' &
                 '';
             };
+            autoRepeatDelay = 200;
+            autoRepeatInterval = 40;
             xkbOptions = "caps:none";
             layout = "us,ru";
             libinput.enable = false;
