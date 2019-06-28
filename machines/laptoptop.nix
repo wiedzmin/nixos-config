@@ -36,6 +36,10 @@
     '';
 
     hardware = {
+        bluetooth = {
+            enable = true;
+            powerOnBoot = false;
+        };
         cpu.intel.updateMicrocode = true;
         enableAllFirmware = true;
         pulseaudio = {
@@ -183,8 +187,6 @@
         enable = false;
         extraBackends = [ pkgs.epkowa ];
     };
-
-    hardware.bluetooth.enable = true;
 
     nixpkgs.config.allowUnfree = true;
 
