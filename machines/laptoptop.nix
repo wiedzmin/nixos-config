@@ -81,8 +81,6 @@
         };
     };
 
-    sound.enable = true;
-
     environment.systemPackages = with pkgs; with config.boot.kernelPackages; [
         pasystray
         pavucontrol
