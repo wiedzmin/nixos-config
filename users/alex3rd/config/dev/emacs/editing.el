@@ -466,3 +466,10 @@
   :after (flycheck)
   :config
   (flycheck-pos-tip-mode 1))
+
+(use-package shift-number
+  :ensure t
+  :commands (shift-number-up shift-number-down)
+  :general
+  ("M-+" 'shift-number-up)
+  ("M-_" 'shift-number-down))

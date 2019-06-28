@@ -236,6 +236,7 @@ with import ../../../const.nix {inherit config pkgs;};
                 epkgs.rg
                 epkgs.russian-holidays
                 epkgs.savekill
+                epkgs.shift-number
                 epkgs.slime-company
                 epkgs.smart-comment
                 epkgs.smartparens
