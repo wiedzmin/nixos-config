@@ -19,6 +19,17 @@
         };
     };
 
+    documentation = {
+        enable = true;
+        man.enable = true;
+        info.enable = true;
+        doc.enable = true;
+        dev.enable = true;
+        nixos = {
+            enable = true;
+            includeAllModules = false; # FIXME build error
+        };
+    };
 
     system.activationScripts.ensureBacklightPermissions = ''
         chmod a+w /sys/class/backlight/intel_backlight/brightness
