@@ -54,7 +54,7 @@
         initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sdhci_pci" ];
         plymouth.enable = true;
         extraModprobeConfig = ''
-            #options iwlwifi 11n_disable=1 power_save=0
+            options iwlwifi 11n_disable=1 power_save=1 power_level=2
         '';
         extraModulePackages = with config.boot.kernelPackages; [ exfat-nofuse ];
         tmpOnTmpfs = true;
