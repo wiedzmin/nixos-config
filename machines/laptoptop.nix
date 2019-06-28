@@ -42,6 +42,20 @@
         };
         cpu.intel.updateMicrocode = true;
         enableAllFirmware = true;
+        opengl = {
+            enable = true;
+            extraPackages = with pkgs; [
+                vaapiIntel
+                libvdpau-va-gl
+                vaapiVdpau
+            ];
+            driSupport32Bit = true;
+            extraPackages32 = with pkgs.pkgsi686Linux; [
+                vaapiIntel
+                libvdpau-va-gl
+                vaapiVdpau
+            ];
+        };
         pulseaudio = {
             enable = true;
             support32Bit = true;
