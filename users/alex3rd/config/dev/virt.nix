@@ -14,11 +14,6 @@ in
 
     virtualisation.libvirtd = {
         enable = true;
-        qemuVerbatimConfig = ''
-            namespaces = []
-            user = "user"
-            group = "users"
-        '';
     };
 
     users.extraUsers."${userName}".extraGroups = [ "docker" "libvirtd" "vboxusers" ];
