@@ -23,6 +23,10 @@ with import ../../const.nix {inherit config pkgs;};
                     };
                 };
                 gdm.enable = false;
+                job = {
+                    logToFile = true;
+                    logToJournal = true;
+                };
                 sessionCommands = let
                     xmodmaprc = pkgs.writeText "xmodmaprc" ''
                         clear mod1
