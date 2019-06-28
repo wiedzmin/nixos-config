@@ -8,7 +8,7 @@ with import ../../const.nix {inherit config pkgs;};
         user = "${userName}";
         group = "users";
         text = ''
-            . ${pkgs.git_hooks_lib}/bin/git_hooks_lib
+            . ${pkgs.git_lib}/bin/git_lib
 
             check_for_wip
             exit $?
@@ -142,7 +142,7 @@ with import ../../const.nix {inherit config pkgs;};
                 text = ''
                     #!${pkgs.bash}/bin/bash
                     # TODO: templatize further
-                    . ${pkgs.git_hooks_lib}/bin/git_hooks_lib
+                    . ${pkgs.git_lib}/bin/git_lib
                     execute_hook_items pre-push
                     exit $?;
                 '';
@@ -152,7 +152,7 @@ with import ../../const.nix {inherit config pkgs;};
                 text = ''
                     #!${pkgs.bash}/bin/bash
                     # TODO: templatize further
-                    . ${pkgs.git_hooks_lib}/bin/git_hooks_lib
+                    . ${pkgs.git_lib}/bin/git_lib
                     execute_hook_items pre-commit
                     exit $?;
                 '';

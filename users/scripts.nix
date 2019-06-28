@@ -39,7 +39,7 @@ in
                 fi
             '';
             # TODO: add secrets pre-commit checking
-            git_hooks_lib = pkgs.writeShellScriptBin "git_hooks_lib" ''
+            git_lib = pkgs.writeShellScriptBin "git_lib" ''
                 WIP_RE=wip
 
                 execute_hook_items() {
