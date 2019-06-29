@@ -25,6 +25,25 @@ with import ../../const.nix {inherit config pkgs;};
             };
         };
         home.file = {
+            ".local/share/applications/defaults.list" = {
+                 text = ''
+                     [Default Applications]
+                     application/pdf=zathura.desktop
+                 '';
+            };
+            ".config/mc/mc.ext" = {
+                 text = ''
+                     regex/\.([pP][dD][fF])$
+                         Include=ebook
+
+                     regex/\.([dD][jJ][vV][uU])$
+                         Include=ebook
+
+                     # modify the include/video section
+                     include/ebook
+                         Open=(zathura %f >/dev/null 2>&1 &)
+                 '';
+            };
             "${config.common.snippets.file}".text = ''
                 ${lib.concatStringsSep "\n" config.common.snippets.inventory}
             '';
