@@ -100,6 +100,7 @@ in
         plymouth.enable = true;
         extraModprobeConfig = ''
             options iwlwifi 11n_disable=1 power_save=1 power_level=2
+            options kvm-intel nested=1
         '';
         extraModulePackages = with config.boot.kernelPackages; [
             exfat-nofuse
