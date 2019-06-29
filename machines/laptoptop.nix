@@ -218,12 +218,10 @@ in
         enable = false;
         drivers = [ pkgs.hplip ];
     nixpkgs.config = {
+        allowUnfree = true;
+        allowUnfreeRedistributable = true;
         sane.snapscanFirmware = lib.mkIf enableScanner "/etc/nixos/contrib/blobs/Esfw52.bin";
     };
-
-
-
-    nixpkgs.config.allowUnfree = true;
 
     networking = {
         hostName = "laptoptop";
