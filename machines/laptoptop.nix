@@ -45,6 +45,7 @@ in
         };
         cpu.intel.updateMicrocode = true;
         enableAllFirmware = true;
+        enableKSM = true;
         opengl = {
             enable = true;
             extraPackages = with pkgs; [
