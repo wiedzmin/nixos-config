@@ -117,6 +117,7 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
                 allow-loopback-pinentry
             '';
         };
+        services.syncthing.enable = true;
         programs.gpg = {
             enable = true;
             settings = {
