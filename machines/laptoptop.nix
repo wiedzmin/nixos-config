@@ -118,6 +118,8 @@ in
         kernelModules = [
             "bfq"
             "kvm-intel"
+            "thinkpad_acpi"
+            "thinkpad_hwmon"
         ];
         kernel.sysctl = {
             "fs.inotify.max_user_instances" = 1024;
