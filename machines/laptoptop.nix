@@ -1,5 +1,8 @@
 { config, pkgs, lib, ... }:
 
+let
+    enableScanner = false;
+in
 {
     imports = [
         ../pkgs/setup.nix
@@ -70,6 +73,10 @@
             daemon.config = {
                 flat-volumes = "no";
             };
+        };
+        sane = {
+            enable = enableScanner;
+            extraBackends = lib.mkIf enableScanner [ pkgs.epkowa ];
         };
     };
 
@@ -201,17 +208,11 @@
     services.printing = {
         enable = false;
         drivers = [ pkgs.hplip ];
+    nixpkgs.config = {
+        sane.snapscanFirmware = lib.mkIf enableScanner "/etc/nixos/contrib/blobs/Esfw52.bin";
     };
 
-    # scanner
-    # nixpkgs.config = {
-    #     sane.snapscanFirmware = "/etc/nixos/contrib/blobs/Esfw52.bin";
-    # };
 
-    hardware.sane = {
-        enable = false;
-        extraBackends = [ pkgs.epkowa ];
-    };
 
     nixpkgs.config.allowUnfree = true;
 
