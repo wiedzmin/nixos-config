@@ -248,7 +248,11 @@ in
         networkmanager = {
             enable = true;
             unmanaged = [
+                "br0"
+                "interface-name:vb-*"
+                "interface-name:vbox*"
                 "interface-name:ve-*"
+                "lo"
             ];
         };
         useNetworkd = false;
