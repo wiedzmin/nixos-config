@@ -164,6 +164,12 @@ in
         upower.enable = true;
         tlp.enable = true;
         acpid.enable = true;
+        printing = {
+            enable = false;
+            drivers = [ pkgs.hplip ];
+            browsing = true;
+            defaultShared = true;
+        };
     };
 
     system.activationScripts.ensureSyncthingDataSymlinks = ''
@@ -214,9 +220,6 @@ in
 
     time.timeZone = "Europe/Moscow";
 
-    services.printing = {
-        enable = false;
-        drivers = [ pkgs.hplip ];
     nixpkgs.config = {
         allowUnfree = true;
         allowUnfreeRedistributable = true;
