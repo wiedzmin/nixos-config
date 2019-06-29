@@ -48,14 +48,15 @@ in
         opengl = {
             enable = true;
             extraPackages = with pkgs; [
-                vaapiIntel
+                intel-media-driver
                 libvdpau-va-gl
+                vaapiIntel
                 vaapiVdpau
             ];
             driSupport32Bit = true;
             extraPackages32 = with pkgs.pkgsi686Linux; [
-                vaapiIntel
                 libvdpau-va-gl
+                vaapiIntel
                 vaapiVdpau
             ];
         };

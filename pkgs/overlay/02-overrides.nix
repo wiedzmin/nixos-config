@@ -22,4 +22,7 @@ self: super: {
     i3lock-color = super.i3lock-color.overrideAttrs (attrs: {
         patches = [ ./patches/i3lock-color/forcefully-reset-keyboard-layout-group-to-0.patch ];
     });
+    vaapiIntel = super.vaapiIntel.overrideAttrs (attrs: {
+        enableHybridCodec = true;
+    });
 }

@@ -28,6 +28,11 @@ with import ../../const.nix {inherit config pkgs;};
             "${config.common.snippets.file}".text = ''
                 ${lib.concatStringsSep "\n" config.common.snippets.inventory}
             '';
+            ".mpv/config".text = ''
+                hwdec=vaapi
+                vo=gpu
+                hwdec-codecs=all
+            '';
             ".arbtt/categorize.cfg".text = ''
                 aliases (
                         "Navigator" -> "Firefox",

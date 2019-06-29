@@ -110,6 +110,7 @@ in
                 WORKON_HOME = "/home/${userName}/.virtualenvs";
                 XAUTHORITY = "/home/${userName}/.Xauthority";
                 ZSH_COMMAND_TIME_COLOR = "cyan";
+                LIBVA_DRIVER_NAME = "iHD";
             };
             shellAliases = {
                 cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
