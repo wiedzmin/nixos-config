@@ -271,5 +271,22 @@ in
         '';
     };
 
+    systemd.extraConfig = ''
+        DefaultCPUAccounting=yes
+        DefaultIOAccounting=yes
+        DefaultBlockIOAccounting=yes
+        DefaultMemoryAccounting=yes
+        DefaultTasksAccounting=yes
+    '';
+
+    services.logind.extraConfig = ''
+        HandleHibernateKey=hibernate
+        HandleLidSwitch=suspend
+        HandlePowerKey=reboot
+        HandleSuspendKey=lock
+        IdleAction=ignore
+        RuntimeDirectorySize=3G
+    '';
+
     system.stateVersion = "19.03";
 }
