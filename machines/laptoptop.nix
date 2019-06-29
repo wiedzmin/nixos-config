@@ -150,7 +150,8 @@ in
         chrony.enable = true;
         openssh = {
             enable = true;
-            forwardX11 = true;
+            allowSFTP = true;
+            forwardX11 = false;
         };
             enable = true;
         };
