@@ -100,6 +100,7 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
 
     home-manager.users."${userName}" = {
         nixpkgs.config.allowUnfree = true;
+        xdg.enable = true;
         home.packages = with pkgs; [
             # base
             file
