@@ -65,6 +65,11 @@
         pulseaudio = {
             enable = true;
             support32Bit = true;
+            package = pkgs.pulseaudioFull; # 'full' for e.g. bluetooth
+            systemWide = true;
+            daemon.config = {
+                flat-volumes = "no";
+            };
         };
     };
 
