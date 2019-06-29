@@ -117,6 +117,11 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
                 allow-emacs-pinentry
                 allow-loopback-pinentry
             '';
+        services = {
+            mpd = {
+                enable = true;
+                musicDirectory = "/home/${userName}/blobs/music";
+            };
         };
         services.syncthing.enable = true;
         programs.gpg = {

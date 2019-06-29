@@ -148,8 +148,10 @@ in
 
     services = {
         irqbalance.enable = true;
-        mpd.enable = true;
-        ympd.enable = true;
+        ympd = {
+            enable = true;
+            webPort = 8765;
+        };
         chrony.enable = true;
         openssh = {
             enable = true;
