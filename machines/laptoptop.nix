@@ -87,12 +87,21 @@ in
             device = "/dev/sda";
             configurationLimit = 10;
         };
-        initrd.availableKernelModules = [ "xhci_pci" "ehci_pci" "ahci" "usb_storage" "sdhci_pci" ];
+        vesa = true;
+        initrd.availableKernelModules = [
+            "ahci"
+            "ehci_pci"
+            "sdhci_pci"
+            "usb_storage"
+            "xhci_pci"
+        ];
         plymouth.enable = true;
         extraModprobeConfig = ''
             options iwlwifi 11n_disable=1 power_save=1 power_level=2
         '';
-        extraModulePackages = with config.boot.kernelPackages; [ exfat-nofuse ];
+        extraModulePackages = with config.boot.kernelPackages; [
+            exfat-nofuse
+        ];
         tmpOnTmpfs = true;
         kernelPackages = pkgs.linuxPackages_4_19;
         kernelParams = [
@@ -227,7 +236,9 @@ in
         };
         networkmanager = {
             enable = true;
-            unmanaged = [ "interface-name:ve-*" ];
+            unmanaged = [
+                "interface-name:ve-*"
+            ];
         };
     };
 
