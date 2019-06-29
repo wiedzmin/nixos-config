@@ -154,6 +154,10 @@ in
             webPort = 8765;
         };
         chrony.enable = true;
+        dbus = {
+            enable = true;
+            socketActivated = true;
+        };
         openssh = {
             enable = true;
             allowSFTP = true;
@@ -174,6 +178,7 @@ in
         upower.enable = true;
         tlp.enable = true;
         acpid.enable = true;
+        timesyncd.enable = true;
         printing = {
             enable = false;
             drivers = [ pkgs.hplip ];
@@ -235,7 +240,7 @@ in
         hostName = "laptoptop";
         hostId = "2ab69157";
         firewall.enable = false;
-        usePredictableInterfaceNames = lib.mkForce true;
+        usePredictableInterfaceNames = lib.mkForce false;
         dnsExtensionMechanism = false;
         wlanInterfaces = {
             "wlan0" = { device = "wlp3s0"; };
@@ -246,6 +251,12 @@ in
                 "interface-name:ve-*"
             ];
         };
+        useNetworkd = false;
+        wireless = {
+            enable = false;
+            userControlled.enable = true;
+        };
+        useDHCP = false;
     };
 
     system.stateVersion = "19.03";
