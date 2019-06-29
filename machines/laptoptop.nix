@@ -257,6 +257,9 @@ in
             userControlled.enable = true;
         };
         useDHCP = false;
+        extraHosts = ''
+            127.0.0.1 ${config.networking.hostName}
+        '';
     };
 
     system.stateVersion = "19.03";
