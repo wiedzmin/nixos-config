@@ -106,24 +106,25 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
             file
             glibcLocales
         ];
-        services.gpg-agent = {
-            enable = true;
-            defaultCacheTtl = 34560000;
-            defaultCacheTtlSsh = 34560000;
-            maxCacheTtl = 34560000;
-            enableSshSupport = true;
-            enableExtraSocket = true;
-            extraConfig = ''
-                allow-emacs-pinentry
-                allow-loopback-pinentry
-            '';
         services = {
+            gpg-agent = {
+                enable = true;
+                defaultCacheTtl = 34560000;
+                defaultCacheTtlSsh = 34560000;
+                maxCacheTtl = 34560000;
+                enableSshSupport = true;
+                enableExtraSocket = true;
+                extraConfig = ''
+                    allow-emacs-pinentry
+                    allow-loopback-pinentry
+                '';
+            };
+            syncthing.enable = true;
             mpd = {
                 enable = true;
                 musicDirectory = "/home/${userName}/blobs/music";
             };
         };
-        services.syncthing.enable = true;
         programs.gpg = {
             enable = true;
             settings = {
