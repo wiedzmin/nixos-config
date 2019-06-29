@@ -301,6 +301,12 @@
           (when (file-exists-p todos-file)
             (find-file todos-file))
         (error (message "Cannot find project todos")))))
+  (defun custom/open-project-magit-status ()
+    (interactive)
+    (let ((current-project-name (projectile-default-project-name (locate-dominating-file buffer-file-name ".git"))))
+      (aif (get-buffer (concat "magit: " current-project-name))
+          (switch-to-buffer it)
+        (magit-status))))
   (defun custom/ensure-project-switch-buffer (arg)
     "Custom switch to buffer.
      With universal argument ARG or when not in project, rely on
@@ -315,6 +321,10 @@
     "Open project's TODOs."
     (let ((projectile-switch-project-action #'custom/open-project-todos))
       (counsel-projectile-switch-project-by-name project)))
+  (defun counsel-projectile-switch-project-action-open-magit-status (project)
+    "Open project's Magit status buffer."
+    (let ((projectile-switch-project-action #'custom/open-project-magit-status))
+      (counsel-projectile-switch-project-by-name project)))
   :general
   (:keymaps 'ctl-x-map
             "j j" 'counsel-projectile-switch-project
@@ -326,12 +336,15 @@
            "d" 'projectile-dired
            "f" 'projectile-recentf
            "t" 'custom/open-project-todos
+           "m" 'custom/open-project-magit-status
            "T" 'doom/ivy-tasks
            "h" 'projectile-find-file)
   :config
   (counsel-projectile-mode 1)
   (add-to-list 'counsel-projectile-switch-project-action
                '("t" counsel-projectile-switch-project-action-open-todos "open project's todos") t)
+  (add-to-list 'counsel-projectile-switch-project-action
+               '("m" counsel-projectile-switch-project-action-open-magit-status "open project's magit status buffer") t)
   (setq projectile-switch-project-action 'counsel-projectile-switch-project))
 
 (use-package dired
