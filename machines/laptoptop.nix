@@ -135,7 +135,6 @@ in
         # ocz-ssd-guru # add as an overlay and fix hash (and installation instructions)
         intelmetool
         me_cleaner
-        smartmontools
     ] ++ [
         perf
         cpupower
@@ -158,7 +157,11 @@ in
             allowSFTP = true;
             forwardX11 = false;
         };
+        smartd = {
             enable = true;
+            notifications = {
+                x11.enable = true;
+            };
         };
         journald.extraConfig = ''
             MaxRetentionSec=7day
