@@ -8,7 +8,7 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
         ./config
         ./modules
         ./packages.nix
-        ../scripts.nix
+        ../../pkgs/scripts
         ./private/network.nix
     ];
 

@@ -1,7 +1,7 @@
 {config, pkgs, lib, ...}:
 
 with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make more declarative
-with import ../../../../util.nix {inherit lib config pkgs;};
+with import ../../../../pkgs/util.nix {inherit lib config pkgs;};
 with import ../../const.nix {inherit config pkgs;};
 let
     firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../../../pkgs/firefox-addons { });

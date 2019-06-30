@@ -1,6 +1,6 @@
 {config, pkgs, lib, ...}:
-with import ../../../../util.nix {inherit config pkgs lib;};
-with import ../../../../const.nix {inherit config pkgs;};
+with import ../../../../pkgs/util.nix {inherit config pkgs lib;};
+with import ../../../../pkgs/const.nix {inherit config pkgs;};
 with import ../../const.nix {inherit config pkgs;};
 {
     environment.etc."nixos/.hooks/pre-push/stop-wip" = {

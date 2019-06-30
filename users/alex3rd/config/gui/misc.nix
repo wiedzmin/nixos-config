@@ -1,9 +1,9 @@
 {config, pkgs, lib, ...}:
-with import ../../../../util.nix {inherit lib config pkgs;};
+with import ../../../../pkgs/util.nix {inherit lib config pkgs;};
 with import ../../const.nix {inherit config pkgs;};
 {
     imports = [
-        ../../scripts/default.nix
+        ../../../../pkgs/scripts
         ../../private/nas.nix
     ];
 

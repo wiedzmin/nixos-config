@@ -1,5 +1,5 @@
 {config, pkgs, ...}:
-with import ../../../const.nix {inherit config pkgs;};
+with import ../../../pkgs/const.nix {inherit config pkgs;};
 let
     nixDuBasedir = "/tmp";
     nixDuFilename = "nix-du";

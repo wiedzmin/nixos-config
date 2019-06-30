@@ -1,5 +1,5 @@
 { config, lib, pkgs, ...}:
-with import ../../../util.nix {inherit config pkgs lib;};
+with import ../../../pkgs/util.nix {inherit config pkgs lib;};
 with import ../const.nix {inherit config pkgs;};
 with lib;
 

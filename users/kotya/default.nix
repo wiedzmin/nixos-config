@@ -13,7 +13,7 @@
         ./services/nixpkgs-update-status.nix
         ./services/xkeysnail.nix
         ./private/traits/network.nix
-        ../scripts.nix
+        ../../pkgs/scripts
     ];
 
     users.extraUsers.kotya = {
