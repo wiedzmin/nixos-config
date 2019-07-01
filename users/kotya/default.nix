@@ -10,7 +10,6 @@
         ./dotfiles/x11/browser.nix
         ./dotfiles/x11/misc.nix
         ./dotfiles/x11/xresources.nix
-        ./services/nixpkgs-update-status.nix
         ./services/xkeysnail.nix
         ./private/traits/network.nix
         ../../pkgs/scripts
