@@ -76,7 +76,7 @@ in {
         systemd.user.timers."git-fetch-updates" = {
             description = "Fetch updates from registered git upstream(s)";
             wantedBy = [ "timers.target" ];
-            timerConfig = if (cfg.bootTimespec != null) then {
+            timerConfig = if (cfg.bootTimespec != "") then {
                 OnBootSec = cfg.bootTimespec;
                 OnUnitActiveSec = cfg.activeTimespec;
             } else {

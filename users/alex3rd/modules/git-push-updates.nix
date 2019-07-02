@@ -77,7 +77,7 @@ in {
         systemd.timers."git-push-updates" = {
             description = "Push updates to registered git upstream(s)";
             wantedBy = [ "timers.target" ];
-            timerConfig = if (cfg.bootTimespec != null) then {
+            timerConfig = if (cfg.bootTimespec != "") then {
                 OnBootSec = cfg.bootTimespec;
                 OnUnitActiveSec = cfg.activeTimespec;
             } else {

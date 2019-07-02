@@ -67,7 +67,7 @@ in {
         systemd.user.timers."clean-trash" = {
             description = "Clean trash";
             wantedBy = [ "timers.target" ];
-            timerConfig = if (cfg.bootTimespec != null) then {
+            timerConfig = if (cfg.bootTimespec != "") then {
                 OnBootSec = cfg.bootTimespec;
                 OnUnitActiveSec = cfg.activeTimespec;
             } else {

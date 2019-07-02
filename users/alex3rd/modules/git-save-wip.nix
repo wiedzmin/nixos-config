@@ -78,7 +78,7 @@ in {
         systemd.user.timers."git-save-wip" = {
             description = "Save work-in-progress in registered git repo(s)";
             wantedBy = [ "timers.target" ];
-            timerConfig = if (cfg.bootTimespec != null) then {
+            timerConfig = if (cfg.bootTimespec != "") then {
                 OnBootSec = cfg.bootTimespec;
                 OnUnitActiveSec = cfg.activeTimespec;
             } else {
