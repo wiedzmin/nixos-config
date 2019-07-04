@@ -89,7 +89,6 @@ in
             device = "/dev/sda";
             configurationLimit = 10;
         };
-        vesa = true;
         initrd.availableKernelModules = [
             "ahci"
             "ehci_pci"
