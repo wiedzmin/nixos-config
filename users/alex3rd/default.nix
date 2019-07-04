@@ -128,7 +128,7 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
         programs.gpg = {
             enable = true;
             settings = {
-                keyserver = "hkp://keys.gnupg.net";
+                keyserver = "hkp://keys.openpgp.org";
                 require-cross-certification = true;
                 use-agent = true;
             };
