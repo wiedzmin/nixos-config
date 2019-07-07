@@ -15,9 +15,9 @@ in
             });
             extensions = with firefox-addons; [
                 display-anchors
+                ghosttext
                 tridactyl
                 url-in-title
-                midnight-lizard
             ];
             profiles = {
                 default = {

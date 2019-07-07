@@ -216,4 +216,17 @@
              platforms = platforms.all;
         };
     };
+    "ghosttext" = buildFirefoxXpiAddon {
+        pname = "ghosttext";
+        version = "17.12.11.910";
+        addonId = "ghosttext@bfred.it";
+        url = "https://addons.mozilla.org/firefox/downloads/file/807568/ghosttext-17.12.11.910-fx.xpi";
+        sha256 = "0rvxh7iq58n6aw9dwaw3w8h51hg8syk50d2pd73k3mflpccpd2pc";
+        meta = with stdenv.lib; {
+             homepage = "https://midnight-lizard.org/home";
+             description = ''Use your text editor to write in your browser. Everything you type in the editor will be instantly updated in the browser.'';
+             license = licenses.mit;
+             platforms = platforms.all;
+        };
+    };
 }
