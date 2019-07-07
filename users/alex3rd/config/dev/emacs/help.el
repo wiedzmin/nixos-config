@@ -1,124 +1,50 @@
-(use-package info
-  :preface
-  (defun custom/open-info (topic bname)
-    "Open info on TOPIC in BNAME."
-    (if (get-buffer bname)
-        (progn
-          (switch-to-buffer bname)
-          (unless (string-match topic Info-current-file)
-            (Info-goto-node (format "(%s)" topic))))
-      (info topic bname)))
-  (defun custom/info-org () (custom/open-info "org" "*org info*"))
-  (defun custom/info-org-clocking () (org-info "Clocking commands"))
-  (defun custom/info-elisp () (custom/open-info "elisp" "*elisp info*"))
-  (defun custom/info-emacs () (custom/open-info "emacs" "*emacs info*"))
-  (defun custom/info-gcl () (custom/open-info "gcl" "*hyperspec*"))
-  :general
-  (:keymaps 'mode-specific-map
-            "C-h o" 'custom/open-org
-            "C-h ?" 'custom/info-org-clocking
-            "C-h e" 'custom/open-elisp
-            "C-h m" 'custom/open-emacs
-            "C-h h" 'custom/open-gcl)
-  :config
-  (info-initialize)
-  (setq Info-additional-directory-list
-        (list "@emacsCustomInfoDir@"))
-  (add-to-list 'Info-directory-list "/usr/share/info")
-  (add-to-list 'Info-directory-list
-               (format "%selpa/%s"
-                       user-emacs-directory
-                       (car (directory-files "@emacsElpaDir@" nil "^use-package-")))))
+(use-package apropos
+  :bind
+  (:map mode-specific-map
+        :prefix-map custom-help-map
+        :prefix "H"
+        ("a" . apropos)
+        ("d" . apropos-documentation)
+        ("v" . apropos-variable)
+        ("c" . apropos-command)
+        ("l" . apropos-library)
+        ("u" . apropos-user-option)
+        ("i" . info-apropos)
+        ("t" . tags-apropos)
+        ("e" . apropos-value)))
 
 (use-package helpful
   :ensure t
   :defer t
-  :general
-  ;;TODO: investigate more concise way
-  ;;TODO: use C-u version (catch up TAPs)
-  (:prefix "<f1>"
-           "f" 'helpful-function
-           "v" 'helpful-variable
-           "C" 'helpful-callable
-           "m" 'helpful-macro
-           "c" 'helpful-command
-           "k" 'helpful-key
-           "RET" 'helpful-at-point)
-  (:prefix "C-h"
-           "f" 'helpful-function
-           "v" 'helpful-variable
-           "C" 'helpful-callable
-           "m" 'helpful-macro
-           "c" 'helpful-command
-           "k" 'helpful-key
-           "RET" 'helpful-at-point))
+  :bind
+  (:prefix-map custom-help-map
+               :prefix "<f1>"
+               ("f" . helpful-function)
+               ("v" . helpful-variable)
+               ("C" . helpful-callable)
+               ("m" . helpful-macro)
+               ("c" . helpful-command)
+               ("k" . helpful-key)
+               ("RET" . helpful-at-point))
+  (:map help-map
+        ("f" . helpful-function)
+        ("v" . helpful-variable)
+        ("C" . helpful-callable)
+        ("m" . helpful-macro)
+        ("c" . helpful-command)
+        ("k" . helpful-key)
+        ("RET" . helpful-at-point)))
 
 (use-package which-key
   :ensure t
   :delight which-key-mode
   :config
-  (which-key-setup-side-window-right)
   (which-key-mode))
 
 (use-package which-key-posframe
-  :quelpa
-  (which-key-posframe :repo "yanghaoxie/which-key-posframe" :fetcher github)
-  :config
-  (which-key-posframe-enable)
+  :ensure t
+  :after which-key
+  :hook
+  (after-init-hook . which-key-posframe-mode)
   :custom
   (which-key-posframe-poshandler 'posframe-poshandler-frame-center))
-
-(use-package free-keys
-  :ensure t
-  :defer t
-  :commands free-keys)
-
-(use-package help-find-org-mode
-  :ensure t
-  :pin melpa-stable
-  :config (help-find-org-mode t))
-
-(use-package info-buffer
-  :ensure t
-  :general
-  ("C-h i" 'info-buffer))
-
-(use-package info-colors
-  :ensure t
-  :hook (Info-selection-hook . info-colors-fontify-node))
-
-(use-package woman
-  :config
-  (defalias 'man 'woman) ;'Woman' offers completion better than 'man'.
-  (setenv "MANPATH" "/usr/share/man:/usr/local/man"))
-
-(use-package man
-  :custom
-  (Man-notify-method 'pushy "show manpage HERE")
-  :custom-face
-  (Man-overstrike ((t (:inherit font-lock-type-face :bold t))))
-  (Man-underline ((t (:inherit font-lock-keyword-face :underline t)))))
-
-(use-package apropos
-  :general
-  (:keymaps 'mode-specific-map
-            "H a" 'apropos
-            "H d" 'apropos-documentation
-            "H v" 'apropos-variable
-            "H c" 'apropos-command
-            "H l" 'apropos-library
-            "H u" 'apropos-user-option
-            "H i" 'info-apropos
-            "H t" 'tags-apropos
-            "H e" 'apropos-value))
-
-(use-package info-look)
-
-(setq custom/hyperspec-root "~/help/HyperSpec/")
-
-;; lookup information in hyperspec
-(info-lookup-add-help
- :mode 'lisp-mode
- :regexp "[^][()'\" \t\n]+"
- :ignore-case t
- :doc-spec '(("(ansicl)Symbol Index" nil nil nil)))

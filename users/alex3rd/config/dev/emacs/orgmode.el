@@ -6,7 +6,7 @@
 (use-package org
   :defer t
   :ensure org-plus-contrib
-  :after (f)
+  :after f
   :mode (("\\.org$" . org-mode)
          ("\\.org_archive$" . org-mode))
   :preface
@@ -155,7 +155,7 @@
   (setq org-contrib-base '(org-agenda org-archive org-attach org-bbdb
                            org-bibtex org-clock org-docview org-habit
                            org-id org-info org-inlinetask org-irc
-                           org-mouse org-protocol org-timer org-w3m))
+                           org-mouse org-protocol org-timer))
   (setq org-contrib-extra '(org-bookmark org-checklist org-collector
                             org-drill org-expiry org-interactive-query
                             org-man org-velocity))
@@ -459,7 +459,7 @@
   (org-mode . org-bullets-mode))
 
 (use-package org-protocol
-  :after (org server))
+  :after org server)
 
 (use-package ob-css
   :ensure org-plus-contrib
@@ -535,16 +535,16 @@
 (use-package ob-async
   :ensure t
   :defer t
-  :after (org ob))
+  :after org ob)
 
 (use-package ob-restclient
   :ensure t
-  :after (ob restclient)
+  :after ob restclient
   :commands (org-babel-execute:restclient))
 
 (use-package org-pomodoro
   :ensure t
-  :after (alert))
+  :after alert)
 
 (use-package orgit
   ;;TODO: automate insertion of links below (yasnippet/whatever)
@@ -592,21 +592,21 @@
 
 (use-package russian-holidays
   :ensure t
-  :after (org)
+  :after org
   :config
   (setq calendar-holidays
    (push russian-holidays calendar-holidays)))
 
 (use-package org-rich-yank
   :ensure t
-  :after (org)
+  :after org
   :general
   (:keymaps 'org-mode-map
             "C-M-y" 'org-rich-yank))
 
 (use-package counsel-org-clock
   :ensure t
-  :after (org counsel)
+  :after org counsel
   :custom
   (counsel-org-clock-default-action 'counsel-org-clock-clock-dwim-action))
 

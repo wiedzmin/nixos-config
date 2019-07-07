@@ -22,7 +22,6 @@
      (unless package-archive-contents
        (package-refresh-contents))
      (package-install package)))
- ;;base system packages for bootstrapping
  '(use-package pinentry))
 
 (setq use-package-compute-statistics t)
@@ -44,8 +43,6 @@
   (use-package-secrets-default-directory "/home/alex3rd/.emacs.d/secrets")
   :quelpa
   (use-package-secrets :repo "a13/use-package-secrets" :fetcher github :version original))
-
-(use-package general :ensure t)
 
 (add-hook 'emacs-startup-hook
           (lambda ()
