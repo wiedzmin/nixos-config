@@ -72,6 +72,7 @@ with import ../../../const.nix {inherit config pkgs;};
                 epkgs.format-all
                 epkgs.gcmh
                 epkgs.git-timemachine
+                epkgs.haskell-mode
                 epkgs.hc-zenburn-theme
                 epkgs.helpful
                 epkgs.highlight-numbers
