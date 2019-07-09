@@ -34,10 +34,6 @@ in
         };
     };
 
-    system.activationScripts.ensureBacklightPermissions = ''
-        chmod a+w /sys/class/backlight/intel_backlight/brightness
-    '';
-
     hardware = {
         bluetooth = {
             enable = true;
@@ -173,6 +169,14 @@ in
         '';
         udev.extraRules = ''
             ACTION=="add|change", KERNEL=="sd[ab][!0-9]", ATTR{queue/scheduler}="kyber"
+
+            SUBSYSTEM=="backlight", ACTION=="add", \
+              RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness", \
+              RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
+
+            SUBSYSTEM=="leds", ACTION=="add", KERNEL=="*::kbd_backlight", \
+              RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/leds/%k/brightness", \
+              RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/leds/%k/brightness"
         '';
         upower.enable = true;
         tlp.enable = true;
