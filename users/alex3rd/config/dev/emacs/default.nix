@@ -50,7 +50,6 @@ with import ../../../const.nix {inherit config pkgs;};
                 epkgs.company-statistics
                 epkgs.copy-as-format
                 epkgs.counsel
-                epkgs.counsel-org-clock
                 epkgs.counsel-projectile
                 epkgs.darkburn-theme
                 epkgs.delight
@@ -106,9 +105,7 @@ with import ../../../const.nix {inherit config pkgs;};
                 epkgs.org-bullets
                 epkgs.org-capture-pop-frame
                 epkgs.org-clock-today
-                epkgs.org-dashboard
                 epkgs.org-download
-                epkgs.org-mru-clock
                 epkgs.org-plus-contrib
                 epkgs.org-pomodoro
                 epkgs.org-randomnote
@@ -249,7 +246,8 @@ with import ../../../const.nix {inherit config pkgs;};
                     { src = ./lang/python.el; })) }
                 ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./clients.el; })) }
-                ;; src = ./orgmode.el here
+                ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
+                    { src = ./orgmode.el; })) }
                 ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./help.el; })) }
 

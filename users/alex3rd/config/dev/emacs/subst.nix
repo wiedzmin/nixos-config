@@ -22,5 +22,6 @@ rec {
     emacsPdfViewRestoreFilename = "${emacsDataDir}/.pdf-view-restore";
     emacsResourcesDir = "/home/${userName}/.emacs.d/resources";
     emacsPlantumlJarPath = "${pkgs.plantuml}/lib/plantuml.jar";
+    emacsXprintidleBin = "${pkgs.xprintidle-ng}/bin/xprintidle";
     timeZone = config.time.timeZone;
 }

@@ -46,6 +46,7 @@
   (scroll-preserve-screen-position 'always)
   :config
   (fset 'yes-or-no-p 'y-or-n-p)
+  (set-charset-priority 'unicode)
   (set-default 'indent-tabs-mode nil) ;; Never insert tabs, !!!DO NOT REMOVE!!!
   (setq-default tab-width 4)
   (setq-default fill-column 200)
