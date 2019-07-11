@@ -320,7 +320,7 @@
 
 (use-package ws-butler
   :ensure t
-  :hook (python-mode-hook . ws-butler-mode)
+  :hook (after-init-hook . ws-butler-global-mode)
   :custom
   (ws-butler-convert-leading-tabs-or-spaces t)
   (ws-butler-global-exempt-modes '(markdown-mode)))
