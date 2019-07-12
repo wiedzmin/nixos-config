@@ -415,8 +415,8 @@
   (defun custom/swiper (&optional tap)
     (interactive "P")
     (if tap
-        (swiper-isearch (thing-at-point 'symbol))
-      (swiper-isearch)))
+        (swiper (thing-at-point 'symbol))
+      (swiper)))
   :bind
   (("C-s" . custom/swiper)
    :map custom-counsel-map
