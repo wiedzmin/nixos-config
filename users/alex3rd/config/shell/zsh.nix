@@ -27,6 +27,7 @@ in
                 }
             '';
         };
+        home.packages = with pkgs; [ libnotify ]; # for zsh-notify plugin
         programs.bat = {
             enable = true;
             config = {
