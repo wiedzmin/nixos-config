@@ -21,13 +21,10 @@ in {
                 type = types.bool;
                 default = false;
             };
-            # TODO: think out and add option(s) for udev rules
         };
     };
 
     config = mkIf cfg.enable {
-        # TODO: add udev rules for dock/undock
-        # TODO: add udev rules for AC/DC
         systemd.user.services."xsuspender" = {
             description = "Xsuspender";
             after = [ "graphical-session-pre.target" ];
