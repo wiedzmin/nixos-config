@@ -2,6 +2,8 @@
 with import <home-manager/modules/lib/dag.nix> { inherit lib; };
 with import ./const.nix {inherit config pkgs;};
 with import ./private/sshuttle.nix {inherit config pkgs lib;};
+let custom = import ../../pkgs/custom pkgs config;
+in
 {
     imports = [
         <home-manager/nixos>
@@ -105,6 +107,9 @@ with import ./private/sshuttle.nix {inherit config pkgs lib;};
             # base
             file
             glibcLocales
+
+            custom.pkgsctl
+            custom.confctl
         ];
         services = {
             gpg-agent = {
