@@ -133,6 +133,8 @@ in
         intelmetool
         me_cleaner
     ] ++ [
+        wpa_supplicant_gui      # broken at the moment (qt plugin location issue)
+    ] ++ [
         perf
         cpupower
         hotspot
@@ -243,22 +245,21 @@ in
         wlanInterfaces = {
             "wlan0" = { device = "wlp3s0"; };
         };
-        networkmanager = {
-            enable = true;
-            unmanaged = [
-                "br0"
-                "interface-name:vb-*"
-                "interface-name:vbox*"
-                "interface-name:ve-*"
-                "lo"
-            ];
-        };
-        useNetworkd = false;
         wireless = {
-            enable = false;
+            enable = true;
+            driver = "nl80211";
             userControlled.enable = true;
+            interfaces = [ "wlan0" ];
+            networks = {
+                "mgts161".pskRaw = "e01f873374ae7edfb0b00767e722a544b83b1127ab439ea835e087969a9e8e0c";
+                "dent guest".pskRaw = "d7c9d6ecb87d5791e21a50d51ad06d8756a02e85185cc74ccba2c7b219b9daf4";
+                "E-HOME".pskRaw = "55a2afc011508c7ebafc06207e03217b57bd839aa82b46819d74ac532c849e98";
+                # TODO: unify/fix SSIDs/hashes
+                "emobile ".pskRaw = "274de2d469e0192d03017182b48a827479cb57bd1dec39df85d4badbb1e52398";
+                "emobile".pskRaw = "34bc8341ed02ed5efa2da222f2a93bacc3e75f76dc635c9ddc5b852ba421c857";
+            };
         };
-        useDHCP = false;
+        useDHCP = true;
         nameservers = [
             "77.88.8.8"
             "77.88.8.1"

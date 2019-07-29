@@ -433,7 +433,6 @@ rec {
     rofiWebjumps = "${rofi_webjumps}/bin/rofi_webjumps";
     rofiCombiRun = "${pkgs.rofi}/bin/rofi -combi-modi drun,run -show combi -modi combi";
     showCurrentSystemHash = "${pkgs.show_current_system_hash}/bin/show_current_system_hash";
-    networkmanagerMenu = "${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu"; # using rofi, despite naming
     mergeXresources = "${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources";
     rofiAutorandrProfiles = "${rofi_autorandr_profiles}/bin/rofi_autorandr_profiles";
     rofiDockerContainerTraits = "${rofi_docker_container_traits}/bin/rofi_docker_container_traits";

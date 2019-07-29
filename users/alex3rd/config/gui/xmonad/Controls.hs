@@ -78,12 +78,12 @@ basicKeys conf = [ "C-\\"         ~> sendMessage (XkbToggle Nothing)
                  , "M-S-d"        ~> spawn "@rofiSshCustomUser@" >> WS.showWSOnProperScreen "shell"
                  , "M-S-s"        ~> spawn "@rofiSsh@" >> WS.showWSOnProperScreen "shell"
                  , "M-j"          ~> spawn "@rofiWebjumps@" >> WS.showWSOnProperScreen "web"
+                 , "M-M1-w"       ~> spawn "tmux new-window wpa_cli" >> WS.showWSOnProperScreen "shell"
                  --
                  , "M-C-q"        ~> spawn "xmonad --recompile; xmonad --restart"
                  , "M-q"          ~> spawn "xmonad --restart"
                  , "M-S-p"        ~> spawn "@rofiCombiRun@"
                  , "M-S-h"        ~> spawn "@showCurrentSystemHash@"
-                 , "M-M1-w"       ~> spawn "@networkmanagerMenu@"
                  , "M-M1-q"       ~> spawn "@mergeXresources@"
                  --
                  , "M-C-a"        ~> spawn "@rofiAutorandrProfiles@"
