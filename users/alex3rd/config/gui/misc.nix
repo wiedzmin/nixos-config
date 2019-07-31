@@ -31,19 +31,6 @@ with import ../../const.nix {inherit config pkgs;};
                      application/pdf=zathura.desktop
                  '';
             };
-            ".config/mc/mc.ext" = {
-                 text = ''
-                     regex/\.([pP][dD][fF])$
-                         Include=ebook
-
-                     regex/\.([dD][jJ][vV][uU])$
-                         Include=ebook
-
-                     # modify the include/video section
-                     include/ebook
-                         Open=(zathura %f >/dev/null 2>&1 &)
-                 '';
-            };
             "${config.common.snippets.file}".text = ''
                 ${lib.concatStringsSep "\n" config.common.snippets.inventory}
             '';
@@ -148,319 +135,6 @@ with import ../../const.nix {inherit config pkgs;};
                                             hostname + "/) ==> tag ssh:" + builtins.replaceStrings ["."] ["_"] hostname + ",")
                                             meta.hostNames))
                                 (config.job.extraHosts ++ config.misc.extraHosts))}
-            '';
-            ".config/xmobar/xmobarrc".text = let
-                wifi-status = pkgs.writeShellScriptBin "wifi-status" ''
-                    ESSID=`${pkgs.wirelesstools}/bin/iwgetid -r`
-                    STRENGTH=$((`awk 'NR==3 {print substr($3, 1, length($3)-1)}' /proc/net/wireless`*100/70))
-                    QUALITY_COLOR=
-                    case 1 in
-                        $((STRENGTH < 30)))
-                            QUALITY_COLOR=red
-                            ;;
-                        $((STRENGTH >= 30 && STRENGTH < 70)))
-                            QUALITY_COLOR=yellow
-                            ;;
-                        $((STRENGTH >= 70 && STRENGTH <= 100)))
-                            QUALITY_COLOR=green
-                            ;;
-                    esac
-                    echo $ESSID: "<fc=$QUALITY_COLOR>$STRENGTH</fc>%"
-                '';
-            in
-            ''
-                Config { font = "xft:${config.sys.fonts.main.name}:${config.sys.fonts.main.weightKeyword}=${config.sys.fonts.main.weight}:${config.sys.fonts.main.sizeKeyword}=${config.sys.fonts.size.Dunst}"
-                       , bgColor = "black"
-                       , fgColor = "grey"
-                       , position = TopW L 100
-                       , lowerOnStart = False
-                       , allDesktops = True
-                       , persistent = True
-                       , commands = [ Run Date "%a %d/%m/%y %H:%M:%S" "date" 10
-                                    , Run StdinReader
-                                    , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
-                                                             "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
-                                                             "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
-                                    , Run Com "${wifi-status}/bin/wifi-status" [] "wifi" 60
-                                    , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["openvpn-jobvpn.service", "[V]"] "vpn" 30
-                                    , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["sshuttle.service", "[S]", "user"] "sshuttle" 30
-                                    , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["xsuspender.service", "[X]", "user"] "xsuspender" 30
-                                    , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
-                                              , ("ru", "<fc=green>ru</fc>")
-                                              ]
-                                    ]
-                       , sepChar = "%"
-                       , alignSep = "}{"
-                       , template = "%StdinReader% }{| %battery% | %wifi% %sshuttle% %vpn% %xsuspender% | <fc=#ee9a00>%date%</fc> |%kbd%"
-                       }
-            '';
-            ".config/rofi/oxide.rasi".text = ''
-                /**
-                 * Oxide Color theme
-                 * Author: Diki Ananta <diki1aap@gmail.com>
-                 * Repository: https://github.com/dikiaap/dotfiles
-                 * License: MIT
-                 **/
-                * {
-                    selected-normal-foreground:  @lightfg;
-                    foreground:                  rgba ( 196, 202, 212, 100 % );
-                    normal-foreground:           @foreground;
-                    alternate-normal-background: rgba ( 42, 42, 42, 100 % );
-                    red:                         rgba ( 194, 65, 65, 100 % );
-                    selected-urgent-foreground:  @lightfg;
-                    blue:                        rgba ( 43, 131, 166, 100 % );
-                    urgent-foreground:           @lightfg;
-                    alternate-urgent-background: @red;
-                    active-foreground:           @lightfg;
-                    lightbg:                     @foreground;
-                    selected-active-foreground:  @lightfg;
-                    alternate-active-background: @blue;
-                    background:                  rgba ( 33, 33, 33, 100 % );
-                    alternate-normal-foreground: @foreground;
-                    normal-background:           @background;
-                    lightfg:                     rgba ( 249, 249, 249, 100 % );
-                    selected-normal-background:  rgba ( 90, 90, 90, 100 % );
-                    border-color:                @foreground;
-                    spacing:                     2;
-                    separatorcolor:              rgba ( 183, 183, 183, 100 % );
-                    urgent-background:           @red;
-                    selected-urgent-background:  rgba ( 214, 78, 78, 100 % );
-                    alternate-urgent-foreground: @urgent-foreground;
-                    background-color:            rgba ( 0, 0, 0, 0 % );
-                    alternate-active-foreground: @active-foreground;
-                    active-background:           @blue;
-                    selected-active-background:  rgba ( 39, 141, 182, 100 % );
-                }
-                window {
-                    background-color: @background;
-                    border:           0;
-                    padding:          8;
-                }
-                mainbox {
-                    border:  0;
-                    padding: 0;
-                }
-                message {
-                    border:       2px dash 0px 0px;
-                    border-color: @separatorcolor;
-                    padding:      1px;
-                }
-                textbox {
-                    text-color: @foreground;
-                }
-                listview {
-                    fixed-height: 0;
-                    border:       0;
-                    border-color: @separatorcolor;
-                    spacing:      2px;
-                    scrollbar:    true;
-                    padding:      2px 0px 0px;
-                }
-                element {
-                    border:  0;
-                    padding: 1px;
-                }
-                element normal.normal {
-                    background-color: @normal-background;
-                    text-color:       @normal-foreground;
-                }
-                element normal.urgent {
-                    background-color: @urgent-background;
-                    text-color:       @urgent-foreground;
-                }
-                element normal.active {
-                    background-color: @active-background;
-                    text-color:       @active-foreground;
-                }
-                element selected.normal {
-                    background-color: @selected-normal-background;
-                    text-color:       @selected-normal-foreground;
-                }
-                element selected.urgent {
-                    background-color: @selected-urgent-background;
-                    text-color:       @selected-urgent-foreground;
-                }
-                element selected.active {
-                    background-color: @selected-active-background;
-                    text-color:       @selected-active-foreground;
-                }
-                element alternate.normal {
-                    background-color: @alternate-normal-background;
-                    text-color:       @alternate-normal-foreground;
-                }
-                element alternate.urgent {
-                    background-color: @alternate-urgent-background;
-                    text-color:       @alternate-urgent-foreground;
-                }
-                element alternate.active {
-                    background-color: @alternate-active-background;
-                    text-color:       @alternate-active-foreground;
-                }
-                scrollbar {
-                    width:        4px;
-                    border:       0;
-                    handle-color: rgba ( 85, 85, 85, 100 % );
-                    handle-width: 8px;
-                    padding:      0;
-                }
-                sidebar {
-                    border:       2px dash 0px 0px;
-                    border-color: @separatorcolor;
-                }
-                button {
-                    spacing:    0;
-                    text-color: @normal-foreground;
-                }
-                button selected {
-                    background-color: @selected-normal-background;
-                    text-color:       @selected-normal-foreground;
-                }
-                inputbar {
-                    spacing:    0px;
-                    text-color: @normal-foreground;
-                    padding:    1px;
-                    children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
-                }
-                case-indicator {
-                    spacing:    0;
-                    text-color: @normal-foreground;
-                }
-                entry {
-                    spacing:    0;
-                    text-color: @normal-foreground;
-                }
-                prompt {
-                    spacing:    0;
-                    text-color: @normal-foreground;
-                }
-                textbox-prompt-colon {
-                    expand:     false;
-                    str:        ":";
-                    margin:     0px 0.3000em 0.0000em 0.0000em;
-                    text-color: inherit;
-                }
-            '';
-            ".config/xkeysnail/config.py".text = ''
-                # -*- coding: utf-8 -*-
-
-                import re
-                from xkeysnail.transform import *
-
-                define_conditional_modmap(re.compile(r'Emacs'), {
-                    Key.RIGHT_CTRL: Key.ESC,
-                })
-
-                define_keymap(re.compile("Firefox"), {
-                    K("C-j"): K("C-f6"), # Type C-j to focus to the content
-                    K("C-g"): K("f5"),
-                    K("C-Shift-Right"): K("C-TAB"),
-                    K("C-Shift-Left"): K("C-Shift-TAB"),
-                    K("C-Shift-comma"): Combo(Modifier.ALT, Key.KEY_1),
-                    K("C-Shift-dot"): Combo(Modifier.ALT, Key.KEY_9),
-                    K("C-n"): K("C-g"),
-                    K("C-Shift-n"): K("C-Shift-g"),
-                    K("M-comma"): K("M-Left"),
-                    K("M-dot"): K("M-Right"),
-                    K("C-x"): {
-                        K("b"): K("b"),
-                        K("k"): K("C-w"),
-                        K("u"): K("C-Shift-t"),
-                        K("C-s"): K("C-s"),
-                        K("C-c"): K("C-q"),
-                    },
-                }, "Firefox")
-
-                define_keymap(re.compile("TelegramDesktop"), {
-                    K("C-x"): {
-                        K("C-c"): K("C-q"),
-                    },
-                    K("C-s"): K("Esc"),
-                    K("C-t"): [K("Shift-Left"), K("C-x"), K("Left"), K("C-v"), K("Right")],
-                }, "Telegram")
-
-                define_keymap(re.compile("Alacritty"), {
-                    K("C-x"): {
-                        K("k"): K("C-d"),
-                    },
-                }, "Alacritty")
-
-                # Emacs-like keybindings in non-Emacs applications
-                define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Alacritty"), {
-                    # Cursor
-                    K("C-b"): with_mark(K("left")),
-                    K("C-f"): with_mark(K("right")),
-                    K("C-p"): with_mark(K("up")),
-                    K("C-n"): with_mark(K("down")),
-                    K("C-h"): with_mark(K("backspace")),
-                    # Forward/Backward word
-                    K("M-b"): with_mark(K("C-left")),
-                    K("M-f"): with_mark(K("C-right")),
-                    # Beginning/End of line
-                    K("C-a"): with_mark(K("home")),
-                    K("C-e"): with_mark(K("end")),
-                    # Page up/down
-                    K("M-v"): with_mark(K("page_up")),
-                    K("C-v"): with_mark(K("page_down")),
-                    # Beginning/End of file
-                    K("M-Shift-comma"): with_mark(K("C-home")),
-                    K("M-Shift-dot"): with_mark(K("C-end")),
-                    # Newline
-                    K("C-m"): K("enter"),
-                    K("C-j"): K("enter"),
-                    K("C-o"): [K("enter"), K("left")],
-                    # Copy
-                    K("C-w"): [K("C-x"), set_mark(False)],
-                    K("M-w"): [K("C-c"), set_mark(False)],
-                    K("C-y"): [K("C-v"), set_mark(False)],
-                    # Delete
-                    K("C-d"): [K("delete"), set_mark(False)],
-                    K("M-d"): [K("C-delete"), set_mark(False)],
-                    # Kill line
-                    K("C-k"): [K("Shift-end"), K("C-x"), set_mark(False)],
-                    # Undo
-                    K("C-slash"): [K("C-z"), set_mark(False)],
-                    K("C-Shift-ro"): K("C-z"),
-                    # Mark
-                    K("C-space"): set_mark(True),
-                    #K("C-M-space"): with_or_set_mark(K("C-right")),
-                    # Search
-                    K("C-s"): K("F3"),
-                    K("C-r"): K("Shift-F3"),
-                    K("M-Shift-key_5"): K("C-h"),
-                    # Cancel
-                    K("C-g"): [K("esc"), set_mark(False)],
-                    # Escape
-                    K("C-q"): escape_next_key,
-                    # C-x YYY
-                    K("C-x"): {
-                        # C-x h (select all)
-                        K("h"): [K("C-home"), K("C-a"), set_mark(True)],
-                        # C-x C-f (open)
-                        K("C-f"): K("C-o"),
-                        # C-x C-s (save)
-                        # K("C-s"): K("C-s"),
-                        # C-x k (kill tab)
-                        K("k"): K("C-f4"),
-                        # C-x C-c (exit)
-                        K("C-c"): K("C-q"),
-                        # cancel
-                        K("C-g"): pass_through_key,
-                        # C-x u (undo)
-                        K("u"): [K("C-z"), set_mark(False)],
-                    }
-                }, "Emacs-like keys")
-            '';
-            ".config/synology/nas.yml".text = ''
-                nas:
-                  hostname: ${config.nas.hostname}
-                  users:
-                    admin:
-                      login: ${config.nas.primaryUser}
-                      password: ${config.nas.primaryUserPassword}
-                  # FIXME: use more versatile parser, because those implemented with bash have limited functionality
-                  volumes: ${builtins.concatStringsSep " " config.nas.volumes}
-                  mount:
-                    basedir: ${config.nas.localMountBase}
             '';
             ".gmrunrc".text = ''
                 # gmrun configuration file
@@ -596,121 +270,445 @@ with import ../../const.nix {inherit config pkgs;};
                           format = "CPU: %usage"
                 }
             '';
-            ".config/networkmanager-dmenu/config.ini".text= ''
-                [dmenu]
-                dmenu_command = ${pkgs.rofi}/bin/rofi
-                rofi_highlight = True
-
-                [editor]
-                terminal = ${pkgs.alacritty}/bin/alacritty
-                gui_if_available = True
-            '';
-            ".config/rofi-pass/config".text = ''
-                # permanently set alternative root dir. Use ":" to separate multiple roots
-                # which can be switched at runtime with shift+left/right
-                # root=/path/to/root
-
-                # rofi command. Make sure to have "$@" as last argument
-                _rofi () {
-                    ${pkgs.rofi}/bin/rofi -i -no-auto-select "$@"
-                }
-
-                # default command to generate passwords
-                _pwgen () {
-                    ${pkgs.pwgen}/bin/pwgen -y "$@"
-                }
-
-                # image viewer to display qrcode of selected entry
-                # qrencode is needed to generate the image and a viewer
-                # that can read from pipes. Known viewers to work are feh and display
-                _image_viewer () {
-                    ${pkgs.feh}/bin/feh -
-                }
-
-                # xdotool needs the keyboard layout to be set using setxkbmap
-                # You can do this in your autostart scripts (e.g. xinitrc)
-
-                # If for some reason, you cannot do this, you can set the command here.
-                # and set fix_layout to true
-                fix_layout=false
-
-                layout_cmd () {
-                    ${pkgs.xkblayout-state}/bin/xkblayout-state set 0
-                }
-
-                # fields to be used
-                URL_field='url'
-                USERNAME_field='login'
-                AUTOTYPE_field='autotype'
-
-                # delay to be used for :delay keyword
-                delay=2
-
-                # rofi-pass needs to close itself before it can type passwords. Set delay here.
-                wait=0.2
-
-                # delay between keypresses when typing (in ms)
-                xdotool_delay=12
-
-                ## Programs to be used
-                # Editor
-                EDITOR='${pkgs.emacs}/bin/emacsclient'
-
-                # Browser
-                BROWSER='${pkgs.firefox-unwrapped}/bin/firefox'
-
-                ## Misc settings
-
-                default_do='menu' # menu, autotype, copyPass, typeUser, typePass, copyUser, copyUrl, viewEntry, typeMenu, actionMenu, copyMenu, openUrl
-                auto_enter='false'
-                notify='false'
-                default_autotype='user :tab pass'
-
-                # color of the help messages
-                # leave empty for autodetection
-                help_color="#4872FF"
-
-                # Clipboard settings
-                # Possible options: primary, clipboard, both
-                clip=clipboard
-
-                # Seconds before clearing pass from clipboard
-                clip_clear=45
-
-                ## Options for generating new password entries
-
-                # open new password entries in editor
-                edit_new_pass="true"
-
-                # default_user is also used for password files that have no user field.
-                #default_user="''${ROFI_PASS_DEFAULT_USER-$(whoami)}"
-                #default_user2=${userName}
-                #password_length=12
-
-                # Custom Keybindings
-                autotype="Alt+1"
-                type_user="Alt+2"
-                type_pass="Alt+3"
-                open_url="Alt+4"
-                copy_name="Alt+u"
-                copy_url="Alt+l"
-                copy_pass="Alt+p"
-                show="Alt+o"
-                copy_entry="Alt+2"
-                type_entry="Alt+1"
-                copy_menu="Alt+c"
-                action_menu="Alt+a"
-                type_menu="Alt+t"
-                help="Alt+h"
-                switch="Alt+x"
-                insert_pass="Alt+n"
-            '';
-            ".config/screenshots/screenshots.yml".text = ''
-                screenshots:
-                  path: /home/${userName}/screenshots
-                  date_format: +%Y-%m-%d_%H:%M:%S
-            '';
         };
+        xdg.configFile."mc/mc.ext".text = ''
+             regex/\.([pP][dD][fF])$
+                 Include=ebook
+
+             regex/\.([dD][jJ][vV][uU])$
+                 Include=ebook
+
+             # modify the include/video section
+             include/ebook
+                 Open=(zathura %f >/dev/null 2>&1 &)
+         '';
+        xdg.configFile."xmobar/xmobarrc".text = let
+            wifi-status = pkgs.writeShellScriptBin "wifi-status" ''
+                ESSID=`${pkgs.wirelesstools}/bin/iwgetid -r`
+                STRENGTH=$((`awk 'NR==3 {print substr($3, 1, length($3)-1)}' /proc/net/wireless`*100/70))
+                QUALITY_COLOR=
+                case 1 in
+                    $((STRENGTH < 30)))
+                        QUALITY_COLOR=red
+                        ;;
+                    $((STRENGTH >= 30 && STRENGTH < 70)))
+                        QUALITY_COLOR=yellow
+                        ;;
+                    $((STRENGTH >= 70 && STRENGTH <= 100)))
+                        QUALITY_COLOR=green
+                        ;;
+                esac
+                echo $ESSID: "<fc=$QUALITY_COLOR>$STRENGTH</fc>%"
+            '';
+        in
+        ''
+            Config { font = "xft:${config.sys.fonts.main.name}:${config.sys.fonts.main.weightKeyword}=${config.sys.fonts.main.weight}:${config.sys.fonts.main.sizeKeyword}=${config.sys.fonts.size.Dunst}"
+                   , bgColor = "black"
+                   , fgColor = "grey"
+                   , position = TopW L 100
+                   , lowerOnStart = False
+                   , allDesktops = True
+                   , persistent = True
+                   , commands = [ Run Date "%a %d/%m/%y %H:%M:%S" "date" 10
+                                , Run StdinReader
+                                , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
+                                                         "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
+                                                         "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
+                                , Run Com "${wifi-status}/bin/wifi-status" [] "wifi" 60
+                                , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["openvpn-jobvpn.service", "[V]"] "vpn" 30
+                                , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["sshuttle.service", "[S]", "user"] "sshuttle" 30
+                                , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["xsuspender.service", "[X]", "user"] "xsuspender" 30
+                                , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
+                                          , ("ru", "<fc=green>ru</fc>")
+                                          ]
+                                ]
+                   , sepChar = "%"
+                   , alignSep = "}{"
+                   , template = "%StdinReader% }{| %battery% | %wifi% %sshuttle% %vpn% %xsuspender% | <fc=#ee9a00>%date%</fc> |%kbd%"
+                   }
+        '';
+        xdg.configFile."rofi/oxide.rasi".text = ''
+            /**
+             * Oxide Color theme
+             * Author: Diki Ananta <diki1aap@gmail.com>
+             * Repository: https://github.com/dikiaap/dotfiles
+             * License: MIT
+             **/
+            * {
+                selected-normal-foreground:  @lightfg;
+                foreground:                  rgba ( 196, 202, 212, 100 % );
+                normal-foreground:           @foreground;
+                alternate-normal-background: rgba ( 42, 42, 42, 100 % );
+                red:                         rgba ( 194, 65, 65, 100 % );
+                selected-urgent-foreground:  @lightfg;
+                blue:                        rgba ( 43, 131, 166, 100 % );
+                urgent-foreground:           @lightfg;
+                alternate-urgent-background: @red;
+                active-foreground:           @lightfg;
+                lightbg:                     @foreground;
+                selected-active-foreground:  @lightfg;
+                alternate-active-background: @blue;
+                background:                  rgba ( 33, 33, 33, 100 % );
+                alternate-normal-foreground: @foreground;
+                normal-background:           @background;
+                lightfg:                     rgba ( 249, 249, 249, 100 % );
+                selected-normal-background:  rgba ( 90, 90, 90, 100 % );
+                border-color:                @foreground;
+                spacing:                     2;
+                separatorcolor:              rgba ( 183, 183, 183, 100 % );
+                urgent-background:           @red;
+                selected-urgent-background:  rgba ( 214, 78, 78, 100 % );
+                alternate-urgent-foreground: @urgent-foreground;
+                background-color:            rgba ( 0, 0, 0, 0 % );
+                alternate-active-foreground: @active-foreground;
+                active-background:           @blue;
+                selected-active-background:  rgba ( 39, 141, 182, 100 % );
+            }
+            window {
+                background-color: @background;
+                border:           0;
+                padding:          8;
+            }
+            mainbox {
+                border:  0;
+                padding: 0;
+            }
+            message {
+                border:       2px dash 0px 0px;
+                border-color: @separatorcolor;
+                padding:      1px;
+            }
+            textbox {
+                text-color: @foreground;
+            }
+            listview {
+                fixed-height: 0;
+                border:       0;
+                border-color: @separatorcolor;
+                spacing:      2px;
+                scrollbar:    true;
+                padding:      2px 0px 0px;
+            }
+            element {
+                border:  0;
+                padding: 1px;
+            }
+            element normal.normal {
+                background-color: @normal-background;
+                text-color:       @normal-foreground;
+            }
+            element normal.urgent {
+                background-color: @urgent-background;
+                text-color:       @urgent-foreground;
+            }
+            element normal.active {
+                background-color: @active-background;
+                text-color:       @active-foreground;
+            }
+            element selected.normal {
+                background-color: @selected-normal-background;
+                text-color:       @selected-normal-foreground;
+            }
+            element selected.urgent {
+                background-color: @selected-urgent-background;
+                text-color:       @selected-urgent-foreground;
+            }
+            element selected.active {
+                background-color: @selected-active-background;
+                text-color:       @selected-active-foreground;
+            }
+            element alternate.normal {
+                background-color: @alternate-normal-background;
+                text-color:       @alternate-normal-foreground;
+            }
+            element alternate.urgent {
+                background-color: @alternate-urgent-background;
+                text-color:       @alternate-urgent-foreground;
+            }
+            element alternate.active {
+                background-color: @alternate-active-background;
+                text-color:       @alternate-active-foreground;
+            }
+            scrollbar {
+                width:        4px;
+                border:       0;
+                handle-color: rgba ( 85, 85, 85, 100 % );
+                handle-width: 8px;
+                padding:      0;
+            }
+            sidebar {
+                border:       2px dash 0px 0px;
+                border-color: @separatorcolor;
+            }
+            button {
+                spacing:    0;
+                text-color: @normal-foreground;
+            }
+            button selected {
+                background-color: @selected-normal-background;
+                text-color:       @selected-normal-foreground;
+            }
+            inputbar {
+                spacing:    0px;
+                text-color: @normal-foreground;
+                padding:    1px;
+                children:   [ prompt,textbox-prompt-colon,entry,case-indicator ];
+            }
+            case-indicator {
+                spacing:    0;
+                text-color: @normal-foreground;
+            }
+            entry {
+                spacing:    0;
+                text-color: @normal-foreground;
+            }
+            prompt {
+                spacing:    0;
+                text-color: @normal-foreground;
+            }
+            textbox-prompt-colon {
+                expand:     false;
+                str:        ":";
+                margin:     0px 0.3000em 0.0000em 0.0000em;
+                text-color: inherit;
+            }
+        '';
+        xdg.configFile."xkeysnail/config.py".text = ''
+            # -*- coding: utf-8 -*-
+
+            import re
+            from xkeysnail.transform import *
+
+            define_conditional_modmap(re.compile(r'Emacs'), {
+                Key.RIGHT_CTRL: Key.ESC,
+            })
+
+            define_keymap(re.compile("Firefox"), {
+                K("C-j"): K("C-f6"), # Type C-j to focus to the content
+                K("C-g"): K("f5"),
+                K("C-Shift-Right"): K("C-TAB"),
+                K("C-Shift-Left"): K("C-Shift-TAB"),
+                K("C-Shift-comma"): Combo(Modifier.ALT, Key.KEY_1),
+                K("C-Shift-dot"): Combo(Modifier.ALT, Key.KEY_9),
+                K("C-n"): K("C-g"),
+                K("C-Shift-n"): K("C-Shift-g"),
+                K("M-comma"): K("M-Left"),
+                K("M-dot"): K("M-Right"),
+                K("C-x"): {
+                    K("b"): K("b"),
+                    K("k"): K("C-w"),
+                    K("u"): K("C-Shift-t"),
+                    K("C-s"): K("C-s"),
+                    K("C-c"): K("C-q"),
+                },
+            }, "Firefox")
+
+            define_keymap(re.compile("TelegramDesktop"), {
+                K("C-x"): {
+                    K("C-c"): K("C-q"),
+                },
+                K("C-s"): K("Esc"),
+                K("C-t"): [K("Shift-Left"), K("C-x"), K("Left"), K("C-v"), K("Right")],
+            }, "Telegram")
+
+            define_keymap(re.compile("Alacritty"), {
+                K("C-x"): {
+                    K("k"): K("C-d"),
+                },
+            }, "Alacritty")
+
+            # Emacs-like keybindings in non-Emacs applications
+            define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Alacritty"), {
+                # Cursor
+                K("C-b"): with_mark(K("left")),
+                K("C-f"): with_mark(K("right")),
+                K("C-p"): with_mark(K("up")),
+                K("C-n"): with_mark(K("down")),
+                K("C-h"): with_mark(K("backspace")),
+                # Forward/Backward word
+                K("M-b"): with_mark(K("C-left")),
+                K("M-f"): with_mark(K("C-right")),
+                # Beginning/End of line
+                K("C-a"): with_mark(K("home")),
+                K("C-e"): with_mark(K("end")),
+                # Page up/down
+                K("M-v"): with_mark(K("page_up")),
+                K("C-v"): with_mark(K("page_down")),
+                # Beginning/End of file
+                K("M-Shift-comma"): with_mark(K("C-home")),
+                K("M-Shift-dot"): with_mark(K("C-end")),
+                # Newline
+                K("C-m"): K("enter"),
+                K("C-j"): K("enter"),
+                K("C-o"): [K("enter"), K("left")],
+                # Copy
+                K("C-w"): [K("C-x"), set_mark(False)],
+                K("M-w"): [K("C-c"), set_mark(False)],
+                K("C-y"): [K("C-v"), set_mark(False)],
+                # Delete
+                K("C-d"): [K("delete"), set_mark(False)],
+                K("M-d"): [K("C-delete"), set_mark(False)],
+                # Kill line
+                K("C-k"): [K("Shift-end"), K("C-x"), set_mark(False)],
+                # Undo
+                K("C-slash"): [K("C-z"), set_mark(False)],
+                K("C-Shift-ro"): K("C-z"),
+                # Mark
+                K("C-space"): set_mark(True),
+                #K("C-M-space"): with_or_set_mark(K("C-right")),
+                # Search
+                K("C-s"): K("F3"),
+                K("C-r"): K("Shift-F3"),
+                K("M-Shift-key_5"): K("C-h"),
+                # Cancel
+                K("C-g"): [K("esc"), set_mark(False)],
+                # Escape
+                K("C-q"): escape_next_key,
+                # C-x YYY
+                K("C-x"): {
+                    # C-x h (select all)
+                    K("h"): [K("C-home"), K("C-a"), set_mark(True)],
+                    # C-x C-f (open)
+                    K("C-f"): K("C-o"),
+                    # C-x C-s (save)
+                    # K("C-s"): K("C-s"),
+                    # C-x k (kill tab)
+                    K("k"): K("C-f4"),
+                    # C-x C-c (exit)
+                    K("C-c"): K("C-q"),
+                    # cancel
+                    K("C-g"): pass_through_key,
+                    # C-x u (undo)
+                    K("u"): [K("C-z"), set_mark(False)],
+                }
+            }, "Emacs-like keys")
+        '';
+        xdg.configFile."synology/nas.yml".text = ''
+            nas:
+              hostname: ${config.nas.hostname}
+              users:
+                admin:
+                  login: ${config.nas.primaryUser}
+                  password: ${config.nas.primaryUserPassword}
+              # FIXME: use more versatile parser, because those implemented with bash have limited functionality
+              volumes: ${builtins.concatStringsSep " " config.nas.volumes}
+              mount:
+                basedir: ${config.nas.localMountBase}
+        '';
+        xdg.configFile."networkmanager-dmenu/config.ini".text= ''
+            [dmenu]
+            dmenu_command = ${pkgs.rofi}/bin/rofi
+            rofi_highlight = True
+
+            [editor]
+            terminal = ${pkgs.alacritty}/bin/alacritty
+            gui_if_available = True
+        '';
+        xdg.configFile."rofi-pass/config".text = ''
+            # permanently set alternative root dir. Use ":" to separate multiple roots
+            # which can be switched at runtime with shift+left/right
+            # root=/path/to/root
+
+            # rofi command. Make sure to have "$@" as last argument
+            _rofi () {
+                ${pkgs.rofi}/bin/rofi -i -no-auto-select "$@"
+            }
+
+            # default command to generate passwords
+            _pwgen () {
+                ${pkgs.pwgen}/bin/pwgen -y "$@"
+            }
+
+            # image viewer to display qrcode of selected entry
+            # qrencode is needed to generate the image and a viewer
+            # that can read from pipes. Known viewers to work are feh and display
+            _image_viewer () {
+                ${pkgs.feh}/bin/feh -
+            }
+
+            # xdotool needs the keyboard layout to be set using setxkbmap
+            # You can do this in your autostart scripts (e.g. xinitrc)
+
+            # If for some reason, you cannot do this, you can set the command here.
+            # and set fix_layout to true
+            fix_layout=false
+
+            layout_cmd () {
+                ${pkgs.xkblayout-state}/bin/xkblayout-state set 0
+            }
+
+            # fields to be used
+            URL_field='url'
+            USERNAME_field='login'
+            AUTOTYPE_field='autotype'
+
+            # delay to be used for :delay keyword
+            delay=2
+
+            # rofi-pass needs to close itself before it can type passwords. Set delay here.
+            wait=0.2
+
+            # delay between keypresses when typing (in ms)
+            xdotool_delay=12
+
+            ## Programs to be used
+            # Editor
+            EDITOR='${pkgs.emacs}/bin/emacsclient'
+
+            # Browser
+            BROWSER='${pkgs.firefox-unwrapped}/bin/firefox'
+
+            ## Misc settings
+
+            default_do='menu' # menu, autotype, copyPass, typeUser, typePass, copyUser, copyUrl, viewEntry, typeMenu, actionMenu, copyMenu, openUrl
+            auto_enter='false'
+            notify='false'
+            default_autotype='user :tab pass'
+
+            # color of the help messages
+            # leave empty for autodetection
+            help_color="#4872FF"
+
+            # Clipboard settings
+            # Possible options: primary, clipboard, both
+            clip=clipboard
+
+            # Seconds before clearing pass from clipboard
+            clip_clear=45
+
+            ## Options for generating new password entries
+
+            # open new password entries in editor
+            edit_new_pass="true"
+
+            # default_user is also used for password files that have no user field.
+            #default_user="''${ROFI_PASS_DEFAULT_USER-$(whoami)}"
+            #default_user2=${userName}
+            #password_length=12
+
+            # Custom Keybindings
+            autotype="Alt+1"
+            type_user="Alt+2"
+            type_pass="Alt+3"
+            open_url="Alt+4"
+            copy_name="Alt+u"
+            copy_url="Alt+l"
+            copy_pass="Alt+p"
+            show="Alt+o"
+            copy_entry="Alt+2"
+            type_entry="Alt+1"
+            copy_menu="Alt+c"
+            action_menu="Alt+a"
+            type_menu="Alt+t"
+            help="Alt+h"
+            switch="Alt+x"
+            insert_pass="Alt+n"
+        '';
+        xdg.configFile."screenshots/screenshots.yml".text = ''
+            screenshots:
+              path: /home/${userName}/screenshots
+              date_format: +%Y-%m-%d_%H:%M:%S
+        '';
         gtk = {
             enable = true;
             font = {

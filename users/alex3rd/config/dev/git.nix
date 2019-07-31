@@ -157,14 +157,14 @@ with import ../../const.nix {inherit config pkgs;};
                     exit $?;
                 '';
             };
-            ".config/pass-git-helper/git-pass-mapping.ini".text = ''
-                [github.com*]
-                target=${userName}/webservices/social/programming/github.com
-
-                [bitbucket.org*]
-                target=${userName}/webservices/social/programming/bitbucket.com
-            '';
         };
+        xdg.configFile."pass-git-helper/git-pass-mapping.ini".text = ''
+            [github.com*]
+            target=${userName}/webservices/social/programming/github.com
+
+            [bitbucket.org*]
+            target=${userName}/webservices/social/programming/bitbucket.com
+        '';
         programs.git = {
             enable = true;
             userName = config.common.userTraits.fullName;
