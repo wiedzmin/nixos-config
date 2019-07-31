@@ -106,19 +106,19 @@ in
             secureSocket = false;
             shell = "${pkgs.zsh}/bin/zsh";
             tmuxp.enable = true;
-            plugins = with pkgs; [
+            plugins = with pkgs; with tmuxPlugins; [
                 {
                     plugin = fzf-tmux-url-with-history; # patched version, see overlays
                     extraConfig = "set -g @fzf-url-bind 'o'";
                 }
-                tmuxPlugins.battery
-                tmuxPlugins.copycat
-                tmuxPlugins.cpu
-                tmuxPlugins.fpp
-                tmuxPlugins.logging
-                tmuxPlugins.prefix-highlight
-                tmuxPlugins.sessionist
-                tmuxPlugins.yank
+                battery
+                copycat
+                cpu
+                fpp
+                logging
+                prefix-highlight
+                sessionist
+                yank
             ];
         };
         home.file = {
