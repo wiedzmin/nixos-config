@@ -13,13 +13,10 @@ in
             gen-nix-du
         ];
         nixpkgs.config.packageOverrides = super: {
-            is-git-repo = pkgs.writeShellScriptBin "is-git-repo" ''
-                ${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null
-            '';
             watch_git_remote_status = pkgs.writeShellScriptBin "watch_git_remote_status" ''
                 GIT_REPO=''${1:-'.'}
                 cd $GIT_REPO
-                if [ -z "$(${pkgs.is-git-repo}/bin/is-git-repo)" ]; then
+                if [ -z "$(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null)" ]; then
                     echo "Not a git repo"
                     exit 1
                 fi

@@ -161,7 +161,7 @@ in
                                         ${pkgs.fzf}/bin/fzf | ${pkgs.gawk}/bin/awk '{print $2}' | xargs kill -9"
 
                 bind b split-window -c '#{pane_current_path}' \
-                                    -v "${pkgs.is-git-repo}/bin/is-git-repo && ${pkgs.git}/bin/git -p show --color=always \
+                                    -v "${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null && ${pkgs.git}/bin/git -p show --color=always \
                                         $(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always | \
                                         ${pkgs.fzf}/bin/fzf --ansi +m +s | ${pkgs.gawk}/bin/awk '{print $2}') | less -R"
 
