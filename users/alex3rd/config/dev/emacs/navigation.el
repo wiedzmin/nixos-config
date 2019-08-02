@@ -290,11 +290,11 @@
   :ensure t
   :delight ivy-mode
   :bind
-  (("M-<f12>" . ivy-switch-buffer)
+  (("M-<f12>" . counsel-switch-buffer)
    ("<f10>" . ivy-resume)
    ("C-x C-b" . nil)
    :map ctl-x-map
-   ("b" . ivy-switch-buffer)
+   ("b" . counsel-switch-buffer)
    :map mode-specific-map
    ("v" . ivy-push-view)
    ("V" . ivy-pop-view)
