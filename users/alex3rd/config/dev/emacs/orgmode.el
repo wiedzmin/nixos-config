@@ -4,12 +4,6 @@
   :custom
   (calendar-week-start-day 1))
 
-(use-package counsel-org-clock
-  :ensure t
-  :after org counsel
-  :custom
-  (counsel-org-clock-default-action 'counsel-org-clock-clock-dwim-action))
-
 (use-package ob-blockdiag
   :ensure t
   :config
