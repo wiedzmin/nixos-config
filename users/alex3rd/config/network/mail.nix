@@ -8,10 +8,7 @@ let
     imapfilterOptionsKeepalive = 29;
     imapfilterOptionsCertificates = false;
     imapfilterSpamFlushAfterDays = 14;
-    pass_imap_helper = pkgs.writeShellScriptBin "pass_imap_helper" ''
-        PASS_ENTRY=$1
-        echo $(${pkgs.pass}/bin/pass $PASS_ENTRY | ${pkgs.coreutils}/bin/head -n 1)
-    '';
+    custom = import ../../../../pkgs/custom pkgs config;
 in
 {
     home-manager.users."${userName}" = {
@@ -22,7 +19,7 @@ in
                 primary = true;
                 realName = "${config.common.userTraits.fullName}";
                 userName = "${config.common.userTraits.email}";
-                passwordCommand = "${pass_imap_helper}/bin/pass_imap_helper ${config.common.userTraits.googleAccountPasswordPath}";
+                passwordCommand = "${custom.pass_imap_helper}/bin/pass_imap_helper ${config.common.userTraits.googleAccountPasswordPath}";
                 signature = {
                     showSignature = "none";
                     text = config.common.userTraits.signature;
@@ -126,7 +123,7 @@ in
         account_personal = IMAP {
             server = 'imap.gmail.com',
             username = '${config.common.userTraits.email}',
-            password = io.popen('${pass_imap_helper}/bin/pass_imap_helper ${config.common.userTraits.googleAccountPasswordPath}', 'r'):read("*a"),
+            password = io.popen('${custom.pass_imap_helper}/bin/pass_imap_helper ${config.common.userTraits.googleAccountPasswordPath}', 'r'):read("*a"),
             ssl = 'tls'
         }
 

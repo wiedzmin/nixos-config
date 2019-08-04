@@ -124,7 +124,9 @@ let
         gitAndTools.topGit
         gitstats
     ];
-    virt = with pkgs; [
+    virt = with pkgs; let
+        custom = import ../../pkgs/custom pkgs config;
+    in [
         ctop
         dive
         docker-machine
@@ -139,8 +141,8 @@ let
         vagrant
         virtmanager
         virtviewer
-        docker-machine-export
-        docker-machine-import
+        custom.docker-machine-export
+        custom.docker-machine-import
     ];
     forensics = with pkgs; [
         bbe

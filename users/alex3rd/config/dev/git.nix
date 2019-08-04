@@ -2,13 +2,16 @@
 with import ../../../../pkgs/util.nix {inherit config pkgs lib;};
 with import ../../../../pkgs/const.nix {inherit config pkgs;};
 with import ../../const.nix {inherit config pkgs;};
+let
+    custom = import ../../../../pkgs/custom pkgs config;
+in
 {
     environment.etc."nixos/.hooks/pre-push/stop-wip" = {
         mode = "0644";
         user = "${userName}";
         group = "users";
         text = ''
-            . ${pkgs.git_lib}/bin/git_lib
+            . ${custom.git_lib}/bin/git_lib
 
             check_for_wip
             exit $?
@@ -142,7 +145,7 @@ with import ../../const.nix {inherit config pkgs;};
                 text = ''
                     #!${pkgs.bash}/bin/bash
                     # TODO: templatize further
-                    . ${pkgs.git_lib}/bin/git_lib
+                    . ${custom.git_lib}/bin/git_lib
                     execute_hook_items pre-push
                     exit $?;
                 '';
@@ -152,7 +155,7 @@ with import ../../const.nix {inherit config pkgs;};
                 text = ''
                     #!${pkgs.bash}/bin/bash
                     # TODO: templatize further
-                    . ${pkgs.git_lib}/bin/git_lib
+                    . ${custom.git_lib}/bin/git_lib
                     execute_hook_items pre-commit
                     exit $?;
                 '';
@@ -240,38 +243,8 @@ with import ../../const.nix {inherit config pkgs;};
                 "ghq" = {
                     root = "/home/${userName}/workspace/repos";
                 };
-                "ghq \"import\"" = let
-                    pass_curl_helper = pkgs.writeShellScriptBin "pass_curl_helper" ''
-                        PASS_ENTRY=$1
-                        echo $(${pkgs.pass}/bin/pass $PASS_ENTRY | ${pkgs.coreutils}/bin/tr '\n' ' ' | \
-                             ${pkgs.gawk}/bin/awk '{print $3 ":" $1}')
-                    '';
-                    bitbucket_team_contributor_repos = pkgs.writeShellScriptBin "bitbucket_team_contributor_repos" ''
-                        PASS_PATH=$1
-                        if [ -z "PASS_PATH" ]; then
-                            echo "No credentials provided"
-                            exit 1
-                        fi
-                        TEAM=$2
-                        PROJECTS_EXCLUDE=$3
-                        CREDENTIALS=$(${pass_curl_helper}/bin/pass_curl_helper $PASS_PATH)
-                        RESULT=$(${pkgs.curl}/bin/curl -s -u \
-                               $CREDENTIALS "https://api.bitbucket.org/2.0/repositories?role=contributor&pagelen=200" | \
-                               ${pkgs.jq}/bin/jq -r '.values[] | select(.project.name != null) | "\(.links.clone[0].href)~\(.project.name)"')
-                        if [[ ! -z $TEAM ]]; then
-                            RESULT=$(printf "%s\n" $RESULT | ${pkgs.gnugrep}/bin/grep $TEAM)
-                        fi
-                        if [[ ! -z $PROJECTS_EXCLUDE ]]; then
-                            GREP_CLAUSES=$(echo $PROJECTS_EXCLUDE | ${pkgs.gnused}/bin/sed "s/,/\|/g")
-                            RESULT=$(printf "%s\n" $RESULT | ${pkgs.gnugrep}/bin/grep -i -v -E $GREP_CLAUSES)
-                        fi
-                        for REPO in $RESULT; do
-                            echo $REPO | ${pkgs.coreutils}/bin/cut -f1 -d~
-                        done
-                    '';
-                in
-                {
-                    bbcontribs = "${bitbucket_team_contributor_repos}";
+                "ghq \"import\"" = {
+                    bbcontribs = "${custom.bitbucket_team_contributor_repos}";
                 };
                 "github" = {
                     user = "wiedzmin";

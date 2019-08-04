@@ -1,26 +1,21 @@
 {config, pkgs, lib, ...}:
 with import ../../const.nix {inherit config pkgs;};
 let
-    rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
-        ${pkgs.feh}/bin/feh --bg-fill ${config.sys.wallpaper.baseDir}/${config.sys.wallpaper.current}
-    '';
-    kill-compton = pkgs.writeShellScriptBin "kill-compton" ''
-        ${pkgs.procps}/bin/pkill -f compton
-    '';
+    custom = import ../../../../pkgs/custom pkgs config;
 in
 {
     home-manager.users."${userName}" = {
         home.packages = with pkgs; [
-            rescale-wallpaper
+            custom.rescale-wallpaper
         ];
         programs.autorandr = {
             enable = true;
             hooks = {
                 postswitch = {
-                    "rescale-wallpaper" = "${rescale-wallpaper}/bin/rescale-wallpaper";
+                    "rescale-wallpaper" = "${custom.rescale-wallpaper}/bin/rescale-wallpaper";
                 };
                 predetect = {
-                    "kill-compton" = "${kill-compton}/bin/kill-compton";
+                    "kill-compton" = "${custom.kill-compton}/bin/kill-compton";
                 };
             };
             profiles = {

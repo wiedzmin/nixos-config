@@ -7,6 +7,7 @@
 
     config = {
         nixpkgs.config.packageOverrides = super: {
+            # TODO: think of relocating to custom scripts pkgs
             bootstrap_custom_config = pkgs.writeShellScriptBin "bootstrap_custom_config" ''
                 ROOT_PARTITION_LABEL=nixos-root
                 BOOT_PARTITION_LABEL=nixos-boot

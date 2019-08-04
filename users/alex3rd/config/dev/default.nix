@@ -2,7 +2,6 @@
 {
     imports =
     [
-        ./clients.nix
         ./emacs
         ./git.nix
         ./misc.nix

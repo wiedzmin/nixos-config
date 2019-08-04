@@ -1,26 +1,7 @@
 {config, pkgs, lib, ...}:
 with import ../../const.nix {inherit config pkgs;};
 let
-    shell-capture = pkgs.writeShellScriptBin "shell-capture" ''
-        TEMPLATE="$1"
-        if [[ ! -n $TEMPLATE ]]
-        then
-            exit 1
-        fi
-        TITLE="$*"
-        if [[ -n $TMUX ]]
-        then
-            TITLE=$(${pkgs.tmux}/bin/tmux display-message -p '#S')
-            ${pkgs.tmux}/bin/tmux send -X copy-pipe-and-cancel "${pkgs.xsel}/bin/xsel -i --primary"
-        fi
-
-        if [[ -n $TITLE ]]
-        then
-            ${pkgs.emacs}/bin/emacsclient -n "org-protocol://capture?template=$TEMPLATE&title=$TITLE"
-        else
-            ${pkgs.emacs}/bin/emacsclient -n "org-protocol://capture?template=$TEMPLATE"
-        fi
-    '';
+    custom = import ../../../../pkgs/custom pkgs config;
 in
 {
     home-manager.users."${userName}" = {
@@ -48,10 +29,10 @@ in
             };
             bindings = {
                 copyMode = {
-                    "M-e" = ''run-shell "${shell-capture}/bin/shell-capture es"'';
-                    "M-j" = ''run-shell "${shell-capture}/bin/shell-capture js"'';
-                    "M-n" = ''run-shell "${shell-capture}/bin/shell-capture ns"'';
-                    "M-x" = ''run-shell "${shell-capture}/bin/shell-capture xs"'';
+                    "M-e" = ''run-shell "${custom.shell-org-capture}/bin/shell-org-capture es"'';
+                    "M-j" = ''run-shell "${custom.shell-org-capture}/bin/shell-org-capture js"'';
+                    "M-n" = ''run-shell "${custom.shell-org-capture}/bin/shell-org-capture ns"'';
+                    "M-x" = ''run-shell "${custom.shell-org-capture}/bin/shell-org-capture xs"'';
                 };
                 root = {
                     "C-left" = "prev";

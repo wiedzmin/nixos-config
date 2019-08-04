@@ -1,9 +1,11 @@
 {config, pkgs, lib, ...}:
 with import ../../../../pkgs/util.nix {inherit lib config pkgs;};
 with import ../../const.nix {inherit config pkgs;};
+let
+    custom = import ../../../../pkgs/custom pkgs config;
+in
 {
     imports = [
-        ../../../../pkgs/scripts
         ../../private/nas.nix
     ];
 
@@ -282,26 +284,7 @@ with import ../../const.nix {inherit config pkgs;};
              include/ebook
                  Open=(zathura %f >/dev/null 2>&1 &)
          '';
-        xdg.configFile."xmobar/xmobarrc".text = let
-            wifi-status = pkgs.writeShellScriptBin "wifi-status" ''
-                ESSID=`${pkgs.wirelesstools}/bin/iwgetid -r`
-                STRENGTH=$((`awk 'NR==3 {print substr($3, 1, length($3)-1)}' /proc/net/wireless`*100/70))
-                QUALITY_COLOR=
-                case 1 in
-                    $((STRENGTH < 30)))
-                        QUALITY_COLOR=red
-                        ;;
-                    $((STRENGTH >= 30 && STRENGTH < 70)))
-                        QUALITY_COLOR=yellow
-                        ;;
-                    $((STRENGTH >= 70 && STRENGTH <= 100)))
-                        QUALITY_COLOR=green
-                        ;;
-                esac
-                echo $ESSID: "<fc=$QUALITY_COLOR>$STRENGTH</fc>%"
-            '';
-        in
-        ''
+        xdg.configFile."xmobar/xmobarrc".text = ''
             Config { font = "xft:${config.sys.fonts.main.name}:${config.sys.fonts.main.weightKeyword}=${config.sys.fonts.main.weight}:${config.sys.fonts.main.sizeKeyword}=${config.sys.fonts.size.Dunst}"
                    , bgColor = "black"
                    , fgColor = "grey"
@@ -314,10 +297,10 @@ with import ../../const.nix {inherit config pkgs;};
                                 , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
                                                          "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
                                                          "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
-                                , Run Com "${wifi-status}/bin/wifi-status" [] "wifi" 60
-                                , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["openvpn-jobvpn.service", "[V]"] "vpn" 30
-                                , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["sshuttle.service", "[S]", "user"] "sshuttle" 30
-                                , Run Com "${pkgs.systemctl-status}/bin/systemctl-status" ["xsuspender.service", "[X]", "user"] "xsuspender" 30
+                                , Run Com "${custom.wifi-status}/bin/wifi-status" [] "wifi" 60
+                                , Run Com "${custom.systemctl-status}/bin/systemctl-status" ["openvpn-jobvpn.service", "[V]"] "vpn" 30
+                                , Run Com "${custom.systemctl-status}/bin/systemctl-status" ["sshuttle.service", "[S]", "user"] "sshuttle" 30
+                                , Run Com "${custom.systemctl-status}/bin/systemctl-status" ["xsuspender.service", "[X]", "user"] "xsuspender" 30
                                 , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
                                           , ("ru", "<fc=green>ru</fc>")
                                           ]

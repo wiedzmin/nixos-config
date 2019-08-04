@@ -12,7 +12,6 @@
         ./dotfiles/x11/xresources.nix
         ./services/xkeysnail.nix
         ./private/traits/network.nix
-        ../../pkgs/scripts
     ];
 
     users.extraUsers.kotya = {
