@@ -31,12 +31,17 @@ let
         terraform
         tflint
     ];
+    stagingPublish = with pkgs; [
+        pdfcpu
+        pdfgrep
+        pdfsandwich
+        pdftk
+    ];
     sandbox = with pkgs; [ # binaries for PATH
         # transmission + service https://transmissionbt.com/
         fd
         gnuplot                 # ? misc
         hstr                    # ? misc shell
-        k2pdfopt
         lsd
         ncmpcpp
         uget
@@ -363,9 +368,6 @@ let
         enca
         ghostscript
         pandoc
-        pdfgrep
-        pdfsandwich
-        pdftk
         python3Packages.weasyprint
     ];
     security = with pkgs; [
@@ -411,6 +413,7 @@ in
                         shell ++
                         stagingCommon ++
                         stagingWork ++
+                        stagingPublish ++
                         text;
     };
 }
