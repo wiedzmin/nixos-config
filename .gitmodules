@@ -1,15 +1,15 @@
-[submodule "home-manager"]
-	path = pkgs/home-manager
-	url = https://github.com/rycee/home-manager
-[submodule "nixpkgs-channels"]
-	path = pkgs/nixpkgs-channels
-	url = https://github.com/NixOS/nixpkgs-channels
-[submodule "users/alex3rd/dotfiles/dev/emacs/yasnippet-snippets"]
-	path = users/alex3rd/config/dev/emacs/yasnippet-snippets/yasnippet-snippets
+[submodule "pkgs/forges/github.com/wiedzmin/yasnippet-snippets"]
+	path = pkgs/forges/github.com/wiedzmin/yasnippet-snippets
 	url = https://github.com/wiedzmin/yasnippet-snippets
-[submodule "home-manager-proposed"]
-	path = pkgs/home-manager-proposed
+[submodule "pkgs/forges/github.com/rycee/home-manager"]
+	path = pkgs/forges/github.com/rycee/home-manager
+	url = https://github.com/rycee/home-manager
+[submodule "pkgs/forges/github.com/NixOS/nixpkgs-channels"]
+	path = pkgs/forges/github.com/NixOS/nixpkgs-channels
+	url = https://github.com/NixOS/nixpkgs-channels
+[submodule "pkgs/forges/github.com/wiedzmin/home-manager"]
+	path = pkgs/forges/github.com/wiedzmin/home-manager
 	url = https://github.com/wiedzmin/home-manager
-[submodule "pkgs/nixpkgs-proposed"]
-	path = pkgs/nixpkgs-proposed
+[submodule "pkgs/forges/github.com/wiedzmin/nixpkgs"]
+	path = pkgs/forges/github.com/wiedzmin/nixpkgs
 	url = https://github.com/wiedzmin/nixpkgs
