@@ -112,6 +112,8 @@ in
                 XAUTHORITY = "/home/${userName}/.Xauthority";
                 ZSH_COMMAND_TIME_COLOR = "cyan";
                 LIBVA_DRIVER_NAME = "iHD";
+                YSU_MODE = "ALL";
+                YSU_IGNORED_ALIASES=["g" "ll"]; # TODO: review list
             };
             shellAliases = {
                 cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
@@ -148,6 +150,16 @@ in
                         repo = "browse-commit";
                         rev = "cf28b2eeba622545ae751ec99532b6b60e58b845";
                         sha256 = "15c9qxxa7l47w5r28pazs0gv0016lv52mncn45s6g1d3120k5fx0";
+                    };
+                }
+                {
+                    name = "you-should-use";
+                    file = "you-should-use.plugin.zsh";
+                    src = pkgs.fetchFromGitHub {
+                        owner = "MichaelAquilina";
+                        repo = "zsh-you-should-use";
+                        rev = "1.1.0";
+                        sha256 = "0fig5ralagi5jajk7gdm52jvwql17qk9cd6j98qsndvckb26a753";
                     };
                 }
                 {
