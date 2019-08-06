@@ -1,5 +1,6 @@
 {config, pkgs, lib, ...}:
 with import ../../const.nix {inherit config pkgs;};
+with import ../../secrets/const.nix {inherit config pkgs lib;};
 let
     custom = import ../../../../pkgs/custom pkgs config;
 in
@@ -124,7 +125,7 @@ in
                 session_name: dev
                 windows:
                   - window_name: mc
-                    start_directory: ${config.dev.workspacePath}/github.com/wiedzmin
+                    start_directory: ${devWorkspacePath}/github.com/wiedzmin
                     panes:
                       - mc
             '';

@@ -1,4 +1,5 @@
-{ bash, config, coreutils, dunst, mycli, pass, pgcli, rofi, stdenv, systemd, tmux, ... }:
+{ bash, config, coreutils, dunst, lib, mycli, pass, pgcli, pkgs, rofi, stdenv, systemd, tmux, ... }:
+with import ../secrets/const.nix {inherit lib config pkgs;};
 ''
     #!${bash}/bin/bash
 
@@ -18,7 +19,7 @@
     ${builtins.concatStringsSep "\n"
       (stdenv.lib.mapAttrsToList
           (alias: meta: "  [\"${alias}\"]=\"${meta.ip} ${meta.command} ${meta.user} ${meta.passwordPassPath}\"")
-            (config.job.dbmsTraits))}
+            (jobDbmsTraits))}
     )
 
     MYCLI_BINARY=${mycli}/bin/mycli

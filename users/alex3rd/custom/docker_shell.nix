@@ -1,4 +1,5 @@
-{ bash, config, coreutils, docker, docker-machine, dunst, eternal-terminal, gawk, rofi, systemd, tmux, ... }:
+{ bash, config, coreutils, docker, docker-machine, dunst, eternal-terminal, gawk, lib, pkgs, rofi, systemd, tmux, ... }:
+with import ../secrets/const.nix {inherit lib config pkgs;};
 let
     dockerContainerShellExecutable = "/bin/bash";
 in
@@ -25,7 +26,7 @@ in
             SELECTED_CONTAINER=$( ${docker}/bin/docker ps --format '{{.Names}}' | ${rofi}/bin/rofi -dmenu -p "Container" )
             if [ -n "$SELECTED_CONTAINER" ]; then
                 ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
-                ${config.job.infra.defaultRemoteUser}@$HOST \
+                ${jobInfraDefaultRemoteUser}@$HOST \
                 -c 'docker exec -it $SELECTED_CONTAINER ${dockerContainerShellExecutable}'"
             fi
         fi

@@ -2,6 +2,7 @@
 with import ../../../../pkgs/util.nix {inherit config pkgs lib;};
 with import ../../../../pkgs/const.nix {inherit config pkgs;};
 with import ../../const.nix {inherit config pkgs;};
+with import ../../secrets/const.nix {inherit config pkgs lib;};
 let
     custom = import ../../../../pkgs/custom pkgs config;
 in
@@ -20,7 +21,7 @@ in
     home-manager.users."${userName}" = {
         home.file = {
             ".mrtrust".text = ''
-                ${config.job.workspacePath}/.mrconfig
+                ${jobWorkspacePath}/.mrconfig
             '';
             # TODO: review https://github.com/RichiH/myrepos/blob/master/mrconfig.complex
             ".mrconfig".text = genIniHum {
@@ -46,7 +47,7 @@ in
                     ] "    ";
                 };
             } + ''
-                include = cat ${config.job.workspacePath}/.mrconfig
+                include = cat ${jobWorkspacePath}/.mrconfig
             '';
             "git-assets/git-commit-template".text = ''
 
@@ -170,10 +171,10 @@ in
         '';
         programs.git = {
             enable = true;
-            userName = config.common.userTraits.fullName;
-            userEmail = config.common.userTraits.email;
+            userName = userFullName;
+            userEmail = userEmail;
             signing = {
-                key = config.common.userTraits.primaryGpgKeyID;
+                key = userPrimaryGpgKeyID;
                 signByDefault = true;
             };
             extraConfig = {

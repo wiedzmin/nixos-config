@@ -1,4 +1,6 @@
-{ bash, config, dunst, eternal-terminal, openssh, rofi, systemd, tmux, ... }: # TODO: think of decoupling from job infra
+{ bash, config, dunst, eternal-terminal, lib, openssh, pkgs, rofi, systemd, tmux, ... }:
+# TODO: think of decoupling from job infra
+with import ../secrets/const.nix {inherit lib config pkgs;};
 ''
     #!${bash}/bin/bash
 
@@ -14,7 +16,7 @@
     enforce_vpn
 
     ask_for_logs() {
-        LOGS=$(${openssh}/bin/ssh ${config.job.infra.defaultRemoteUser}@${config.job.infra.logsHost} "find ${config.job.infra.remoteDockerLogsPath}/ -maxdepth 1 -size +0 -type f | grep -v gz")
+        LOGS=$(${openssh}/bin/ssh ${jobInfraDefaultRemoteUser}@${jobInfraLogsHost} "find ${jobInfraRemoteDockerLogsPath}/ -maxdepth 1 -size +0 -type f | grep -v gz")
         for i in "''${LOGS[@]}"
         do
             echo "$i"
@@ -25,7 +27,7 @@
         LOG=$( (ask_for_logs) | ${rofi}/bin/rofi -dmenu -p "View log" )
         if [ -n "$LOG" ]; then
            ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
-           ${config.job.infra.defaultRemoteUser}@${config.job.infra.logsHost} \
+           ${jobInfraDefaultRemoteUser}@${jobInfraLogsHost} \
            -c 'tail -f $LOG'"
         fi
     }
@@ -33,10 +35,4 @@
     main
 
     exit 0
-
-
-
-
-
-
 ''

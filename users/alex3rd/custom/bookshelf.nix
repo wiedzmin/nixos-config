@@ -1,7 +1,5 @@
-{ bash, fd, rofi, zathura, ... }:
-let
-    bookshelfPath = "$HOME/bookshelf"; # TODO: parameterize at nix level
-in
+{ bash, config, fd, lib, pkgs, rofi, zathura, ... }:
+with import ../secrets/const.nix {inherit lib config pkgs;};
 ''
     #!${bash}/bin/bash
 

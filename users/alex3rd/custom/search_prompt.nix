@@ -1,9 +1,11 @@
-{ bash, config, gawk, lib, pkgs, rofi, xsel, ... }:
-with import ../../pkgs/util.nix {inherit config lib pkgs;};
+{ bash, config, gawk, lib, pkgs, rofi, ... }:
+with import ../../../pkgs/util.nix {inherit config lib pkgs;};
+with import ../const.nix {inherit lib config pkgs;};
+with import ../secrets/const.nix {inherit lib config pkgs;};
 ''
     #!${bash}/bin/bash
 
-    ${listOfSetsToShellHashtable (config.misc.searchEngines) "engine" "SEARCHENGINES" true}
+    ${listOfSetsToShellHashtable (searchEngines) "engine" "SEARCHENGINES" true}
 
     list_searchengines() {
         INDEX=1
@@ -19,10 +21,10 @@ with import ../../pkgs/util.nix {inherit config lib pkgs;};
         if [ ! -n "$SELECTED_ENGINE" ]; then
             exit 1
         fi
-        QUERY=$(${xsel}/bin/xsel -o)
+        QUERY=$( (echo ) | ${rofi}/bin/rofi  -dmenu -matching fuzzy -location 0 -p "Query" )
         if [ -n "$QUERY" ]; then
             URL="''${SEARCHENGINES[$SELECTED_ENGINE]}$QUERY"
-            ${config.misc.defaultBrowserCmd} "$URL"
+            ${defaultBrowserCmd} "$URL"
         fi
     }
 

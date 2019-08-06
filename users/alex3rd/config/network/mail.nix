@@ -1,5 +1,6 @@
 {config, pkgs, lib, ...}:
 with import ../../const.nix {inherit config pkgs;};
+with import ../../secrets/const.nix {inherit config pkgs lib;};
 let
     imapfilterOptionsTimeout = 120;
     imapfilterOptionsSubscribe = true;
@@ -14,18 +15,18 @@ in
     home-manager.users."${userName}" = {
         accounts.email = {
             accounts."personal" = {
-                address = "${config.common.userTraits.email}";
+                address = "${userEmail}";
                 flavor = "gmail.com";
                 primary = true;
-                realName = "${config.common.userTraits.fullName}";
-                userName = "${config.common.userTraits.email}";
-                passwordCommand = "${custom.pass_imap_helper}/bin/pass_imap_helper ${config.common.userTraits.googleAccountPasswordPath}";
+                realName = "${userFullName}";
+                userName = "${userEmail}";
+                passwordCommand = "${custom.pass_imap_helper}/bin/pass_imap_helper ${userGoogleAccountPasswordPath}";
                 signature = {
                     showSignature = "none";
-                    text = config.common.userTraits.signature;
+                    text = userSignature;
                 };
                 gpg = {
-                    key = config.common.userTraits.primaryGpgKeyID;
+                    key = userPrimaryGpgKeyID;
                     signByDefault = true;
                 };
                 notmuch.enable = true;
@@ -53,57 +54,57 @@ in
         programs.mbsync = {
             enable = true;
             extraConfig = ''
-                Channel ${config.common.userTraits.email}-archive
-                Master ":${config.common.userTraits.email}-remote:[Gmail]/All Mail"
-                Slave ":${config.common.userTraits.email}-archive:Archive"
+                Channel ${userEmail}-archive
+                Master ":${userEmail}-remote:[Gmail]/All Mail"
+                Slave ":${userEmail}-archive:Archive"
                 Create Slave
                 SyncState *
                 Sync Push Flags
 
-                Channel ${config.common.userTraits.email}-trash
-                Master ":${config.common.userTraits.email}-remote:[Gmail]/Trash"
-                Slave ":${config.common.userTraits.email}-archive:Trash"
+                Channel ${userEmail}-trash
+                Master ":${userEmail}-remote:[Gmail]/Trash"
+                Slave ":${userEmail}-archive:Trash"
                 Create Slave
                 Sync All
 
-                Channel ${config.common.userTraits.email}-drafts
-                Master ":${config.common.userTraits.email}-remote:[Gmail]/Drafts"
-                Slave ":${config.common.userTraits.email}-local:Drafts"
-                Create Slave
-                Sync All
-                Expunge Both
-
-                Channel ${config.common.userTraits.email}-sent
-                Master ":${config.common.userTraits.email}-remote:[Gmail]/Sent Mail"
-                Slave ":${config.common.userTraits.email}-local:Sent"
+                Channel ${userEmail}-drafts
+                Master ":${userEmail}-remote:[Gmail]/Drafts"
+                Slave ":${userEmail}-local:Drafts"
                 Create Slave
                 Sync All
                 Expunge Both
 
-                Channel ${config.common.userTraits.email}-inbox
-                Master ":${config.common.userTraits.email}-remote:INBOX"
-                Slave ":${config.common.userTraits.email}-local:INBOX"
+                Channel ${userEmail}-sent
+                Master ":${userEmail}-remote:[Gmail]/Sent Mail"
+                Slave ":${userEmail}-local:Sent"
                 Create Slave
                 Sync All
                 Expunge Both
 
-                Channel ${config.common.userTraits.email}-mailing-lists-and-notifications
-                Master :${config.common.userTraits.email}-remote:
-                Slave :${config.common.userTraits.email}-local:
+                Channel ${userEmail}-inbox
+                Master ":${userEmail}-remote:INBOX"
+                Slave ":${userEmail}-local:INBOX"
+                Create Slave
+                Sync All
+                Expunge Both
+
+                Channel ${userEmail}-mailing-lists-and-notifications
+                Master :${userEmail}-remote:
+                Slave :${userEmail}-local:
                 Create Slave
                 Sync All
                 Patterns "Lists*" "Cron*"
                 # MaxMessages 2000
                 Expunge Both
 
-                Group ${config.common.userTraits.email}
-                Channel ${config.common.userTraits.email}-trash
-                Channel ${config.common.userTraits.email}-inbox
-                Channel ${config.common.userTraits.email}-drafts
-                Channel ${config.common.userTraits.email}-sent
-                Channel ${config.common.userTraits.email}-user-labels
-                Channel ${config.common.userTraits.email}-mailing-lists-and-notifications
-                Channel ${config.common.userTraits.email}-archive
+                Group ${userEmail}
+                Channel ${userEmail}-trash
+                Channel ${userEmail}-inbox
+                Channel ${userEmail}-drafts
+                Channel ${userEmail}-sent
+                Channel ${userEmail}-user-labels
+                Channel ${userEmail}-mailing-lists-and-notifications
+                Channel ${userEmail}-archive
             '';
         };
         services.mbsync = {
@@ -122,8 +123,8 @@ in
 
         account_personal = IMAP {
             server = 'imap.gmail.com',
-            username = '${config.common.userTraits.email}',
-            password = io.popen('${custom.pass_imap_helper}/bin/pass_imap_helper ${config.common.userTraits.googleAccountPasswordPath}', 'r'):read("*a"),
+            username = '${userEmail}',
+            password = io.popen('${custom.pass_imap_helper}/bin/pass_imap_helper ${userGoogleAccountPasswordPath}', 'r'):read("*a"),
             ssl = 'tls'
         }
 
@@ -133,29 +134,29 @@ in
         local from_tofolder = {
             ${(builtins.concatStringsSep ",\n    "
                   (lib.mapAttrsToList (from: folder: "[\"${from}\"] = \"${folder}\"")
-                  config.email.imapfilter.fromToFolder))}
+                      imapfilterFromToFolder))}
         }
 
         local to_tofolder = {
             ${(builtins.concatStringsSep ",\n    "
                   (lib.mapAttrsToList (to: folder: "[\"${to}\"] = \"${folder}\"")
-                  config.email.imapfilter.toToFolder))}
+                  imapfilterToToFolder))}
         }
 
         local cc_tofolder = {
             ${(builtins.concatStringsSep ",\n    "
                   (lib.mapAttrsToList (cc: folder: "[\"${cc}\"] = \"${folder}\"")
-                  config.email.imapfilter.ccToFolder))}
+                  imapfilterCcToFolder))}
         }
 
         local subject_tofolder = {
             ${(builtins.concatStringsSep ",\n    "
                   (lib.mapAttrsToList (subj: folder: "[\"${subj}\"] = \"${folder}\"")
-                  config.email.imapfilter.subjectToFolder))}
+                  imapfilterSubjectToFolder))}
         }
 
         local from_delete = {
-            "${(builtins.concatStringsSep "\",\n    \"" config.email.imapfilter.fromDelete)}"
+            "${(builtins.concatStringsSep "\",\n    \"" imapfilterFromDelete)}"
         }
 
         messages_all = account_personal['INBOX']:select_all()

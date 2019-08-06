@@ -1,14 +1,11 @@
 {config, pkgs, lib, ...}:
 with import ../../../../pkgs/util.nix {inherit lib config pkgs;};
 with import ../../const.nix {inherit config pkgs;};
+with import ../../secrets/const.nix {inherit config pkgs lib;};
 let
     custom = import ../../../../pkgs/custom pkgs config;
 in
 {
-    imports = [
-        ../../private/nas.nix
-    ];
-
     home-manager.users."${userName}" = {
         xdg.configFile."xsuspender.conf".text = genIni {
             Default = {
@@ -33,8 +30,8 @@ in
                      application/pdf=zathura.desktop
                  '';
             };
-            "${config.common.snippets.file}".text = ''
-                ${lib.concatStringsSep "\n" config.common.snippets.inventory}
+            "${snippetsFile}".text = ''
+                ${lib.concatStringsSep "\n" snippetsInventory}
             '';
             ".mpv/config".text = ''
                 hwdec=vaapi
@@ -133,10 +130,10 @@ in
                 ${builtins.concatStringsSep "\n"
                            (map (meta: builtins.concatStringsSep "\n"
                                        (map (hostname: "current window ($program == \"" +
-                                            config.sys.defaultShellClass + "\" && $title =~ /" +
+                                            defaultShellClass + "\" && $title =~ /" +
                                             hostname + "/) ==> tag ssh:" + builtins.replaceStrings ["."] ["_"] hostname + ",")
                                             meta.hostNames))
-                                (config.job.extraHosts ++ config.misc.extraHosts))}
+                                (jobExtraHosts ++ extraHosts))}
             '';
             ".gmrunrc".text = ''
                 # gmrun configuration file
@@ -285,7 +282,7 @@ in
                  Open=(zathura %f >/dev/null 2>&1 &)
          '';
         xdg.configFile."xmobar/xmobarrc".text = ''
-            Config { font = "xft:${config.sys.fonts.main.name}:${config.sys.fonts.main.weightKeyword}=${config.sys.fonts.main.weight}:${config.sys.fonts.main.sizeKeyword}=${config.sys.fonts.size.Dunst}"
+            Config { font = "xft:${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDunst}"
                    , bgColor = "black"
                    , fgColor = "grey"
                    , position = TopW L 100
@@ -298,16 +295,13 @@ in
                                                          "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
                                                          "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
                                 , Run Com "${custom.wifi-status}/bin/wifi-status" [] "wifi" 60
-                                , Run Com "${custom.systemctl-status}/bin/systemctl-status" ["openvpn-jobvpn.service", "[V]"] "vpn" 30
-                                , Run Com "${custom.systemctl-status}/bin/systemctl-status" ["sshuttle.service", "[S]", "user"] "sshuttle" 30
-                                , Run Com "${custom.systemctl-status}/bin/systemctl-status" ["xsuspender.service", "[X]", "user"] "xsuspender" 30
                                 , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
                                           , ("ru", "<fc=green>ru</fc>")
                                           ]
                                 ]
                    , sepChar = "%"
                    , alignSep = "}{"
-                   , template = "%StdinReader% }{| %battery% | %wifi% %sshuttle% %vpn% %xsuspender% | <fc=#ee9a00>%date%</fc> |%kbd%"
+                   , template = "%StdinReader% }{| %battery% | %wifi% | <fc=#ee9a00>%date%</fc> |%kbd%"
                    }
         '';
         xdg.configFile."xkeysnail/config.py".text = ''
@@ -422,15 +416,15 @@ in
         '';
         xdg.configFile."synology/nas.yml".text = ''
             nas:
-              hostname: ${config.nas.hostname}
+              hostname: ${nasHostname}
               users:
                 admin:
-                  login: ${config.nas.primaryUser}
-                  password: ${config.nas.primaryUserPassword}
+                  login: ${nasPrimaryUser}
+                  password: ${nasPrimaryUserPassword}
               # FIXME: use more versatile parser, because those implemented with bash have limited functionality
-              volumes: ${builtins.concatStringsSep " " config.nas.volumes}
+              volumes: ${builtins.concatStringsSep " " nasVolumes}
               mount:
-                basedir: ${config.nas.localMountBase}
+                basedir: ${nasLocalMountBase}
         '';
         xdg.configFile."networkmanager-dmenu/config.ini".text= ''
             [dmenu]
@@ -550,7 +544,7 @@ in
             enable = true;
             font = {
                 package = pkgs.dejavu_fonts;
-                name = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.Dunst}";
+                name = "${fontMainName} ${fontMainWeight} ${fontSizeDunst}";
             };
         };
         services.dunst = {
@@ -564,7 +558,7 @@ in
                     dmenu = "${pkgs.dmenu}/bin/dmenu -p dunst:";
                     ellipsize = "middle";
                     follow = "keyboard";
-                    font = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.Dunst}";
+                    font = "${fontMainName} ${fontMainWeight} ${fontSizeDunst}";
                     force_xinerama = "false";
                     format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\\n%b";
                     frame_color = "#232323";
@@ -667,8 +661,8 @@ in
         };
         services.redshift = {
             enable = true;
-            latitude = "${config.common.redshift.latitude}";
-            longitude = "${config.common.redshift.longitude}";
+            latitude = "${redshiftLatitude}";
+            longitude = "${redshiftLongitude}";
             temperature.day = 5500;
             temperature.night = 3100;
             brightness.day = "1.0";
@@ -693,7 +687,7 @@ in
             width = 80;
             xoffset = 0;
             yoffset = 0;
-            font = "${config.sys.fonts.main.name} ${config.sys.fonts.main.weight} ${config.sys.fonts.size.Dunst}";
+            font = "${fontMainName} ${fontMainWeight} ${fontSizeDunst}";
             theme = "gruvbox-dark-hard";
             # TODO: review https://davedavenport.github.io/rofi/manpage.html
             extraConfig = ''
@@ -719,7 +713,7 @@ in
                 rofi.parse-hosts:                    true
                 rofi.parse-known-hosts:              false
                 rofi.ssh-client:                     ${pkgs.eternal-terminal}/bin/et
-                rofi.ssh-command:                    ${pkgs.tmux}/bin/tmux new-window '{ssh-client} ${config.network.defaultRemoteUser}@{host}'
+                rofi.ssh-command:                    ${pkgs.tmux}/bin/tmux new-window '{ssh-client} ${networkDefaultRemoteUser}@{host}'
 
                 rofi.kb-accept-alt:                  Shift+Return
                 rofi.kb-accept-custom:               Control+Return

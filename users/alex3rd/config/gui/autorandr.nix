@@ -2,17 +2,18 @@
 with import ../../const.nix {inherit config pkgs;};
 let
     custom = import ../../../../pkgs/custom pkgs config;
+    userCustom = import ../../custom pkgs config;
 in
 {
     home-manager.users."${userName}" = {
         home.packages = with pkgs; [
-            custom.rescale-wallpaper
+            userCustom.rescale-wallpaper
         ];
         programs.autorandr = {
             enable = true;
             hooks = {
                 postswitch = {
-                    "rescale-wallpaper" = "${custom.rescale-wallpaper}/bin/rescale-wallpaper";
+                    "rescale-wallpaper" = "${userCustom.rescale-wallpaper}/bin/rescale-wallpaper";
                 };
                 predetect = {
                     "kill-compton" = "${custom.kill-compton}/bin/kill-compton";

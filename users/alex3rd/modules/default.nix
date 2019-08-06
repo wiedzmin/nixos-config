@@ -10,7 +10,6 @@
         ./git-save-wip.nix
         ./order-screenshots.nix
         ./sshuttle.nix
-        ./vpn.nix
         ./xkeysnail.nix
         ./xsuspender.nix        # fix HM one and migrate to it, then try pushing upstream
     ];

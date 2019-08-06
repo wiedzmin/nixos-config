@@ -23,18 +23,18 @@ with import ../../const.nix {inherit config pkgs;};
                 draw_bold_text_with_bright_colors = true;
                 font = {
                     normal = {
-                        family = "${config.sys.fonts.term.name}";
-                        style = "${config.sys.fonts.term.weight}";
+                        family = "${fontTermName}";
+                        style = "${fontTermWeight}";
                     };
                     bold = {
-                        family = "${config.sys.fonts.term.name}";
-                        style = "${config.sys.fonts.term.weight}";
+                        family = "${fontTermName}";
+                        style = "${fontTermWeight}";
                     };
                     italic = {
-                        family = "${config.sys.fonts.term.name}";
+                        family = "${fontTermName}";
                         style = "Italic";
                     };
-                    size = config.sys.fonts.size.Alacritty;
+                    size = fontSizeAlacritty;
                 };
                 render_timer = false;
                 colors = {

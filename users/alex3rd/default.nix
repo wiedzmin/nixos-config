@@ -1,7 +1,7 @@
 {config, pkgs, lib, ...}:
 with import <home-manager/modules/lib/dag.nix> { inherit lib; };
 with import ./const.nix {inherit config pkgs;};
-with import ./private/sshuttle.nix {inherit config pkgs lib;};
+with import ./secrets/const.nix {inherit config pkgs lib;};
 let
     custom = import ../../pkgs/custom pkgs config;
 in
@@ -11,7 +11,8 @@ in
         ./config
         ./modules
         ./packages.nix
-        ./private/network.nix
+        ./secrets/personal.nix
+        ./secrets/job.nix
     ];
 
     users.extraUsers."${userName}" = {
@@ -55,13 +56,6 @@ in
         configFile = "/home/${userName}/.config/xkeysnail/config.py";
     };
 
-    services.vpn-client = {
-        enable = true;
-        name = "jobvpn";   # TODO: templatize
-        keep = true;
-        configPath = "/etc/nixos/users/${userName}/private/vpn/job.current/office.ovpn";
-    };
-
     services.xsuspender.enable = true;
 
     services.git-fetch-updates = {
@@ -102,7 +96,7 @@ in
 
     networking.extraHosts = (builtins.concatStringsSep "\n"
                                       (map (host: host.ip + "   " + (builtins.concatStringsSep " " host.hostNames))
-                                      (config.job.extraHosts ++ config.misc.extraHosts)));
+                                      (jobExtraHosts ++ extraHosts)));
 
     home-manager.users."${userName}" = {
         nixpkgs.config.allowUnfree = true;

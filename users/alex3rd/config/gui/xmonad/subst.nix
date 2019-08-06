@@ -3,6 +3,7 @@ with import ../../../../../pkgs/util.nix {inherit lib config pkgs;};
 with import ../../../const.nix {inherit config pkgs;};
 let
     custom = import ../../../../../pkgs/custom pkgs config;
+    userCustom = import ../../../custom pkgs config;
 in
 rec {
     backlightAmount = 10;
@@ -13,19 +14,19 @@ rec {
     volumeDeltaPercents = 10;
 
     autorandrProfiles = "${custom.autorandr_profiles}/bin/autorandr_profiles";
-    bookshelf = "${custom.bookshelf}/bin/bookshelf";
+    bookshelf = "${userCustom.bookshelf}/bin/bookshelf";
     bukuAdd = "${custom.buku_add}/bin/buku_add";
     currentSystemHash = "${custom.current_system_hash}/bin/current_system_hash";
-    dbms = "${custom.dbms}/bin/dbms";
+    dbms = "${userCustom.dbms}/bin/dbms";
     dockerContainerTraits = "${custom.docker_containers_traits}/bin/docker_containers_traits";
-    dockerShell = "${custom.docker_shell}/bin/docker_shell";
-    dockerStacksInfo = "${custom.docker_stacks_info}/bin/docker_stacks_info";
-    extraHostsTraits = "${custom.extra_hosts_traits}/bin/extra_hosts_traits";
+    dockerShell = "${userCustom.docker_shell}/bin/docker_shell";
+    dockerStacksInfo = "${userCustom.docker_stacks_info}/bin/docker_stacks_info";
+    extraHostsTraits = "${userCustom.extra_hosts_traits}/bin/extra_hosts_traits";
     jogEmacs = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";
     lockScreen = "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off";
     mergeXresources = "${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources";
-    mountNasVolume = "${custom.mount_nas_volume}/bin/mount_nas_volume";
-    remoteDockerLogs = "${custom.remote_docker_logs}/bin/remote_docker_logs";
+    mountNasVolume = "${userCustom.mount_nas_volume}/bin/mount_nas_volume";
+    remoteDockerLogs = "${userCustom.remote_docker_logs}/bin/remote_docker_logs";
     rofiCombiRun = "${pkgs.rofi}/bin/rofi -combi-modi drun,run -show combi -modi combi";
     rofiPass = "${pkgs.rofi-pass}/bin/rofi-pass";
     rofiSsh = "${pkgs.rofi}/bin/rofi -show ssh";
@@ -33,14 +34,14 @@ rec {
     screenshotActiveWindow = "${custom.screenshot_active_window}/bin/screenshot_active_window";
     screenshotFull = "${custom.screenshot_full}/bin/screenshot_full";
     screenshotRegion = "${custom.screenshot_region}/bin/screenshot_region";
-    searchPrompt = "${custom.search_prompt}/bin/search_prompt";
-    searchSelection = "${custom.search_selection}/bin/search_selection";
+    searchPrompt = "${userCustom.search_prompt}/bin/search_prompt";
+    searchSelection = "${userCustom.search_selection}/bin/search_selection";
     serviceJournal = "${custom.services_journals}/bin/services_journals";
     sshCustomUser = "${custom.ssh_custom_user}/bin/ssh_custom_user";
     tmuxpSessions = "${custom.tmuxp_sessions}/bin/tmuxp_sessions";
-    unmountNasVolume = "${custom.unmount_nas_volume}/bin/unmount_nas_volume";
+    unmountNasVolume = "${userCustom.unmount_nas_volume}/bin/unmount_nas_volume";
     uptimeInfo = "${custom.uptime_info}/bin/uptime_info";
-    webjumps = "${custom.webjumps}/bin/webjumps";
+    webjumps = "${userCustom.webjumps}/bin/webjumps";
 
     brightnessDown = "${light} -U ${toString backlightAmount}";
     brightnessMax = "${light} -S 100";
@@ -60,7 +61,7 @@ rec {
     sctlUserRestart = "${pkgs.systemd}/bin/systemctl --user restart";
     sctlUserStop = "${pkgs.systemd}/bin/systemctl --user stop";
 
-    fontDefault = "${config.sys.fonts.main.name}:${config.sys.fonts.main.weightKeyword}=${config.sys.fonts.main.weight}:${config.sys.fonts.main.sizeKeyword}=${config.sys.fonts.size.Dzen}";
-    fontTabbed = "${config.sys.fonts.main.name}:${config.sys.fonts.main.weightKeyword}=${config.sys.fonts.main.weight}:${config.sys.fonts.main.sizeKeyword}=${config.sys.fonts.size.Dzen}";
+    fontDefault = "${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDzen}";
+    fontTabbed = "${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDzen}";
     xmobar = "${pkgs.xmobar}/bin/xmobar";
 }

@@ -1,6 +1,7 @@
 { bash, config, gawk, gnused, lib, pkgs, rofi, xsel, yad, ... }:
-with import ../util.nix {inherit lib config pkgs;};
-with import ../const.nix {inherit lib config pkgs;};
+with import ../../../pkgs/util.nix {inherit lib config pkgs;};
+with import ../../../pkgs/const.nix {inherit lib config pkgs;};
+with import ../secrets/const.nix {inherit lib config pkgs;};
 let
     hostTraitsIpOutputPosition = 4;
 in
@@ -9,7 +10,7 @@ in
 
     ${listOfSetsToShellHashtable
         (unfoldListOfSetsByAttr
-            (config.job.extraHosts ++ config.misc.extraHosts)
+            (jobExtraHosts ++ extraHosts)
             "hostNames")
         "hostNames"
         "EXTRA_HOSTS"

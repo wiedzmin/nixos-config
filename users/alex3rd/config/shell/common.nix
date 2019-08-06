@@ -1,9 +1,9 @@
 {config, pkgs, lib, ...}:
 with import ../../const.nix {inherit config pkgs;};
+with import ../../secrets/const.nix {inherit config pkgs lib;};
 {
     imports = [
-        ../../private/common.nix
-        ../../private/job.nix
+        ../../secrets/job.nix
     ];
 
     home-manager.users."${userName}" = {
@@ -27,7 +27,7 @@ with import ../../const.nix {inherit config pkgs;};
                   enabled: true
                   locations:
                     ${builtins.concatStringsSep "\n        "
-                        (lib.mapAttrsToList (caption: timezone: caption + ": " + timezone) config.common.worldClocks)}
+                        (lib.mapAttrsToList (caption: timezone: caption + ": " + timezone) worldClocks)}
                   position:
                     top: 0
                     left: 0

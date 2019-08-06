@@ -1,4 +1,6 @@
-{ bash, config, dunst, eternal-terminal, gawk, rofi, systemd, tmux, ... }: # TODO: think of decoupling from job infra
+{ bash, config, dunst, eternal-terminal, gawk, lib, pkgs, rofi, systemd, tmux, ... }:
+# TODO: think of decoupling from job infra
+with import ../secrets/const.nix {inherit lib config pkgs;};
 ''
     #!${bash}/bin/bash
 
@@ -15,7 +17,7 @@
         if [ -n "$HOST" ]; then
             enforce_vpn
             ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
-            ${config.job.infra.defaultRemoteUser}@$HOST -c 'ctop'"
+            ${jobInfraDefaultRemoteUser}@$HOST -c 'ctop'"
         fi
     }
 

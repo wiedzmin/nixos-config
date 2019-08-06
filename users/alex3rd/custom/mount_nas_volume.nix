@@ -1,4 +1,5 @@
-{ afpfs-ng, bash, coreutils, dunst, gnugrep, netcat, rofi, shyaml, ... }:
+{ afpfs-ng, bash, config, coreutils, dunst, gnugrep, lib, netcat, pkgs, rofi, shyaml, ... }:
+with import ../secrets/const.nix {inherit lib config pkgs;};
 let
     nasConfigPath = "$HOME/.config/synology/nas.yml";
 in

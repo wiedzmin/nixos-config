@@ -1,4 +1,6 @@
-{ bash, config, dunst, eternal-terminal, gawk, openssh, rofi, systemd, tmux, yad, ... }: # TODO: think of decoupling from job infra
+{ bash, config, dunst, eternal-terminal, gawk, lib, openssh, pkgs, rofi, systemd, tmux, yad, ... }:
+# TODO: think of decoupling from job infra
+with import ../secrets/const.nix {inherit lib config pkgs;};
 let
     dockerStackPsCustomFormat = "{{.Name}}   {{.Image}}   {{.Node}} {{.DesiredState}}   {{.CurrentState}}";
     useDockerStackPsCustomFormat = false;
@@ -21,11 +23,11 @@ in
     ${builtins.concatStringsSep "\n"
                (map (host: builtins.head host.hostNames)
                     (builtins.filter (host: host.swarm == true)
-                                     config.job.extraHosts))}
+                                     jobExtraHosts))}
     )
     SWARM_NODES_COUNT=''${#SWARM_NODES[@]}
     # SELECTED_NODE=''${SWARM_NODES[$(( ( RANDOM % $SWARM_NODES_COUNT ) ))]}
-    SELECTED_NODE=${config.job.infra.dockerSwarmLeaderHost}
+    SELECTED_NODE=${jobInfraDockerSwarmLeaderHost}
 
     docker_stack_ps_params() {
         echo ${ if dockerStackShowOnlyRunning then "--filter \\\"desired-state=Running\\\"" else ""}
@@ -46,7 +48,7 @@ in
     }
 
     ask_for_stack() {
-        STACKS=$(${openssh}/bin/ssh ${config.job.infra.defaultRemoteUser}@$SELECTED_NODE \
+        STACKS=$(${openssh}/bin/ssh ${jobInfraDefaultRemoteUser}@$SELECTED_NODE \
                                          "docker stack ls | awk '{if(NR>1)print $1}'" | \
                                          ${gawk}/bin/awk '{print $1}')
         for i in "''${STACKS[@]}"
@@ -57,7 +59,7 @@ in
 
     show_stack_status() {
         STACK=$1
-        ${openssh}/bin/ssh ${config.job.infra.defaultRemoteUser}@$SELECTED_NODE \
+        ${openssh}/bin/ssh ${jobInfraDefaultRemoteUser}@$SELECTED_NODE \
         "docker stack ps $STACK $(docker_stack_ps_params)" > /tmp/docker_stack_status
         ${yad}/bin/yad --filename /tmp/docker_stack_status --text-info
         rm /tmp/docker_stack_status
@@ -65,9 +67,9 @@ in
 
     ask_for_stack_task() {
         STACK=$1
-        TASKS=$(${openssh}/bin/ssh ${config.job.infra.defaultRemoteUser}@$SELECTED_NODE \
+        TASKS=$(${openssh}/bin/ssh ${jobInfraDefaultRemoteUser}@$SELECTED_NODE \
         "docker stack ps $STACK $(docker_stack_ps_params)" | awk '{if(NR>1)print $0}')
-        SERVICE=$(${openssh}/bin/ssh ${config.job.infra.defaultRemoteUser}@$SELECTED_NODE \
+        SERVICE=$(${openssh}/bin/ssh ${jobInfraDefaultRemoteUser}@$SELECTED_NODE \
         "docker service ls --format='{{.Name}}' | grep $STACK ")
         TASKS="''${SERVICE}
     ''${TASKS}"
@@ -87,7 +89,7 @@ in
             logs)
                 TASK=$( (ask_for_stack_task $STACK) | ${rofi}/bin/rofi -dmenu -p "Task" | ${gawk}/bin/awk '{print $1}' )
                 ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
-                                                  ${config.job.infra.defaultRemoteUser}@$SELECTED_NODE \
+                                                  ${jobInfraDefaultRemoteUser}@$SELECTED_NODE \
                                                   -c 'docker service logs --follow $TASK'"
                 ;;
             *)
