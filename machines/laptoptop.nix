@@ -241,7 +241,10 @@ in
         hostId = "2ab69157";
         firewall.enable = false;
         usePredictableInterfaceNames = lib.mkForce false;
-        resolvconf.dnsExtensionMechanism = false;
+        resolvconf = {
+            enable = true;
+            dnsExtensionMechanism = false;
+        };
         wlanInterfaces = {
             "wlan0" = { device = "wlp3s0"; };
         };
