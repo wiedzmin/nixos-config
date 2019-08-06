@@ -22,7 +22,6 @@ rec {
     dockerStacksInfo = "${custom.docker_stacks_info}/bin/docker_stacks_info";
     extraHostsTraits = "${custom.extra_hosts_traits}/bin/extra_hosts_traits";
     jogEmacs = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";
-    jogWifi = "${pkgs.networkmanager}/bin/nmcli radio wifi off && ${pkgs.networkmanager}/bin/nmcli radio wifi on";
     lockScreen = "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off";
     mergeXresources = "${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources";
     mountNasVolume = "${custom.mount_nas_volume}/bin/mount_nas_volume";

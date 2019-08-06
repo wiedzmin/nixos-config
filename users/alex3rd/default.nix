@@ -23,7 +23,6 @@ in
             "audio"
             "input"
             "lp"
-            "networkmanager"
             "scanner"
             "video"
             "wheel"
