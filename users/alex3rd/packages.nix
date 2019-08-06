@@ -23,6 +23,7 @@ let
         grab-site # https://github.com/ArchiveTeam/grab-site
         pciutils
         quilt
+        wmc-mpris # TODO: make service
     ];
     stagingWork = with pkgs; [
         drone

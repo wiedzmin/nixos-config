@@ -18,6 +18,7 @@ in
                 ghosttext
                 tridactyl
                 url-in-title
+                web_media_controller
             ];
             profiles = {
                 default = {

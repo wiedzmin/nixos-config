@@ -229,4 +229,17 @@
              platforms = platforms.all;
         };
     };
+    "web_media_controller" = buildFirefoxXpiAddon {
+        pname = "web_media_controller";
+        version = "0.8.4";
+        addonId = "web-media-controller@f1u77y.me";
+        url = "https://addons.mozilla.org/firefox/downloads/file/2989653/web_media_controller-0.8.4-fx.xpi";
+        sha256 = "10sck4w0llzd3al9rjxgm3ixwmqk25yangjcl56sl058x9n4g13g";
+        meta = with stdenv.lib; {
+             homepage = "https://github.com/f1u77y/web-media-controller";
+             description = ''Allows controlling media player on different sites with Media Player widget on your desktop'';
+             license = licenses.unlicense;
+             platforms = platforms.unix;
+        };
+    };
 }
