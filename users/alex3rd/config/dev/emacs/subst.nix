@@ -4,7 +4,7 @@ rec {
     emacsAmxSaveFile = "${emacsDataDir}/amx-items";
     emacsCustomFile = "/home/${userName}/.emacs.d/customizations.el";
     emacsCustomInfoDir = "/home/${userName}/help/info";
-    emacsCustomYasnippetsDir = "${emacsResourcesDir}/yasnippet/yasnippet-snippets";
+    emacsCustomYasnippetsDir = "/etc/nixos/pkgs/forges/github.com/wiedzmin/yasnippet-snippets";
     emacsDataDir = "/home/${userName}/.emacs.d/data";
     emacsElpaDir = "/home/${userName}/.emacs.d/elpa";
     emacsInitFile = "/etc/nixos/users/${userName}/config/dev/emacs/default.nix";

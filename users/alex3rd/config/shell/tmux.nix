@@ -103,19 +103,15 @@ in
             ];
         };
         home.file = {
-            # TODO: make gc root of shell env below
             "tmuxp/housekeeping.yml".text = ''
                 session_name: housekeeping
                 windows:
-                  - window_name: system
-                    start_directory: /etc/nixos/pkgs/custom
-                    panes:
-                      - nix-shell
                   - window_name: repl
                     panes:
-                      - shell_command:
-                        - cd /etc/nixos/pkgs/nixpkgs-channels
-                        - nix repl '<nixpkgs/nixos>'
+                      - nix repl '<nixpkgs/nixos>'
+                  - window_name: files
+                    panes:
+                      - mc
             '';
             "tmuxp/media.yml".text = ''
                 session_name: media

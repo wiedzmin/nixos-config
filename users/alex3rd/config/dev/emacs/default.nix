@@ -258,7 +258,7 @@ with import ../../../const.nix {inherit config pkgs;};
                 (setq debug-on-quit nil)
             '';
             ".emacs.d/resources/yasnippet" = {
-                source = ./yasnippet-snippets;
+                source = ../../../../../pkgs/forges/github.com/wiedzmin/yasnippet-snippets;
                 recursive = true;
             };
             ".emacs.d/secrets/email.el.gpg".source = ../../../private/emacs-secrets/email.el.gpg;

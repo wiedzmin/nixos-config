@@ -1,5 +1,5 @@
 self: super:
-let nixpkgs = import ../nixpkgs-proposed {
+let nixpkgs = import ../forges/github.com/wiedzmin/nixpkgs {
       config = {
         allowUnfree = true;
       };
