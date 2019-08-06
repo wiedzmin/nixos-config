@@ -54,7 +54,6 @@ writeTextFile {
     kill-compton = ./kill-compton.nix;
     mount_nas_volume = ./mount_nas_volume.nix;
     pass_imap_helper = ./pass_imap_helper.nix;
-    post-upgrade-check = ./post-upgrade-check.nix;
     remote_docker_logs = ./remote_docker_logs.nix;
     rescale-wallpaper = ./rescale-wallpaper.nix;
     screenshot_active_window = ./screenshot_active_window.nix;
@@ -68,6 +67,7 @@ writeTextFile {
     systemctl-status = ./systemctl-status.nix;
     tmuxp_sessions = ./tmuxp_sessions.nix;
     unmount_nas_volume = ./unmount_nas_volume.nix;
+    update-system = ./update-system.nix;
     uptime_info = ./uptime_info.nix;
     webjumps = ./webjumps.nix;
     wifi-status = ./wifi-status.nix;

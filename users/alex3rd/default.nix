@@ -116,6 +116,7 @@ in
             custom.confctl
 
             custom.gen-nix-du
+            custom.update-system
         ];
         services = {
             gpg-agent = {
