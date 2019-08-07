@@ -4,6 +4,10 @@
 
     cd /etc/nixos
     ${nix}/bin/nix build -f ./pkgs/forges/github.com/NixOS/nixpkgs-channels/nixos system $@
+    if [[ $? == 1 ]]
+    then
+        exit 1
+    fi
 
     dir=$(pwd)
     export SHELL=/bin/sh
