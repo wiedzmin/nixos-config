@@ -10,5 +10,7 @@ with import ../../const.nix {inherit config pkgs;};
         enable = true;
     };
 
+    virtualisation.kvmgt.enable = true;
+
     users.extraUsers."${userName}".extraGroups = [ "docker" "libvirtd" "vboxusers" ];
 }
