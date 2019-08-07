@@ -13,6 +13,7 @@ python3Packages.buildPythonPackage rec {
         python3Full
         python3Packages.papis-python-rofi
         python3Packages.GitPython
+        python3Packages.telethon # for some hypothetical future notifications
     ];
     buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${name}";
     installPhase = "true";
@@ -33,9 +34,12 @@ writeTextFile {
     # ========
     autorandr_profiles = ./autorandr_profiles.nix;
     bitbucket_team_contributor_repos = ./bitbucket_team_contributor_repos.nix;
+    bootstrap_custom_config = ./bootstrap_custom_config.nix;
+    build_iso = ./build_iso.nix;
     buku_add = ./buku_add.nix;
     buku_search_tag = ./buku_search_tag.nix;
     buku_search_url = ./buku_search_url.nix;
+    burn_iso = ./burn_iso.nix;
     current_system_hash = ./current_system_hash.nix;
     discover_containerized_services = ./discover_containerized_services.nix;
     docker-machine-export = ./docker-machine-export.nix;
@@ -43,6 +47,7 @@ writeTextFile {
     docker_containers_traits = ./docker_containers_traits.nix; # TODO: review and fix
     gen-nix-du = ./gen-nix-du.nix;
     git_remote_diff = ./git_remote_diff.nix;
+    goreplay-capture = ./goreplay-capture.nix;
     kill-compton = ./kill-compton.nix;
     pass_imap_helper = ./pass_imap_helper.nix;
     screenshot_active_window = ./screenshot_active_window.nix;
