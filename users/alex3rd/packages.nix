@@ -3,27 +3,38 @@ with import ./const.nix {inherit config pkgs;};
 let
     # TODO: write script to query keywords which would provide packages names either from installed or whole nixpkgs
     stagingInactive = with pkgs; [
-        # kvmgt service
-        # waf.io
+        chrome-export
         dia
-        gimp-with-plugins
+        drawio
+        drm_info
         gopass
         keychain
         libvirt # for `vagrant plugin install vagrant-libvirt`
         nfs-utils # for vagrant
         paperless # see docs
+        polybarFull             # + review https://github.com/polybar/polybar
         quassel
-        quilt
+        rclone
         xdg-user-dirs
         xlsfonts
+        tree-from-tags
+        mpd-mpris
+        ccextractor
     ];
     stagingCommon = with pkgs; [
         aerc
         checkbashism
+        dua
         grab-site # https://github.com/ArchiveTeam/grab-site
+        j4-dmenu-desktop
+        lazydocker
         pciutils
+        psrecord
         quilt
+        textql
+        wire-desktop
         wmc-mpris # TODO: make service
+        yj
     ];
     stagingWork = with pkgs; [
         drone
@@ -40,10 +51,8 @@ let
     ];
     sandbox = with pkgs; [ # binaries for PATH
         # transmission + service https://transmissionbt.com/
-        fd
         gnuplot                 # ? misc
         hstr                    # ? misc shell
-        lsd
         ncmpcpp
         uget
         xdotool
@@ -120,35 +129,36 @@ let
         zeal
     ];
     devVcsGit = with pkgs; [
-        proposed.gitAndTools.git-quick-stats
         git-sizer
         gitAndTools.ghq
         gitAndTools.git-absorb # TODO: review abilities and maybe use in some automation
         gitAndTools.git-extras
-        gitAndTools.git-imerge
         gitAndTools.pass-git-helper
         gitAndTools.topGit
         gitstats
+        proposed.gitAndTools.git-quick-stats
     ];
     virt = with pkgs; let
         custom = import ../../pkgs/custom pkgs config;
     in [
         ctop
+        custom.docker-machine-export
+        custom.docker-machine-import
         dive
         docker-machine
         docker_compose
         kvm
         libcgroup
         promoter
-        skopeo
         spice
         spice-gtk
         tigervnc
         vagrant
         virtmanager
         virtviewer
-        custom.docker-machine-export
-        custom.docker-machine-import
+    ];
+    virtRare = [
+        skopeo
     ];
     forensics = with pkgs; [
         bbe
@@ -208,6 +218,7 @@ let
         zenburn
     ];
     devMisc = with pkgs; [
+        cachix
         certigo
         cloc
         dnsrecon
@@ -245,7 +256,6 @@ let
         jnettop
         lsof
         nethogs
-        nethogs
         nload
         pagemon
         psmisc
@@ -261,8 +271,10 @@ let
         skype
         slack
         tdesktop
-        teamviewer
         w3m-full
+    ];
+    miscClientsRare = with pkgs; [
+        teamviewer
         zoom-us
     ];
     scanner = with pkgs; [ # enable when needed
@@ -316,13 +328,16 @@ let
     ];
     shell = with pkgs; [
         archiver
+        fd
         fpart
         jdupes
+        lsd
         moreutils
         nq
         pbzip2
         pigz
         rmlint
+        sd
         unar
         unshield
     ] ++ [
@@ -363,16 +378,17 @@ let
         tmatrix
     ];
     text = with pkgs; [
-        calibre
+        # calibre
+        # python3Packages.weasyprint
         djview
         djvulibre
         enca
         ghostscript
         pandoc
-        python3Packages.weasyprint
     ];
     security = with pkgs; [
         (pass.withExtensions (ext: with ext; [ pass-audit pass-import pass-update ]))
+        clair                   # https://werner-dijkerman.nl/2019/01/28/scanning-docker-images-with-coreos-clair/
         gnupg
         gpa
         paperkey
@@ -395,26 +411,25 @@ in
 {
     home-manager.users."${userName}" = {
         home.packages = devClients ++
-                        devClojure ++
                         devGolangInfra ++
                         devGolangTools ++
                         devIde ++
                         devMisc ++
                         devPythonTools ++
                         devVcsGit ++
-                        virt ++
                         forensics ++
                         miscClients ++
                         miscMedia ++
                         monitoring ++
-                        org ++
                         nix ++
+                        org ++
                         sandbox ++
                         security ++
                         shell ++
                         stagingCommon ++
-                        stagingWork ++
                         stagingPublish ++
-                        text;
+                        stagingWork ++
+                        text ++
+                        virt;
     };
 }
