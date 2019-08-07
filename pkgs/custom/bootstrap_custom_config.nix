@@ -20,6 +20,9 @@
     nix-env -iA nixos.pkgs.gitAndTools.gitFull
     nix-env -iA nixos.wget
 
+    # TODO: handle secrets, see partial example below
+    # gpg -dq secret.nix.gpg > secret.nix
+
     echo "removing existing configuration tree, if any"
     rm -rf /mnt/etc/nixos
 
