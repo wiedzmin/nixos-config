@@ -64,11 +64,14 @@ def update_nixpkgs():
     local_head_ref = nixpkgs_repo.heads[nixpkgs_branch].object
     local_head = local_head_ref.hexsha
     remote_head = nixpkgs_origin.refs[nixpkgs_branch].object.hexsha
-    fallback_head = nixpkgs_repo.heads[nixpkgs_fallback_branch].object.hexsha
+    try:
+        fallback_head = nixpkgs_repo.heads[nixpkgs_fallback_branch].object.hexsha
+    except IndexError:
+        fallback_head = None
 
     should_rebase = local_head != remote_head
     should_rebuild = not local_head.startswith(system_git_version)
-    should_force_fallback = not fallback_head.startswith(system_git_version)
+    should_force_fallback = not fallback_head or fallback_head and not fallback_head.startswith(system_git_version)
 
     fetch_results = list(nixpkgs_origin.fetch())
     if should_rebase:
