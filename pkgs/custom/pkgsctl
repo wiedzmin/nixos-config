@@ -15,12 +15,12 @@ package_name_regexp = re.compile(
 package_version_start_regexp = re.compile(r"-v?[0-9]|-unstable|-with-packages|-with-plugins|-git")
 current_system_regexp = re.compile(r"git\.([0-9abcdef]+)M?\$?")
 
-nixpkgs_path = "/etc/nixos/pkgs/nixpkgs-channels/"
+nixpkgs_path = "/etc/nixos/pkgs/forges/github.com/NixOS/nixpkgs-channels/"
 nixpkgs_branch = "nixos-unstable"
 nixpkgs_fallback_branch = "nixos-unstable-working"
 nixpkgs_upstream_remote = "upstream"
 
-nixpkgs_proposed_path = "/etc/nixos/pkgs/nixpkgs-proposed/"
+nixpkgs_proposed_path = "/etc/nixos/pkgs/forges/github.com/wiedzmin/nixpkgs/"
 nixpkgs_proposed_branch = "master"
 
 
