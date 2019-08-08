@@ -4,6 +4,7 @@ with import ./const.nix {inherit config pkgs;};
 with import ./secrets/const.nix {inherit config pkgs lib;};
 let
     custom = import ../../pkgs/custom pkgs config;
+    userCustom = import ./custom pkgs config;
 in
 {
     imports = [
@@ -111,6 +112,8 @@ in
 
             custom.gen-nix-du
             custom.update-system
+
+            userCustom.decrypt_secrets
         ];
         services = {
             gpg-agent = {

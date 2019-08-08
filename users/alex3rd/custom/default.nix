@@ -32,6 +32,7 @@ writeTextFile {
     bookshelf = ./bookshelf.nix;
     ctop_hosts = ./ctop_hosts.nix;
     dbms = ./dbms.nix;
+    decrypt_secrets = ./decrypt_secrets.nix;
     docker_shell = ./docker_shell.nix;
     docker_stacks_info = ./docker_stacks_info.nix;
     extra_hosts_traits = ./extra_hosts_traits.nix;
