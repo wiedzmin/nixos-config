@@ -1,5 +1,5 @@
-!**/secrets/*.nix.gpg
-**/secrets/*.nix
+**/secrets/*
+!**/secrets/*.gpg
 *qcow2
 *zshrc
 .xsession
