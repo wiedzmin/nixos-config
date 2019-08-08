@@ -1,6 +1,7 @@
 {config, pkgs, lib, ...}:
 with import ../../../../../pkgs/util.nix {inherit lib config pkgs;};
 with import ../../../const.nix {inherit config pkgs;};
+with import ../../../secrets/const.nix {inherit config lib pkgs;};
 let
     custom = import ../../../../../pkgs/custom pkgs config;
     userCustom = import ../../../custom pkgs config;
@@ -60,6 +61,11 @@ rec {
     sctlStop = "${pkgs.systemd}/bin/systemctl stop";
     sctlUserRestart = "${pkgs.systemd}/bin/systemctl --user restart";
     sctlUserStop = "${pkgs.systemd}/bin/systemctl --user stop";
+
+    personalVpnUp = "${sctlRestart} openvpn-${personalVpnName}.service";
+    personalVpnDown = "${sctlStop} openvpn-${personalVpnName}.service";
+    jobVpnUp = "${sctlRestart} openvpn-${jobVpnName}.service";
+    jobVpnDown = "${sctlStop} openvpn-${jobVpnName}.service";
 
     fontDefault = "${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDzen}";
     fontTabbed = "${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDzen}";

@@ -113,10 +113,10 @@ appKeys = [ "M-w <Backspace>" ~> nextMatch History (return True)
           , "M-w S-e"      ~> spawn "@jogEmacs@"
           ]
 
-servicesKeys = [ "M-s s <Up>" ~> spawn "@sctlUserRestart@ sshuttle.service"
-               , "M-s s <Down>" ~> spawn "@sctlUserStop@ sshuttle.service"
-               , "M-s v <Up>" ~> spawn "@sctlRestart@ openvpn-jobvpn.service"
-               , "M-s v <Down>" ~> spawn "@sctlStop@ openvpn-jobvpn.service"
+servicesKeys = [ "M-s s <Up>" ~> spawn "@personalVpnUp@"
+               , "M-s s <Down>" ~> spawn "@personalVpnDown@"
+               , "M-s v <Up>" ~> spawn "@jobVpnUp@"
+               , "M-s v <Down>" ~> spawn "@jobVpnDown@"
                , "M-s x <Up>" ~> spawn "@sctlUserRestart@ xsuspender.service"
                , "M-s x <Down>" ~> spawn "@sctlUserStop@ xsuspender.service"
                ]
