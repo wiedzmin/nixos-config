@@ -123,8 +123,6 @@ servicesKeys = [ "M-s s <Up>" ~> spawn "@personalVpnUp@"
 
 hardwareKeys = [ "<XF86AudioRaiseVolume>" ~> spawn "@pctlRaiseVolume@"
                , "<XF86AudioLowerVolume>" ~> spawn "@pctlLowerVolume@"
-               , "C-<XF86AudioRaiseVolume>" ~> spawn "@pulseRaiseVolume@"
-               , "C-<XF86AudioLowerVolume>" ~> spawn "@pulseLowerVolume@"
                , "<XF86AudioPrev>" ~> spawn "@pctl@ previous"
                , "<XF86AudioPlay>" ~> spawn "@pctl@ play-pause"
                , "<XF86AudioNext>" ~> spawn "@pctl@ next"

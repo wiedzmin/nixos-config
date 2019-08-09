@@ -33,7 +33,6 @@ let
         quilt
         textql
         wire-desktop
-        wmc-mpris # TODO: make service
         yj
     ];
     stagingWork = with pkgs; [

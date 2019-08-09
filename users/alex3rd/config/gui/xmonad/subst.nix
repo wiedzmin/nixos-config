@@ -55,8 +55,6 @@ rec {
     pctlRaiseVolume = "${pctl} volume ${builtins.toString volumeDeltaFraction}+";
     pctlSeekBackward = "${pctl} position ${builtins.toString playerDeltaSeconds}-";
     pctlSeekForward = "${pctl} position ${builtins.toString playerDeltaSeconds}+";
-    pulseLowerVolume = "${pactl} set-sink-volume 0 -${builtins.toString volumeDeltaPercents}%";
-    pulseRaiseVolume = "${pactl} set-sink-volume 0 +${builtins.toString volumeDeltaPercents}%";
     sctlRestart = "${pkgs.systemd}/bin/systemctl restart";
     sctlStop = "${pkgs.systemd}/bin/systemctl stop";
     sctlUserRestart = "${pkgs.systemd}/bin/systemctl --user restart";
