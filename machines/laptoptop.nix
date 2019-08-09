@@ -233,6 +233,8 @@ in
     nixpkgs.config = {
         allowUnfree = true;
         allowUnfreeRedistributable = true;
+
+        oraclejdk.accept_license = true;
         sane.snapscanFirmware = lib.mkIf enableScanner "/etc/nixos/contrib/blobs/Esfw52.bin";
     };
 
