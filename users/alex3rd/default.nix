@@ -114,6 +114,7 @@ in
             custom.update-system
 
             userCustom.decrypt_secrets
+            custom.docker-dns
         ];
         services = {
             gpg-agent = {
