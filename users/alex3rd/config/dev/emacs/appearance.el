@@ -22,16 +22,10 @@
   :config
   (default-text-scale-mode 1))
 
-(use-package hc-zenburn-theme
-  :ensure t
-  :disabled
-  :hook
-  (after-init-hook . (lambda () (load-theme 'hc-zenburn t))))
-
-(use-package darkburn-theme
+(use-package zenburn-theme
   :ensure t
   :hook
-  (after-init-hook . (lambda () (load-theme 'darkburn t))))
+  (after-init-hook . (lambda () (load-theme 'zenburn t))))
 
 (use-package highlight-numbers
   :ensure t

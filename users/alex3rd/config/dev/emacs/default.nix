@@ -144,6 +144,7 @@ with import ../../../const.nix {inherit config pkgs;};
                 epkgs.which-key-posframe
                 epkgs.ws-butler
                 epkgs.yasnippet
+                epkgs.zenburn-theme
             ];
         };
         home.file = {
