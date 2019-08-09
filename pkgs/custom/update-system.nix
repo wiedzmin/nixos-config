@@ -4,7 +4,8 @@
 
     cd /etc/nixos
     ${nix}/bin/nix build -f ./pkgs/forges/github.com/NixOS/nixpkgs-channels/nixos system $@
-    if [[ $? == 1 ]]
+    result=$?
+    if [[ $result == 1 ]] || [[ $result == 100 ]]
     then
         exit 1
     fi
