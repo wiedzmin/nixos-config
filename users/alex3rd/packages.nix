@@ -17,9 +17,6 @@ let
         rclone
         xdg-user-dirs
         xlsfonts
-        tree-from-tags
-        mpd-mpris
-        ccextractor
     ];
     stagingCommon = with pkgs; [
         aerc
@@ -39,6 +36,7 @@ let
         drone
         drone-cli
         jenkins
+        terracognita
         terraform
         tflint
     ];
@@ -291,6 +289,7 @@ let
             scripts = [ mpvScripts.mpris ];
         }))
         android-file-transfer
+        ccextractor
         clipgrab
         desktop-file-utils
         exif
@@ -304,6 +303,7 @@ let
         maim
         mimeo
         minitube
+        mpd-mpris # TODO: incorporate into user infrastructure
         mps-youtube # TODO: make script + service to backup playlists data
         playerctl
         shared-mime-info
@@ -335,6 +335,7 @@ let
         nq
         pbzip2
         pigz
+        ripgrep-all
         rmlint
         sd
         unar
