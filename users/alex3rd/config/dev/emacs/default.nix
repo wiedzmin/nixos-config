@@ -52,6 +52,7 @@ with import ../../../const.nix {inherit config pkgs;};
                 epkgs.counsel
                 epkgs.counsel-projectile
                 epkgs.darkburn-theme
+                epkgs.default-text-scale
                 epkgs.delight
                 epkgs.diff-hl
                 epkgs.dired-filetype-face
@@ -69,6 +70,7 @@ with import ../../../const.nix {inherit config pkgs;};
                 epkgs.fic-mode
                 epkgs.flycheck
                 epkgs.format-all
+                epkgs.frog-jump-buffer
                 epkgs.gcmh
                 epkgs.git-timemachine
                 epkgs.haskell-mode
