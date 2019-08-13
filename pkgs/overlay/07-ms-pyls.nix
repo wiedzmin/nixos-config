@@ -2,12 +2,12 @@ self: super: {
 
 ms-pyls = super.stdenv.mkDerivation rec {
     name = "ms-pyls-${version}";
-    version = "2019.1";
+    version = "0.2";
 
     # Impossible to build anything offline with dotnet
     src = super.fetchurl {
         url = "https://github.com/wiedzmin/python-language-server/releases/download/${version}/python-language-server-${version}.tar.gz";
-        sha256 = "0aj66a6qav4kh33a7y057z2pgy6ccz81gzz5mas49l5if5szlpyi";
+        sha256 = "1inqab80495z838yrnplp7g3j6vbnvbd46rjbdzcv76qckjpvprr";
     };
 
     buildInputs = with super; [
