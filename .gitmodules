@@ -13,3 +13,6 @@
 [submodule "pkgs/forges/github.com/wiedzmin/nixpkgs"]
 	path = pkgs/forges/github.com/wiedzmin/nixpkgs
 	url = https://github.com/wiedzmin/nixpkgs
+[submodule "pkgs/forges/github.com/NixOS/nixos-hardware"]
+	path = pkgs/forges/github.com/NixOS/nixos-hardware
+	url = https://github.com/NixOS/nixos-hardware
