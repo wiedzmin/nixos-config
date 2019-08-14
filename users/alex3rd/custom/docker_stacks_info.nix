@@ -9,15 +9,9 @@ in
 ''
     #!${bash}/bin/bash
 
-    enforce_vpn() {
-        VPN_STATUS=$(${systemd}/bin/systemctl status openvpn-jobvpn.service)
-        if [[ "$VPN_STATUS" == "inactive" ]]; then
-            ${dunst}/bin/dunstify -t 5000 -u critical "VPN is off, turn it on and retry"
-            exit 1
-        fi
-    }
+    ${enforce_job_vpn_impl}
 
-    enforce_vpn
+    enforce_job_vpn
 
     SWARM_NODES=(
     ${builtins.concatStringsSep "\n"
@@ -25,9 +19,7 @@ in
                     (builtins.filter (host: host.swarm == true)
                                      jobExtraHosts))}
     )
-    SWARM_NODES_COUNT=''${#SWARM_NODES[@]}
-    # SELECTED_NODE=''${SWARM_NODES[$(( ( RANDOM % $SWARM_NODES_COUNT ) ))]}
-    SELECTED_NODE=${jobInfraDockerSwarmLeaderHost}
+    SWARM_LEADER_NODE=$(${openssh}/bin/ssh ${jobInfraSeedHost} "docker node ls --format '{{.Hostname}} {{ .ManagerStatus }}' | grep Leader | cut -f1 -d\ ")
 
     docker_stack_ps_params() {
         echo ${ if dockerStackShowOnlyRunning then "--filter \\\"desired-state=Running\\\"" else ""}
@@ -48,7 +40,7 @@ in
     }
 
     ask_for_stack() {
-        STACKS=$(${openssh}/bin/ssh $SELECTED_NODE \
+        STACKS=$(${openssh}/bin/ssh $SWARM_LEADER_NODE \
                                          "docker stack ls | awk '{if(NR>1)print $1}'" | \
                                          ${gawk}/bin/awk '{print $1}')
         for i in "''${STACKS[@]}"
@@ -59,7 +51,7 @@ in
 
     show_stack_status() {
         STACK=$1
-        ${openssh}/bin/ssh $SELECTED_NODE \
+        ${openssh}/bin/ssh $SWARM_LEADER_NODE \
         "docker stack ps $STACK $(docker_stack_ps_params)" > /tmp/docker_stack_status
         ${yad}/bin/yad --filename /tmp/docker_stack_status --text-info
         rm /tmp/docker_stack_status
@@ -67,9 +59,9 @@ in
 
     ask_for_stack_task() {
         STACK=$1
-        TASKS=$(${openssh}/bin/ssh $SELECTED_NODE \
+        TASKS=$(${openssh}/bin/ssh $SWARM_LEADER_NODE \
         "docker stack ps $STACK $(docker_stack_ps_params)" | awk '{if(NR>1)print $0}')
-        SERVICE=$(${openssh}/bin/ssh $SELECTED_NODE \
+        SERVICE=$(${openssh}/bin/ssh $SWARM_LEADER_NODE \
         "docker service ls --format='{{.Name}}' | grep $STACK ")
         TASKS="''${SERVICE}
     ''${TASKS}"
@@ -89,7 +81,7 @@ in
             logs)
                 TASK=$( (ask_for_stack_task $STACK) | ${rofi}/bin/rofi -dmenu -p "Task" | ${gawk}/bin/awk '{print $1}' )
                 ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
-                                                  $SELECTED_NODE \
+                                                  $SWARM_LEADER_NODE \
                                                   -c 'docker service logs --follow $TASK'"
                 ;;
             *)

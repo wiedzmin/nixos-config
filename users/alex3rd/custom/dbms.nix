@@ -3,15 +3,9 @@ with import ../secrets/const.nix {inherit lib config pkgs;};
 ''
     #!${bash}/bin/bash
 
-    enforce_vpn() {
-        VPN_STATUS=$(${systemd}/bin/systemctl status openvpn-jobvpn.service)
-        if [[ "$VPN_STATUS" == "inactive" ]]; then
-            ${dunst}/bin/dunstify -t 5000 -u critical "VPN is off, turn it on and retry"
-            exit 1
-        fi
-    }
+    ${enforce_job_vpn_impl}
 
-    enforce_vpn
+    enforce_job_vpn
 
     declare -A DBMS_TRAITS
 

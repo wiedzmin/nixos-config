@@ -6,13 +6,7 @@ in
 ''
     #!${bash}/bin/bash
 
-    enforce_vpn() {
-        VPN_STATUS=$(${systemd}/bin/systemctl status openvpn-jobvpn.service)
-        if [[ "$VPN_STATUS" == "inactive" ]]; then
-            ${dunst}/bin/dunstify -t 5000 -u critical "VPN is off, turn it on and retry"
-            exit 1
-        fi
-    }
+    ${enforce_job_vpn_impl}
 
     main() {
         HOST=$( cat /etc/hosts | ${gawk}/bin/awk '{print $2}' | ${coreutils}/bin/uniq | ${rofi}/bin/rofi -dmenu -p "Host" )
@@ -20,7 +14,7 @@ in
             if [ "$HOST" == "localhost" ]; then
                 eval $(${docker-machine}/bin/docker-machine env -u)
             else
-                enforce_vpn
+                enforce_job_vpn
                 eval $(${docker-machine}/bin/docker-machine env $HOST)
             fi
             SELECTED_CONTAINER=$( ${docker}/bin/docker ps --format '{{.Names}}' | ${rofi}/bin/rofi -dmenu -p "Container" )
