@@ -17,7 +17,7 @@ with import ../secrets/const.nix {inherit lib config pkgs;};
         if [ -n "$HOST" ]; then
             enforce_vpn
             ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
-            ${jobInfraDefaultRemoteUser}@$HOST -c 'ctop'"
+            $HOST -c 'ctop'"
         fi
     }
 

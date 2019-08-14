@@ -713,7 +713,7 @@ in
                 rofi.parse-hosts:                    true
                 rofi.parse-known-hosts:              false
                 rofi.ssh-client:                     ${pkgs.eternal-terminal}/bin/et
-                rofi.ssh-command:                    ${pkgs.tmux}/bin/tmux new-window '{ssh-client} ${networkDefaultRemoteUser}@{host}'
+                rofi.ssh-command:                    ${pkgs.tmux}/bin/tmux new-window '{ssh-client} {host}'
 
                 rofi.kb-accept-alt:                  Shift+Return
                 rofi.kb-accept-custom:               Control+Return

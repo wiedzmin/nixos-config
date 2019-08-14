@@ -16,7 +16,7 @@ with import ../secrets/const.nix {inherit lib config pkgs;};
     enforce_vpn
 
     ask_for_logs() {
-        LOGS=$(${openssh}/bin/ssh ${jobInfraDefaultRemoteUser}@${jobInfraLogsHost} "find ${jobInfraRemoteDockerLogsPath}/ -maxdepth 1 -size +0 -type f | grep -v gz")
+        LOGS=$(${openssh}/bin/ssh ${jobInfraLogsHost} "find ${jobInfraRemoteDockerLogsPath}/ -maxdepth 1 -size +0 -type f | grep -v gz")
         for i in "''${LOGS[@]}"
         do
             echo "$i"
@@ -27,7 +27,7 @@ with import ../secrets/const.nix {inherit lib config pkgs;};
         LOG=$( (ask_for_logs) | ${rofi}/bin/rofi -dmenu -p "View log" )
         if [ -n "$LOG" ]; then
            ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
-           ${jobInfraDefaultRemoteUser}@${jobInfraLogsHost} \
+           ${jobInfraLogsHost} \
            -c 'tail -f $LOG'"
         fi
     }

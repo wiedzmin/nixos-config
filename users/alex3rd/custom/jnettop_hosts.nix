@@ -15,7 +15,7 @@ with import ../secrets/const.nix {inherit lib config pkgs;};
         HOST=$( cat /etc/hosts | ${gawk}/bin/awk '{print $2}' | ${rofi}/bin/rofi -dmenu -p "Host" )
         if [ -n "$HOST" ]; then
             ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
-            ${jobInfraDefaultRemoteUser}@$HOST -c 'jnettop'"
+            $HOST -c 'jnettop'"
         fi
     }
 

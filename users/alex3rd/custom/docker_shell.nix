@@ -26,7 +26,7 @@ in
             SELECTED_CONTAINER=$( ${docker}/bin/docker ps --format '{{.Names}}' | ${rofi}/bin/rofi -dmenu -p "Container" )
             if [ -n "$SELECTED_CONTAINER" ]; then
                 ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
-                ${jobInfraDefaultRemoteUser}@$HOST \
+                $HOST \
                 -c 'docker exec -it $SELECTED_CONTAINER ${dockerContainerShellExecutable}'"
             fi
         fi

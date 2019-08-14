@@ -48,7 +48,7 @@ in
     }
 
     ask_for_stack() {
-        STACKS=$(${openssh}/bin/ssh ${jobInfraDefaultRemoteUser}@$SELECTED_NODE \
+        STACKS=$(${openssh}/bin/ssh $SELECTED_NODE \
                                          "docker stack ls | awk '{if(NR>1)print $1}'" | \
                                          ${gawk}/bin/awk '{print $1}')
         for i in "''${STACKS[@]}"
@@ -59,7 +59,7 @@ in
 
     show_stack_status() {
         STACK=$1
-        ${openssh}/bin/ssh ${jobInfraDefaultRemoteUser}@$SELECTED_NODE \
+        ${openssh}/bin/ssh $SELECTED_NODE \
         "docker stack ps $STACK $(docker_stack_ps_params)" > /tmp/docker_stack_status
         ${yad}/bin/yad --filename /tmp/docker_stack_status --text-info
         rm /tmp/docker_stack_status
@@ -67,9 +67,9 @@ in
 
     ask_for_stack_task() {
         STACK=$1
-        TASKS=$(${openssh}/bin/ssh ${jobInfraDefaultRemoteUser}@$SELECTED_NODE \
+        TASKS=$(${openssh}/bin/ssh $SELECTED_NODE \
         "docker stack ps $STACK $(docker_stack_ps_params)" | awk '{if(NR>1)print $0}')
-        SERVICE=$(${openssh}/bin/ssh ${jobInfraDefaultRemoteUser}@$SELECTED_NODE \
+        SERVICE=$(${openssh}/bin/ssh $SELECTED_NODE \
         "docker service ls --format='{{.Name}}' | grep $STACK ")
         TASKS="''${SERVICE}
     ''${TASKS}"
@@ -89,7 +89,7 @@ in
             logs)
                 TASK=$( (ask_for_stack_task $STACK) | ${rofi}/bin/rofi -dmenu -p "Task" | ${gawk}/bin/awk '{print $1}' )
                 ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
-                                                  ${jobInfraDefaultRemoteUser}@$SELECTED_NODE \
+                                                  $SELECTED_NODE \
                                                   -c 'docker service logs --follow $TASK'"
                 ;;
             *)
