@@ -42,7 +42,6 @@ writeTextFile {
     burn_iso = ./burn_iso.nix;
     current_system_hash = ./current_system_hash.nix;
     discover_containerized_services = ./discover_containerized_services.nix;
-    docker-dns = ./docker-dns.nix;
     docker-machine-export = ./docker-machine-export.nix;
     docker-machine-import = ./docker-machine-import.nix;
     docker_containers_traits = ./docker_containers_traits.nix; # TODO: review and fix

@@ -77,6 +77,11 @@ in
         activeTimespec = "1hour";
     };
 
+    services.docker-devdns = {
+        enable = true;
+        autoStart = false;
+    };
+
     services.clean-trash = {
         enable = true;
         calendarTimespec = "*-*-* 23:00:00";
@@ -114,7 +119,6 @@ in
             custom.update-system
 
             userCustom.decrypt_secrets
-            custom.docker-dns
         ];
         services = {
             gpg-agent = {

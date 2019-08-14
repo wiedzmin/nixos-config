@@ -4,6 +4,7 @@
     [
         ./battery-notifier.nix
         ./clean-trash.nix
+        ./docker-dns.nix
         ./fusuma.nix
         ./git-fetch-updates.nix
         ./git-push-updates.nix

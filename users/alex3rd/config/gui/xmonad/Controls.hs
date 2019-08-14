@@ -113,7 +113,9 @@ appKeys = [ "M-w <Backspace>" ~> nextMatch History (return True)
           , "M-w S-e"      ~> spawn "@jogEmacs@"
           ]
 
-servicesKeys = [ "M-s s <Up>" ~> spawn "@personalVpnUp@"
+servicesKeys = [ "M-s d <Up>" ~> spawn "@sctlRestart@ docker-devdns.service"
+               , "M-s d <Down>" ~> spawn "@sctlStop@ docker-devdns.service"
+               , "M-s s <Up>" ~> spawn "@personalVpnUp@"
                , "M-s s <Down>" ~> spawn "@personalVpnDown@"
                , "M-s v <Up>" ~> spawn "@jobVpnUp@"
                , "M-s v <Down>" ~> spawn "@jobVpnDown@"
