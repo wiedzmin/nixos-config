@@ -6,6 +6,9 @@ in
 {
     imports = [
         ../pkgs/setup.nix
+        ../pkgs/forges/github.com/NixOS/nixos-hardware/common/cpu/intel/sandy-bridge
+        ../pkgs/forges/github.com/NixOS/nixos-hardware/common/pc/ssd
+        ../pkgs/forges/github.com/NixOS/nixos-hardware/lenovo/thinkpad/x230
         ../partitions/laptoptop-ssd-512.nix
         ../users/alex3rd
         <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
