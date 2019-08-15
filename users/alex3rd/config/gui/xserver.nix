@@ -56,8 +56,6 @@ with import ../../const.nix {inherit config pkgs;};
                     ${pkgs.wmname}/bin/wmname LG3D
 
                     ${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources
-
-                    ${pkgs.xpointerbarrier}/bin/xpointerbarrier 25 0 0 0 &
                 '';
             };
             autoRepeatDelay = 200;

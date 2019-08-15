@@ -88,6 +88,7 @@ in
     };
 
     services.xidlehook.enable = true;
+    services.xpointerbarrier.enable = true;
 
     # FIXME: move functionality to pkgsctl
     system.activationScripts.saveCurrentHMVersion = ''

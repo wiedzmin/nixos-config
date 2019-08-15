@@ -13,6 +13,7 @@
         ./sshuttle.nix
         ./xkeysnail.nix
         ./xidlehook.nix
+        ./xpointerbarrier.nix
         ./xsuspender.nix        # fix HM one and migrate to it, then try pushing upstream
     ];
 }
