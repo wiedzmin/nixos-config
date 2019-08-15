@@ -45,13 +45,6 @@ in
         calendarTimespec = "*-*-* 00:05:00";
     };
 
-    services.sshuttle = {
-        enable = true;
-        remote = sshuttleRemote;
-        excludeSubnets = sshuttleExcludes;
-        sshIdentity = sshuttleIdentity;
-    };
-
     services.xkeysnail = {
         enable = true;
         configFile = "/home/${userName}/.config/xkeysnail/config.py";
