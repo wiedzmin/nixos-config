@@ -58,10 +58,6 @@ with import ../../const.nix {inherit config pkgs;};
                     ${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources
 
                     ${pkgs.xpointerbarrier}/bin/xpointerbarrier 25 0 0 0 &
-
-                    ${pkgs.xidlehook}/bin/xidlehook --not-when-audio --not-when-fullscreen\
-                          --timer normal 150 '${pkgs.dunst}/bin/dunstify -t 7000 -u critical "Locking in 30 seconds"' ''' \
-                          --timer primary 30 '${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off' ''' &
                 '';
             };
             autoRepeatDelay = 200;

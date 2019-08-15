@@ -87,6 +87,8 @@ in
         calendarTimespec = "*-*-* 23:00:00";
     };
 
+    services.xidlehook.enable = true;
+
     # FIXME: move functionality to pkgsctl
     system.activationScripts.saveCurrentHMVersion = ''
         touch /etc/current-home-manager
