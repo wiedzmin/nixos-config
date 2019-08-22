@@ -239,7 +239,10 @@ in
         };
     };
 
-    time.timeZone = "Europe/Moscow";
+    time = {
+        timeZone = "Europe/Moscow";
+        hardwareClockInLocalTime = true;
+    };
 
     nixpkgs.config = {
         allowUnfree = true;
