@@ -17,7 +17,7 @@ in
     nix = { # per-machine settings
         maxJobs = lib.mkDefault 4;
         buildCores = lib.mkDefault 4;
-        optimise.automatic = true;
+        optimise.automatic = false;
         gc = {
             automatic = true;
             dates = "weekly";
