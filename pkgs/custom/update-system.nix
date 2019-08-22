@@ -12,9 +12,8 @@
 
     dir=$(pwd)
     export SHELL=/bin/sh
-    # FIXME: sudo --> pkexec after figuring out the correct way to use the latter
-    sudo ${nix}/bin/nix-env --profile /nix/var/nix/profiles/system --set $(readlink $dir/result)
-    sudo $dir/result/bin/switch-to-configuration switch
+    pkexec ${nix}/bin/nix-env --profile /nix/var/nix/profiles/system --set $(readlink $dir/result)
+    pkexec $dir/result/bin/switch-to-configuration switch
 
     current=$(readlink -f /run/current-system/kernel)
     booted=$(readlink -f /run/booted-system/kernel)

@@ -202,6 +202,14 @@ in
                     return polkit.Result.YES;
                 }
             });
+
+            /* Allow users in wheel group to run programs with pkexec without authentication */
+            polkit.addRule(function(action, subject) {
+                if (action.id == "org.freedesktop.policykit.exec" &&
+                    subject.isInGroup("wheel")) {
+                    return polkit.Result.YES;
+                }
+            });
         '';
         wrappers = {
             pmount.source = "${pkgs.pmount}/bin/pmount";
