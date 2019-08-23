@@ -16,6 +16,11 @@
   :ensure t
   :mode "\\.ini\\'")
 
+(use-package yaml-mode
+  :mode "\\.yml\\'"
+  :quelpa
+  (yaml-mode :repo "yoshiki/yaml-mode" :fetcher github :version original))
+
 (use-package rainbow-mode
   :ensure t
   :hook (css-mode-hook . rainbow-mode))
