@@ -70,9 +70,14 @@ in
         programs.chromium = {
             enable = true;
             extensions = [
-                "gfbliohnnapiefjpjlpjnehglfpaknnc" # surfingkeys
-                "ignpacbgnbnkaiooknalneoeladjnfgb" # url in title
-                "poahndpaaanbpbeafbkploiobpiiieko" # display anchors
+                "gfbliohnnapiefjpjlpjnehglfpaknnc" # Surfingkeys
+                "ignpacbgnbnkaiooknalneoeladjnfgb" # Url in title
+                "poahndpaaanbpbeafbkploiobpiiieko" # Display anchors
+                # "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
+                # "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
+                # "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
+                # "naepdomgkenhinolocfifgehidddafch" # Browserpass
+                # "ogfcmafjalglgifnmanfmnieipoejdcf" # uMatrix
             ];
         };
         home.file = {
