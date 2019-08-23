@@ -24,6 +24,7 @@ in
         extraGroups = [
             "audio"
             "input"
+            "libvirtd"
             "lp"
             "scanner"
             "video"
