@@ -113,6 +113,7 @@ let
         yapf
     ];
     devClients = with pkgs; [
+        anydesk
         http-prompt
         httplab
         litecli # TODO: shell automation: skim for selecting db file, you get the idea
