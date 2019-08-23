@@ -126,14 +126,6 @@ in
 
                 month $now == month $date ==> tag current-month,
                 year $now == year $date ==> tag current-year,
-
-                ${builtins.concatStringsSep "\n"
-                           (map (meta: builtins.concatStringsSep "\n"
-                                       (map (hostname: "current window ($program == \"" +
-                                            defaultShellClass + "\" && $title =~ /" +
-                                            hostname + "/) ==> tag ssh:" + builtins.replaceStrings ["."] ["_"] hostname + ",")
-                                            meta.hostNames))
-                                (jobExtraHosts ++ extraHosts))}
             '';
             ".gmrunrc".text = ''
                 # gmrun configuration file
