@@ -45,6 +45,7 @@ in
         cpu.intel.updateMicrocode = true;
         enableAllFirmware = true;
         ksm.enable = true;
+        sensor.iio.enable = true;
         opengl = {
             enable = true;
             extraPackages = with pkgs; [
@@ -180,6 +181,7 @@ in
         '';
         upower.enable = true;
         tlp.enable = true;
+        thermald.enable = true;
         acpid.enable = true;
         timesyncd.enable = true;
         printing = {
