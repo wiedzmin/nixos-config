@@ -538,6 +538,15 @@ in
                 package = pkgs.dejavu_fonts;
                 name = "${fontMainName} ${fontMainWeight} ${fontSizeDunst}";
             };
+            theme.name = "Adwaita-dark";
+            iconTheme = {
+                name = "Adwaita";
+                package = pkgs.gnome3.adwaita-icon-theme;
+            };
+            gtk2.extraConfig = ''
+                gtk-cursor-theme-name = capitaine-cursors;
+            '';
+            gtk3.extraConfig = { gtk-cursor-theme-name = lib.mkForce "capitaine-cursors"; };
         };
         services.dunst = {
             enable = true;
