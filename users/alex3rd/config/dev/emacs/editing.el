@@ -33,6 +33,13 @@
     :ensure t
     :config
     (company-flx-mode 1))
+  ;TODO: swap with above, when in nixpkgs
+  ;; (use-package company-fuzzy
+  ;;   :ensure t
+  ;;   :custom
+  ;;   (company-fuzzy-sorting-backend 'alphabetic)
+  ;;   :config
+  ;;   (global-company-fuzzy-mode 1)) https://github.com/elpa-host/company-fuzzy
   (use-package company-quickhelp
     :ensure t
     :config

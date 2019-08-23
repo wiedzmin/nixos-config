@@ -28,6 +28,8 @@ with import ../../../const.nix {inherit config pkgs;};
                 withGTK3 = false;
             });
             extraPackages = epkgs: [
+                # epkgs.company-fuzzy
+                # epkgs.mark-thing-at # wait in nixpkgs
                 epkgs.ace-link
                 epkgs.ace-window
                 epkgs.amx
