@@ -34,9 +34,17 @@ in
                 ${lib.concatStringsSep "\n" snippetsInventory}
             '';
             ".mpv/config".text = ''
-                hwdec=vaapi
-                vo=gpu
+                hwdec=vdpau
+                vo=opengl-hq,opengl,xv
                 hwdec-codecs=all
+
+                af=scaletempo,drc
+                audio-samplerate=48000
+
+                cache-default = 250000 # Use 250MB cache for network streams
+
+                slang = en
+                alang = en,eng,us
             '';
             ".arbtt/categorize.cfg".text = ''
                 aliases (
