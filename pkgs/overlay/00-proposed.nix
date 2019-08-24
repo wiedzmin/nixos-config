@@ -1,9 +1,11 @@
 self: super:
-let nixpkgs = import ../forges/github.com/wiedzmin/nixpkgs {
-      config = {
-        allowUnfree = true;
-      };
+let
+  nixpkgs = import ../forges/github.com/wiedzmin/nixpkgs {
+    config = {
+      allowUnfree = true;
     };
-in {
+  };
+in
+{
   proposed = nixpkgs.pkgs;
 }

@@ -1,9 +1,11 @@
 self: super:
-let nixpkgs = import ../pkgs/nixpkgs-channels {
-      config = {
-        allowUnfree = true;
-      };
+let
+  nixpkgs = import ../pkgs/nixpkgs-channels {
+    config = {
+      allowUnfree = true;
     };
-in {
+  };
+in
+{
   unstable = nixpkgs.pkgs;
 }

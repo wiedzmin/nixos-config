@@ -1,12 +1,12 @@
-{...}:
+{ ... }:
 {
-    imports =
+  imports =
     [
-        ./xserver.nix
-        ./autorandr.nix
-        ./clients.nix
-        ./misc.nix
-        ./xresources.nix
-        ./xmonad
+      ./xserver.nix
+      ./autorandr.nix
+      ./clients.nix
+      ./misc.nix
+      ./xresources.nix
+      ./xmonad
     ];
 }

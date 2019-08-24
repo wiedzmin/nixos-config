@@ -1,7 +1,7 @@
 { bash, config, feh, lib, pkgs, ... }:
-with import ../const.nix {inherit lib config pkgs;};
+with import ../const.nix { inherit lib config pkgs; };
 ''
-    #!${bash}/bin/bash
+  #!${bash}/bin/bash
 
-    ${feh}/bin/feh --bg-fill ${wallpaperBaseDir}/${wallpaperCurrent}
+  ${feh}/bin/feh --bg-fill ${wallpaperBaseDir}/${wallpaperCurrent}
 ''

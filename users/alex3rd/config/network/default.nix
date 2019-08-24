@@ -1,7 +1,7 @@
-{config, pkgs, ...}:
+{ config, pkgs, ... }:
 {
-    imports =
+  imports =
     [
-        ./mail.nix
+      ./mail.nix
     ];
 }

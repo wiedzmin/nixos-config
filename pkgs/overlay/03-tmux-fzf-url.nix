@@ -3,48 +3,55 @@ let
   rtpPath = "share/tmux-plugins";
 
   addRtp = path: rtpFilePath: attrs: derivation:
-    derivation // { rtp = "${derivation}/${path}/${rtpFilePath}"; } // {
-      overrideAttrs = f: mkDerivation (attrs // f attrs);
-    };
+    derivation // { rtp = "${derivation}/${path}/${rtpFilePath}"; }
+    // {
+         overrideAttrs = f: mkDerivation (attrs // f attrs);
+       };
 
   mkDerivation = a@{
-    pluginName,
-    rtpFilePath ? (builtins.replaceStrings ["-"] ["_"] pluginName) + ".tmux",
-    namePrefix ? "tmuxplugin-",
-    src,
-    unpackPhase ? "",
-    postPatch ? "",
-    configurePhase ? ":",
-    buildPhase ? ":",
-    addonInfo ? null,
-    preInstall ? "",
-    postInstall ? "",
-    path ? (builtins.parseDrvName pluginName).name,
-    dependencies ? [],
-    ...
+    pluginName
+  , rtpFilePath ? (builtins.replaceStrings [ "-" ] [ "_" ] pluginName) + ".tmux"
+  , namePrefix ? "tmuxplugin-"
+  , src
+  , unpackPhase ? ""
+  , postPatch ? ""
+  , configurePhase ? ":"
+  , buildPhase ? ":"
+  , addonInfo ? null
+  , preInstall ? ""
+  , postInstall ? ""
+  , path ? (builtins.parseDrvName pluginName).name
+  , dependencies ? []
+  , ...
   }:
-    addRtp "${rtpPath}/${path}" rtpFilePath a (super.stdenv.mkDerivation (a // {
-      name = namePrefix + pluginName;
+    addRtp "${rtpPath}/${path}" rtpFilePath a (
+      super.stdenv.mkDerivation (
+        a
+        // {
+             name = namePrefix + pluginName;
 
-      inherit pluginName unpackPhase postPatch configurePhase buildPhase addonInfo preInstall postInstall;
+             inherit pluginName unpackPhase postPatch configurePhase buildPhase addonInfo preInstall postInstall;
 
-      installPhase = ''
-        runHook preInstall
+             installPhase = ''
+               runHook preInstall
 
-        target=$out/${rtpPath}/${path}
-        mkdir -p $out/${rtpPath}
-        cp -r . $target
-        if [ -n "$addonInfo" ]; then
-          echo "$addonInfo" > $target/addon-info.json
-        fi
+               target=$out/${rtpPath}/${path}
+               mkdir -p $out/${rtpPath}
+               cp -r . $target
+               if [ -n "$addonInfo" ]; then
+                 echo "$addonInfo" > $target/addon-info.json
+               fi
 
-        runHook postInstall
-      '';
+               runHook postInstall
+             '';
 
-      dependencies = [ super.bash ] ++ dependencies;
-    }));
-    paneHistoryDepthLines = 10000;
-in rec {
+             dependencies = [ super.bash ] ++ dependencies;
+           }
+      )
+    );
+  paneHistoryDepthLines = 10000;
+in
+rec {
 
   inherit mkDerivation;
 

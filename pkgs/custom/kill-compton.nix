@@ -1,6 +1,6 @@
 { bash, procps, ... }:
 ''
-    #!${bash}/bin/bash
+  #!${bash}/bin/bash
 
-    ${procps}/bin/pkill -f compton
+  ${procps}/bin/pkill -f compton
 ''

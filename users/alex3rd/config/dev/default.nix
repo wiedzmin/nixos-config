@@ -1,11 +1,11 @@
-{...}:
+{ ... }:
 {
-    imports =
+  imports =
     [
-        ./emacs
-        ./git.nix
-        ./misc.nix
-        ./python.nix
-        ./virt.nix
+      ./emacs
+      ./git.nix
+      ./misc.nix
+      ./python.nix
+      ./virt.nix
     ];
 }
