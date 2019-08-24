@@ -1,4 +1,3 @@
-# CHECKED
 # https://gist.github.com/domenkozar/82886ee82efee623cdc0d19eb81c7fb7
 { config, lib, pkgs, ...}:
 

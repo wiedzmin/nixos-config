@@ -51,7 +51,6 @@ in {
             after = [ "graphical-session-pre.target" ];
             partOf = [ "graphical-session.target" ];
             wantedBy = [ "graphical-session.target" ];
-            # path = [ pkgs.bash ];
             serviceConfig = {
                 Type = "simple";
                 PassEnvironment = "DISPLAY";
