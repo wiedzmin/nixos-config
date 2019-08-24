@@ -52,6 +52,7 @@ in
     };
 
     services.xsuspender.enable = true;
+    services.keynav.enable = true;
 
     services.git-fetch-updates = {
         enable = true;
