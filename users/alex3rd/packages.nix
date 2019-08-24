@@ -36,6 +36,8 @@ let
         drone
         drone-cli
         jenkins
+        python3Packages.deprecated
+        python3Packages.unittest-data-provider
         terracognita
         terraform
         tflint
