@@ -218,7 +218,6 @@ let
         zenburn
     ];
     devMisc = with pkgs; [
-        cachix
         certigo
         cloc
         dnsrecon
@@ -247,6 +246,9 @@ let
         wiggle
         xtruss
         xurls
+    ];
+    devMiscRare = with pkgs; [
+        cachix
     ];
     monitoring = with pkgs; [
         bmon
