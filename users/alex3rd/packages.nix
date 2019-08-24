@@ -127,10 +127,12 @@ let
         zeal
     ];
     devVcsGit = with pkgs; [
+        git-crecord
         git-sizer
         gitAndTools.ghq
         gitAndTools.git-absorb # TODO: review abilities and maybe use in some automation
         gitAndTools.git-extras
+        gitAndTools.git-octopus
         gitAndTools.pass-git-helper
         gitAndTools.topGit
         gitstats
