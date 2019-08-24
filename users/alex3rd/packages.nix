@@ -337,6 +337,7 @@ let
         fpart
         jdupes
         lsd
+        lzip
         moreutils
         nq
         pbzip2
