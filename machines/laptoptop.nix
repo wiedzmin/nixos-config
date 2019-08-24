@@ -78,7 +78,10 @@ in
         };
         sane = {
             enable = enableScanner;
-            extraBackends = lib.mkIf enableScanner [ pkgs.epkowa ];
+            extraBackends = lib.mkIf enableScanner [
+                pkgs.epkowa
+                # pkgs.utsushi # TODO: try
+            ];
         };
     };
 
