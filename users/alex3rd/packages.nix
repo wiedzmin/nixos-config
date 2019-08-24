@@ -3,6 +3,7 @@ with import ./const.nix {inherit config pkgs;};
 let
     # TODO: write script to query keywords which would provide packages names either from installed or whole nixpkgs
     stagingInactive = with pkgs; [
+        apfs-fuse
         chrome-export
         dia
         drawio
@@ -15,6 +16,8 @@ let
         polybarFull             # + review https://github.com/polybar/polybar
         quassel
         rclone
+        rmount                  # https://github.com/Luis-Hebendanz/rmount
+        seturgent
         xdg-user-dirs
         xlsfonts
     ];
