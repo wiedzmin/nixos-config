@@ -21,6 +21,7 @@ let
     stagingCommon = with pkgs; [
         aerc
         checkbashism
+        curlie
         dua
         grab-site # https://github.com/ArchiveTeam/grab-site
         j4-dmenu-desktop
