@@ -41,6 +41,8 @@
             # base
             file
             glibcLocales
+
+            anydesk
         ];
     };
 }
