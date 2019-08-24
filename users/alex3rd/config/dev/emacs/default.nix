@@ -229,6 +229,8 @@ with import ../../../const.nix {inherit config pkgs;};
 
                 (add-hook 'focus-out-hook #'garbage-collect)
 
+                (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3")
+
                 ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
                     { src = ./bootstrap.el; })) }
                 ${builtins.readFile (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs; }) //
