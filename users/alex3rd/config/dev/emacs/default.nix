@@ -97,6 +97,7 @@ with import ../../../const.nix {inherit config pkgs;};
                 epkgs.magit
                 epkgs.magit-filenotify
                 epkgs.magit-popup # *
+                epkgs.magit-todos
                 epkgs.markdown-mode
                 epkgs.multi-compile
                 epkgs.multiple-cursors

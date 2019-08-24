@@ -158,6 +158,11 @@
                                         (magit-filenotify-mode)
                                       (error (magit-filenotify-mode -1))))))
 
+(use-package magit-todos
+  :ensure t
+  :hook
+  (magit-status-mode . magit-todos-mode))
+
 (use-package multi-compile :ensure t)
 
 (use-package nix-mode
