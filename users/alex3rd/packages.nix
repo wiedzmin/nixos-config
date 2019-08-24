@@ -45,6 +45,7 @@ let
         pdfgrep
         pdfsandwich
         pdftk
+        python3Packages.ocrmypdf
     ];
     sandbox = with pkgs; [ # binaries for PATH
         # transmission + service https://transmissionbt.com/
