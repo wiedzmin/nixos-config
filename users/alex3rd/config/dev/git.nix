@@ -45,6 +45,16 @@ in
                         "    ${pkgs.git}/bin/git push origin $(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD)"
                         "fi"
                     ] "    ";
+                    "usync" = indentedLines [
+                        "if [[ ! -z $(${pkgs.git}/bin/git remote | grep ${defaultUpstreamRemoteName}) ]]; then"
+                        "    ${pkgs.git}/bin/git fetch ${defaultUpstreamRemoteName}"
+                        "    current_branch=$(${pkgs.git}/bin/git branch | ${pkgs.gnugrep}/bin/grep \* | ${pkgs.coreutils}/bin/cut -d ' ' -f2)"
+                        "    ${pkgs.git}/bin/git merge ${defaultUpstreamRemoteName}/$current_branch"
+                        "else"
+                        "    echo No upstream defined, skipping"
+                        "    return 0"
+                        "fi"
+                    ] "    ";
                 };
             } + ''
                 include = cat ${jobWorkspacePath}/.mrconfig

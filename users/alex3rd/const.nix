@@ -56,4 +56,5 @@ rec {
     fontSizeAlacritty = 11.0;
     fontSizeDunst = "10";
     defaultShellClass = "Alacritty"; # TODO: generalize in some way
+    defaultUpstreamRemoteName = "upstream";
 }
