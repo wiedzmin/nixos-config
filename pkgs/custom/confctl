@@ -8,5 +8,6 @@ r = Rofi()
 configs = os.listdir(MACHINES_CONFIG_PATH)
 index, keypressed = r.select('config', [config[:-4] for config in configs])
 if keypressed == 0:
+    # TODO: migrate to update system after implementing VM builds there
     os.system('sudo nixos-rebuild -I nixos-config="{0}/{1}" build-vm'.format(
         MACHINES_CONFIG_PATH, configs[index[0]]))

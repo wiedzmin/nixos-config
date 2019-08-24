@@ -43,3 +43,5 @@ ms-pyls = super.stdenv.mkDerivation rec {
 };
 
 }
+# TODO: automate release preparation
+# also see https://github.com/emacs-lsp/lsp-python-ms for reference

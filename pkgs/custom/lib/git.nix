@@ -56,7 +56,7 @@ in
         return 0;
     }
 
-    check_for_secrets() {
+    check_for_secrets() { # https://github.com/Luis-Hebendanz/nix-configs/blob/master/git.nix#L25
         RESULTS=$(${gitAndTools.git-secrets}/bin/git-secrets --scan --cached 2>&1)
         if [[ -z "$RESULTS" ]]; then
             return 0;
