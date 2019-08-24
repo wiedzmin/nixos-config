@@ -167,6 +167,7 @@ let
         flamegraph
         gdb
         gdbgui
+        hopper
         jd-gui
         jid
         netsniff-ng
