@@ -420,6 +420,8 @@ let
     ] ++ [
         nodePackages.node2nix
         pypi2nix
+    ] ++ [
+        nixpkgs-fmt
     ];
 in
 {
