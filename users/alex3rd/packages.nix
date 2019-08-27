@@ -22,13 +22,17 @@ let
     xlsfonts
   ];
   stagingCommon = with pkgs; [
+    _3llo
     aerc
     checkbashism
     curlie
     dua
+    gitAndTools.git-subrepo
     grab-site # https://github.com/ArchiveTeam/grab-site
+    ix
     j4-dmenu-desktop
     lazydocker
+    out-of-tree
     pciutils
     psrecord
     quilt
@@ -47,15 +51,15 @@ let
     tflint
   ];
   stagingPublish = with pkgs; [
+    ocrmypdf
     pdfcpu
     pdfgrep
     pdfsandwich
     pdftk
-    python3Packages.ocrmypdf
   ];
   sandbox = with pkgs; [
     # binaries for PATH
-    # transmission + service https://transmissionbt.com/
+    # transmission + service https://transmissionbt.com/ + stig
     gnuplot # ? misc
     hstr # ? misc shell
     ncmpcpp
@@ -347,6 +351,8 @@ let
     wirelesstools
   ];
   shell = with pkgs; [
+    # docker-slim # TODO: make package https://github.com/docker-slim/docker-slim
+    # tsvutils # TODO: make package https://github.com/brendano/tsvutils
     archiver
     fd
     fpart
