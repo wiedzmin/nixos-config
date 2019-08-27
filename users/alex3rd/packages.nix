@@ -419,9 +419,7 @@ let
     (pass.withExtensions (ext: with ext; [ pass-audit pass-import pass-update ]))
     clair # https://werner-dijkerman.nl/2019/01/28/scanning-docker-images-with-coreos-clair/
     gnupg
-    gpa
     paperkey
-    pinentry
     rofi-pass
     srm
   ];

@@ -147,7 +147,7 @@ in
     ++ [
          perf
          cpupower
-         hotspot
+         # hotspot # rarely used
        ];
   powerManagement = {
     enable = true;
