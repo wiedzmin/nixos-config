@@ -18,6 +18,7 @@ in
       extensions = with firefox-addons; [
         display-anchors
         ghosttext
+        passff
         tridactyl
         url-in-title
         web_media_controller
@@ -94,6 +95,13 @@ in
         path = "${pkgs.wmc-mpris}/bin/web-media-controller";
         type = "stdio";
         allowed_extensions = [ "web-media-controller@f1u77y.me" ];
+      };
+      ".mozilla/native-messaging-hosts/passff.json".text = builtins.toJSON {
+        name = "passff";
+        description = "Host for communicating with zx2c4 pass";
+        path = "${pkgs.passff-host}/share/passff-host/passff.py";
+        type = "stdio";
+        allowed_extensions = [ "passff@invicem.pro" ];
       };
     };
     xdg.configFile."imv/config".text = genIni {

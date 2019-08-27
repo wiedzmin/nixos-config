@@ -242,4 +242,17 @@
       platforms = platforms.unix;
     };
   };
+  "passff" = buildFirefoxXpiAddon {
+    pname = "passff";
+    version = "1.9";
+    addonId = "passff@invicem.pro";
+    url = "https://addons.mozilla.org/firefox/downloads/file/3051801/passff-1.9-fx.xpi";
+    sha256 = "0ypbc67kdj2ajvjzbnykvx1iqjxw9l220wj1crgqgfvw21nhpyzz";
+    meta = with stdenv.lib; {
+      homepage = "https://github.com/passff/passff";
+      description = ''zx2c4 pass manager extension for Firefox, Chrome and Opera'';
+      license = licenses.gpl2;
+      platforms = platforms.unix;
+    };
+  };
 }
