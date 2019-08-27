@@ -13,7 +13,6 @@ let
     libvirt # for `vagrant plugin install vagrant-libvirt`
     nfs-utils # for vagrant
     paperless # see docs
-    polybarFull # + review https://github.com/polybar/polybar
     quassel
     rclone
     rmount # https://github.com/Luis-Hebendanz/rmount
