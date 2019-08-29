@@ -59,6 +59,7 @@ rec {
   sctlStop = "${pkgs.systemd}/bin/systemctl stop";
   sctlUserRestart = "${pkgs.systemd}/bin/systemctl --user restart";
   sctlUserStop = "${pkgs.systemd}/bin/systemctl --user stop";
+  wpaGui = "${pkgs.wpa_supplicant_gui}/bin/wpa_gui";
 
   personalVpnUp = "${sctlRestart} openvpn-${personalVpnName}.service";
   personalVpnDown = "${sctlStop} openvpn-${personalVpnName}.service";

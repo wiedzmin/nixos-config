@@ -142,7 +142,7 @@ in
     me_cleaner
   ]
     ++ [
-         wpa_supplicant_gui # broken at the moment (qt plugin location issue)
+         wpa_supplicant_gui
        ]
     ++ [
          perf

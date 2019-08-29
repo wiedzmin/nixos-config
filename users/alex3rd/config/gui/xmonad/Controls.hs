@@ -78,7 +78,7 @@ basicKeys conf = [ "C-\\"         ~> sendMessage (XkbToggle Nothing)
                  , "M-S-d"        ~> spawn "@sshCustomUser@" >> WS.showWSOnProperScreen "shell"
                  , "M-S-s"        ~> spawn "@rofiSsh@" >> WS.showWSOnProperScreen "shell"
                  , "M-j"          ~> spawn "@webjumps@" >> WS.showWSOnProperScreen "web"
-                 , "M-M1-w"       ~> spawn "tmux new-window wpa_cli" >> WS.showWSOnProperScreen "shell"
+                 , "M-M1-w"       ~> spawn "@wpaGui@" -- "tmux new-window wpa_cli" >> WS.showWSOnProperScreen "shell"
                  --
                  , "M-C-q"        ~> spawn "xmonad --recompile; xmonad --restart"
                  , "M-q"          ~> spawn "xmonad --restart"
