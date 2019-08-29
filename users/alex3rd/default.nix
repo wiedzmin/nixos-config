@@ -110,14 +110,9 @@ in
     nixpkgs.config.allowUnfree = true;
     xdg.enable = true;
     home.packages = with pkgs; [
-      # base
-      file
-      glibcLocales
-
-      custom.pkgsctl
       custom.confctl
-
       custom.gen-nix-du
+      custom.pkgsctl
       custom.update-system
 
       userCustom.decrypt_secrets
