@@ -335,6 +335,7 @@ with import ../../../const.nix { inherit config pkgs; };
       ".emacs.d/secrets/identity.el.gpg".source = ../../../secrets/emacs/identity.el.gpg;
       ".emacs.d/secrets/media.el.gpg".source = ../../../secrets/emacs/media.el.gpg;
       ".emacs.d/secrets/vcs.el.gpg".source = ../../../secrets/emacs/vcs.el.gpg;
+      ".authinfo.gpg".source = ../../../secrets/.authinfo.gpg;
     };
   };
 }
