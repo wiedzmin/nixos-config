@@ -12,7 +12,7 @@
 -- plus few other similar operators, aliases, and re-exports.
 -----------------------------------------------------------------
 
-module Extensions.ExtraCombinators where
+module XMonad.Util.ExtraCombinators where
 
 import Control.Applicative ((<$>),(<*>))
 import Control.Arrow (first,second,(>>>))

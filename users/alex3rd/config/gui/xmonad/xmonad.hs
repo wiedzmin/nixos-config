@@ -4,7 +4,7 @@ import XMonad hiding ((|||))
 import XMonad.Actions.Navigation2D (withNavigation2DConfig)
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, docks, manageDocks)
 
-import Extensions.Xkb (xkbLayout)
+import XMonad.Util.Xkb (xkbLayout)
 import XMonad.Hooks.DynamicBars (dynStatusBarEventHook, dynStatusBarStartup)
 import XMonad.Hooks.EwmhDesktops (ewmhDesktopsEventHook, ewmhDesktopsStartup)
 import XMonad.Hooks.Place (placeHook)

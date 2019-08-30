@@ -27,8 +27,8 @@ import XMonad.Util.NamedScratchpad (NamedScratchpad(NS), namedScratchpadAction, 
 import qualified XMonad.Actions.FlexibleManipulate as Flex
 import qualified XMonad.StackSet as W
 
-import Extensions.ExtraCombinators ((~>))
-import Extensions.Xkb
+import XMonad.Util.ExtraCombinators ((~>))
+import XMonad.Util.Xkb
 import qualified Workspaces as WS
 import qualified Layouts as L
 

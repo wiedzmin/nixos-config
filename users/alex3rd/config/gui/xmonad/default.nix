@@ -6,8 +6,8 @@ with import ../../../const.nix { inherit config pkgs; };
 {
   home-manager.users."${userName}" = {
     home.file = {
-      ".xmonad/lib/Extensions/Xkb.hs".source = ./lib/Xkb.hs;
-      ".xmonad/lib/Extensions/ExtraCombinators.hs".source = ./lib/ExtraCombinators.hs;
+      ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./lib/XMonad/Util/Xkb.hs;
+      ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./lib/XMonad/Util/ExtraCombinators.hs;
       ".xmonad/lib/Controls.hs" = {
         text = builtins.readFile (
           pkgs.substituteAll (

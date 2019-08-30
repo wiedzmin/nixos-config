@@ -1,6 +1,6 @@
 {-# LANGUAGE FlexibleInstances, MultiParamTypeClasses #-}
 
-module Extensions.Xkb where
+module XMonad.Util.Xkb where
 
 import XMonad
 import qualified Data.Map        as M
