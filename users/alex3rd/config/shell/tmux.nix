@@ -104,8 +104,8 @@ in
       ];
     };
     home.file = {
-      "tmuxp/housekeeping.yml".text = ''
-        session_name: housekeeping
+      "tmuxp/main.yml".text = ''
+        session_name: main
         windows:
           - window_name: repl
             panes:
