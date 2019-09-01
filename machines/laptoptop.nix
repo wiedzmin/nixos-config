@@ -134,21 +134,26 @@ in
     };
   };
 
-  environment.systemPackages = with pkgs; with config.boot.kernelPackages; [
-    pasystray
-    pavucontrol
-    # ocz-ssd-guru # add as an overlay and fix hash (and installation instructions)
-    intelmetool
-    me_cleaner
-  ]
-    ++ [
-         wpa_supplicant_gui
-       ]
-    ++ [
-         perf
-         cpupower
-         # hotspot # rarely used
-       ];
+  environment = {
+    shells = with pkgs; [
+      "${bash}/bin/bash"
+      "${zsh}/bin/zsh"
+    ];
+    systemPackages = with pkgs; with config.boot.kernelPackages; [
+      pasystray
+      pavucontrol
+      # ocz-ssd-guru # add as an overlay and fix hash (and installation instructions)
+      intelmetool
+      me_cleaner
+    ] ++ [
+      wpa_supplicant_gui
+    ] ++ [
+      perf
+      cpupower
+      # hotspot # rarely used
+    ];
+  };
+
   powerManagement = {
     enable = true;
     powertop.enable = true;
