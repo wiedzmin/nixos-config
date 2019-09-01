@@ -1,7 +1,9 @@
-{ config, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with import ../../../const.nix { inherit config pkgs; };
+with import ../../../secrets/const.nix { inherit config lib pkgs; };
 rec {
   emacsAmxSaveFile = "${emacsDataDir}/amx-items";
+  emacsCodesearchIndex = "${devWorkspacePath}/.csearchindex";
   emacsCustomFile = "/home/${userName}/.emacs.d/customizations.el";
   emacsCustomInfoDir = "/home/${userName}/help/info";
   emacsCustomYasnippetsDir = "/etc/nixos/pkgs/forges/github.com/wiedzmin/yasnippet-snippets";
@@ -20,8 +22,8 @@ rec {
   emacsOrgProjectsFile = "${emacsOrgDir}/projects.org";
   emacsOrgRecentHeadingsSaveFile = "${emacsDataDir}/org-recent-headings";
   emacsPdfViewRestoreFilename = "${emacsDataDir}/.pdf-view-restore";
-  emacsResourcesDir = "/home/${userName}/.emacs.d/resources";
   emacsPlantumlJarPath = "${pkgs.plantuml}/lib/plantuml.jar";
+  emacsResourcesDir = "/home/${userName}/.emacs.d/resources";
   emacsXprintidleBin = "${pkgs.xprintidle-ng}/bin/xprintidle";
   timeZone = config.time.timeZone;
 }

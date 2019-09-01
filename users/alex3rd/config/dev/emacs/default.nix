@@ -47,6 +47,7 @@ with import ../../../const.nix { inherit config pkgs; };
         epkgs.beginend
         epkgs.blockdiag-mode
         epkgs.browse-at-remote
+        epkgs.codesearch
         epkgs.comment-dwim-2
         epkgs.company
         epkgs.company-flx
@@ -57,6 +58,7 @@ with import ../../../const.nix { inherit config pkgs; };
         epkgs.company-statistics
         epkgs.copy-as-format
         epkgs.counsel
+        epkgs.counsel-codesearch
         epkgs.counsel-projectile
         epkgs.darkburn-theme
         epkgs.default-text-scale
@@ -130,6 +132,7 @@ with import ../../../const.nix { inherit config pkgs; };
         epkgs.plantuml-mode
         epkgs.posframe
         epkgs.projectile
+        epkgs.projectile-codesearch
         epkgs.py-yapf
         epkgs.pyvenv
         epkgs.quelpa
@@ -239,86 +242,86 @@ with import ../../../const.nix { inherit config pkgs; };
 
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./bootstrap.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./base.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./security.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./appearance.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./context.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./navigation.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./editing.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./majormodes.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./programming.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./lang/python.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./clients.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./orgmode.el; }
         )
       ) }
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./help.el; }
         )
       ) }
 
         ${builtins.readFile (
         pkgs.substituteAll (
-          (import ./subst.nix { inherit config pkgs; })
+          (import ./subst.nix { inherit config lib pkgs; })
           // { src = ./staging.el; }
         )
       ) }

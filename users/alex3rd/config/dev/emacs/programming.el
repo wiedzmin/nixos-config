@@ -188,3 +188,19 @@
 (dolist (mode '(paredit-mode smartparens-mode))
   (when (fboundp mode)
     (add-hook 'eval-expression-minibuffer-setup-hook mode)))
+
+(use-package codesearch
+  :ensure t
+  :custom
+  (codesearch-global-csearchindex "@emacsCodesearchIndex@"))
+
+(use-package counsel-codesearch
+  :ensure t
+  :after codesearch
+  :bind
+  (:map mode-specific-map
+        ("c" . counsel-codesearch)))
+
+(use-package projectile-codesearch
+  :ensure t
+  :after codesearch)

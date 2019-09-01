@@ -1,5 +1,6 @@
 { config, pkgs, lib, ... }:
 with import ../../const.nix { inherit config pkgs; };
+with import ../../secrets/const.nix { inherit config pkgs lib; };
 let
   zshOptions = [
     "braceccl"
@@ -114,6 +115,7 @@ in
         LIBVA_DRIVER_NAME = "iHD";
         YSU_MODE = "ALL";
         YSU_IGNORED_ALIASES = [ "g" "ll" ]; # TODO: review list
+        CSEARCHINDEX = "${devWorkspacePath}/.csearchindex";
       };
       shellAliases = {
         cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency

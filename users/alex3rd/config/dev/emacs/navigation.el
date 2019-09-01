@@ -132,6 +132,10 @@
             (not (projectile-project-p)))
         (ivy-switch-buffer)
       (counsel-projectile-switch-to-buffer)))
+  (defun counsel-projectile-switch-project-action-codesearch-search (project)
+    "Search project's files with Codesearch."
+    (let ((projectile-switch-project-action #'projectile-codesearch-search))
+      (counsel-projectile-switch-project-by-name project)))
   (defun counsel-projectile-switch-project-action-open-todos (project)
     "Open project's TODOs."
     (let ((projectile-switch-project-action #'custom/open-project-todos))
@@ -145,18 +149,21 @@
                :prefix "<f8>"
                ("i" . projectile-invalidate-cache)
                ("k" . projectile-kill-buffers)
-               ("c" . projectile-commander)
+               ("C" . projectile-commander)
                ("d" . projectile-dired)
                ("f" . projectile-recentf)
                ("t" . custom/open-project-todos)
                ("m" . custom/open-project-magit-status)
                ("T" . doom/ivy-tasks)
-               ("h" . projectile-find-file))
+               ("h" . projectile-find-file)
+               ("c" . projectile-codesearch-search))
   (:map ctl-x-map
         ("j j" . counsel-projectile-switch-project)
         ("b" . custom/ensure-project-switch-buffer))
   :config
   (counsel-projectile-mode 1)
+  (add-to-list 'counsel-projectile-switch-project-action
+               '("c" counsel-projectile-switch-project-action-codesearch-search "search project's files with Codesearch") t)
   (add-to-list 'counsel-projectile-switch-project-action
                '("t" counsel-projectile-switch-project-action-open-todos "open project's todos") t)
   (add-to-list 'counsel-projectile-switch-project-action
