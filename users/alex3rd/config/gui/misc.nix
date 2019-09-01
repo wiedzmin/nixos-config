@@ -4,6 +4,54 @@ with import ../../const.nix { inherit config pkgs; };
 with import ../../secrets/const.nix { inherit config pkgs lib; };
 let
   custom = import ../../../../pkgs/custom pkgs config;
+  zathuraZenburn = {
+    completion-bg = "#404040";
+    completion-fg = "#7cb8bb";
+    completion-highlight-bg = "#7cb8bb";
+    completion-highlight-fg = "#ffffff";
+    default-bg = "#383838";
+    default-fg = "#404040";
+    highlight-active-color = "#7cb8bb";
+    highlight-color = "#e0cf9f";
+    inputbar-bg = "#383838";
+    inputbar-fg = "#ffffff";
+    notification-bg = "#383838";
+    notification-error-bg = "#383838";
+    notification-error-fg = "#dca3a3";
+    notification-fg = "#ffffff";
+    notification-warning-bg = "#383838";
+    notification-warning-fg = "#dca3a3";
+    recolor = false;
+    recolor-darkcolor = "#c0c0c0";
+    recolor-keephue = false;
+    recolor-lightcolor = "#383838";
+    statusbar-bg = "#606060";
+    statusbar-fg = "#808080";
+  };
+  zathuraBase16 = {
+    completion-bg = "#303030";
+    completion-fg = "#75B5AA";
+    completion-highlight-bg = "#75B5AA";
+    completion-highlight-fg = "#303030";
+    default-bg = "#151515";
+    default-fg = "#202020";
+    highlight-active-color = "#6A9FB5";
+    highlight-color = "#F4BF75";
+    inputbar-bg = "#151515";
+    inputbar-fg = "#303030";
+    notification-bg = "#90A959";
+    notification-error-bg = "#AC4142";
+    notification-error-fg = "#151515";
+    notification-fg = "#151515";
+    notification-warning-bg = "#AC4142";
+    notification-warning-fg = "#151515";
+    recolor = false;
+    recolor-darkcolor = "#E0E0E0";
+    recolor-keephue = true;
+    recolor-lightcolor = "#151515";
+    statusbar-bg = "#202020";
+    statusbar-fg = "#B0B0B0";
+  };
 in
 {
   home-manager.users."${userName}" = {
@@ -628,29 +676,9 @@ in
     programs.zathura = {
       enable = true;
       options = {
-        completion-bg = "#404040";
-        completion-fg = "#7cb8bb";
-        completion-highlight-bg = "#7cb8bb";
-        completion-highlight-fg = "#ffffff";
-        default-bg = "#383838";
-        default-fg = "#404040";
-        highlight-active-color = "#7cb8bb";
-        highlight-color = "#e0cf9f";
-        inputbar-bg = "#383838";
-        inputbar-fg = "#ffffff";
-        notification-bg = "#383838";
-        notification-error-bg = "#383838";
-        notification-error-fg = "#dca3a3";
-        notification-fg = "#ffffff";
-        notification-warning-bg = "#383838";
-        notification-warning-fg = "#dca3a3";
-        recolor = false;
-        recolor-darkcolor = "#c0c0c0";
-        recolor-keephue = false;
-        recolor-lightcolor = "#383838";
-        statusbar-bg = "#606060";
-        statusbar-fg = "#808080";
-      };
+        pages-per-row = 1;
+        font = "${fontMainName} ${fontMainWeight} ${fontSizeDunst}";
+      } // zathuraZenburn;
     };
     services.compton = {
       enable = true;
