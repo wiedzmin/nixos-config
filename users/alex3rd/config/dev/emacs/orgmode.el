@@ -268,7 +268,7 @@
   (org-agenda-use-tag-inheritance t)
   (org-agenda-window-setup 'current-window)
   (org-align-all-tags t)
-  (org-archive-location "@emacsOrgJournalFile@/::datetree/")
+  (org-archive-location "@emacsOrgJournalFile@::datetree/")
   (org-attach-directory "@emacsOrgAttachDir@")
   (org-blank-before-new-entry '((heading) (plain-list-item . auto)))
   (org-catch-invisible-edits nil)
