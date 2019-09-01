@@ -122,6 +122,7 @@ in
         du = "${pkgs.duc}/bin/duc";
 
         git = "${pkgs.gitAndTools.hub}/bin/hub";
+        gg = "${pkgs.gitAndTools.ghq}/bin/ghq get";
 
         yg = "${pkgs.you-get}/bin/you-get";
 
