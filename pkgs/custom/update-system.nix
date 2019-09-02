@@ -2,10 +2,14 @@
 ''
   #!${bash}/bin/bash
 
-  cd /etc/nixos
+  nixpkgs=$(${nix}/bin/nix-instantiate --find-file nixpkgs)
+  if [[ $? -ne 0 ]]; then
+      echo "Could not find nixpkgs"
+      exit 1
+  fi
 
   build_configuration() {
-      ${nix}/bin/nix build -f ./pkgs/forges/github.com/NixOS/nixpkgs-channels/nixos system $@
+      ${nix}/bin/nix build -f $nixpkgs/nixos system $@
       result=$?
       if [[ $result == 1 ]] || [[ $result == 100 ]]
       then
@@ -15,25 +19,22 @@
 
   switch_configuration() {
       dir=$(pwd)
-      export SHELL=/bin/sh
       pkexec ${nix}/bin/nix-env --profile /nix/var/nix/profiles/system --set $(readlink $dir/result)
       pkexec $dir/result/bin/switch-to-configuration switch
   }
 
   update_nixpkgs_suffix() {
-      if nixpkgs=$(${nix}/bin/nix-instantiate --find-file nixpkgs); then
-          rev=
-          if [ -e "$nixpkgs/.git" ]; then
-              cd $nixpkgs
-              rev=$(${git}/bin/git rev-parse --short HEAD)
-              if ${git}/bin/git describe --always --dirty | grep -q dirty; then
-                  rev+=M
-              fi
+      rev=
+      if [ -e "$nixpkgs/.git" ]; then
+          cd $nixpkgs
+          rev=$(${git}/bin/git rev-parse --short HEAD)
+          if ${git}/bin/git describe --always --dirty | grep -q dirty; then
+              rev+=M
           fi
-          if [ -n "$rev" ]; then
-              suffix=".git.$rev"
-              pkexec ${bash}/bin/bash -c "echo -n $suffix > $nixpkgs/.version-suffix" || true
-          fi
+      fi
+      if [ -n "$rev" ]; then
+          suffix=".git.$rev"
+          pkexec ${bash}/bin/bash -c "echo -n $suffix > $nixpkgs/.version-suffix" || true
       fi
   }
 
