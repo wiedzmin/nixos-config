@@ -1,10 +1,10 @@
-{ bash, coreutils, maim, shyaml, xclip, ... }:
+{ bash, coreutils, maim, xclip, yq-go, ... }:
 ''
   #!${bash}/bin/bash
 
   CONFIGFILE=''${1:-$HOME/.config/screenshots/screenshots.yml}
-  SCREENSHOTS_PATH=$(${shyaml}/bin/shyaml -gy screenshots.path $CONFIGFILE)
-  DATE_FORMAT=$(${shyaml}/bin/shyaml -gy screenshots.date_format $CONFIGFILE)
+  SCREENSHOTS_PATH=$(${yq-go}/bin/yq $CONFIGFILE screenshots.path)
+  DATE_FORMAT=$(${yq-go}/bin/yq $CONFIGFILE screenshots.date_format)
   ${maim}/bin/maim -o -s --format png /dev/stdout | \
       ${coreutils}/bin/tee $SCREENSHOTS_PATH/screenshot-$(date $DATE_FORMAT.png | ${coreutils}/bin/tr -d '[:cntrl:]') | \
       ${xclip}/bin/xclip -selection primary -t image/png -i

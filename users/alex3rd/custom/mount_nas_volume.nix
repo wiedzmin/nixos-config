@@ -1,4 +1,4 @@
-{ afpfs-ng, bash, config, coreutils, dunst, gnugrep, lib, netcat, pkgs, rofi, shyaml, ... }:
+{ afpfs-ng, bash, config, coreutils, dunst, gnugrep, lib, netcat, pkgs, rofi, yq-go, ... }:
 with import ../secrets/const.nix { inherit lib config pkgs; };
 let
   nasConfigPath = "$HOME/.config/synology/nas.yml";
@@ -47,13 +47,13 @@ in
       fi
   }
 
-  NAS_HOSTNAME=$(${shyaml}/bin/shyaml -gy nas.hostname $CONFIGFILE)
-  NAS_ADMIN_LOGIN=$(${shyaml}/bin/shyaml -gy nas.users.admin.login $CONFIGFILE)
-  NAS_ADMIN_PASSWORD=$(${shyaml}/bin/shyaml -gy nas.users.admin.password $CONFIGFILE)
-  NAS_MOUNT_PATH=$(${shyaml}/bin/shyaml -gy nas.mount.basedir $CONFIGFILE)
+  NAS_HOSTNAME=$(${yq-go}/bin/yq $CONFIGFILE nas.hostname)
+  NAS_ADMIN_LOGIN=$(${yq-go}/bin/yq $CONFIGFILE nas.users.admin.login)
+  NAS_ADMIN_PASSWORD=$(${yq-go}/bin/yq $CONFIGFILE nas.users.admin.password)
+  NAS_MOUNT_PATH=$(${yq-go}/bin/yq $CONFIGFILE nas.mount.basedir)
 
   nas_volumes=(
-  $(${shyaml}/bin/shyaml -gy nas.volumes $${nasConfigPath})
+  $(${yq-go}/bin/yq -gy $${nasConfigPath} nas.volumes)
   )
 
   main() {

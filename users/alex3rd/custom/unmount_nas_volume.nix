@@ -1,4 +1,4 @@
-{ bash, config, coreutils, dunst, gnugrep, lib, pkgs, rofi, shyaml, ... }:
+{ bash, config, coreutils, dunst, gnugrep, lib, pkgs, rofi, yq-go, ... }:
 with import ../secrets/const.nix { inherit lib config pkgs; };
 let
   nasConfigPath = "$HOME/.config/synology/nas.yml";
@@ -23,7 +23,7 @@ in
 
   function unmount_volume() {
       VOLUME=$1
-      NAS_MOUNT_PATH=$(${shyaml}/bin/shyaml -gy nas.mount.basedir $${nasConfigPath})
+      NAS_MOUNT_PATH=$(${yq-go}/bin/yq $${nasConfigPath} nas.mount.basedir)
       YET_MOUNTED=$(cat /etc/mtab | ${gnugrep}/bin/grep catscan | ${coreutils}/bin/cut -d ' '  -f 1 | ${gnugrep}/bin/grep $VOLUME)
       if [[ ! -z $YET_MOUNTED ]]; then
           fusermount -u $NAS_MOUNT_PATH/$VOLUME
