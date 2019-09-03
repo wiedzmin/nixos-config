@@ -98,6 +98,7 @@ in
         cpu
         fpp
         logging
+        open
         prefix-highlight
         sessionist
         yank
