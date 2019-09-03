@@ -33,7 +33,6 @@ with import ../../../const.nix { inherit config pkgs; };
         }
       );
       extraPackages = epkgs: [
-        # epkgs.mark-thing-at # wait in nixpkgs
         epkgs.ace-link
         epkgs.ace-window
         epkgs.amx
