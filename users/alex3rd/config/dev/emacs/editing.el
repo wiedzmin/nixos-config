@@ -29,17 +29,15 @@
   (company-tooltip-align-annotations t)
   (company-show-numbers t)
   :config
-  (use-package company-flx
+  (use-package company-fuzzy
     :ensure t
+    :custom
+    (company-fuzzy-prefix-ontop t)
+    (company-fuzzy-show-annotation t)
+    (company-fuzzy-sorting-backend 'flx)
     :config
-    (company-flx-mode 1))
-  ;TODO: swap with above, when in nixpkgs
-  ;; (use-package company-fuzzy
-  ;;   :ensure t
-  ;;   :custom
-  ;;   (company-fuzzy-sorting-backend 'alphabetic)
-  ;;   :config
-  ;;   (global-company-fuzzy-mode 1)) https://github.com/elpa-host/company-fuzzy
+    (add-to-list 'company-fuzzy--no-prefix-backends 'company-yasnippet)
+    (global-company-fuzzy-mode 1))
   (use-package company-quickhelp
     :ensure t
     :config

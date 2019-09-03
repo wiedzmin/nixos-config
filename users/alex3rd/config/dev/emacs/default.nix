@@ -33,7 +33,6 @@ with import ../../../const.nix { inherit config pkgs; };
         }
       );
       extraPackages = epkgs: [
-        # epkgs.company-fuzzy
         # epkgs.mark-thing-at # wait in nixpkgs
         epkgs.ace-link
         epkgs.ace-window
@@ -50,7 +49,7 @@ with import ../../../const.nix { inherit config pkgs; };
         epkgs.codesearch
         epkgs.comment-dwim-2
         epkgs.company
-        epkgs.company-flx
+        epkgs.company-fuzzy
         epkgs.company-lsp
         epkgs.company-nixos-options
         epkgs.company-quickhelp
