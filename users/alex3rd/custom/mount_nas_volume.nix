@@ -47,13 +47,13 @@ in
       fi
   }
 
-  NAS_HOSTNAME=$(${yq-go}/bin/yq $CONFIGFILE nas.hostname)
-  NAS_ADMIN_LOGIN=$(${yq-go}/bin/yq $CONFIGFILE nas.users.admin.login)
-  NAS_ADMIN_PASSWORD=$(${yq-go}/bin/yq $CONFIGFILE nas.users.admin.password)
-  NAS_MOUNT_PATH=$(${yq-go}/bin/yq $CONFIGFILE nas.mount.basedir)
+  NAS_HOSTNAME=$(${yq-go}/bin/yq r $CONFIGFILE nas.hostname)
+  NAS_ADMIN_LOGIN=$(${yq-go}/bin/yq r $CONFIGFILE nas.users.admin.login)
+  NAS_ADMIN_PASSWORD=$(${yq-go}/bin/yq r $CONFIGFILE nas.users.admin.password)
+  NAS_MOUNT_PATH=$(${yq-go}/bin/yq r $CONFIGFILE nas.mount.basedir)
 
   nas_volumes=(
-  $(${yq-go}/bin/yq -gy $${nasConfigPath} nas.volumes)
+  $(${yq-go}/bin/yq r $${nasConfigPath} nas.volumes)
   )
 
   main() {

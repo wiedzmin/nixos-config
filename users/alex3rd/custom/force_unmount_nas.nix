@@ -8,7 +8,7 @@ in
 
   function unmount_volume() {
       VOLUME=$1
-      NAS_MOUNT_PATH=$(${yq-go}/bin/yq $${nasConfigPath} nas.mount.basedir)
+      NAS_MOUNT_PATH=$(${yq-go}/bin/yq r $${nasConfigPath} nas.mount.basedir)
       YET_MOUNTED=$(cat /etc/mtab | ${gnugrep}/bin/grep catscan | ${coreutils}/bin/cut -d ' '  -f 1 | ${gnugrep}/bin/grep $VOLUME)
       if [[ ! -z $YET_MOUNTED ]]; then
           fusermount -u $NAS_MOUNT_PATH/$VOLUME
@@ -23,7 +23,7 @@ in
       ${dunst}/bin/dunstify -t 5000 -u critical "Missing config file, exiting"
       exit 1
   fi
-  NAS_HOSTNAME=$(${yq-go}/bin/yq $CONFIGFILE nas.hostname)
+  NAS_HOSTNAME=$(${yq-go}/bin/yq r $CONFIGFILE nas.hostname)
 
   mounted_nas_volumes=$(cat /etc/mtab | ${gnugrep}/bin/grep $NAS_HOSTNAME | ${coreutils}/bin/cut -d ' '  -f 1)
   for i in "''${mounted_nas_volumes[@]}"
