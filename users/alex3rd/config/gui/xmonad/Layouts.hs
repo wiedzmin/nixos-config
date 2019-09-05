@@ -4,13 +4,13 @@ module Layouts where
 
 import XMonad hiding ((|||))
 import XMonad.Layout.AutoMaster
-import XMonad.Layout.Dishes
 import XMonad.Layout.DwmStyle (dwmStyle, shrinkText)
 import XMonad.Layout.Grid
 import XMonad.Layout.IM (Property(And), Property(ClassName), Property(Or),
                          Property(Role), Property(Title), Property(Resource),
                          withIM)
 import XMonad.Layout.LayoutCombinators
+import XMonad.Layout.MultiDishes
 import XMonad.Layout.OneBig
 import XMonad.Layout.PerWorkspace (onWorkspace)
 import XMonad.Layout.Reflect (reflectHoriz)
@@ -53,7 +53,7 @@ layouts = onWorkspace "scratch" gimpLayout $
           onWorkspace "web2" (StackTile 1 (3/100) (1/2)) $
           onWorkspace "web3" (StackTile 1 (3/100) (1/2)) $
           onWorkspace "work" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4)) |||
-                              renamed [Replace "Dishes"] (Dishes 2 (1/6)) |||
+                              renamed [Replace "Dishes"] (MultiDishes 2 3 (1/6)) |||
                               renamed [Replace "Grid"] Grid |||
                               renamed [Replace "Tiled"] (autoMaster 1 (1/100) customHintedTile)) $
           onWorkspace "shell" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4))) $
