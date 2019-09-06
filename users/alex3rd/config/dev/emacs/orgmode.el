@@ -431,3 +431,14 @@
   :commands (org-html-convert-region-to-html
              org-html-export-as-html
              org-html-export-to-html))
+
+(use-package ivy-omni-org
+  :ensure t
+  :bind
+  (:map mode-specific-map
+        ("O" . ivy-omni-org))
+  :preface
+  (defun custom/org-kb-files ()
+    (f-files "@emacsOrgKbDir@" nil t))
+  :custom
+  (ivy-omni-org-file-sources '(org-agenda-files custom/org-kb-files)))

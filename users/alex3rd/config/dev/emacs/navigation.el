@@ -45,23 +45,6 @@
 (use-package counsel
   :ensure t
   :delight counsel-mode
-  :preface
-  (defun custom/open-org-file ()
-    (interactive)
-    (ivy-read "Org files: "
-              (funcall #'(lambda () (f-files "@emacsOrgDir@" nil t)))
-              :action #'(lambda (candidate)
-                          (find-file candidate))
-              :require-match t
-              :caller 'custom/open-org-file))
-  (defun custom/open-org-kb-file ()
-    (interactive)
-    (ivy-read "Org files: "
-              (funcall #'(lambda () (f-files "@emacsOrgKbDir@" nil t)))
-              :action #'(lambda (candidate)
-                          (find-file candidate))
-              :require-match t
-              :caller 'custom/open-org-kb-file))
   :init
   (require 'iso-transl)
   :bind
@@ -89,8 +72,6 @@
    ("C-SPC" . counsel-mark-ring)
    ("C-." . counsel-fzf)
    ("w" . counsel-wmctrl)
-   ("O" . custom/open-org-file)
-   ("K" . custom/open-org-kb-file)
    :map ctl-x-map
    ("C-r" . counsel-recentf)
    :map help-map
