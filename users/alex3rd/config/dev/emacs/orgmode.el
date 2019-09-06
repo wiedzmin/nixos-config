@@ -372,13 +372,23 @@
   (org-yank-adjusted-subtrees t)
   :config
   (use-package org-capture-pop-frame :ensure t)
-  ;;TODO: also add (as below) todo files from work projects (and maybe not only those)
-  (f-entries "@emacsOrgDir@"
-             (lambda (entry) (when (and (f-file? entry)
-                                        (s-suffix? "org" entry)
-                                        (not (s-contains? "journal" entry))
-                                        (file-exists-p entry))
-                               (push entry org-agenda-files))) t)
+  (deferred:$
+    (deferred:nextc
+      (deferred:wait-idle 3000)
+      (lambda () (f-entries "@emacsOrgDir@"
+                            (lambda (entry) (when (and (f-file? entry)
+                                                       (s-suffix? "org" entry)
+                                                       (not (s-contains? "journal" entry))
+                                                       (file-exists-p entry))
+                                              (push entry org-agenda-files))) t)))
+    (deferred:nextc
+      (deferred:wait-idle 10000)
+      (lambda () (f-entries "@jobReposRoot@"
+                            (lambda (entry) (when (and (f-file? entry)
+                                                       (s-suffix? "org" entry)
+                                                       (not (s-contains? "journal" entry))
+                                                       (file-exists-p entry))
+                                              (push entry org-agenda-files))) t))))
   ;; run some commands
   (org-add-link-type "tag" 'custom/follow-tag-link)
   (org-clock-persistence-insinuate)

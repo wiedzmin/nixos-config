@@ -44,6 +44,8 @@
   :quelpa
   (use-package-secrets :repo "a13/use-package-secrets" :fetcher github :version original))
 
+(use-package deferred :ensure t)
+
 (add-hook 'emacs-startup-hook
           (lambda ()
             (message "Emacs ready in %s with %d garbage collections."

@@ -25,5 +25,6 @@ rec {
   emacsPlantumlJarPath = "${pkgs.plantuml}/lib/plantuml.jar";
   emacsResourcesDir = "/home/${userName}/.emacs.d/resources";
   emacsXprintidleBin = "${pkgs.xprintidle-ng}/bin/xprintidle";
+  jobReposRoot = jobWorkspacePath;
   timeZone = config.time.timeZone;
 }

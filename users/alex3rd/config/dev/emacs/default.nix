@@ -59,6 +59,7 @@ with import ../../../const.nix { inherit config pkgs; };
         epkgs.counsel-projectile
         epkgs.darkburn-theme
         epkgs.default-text-scale
+        epkgs.deferred
         epkgs.delight
         epkgs.diff-hl
         epkgs.dired-filetype-face
