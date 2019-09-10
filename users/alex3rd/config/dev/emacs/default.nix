@@ -25,12 +25,13 @@ with import ../../../const.nix { inherit config pkgs; };
     programs.emacs = {
       enable = true;
       package = (
-        pkgs.emacs26.override {
+        pkgs.emacsGit.override {
           # build Lucid version
           withGTK2 = false;
           withGTK3 = false;
         }
       );
+      # TODO: scan *.el and find packages not in list below
       extraPackages = epkgs: [
         epkgs.ace-link
         epkgs.ace-window

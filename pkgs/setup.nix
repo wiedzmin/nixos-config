@@ -29,8 +29,12 @@ in
       http-connections = 10
     '';
   };
-  # For nixos-rebuild
-  nixpkgs.overlays = map (n: import (path + ("/" + n)))
+
+  nixpkgs.overlays = [
+    (import (builtins.fetchTarball {
+      url = https://github.com/nix-community/emacs-overlay/archive/master.tar.gz;
+    }))
+  ] ++ map (n: import (path + ("/" + n)))
     (
       builtins.filter (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (path + ("/" + n + "/default.nix")))
         (lib.attrNames content)
