@@ -157,6 +157,10 @@ in
   powerManagement = {
     enable = true;
     powertop.enable = true;
+    resumeCommands = lib.concatStringsSep "\n"
+      (lib.mapAttrsToList
+        (server: conf: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
+        config.services.openvpn.servers);
   };
 
   services = {
