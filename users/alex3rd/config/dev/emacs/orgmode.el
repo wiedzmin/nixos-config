@@ -196,13 +196,11 @@
   (org-M-RET-may-split-line '((default . nil)))
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :narrow 60))
   (org-agenda-custom-commands
-   `(("d" . "some non-straightforward TODO statuses")
-     ("db" todo "BACKLOG" nil)
-     ("ds" todo "SOON" nil)
-     ("dc" todo "CANCELLED" nil)
-     ("dw" todo "WAITING|FEEDBACK" nil)
-     ("dg" todo "GOING" ,agenda-opts-all-with-time)
-     ("P" . "Prioritized tasks")
+   `(("db" "BACKLOG tasks" todo "BACKLOG" nil)
+     ("ds" "SOON tasks" todo "SOON" nil)
+     ("dc" "CANCELLED tasks" todo "CANCELLED" nil)
+     ("dw" "WAITING/FEEDBACK tasks" todo "WAITING|FEEDBACK" nil)
+     ("dg" "GOING tasks" todo "GOING" ,agenda-opts-all-with-time)
      ("Pa" "Prioritized tasks A"
       ((tags-todo "+PRIORITY=\"A\"") ))
      ("Pb" "Prioritized tasks B"
@@ -219,8 +217,7 @@
       ((org-agenda-time-grid nil)
        (org-deadline-warning-days 32)
        (org-agenda-entry-types '(:scheduled))))
-     ("u" . "unassigned")
-     ("up" alltodo "Unprioritized TODO entries"
+     ("up" "Unprioritized TODO entries" alltodo "Unprioritized TODO entries"
       ((org-agenda-skip-function
         (lambda nil
           (org-agenda-skip-entry-if 'regexp "\\[#[ABCDEF]]")))
@@ -229,7 +226,7 @@
         '((agenda time-up tag-up) ))
        ;; '(org-agenda-sorting-strategy '((agenda time-up priority-down tag-up) (todo tag-up)))
        (org-agenda-overriding-header "Unprioritized TODO entries: ")))
-     ("jc" tags "+@job+current/GOING|FEEDBACK")
+     ("jc" "Active job tasks" tags "+@job+current/GOING|FEEDBACK")
      ))
   (org-agenda-dim-blocked-tasks 'invisible)
   (org-agenda-include-all-todo t)
