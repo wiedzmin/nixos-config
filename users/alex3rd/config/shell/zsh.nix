@@ -99,23 +99,23 @@ in
         bindkey '^P' fuzzy-search-and-edit
       '';
       sessionVariables = {
+        CSEARCHINDEX = "${devWorkspacePath}/.csearchindex";
         CURRENT_WM = "${config.services.xserver.windowManager.default}";
         EDITOR = "${pkgs.emacs}/bin/emacsclient";
         GREP_COLOR = "1;32";
         GREP_OPTIONS = "--color=auto";
         GTAGSLIBPATH = "/home/${userName}/.gtags/";
         HISTFILE = "${zshHistFilename}";
+        LIBVA_DRIVER_NAME = "iHD";
         PATH = "$PATH:${lib.concatStringsSep ":" (lib.unique binDirs)}";
         SHELL = "${pkgs.zsh}/bin/zsh";
         TMUXP_CONFIGDIR = "/home/${userName}/tmuxp";
         VISUAL = "${pkgs.emacs}/bin/emacsclient";
         WORKON_HOME = "/home/${userName}/.virtualenvs";
         XAUTHORITY = "/home/${userName}/.Xauthority";
-        ZSH_COMMAND_TIME_COLOR = "cyan";
-        LIBVA_DRIVER_NAME = "iHD";
-        YSU_MODE = "ALL";
         YSU_IGNORED_ALIASES = [ "g" "ll" ]; # TODO: review list
-        CSEARCHINDEX = "${devWorkspacePath}/.csearchindex";
+        YSU_MODE = "ALL";
+        ZSH_COMMAND_TIME_COLOR = "cyan";
       };
       shellAliases = {
         cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
