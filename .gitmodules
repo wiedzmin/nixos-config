@@ -7,9 +7,6 @@
 [submodule "pkgs/forges/github.com/NixOS/nixpkgs-channels"]
 	path = pkgs/forges/github.com/NixOS/nixpkgs-channels
 	url = https://github.com/NixOS/nixpkgs-channels
-[submodule "pkgs/forges/github.com/wiedzmin/home-manager"]
-	path = pkgs/forges/github.com/wiedzmin/home-manager
-	url = https://github.com/wiedzmin/home-manager
 [submodule "pkgs/forges/github.com/wiedzmin/nixpkgs"]
 	path = pkgs/forges/github.com/wiedzmin/nixpkgs
 	url = https://github.com/wiedzmin/nixpkgs

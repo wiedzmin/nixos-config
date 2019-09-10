@@ -11,7 +11,7 @@ in
       "nixpkgs=/etc/nixos/pkgs/forges/github.com/NixOS/nixpkgs-channels"
       "nixpkgs-overlays=/etc/nixos/pkgs/overlay"
       "nixos-config=/etc/nixos/configuration.nix"
-      "home-manager=/etc/nixos/pkgs/forges/github.com/wiedzmin/home-manager"
+      "home-manager=/etc/nixos/pkgs/forges/github.com/rycee/home-manager"
     ];
     useSandbox = true;
     readOnlyStore = true;

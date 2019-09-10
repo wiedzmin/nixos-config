@@ -91,9 +91,6 @@ in
     cd /etc/nixos/pkgs/forges/github.com/rycee/home-manager
     hm_revision="upstream: $(${pkgs.git}/bin/git rev-parse --short HEAD)"
     echo "$hm_revision" >> /etc/current-home-manager
-    cd /etc/nixos/pkgs/forges/github.com/wiedzmin/home-manager
-    hm_revision_proposed="fork: $(${pkgs.git}/bin/git rev-parse --short HEAD)"
-    echo "$hm_revision_proposed" >> /etc/current-home-manager
   '';
 
   nix.trustedUsers = [ userName ];
