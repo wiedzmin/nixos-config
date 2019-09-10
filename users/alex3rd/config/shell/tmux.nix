@@ -98,7 +98,7 @@ in
         cpu
         fpp
         logging
-        open
+        open # TODO: setup and verify working
         prefix-highlight
         sessionist
         yank
