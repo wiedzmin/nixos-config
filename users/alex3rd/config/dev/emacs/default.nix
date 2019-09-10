@@ -17,8 +17,9 @@ with import ../../../const.nix { inherit config pkgs; };
         }
       )
 
-      nodePackages.bash-language-server
+      ispell
       ms-pyls
+      nodePackages.bash-language-server
       plantuml
       ripgrep
     ];
