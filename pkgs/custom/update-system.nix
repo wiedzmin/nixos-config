@@ -1,4 +1,4 @@
-{ bash, git, nix, systemd, ... }:
+{ bash, coreutils, git, gnupg, nix, systemd, ... }:
 ''
   #!${bash}/bin/bash
 
@@ -7,6 +7,18 @@
       echo "Could not find nixpkgs"
       exit 1
   fi
+
+  decrypt_secrets() {
+      echo "Updating secrets"
+      SECRETS_DIR="/etc/nixos/users/$USER/secrets"
+      for secret in "$SECRETS_DIR"/*.gpg
+      do
+          SECRET_NAME=$(basename "$secret")
+          DECRYPTED_NAME="''${SECRET_NAME%.*}"
+          ${gnupg}/bin/gpg -dq "$SECRETS_DIR/$SECRET_NAME" > "$SECRETS_DIR/$DECRYPTED_NAME"
+          echo "$SECRETS_DIR/$DECRYPTED_NAME"
+      done
+  }
 
   build_configuration() {
       ${nix}/bin/nix build -f $nixpkgs/nixos system $@
@@ -24,6 +36,7 @@
   }
 
   update_nixpkgs_suffix() {
+      current_rev=$(${coreutils}/bin/readlink -f /run/current-system | ${coreutils}/bin/cut -f4 -d.)
       rev=
       if [ -e "$nixpkgs/.git" ]; then
           cd $nixpkgs
@@ -35,6 +48,10 @@
       if [ -n "$rev" ]; then
           suffix=".git.$rev"
           pkexec ${bash}/bin/bash -c "echo -n $suffix > $nixpkgs/.version-suffix" || true
+      fi
+      if ! [[ $current_rev =~ $rev ]]
+      then
+          echo "Updating Nixpkgs suffix: $current_rev --> $rev"
       fi
   }
 
@@ -56,6 +73,7 @@
       fi
   }
 
+  decrypt_secrets
   update_nixpkgs_suffix
   build_configuration
   switch_configuration

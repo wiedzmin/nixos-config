@@ -114,8 +114,6 @@ in
       custom.hadolintd
       custom.pkgsctl
       custom.update-system
-
-      userCustom.decrypt_secrets
     ];
     services = {
       gpg-agent = {
