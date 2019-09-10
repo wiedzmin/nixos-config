@@ -385,7 +385,12 @@
                                                        (s-suffix? "org" entry)
                                                        (not (s-contains? "journal" entry))
                                                        (file-exists-p entry))
-                                              (push entry org-agenda-files))) t))))
+                                              (push entry org-agenda-files))) t)))
+    (deferred:nextc
+      (deferred:wait-idle 100)
+      (lambda ()
+        (push "/etc/nixos/todo.org" org-agenda-files)
+        (push "/etc/nixos/emacs-todo.org" org-agenda-files))))
   ;; run some commands
   (org-add-link-type "tag" 'custom/follow-tag-link)
   (org-clock-persistence-insinuate)
