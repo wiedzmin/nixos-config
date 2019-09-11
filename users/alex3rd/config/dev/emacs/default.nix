@@ -79,7 +79,6 @@ with import ../../../const.nix { inherit config pkgs; };
         epkgs.fic-mode
         epkgs.flycheck
         epkgs.format-all
-        epkgs.frog-jump-buffer
         epkgs.gcmh
         epkgs.git-timemachine
         epkgs.haskell-mode
