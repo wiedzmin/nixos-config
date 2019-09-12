@@ -26,7 +26,7 @@ with import ../../../const.nix { inherit config pkgs; };
     programs.emacs = {
       enable = true;
       package = (
-        pkgs.emacsGit.override {
+        pkgs.emacs26.override {
           # build Lucid version
           withGTK2 = false;
           withGTK3 = false;
