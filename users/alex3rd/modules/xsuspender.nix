@@ -1,6 +1,5 @@
 { config, lib, pkgs, ... }:
 with import ../../../pkgs/util.nix { inherit config pkgs lib; };
-with import ../const.nix { inherit config pkgs; };
 with lib;
 
 let
@@ -41,7 +40,7 @@ in
         ExecStart = "${pkgs.xsuspender}/bin/xsuspender";
       };
       restartTriggers = [
-        "/home/${userName}/.config/xsuspender.conf"
+        "%h/.config/xsuspender.conf"
       ];
     };
   };
