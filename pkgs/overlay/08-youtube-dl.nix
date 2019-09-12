@@ -13,7 +13,8 @@ self: super: {
     buildInputs = [ super.zip ];
     propagatedBuildInputs = [ super.python3Packages.pycryptodome ];
 
-    makeWrapperArgs = with super; [ ''--prefix PATH : "${stdenv.lib.makeBinPath [ atomicparsley ffmpeg_4 rtmpdump ]}"'' ];
+    makeWrapperArgs = with super;
+      [ ''--prefix PATH : "${stdenv.lib.makeBinPath [ atomicparsley ffmpeg_4 rtmpdump ]}"'' ];
 
     postInstall = ''
       mkdir -p $out/share/zsh/site-functions
@@ -24,8 +25,8 @@ self: super: {
     doCheck = false;
 
     meta = {
-      homepage = https://rg3.github.io/youtube-dl/;
-      repositories.git = https://github.com/rg3/youtube-dl.git;
+      homepage = "https://rg3.github.io/youtube-dl/";
+      repositories.git = "https://github.com/rg3/youtube-dl.git";
       description = "Command-line tool to download videos from YouTube.com and other sites";
       longDescription = ''
         youtube-dl is a small, Python-based command-line program

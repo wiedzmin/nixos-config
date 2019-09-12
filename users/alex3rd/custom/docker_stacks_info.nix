@@ -5,8 +5,7 @@ let
   dockerStackPsCustomFormat = "{{.Name}}   {{.Image}}   {{.Node}} {{.DesiredState}}   {{.CurrentState}}";
   useDockerStackPsCustomFormat = false;
   dockerStackShowOnlyRunning = true;
-in
-''
+in ''
   #!${bash}/bin/bash
 
   ${enforce_job_vpn_impl}
@@ -15,20 +14,13 @@ in
 
   SWARM_NODES=(
   ${builtins.concatStringsSep "\n"
-  (
-    map (host: builtins.head host.hostNames)
-      (
-        builtins.filter (host: host.swarm == true)
-          jobExtraHosts
-      )
-  )}
+  (map (host: builtins.head host.hostNames) (builtins.filter (host: host.swarm == true) jobExtraHosts))}
   )
   SWARM_LEADER_NODE=$(${openssh}/bin/ssh ${jobInfraSeedHost} "docker node ls --format '{{.Hostname}} {{ .ManagerStatus }}' | grep Leader | cut -f1 -d\ ")
 
   docker_stack_ps_params() {
-      echo ${ if dockerStackShowOnlyRunning then "--filter \\\"desired-state=Running\\\"" else ""}
-           ${ if useDockerStackPsCustomFormat then " --format \\\"${dockerStackPsCustomFormat}\\\""
-else "" }
+      echo ${if dockerStackShowOnlyRunning then ''--filter \"desired-state=Running\"'' else ""}
+           ${if useDockerStackPsCustomFormat then " --format \\\"${dockerStackPsCustomFormat}\\\"" else ""}
   }
 
   MODES=(

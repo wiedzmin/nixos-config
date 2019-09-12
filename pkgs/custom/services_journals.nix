@@ -1,5 +1,4 @@
-{ bash, gawk, rofi, systemd, tmux, ... }:
-''
+{ bash, gawk, rofi, systemd, tmux, ... }: ''
   #!${bash}/bin/bash
 
   function show_list() {

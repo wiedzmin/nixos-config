@@ -1,10 +1,8 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let
-  cfg = config.services.xpointerbarrier;
-in
-{
+let cfg = config.services.xpointerbarrier;
+in {
   options = {
     services.xpointerbarrier = {
       enable = mkOption {

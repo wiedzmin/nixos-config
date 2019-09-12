@@ -1,5 +1,4 @@
-{ bash, nix, ... }:
-''
+{ bash, nix, ... }: ''
   #!${bash}/bin/bash
 
   pause () {

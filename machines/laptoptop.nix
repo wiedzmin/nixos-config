@@ -1,9 +1,7 @@
 { config, pkgs, lib, ... }:
 
-let
-  enableScanner = false;
-in
-{
+let enableScanner = false;
+in {
   imports = [
     ../pkgs/setup.nix
     ../pkgs/forges/github.com/NixOS/nixos-hardware/common/cpu/intel/sandy-bridge
@@ -49,18 +47,9 @@ in
     sensor.iio.enable = true;
     opengl = {
       enable = true;
-      extraPackages = with pkgs; [
-        intel-media-driver
-        libvdpau-va-gl
-        vaapiIntel
-        vaapiVdpau
-      ];
+      extraPackages = with pkgs; [ intel-media-driver libvdpau-va-gl vaapiIntel vaapiVdpau ];
       driSupport32Bit = true;
-      extraPackages32 = with pkgs.pkgsi686Linux; [
-        libvdpau-va-gl
-        vaapiIntel
-        vaapiVdpau
-      ];
+      extraPackages32 = with pkgs.pkgsi686Linux; [ libvdpau-va-gl vaapiIntel vaapiVdpau ];
     };
     trackpoint = {
       enable = true;
@@ -73,9 +62,7 @@ in
       support32Bit = true;
       package = pkgs.pulseaudioFull; # 'full' for e.g. bluetooth
       systemWide = true;
-      daemon.config = {
-        flat-volumes = "no";
-      };
+      daemon.config = { flat-volumes = "no"; };
     };
     sane = {
       enable = enableScanner;
@@ -93,37 +80,18 @@ in
       device = "/dev/sda";
       configurationLimit = 10;
     };
-    initrd.availableKernelModules = [
-      "ahci"
-      "ehci_pci"
-      "sdhci_pci"
-      "usb_storage"
-      "xhci_pci"
-    ];
+    initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
     plymouth.enable = true;
     extraModprobeConfig = ''
       options iwlwifi 11n_disable=1 power_save=1 power_level=2
       options kvm-intel nested=1
     '';
-    extraModulePackages = with config.boot.kernelPackages; [
-      exfat-nofuse
-    ];
+    extraModulePackages = with config.boot.kernelPackages; [ exfat-nofuse ];
     tmpOnTmpfs = true;
     kernelPackages = pkgs.linuxPackages_4_19;
-    kernelParams = [
-      "scsi_mod.use_blk_mq=1"
-      "pti=off"
-      "nospectre_v1"
-      "nospectre_v2"
-      "l1tf=off"
-      "nospec_store_bypass_disable"
-    ];
-    kernelModules = [
-      "bfq"
-      "kvm-intel"
-      "thinkpad_acpi"
-      "thinkpad_hwmon"
-    ];
+    kernelParams =
+      [ "scsi_mod.use_blk_mq=1" "pti=off" "nospectre_v1" "nospectre_v2" "l1tf=off" "nospec_store_bypass_disable" ];
+    kernelModules = [ "bfq" "kvm-intel" "thinkpad_acpi" "thinkpad_hwmon" ];
     kernel.sysctl = {
       "fs.inotify.max_user_instances" = 1024;
       "fs.inotify.max_user_watches" = 1048576;
@@ -135,31 +103,27 @@ in
   };
 
   environment = {
-    shells = with pkgs; [
-      "${bash}/bin/bash"
-      "${zsh}/bin/zsh"
-    ];
-    systemPackages = with pkgs; with config.boot.kernelPackages; [
-      pasystray
-      pavucontrol
-      # ocz-ssd-guru # add as an overlay and fix hash (and installation instructions)
-      intelmetool
-      me_cleaner
-    ] ++ [
-      wpa_supplicant_gui
-    ] ++ [
-      perf
-      cpupower
-      # hotspot # rarely used
-    ];
+    shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" ];
+    systemPackages = with pkgs;
+      with config.boot.kernelPackages;
+      [
+        pasystray
+        pavucontrol
+        # ocz-ssd-guru # add as an overlay and fix hash (and installation instructions)
+        intelmetool
+        me_cleaner
+      ] ++ [ wpa_supplicant_gui ] ++ [
+        perf
+        cpupower
+        # hotspot # rarely used
+      ];
   };
 
   powerManagement = {
     enable = true;
     powertop.enable = true;
     resumeCommands = lib.concatStringsSep "\n"
-      (lib.mapAttrsToList
-        (server: conf: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
+      (lib.mapAttrsToList (server: conf: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
         config.services.openvpn.servers);
   };
 
@@ -181,9 +145,7 @@ in
     };
     smartd = {
       enable = true;
-      notifications = {
-        x11.enable = true;
-      };
+      notifications = { x11.enable = true; };
     };
     journald.extraConfig = ''
       MaxRetentionSec=7day
@@ -207,7 +169,8 @@ in
     };
   };
 
-  users.extraUsers.root.hashedPassword = "586c56b7b6b6f68fca29c9ff2524e4dc52d51d5b6184a65f707dd3eae075e4c9afa81c9cd4042c26c9fb773d4f3de55fb55f363c6b0f5f6790baf4c4e3f32cb9";
+  users.extraUsers.root.hashedPassword =
+    "586c56b7b6b6f68fca29c9ff2524e4dc52d51d5b6184a65f707dd3eae075e4c9afa81c9cd4042c26c9fb773d4f3de55fb55f363c6b0f5f6790baf4c4e3f32cb9";
   nix.trustedUsers = [ "root" ];
   security = {
     sudo.wheelNeedsPassword = false;
@@ -278,9 +241,7 @@ in
       enable = true;
       dnsExtensionMechanism = false;
     };
-    wlanInterfaces = {
-      "wlan0" = { device = "wlp3s0"; };
-    };
+    wlanInterfaces = { "wlan0" = { device = "wlp3s0"; }; };
     wireless = {
       enable = true;
       driver = "nl80211";
@@ -294,11 +255,7 @@ in
       };
     };
     useDHCP = true;
-    nameservers = [
-      "77.88.8.8"
-      "77.88.8.1"
-      "8.8.8.8"
-    ];
+    nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
     extraHosts = ''
       127.0.0.1 ${config.networking.hostName}
     '';

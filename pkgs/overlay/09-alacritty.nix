@@ -2,23 +2,10 @@ self: super:
 
 with super.rustPlatform;
 let
-  rpathLibs = with super; [
-    expat
-    freetype
-    fontconfig
-    xorg.libX11
-    xorg.libXcursor
-    xorg.libXxf86vm
-    xorg.libXrandr
-    libGL
-    xorg.libXi
-  ]
-    ++ super.stdenv.lib.optionals super.stdenv.isLinux [
-         wayland
-         libxkbcommon
-       ];
-in
-rec {
+  rpathLibs = with super;
+    [ expat freetype fontconfig xorg.libX11 xorg.libXcursor xorg.libXxf86vm xorg.libXrandr libGL xorg.libXi ]
+    ++ super.stdenv.lib.optionals super.stdenv.isLinux [ wayland libxkbcommon ];
+in rec {
 
   inherit mkDerivation;
 
@@ -35,26 +22,20 @@ rec {
 
     cargoSha256 = "0h9wczgpjh52lhrqg0r2dkrh5svmyvrvh4yj7p0nz45skgrnl8w9";
 
-    nativeBuildInputs = with super; [
-      cmake
-      makeWrapper
-      pkgconfig
-      ncurses
-      gzip
-    ];
+    nativeBuildInputs = with super; [ cmake makeWrapper pkgconfig ncurses gzip ];
 
-    buildInputs = with super; rpathLibs
-      ++ stdenv.lib.optionals stdenv.isDarwin [
-           AppKit
-           CoreFoundation
-           CoreGraphics
-           CoreServices
-           CoreText
-           Foundation
-           OpenGL
-           # Needed for CFURLResourceIsReachable symbols.
-           cf-private
-         ];
+    buildInputs = with super;
+      rpathLibs ++ stdenv.lib.optionals stdenv.isDarwin [
+        AppKit
+        CoreFoundation
+        CoreGraphics
+        CoreServices
+        CoreText
+        Foundation
+        OpenGL
+        # Needed for CFURLResourceIsReachable symbols.
+        cf-private
+      ];
 
     outputs = [ "out" "terminfo" ];
 
@@ -70,17 +51,13 @@ rec {
 
       install -D target/release/alacritty $out/bin/alacritty
 
-    ''
-    + (
-        if super.stdenv.isDarwin then ''
-          mkdir $out/Applications
-          cp -r target/release/osx/Alacritty.app $out/Applications/Alacritty.app
-        '' else ''
-          install -D alacritty.desktop $out/share/applications/alacritty.desktop
-          patchelf --set-rpath "${super.stdenv.lib.makeLibraryPath rpathLibs}" $out/bin/alacritty
-        ''
-      )
-    + ''
+    '' + (if super.stdenv.isDarwin then ''
+      mkdir $out/Applications
+      cp -r target/release/osx/Alacritty.app $out/Applications/Alacritty.app
+    '' else ''
+      install -D alacritty.desktop $out/share/applications/alacritty.desktop
+      patchelf --set-rpath "${super.stdenv.lib.makeLibraryPath rpathLibs}" $out/bin/alacritty
+    '') + ''
       install -D alacritty-completions.zsh "$out/share/zsh/site-functions/_alacritty"
       install -D alacritty-completions.bash "$out/etc/bash_completion.d/alacritty-completions.bash"
       install -D alacritty-completions.fish "$out/share/fish/vendor_completions.d/alacritty.fish"
@@ -94,14 +71,13 @@ rec {
       echo "$terminfo" >> $out/nix-support/propagated-user-env-packages
 
       runHook postInstall
-    ''
-    ;
+    '';
 
     dontPatchELF = true;
 
     meta = with super.stdenv.lib; {
       description = "GPU-accelerated terminal emulator";
-      homepage = https://github.com/jwilm/alacritty;
+      homepage = "https://github.com/jwilm/alacritty";
       license = with super.stdenv.lib.licenses; [ asl20 ];
       platforms = [ "x86_64-linux" "x86_64-darwin" ];
     };

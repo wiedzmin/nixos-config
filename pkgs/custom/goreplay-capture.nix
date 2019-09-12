@@ -1,5 +1,4 @@
-{ bash, ... }:
-''
+{ bash, ... }: ''
   #!${bash}/bin/bash
 
   CONTAINER_HANDLE=$1

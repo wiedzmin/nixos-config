@@ -2,18 +2,9 @@
 with import ../../const.nix { inherit config pkgs; };
 let
   urxvtUrlLauncher = "${pkgs.xdg_utils}/bin/xdg-open";
-  urxvtPerlExtensions = [
-    "clipboard"
-    "default"
-    "font-size"
-    "fullscreen"
-    "keyboard-select"
-    "matcher"
-    "selection"
-    "url-select"
-  ];
-in
-{
+  urxvtPerlExtensions =
+    [ "clipboard" "default" "font-size" "fullscreen" "keyboard-select" "matcher" "selection" "url-select" ];
+in {
   home-manager.users."${userName}" = {
     xresources.properties = {
       "Xmessage*Buttons" = "Quit";
@@ -23,7 +14,8 @@ in
       "Xmessage*faceWeight" = "${fontMainWeight}";
       "Xmessage*international" = true;
 
-      "dzen2.font" = "${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDzen}";
+      "dzen2.font" =
+        "${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDzen}";
 
       "Emacs*XlwMenu.font" = "${fontCodeName}:weight=${fontCodeWeight}:size=${fontSizeEmacs}";
       "Emacs.Font" = "${fontCodeName}:weight=${fontCodeWeight}:size=${fontSizeEmacs}";

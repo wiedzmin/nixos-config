@@ -4,12 +4,8 @@ with lib;
 
 let
   cfg = config.services.git-push-updates;
-  pathPkgs = with pkgs; [
-    pass
-    gitAndTools.pass-git-helper
-  ];
-in
-{
+  pathPkgs = with pkgs; [ pass gitAndTools.pass-git-helper ];
+in {
   options = {
     services.git-push-updates = {
       enable = mkOption {
@@ -59,8 +55,7 @@ in
       }
       {
         assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "")
-          || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "")
-          ;
+          || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
         message = "git-push-updates: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
       }
     ];

@@ -14,15 +14,15 @@ self: super: {
     cargoSha256 = "1xai3jxvs8r3s3v5d5w40miw6nihnj9gzlzzdrwphmgrkywr88c4";
     cargoBuildFlags = [ "--features all" ];
 
-    buildInputs = with super; stdenv.lib.optionals stdenv.isDarwin [
-      libiconv
-      darwin.apple_sdk.frameworks.Security
-    ];
+    buildInputs = with super; stdenv.lib.optionals stdenv.isDarwin [ libiconv darwin.apple_sdk.frameworks.Security ];
 
     meta = with super.stdenv.lib; {
       description = "Program that displays statistics about your code";
-      homepage = https://github.com/XAMPPRocky/tokei;
-      license = with licenses; [ asl20 /* or */ mit ];
+      homepage = "https://github.com/XAMPPRocky/tokei";
+      license = with licenses; [
+        asl20 # or
+        mit
+      ];
       platforms = platforms.all;
     };
   };

@@ -1,13 +1,10 @@
 { config, pkgs, lib, ... }:
-with import ../../const.nix { inherit config pkgs; };
-{
+with import ../../const.nix { inherit config pkgs; }; {
   home-manager.users."${userName}" = {
     programs.alacritty = {
       enable = true;
       settings = {
-        env = {
-          TERM = "xterm-256color";
-        };
+        env = { TERM = "xterm-256color"; };
         window = {
           dimensions = {
             columns = 80;
@@ -73,22 +70,19 @@ with import ../../const.nix { inherit config pkgs; };
           duration = 1;
         };
         background_opacity = 0.8;
-        mouse_bindings = [
-          { mouse = "Middle"; action = "PasteSelection"; }
-        ];
+        mouse_bindings = [{
+          mouse = "Middle";
+          action = "PasteSelection";
+        }];
         mouse = {
           double_click = { threshold = 300; };
           triple_click = { threshold = 300; };
           faux_scrolling_lines = 1;
           hide_when_typing = false;
         };
-        selection = {
-          semantic_escape_chars = ",│`|:\"' ()[]{}<>";
-        };
+        selection = { semantic_escape_chars = '',│`|:"' ()[]{}<>''; };
         dynamic_title = true;
-        cursor = {
-          style = "Beam";
-        };
+        cursor = { style = "Beam"; };
         live_config_reload = true;
         key_bindings = [
           { key = "V"; mods = "Control|Shift"; action = "Paste"; }

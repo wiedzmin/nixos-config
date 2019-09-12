@@ -35,8 +35,7 @@ let
 
     exit 0
   '';
-in
-{
+in {
   options = {
     services.order-screenshots = {
       enable = mkOption {
@@ -81,11 +80,13 @@ in
 
   config = mkIf cfg.enable {
     assertions = [
-      { assertion = cfg.baseDir != null; message = "Must provide path to screenshots dir."; }
+      {
+        assertion = cfg.baseDir != null;
+        message = "Must provide path to screenshots dir.";
+      }
       {
         assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "")
-          || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "")
-          ;
+          || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
         message = "order-screenshots: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
       }
     ];

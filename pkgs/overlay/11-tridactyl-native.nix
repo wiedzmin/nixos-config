@@ -14,9 +14,7 @@ self: super: {
     };
     sourceRoot = "source/native";
 
-    nativeBuildInputs = [
-      super.python3.pkgs.wrapPython
-    ];
+    nativeBuildInputs = [ super.python3.pkgs.wrapPython ];
 
     buildPhase = ''
       sed -i -e "s|REPLACE_ME_WITH_SED|$out/share/tridactyl/native_main.py|" "tridactyl.json"
@@ -33,7 +31,7 @@ self: super: {
 
     meta = with super.stdenv.lib; {
       description = "Tridactyl native messaging host application";
-      homepage = https://github.com/tridactyl/tridactyl;
+      homepage = "https://github.com/tridactyl/tridactyl";
       license = licenses.asl20;
       platforms = platforms.all;
       maintainers = with maintainers; [ timokau ];

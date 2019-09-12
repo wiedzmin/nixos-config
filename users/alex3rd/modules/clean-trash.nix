@@ -1,10 +1,8 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let
-  cfg = config.services.clean-trash;
-in
-{
+let cfg = config.services.clean-trash;
+in {
   options = {
     services.clean-trash = {
       enable = mkOption {
@@ -48,14 +46,11 @@ in
   };
 
   config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "")
-          || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "")
-          ;
-        message = "Clean trash: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
-      }
-    ];
+    assertions = [{
+      assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "")
+        || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
+      message = "Clean trash: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
+    }];
 
     systemd.user.services."clean-trash" = {
       description = "Clean trash";

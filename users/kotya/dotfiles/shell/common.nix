@@ -1,9 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports = [
-    ../../private/traits/common.nix
-  ];
+  imports = [ ../../private/traits/common.nix ];
 
   home-manager.users.kotya = {
     programs.htop.enable = true;

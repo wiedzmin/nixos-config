@@ -1,5 +1,4 @@
-{ bash, git, ... }:
-''
+{ bash, git, ... }: ''
   #!${bash}/bin/bash
 
   GIT_REPO=''${1:-'.'}

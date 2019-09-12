@@ -1,10 +1,7 @@
 { config, pkgs, lib, ... }:
 with import ../../const.nix { inherit config pkgs; };
-with import ../../secrets/const.nix { inherit config pkgs lib; };
-{
-  imports = [
-    ../../secrets/job.nix
-  ];
+with import ../../secrets/const.nix { inherit config pkgs lib; }; {
+  imports = [ ../../secrets/job.nix ];
 
   home-manager.users."${userName}" = {
     xdg.configFile."wtf/config.yml".text = ''
@@ -71,17 +68,7 @@ with import ../../secrets/const.nix { inherit config pkgs lib; };
     '';
     programs.htop = {
       enable = true;
-      fields = [
-        "USER"
-        "PRIORITY"
-        "NICE"
-        "M_SIZE"
-        "STATE"
-        "PERCENT_CPU"
-        "PERCENT_MEM"
-        "TIME"
-        "COMM"
-      ];
+      fields = [ "USER" "PRIORITY" "NICE" "M_SIZE" "STATE" "PERCENT_CPU" "PERCENT_MEM" "TIME" "COMM" ];
       meters.left = [ "AllCPUs" "Memory" ];
       colorScheme = 0;
       detailedCpuTime = true;
@@ -92,13 +79,8 @@ with import ../../secrets/const.nix { inherit config pkgs lib; };
     programs.info.enable = true;
     programs.skim = {
       enable = true;
-      historyWidgetOptions = [
-        "--exact"
-      ];
-      defaultOptions = [
-        "--height 40%"
-        "--prompt ⟫"
-      ];
+      historyWidgetOptions = [ "--exact" ];
+      defaultOptions = [ "--height 40%" "--prompt ⟫" ];
       fileWidgetCommand = "${pkgs.fd}/bin/fd --type f";
       fileWidgetOptions = [ "--preview 'head {}'" ];
       changeDirWidgetCommand = "${pkgs.fd}/bin/fd --type d";
@@ -112,11 +94,7 @@ with import ../../secrets/const.nix { inherit config pkgs lib; };
     programs.z-lua = {
       enable = true;
       enableZshIntegration = true;
-      options = [
-        "fzf"
-        "enhanced"
-        "once"
-      ];
+      options = [ "fzf" "enhanced" "once" ];
     };
   };
 }

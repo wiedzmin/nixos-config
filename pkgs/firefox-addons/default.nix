@@ -6,9 +6,7 @@ let
 
       inherit meta;
 
-      src = pkgs.fetchurl {
-        inherit url sha256;
-      };
+      src = pkgs.fetchurl { inherit url sha256; };
 
       preferLocalBuild = true;
       allowSubstitutes = false;
@@ -20,11 +18,5 @@ let
       '';
     };
 
-  packages = with pkgs; import ./addons.nix {
-    inherit buildFirefoxXpiAddon fetchurl stdenv;
-  };
-in
-packages
-// {
-     inherit buildFirefoxXpiAddon;
-   }
+  packages = with pkgs; import ./addons.nix { inherit buildFirefoxXpiAddon fetchurl stdenv; };
+in packages // { inherit buildFirefoxXpiAddon; }

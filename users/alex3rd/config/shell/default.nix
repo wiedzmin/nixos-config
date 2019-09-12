@@ -1,10 +1,1 @@
-{ ... }:
-{
-  imports =
-    [
-      ./common.nix
-      ./term.nix
-      ./tmux.nix
-      ./zsh.nix
-    ];
-}
+{ ... }: { imports = [ ./common.nix ./term.nix ./tmux.nix ./zsh.nix ]; }

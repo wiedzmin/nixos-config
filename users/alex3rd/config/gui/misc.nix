@@ -52,8 +52,7 @@ let
     statusbar-bg = "#202020";
     statusbar-fg = "#B0B0B0";
   };
-in
-{
+in {
   home-manager.users."${userName}" = {
     xdg.configFile."xsuspender.conf".text = genIni {
       Default = {
@@ -64,12 +63,8 @@ in
         auto_suspend_on_battery = true;
         send_signals = true;
       };
-      Firefox = {
-        match_wm_class_contains = "Firefox";
-      };
-      Chromium = {
-        match_wm_class_contains = "Chromium-browser";
-      };
+      Firefox = { match_wm_class_contains = "Firefox"; };
+      Chromium = { match_wm_class_contains = "Chromium-browser"; };
     };
     home.file = {
       ".local/share/applications/defaults.list" = {
@@ -723,10 +718,7 @@ in
       temperature.night = 3100;
       brightness.day = "1.0";
       brightness.night = "0.7";
-      extraOptions = [
-        "-v"
-        "-m randr"
-      ];
+      extraOptions = [ "-v" "-m randr" ];
     };
     programs.rofi = {
       enable = true;
@@ -845,10 +837,6 @@ in
     enable = true;
     timeout = 2;
     threshold = 15;
-    extraOptions = [
-      "exclude-root"
-      "fork"
-      "ignore-scrolling"
-    ];
+    extraOptions = [ "exclude-root" "fork" "ignore-scrolling" ];
   };
 }

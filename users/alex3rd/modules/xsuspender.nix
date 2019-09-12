@@ -2,10 +2,8 @@
 with import ../../../pkgs/util.nix { inherit config pkgs lib; };
 with lib;
 
-let
-  cfg = config.services.xsuspender;
-in
-{
+let cfg = config.services.xsuspender;
+in {
   options = {
     services.xsuspender = {
       enable = mkOption {
@@ -30,18 +28,14 @@ in
       after = [ "graphical-session-pre.target" ];
       partOf = [ "graphical-session.target" ];
       wantedBy = [ "graphical-session.target" ];
-      environment = mkIf cfg.debug {
-        G_MESSAGE_DEBUG = "all";
-      };
+      environment = mkIf cfg.debug { G_MESSAGE_DEBUG = "all"; };
       serviceConfig = {
         PIDFile = "/run/xsuspender.pid";
         Restart = "always";
         RestartSec = 1;
         ExecStart = "${pkgs.xsuspender}/bin/xsuspender";
       };
-      restartTriggers = [
-        "%h/.config/xsuspender.conf"
-      ];
+      restartTriggers = [ "%h/.config/xsuspender.conf" ];
     };
   };
 }

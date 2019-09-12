@@ -1,21 +1,16 @@
 { config, pkgs, lib, ... }:
 with import ../../../../../pkgs/util.nix { inherit lib config pkgs; };
-with import ../../../const.nix { inherit config pkgs; };
-{
+with import ../../../const.nix { inherit config pkgs; }; {
   home-manager.users."${userName}" = {
     home.packages = with pkgs; [
-      (
-        makeDesktopItem {
-          name = "org-protocol";
-          exec = "${emacs}/bin/emacsclient %U";
-          comment = "";
-          desktopName = "Custom org-protocol handler";
-          categories = "System";
-          mimeType = stdenv.lib.concatStringsSep ";" [
-            "x-scheme-handler/org-protocol"
-          ];
-        }
-      )
+      (makeDesktopItem {
+        name = "org-protocol";
+        exec = "${emacs}/bin/emacsclient %U";
+        comment = "";
+        desktopName = "Custom org-protocol handler";
+        categories = "System";
+        mimeType = stdenv.lib.concatStringsSep ";" [ "x-scheme-handler/org-protocol" ];
+      })
 
       ispell
       ms-pyls
@@ -25,13 +20,11 @@ with import ../../../const.nix { inherit config pkgs; };
     ];
     programs.emacs = {
       enable = true;
-      package = (
-        pkgs.emacs26.override {
-          # build Lucid version
-          withGTK2 = false;
-          withGTK3 = false;
-        }
-      );
+      package = (pkgs.emacs26.override {
+        # build Lucid version
+        withGTK2 = false;
+        withGTK3 = false;
+      });
       # TODO: scan *.el and find packages not in list below
       extraPackages = epkgs: [
         epkgs.ace-link
@@ -242,91 +235,35 @@ with import ../../../const.nix { inherit config pkgs; };
           (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
 
 
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./bootstrap.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./base.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./security.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./appearance.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./context.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./navigation.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./editing.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./majormodes.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./programming.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./lang/python.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./clients.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./orgmode.el; }
-        )
-      ) }
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./help.el; }
-        )
-      ) }
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./bootstrap.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./base.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./security.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./appearance.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./context.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./navigation.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./editing.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./majormodes.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./programming.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./lang/python.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./clients.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./orgmode.el; }))}
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./help.el; }))}
 
-        ${builtins.readFile (
-        pkgs.substituteAll (
-          (import ./subst.nix { inherit config lib pkgs; })
-          // { src = ./staging.el; }
-        )
-      ) }
+        ${builtins.readFile
+        (pkgs.substituteAll ((import ./subst.nix { inherit config lib pkgs; }) // { src = ./staging.el; }))}
 
         (setq debug-on-error nil)
         (setq debug-on-quit nil)

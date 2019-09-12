@@ -1,7 +1,6 @@
 { config, lib, pkgs, ... }:
 with import ../../../const.nix { inherit config pkgs; };
-with import ../../../secrets/const.nix { inherit config lib pkgs; };
-rec {
+with import ../../../secrets/const.nix { inherit config lib pkgs; }; rec {
   emacsAmxSaveFile = "${emacsDataDir}/amx-items";
   emacsCodesearchIndex = "${devWorkspacePath}/.csearchindex";
   emacsCustomFile = "/home/${userName}/.emacs.d/customizations.el";

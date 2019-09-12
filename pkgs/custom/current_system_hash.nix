@@ -1,6 +1,5 @@
 { bash, config, coreutils, dunst, git, pkgs, ... }:
-with import ../const.nix { inherit config pkgs; };
-''
+with import ../const.nix { inherit config pkgs; }; ''
   #!${bash}/bin/bash
 
   current_system_commit_hash=`${coreutils}/bin/readlink -f /run/current-system | ${coreutils}/bin/cut -f4 -d.`

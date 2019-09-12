@@ -1,5 +1,4 @@
-{ bash, dunst, gnused, procps, ... }:
-''
+{ bash, dunst, gnused, procps, ... }: ''
   #!${bash}/bin/bash
 
   ${dunst}/bin/dunstify -t 7000 "Uptime: $(${procps}/bin/w | \

@@ -1,5 +1,4 @@
-{ bash, emacs, tmux, xsel, ... }:
-''
+{ bash, emacs, tmux, xsel, ... }: ''
   #!${bash}/bin/bash
 
   TEMPLATE="$1"

@@ -17,7 +17,7 @@ self: super: {
 
     meta = with super.stdenv.lib; {
       description = "Yet another keyboard remapping tool for X environment";
-      homepage = https://github.com/mooz/xkeysnail;
+      homepage = "https://github.com/mooz/xkeysnail";
       license = licenses.gpl3;
       platforms = platforms.unix;
     };

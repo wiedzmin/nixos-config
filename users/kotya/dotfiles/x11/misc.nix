@@ -1,9 +1,7 @@
 { config, pkgs, lib, ... }:
 
 {
-  imports = [
-    ../../private/traits/nas.nix
-  ];
+  imports = [ ../../private/traits/nas.nix ];
 
   system.activationScripts.ensureBacklightPermissions = ''
     chmod a+w /sys/class/backlight/intel_backlight/brightness
@@ -583,7 +581,9 @@
           follow = "keyboard";
           font = "${config.sys.fontMainName} ${config.sys.fontMainWeight} ${config.sys.fontMainSizeDunst}";
           force_xinerama = "false";
-          format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\n%b";
+          format = ''
+            <span foreground='#F3F4F5'><b>%s %p</b></span>
+            %b'';
           frame_color = "#232323";
           frame_width = 1;
           geometry = "300x5-15+15";

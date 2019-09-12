@@ -1,5 +1,4 @@
-{ bash, coreutils, perl, unzip, ... }:
-''
+{ bash, coreutils, perl, unzip, ... }: ''
   #!${bash}/bin/bash
 
   set -e

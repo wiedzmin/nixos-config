@@ -1,5 +1,4 @@
-{ bash, coreutils, curl, gawk, gnugrep, gnused, jq, pass, ... }:
-''
+{ bash, coreutils, curl, gawk, gnugrep, gnused, jq, pass, ... }: ''
   #!${bash}/bin/bash
 
   PASS_PATH=$1

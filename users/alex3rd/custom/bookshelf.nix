@@ -1,6 +1,5 @@
 { bash, config, fd, lib, pkgs, rofi, zathura, ... }:
-with import ../secrets/const.nix { inherit lib config pkgs; };
-''
+with import ../secrets/const.nix { inherit lib config pkgs; }; ''
   #!${bash}/bin/bash
 
   IFS=$'\n'

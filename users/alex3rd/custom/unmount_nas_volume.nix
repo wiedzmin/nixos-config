@@ -1,9 +1,7 @@
 { bash, config, coreutils, dunst, gnugrep, lib, pkgs, rofi, yq-go, ... }:
 with import ../secrets/const.nix { inherit lib config pkgs; };
-let
-  nasConfigPath = "$HOME/.config/synology/nas.yml";
-in
-''
+let nasConfigPath = "$HOME/.config/synology/nas.yml";
+in ''
   #!${bash}/bin/bash
 
   function show_list() {

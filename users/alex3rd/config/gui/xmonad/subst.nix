@@ -5,8 +5,7 @@ with import ../../../secrets/const.nix { inherit config lib pkgs; };
 let
   custom = import ../../../../../pkgs/custom pkgs config;
   userCustom = import ../../../custom pkgs config;
-in
-rec {
+in rec {
   backlightAmount = 10;
   volumeAmount = 10;
 

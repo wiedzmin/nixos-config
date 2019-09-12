@@ -1,6 +1,5 @@
 { bash, config, coreutils, dunst, lib, mycli, pass, pgcli, pkgs, rofi, stdenv, systemd, tmux, ... }:
-with import ../secrets/const.nix { inherit lib config pkgs; };
-''
+with import ../secrets/const.nix { inherit lib config pkgs; }; ''
   #!${bash}/bin/bash
 
   ${enforce_job_vpn_impl}
@@ -10,12 +9,9 @@ with import ../secrets/const.nix { inherit lib config pkgs; };
   declare -A DBMS_TRAITS
 
   DBMS_TRAITS=(
-  ${builtins.concatStringsSep "\n"
-  (
-    stdenv.lib.mapAttrsToList
-      (alias: meta: "  [\"${alias}\"]=\"${meta.ip} ${meta.command} ${meta.user} ${meta.passwordPassPath}\"")
-      (jobDbmsTraits)
-  )}
+  ${builtins.concatStringsSep "\n" (stdenv.lib.mapAttrsToList
+    (alias: meta: "  [\"${alias}\"]=\"${meta.ip} ${meta.command} ${meta.user} ${meta.passwordPassPath}\"")
+    (jobDbmsTraits))}
   )
 
   MYCLI_BINARY=${mycli}/bin/mycli

@@ -1,5 +1,4 @@
-{ bash, coreutils, docker-machine, perl, zip, ... }:
-''
+{ bash, coreutils, docker-machine, perl, zip, ... }: ''
   #!${bash}/bin/bash
 
   if [ -z "$1" ]; then

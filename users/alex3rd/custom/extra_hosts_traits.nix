@@ -2,21 +2,12 @@
 with import ../../../pkgs/util.nix { inherit lib config pkgs; };
 with import ../../../pkgs/const.nix { inherit lib config pkgs; };
 with import ../secrets/const.nix { inherit lib config pkgs; };
-let
-  hostTraitsIpOutputPosition = 4;
-in
-''
+let hostTraitsIpOutputPosition = 4;
+in ''
   #!${bash}/bin/bash
 
-  ${listOfSetsToShellHashtable
-  (
-    unfoldListOfSetsByAttr
-      (jobExtraHosts ++ extraHosts)
-      "hostNames"
-  )
-  "hostNames"
-  "EXTRA_HOSTS"
-  false}
+  ${listOfSetsToShellHashtable (unfoldListOfSetsByAttr (jobExtraHosts ++ extraHosts) "hostNames") "hostNames"
+  "EXTRA_HOSTS" false}
 
   list_extra_hosts() {
       for i in "''${!EXTRA_HOSTS[@]}"

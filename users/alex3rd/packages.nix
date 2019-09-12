@@ -49,13 +49,7 @@ let
     terraform
     tflint
   ];
-  stagingPublish = with pkgs; [
-    ocrmypdf
-    pdfcpu
-    pdfgrep
-    pdfsandwich
-    pdftk
-  ];
+  stagingPublish = with pkgs; [ ocrmypdf pdfcpu pdfgrep pdfsandwich pdftk ];
   sandbox = with pkgs; [
     # binaries for PATH
     # transmission + service https://transmissionbt.com/ + stig
@@ -68,12 +62,7 @@ let
     xorg.xdpyinfo
     xprintidle-ng
   ];
-  devClojure = with pkgs; [
-    boot
-    cfr
-    clojure
-    leiningen
-  ];
+  devClojure = with pkgs; [ boot cfr clojure leiningen ];
   devGolangTools = with pkgs; [
     # TODO: wait for/find/dismiss github.com/davecheney/graphpkg in nixpkgs
     # TODO: wait for/find/dismiss github.com/davecheney/prdeps in nixpkgs
@@ -111,18 +100,8 @@ let
     unconvert
     go-check
   ];
-  devGolangInfra = with pkgs; [
-    dep
-    dep2nix
-    glide
-    go
-    vgo2nix
-  ];
-  devPythonTools = with pkgs; [
-    python3Packages.virtualenv
-    python3Packages.virtualenvwrapper
-    yapf
-  ];
+  devGolangInfra = with pkgs; [ dep dep2nix glide go go2nix vgo2nix ];
+  devPythonTools = with pkgs; [ python3Packages.virtualenv python3Packages.virtualenvwrapper yapf ];
   devClients = with pkgs; [
     anydesk
     http-prompt
@@ -149,10 +128,9 @@ let
     gitstats
     proposed.gitAndTools.git-quick-stats
   ];
-  virt = with pkgs; let
-    custom = import ../../pkgs/custom pkgs config;
-  in
-    [
+  virt = with pkgs;
+    let custom = import ../../pkgs/custom pkgs config;
+    in [
       ctop
       custom.docker-machine-export
       custom.docker-machine-import
@@ -169,9 +147,7 @@ let
       virtmanager
       virtviewer
     ];
-  virtRare = [
-    skopeo
-  ];
+  virtRare = [ skopeo ];
   forensics = with pkgs; [
     bbe
     binutils
@@ -195,10 +171,7 @@ let
     vnstat
     vulnix
   ];
-  devIde = with pkgs; [
-    icdiff
-    vimHugeX
-  ];
+  devIde = with pkgs; [ icdiff vimHugeX ];
   vim_plugins = with pkgs.vimPlugins; [
     bufexplorer
     command-t
@@ -260,9 +233,7 @@ let
     xtruss
     xurls
   ];
-  devMiscRare = with pkgs; [
-    cachix
-  ];
+  devMiscRare = with pkgs; [ cachix ];
   monitoring = with pkgs; [
     bmon
     gotop
@@ -279,19 +250,8 @@ let
     speedtest-cli
     watchexec
   ];
-  miscClients = with pkgs; [
-    aria2
-    inetutils
-    qbittorrent
-    skype
-    slack
-    tdesktop
-    w3m-full
-  ];
-  miscClientsRare = with pkgs; [
-    teamviewer
-    zoom-us
-  ];
+  miscClients = with pkgs; [ aria2 inetutils qbittorrent skype slack tdesktop w3m-full ];
+  miscClientsRare = with pkgs; [ teamviewer zoom-us ];
   scanner = with pkgs; [
     # enable when needed
     deskew
@@ -303,116 +263,82 @@ let
     remind # + rem2ics (make overlay)
     wyrd
   ];
-  miscMedia = with pkgs; [
-    # mpv
-    # FIXME: make closure for last working version
-    # (
-    #   mpv-with-scripts.override (
-    #     {
-    #       scripts = [ mpvScripts.mpris ];
-    #     }
-    #   )
-    # )
-    android-file-transfer
-    ccextractor
-    clipgrab
-    desktop-file-utils
-    exif
-    exiftool
-    exiv2
-    ffmpeg
-    gallery-dl
-    haskellPackages.arbtt
-    imv
-    jmtpfs # consider providing some (shell) automation
-    maim
-    mimeo
-    minitube
-    mpd-mpris # TODO: incorporate into user infrastructure
-    mps-youtube # TODO: make script + service to backup playlists data
-    playerctl
-    shared-mime-info
-    testdisk
-    xsel # for firefox native clients
-    you-get
-    ytcc
-  ]
-    ++ [
-         gimp
-         ttyplot
-         visidata # TODO: make overlay
-       ];
-  system = with pkgs; [
-    acpitool
-    dmidecode
-    iw
-    lshw
-    pciutils
-    usbutils
-    wirelesstools
-  ];
-  shell = with pkgs; [
-    # docker-slim # TODO: make package https://github.com/docker-slim/docker-slim
-    # tsvutils # TODO: make package https://github.com/brendano/tsvutils
-    archiver
-    fd
-    fpart
-    jdupes
-    lsd
-    lzip
-    moreutils
-    nq
-    pbzip2
-    pigz
-    ripgrep-all
-    rmlint
-    sd
-    unar
-    unshield
-  ]
-    ++ [
-         xsv
-       ]
-    ++ [
-         bc
-         dateutils
-         dex
-         doitlive
-         # gcalcli
-         loop
-         mc
-         plan9port
-         replace
-         shellcheck
-         tmsu
-         tree
-         unicode-paracode
-         wtf
-       ]
-    ++ [
-         rdfind
-       ]
-    ++ [
-         most
-         ntfy
-         procs
-         progress
-         pv
-         shell-hist
-         up
-         xe
-       ]
-    ++ [
-         eternal-terminal
-       ]
-    ++ [
-         fpp
-         skim
-         tmux
-       ]
-    ++ [
-         tmatrix
-       ];
+  miscMedia = with pkgs;
+    [
+      # mpv
+      # FIXME: make closure for last working version
+      # (
+      #   mpv-with-scripts.override (
+      #     {
+      #       scripts = [ mpvScripts.mpris ];
+      #     }
+      #   )
+      # )
+      android-file-transfer
+      ccextractor
+      clipgrab
+      desktop-file-utils
+      exif
+      exiftool
+      exiv2
+      ffmpeg
+      gallery-dl
+      haskellPackages.arbtt
+      imv
+      jmtpfs # consider providing some (shell) automation
+      maim
+      mimeo
+      minitube
+      mpd-mpris # TODO: incorporate into user infrastructure
+      mps-youtube # TODO: make script + service to backup playlists data
+      playerctl
+      shared-mime-info
+      testdisk
+      xsel # for firefox native clients
+      you-get
+      ytcc
+    ] ++ [
+      gimp
+      ttyplot
+      visidata # TODO: make overlay
+    ];
+  system = with pkgs; [ acpitool dmidecode iw lshw pciutils usbutils wirelesstools ];
+  shell = with pkgs;
+    [
+      # docker-slim # TODO: make package https://github.com/docker-slim/docker-slim
+      # tsvutils # TODO: make package https://github.com/brendano/tsvutils
+      archiver
+      fd
+      fpart
+      jdupes
+      lsd
+      lzip
+      moreutils
+      nq
+      pbzip2
+      pigz
+      ripgrep-all
+      rmlint
+      sd
+      unar
+      unshield
+    ] ++ [ xsv ] ++ [
+      bc
+      dateutils
+      dex
+      doitlive
+      # gcalcli
+      loop
+      mc
+      plan9port
+      replace
+      shellcheck
+      tmsu
+      tree
+      unicode-paracode
+      wtf
+    ] ++ [ rdfind ] ++ [ most ntfy procs progress pv shell-hist up xe ] ++ [ eternal-terminal ] ++ [ fpp skim tmux ]
+    ++ [ tmatrix ];
   text = with pkgs; [
     # calibre
     # python3Packages.weasyprint
@@ -430,46 +356,18 @@ let
     rofi-pass
     srm
   ];
-  nix = with pkgs; [
-    nix-index # TODO: maybe make easier shell alias
-    nix-prefetch
-    nix-prefetch-github
-    nix-prefetch-scripts
-  ]
-    ++ [
-         nix-zsh-completions
-       ]
-    ++ [
-         nodePackages.node2nix
-         pypi2nix
-       ]
-    ++ [
-         nixpkgs-fmt
-       ];
-in
-{
+  nix = with pkgs;
+    [
+      nix-index # TODO: maybe make easier shell alias
+      nix-prefetch
+      nix-prefetch-github
+      nix-prefetch-scripts
+      nixfmt
+    ] ++ [ nix-zsh-completions ] ++ [ nodePackages.node2nix pypi2nix ];
+in {
   home-manager.users."${userName}" = {
-    home.packages = devClients
-      ++ devGolangInfra
-      ++ devGolangTools
-      ++ devIde
-      ++ devMisc
-      ++ devPythonTools
-      ++ devVcsGit
-      ++ forensics
-      ++ miscClients
-      ++ miscMedia
-      ++ monitoring
-      ++ nix
-      ++ org
-      ++ sandbox
-      ++ security
-      ++ shell
-      ++ stagingCommon
-      ++ stagingPublish
-      ++ stagingWork
-      ++ text
-      ++ virt
-      ;
+    home.packages = devClients ++ devGolangInfra ++ devGolangTools ++ devIde ++ devMisc ++ devPythonTools ++ devVcsGit
+      ++ forensics ++ miscClients ++ miscMedia ++ monitoring ++ nix ++ org ++ sandbox ++ security ++ shell
+      ++ stagingCommon ++ stagingPublish ++ stagingWork ++ text ++ virt;
   };
 }

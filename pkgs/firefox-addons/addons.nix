@@ -1,5 +1,4 @@
-{ buildFirefoxXpiAddon, fetchurl, stdenv }:
-{
+{ buildFirefoxXpiAddon, fetchurl, stdenv }: {
   "cookie-autodelete" = buildFirefoxXpiAddon {
     pname = "cookie-autodelete";
     version = "3.0.1";
@@ -8,7 +7,8 @@
     sha256 = "1d1db3063bdad33a786ed7a171b760cbd801a84c4f56cb005163250a609e8d2a";
     meta = with stdenv.lib; {
       homepage = "https://github.com/mrdokenny/Cookie-AutoDelete";
-      description = "Control your cookies! This WebExtension is inspired by Self Destructing Cookies. When a tab closes, any cookies not being used are automatically deleted. Whitelist the ones you trust while deleting the rest. Support for Container Tabs.";
+      description =
+        "Control your cookies! This WebExtension is inspired by Self Destructing Cookies. When a tab closes, any cookies not being used are automatically deleted. Whitelist the ones you trust while deleting the rest. Support for Container Tabs.";
       license = licenses.mit;
       platforms = platforms.all;
     };
@@ -21,7 +21,8 @@
     sha256 = "68d46f1e1c1e2259b77fd1992d5a5ebb86ca5ec3c519439c011836b9126c55df";
     meta = with stdenv.lib; {
       homepage = "https://decentraleyes.org";
-      description = "Protects you against tracking through \"free\", centralized, content delivery. It prevents a lot of requests from reaching networks like Google Hosted Libraries, and serves local files to keep sites from breaking. Complements regular content blockers.";
+      description = ''
+        Protects you against tracking through "free", centralized, content delivery. It prevents a lot of requests from reaching networks like Google Hosted Libraries, and serves local files to keep sites from breaking. Complements regular content blockers.'';
       license = licenses.mpl20;
       platforms = platforms.all;
     };
@@ -47,7 +48,8 @@
     sha256 = "d8a053e990a41271a770c6eec9fd2134968a4d41eb4acc8708b89c7c6a2e90a6";
     meta = with stdenv.lib; {
       homepage = "https://www.eff.org/https-everywhere";
-      description = "Encrypt the web! HTTPS Everywhere is a Firefox extension to protect your communications by enabling HTTPS encryption automatically on sites that are known to support it, even when you type URLs or follow links that omit the https: prefix.";
+      description =
+        "Encrypt the web! HTTPS Everywhere is a Firefox extension to protect your communications by enabling HTTPS encryption automatically on sites that are known to support it, even when you type URLs or follow links that omit the https: prefix.";
       platforms = platforms.all;
     };
   };
@@ -59,7 +61,11 @@
     sha256 = "1ecec8cbe78b4166fc50da83213219f30575a8c183f7a13aabbff466c71ce560";
     meta = with stdenv.lib; {
       homepage = "https://github.com/idlewan/link_cleaner";
-      description = "Clean URLs that are about to be visited:\n- removes utm_* parameters\n- on item pages of aliexpress and amazon, removes tracking parameters\n- skip redirect pages of facebook, steam and reddit";
+      description = ''
+        Clean URLs that are about to be visited:
+        - removes utm_* parameters
+        - on item pages of aliexpress and amazon, removes tracking parameters
+        - skip redirect pages of facebook, steam and reddit'';
       license = licenses.gpl3;
       platforms = platforms.all;
     };
@@ -98,7 +104,10 @@
     sha256 = "239c1954af303cc7b0f0cf2f9ccaa68ccc42cf6d17cf4e3598b4bc75ac59dc85";
     meta = with stdenv.lib; {
       homepage = "https://redditenhancementsuite.com/";
-      description = "NOTE: Reddit Enhancement Suite is developed independently, and is not officially endorsed by or affiliated with reddit.\n\nRES is a suite of tools to enhance your reddit browsing experience.";
+      description = ''
+        NOTE: Reddit Enhancement Suite is developed independently, and is not officially endorsed by or affiliated with reddit.
+
+        RES is a suite of tools to enhance your reddit browsing experience.'';
       license = licenses.gpl3;
       platforms = platforms.all;
     };
@@ -110,7 +119,8 @@
     url = "https://addons.mozilla.org/firefox/downloads/file/1705641/save_page_we-13.3-fx.xpi?src=";
     sha256 = "79c2e9ff8329c651dcb56f309c827005f582b90c15b8749cb53e09686296a1a5";
     meta = with stdenv.lib; {
-      description = "Save a complete web page (as curently displayed) as a single HTML file that can be opened in any browser. Choose which items to save. Define the format of the saved filename. Enter user comments.";
+      description =
+        "Save a complete web page (as curently displayed) as a single HTML file that can be opened in any browser. Choose which items to save. Define the format of the saved filename. Enter user comments.";
       license = licenses.gpl2;
       platforms = platforms.all;
     };
@@ -123,7 +133,8 @@
     sha256 = "26ea296688e19161f21f935c86687a40679831f197c0b9a0cf8bd323484b9435";
     meta = with stdenv.lib; {
       homepage = "https://add0n.com/stylus.html";
-      description = "Redesign your favorite websites with Stylus, an actively developed and community driven userstyles manager. Easily install custom themes from popular online repositories, or create, edit, and manage your own personalized CSS stylesheets.";
+      description =
+        "Redesign your favorite websites with Stylus, an actively developed and community driven userstyles manager. Easily install custom themes from popular online repositories, or create, edit, and manage your own personalized CSS stylesheets.";
       license = licenses.gpl3;
       platforms = platforms.all;
     };
@@ -198,7 +209,7 @@
     sha256 = "1a69ka4044gda6gcf1pvjslhjqgnssh0rgm5bf56azrikkid2x11";
     meta = with stdenv.lib; {
       homepage = "https://github.com/Tormen/url-in-title";
-      description = ''URL (protocol, hostname, path) in title'';
+      description = "URL (protocol, hostname, path) in title";
       license = licenses.gpl3;
       platforms = platforms.all;
     };
@@ -211,7 +222,8 @@
     sha256 = "1d4rh5d4dx6723z3ldnfrrnx0zzzzz6rcr48jd7gyy79s6pz28c7";
     meta = with stdenv.lib; {
       homepage = "https://midnight-lizard.org/home";
-      description = ''Custom color schemes for all websites: night mode, dark themes, blue light filter, screen shader, high contrast, grayscale, etc.'';
+      description =
+        "Custom color schemes for all websites: night mode, dark themes, blue light filter, screen shader, high contrast, grayscale, etc.";
       license = licenses.mit;
       platforms = platforms.all;
     };
@@ -224,7 +236,8 @@
     sha256 = "0rvxh7iq58n6aw9dwaw3w8h51hg8syk50d2pd73k3mflpccpd2pc";
     meta = with stdenv.lib; {
       homepage = "https://midnight-lizard.org/home";
-      description = ''Use your text editor to write in your browser. Everything you type in the editor will be instantly updated in the browser.'';
+      description =
+        "Use your text editor to write in your browser. Everything you type in the editor will be instantly updated in the browser.";
       license = licenses.mit;
       platforms = platforms.all;
     };
@@ -237,7 +250,7 @@
     sha256 = "10sck4w0llzd3al9rjxgm3ixwmqk25yangjcl56sl058x9n4g13g";
     meta = with stdenv.lib; {
       homepage = "https://github.com/f1u77y/web-media-controller";
-      description = ''Allows controlling media player on different sites with Media Player widget on your desktop'';
+      description = "Allows controlling media player on different sites with Media Player widget on your desktop";
       license = licenses.unlicense;
       platforms = platforms.unix;
     };
@@ -250,7 +263,7 @@
     sha256 = "0ypbc67kdj2ajvjzbnykvx1iqjxw9l220wj1crgqgfvw21nhpyzz";
     meta = with stdenv.lib; {
       homepage = "https://github.com/passff/passff";
-      description = ''zx2c4 pass manager extension for Firefox, Chrome and Opera'';
+      description = "zx2c4 pass manager extension for Firefox, Chrome and Opera";
       license = licenses.gpl2;
       platforms = platforms.unix;
     };

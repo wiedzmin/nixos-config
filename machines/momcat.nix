@@ -49,18 +49,9 @@
     extraModulePackages = with config.boot.kernelPackages; [ exfat-nofuse ];
     tmpOnTmpfs = true;
     kernelPackages = pkgs.linuxPackages_4_19;
-    kernelParams = [
-      "scsi_mod.use_blk_mq=1"
-      "pti=off"
-      "nospectre_v1"
-      "nospectre_v2"
-      "l1tf=off"
-      "nospec_store_bypass_disable"
-    ];
-    kernelModules = [
-      "bfq"
-      "kvm-intel"
-    ];
+    kernelParams =
+      [ "scsi_mod.use_blk_mq=1" "pti=off" "nospectre_v1" "nospectre_v2" "l1tf=off" "nospec_store_bypass_disable" ];
+    kernelModules = [ "bfq" "kvm-intel" ];
     kernel.sysctl = {
       "fs.inotify.max_user_instances" = 512;
       "fs.inotify.max_user_watches" = 1048576;
@@ -102,7 +93,8 @@
 
   security.sudo.wheelNeedsPassword = false;
 
-  users.extraUsers.root.hashedPassword = "586c56b7b6b6f68fca29c9ff2524e4dc52d51d5b6184a65f707dd3eae075e4c9afa81c9cd4042c26c9fb773d4f3de55fb55f363c6b0f5f6790baf4c4e3f32cb9";
+  users.extraUsers.root.hashedPassword =
+    "586c56b7b6b6f68fca29c9ff2524e4dc52d51d5b6184a65f707dd3eae075e4c9afa81c9cd4042c26c9fb773d4f3de55fb55f363c6b0f5f6790baf4c4e3f32cb9";
   nix.trustedUsers = [ "root" ];
 
   security.polkit.extraConfig = ''

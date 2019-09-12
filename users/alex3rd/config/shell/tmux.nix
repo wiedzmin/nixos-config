@@ -1,10 +1,8 @@
 { config, pkgs, lib, ... }:
 with import ../../const.nix { inherit config pkgs; };
 with import ../../secrets/const.nix { inherit config pkgs lib; };
-let
-  custom = import ../../../../pkgs/custom pkgs config;
-in
-{
+let custom = import ../../../../pkgs/custom pkgs config;
+in {
   home-manager.users."${userName}" = {
     programs.tmux = {
       enable = true;
@@ -26,7 +24,8 @@ in
         inactive = "fg=colour235,bg=default";
       };
       hooks = {
-        "after-select-pane" = ''run-shell \"tmux set -g window-active-style "bg='brightblack'" && sleep .05 && tmux set -g window-active-style '''\"'';
+        "after-select-pane" =
+          "run-shell \\\"tmux set -g window-active-style \"bg='brightblack'\" && sleep .05 && tmux set -g window-active-style ''\\\"";
       };
       bindings = {
         copyMode = {
@@ -40,8 +39,9 @@ in
           "C-right" = "next";
           "S-left" = "swap-window -t -1";
           "S-right" = "swap-window -t +1";
-          "C-y" = ''run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o --clipboard | tmux load-buffer - ; \
-                                    tmux paste-buffer"'';
+          "C-y" = ''
+            run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o --clipboard | tmux load-buffer - ; \
+                                                tmux paste-buffer"'';
         };
         prefixed = {
           "*" = "list-clients";
@@ -57,17 +57,21 @@ in
           "r" = ''source-file ~/.tmux.conf \; display "  Config reloaded..."'';
           "y" = "set-window-option synchronize-panes";
           "T" = ''neww -n "Tmux manual" "exec man tmux"'';
-          "s" = ''split-window -v "tmux list-sessions | sed -E 's/:.*$//' | \
-                                        grep -v \"^$(tmux display-message -p '#S')\$\" | \
-                                        ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
-          "F12" = ''send-key "#############################################################################################"'';
+          "s" = ''
+            split-window -v "tmux list-sessions | sed -E 's/:.*$//' | \
+                                                    grep -v \"^$(tmux display-message -p '#S')\$\" | \
+                                                    ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
+          "F12" = ''
+            send-key "#############################################################################################"'';
           "F11" = ''new-window "fq; $SHELL"'';
-          "S-F11" = ''run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o --clipboard | \
-                                                    ${pkgs.xe}/bin/xe ${pkgs.nq}/bin/nq ${pkgs.you-get}/bin/you-get"'';
-          "b" = ''split-window -c '#{pane_current_path}' \
-                                    -v "${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null && ${pkgs.git}/bin/git -p show --color=always \
-                                        $(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always | \
-                                        ${pkgs.skim}/bin/sk --ansi -m | ${pkgs.gawk}/bin/awk '{print $2}') | less -R"'';
+          "S-F11" = ''
+            run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o --clipboard | \
+                                                                ${pkgs.xe}/bin/xe ${pkgs.nq}/bin/nq ${pkgs.you-get}/bin/you-get"'';
+          "b" = ''
+            split-window -c '#{pane_current_path}' \
+                                                -v "${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null && ${pkgs.git}/bin/git -p show --color=always \
+                                                    $(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always | \
+                                                    ${pkgs.skim}/bin/sk --ansi -m | ${pkgs.gawk}/bin/awk '{print $2}') | less -R"'';
         };
       };
       extraConfig = ''
@@ -88,21 +92,22 @@ in
       secureSocket = false;
       shell = "${pkgs.zsh}/bin/zsh";
       tmuxp.enable = true;
-      plugins = with pkgs; with tmuxPlugins; [
-        {
-          plugin = fzf-tmux-url-with-history; # patched version, see overlays
-          extraConfig = "set -g @fzf-url-bind 'o'";
-        }
-        battery
-        copycat
-        cpu
-        fpp
-        logging
-        open # TODO: setup and verify working
-        prefix-highlight
-        sessionist
-        yank
-      ];
+      plugins = with pkgs;
+        with tmuxPlugins; [
+          {
+            plugin = fzf-tmux-url-with-history; # patched version, see overlays
+            extraConfig = "set -g @fzf-url-bind 'o'";
+          }
+          battery
+          copycat
+          cpu
+          fpp
+          logging
+          open # TODO: setup and verify working
+          prefix-highlight
+          sessionist
+          yank
+        ];
     };
     home.file = {
       "tmuxp/main.yml".text = ''

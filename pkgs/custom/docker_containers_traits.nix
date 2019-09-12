@@ -1,5 +1,4 @@
-{ bash, coreutils, docker, docker-machine, gawk, rofi, xsel, yad, ... }:
-''
+{ bash, coreutils, docker, docker-machine, gawk, rofi, xsel, yad, ... }: ''
   #!${bash}/bin/bash
 
   declare -A CONTAINER_TRAITS

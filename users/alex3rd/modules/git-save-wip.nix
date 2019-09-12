@@ -4,12 +4,8 @@ with lib;
 
 let
   cfg = config.services.git-save-wip;
-  pathPkgs = with pkgs; [
-    pass
-    gitAndTools.pass-git-helper
-  ];
-in
-{
+  pathPkgs = with pkgs; [ pass gitAndTools.pass-git-helper ];
+in {
   options = {
     services.git-save-wip = {
       enable = mkOption {
@@ -59,8 +55,7 @@ in
       }
       {
         assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "")
-          || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "")
-          ;
+          || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
         message = "git-save-wip: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
       }
     ];
@@ -71,7 +66,8 @@ in
       path = pathPkgs;
       serviceConfig = {
         Type = "oneshot";
-        ExecStart = "${pkgs.bash}/bin/bash -c \"[[ $(${pkgs.xprintidle-ng}/bin/xprintidle-ng) -ge $((3600*1000)) ]] && ${pkgs.mr}/bin/mr savewip\""; # TODO: only when not on master
+        ExecStart = ''
+          ${pkgs.bash}/bin/bash -c "[[ $(${pkgs.xprintidle-ng}/bin/xprintidle-ng) -ge $((3600*1000)) ]] && ${pkgs.mr}/bin/mr savewip"''; # TODO: only when not on master
         WorkingDirectory = cfg.workDir;
         StandardOutput = "journal+console";
         StandardError = "inherit";

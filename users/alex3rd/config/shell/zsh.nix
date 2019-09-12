@@ -2,20 +2,10 @@
 with import ../../const.nix { inherit config pkgs; };
 with import ../../secrets/const.nix { inherit config pkgs lib; };
 let
-  zshOptions = [
-    "braceccl"
-    "correctall"
-    "extendedglob"
-    "menucomplete"
-  ];
-  binDirs = [
-    "/home/${userName}/scripts"
-    "/home/${userName}/tools/bin"
-    "/home/${userName}/.local/bin"
-  ];
+  zshOptions = [ "braceccl" "correctall" "extendedglob" "menucomplete" ];
+  binDirs = [ "/home/${userName}/scripts" "/home/${userName}/tools/bin" "/home/${userName}/.local/bin" ];
   zshHistFilename = ".histfile";
-in
-{
+in {
   home-manager.users."${userName}" = {
     home.file = {
       ".zsh/functions.zsh".text = ''
@@ -56,13 +46,7 @@ in
       enable = true;
       oh-my-zsh = {
         enable = true;
-        plugins = [
-          "colored-man-pages"
-          "dirpersist"
-          "urltools"
-          "virtualenv"
-          "virtualenvwrapper"
-        ];
+        plugins = [ "colored-man-pages" "dirpersist" "urltools" "virtualenv" "virtualenvwrapper" ];
         theme = "muse";
       };
       enableAutosuggestions = true;
@@ -91,7 +75,9 @@ in
 
         ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
 
-        ${lib.concatMapStrings (opt: "setopt ${opt}\n") zshOptions}
+        ${lib.concatMapStrings (opt: ''
+          setopt ${opt}
+        '') zshOptions}
 
         source ~/.zsh/functions.zsh
 
@@ -128,7 +114,8 @@ in
 
         yg = "${pkgs.you-get}/bin/you-get";
 
-        zz = "cd $(z -i | ${pkgs.skim}/bin/sk --nth 2 --reverse --inline-info --tac | ${pkgs.gawk}/bin/awk '{print $2}')";
+        zz =
+          "cd $(z -i | ${pkgs.skim}/bin/sk --nth 2 --reverse --inline-info --tac | ${pkgs.gawk}/bin/awk '{print $2}')";
         zb = "z -b";
 
         zr = ". ~/.zshrc";

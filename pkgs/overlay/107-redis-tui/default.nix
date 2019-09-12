@@ -17,7 +17,7 @@ self: super: {
 
     meta = {
       description = "A Redis Text-based UI client in CLI";
-      homepage = https://github.com/mylxsw/redis-tui;
+      homepage = "https://github.com/mylxsw/redis-tui";
       license = super.stdenv.lib.licenses.gpl2;
       platforms = super.stdenv.lib.platforms.unix;
     };

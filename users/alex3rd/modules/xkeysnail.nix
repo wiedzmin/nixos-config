@@ -1,10 +1,8 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let
-  cfg = config.services.xkeysnail;
-in
-{
+let cfg = config.services.xkeysnail;
+in {
   options = {
     services.xkeysnail = {
       enable = mkOption {
@@ -24,7 +22,7 @@ in
       };
       inputDevices = mkOption {
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
         example = literalExample ''
           [
               "/dev/input/event3"
@@ -40,9 +38,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    assertions = [
-      { assertion = cfg.configFile != ""; message = "XKeysnail: must provide config file path."; }
-    ];
+    assertions = [{
+      assertion = cfg.configFile != "";
+      message = "XKeysnail: must provide config file path.";
+    }];
 
     systemd.user.services."xkeysnail" = {
       description = "Xkeysnail";
@@ -53,8 +52,9 @@ in
         PIDFile = "/run/xkeysnail.pid";
         Restart = "always";
         RestartSec = 1;
-        ExecStart = "/run/wrappers/bin/sudo ${pkgs.xkeysnail}/bin/xkeysnail ${optionalString
-          (cfg.inputDevices != []) "--devices ${lib.concatStringsSep " " cfg.inputDevices}"} ${cfg.configFile}";
+        ExecStart = "/run/wrappers/bin/sudo ${pkgs.xkeysnail}/bin/xkeysnail ${
+            optionalString (cfg.inputDevices != [ ]) "--devices ${lib.concatStringsSep " " cfg.inputDevices}"
+          } ${cfg.configFile}";
       };
     };
   };

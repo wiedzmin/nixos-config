@@ -1,5 +1,4 @@
-{ bash, ... }:
-''
+{ bash, ... }: ''
   #!${bash}/bin/bash
 
   ROOT_PARTITION_LABEL=nixos-root

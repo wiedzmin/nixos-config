@@ -14,12 +14,9 @@ let
     tmuxPlugins.yank
     tmuxPlugins.sessionist
   ];
-in
-{
+in {
   home-manager.users.kotya = {
-    home.packages = with pkgs; [
-      tmuxp
-    ];
+    home.packages = with pkgs; [ tmuxp ];
     home.file = {
       "tmuxp/housekeeping.yml".text = ''
         session_name: housekeeping
@@ -171,7 +168,9 @@ in
         # plugins settings
 
         # add all the plugins
-        ${lib.concatStrings (map (x: "run-shell ${x.rtp}\n") tmuxPluginsBundle)}
+        ${lib.concatStrings (map (x: ''
+          run-shell ${x.rtp}
+        '') tmuxPluginsBundle)}
       '';
     };
   };

@@ -1,5 +1,4 @@
-{ bash, eternal-terminal, gawk, rofi, tmux, ... }:
-''
+{ bash, eternal-terminal, gawk, rofi, tmux, ... }: ''
   #!${bash}/bin/bash
 
   function show_list() {

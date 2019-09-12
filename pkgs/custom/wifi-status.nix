@@ -1,5 +1,4 @@
-{ bash, wirelesstools, ... }:
-''
+{ bash, wirelesstools, ... }: ''
   #!${bash}/bin/bash
 
   ESSID=`${wirelesstools}/bin/iwgetid -r`

@@ -1,10 +1,8 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let
-  cfg = config.services.xidlehook;
-in
-{
+let cfg = config.services.xidlehook;
+in {
   options = {
     services.xidlehook = {
       enable = mkOption {

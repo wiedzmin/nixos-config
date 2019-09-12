@@ -3,18 +3,12 @@
 with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make more declarative
 with import ../../../../pkgs/util.nix { inherit lib config pkgs; };
 with import ../../const.nix { inherit config pkgs; };
-let
-  firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../../../pkgs/firefox-addons {});
-in
-{
+let firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../../../pkgs/firefox-addons { });
+in {
   home-manager.users."${userName}" = {
     programs.firefox = {
       enable = true;
-      package = pkgs.firefox.overrideAttrs (
-        attrs: {
-          enableTridactylNative = true;
-        }
-      );
+      package = pkgs.firefox.overrideAttrs (attrs: { enableTridactylNative = true; });
       extensions = with firefox-addons; [
         display-anchors
         ghosttext
@@ -40,14 +34,8 @@ in
             "lightweightThemes.selectedThemeID" = "firefox-compact-dark@mozilla.org";
           };
           handlers = {
-            defaultHandlersVersion = {
-              "en-US" = 4;
-            };
-            mimeTypes = {
-              "application/pdf" = {
-                action = 3;
-              };
-            };
+            defaultHandlersVersion = { "en-US" = 4; };
+            mimeTypes = { "application/pdf" = { action = 3; }; };
             schemes = {
               mailto = {
                 action = 4;
@@ -59,12 +47,8 @@ in
                   }
                 ];
               };
-              "org-protocol" = {
-                action = 4;
-              };
-              "tg" = {
-                action = 4;
-              };
+              "org-protocol" = { action = 4; };
+              "tg" = { action = 4; };
             };
           };
         };
@@ -84,11 +68,12 @@ in
       ];
     };
     home.file = {
-      ".mozilla/firefox/profile.default/browser-extension-data/{d47d18bc-d6ba-4f96-a144-b3016175f3a7}/storage.js".text = builtins.toJSON {
-        protocol = false;
-        path = true;
-        delimiter = " // ";
-      };
+      ".mozilla/firefox/profile.default/browser-extension-data/{d47d18bc-d6ba-4f96-a144-b3016175f3a7}/storage.js".text =
+        builtins.toJSON {
+          protocol = false;
+          path = true;
+          delimiter = " // ";
+        };
       ".mozilla/native-messaging-hosts/me.f1u77y.web_media_controller.json".text = builtins.toJSON {
         name = "me.f1u77y.web_media_controller";
         description = "Allows controlling embedded players (YT, etc) via MPRIS";

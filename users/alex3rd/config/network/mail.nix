@@ -10,8 +10,7 @@ let
   imapfilterOptionsCertificates = false;
   imapfilterSpamFlushAfterDays = 14;
   custom = import ../../../../pkgs/custom pkgs config;
-in
-{
+in {
   home-manager.users."${userName}" = {
     accounts.email = {
       accounts."personal" = {
@@ -36,16 +35,7 @@ in
           create = "both";
           expunge = "both";
           remove = "both";
-          patterns = [
-            "!Cron*"
-            "!Drafts"
-            "!INBOX"
-            "!Lists*"
-            "!Sent"
-            "!Trash"
-            "![Gmail]*"
-            "*"
-          ];
+          patterns = [ "!Cron*" "!Drafts" "!INBOX" "!Lists*" "!Sent" "!Trash" "![Gmail]*" "*" ];
         };
       };
     };
@@ -132,47 +122,43 @@ in
     -- Rules: --
     ------------
     local from_tofolder = {
-        ${(
-    builtins.concatStringsSep ",\n    "
-      (
-        lib.mapAttrsToList (from: folder: "[\"${from}\"] = \"${folder}\"")
-          imapfilterFromToFolder
-      )
-  )}
+        ${
+          (builtins.concatStringsSep ''
+            ,
+                '' (lib.mapAttrsToList (from: folder: ''["${from}"] = "${folder}"'') imapfilterFromToFolder))
+        }
     }
 
     local to_tofolder = {
-        ${(
-    builtins.concatStringsSep ",\n    "
-      (
-        lib.mapAttrsToList (to: folder: "[\"${to}\"] = \"${folder}\"")
-          imapfilterToToFolder
-      )
-  )}
+        ${
+          (builtins.concatStringsSep ''
+            ,
+                '' (lib.mapAttrsToList (to: folder: ''["${to}"] = "${folder}"'') imapfilterToToFolder))
+        }
     }
 
     local cc_tofolder = {
-        ${(
-    builtins.concatStringsSep ",\n    "
-      (
-        lib.mapAttrsToList (cc: folder: "[\"${cc}\"] = \"${folder}\"")
-          imapfilterCcToFolder
-      )
-  )}
+        ${
+          (builtins.concatStringsSep ''
+            ,
+                '' (lib.mapAttrsToList (cc: folder: ''["${cc}"] = "${folder}"'') imapfilterCcToFolder))
+        }
     }
 
     local subject_tofolder = {
-        ${(
-    builtins.concatStringsSep ",\n    "
-      (
-        lib.mapAttrsToList (subj: folder: "[\"${subj}\"] = \"${folder}\"")
-          imapfilterSubjectToFolder
-      )
-  )}
+        ${
+          (builtins.concatStringsSep ''
+            ,
+                '' (lib.mapAttrsToList (subj: folder: ''["${subj}"] = "${folder}"'') imapfilterSubjectToFolder))
+        }
     }
 
     local from_delete = {
-        "${(builtins.concatStringsSep "\",\n    \"" imapfilterFromDelete)}"
+        "${
+          (builtins.concatStringsSep ''
+            ",
+                "'' imapfilterFromDelete)
+        }"
     }
 
     messages_all = account_personal['INBOX']:select_all()

@@ -1,5 +1,4 @@
-{ bash, coreutils, maim, xclip, yq-go, ... }:
-''
+{ bash, coreutils, maim, xclip, yq-go, ... }: ''
   #!${bash}/bin/bash
 
   CONFIGFILE=''${1:-$HOME/.config/screenshots/screenshots.yml}

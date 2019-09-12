@@ -1,9 +1,7 @@
 { bash, config, coreutils, docker, docker-machine, dunst, eternal-terminal, gawk, lib, pkgs, rofi, systemd, tmux, ... }:
 with import ../secrets/const.nix { inherit lib config pkgs; };
-let
-  dockerContainerShellExecutable = "/bin/bash";
-in
-''
+let dockerContainerShellExecutable = "/bin/bash";
+in ''
   #!${bash}/bin/bash
 
   ${enforce_job_vpn_impl}

@@ -1,5 +1,4 @@
-{ bash, coreutils, git, gnupg, nix, systemd, ... }:
-''
+{ bash, coreutils, git, gnupg, nix, systemd, ... }: ''
   #!${bash}/bin/bash
 
   nixpkgs=$(${nix}/bin/nix-instantiate --find-file nixpkgs)

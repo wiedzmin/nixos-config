@@ -1,6 +1,5 @@
 { bash, config, docker, docker-machine, pkgs, rofi, ... }:
-with import ../../pkgs/const.nix { inherit config pkgs; };
-''
+with import ../../pkgs/const.nix { inherit config pkgs; }; ''
   #!${bash}/bin/bash
 
   # TODO: think how to restrict networks/ports output (maybe pick first ones)

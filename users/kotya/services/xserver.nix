@@ -1,8 +1,5 @@
-{ config, pkgs, ... }:
-{
-  imports = [
-    ../private/traits/sys.nix
-  ];
+{ config, pkgs, ... }: {
+  imports = [ ../private/traits/sys.nix ];
   services = {
     xserver = {
       enable = true;
@@ -55,7 +52,7 @@
       enable = true;
       backend = "glx";
       vSync = "opengl-swc";
-      opacityRules = [];
+      opacityRules = [ ];
       package = pkgs.compton-git;
       extraOptions = ''
         inactive-dim 0.3
@@ -65,14 +62,7 @@
   };
   programs.light.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    ckbcomp
-    gmrun
-    xlibs.xev
-    xlibs.xprop
-    xorg.xhost
-    xorg.xmessage
-  ];
+  environment.systemPackages = with pkgs; [ ckbcomp gmrun xlibs.xev xlibs.xprop xorg.xhost xorg.xmessage ];
   fonts = {
     fontconfig = {
       enable = true;

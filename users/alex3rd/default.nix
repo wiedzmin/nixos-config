@@ -5,31 +5,15 @@ with import ./secrets/const.nix { inherit config pkgs lib; };
 let
   custom = import ../../pkgs/custom pkgs config;
   userCustom = import ./custom pkgs config;
-in
-{
-  imports = [
-    <home-manager/nixos>
-    ./config
-    ./modules
-    ./packages.nix
-    ./secrets/personal.nix
-    ./secrets/job.nix
-  ];
+in {
+  imports = [ <home-manager/nixos> ./config ./modules ./packages.nix ./secrets/personal.nix ./secrets/job.nix ];
 
   users.extraUsers."${userName}" = {
     isNormalUser = true;
     uid = 1000;
     description = "Alex Ermolov";
     shell = pkgs.zsh;
-    extraGroups = [
-      "audio"
-      "input"
-      "libvirtd"
-      "lp"
-      "scanner"
-      "video"
-      "wheel"
-    ];
+    extraGroups = [ "audio" "input" "libvirtd" "lp" "scanner" "video" "wheel" ];
   };
 
   services.batteryNotifier = {
@@ -95,13 +79,8 @@ in
 
   nix.trustedUsers = [ userName ];
 
-  networking.extraHosts = (
-    builtins.concatStringsSep "\n"
-      (
-        map (host: host.ip + "   " + (builtins.concatStringsSep " " host.hostNames))
-          (jobExtraHosts ++ extraHosts)
-      )
-  );
+  networking.extraHosts = (builtins.concatStringsSep "\n"
+    (map (host: host.ip + "   " + (builtins.concatStringsSep " " host.hostNames)) (jobExtraHosts ++ extraHosts)));
 
   home-manager.users."${userName}" = {
     nixpkgs.config.allowUnfree = true;
@@ -111,6 +90,7 @@ in
       custom.confctl
       custom.dflinter
       custom.dlint
+      custom.format-config
       custom.hadolintd
       custom.pkgsctl
       custom.update-system

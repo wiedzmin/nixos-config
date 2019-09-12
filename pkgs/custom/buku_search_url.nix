@@ -1,5 +1,4 @@
-{ bash, buku, rofi, ... }:
-''
+{ bash, buku, rofi, ... }: ''
   #!${bash}/bin/bash
 
   _rofi () {

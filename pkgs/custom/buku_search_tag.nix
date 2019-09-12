@@ -1,8 +1,6 @@
 { bash, buku, coreutils, gawk, rofi, ... }:
-let
-  buku_batch_open_treshold = 20;
-in
-''
+let buku_batch_open_treshold = 20;
+in ''
   #!${bash}/bin/bash
 
   _rofi () {
@@ -65,7 +63,9 @@ in
       BUKU_CMD="$BUKU_CMD ''${taglist[@]}"
       BUKU_CMD=''${BUKU_CMD%?}
       SEARCH_RESULTS="$($BUKU_CMD)"
-      LEGEND="Select an entry or use <span color='$HELP_COLOR'>$OPEN_ALL</span> to open all bookmarks. You could open maximum ${builtins.toString buku_batch_open_treshold} bookmarks at once."
+      LEGEND="Select an entry or use <span color='$HELP_COLOR'>$OPEN_ALL</span> to open all bookmarks. You could open maximum ${
+        builtins.toString buku_batch_open_treshold
+      } bookmarks at once."
       SELECTION=$( echo "$SEARCH_RESULTS" | tr ' ' '\n' | \
                    _rofi -p '> ' -mesg "''${LEGEND}" -kb-custom-10 "''${OPEN_ALL}")
       ROFI_EXIT=$?

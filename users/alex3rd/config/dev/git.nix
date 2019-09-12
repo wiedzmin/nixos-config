@@ -3,10 +3,8 @@ with import ../../../../pkgs/util.nix { inherit config pkgs lib; };
 with import ../../../../pkgs/const.nix { inherit config pkgs; };
 with import ../../const.nix { inherit config pkgs; };
 with import ../../secrets/const.nix { inherit config pkgs lib; };
-let
-  custom = import ../../../../pkgs/custom pkgs config;
-in
-{
+let custom = import ../../../../pkgs/custom pkgs config;
+in {
   environment.etc."nixos/.hooks/pre-push/stop-wip" = {
     mode = "0644";
     user = "${userName}";
@@ -56,44 +54,42 @@ in
             "fi"
           ] "    ";
         };
-      }
-      + ''
+      } + ''
         include = cat ${jobWorkspacePath}/.mrconfig
-      ''
-      ;
+      '';
       "git-assets/git-commit-template".text = ''
 
 
-                # <type>: (If applied, this commit will...) <subject> (Max 50 char)
-                # |<----  Using a Maximum Of 50 Characters  ---->|
+        # <type>: (If applied, this commit will...) <subject> (Max 50 char)
+        # |<----  Using a Maximum Of 50 Characters  ---->|
 
-                # Explain why this change is being made
-                # |<----   Try To Limit Each Line to a Maximum Of 72 Characters   ---->|
+        # Explain why this change is being made
+        # |<----   Try To Limit Each Line to a Maximum Of 72 Characters   ---->|
 
-                # Provide links or keys to any relevant tickets, articles or other resources
-                # Example: Github issue #23
+        # Provide links or keys to any relevant tickets, articles or other resources
+        # Example: Github issue #23
 
-                # --- COMMIT END ---
-                # Type can be
-                #    feat     (new feature)
-                #    fix      (bug fix)
-                #    refactor (refactoring production code)
-                #    style    (formatting, missing semi colons, etc; no code change)
-                #    docs     (changes to documentation)
-                #    test     (adding or refactoring tests; no production code change)
-                #    chore    (updating grunt tasks etc; no production code change)
-                # --------------------
-                # Remember to
-                #    Capitalize the subject line
-                #    Use the imperative mood in the subject line
-                #    Do not end the subject line with a period
-                #    Separate subject from body with a blank line
-                #    Use the body to explain what and why vs. how
-                #    Can use multiple lines with "-" for bullet points in body
-                # --------------------
-                # For more information about this template, check out
-                # https://gist.github.com/adeekshith/cd4c95a064977cdc6c50
-            '';
+        # --- COMMIT END ---
+        # Type can be
+        #    feat     (new feature)
+        #    fix      (bug fix)
+        #    refactor (refactoring production code)
+        #    style    (formatting, missing semi colons, etc; no code change)
+        #    docs     (changes to documentation)
+        #    test     (adding or refactoring tests; no production code change)
+        #    chore    (updating grunt tasks etc; no production code change)
+        # --------------------
+        # Remember to
+        #    Capitalize the subject line
+        #    Use the imperative mood in the subject line
+        #    Do not end the subject line with a period
+        #    Separate subject from body with a blank line
+        #    Use the body to explain what and why vs. how
+        #    Can use multiple lines with "-" for bullet points in body
+        # --------------------
+        # For more information about this template, check out
+        # https://gist.github.com/adeekshith/cd4c95a064977cdc6c50
+      '';
       "git-assets/.gitignore".text = ''
         # reference ignore list / inspired by Github
         *.o
@@ -219,9 +215,7 @@ in
           changed = "yellow";
           untracked = "red";
         };
-        "commit" = {
-          template = "/home/${userName}/git-assets/git-commit-template";
-        };
+        "commit" = { template = "/home/${userName}/git-assets/git-commit-template"; };
         "rebase" = {
           autoSquash = true;
           autoStash = true;
@@ -233,35 +227,19 @@ in
           askPass = "";
           hooksPath = "/home/${userName}/git-assets/templates/hooks";
         };
-        "credential" = {
-          helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper";
-        };
-        "diff" = {
-          algorithm = "patience";
-        };
-        "init" = {
-          templatedir = "/home/${userName}/git-assets/templates";
-        };
-        "clone" = {
-          templatedir = "/home/${userName}/git-assets/templates";
-        };
+        "credential" = { helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper"; };
+        "diff" = { algorithm = "patience"; };
+        "init" = { templatedir = "/home/${userName}/git-assets/templates"; };
+        "clone" = { templatedir = "/home/${userName}/git-assets/templates"; };
         "pager" = {
           diff = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
           show = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
           log = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
         };
-        "push" = {
-          default = "current";
-        };
-        "ghq" = {
-          root = "/home/${userName}/workspace/repos";
-        };
-        "ghq \"import\"" = {
-          bbcontribs = "${custom.bitbucket_team_contributor_repos}";
-        };
-        "github" = {
-          user = "wiedzmin";
-        };
+        "push" = { default = "current"; };
+        "ghq" = { root = "/home/${userName}/workspace/repos"; };
+        "ghq \"import\"" = { bbcontribs = "${custom.bitbucket_team_contributor_repos}"; };
+        "github" = { user = "wiedzmin"; };
       };
       aliases = {
         co = "checkout";
@@ -278,9 +256,11 @@ in
         hundo = "reset --hard HEAD~1";
 
         cont = "shortlog -n -s";
-        fc = "!f() { git log --pretty=format:'* %C(yellow)%h%Creset -%C(red)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%cn>%Creset' --decorate --date=relative --grep=$1; }; f";
-        hist = "log --pretty=format:\"%h %ad | %s%d [%an]\" --graph --date=short";
-        lg = "log --graph --pretty='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
+        fc =
+          "!f() { git log --pretty=format:'* %C(yellow)%h%Creset -%C(red)%d%Creset %s %Cgreen(%ad) %C(bold blue)<%cn>%Creset' --decorate --date=relative --grep=$1; }; f";
+        hist = ''log --pretty=format:"%h %ad | %s%d [%an]" --graph --date=short'';
+        lg =
+          "log --graph --pretty='%Cred%h%Creset -%C(yellow)%d%Creset %s %Cgreen(%cr) %C(bold blue)<%an>%Creset' --abbrev-commit";
         who = "shortlog -n -s --no-merges";
         sl = "log --name-only --oneline";
         updated = "show --name-only --oneline";

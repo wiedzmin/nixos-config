@@ -15,7 +15,8 @@ self: super: {
     buildInputs = [ super.zip ];
     propagatedBuildInputs = [ super.python3Packages.pycryptodome ];
 
-    makeWrapperArgs = with super; [ ''--prefix PATH : "${stdenv.lib.makeBinPath [ atomicparsley ffmpeg_4 rtmpdump ]}"'' ];
+    makeWrapperArgs = with super;
+      [ ''--prefix PATH : "${stdenv.lib.makeBinPath [ atomicparsley ffmpeg_4 rtmpdump ]}"'' ];
 
     postInstall = ''
       mkdir -p $out/share/zsh/site-functions
@@ -26,8 +27,8 @@ self: super: {
     doCheck = false;
 
     meta = {
-      homepage = https://rg3.github.io/youtube-dl/;
-      repositories.git = https://github.com/rg3/youtube-dl.git;
+      homepage = "https://rg3.github.io/youtube-dl/";
+      repositories.git = "https://github.com/rg3/youtube-dl.git";
       description = "Command-line tool to download videos from YouTube.com and other sites";
       longDescription = ''
         youtube-dl is a small, Python-based command-line program
@@ -56,7 +57,7 @@ self: super: {
 
     meta = with super.stdenv.lib; {
       description = "A library to download YouTube content and retrieve metadata";
-      homepage = http://np1.github.io/pafy/;
+      homepage = "http://np1.github.io/pafy/";
       license = licenses.lgpl3Plus;
     };
   };
@@ -86,7 +87,7 @@ self: super: {
 
     meta = with super.stdenv.lib; {
       description = "Terminal based YouTube player and downloader";
-      homepage = https://github.com/np1/mps-youtube;
+      homepage = "https://github.com/np1/mps-youtube";
       license = licenses.gpl3;
     };
   };

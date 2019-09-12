@@ -1,10 +1,8 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let
-  cfg = config.services.sshuttle;
-in
-{
+let cfg = config.services.sshuttle;
+in {
   options = {
     services.sshuttle = {
       enable = mkOption {
@@ -25,7 +23,7 @@ in
       };
       excludeSubnets = mkOption {
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
         description = ''
           Route these subnets as normal.
         '';
@@ -47,9 +45,10 @@ in
   };
 
   config = mkIf cfg.enable {
-    assertions = [
-      { assertion = cfg.remote != null; message = "Must provide remote identity."; }
-    ];
+    assertions = [{
+      assertion = cfg.remote != null;
+      message = "Must provide remote identity.";
+    }];
 
     systemd.user.services."sshuttle" = {
       description = "sshuttle tunnel to remote server";
@@ -61,8 +60,7 @@ in
         RestartSec = 2;
         ExecStart = "-/run/wrappers/bin/sudo ${pkgs.sshuttle}/bin/sshuttle -D --dns -r ${cfg.remote}"
           + (lib.concatMapStrings (subnet: " -x ${subnet}") cfg.excludeSubnets)
-          + " 0/0 --pidfile=/var/run/sshuttle.pid -e 'ssh -i ${cfg.sshIdentity}'"
-          ;
+          + " 0/0 --pidfile=/var/run/sshuttle.pid -e 'ssh -i ${cfg.sshIdentity}'";
         ExecStop = "/run/wrappers/bin/sudo ${pkgs.procps}/bin/pkill -SIGTERM -f sshuttle";
         KillMode = "mixed";
       };

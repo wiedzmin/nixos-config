@@ -1,24 +1,16 @@
 { config, pkgs, lib, ... }:
 
 let
-  zshOptions = [
-    "braceccl"
-    "correctall"
-    "extendedglob"
-    "menucomplete"
-  ];
+  zshOptions = [ "braceccl" "correctall" "extendedglob" "menucomplete" ];
   binDirs = [
     "${config.users.extraUsers.kotya.home}/scripts"
     "${config.users.extraUsers.kotya.home}/tools/bin"
     "${config.users.extraUsers.kotya.home}/.local/bin"
   ];
   zshHistFilename = ".histfile";
-in
-{
+in {
   home-manager.users.kotya = {
-    home.packages = with pkgs; [
-      pkgs.libnotify
-    ];
+    home.packages = with pkgs; [ pkgs.libnotify ];
     home.file = {
       ".zsh/functions.zsh".text = ''
         dot() {
@@ -34,13 +26,7 @@ in
       enable = true;
       oh-my-zsh = {
         enable = true;
-        plugins = [
-          "colored-man-pages"
-          "dirpersist"
-          "urltools"
-          "virtualenv"
-          "virtualenvwrapper"
-        ];
+        plugins = [ "colored-man-pages" "dirpersist" "urltools" "virtualenv" "virtualenvwrapper" ];
         theme = "muse";
       };
       enableAutosuggestions = true;
@@ -58,7 +44,9 @@ in
         ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
         eval "$(${pkgs.fasd}/bin/fasd --init auto)"
 
-        ${lib.concatMapStrings (opt: "setopt ${opt}\n") zshOptions}
+        ${lib.concatMapStrings (opt: ''
+          setopt ${opt}
+        '') zshOptions}
 
         source ~/.zsh/functions.zsh
 

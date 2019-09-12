@@ -1,5 +1,4 @@
-{ bash, fd, rofi, tmuxp, ... }:
-''
+{ bash, fd, rofi, tmuxp, ... }: ''
   #!${bash}/bin/bash
 
   function show_list() {

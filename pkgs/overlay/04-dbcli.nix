@@ -23,7 +23,7 @@ self: super: {
         with it should run fine on both Unix and Windows systems. Also ships
         with a nice interactive Python shell (called ptpython) built on top.
       '';
-      homepage = https://github.com/jonathanslenders/python-prompt-toolkit;
+      homepage = "https://github.com/jonathanslenders/python-prompt-toolkit";
       license = super.stdenv.lib.licenses.bsd3;
     };
   };
@@ -64,7 +64,7 @@ self: super: {
         Rich command-line interface for MySQL with auto-completion and
         syntax highlighting.
       '';
-      homepage = http://mycli.net;
+      homepage = "http://mycli.net";
       license = super.stdenv.lib.licenses.bsd3;
     };
   };
@@ -104,7 +104,7 @@ self: super: {
         Rich command-line interface for PostgreSQL with auto-completion and
         syntax highlighting.
       '';
-      homepage = https://pgcli.com;
+      homepage = "https://pgcli.com";
       license = licenses.bsd3;
     };
   };
@@ -137,10 +137,7 @@ self: super: {
       sqlparse
     ];
 
-    checkInputs = with super.python3Packages; [
-      pytest
-      mock
-    ];
+    checkInputs = with super.python3Packages; [ pytest mock ];
 
     preCheck = ''
       export XDG_CONFIG_HOME=$TMP
@@ -155,7 +152,7 @@ self: super: {
       longDescription = ''
         A command-line client for SQLite databases that has auto-completion and syntax highlighting.
       '';
-      homepage = https://litecli.com;
+      homepage = "https://litecli.com";
       license = licenses.bsd3;
     };
   };

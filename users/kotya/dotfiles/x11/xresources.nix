@@ -2,18 +2,9 @@
 
 let
   urxvtUrlLauncher = "${pkgs.xdg_utils}/bin/xdg-open";
-  urxvtPerlExtensions = [
-    "clipboard"
-    "default"
-    "font-size"
-    "fullscreen"
-    "keyboard-select"
-    "matcher"
-    "selection"
-    "url-select"
-  ];
-in
-{
+  urxvtPerlExtensions =
+    [ "clipboard" "default" "font-size" "fullscreen" "keyboard-select" "matcher" "selection" "url-select" ];
+in {
   home-manager.users.kotya = {
     xresources.properties = {
       "Xmessage*Buttons" = "Quit";
@@ -23,12 +14,16 @@ in
       "Xmessage*faceWeight" = "${config.sys.fontMainWeight}";
       "Xmessage*international" = true;
 
-      "dzen2.font" = "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeDzen}";
+      "dzen2.font" =
+        "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeDzen}";
 
-      "Emacs*XlwMenu.font" = "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeEmacs}";
-      "Emacs.Font" = "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeEmacs}";
+      "Emacs*XlwMenu.font" =
+        "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeEmacs}";
+      "Emacs.Font" =
+        "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeEmacs}";
       "Emacs.FontBackend" = "xft,x";
-      "Emacs.dialog*.font" = "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeEmacs}";
+      "Emacs.dialog*.font" =
+        "${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeEmacs}";
       "Emacs.menuBar" = "0";
       "Emacs.toolBar" = "0";
       "Emacs.verticalScrollBars" = false;
@@ -66,7 +61,8 @@ in
       "URxvt.externalBorder" = "3";
       "URxvt.fadeColor" = "#666666";
       "URxvt.fading" = "40";
-      "URxvt.font" = "xft:${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeURxvt}";
+      "URxvt.font" =
+        "xft:${config.sys.fontMainName}:weight=${config.sys.fontMainWeight}:size=${config.sys.fontMainSizeURxvt}";
       "URxvt.geometry" = "80x27";
       "URxvt.internalBorder" = "3";
       "URxvt.keysym.C-Delete" = "perl:matcher:last";

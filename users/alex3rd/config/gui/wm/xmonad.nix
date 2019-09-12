@@ -1,5 +1,4 @@
-{ config, pkgs, ... }:
-{
+{ config, pkgs, ... }: {
   services.xserver.windowManager = {
     default = "xmonad";
     xmonad = {
@@ -8,7 +7,5 @@
       extraPackages = p: [ p.dbus p.monad-logger p.lens p.split ];
     };
   };
-  environment.systemPackages = with pkgs; [
-    haskellPackages.xmobar
-  ];
+  environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
 }

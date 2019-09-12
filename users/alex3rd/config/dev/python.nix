@@ -3,23 +3,9 @@ with import ../../const.nix { inherit config pkgs; };
 let
   maxLineLength = 120;
   indentWidth = 4;
-  excludes = [
-    ".git"
-    "__pycache__"
-  ];
-  ignoredCodes = [
-    "C901"
-    "E124"
-    "E128"
-    "E201"
-    "E203"
-    "E211"
-    "E251"
-    "W503"
-    "W504"
-  ];
-in
-{
+  excludes = [ ".git" "__pycache__" ];
+  ignoredCodes = [ "C901" "E124" "E128" "E201" "E203" "E211" "E251" "W503" "W504" ];
+in {
   home-manager.users."${userName}" = {
     home.file = {
       ".pylintrc".text = ''

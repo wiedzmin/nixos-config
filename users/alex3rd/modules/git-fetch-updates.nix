@@ -3,12 +3,8 @@ with lib;
 
 let
   cfg = config.services.git-fetch-updates;
-  pathPkgs = with pkgs; [
-    pass
-    gitAndTools.pass-git-helper
-  ];
-in
-{
+  pathPkgs = with pkgs; [ pass gitAndTools.pass-git-helper ];
+in {
   options = {
     services.git-fetch-updates = {
       enable = mkOption {
@@ -58,8 +54,7 @@ in
       }
       {
         assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "")
-          || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "")
-          ;
+          || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
         message = "git-fetch-updates: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
       }
     ];

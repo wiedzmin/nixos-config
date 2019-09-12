@@ -1,9 +1,6 @@
 { config, pkgs, ... }:
-with import ../../const.nix { inherit config pkgs; };
-{
-  imports = [
-    ./wm/xmonad.nix
-  ];
+with import ../../const.nix { inherit config pkgs; }; {
+  imports = [ ./wm/xmonad.nix ];
   services = {
     xserver = {
       enable = true;
@@ -44,19 +41,18 @@ with import ../../const.nix { inherit config pkgs; };
             add mod4 = Super_L
             add mod5 = Hyper_L
           '';
-        in
-          ''
-            ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
-            ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
+        in ''
+          ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
+          ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
 
-            export CURRENT_WM=${config.services.xserver.windowManager.default}
-            export TZ="${config.time.timeZone}"
-            export _JAVA_AWT_WM_NONREPARENTING=1
+          export CURRENT_WM=${config.services.xserver.windowManager.default}
+          export TZ="${config.time.timeZone}"
+          export _JAVA_AWT_WM_NONREPARENTING=1
 
-            ${pkgs.wmname}/bin/wmname LG3D
+          ${pkgs.wmname}/bin/wmname LG3D
 
-            ${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources
-          '';
+          ${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources
+        '';
       };
       autoRepeatDelay = 200;
       autoRepeatInterval = 40;
@@ -103,23 +99,14 @@ with import ../../const.nix { inherit config pkgs; };
   };
   programs.light.enable = true;
 
-  environment.systemPackages = with pkgs; [
-    ckbcomp
-    gmrun
-    xlibs.xev
-    xlibs.xprop
-    xorg.xhost
-    xorg.xmessage
-  ];
+  environment.systemPackages = with pkgs; [ ckbcomp gmrun xlibs.xev xlibs.xprop xorg.xhost xorg.xmessage ];
   fonts = {
     fontconfig = {
       enable = true;
       antialias = true;
       useEmbeddedBitmaps = true;
       dpi = 115;
-      defaultFonts = {
-        monospace = [ "Iosevka" ];
-      };
+      defaultFonts = { monospace = [ "Iosevka" ]; };
     };
     enableFontDir = true;
     enableGhostscriptFonts = true;

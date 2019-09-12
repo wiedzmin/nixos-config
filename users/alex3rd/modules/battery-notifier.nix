@@ -3,10 +3,8 @@
 
 with lib;
 
-let
-  cfg = config.services.batteryNotifier;
-in
-{
+let cfg = config.services.batteryNotifier;
+in {
   options = {
     services.batteryNotifier = {
       enable = mkOption {

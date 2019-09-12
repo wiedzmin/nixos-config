@@ -19,26 +19,13 @@
     uid = 1000;
     description = "Ekaterina Ermolova";
     shell = pkgs.zsh;
-    extraGroups = [
-      "audio"
-      "input"
-      "lp"
-      "networkmanager"
-      "vboxusers"
-      "video"
-      "wheel"
-    ];
+    extraGroups = [ "audio" "input" "lp" "networkmanager" "vboxusers" "video" "wheel" ];
   };
 
   nix.trustedUsers = [ "kotya" ];
 
-  networking.extraHosts = (
-    builtins.concatStringsSep "\n"
-      (
-        map (host: host.ip + "   " + (builtins.concatStringsSep " " host.hostNames))
-          config.misc.extra_hosts
-      )
-  );
+  networking.extraHosts = (builtins.concatStringsSep "\n"
+    (map (host: host.ip + "   " + (builtins.concatStringsSep " " host.hostNames)) config.misc.extra_hosts));
 
   home-manager.users.kotya = {
     home.packages = with pkgs; [

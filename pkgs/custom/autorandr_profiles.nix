@@ -1,5 +1,4 @@
-{ autorandr, bash, fd, gnugrep, rofi, ... }:
-''
+{ autorandr, bash, fd, gnugrep, rofi, ... }: ''
   #!${bash}/bin/bash
 
   AUTORANDR_PROFILES_PATH=''${1:-$HOME/.config/autorandr}

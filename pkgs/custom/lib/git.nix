@@ -1,9 +1,7 @@
 { bash, config, coreutils, git, gitAndTools, gnugrep, graphviz, fd, nix-du, ... }:
 with import ../../const.nix { inherit config; };
-let
-  warningsOrgFile = "$HOME/warnings.org";
-in
-''
+let warningsOrgFile = "$HOME/warnings.org";
+in ''
   #!${bash}/bin/bash
 
   WIP_RE=wip

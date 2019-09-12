@@ -5,8 +5,7 @@ with lib;
 let
   cfg = config.services.docker-devdns;
   containerName = "docker_dns";
-in
-{
+in {
   options = {
     services.docker-devdns = {
       enable = mkOption {

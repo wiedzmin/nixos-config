@@ -1,5 +1,4 @@
-{ bash, buku, coreutils, dunst, gawk, rofi, xsel, ... }:
-''
+{ bash, buku, coreutils, dunst, gawk, rofi, xsel, ... }: ''
   #!${bash}/bin/bash
 
   _rofi () {
