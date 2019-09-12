@@ -180,7 +180,7 @@ let
     gdb
     gdbgui
     hopper
-    jd-gui
+    # jd-gui
     jid
     netsniff-ng
     ngrep
@@ -304,13 +304,15 @@ let
     wyrd
   ];
   miscMedia = with pkgs; [
-    (
-      mpv-with-scripts.override (
-        {
-          scripts = [ mpvScripts.mpris ];
-        }
-      )
-    )
+    # mpv
+    # FIXME: make closure for last working version
+    # (
+    #   mpv-with-scripts.override (
+    #     {
+    #       scripts = [ mpvScripts.mpris ];
+    #     }
+    #   )
+    # )
     android-file-transfer
     ccextractor
     clipgrab
@@ -376,7 +378,7 @@ let
          dateutils
          dex
          doitlive
-         gcalcli
+         # gcalcli
          loop
          mc
          plan9port

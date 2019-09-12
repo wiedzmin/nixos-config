@@ -107,10 +107,10 @@ in
     nixpkgs.config.allowUnfree = true;
     xdg.enable = true;
     home.packages = with pkgs; [
+      # custom.gen-nix-du
       custom.confctl
       custom.dflinter
       custom.dlint
-      custom.gen-nix-du
       custom.hadolintd
       custom.pkgsctl
       custom.update-system
