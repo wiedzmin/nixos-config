@@ -83,8 +83,13 @@ in
       '';
       ".mpv/config".text = ''
         hwdec=vdpau
+        # hwdec=vaapi
         vo=opengl-hq,opengl,xv
+        # no-audio-display
+        # ao=pulse
         hwdec-codecs=all
+
+        # profile=opengl
 
         af=scaletempo,drc
         audio-samplerate=48000
@@ -93,6 +98,20 @@ in
 
         slang = en
         alang = en,eng,us
+
+        # scale=ewa_lanczossharp
+        # cscale=ewa_lanczossharp
+        # scaler-resizes-only
+        # interpolation=yes
+        # tscale=oversample
+        # video-sync=display-resample
+
+        # volume-max=200
+
+        # Always use 1080p+ or 60 fps where available. Prefer VP9
+        # over AVC and VP8 for high-resolution streams.
+        # ytdl=yes
+        # ytdl-format=(bestvideo[ext=webm]/bestvideo[height>720]/bestvideo[fps=60])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio)/best
       '';
       ".arbtt/categorize.cfg".text = ''
         aliases (
