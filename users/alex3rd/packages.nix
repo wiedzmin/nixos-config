@@ -3,46 +3,117 @@ with import ./const.nix { inherit config pkgs; };
 let
   # TODO: write script to query keywords which would provide packages names either from installed or whole nixpkgs
   stagingInactive = with pkgs; [
-    apfs-fuse
-    chrome-export
-    dia
-    drawio
-    drm_info
-    gopass
-    keychain
-    libvirt # for `vagrant plugin install vagrant-libvirt`
-    nfs-utils # for vagrant
-    paperless # see docs
-    quassel
-    rclone
-    rmount # https://github.com/Luis-Hebendanz/rmount
-    seturgent
-    xdg-user-dirs
-    xlsfonts
   ];
   stagingCommon = with pkgs; [
+    # !system-config-printer
+    # gImageReader
+    # git-repo
+    # gitAndTools.git-subrepo
+    # graphicsmagick
+    # https://github.com/unixorn/git-extra-commands # TODO: package
+    # hyperkitty
+    # lab
+    # matcha theme
+    # multitail (remote)
+    # nohang
+    # r stats tool(s)
+    # rargs
+    # rmount # https://github.com/Luis-Hebendanz/rmount
+    # skype-call-recorder
+    # tesseract
+    # vegeta # TODO: package
     _3llo
     aerc
+    afl # http://lcamtuf.coredump.cx/afl/
+    apfs-fuse
+    blsd
+    bolt
     checkbashism
+    chrome-export
+    codesearch # TODO: timer + service for reindexing + https://github.com/abingham/emacs-codesearch for emacs
     curlie
+    datamash
+    davfs2
+    dia
+    diffoscope
+    drawio
+    drm_info
     dua
-    gitAndTools.git-subrepo
+    feedreader
+    firecracker
+    gmvault
+    gopass
+    gource
     grab-site # https://github.com/ArchiveTeam/grab-site
+    gramps
+    img2pdf
     ix
     j4-dmenu-desktop
+    jhead
+    jl # https://github.com/chrisdone/jl
+    keychain
+    kid3
     lazydocker
+    libvirt # for `vagrant plugin install vagrant-libvirt`
+    lightlocker
+    mediainfo
+    mediainfo-gui
+    nfs-utils # for vagrant
+    nix-review # https://github.com/Mic92/nix-review
+    nixos-generators
+    nnn # review https://github.com/jarun/nnn
+    noti
     out-of-tree
+    # paperless # see docs
     pciutils
+    peco
+    pipreqs # adapt to py3
+    progress
+    pshs
     psrecord
-    quilt
+    python3Packages.autopep8
+    python3Packages.glances
+    python3Packages.importmagic
+    q-text-as-data
+    qmmp
+    rawtherapee
+    rclone
+    recoll
+    rofi-tmux # TODO: more descriptive tmux window titles
+    rsclock
+    satysfi
+    screenfetch
+    seturgent
+    skim
+    slmenu
+    slop
+    spyder # + kernels
+    sqlitebrowser
+    strace
+    sysdig
+    tcpreplay
+    termtosvg
     textql
+    uq
+    usbtop
+    valgrind
+    wayback_machine_downloader
     wire-desktop
+    xdg-user-dirs
+    xlsfonts
     yj
   ];
   stagingWork = with pkgs; [
+    # https://github.com/Matty9191/ssl-cert-check
+    # https://github.com/alexmavr/swarm-nbt
+    # https://github.com/moncho/dry
+    # https://hub.docker.com/r/nicolaka/netshoot/
+    # rstudio # qt plugins broken
     drone
     drone-cli
     jenkins
+    nmon
+    nsjail
     python3Packages.deprecated
     python3Packages.unittest-data-provider
     terracognita
@@ -68,13 +139,15 @@ let
     # TODO: wait for/find/dismiss github.com/davecheney/prdeps in nixpkgs
     # TODO: wait for/find/dismiss github.com/motemen/gore in nixpkgs
     # TODO: wait for/find/dismiss github.com/stretchr/gorc in nixpkgs
+    # TODO: wait for/find/dismiss gitlab.com/opennota/check in nixpkgs
     # TODO: wait for/find/dismiss godoctor in nixpkgs
     # TODO: wait for/find/dismiss gomvpkg in nixpkgs
     # TODO: wait for/find/dismiss unbed in nixpkgs
-    # TODO: wait for/find/dismiss gitlab.com/opennota/check in nixpkgs
     # asmfmt # FIXME: try to solve problem with priorities (with gotools)
+    # gocode
     deadcode
     errcheck
+    go-check
     go-langserver
     go-tools
     gocode-gomod
@@ -98,7 +171,6 @@ let
     manul
     reftools
     unconvert
-    go-check
   ];
   devGolangInfra = with pkgs; [ dep dep2nix glide go go2nix vgo2nix ];
   devPythonTools = with pkgs; [ python3Packages.virtualenv python3Packages.virtualenvwrapper yapf ];
@@ -124,9 +196,11 @@ let
     gitAndTools.git-extras
     gitAndTools.git-octopus
     gitAndTools.pass-git-helper
-    gitAndTools.topGit
+    gitAndTools.stgit
+    gitAndTools.topGit # https://github.com/mackyle/topgit
     gitstats
     proposed.gitAndTools.git-quick-stats
+    python2Packages.git-sweep # FIXME: adapt to py3
   ];
   virt = with pkgs;
     let custom = import ../../pkgs/custom pkgs config;
@@ -149,6 +223,7 @@ let
     ];
   virtRare = [ skopeo ];
   forensics = with pkgs; [
+    # jd-gui
     bbe
     binutils
     elfinfo
@@ -156,7 +231,6 @@ let
     gdb
     gdbgui
     hopper
-    # jd-gui
     jid
     netsniff-ng
     ngrep
@@ -211,6 +285,7 @@ let
     extrace
     glogg
     gron
+    hss
     hyperfine
     ipcalc
     just
@@ -327,7 +402,7 @@ let
       dateutils
       dex
       doitlive
-      # gcalcli
+      gcalcli
       loop
       mc
       plan9port
@@ -340,8 +415,8 @@ let
     ] ++ [ rdfind ] ++ [ most ntfy procs progress pv shell-hist up xe ] ++ [ eternal-terminal ] ++ [ fpp skim tmux ]
     ++ [ tmatrix ];
   text = with pkgs; [
-    # calibre
     # python3Packages.weasyprint
+    calibre
     djview
     djvulibre
     enca
