@@ -702,6 +702,9 @@ in {
       backend = "glx";
       vSync = "opengl-swc";
       package = pkgs.compton-git;
+      opacityRule = [
+        "70:class_g = 'Alacritty'"
+      ];
       extraOptions = ''
         clear-shadow = true;
         glx-no-rebind-pixmap = true;
