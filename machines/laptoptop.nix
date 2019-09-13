@@ -138,6 +138,7 @@ in {
       enable = true;
       socketActivated = true;
     };
+    earlyoom.enable = true;
     openssh = {
       enable = true;
       allowSFTP = true;
