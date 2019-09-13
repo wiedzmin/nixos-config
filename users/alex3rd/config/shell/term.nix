@@ -33,7 +33,7 @@ with import ../../const.nix { inherit config pkgs; }; {
           };
           size = fontSizeAlacritty;
         };
-        render_timer = false;
+        debug.render_timer = false;
         colors = {
           primary = {
             background = "0x212121";
