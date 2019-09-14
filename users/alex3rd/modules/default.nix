@@ -9,7 +9,6 @@
     ./git-save-wip.nix
     ./keynav.nix
     ./order-screenshots.nix
-    ./sshuttle.nix
     ./xidlehook.nix
     ./xkeysnail.nix
     ./xpointerbarrier.nix
