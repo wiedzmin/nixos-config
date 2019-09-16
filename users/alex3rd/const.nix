@@ -5,7 +5,7 @@ rec {
   userNamePrevious = "octocat";
   defaultBrowserCmd = "firefox --new-window";
   wallpaperBaseDir = "/home/${userName}/blobs/wallpaper";
-  wallpaperCurrent = builtins.elemAt wallpaperInventory 4;
+  wallpaperCurrent = builtins.elemAt wallpaperInventory 2;
   wallpaperInventory = [
     "mountain.jpg"
     "westernmongolia.jpg"
