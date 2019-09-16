@@ -38,7 +38,6 @@ scratchpadTerminal = "alacritty"
 scratchpads = [ NS "htop" (scratchpadTerminal ++ " -t htop -e htop") (title =? "htop") nonFloating
               , NS "iotop" (scratchpadTerminal ++ " -t iotop -e sudo iotop") (title =? "iotop") nonFloating
               , NS "gotop" (scratchpadTerminal ++ " -t gotop -e gotop") (title =? "gotop") nonFloating
-              , NS "nmtui" (scratchpadTerminal ++ " -t nmtui -e nmtui") (title =? "nmtui") nonFloating
               , NS "bc" (scratchpadTerminal ++ " -t calc -e bc") (title =? "calc") nonFloating
               ]
 
