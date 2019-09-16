@@ -5,6 +5,7 @@ import XMonad.Actions.Navigation2D (withNavigation2DConfig)
 import XMonad.Hooks.ManageDocks (avoidStruts, docksEventHook, docks, manageDocks)
 
 import XMonad.Util.Xkb (xkbLayout)
+import XMonad.Util.WindowTypes (checkDialog, checkMenu)
 import XMonad.Hooks.DynamicBars (dynStatusBarEventHook, dynStatusBarStartup)
 import XMonad.Hooks.EwmhDesktops (ewmhDesktopsEventHook, ewmhDesktopsStartup)
 import XMonad.Hooks.Place (placeHook)
@@ -19,6 +20,9 @@ import qualified Workspaces as WS
 
 
 configModifiers = withNavigation2DConfig C.customNavigation2DConfig . docks
+
+manageMenus = checkMenu --> doFloat
+manageDialogs = checkDialog --> doFloat
 
 main = do
   xmonad $ configModifiers def {
@@ -38,6 +42,7 @@ main = do
     layoutHook         = xkbLayout $ avoidStruts $ L.layouts,
     logHook            = SB.loghookXmobar,
     manageHook         = manageDocks <+>
+                         manageMenus <+> manageDialogs <+>
                          xPropManageHook WS.xPropMatches <+>
                          namedScratchpadManageHook C.scratchpads <+>
                          placeHook WS.placePolicy,

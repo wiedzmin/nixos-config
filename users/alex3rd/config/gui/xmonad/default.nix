@@ -7,6 +7,7 @@ with import ../../../const.nix { inherit config pkgs; }; {
     home.file = {
       ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./lib/XMonad/Util/Xkb.hs;
       ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./lib/XMonad/Util/ExtraCombinators.hs;
+      ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./lib/XMonad/Util/WindowTypes.hs;
       ".xmonad/lib/Controls.hs" = {
         text = builtins.readFile
           (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs lib; }) // { src = ./Controls.hs; }));
