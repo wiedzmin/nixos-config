@@ -830,11 +830,6 @@ in {
       tray = "never";
     };
     services.network-manager-applet.enable = true;
-    services.random-background = {
-      enable = true;
-      imageDirectory = "%h/blobs/wallpaper";
-      interval = "1w";
-    };
   };
   services.unclutter-xfixes = {
     enable = true;
