@@ -2,8 +2,7 @@
 with import ./const.nix { inherit config pkgs; };
 let
   # TODO: write script to query keywords which would provide packages names either from installed or whole nixpkgs
-  stagingInactive = with pkgs; [
-  ];
+  stagingInactive = with pkgs; [ ];
   stagingCommon = with pkgs; [
     # !system-config-printer
     # gImageReader
@@ -397,22 +396,9 @@ let
       sd
       unar
       unshield
-    ] ++ [ xsv ] ++ [
-      bc
-      dateutils
-      dex
-      doitlive
-      gcalcli
-      loop
-      mc
-      plan9port
-      replace
-      shellcheck
-      tmsu
-      tree
-      unicode-paracode
-      wtf
-    ] ++ [ rdfind ] ++ [ most ntfy procs progress pv shell-hist up xe ] ++ [ eternal-terminal ] ++ [ fpp skim tmux ]
+    ] ++ [ xsv ]
+    ++ [ bc dateutils dex doitlive gcalcli loop mc plan9port replace shellcheck tmsu tree unicode-paracode wtf ]
+    ++ [ rdfind ] ++ [ most ntfy procs progress pv shell-hist up xe ] ++ [ eternal-terminal ] ++ [ fpp skim tmux ]
     ++ [ tmatrix ];
   text = with pkgs; [
     # python3Packages.weasyprint
