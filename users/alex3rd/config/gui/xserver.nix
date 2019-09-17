@@ -92,10 +92,6 @@ with import ../../const.nix { inherit config pkgs; }; {
       };
     };
     arbtt.enable = true;
-    autorandr = {
-      enable = true;
-      defaultTarget = "mobile";
-    };
   };
   programs.light.enable = true;
 
