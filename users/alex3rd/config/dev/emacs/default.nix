@@ -32,6 +32,7 @@ with import ../../../const.nix { inherit config pkgs; }; {
         epkgs.amx
         epkgs.anaphora
         epkgs.atomic-chrome
+        epkgs.auth-source-pass
         epkgs.auto-compile
         epkgs.avy
         epkgs.avy-zap

@@ -4,6 +4,13 @@
   ;;TODO: check if it needed and resurrect .authinfo.gpg
   (auth-sources '("~/.authinfo.gpg")))
 
+(use-package auth-source-pass
+  :ensure t
+  :after auth-source
+  :config
+  ;FIXME: source not being added
+  (auth-source-pass-enable))
+
 (use-package keychain-environment
   :ensure t
   :hook
