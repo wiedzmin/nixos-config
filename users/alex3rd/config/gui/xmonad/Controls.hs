@@ -198,3 +198,4 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
                 ]
 
 -- TODO: try to find a block of keys for http://hackage.haskell.org/package/xmonad-contrib-0.14/docs/XMonad-Layout-WindowArranger.html
+-- TODO: try to find a block of keys for http://hackage.haskell.org/package/xmonad-contrib-0.15/docs/XMonad-Layout-BinarySpacePartition.html
