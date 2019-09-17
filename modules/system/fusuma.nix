@@ -17,7 +17,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    systemd.user.services."fusuma" = let
+    systemd.services."fusuma" = let
       fusumaConfig = pkgs.writeText "fusuma.yml" (builtins.toJSON {
         # TODO: maybe extract some parameters from below
         "swipe" = {

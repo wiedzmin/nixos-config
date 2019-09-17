@@ -45,7 +45,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    systemd.user.services."xpointerbarrier" = {
+    systemd.services."xpointerbarrier" = {
       description = "Create pointer barriers around each XRandR screen";
       after = [ "graphical-session-pre.target" ];
       partOf = [ "graphical-session.target" ];

@@ -4,6 +4,7 @@ let enableScanner = false;
 in {
   imports = [
     ../pkgs/setup.nix
+    ../modules
     ../pkgs/forges/github.com/NixOS/nixos-hardware/common/cpu/intel/sandy-bridge
     ../pkgs/forges/github.com/NixOS/nixos-hardware/common/pc/ssd
     ../pkgs/forges/github.com/NixOS/nixos-hardware/lenovo/thinkpad/x230

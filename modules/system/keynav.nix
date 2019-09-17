@@ -18,7 +18,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    systemd.user.services."keynav" = let
+    systemd.services."keynav" = let
       keynavConfig = pkgs.writeText "keynav.conf" (''
         clear
         grid-nav on

@@ -6,7 +6,7 @@ let
   custom = import ../../pkgs/custom pkgs config;
   userCustom = import ./custom pkgs config;
 in {
-  imports = [ <home-manager/nixos> ./config ./modules ./packages.nix ./secrets/personal.nix ./secrets/job.nix ];
+  imports = [ <home-manager/nixos> ./config ./packages.nix ./secrets/personal.nix ./secrets/job.nix ];
 
   users.extraUsers."${userName}" = {
     isNormalUser = true;

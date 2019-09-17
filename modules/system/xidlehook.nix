@@ -65,9 +65,13 @@ in {
       partOf = [ "graphical-session.target" ];
       wantedBy = [ "graphical-session.target" ];
       path = [ pkgs.bash ];
+      environment = {
+        DISPLAY = ":0";
+        XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
+      };
       serviceConfig = {
         Type = "simple";
-        PassEnvironment = "DISPLAY";
+        # PassEnvironment = "DISPLAY";
         ExecStart = ''
           ${pkgs.xidlehook}/bin/xidlehook \
                 ${optionalString cfg.respectPlayback "--not-when-audio"} \
