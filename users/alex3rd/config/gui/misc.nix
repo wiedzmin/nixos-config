@@ -488,15 +488,6 @@ in {
         mount:
           basedir: ${nasLocalMountBase}
     '';
-    xdg.configFile."networkmanager-dmenu/config.ini".text = ''
-      [dmenu]
-      dmenu_command = ${pkgs.rofi}/bin/rofi
-      rofi_highlight = True
-
-      [editor]
-      terminal = ${pkgs.alacritty}/bin/alacritty
-      gui_if_available = True
-    '';
     xdg.configFile."rofi-pass/config".text = ''
       # permanently set alternative root dir. Use ":" to separate multiple roots
       # which can be switched at runtime with shift+left/right
@@ -827,7 +818,6 @@ in {
       notify = true;
       tray = "never";
     };
-    services.network-manager-applet.enable = true;
   };
   services.unclutter-xfixes = {
     enable = true;
