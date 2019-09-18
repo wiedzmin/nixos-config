@@ -42,6 +42,7 @@ in rec {
   unmountNasVolume = "${userCustom.unmount_nas_volume}/bin/unmount_nas_volume";
   uptimeInfo = "${custom.uptime_info}/bin/uptime_info";
   webjumps = "${userCustom.webjumps}/bin/webjumps";
+  xrandrForceMobile = "${pkgs.autorandr}/bin/autorandr --load mobile";
 
   brightnessDown = "${light} -U ${toString backlightAmount}";
   brightnessMax = "${light} -S 100";

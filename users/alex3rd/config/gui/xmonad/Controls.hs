@@ -79,6 +79,7 @@ basicKeys conf = [ "C-\\"         ~> sendMessage (XkbToggle Nothing)
                  , "M-j"          ~> spawn "@webjumps@" >> WS.showWSOnProperScreen "web"
                  , "M-M1-w"       ~> spawn "@wpaGui@" -- "tmux new-window wpa_cli" >> WS.showWSOnProperScreen "shell"
                  , "M-M1-S-w"     ~> spawn "tmux new-window wpa_cli" >> WS.showWSOnProperScreen "shell"
+                 , "M-M1-x"       ~> spawn "@xrandrForceMobile@"
                  --
                  , "M-C-q"        ~> spawn "xmonad --recompile; xmonad --restart"
                  , "M-q"          ~> spawn "xmonad --restart"
