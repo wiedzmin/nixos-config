@@ -341,13 +341,13 @@ let
     [
       # mpv
       # FIXME: make closure for last working version
-      # (
-      #   mpv-with-scripts.override (
-      #     {
-      #       scripts = [ mpvScripts.mpris ];
-      #     }
-      #   )
-      # )
+      (
+        mpv-with-scripts.override (
+          {
+            scripts = [ mpvScripts.mpris ];
+          }
+        )
+      )
       android-file-transfer
       ccextractor
       clipgrab
