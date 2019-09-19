@@ -65,13 +65,9 @@ in {
       partOf = [ "graphical-session.target" ];
       wantedBy = [ "graphical-session.target" ];
       path = [ pkgs.bash ];
-      environment = {
-        DISPLAY = ":0";
-        XAUTHORITY = "${config.users.extraUsers.alex3rd.home}/.Xauthority";
-      };
       serviceConfig = {
         Type = "simple";
-        # PassEnvironment = "DISPLAY";
+        ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
         ExecStart = ''
           ${pkgs.xidlehook}/bin/xidlehook \
                 ${optionalString cfg.respectPlayback "--not-when-audio"} \

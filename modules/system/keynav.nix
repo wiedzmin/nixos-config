@@ -18,7 +18,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    systemd.services."keynav" = let
+    systemd.user.services."keynav" = let
       keynavConfig = pkgs.writeText "keynav.conf" (''
         clear
         grid-nav on
@@ -70,7 +70,7 @@ in {
       wantedBy = [ "graphical-session.target" ];
       serviceConfig = {
         Type = "simple";
-        PassEnvironment = "DISPLAY";
+        ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
         ExecStart = ''${pkgs.keynav}/bin/keynav "loadconfig ${keynavConfig}"'';
       };
     };

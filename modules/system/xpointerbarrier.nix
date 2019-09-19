@@ -45,14 +45,14 @@ in {
   };
 
   config = mkIf cfg.enable {
-    systemd.services."xpointerbarrier" = {
+    systemd.user.services."xpointerbarrier" = {
       description = "Create pointer barriers around each XRandR screen";
       after = [ "graphical-session-pre.target" ];
       partOf = [ "graphical-session.target" ];
       wantedBy = [ "graphical-session.target" ];
       serviceConfig = {
         Type = "simple";
-        PassEnvironment = "DISPLAY";
+        ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
         ExecStart = ''
           ${pkgs.xpointerbarrier}/bin/xpointerbarrier ${builtins.toString cfg.top} \
                                                       ${builtins.toString cfg.left} \

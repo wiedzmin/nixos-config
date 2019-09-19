@@ -28,11 +28,12 @@ in {
       after = [ "graphical-session-pre.target" ];
       partOf = [ "graphical-session.target" ];
       wantedBy = [ "graphical-session.target" ];
-      environment = mkIf cfg.debug { G_MESSAGE_DEBUG = "all"; };
+      environment = optionalAttrs cfg.debug { G_MESSAGE_DEBUG = "all"; };
       serviceConfig = {
         PIDFile = "/run/xsuspender.pid";
         Restart = "always";
         RestartSec = 1;
+        ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
         ExecStart = "${pkgs.xsuspender}/bin/xsuspender";
       };
       restartTriggers = [ "%h/.config/xsuspender.conf" ];
