@@ -78,35 +78,24 @@ in {
       '';
       ".mpv/config".text = ''
         hwdec=vdpau
-        # hwdec=vaapi
-        vo=opengl-hq,opengl,xv
-        # no-audio-display
-        # ao=pulse
         hwdec-codecs=all
 
-        # profile=opengl
+        vo=gpu,xv
+        ao=pulse
 
-        af=scaletempo,drc
+        af=scaletempo
         audio-samplerate=48000
-
-        cache-default = 250000 # Use 250MB cache for network streams
 
         slang = en
         alang = en,eng,us
 
-        # scale=ewa_lanczossharp
-        # cscale=ewa_lanczossharp
-        # scaler-resizes-only
-        # interpolation=yes
-        # tscale=oversample
-        # video-sync=display-resample
-
-        # volume-max=200
+        volume-max=200
+        cache-default = 250000 # Use 250MB cache for network streams
 
         # Always use 1080p+ or 60 fps where available. Prefer VP9
         # over AVC and VP8 for high-resolution streams.
-        # ytdl=yes
-        # ytdl-format=(bestvideo[ext=webm]/bestvideo[height>720]/bestvideo[fps=60])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio)/best
+        ytdl=yes
+        ytdl-format=(bestvideo[ext=webm]/bestvideo[height>720]/bestvideo[fps=60])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio)/best
       '';
       ".arbtt/categorize.cfg".text = ''
         aliases (
