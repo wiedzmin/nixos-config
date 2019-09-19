@@ -97,7 +97,6 @@ in {
               mode = "1920x1200";
               gamma = "1.0:0.909:0.833";
               rate = "59.95";
-              rotate = "left";
             };
             "HDMI-3" = {
               enable = true;
