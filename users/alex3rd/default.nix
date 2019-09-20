@@ -22,7 +22,15 @@ in {
     suspendCapacity = 10;
   };
 
-  services.fusuma.enable = true;
+  xinput = {
+    constraintMouse.enable = true;
+    gestures.enable = true;
+    keynav.enable = true;
+    xkeysnail = {
+      enable = true;
+      configFile = "/home/${userName}/.config/xkeysnail/config.py";
+    };
+  };
 
   services.order-screenshots = {
     enable = true;
@@ -30,13 +38,7 @@ in {
     calendarTimespec = "*-*-* 00:05:00";
   };
 
-  services.xkeysnail = {
-    enable = true;
-    configFile = "/home/${userName}/.config/xkeysnail/config.py";
-  };
-
   services.xsuspender.enable = true;
-  services.keynav.enable = true;
 
   services.git-fetch-updates = {
     enable = true;
@@ -67,7 +69,6 @@ in {
   };
 
   services.xidlehook.enable = true;
-  services.xpointerbarrier.enable = true;
 
   # FIXME: move functionality to pkgsctl
   system.activationScripts.saveCurrentHMVersion = ''
