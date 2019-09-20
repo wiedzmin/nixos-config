@@ -32,9 +32,10 @@ in {
     };
   };
 
-  services.order-screenshots = {
+  screenshots = {
     enable = true;
     baseDir = "/home/${userName}/screenshots";
+    dateFormat = "+%Y-%m-%d_%H:%M:%S";
     calendarTimespec = "*-*-* 00:05:00";
   };
 

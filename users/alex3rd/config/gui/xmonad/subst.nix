@@ -31,9 +31,6 @@ in rec {
   rofiPass = "${pkgs.rofi-pass}/bin/rofi-pass";
   rofiSsh = "${pkgs.rofi}/bin/rofi -show ssh";
   rofiWindow = "${pkgs.rofi}/bin/rofi -show window";
-  screenshotActiveWindow = "${custom.screenshot_active_window}/bin/screenshot_active_window";
-  screenshotFull = "${custom.screenshot_full}/bin/screenshot_full";
-  screenshotRegion = "${custom.screenshot_region}/bin/screenshot_region";
   searchPrompt = "${userCustom.search_prompt}/bin/search_prompt";
   searchSelection = "${userCustom.search_selection}/bin/search_selection";
   serviceJournal = "${custom.services_journals}/bin/services_journals";
@@ -43,7 +40,12 @@ in rec {
   uptimeInfo = "${custom.uptime_info}/bin/uptime_info";
   webjumps = "${userCustom.webjumps}/bin/webjumps";
   xrandrForceMobile = "${pkgs.autorandr}/bin/autorandr --load mobile";
-
+  screenshotsBlock = lib.optionalString config.screenshots.enable
+    (builtins.concatStringsSep "\n                 , " [
+      '', "<Print>"      ~> spawn "screenshot_active_window"''
+      ''"C-<Print>"    ~> spawn "screenshot_full"''
+      ''"M-<Print>"    ~> spawn "screenshot_region"''
+    ]);
   brightnessDown = "${light} -U ${toString backlightAmount}";
   brightnessMax = "${light} -S 100";
   brightnessMin = "${light} -S 20";

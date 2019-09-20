@@ -52,9 +52,6 @@ builtins.mapAttrs (name: value:
       hadolintd = ./hadolintd.nix;
       kill-compton = ./kill-compton.nix;
       pass_imap_helper = ./pass_imap_helper.nix;
-      screenshot_active_window = ./screenshot_active_window.nix;
-      screenshot_full = ./screenshot_full.nix;
-      screenshot_region = ./screenshot_region.nix;
       services_journals = ./services_journals.nix;
       shell-org-capture = ./shell-org-capture.nix;
       ssh_custom_user = ./ssh_custom_user.nix;

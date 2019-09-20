@@ -2,8 +2,7 @@
 with lib;
 
 let
-  cfg = config.services.order-screenshots;
-
+  cfg = config.screenshots;
   order_screenshots = pkgs.writeShellScriptBin "order_screenshots" ''
     declare -A REGEXP_TO_DATECMD
     REGEXP_TO_DATECMD=(
@@ -18,41 +17,55 @@ let
 
     for regexp in "''${!REGEXP_TO_DATECMD[@]}"
     do
-        FILELIST=$(ls -a ${cfg.baseDir} | grep -e $regexp)
-        DATECMD=''${REGEXP_TO_DATECMD[$regexp]}
-        for FILENAME in $FILELIST
-        do
-            DATE_PART=($(eval $DATECMD))
-            YEAR=''${DATE_PART[0]}
-            MONTH=''${DATE_PART[1]}
-            DAY=''${DATE_PART[2]}
-            DEST_PATH=${cfg.baseDir}/$YEAR/$MONTH/$DAY
-            mkdir -p ${cfg.baseDir}/$YEAR/$MONTH/$DAY
-            echo "moving $FILENAME to $DEST_PATH"
-            mv ${cfg.baseDir}/$FILENAME ${cfg.baseDir}/$YEAR/$MONTH/$DAY
-        done
+      FILELIST=$(ls -a ${cfg.baseDir} | grep -e $regexp)
+      DATECMD=''${REGEXP_TO_DATECMD[$regexp]}
+      for FILENAME in $FILELIST
+      do
+        DATE_PART=($(eval $DATECMD))
+        YEAR=''${DATE_PART[0]}
+        MONTH=''${DATE_PART[1]}
+        DAY=''${DATE_PART[2]}
+        DEST_PATH=${cfg.baseDir}/$YEAR/$MONTH/$DAY
+        mkdir -p ${cfg.baseDir}/$YEAR/$MONTH/$DAY
+        echo "moving $FILENAME to $DEST_PATH"
+        mv ${cfg.baseDir}/$FILENAME ${cfg.baseDir}/$YEAR/$MONTH/$DAY
+      done
     done
 
     exit 0
   '';
+  screenshot_active_window = pkgs.writeShellScriptBin "screenshot_active_window" ''
+    ${pkgs.maim}/bin/maim -o -i $(${pkgs.xdotool}/bin/xdotool getactivewindow) --format png /dev/stdout | \
+        ${pkgs.coreutils}/bin/tee ${cfg.baseDir}/screenshot-$(date ${cfg.dateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
+        ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
+  '';
+  screenshot_full = pkgs.writeShellScriptBin "screenshot_full" ''
+    ${pkgs.maim}/bin/maim -o --format png /dev/stdout | \
+        ${pkgs.coreutils}/bin/tee ${cfg.baseDir}/screenshot-$(date ${cfg.dateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
+        ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
+  '';
+  screenshot_region = pkgs.writeShellScriptBin "screenshot_region" ''
+    ${pkgs.maim}/bin/maim -o -s --format png /dev/stdout | \
+        ${pkgs.coreutils}/bin/tee ${cfg.baseDir}/screenshot-$(date ${cfg.dateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
+        ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
+  '';
 in {
   options = {
-    services.order-screenshots = {
+    screenshots = {
       enable = mkOption {
         type = types.bool;
         default = false;
-        example = true;
-        description = ''
-          Whether to enable screenshots ordering.
-        '';
+        description = "Whether to enable screenshots functionality";
       };
       baseDir = mkOption {
         type = types.nullOr types.str;
         default = null;
-        example = "$HOME/screenshots";
-        description = ''
-          Screenshots base directory.
-        '';
+        description = "Screenshots base directory";
+      };
+      dateFormat = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "screenshot date suffix format";
       };
       bootTimespec = mkOption {
         type = types.str;
@@ -85,10 +98,21 @@ in {
         message = "Must provide path to screenshots dir.";
       }
       {
+        assertion = cfg.dateFormat != null;
+        message = "Must provide date format.";
+      }
+      {
         assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "")
           || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
-        message = "order-screenshots: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
+        message = "screenshots: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
       }
+    ];
+
+    environment.systemPackages = [
+      order_screenshots
+      screenshot_active_window
+      screenshot_full
+      screenshot_region
     ];
 
     systemd.user.services."order-screenshots" = {

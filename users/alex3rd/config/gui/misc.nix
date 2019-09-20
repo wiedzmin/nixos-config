@@ -577,11 +577,6 @@ in {
       switch="Alt+x"
       insert_pass="Alt+n"
     '';
-    xdg.configFile."screenshots/screenshots.yml".text = ''
-      screenshots:
-        path: /home/${userName}/screenshots
-        date_format: +%Y-%m-%d_%H:%M:%S
-    '';
     gtk = {
       enable = true;
       font = {

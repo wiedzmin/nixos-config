@@ -62,10 +62,8 @@ basicKeys conf = [ "C-\\"         ~> sendMessage (XkbToggle Nothing)
                  , "M-x k"        ~> killAllOtherCopies -- @@ Toggle window state back
                  , "M-r"          ~> WS.placeWorkplaces
                  --
-                 , "<Print>"      ~> spawn "@screenshotActiveWindow@"
                  , "<XF86ScreenSaver>" ~> spawn "@lockScreen@"
-                 , "C-<Print>"    ~> spawn "@screenshotFull@"
-                 , "M-<Print>"    ~> spawn "@screenshotRegion@"
+                 @screenshotsBlock@
                  -- workspace-dependent bindings
                  , "M-/"          ~> spawn "@searchSelection@" >> WS.showWSOnProperScreen "web"
                  , "M-C-/"        ~> spawn "@searchPrompt@" >> WS.showWSOnProperScreen "web"
