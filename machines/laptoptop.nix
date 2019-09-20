@@ -176,25 +176,11 @@ in {
   users.extraUsers.root.hashedPassword =
     "586c56b7b6b6f68fca29c9ff2524e4dc52d51d5b6184a65f707dd3eae075e4c9afa81c9cd4042c26c9fb773d4f3de55fb55f363c6b0f5f6790baf4c4e3f32cb9";
   nix.trustedUsers = [ "root" ];
+
+  polkit-silent-auth.enable = true;
+
   security = {
     sudo.wheelNeedsPassword = false;
-    polkit.extraConfig = ''
-      /* Allow users in wheel group to manage systemd units without authentication */
-      polkit.addRule(function(action, subject) {
-          if (action.id == "org.freedesktop.systemd1.manage-units" &&
-              subject.isInGroup("wheel")) {
-              return polkit.Result.YES;
-          }
-      });
-
-      /* Allow users in wheel group to run programs with pkexec without authentication */
-      polkit.addRule(function(action, subject) {
-          if (action.id == "org.freedesktop.policykit.exec" &&
-              subject.isInGroup("wheel")) {
-              return polkit.Result.YES;
-          }
-      });
-    '';
     wrappers = {
       pmount.source = "${pkgs.pmount}/bin/pmount";
       pumount.source = "${pkgs.pmount}/bin/pumount";
