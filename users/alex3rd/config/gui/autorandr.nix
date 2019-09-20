@@ -19,13 +19,6 @@ in {
               "00ffffffffffff0030e4d8020000000000160103801c1078ea8855995b558f261d505400000001010101010101010101010101010101601d56d85000183030404700159c1000001b000000000000000000000000000000000000000000fe004c4720446973706c61790a2020000000fe004c503132355748322d534c42330059";
           };
           config = {
-            "VGA-1".enable = false;
-            "HDMI-1".enable = false;
-            "DP-1".enable = false;
-            "HDMI-2".enable = false;
-            "HDMI-3".enable = false;
-            "DP-2".enable = false;
-            "DP-3".enable = false;
             "LVDS-1" = {
               enable = true;
               primary = true;
@@ -46,11 +39,6 @@ in {
               "00ffffffffffff0030e4d8020000000000160103801c1078ea8855995b558f261d505400000001010101010101010101010101010101601d56d85000183030404700159c1000001b000000000000000000000000000000000000000000fe004c4720446973706c61790a2020000000fe004c503132355748322d534c42330059";
           };
           config = {
-            "VGA-1".enable = false;
-            "HDMI-1".enable = false;
-            "DP-1".enable = false;
-            "DP-2".enable = false;
-            "DP-3".enable = false;
             "HDMI-2" = {
               enable = true;
               position = "0x0";
@@ -86,11 +74,6 @@ in {
               "00ffffffffffff0030e4d8020000000000160103801c1078ea8855995b558f261d505400000001010101010101010101010101010101601d56d85000183030404700159c1000001b000000000000000000000000000000000000000000fe004c4720446973706c61790a2020000000fe004c503132355748322d534c42330059";
           };
           config = {
-            "VGA-1".enable = false;
-            "HDMI-1".enable = false;
-            "DP-1".enable = false;
-            "DP-2".enable = false;
-            "DP-3".enable = false;
             "HDMI-2" = {
               enable = true;
               position = "1366x1200";
@@ -123,12 +106,6 @@ in {
               "00ffffffffffff0030e4d8020000000000160103801c1078ea8855995b558f261d505400000001010101010101010101010101010101601d56d85000183030404700159c1000001b000000000000000000000000000000000000000000fe004c4720446973706c61790a2020000000fe004c503132355748322d534c42330059";
           };
           config = {
-            "HDMI-1".enable = false;
-            "HDMI-2".enable = false;
-            "HDMI-3".enable = false;
-            "DP-1".enable = false;
-            "DP-2".enable = false;
-            "DP-3".enable = false;
             "VGA-1" = {
               enable = true;
               position = "0x0";
