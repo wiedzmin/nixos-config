@@ -326,13 +326,6 @@ let
   ];
   miscClients = with pkgs; [ aria2 inetutils qbittorrent skype slack tdesktop w3m-full ];
   miscClientsRare = with pkgs; [ teamviewer zoom-us ];
-  scanner = with pkgs; [
-    # enable when needed
-    deskew
-    scantailor-advanced
-    simple-scan
-    xsane # temporarily kept for debug
-  ];
   org = with pkgs; [
     remind # + rem2ics (make overlay)
     wyrd

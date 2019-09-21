@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
 
-let enableScanner = false;
-in {
+{
   imports = [
     ../pkgs/setup.nix
     ../modules
@@ -64,13 +63,6 @@ in {
       package = pkgs.pulseaudioFull; # 'full' for e.g. bluetooth
       systemWide = true;
       daemon.config = { flat-volumes = "no"; };
-    };
-    sane = {
-      enable = enableScanner;
-      extraBackends = lib.mkIf enableScanner [
-        pkgs.epkowa
-        # pkgs.utsushi # TODO: try
-      ];
     };
   };
 
@@ -165,12 +157,6 @@ in {
     thermald.enable = true;
     acpid.enable = true;
     timesyncd.enable = true;
-    printing = {
-      enable = false;
-      drivers = [ pkgs.hplip ];
-      browsing = true;
-      defaultShared = true;
-    };
   };
 
   users.extraUsers.root.hashedPassword =
@@ -219,7 +205,6 @@ in {
     allowUnfreeRedistributable = true;
 
     oraclejdk.accept_license = true;
-    sane.snapscanFirmware = lib.mkIf enableScanner "/etc/nixos/contrib/blobs/Esfw52.bin";
   };
 
   networking = {

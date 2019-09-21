@@ -6,6 +6,7 @@
     ./git-fetch-updates.nix
     ./git-push-updates.nix
     ./git-save-wip.nix
+    ./paperwork.nix
     ./polkit-silent-auth.nix
     ./screenshots.nix
     ./xidlehook.nix
