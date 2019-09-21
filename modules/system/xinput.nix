@@ -66,6 +66,16 @@ in {
         default = 0;
         description = "Bottom margin size.";
       };
+      xmodmap.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to use xmodmap";
+      };
+      xmodmap.rc = mkOption {
+        type = types.lines;
+        default = "";
+        description = "Xmodmaprc contents";
+      };
     };
   };
 
@@ -224,6 +234,14 @@ in {
             '';
         };
       };
+    })
+    (mkIf cfg.xmodmap.enable {
+      services.xserver.displayManager.sessionCommands = let
+        xmodmaprc = pkgs.writeText "xmodmaprc" "${cfg.xmodmap.rc}";
+        in ''
+          ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
+          ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
+        '';
     })
   ];
 }

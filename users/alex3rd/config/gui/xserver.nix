@@ -27,24 +27,7 @@ with import ../../const.nix { inherit config pkgs; }; {
           logToFile = true;
           logToJournal = true;
         };
-        sessionCommands = let
-          xmodmaprc = pkgs.writeText "xmodmaprc" ''
-            clear mod1
-            clear mod4
-            clear mod5
-            keycode 64 = Alt_L Meta_L
-            keycode 133 = Super_L
-            keycode 108 = Hyper_L
-            keycode 191 = Insert
-            add mod1 = Meta_L
-            add mod1 = Alt_L
-            add mod4 = Super_L
-            add mod5 = Hyper_L
-          '';
-        in ''
-          ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
-          ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
-
+        sessionCommands = ''
           export CURRENT_WM=${config.services.xserver.windowManager.default}
           export TZ="${config.time.timeZone}"
           export _JAVA_AWT_WM_NONREPARENTING=1
