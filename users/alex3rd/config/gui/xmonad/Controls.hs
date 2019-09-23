@@ -86,7 +86,7 @@ basicKeys conf = [ "C-\\"         ~> sendMessage (XkbToggle Nothing)
                  , "M-M1-q"       ~> spawn "@mergeXresources@"
                  --
                  , "M-C-a"        ~> spawn "@autorandrProfiles@"
-                 , "M-C-c"        ~> spawn "@dockerContainerTraits@"
+                 @dockerContainerTraits@
                  , "M-C-h"        ~> spawn "@extraHostsTraits@"
                  , "M-C-m"        ~> spawn "@mountNasVolume@"
                  , "M-C-t"        ~> spawn "@tmuxpSessions@"

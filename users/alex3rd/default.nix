@@ -13,13 +13,23 @@ in {
     uid = 1000;
     description = "Alex Ermolov";
     shell = pkgs.zsh;
-    extraGroups = [ "audio" "input" "libvirtd" "lp" "scanner" "video" "wheel" ];
+    extraGroups = [ "audio" "input" "lp" "scanner" "video" "wheel" ];
   };
 
   services.batteryNotifier = {
     enable = true;
     notifyCapacity = 20;
     suspendCapacity = 10;
+  };
+
+  virtualization = {
+    enable = true;
+    userName = "${userName}";
+    docker = {
+      enable = true;
+      devdns.enable = true;
+    };
+    libvirt.enable = true;
   };
 
   xinput = {
@@ -75,11 +85,6 @@ in {
     activeTimespec = "1hour";
   };
 
-  services.docker-devdns = {
-    enable = true;
-    autoStart = false;
-  };
-
   services.clean-trash = {
     enable = true;
     calendarTimespec = "*-*-* 23:00:00";
@@ -106,10 +111,7 @@ in {
     home.packages = with pkgs; [
       # custom.gen-nix-du
       custom.confctl
-      custom.dflinter
-      custom.dlint
       custom.format-config
-      custom.hadolintd
       custom.pkgsctl
       custom.update-system
     ];

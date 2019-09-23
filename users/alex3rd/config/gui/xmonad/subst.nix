@@ -18,7 +18,8 @@ in rec {
   bukuAdd = "${custom.buku_add}/bin/buku_add";
   currentSystemHash = "${custom.current_system_hash}/bin/current_system_hash";
   dbms = "${userCustom.dbms}/bin/dbms";
-  dockerContainerTraits = "${custom.docker_containers_traits}/bin/docker_containers_traits";
+  dockerContainerTraits = lib.optionalString config.virtualization.docker.enable
+    '', "M-C-c"      ~> spawn "docker_containers_traits"'';
   dockerShell = "${userCustom.docker_shell}/bin/docker_shell";
   dockerStacksInfo = "${userCustom.docker_stacks_info}/bin/docker_stacks_info";
   extraHostsTraits = "${userCustom.extra_hosts_traits}/bin/extra_hosts_traits";

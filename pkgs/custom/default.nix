@@ -39,17 +39,11 @@ builtins.mapAttrs (name: value:
       buku_search_url = ./buku_search_url.nix;
       burn_iso = ./burn_iso.nix;
       current_system_hash = ./current_system_hash.nix;
-      dflinter = ./dflinter.nix;
       discover_containerized_services = ./discover_containerized_services.nix;
-      dlint = ./dlint.nix;
-      docker-machine-export = ./docker-machine-export.nix;
-      docker-machine-import = ./docker-machine-import.nix;
-      docker_containers_traits = ./docker_containers_traits.nix; # TODO: review and fix
       format-config = ./format-config.nix;
       gen-nix-du = ./gen-nix-du.nix;
       git_remote_diff = ./git_remote_diff.nix;
       goreplay-capture = ./goreplay-capture.nix;
-      hadolintd = ./hadolintd.nix;
       kill-compton = ./kill-compton.nix;
       pass_imap_helper = ./pass_imap_helper.nix;
       services_journals = ./services_journals.nix;

@@ -201,26 +201,6 @@ let
     proposed.gitAndTools.git-quick-stats
     python2Packages.git-sweep # FIXME: adapt to py3
   ];
-  virt = with pkgs;
-    let custom = import ../../pkgs/custom pkgs config;
-    in [
-      ctop
-      custom.docker-machine-export
-      custom.docker-machine-import
-      dive
-      docker-machine
-      docker_compose
-      kvm
-      libcgroup
-      promoter
-      spice
-      spice-gtk
-      tigervnc
-      vagrant
-      virtmanager
-      virtviewer
-    ];
-  virtRare = [ skopeo ];
   forensics = with pkgs; [
     # jd-gui
     bbe
@@ -422,6 +402,6 @@ in {
   home-manager.users."${userName}" = {
     home.packages = devClients ++ devGolangInfra ++ devGolangTools ++ devIde ++ devMisc ++ devPythonTools ++ devVcsGit
       ++ forensics ++ miscClients ++ miscMedia ++ monitoring ++ nix ++ org ++ sandbox ++ security ++ shell
-      ++ stagingCommon ++ stagingPublish ++ stagingWork ++ text ++ virt;
+      ++ stagingCommon ++ stagingPublish ++ stagingWork ++ text;
   };
 }
