@@ -91,13 +91,14 @@ in {
         '';
       };
     };
-    xdg.configFile."pass-git-helper/git-pass-mapping.ini".text = ''
-      [github.com*]
-      target=${userName}/webservices/social/programming/github.com
-
-      [bitbucket.org*]
-      target=${userName}/webservices/social/programming/bitbucket.com
-    '';
+    xdg.configFile."pass-git-helper/git-pass-mapping.ini".text = genIni {
+      "github.com*" = {
+        target = "${userName}/webservices/social/programming/github.com";
+      };
+      "bitbucket.org*" = {
+        target = "${userName}/webservices/social/programming/bitbucket.com";
+      };
+    };
     programs.git = {
       enable = true;
       userName = userFullName;
