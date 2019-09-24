@@ -76,6 +76,11 @@ in {
         default = "";
         description = "Xmodmaprc contents";
       };
+      debug.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to add some X-related tools to PATH";
+      };
     };
   };
 
@@ -242,6 +247,12 @@ in {
           ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
           ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
         '';
+    })
+    (mkIf cfg.debug.enable {
+      environment.systemPackages = with pkgs; [
+        xlibs.xev
+        xlibs.xprop
+      ];
     })
   ];
 }
