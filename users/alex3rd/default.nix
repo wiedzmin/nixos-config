@@ -8,6 +8,8 @@ let
 in {
   imports = [ <home-manager/nixos> ./config ./packages.nix ./secrets/personal.nix ./secrets/job.nix ];
 
+  attributes.mainUser = "${userName}";
+
   users.extraUsers."${userName}" = {
     isNormalUser = true;
     uid = 1000;
