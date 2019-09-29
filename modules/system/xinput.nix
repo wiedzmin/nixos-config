@@ -221,6 +221,8 @@ in {
           } ${cfg.xkeysnail.configFile}";
         };
       };
+
+      users.users."${config.attributes.mainUser}".extraGroups = [ "input" ];
     })
     (mkIf cfg.constraintMouse.enable {
       systemd.user.services."xpointerbarrier" = {
