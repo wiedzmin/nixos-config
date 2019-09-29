@@ -1,5 +1,5 @@
 { bash, config, gawk, lib, pkgs, rofi, ... }:
-with import ../../../pkgs/util.nix { inherit config lib pkgs; };
+with import ../../../pkgs/util.nix { inherit config lib; };
 with import ../const.nix { inherit lib config pkgs; };
 with import ../secrets/const.nix { inherit lib config pkgs; }; ''
   #!${bash}/bin/bash

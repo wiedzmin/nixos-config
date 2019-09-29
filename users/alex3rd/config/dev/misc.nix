@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }:
-with import ../../../../pkgs/util.nix { inherit lib config pkgs; };
+with import ../../../../pkgs/util.nix { inherit lib config; };
 with import ../../const.nix { inherit lib config pkgs; }; {
   programs = {
     mtr.enable = true;

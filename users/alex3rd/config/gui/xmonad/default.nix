@@ -1,7 +1,7 @@
 { config, pkgs, lib, ... }:
 
 with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make more declarative
-with import ../../../../../pkgs/util.nix { inherit lib config pkgs; };
+with import ../../../../../pkgs/util.nix { inherit lib config; };
 with import ../../../const.nix { inherit config pkgs; }; {
   home-manager.users."${userName}" = {
     home.file = {

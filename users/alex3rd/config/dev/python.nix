@@ -1,5 +1,5 @@
 { config, pkgs, lib, ... }:
-with import ../../../../pkgs/util.nix { inherit config pkgs lib; };
+with import ../../../../pkgs/util.nix { inherit config lib; };
 with import ../../const.nix { inherit config pkgs; };
 let
   maxLineLength = 120;

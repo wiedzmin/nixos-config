@@ -1,5 +1,5 @@
 { bash, config, gawk, gnused, lib, pkgs, rofi, xsel, yad, ... }:
-with import ../../../pkgs/util.nix { inherit lib config pkgs; };
+with import ../../../pkgs/util.nix { inherit lib config; };
 with import ../../../pkgs/const.nix { inherit lib config pkgs; };
 with import ../secrets/const.nix { inherit lib config pkgs; };
 let hostTraitsIpOutputPosition = 4;

@@ -1,4 +1,5 @@
-{ config, lib, pkgs, ... }:
+{ lib, ... }:
+with lib;
 
 rec {
   sedPlaceholderChar = "_";

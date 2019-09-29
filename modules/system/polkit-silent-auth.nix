@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
-with import ../../../pkgs/util.nix { inherit config pkgs lib; };
+with import ../../../pkgs/util.nix { inherit config lib; };
 with lib;
 
 let cfg = config.polkit-silent-auth;
