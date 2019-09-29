@@ -657,7 +657,6 @@ in {
           foreground = "#F0E0E0";
           frame_color = "#D64E4E";
           timeout = 7;
-          icon = "/usr/share/icons/gentoo/32x32/dia.png";
         };
       };
     };
