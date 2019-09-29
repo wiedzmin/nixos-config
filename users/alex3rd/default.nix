@@ -15,13 +15,25 @@ in {
     uid = 1000;
     description = "Alex Ermolov";
     shell = pkgs.zsh;
-    extraGroups = [ "audio" "video" "wheel" ];
+    extraGroups = [ "wheel" ];
   };
 
   services.batteryNotifier = {
     enable = true;
     notifyCapacity = 20;
     suspendCapacity = 10;
+  };
+
+  media = {
+    enable = true;
+    pulse = {
+        enable = true;
+        daemonConfig = {
+          flat-volumes = "no";
+        };
+    };
+    opengl.enable = true;
+    ympd.enable = true;
   };
 
   virtualization = {

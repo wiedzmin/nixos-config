@@ -45,24 +45,11 @@
     enableAllFirmware = true;
     ksm.enable = true;
     sensor.iio.enable = true;
-    opengl = {
-      enable = true;
-      extraPackages = with pkgs; [ intel-media-driver libvdpau-va-gl vaapiIntel vaapiVdpau ];
-      driSupport32Bit = true;
-      extraPackages32 = with pkgs.pkgsi686Linux; [ libvdpau-va-gl vaapiIntel vaapiVdpau ];
-    };
     trackpoint = {
       enable = true;
       sensitivity = 255;
       speed = 200;
       emulateWheel = true;
-    };
-    pulseaudio = {
-      enable = true;
-      support32Bit = true;
-      package = pkgs.pulseaudioFull; # 'full' for e.g. bluetooth
-      systemWide = true;
-      daemon.config = { flat-volumes = "no"; };
     };
   };
 
@@ -98,8 +85,6 @@
     systemPackages = with pkgs;
       with config.boot.kernelPackages;
       [
-        pasystray
-        pavucontrol
         # ocz-ssd-guru # add as an overlay and fix hash (and installation instructions)
         intelmetool
         me_cleaner
@@ -120,10 +105,6 @@
 
   services = {
     irqbalance.enable = true;
-    ympd = {
-      enable = true;
-      webPort = 8765;
-    };
     chrony.enable = true;
     dbus = {
       enable = true;
