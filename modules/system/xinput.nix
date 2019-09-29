@@ -22,7 +22,7 @@ in {
       };
       xkeysnail.configFile = mkOption {
         type = types.str;
-        default = "";
+        default = "/home/${config.attributes.mainUser}/.config/xkeysnail/config.py";
         description = ''
           Config file absolute path.
         '';
@@ -206,6 +206,12 @@ in {
         assertion = cfg.xkeysnail.configFile != "";
         message = "XKeysnail: must provide config file path.";
       }];
+
+      security.wrappers.sudo = {
+        source = "${pkgs.sudo}/bin/sudo";
+        owner = "root";
+        permissions = "u+s";
+      };
 
       systemd.user.services."xkeysnail" = {
         description = "Xkeysnail";

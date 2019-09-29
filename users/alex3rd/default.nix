@@ -49,10 +49,7 @@ in {
     constraintMouse.enable = true;
     gestures.enable = true;
     keynav.enable = true;
-    xkeysnail = {
-      enable = true;
-      configFile = "/home/${userName}/.config/xkeysnail/config.py";
-    };
+    xkeysnail.enable = true;
     xmodmap = {
       enable = true;
       rc = ''

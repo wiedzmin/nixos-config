@@ -78,30 +78,5 @@ with import ../../const.nix { inherit config pkgs; }; {
   };
   programs.light.enable = true;
 
-  environment.systemPackages = with pkgs; [ ckbcomp gmrun xlibs.xev xlibs.xprop xorg.xhost xorg.xmessage ];
-  fonts = {
-    fontconfig = {
-      enable = true;
-      antialias = true;
-      useEmbeddedBitmaps = true;
-      dpi = 115;
-      defaultFonts = { monospace = [ "Iosevka" ]; };
-    };
-    enableFontDir = true;
-    enableGhostscriptFonts = true;
-    fonts = with pkgs; [
-      anonymousPro
-      corefonts
-      emacs-all-the-icons-fonts
-      fantasque-sans-mono
-      fira-code
-      font-awesome-ttf
-      go-font
-      hack-font
-      iosevka
-      powerline-fonts
-      terminus_font
-      terminus_font_ttf
-    ];
-  };
+  environment.systemPackages = with pkgs; [ gmrun xorg.xhost xorg.xmessage ];
 }
