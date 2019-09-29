@@ -1,7 +1,7 @@
 { ... }: {
   imports = [
     ./battery-notifier.nix
-    ./paperwork.nix
+    ./paperworks.nix
     ./polkit-silent-auth.nix
     ./virt.nix
     ./xinput.nix

@@ -15,7 +15,7 @@ in {
     uid = 1000;
     description = "Alex Ermolov";
     shell = pkgs.zsh;
-    extraGroups = [ "audio" "input" "lp" "scanner" "video" "wheel" ];
+    extraGroups = [ "audio" "input" "video" "wheel" ];
   };
 
   services.batteryNotifier = {

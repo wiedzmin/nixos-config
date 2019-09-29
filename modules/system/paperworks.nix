@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.paperwork;
+let cfg = config.paperworks;
 in {
   options = {
-    paperwork = {
+    paperworks = {
       printing.enable = mkOption {
         type = types.bool;
         default = false;
@@ -13,7 +13,7 @@ in {
       printing.drivers = mkOption {
         type = types.listOf types.path;
         default = [ ];
-        example = [ pkgs.hplip ];
+        example = [ pkgs.hplipWithPlugin ];
         description = "Printer drivers list.";
       };
       scanning.enable = mkOption {
@@ -63,8 +63,8 @@ in {
         defaultShared = true;
         webInterface = true;
       };
+      users.users."${config.attributes.mainUser}".extraGroups = [ "lp" ];
     })
-    # TODO: try pkgs.utsushi
     (mkIf cfg.scanning.enable {
       assertions = [
         {
@@ -76,6 +76,9 @@ in {
         enable = true;
         extraBackends = cfg.scanning.extraBackends;
       };
+
+      services.saned.enable = true;
+
       nixpkgs.config = optionalAttrs cfg.scanning.snapscan.enable {
         sane.snapscanFirmware = cfg.scanning.snapscan.firmware;
       };
@@ -83,7 +86,11 @@ in {
         deskew
         scantailor-advanced
         simple-scan
-      ] ++ optional cfg.scanning.enableXsane [ xsane ];
+        utsushi
+      ] ++ optional cfg.scanning.enableXsane [
+        (xsane.override { gimpSupport = true; })
+      ];
+      users.users."${config.attributes.mainUser}".extraGroups = [ "scanner" ];
     })
   ];
 }
