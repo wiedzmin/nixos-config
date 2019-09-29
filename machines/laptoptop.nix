@@ -77,19 +77,17 @@
     plymouth.enable = true;
     extraModprobeConfig = ''
       options iwlwifi 11n_disable=1 power_save=1 power_level=2
-      options kvm-intel nested=1
     '';
     extraModulePackages = with config.boot.kernelPackages; [ exfat-nofuse ];
     tmpOnTmpfs = true;
     kernelPackages = pkgs.linuxPackages_4_19;
     kernelParams =
       [ "scsi_mod.use_blk_mq=1" "pti=off" "nospectre_v1" "nospectre_v2" "l1tf=off" "nospec_store_bypass_disable" ];
-    kernelModules = [ "bfq" "kvm-intel" "thinkpad_acpi" "thinkpad_hwmon" ];
+    kernelModules = [ "bfq" "thinkpad_acpi" "thinkpad_hwmon" ];
     kernel.sysctl = {
       "fs.inotify.max_user_instances" = 1024;
       "fs.inotify.max_user_watches" = 1048576;
       "fs.inotify.max_queued_events" = 32768;
-      "net.ipv4.ip_forward" = 1; # for VMs forwarding
       "net.ipv4.ip_default_ttl" = 65;
       "net.ipv4.tcp_sack" = 0;
     };

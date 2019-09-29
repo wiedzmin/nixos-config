@@ -26,7 +26,6 @@ in {
 
   virtualization = {
     enable = true;
-    userName = "${userName}";
     docker = {
       enable = true;
       devdns.enable = true;

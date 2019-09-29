@@ -53,7 +53,6 @@ builtins.mapAttrs (name: value:
       tmuxp_sessions = ./tmuxp_sessions.nix;
       update-system = ./update-system.nix;
       uptime_info = ./uptime_info.nix;
-      vdi2qcow2 = ./vdi2qcow2.nix;
       wifi-status = ./wifi-status.nix;
     }
 

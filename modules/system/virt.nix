@@ -164,6 +164,9 @@ let
 
     exit 0
   '';
+  vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
+    ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
+  '';
 in {
   options = {
     virtualization = {
@@ -171,10 +174,6 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable virtualization";
-      };
-      userName = mkOption {
-        type = types.str;
-        default = "";
       };
       docker.enable = mkOption {
         type = types.bool;
@@ -221,14 +220,14 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      assertions = [{
-        assertion = cfg.userName != "";
-        message = "virtualization: must provide username.";
-      }];
       environment.systemPackages = with pkgs; [
         tigervnc
         vagrant
       ];
+
+      boot.kernel.sysctl = {
+        "net.ipv4.ip_forward" = 1; # for VMs forwarding
+      };
     })
 
     (mkIf (cfg.enable && cfg.docker.enable && cfg.docker.aux.enable) {
@@ -243,7 +242,7 @@ in {
         storageDriver = cfg.docker.storageDriver;
       };
 
-      users.extraUsers."${cfg.userName}".extraGroups = [ "docker" ];
+      users.users."${config.attributes.mainUser}".extraGroups = [ "docker" ];
 
       environment.systemPackages = with pkgs; [
         dlint
@@ -251,6 +250,7 @@ in {
         docker-machine-export
         docker-machine-import
         docker_containers_traits
+        vdi2qcow2
       ] ++ [
         ctop
         dive
@@ -292,10 +292,30 @@ in {
       virtualisation.libvirtd = { enable = true; };
       virtualisation.kvmgt.enable = true;
 
-      users.extraUsers."${cfg.userName}".extraGroups = [ "libvirtd" ];
+      users.users."${config.attributes.mainUser}".extraGroups = [ "libvirtd" ];
+
+      networking.nat.internalInterfaces = ["virbr0"];
+      services.dnsmasq.extraConfig = ''
+        except-interface=virbr0 # ignore virbr0 as libvirtd listens here
+      '';
+
+      boot.kernelParams = [
+        "kvm.allow_unsafe_assigned_interrupts=1"
+        "kvm.ignore_msrs=1"
+        "kvm-intel.nested=1"
+      ];
+      boot.kernelModules = [ "kvm-intel" ];
+      boot.extraModprobeConfig = ''
+        options kvm-intel nested=1
+      '';
+
+      # required for usb redirection to work
+      security.wrappers.spice-client-glib-usb-acl-helper.source =
+        "${pkgs.spice_gtk}/bin/spice-client-glib-usb-acl-helper";
 
       environment.systemPackages = with pkgs; [
         kvm
+        libvirt # for `vagrant plugin install vagrant-libvirt`
         spice
         spice-gtk
         virtmanager
