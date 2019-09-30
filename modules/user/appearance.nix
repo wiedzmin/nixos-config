@@ -31,11 +31,26 @@ in {
         default = "Iosevka";
         description = "Default monospace font family.";
       };
+      fonts.console = mkOption {
+        type = types.str;
+        default = "";
+        description = "Font for console.";
+      };
+      fonts.locale = mkOption {
+        type = types.str;
+        default = "ru_RU.UTF-8";
+        description = "Locale name.";
+      };
     };
   };
 
   config = mkMerge [
     (mkIf cfg.enable {
+      assertions = [{
+        assertion = cfg.fonts.console != "";
+        message = "appearance: must provide console font name.";
+      }];
+
       fonts = {
         fonts = cfg.fonts.list;
         fontconfig = {
@@ -46,6 +61,19 @@ in {
         };
         enableFontDir = true;
         enableGhostscriptFonts = true;
+      };
+      i18n = {
+        consoleFont = cfg.fonts.console;
+        defaultLocale = cfg.fonts.locale;
+        consoleUseXkbConfig = true;
+        inputMethod = {
+          enabled = "ibus";
+          ibus.engines = with pkgs.ibus-engines; [
+            table
+            table-others # for LaTeX input
+            m17n
+          ];
+        };
       };
     })
   ];

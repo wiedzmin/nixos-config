@@ -155,20 +155,6 @@
     lockKernelModules = false;
   };
 
-  i18n = {
-    consoleFont = "Lat2-Terminus16";
-    defaultLocale = "ru_RU.UTF-8";
-    consoleUseXkbConfig = true;
-    inputMethod = {
-      enabled = "ibus";
-      ibus.engines = with pkgs.ibus-engines; [
-        table
-        table-others # for LaTeX input
-        m17n
-      ];
-    };
-  };
-
   time = {
     timeZone = "Europe/Moscow";
     hardwareClockInLocalTime = true;
