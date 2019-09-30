@@ -28,13 +28,8 @@ with import ../../const.nix { inherit config pkgs; }; {
           logToJournal = true;
         };
         sessionCommands = ''
-          export CURRENT_WM=${config.services.xserver.windowManager.default}
-          export TZ="${config.time.timeZone}"
           export _JAVA_AWT_WM_NONREPARENTING=1
-
           ${pkgs.wmname}/bin/wmname LG3D
-
-          ${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources
         '';
       };
       autoRepeatDelay = 200;
@@ -48,8 +43,6 @@ with import ../../const.nix { inherit config pkgs; }; {
         ignorePalm = true;
         tapButtons = false;
         additionalOptions = ''
-          # Option        "ScrollCoastDuration" "500"
-          # Option        "ScrollCoastEnableSpeed" ".3"
           Option        "ButtonIntegrated" "true"
           Option        "ButtonMoveEmulate" "false"
           Option        "ClickTime" "25"

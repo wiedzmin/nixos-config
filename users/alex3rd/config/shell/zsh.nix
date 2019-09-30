@@ -3,21 +3,9 @@ with import ../../const.nix { inherit config pkgs; };
 with import ../../secrets/const.nix { inherit config pkgs lib; };
 let
   zshOptions = [ "braceccl" "correctall" "extendedglob" "menucomplete" ];
-  binDirs = [ "/home/${userName}/scripts" "/home/${userName}/tools/bin" "/home/${userName}/.local/bin" ];
   zshHistFilename = ".histfile";
 in {
   home-manager.users."${userName}" = {
-    home.file = {
-      ".zsh/functions.zsh".text = ''
-        dot() {
-            if [[ $LBUFFER = *.. ]]; then
-                LBUFFER+=/..
-            else
-                LBUFFER+=.
-            fi
-        }
-      '';
-    };
     home.packages = with pkgs; [ libnotify ]; # for zsh-notify plugin
     programs.bat = {
       enable = true;
@@ -46,7 +34,7 @@ in {
       enable = true;
       oh-my-zsh = {
         enable = true;
-        plugins = [ "colored-man-pages" "dirpersist" "urltools" "virtualenv" "virtualenvwrapper" ];
+        plugins = [ "colored-man-pages" "urltools" ];
         theme = "muse";
       };
       enableAutosuggestions = true;
@@ -79,26 +67,15 @@ in {
           setopt ${opt}
         '') zshOptions}
 
-        source ~/.zsh/functions.zsh
-
-        zle -N dot && bindkey . dot
         bindkey '^P' fuzzy-search-and-edit
       '';
       sessionVariables = {
         CSEARCHINDEX = "${devWorkspacePath}/.csearchindex";
-        CURRENT_WM = "${config.services.xserver.windowManager.default}";
         EDITOR = "${pkgs.emacs}/bin/emacsclient";
-        GREP_COLOR = "1;32";
-        GREP_OPTIONS = "--color=auto";
-        GTAGSLIBPATH = "/home/${userName}/.gtags/";
         HISTFILE = "${zshHistFilename}";
-        LIBVA_DRIVER_NAME = "iHD";
-        PATH = "$PATH:${lib.concatStringsSep ":" (lib.unique binDirs)}";
-        SHELL = "${pkgs.zsh}/bin/zsh";
         TMUXP_CONFIGDIR = "/home/${userName}/tmuxp";
         VISUAL = "${pkgs.emacs}/bin/emacsclient";
         WORKON_HOME = "/home/${userName}/.virtualenvs";
-        XAUTHORITY = "/home/${userName}/.Xauthority";
         YSU_IGNORED_ALIASES = [ "g" "ll" ]; # TODO: review list
         YSU_MODE = "ALL";
         ZSH_COMMAND_TIME_COLOR = "cyan";

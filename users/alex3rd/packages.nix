@@ -53,7 +53,6 @@ let
     keychain
     kid3
     lazydocker
-    libvirt # for `vagrant plugin install vagrant-libvirt`
     lightlocker
     mediainfo
     mediainfo-gui
@@ -331,7 +330,6 @@ let
       ffmpeg
       gallery-dl
       haskellPackages.arbtt
-      imv
       jmtpfs # consider providing some (shell) automation
       maim
       mimeo
@@ -370,7 +368,7 @@ let
       unar
       unshield
     ] ++ [ xsv ]
-    ++ [ bc dateutils dex doitlive gcalcli loop mc plan9port replace shellcheck tmsu tree unicode-paracode wtf ]
+    ++ [ bc dateutils dex doitlive gcalcli loop mc plan9port replace shellcheck tmsu tree unicode-paracode ]
     ++ [ rdfind ] ++ [ most ntfy procs progress pv shell-hist up xe ] ++ [ eternal-terminal ] ++ [ fpp skim tmux ]
     ++ [ tmatrix ];
   text = with pkgs; [
