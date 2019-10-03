@@ -1,7 +1,6 @@
 { config, pkgs, lib, ... }:
-with import ../../../../../pkgs/util.nix { inherit lib config; };
-with import ../../../const.nix { inherit config pkgs; }; {
-  home-manager.users."${userName}" = {
+{
+  home-manager.users."${config.attributes.mainUser}" = {
     home.packages = with pkgs; [
       (makeDesktopItem {
         name = "org-protocol";
@@ -78,7 +77,6 @@ with import ../../../const.nix { inherit config pkgs; }; {
         epkgs.haskell-mode
         epkgs.hc-zenburn-theme
         epkgs.helpful
-        epkgs.highlight-numbers
         epkgs.hl-todo
         epkgs.imenu-anywhere
         epkgs.ini-mode
@@ -110,7 +108,6 @@ with import ../../../const.nix { inherit config pkgs; }; {
         epkgs.org-bullets
         epkgs.org-capture-pop-frame
         epkgs.org-clock-today
-        epkgs.org-download
         epkgs.org-plus-contrib
         epkgs.org-pomodoro
         epkgs.org-randomnote

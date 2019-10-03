@@ -190,45 +190,8 @@
   :preface
   (defadvice wdired-abort-changes (after revert-buffer activate)
     (revert-buffer))
-  :bind
-  (:map dired-mode-map
-        ("r" . wdired-change-to-wdired-mode))
   :custom
   (wdired-allow-to-change-permissions 'advanced))
-
-(use-package dired-launch
-  :ensure t
-  :hook
-  (dired-mode . dired-launch-mode))
-
-(use-package dired-git-info
-  :ensure t
-  :bind
-  (:map dired-mode-map
-        (")" . dired-git-info-mode)))
-
-(use-package dired-narrow
-  :ensure t
-  :bind
-  (:map dired-mode-map
-        ("/" . dired-narrow)))
-
-(use-package dired-quick-sort
-  :ensure t
-  :config
-  (dired-quick-sort-setup))
-
-(use-package diredfl
-  :ensure t
-  :hook
-  (dired-mode . diredfl-mode))
-
-(use-package dired-x
-  :bind
-  ([remap list-directory] . dired-jump)
-  :custom
-  ;; do not bind C-x C-j, it may be binded later
-  (dired-bind-jump nil))
 
 (use-package dired-hide-dotfiles
   :ensure t

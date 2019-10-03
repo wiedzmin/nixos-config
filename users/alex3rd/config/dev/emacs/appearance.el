@@ -27,11 +27,6 @@
   :hook
   (after-init-hook . (lambda () (load-theme 'zenburn t))))
 
-(use-package highlight-numbers
-  :ensure t
-  :hook
-  (prog-mode . highlight-numbers-mode))
-
 (use-package hl-line
   :config
   (global-hl-line-mode 1))
@@ -61,3 +56,8 @@
   (uniquify-separator ":")
   (uniquify-ignore-buffers-re "^\\*")
   (uniquify-strip-common-suffix nil))
+
+(use-package diredfl
+  :ensure t
+  :hook
+  (dired-mode . diredfl-mode))

@@ -4,17 +4,9 @@
   :config
   (add-to-list 'company-backends 'company-restclient))
 
-(use-package haskell-mode
-  :ensure t
-  :mode "\\.hs\\'")
-
 (use-package jinja2-mode
   :ensure t
   :mode "\\.j2$")
-
-(use-package ini-mode
-  :ensure t
-  :mode "\\.ini\\'")
 
 (use-package yaml-mode
   :mode "\\.yml\\'"

@@ -6,8 +6,6 @@
   (amx-backend 'ivy)
   (amx-save-file "@emacsAmxSaveFile@"))
 
-(use-package anaphora :ensure t)
-
 (use-package auto-compile
   :ensure t
   :config

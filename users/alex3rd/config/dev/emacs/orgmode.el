@@ -402,15 +402,6 @@
   :hook
   (org-mode-hook . org-bullets-mode))
 
-;TODO: review https://github.com/abo-abo/org-download
-(use-package org-download
-  :ensure t
-  ;;TODO: bind keys ASAP
-  ;;TODO: use in automation
-  :hook (dired-mode-hook . org-download-enable)
-  :custom
-  (org-download-method 'attach))
-
 (use-package org-protocol
   :after org server)
 

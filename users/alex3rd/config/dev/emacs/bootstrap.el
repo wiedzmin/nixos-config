@@ -35,6 +35,7 @@
   :custom
   (quelpa-use-package-inhibit-loading-quelpa
    t "Improve startup performance"))
+(use-package anaphora :ensure t)
 
 (pinentry-start)
 
