@@ -11,13 +11,19 @@ builtins.mapAttrs (name: value:
     buildInputs = [ makeWrapper ];
     propagatedBuildInputs = [
       python3Full
-      python3Packages.papis-python-rofi
+      python3Packages.dmenu-python
       python3Packages.GitPython
       python3Packages.telethon # for some hypothetical future notifications
+      # TODO: move per script
+      fd
+      zathura
     ];
     buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${name}";
     installPhase = "true";
-  }) { } // builtins.mapAttrs (name: value:
+    pythonCatchConflictsPhase = "true";
+  }) {
+    bookshelf = ./bookshelf;
+  } // builtins.mapAttrs (name: value:
     writeTextFile {
       inherit name;
       destination = "/bin/${name}";
@@ -27,7 +33,6 @@ builtins.mapAttrs (name: value:
     }) {
       git_lib = ./lib/git.nix; # TODO: add secrets pre-commit checking
       # ========
-      bookshelf = ./bookshelf.nix;
       ctop_hosts = ./ctop_hosts.nix;
       dbms = ./dbms.nix;
       docker_shell = ./docker_shell.nix;

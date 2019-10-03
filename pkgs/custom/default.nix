@@ -12,14 +12,26 @@ builtins.mapAttrs (name: value:
     propagatedBuildInputs = [
       python3Full
       python3Packages.papis-python-rofi
+      python3Packages.dmenu-python
       python3Packages.GitPython
       python3Packages.telethon # for some hypothetical future notifications
+      # TODO: move per script
+      autorandr
+      eternal-terminal
+      systemd
+      tmux
+      tmuxp
     ];
     buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${name}";
     installPhase = "true";
+    pythonCatchConflictsPhase = "true";
   }) {
-    pkgsctl = ./pkgsctl;
     confctl = ./confctl;
+    pkgsctl = ./pkgsctl;
+    autorandr_profiles = ./autorandr_profiles;
+    services_journals = ./services_journals;
+    ssh_custom_user = ./ssh_custom_user;
+    tmuxp_sessions = ./tmuxp_sessions;
   } // builtins.mapAttrs (name: value:
     writeTextFile {
       inherit name;
@@ -30,7 +42,6 @@ builtins.mapAttrs (name: value:
     }) {
       git_lib = ./lib/git.nix; # TODO: add secrets pre-commit checking
       # ========
-      autorandr_profiles = ./autorandr_profiles.nix;
       bitbucket_team_contributor_repos = ./bitbucket_team_contributor_repos.nix;
       bootstrap_custom_config = ./bootstrap_custom_config.nix;
       build_iso = ./build_iso.nix;
@@ -46,11 +57,8 @@ builtins.mapAttrs (name: value:
       goreplay-capture = ./goreplay-capture.nix;
       kill-compton = ./kill-compton.nix;
       pass_imap_helper = ./pass_imap_helper.nix;
-      services_journals = ./services_journals.nix;
       shell-org-capture = ./shell-org-capture.nix;
-      ssh_custom_user = ./ssh_custom_user.nix;
       systemctl-status = ./systemctl-status.nix;
-      tmuxp_sessions = ./tmuxp_sessions.nix;
       update-system = ./update-system.nix;
       uptime_info = ./uptime_info.nix;
       wifi-status = ./wifi-status.nix;

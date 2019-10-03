@@ -4,7 +4,7 @@ import re
 import subprocess
 import datetime
 
-from rofi import Rofi
+import dmenu
 from git import Repo
 
 package_name_regexp = re.compile(
@@ -215,20 +215,18 @@ def show_home_manager_git_tags():
     # ;;
     pass
 
-
-operations = [
-    ["update nixpkgs", update_nixpkgs],
-    ["update nixpkgs-proposed", update_nixpkgs_proposed],
-    ["updates to installed packages", list_installed_packages_updates],
-    ["new packages", list_new_packages],
-    ["home-manager git tags", "huy"]
-]
+operations = {
+    "update nixpkgs": update_nixpkgs,
+    "update nixpkgs-proposed": update_nixpkgs_proposed,
+    "updates to installed packages": list_installed_packages_updates,
+    "new packages": list_new_packages,
+    "home-manager git tags": "huy"
+}
 
 
 if __name__ == "__main__":
-    r = Rofi()
-    index, keypressed = r.select('perform:', [op[0] for op in operations])
-    if keypressed == 0:
-        operations[index[0]][1]()
+    result = dmenu.show(operations.keys(), prompt='perform:', lines=10)
+    if result:
+        operations[result]()
 
 # TODO: git submodule update --init (or some kind of versions pinning)

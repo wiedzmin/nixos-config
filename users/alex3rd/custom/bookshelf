@@ -1,0 +1,16 @@
+#!/usr/bin/env python
+import os
+import subprocess
+
+import dmenu
+
+books = []
+
+books_task = subprocess.Popen("fd --full-path /home/alex3rd/bookshelf -e pdf -e djvu",
+                              shell=True, stdout=subprocess.PIPE)
+books.extend([book for book in books_task.stdout.read().decode().split("\n")])
+assert books_task.wait() == 0
+
+result = dmenu.show(books, prompt='book', lines=30)
+if result:
+    os.system("zathura {0}".format(result))

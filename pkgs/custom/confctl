@@ -1,13 +1,12 @@
 #!/usr/bin/env python
 import os
-from rofi import Rofi
+import dmenu
 
 MACHINES_CONFIG_PATH = "/etc/nixos/machines"
 
-r = Rofi()
 configs = os.listdir(MACHINES_CONFIG_PATH)
-index, keypressed = r.select('config', [config[:-4] for config in configs])
-if keypressed == 0:
+result = dmenu.show([config[:-4] for config in configs], prompt='config', lines=5)
+if result:
     # TODO: migrate to update system after implementing VM builds there
     os.system('sudo nixos-rebuild -I nixos-config="{0}/{1}" build-vm'.format(
-        MACHINES_CONFIG_PATH, configs[index[0]]))
+        MACHINES_CONFIG_PATH, "{0}.nix".format(result)))
