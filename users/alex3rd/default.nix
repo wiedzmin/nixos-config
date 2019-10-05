@@ -18,6 +18,12 @@ in {
     extraGroups = [ "wheel" ];
   };
 
+  attributes.testLines = lib.mkAfter ''
+
+    333
+    444
+  '';
+
   services.batteryNotifier = {
     enable = true;
     notifyCapacity = 20;
@@ -140,6 +146,9 @@ in {
   home-manager.users."${userName}" = {
     nixpkgs.config.allowUnfree = true;
     xdg.enable = true;
+    home.file = {
+      "test_lines".text = config.attributes.testLines;
+    };
     home.packages = with pkgs; [
       # custom.gen-nix-du
       custom.confctl

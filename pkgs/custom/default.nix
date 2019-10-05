@@ -11,7 +11,6 @@ builtins.mapAttrs (name: value:
     buildInputs = [ makeWrapper ];
     propagatedBuildInputs = [
       python3Full
-      python3Packages.papis-python-rofi
       python3Packages.dmenu-python
       python3Packages.GitPython
       python3Packages.telethon # for some hypothetical future notifications

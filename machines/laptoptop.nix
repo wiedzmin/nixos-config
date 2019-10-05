@@ -199,5 +199,10 @@
 
   services.logind.lidSwitchDocked = "suspend";
 
+  attributes.testLines = ''
+    111
+    222
+  '';
+
   system.stateVersion = "19.03";
 }
