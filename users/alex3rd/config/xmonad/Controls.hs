@@ -88,9 +88,8 @@ basicKeys conf = [ "C-\\"         ~> sendMessage (XkbToggle Nothing)
                  , "M-C-a"        ~> spawn "@autorandrProfiles@"
                  @dockerContainerTraits@
                  , "M-C-h"        ~> spawn "@extraHostsTraits@"
-                 , "M-C-m"        ~> spawn "@mountNasVolume@"
+                 @nasBlock@
                  , "M-C-t"        ~> spawn "@tmuxpSessions@"
-                 , "M-C-u"        ~> spawn "@unmountNasVolume@"
                  , "M-S-b"        ~> spawn "@bookshelf@"
                  , "M-S-u"        ~> spawn "@uptimeInfo@"
                  , "M-y"          ~> spawn "@bukuAdd@"

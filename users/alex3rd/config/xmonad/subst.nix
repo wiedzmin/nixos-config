@@ -26,7 +26,11 @@ in rec {
   jogEmacs = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";
   lockScreen = "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off";
   mergeXresources = "${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources";
-  mountNasVolume = "${userCustom.mount_nas_volume}/bin/mount_nas_volume";
+  nasBlock = lib.optionalString config.nas.enable
+    (builtins.concatStringsSep "\n                 , " [
+      '', "M-C-m"      ~> spawn "mount_nas_volume"''
+      ''"M-C-u"    ~> spawn "unmount_nas_volume"''
+    ]);
   remoteDockerLogs = "${userCustom.remote_docker_logs}/bin/remote_docker_logs";
   rofiCombiRun = "${pkgs.rofi}/bin/rofi -combi-modi drun,run -show combi -modi combi";
   rofiPass = "${pkgs.rofi-pass}/bin/rofi-pass";
@@ -37,7 +41,6 @@ in rec {
   serviceJournal = "${custom.services_journals}/bin/services_journals";
   sshCustomUser = "${custom.ssh_custom_user}/bin/ssh_custom_user";
   tmuxpSessions = "${custom.tmuxp_sessions}/bin/tmuxp_sessions";
-  unmountNasVolume = "${userCustom.unmount_nas_volume}/bin/unmount_nas_volume";
   uptimeInfo = "${custom.uptime_info}/bin/uptime_info";
   webjumps = "${userCustom.webjumps}/bin/webjumps";
   xrandrForceMobile = "${pkgs.autorandr}/bin/autorandr --load mobile";

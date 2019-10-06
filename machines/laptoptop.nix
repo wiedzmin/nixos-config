@@ -146,10 +146,6 @@
 
   security = {
     sudo.wheelNeedsPassword = false;
-    wrappers = {
-      pmount.source = "${pkgs.pmount}/bin/pmount";
-      pumount.source = "${pkgs.pmount}/bin/pumount";
-    };
     allowUserNamespaces = true;
     allowSimultaneousMultithreading = true;
     lockKernelModules = false;

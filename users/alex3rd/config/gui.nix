@@ -872,18 +872,6 @@ in {
           }
       }, "Emacs-like keys")
     '';
-    xdg.configFile."synology/nas.yml".text = ''
-      nas:
-        hostname: ${nasHostname}
-        users:
-          admin:
-            login: ${nasPrimaryUser}
-            password: ${nasPrimaryUserPassword}
-        # FIXME: use more versatile parser, because those implemented with bash have limited functionality
-        volumes: ${builtins.concatStringsSep " " nasVolumes}
-        mount:
-          basedir: ${nasLocalMountBase}
-    '';
     xdg.configFile."rofi-pass/config".text = ''
       # permanently set alternative root dir. Use ":" to separate multiple roots
       # which can be switched at runtime with shift+left/right
