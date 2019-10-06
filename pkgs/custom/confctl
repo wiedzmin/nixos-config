@@ -8,5 +8,5 @@ configs = os.listdir(MACHINES_CONFIG_PATH)
 result = dmenu.show([config[:-4] for config in configs], prompt='config', lines=5)
 if result:
     # TODO: migrate to update system after implementing VM builds there
-    os.system('sudo nixos-rebuild -I nixos-config="{0}/{1}" build-vm'.format(
+    os.system('sudo nixos-rebuild -I nixos-config="{0}/{1}" build'.format(
         MACHINES_CONFIG_PATH, "{0}.nix".format(result)))
