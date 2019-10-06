@@ -72,7 +72,6 @@
       fi
   }
 
-  decrypt_secrets
   update_nixpkgs_suffix
   build_configuration
   switch_configuration
