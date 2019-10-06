@@ -29,7 +29,8 @@
   (("C-:" . avy-goto-char)
    :prefix-map custom-goto-map
    :prefix "M-s"
-   ("M-s" . avy-goto-word-0))
+   ("M-s" . avy-goto-word-0)
+   ("M-a" . swiper-avy))
   :custom
   (avy-timeout-seconds 0.5)
   (avy-keys '(?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
