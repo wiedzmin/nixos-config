@@ -1,5 +1,5 @@
 { config, pkgs, ... }:
-with import ../../../const.nix { inherit config pkgs; }; {
+with import ../../const.nix { inherit config pkgs; }; {
   services.xserver.windowManager = {
     default = "stumpwm";
     stumpwm.enable = true;

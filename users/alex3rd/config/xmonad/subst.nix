@@ -1,10 +1,10 @@
 { config, pkgs, lib, ... }:
-with import ../../../../../pkgs/util.nix { inherit lib config; };
-with import ../../../const.nix { inherit config pkgs; };
-with import ../../../secrets/const.nix { inherit config lib pkgs; };
+with import ../../../../pkgs/util.nix { inherit lib config; };
+with import ../../const.nix { inherit config pkgs; };
+with import ../../secrets/const.nix { inherit config lib pkgs; };
 let
-  custom = import ../../../../../pkgs/custom pkgs config;
-  userCustom = import ../../../custom pkgs config;
+  custom = import ../../../../pkgs/custom pkgs config;
+  userCustom = import ../../custom pkgs config;
 in rec {
   backlightAmount = 10;
   volumeAmount = 10;

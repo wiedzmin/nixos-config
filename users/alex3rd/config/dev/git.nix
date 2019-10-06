@@ -108,35 +108,6 @@ in {
         signByDefault = true;
       };
       extraConfig = {
-        "color" = {
-          diff = "auto";
-          status = "auto";
-          ui = "always";
-        };
-        "color \"branch\"" = {
-          current = "yellow reverse";
-          local = "yellow";
-          remote = "green";
-        };
-        "color \"diff\"" = {
-          commit = "cyan bold";
-          frag = "magenta bold";
-          meta = "yellow bold";
-          new = "green bold";
-          old = "red bold";
-          whitespace = "red reverse";
-        };
-        "color \"diff-highlight\"" = {
-          newHighlight = "green bold 22";
-          newNormal = "green bold";
-          oldHighlight = "red bold 52";
-          oldNormal = "red bold";
-        };
-        "color \"status\"" = {
-          added = "green";
-          changed = "yellow";
-          untracked = "red";
-        };
         "rebase" = {
           autoSquash = true;
           autoStash = true;

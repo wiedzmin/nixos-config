@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
 with import ../const.nix { inherit config pkgs; }; {
-  imports = [ ./dev ./gui ./network ./shell ];
+  imports = [ ./dev ./email.nix ./gui.nix ./shell.nix ./xmonad ];
 
   home-manager.users."${userName}" = {
     programs.ssh = {

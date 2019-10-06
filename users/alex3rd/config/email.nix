@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
-with import ../../const.nix { inherit config pkgs; };
-with import ../../secrets/const.nix { inherit config pkgs lib; };
+with import ../const.nix { inherit config pkgs; };
+with import ../secrets/const.nix { inherit config pkgs lib; };
 let
   imapfilterOptionsTimeout = 120;
   imapfilterOptionsSubscribe = true;
@@ -9,7 +9,7 @@ let
   imapfilterOptionsKeepalive = 29;
   imapfilterOptionsCertificates = false;
   imapfilterSpamFlushAfterDays = 14;
-  custom = import ../../../../pkgs/custom pkgs config;
+  custom = import ../../../pkgs/custom pkgs config;
 in {
   home-manager.users."${userName}" = {
     accounts.email = {

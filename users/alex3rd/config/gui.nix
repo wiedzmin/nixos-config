@@ -1,9 +1,11 @@
 { config, pkgs, lib, ... }:
-with import ../../../../pkgs/util.nix { inherit lib config; };
-with import ../../const.nix { inherit config pkgs; };
-with import ../../secrets/const.nix { inherit config pkgs lib; };
+with import ../const.nix { inherit config pkgs; };
+with import ../../../pkgs/util.nix { inherit lib config; };
+with import ../secrets/const.nix { inherit config pkgs lib; };
 let
-  custom = import ../../../../pkgs/custom pkgs config;
+  custom = import ../../../pkgs/custom pkgs config;
+  userCustom = import ../custom pkgs config;
+  firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../../pkgs/firefox-addons { });
   zathuraZenburn = {
     completion-bg = "#404040";
     completion-fg = "#7cb8bb";
@@ -53,7 +55,412 @@ let
     statusbar-fg = "#B0B0B0";
   };
 in {
+  imports = [ ./wm/xmonad.nix ];
+  services = {
+    xserver = {
+      enable = true;
+      startDbusSession = true;
+      videoDrivers = [ "modesetting" ];
+      useGlamor = true;
+      exportConfiguration = true;
+      desktopManager = {
+        xterm.enable = false;
+        gnome3.enable = false;
+        default = "none";
+      };
+      displayManager = {
+        lightdm = {
+          enable = true;
+          background = "black";
+          greeters.mini = {
+            enable = true;
+            user = userName;
+          };
+        };
+        gdm.enable = false;
+        job = {
+          logToFile = true;
+          logToJournal = true;
+        };
+        sessionCommands = ''
+          export _JAVA_AWT_WM_NONREPARENTING=1
+          ${pkgs.wmname}/bin/wmname LG3D
+        '';
+      };
+      autoRepeatDelay = 200;
+      autoRepeatInterval = 40;
+      xkbOptions = "caps:none";
+      layout = "us,ru";
+      libinput.enable = false;
+      multitouch = {
+        enable = true;
+        invertScroll = true;
+        ignorePalm = true;
+        tapButtons = false;
+        additionalOptions = ''
+          Option        "ButtonIntegrated" "true"
+          Option        "ButtonMoveEmulate" "false"
+          Option        "ClickTime" "25"
+          Option        "EdgeBottomSize" "5"
+          Option        "FingerHigh" "5"
+          Option        "FingerLow" "1"
+          Option        "Hold1Move1StationaryMaxMove" "1000"
+          Option        "IgnoreThumb" "true"
+          Option        "ScrollCoastDuration" "600"
+          Option        "ScrollCoastEnableSpeed" "0.05"
+          Option        "ScrollDistance" "100"
+          Option        "ScrollSensitivity" "0"
+          Option        "Sensitivity" "0.3"
+          Option        "SwipeDistance" "700"
+          Option        "SwipeDownButton" "0"
+          Option        "SwipeLeftButton" "8"
+          Option        "SwipeRightButton" "9"
+          Option        "SwipeUpButton" "0"
+          Option        "TapButton4" "0"
+          Option        "ThumbRatio" "70"
+          Option        "ThumbSize" "25"
+        '';
+      };
+    };
+    arbtt.enable = true;
+  };
+  programs.light.enable = true;
+
+  environment.systemPackages = with pkgs; [ gmrun xorg.xhost xorg.xmessage ];
   home-manager.users."${userName}" = {
+    home.packages = with pkgs; [ userCustom.rescale-wallpaper ];
+    programs.autorandr = {
+      enable = true;
+      hooks = {
+        postswitch = { "rescale-wallpaper" = "${userCustom.rescale-wallpaper}/bin/rescale-wallpaper"; };
+        predetect = { "kill-compton" = "${custom.kill-compton}/bin/kill-compton"; };
+      };
+      profiles = {
+        "mobile" = {
+          fingerprint = {
+            "LVDS-1" =
+              "00ffffffffffff0030e4d8020000000000160103801c1078ea8855995b558f261d505400000001010101010101010101010101010101601d56d85000183030404700159c1000001b000000000000000000000000000000000000000000fe004c4720446973706c61790a2020000000fe004c503132355748322d534c42330059";
+          };
+          config = {
+            "LVDS-1" = {
+              enable = true;
+              primary = true;
+              position = "0x0";
+              mode = "1366x768";
+              gamma = "1.0:0.909:0.833";
+              rate = "60.10";
+            };
+          };
+        };
+        "docked-home" = {
+          fingerprint = {
+            "HDMI-2" =
+              "00ffffffffffff001e6dbc594f53010006170103803c2278ea3135a5554ea1260c5054a54b00714f81809500b300a9c0810081c09040023a801871382d40582c450056512100001e000000fd00384b1e530f000a202020202020000000fc003237454133330a202020202020000000ff0033303652414e4e324a3836330a00dd";
+            "HDMI-3" =
+              "00ffffffffffff000469b124010101011d18010380372378ea3d15a3544da027125054bfef00714f818081409500a940b300d1c00101283c80a070b023403020360022602100001a000000fd00324c1e5311000a202020202020000000fc0050413234380a20202020202020000000ff0045374c4d51533037373132380a0023";
+            "LVDS-1" =
+              "00ffffffffffff0030e4d8020000000000160103801c1078ea8855995b558f261d505400000001010101010101010101010101010101601d56d85000183030404700159c1000001b000000000000000000000000000000000000000000fe004c4720446973706c61790a2020000000fe004c503132355748322d534c42330059";
+          };
+          config = {
+            "HDMI-2" = {
+              enable = true;
+              position = "0x0";
+              mode = "1920x1080";
+              gamma = "1.0:0.909:0.833";
+              rate = "60.00";
+            };
+            "HDMI-3" = {
+              enable = true;
+              position = "1366x1080";
+              mode = "1920x1080";
+              gamma = "1.0:0.909:0.833";
+              rate = "60.00";
+              rotate = "left";
+            };
+            "LVDS-1" = {
+              enable = true;
+              primary = true;
+              position = "0x1080";
+              mode = "1366x768";
+              gamma = "1.0:0.909:0.833";
+              rate = "60.10";
+            };
+          };
+        };
+        "docked-office" = {
+          fingerprint = {
+            "HDMI-2" =
+              "00ffffffffffff0009d111804554000015180103803420782e4ca5a7554da226105054a56b8061c0810081809500d1c0b300a9400101283c80a070b023403020360006442100001a000000ff004e354530373434373031390a20000000fd00324c1e5311000a202020202020000000fc0042656e5120424c323431310a20003e";
+            "HDMI-3" =
+              "00ffffffffffff000469b124010101010f17010380372378ea3d15a3544da027125054bfef00714f818081409500a940b300d1c00101283c80a070b023403020360022602100001a000000fd00324c1e5311000a202020202020000000fc0050413234380a20202020202020000000ff0044344c4d51533034313530370a003e";
+            "LVDS-1" =
+              "00ffffffffffff0030e4d8020000000000160103801c1078ea8855995b558f261d505400000001010101010101010101010101010101601d56d85000183030404700159c1000001b000000000000000000000000000000000000000000fe004c4720446973706c61790a2020000000fe004c503132355748322d534c42330059";
+          };
+          config = {
+            "HDMI-2" = {
+              enable = true;
+              position = "1366x1200";
+              mode = "1920x1200";
+              gamma = "1.0:0.909:0.833";
+              rate = "59.95";
+            };
+            "HDMI-3" = {
+              enable = true;
+              position = "0x0";
+              mode = "1920x1200";
+              gamma = "1.0:0.909:0.833";
+              rate = "59.95";
+            };
+            "LVDS-1" = {
+              enable = true;
+              primary = true;
+              position = "0x1200";
+              mode = "1366x768";
+              gamma = "1.0:0.909:0.833";
+              rate = "60.10";
+            };
+          };
+        };
+        "undocked-parents-dsub" = {
+          fingerprint = {
+            "VGA-1" =
+              "00ffffffffffff004c2d0e0139314a4d100f01036c261e782aee95a3544c99260f5054bfef808180714f010101010101010101010101302a009851002a4030701300782d1100001e000000fd00384b1e510e000a202020202020000000fc0053796e634d61737465720a2020000000ff00485348593430323338330a202000d2";
+            "LVDS-1" =
+              "00ffffffffffff0030e4d8020000000000160103801c1078ea8855995b558f261d505400000001010101010101010101010101010101601d56d85000183030404700159c1000001b000000000000000000000000000000000000000000fe004c4720446973706c61790a2020000000fe004c503132355748322d534c42330059";
+          };
+          config = {
+            "VGA-1" = {
+              enable = true;
+              position = "0x0";
+              mode = "1280x1024";
+              gamma = "1.0:0.909:0.833";
+              rate = "60.02";
+            };
+            "LVDS-1" = {
+              enable = true;
+              primary = true;
+              position = "0x1024";
+              mode = "1366x768";
+              gamma = "1.0:0.909:0.833";
+              rate = "60.00";
+            };
+          };
+        };
+      };
+    };
+    programs.firefox = {
+      enable = true;
+      package = pkgs.firefox.overrideAttrs (attrs: { enableTridactylNative = true; });
+      extensions = with firefox-addons; [
+        display-anchors
+        ghosttext
+        passff
+        tridactyl
+        url-in-title
+        web_media_controller
+      ];
+      profiles = {
+        default = {
+          name = "profile.default";
+          path = "profile.default";
+          settings = {
+            "extensions.autoDisableScopes" = 0;
+            "browser.ctrlTab.recentlyUsedOrder" = false;
+            "browser.download.dir" = "/home/${userName}/Downloads";
+            "browser.link.open_newwindow" = 2;
+            "browser.sessionstore.restore_on_demand" = true;
+            "browser.sessionstore.restore_tabs_lazily" = true;
+            "browser.shell.checkDefaultBrowser" = true;
+            "browser.startup.page" = 3;
+            "extensions.pocket.enabled" = false;
+            "lightweightThemes.selectedThemeID" = "firefox-compact-dark@mozilla.org";
+          };
+          handlers = {
+            defaultHandlersVersion = { "en-US" = 4; };
+            mimeTypes = { "application/pdf" = { action = 3; }; };
+            schemes = {
+              mailto = {
+                action = 4;
+                handlers = [
+                  null
+                  {
+                    name = "Gmail";
+                    uriTemplate = "https://mail.google.com/mail/?extsrc=mailto&url=%s";
+                  }
+                ];
+              };
+              "org-protocol" = { action = 4; };
+              "tg" = { action = 4; };
+            };
+          };
+        };
+      };
+    };
+    programs.chromium = {
+      enable = true;
+      extensions = [
+        "gfbliohnnapiefjpjlpjnehglfpaknnc" # Surfingkeys
+        "ignpacbgnbnkaiooknalneoeladjnfgb" # Url in title
+        "poahndpaaanbpbeafbkploiobpiiieko" # Display anchors
+        # "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
+        # "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
+        # "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
+        # "naepdomgkenhinolocfifgehidddafch" # Browserpass
+        # "ogfcmafjalglgifnmanfmnieipoejdcf" # uMatrix
+      ];
+    };
+    home.file = {
+      ".mozilla/firefox/profile.default/browser-extension-data/{d47d18bc-d6ba-4f96-a144-b3016175f3a7}/storage.js".text =
+        builtins.toJSON {
+          protocol = false;
+          path = true;
+          delimiter = " // ";
+        };
+      ".mozilla/native-messaging-hosts/me.f1u77y.web_media_controller.json".text = builtins.toJSON {
+        name = "me.f1u77y.web_media_controller";
+        description = "Allows controlling embedded players (YT, etc) via MPRIS";
+        path = "${pkgs.wmc-mpris}/bin/web-media-controller";
+        type = "stdio";
+        allowed_extensions = [ "web-media-controller@f1u77y.me" ];
+      };
+      ".mozilla/native-messaging-hosts/passff.json".text = builtins.toJSON {
+        name = "passff";
+        description = "Host for communicating with zx2c4 pass";
+        path = "${pkgs.passff-host}/share/passff-host/passff.py";
+        type = "stdio";
+        allowed_extensions = [ "passff@invicem.pro" ];
+      };
+    };
+    xdg.configFile."tridactyl/tridactylrc".text = ''
+      set storageloc local
+
+      set historyresults 100
+
+      colorscheme dark
+
+      guiset_quiet tabs autohide
+      guiset_quiet navbar autohide
+      guiset_quiet hoverlink top-right
+
+      " Comment toggler for Reddit and Hacker News
+      bind ;c hint -c [class*="expand"],[class="togg"]
+
+      bind qnt composite js javascript:location.href="org-protocol:///capture?template=nt&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
+      bind qnc composite js javascript:location.href="org-protocol:///capture?template=nc&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
+      bind qet composite js javascript:location.href="org-protocol:///capture?template=et&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
+      bind qec composite js javascript:location.href="org-protocol:///capture?template=ec&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
+      bind qxt composite js javascript:location.href="org-protocol:///capture?template=xt&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
+      bind qxc composite js javascript:location.href="org-protocol:///capture?template=xc&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
+      bind qd composite js javascript:location.href="org-protocol:///capture?template=d&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
+      bind qjt composite js javascript:location.href="org-protocol:///capture?template=jt&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
+      bind qjc composite js javascript:location.href="org-protocol:///capture?template=jc&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
+      bind qjr composite js javascript:location.href="org-protocol:///capture?template=jr&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
+      bind qm composite js javascript:location.href="org-protocol:///capture?template=m&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
+
+      bind <A-y> clipboard yank
+
+      "
+      " Misc settings
+      "
+
+      " set editorcmd to emacsclient, or use the defaults on other platforms
+      js tri.browserBg.runtime.getPlatformInfo().then(os=>{const editorcmd = os.os=="linux" ? "emacsclient" : "auto"; tri.config.set("editorcmd", editorcmd)})
+
+      " Sane hinting mode
+      set hintfiltermode vimperator-reflow
+      set hintchars 4327895610
+      set hintuppercase false
+      set hintnames numeric
+
+      set tabopenpos last
+
+      set yankto both
+      set putfrom clipboard
+
+      " Make Tridactyl work on more sites at the expense of some security
+      set csp clobber
+      fixamo_quiet
+
+      " Make quickmarks for the sane Tridactyl issue view
+      quickmark T https://github.com/cmcaine/tridactyl/issues?utf8=%E2%9C%93&q=sort%3Aupdated-desc+
+      quickmark t https://github.com/tridactyl/tridactyl
+
+      " Map keys between layouts
+      keymap ё `
+      keymap й q
+      keymap ц w
+      keymap у e
+      keymap к r
+      keymap е t
+      keymap н y
+      keymap г u
+      keymap ш i
+      keymap щ o
+      keymap з p
+      keymap х [
+      keymap ъ ]
+      keymap ф a
+      keymap ы s
+      keymap в d
+      keymap а f
+      keymap п g
+      keymap р h
+      keymap о j
+      keymap л k
+      keymap д l
+      keymap ж ;
+      keymap э '
+      keymap я z
+      keymap ч x
+      keymap с c
+      keymap м v
+      keymap и b
+      keymap т n
+      keymap ь m
+      keymap б ,
+      keymap ю .
+      keymap Ё ~
+      keymap Й Q
+      keymap Ц W
+      keymap У E
+      keymap К R
+      keymap Е T
+      keymap Н Y
+      keymap Г U
+      keymap Ш I
+      keymap Щ O
+      keymap З P
+      keymap Х {
+      keymap Ъ }
+      keymap Ф A
+      keymap Ы S
+      keymap В D
+      keymap А F
+      keymap П G
+      keymap Р H
+      keymap О J
+      keymap Л K
+      keymap Д L
+      keymap Ж :
+      keymap Э "
+      keymap Я Z
+      keymap Ч X
+      keymap С C
+      keymap М V
+      keymap И B
+      keymap Т N
+      keymap Ь M
+      keymap Б <
+      keymap Ю >
+
+      keymap <C-х> <C-[>
+      keymap пш gi
+      keymap пп gg
+      keymap нн yy
+      keymap нс yc
+
+      keymap . /
+    '';
     xdg.configFile."xsuspender.conf".text = genIni {
       Default = {
         suspend_delay = 10;
@@ -800,6 +1207,40 @@ in {
       automount = true;
       notify = true;
       tray = "never";
+    };
+    xresources.properties = {
+      "Xmessage*Buttons" = "Quit";
+      "Xmessage*defaultButton" = "Quit";
+      "Xmessage*faceName" = "${fontMainName}";
+      "Xmessage*faceSize" = "${fontSizeXmessage}";
+      "Xmessage*faceWeight" = "${fontMainWeight}";
+      "Xmessage*international" = true;
+
+      "dzen2.font" =
+        "${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDzen}";
+
+      "Emacs*XlwMenu.font" = "${fontCodeName}:weight=${fontCodeWeight}:size=${fontSizeEmacs}";
+      "Emacs.Font" = "${fontCodeName}:weight=${fontCodeWeight}:size=${fontSizeEmacs}";
+      "Emacs.FontBackend" = "xft,x";
+      "Emacs.dialog*.font" = "${fontCodeName}:weight=${fontCodeWeight}:size=${fontSizeEmacs}";
+      "Emacs.menuBar" = "0";
+      "Emacs.toolBar" = "0";
+      "Emacs.verticalScrollBars" = false;
+
+      "urgentOnBell" = true;
+      "visualBell" = true;
+
+      "Xft.antialias" = true;
+      "Xft.autohint" = false;
+      "Xft.dpi" = "120.0";
+      "Xft.hinting" = true;
+      "Xft.hintstyle" = "hintslight";
+      "Xft.lcdfilter" = "lcddefault";
+      "Xft.rgba" = "none";
+    };
+    xsession.pointerCursor = {
+      package = pkgs.vanilla-dmz;
+      name = "Vanilla-DMZ";
     };
   };
   services.unclutter-xfixes = {
