@@ -128,6 +128,8 @@ in {
     calendarTimespec = "*-*-* 23:00:00";
   };
 
+  dev.python.enable = true;
+
   services.xidlehook.enable = true;
 
   # FIXME: move functionality to pkgsctl
