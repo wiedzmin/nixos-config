@@ -242,7 +242,7 @@ in {
         storageDriver = cfg.docker.storageDriver;
       };
 
-      users.users."${config.attributes.mainUser}".extraGroups = [ "docker" ];
+      users.users."${config.attributes.mainUser.name}".extraGroups = [ "docker" ];
 
       environment.systemPackages = with pkgs; [
         dlint
@@ -292,7 +292,7 @@ in {
       virtualisation.libvirtd = { enable = true; };
       virtualisation.kvmgt.enable = true;
 
-      users.users."${config.attributes.mainUser}".extraGroups = [ "libvirtd" ];
+      users.users."${config.attributes.mainUser.name}".extraGroups = [ "libvirtd" ];
 
       networking.nat.internalInterfaces = ["virbr0"];
       services.dnsmasq.extraConfig = ''

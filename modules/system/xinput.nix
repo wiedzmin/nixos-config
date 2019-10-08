@@ -22,7 +22,7 @@ in {
       };
       xkeysnail.configFile = mkOption {
         type = types.str;
-        default = "/home/${config.attributes.mainUser}/.config/xkeysnail/config.py";
+        default = "/home/${config.attributes.mainUser.name}/.config/xkeysnail/config.py";
         description = ''
           Config file absolute path.
         '';
@@ -228,7 +228,7 @@ in {
         };
       };
 
-      users.users."${config.attributes.mainUser}".extraGroups = [ "input" ];
+      users.users."${config.attributes.mainUser.name}".extraGroups = [ "input" ];
     })
     (mkIf cfg.constraintMouse.enable {
       systemd.user.services."xpointerbarrier" = {

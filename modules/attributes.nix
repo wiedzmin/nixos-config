@@ -4,7 +4,7 @@ with lib;
 
 {
   options.attributes = {
-    mainUser = mkOption {
+    mainUser.name = mkOption {
       description = "Main user to be granted various service-related rights to";
       type = types.str;
     };

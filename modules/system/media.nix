@@ -40,7 +40,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      users.users."${config.attributes.mainUser}".extraGroups = [ "audio" "video" ];
+      users.users."${config.attributes.mainUser.name}".extraGroups = [ "audio" "video" ];
     })
     (mkIf cfg.pulse.enable {
       hardware.pulseaudio = {

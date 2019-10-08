@@ -125,7 +125,7 @@ in {
       };
       localMountBase = mkOption {
         type = types.str;
-        default = "/home/${config.attributes.mainUser}/nas";
+        default = "/home/${config.attributes.mainUser.name}/nas";
         description = "Where to mount remote volumes under";
       };
       hostName = mkOption {

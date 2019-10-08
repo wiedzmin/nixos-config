@@ -1,6 +1,6 @@
 { config, pkgs, lib, ... }:
 {
-  home-manager.users."${config.attributes.mainUser}" = {
+  home-manager.users."${config.attributes.mainUser.name}" = {
     home.packages = with pkgs; [
       (makeDesktopItem {
         name = "org-protocol";

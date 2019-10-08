@@ -63,7 +63,7 @@ in {
         defaultShared = true;
         webInterface = true;
       };
-      users.users."${config.attributes.mainUser}".extraGroups = [ "lp" ];
+      users.users."${config.attributes.mainUser.name}".extraGroups = [ "lp" ];
     })
     (mkIf cfg.scanning.enable {
       assertions = [
@@ -90,7 +90,7 @@ in {
       ] ++ optional cfg.scanning.enableXsane [
         (xsane.override { gimpSupport = true; })
       ];
-      users.users."${config.attributes.mainUser}".extraGroups = [ "scanner" ];
+      users.users."${config.attributes.mainUser.name}".extraGroups = [ "scanner" ];
     })
   ];
 }

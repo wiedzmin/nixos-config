@@ -48,7 +48,7 @@ in {
   };
 
   config = mkIf cfg.enable {
-    home-manager.users."${config.attributes.mainUser}" = {
+    home-manager.users."${config.attributes.mainUser.name}" = {
       home.file = {
         ".pylintrc".text = genIni { # see https://github.com/PyCQA/pylint/blob/master/pylintrc for reference
           "MASTER" = {

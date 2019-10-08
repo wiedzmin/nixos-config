@@ -28,7 +28,7 @@ in {
         };
         wavemon.enable = true;
       };
-      users.extraUsers."${config.attributes.mainUser}".extraGroups = [ "wireshark" ];
+      users.extraUsers."${config.attributes.mainUser.name}".extraGroups = [ "wireshark" ];
     })
   ];
 }
