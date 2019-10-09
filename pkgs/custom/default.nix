@@ -39,9 +39,6 @@ builtins.mapAttrs (name: value:
       executable = true;
       checkPhase = "${bash}/bin/bash -n $src";
     }) {
-      git_lib = ./lib/git.nix; # TODO: add secrets pre-commit checking
-      # ========
-      bitbucket_team_contributor_repos = ./bitbucket_team_contributor_repos.nix;
       bootstrap_custom_config = ./bootstrap_custom_config.nix;
       build_iso = ./build_iso.nix;
       buku_add = ./buku_add.nix;
@@ -52,7 +49,6 @@ builtins.mapAttrs (name: value:
       discover_containerized_services = ./discover_containerized_services.nix;
       format-config = ./format-config.nix;
       gen-nix-du = ./gen-nix-du.nix;
-      git_remote_diff = ./git_remote_diff.nix;
       goreplay-capture = ./goreplay-capture.nix;
       kill-compton = ./kill-compton.nix;
       pass_imap_helper = ./pass_imap_helper.nix;

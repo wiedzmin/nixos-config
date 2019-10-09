@@ -186,20 +186,6 @@ let
     wuzz
     zeal
   ];
-  devVcsGit = with pkgs; [
-    git-crecord
-    git-sizer
-    gitAndTools.ghq
-    gitAndTools.git-absorb # TODO: review abilities and maybe use in some automation
-    gitAndTools.git-extras
-    gitAndTools.git-octopus
-    gitAndTools.pass-git-helper
-    gitAndTools.stgit
-    gitAndTools.topGit # https://github.com/mackyle/topgit
-    gitstats
-    proposed.gitAndTools.git-quick-stats
-    python2Packages.git-sweep # FIXME: adapt to py3
-  ];
   forensics = with pkgs; [
     # jd-gui
     bbe
@@ -398,7 +384,7 @@ let
     ] ++ [ nix-zsh-completions ] ++ [ nodePackages.node2nix pypi2nix ];
 in {
   home-manager.users."${userName}" = {
-    home.packages = devClients ++ devGolangInfra ++ devGolangTools ++ devIde ++ devMisc ++ devPythonTools ++ devVcsGit
+    home.packages = devClients ++ devGolangInfra ++ devGolangTools ++ devIde ++ devMisc ++ devPythonTools
       ++ forensics ++ miscClients ++ miscMedia ++ monitoring ++ nix ++ org ++ sandbox ++ security ++ shell
       ++ stagingCommon ++ stagingPublish ++ stagingWork ++ text;
   };

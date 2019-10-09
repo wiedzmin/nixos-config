@@ -31,8 +31,6 @@ builtins.mapAttrs (name: value:
       executable = true;
       checkPhase = "${bash}/bin/bash -n $src";
     }) {
-      git_lib = ./lib/git.nix; # TODO: add secrets pre-commit checking
-      # ========
       ctop_hosts = ./ctop_hosts.nix;
       dbms = ./dbms.nix;
       docker_shell = ./docker_shell.nix;

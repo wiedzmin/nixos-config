@@ -293,9 +293,6 @@ in {
         df = "${pkgs.dfc}/bin/dfc";
         du = "${pkgs.duc}/bin/duc";
 
-        git = "${pkgs.gitAndTools.hub}/bin/hub";
-        gg = "${pkgs.gitAndTools.ghq}/bin/ghq get";
-
         yg = "${pkgs.you-get}/bin/you-get";
 
         zz =

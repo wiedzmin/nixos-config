@@ -2,9 +2,7 @@
   imports = [
     ./appearance.nix
     ./clean-trash.nix
-    ./git-fetch-updates.nix
-    ./git-push-updates.nix
-    ./git-save-wip.nix
+    ./git.nix
     ./python.nix
     ./screenshots.nix
     ./xidlehook.nix

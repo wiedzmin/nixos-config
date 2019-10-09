@@ -8,7 +8,12 @@ let
 in {
   imports = [ <home-manager/nixos> ./config ./packages.nix ./secrets/personal.nix ./secrets/job.nix ];
 
-  attributes.mainUser.name = "${userName}";
+  attributes.mainUser = {
+    name = "${userName}";
+    fullName = "${userFullName}";
+    email = "${userEmail}";
+    gpgKeyID = "${userPrimaryGpgKeyID}";
+  };
 
   users.extraUsers."${userName}" = {
     isNormalUser = true;
@@ -28,6 +33,29 @@ in {
     enable = true;
     notifyCapacity = 20;
     suspendCapacity = 10;
+  };
+
+  dev.git = {
+    enable = true;
+    pager.delta.enable = true;
+    myrepos.enable = false; # temporarily
+    myrepos.subconfigs = [
+      "/home/${config.attributes.mainUser.name}/workspace/repos/.mrconfig"
+    ];
+    ghq = {
+      enable = true;
+      importCommands = {
+        bbcontribs = "bitbucket_team_contributor_repos";
+      };
+    };
+    github = {
+      enable = true;
+      user = "wiedzmin";
+    };
+    workspaceRoot = "/home/${config.attributes.mainUser.name}/workspace/repos";
+    fetchUpdates.enable = false; # temporarily; bootTimespec = "1min"; activeTimespec = "30min";
+    pushUpdates.enable = false; # temporarily; calendar = "*-*-* 18:00:00";
+    saveWip.enable = false; # temporarily; bootTimespec = "30sec"; activeTimespec = "1hour";
   };
 
   media = {
@@ -104,24 +132,6 @@ in {
   };
 
   services.xsuspender.enable = true;
-
-  services.git-fetch-updates = {
-    enable = true;
-    workDir = "/home/${userName}";
-    bootTimespec = "1min";
-    activeTimespec = "30min";
-  };
-
-  services.git-push-updates = {
-    enable = false;
-    calendarTimespec = "*-*-* 18:00:00";
-  };
-
-  services.git-save-wip = {
-    enable = false;
-    bootTimespec = "30sec";
-    activeTimespec = "1hour";
-  };
 
   services.clean-trash = {
     enable = true;
