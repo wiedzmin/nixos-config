@@ -1,5 +1,4 @@
 { config, pkgs, lib, ... }:
-with import ../const.nix { inherit config pkgs; };
 with import ../secrets/const.nix { inherit config pkgs lib; };
 let
   custom = import ../../../pkgs/custom pkgs config;
@@ -8,8 +7,8 @@ let
 in {
   imports = [ ../secrets/job.nix ];
 
-  home-manager.users."${userName}" = {
     home.packages = with pkgs; [ libnotify ]; # for zsh-notify plugin
+  home-manager.users."${config.attributes.mainUser.name}" = {
     home.file = {
       "tmuxp/main.yml".text = ''
         session_name: main
@@ -280,9 +279,9 @@ in {
         CSEARCHINDEX = "${devWorkspacePath}/.csearchindex";
         EDITOR = "${pkgs.emacs}/bin/emacsclient";
         HISTFILE = "${zshHistFilename}";
-        TMUXP_CONFIGDIR = "/home/${userName}/tmuxp";
+        TMUXP_CONFIGDIR = "/home/${config.attributes.mainUser.name}/tmuxp";
         VISUAL = "${pkgs.emacs}/bin/emacsclient";
-        WORKON_HOME = "/home/${userName}/.virtualenvs";
+        WORKON_HOME = "/home/${config.attributes.mainUser.name}/.virtualenvs";
         YSU_IGNORED_ALIASES = [ "g" "ll" ]; # TODO: review list
         YSU_MODE = "ALL";
         ZSH_COMMAND_TIME_COLOR = "cyan";

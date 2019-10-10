@@ -2,8 +2,8 @@
 
 with import <home-manager/modules/lib/dag.nix> { inherit lib; }; # TODO: make more declarative
 with import ../../../../pkgs/util.nix { inherit lib config; };
-with import ../../const.nix { inherit config pkgs; }; {
-  home-manager.users."${userName}" = {
+{
+  home-manager.users."${config.attributes.mainUser.name}" = {
     home.file = {
       ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./lib/XMonad/Util/Xkb.hs;
       ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./lib/XMonad/Util/ExtraCombinators.hs;

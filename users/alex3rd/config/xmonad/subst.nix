@@ -1,6 +1,5 @@
 { config, pkgs, lib, ... }:
 with import ../../../../pkgs/util.nix { inherit lib config; };
-with import ../../const.nix { inherit config pkgs; };
 with import ../../secrets/const.nix { inherit config lib pkgs; };
 let
   custom = import ../../../../pkgs/custom pkgs config;
@@ -72,7 +71,8 @@ in rec {
   jobVpnUp = "${sctlRestart} openvpn-${jobVpnName}.service";
   jobVpnDown = "${sctlStop} openvpn-${jobVpnName}.service";
 
-  fontDefault = "${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDzen}";
-  fontTabbed = "${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDzen}";
+  # IDEA: make PoC XMonad module
+  fontDefault = "Iosevka:weight=Bold:size=16";
+  fontTabbed = "Iosevka:weight=Bold:size=16";
   xmobar = "${pkgs.xmobar}/bin/xmobar";
 }

@@ -1,6 +1,5 @@
 { bash, config, gawk, lib, pkgs, rofi, ... }:
 with import ../../../pkgs/util.nix { inherit config lib; };
-with import ../const.nix { inherit lib config pkgs; };
 with import ../secrets/const.nix { inherit lib config pkgs; }; ''
   #!${bash}/bin/bash
 
@@ -23,7 +22,8 @@ with import ../secrets/const.nix { inherit lib config pkgs; }; ''
       QUERY=$( (echo ) | ${rofi}/bin/rofi  -dmenu -matching fuzzy -location 0 -p "Query" )
       if [ -n "$QUERY" ]; then
           URL="''${SEARCHENGINES[$SELECTED_ENGINE]}$QUERY"
-          ${defaultBrowserCmd} "$URL"
+          # IDEA: extract browsers module
+          firefox --new-window "$URL"
       fi
   }
 

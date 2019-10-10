@@ -1,10 +1,10 @@
 { config, pkgs, ... }:
-with import ../../const.nix { inherit config pkgs; }; {
+{
   services.xserver.windowManager = {
     default = "stumpwm";
     stumpwm.enable = true;
   };
-  home-manager.users."${userName}" = {
+  home-manager.users."${config.attributes.mainUser.name}" = {
     home.file = {
       ".stumpwm.d".source = pkgs.fetchFromGitHub {
         owner = "wiedzmin";

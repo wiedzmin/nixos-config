@@ -1,6 +1,5 @@
 { config, pkgs, lib, ... }:
 with import <home-manager/modules/lib/dag.nix> { inherit lib; };
-with import ./const.nix { inherit config pkgs; };
 with import ./secrets/const.nix { inherit config pkgs lib; };
 let
   custom = import ../../pkgs/custom pkgs config;
@@ -9,16 +8,16 @@ in {
   imports = [ <home-manager/nixos> ./config ./packages.nix ./secrets/personal.nix ./secrets/job.nix ];
 
   attributes.mainUser = {
-    name = "${userName}";
+    name = "alex3rd";
     fullName = "${userFullName}";
     email = "${userEmail}";
     gpgKeyID = "${userPrimaryGpgKeyID}";
   };
 
-  users.extraUsers."${userName}" = {
+  users.extraUsers."${config.attributes.mainUser.name}" = {
     isNormalUser = true;
     uid = 1000;
-    description = "Alex Ermolov";
+    description = "${userFullName}";
     shell = pkgs.zsh;
     extraGroups = [ "wheel" ];
   };
@@ -126,7 +125,7 @@ in {
 
   screenshots = {
     enable = true;
-    baseDir = "/home/${userName}/screenshots";
+    baseDir = "/home/${config.attributes.mainUser.name}/screenshots";
     dateFormat = "+%Y-%m-%d_%H:%M:%S";
     calendarTimespec = "*-*-* 00:05:00";
   };
@@ -150,12 +149,12 @@ in {
     echo "$hm_revision" >> /etc/current-home-manager
   '';
 
-  nix.trustedUsers = [ userName ];
+  nix.trustedUsers = [ config.attributes.mainUser.name ];
 
   networking.extraHosts = (builtins.concatStringsSep "\n"
     (map (host: host.ip + "   " + (builtins.concatStringsSep " " host.hostNames)) (jobExtraHosts ++ extraHosts)));
 
-  home-manager.users."${userName}" = {
+  home-manager.users."${config.attributes.mainUser.name}" = {
     nixpkgs.config.allowUnfree = true;
     xdg.enable = true;
     home.file = {
@@ -184,7 +183,7 @@ in {
       syncthing.enable = true;
       mpd = {
         enable = true;
-        musicDirectory = "/home/${userName}/blobs/music";
+        musicDirectory = "/home/${config.attributes.mainUser.name}/blobs/music";
       };
     };
     programs.gpg = {

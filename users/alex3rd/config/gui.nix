@@ -1,5 +1,4 @@
 { config, pkgs, lib, ... }:
-with import ../const.nix { inherit config pkgs; };
 with import ../../../pkgs/util.nix { inherit lib config; };
 with import ../secrets/const.nix { inherit config pkgs lib; };
 let
@@ -74,7 +73,7 @@ in {
           background = "black";
           greeters.mini = {
             enable = true;
-            user = userName;
+            user = config.attributes.mainUser.name;
           };
         };
         gdm.enable = false;
@@ -127,8 +126,8 @@ in {
   programs.light.enable = true;
 
   environment.systemPackages = with pkgs; [ gmrun xorg.xhost xorg.xmessage ];
-  home-manager.users."${userName}" = {
     home.packages = with pkgs; [ userCustom.rescale-wallpaper ];
+  home-manager.users."${config.attributes.mainUser.name}" = {
     programs.autorandr = {
       enable = true;
       hooks = {
@@ -266,7 +265,7 @@ in {
           settings = {
             "extensions.autoDisableScopes" = 0;
             "browser.ctrlTab.recentlyUsedOrder" = false;
-            "browser.download.dir" = "/home/${userName}/Downloads";
+            "browser.download.dir" = "/home/${config.attributes.mainUser.name}/Downloads";
             "browser.link.open_newwindow" = 2;
             "browser.sessionstore.restore_on_demand" = true;
             "browser.sessionstore.restore_tabs_lazily" = true;
@@ -520,17 +519,17 @@ in {
         tag apps:$current.program, -- just tags the current program
 
         -- projects at work
-        current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
+        current window ($program == "emacs" && $title =~ m!(?:~|home/${config.attributes.mainUser.name})/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
           ==> tag project:$1-$2,
-        current window ($program == "Alacritty" && $title =~ m!(?:~|home/${userName})/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
+        current window ($program == "Alacritty" && $title =~ m!(?:~|home/${config.attributes.mainUser.name})/workspace/([a-zA-Z0-9]*)/src/.*-([a-zA-Z0-9]*)/!)
           ==> tag project:$1-$2,
 
         -- personal projects
-        current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/workspace/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/!)
+        current window ($program == "emacs" && $title =~ m!(?:~|home/${config.attributes.mainUser.name})/workspace/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/!)
           ==> tag project:$1-$2,
-        current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/.xmonad/!) ==> tag project:xmonad-config,
-        current window ($program == "Alacritty" && $title =~ m!(?:~|home/${userName})/.xmonad/!) ==> tag project:xmonad-config,
-        current window ($program == "emacs" && $title =~ m!(?:~|home/${userName})/.emacs.d/!) ==> tag project:emacs-config,
+        current window ($program == "emacs" && $title =~ m!(?:~|home/${config.attributes.mainUser.name})/.xmonad/!) ==> tag project:xmonad-config,
+        current window ($program == "Alacritty" && $title =~ m!(?:~|home/${config.attributes.mainUser.name})/.xmonad/!) ==> tag project:xmonad-config,
+        current window ($program == "emacs" && $title =~ m!(?:~|home/${config.attributes.mainUser.name})/.emacs.d/!) ==> tag project:emacs-config,
         current window ($program == "emacs" && $title =~ m!(?:/etc)/nixos/!) ==> tag project:nixos-config,
 
         current window ($program == "Navigator" && $title =~ /Facebook/) ==> tag site:facebook,
@@ -739,8 +738,9 @@ in {
       include/ebook
           Open=(zathura %f >/dev/null 2>&1 &)
     '';
+    # IDEA: make PoC XMonad module
     xdg.configFile."xmobar/xmobarrc".text = ''
-      Config { font = "xft:${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDunst}"
+      Config { font = "xft:Iosevka:weight=Bold:size=10"
              , bgColor = "black"
              , fgColor = "grey"
              , position = TopW L 100

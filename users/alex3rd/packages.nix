@@ -1,5 +1,4 @@
 { config, pkgs, ... }:
-with import ./const.nix { inherit config pkgs; };
 let
   # TODO: write script to query keywords which would provide packages names either from installed or whole nixpkgs
   stagingInactive = with pkgs; [ ];
@@ -383,7 +382,7 @@ let
       nixfmt
     ] ++ [ nix-zsh-completions ] ++ [ nodePackages.node2nix pypi2nix ];
 in {
-  home-manager.users."${userName}" = {
+  home-manager.users."${config.attributes.mainUser.name}" = {
     home.packages = devClients ++ devGolangInfra ++ devGolangTools ++ devIde ++ devMisc ++ devPythonTools
       ++ forensics ++ miscClients ++ miscMedia ++ monitoring ++ nix ++ org ++ sandbox ++ security ++ shell
       ++ stagingCommon ++ stagingPublish ++ stagingWork ++ text;
