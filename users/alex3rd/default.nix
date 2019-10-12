@@ -141,6 +141,9 @@ in {
 
   services.xidlehook.enable = true;
 
+  themes.condensedFonts.enable = true;
+  themes.zenburn.enable = true;
+
   # FIXME: move functionality to pkgsctl
   system.activationScripts.saveCurrentHMVersion = ''
     touch /etc/current-home-manager

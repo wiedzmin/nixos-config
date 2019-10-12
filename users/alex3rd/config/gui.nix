@@ -5,54 +5,6 @@ let
   custom = import ../../../pkgs/custom pkgs config;
   userCustom = import ../custom pkgs config;
   firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../../pkgs/firefox-addons { });
-  zathuraZenburn = {
-    completion-bg = "#404040";
-    completion-fg = "#7cb8bb";
-    completion-highlight-bg = "#7cb8bb";
-    completion-highlight-fg = "#ffffff";
-    default-bg = "#383838";
-    default-fg = "#404040";
-    highlight-active-color = "#7cb8bb";
-    highlight-color = "#e0cf9f";
-    inputbar-bg = "#383838";
-    inputbar-fg = "#ffffff";
-    notification-bg = "#383838";
-    notification-error-bg = "#383838";
-    notification-error-fg = "#dca3a3";
-    notification-fg = "#ffffff";
-    notification-warning-bg = "#383838";
-    notification-warning-fg = "#dca3a3";
-    recolor = false;
-    recolor-darkcolor = "#c0c0c0";
-    recolor-keephue = false;
-    recolor-lightcolor = "#383838";
-    statusbar-bg = "#606060";
-    statusbar-fg = "#808080";
-  };
-  zathuraBase16 = {
-    completion-bg = "#303030";
-    completion-fg = "#75B5AA";
-    completion-highlight-bg = "#75B5AA";
-    completion-highlight-fg = "#303030";
-    default-bg = "#151515";
-    default-fg = "#202020";
-    highlight-active-color = "#6A9FB5";
-    highlight-color = "#F4BF75";
-    inputbar-bg = "#151515";
-    inputbar-fg = "#303030";
-    notification-bg = "#90A959";
-    notification-error-bg = "#AC4142";
-    notification-error-fg = "#151515";
-    notification-fg = "#151515";
-    notification-warning-bg = "#AC4142";
-    notification-warning-fg = "#151515";
-    recolor = false;
-    recolor-darkcolor = "#E0E0E0";
-    recolor-keephue = true;
-    recolor-lightcolor = "#151515";
-    statusbar-bg = "#202020";
-    statusbar-fg = "#B0B0B0";
-  };
 in {
   imports = [ ./wm/xmonad.nix ];
   services = {
@@ -974,10 +926,6 @@ in {
     '';
     gtk = {
       enable = true;
-      font = {
-        package = pkgs.dejavu_fonts;
-        name = "${fontMainName} ${fontMainWeight} ${fontSizeDunst}";
-      };
       theme.name = "Adwaita-dark";
       iconTheme = {
         name = "Adwaita";
@@ -999,7 +947,6 @@ in {
           dmenu = "${pkgs.dmenu}/bin/dmenu -p dunst:";
           ellipsize = "middle";
           follow = "keyboard";
-          font = "${fontMainName} ${fontMainWeight} ${fontSizeDunst}";
           force_xinerama = "false";
           format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\\n%b";
           frame_color = "#232323";
@@ -1060,8 +1007,7 @@ in {
       enable = true;
       options = {
         pages-per-row = 1;
-        font = "${fontMainName} ${fontMainWeight} ${fontSizeDunst}";
-      } // zathuraZenburn;
+      };
     };
     services.compton = {
       enable = true;
@@ -1105,7 +1051,6 @@ in {
       width = 80;
       xoffset = 0;
       yoffset = 0;
-      font = "${fontMainName} ${fontMainWeight} ${fontSizeDunst}";
       theme = "gruvbox-dark-hard";
       # TODO: review https://davedavenport.github.io/rofi/manpage.html
       extraConfig = ''
@@ -1199,18 +1144,9 @@ in {
     xresources.properties = {
       "Xmessage*Buttons" = "Quit";
       "Xmessage*defaultButton" = "Quit";
-      "Xmessage*faceName" = "${fontMainName}";
-      "Xmessage*faceSize" = "${fontSizeXmessage}";
-      "Xmessage*faceWeight" = "${fontMainWeight}";
       "Xmessage*international" = true;
 
-      "dzen2.font" =
-        "${fontMainName}:${fontMainWeightKeyword}=${fontMainWeight}:${fontMainSizeKeyword}=${fontSizeDzen}";
-
-      "Emacs*XlwMenu.font" = "${fontCodeName}:weight=${fontCodeWeight}:size=${fontSizeEmacs}";
-      "Emacs.Font" = "${fontCodeName}:weight=${fontCodeWeight}:size=${fontSizeEmacs}";
       "Emacs.FontBackend" = "xft,x";
-      "Emacs.dialog*.font" = "${fontCodeName}:weight=${fontCodeWeight}:size=${fontSizeEmacs}";
       "Emacs.menuBar" = "0";
       "Emacs.toolBar" = "0";
       "Emacs.verticalScrollBars" = false;
