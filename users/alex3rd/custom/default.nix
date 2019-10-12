@@ -40,7 +40,6 @@ builtins.mapAttrs (name: value:
       jnettop_hosts = ./jnettop_hosts.nix;
       mount_nas_volume = ./mount_nas_volume.nix;
       remote_docker_logs = ./remote_docker_logs.nix;
-      rescale-wallpaper = ./rescale-wallpaper.nix;
       search_prompt = ./search_prompt.nix;
       search_selection = ./search_selection.nix;
       unmount_nas_volume = ./unmount_nas_volume.nix;

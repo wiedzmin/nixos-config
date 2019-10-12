@@ -121,6 +121,11 @@ in {
       ];
       console = "Lat2-Terminus16";
     };
+    wallpaper = {
+      enable = true;
+      root = "/home/${config.attributes.mainUser.name}/blobs/wallpaper";
+      current = "mongolia_2.jpg";
+    };
   };
 
   screenshots = {

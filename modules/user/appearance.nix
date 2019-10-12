@@ -1,7 +1,11 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.appearance;
+let
+  cfg = config.appearance;
+  rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
+    ${pkgs.feh}/bin/feh --bg-fill ${cfg.wallpaper.root}/${cfg.wallpaper.current}
+  '';
 in {
   options = {
     appearance = {
@@ -41,6 +45,21 @@ in {
         default = "ru_RU.UTF-8";
         description = "Locale name.";
       };
+      wallpaper.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable wallpapers functionality.";
+      };
+      wallpaper.root = mkOption {
+        type = types.str;
+        default = "";
+        description = "Wallpapers root directory.";
+      };
+      wallpaper.current = mkOption {
+        type = types.str;
+        default = "";
+        description = "Current wallpaper.";
+      };
     };
   };
 
@@ -73,6 +92,22 @@ in {
             table-others # for LaTeX input
             m17n
           ];
+        };
+      };
+    })
+    (mkIf (cfg.enable && cfg.wallpaper.enable) {
+      assertions = [{
+        assertion = cfg.wallpaper.root != "" && cfg.wallpaper.current != "";
+        message = "appearance: must provide wallpapers path and image to use.";
+      }];
+
+      environment.systemPackages = with pkgs; [
+        rescale-wallpaper
+      ];
+
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        programs.autorandr.hooks = {
+          postswitch = { "rescale-wallpaper" = "${rescale-wallpaper}/bin/rescale-wallpaper"; };
         };
       };
     })

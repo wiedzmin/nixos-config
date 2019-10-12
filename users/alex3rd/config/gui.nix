@@ -78,12 +78,10 @@ in {
   programs.light.enable = true;
 
   environment.systemPackages = with pkgs; [ gmrun xorg.xhost xorg.xmessage ];
-    home.packages = with pkgs; [ userCustom.rescale-wallpaper ];
   home-manager.users."${config.attributes.mainUser.name}" = {
     programs.autorandr = {
       enable = true;
       hooks = {
-        postswitch = { "rescale-wallpaper" = "${userCustom.rescale-wallpaper}/bin/rescale-wallpaper"; };
         predetect = { "kill-compton" = "${custom.kill-compton}/bin/kill-compton"; };
       };
       profiles = {
