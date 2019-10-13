@@ -2,6 +2,7 @@
   imports = [
     ./appearance.nix
     ./clean-trash.nix
+    ./email.nix
     ./git.nix
     ./python.nix
     ./screenshots.nix

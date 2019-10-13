@@ -144,6 +144,31 @@ in {
 
   dev.python.enable = true;
 
+  email = {
+    enable = true;
+    emailAddress = userEmail;
+    passwordPath = userGoogleAccountPasswordPath;
+    gpg = {
+      sign = true;
+      keyID = userPrimaryGpgKeyID;
+    };
+    mbsync = {
+      enable = true;
+      postExec = "${pkgs.notmuch}/bin/notmuch new";
+    };
+    msmtp.enable = true;
+    notmuch.enable = true;
+    imapfilter = {
+      enable = true;
+      server = "imap.google.com";
+      byFrom = imapfilterFromToFolder;
+      byTo = imapfilterToToFolder;
+      byCc = imapfilterCcToFolder;
+      bySubject = imapfilterSubjectToFolder;
+      deleteByFrom = imapfilterFromDelete;
+    };
+  };
+
   services.xidlehook.enable = true;
 
   themes.condensedFonts.enable = true;

@@ -51,7 +51,6 @@ builtins.mapAttrs (name: value:
       gen-nix-du = ./gen-nix-du.nix;
       goreplay-capture = ./goreplay-capture.nix;
       kill-compton = ./kill-compton.nix;
-      pass_imap_helper = ./pass_imap_helper.nix;
       shell-org-capture = ./shell-org-capture.nix;
       systemctl-status = ./systemctl-status.nix;
       update-system = ./update-system.nix;
