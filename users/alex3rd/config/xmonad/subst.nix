@@ -21,7 +21,6 @@ in rec {
     '', "M-C-c"      ~> spawn "docker_containers_traits"'';
   dockerShell = "${userCustom.docker_shell}/bin/docker_shell";
   dockerStacksInfo = "${userCustom.docker_stacks_info}/bin/docker_stacks_info";
-  extraHostsTraits = "${userCustom.extra_hosts_traits}/bin/extra_hosts_traits";
   jogEmacs = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";
   lockScreen = "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off";
   mergeXresources = "${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources";

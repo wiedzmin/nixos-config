@@ -35,7 +35,6 @@ builtins.mapAttrs (name: value:
       dbms = ./dbms.nix;
       docker_shell = ./docker_shell.nix;
       docker_stacks_info = ./docker_stacks_info.nix;
-      extra_hosts_traits = ./extra_hosts_traits.nix;
       force_unmount_nas = ./force_unmount_nas.nix;
       jnettop_hosts = ./jnettop_hosts.nix;
       mount_nas_volume = ./mount_nas_volume.nix;

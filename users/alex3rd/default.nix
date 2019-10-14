@@ -185,7 +185,7 @@ in {
   nix.trustedUsers = [ config.attributes.mainUser.name ];
 
   networking.extraHosts = (builtins.concatStringsSep "\n"
-    (map (host: host.ip + "   " + (builtins.concatStringsSep " " host.hostNames)) (jobExtraHosts ++ extraHosts)));
+    (lib.mapAttrsToList (ip: hosts: ip + "    " + (builtins.concatStringsSep " " hosts)) (jobExtraHosts // extraHosts)));
 
   home-manager.users."${config.attributes.mainUser.name}" = {
     nixpkgs.config.allowUnfree = true;
