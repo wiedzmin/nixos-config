@@ -4,58 +4,31 @@ module Layouts where
 
 import XMonad hiding ((|||))
 import XMonad.Layout.AutoMaster
-import XMonad.Layout.DwmStyle (dwmStyle, shrinkText)
+import XMonad.Layout.DwmStyle (dwmStyle, shrinkText, defaultTheme)
 import XMonad.Layout.Grid
-import XMonad.Layout.IM (Property(And), Property(ClassName), Property(Or),
-                         Property(Role), Property(Title), Property(Resource),
-                         withIM)
 import XMonad.Layout.LayoutCombinators
 import XMonad.Layout.MultiDishes
 import XMonad.Layout.OneBig
 import XMonad.Layout.PerWorkspace (onWorkspace)
-import XMonad.Layout.Reflect (reflectHoriz)
 import XMonad.Layout.Renamed (renamed, Rename(Replace))
-import XMonad.Layout.ResizableTile
-import XMonad.Layout.Tabbed (tabbed)
+import XMonad.Layout.StackTile
+import XMonad.Layout.Tabbed (tabbed, shrinkText, defaultTheme)
 import qualified XMonad.Layout.HintedTile as HT
 
-import Themes (tabbedConf)
 
-import XMonad.Layout.StackTile
+tabbedLayout = tabbed shrinkText defaultTheme
+dwmLayout = dwmStyle shrinkText defaultTheme
 
-
-customHintedTile = HT.HintedTile nmaster delta ratio HT.TopLeft HT.Tall
-  where
-    nmaster = 1
-    ratio   = 1/2
-    delta   = 3/100
-
-imLayout = withIM (0.15) (isPsiRoster `Or` isPsiPlusRoster) $ reflectHoriz $ withIM (0.15) (isPidginRoster) (tabbed shrinkText def ||| Grid)
-gimpLayout = withIM (0.17) (isGimpToolbox) $ reflectHoriz $ withIM (0.15) (isGimpDock) (Full)
-gimpLayoutAlt = reflectHoriz $ withIM (11/64) (isGimpToolbox) $ ResizableTall 2 (1/118) (11/20) [5/4,5/4,5/4]
-tabbedLayout = tabbed shrinkText tabbedConf -- | defaultTheme
-dwmLayout = dwmStyle shrinkText tabbedConf
-
-isPidginRoster = And (ClassName "Pidgin") (Role "buddy_list")
-isPidginChat = And (ClassName "Pidgin") (Role "conversation")
-isPsiRoster = And (ClassName "psi") (Role "psimain")
-isPsiPlusRoster = Or (Title "Psi+") (And (Resource "main") (ClassName "psi"))
-isPsiChat = And (Resource "chat") (ClassName "psi")
-
-isGimpMain = And (ClassName "Gimp") (Role "gimp-image-window-1")
-isGimpToolbox = And (ClassName "Gimp") (Role "gimp-toolbox-1")
-isGimpDock = And (ClassName "Gimp") (Role "gimp-dock-1")
-isGimpMessage = And (ClassName "Gimp") (Role "gimp-message")
-
-layouts = onWorkspace "scratch" gimpLayout $
-          onWorkspace "im" imLayout $
+layouts = onWorkspace "scratch" (renamed [Replace "tabs"] tabbedLayout) $
+          onWorkspace "im" (renamed [Replace "tabs"] tabbedLayout) $
           onWorkspace "web" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4))) $
           onWorkspace "web2" (StackTile 1 (3/100) (1/2)) $
           onWorkspace "web3" (StackTile 1 (3/100) (1/2)) $
           onWorkspace "work" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4)) |||
                               renamed [Replace "Dishes"] (MultiDishes 2 3 (1/6)) |||
                               renamed [Replace "Grid"] Grid |||
-                              renamed [Replace "Tiled"] (autoMaster 1 (1/100) customHintedTile)) $
+                              renamed [Replace "Tiled"] (autoMaster 1 (1/100)
+                                                          (HT.HintedTile 1 (3/100) (1/2) HT.TopLeft HT.Tall))) $
           onWorkspace "shell" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4))) $
           renamed [Replace "OneBig"] (OneBig (3/4) (3/4))
 

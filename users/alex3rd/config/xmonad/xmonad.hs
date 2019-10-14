@@ -15,7 +15,6 @@ import XMonad.Util.NamedScratchpad (namedScratchpadManageHook)
 import qualified Controls as C
 import qualified Layouts as L
 import qualified StatusBar as SB
-import qualified Themes as T
 import qualified Workspaces as WS
 
 

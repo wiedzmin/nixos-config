@@ -593,89 +593,6 @@ in {
         EXT:ps = zathura %s
         EXT:pdf = zathura %s
       '';
-      # TODO: check/Nixify paths
-      ".i3status.conf".text = ''
-        # i3status configuration file.
-        # see "man i3status" for documentation.
-
-        # It is important that this file is edited as UTF-8.
-        # The following line should contain a sharp s:
-        # ß
-        # If the above line is not correctly displayed, fix your editor first!
-
-        general {
-                output_format = "dzen2"
-                colors = true
-                interval = 5
-        }
-
-        order += "tztime local"
-        order += "cpu_usage"
-        order += "cpu_temperature 0"
-        order += "load"
-        order += "disk /"
-        order += "run_watch DHCP"
-        order += "path_exists VPN"
-        order += "wireless _first_"
-        order += "battery 0"
-        order += "volume master"
-
-        wireless _first_ {
-                 format_up = "W: %quality, %essid"
-                 format_down = "W: down"
-        }
-
-        battery 0 {
-                format = "%status %percentage %remaining"
-        }
-
-        battery 0 {
-                format = "%status %percentage %remaining"
-                format_down = "No battery"
-                status_chr = "⚇ CHR"
-                status_bat = "⚡ BAT"
-                status_full = "☻ FULL"
-                path = "/sys/class/power_supply/BAT%d/uevent"
-                low_threshold = 10
-        }
-
-        run_watch DHCP {
-                  pidfile = "/var/run/dhclient*.pid"
-        }
-
-        path_exists VPN {
-                    path = "/proc/sys/net/ipv4/conf/tun0"
-        }
-
-        tztime local {
-               format = "%H:%M:%S %d-%m-%Y"
-        }
-
-        load {
-             format = "%1min"
-        }
-
-        disk "/" {
-             format = "%free"
-        }
-
-        cpu_temperature 0 {
-                        format = "/ %degrees °C"
-                        path = "/sys/devices/platform/coretemp.0/hwmon/hwmon1/temp2_input"
-        }
-
-        volume master {
-               format = "♪: %volume"
-               format_muted = "♪: muted (%volume)"
-               device = "pulse"
-               mixer = "Master"
-               mixer_idx = 0
-        }
-
-        cpu_usage {
-                  format = "CPU: %usage"
-        }
-      '';
     };
     xdg.configFile."mc/mc.ext".text = ''
       regex/\.([pP][dD][fF])$
@@ -725,10 +642,6 @@ in {
       define_keymap(re.compile("Firefox"), {
           K("C-j"): K("C-f6"), # Type C-j to focus to the content
           K("C-g"): K("f5"),
-          K("C-Shift-Right"): K("C-TAB"),
-          K("C-Shift-Left"): K("C-Shift-TAB"),
-          K("C-Shift-comma"): Combo(Modifier.ALT, Key.KEY_1),
-          K("C-Shift-dot"): Combo(Modifier.ALT, Key.KEY_9),
           K("C-n"): K("C-g"),
           K("C-Shift-n"): K("C-Shift-g"),
           K("M-comma"): K("M-Left"),
@@ -821,106 +734,6 @@ in {
               K("u"): [K("C-z"), set_mark(False)],
           }
       }, "Emacs-like keys")
-    '';
-    xdg.configFile."rofi-pass/config".text = ''
-      # permanently set alternative root dir. Use ":" to separate multiple roots
-      # which can be switched at runtime with shift+left/right
-      # root=/path/to/root
-
-      # rofi command. Make sure to have "$@" as last argument
-      _rofi () {
-          ${pkgs.rofi}/bin/rofi -i -no-auto-select "$@"
-      }
-
-      # default command to generate passwords
-      _pwgen () {
-          ${pkgs.pwgen}/bin/pwgen -y "$@"
-      }
-
-      # image viewer to display qrcode of selected entry
-      # qrencode is needed to generate the image and a viewer
-      # that can read from pipes. Known viewers to work are feh and display
-      _image_viewer () {
-          ${pkgs.feh}/bin/feh -
-      }
-
-      # xdotool needs the keyboard layout to be set using setxkbmap
-      # You can do this in your autostart scripts (e.g. xinitrc)
-
-      # If for some reason, you cannot do this, you can set the command here.
-      # and set fix_layout to true
-      fix_layout=false
-
-      layout_cmd () {
-          ${pkgs.xkblayout-state}/bin/xkblayout-state set 0
-      }
-
-      # fields to be used
-      URL_field='url'
-      USERNAME_field='login'
-      AUTOTYPE_field='autotype'
-
-      # delay to be used for :delay keyword
-      delay=2
-
-      # rofi-pass needs to close itself before it can type passwords. Set delay here.
-      wait=0.2
-
-      # delay between keypresses when typing (in ms)
-      xdotool_delay=12
-
-      ## Programs to be used
-      # Editor
-      EDITOR='${pkgs.emacs}/bin/emacsclient'
-
-      # Browser
-      BROWSER='${pkgs.firefox-unwrapped}/bin/firefox'
-
-      ## Misc settings
-
-      default_do='menu' # menu, autotype, copyPass, typeUser, typePass, copyUser, copyUrl, viewEntry, typeMenu, actionMenu, copyMenu, openUrl
-      auto_enter='false'
-      notify='false'
-      default_autotype='user :tab pass'
-
-      # color of the help messages
-      # leave empty for autodetection
-      help_color="#4872FF"
-
-      # Clipboard settings
-      # Possible options: primary, clipboard, both
-      clip=clipboard
-
-      # Seconds before clearing pass from clipboard
-      clip_clear=45
-
-      ## Options for generating new password entries
-
-      # open new password entries in editor
-      edit_new_pass="true"
-
-      # default_user is also used for password files that have no user field.
-      #default_user="''${ROFI_PASS_DEFAULT_USER-$(whoami)}"
-      #default_user2=${userName}
-      #password_length=12
-
-      # Custom Keybindings
-      autotype="Alt+1"
-      type_user="Alt+2"
-      type_pass="Alt+3"
-      open_url="Alt+4"
-      copy_name="Alt+u"
-      copy_url="Alt+l"
-      copy_pass="Alt+p"
-      show="Alt+o"
-      copy_entry="Alt+2"
-      type_entry="Alt+1"
-      copy_menu="Alt+c"
-      action_menu="Alt+a"
-      type_menu="Alt+t"
-      help="Alt+h"
-      switch="Alt+x"
-      insert_pass="Alt+n"
     '';
     gtk = {
       enable = true;

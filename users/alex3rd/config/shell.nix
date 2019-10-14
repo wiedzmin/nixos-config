@@ -20,13 +20,6 @@ in {
             panes:
               - mc
       '';
-      "tmuxp/media.yml".text = ''
-        session_name: media
-        windows:
-          - window_name: youtube
-            panes:
-              - mpsyt
-      '';
       "tmuxp/dev.yml".text = ''
         session_name: dev
         windows:
@@ -123,17 +116,6 @@ in {
             split-window -v "tmux list-sessions | sed -E 's/:.*$//' | \
                                                     grep -v \"^$(tmux display-message -p '#S')\$\" | \
                                                     ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
-          "F12" = ''
-            send-key "#############################################################################################"'';
-          "F11" = ''new-window "fq; $SHELL"'';
-          "S-F11" = ''
-            run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o --clipboard | \
-                                                                ${pkgs.xe}/bin/xe ${pkgs.nq}/bin/nq ${pkgs.you-get}/bin/you-get"'';
-          "b" = ''
-            split-window -c '#{pane_current_path}' \
-                                                -v "${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null && ${pkgs.git}/bin/git -p show --color=always \
-                                                    $(${pkgs.git}/bin/git log --decorate=short --graph --oneline --color=always | \
-                                                    ${pkgs.skim}/bin/sk --ansi -m | ${pkgs.gawk}/bin/awk '{print $2}') | less -R"'';
         };
       };
       extraConfig = ''
@@ -264,8 +246,6 @@ in {
         CSEARCHINDEX = "${devWorkspacePath}/.csearchindex";
         EDITOR = "${pkgs.emacs}/bin/emacsclient";
         HISTFILE = "${zshHistFilename}";
-        TMUXP_CONFIGDIR = "/home/${config.attributes.mainUser.name}/tmuxp";
-        VISUAL = "${pkgs.emacs}/bin/emacsclient";
         WORKON_HOME = "/home/${config.attributes.mainUser.name}/.virtualenvs";
         YSU_IGNORED_ALIASES = [ "g" "ll" ]; # TODO: review list
         YSU_MODE = "ALL";
