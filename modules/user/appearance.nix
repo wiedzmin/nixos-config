@@ -14,12 +14,6 @@ in {
         default = false;
         description = "Whether to enable appearance customizations.";
       };
-      fonts.list = mkOption {
-        type = types.listOf types.path;
-        default = [ ];
-        example = [ pkgs.hack-font ];
-        description = "Fonts packages.";
-      };
       fonts.antialias = mkOption {
         type = types.bool;
         default = false;
@@ -71,7 +65,6 @@ in {
       }];
 
       fonts = {
-        fonts = cfg.fonts.list;
         fontconfig = {
           enable = true;
           antialias = cfg.fonts.antialias;

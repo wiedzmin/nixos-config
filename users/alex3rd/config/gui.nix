@@ -607,7 +607,7 @@ in {
     '';
     # IDEA: make PoC XMonad module
     xdg.configFile."xmobar/xmobarrc".text = ''
-      Config { font = "xft:Iosevka:weight=Bold:size=10"
+      Config { ${lib.optionalString (config.attributes.fonts.xmobar != "") ''font = "${config.attributes.fonts.xmobar}"''}
              , bgColor = "black"
              , fgColor = "grey"
              , position = TopW L 100

@@ -105,20 +105,6 @@ in {
     enable = true;
     fonts = {
       antialias = true;
-      list = with pkgs; [
-        anonymousPro
-        corefonts
-        emacs-all-the-icons-fonts
-        fantasque-sans-mono
-        fira-code
-        font-awesome-ttf
-        go-font
-        hack-font
-        iosevka
-        powerline-fonts
-        terminus_font
-        terminus_font_ttf
-      ];
       console = "Lat2-Terminus16";
     };
     wallpaper = {

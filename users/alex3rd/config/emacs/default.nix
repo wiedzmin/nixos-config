@@ -1,5 +1,11 @@
 { config, pkgs, lib, ... }:
 {
+  fonts = {
+    fonts = with pkgs; [
+      emacs-all-the-icons-fonts
+    ];
+  };
+
   home-manager.users."${config.attributes.mainUser.name}" = {
     home.packages = with pkgs; [
       (makeDesktopItem {

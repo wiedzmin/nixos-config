@@ -71,7 +71,8 @@ in rec {
   jobVpnDown = "${sctlStop} openvpn-${jobVpnName}.service";
 
   # IDEA: make PoC XMonad module
-  fontDefault = "Iosevka:weight=Bold:size=16";
-  fontTabbed = "Iosevka:weight=Bold:size=16";
   xmobar = "${pkgs.xmobar}/bin/xmobar";
+} // lib.optionalAttrs (config.attributes.fonts.xmonadDefault != "") {
+  fontDefault = config.attributes.fonts.xmonadDefault;
+  fontTabbed = config.attributes.fonts.xmonadDefault;
 }

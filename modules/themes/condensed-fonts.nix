@@ -9,6 +9,13 @@ in {
   };
 
   config = mkIf cfg.enable {
+    fonts = {
+      fonts = with pkgs; [
+        iosevka
+      ];
+    };
+    attributes.fonts.xmobar = "xft:Iosevka:weight=Bold:size=10";
+    attributes.fonts.xmonadDefault = "xft:Iosevka:weight=Bold:size=16";
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = {
         package = pkgs.iosevka;

@@ -24,5 +24,15 @@ with lib;
       description = "testing lines merge";
       type = types.lines;
     };
+    # TODO: think if this is the proper location
+    fonts.xmobar = mkOption {
+      description = "Font definition for XMobar";
+      type = types.str;
+    };
+    # TODO: think if this is the proper location
+    fonts.xmonadDefault = mkOption {
+      description = "Default Font for XMonad";
+      type = types.str;
+    };
   };
 }
