@@ -13,16 +13,6 @@ with import ../../../../pkgs/util.nix { inherit lib config; };
           (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs lib; }) // { src = ./Controls.hs; }));
         onChange = "xmonad --recompile";
       };
-      ".xmonad/lib/Layouts.hs" = {
-        text = builtins.readFile
-          (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs lib; }) // { src = ./Layouts.hs; }));
-        onChange = "xmonad --recompile";
-      };
-      ".xmonad/lib/StatusBar.hs" = {
-        text = builtins.readFile
-          (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs lib; }) // { src = ./StatusBar.hs; }));
-        onChange = "xmonad --recompile";
-      };
       ".xmonad/lib/Workspaces.hs" = {
         text = builtins.readFile
           (pkgs.substituteAll ((import ./subst.nix { inherit config pkgs lib; }) // { src = ./Workspaces.hs; }));
