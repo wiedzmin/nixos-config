@@ -318,9 +318,7 @@ let
       jmtpfs # consider providing some (shell) automation
       maim
       mimeo
-      minitube
       mpd-mpris # TODO: incorporate into user infrastructure
-      mps-youtube # TODO: make script + service to backup playlists data
       playerctl
       shared-mime-info
       testdisk
