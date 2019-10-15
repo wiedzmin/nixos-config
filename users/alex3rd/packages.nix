@@ -117,7 +117,7 @@ let
     terraform
     tflint
   ];
-  stagingPublish = with pkgs; [ ocrmypdf pdfcpu pdfgrep pdfsandwich pdftk ];
+  stagingPublish = with pkgs; [ ocrmypdfWorking.ocrmypdf pdfcpu pdfgrep pdfsandwich pdftk ];
   sandbox = with pkgs; [
     # binaries for PATH
     # transmission + service https://transmissionbt.com/ + stig
@@ -173,13 +173,13 @@ let
   devPythonTools = with pkgs; [ python3Packages.virtualenv python3Packages.virtualenvwrapper yapf ];
   devClients = with pkgs; [
     anydesk
-    http-prompt
+    hpWorking.http-prompt
     httplab
-    litecli # TODO: shell automation: skim for selecting db file, you get the idea
-    mycli
+    litecliWorking.litecli # TODO: shell automation: skim for selecting db file, you get the idea
+    mypgWorking.mycli
     nodePackages.elasticdump
     pgcenter
-    pgcli
+    mypgWorking.pgcli
     redis-tui
     soapui
     wuzz
