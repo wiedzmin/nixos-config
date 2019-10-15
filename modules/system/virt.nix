@@ -259,6 +259,13 @@ in {
 
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "docker" ];
 
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        xdg.configFile."hadolint.yaml".text = ''
+          ignored:
+            - DL3007
+        '';
+      };
+
       environment.systemPackages = with pkgs; [
         dlint
         hadolintd
