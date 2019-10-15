@@ -4,11 +4,22 @@
   imports = [
     ../pkgs/setup.nix
     ../modules
-    ../partitions/momcat-ssd-256.nix
     ../users/kotya/services/xserver.nix
     ../users/kotya/default.nix
     <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
   ];
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos-root";
+    fsType = "ext4";
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-label/nixos-boot";
+    fsType = "ext2";
+  };
+
+  swapDevices = [ ];
 
   nix = {
     # per-machine settings

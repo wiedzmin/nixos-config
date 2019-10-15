@@ -7,10 +7,27 @@
     ../pkgs/forges/github.com/NixOS/nixos-hardware/common/cpu/intel/sandy-bridge
     ../pkgs/forges/github.com/NixOS/nixos-hardware/common/pc/ssd
     ../pkgs/forges/github.com/NixOS/nixos-hardware/lenovo/thinkpad/x230
-    ../partitions/laptoptop-ssd-512.nix
     ../users/alex3rd
     <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
   ];
+
+  fileSystems."/" = {
+    device = "/dev/disk/by-label/nixos-root";
+    fsType = "ext4";
+  };
+
+  fileSystems."/boot" = {
+    device = "/dev/disk/by-label/nixos-boot";
+    fsType = "ext2";
+  };
+
+  fileSystems."${config.services.syncthing.dataDir}/bookshelf" = {
+    device =
+      "${config.users.extraUsers.alex3rd.home}/bookshelf"; # TODO: check if we could use env var or substitution here
+    options = [ "bind" ];
+  };
+
+  swapDevices = [ ];
 
   nix = {
     # per-machine settings
