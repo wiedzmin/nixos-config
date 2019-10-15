@@ -3,7 +3,7 @@
 with import ../secrets/const.nix { inherit lib config pkgs; }; ''
   #!${bash}/bin/bash
 
-  ${enforce_job_vpn_impl}
+  ${enforceJobVpnImplSh}
 
   ask_for_logs() {
       LOGS=$(${openssh}/bin/ssh ${jobInfraLogsHost} "find ${jobInfraRemoteDockerLogsPath}/ -maxdepth 1 -size +0 -type f | grep -v gz")

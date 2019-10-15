@@ -3,7 +3,7 @@
 with import ../secrets/const.nix { inherit lib config pkgs; }; ''
   #!${bash}/bin/bash
 
-  ${enforce_job_vpn_impl}
+  ${enforceJobVpnImplSh}
 
   main() {
       HOST=$( cat /etc/hosts | ${gawk}/bin/awk '{print $2}' | ${rofi}/bin/rofi -dmenu -p "Host" )

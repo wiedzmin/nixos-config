@@ -8,7 +8,7 @@ let
 in ''
   #!${bash}/bin/bash
 
-  ${enforce_job_vpn_impl}
+  ${enforceJobVpnImplSh}
 
   enforce_job_vpn
 

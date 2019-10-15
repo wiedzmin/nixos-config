@@ -2,7 +2,7 @@
 with import ../secrets/const.nix { inherit lib config pkgs; }; ''
   #!${bash}/bin/bash
 
-  ${enforce_job_vpn_impl}
+  ${enforceJobVpnImplSh}
 
   enforce_job_vpn
 
