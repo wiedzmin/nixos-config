@@ -1,11 +1,7 @@
 { bash, config, dunst, eternal-terminal, gawk, lib, openssh, pkgs, rofi, systemd, tmux, yad, ... }:
 # TODO: think of decoupling from job infra
 with import ../secrets/const.nix { inherit lib config pkgs; };
-let
-  dockerStackPsCustomFormat = "{{.Name}}   {{.Image}}   {{.Node}} {{.DesiredState}}   {{.CurrentState}}";
-  useDockerStackPsCustomFormat = false;
-  dockerStackShowOnlyRunning = true;
-in ''
+''
   #!${bash}/bin/bash
 
   ${enforceJobVpnImplSh}
@@ -19,8 +15,8 @@ in ''
   SWARM_LEADER_NODE=$(${openssh}/bin/ssh ${jobInfraSeedHost} "docker node ls --format '{{.Hostname}} {{ .ManagerStatus }}' | grep Leader | cut -f1 -d\ ")
 
   docker_stack_ps_params() {
-      echo ${if dockerStackShowOnlyRunning then ''--filter \"desired-state=Running\"'' else ""}
-           ${if useDockerStackPsCustomFormat then " --format \\\"${dockerStackPsCustomFormat}\\\"" else ""}
+      echo ${if docker.stacks.showOnlyRunning then ''--filter \"desired-state=Running\"'' else ""}
+           ${if docker.stacks.useCustomFormat then " --format \\\"${docker.stacks.psCustomFormat}\\\"" else ""}
   }
 
   MODES=(

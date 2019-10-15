@@ -210,6 +210,21 @@ in {
         type = types.bool;
         description = "Whether DNS service should be started automatically.";
       };
+      docker.stacks.psCustomFormat = mkOption {
+        type = types.str;
+        default = "{{.Name}}   {{.Image}}   {{.Node}} {{.DesiredState}}   {{.CurrentState}}";
+        description = "Custom columns formatting for `docker stack ps` output.";
+      };
+      docker.stacks.useCustomFormat = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Wheteher to use custom formatting for `docker stack ps` output.";
+      };
+      docker.stacks.showOnlyRunning = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Show only running services in stack.";
+      };
       libvirt.enable = mkOption {
         type = types.bool;
         default = false;
