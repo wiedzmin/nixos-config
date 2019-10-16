@@ -1,5 +1,4 @@
 { bash, config, lib, pkgs, rofi, ... }:
-with import ../../../pkgs/util.nix { inherit config lib; };
 with import ../secrets/const.nix { inherit lib config pkgs; }; ''
   #!${bash}/bin/bash
 
@@ -11,7 +10,7 @@ with import ../secrets/const.nix { inherit lib config pkgs; }; ''
       done
   }
 
-  ${listOfSetsToShellHashtable (jobWebjumps ++ webjumps) "url" "WEBJUMPS" true}
+  ${webjumpsData}
 
   main() {
       WEBJUMP=$( (show_mapping_keys "$(declare -p WEBJUMPS)") | ${rofi}/bin/rofi -dmenu -p "Jump to" )

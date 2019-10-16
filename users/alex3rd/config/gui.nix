@@ -1,5 +1,4 @@
 { config, pkgs, lib, ... }:
-with import ../../../pkgs/util.nix { inherit lib config; };
 with import ../secrets/const.nix { inherit config pkgs lib; };
 let
   custom = import ../../../pkgs/custom pkgs config;
@@ -410,7 +409,7 @@ in {
 
       keymap . /
     '';
-    xdg.configFile."xsuspender.conf".text = genIni {
+    xdg.configFile."xsuspender.conf".text = lib.generators.toINI {} {
       Default = {
         suspend_delay = 10;
         resume_every = 50;

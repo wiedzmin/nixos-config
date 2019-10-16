@@ -1,5 +1,4 @@
 { config, lib, pkgs, ... }:
-with import ../../pkgs/util.nix { inherit config lib; };
 with lib;
 
 let cfg = config.dev.python;
@@ -50,7 +49,7 @@ in {
   config = mkIf cfg.enable {
     home-manager.users."${config.attributes.mainUser.name}" = {
       home.file = {
-        ".pylintrc".text = genIni { # see https://github.com/PyCQA/pylint/blob/master/pylintrc for reference
+        ".pylintrc".text = lib.generators.toINI {} { # see https://github.com/PyCQA/pylint/blob/master/pylintrc for reference
           "MASTER" = {
             ignore = "CVS";
             persistent = "yes";
@@ -252,7 +251,7 @@ in {
             ];
           };
         };
-      ".isort.cfg".text = genIni {
+      ".isort.cfg".text = lib.generators.toINI {} {
         settings = {
           line_length = builtins.toString cfg.lineLengthThreshold;
           indent = "'    '";
@@ -273,14 +272,14 @@ in {
         };
       };
     };
-    xdg.configFile."flake8".text = genIni {
+    xdg.configFile."flake8".text = lib.generators.toINI {} {
       flake8 = {
         max-line-length = builtins.toString cfg.lineLengthThreshold;
         exclude = lib.concatStringsSep "," cfg.excludes;
         ignore = lib.concatStringsSep ", " cfg.ignoredErrors;
       };
     };
-    xdg.configFile."pycodestyle".text = genIni {
+    xdg.configFile."pycodestyle".text = lib.generators.toINI {} {
       pycodestyle = {
         exclude = lib.concatStringsSep "," cfg.excludes;
         max-line-length = builtins.toString cfg.lineLengthThreshold;
@@ -289,7 +288,7 @@ in {
         statistics = "True";
       };
     };
-    xdg.configFile."yapf/style".text = genIni {
+    xdg.configFile."yapf/style".text = lib.generators.toINI {} {
       style = {
         based_on_style = "pep8";
         align_closing_bracket_with_visual_indent = "True";

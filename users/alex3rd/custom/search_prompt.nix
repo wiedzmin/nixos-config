@@ -1,9 +1,8 @@
 { bash, config, gawk, lib, pkgs, rofi, ... }:
-with import ../../../pkgs/util.nix { inherit config lib; };
 with import ../secrets/const.nix { inherit lib config pkgs; }; ''
   #!${bash}/bin/bash
 
-  ${listOfSetsToShellHashtable (searchEngines) "engine" "SEARCHENGINES" true}
+  ${searchenginesData}
 
   list_searchengines() {
       INDEX=1

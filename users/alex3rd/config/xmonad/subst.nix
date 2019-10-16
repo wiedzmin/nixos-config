@@ -1,5 +1,4 @@
 { config, pkgs, lib, ... }:
-with import ../../../../pkgs/util.nix { inherit lib config; };
 with import ../../secrets/const.nix { inherit config lib pkgs; };
 let
   custom = import ../../../../pkgs/custom pkgs config;

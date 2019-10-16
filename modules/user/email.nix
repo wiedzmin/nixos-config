@@ -1,5 +1,4 @@
 { config, lib, pkgs, ... }:
-with import ../../pkgs/util.nix { inherit config lib; };
 with lib;
 
 let
