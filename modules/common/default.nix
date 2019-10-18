@@ -1,0 +1,37 @@
+{ ... }: {
+  imports = [
+    ./analysis.nix
+    ./appearance.nix
+    ./battery-notifier.nix
+    ./browsers.nix
+    ./clean-trash.nix
+    ./clojure.nix
+    ./content.nix
+    ./dataworks.nix
+    ./dbms.nix
+    ./dev.nix
+    ./ebook.nix
+    ./email.nix
+    ./git.nix
+    ./golang.nix
+    ./media.nix
+    ./messengers.nix
+    ./nas.nix
+    ./navigation.nix
+    ./network.nix
+    ./packaging.nix
+    ./paperworks.nix
+    ./polkit-silent-auth.nix
+    ./python.nix
+    ./screenshots.nix
+    ./security.nix
+    ./shell.nix
+    ./stumpwm.nix
+    ./system.nix
+    ./virt.nix
+    ./xidlehook.nix
+    ./xinput.nix
+    ./xmonad.nix
+    ./xrandr.nix
+  ];
+}

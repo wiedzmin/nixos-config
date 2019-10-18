@@ -25,9 +25,10 @@ builtins.mapAttrs (name: value:
     installPhase = "true";
     pythonCatchConflictsPhase = "true";
   }) {
+    autorandr_profiles = ./autorandr_profiles;
+    bookshelf = ./bookshelf;
     confctl = ./confctl;
     pkgsctl = ./pkgsctl;
-    autorandr_profiles = ./autorandr_profiles;
     services_journals = ./services_journals;
     ssh_custom_user = ./ssh_custom_user;
     tmuxp_sessions = ./tmuxp_sessions;
@@ -45,16 +46,26 @@ builtins.mapAttrs (name: value:
       buku_search_tag = ./buku_search_tag.nix;
       buku_search_url = ./buku_search_url.nix;
       burn_iso = ./burn_iso.nix;
+      ctop_hosts = ./ctop_hosts.nix;
       current_system_hash = ./current_system_hash.nix;
       discover_containerized_services = ./discover_containerized_services.nix;
+      docker_shell = ./docker_shell.nix;
+      force_unmount_nas = ./force_unmount_nas.nix;
       format-config = ./format-config.nix;
       gen-nix-du = ./gen-nix-du.nix;
       goreplay-capture = ./goreplay-capture.nix;
+      jnettop_hosts = ./jnettop_hosts.nix;
       kill-compton = ./kill-compton.nix;
+      mount_nas_volume = ./mount_nas_volume.nix;
+      remote_docker_logs = ./remote_docker_logs.nix;
+      search_prompt = ./search_prompt.nix;
+      search_selection = ./search_selection.nix;
       shell-org-capture = ./shell-org-capture.nix;
       systemctl-status = ./systemctl-status.nix;
+      unmount_nas_volume = ./unmount_nas_volume.nix;
       update-system = ./update-system.nix;
       uptime_info = ./uptime_info.nix;
+      webjumps = ./webjumps.nix;
       wifi-status = ./wifi-status.nix;
     }
 

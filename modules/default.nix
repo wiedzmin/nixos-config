@@ -1,8 +1,7 @@
 { ... }: {
   imports = [
     ./attributes.nix
-    ./system
+    ./common
     ./themes
-    ./user
   ];
 }

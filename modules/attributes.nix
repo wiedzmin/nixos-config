@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -33,6 +33,85 @@ with lib;
     fonts.xmonadDefault = mkOption {
       description = "Default Font for XMonad";
       type = types.str;
+    };
+    paths.nixpkgs = mkOption {
+      description = "Full path to `Nixpkgs`";
+      type = types.str;
+      default = "/etc/nixos/pkgs/forges/github.com/NixOS/nixpkgs-channels";
+    };
+    paths.home-manager = mkOption {
+      description = "Full path to `home-manager`";
+      type = types.str;
+      default = "/etc/nixos/pkgs/forges/github.com/rycee/home-manager";
+    };
+    defaultCommands.terminal = mkOption {
+      description = "Default terminal";
+      type = types.str;
+      default = "${pkgs.alacritty}/bin/alacritty -e";
+    };
+    defaultCommands.browser = mkOption {
+      description = "Default browser";
+      type = types.str;
+      default = "${pkgs.firefox-unwrapped}/bin/firefox -new-tab";
+    };
+    defaultCommands.fallbackBrowser = mkOption {
+      description = "Default browser to fallback to in some cases";
+      type = types.str;
+      default = "${pkgs.chromium}/bin/chromium";
+    };
+    defaultCommands.ebookReader = mkOption {
+      description = "Default ebooks reader";
+      type = types.str;
+      default = "${pkgs.zathura}/bin/zathura";
+    };
+    defaultCommands.textProcessor = mkOption {
+      description = "Default text processor app";
+      type = types.str;
+      default = "libreoffice";
+    };
+    defaultCommands.spreadsheetEditor = mkOption {
+      description = "Default spreadheets editor";
+      type = types.str;
+      default = "libreoffice";
+    };
+    defaultCommands.pager = mkOption {
+      description = "Default pager";
+      type = types.str;
+      default = "${pkgs.most}/bin/most";
+    };
+    defaultCommands.videoPlayer = mkOption {
+      description = "Default video player";
+      type = types.str;
+      default = "mpv";
+    };
+    defaultCommands.imageViewer = mkOption {
+      description = "Default image viewer";
+      type = types.str;
+      default = "";
+    };
+    staging.enable = mkOption {
+      description = "Whether to enable staging packages/configuration";
+      type = types.bool;
+      default = false;
+    };
+    hardware.monitors = {
+      internalHead = {
+        name = mkOption {
+          type = types.str ;
+          default = "";
+          description = "Internal laptop head name";
+        };
+        edid = mkOption {
+          type = types.str ;
+          default = "";
+          description = "Internal laptop head EDID value";
+        };
+        resolution = mkOption {
+          type = types.str ;
+          default = "";
+          description = "Internal laptop head resolution";
+        };
+      };
     };
   };
 }

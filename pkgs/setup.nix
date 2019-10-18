@@ -8,10 +8,10 @@ in {
   nix = {
     # For interactive usage
     nixPath = [
-      "nixpkgs=/etc/nixos/pkgs/forges/github.com/NixOS/nixpkgs-channels"
+      "nixpkgs=${config.attributes.paths.nixpkgs}"
       "nixpkgs-overlays=/etc/nixos/pkgs/overlay"
       "nixos-config=/etc/nixos/configuration.nix"
-      "home-manager=/etc/nixos/pkgs/forges/github.com/rycee/home-manager"
+      "home-manager=${config.attributes.paths.home-manager}"
     ];
     useSandbox = true;
     readOnlyStore = true;

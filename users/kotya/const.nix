@@ -1,5 +1,0 @@
-{ config, ... }:
-
-{
-  userName = "kotya";
-}

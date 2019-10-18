@@ -13,6 +13,9 @@ in {
 
   config = mkIf cfg.enable {
     home-manager.users."${config.attributes.mainUser.name}" = {
+      programs.emacs.extraPackages = epkgs: [
+        epkgs.zenburn-theme
+      ];
       programs.zathura.options = {
         completion-bg = "#404040";
         completion-fg = "#7cb8bb";
