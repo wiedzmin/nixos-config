@@ -35,8 +35,7 @@ in {
         description = "User's signature.";
       };
       signature.show = mkOption {
-        # type = types.enum [ "append" "attach" "none" ];
-        type = types.str;
+        type = types.enum [ "append" "attach" "none" ];
         default = "none";
         description = "Method to communicate the signature.";
       };
@@ -77,7 +76,7 @@ in {
       };
       mbsync.postExec = mkOption {
         type = types.str;
-        default = str;
+        default = "";
         description = "What to do after mbsync service invocation.";
       };
       mbsync.frequency = mkOption {
