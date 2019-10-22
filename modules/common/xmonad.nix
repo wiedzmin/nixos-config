@@ -217,7 +217,7 @@ let
     import XMonad.Hooks.XPropManage (XPropMatch, pmP, xPropManageHook)
 
     import XMonad.Layout.AutoMaster
-    import XMonad.Layout.DwmStyle (defaultTheme, dwmStyle, shrinkText)
+    import XMonad.Layout.DwmStyle as Dwm
     import XMonad.Layout.Grid
     import XMonad.Layout.LayoutCombinators
     import XMonad.Layout.MultiDishes
@@ -519,19 +519,20 @@ let
     -- TODO: rethink tagging setup
 
     tabbedLayout = Tabs.tabbed Tabs.shrinkText Tabs.def
+    dwmLayout = Dwm.dwmStyle Dwm.shrinkText Dwm.def
 
     layouts = onWorkspace "scratch" (renamed [Replace "tabs"] tabbedLayout) $
               onWorkspace "im" (renamed [Replace "tabs"] tabbedLayout) $
-              onWorkspace "web" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4))) $
+              onWorkspace "web" (renamed [Replace "OneBig"] (dwmLayout (OneBig (3/4) (3/4)))) $
               onWorkspace "web2" (StackTile 1 (3/100) (1/2)) $
               onWorkspace "web3" (StackTile 1 (3/100) (1/2)) $
-              onWorkspace "work" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4)) |||
-                                  renamed [Replace "Dishes"] (MultiDishes 2 3 (1/6)) |||
-                                  renamed [Replace "Grid"] Grid |||
-                                  renamed [Replace "Tiled"] (autoMaster 1 (1/100)
-                                                              (HT.HintedTile 1 (3/100) (1/2) HT.TopLeft HT.Tall))) $
-              onWorkspace "shell" (renamed [Replace "OneBig"] (OneBig (3/4) (3/4))) $
-              renamed [Replace "OneBig"] (OneBig (3/4) (3/4))
+              onWorkspace "work" (renamed [Replace "OneBig"] (dwmLayout (OneBig (3/4) (3/4))) |||
+                                  renamed [Replace "Dishes"] (dwmLayout (MultiDishes 2 3 (1/6))) |||
+                                  renamed [Replace "Grid"] (dwmLayout Grid) |||
+                                  renamed [Replace "Tiled"] (dwmLayout (autoMaster 1 (1/100)
+                                                              (HT.HintedTile 1 (3/100) (1/2) HT.TopLeft HT.Tall)))) $
+              onWorkspace "shell" (renamed [Replace "OneBig"] (dwmLayout (OneBig (3/4) (3/4)))) $
+                                   renamed [Replace "OneBig"] (OneBig (3/4) (3/4))
 
     layoutMappings = [ ("g", "Grid")
                      , ("b", "OneBig")
@@ -754,7 +755,7 @@ let
                              docksEventHook <+>
                              dynStatusBarEventHook barCreatorXmobar barDestroyer <+>
                              onRescreen placeWorkplaces,
-        layoutHook         = xkbLayout $ avoidStruts $ dwmStyle shrinkText def $ layouts,
+        layoutHook         = xkbLayout $ avoidStruts $ layouts,
         logHook            = loghookXmobar,
         manageHook         = manageDocks <+>
                              manageMenus <+> manageDialogs <+>
