@@ -375,6 +375,10 @@ in {
     aux.enable = true;
   };
 
+  dataworks = {
+    forensics.enable = true;
+  };
+
   dev.git = {
     enable = true;
     pager.delta.enable = true;
