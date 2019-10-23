@@ -52,7 +52,7 @@ with lib;
     defaultCommands.browser = mkOption {
       description = "Default browser";
       type = types.str;
-      default = "${pkgs.firefox-unwrapped}/bin/firefox -new-tab";
+      default = "${pkgs.firefox-unwrapped}/bin/firefox --new-window";
     };
     defaultCommands.fallbackBrowser = mkOption {
       description = "Default browser to fallback to in some cases";
