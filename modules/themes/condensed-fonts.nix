@@ -14,6 +14,7 @@ in {
         iosevka
       ];
     };
+    wm.xmonad.font = "xft:Iosevka:style=Bold:pixelsize=10";
     attributes.fonts.xmobar = "xft:Iosevka:weight=Bold:size=10";
     attributes.fonts.xmonadDefault = "xft:Iosevka:weight=Bold:size=16";
     home-manager.users."${config.attributes.mainUser.name}" = {

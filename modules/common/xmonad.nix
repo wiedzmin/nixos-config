@@ -519,7 +519,9 @@ let
     -- TODO: rethink tagging setup
 
     tabbedLayout = Tabs.tabbed Tabs.shrinkText Tabs.def
-    dwmLayout = Dwm.dwmStyle Dwm.shrinkText Dwm.def
+    dwmLayout = Dwm.dwmStyle Dwm.shrinkText Dwm.def {
+      ${lib.optionalString (cfg.font != "") "fontName = \"${cfg.font}\""}
+    }
 
     layouts = onWorkspace "scratch" (renamed [Replace "tabs"] tabbedLayout) $
               onWorkspace "im" (renamed [Replace "tabs"] tabbedLayout) $
@@ -775,6 +777,13 @@ in {
         default = false;
         description = ''
           Whether to enable xmonad.
+        '';
+      };
+      font = mkOption {
+        type = types.str;
+        default = "";
+        description = ''
+          XMonad `internal` font' definition.
         '';
       };
     };
