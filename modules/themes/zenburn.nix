@@ -6,12 +6,19 @@ with lib;
 
 let
   cfg = config.themes.zenburn;
+  zenburnEmacs = ''
+    (use-package zenburn-theme
+      :ensure t
+      :hook
+      (after-init-hook . (lambda () (load-theme 'zenburn t))))
+  '';
 in {
   options.themes.zenburn = {
     enable = mkEnableOption "zenburn";
   };
 
   config = mkIf cfg.enable {
+    ide.emacs.config = ''${zenburnEmacs}'';
     home-manager.users."${config.attributes.mainUser.name}" = {
       programs.emacs.extraPackages = epkgs: [
         epkgs.zenburn-theme

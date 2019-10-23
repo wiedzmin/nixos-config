@@ -20,10 +20,6 @@ with lib;
       description = "Main user's GPG key ID";
       type = types.str;
     };
-    testLines = mkOption {
-      description = "testing lines merge";
-      type = types.lines;
-    };
     # TODO: think if this is the proper location
     fonts.xmobar = mkOption {
       description = "Font definition for XMobar";

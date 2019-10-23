@@ -1,7 +1,25 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.dataworks;
+let
+  cfg = config.dataworks;
+  emacsCodeSearchSetup = ''
+    (use-package codesearch
+      :ensure t
+      :custom
+      (codesearch-global-csearchindex "${config.secrets.dev.workspaceRoot}/.csearchindex"))
+
+    (use-package counsel-codesearch
+      :ensure t
+      :after codesearch
+      :bind
+      (:map mode-specific-map
+            ("c" . counsel-codesearch)))
+
+    (use-package projectile-codesearch
+      :ensure t
+      :after codesearch)
+  '';
 in {
   options = {
     dataworks = {
@@ -30,6 +48,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.codesearch.enable {
+      ide.emacs.config = ''${emacsCodeSearchSetup}'';
       # TODO: timer + service for reindexing + https://github.com/abingham/emacs-codesearch for emacs
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [

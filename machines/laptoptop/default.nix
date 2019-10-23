@@ -12,7 +12,6 @@ in {
     ../../pkgs/forges/github.com/NixOS/nixos-hardware/common/pc/ssd
     ../../pkgs/forges/github.com/NixOS/nixos-hardware/lenovo/thinkpad/x230
     ./filesvars.nix
-    ./emacs
     <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
   ];
 
@@ -320,16 +319,9 @@ in {
 
   programs.light.enable = true;
 
-  documentation = {
+  knowledgebase = {
     enable = true;
-    man.enable = true;
-    info.enable = true;
-    doc.enable = true;
-    dev.enable = true;
-    nixos = {
-      enable = true;
-      includeAllModules = false; # FIXME build error
-    };
+    emacs.enable = true;
   };
 
   system.stateVersion = "19.03";
@@ -340,12 +332,6 @@ in {
     email = config.secrets.identity.email;
     gpgKeyID = config.secrets.identity.gpgKeyID;
   };
-
-  attributes.testLines = lib.mkAfter ''
-
-    333
-    444
-  '';
 
   users.extraUsers."${config.attributes.mainUser.name}" = {
     isNormalUser = true;
@@ -366,6 +352,7 @@ in {
       root = "/home/${config.attributes.mainUser.name}/blobs/wallpaper";
       current = "mongolia_2.jpg";
     };
+    emacs.enable = true;
   };
 
   browsers = {
@@ -373,10 +360,12 @@ in {
     firefox.enable = true;
     chromium.enable = true;
     aux.enable = true;
+    emacs.enable = true;
   };
 
   dataworks = {
     forensics.enable = true;
+    codesearch.enable = true;
   };
 
   dev.git = {
@@ -400,13 +389,18 @@ in {
     fetchUpdates.enable = false; # temporarily; bootTimespec = "1min"; activeTimespec = "30min";
     pushUpdates.enable = false; # temporarily; calendar = "*-*-* 18:00:00";
     saveWip.enable = false; # temporarily; bootTimespec = "30sec"; activeTimespec = "1hour";
+    emacs.enable = true;
   };
 
-  dev.python.enable = true;
+  dev.python = {
+    enable = true;
+    emacs.enable = true;
+  };
 
-  dev.tools = {
+  custom.dev = {
     statistics.enable = true;
     misc.enable = true;
+    emacs.enable = true;
   };
 
   email = {
@@ -452,6 +446,7 @@ in {
     gmrun.enable = true;
     mc.enable = true;
     rofi.enable = true;
+    emacs.enable = true;
   };
 
   packaging = {
@@ -460,6 +455,7 @@ in {
       helpers.enable = true;
       srcfmt.enable = true;
     };
+    emacs.enable = true;
   };
 
   polkit-silent-auth.enable = true;
@@ -482,11 +478,20 @@ in {
       jobDbms.enable = true;
     };
     ebooks.readers.enable = true;
-    security.enable = true;
     system = {
       forensics.enable = true;
       monitoring.enable = true;
     };
+  };
+
+  custom.security = {
+    enable = true;
+    emacs.enable = true;
+  };
+
+  custom.shell = {
+    enable = true;
+    emacs.enable = true;
   };
 
   virtualization = {
@@ -499,6 +504,13 @@ in {
   };
 
   wm.xmonad.enable = true;
+
+  ide.emacs.enable = true;
+
+  custom.pim = {
+    enable = true;
+    emacs.enable = true;
+  };
 
   xinput = {
     constraintMouse.enable = true;
@@ -542,9 +554,6 @@ in {
   home-manager.users."${config.attributes.mainUser.name}" = {
     nixpkgs.config.allowUnfree = true;
     xdg.enable = true;
-    home.file = {
-      "test_lines".text = config.attributes.testLines;
-    };
     home.packages = with pkgs; [
       fpp       # for tmux fpp plugin
       libnotify # for zsh-notify plugin

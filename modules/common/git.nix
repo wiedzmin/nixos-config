@@ -133,6 +133,111 @@ let
         echo ''${DIVERGED_MESSAGE:-"Diverged"}
       fi
     '';
+    emacsGitSetup = ''
+      (use-package browse-at-remote
+        :ensure t
+        :after link-hint
+        :bind
+        (:map link-hint-keymap
+              ("r" . browse-at-remote)
+              ("k" . browse-at-remote-kill))
+        (:map magit-status-mode-map
+              ("o" . browse-at-remote))
+        :custom
+        (browse-at-remote-prefer-symbolic nil))
+
+      (use-package git-timemachine
+        :ensure t
+        :bind
+        (:map mode-specific-map
+              (";" . git-timemachine)))
+
+      (use-package magit
+        :ensure t
+        :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
+               ("COMMIT" . git-commit-mode))
+        :bind
+        (:prefix-map custom-magit-map
+                     :prefix "C-'"
+                     ("B" . magit-branch)
+                     ("L" . magit-reflog-current)
+                     ("O" . magit-reflog-other)
+                     ("R" . magit-rebase)
+                     ("S" . magit-stash)
+                     ("U" . magit-update-index)
+                     ("a" . magit-stage-file)
+                     ("b" . magit-blame-addition)
+                     ("c" . magit-checkout)
+                     ("d" . magit-diff)
+                     ("f" . magit-log-buffer-file)
+                     ("i" . magit-init)
+                     ("l" . magit-log)
+                     ("n" . magit-notes-edit)
+                     ("r" . magit-reset)
+                     ("s" . magit-status)
+                     ("t" . magit-tag)
+                     ("w" . magit-diff-working-tree))
+        (:map magit-status-mode-map
+              ("E" . nil)
+              ("N" . magit-notes-edit)
+              ("q" . custom/magit-kill-buffers))
+        :preface
+        (defun open-global-repos-list ()
+          (interactive)
+          (let ((repos-buffer (get-buffer "*Magit Repositories*")))
+            (if repos-buffer
+                (switch-to-buffer repos-buffer)
+              (magit-list-repositories))))
+        (defun custom/magit-restore-window-configuration (&optional kill-buffer)
+          "Bury or kill the current buffer and restore previous window configuration."
+          (let ((winconf magit-previous-window-configuration)
+                (buffer (current-buffer))
+                (frame (selected-frame)))
+            (quit-window kill-buffer (selected-window))
+            (when (and winconf (equal frame (window-configuration-frame winconf)))
+              (set-window-configuration winconf)
+              (when (buffer-live-p buffer)
+                (with-current-buffer buffer
+                  (setq magit-previous-window-configuration nil))))))
+        (defun custom/magit-kill-buffers ()
+          "Restore window configuration and kill all Magit buffers."
+          (interactive)
+          (let ((buffers (magit-mode-get-buffers)))
+            (magit-restore-window-configuration)
+            (mapc #'kill-buffer buffers)))
+        :secret "vcs.el.gpg"
+        :custom
+        (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
+        (magit-completing-read-function 'ivy-completing-read)
+        (magit-blame-heading-format "%H %-20a %C %s")
+        (magit-diff-refine-hunk t)
+        (magit-display-buffer-function 'magit-display-buffer-fullframe-status-topleft-v1))
+
+      (use-package magit-filenotify
+        :ensure t
+        :delight (magit-filenotify-mode " FN")
+        :hook (magit-status-mode-hook . (lambda ()
+                                          (condition-case nil
+                                              (magit-filenotify-mode)
+                                            (error (magit-filenotify-mode -1))))))
+
+      (use-package magit-todos
+        :ensure t
+        :hook
+        (magit-status-mode . magit-todos-mode))
+
+      (use-package smerge-mode
+        :delight (smerge-mode "∓")
+        :bind
+        (:map mode-specific-map
+              ("g k" . smerge-prev)
+              ("g j" . smerge-next))
+        :hook (find-file-hooks . (lambda ()
+                                   (save-excursion
+                                     (goto-char (point-min))
+                                     (when (re-search-forward "^<<<<<<< " nil t)
+                                       (smerge-mode 1))))))
+    '';
 in {
   options = {
     dev.git = {
@@ -258,6 +363,11 @@ in {
         type = types.str;
         default = "$HOME/warnings.org";
         description = "Org-mode file to place accidental deletes diff.";
+      };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Emacs git-related setup.";
       };
     };
   };
@@ -614,5 +724,21 @@ in {
         };
       };
     })
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        programs.emacs.extraPackages = epkgs: [
+          epkgs.git-timemachine
+          epkgs.magit
+          epkgs.magit-filenotify
+          epkgs.magit-popup # *
+          epkgs.magit-todos
+        ];
+      };
+      ide.emacs.config = ''${emacsGitSetup}'';
+    })
   ];
 }
+
+# * it seems some magit-dependent packages yet depend on magit-popup in some path, so we introduced
+#   this explicit dependency and will keep it until transition to "transient" library is fully done
+#   by all affected packages. (or some other root cause of "magit-popup"" will pop up)

@@ -11,9 +11,11 @@
     ./dbms.nix
     ./dev.nix
     ./ebook.nix
+    ./emacs.nix
     ./email.nix
     ./git.nix
     ./golang.nix
+    ./knowledgebase.nix
     ./media.nix
     ./messengers.nix
     ./nas.nix
@@ -21,6 +23,7 @@
     ./network.nix
     ./packaging.nix
     ./paperworks.nix
+    ./pim.nix
     ./polkit-silent-auth.nix
     ./python.nix
     ./screenshots.nix
