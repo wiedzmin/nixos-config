@@ -45,6 +45,11 @@ with lib;
       type = types.str;
       default = "${pkgs.alacritty}/bin/alacritty -e";
     };
+    defaultCommands.remoteTerminal = mkOption {
+      description = "Default remote terminal";
+      type = types.str;
+      default = "${pkgs.eternal-terminal}/bin/et";
+    };
     defaultCommands.browser = mkOption {
       description = "Default browser";
       type = types.str;
