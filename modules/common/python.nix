@@ -117,7 +117,7 @@ in {
     (mkIf cfg.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          # pipreqs # adapt to py3
+          pipreqs
           pipreqs3
           python3Packages.autopep8
           python3Packages.glances
