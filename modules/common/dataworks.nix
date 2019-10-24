@@ -118,6 +118,8 @@ in {
           visidata # TODO: make overlay
           xsv
           xurls
+        ] ++ lib.optionals (config.attributes.staging.enable) [
+          lv
         ];
       };
     })

@@ -37,6 +37,8 @@ in {
           pandoc
           pdfcpu
           pdftk
+        ] ++ lib.optionals (config.attributes.staging.enable) [
+          pdfarranger
         ];
       };
     })

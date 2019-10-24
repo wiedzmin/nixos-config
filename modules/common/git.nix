@@ -500,6 +500,8 @@ in {
         gitstats
         proposed.gitAndTools.git-quick-stats
         python2Packages.git-sweep # FIXME: adapt to py3
+      ] ++ lib.optionals (config.attributes.staging.enable) [
+        gitAndTools.git-subrepo # https://github.com/ingydotnet/git-subrepo
       ];
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {

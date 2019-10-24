@@ -164,6 +164,8 @@ in {
           gource
           sloccount
           tokei
+        ] ++ lib.optionals (config.attributes.staging.enable) [
+          scc
         ];
       };
     })
