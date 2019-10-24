@@ -2,245 +2,245 @@
 with lib;
 
 let
-    cfg = config.dev.git;
-    git_lib = pkgs.writeShellScriptBin "git_lib" ''
-      WIP_RE=wip
+  cfg = config.custom.dev.git;
+  git_lib = pkgs.writeShellScriptBin "git_lib" ''
+    WIP_RE=wip
 
-      execute_hook_items() {
-        hook=$1
-        hooks_basedir=$(pwd)/${cfg.hooks.dirName}
+    execute_hook_items() {
+      hook=$1
+      hooks_basedir=$(pwd)/${cfg.hooks.dirName}
 
-        if [ -z $hook ]; then
-          echo "no hook provided, exiting"
-          exit 1
+      if [ -z $hook ]; then
+        echo "no hook provided, exiting"
+        exit 1
+      fi
+
+      if [ ! -d "$hooks_basedir" ]; then
+        # repo hooks were not initialized, simply exit with success
+        exit 0
+      fi
+
+      IS_CLEAN=true
+      TARGET_DIR="$hooks_basedir/$hook"
+
+      shopt -s execfail
+
+      for TARGET_PATH in $(${pkgs.fd}/bin/fd . -L --max-depth 1 --type f $TARGET_DIR | ${pkgs.coreutils}/bin/sort)
+      do
+        if [ -x "$TARGET_PATH" ]; then # Run as an executable file
+          "$TARGET_PATH" "$@"
+        elif [ -f "$TARGET_PATH" ]; then  # Run as a Shell script
+          ${pkgs.bash}/bin/bash "$TARGET_PATH" "$@"
         fi
-
-        if [ ! -d "$hooks_basedir" ]; then
-          # repo hooks were not initialized, simply exit with success
-          exit 0
+        exitcode=$?
+        if (( exitcode != 0 )); then
+          IS_CLEAN=false
+          ${if cfg.hooks.shortCircuit then "return $exitcode" else ""}
         fi
+      done
+      if [[ "$IS_CLEAN" == "false" ]]; then
+        return 1;
+      fi
+      return 0;
+    }
 
-        IS_CLEAN=true
-        TARGET_DIR="$hooks_basedir/$hook"
-
-        shopt -s execfail
-
-        for TARGET_PATH in $(${pkgs.fd}/bin/fd . -L --max-depth 1 --type f $TARGET_DIR | ${pkgs.coreutils}/bin/sort)
-        do
-          if [ -x "$TARGET_PATH" ]; then # Run as an executable file
-            "$TARGET_PATH" "$@"
-          elif [ -f "$TARGET_PATH" ]; then  # Run as a Shell script
-            ${pkgs.bash}/bin/bash "$TARGET_PATH" "$@"
-          fi
-          exitcode=$?
-          if (( exitcode != 0 )); then
-            IS_CLEAN=false
-            ${if cfg.hooks.shortCircuit then "return $exitcode" else ""}
-          fi
-        done
-        if [[ "$IS_CLEAN" == "false" ]]; then
-          return 1;
-        fi
-        return 0;
-      }
-
-      check_for_wip() {
-        RESULTS=$(${pkgs.git}/bin/git shortlog "@{u}.." | ${pkgs.gnugrep}/bin/grep -w $WIP_RE);
-        if [[ ! -z "$RESULTS" ]]; then
-          echo "Found commits with stop snippets:"
-          echo "$RESULTS"
-          return 1;
-        fi
-        return 0;
-      }
-
-      check_for_secrets() { # https://github.com/Luis-Hebendanz/nix-configs/blob/master/git.nix#L25
-        RESULTS=$(${pkgs.gitAndTools.git-secrets}/bin/git-secrets --scan --cached 2>&1)
-        if [[ -z "$RESULTS" ]]; then
-          return 0;
-        fi
-        echo "Found secret snippets:"
+    check_for_wip() {
+      RESULTS=$(${pkgs.git}/bin/git shortlog "@{u}.." | ${pkgs.gnugrep}/bin/grep -w $WIP_RE);
+      if [[ ! -z "$RESULTS" ]]; then
+        echo "Found commits with stop snippets:"
         echo "$RESULTS"
         return 1;
-      }
-
-      check_org_delete_treshold() {
-        CURRENT_REV=`${pkgs.git}/bin/git rev-parse HEAD`
-        PREVIOUS_REV=`${pkgs.git}/bin/git rev-parse HEAD^1`
-
-        OUTFILE="${cfg.org.warningsFile}"
-        THRESHOLD=250
-
-        MESSAGE="** commit ''${CURRENT_REV} deleted more than ''${THRESHOLD} lines in a file!"
-
-        DETAILS="#+BEGIN_SRC sh :results output
-        cd ${builtins.dirOf cfg.org.warningsFile}
-        echo \"commit ''${CURRENT_REV}\"
-        ${pkgs.git}/bin/git diff --stat \"''${PREVIOUS_REV}\" \"''${CURRENT_REV}\"
-        #+END_SRC"
-
-        ${pkgs.git}/bin/git diff --numstat "''${PREVIOUS_REV}" "''${CURRENT_REV}" | \
-          cut -f 2 | \
-          while read line
-            do test "$line" -gt "''${THRESHOLD}" && \
-              echo "''${MESSAGE}\n<`date '+%Y-%m-%d %H:%M'` +1d>\n\n''${DETAILS}\n" >> \
-              "''${OUTFILE}"; \
-            done
-      }
-    '';
-    bitbucket_team_contributor_repos = pkgs.writeShellScriptBin "bitbucket_team_contributor_repos" ''
-      PASS_PATH=$1
-      if [ -z "PASS_PATH" ]; then
-        echo "No credentials provided"
-        exit 1
       fi
-      TEAM=$2
-      PROJECTS_EXCLUDE=$3
-      CREDENTIALS=$(${pkgs.pass}/bin/pass $PASS_PATH | ${pkgs.coreutils}/bin/tr '\n' ' ' | ${pkgs.gawk}/bin/awk '{print $3 ":" $1}')
-      RESULT=$(${pkgs.curl}/bin/curl -s -u \
-             $CREDENTIALS "https://api.bitbucket.org/2.0/repositories?role=contributor&pagelen=200" | \
-             ${pkgs.jq}/bin/jq -r '.values[] | select(.project.name != null) | "\(.links.clone[0].href)~\(.project.name)"')
-      if [[ ! -z $TEAM ]]; then
-        RESULT=$(printf "%s\n" $RESULT | ${pkgs.gnugrep}/bin/grep $TEAM)
+      return 0;
+    }
+
+    check_for_secrets() { # https://github.com/Luis-Hebendanz/nix-configs/blob/master/git.nix#L25
+      RESULTS=$(${pkgs.gitAndTools.git-secrets}/bin/git-secrets --scan --cached 2>&1)
+      if [[ -z "$RESULTS" ]]; then
+        return 0;
       fi
-      if [[ ! -z $PROJECTS_EXCLUDE ]]; then
-        GREP_CLAUSES=$(echo $PROJECTS_EXCLUDE | ${pkgs.gnused}/bin/sed "s/,/\|/g")
-        RESULT=$(printf "%s\n" $RESULT | ${pkgs.gnugrep}/bin/grep -i -v -E $GREP_CLAUSES)
-      fi
-      for REPO in $RESULT; do
-        echo $REPO | ${pkgs.coreutils}/bin/cut -f1 -d~
-      done
-    '';
-    git_remote_diff = pkgs.writeShellScriptBin "git_remote_diff" ''
-      GIT_REPO=''${1:-'.'}
-      cd $GIT_REPO
-      if [ -z "$(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null)" ]; then
-        echo "Not a git repo"
-        exit 1
-      fi
-      UPSTREAM=''${2:-'@{u}'}
-      LOCAL=$(${pkgs.git}/bin/git rev-parse @)
-      REMOTE=$(${pkgs.git}/bin/git rev-parse "$UPSTREAM")
-      BASE=$(${pkgs.git}/bin/git merge-base @ "$UPSTREAM")
+      echo "Found secret snippets:"
+      echo "$RESULTS"
+      return 1;
+    }
 
-      if [ "$LOCAL" == "$REMOTE" ]; then
-        echo ''${UPTODATE_MESSAGE:-"Up-to-date"}
-      elif [ "$LOCAL" == "$BASE" ]; then
-        echo ''${NEEDFETCH_MESSAGE:-"Need to fetch"}
-      elif [ "$REMOTE" == "$BASE" ]; then
-        echo ''${NEEDPUSH_MESSAGE:-"Need to push"}
-      else
-        echo ''${DIVERGED_MESSAGE:-"Diverged"}
-      fi
-    '';
-    emacsGitSetup = ''
-      (use-package browse-at-remote
-        :ensure t
-        :after link-hint
-        :bind
-        (:map link-hint-keymap
-              ("r" . browse-at-remote)
-              ("k" . browse-at-remote-kill))
-        (:map magit-status-mode-map
-              ("o" . browse-at-remote))
-        :custom
-        (browse-at-remote-prefer-symbolic nil))
+    check_org_delete_treshold() {
+      CURRENT_REV=`${pkgs.git}/bin/git rev-parse HEAD`
+      PREVIOUS_REV=`${pkgs.git}/bin/git rev-parse HEAD^1`
 
-      (use-package git-timemachine
-        :ensure t
-        :bind
-        (:map mode-specific-map
-              (";" . git-timemachine)))
+      OUTFILE="${cfg.org.warningsFile}"
+      THRESHOLD=250
 
-      (use-package magit
-        :ensure t
-        :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
-               ("COMMIT" . git-commit-mode))
-        :bind
-        (:prefix-map custom-magit-map
-                     :prefix "C-'"
-                     ("B" . magit-branch)
-                     ("L" . magit-reflog-current)
-                     ("O" . magit-reflog-other)
-                     ("R" . magit-rebase)
-                     ("S" . magit-stash)
-                     ("U" . magit-update-index)
-                     ("a" . magit-stage-file)
-                     ("b" . magit-blame-addition)
-                     ("c" . magit-checkout)
-                     ("d" . magit-diff)
-                     ("f" . magit-log-buffer-file)
-                     ("i" . magit-init)
-                     ("l" . magit-log)
-                     ("n" . magit-notes-edit)
-                     ("r" . magit-reset)
-                     ("s" . magit-status)
-                     ("t" . magit-tag)
-                     ("w" . magit-diff-working-tree))
-        (:map magit-status-mode-map
-              ("E" . nil)
-              ("N" . magit-notes-edit)
-              ("q" . custom/magit-kill-buffers))
-        :preface
-        (defun open-global-repos-list ()
-          (interactive)
-          (let ((repos-buffer (get-buffer "*Magit Repositories*")))
-            (if repos-buffer
-                (switch-to-buffer repos-buffer)
-              (magit-list-repositories))))
-        (defun custom/magit-restore-window-configuration (&optional kill-buffer)
-          "Bury or kill the current buffer and restore previous window configuration."
-          (let ((winconf magit-previous-window-configuration)
-                (buffer (current-buffer))
-                (frame (selected-frame)))
-            (quit-window kill-buffer (selected-window))
-            (when (and winconf (equal frame (window-configuration-frame winconf)))
-              (set-window-configuration winconf)
-              (when (buffer-live-p buffer)
-                (with-current-buffer buffer
-                  (setq magit-previous-window-configuration nil))))))
-        (defun custom/magit-kill-buffers ()
-          "Restore window configuration and kill all Magit buffers."
-          (interactive)
-          (let ((buffers (magit-mode-get-buffers)))
-            (magit-restore-window-configuration)
-            (mapc #'kill-buffer buffers)))
-        :secret "vcs.el.gpg"
-        :custom
-        (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
-        (magit-completing-read-function 'ivy-completing-read)
-        (magit-blame-heading-format "%H %-20a %C %s")
-        (magit-diff-refine-hunk t)
-        (magit-display-buffer-function 'magit-display-buffer-fullframe-status-topleft-v1))
+      MESSAGE="** commit ''${CURRENT_REV} deleted more than ''${THRESHOLD} lines in a file!"
 
-      (use-package magit-filenotify
-        :ensure t
-        :delight (magit-filenotify-mode " FN")
-        :hook (magit-status-mode-hook . (lambda ()
-                                          (condition-case nil
-                                              (magit-filenotify-mode)
-                                            (error (magit-filenotify-mode -1))))))
+      DETAILS="#+BEGIN_SRC sh :results output
+      cd ${builtins.dirOf cfg.org.warningsFile}
+      echo \"commit ''${CURRENT_REV}\"
+      ${pkgs.git}/bin/git diff --stat \"''${PREVIOUS_REV}\" \"''${CURRENT_REV}\"
+      #+END_SRC"
 
-      (use-package magit-todos
-        :ensure t
-        :hook
-        (magit-status-mode . magit-todos-mode))
+      ${pkgs.git}/bin/git diff --numstat "''${PREVIOUS_REV}" "''${CURRENT_REV}" | \
+        cut -f 2 | \
+        while read line
+          do test "$line" -gt "''${THRESHOLD}" && \
+            echo "''${MESSAGE}\n<`date '+%Y-%m-%d %H:%M'` +1d>\n\n''${DETAILS}\n" >> \
+            "''${OUTFILE}"; \
+          done
+    }
+  '';
+  bitbucket_team_contributor_repos = pkgs.writeShellScriptBin "bitbucket_team_contributor_repos" ''
+    PASS_PATH=$1
+    if [ -z "PASS_PATH" ]; then
+      echo "No credentials provided"
+      exit 1
+    fi
+    TEAM=$2
+    PROJECTS_EXCLUDE=$3
+    CREDENTIALS=$(${pkgs.pass}/bin/pass $PASS_PATH | ${pkgs.coreutils}/bin/tr '\n' ' ' | ${pkgs.gawk}/bin/awk '{print $3 ":" $1}')
+    RESULT=$(${pkgs.curl}/bin/curl -s -u \
+           $CREDENTIALS "https://api.bitbucket.org/2.0/repositories?role=contributor&pagelen=200" | \
+           ${pkgs.jq}/bin/jq -r '.values[] | select(.project.name != null) | "\(.links.clone[0].href)~\(.project.name)"')
+    if [[ ! -z $TEAM ]]; then
+      RESULT=$(printf "%s\n" $RESULT | ${pkgs.gnugrep}/bin/grep $TEAM)
+    fi
+    if [[ ! -z $PROJECTS_EXCLUDE ]]; then
+      GREP_CLAUSES=$(echo $PROJECTS_EXCLUDE | ${pkgs.gnused}/bin/sed "s/,/\|/g")
+      RESULT=$(printf "%s\n" $RESULT | ${pkgs.gnugrep}/bin/grep -i -v -E $GREP_CLAUSES)
+    fi
+    for REPO in $RESULT; do
+      echo $REPO | ${pkgs.coreutils}/bin/cut -f1 -d~
+    done
+  '';
+  git_remote_diff = pkgs.writeShellScriptBin "git_remote_diff" ''
+    GIT_REPO=''${1:-'.'}
+    cd $GIT_REPO
+    if [ -z "$(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null)" ]; then
+      echo "Not a git repo"
+      exit 1
+    fi
+    UPSTREAM=''${2:-'@{u}'}
+    LOCAL=$(${pkgs.git}/bin/git rev-parse @)
+    REMOTE=$(${pkgs.git}/bin/git rev-parse "$UPSTREAM")
+    BASE=$(${pkgs.git}/bin/git merge-base @ "$UPSTREAM")
 
-      (use-package smerge-mode
-        :delight (smerge-mode "∓")
-        :bind
-        (:map mode-specific-map
-              ("g k" . smerge-prev)
-              ("g j" . smerge-next))
-        :hook (find-file-hooks . (lambda ()
-                                   (save-excursion
-                                     (goto-char (point-min))
-                                     (when (re-search-forward "^<<<<<<< " nil t)
-                                       (smerge-mode 1))))))
-    '';
+    if [ "$LOCAL" == "$REMOTE" ]; then
+      echo ''${UPTODATE_MESSAGE:-"Up-to-date"}
+    elif [ "$LOCAL" == "$BASE" ]; then
+      echo ''${NEEDFETCH_MESSAGE:-"Need to fetch"}
+    elif [ "$REMOTE" == "$BASE" ]; then
+      echo ''${NEEDPUSH_MESSAGE:-"Need to push"}
+    else
+      echo ''${DIVERGED_MESSAGE:-"Diverged"}
+    fi
+  '';
+  emacsGitSetup = ''
+    (use-package browse-at-remote
+      :ensure t
+      :after link-hint
+      :bind
+      (:map link-hint-keymap
+            ("r" . browse-at-remote)
+            ("k" . browse-at-remote-kill))
+      (:map magit-status-mode-map
+            ("o" . browse-at-remote))
+      :custom
+      (browse-at-remote-prefer-symbolic nil))
+
+    (use-package git-timemachine
+      :ensure t
+      :bind
+      (:map mode-specific-map
+            (";" . git-timemachine)))
+
+    (use-package magit
+      :ensure t
+      :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
+             ("COMMIT" . git-commit-mode))
+      :bind
+      (:prefix-map custom-magit-map
+                   :prefix "C-'"
+                   ("B" . magit-branch)
+                   ("L" . magit-reflog-current)
+                   ("O" . magit-reflog-other)
+                   ("R" . magit-rebase)
+                   ("S" . magit-stash)
+                   ("U" . magit-update-index)
+                   ("a" . magit-stage-file)
+                   ("b" . magit-blame-addition)
+                   ("c" . magit-checkout)
+                   ("d" . magit-diff)
+                   ("f" . magit-log-buffer-file)
+                   ("i" . magit-init)
+                   ("l" . magit-log)
+                   ("n" . magit-notes-edit)
+                   ("r" . magit-reset)
+                   ("s" . magit-status)
+                   ("t" . magit-tag)
+                   ("w" . magit-diff-working-tree))
+      (:map magit-status-mode-map
+            ("E" . nil)
+            ("N" . magit-notes-edit)
+            ("q" . custom/magit-kill-buffers))
+      :preface
+      (defun open-global-repos-list ()
+        (interactive)
+        (let ((repos-buffer (get-buffer "*Magit Repositories*")))
+          (if repos-buffer
+              (switch-to-buffer repos-buffer)
+            (magit-list-repositories))))
+      (defun custom/magit-restore-window-configuration (&optional kill-buffer)
+        "Bury or kill the current buffer and restore previous window configuration."
+        (let ((winconf magit-previous-window-configuration)
+              (buffer (current-buffer))
+              (frame (selected-frame)))
+          (quit-window kill-buffer (selected-window))
+          (when (and winconf (equal frame (window-configuration-frame winconf)))
+            (set-window-configuration winconf)
+            (when (buffer-live-p buffer)
+              (with-current-buffer buffer
+                (setq magit-previous-window-configuration nil))))))
+      (defun custom/magit-kill-buffers ()
+        "Restore window configuration and kill all Magit buffers."
+        (interactive)
+        (let ((buffers (magit-mode-get-buffers)))
+          (magit-restore-window-configuration)
+          (mapc #'kill-buffer buffers)))
+      :secret "vcs.el.gpg"
+      :custom
+      (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
+      (magit-completing-read-function 'ivy-completing-read)
+      (magit-blame-heading-format "%H %-20a %C %s")
+      (magit-diff-refine-hunk t)
+      (magit-display-buffer-function 'magit-display-buffer-fullframe-status-topleft-v1))
+
+    (use-package magit-filenotify
+      :ensure t
+      :delight (magit-filenotify-mode " FN")
+      :hook (magit-status-mode-hook . (lambda ()
+                                        (condition-case nil
+                                            (magit-filenotify-mode)
+                                          (error (magit-filenotify-mode -1))))))
+
+    (use-package magit-todos
+      :ensure t
+      :hook
+      (magit-status-mode . magit-todos-mode))
+
+    (use-package smerge-mode
+      :delight (smerge-mode "∓")
+      :bind
+      (:map mode-specific-map
+            ("g k" . smerge-prev)
+            ("g j" . smerge-next))
+      :hook (find-file-hooks . (lambda ()
+                                 (save-excursion
+                                   (goto-char (point-min))
+                                   (when (re-search-forward "^<<<<<<< " nil t)
+                                     (smerge-mode 1))))))
+  '';
 in {
   options = {
-    dev.git = {
+    custom.dev.git = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -498,10 +498,10 @@ in {
         gitAndTools.stgit
         git_remote_diff
         gitstats
+        gitRepo
         proposed.gitAndTools.git-quick-stats
         python2Packages.git-sweep # FIXME: adapt to py3
       ] ++ lib.optionals (config.attributes.staging.enable) [
-        gitAndTools.git-subrepo # https://github.com/ingydotnet/git-subrepo
       ];
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {

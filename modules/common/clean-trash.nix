@@ -3,7 +3,7 @@ with lib;
 
 let cfg = config.services.clean-trash;
 in {
-  options = {
+  options = { # TODO: merge into relevant module
     services.clean-trash = {
       enable = mkOption {
         type = types.bool;

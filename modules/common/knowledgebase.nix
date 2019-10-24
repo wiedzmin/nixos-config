@@ -2,7 +2,7 @@
 with lib;
 
 let
-  cfg = config.knowledgebase;
+  cfg = config.custom.knowledgebase;
   rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
     ${pkgs.feh}/bin/feh --bg-fill ${cfg.wallpaper.root}/${cfg.wallpaper.current}
   '';
@@ -60,7 +60,7 @@ let
   '';
 in {
   options = {
-    knowledgebase = {
+    custom.knowledgebase = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -110,6 +110,12 @@ in {
         nixos = {
           enable = cfg.nixos.enable;
           includeAllModules = false; # FIXME build error
+        };
+      };
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        programs = {
+          info.enable = true;
+          man.enable = true;
         };
       };
     })

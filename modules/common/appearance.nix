@@ -2,7 +2,7 @@
 with lib;
 
 let
-  cfg = config.appearance;
+  cfg = config.custom.appearance;
   rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
     ${pkgs.feh}/bin/feh --bg-fill ${cfg.wallpaper.root}/${cfg.wallpaper.current}
   '';
@@ -72,7 +72,7 @@ let
   '';
 in {
   options = {
-    appearance = {
+    custom.appearance = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -133,6 +133,11 @@ in {
         default = false;
         description = "Whether to enable Emacs appearance setup.";
       };
+      xmonad.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable XMonad keybindings.";
+      };
     };
   };
 
@@ -185,6 +190,7 @@ in {
         programs.autorandr.hooks = {
           postswitch = { "rescale-wallpaper" = "${rescale-wallpaper}/bin/rescale-wallpaper"; };
         };
+        programs.feh.enable = true;
       };
     })
     (mkIf (cfg.enable && cfg.gtk.enable) {
@@ -227,6 +233,11 @@ in {
         ];
       };
       ide.emacs.config = ''${emacsAppearanceSetup}'';
+    })
+    (mkIf (cfg.enable && cfg.xmonad.enable) {
+      wm.xmonad.keybindings = {
+        "M-M1-q" = ''spawn "${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources"'';
+      };
     })
   ];
 }

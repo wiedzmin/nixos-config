@@ -2,8 +2,86 @@
 with lib;
 
 let
-  cfg = config.browsers;
+  cfg = config.custom.browsers;
   firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../pkgs/firefox-addons { });
+  search_prompt = pkgs.writeShellScriptBin "search_prompt" ''
+    ${config.secrets.nav.searchenginesData}
+
+    list_searchengines() {
+        INDEX=1
+        for i in "''${!SEARCHENGINES[@]}"
+        do
+            echo "$INDEX $i"
+            (( INDEX++ ))
+        done
+    }
+
+    main() {
+        SELECTED_ENGINE=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search" | ${pkgs.gawk}/bin/awk '{print $2}')
+        if [ ! -n "$SELECTED_ENGINE" ]; then
+            exit 1
+        fi
+        QUERY=$( (echo ) | ${pkgs.rofi}/bin/rofi  -dmenu -matching fuzzy -location 0 -p "Query" )
+        if [ -n "$QUERY" ]; then
+            URL="''${SEARCHENGINES[$SELECTED_ENGINE]}$QUERY"
+            firefox --new-window "$URL"
+        fi
+    }
+
+    main
+
+    exit 0
+  '';
+  search_selection = pkgs.writeShellScriptBin "search_selection" ''
+    ${config.secrets.nav.searchenginesData}
+
+    list_searchengines() {
+        INDEX=1
+        for i in "''${!SEARCHENGINES[@]}"
+        do
+            echo "$INDEX $i"
+            (( INDEX++ ))
+        done
+    }
+
+    main() {
+        SELECTED_ENGINE=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search" | ${pkgs.gawk}/bin/awk '{print $2}')
+        if [ ! -n "$SELECTED_ENGINE" ]; then
+            exit 1
+        fi
+        QUERY=$(${pkgs.xsel}/bin/xsel -o)
+        if [ -n "$QUERY" ]; then
+            URL="''${SEARCHENGINES[$SELECTED_ENGINE]}$QUERY"
+            firefox --new-window "$URL"
+        fi
+    }
+
+    main
+
+    exit 0
+  '';
+  webjumps = pkgs.writeShellScriptBin "webjumps" ''
+    function show_mapping_keys() {
+        eval "declare -A contents="''${1#*=}
+        for i in "''${!contents[@]}";
+        do
+            echo "$i"
+        done
+    }
+
+    ${config.secrets.nav.webjumpsData}
+
+    main() {
+        WEBJUMP=$( (show_mapping_keys "$(declare -p WEBJUMPS)") | ${pkgs.rofi}/bin/rofi -dmenu -p "Jump to" )
+        if [ -n "$WEBJUMP" ]; then
+            ''${WEBJUMPS[$WEBJUMP]} "$WEBJUMP"
+        fi
+    }
+
+    main
+
+    exit 0
+  '';
   emacsBrowsersSetup = ''
     (use-package atomic-chrome
       :ensure t
@@ -70,47 +148,54 @@ let
 in {
   # TODO: extract options
   options = {
-    browsers.enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        Whether to enable some browsers'.
-      '';
-    };
-    browsers.downloadPath = mkOption {
-      type = types.str;
-      default = "/home/${config.attributes.mainUser.name}/Downloads";
-      description = ''
-        Common downloads path'.
-      '';
-    };
-    browsers.firefox.enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        Whether to enable Firefox.
-      '';
-    };
-    browsers.chromium.enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        Whether to enable Chromium.
-      '';
-    };
-    browsers.aux.enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        Whether to enable Next, w3m and such.
-      '';
-    };
-    browsers.emacs.enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = ''
-        Whether to enable Emacs browsers-related setup.
-      '';
+    custom.browsers = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable some browsers'.
+        '';
+      };
+      downloadPath = mkOption {
+        type = types.str;
+        default = "/home/${config.attributes.mainUser.name}/Downloads";
+        description = ''
+          Common downloads path'.
+        '';
+      };
+      firefox.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable Firefox.
+        '';
+      };
+      chromium.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable Chromium.
+        '';
+      };
+      aux.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable Next, w3m and such.
+        '';
+      };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable Emacs browsers-related setup.
+        '';
+      };
+      xmonad.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable XMonad keybindings.";
+      };
     };
   };
   config = mkMerge [
@@ -121,6 +206,9 @@ in {
     })
     (mkIf (cfg.enable && cfg.firefox.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          xsel # for firefox native clients
+        ];
         programs.firefox = {
           enable = true;
           package = pkgs.firefox.overrideAttrs (attrs: { enableTridactylNative = true; });
@@ -354,6 +442,13 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.config = ''${emacsBrowsersSetup}'';
+    })
+    (mkIf (cfg.enable && cfg.xmonad.enable) {
+      wm.xmonad.keybindings = {
+        "M-/" = ''spawn "${search_selection}/bin/search_selection" >> showWSOnProperScreen "web"'';
+        "M-C-/" = ''spawn "${search_prompt}/bin/search_prompt" >> showWSOnProperScreen "web"'';
+        "M-j" = ''spawn "${webjumps}/bin/webjumps" >> showWSOnProperScreen "web"'';
+      };
     })
   ];
 }

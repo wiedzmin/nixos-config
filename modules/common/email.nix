@@ -2,13 +2,13 @@
 with lib;
 
 let
-  cfg = config.email;
+  cfg = config.custom.email;
   pass_imap_helper = pkgs.writeShellScriptBin "pass_imap_helper" ''
     echo $(${pkgs.pass}/bin/pass $1 | ${pkgs.coreutils}/bin/head -n 1)
   '';
 in {
   options = {
-    email = {
+    custom.email = {
       enable = mkOption {
         type = types.bool;
         default = false;

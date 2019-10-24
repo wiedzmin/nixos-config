@@ -51,6 +51,11 @@ in {
         default = false;
         description = "Whether to enable Emacs security-related setup.";
       };
+      xmonad.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable XMonad keybindings.";
+      };
     };
   };
 
@@ -71,6 +76,26 @@ in {
           sslscan
           vulnix
         ];
+        programs.gpg = {
+          enable = true;
+          settings = {
+            keyserver = "hkp://keys.openpgp.org";
+            require-cross-certification = true;
+            use-agent = true;
+          };
+        };
+        services.gpg-agent = {
+          enable = true;
+          defaultCacheTtl = 34560000;
+          defaultCacheTtlSsh = 34560000;
+          maxCacheTtl = 34560000;
+          enableSshSupport = true;
+          enableExtraSocket = true;
+          extraConfig = ''
+            allow-emacs-pinentry
+            allow-loopback-pinentry
+          '';
+        };
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
@@ -83,5 +108,17 @@ in {
       };
       ide.emacs.config = ''${emacsSecuritySetup}'';
     })
+    (mkIf (cfg.enable && cfg.xmonad.enable) {
+      wm.xmonad.keybindings = {
+        "<XF86ScreenSaver>" = ''spawn "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off"'';
+        "M-a q" = ''spawn "${pkgs.rofi-pass}/bin/rofi-pass"'';
+        "M-s s <Down>" = ''spawn "${pkgs.systemd}/bin/systemctl stop openvpn-${config.secrets.network.vpn.name}.service"'';
+        "M-s s <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart openvpn-${config.secrets.network.vpn.name}.service"'';
+        "M-s v <Down>" = ''spawn "${pkgs.systemd}/bin/systemctl stop openvpn-${config.secrets.job.vpn.name}.service"'';
+        "M-s v <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart openvpn-${config.secrets.job.vpn.name}.service"'';
+      };
+    })
   ];
 }
+
+# TODO: review https://github.com/faulesocke/pass-dmenu/blob/master/pass-dmenu.py and try to make own script

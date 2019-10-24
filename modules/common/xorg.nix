@@ -3,11 +3,32 @@
 with lib;
 
 let
-  cfg = config.xrandr;
-  custom = import ../../pkgs/custom pkgs config;
+  cfg = config.custom.xorg;
+  autorandr_profiles = pkgs.writeScriptBin "autorandr_profiles" ''
+    #! /usr/bin/env nix-shell
+    #! nix-shell -i python3 -p python3 python3Packages.dmenu-python
+    import os
+    import dmenu
+
+    profiles = []
+
+
+    for root, dirs, files in os.walk("/home/${config.attributes.mainUser.name}/.config/autorandr"):
+        for dir in dirs:
+            if not dir.endswith(".d"):
+                profiles.append(dir)
+
+    result = dmenu.show(profiles, prompt='profile', lines=5)
+    if result:
+        print(result)
+        os.system("${pkgs.autorandr}/bin/autorandr --load {0}".format(result))
+  '';
+  kill-compton = pkgs.writeScriptBin "kill-compton" ''
+    ${pkgs.procps}/bin/pkill -f compton
+  '';
 in {
   options = {
-    xrandr = {
+    custom.xorg = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -27,6 +48,13 @@ in {
         default = "1.0:0.909:0.833";
         description = ''
           XRandR gamma settings.
+        '';
+      };
+      backlightDelta = mkOption {
+        type = types.int;
+        default = 10;
+        description = ''
+          Backlight delta percents.
         '';
       };
       autorandr.enable = mkOption {
@@ -125,21 +153,84 @@ in {
           };
         };
       };
+      scripts.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable custom scripts.
+        '';
+      };
+      xmonad.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable XMonad bindings.
+        '';
+      };
     };
   };
 
   config = mkMerge [
+    (mkIf cfg.enable {
+      programs.light.enable = true;
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        # TODO: consider rework/restructure
+        services = {
+          compton = {
+            enable = true;
+            fade = true;
+            fadeDelta = 5;
+            fadeSteps = [ "0.04" "0.04" ];
+            backend = "glx";
+            vSync = "opengl-swc";
+            package = pkgs.compton-git;
+            opacityRule = [ "70:class_g = 'Alacritty'" ];
+            extraOptions = ''
+              clear-shadow = true;
+              glx-no-rebind-pixmap = true;
+              glx-no-stencil = true;
+              paint-on-overlay = true;
+              xrender-sync-fence = true;
+            '';
+          };
+          redshift = {
+            enable = true;
+            latitude = config.secrets.identity.redshiftLatitude;
+            longitude = config.secrets.identity.redshiftLongitude;
+            temperature.day = 5500;
+            temperature.night = 3100;
+            brightness.day = "1.0";
+            brightness.night = "0.7";
+            extraOptions = [ "-v" "-m randr" ];
+          };
+        };
+      };
+    })
     (mkIf (cfg.enable && cfg.autorandr.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          autorandr_profiles
+        ];
         programs.autorandr = {
           enable = true;
           hooks = lib.optionalAttrs
             (config.home-manager.users."${config.attributes.mainUser.name}".services.compton.enable) {
-              predetect = { "kill-compton" = "${custom.kill-compton}/bin/kill-compton"; };
+              predetect = { "kill-compton" = "${kill-compton}/bin/kill-compton"; };
           } // cfg.autorandr.hooks;
           profiles = cfg.autorandr.profiles;
         };
       };
+    })
+    (mkIf (cfg.enable && cfg.xmonad.enable) {
+      wm.xmonad.keybindings = {
+        "<XF86MonBrightnessUp>" = ''spawn "${pkgs.light}/bin/light -A ${toString config.custom.xorg.backlightDelta}"'';
+        "<XF86MonBrightnessDown>" = ''spawn "${pkgs.light}/bin/light -U ${toString config.custom.xorg.backlightDelta}"'';
+        "C-<XF86MonBrightnessUp>" = ''spawn "${pkgs.light}/bin/light -S 100"'';
+        "C-<XF86MonBrightnessDown>" = ''spawn "${pkgs.light}/bin/light -S 20"'';
+        "M-C-a" = ''spawn "${autorandr_profiles}/bin/autorandr_profiles"'';
+        "M-M1-x" = ''spawn "${pkgs.autorandr}/bin/autorandr --load mobile"'';
+        "M-a c" = ''spawn "${pkgs.systemd}/bin/systemctl --user restart compton.service"'';
+       };
     })
   ];
 }

@@ -1,6 +1,6 @@
 { config, pkgs, ... }:
-let custom = import ../../../../pkgs/custom pkgs config;
-in {
+# NOTE: presumably broken by refactoring
+{
   imports = [
     <nixpkgs/nixos/modules/installer/cd-dvd/installation-cd-minimal.nix>
     <nixpkgs/nixos/modules/installer/cd-dvd/channel.nix>

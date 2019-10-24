@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.xinput;
+let cfg = config.custom.xinput;
 in {
   options = {
-    xinput = {
+    custom.xinput = {
       gestures.enable = mkOption {
         type = types.bool;
         default = false;

@@ -1,8 +1,6 @@
 { config, pkgs, lib, ... }:
 
-let
-  custom = import ../../pkgs/custom pkgs config;
-in {
+{
   imports = [
     ../../pkgs/setup.nix
     <home-manager/nixos>
@@ -23,12 +21,6 @@ in {
   fileSystems."/boot" = {
     device = "/dev/disk/by-label/nixos-boot";
     fsType = "ext2";
-  };
-
-  fileSystems."${config.services.syncthing.dataDir}/bookshelf" = {
-    device =
-      "${config.users.extraUsers.alex3rd.home}/bookshelf"; # TODO: check if we could use env var or substitution here
-    options = [ "bind" ];
   };
 
   swapDevices = [ ];
@@ -212,11 +204,6 @@ in {
       enable = true;
       calendarTimespec = "*-*-* 23:00:00";
     };
-    batteryNotifier = {
-      enable = true;
-      notifyCapacity = 20;
-      suspendCapacity = 10;
-    };
     openvpn.servers = {
       "${config.secrets.network.vpn.name}" = {
         config = config.secrets.network.vpn.config;
@@ -244,6 +231,8 @@ in {
       extraOptions = [ "exclude-root" "fork" "ignore-scrolling" ];
     };
   };
+
+  polkit-silent-auth.enable = true;
 
   attributes.hardware.monitors = {
     internalHead.name = "LVDS-1";
@@ -318,15 +307,6 @@ in {
     };
   };
 
-  programs.light.enable = true;
-
-  knowledgebase = {
-    enable = true;
-    emacs.enable = true;
-  };
-
-  system.stateVersion = "19.03";
-
   attributes.mainUser = {
     name = config.secrets.identity.userName;
     fullName = config.secrets.identity.fullName;
@@ -342,7 +322,7 @@ in {
     extraGroups = [ "wheel" ];
   };
 
-  appearance = {
+  custom.appearance = {
     enable = true;
     fonts = {
       antialias = true;
@@ -354,22 +334,40 @@ in {
       current = "mongolia_2.jpg";
     };
     emacs.enable = true;
+    xmonad.enable = true;
   };
 
-  browsers = {
+  custom.browsers = {
     enable = true;
     firefox.enable = true;
     chromium.enable = true;
     aux.enable = true;
     emacs.enable = true;
+    xmonad.enable = true;
   };
 
-  dataworks = {
+  custom.content = {
+    consumers.enable = true;
+    orderingTools.enable = true;
+    videoTools.enable = true;
+    mpd.enable = true;
+    xmonad.enable = true;
+  };
+
+  custom.dataworks = {
     forensics.enable = true;
     codesearch.enable = true;
+    emacs.enable = true;
   };
 
-  dev.git = {
+  custom.dev = {
+    statistics.enable = true;
+    misc.enable = true;
+    emacs.enable = true;
+    xmonad.enable = true;
+  };
+
+  custom.dev.git = {
     enable = true;
     pager.delta.enable = true;
     myrepos.enable = false; # temporarily
@@ -393,18 +391,12 @@ in {
     emacs.enable = true;
   };
 
-  dev.python = {
+  custom.dev.python = {
     enable = true;
     emacs.enable = true;
   };
 
-  custom.dev = {
-    statistics.enable = true;
-    misc.enable = true;
-    emacs.enable = true;
-  };
-
-  email = {
+  custom.email = {
     enable = true;
     emailAddress = config.secrets.identity.email;
     passwordPath = config.secrets.identity.googleAccountPasswordPath;
@@ -429,73 +421,93 @@ in {
     };
   };
 
-  media = {
+  ide.emacs.enable = true;
+
+  custom.knowledgebase = {
     enable = true;
-    pulse = {
-        enable = true;
-        daemonConfig = {
-          flat-volumes = "no";
-        };
-    };
-    opengl.enable = true;
+    emacs.enable = true;
   };
 
-  messengers.enable = true;
+  custom.media = {
+    enable = true;
+    pulse = {
+      enable = true;
+      daemonConfig = {
+        flat-volumes = "no";
+      };
+    };
+    opengl.enable = true;
+    xmonad.enable = true;
+  };
 
-  navigation = {
+  tools.messengers.enable = true;
+
+  custom.navigation = {
     enable = true;
     gmrun.enable = true;
     mc.enable = true;
     rofi.enable = true;
+    misc.enable = true;
     emacs.enable = true;
   };
 
-  packaging = {
+  custom.networking = {
+    enable = true;
+    xmonad.enable = true;
+  };
+
+  custom.packaging = {
     enable = true;
     nix = {
       helpers.enable = true;
       srcfmt.enable = true;
     };
+    scripts.enable = true;
+    emacs.enable = true;
+    xmonad.enable = true;
+  };
+
+  custom.pim = {
+    enable = true;
     emacs.enable = true;
   };
 
-  polkit-silent-auth.enable = true;
-
-  screenshots = {
+  custom.screenshots = {
     enable = true;
     baseDir = "/home/${config.attributes.mainUser.name}/screenshots";
     dateFormat = "+%Y-%m-%d_%H:%M:%S";
     calendarTimespec = "*-*-* 00:05:00";
-  };
-
-  tools = {
-    content = {
-      consumers.enable = true;
-      orderingTools.enable = true;
-      videoTools.enable = true;
-    };
-    dbms = {
-      mysql.enable = true;
-      jobDbms.enable = true;
-    };
-    ebooks.readers.enable = true;
-    system = {
-      forensics.enable = true;
-      monitoring.enable = true;
-    };
+    xmonad.enable = true;
   };
 
   custom.security = {
     enable = true;
     emacs.enable = true;
+    xmonad.enable = true;
   };
 
   custom.shell = {
     enable = true;
     emacs.enable = true;
+    xmonad.enable = true;
   };
 
-  virtualization = {
+  custom.system = {
+    forensics.enable = true;
+    monitoring.enable = true;
+    scripts.enable = true;
+    powersave = {
+      enable = true;
+      notifications = {
+        enable = true;
+        notifyAfter = 20;
+        suspendAfter = 10;
+      };
+    };
+    xmonad.enable = true;
+  };
+
+  custom.virtualization = {
     enable = true;
     docker = {
       enable = true;
@@ -504,16 +516,7 @@ in {
     libvirt.enable = true;
   };
 
-  wm.xmonad.enable = true;
-
-  ide.emacs.enable = true;
-
-  custom.pim = {
-    enable = true;
-    emacs.enable = true;
-  };
-
-  xinput = {
+  custom.xinput = {
     constraintMouse.enable = true;
     gestures.enable = true;
     keynav.enable = true;
@@ -536,13 +539,25 @@ in {
     };
   };
 
-  xrandr = {
+  custom.xorg = {
     enable = true;
     autorandr.enable = true;
+    xmonad.enable = true;
   };
 
   themes.condensedFonts.enable = true;
   themes.zenburn.enable = true;
+
+  tools = {
+    dbms = {
+      mysql.enable = true;
+      jobDbms.enable = true;
+      xmonad.enable = true;
+    };
+    ebooks.readers.enable = true;
+  };
+
+  wm.xmonad.enable = true;
 
   # FIXME: move functionality to pkgsctl
   system.activationScripts.saveCurrentHMVersion = ''
@@ -556,515 +571,13 @@ in {
     nixpkgs.config.allowUnfree = true;
     xdg.enable = true;
     home.packages = with pkgs; [
-      fpp       # for tmux fpp plugin
-      libnotify # for zsh-notify plugin
-      xsel # for firefox native clients
       haskellPackages.arbtt # for stats viewing
-
-      custom.confctl
-      custom.format-config
-      custom.pkgsctl
-      custom.update-system
-
-      custom.docker_stacks_info_new
     ];
-    services = {
-      gpg-agent = {
-        enable = true;
-        defaultCacheTtl = 34560000;
-        defaultCacheTtlSsh = 34560000;
-        maxCacheTtl = 34560000;
-        enableSshSupport = true;
-        enableExtraSocket = true;
-        extraConfig = ''
-          allow-emacs-pinentry
-          allow-loopback-pinentry
-        '';
-      };
-      syncthing.enable = true;
-      mpd = {
-        enable = true;
-        musicDirectory = "/home/${config.attributes.mainUser.name}/blobs/music";
-      };
-      xsuspender = {
-        enable = true;
-        defaults = {
-          suspendDelay = 10;
-          onlyOnBattery = false;
-        };
-        rules = {
-          Chromium = {
-            suspendDelay = 10;
-            matchWmClassContains = "Chromium-browser";
-            suspendSubtreePattern = "chromium";
-          };
-          Firefox = {
-            suspendDelay = 10;
-            matchWmClassContains = "Firefox";
-            suspendSubtreePattern = "firefox";
-          };
-        };
-      };
-      dunst = {
-        enable = true;
-        settings = {
-          global = {
-            alignment = "left";
-            always_run_script = "true";
-            bounce_freq = 0;
-            browser = "${pkgs.firefox-unwrapped}/bin/firefox -new-tab";
-            dmenu = "${pkgs.dmenu}/bin/dmenu -p dunst:";
-            ellipsize = "middle";
-            follow = "keyboard";
-            force_xinerama = "false";
-            format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\\n%b";
-            frame_color = "#232323";
-            frame_width = 3;
-            geometry = "300x5-15+15";
-            hide_duplicates_count = "false";
-            history_length = 20;
-            horizontal_padding = 10;
-            icon_position = "left";
-            idle_threshold = 120;
-            ignore_newline = "no";
-            indicate_hidden = "yes";
-            line_height = 0;
-            markup = "full";
-            max_icon_size = 32;
-            monitor = 0;
-            notification_height = 0;
-            padding = 10;
-            separator_color = "frame";
-            separator_height = 2;
-            show_age_threshold = 60;
-            show_indicators = "yes";
-            shrink = "no";
-            sort = "yes";
-            stack_duplicates = "true";
-            startup_notification = "false";
-            sticky_history = "yes";
-            transparency = 0;
-            verbosity = "mesg";
-            word_wrap = "yes";
-          };
-          shortcuts = {
-            close = "ctrl+space";
-            close_all = "ctrl+shift+space";
-            history = "ctrl+grave";
-            context = "ctrl+shift+period";
-          };
-          urgency_low = {
-            background = "#232323";
-            foreground = "#A8A8A8";
-            timeout = 3;
-          };
-          urgency_normal = {
-            background = "#285577";
-            foreground = "#ffffff";
-            timeout = 5;
-          };
-          urgency_critical = {
-            background = "#D64E4E";
-            foreground = "#F0E0E0";
-            frame_color = "#D64E4E";
-            timeout = 7;
-          };
-        };
-      };
-      compton = {
-        enable = true;
-        fade = true;
-        fadeDelta = 5;
-        fadeSteps = [ "0.04" "0.04" ];
-        backend = "glx";
-        vSync = "opengl-swc";
-        package = pkgs.compton-git;
-        opacityRule = [ "70:class_g = 'Alacritty'" ];
-        extraOptions = ''
-          clear-shadow = true;
-          glx-no-rebind-pixmap = true;
-          glx-no-stencil = true;
-          paint-on-overlay = true;
-          xrender-sync-fence = true;
-        '';
-      };
-      redshift = {
-        enable = true;
-        latitude = config.secrets.identity.redshiftLatitude;
-        longitude = config.secrets.identity.redshiftLongitude;
-        temperature.day = 5500;
-        temperature.night = 3100;
-        brightness.day = "1.0";
-        brightness.night = "0.7";
-        extraOptions = [ "-v" "-m randr" ];
-      };
-      udiskie = {
-        enable = true;
-        automount = true;
-        notify = true;
-        tray = "never";
-      };
-    };
-    programs.gpg = {
-      enable = true;
-      settings = {
-        keyserver = "hkp://keys.openpgp.org";
-        require-cross-certification = true;
-        use-agent = true;
-      };
-    };
-    programs.ssh = {
-      enable = true;
-      forwardAgent = true;
-      userKnownHostsFile = "~/.ssh/known_hosts";
-      controlMaster = "auto";
-      controlPath = "~/.ssh/sockets/%r@%h:%p";
-      controlPersist = "4h";
-      serverAliveInterval = 30;
-    };
-    programs.htop = {
-      enable = true;
-      fields = [ "USER" "PRIORITY" "NICE" "M_SIZE" "STATE" "PERCENT_CPU" "PERCENT_MEM" "TIME" "COMM" ];
-      meters.left = [ "AllCPUs" "Memory" ];
-      colorScheme = 0;
-      detailedCpuTime = true;
-    };
-    programs.command-not-found.enable = true;
-    programs.lesspipe.enable = true;
-    programs.man.enable = true;
-    programs.info.enable = true;
-    programs.skim = {
-      enable = true;
-      historyWidgetOptions = [ "--exact" ];
-      defaultOptions = [ "--height 40%" "--prompt ⟫" ];
-      fileWidgetCommand = "${pkgs.fd}/bin/fd --type f";
-      fileWidgetOptions = [ "--preview 'head {}'" ];
-      changeDirWidgetCommand = "${pkgs.fd}/bin/fd --type d";
-      changeDirWidgetOptions = [ "--preview 'tree -C {} | head -200'" ];
-      enableZshIntegration = true;
-    };
-    programs.direnv = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-    programs.z-lua = {
-      enable = true;
-      enableZshIntegration = true;
-      options = [ "fzf" "enhanced" "once" ];
-    };
-    programs.tmux = {
-      enable = true;
-      baseIndex = 1;
-      clock24 = true;
-      escapeTime = 0;
-      status = {
-        currentWindowFormat = "#[bg=blue,fg=cyan,bold]#I#[bg=blue,fg=cyan]:#[fg=colour230]#T#[fg=dim]#F";
-        windowFormat = "#[fg=cyan,dim]#I#[fg=blue]:#[default]#W#[fg=grey,dim]#F";
-        leftFormat = "#{prefix_highlight}#[fg=green](#S) #(whoami)@#H";
-        rightFormat = "#[fg=blue,bright]%k:%M:%S %d/%m/%Y | #{cpu_fg_color}#{cpu_icon}#{cpu_percentage}";
-        style = "fg=white,bg=default,default";
-        windowStyle = "fg=cyan,bg=default,dim";
-        currentWindowStyle = "fg=colour166,bg=red,bright";
-        messageStyle = "fg=white,bg=black,bright";
-      };
-      borderStyle = {
-        active = "fg=colour240,bg=default";
-        inactive = "fg=colour235,bg=default";
-      };
-      hooks = {
-        "after-select-pane" =
-          "run-shell \\\"tmux set -g window-active-style \"bg='brightblack'\" && sleep .05 && tmux set -g window-active-style ''\\\"";
-      };
-      bindings = {
-        copyMode = {
-          "M-e" = ''run-shell "${custom.shell-org-capture}/bin/shell-org-capture es"'';
-          "M-j" = ''run-shell "${custom.shell-org-capture}/bin/shell-org-capture js"'';
-          "M-n" = ''run-shell "${custom.shell-org-capture}/bin/shell-org-capture ns"'';
-          "M-x" = ''run-shell "${custom.shell-org-capture}/bin/shell-org-capture xs"'';
-        };
-        root = {
-          "C-left" = "prev";
-          "C-right" = "next";
-          "S-left" = "swap-window -t -1";
-          "S-right" = "swap-window -t +1";
-          "C-y" = ''
-            run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o --clipboard | tmux load-buffer - ; \
-                                                tmux paste-buffer"'';
-        };
-        prefixed = {
-          "*" = "list-clients";
-          "l" = "refresh-client";
-          "m" = "select-pane -m";
-          "|" = ''split-window -h -c "#{pane_current_path}"'';
-          "\\" = ''split-window -fh -c "#{pane_current_path}"'';
-          "-" = ''split-window -v -c "#{pane_current_path}"'';
-          "_" = ''split-window -fv -c "#{pane_current_path}"'';
-          "'#'" = ''split-window -h -c "#{pane_current_path}"'';
-          "@" = ''split-window -v -c "#{pane_current_path}"'';
-          "BSpace" = "last-window";
-          "r" = ''source-file ~/.tmux.conf \; display "  Config reloaded..."'';
-          "y" = "set-window-option synchronize-panes";
-          "T" = ''neww -n "Tmux manual" "exec man tmux"'';
-          "s" = ''
-            split-window -v "tmux list-sessions | sed -E 's/:.*$//' | \
-                                                    grep -v \"^$(tmux display-message -p '#S')\$\" | \
-                                                    ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
-        };
-      };
-      extraConfig = ''
-        set -g renumber-windows on
 
-        set -g bell-action any
-        set -g visual-activity off
-        set -g visual-bell off
-        set -g visual-silence off
-        setw -g monitor-activity on
-      '';
-      historyLimit = 102400;
-      keyMode = "emacs";
-      nestedShortcut = "C-x";
-      sensibleOnTop = false;
-      shortcut = "M-x";
-      terminal = "screen-256color";
-      secureSocket = false;
-      shell = "${pkgs.zsh}/bin/zsh";
-      tmuxp.enable = true;
-      plugins = with pkgs;
-        with tmuxPlugins; [
-          {
-            plugin = fzf-tmux-url-with-history; # patched version, see overlays
-            extraConfig = "set -g @fzf-url-bind 'o'";
-          }
-          battery
-          copycat
-          cpu
-          fpp
-          logging
-          open # TODO: setup and verify working
-          prefix-highlight
-          sessionist
-          yank
-        ];
-    };
-    programs.alacritty = { # 75be5861a59b1eb04d33dbd38812a19f2665b9a0
-      enable = true;
-      settings = {
-        env = { TERM = "xterm-256color"; };
-        window = {
-          padding = {
-            x = 2;
-            y = 2;
-          };
-          decorations = "full";
-        };
-        tabspaces = 8;
-        draw_bold_text_with_bright_colors = true;
-        visual_bell = {
-          animation = "EaseOutExpo";
-          duration = 1;
-        };
-        mouse_bindings = [{
-          mouse = "Middle";
-          action = "PasteSelection";
-        }];
-        selection = { semantic_escape_chars = '',│`|:"' ()[]{}<>''; };
-        dynamic_title = true;
-        cursor = { style = "Beam"; };
-        live_config_reload = true;
-      };
-    };
-    programs.bat = {
-      enable = true;
-      config = {
-        theme = "TwoDark";
-        # pager = "less -FR";
-        pager = "${pkgs.most}/bin/most";
-      };
-    };
-    programs.lsd = {
-      enable = true;
-      enableAliases = true;
-    };
-    programs.feh.enable = true;
-    programs.zathura = {
-      enable = true;
-      options = {
-        pages-per-row = 1;
-      };
-    };
-    programs.zsh = {
-      enable = true;
-      oh-my-zsh = {
-        enable = true;
-        plugins = [ "colored-man-pages" "urltools" ];
-        theme = "muse";
-      };
-      enableAutosuggestions = true;
-      enableCompletion = true;
-      history = {
-        size = 10000;
-        save = 10000;
-        path = ".histfile";
-        ignoreDups = true;
-        expireDuplicatesFirst = true;
-        extended = true;
-        share = true;
-      };
-      initExtra = ''
-        setopt APPEND_HISTORY
-        setopt BRACE_CCL
-        setopt HIST_FIND_NO_DUPS
-        setopt HIST_IGNORE_ALL_DUPS
-        setopt HIST_IGNORE_SPACE
-        setopt HIST_NO_STORE
-        setopt HIST_SAVE_NO_DUPS
-        setopt AUTO_CD
-        setopt EXTENDED_GLOB
-        setopt INC_APPEND_HISTORY
-        setopt MENU_COMPLETE
-
-        ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
-
-        ${lib.concatMapStrings (opt: ''
-          setopt ${opt}
-        '') [
-          "braceccl"
-          "correctall"
-          "extendedglob"
-          "menucomplete"
-        ]}
-
-        bindkey '^P' fuzzy-search-and-edit
-      '';
-      sessionVariables = {
-        HISTFILE = ".histfile";
-        YSU_IGNORED_ALIASES = [ "g" "ll" ]; # TODO: review list
-        YSU_MODE = "ALL";
-        ZSH_COMMAND_TIME_COLOR = "cyan";
-      };
-      shellAliases = {
-        cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
-
-        less = "${pkgs.most}/bin/most";
-
-        df = "${pkgs.dfc}/bin/dfc";
-        du = "${pkgs.dua}/bin/dua";
-
-        yg = "${pkgs.you-get}/bin/you-get";
-
-        zz =
-          "cd $(z -i | ${pkgs.skim}/bin/sk --nth 2 --reverse --inline-info --tac | ${pkgs.gawk}/bin/awk '{print $2}')";
-        zb = "z -b";
-
-        zr = ". ~/.zshrc";
-      };
-      plugins = [
-        {
-          name = "zsh-notify";
-          file = "notify.plugin.zsh";
-          src = pkgs.fetchFromGitHub {
-            owner = "marzocchi";
-            repo = "zsh-notify";
-            rev = "853bc9434771b99b028f069b95e13ecdf06901d0";
-            sha256 = "0bhmv1xfjzmci9b4dy3mix2s31zj0kayrl44xx5xb8rgzlf0qbvr";
-          };
-        }
-        {
-          # TODO: try to integrate with fzf-based/skim utils, expecially commit browser
-          name = "browse-commit";
-          file = "browse-commit.plugin.zsh";
-          src = pkgs.fetchFromGitHub {
-            owner = "wiedzmin";
-            repo = "browse-commit";
-            rev = "cf28b2eeba622545ae751ec99532b6b60e58b845";
-            sha256 = "15c9qxxa7l47w5r28pazs0gv0016lv52mncn45s6g1d3120k5fx0";
-          };
-        }
-        {
-          name = "you-should-use";
-          file = "you-should-use.plugin.zsh";
-          src = pkgs.fetchFromGitHub {
-            owner = "MichaelAquilina";
-            repo = "zsh-you-should-use";
-            rev = "1.1.0";
-            sha256 = "0fig5ralagi5jajk7gdm52jvwql17qk9cd6j98qsndvckb26a753";
-          };
-        }
-        {
-          name = "pass-zsh-completion";
-          file = "pass-zsh-completion.plugin.zsh";
-          src = pkgs.fetchFromGitHub {
-            owner = "ninrod";
-            repo = "pass-zsh-completion";
-            rev = "e4d8d2c27d8999307e8f34bf81b2e15df4b76177";
-            sha256 = "1z83hgdljl7yqd1lqb10an8zkrv7s01khky27mgc1wargkslkxi9";
-          };
-        }
-        {
-          name = "zsh-async";
-          file = "async.plugin.zsh";
-          src = pkgs.fetchFromGitHub {
-            owner = "mafredri";
-            repo = "zsh-async";
-            rev = "e6d937228729f934f2033039bb54c3a18f5f1358";
-            sha256 = "0f0bqm4245ghx31x30ircfp4njji834495g25wvrd93k2r96a669";
-          };
-        }
-        {
-          name = "git-extra-commands";
-          file = "git-extra-commands.plugin.zsh";
-          src = pkgs.fetchFromGitHub {
-            owner = "unixorn";
-            repo = "git-extra-commands";
-            rev = "f03ff8ffce9f3e488b6a0265cb09288cc29899fe";
-            sha256 = "1qlbjn0q87jgjir3k7w4m8p6wqgjl2c7jnilczf7c205fgwksdhi";
-          };
-        }
-        {
-          name = "zsh-reentry-hook";
-          file = "zsh-reentry-hook.plugin.zsh";
-          src = pkgs.fetchFromGitHub {
-            owner = "RobSis";
-            repo = "zsh-reentry-hook";
-            rev = "8587186df8f08b8a57ae7f87ab0bc7d503909031";
-            sha256 = "1jgin1gmw05vxf7vw414zvhq9dg06yzlzxas723f710vs58mf11a";
-          };
-        }
-        {
-          name = "zsh-fuzzy-search-and-edit";
-          file = "plugin.zsh";
-          src = pkgs.fetchFromGitHub {
-            owner = "seletskiy";
-            repo = "zsh-fuzzy-search-and-edit";
-            rev = "4fbb3d351b75f1007df0d5cb09292bb2321f903a";
-            sha256 = "1shhmda1iqwz79y2ianmjs5623zabckxfj2hqw4gl2axpkwnj1ib";
-          };
-        }
-        {
-          name = "zsh-command-time";
-          file = "command-time.plugin.zsh";
-          src = pkgs.fetchFromGitHub {
-            owner = "popstas";
-            repo = "zsh-command-time";
-            rev = "afb4a4c9ae7ce64ca9d4f334a79a25e46daad0aa";
-            sha256 = "1bvyjgz6bhgg1nwr56r50p6fblgah6yiql55pgm5abnn2h876fjq";
-          };
-        }
-        {
-          # NOTE: should be last in the list
-          name = "zsh-syntax-highlighting";
-          file = "zsh-syntax-highlighting.plugin.zsh";
-          src = pkgs.fetchFromGitHub {
-            owner = "zsh-users";
-            repo = "zsh-syntax-highlighting";
-            rev = "e900ad8bad53501689afcb050456400d7a8466e5";
-            sha256 = "1dfy5wvkmnp2zzk81fhc7qlywgn0j6z0vjch5ak5r3j2kqv61cmi";
-          };
-        }
-      ];
-    };
     home.stateVersion = "19.09";
   };
+
+  system.stateVersion = "19.03";
 }
 
 # TODO: some impl/binding for ix.io posts

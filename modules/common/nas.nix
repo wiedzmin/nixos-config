@@ -2,7 +2,7 @@
 with lib;
 
 let
-  cfg = config.nas;
+  cfg = config.custom.nas;
   nasConfigPath = "$HOME/.config/synology/nas.yml";
   mount_nas_volume = pkgs.writeShellScriptBin "mount_nas_volume" ''
     function show_list() {
@@ -107,7 +107,7 @@ let
   '';
 in {
   options = {
-    nas = {
+    custom.nas = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -138,41 +138,54 @@ in {
         default = [ ];
         description = "NAS' volumes to access";
       };
-    };
-  };
-
-  config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = cfg.primaryUser != "";
-        message = "NAS: must provide primary user's name.";
-      }
-      {
-        assertion = cfg.primaryUserPassword != "";
-        message = "NAS: must provide primary user's password.";
-      }
-      {
-        assertion = cfg.localMountBase != "";
-        message = "NAS: must provide local base path for remote volumes mounting.";
-      }
-      {
-        assertion = cfg.hostName != "";
-        message = "NAS: must provide hostname.";
-      }
-    ];
-
-    security = {
-      wrappers = {
-        # dmenu-pmount
-        pmount.source = "${pkgs.pmount}/bin/pmount";
-        pumount.source = "${pkgs.pmount}/bin/pumount";
+      xmonad.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable XMonad keybindings";
       };
     };
-
-    environment.systemPackages = with pkgs; [
-      mount_nas_volume
-      unmount_nas_volume
-      force_unmount_nas
-    ];
   };
+
+  config = mkMerge [
+    (mkIf cfg.enable {
+      assertions = [
+        {
+          assertion = cfg.primaryUser != "";
+          message = "NAS: must provide primary user's name.";
+        }
+        {
+          assertion = cfg.primaryUserPassword != "";
+          message = "NAS: must provide primary user's password.";
+        }
+        {
+          assertion = cfg.localMountBase != "";
+          message = "NAS: must provide local base path for remote volumes mounting.";
+        }
+        {
+          assertion = cfg.hostName != "";
+          message = "NAS: must provide hostname.";
+        }
+      ];
+
+      security = {
+        wrappers = {
+          # dmenu-pmount
+          pmount.source = "${pkgs.pmount}/bin/pmount";
+          pumount.source = "${pkgs.pmount}/bin/pumount";
+        };
+      };
+
+      environment.systemPackages = with pkgs; [
+        mount_nas_volume
+        unmount_nas_volume
+        force_unmount_nas
+      ];
+    })
+    (mkIf (cfg.enable && cfg.xmonad.enable) {
+      wm.xmonad.keybindings = {
+        "M-C-m" = ''spawn "${mount_nas_volume}/bin/mount_nas_volume"'';
+        "M-C-u" = ''spawn "${unmount_nas_volume}/bin/unmount_nas_volume"'';
+      };
+    })
+  ];
 }

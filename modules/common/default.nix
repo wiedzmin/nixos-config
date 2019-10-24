@@ -2,7 +2,6 @@
   imports = [
     ./analysis.nix
     ./appearance.nix
-    ./battery-notifier.nix
     ./browsers.nix
     ./clean-trash.nix
     ./clojure.nix
@@ -20,7 +19,7 @@
     ./messengers.nix
     ./nas.nix
     ./navigation.nix
-    ./network.nix
+    ./networking.nix
     ./packaging.nix
     ./paperworks.nix
     ./pim.nix
@@ -35,6 +34,6 @@
     ./xidlehook.nix
     ./xinput.nix
     ./xmonad.nix
-    ./xrandr.nix
+    ./xorg.nix
   ];
 }

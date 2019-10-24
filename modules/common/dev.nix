@@ -126,6 +126,11 @@ in {
         default = false;
         description = ''Whether to enable development infra for Emacs.'';
       };
+      xmonad.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''Whether to enable XMonad keybindings.'';
+      };
     };
   };
 
@@ -178,6 +183,10 @@ in {
           loop
           ix
         ];
+        programs.direnv = {
+          enable = true;
+          enableZshIntegration = true;
+        };
       };
     })
     (mkIf cfg.emacs.enable {
@@ -192,6 +201,12 @@ in {
         ];
       };
       ide.emacs.config = ''${emacsDevSetup}'';
+    })
+    (mkIf (cfg.xmonad.enable && config.custom.virtualization.docker.enable) {
+      wm.xmonad.keybindings = {
+        "M-s d <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart docker-devdns.service"'';
+        "M-s d <Down>" = ''spawn "${pkgs.systemd}/bin/systemctl stop docker-devdns.service"'';
+      };
     })
   ];
 }

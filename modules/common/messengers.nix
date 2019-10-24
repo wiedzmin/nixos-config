@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.messengers;
+let cfg = config.tools.messengers;
 in {
   options = {
-    messengers = {
+    tools.messengers = {
       enable = mkOption {
         type = types.bool;
         default = false;

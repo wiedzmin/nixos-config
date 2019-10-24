@@ -3,7 +3,7 @@ with lib;
 
 let
   cfg = config.tools.dbms;
-  dbmsScript = pkgs.writeShellScriptBin "dbms" ''
+  dbms = pkgs.writeShellScriptBin "dbms" ''
     ${config.secrets.job.enforceJobVpnHunkSh}
 
     enforce_job_vpn
@@ -76,6 +76,11 @@ in {
         default = false;
         description = "Whether to enable job dbms connectivity.";
       };
+      xmonad.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable XMonad keybindings.";
+      };
     };
   };
 
@@ -111,11 +116,9 @@ in {
         ];
       };
     })
-    (mkIf cfg.jobDbms.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          dbmsScript
-        ];
+    (mkIf (cfg.jobDbms.enable && cfg.xmonad.enable) {
+      wm.xmonad.keybindings = {
+        "M-C-y" = ''spawn "${dbms}/bin/dbms" >> showWSOnProperScreen "shell"'';
       };
     })
   ];

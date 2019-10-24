@@ -2,7 +2,7 @@
 with lib;
 
 let
-  cfg = config.dev.python;
+  cfg = config.custom.dev.python;
   emacsPythonSetup = ''
     (use-package ms-pyls-client
       :quelpa
@@ -66,7 +66,7 @@ let
   '';
 in {
   options = {
-    dev.python = {
+    custom.dev.python = {
       enable = mkOption {
         type = types.bool;
         default = false;

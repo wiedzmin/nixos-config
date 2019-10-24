@@ -2,7 +2,7 @@
 with lib;
 
 let
-  cfg = config.virtualization;
+  cfg = config.custom.virtualization;
   dnsContainerName = "docker_dns";
   dlint = pkgs.writeShellScriptBin "dlint" ''
     if [ -z $1 ]; then
@@ -164,12 +164,229 @@ let
 
     exit 0
   '';
+  discover_containerized_services = pkgs.writeShellScriptBin "discover_containerized_services" ''
+    # TODO: think how to restrict networks/ports output (maybe pick first ones)
+    main() {
+        eval $(${docker-machine}/bin/docker-machine env -u) # ensure we cosidering only local containers
+        SELECTED_CONTAINER=$( ${docker}/bin/docker ps --format '{{.Names}}' | ${rofi}/bin/rofi -dmenu -p "Container" )
+        if [ ! -z "$SELECTED_CONTAINER" ]; then
+            CONTAINER_IP=$(${docker}/bin/docker inspect $SELECTED_CONTAINER --format='{{range $network, $settings :=.NetworkSettings.Networks}}{{$settings.IPAddress}}{{end}}')
+            EXPOSED_PORT=$(${docker}/bin/docker inspect $SELECTED_CONTAINER --format='{{range $port, $mappings :=.NetworkSettings.Ports}}{{$port}}{{end}}' | ${coreutils}/bin/cut -f1 -d/)
+            ${firefoxOpenPageCmd} http://$CONTAINER_IP:$EXPOSED_PORT
+        fi
+    }
+
+    main
+
+    exit 0
+  '';
+  remote_docker_logs = pkgs.writeShellScriptBin "remote_docker_logs" ''
+    # TODO: think of decoupling from job infra
+    ${config.secrets.job.enforceJobVpnHunkSh}
+
+    ask_for_logs() {
+        LOGS=$(${openssh}/bin/ssh ${config.secrets.job.infra.logsHost} "find ${config.secrets.job.infra.remoteDockerLogsRoot}/ -maxdepth 1 -size +0 -type f | grep -v gz")
+        for i in "''${LOGS[@]}"
+        do
+            echo "$i"
+        done
+    }
+
+    main() {
+        LOG=$( (ask_for_logs) | ${rofi}/bin/rofi -dmenu -p "View log" )
+        if [ -n "$LOG" ]; then
+            enforce_job_vpn
+            ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
+            ${config.secrets.job.infra.logsHost} \
+            -c 'tail -f $LOG'"
+        fi
+    }
+
+    main
+
+    exit 0
+  '';
+  docker_stacks_info = pkgs.writeShellScriptBin "docker_stacks_info" ''
+    # TODO: think of decoupling from job infra
+
+    ${config.secrets.job.enforceJobVpnHunkSh}
+
+    enforce_job_vpn
+
+    SWARM_NODES=(
+    ${builtins.concatStringsSep "\n"
+    (map (host: builtins.head host.hostNames) (builtins.filter (host: host.swarm == true) jobExtraHosts))}
+    )
+    SWARM_LEADER_NODE=$(${openssh}/bin/ssh ${jobInfraSeedHost} "docker node ls --format '{{.Hostname}} {{ .ManagerStatus }}' | grep Leader | cut -f1 -d\ ")
+
+    docker_stack_ps_params() {
+        echo ${if docker.stacks.showOnlyRunning then ''--filter \"desired-state=Running\"'' else ""}
+             ${if docker.stacks.useCustomFormat then " --format \\\"${docker.stacks.psCustomFormat}\\\"" else ""}
+    }
+
+    MODES=(
+      "status"
+      "logs"
+    )
+
+    ask_for_mode() {
+        for i in "''${MODES[@]}"
+        do
+            echo "$i"
+        done
+    }
+
+    ask_for_stack() {
+        STACKS=$(${openssh}/bin/ssh $SWARM_LEADER_NODE \
+                                         "docker stack ls | awk '{if(NR>1)print $1}'" | \
+                                         ${gawk}/bin/awk '{print $1}')
+        for i in "''${STACKS[@]}"
+        do
+            echo "$i"
+        done
+    }
+
+    show_stack_status() {
+        STACK=$1
+        ${openssh}/bin/ssh $SWARM_LEADER_NODE \
+        "docker stack ps $STACK $(docker_stack_ps_params)" > /tmp/docker_stack_status
+        ${yad}/bin/yad --filename /tmp/docker_stack_status --text-info
+        rm /tmp/docker_stack_status
+    }
+
+    ask_for_stack_task() {
+        STACK=$1
+        TASKS=$(${openssh}/bin/ssh $SWARM_LEADER_NODE \
+        "docker stack ps $STACK $(docker_stack_ps_params)" | awk '{if(NR>1)print $0}')
+        SERVICE=$(${openssh}/bin/ssh $SWARM_LEADER_NODE \
+        "docker service ls --format='{{.Name}}' | grep $STACK ")
+        TASKS="''${SERVICE}
+    ''${TASKS}"
+        for i in "''${TASKS[@]}"
+        do
+            echo "$i"
+        done
+    }
+
+    main() {
+        MODE=$( (ask_for_mode) | ${rofi}/bin/rofi -dmenu -p "Mode" )
+        STACK=$( (ask_for_stack) | ${rofi}/bin/rofi -dmenu -p "Stack" )
+        case "$MODE" in
+            status)
+                show_stack_status $STACK
+                ;;
+            logs)
+                TASK=$( (ask_for_stack_task $STACK) | ${rofi}/bin/rofi -dmenu -p "Task" | ${gawk}/bin/awk '{print $1}' )
+                ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
+                                                  $SWARM_LEADER_NODE \
+                                                  -c 'docker service logs --follow $TASK'"
+                ;;
+            *)
+                echo "Unknown mode: $MODE"
+                exit 1
+                ;;
+        esac
+    }
+
+    main
+
+    exit 0
+  '';
+  docker_stacks_info_new = pkgs.writeScriptBin "docker_stacks_info_new" ''
+    #! /usr/bin/env nix-shell
+    #! nix-shell -i python3 -p python3
+
+    # NOTE: unfinished rewrite in Python, see original just above
+
+    import os
+    import subprocess
+    import random
+
+    endpoint_nodes = ["router", "elk1", "tech1", "tech2"] # TODO: provide from nix
+    nodes_meta = {}
+
+    while True:
+        entry_node = random.choice(endpoint_nodes)
+        swarm_nodes_task = subprocess.Popen('ssh {0} "docker node ls"'.format(entry_node),
+                                            shell=True, stdout=subprocess.PIPE)
+        nodes_lines = swarm_nodes_task.stdout.read().decode().split("\n")
+        task_result = swarm_nodes_task.wait()
+
+        if task_result != 0:
+            continue
+
+        for node in nodes_lines[1:-1]:
+            node_fields = node.split()
+            parts_count = len(node_fields)
+            if parts_count == 5:
+                nodes_meta[node_fields[1]] = {
+                    "manager_status": "",
+                    "status": node_fields[2],
+                    "availability": node_fields[3]
+                }
+            elif parts_count == 6:
+                nodes_meta[node_fields[1]] = {
+                    "manager_status": node_fields[4],
+                    "status": node_fields[2],
+                    "availability": node_fields[3]
+                }
+            elif parts_count == 7:
+                nodes_meta[node_fields[2]] = {
+                    "manager_status": node_fields[5],
+                    "status": node_fields[3],
+                    "availability": node_fields[4]
+                }
+        print(nodes_meta)
+        break
+  '';
   vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
   '';
+  ctop_hosts = pkgs.writeShellScriptBin "ctop_hosts" ''
+    ${config.secrets.job.enforceJobVpnHunkSh}
+
+    main() {
+        HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.dmenu}/bin/dmenu -p "Host" -l 20)
+        if [ -n "$HOST" ]; then
+            enforce_job_vpn
+            ${pkgs.tmux}/bin/tmux new-window "${config.attributes.defaultCommands.remoteTerminal} $HOST -c 'ctop'"
+        fi
+    }
+
+    main
+
+    exit 0
+  '';
+  docker_shell = let
+    dockerPsCommand = "docker ps --format '{{.Names}}'";
+  in pkgs.writeShellScriptBin "docker_shell" ''
+    ${config.secrets.job.enforceJobVpnHunkSh}
+
+    main() {
+        HOST=$( cat /etc/hosts | grep -v "::1" | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/uniq | ${pkgs.dmenu}/bin/dmenu -p "Host" -l 20)
+        if [ -n $HOST ]; then
+            if [ "$HOST" == "localhost" ]; then
+                SELECTED_CONTAINER=$( ${dockerPsCommand} | ${pkgs.dmenu}/bin/dmenu -p "Container" -l 20)
+            else
+                enforce_job_vpn
+                SELECTED_CONTAINER=$( ${config.attributes.defaultCommands.remoteTerminal} $HOST -c '${dockerPsCommand}' | ${pkgs.dmenu}/bin/dmenu -p "Container" -l 20)
+            fi
+            if [ -n "$SELECTED_CONTAINER" ]; then
+                ${pkgs.tmux}/bin/tmux new-window "${config.attributes.defaultCommands.remoteTerminal} \
+                $HOST \
+                -c 'docker exec -it $SELECTED_CONTAINER ${config.custom.virtualization.docker.defaultContainerShell}'"
+            fi
+        fi
+    }
+
+    main
+
+    exit 0
+  '';
+  # docker_stacks_info = ./docker_stacks_info.nix; # temporarily disabled, rework after refactoring extraHosts
 in {
   options = {
-    virtualization = {
+    custom.virtualization = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -184,6 +401,11 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable Docker auxillary packages";
+      };
+      docker.defaultContainerShell = mkOption {
+        type = types.str;
+        default = "/bin/bash";
+        description = "Default shell to execute within container with `exec -it`";
       };
       docker.storageDriver = mkOption {
         type = types.str;
@@ -230,6 +452,11 @@ in {
         default = false;
         description = "Whether to enable Libvirt";
       };
+      xmonad.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable XMonad keybindings.";
+      };
     };
   };
 
@@ -271,11 +498,13 @@ in {
       };
 
       environment.systemPackages = with pkgs; [
+        ctop_hosts
         dlint
-        hadolintd
         docker-machine-export
         docker-machine-import
         docker_containers_traits
+        docker_shell
+        hadolintd
         vdi2qcow2
       ] ++ [
         ctop
@@ -348,6 +577,15 @@ in {
         virtmanager
         virtviewer
       ];
+    })
+    (mkIf (cfg.docker.enable && cfg.xmonad.enable) {
+      wm.xmonad.keybindings = {
+        "M-C-c" = ''spawn "${docker_containers_traits}/bin/docker_containers_traits" >> showWSOnProperScreen "shell"'';
+        "M-C-h" = ''spawn "${ctop_hosts}/bin/ctop_hosts" >> showWSOnProperScreen "shell"'';
+        "M-C-d" = ''spawn "${docker_shell}/bin/docker_shell" >> showWSOnProperScreen "shell"'';
+        # "M-C-l" = ''spawn "${custom.remote_docker_logs}/bin/remote_docker_logs" >> showWSOnProperScreen "shell"'';
+        # "M-C-s" = ''spawn "{custom.docker_stacks_info}/bin/docker_stacks_info" >> showWSOnProperScreen "shell"'';
+      };
     })
   ];
 }

@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.dev.golang;
+let cfg = config.custom.dev.golang;
 in {
   options = {
-    dev.golang = {
+    custom.dev.golang = {
       enable = mkOption {
         type = types.bool;
         default = false;

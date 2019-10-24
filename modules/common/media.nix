@@ -1,14 +1,24 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.media;
+let cfg = config.custom.media;
 in {
   options = {
-    media = {
+    custom.media = {
       enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable media support";
+      };
+      volume.deltaFraction = mkOption {
+        type = types.float;
+        default = 0.1;
+        description = "Sound volume delta fraction value";
+      };
+      volume.deltaPercents = mkOption {
+        type = types.int;
+        default = 10;
+        description = "Sound volume delta percents value";
       };
       pulse.enable = mkOption {
         type = types.bool;
@@ -29,6 +39,11 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable OpenGL";
+      };
+      xmonad.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable XMonad keybindings";
       };
     };
   };
@@ -58,6 +73,19 @@ in {
         extraPackages32 = with pkgs.pkgsi686Linux; [ libvdpau-va-gl vaapiIntel vaapiVdpau ];
       };
       environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+    })
+    (mkIf (cfg.enable && cfg.xmonad.enable) {
+      wm.xmonad.keybindings = {
+        "<XF86AudioRaiseVolume>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString config.custom.media.volume.deltaFraction}+"'';
+        "<XF86AudioLowerVolume>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString config.custom.media.volume.deltaFraction}-"'';
+        "<XF86AudioPrev>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players previous"'';
+        "<XF86AudioPlay>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players play-pause"'';
+        "<XF86AudioNext>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players next"'';
+        "<XF86AudioMute>" = ''spawn "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle"'';
+        "<XF86AudioMicMute>" = ''spawn "${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle"'';
+        "M-<XF86AudioNext>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString config.custom.content.players.deltaSeconds}+"'';
+        "M-<XF86AudioPrev>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString config.custom.content.players.deltaSeconds}-"'';
+      };
     })
   ];
 }

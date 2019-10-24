@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.paperworks;
+let cfg = config.custom.paperworks;
 in {
   options = {
-    paperworks = {
+    custom.paperworks = {
       printing.enable = mkOption {
         type = types.bool;
         default = false;

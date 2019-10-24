@@ -2,7 +2,7 @@
 with lib;
 
 let
-  cfg = config.navigation;
+  cfg = config.custom.navigation;
   emacsNavigationSetup = ''
     (use-package ace-link
       :ensure t
@@ -388,7 +388,7 @@ let
   '';
 in {
   options = {
-    navigation = {
+    custom.navigation = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -456,6 +456,13 @@ in {
         default = "gruvbox-dark-hard";
         description = ''
           Rofi theme to use.
+        '';
+      };
+      misc.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable misc setup.
         '';
       };
       emacs.enable = mkOption {
@@ -635,6 +642,27 @@ in {
             rofi.kb-toggle-case-sensitivity:     grave,dead_grave
             rofi.kb-toggle-sort:                 Alt+grave
           '';
+        };
+      };
+    })
+    (mkIf (cfg.enable && cfg.misc.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        programs = {
+          z-lua = {
+            enable = true;
+            enableZshIntegration = true;
+            options = [ "fzf" "enhanced" "once" ];
+          };
+          skim = {
+            enable = true;
+            historyWidgetOptions = [ "--exact" ];
+            defaultOptions = [ "--height 40%" "--prompt ⟫" ];
+            fileWidgetCommand = "${pkgs.fd}/bin/fd --type f";
+            fileWidgetOptions = [ "--preview 'head {}'" ];
+            changeDirWidgetCommand = "${pkgs.fd}/bin/fd --type d";
+            changeDirWidgetOptions = [ "--preview 'tree -C {} | head -200'" ];
+            enableZshIntegration = true;
+          };
         };
       };
     })

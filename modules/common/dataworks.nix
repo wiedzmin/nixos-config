@@ -2,7 +2,7 @@
 with lib;
 
 let
-  cfg = config.dataworks;
+  cfg = config.custom.dataworks;
   emacsCodeSearchSetup = ''
     (use-package codesearch
       :ensure t
@@ -22,7 +22,7 @@ let
   '';
 in {
   options = {
-    dataworks = {
+    custom.dataworks = {
       codesearch.enable = mkOption {
         type = types.bool;
         default = false;
@@ -43,13 +43,16 @@ in {
         default = false;
         description = ''Whether to enable various "forensics" tools.'';
       };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''Whether to enable respective Emacs setup.'';
+      };
     };
   };
 
   config = mkMerge [
     (mkIf cfg.codesearch.enable {
-      ide.emacs.config = ''${emacsCodeSearchSetup}'';
-      # TODO: timer + service for reindexing + https://github.com/abingham/emacs-codesearch for emacs
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           codesearch
@@ -58,16 +61,43 @@ in {
           zsh.sessionVariables = {
             CSEARCHINDEX = "${config.secrets.dev.workspaceRoot}/.csearchindex";
           };
-          bash.sessionVariables = { # TODO: check if option indeed exists
+          bash.sessionVariables = {
             CSEARCHINDEX = "${config.secrets.dev.workspaceRoot}/.csearchindex";
           };
-          emacs.extraPackages = epkgs: [ # TODO: correlate with navigation.enable somehow
-            epkgs.codesearch
-            epkgs.counsel-codesearch
-            epkgs.projectile-codesearch
-          ];
         };
       };
+      systemd.user.services."codesearch-reindex" = {
+        description = "Codesearch index updating";
+        wantedBy = [ "graphical.target" ];
+        partOf = [ "graphical.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          Environment = [
+            "CSEARCHINDEX=${config.secrets.dev.workspaceRoot}/.csearchindex"
+          ];
+          ExecStart = "${pkgs.codesearch}/bin/cindex ${config.secrets.dev.workspaceRoot}";
+          StandardOutput = "journal+console";
+          StandardError = "inherit";
+        };
+      };
+      systemd.user.timers."codesearch-reindex" = {
+        description = "Codesearch index updating";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnBootSec = "5min";
+          OnUnitActiveSec = "1h";
+        };
+      };
+    })
+    (mkIf (cfg.codesearch.enable && cfg.emacs.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        programs.emacs.extraPackages = epkgs: [
+          epkgs.codesearch
+          epkgs.counsel-codesearch
+          epkgs.projectile-codesearch
+        ];
+      };
+      ide.emacs.config = ''${emacsCodeSearchSetup}'';
     })
     (mkIf cfg.structured.json.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -95,9 +125,21 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           fd
-          lsd
           sd
         ];
+        programs = {
+          lsd = {
+            enable = true;
+            enableAliases = true;
+          };
+          bat = {
+            enable = true;
+            config = {
+              theme = "TwoDark";
+              pager = "less -FR";
+            };
+          };
+        };
       };
     })
     (mkIf cfg.forensics.enable {

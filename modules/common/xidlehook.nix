@@ -3,7 +3,7 @@ with lib;
 
 let cfg = config.services.xidlehook;
 in {
-  options = {
+  options = { # TODO: merge into relevant module
     services.xidlehook = {
       enable = mkOption {
         type = types.bool;

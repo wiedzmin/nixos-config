@@ -2,7 +2,7 @@
 with lib;
 
 let
-  cfg = config.screenshots;
+  cfg = config.custom.screenshots;
   order_screenshots = pkgs.writeShellScriptBin "order_screenshots" ''
     declare -A REGEXP_TO_DATECMD
     REGEXP_TO_DATECMD=(
@@ -51,7 +51,7 @@ let
   '';
 in {
   options = {
-    screenshots = {
+    custom.screenshots = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -88,53 +88,67 @@ in {
           Timestamp of service activation (in systemd format).
         '';
       };
-    };
-  };
-
-  config = mkIf cfg.enable {
-    assertions = [
-      {
-        assertion = cfg.baseDir != null;
-        message = "Must provide path to screenshots dir.";
-      }
-      {
-        assertion = cfg.dateFormat != null;
-        message = "Must provide date format.";
-      }
-      {
-        assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "")
-          || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
-        message = "screenshots: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
-      }
-    ];
-
-    environment.systemPackages = [
-      order_screenshots
-      screenshot_active_window
-      screenshot_full
-      screenshot_region
-    ];
-
-    systemd.user.services."order-screenshots" = {
-      description = "Screenshots ordering";
-      wantedBy = [ "graphical.target" ];
-      partOf = [ "graphical.target" ];
-      serviceConfig = {
-        Type = "oneshot";
-        ExecStart = "${order_screenshots}";
-        StandardOutput = "journal+console";
-        StandardError = "inherit";
-      };
-    };
-    systemd.user.timers."order-screenshots" = {
-      description = "Screenshots ordering";
-      wantedBy = [ "timers.target" ];
-      timerConfig = if (cfg.bootTimespec != "") then {
-        OnBootSec = cfg.bootTimespec;
-        OnUnitActiveSec = cfg.activeTimespec;
-      } else {
-        OnCalendar = cfg.calendarTimespec;
+      xmonad.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable XMonad keybindings";
       };
     };
   };
+
+  config = mkMerge [
+    (mkIf cfg.enable {
+      assertions = [
+        {
+          assertion = cfg.baseDir != null;
+          message = "Must provide path to screenshots dir.";
+        }
+        {
+          assertion = cfg.dateFormat != null;
+          message = "Must provide date format.";
+        }
+        {
+          assertion = (cfg.bootTimespec == "" && cfg.activeTimespec == "" && cfg.calendarTimespec != "")
+            || (cfg.bootTimespec != "" && cfg.activeTimespec != "" && cfg.calendarTimespec == "");
+          message = "screenshots: Must provide either calendarTimespec or bootTimespec/activeTimespec pair.";
+        }
+      ];
+
+      environment.systemPackages = [
+        order_screenshots
+        screenshot_active_window
+        screenshot_full
+        screenshot_region
+      ];
+
+      systemd.user.services."order-screenshots" = {
+        description = "Screenshots ordering";
+        wantedBy = [ "graphical.target" ];
+        partOf = [ "graphical.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${order_screenshots}";
+          StandardOutput = "journal+console";
+          StandardError = "inherit";
+        };
+      };
+      systemd.user.timers."order-screenshots" = {
+        description = "Screenshots ordering";
+        wantedBy = [ "timers.target" ];
+        timerConfig = if (cfg.bootTimespec != "") then {
+          OnBootSec = cfg.bootTimespec;
+          OnUnitActiveSec = cfg.activeTimespec;
+        } else {
+          OnCalendar = cfg.calendarTimespec;
+        };
+      };
+    })
+    (mkIf cfg.xmonad.enable {
+      wm.xmonad.keybindings = {
+        "<Print>" = ''spawn "screenshot_active_window"'';
+        "C-<Print>" = ''spawn "screenshot_full"'';
+        "M-<Print>" = ''spawn "screenshot_region"'';
+      };
+    })
+  ];
 }

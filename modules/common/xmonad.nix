@@ -3,15 +3,51 @@ with lib;
 
 let
   cfg = config.wm.xmonad;
-  custom = import ../../pkgs/custom pkgs config;
-
-  # TODO: move to options
-  backlightAmount = 10;
-  volumeAmount = 10;
-  playerDeltaSeconds = 10;
-  volumeDeltaFraction = 0.1;
-  volumeDeltaPercents = 10;
-
+  basicKeys = {
+    "C-\\\\" = "sendMessage (XkbToggle Nothing)";
+    "M-<Home>" = "toggleWS";
+    "M-<Return>" = "promote";
+    "M-<Space>" = "sendMessage NextLayout";
+    "M-<Tab>" = "windows W.focusDown";
+    "M-S-<Space>" = "setLayout $ XMonad.layoutHook conf";
+    "M-S-<Tab>" = "windows W.focusUp";
+    "M-S-c" = "kill1";
+    "M-S-j" = "windows W.swapDown";
+    "M-S-k" = "windows W.swapUp";
+    "M-S-q" = "io (exitWith ExitSuccess)";
+    "M-b" = ''sendMessage (XkbToggle (Just 0)) >> spawn "${pkgs.rofi}/bin/rofi -show window"'';
+    "M-h" = "sendMessage Shrink";
+    "M-l" = "sendMessage Expand";
+    "M-m" = "windows W.focusMaster";
+    "M-n" = "refresh";
+    "M-t" = "withFocused $ windows . W.sink";
+    "M-x a" = "windows copyToAll"; # @@ Make focused window always visible
+    "M-x k" = "killAllOtherCopies"; # @@ Toggle window state back
+    "M-r" = "placeWorkplaces";
+    "M-C-q" = ''spawn "xmonad --recompile; xmonad --restart"'';
+    "M-q" = ''spawn "xmonad --restart"'';
+    "M-S-p" = ''spawn "${pkgs.rofi}/bin/rofi -combi-modi drun,run -show combi -modi combi"'';
+    "M-a 1" = ''namedScratchpadAction scratchpads "htop"'';
+    "M-a 2" = ''namedScratchpadAction scratchpads "iotop"'';
+    "M-a 3" = ''namedScratchpadAction scratchpads "gotop"'';
+    "M-a 4" = ''namedScratchpadAction scratchpads "bc"'';
+    # -- TODO: recall and add "multiple app windows"-aware raising
+    "M-w <Backspace>" = ''nextMatch History (return True)'';
+    "<XF86Launch1>" = ''spawn "${pkgs.rofi}/bin/rofi -combi-modi drun,run -show combi -modi combi"'';
+    "M-S-w M-S-n" = "moveTo Next EmptyWS"; # find a free workspace
+    "M-S-w M-S-<Up>" = "shiftToPrev";
+    "M-S-w M-S-<Down>" = "shiftToNext";
+    "M-S-w M-S-<Right>" = "shiftToNext >> nextWS";
+    "M-S-w M-S-<Left>" = "shiftToPrev >> prevWS";
+    "M-S-w <Up>" = "prevWS";
+    "M-S-w <Down>" = "nextWS";
+    "M-w M-s" = "sinkAll";
+    "M-S-." = "placeFocused placePolicy";
+    "M-<Right>" = "windowGo R True";
+    "M-<Left>" = "windowGo L True";
+    "M-<Up>" = "windowGo U True";
+    "M-<Down>" = "windowGo D True";
+  };
   extraCombinators = ''
     -----------------------------------------------------------------
     -- |
@@ -566,125 +602,14 @@ let
                   , NS "bc" (scratchpadTerminal ++ " -t calc -e bc") (title =? "calc") nonFloating
                   ]
 
-    basicKeys conf = [ "C-\\"         ~> sendMessage (XkbToggle Nothing)
-                     , "M-<Home>"     ~> toggleWS
-                     , "M-<Return>"   ~> promote
-                     , "M-<Space>"    ~> sendMessage NextLayout
-                     , "M-<Tab>"      ~> windows W.focusDown
-                     , "M-S-<Space>"  ~> setLayout $ XMonad.layoutHook conf
-                     , "M-S-<Tab>"    ~> windows W.focusUp
-                     , "M-S-c"        ~> kill1
-                     , "M-S-j"        ~> windows W.swapDown
-                     , "M-S-k"        ~> windows W.swapUp
-                     , "M-S-q"        ~> io (exitWith ExitSuccess)
-                     , "M-b"          ~> sendMessage (XkbToggle (Just 0)) >> spawn "${pkgs.rofi}/bin/rofi -show window"
-                     , "M-h"          ~> sendMessage Shrink
-                     , "M-l"          ~> sendMessage Expand
-                     , "M-m"          ~> windows W.focusMaster
-                     , "M-n"          ~> refresh
-                     , "M-t"          ~> withFocused $ windows . W.sink
-                     , "M-x a"        ~> windows copyToAll -- @@ Make focused window always visible
-                     , "M-x k"        ~> killAllOtherCopies -- @@ Toggle window state back
-                     , "M-r"          ~> placeWorkplaces
-                     --
-                     , "<XF86ScreenSaver>"  ~> spawn "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off"
-                     , "<Print>"            ~> spawn "screenshot_active_window"
-                     , "C-<Print>"          ~> spawn "screenshot_full"
-                     , "M-<Print>"          ~> spawn "screenshot_region"
-                     -- workspace-dependent bindings
-                     , "M-/"          ~> spawn "${custom.search_selection}/bin/search_selection" >> showWSOnProperScreen "web"
-                     , "M-C-/"        ~> spawn "${custom.search_prompt}/bin/search_prompt" >> showWSOnProperScreen "web"
-                     , "M-C-d"        ~> spawn "${custom.docker_shell}/bin/docker_shell" >> showWSOnProperScreen "shell"
-                     , "M-C-j"        ~> spawn "${custom.services_journals}/bin/services_journals" >> showWSOnProperScreen "shell"
-                     , "M-C-l"        ~> spawn "${custom.remote_docker_logs}/bin/remote_docker_logs" >> showWSOnProperScreen "shell"
-                     -- , "M-C-s"        ~> spawn "{custom.docker_stacks_info}/bin/docker_stacks_info" >> showWSOnProperScreen "shell"
-                     ${lib.optionalString config.tools.dbms.jobDbms.enable
-                       '', "M-C-y"      ~> spawn "dbms" >> showWSOnProperScreen "shell"''}
-                     , "M-S-d"        ~> spawn "${custom.ssh_custom_user}/bin/ssh_custom_user" >> showWSOnProperScreen "shell"
-                     , "M-S-s"        ~> spawn "${pkgs.rofi}/bin/rofi -show ssh" >> showWSOnProperScreen "shell"
-                     , "M-j"          ~> spawn "${custom.webjumps}/bin/webjumps" >> showWSOnProperScreen "web"
-                     , "M-M1-w"       ~> spawn "${pkgs.wpa_supplicant_gui}/bin/wpa_gui"
-                     , "M-M1-S-w"     ~> spawn "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli" >> showWSOnProperScreen "shell"
-                     , "M-M1-x"       ~> spawn "${pkgs.autorandr}/bin/autorandr --load mobile"
-                     --
-                     , "M-C-q"        ~> spawn "xmonad --recompile; xmonad --restart"
-                     , "M-q"          ~> spawn "xmonad --restart"
-                     , "M-S-p"        ~> spawn "${pkgs.rofi}/bin/rofi -combi-modi drun,run -show combi -modi combi"
-                     , "M-S-h"        ~> spawn "${custom.current_system_hash}/bin/current_system_hash"
-                     , "M-M1-q"       ~> spawn "${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources"
-                     --
-                     , "M-C-a"        ~> spawn "${custom.autorandr_profiles}/bin/autorandr_profiles"
-                     ${lib.optionalString config.virtualization.docker.enable
-                       '', "M-C-c"      ~> spawn "docker_containers_traits"''}
-                     ${lib.optionalString config.nas.enable
-                       (builtins.concatStringsSep "\n                 , " [
-                         '', "M-C-m"      ~> spawn "${custom.mount_nas_volume}/bin/mount_nas_volume"''
-                         ''"M-C-u"    ~> spawn "${custom.unmount_nas_volume}/bin/unmount_nas_volume"''
-                       ])}
-                     , "M-C-t"        ~> spawn "${custom.tmuxp_sessions}/bin/tmuxp_sessions"
-                     , "M-S-b"        ~> spawn "${custom.bookshelf}/bin/bookshelf"
-                     , "M-S-u"        ~> spawn "${custom.uptime_info}/bin/uptime_info"
-                     , "M-y"          ~> spawn "${custom.buku_add}/bin/buku_add"
-                     ]
+    customKeys conf = [
+               ${lib.concatStringsSep "\,\n           "
+                   (lib.mapAttrsToList (keys: command: ''"${keys}" ~> ${command}'') basicKeys)},
+               ${lib.concatStringsSep "\,\n           "
+                   (lib.mapAttrsToList (keys: command: ''"${keys}" ~> ${command}'') cfg.keybindings)}
+               ]
 
-    auxKeys = [ "M-a 1"        ~> namedScratchpadAction scratchpads "htop"
-              , "M-a 2"        ~> namedScratchpadAction scratchpads "iotop"
-              , "M-a 3"        ~> namedScratchpadAction scratchpads "gotop"
-              , "M-a 4"        ~> namedScratchpadAction scratchpads "bc"
-              --
-              , "M-a c"        ~> spawn "${pkgs.systemd}/bin/systemctl --user restart compton.service"
-              , "M-a q"        ~> spawn "${pkgs.rofi-pass}/bin/rofi-pass"
-              ]
-
-    -- TODO: recall and add "multiple app windows"-aware raising
-    appKeys = [ "M-w <Backspace>" ~> nextMatch History (return True)
-              , "M-w S-e"      ~> spawn "${pkgs.procps}/bin/pkill -SIGUSR2 emacs"
-              ]
-
-    servicesKeys = [ "M-s d <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart docker-devdns.service"
-                   , "M-s d <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop docker-devdns.service"
-                   , "M-s s <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart openvpn-${config.secrets.network.vpn.name}.service"
-                   , "M-s s <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop openvpn-${config.secrets.network.vpn.name}.service"
-                   , "M-s v <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart openvpn-${config.secrets.job.vpn.name}.service"
-                   , "M-s v <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl stop openvpn-${config.secrets.job.vpn.name}.service"
-                   , "M-s x <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl --user restart xsuspender.service"
-                   , "M-s x <Down>" ~> spawn "${pkgs.systemd}/bin/systemctl --user stop xsuspender.service"
-                   , "M-s d <Up>" ~> spawn "${pkgs.systemd}/bin/systemctl restart nscd.service"
-                   ]
-
-    hardwareKeys = [ "<XF86AudioRaiseVolume>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString volumeDeltaFraction}+"
-                   , "<XF86AudioLowerVolume>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString volumeDeltaFraction}-"
-                   , "<XF86AudioPrev>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players previous"
-                   , "<XF86AudioPlay>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players play-pause"
-                   , "<XF86AudioNext>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players next"
-                   , "<XF86AudioMute>" ~> spawn "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle"
-                   , "<XF86AudioMicMute>" ~> spawn "${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle"
-                   , "M-<XF86AudioNext>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString playerDeltaSeconds}+"
-                   , "M-<XF86AudioPrev>" ~> spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString playerDeltaSeconds}-"
-                   , "<XF86MonBrightnessUp>" ~> spawn "${pkgs.light}/bin/light -A ${toString backlightAmount}"
-                   , "<XF86MonBrightnessDown>" ~> spawn "${pkgs.light}/bin/light -U ${toString backlightAmount}"
-                   , "C-<XF86MonBrightnessUp>" ~> spawn "${pkgs.light}/bin/light -S 100"
-                   , "C-<XF86MonBrightnessDown>" ~> spawn "${pkgs.light}/bin/light -S 20"
-                   , "<XF86Launch1>" ~> spawn "${pkgs.rofi}/bin/rofi -combi-modi drun,run -show combi -modi combi"
-                   ]
-
-    windowKeys = [ "M-S-w M-S-n"       ~> moveTo Next EmptyWS -- find a free workspace
-                 , "M-S-w M-S-<Up>"    ~> shiftToPrev
-                 , "M-S-w M-S-<Down>"  ~> shiftToNext
-                 , "M-S-w M-S-<Right>" ~> shiftToNext >> nextWS
-                 , "M-S-w M-S-<Left>"  ~> shiftToPrev >> prevWS
-                 , "M-S-w <Up>"        ~> prevWS
-                 , "M-S-w <Down>"      ~> nextWS
-                 , "M-w M-s"           ~> sinkAll
-                 , "M-S-."             ~> placeFocused placePolicy
-                 ]
-
-    layoutKeys = [ "M-; " ++ keys ~> sendMessage $ JumpToLayout $ layout | (keys, layout) <- layoutMappings ] ++
-                 [ "M-<Right>"     ~> windowGo R True
-                 , "M-<Left>"      ~> windowGo L True
-                 , "M-<Up>"        ~> windowGo U True
-                 , "M-<Down>"      ~> windowGo D True
-                 ]
+    layoutKeys = [ "M-; " ++ keys ~> sendMessage $ JumpToLayout $ layout | (keys, layout) <- layoutMappings ]
 
     switchScreenKeys = [ "M-" ++ m ++ key ~> f sc
                        | (f, m) <- [(viewScreen naturalScreenOrderer, "C-"), (sendToScreen def, "M1-")]
@@ -706,16 +631,7 @@ let
                                [ ("M-" ++ key, switchToTertiary name)
                                | (name, key) <- map wsMapping $ filter wsMapped [scratchpadWorkspace]]
 
-    myKeys = \conf -> mkKeymap conf $
-             appKeys ++
-             auxKeys ++
-             hardwareKeys ++
-             basicKeys conf ++
-             layoutKeys ++
-             servicesKeys ++
-             switchScreenKeys ++
-             switchWorkspaceKeys conf ++
-             windowKeys
+    myKeys = \conf -> mkKeymap conf $ customKeys conf ++ layoutKeys ++ switchScreenKeys ++ switchWorkspaceKeys conf
 
     ------------------------------------------------------------------------
     -- Mouse bindings: default actions bound to mouse events
@@ -786,6 +702,13 @@ in {
           XMonad `internal` font' definition.
         '';
       };
+      keybindings = mkOption {
+        type = types.attrs;
+        default = {};
+        description = ''
+          XMonad keybindings.
+        '';
+      };
     };
   };
 
@@ -822,7 +745,7 @@ in {
                             , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
                                                      "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
                                                      "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
-                            , Run Com "${custom.wifi-status}/bin/wifi-status" [] "wifi" 60
+                            , Run Com "wifi-status" [] "wifi" 60
                             , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
                                       , ("ru", "<fc=green>ru</fc>")
                                       ]
