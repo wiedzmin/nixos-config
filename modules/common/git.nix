@@ -445,6 +445,7 @@ in {
             "init" = { templatedir = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/templates"; };
             "clone" = { templatedir = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/templates"; };
             "push" = { default = "current"; };
+            "absorb" = { maxstack = 75; };
           } // lib.optionalAttrs (cfg.github.enable) {
             "github" = { user = cfg.github.user; };
           } // lib.optionalAttrs (cfg.pager.diff-so-fancy.enable) {
@@ -455,21 +456,9 @@ in {
             };
           } // lib.optionalAttrs (cfg.pager.delta.enable) {
             "pager" = {
-              diff = ''${pkgs.gitAndTools.delta}/bin/delta --plus-color="#012800" \
-                                                           --minus-color="#340001" \
-                                                           --highlight-removed \
-                                                           --theme="zenburn"
-                                                           '';
-              show = ''${pkgs.gitAndTools.delta}/bin/delta --plus-color="#012800" \
-                                                           --minus-color="#340001" \
-                                                           --highlight-removed \
-                                                           --theme="zenburn"
-                                                           '';
-              log = ''${pkgs.gitAndTools.delta}/bin/delta --plus-color="#012800" \
-                                                          --minus-color="#340001" \
-                                                          --highlight-removed \
-                                                          --theme="zenburn"
-                                                          '';
+              diff = ''${pkgs.gitAndTools.delta}/bin/delta --plus-color="#012800" --minus-color="#340001" --highlight-removed --theme="zenburn"'';
+              show = ''${pkgs.gitAndTools.delta}/bin/delta --plus-color="#012800" --minus-color="#340001" --highlight-removed --theme="zenburn"'';
+              log = ''${pkgs.gitAndTools.delta}/bin/delta --plus-color="#012800" --minus-color="#340001" --highlight-removed --theme="zenburn"'';
             };
           };
 
