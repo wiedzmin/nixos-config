@@ -507,12 +507,10 @@ in {
         gitAndTools.lab
         gitAndTools.pass-git-helper
         gitAndTools.stgit
-        gitAndTools.topGit # https://github.com/mackyle/topgit
         git_remote_diff
         gitstats
         proposed.gitAndTools.git-quick-stats
         python2Packages.git-sweep # FIXME: adapt to py3
-        vcstool # try and compare with myrepos
       ];
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
