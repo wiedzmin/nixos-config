@@ -262,6 +262,8 @@ in {
           wayback_machine_downloader
           you-get
           ytcc
+        ] ++ lib.optionals config.attributes.staging.enable [
+          waon
         ];
         services.syncthing.enable = true; # TODO: consider separate option(s)
       };

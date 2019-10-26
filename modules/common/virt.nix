@@ -576,6 +576,8 @@ in {
         spice-gtk
         virtmanager
         virtviewer
+      ] ++ lib.optionals config.attributes.staging.enable [
+        x11spice
       ];
     })
     (mkIf (cfg.docker.enable && cfg.xmonad.enable) {
