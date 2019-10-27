@@ -62,7 +62,7 @@ in {
       };
       environment.systemPackages = with pkgs; [
         pasystray
-        pavucontrol
+        lxqt.pavucontrol-qt
       ];
     })
     (mkIf cfg.opengl.enable {
@@ -85,6 +85,7 @@ in {
         "<XF86AudioMicMute>" = ''spawn "${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle"'';
         "M-<XF86AudioNext>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString config.custom.content.players.deltaSeconds}+"'';
         "M-<XF86AudioPrev>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString config.custom.content.players.deltaSeconds}-"'';
+        "M-p" = ''spawn "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt"'';
       };
     })
   ];
