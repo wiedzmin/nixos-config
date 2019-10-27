@@ -498,7 +498,6 @@ in {
         gitAndTools.stgit
         git_remote_diff
         gitstats
-        gitRepo
         proposed.gitAndTools.git-quick-stats
         python2Packages.git-sweep # FIXME: adapt to py3
       ] ++ lib.optionals (config.attributes.staging.enable) [
