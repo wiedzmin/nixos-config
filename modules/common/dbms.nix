@@ -4,9 +4,7 @@ with lib;
 let
   cfg = config.tools.dbms;
   dbms = pkgs.writeShellScriptBin "dbms" ''
-    ${config.secrets.job.enforceJobVpnHunkSh}
-
-    enforce_job_vpn
+    enforce_job_vpn_up || exit 1
 
     declare -A DBMS_TRAITS
 

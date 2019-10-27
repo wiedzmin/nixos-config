@@ -182,7 +182,6 @@ let
   '';
   remote_docker_logs = pkgs.writeShellScriptBin "remote_docker_logs" ''
     # TODO: think of decoupling from job infra
-    ${config.secrets.job.enforceJobVpnHunkSh}
 
     ask_for_logs() {
         LOGS=$(${openssh}/bin/ssh ${config.secrets.job.infra.logsHost} "find ${config.secrets.job.infra.remoteDockerLogsRoot}/ -maxdepth 1 -size +0 -type f | grep -v gz")
@@ -195,7 +194,7 @@ let
     main() {
         LOG=$( (ask_for_logs) | ${rofi}/bin/rofi -dmenu -p "View log" )
         if [ -n "$LOG" ]; then
-            enforce_job_vpn
+            enforce_job_vpn_up || exit 1
             ${tmux}/bin/tmux new-window "${eternal-terminal}/bin/et \
             ${config.secrets.job.infra.logsHost} \
             -c 'tail -f $LOG'"
@@ -209,9 +208,7 @@ let
   docker_stacks_info = pkgs.writeShellScriptBin "docker_stacks_info" ''
     # TODO: think of decoupling from job infra
 
-    ${config.secrets.job.enforceJobVpnHunkSh}
-
-    enforce_job_vpn
+    enforce_job_vpn_up || exit 1
 
     SWARM_NODES=(
     ${builtins.concatStringsSep "\n"
@@ -343,12 +340,10 @@ let
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
   '';
   ctop_hosts = pkgs.writeShellScriptBin "ctop_hosts" ''
-    ${config.secrets.job.enforceJobVpnHunkSh}
-
     main() {
         HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.dmenu}/bin/dmenu -p "Host" -l 20)
         if [ -n "$HOST" ]; then
-            enforce_job_vpn
+            enforce_job_vpn_up || exit 1
             ${pkgs.tmux}/bin/tmux new-window "${config.attributes.defaultCommands.remoteTerminal} $HOST -c 'ctop'"
         fi
     }
@@ -360,15 +355,13 @@ let
   docker_shell = let
     dockerPsCommand = "docker ps --format '{{.Names}}'";
   in pkgs.writeShellScriptBin "docker_shell" ''
-    ${config.secrets.job.enforceJobVpnHunkSh}
-
     main() {
         HOST=$( cat /etc/hosts | grep -v "::1" | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/uniq | ${pkgs.dmenu}/bin/dmenu -p "Host" -l 20)
         if [ -n $HOST ]; then
             if [ "$HOST" == "localhost" ]; then
                 SELECTED_CONTAINER=$( ${dockerPsCommand} | ${pkgs.dmenu}/bin/dmenu -p "Container" -l 20)
             else
-                enforce_job_vpn
+                enforce_job_vpn_up || exit 1
                 SELECTED_CONTAINER=$( ${config.attributes.defaultCommands.remoteTerminal} $HOST -c '${dockerPsCommand}' | ${pkgs.dmenu}/bin/dmenu -p "Container" -l 20)
             fi
             if [ -n "$SELECTED_CONTAINER" ]; then

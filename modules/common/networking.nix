@@ -30,13 +30,11 @@ let
         sys.exit(1)
     os.system('tmux new-window "et {0}@{1}"'.format(user, host))
   '';
-  jnettop_hosts = pkgs.writeScriptBin "jnettop_hosts" ''
-    ${config.secrets.job.enforceJobVpnHunkSh}
-
+  jnettop_hosts = pkgs.writeShellScriptBin "jnettop_hosts" ''
     main() {
         HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
         if [ -n "$HOST" ]; then
-            enforce_job_vpn
+            enforce_job_vpn_up || exit 1
             ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
             $HOST -c 'jnettop'"
         fi

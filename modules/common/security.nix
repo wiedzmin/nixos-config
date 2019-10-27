@@ -37,6 +37,18 @@ let
       :config
       (use-package ivy-pass :ensure t))
   '';
+  cache_job_vpn_status_up = pkgs.writeShellScriptBin "cache_job_vpn_status_up" ''
+    ${pkgs.redis}/bin/redis-cli set job_vpn_status up
+  '';
+  cache_job_vpn_status_down = pkgs.writeShellScriptBin "cache_job_vpn_status_down" ''
+    ${pkgs.redis}/bin/redis-cli set job_vpn_status down
+  '';
+  enforce_job_vpn_up = pkgs.writeShellScriptBin "enforce_job_vpn_up" ''
+    if [[ $(${pkgs.redis}/bin/redis-cli get job_vpn_status) != "up" ]]; then
+      ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "VPN is off, turn it on and retry"
+      exit 1
+    fi
+  '';
 in {
   options = {
     # TODO: refine options
@@ -75,6 +87,8 @@ in {
           srm
           sslscan
           vulnix
+          # ===
+          enforce_job_vpn_up
         ];
         programs.gpg = {
           enable = true;
@@ -96,6 +110,15 @@ in {
             allow-loopback-pinentry
           '';
         };
+      };
+      # FIXME: think how to make plug point(s) for secrets with example of this use case
+      services.openvpn.servers."${config.secrets.job.vpn.name}" = {
+        up = ''
+          ${cache_job_vpn_status_up}/bin/cache_job_vpn_status_up
+        '';
+        down = ''
+          ${cache_job_vpn_status_down}/bin/cache_job_vpn_status_down
+        '';
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
