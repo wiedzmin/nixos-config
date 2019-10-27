@@ -511,7 +511,10 @@
     enable = true;
     docker = {
       enable = true;
-      devdns.enable = true;
+      devdns = {
+        enable = true;
+        autoStart = false;
+      };
     };
     libvirt.enable = true;
   };
