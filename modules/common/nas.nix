@@ -45,7 +45,7 @@ let
         ensure_nas_online
         ensure_volume_already_mounted
 
-        selected_volume=$( (show_list "''${nas_volumes[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "Mount: " )
+        selected_volume=$( (show_list "''${nas_volumes[@]}") | ${pkgs.dmenu}/bin/dmenu -i -p "Mount: " -l 15)
         if [ -n "$selected_volume" ]; then
             mount_volume "$selected_volume"
         fi
@@ -77,7 +77,7 @@ let
 
     main() {
         mounted_nas_volumes=$(cat /etc/mtab | ${pkgs.gnugrep}/bin/grep ${cfg.hostName} | ${pkgs.coreutils}/bin/cut -d ' '  -f 1)
-        selected_volume=$( (show_list "''${mounted_nas_volumes[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "Unmount: " )
+        selected_volume=$( (show_list "''${mounted_nas_volumes[@]}") | ${pkgs.dmenu}/bin/dmenu -i -p "Unmount: " -l 15)
         if [ -n "$selected_volume" ]; then
             unmount_volume "$selected_volume"
         fi

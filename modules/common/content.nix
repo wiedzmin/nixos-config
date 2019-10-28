@@ -23,10 +23,6 @@ let
         os.system("zathura {0}".format(result))
   '';
   buku_add = pkgs.writeScriptBin "buku_add" ''
-    _rofi () {
-        ${pkgs.rofi}/bin/rofi -dmenu -i -no-levenshtein-sort -width 1000 "$@"
-    }
-
     is_url () {
         url_regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
         url_candidate=$1
@@ -44,7 +40,7 @@ let
                    ${pkgs.gawk}/bin/awk '{$NF=""; print $0}' | \
                    ${pkgs.coreutils}/bin/cut -d ' ' -f2 | sort -u )
         while true; do
-            tag=$(echo $tagcloud | tr ' ' '\n' | _rofi -p '> ' -mesg "Add tag" -custom)
+            tag=$(echo $tagcloud | tr ' ' '\n' | ${pkgs.dmenu}/bin/dmenu -p '> ' -mesg "Add tag" -custom)
             keep_going=$?
             if [[ $keep_going -ne 0 ]]; then
                 break
@@ -58,7 +54,7 @@ let
     sleep_sec=''${1:-1}
 
     add_mark () {
-        inserturl=$(echo -e "$(${pkgs.xsel}/bin/xsel -o -b)" | _rofi -p '> ' -mesg "Use URL below or type manually")
+        inserturl=$(echo -e "$(${pkgs.xsel}/bin/xsel -o -b)" | ${pkgs.dmenu}/bin/dmenu -p '> ' -mesg "Use URL below or type manually")
         if [[ $? -ne 0 ]]; then
             exit
         fi
@@ -93,10 +89,6 @@ let
   buku_search_tag = let
     buku_batch_open_treshold = 20;
   in pkgs.writeScriptBin "buku_search_tag" ''
-    _rofi () {
-        ${pkgs.rofi}/bin/rofi -dmenu -i -no-levenshtein-sort -width 1000 "$@"
-    }
-
     collect_tags () {
         taglist=()
         sep=''${1:-,}
@@ -104,7 +96,7 @@ let
                    ${pkgs.gawk}/bin/awk '{$NF=""; print $0}' | \
                    ${pkgs.coreutils}/bin/cut -d ' ' -f2 | sort -u )
         while true; do
-            tag=$(echo $tagcloud | tr ' ' '\n' | _rofi -p '> ' -mesg "Add tag" -custom)
+            tag=$(echo $tagcloud | tr ' ' '\n' | ${pkgs.dmenu}/bin/dmenu -p '> ' -mesg "Add tag" -custom)
             keep_going=$?
             if [[ $keep_going -ne 0 ]]; then
                 break
@@ -142,7 +134,7 @@ let
 
     main() {
         collect_tags ","
-        MODE=$( (ask_for_mode) | ${pkgs.rofi}/bin/rofi -dmenu -p "Mode" )
+        MODE=$( (ask_for_mode) | ${pkgs.dmenu}/bin/dmenu -i -p "Mode" )
         if [ -z $MODE ]; then
             MODE=$DEFAULT_MODE
         fi
@@ -157,7 +149,7 @@ let
           builtins.toString buku_batch_open_treshold
         } bookmarks at once."
         SELECTION=$( echo "$SEARCH_RESULTS" | tr ' ' '\n' | \
-                     _rofi -p '> ' -mesg "''${LEGEND}" -kb-custom-10 "''${OPEN_ALL}")
+                     ${pkgs.dmenu}/bin/dmenu -p '> ' -mesg "''${LEGEND}" -kb-custom-10 "''${OPEN_ALL}")
         ROFI_EXIT=$?
         if [[ $ROFI_EXIT -eq 10 ]]; then
             if [[ $(echo "''${taglist}" | wc -l) -gt ${builtins.toString buku_batch_open_treshold} ]]; then
@@ -176,13 +168,9 @@ let
     exit 0
   '';
   buku_search_url = pkgs.writeScriptBin "buku_search_url" ''
-    _rofi () {
-        ${pkgs.rofi}/bin/rofi -dmenu -i -no-levenshtein-sort -width 1000 "$@"
-    }
-
     main() {
         SEARCH_RESULTS="$(${pkgs.buku}/bin/buku -f 1 --nc -p)"
-        SELECTION=$( echo "$SEARCH_RESULTS" | tr ' ' '\n' | _rofi -p '> ')
+        SELECTION=$( echo "$SEARCH_RESULTS" | tr ' ' '\n' | ${pkgs.dmenu}/bin/dmenu -p '> ')
         if [ -n "$SELECTION" ]; then
             ${pkgs.buku}/bin/buku -o $SELECTION
         fi

@@ -32,7 +32,7 @@ let
   '';
   jnettop_hosts = pkgs.writeShellScriptBin "jnettop_hosts" ''
     main() {
-        HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
+        HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.dmenu}/bin/dmenu -i -p "Host" -l 15)
         if [ -n "$HOST" ]; then
             enforce_job_vpn_up || exit 1
             ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
@@ -149,6 +149,7 @@ in {
         "M-M1-S-w" = ''spawn "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli" >> showWSOnProperScreen "shell"'';
         "M-s n <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart nscd.service"'';
       };
+      # https://github.com/menski/sshmenu/blob/master/sshmenu
     })
   ];
 }

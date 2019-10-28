@@ -197,7 +197,7 @@ let
         nixpkgs_proposed_origin = nixpkgs_proposed_repo.remotes.origin
 
         # check if fetch remote present
-        # if not present use rofi to input and add it
+        # if not present use dmenu to input and add it
 
 
         # cd /etc/nixos/pkgs/nixpkgs-proposed

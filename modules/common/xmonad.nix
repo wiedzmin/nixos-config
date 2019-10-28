@@ -3,6 +3,16 @@ with lib;
 
 let
   cfg = config.wm.xmonad;
+  dmenu_runapps = pkgs.writeShellScriptBin "dmenu_runapps" ''
+    ${pkgs.j4-dmenu-desktop}/bin/j4-dmenu-desktop --display-binary \
+      --dmenu="(${pkgs.coreutils}/bin/cat ; (${pkgs.dmenu}/bin/stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
+                                                                          ${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.fonts.dmenu}'"
+  '';
+  dmenu_select_windows = pkgs.writeShellScriptBin "dmenu_select_windows" ''
+    ${pkgs.wmctrl}/bin/wmctrl -a $(${pkgs.wmctrl}/bin/wmctrl -l | \
+                                 ${pkgs.coreutils}/bin/cut -d" " -f5- | \
+                                 ${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.fonts.dmenu}')
+  '';
   basicKeys = {
     "C-\\\\" = "sendMessage (XkbToggle Nothing)";
     "M-<Home>" = "toggleWS";
@@ -15,7 +25,7 @@ let
     "M-S-j" = "windows W.swapDown";
     "M-S-k" = "windows W.swapUp";
     "M-S-q" = "io (exitWith ExitSuccess)";
-    "M-b" = ''sendMessage (XkbToggle (Just 0)) >> spawn "${pkgs.rofi}/bin/rofi -show window"'';
+    "M-b" = ''spawn "${dmenu_select_windows}/bin/dmenu_select_windows"'';
     "M-h" = "sendMessage Shrink";
     "M-l" = "sendMessage Expand";
     "M-m" = "windows W.focusMaster";
@@ -26,14 +36,14 @@ let
     "M-r" = "placeWorkplaces";
     "M-C-q" = ''spawn "xmonad --recompile; xmonad --restart"'';
     "M-q" = ''spawn "xmonad --restart"'';
-    "M-S-p" = ''spawn "${pkgs.rofi}/bin/rofi -combi-modi drun,run -show combi -modi combi"'';
+    "M-S-p" = ''spawn "${dmenu_runapps}/bin/dmenu_runapps"'';
     "M-a 1" = ''namedScratchpadAction scratchpads "htop"'';
     "M-a 2" = ''namedScratchpadAction scratchpads "iotop"'';
     "M-a 3" = ''namedScratchpadAction scratchpads "gotop"'';
     "M-a 4" = ''namedScratchpadAction scratchpads "bc"'';
     # -- TODO: recall and add "multiple app windows"-aware raising
     "M-w <Backspace>" = ''nextMatch History (return True)'';
-    "<XF86Launch1>" = ''spawn "${pkgs.rofi}/bin/rofi -combi-modi drun,run -show combi -modi combi"'';
+    "<XF86Launch1>" = ''spawn "${dmenu_runapps}/bin/dmenu_runapps"'';
     "M-S-w M-S-n" = "moveTo Next EmptyWS"; # find a free workspace
     "M-S-w M-S-<Up>" = "shiftToPrev";
     "M-S-w M-S-<Down>" = "shiftToNext";

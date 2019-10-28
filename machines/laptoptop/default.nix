@@ -446,7 +446,6 @@
     enable = true;
     gmrun.enable = true;
     mc.enable = true;
-    rofi.enable = true;
     misc.enable = true;
     emacs.enable = true;
   };

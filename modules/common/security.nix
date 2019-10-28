@@ -145,3 +145,4 @@ in {
 }
 
 # TODO: review https://github.com/faulesocke/pass-dmenu/blob/master/pass-dmenu.py and try to make own script
+# also https://github.com/Kwpolska/upass/blob/master/upass/__main__.py

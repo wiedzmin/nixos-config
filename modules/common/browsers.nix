@@ -17,11 +17,11 @@ let
     }
 
     main() {
-        SELECTED_ENGINE=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search" | ${pkgs.gawk}/bin/awk '{print $2}')
+        SELECTED_ENGINE=$( (list_searchengines) | ${pkgs.dmenu}/bin/dmenu -i -p "Search" -l 15 | ${pkgs.gawk}/bin/awk '{print $2}')
         if [ ! -n "$SELECTED_ENGINE" ]; then
             exit 1
         fi
-        QUERY=$( (echo ) | ${pkgs.rofi}/bin/rofi  -dmenu -matching fuzzy -location 0 -p "Query" )
+        QUERY=$( (echo ) | ${pkgs.dmenu}/bin/dmenu -i -p "Query" -l 15)
         if [ -n "$QUERY" ]; then
             URL="''${SEARCHENGINES[$SELECTED_ENGINE]}$QUERY"
             firefox --new-window "$URL"
@@ -45,7 +45,7 @@ let
     }
 
     main() {
-        SELECTED_ENGINE=$( (list_searchengines) | ${pkgs.rofi}/bin/rofi -dmenu -i -p "Search" | ${pkgs.gawk}/bin/awk '{print $2}')
+        SELECTED_ENGINE=$( (list_searchengines) | ${pkgs.dmenu}/bin/dmenu -i -p "Search" -l 15 | ${pkgs.gawk}/bin/awk '{print $2}')
         if [ ! -n "$SELECTED_ENGINE" ]; then
             exit 1
         fi
@@ -72,7 +72,7 @@ let
     ${config.secrets.nav.webjumpsData}
 
     main() {
-        WEBJUMP=$( (show_mapping_keys "$(declare -p WEBJUMPS)") | ${pkgs.rofi}/bin/rofi -dmenu -p "Jump to" )
+        WEBJUMP=$( (show_mapping_keys "$(declare -p WEBJUMPS)") | ${pkgs.dmenu}/bin/dmenu -i -p "Jump to" -l 15)
         if [ -n "$WEBJUMP" ]; then
             ''${WEBJUMPS[$WEBJUMP]} "$WEBJUMP"
         fi

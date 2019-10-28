@@ -131,24 +131,24 @@ let
     }
 
     main() {
-        HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/uniq | ${pkgs.rofi}/bin/rofi -dmenu -p "Host" )
+        HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.coreutils}/bin/uniq | ${pkgs.dmenu}/bin/dmenu -i -p "Host" -l 15)
         if [ ! -z "$HOST" ]; then
             if [ "$HOST" == "localhost" ]; then
                 eval $(${pkgs.docker-machine}/bin/docker-machine env -u)
             else
                 eval $(${pkgs.docker-machine}/bin/docker-machine env $HOST)
             fi
-            CONTAINER_STATUS=$( (show_list "''${CONTAINER_STATUSES[@]}") | ${pkgs.rofi}/bin/rofi -dmenu -p "Status" )
+            CONTAINER_STATUS=$( (show_list "''${CONTAINER_STATUSES[@]}") | ${pkgs.dmenu}/bin/dmenu -i -p "Status" -l 15)
             if [ -z "$CONTAINER_STATUS" ]; then
                 exit 1
             fi
             if [ "$CONTAINER_STATUS" == "all" ]; then
-                SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps -a --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps -a --format '{{.Names}}' | ${pkgs.dmenu}/bin/dmenu -i -p "Container" -l 15)
             else
-                SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.rofi}/bin/rofi -dmenu -p "Container" )
+                SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.dmenu}/bin/dmenu -i -p "Container" -l 15)
             fi
             if [ -n "$SELECTED_CONTAINER" ]; then
-                SELECTED_TRAIT=$( (show_mapping_keys "$(declare -p CONTAINER_TRAITS)") | ${pkgs.rofi}/bin/rofi -dmenu -p "Inspect" )
+                SELECTED_TRAIT=$( (show_mapping_keys "$(declare -p CONTAINER_TRAITS)") | ${pkgs.dmenu}/bin/dmenu -i -p "Inspect" -l 15)
                 if [ -n "$SELECTED_TRAIT" ]; then
                     INSPECT_COMMAND="${pkgs.docker}/bin/docker inspect $SELECTED_CONTAINER --format='"''${CONTAINER_TRAITS[$SELECTED_TRAIT]}"'"
                     eval `echo $INSPECT_COMMAND` | tr -d '\n' | ${pkgs.xsel}/bin/xsel -i --clipboard
@@ -168,7 +168,7 @@ let
     # TODO: think how to restrict networks/ports output (maybe pick first ones)
     main() {
         eval $(${pkgs.docker-machine}/bin/docker-machine env -u) # ensure we cosidering only local containers
-        SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${rofi}/bin/rofi -dmenu -p "Container")
+        SELECTED_CONTAINER=$( ${pkgs.docker}/bin/docker ps --format '{{.Names}}' | ${pkgs.dmenu}/bin/dmenu -i -p "Container" -l 15)
         if [ ! -z "$SELECTED_CONTAINER" ]; then
             CONTAINER_IP=$(${pkgs.docker}/bin/docker inspect $SELECTED_CONTAINER --format='{{range $network, $settings :=.NetworkSettings.Networks}}{{$settings.IPAddress}}{{end}}')
             EXPOSED_PORT=$(${pkgs.docker}/bin/docker inspect $SELECTED_CONTAINER --format='{{range $port, $mappings :=.NetworkSettings.Ports}}{{$port}}{{end}}' | ${coreutils}/bin/cut -f1 -d/)
@@ -192,7 +192,7 @@ let
     }
 
     main() {
-        LOG=$( (ask_for_logs) | ${pkgs.rofi}/bin/rofi -dmenu -p "View log" )
+        LOG=$( (ask_for_logs) | ${pkgs.dmenu}/bin/dmenu -i -p "View log" -l 15)
         if [ -n "$LOG" ]; then
             enforce_job_vpn_up || exit 1
             ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
@@ -266,14 +266,14 @@ let
     }
 
     main() {
-        MODE=$( (ask_for_mode) | ${pkgs.rofi}/bin/rofi -dmenu -p "Mode" )
-        STACK=$( (ask_for_stack) | ${pkgs.rofi}/bin/rofi -dmenu -p "Stack" )
+        MODE=$( (ask_for_mode) | ${pkgs.dmenu}/bin/dmenu -i -p "Mode" -l 15)
+        STACK=$( (ask_for_stack) | ${pkgs.dmenu}/bin/dmenu -i -p "Stack" -l 15)
         case "$MODE" in
             status)
                 show_stack_status $STACK
                 ;;
             logs)
-                TASK=$( (ask_for_stack_task $STACK) | ${pkgs.rofi}/bin/rofi -dmenu -p "Task" | ${pkgs.gawk}/bin/awk '{print $1}' )
+                TASK=$( (ask_for_stack_task $STACK) | ${pkgs.dmenu}/bin/dmenu -i -p "Task" -l 15 | ${pkgs.gawk}/bin/awk '{print $1}' )
                 ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
                                                   $SWARM_LEADER_NODE \
                                                   -c 'docker service logs --follow $TASK'"
