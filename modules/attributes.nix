@@ -30,6 +30,11 @@ with lib;
       description = "Default Font for XMonad";
       type = types.str;
     };
+    # TODO: think if this is the proper location
+    fonts.dmenu = mkOption {
+      description = "Default Font for Dmenu";
+      type = types.str;
+    };
     paths.nixpkgs = mkOption {
       description = "Full path to `Nixpkgs`";
       type = types.str;

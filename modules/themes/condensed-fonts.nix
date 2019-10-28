@@ -16,6 +16,7 @@ in {
     };
     wm.xmonad.font = "xft:Iosevka:style=Bold:pixelsize=10";
     attributes.fonts.xmobar = "xft:Iosevka:weight=Bold:size=10";
+    attributes.fonts.dmenu = "xft:IosevkaCC:style=Bold:pixelsize=12";
     attributes.fonts.xmonadDefault = "xft:Iosevka:weight=Bold:size=16";
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = {
