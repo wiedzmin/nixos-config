@@ -3,6 +3,16 @@ with lib;
 
 let
   cfg = config.custom.dev;
+  init_dev_metadata = pkgs.writeShellScriptBin "init_dev_metadata" ''
+    ${pkgs.redis}/bin/redis-cli del job/swarm_endpoint_hosts
+    ${pkgs.redis}/bin/redis-cli lpush job/swarm_endpoint_hosts ${builtins.concatStringsSep " " config.secrets.job.infra.swarmEndpointHosts}
+
+    ${pkgs.redis}/bin/redis-cli set job/logs_host ${config.secrets.job.infra.logsHost}
+    ${pkgs.redis}/bin/redis-cli set job/remote_docker_logs_root ${config.secrets.job.infra.remoteDockerLogsRoot}
+
+    ${pkgs.redis}/bin/redis-cli set job/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.infra.dbmsMeta)}
+    ${pkgs.redis}/bin/redis-cli set job/extra_hosts ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.infra.extraHosts)}
+  '';
   emacsDevSetup = ''
     (use-package webpaste
       :ensure t
@@ -182,6 +192,8 @@ in {
           pv
           loop
           ix
+
+          init_dev_metadata
         ];
         programs.direnv = {
           enable = true;
