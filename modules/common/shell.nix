@@ -251,8 +251,6 @@ in {
           shellAliases = {
             cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
 
-            less = "${pkgs.most}/bin/most";
-
             df = "${pkgs.dfc}/bin/dfc";
             du = "${pkgs.dua}/bin/dua";
 
