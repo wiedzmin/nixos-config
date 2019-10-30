@@ -542,6 +542,8 @@ in {
           dotnet-sdk # for building some binary releases
           nix-zsh-completions
           nix-review # https://github.com/Mic92/nix-review
+        ] ++ lib.optionals (config.attributes.staging.enable) [
+          niv
         ];
       };
     })
