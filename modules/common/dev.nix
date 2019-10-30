@@ -200,6 +200,9 @@ in {
           enableZshIntegration = true;
         };
       };
+      systemd.services.redis.postStart = ''
+        ${init_dev_metadata}/bin/init_dev_metadata
+      '';
     })
     (mkIf cfg.emacs.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
