@@ -221,6 +221,11 @@ in {
           "Xft.lcdfilter" = "lcddefault";
           "Xft.rgba" = "none";
         };
+        home.activation.xrdb = {
+          after = ["linkGeneration"];
+          before = [];
+          data = "DISPLAY=:0 ${pkgs.xorg.xrdb}/bin/xrdb /home/${config.attributes.mainUser.name}/.Xresources";
+        };
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
