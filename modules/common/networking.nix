@@ -130,6 +130,15 @@ in {
           controlPath = "~/.ssh/sockets/%r@%h:%p";
           controlPersist = "4h";
           serverAliveInterval = 30;
+          matchBlocks = {
+            "*" = {
+              identityFile = toString (pkgs.writeTextFile {
+                name = "id_rsa";
+                text = config.secrets.network.ssh.privateKey;
+              });
+              compression = true;
+            };
+          };
         };
       };
     })

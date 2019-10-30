@@ -21,6 +21,7 @@ with lib;
             panes:
               - mc
       '';
+      ".ssh/id_rsa.pub".text = config.secrets.network.ssh.publicKey; # kept secrets, it tends to diverge otherwise
       ".local/share/applications/defaults.list" = {
         text = ''
           [Default Applications]
