@@ -296,7 +296,7 @@ in {
               border-color: darker(@bg_active);
           }
 
-          *:insensitive {
+          *:disabled {
               color: @fg_insensitive;
               background-color: @bg_insensitive;
               border-color: darker(@bg_insensitive);
@@ -327,7 +327,7 @@ in {
               border-color: darker(@bg_normal);
           }
 
-          .view:insensitive, .entry:insensitive {
+          .view:disabled, .entry:disabled {
               color: @text_insensitive;
               background-color: @base_insensitive;
               border-color: darker(@bg_normal);
@@ -353,7 +353,7 @@ in {
               background-color: shade(@base_active, 0.93);
           }
 
-          .view row:nth-child(odd):insensitive {
+          .view row:nth-child(odd):disabled {
               background-color: shade(@base_insensitive, 0.93);
           }
 
@@ -377,7 +377,7 @@ in {
               color: @text_active;
           }
 
-          GtkCalendar:insensitive {
+          GtkCalendar:disabled {
               color: @text_insensitive;
           }
 
@@ -394,7 +394,7 @@ in {
               background-color: @base_active;
           }
 
-          GtkCalendar:inconsistent {
+          GtkCalendar:indeterminate {
               color: mix(lighter(@bg_normal), darker(@bg_normal), 0.5);
           }
 
@@ -415,7 +415,7 @@ in {
               border-color: darker(@bg_normal);
           }
 
-          .check:insensitive, .radio:insensitive {
+          .check:disabled, .radio:disabled {
               color: @text_insensitive;
               background-color: @base_insensitive;
               border-color: darker(@bg_insensitive);
@@ -433,13 +433,13 @@ in {
               border-color: darker(@bg_active);
           }
 
-          .check:inconsistent, .radio:inconsistent {
+          .check:indeterminate, .radio:indeterminate {
               color: @fg_normal;
               background-color: @base_normal;
               border-color: darker(@bg_normal);
           }
 
-          .check:insensitive:inconsistent, .radio:insensitive:inconsistent {
+          .check:disabled:indeterminate, .radio:disabled:indeterminate {
               color: @fg_insensitive;
               background-color: @base_insensitive;
               border-color: darker(@bg_insensitive);
@@ -453,7 +453,7 @@ in {
               color: @text_active;
           }
 
-          .cell:insensitive {
+          .cell:disabled {
               color: @text_insensitive;
           }
 
@@ -475,7 +475,7 @@ in {
               background-color: @bg_active;
           }
 
-          .spinbutton.button:insensitive {
+          .spinbutton.button:disabled {
               color: @fg_insensitive;
               background-color: @bg_insensitive;
           }
@@ -529,7 +529,7 @@ in {
               border-color: @fg_normal;
           }
 
-          .expander:insensitive {
+          .expander:disabled {
               color: @base_insensitive;
               border-color: @fg_insensitive;
           }
@@ -570,7 +570,7 @@ in {
               background-image: -gtk-gradient(linear, left top, left bottom, from(shade(@bg_active, 1.0)), to(shade(@bg_active, 1.25)));
           }
 
-          .button:insensitive, .slider.horizontal:insensitive {
+          .button:disabled, .slider.horizontal:disabled {
               background-image: -gtk-gradient(linear, left top, left bottom, from(shade(@bg_insensitive, 1.25)), to(shade(@bg_insensitive, 1.0)));
           }
 
@@ -598,7 +598,7 @@ in {
               background-image: -gtk-gradient(linear, left top, right top, from(shade(@bg_active, 1.0)), to(shade(@bg_active, 1.25)));
           }
 
-          .slider.vertical:insensitive {
+          .slider.vertical:disabled {
               background-image: -gtk-gradient(linear, left top, right top, from(shade(@bg_insensitive, 1.25)), to(shade(@bg_insensitive, 1.0)));
           }
 
