@@ -88,29 +88,6 @@ let
           done
     }
   '';
-  bitbucket_team_contributor_repos = pkgs.writeShellScriptBin "bitbucket_team_contributor_repos" ''
-    PASS_PATH=$1
-    if [ -z "PASS_PATH" ]; then
-      echo "No credentials provided"
-      exit 1
-    fi
-    TEAM=$2
-    PROJECTS_EXCLUDE=$3
-    CREDENTIALS=$(${pkgs.pass}/bin/pass $PASS_PATH | ${pkgs.coreutils}/bin/tr '\n' ' ' | ${pkgs.gawk}/bin/awk '{print $3 ":" $1}')
-    RESULT=$(${pkgs.curl}/bin/curl -s -u \
-           $CREDENTIALS "https://api.bitbucket.org/2.0/repositories?role=contributor&pagelen=200" | \
-           ${pkgs.jq}/bin/jq -r '.values[] | select(.project.name != null) | "\(.links.clone[0].href)~\(.project.name)"')
-    if [[ ! -z $TEAM ]]; then
-      RESULT=$(printf "%s\n" $RESULT | ${pkgs.gnugrep}/bin/grep $TEAM)
-    fi
-    if [[ ! -z $PROJECTS_EXCLUDE ]]; then
-      GREP_CLAUSES=$(echo $PROJECTS_EXCLUDE | ${pkgs.gnused}/bin/sed "s/,/\|/g")
-      RESULT=$(printf "%s\n" $RESULT | ${pkgs.gnugrep}/bin/grep -i -v -E $GREP_CLAUSES)
-    fi
-    for REPO in $RESULT; do
-      echo $REPO | ${pkgs.coreutils}/bin/cut -f1 -d~
-    done
-  '';
   git_remote_diff = pkgs.writeShellScriptBin "git_remote_diff" ''
     GIT_REPO=''${1:-'.'}
     cd $GIT_REPO
@@ -512,7 +489,6 @@ in {
       ];
 
       environment.systemPackages = with pkgs; [
-        bitbucket_team_contributor_repos
         gitAndTools.ghq
       ];
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -521,7 +497,6 @@ in {
         };
         programs.git.extraConfig = {
           "ghq" = { root = cfg.workspaceRoot; };
-          "ghq \"import\"" = cfg.ghq.importCommands;
         };
       };
     })

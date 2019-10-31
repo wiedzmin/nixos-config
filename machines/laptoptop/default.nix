@@ -374,12 +374,7 @@
     myrepos.subconfigs = [
       "/home/${config.attributes.mainUser.name}/workspace/repos/.mrconfig"
     ];
-    ghq = {
-      enable = true;
-      importCommands = {
-        bbcontribs = "bitbucket_team_contributor_repos";
-      };
-    };
+    ghq = { enable = true; };
     github = {
       enable = true;
       user = "wiedzmin";
