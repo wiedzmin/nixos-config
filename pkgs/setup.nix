@@ -41,6 +41,9 @@ in {
         ocrmypdfWorking = import (fetchTarball
           "${nixpkgs-tars}352239e24a7da18f4eb22993cd05e8535d6b01a5.tar.gz")
             { config = config.nixpkgs.config; };
+        mpsytWorking = import (fetchTarball
+          "${nixpkgs-tars}4cd2cb43fb3a87f48c1e10bb65aee99d8f24cb9d.tar.gz")
+            { config = config.nixpkgs.config; };
       };
     };
     overlays = [

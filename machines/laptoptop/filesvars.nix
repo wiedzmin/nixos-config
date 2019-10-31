@@ -22,6 +22,13 @@ with lib;
               - mc
       '';
       ".ssh/id_rsa.pub".text = config.secrets.network.ssh.publicKey; # kept secrets, it tends to diverge otherwise
+      "tmuxp/media.yml".text = ''
+        session_name: media
+        windows:
+          - window_name: mps-youtube
+            panes:
+              - ${pkgs.python3Packages.mps-youtube}/bin/mpsyt
+      '';
       ".local/share/applications/defaults.list" = {
         text = ''
           [Default Applications]
