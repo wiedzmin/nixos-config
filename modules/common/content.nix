@@ -3,25 +3,13 @@ with lib;
 
 let
   cfg = config.custom.content;
-  bookshelf = pkgs.writeScriptBin "bookshelf" ''
-    #! /usr/bin/env nix-shell
-    #! nix-shell -i python3 -p python3 python3Packages.dmenu-python
     import os
     import subprocess
 
     import dmenu
 
-    books = []
 
-    books_task = subprocess.Popen("fd --full-path /home/alex3rd/bookshelf -e pdf -e djvu",
-                                  shell=True, stdout=subprocess.PIPE)
-    books.extend([book for book in books_task.stdout.read().decode().split("\n")])
-    assert books_task.wait() == 0
 
-    result = dmenu.show(books, prompt='book', lines=30)
-    if result:
-        os.system("zathura {0}".format(result))
-  '';
   buku_add = pkgs.writeScriptBin "buku_add" ''
     is_url () {
         url_regex='(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]'
@@ -329,7 +317,6 @@ in {
     })
     (mkIf cfg.xmonad.enable {
       wm.xmonad.keybindings = {
-        "M-S-b" = ''spawn "${bookshelf}/bin/bookshelf"'';
         "M-y" = ''spawn "${buku_add}/bin/buku_add"'';
       };
     })

@@ -549,9 +549,10 @@
     dbms = {
       mysql.enable = true;
       jobDbms.enable = true;
+    ebooks = {
+      readers.enable = true;
       xmonad.enable = true;
     };
-    ebooks.readers.enable = true;
   };
 
   wm.xmonad.enable = true;
