@@ -256,7 +256,7 @@ in {
               format = "<span foreground='#F3F4F5'><b>%s %p</b></span>\\n%b";
               frame_color = "#232323";
               frame_width = 3;
-              geometry = "300x5-15+15";
+              geometry = "0x5-15+15";
               hide_duplicates_count = "false";
               history_length = 20;
               horizontal_padding = 10;
