@@ -161,6 +161,7 @@ in {
         };
         enableFontDir = true;
         enableGhostscriptFonts = true;
+        enableDefaultFonts = true;
       };
       i18n = {
         consoleFont = cfg.fonts.console;
