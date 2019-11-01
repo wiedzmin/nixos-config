@@ -76,7 +76,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           # jd-gui
-          (pass.withExtensions (ext: with ext; [ pass-audit pass-import pass-update ]))
+          (pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]))
           certigo
           dnsrecon
           gnupg
