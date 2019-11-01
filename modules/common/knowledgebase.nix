@@ -3,9 +3,6 @@ with lib;
 
 let
   cfg = config.custom.knowledgebase;
-  rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
-    ${pkgs.feh}/bin/feh --bg-fill ${cfg.wallpaper.root}/${cfg.wallpaper.current}
-  '';
   emacsHelpSetup = ''
     (use-package apropos
       :bind
