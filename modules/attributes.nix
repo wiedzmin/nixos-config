@@ -45,6 +45,16 @@ with lib;
       type = types.str;
       default = "/etc/nixos/pkgs/forges/github.com/rycee/home-manager";
     };
+    branches.nixpkgs = mkOption {
+      description = "`Nixpkgs` branch to use";
+      type = types.str;
+      default = "nixos-unstable";
+    };
+    branches.home-manager = mkOption {
+      description = "`home-manager` branch to use";
+      type = types.str;
+      default = "master";
+    };
     defaultCommands.terminal = mkOption {
       description = "Default terminal";
       type = types.str;
