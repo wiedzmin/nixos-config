@@ -188,7 +188,10 @@ let
       (dired-recursive-deletes 'top) ;; Allows recursive deletes
       (dired-dwim-target t)
       (dired-listing-switches "-lah1v --group-directories-first") ;;TODO: think of using TIME_STYLE env var
+      (dired-guess-shell-alist-user '(("\\.pdf\\'" "zathura")
+                                      ("\\.mp4\\'" "mpv")))
       :config
+      (use-package dired-x)
       (put 'dired-find-alternate-file 'disabled nil)
       (ad-activate 'abort-if-file-too-large)
       (use-package dired-filetype-face :ensure t))
