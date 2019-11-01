@@ -44,6 +44,9 @@ in {
         mpsytWorking = import (fetchTarball
           "${nixpkgs-tars}4cd2cb43fb3a87f48c1e10bb65aee99d8f24cb9d.tar.gz")
             { config = config.nixpkgs.config; };
+        bukuWorking = import (fetchTarball
+          "${nixpkgs-tars}471869c9185fb610e67940a701eb13b1cfb335a4.tar.gz")
+            { config = config.nixpkgs.config; };
       };
     };
     overlays = [

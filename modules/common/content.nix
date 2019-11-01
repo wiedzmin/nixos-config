@@ -92,7 +92,7 @@ let
     collect_tags () {
         taglist=()
         sep=''${1:-,}
-        tagcloud=$(${pkgs.buku}/bin/buku --np --st | \
+        tagcloud=$(${pkgs.bukuWorking.buku}/bin/buku --np --st | \
                    ${pkgs.gawk}/bin/awk '{$NF=""; print $0}' | \
                    ${pkgs.coreutils}/bin/cut -d ' ' -f2 | sort -u )
         while true; do
@@ -110,8 +110,8 @@ let
     declare -A MODES
 
     MODES=(
-      ["urls"]="${pkgs.buku}/bin/buku -f 1 --np --st"
-      ["titles"]="${pkgs.buku}/bin/buku -f 3 --np --st"
+      ["urls"]="${pkgs.bukuWorking.buku}/bin/buku -f 1 --np --st"
+      ["titles"]="${pkgs.bukuWorking.buku}/bin/buku -f 3 --np --st"
     )
     DEFAULT_MODE=urls
 
@@ -160,7 +160,7 @@ let
         fi
 
         SELECTION=$( (list_search_results) | ${pkgs.gawk}/bin/awk '{print $1}' )
-        ${pkgs.buku}/bin/buku -o $SELECTION
+        ${pkgs.bukuWorking.buku}/bin/buku -o $SELECTION
     }
 
     main
@@ -169,10 +169,10 @@ let
   '';
   buku_search_url = pkgs.writeScriptBin "buku_search_url" ''
     main() {
-        SEARCH_RESULTS="$(${pkgs.buku}/bin/buku -f 1 --nc -p)"
+        SEARCH_RESULTS="$(${pkgs.bukuWorking.buku}/bin/buku -f 1 --nc -p)"
         SELECTION=$( echo "$SEARCH_RESULTS" | tr ' ' '\n' | ${pkgs.dmenu}/bin/dmenu -p '> ')
         if [ -n "$SELECTION" ]; then
-            ${pkgs.buku}/bin/buku -o $SELECTION
+            ${pkgs.bukuWorking.buku}/bin/buku -o $SELECTION
         fi
     }
 
