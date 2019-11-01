@@ -118,15 +118,6 @@ let
                               (browse-url candidate))
                   :require-match t
                   :caller 'custom/open-url-current-buffer))
-      (defun feh-browse (url &rest ignore)
-        "Browse image using feh."
-        (interactive (browse-url-interactive-arg "URL: "))
-        (start-process (concat "feh " url) nil "feh" url))
-      (defun mpv-browse (url &rest ignore)
-        "Browse video using mpv."
-        (interactive (browse-url-interactive-arg "URL: "))
-        (start-process (concat "mpv --loop-file=inf" url) nil "mpv" "--loop-file=inf" url))
-      :secret "media.el.gpg"
       :custom
       (browse-url-browser-function 'browse-url-generic)
       (browse-url-generic-program "xdg-open"))
