@@ -111,6 +111,10 @@ in {
           '';
         };
       };
+      programs.gnupg.agent = {
+        enable = true;
+        pinentryFlavor = "emacs";
+      };
       # FIXME: think how to make plug point(s) for secrets with example of this use case
       services.openvpn.servers."${config.secrets.job.vpn.name}" = {
         up = ''
