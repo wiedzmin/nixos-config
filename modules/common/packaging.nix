@@ -578,8 +578,5 @@ in {
   ];
 }
 
-# TODO: also make as git subcommand
-# git fetch upstream --tags
-# git push origin --tags
 
 # https://github.com/jwiegley/nix-config/blob/master/bin/nixpkgs-bisect - integrate into pkgsctl workflow

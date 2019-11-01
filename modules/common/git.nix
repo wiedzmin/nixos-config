@@ -546,6 +546,17 @@ in {
                 echo No upstream defined, skipping...
                 return 0
               fi
+            synctags =
+              ${pkgs.git}/bin/git fetch origin --tags
+              ${pkgs.git}/bin/git push origin --tags
+            usynctags =
+              if [[ ! -z $(${pkgs.git}/bin/git remote | grep ${cfg.defaultUpstreamRemote}) ]]; then
+                ${pkgs.git}/bin/git fetch ${cfg.defaultUpstreamRemote} --tags
+                ${pkgs.git}/bin/git push ${cfg.defaultUpstreamRemote} --tags
+              else
+                echo No upstream defined, skipping...
+                return 0
+              fi
 
             ${lib.concatMapStrings (config: ''
               include = cat ${config}
