@@ -1,11 +1,13 @@
 { config, lib, pkgs, ... }:
+with import ../util.nix { inherit config lib pkgs; };
 with lib;
 
 let
   cfg = config.tools.dbms;
-  dbms = pkgs.writeScriptBin "dbms" ''
-    #! /usr/bin/env nix-shell
-    #! nix-shell -i python3 -p python3 python3Packages.dmenu-python python3Packages.redis
+  dbms = writePythonScriptWithPythonPackages "dbms" [
+    pkgs.python3Packages.dmenu-python
+    pkgs.python3Packages.redis
+  ] ''
     import json
     import os
     import subprocess

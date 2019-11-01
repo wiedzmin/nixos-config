@@ -1,11 +1,12 @@
 { config, lib, pkgs, ... }:
+with import ../util.nix { inherit config lib pkgs; };
 with lib;
 
 let
   cfg = config.custom.shell;
-  tmuxp_sessions = pkgs.writeScriptBin "tmuxp_sessions" ''
-    #! /usr/bin/env nix-shell
-    #! nix-shell -i python3 -p python3 python3Packages.dmenu-python
+  tmuxp_sessions = writePythonScriptWithPythonPackages "tmuxp_sessions" [
+    pkgs.python3Packages.dmenu-python
+  ] ''
     import os
     import dmenu
 
