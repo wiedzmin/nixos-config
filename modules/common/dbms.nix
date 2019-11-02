@@ -110,6 +110,7 @@ in {
     (mkIf (cfg.jobDbms.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
         "M-C-y" = ''spawn "${dbms}/bin/dbms" >> showWSOnProperScreen "shell"'';
+        "M-C-r" = ''spawn "${pkgs.tmux}/bin/tmux new-window '${pkgs.redis-tui}/bin/redis-tui'" >> showWSOnProperScreen "shell"'';
       };
     })
   ];
