@@ -120,11 +120,9 @@ in {
           pipreqs
           pipreqs3
           python3Packages.autopep8
-          python3Packages.glances
           python3Packages.importmagic
           python3Packages.virtualenv
           python3Packages.virtualenvwrapper
-          spyder # + kernels - IDEA use such tools in nix-shells
           yapf
         ];
         home.file = {
