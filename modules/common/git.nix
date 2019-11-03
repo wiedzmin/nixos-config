@@ -223,12 +223,13 @@ in {
         default = false;
         description = "Whether to enable Git VCS infrastructure.";
       };
-      enableNixosConfigWipChecks = mkOption {
+      enableNixosConfigGoodies = mkOption {
         type = types.bool;
         default = true;
         description = ''
           Whether to enable pre commit hook for NixOS config
           repo, that checks for work-in-progress code.
+          ...and gpg-aware .gitattributes.
         '';
       };
       defaultUpstreamRemote = mkOption {
@@ -418,7 +419,12 @@ in {
               hooksPath = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/templates/hooks";
             };
             "credential" = { helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper"; };
-            "diff" = { algorithm = "patience"; };
+            "diff" = {
+              algorithm = "patience";
+              gpg = {
+                textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt";
+              };
+            };
             "init" = { templatedir = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/templates"; };
             "clone" = { templatedir = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/templates"; };
             "push" = { default = "current"; };
@@ -500,8 +506,11 @@ in {
         };
       };
     })
-    (mkIf (cfg.enable && cfg.enableNixosConfigWipChecks) {
+    (mkIf (cfg.enable && cfg.enableNixosConfigGoodies) {
       # FIXME: provide recursive permissions setting
+      environment.etc."nixos/.gitattributes".text = ''
+        *.gpg filter=gpg diff=gpg
+      '';
       environment.etc."nixos/${cfg.hooks.dirName}/pre-push/stop-wip" = {
         mode = "0644";
         user = "${config.attributes.mainUser.name}";

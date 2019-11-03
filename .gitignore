@@ -8,6 +8,7 @@
 /overlay/inactive
 common_settings*
 configuration.nix
+.gitattributes
 notice
 result
 todo.org

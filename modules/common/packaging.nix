@@ -340,14 +340,12 @@ let
     fi
 
     decrypt_secrets() {
-        echo "Updating secrets"
-        SECRETS_DIR="/etc/nixos/users/$USER/secrets"
+        SECRETS_DIR="/etc/nixos/machines/laptoptop/secrets" # FIXME: unhardcode
         for secret in "$SECRETS_DIR"/*.gpg
         do
             SECRET_NAME=$(basename "$secret")
             DECRYPTED_NAME="''${SECRET_NAME%.*}"
-            ${pkgs.gnupg}/bin/gpg -dq "$SECRETS_DIR/$SECRET_NAME" > "$SECRETS_DIR/$DECRYPTED_NAME"
-            echo "$SECRETS_DIR/$DECRYPTED_NAME"
+            ${pkgs.gnupg}/bin/gpg2 -dq "$SECRETS_DIR/$SECRET_NAME" > "$SECRETS_DIR/$DECRYPTED_NAME"
         done
     }
 
@@ -404,6 +402,7 @@ let
         fi
     }
 
+    decrypt_secrets
     update_nixpkgs_suffix
     build_configuration
     switch_configuration
