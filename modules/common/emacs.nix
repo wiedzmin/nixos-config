@@ -116,7 +116,7 @@ let
       :bind
       ("M-\"" . eval-region)
       ([remap kill-buffer] . kill-this-buffer)
-      :secret "identity.el.gpg"
+      :secret "identity.el"
       :custom
       (use-dialog-box nil)
       (minibuffer-prompt-properties

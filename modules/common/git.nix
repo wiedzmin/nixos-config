@@ -182,7 +182,7 @@ let
         (let ((buffers (magit-mode-get-buffers)))
           (magit-restore-window-configuration)
           (mapc #'kill-buffer buffers)))
-      :secret "vcs.el.gpg"
+      :secret "vcs.el"
       :custom
       (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
       (magit-completing-read-function 'ivy-completing-read)
