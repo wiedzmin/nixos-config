@@ -3,83 +3,8 @@ with lib;
 
 let
   cfg = config.custom.packaging;
-  bootstrap_custom_config = pkgs.writeShellScriptBin "bootstrap_custom_config" ''
-    ROOT_PARTITION_LABEL=nixos-root
-    BOOT_PARTITION_LABEL=nixos-boot
-    MACHINE=''${1:-laptoptop}
-    USERNAME=''${2:-alex3rd}
-    PRIVATE_STORAGE_HOST=''${3:-localhost}
-    PRIVATE_STORAGE_HOST_PORT=''${4:-8080}
-
-    echo "Mounting root partition"
-    mount /dev/disk/by-label/$ROOT_PARTITION_LABEL /mnt
-    echo "creating /boot"
-    mkdir -p /mnt/boot
-    echo "Mounting boot partition"
-    mount /dev/disk/by-label/$BOOT_PARTITION_LABEL /mnt/boot
-
-    echo "Installing essential tools"
-    nix-env -iA nixos.pkgs.gitAndTools.gitFull
-    nix-env -iA nixos.wget
-
-    # TODO: handle secrets, see partial example below
-    # gpg -dq secret.nix.gpg > secret.nix
-
-    echo "removing existing configuration tree, if any"
-    rm -rf /mnt/etc/nixos
-
-    git clone https://github.com/wiedzmin/nixos-config nixos
-
-    # prepare config (fetch home-manager + nixpkgs)
-    echo "preparing submodules"
-    cd /mnt/etc/nixos && git submodule init && git submodule update
-    echo "fetching private user data"
-    # TODO: make more declarative/self-contained
-    # TODO: harden in terms of security
-    cd "/mnt/etc/nixos/users/$USERNAME" && wget "http://$PRIVATE_STORAGE_HOST:$PRIVATE_STORAGE_HOST_PORT/''${USERNAME}_private.tar.gz"
-    if [ $? -ne 0 ]; then
-        echo "Error fetching private data, check manually"
-        exit 1
-    fi
-
-    echo "symlinking configuration root"
-    cd /mnt/etc/nixos && ln -rsvf "machines/$MACHINE.nix" ./configuration.nix
-
-    echo "actually installing"
-    # home-manager and nixpkgs paths are either absent in NIX_PATH or point to wrong locations
-    nixos-install --root /mnt -I home-manager=/mnt/etc/nixos/pkgs/home-manager-proposed -I nixpkgs=/mnt/etc/nixos/pkgs/nixpkgs-channels
   '';
-  build_iso = pkgs.writeShellScriptBin "build_iso" ''
-    ${pkgs.nix}/bin/nix-build '<nixpkgs/nixos>' -A config.system.build.isoImage -I nixos-config=/etc/nixos/contrib/iso/iso.nix
   '';
-  burn_iso = pkgs.writeShellScriptBin "burn_iso" ''
-    pause () {
-        echo
-        read -n 1 -s -r -p "Press any key to continue..."
-        echo
-    }
-
-    RESULT_SYMLINK=''${1:-/etc/nixos/result}
-    if [ ! -f "$RESULT_SYMLINK" ]; then
-        echo "Cannot find symlink to recently built system, exiting"
-        exit 1
-    fi
-    ISO_DIRNAME=$(readlink $RESULT_SYMLINK)/iso
-    ISO_BASENAME=$(ls $ISO_DIRNAME)
-
-    ISO_DEVICE=''${2:-/dev/sdb}
-    if [ ! -b "$ISO_DEVICE" ]; then
-        echo "USB drive NOT found, exiting"
-        exit 1
-    else
-        echo "Going to burn $ISO_DIRNAME/$ISO_BASENAME to $ISO_DEVICE"
-        pause
-        sudo dd bs=4M if="$ISO_DIRNAME/$ISO_BASENAME" of="$ISO_DEVICE"
-        # TODO: investigate unmounting/data flush issues
-        echo "Burned successfully, unmounting pending"
-        pause
-        sudo umount "$ISO_DEVICE"
-    fi
   '';
   pkgsctl = pkgs.writeShellScriptBin "pkgsctl" ''
     #! /usr/bin/env nix-shell
