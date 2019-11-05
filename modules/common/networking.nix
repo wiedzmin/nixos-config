@@ -108,6 +108,7 @@ in {
       users.extraUsers."${config.attributes.mainUser.name}".extraGroups = [ "wireshark" ];
     })
     (mkIf (cfg.enable && cfg.clients.enable) {
+      systemd.services.dhcpcd.serviceConfig.Type = lib.mkForce "simple"; # NOTE: forking is not acceptable for dhcpcd.
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           # curlie
