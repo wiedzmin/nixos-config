@@ -78,6 +78,8 @@ in {
           shell-hist
           shellcheck
           tmsu                        # ?
+        ] ++ lib.optionals (config.attributes.staging.enable) [
+          eva
         ];
         programs.tmux = { # TODO: consider extracting options or config itself
           enable = true;
