@@ -88,28 +88,6 @@ let
           done
     }
   '';
-  git_remote_diff = pkgs.writeShellScriptBin "git_remote_diff" ''
-    GIT_REPO=''${1:-'.'}
-    cd $GIT_REPO
-    if [ -z "$(${pkgs.git}/bin/git rev-parse --git-dir 2> /dev/null)" ]; then
-      echo "Not a git repo"
-      exit 1
-    fi
-    UPSTREAM=''${2:-'@{u}'}
-    LOCAL=$(${pkgs.git}/bin/git rev-parse @)
-    REMOTE=$(${pkgs.git}/bin/git rev-parse "$UPSTREAM")
-    BASE=$(${pkgs.git}/bin/git merge-base @ "$UPSTREAM")
-
-    if [ "$LOCAL" == "$REMOTE" ]; then
-      echo ''${UPTODATE_MESSAGE:-"Up-to-date"}
-    elif [ "$LOCAL" == "$BASE" ]; then
-      echo ''${NEEDFETCH_MESSAGE:-"Need to fetch"}
-    elif [ "$REMOTE" == "$BASE" ]; then
-      echo ''${NEEDPUSH_MESSAGE:-"Need to push"}
-    else
-      echo ''${DIVERGED_MESSAGE:-"Diverged"}
-    fi
-  '';
   # TODO: make custom script with basw of https://github.com/arc90/git-sweep
   emacsGitSetup = ''
     (use-package browse-at-remote
@@ -480,7 +458,6 @@ in {
         gitAndTools.lab
         gitAndTools.pass-git-helper
         gitAndTools.stgit
-        git_remote_diff
         gitstats
         proposed.gitAndTools.git-quick-stats
       ] ++ lib.optionals (config.attributes.staging.enable) [

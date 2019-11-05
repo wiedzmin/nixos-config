@@ -1,365 +1,336 @@
 { config, lib, pkgs, ... }:
+with import ../util.nix { inherit config lib pkgs; };
 with lib;
 
 let
   cfg = config.custom.packaging;
-  '';
-  '';
-  '';
-  pkgsctl = pkgs.writeShellScriptBin "pkgsctl" ''
-    #! /usr/bin/env nix-shell
-    #! nix-shell -i python3 -p python3 python3Packages.dmenu-python python3Packages.GitPython
+  update_pkgs_status = writePythonScriptWithPythonPackages "update_pkgs_status" [
+    pkgs.python3Packages.GitPython
+    pkgs.python3Packages.redis
+  ] ''
     import os
-    import re
     import subprocess
-    import datetime
 
-    import dmenu
     from git import Repo
+    from git.cmd import Git
+    import redis
 
-    package_name_regexp = re.compile(
-        r"(?:/nix/store/[0-9a-z]{32}-)"                 # prefix with hash - always present
-        r"(?:python|perl|node_)?(?:[0-9\.\-]*)?"        # package subsets by languages (with version) - optional
-        r"([0-9{1}A-Za-z\.\_\-]*)"                      # package name itself
-    )
-    package_version_start_regexp = re.compile(r"-v?[0-9]|-unstable|-with-packages|-with-plugins|-git")
-    current_system_regexp = re.compile(r"git\.([0-9abcdef]+)M?\$?")
+    r = redis.Redis(host='localhost', port=6379, db=0)
 
-    nixpkgs_path = "/etc/nixos/pkgs/forges/github.com/NixOS/nixpkgs-channels/"
-    nixpkgs_branch = "nixos-unstable"
-    nixpkgs_fallback_branch = "nixos-unstable-working"
-    nixpkgs_upstream_remote = "upstream"
+    repos_meta = [
+        {
+            "name": "home-manager",
+            "repo_path": "${config.attributes.paths.home-manager}",
+            "branch": "${config.attributes.branches.home-manager}"
+        },
+        {
+            "name": "nixpkgs-channels",
+            "repo_path": "${config.attributes.paths.nixpkgs}",
+            "branch": "${config.attributes.branches.nixpkgs}"
+        },
+    ]
 
-    nixpkgs_proposed_path = "/etc/nixos/pkgs/forges/github.com/wiedzmin/nixpkgs/"
-    nixpkgs_proposed_branch = "master"
+    current_system_hash = os.readlink("/run/current-system").split(".")[-1]
 
+    for meta in repos_meta:
+        repo_path = meta["repo_path"]
+        branch = meta["branch"]
 
-    def get_installed_packages(home_manager=True,nixpkgs=True):
-        installed_paths = []
-        result = {}
-        if nixpkgs:
-            nixpkgs_list_task = subprocess.Popen("nix-store -q --references /run/current-system/sw | grep -v nixos",
-                                             shell=True, stdout=subprocess.PIPE)
-            nixpkgs_paths = nixpkgs_list_task.stdout.read().decode().split("\n")[:-1]
-            assert nixpkgs_list_task.wait() == 0
-            installed_paths.extend(nixpkgs_paths)
-        if home_manager:
-            home_manager_list_task = subprocess.Popen('nix-store -q --references "$(nix-store -q --references '
-                                                      '/home/{0}/.nix-profile | grep home-manager-path)"'.format(
-                                                          os.environ["USER"]), shell=True, stdout=subprocess.PIPE)
-            home_manager_paths = home_manager_list_task.stdout.read().decode().split("\n")[:-1]
-            assert home_manager_list_task.wait() == 0
-            installed_paths.extend(home_manager_paths)
-        for path in installed_paths:
-            try:
-                pn_match = package_name_regexp.search(path)
-                package_name_postfix = pn_match.group(1)
-                pvs_match = package_version_start_regexp.search(package_name_postfix)
-                package_name = package_name_postfix[:pvs_match.span()[0]]
-                result[package_name] = True
-            except AttributeError:
-                continue
-        return [k for k in result]
+        repo = Repo(repo_path)
+        origin = repo.remotes.origin
 
-
-    def update_nixpkgs():
-        branch = "nixos-unstable"
-        fallback_branch = "nixos-unstable-working"
-
-        current_system_path = os.readlink("/run/current-system")
-        system_git_version = current_system_regexp.search(current_system_path).group(1)
-
-        nixpkgs_repo = Repo(nixpkgs_path)
-        nixpkgs_origin = nixpkgs_repo.remotes.origin
-        local_head_ref = nixpkgs_repo.heads[nixpkgs_branch].object
-        local_head = local_head_ref.hexsha
-        remote_head = nixpkgs_origin.refs[nixpkgs_branch].object.hexsha
-        try:
-            fallback_head = nixpkgs_repo.heads[nixpkgs_fallback_branch].object.hexsha
-        except IndexError:
-            fallback_head = None
-
-        should_rebase = local_head != remote_head
-        should_rebuild = not local_head.startswith(system_git_version)
-        should_force_fallback = not fallback_head or fallback_head and not fallback_head.startswith(system_git_version)
-
-        fetch_results = list(nixpkgs_origin.fetch())
-        if should_rebase:
-            for fetch_info in nixpkgs_origin.fetch():
-                print("Updated %s to %s" % (fetch_info.ref, fetch_info.commit))
+        subprocess.run("cd {0} && ${pkgs.gitAndTools.stgit}/bin/stg pop -a".format(
+            repo_path
+        ).split(), shell=True)
 
         try:
-            if should_rebase:
-                while True:
-                    reply = str(input("Update local '{0}'? (y/n): ".format(nixpkgs_branch))).lower().strip()
-                    if reply[0] == 'y':
-                        nixpkgs_repo.git.rebase("origin", nixpkgs_branch)
-                        print("Updated '{0}': {1} --> {2}".format(nixpkgs_branch, local_head, remote_head))
-                        head_ts = datetime.datetime.utcfromtimestamp(local_head_ref.authored_date).isoformat()
-                        checkpoint = nixpkgs_repo.create_tag("v_{0}".format(local_head_ref.authored_date),
-                                                             ref=local_head_ref,
-                                                             message="checkpoint at {0}".format(head_ts))
-                        break
-                    if reply[0] == 'n':
-                        break
-            if should_force_fallback:
-                fallback_branch_ref = nixpkgs_repo.create_head(nixpkgs_fallback_branch,
-                                                               commit=system_git_version,
-                                                               force=True)
-                last_working = nixpkgs_repo.create_tag("last_working", ref=system_git_version,
-                                                       force=True,
-                                                       message="last nixpkgs built and working")
-                print("Updated '{0}': {1} --> {2}".format(nixpkgs_fallback_branch, fallback_head, system_git_version))
-        except KeyboardInterrupt: # TODO: add types
-            # TODO: rollback
+            local_head = repo.heads[branch].object.hexsha
+            r.set("version/{0}/local".format(meta["name"]), local_head)
+            remote_head = origin.refs[branch].object.hexsha
+            r.set("version/{0}/remote".format(meta["name"]), remote_head)
+
+            origin.fetch()
+
+            if local_head != remote_head:
+                r.set("version/{0}/updatable".format(meta["name"]), "yes")
+                g = Git(repo_path)
+                new_commits = g.log("{0}..{1}".format(local_head, remote_head), pretty="oneline")
+                r.set("version/{0}/updates_log".format(meta["name"]), new_commits)
+            elif not local_head.startswith(current_system_hash):
+                r.set("version/{0}/updatable".format(meta["name"]), "yes")
+            else:
+                r.set("version/{0}/updatable".format(meta["name"]), "no")
+        finally:
+            subprocess.run("cd {0} && ${pkgs.gitAndTools.stgit}/bin/stg push -a".format(
+                repo_path
+            ).split(), shell=True)
+  '';
+  show_home_manager_status = writePythonScriptWithPythonPackages "show_home_manager_status" [
+    pkgs.python3Packages.libtmux
+    pkgs.python3Packages.notify2
+    pkgs.python3Packages.redis
+  ] ''
+    import libtmux
+    import notify2
+    import redis
+
+    from notify2 import URGENCY_NORMAL, URGENCY_CRITICAL
+
+    r = redis.Redis(host='localhost', port=6379, db=0)
+    notify2.init("show_home_manager_status")
+
+    if r.get("version/home-manager/updatable").decode() == "yes":
+        updates_log = r.get("version/home-manager/updates_log")
+        with open("/tmp/home_manager_updates", "w") as f:
+            f.write(updates_log.decode())
+        n = notify2.Notification("[home-manager]", "new commits!")
+        n.set_urgency(URGENCY_NORMAL)
+        n.set_timeout(15000)
+        n.show()
+        tmux_server = libtmux.Server()
+        tmux_session_main = tmux_server.find_where({ "session_name": "main" }) # FIXME: templatize
+        commits_window = tmux_session_main.new_window(attach=True, window_name="commits")
+        commits_pane = commits_window.attached_pane
+        commits_pane.send_keys("cd ${config.attributes.paths.home-manager}")
+        commits_pane.send_keys("cat /tmp/home_manager_updates")
+    else:
+        n = notify2.Notification("[home-manager] nothing new", "Come again later ;)")
+        n.set_urgency(URGENCY_NORMAL)
+        n.set_timeout(15000)
+        n.show()
+  '';
+  show_nixpkgs_status = writePythonScriptWithPythonPackages "show_nixpkgs_status" [
+    pkgs.python3Packages.libtmux
+    pkgs.python3Packages.notify2
+    pkgs.python3Packages.redis
+  ] ''
+    import libtmux
+    import notify2
+    import redis
+
+    from notify2 import URGENCY_NORMAL, URGENCY_CRITICAL
+
+    r = redis.Redis(host='localhost', port=6379, db=0)
+    notify2.init("show_nixpkgs_status")
+
+    if r.get("version/nixpkgs-channels/updatable").decode() == "yes":
+        updates_log = r.get("version/nixpkgs-channels/updates_log")
+        new_packages = [ " ".join(entry.split()[1:]) for entry in updates_log.decode().split("\n")
+                         if "init" in entry and "Merge" not in entry and "pythonPackages" not in entry and
+                         "python3Packages" not in entry and "python37Packages" not in entry and "ocamlPackages" not in entry]
+        with open("/tmp/nixpkgs_updates_new", "w") as f:
+            f.write("\n".join(new_packages))
+        package_updates = [ " ".join(entry.split()[1:]) for entry in updates_log.decode().split("\n")
+                         if "init" not in entry and "Merge" not in entry]
+        with open("/tmp/nixpkgs_updates_installed", "w") as f:
+            f.write("\n".join(package_updates))
+        n = notify2.Notification("[nixpkgs]", "Updated!")
+        n.set_urgency(URGENCY_CRITICAL)
+        n.set_timeout(15000)
+        n.show()
+        tmux_server = libtmux.Server()
+        tmux_session_main = tmux_server.find_where({ "session_name": "main" }) # FIXME: templatize
+        new_packages_window = tmux_session_main.new_window(attach=True, window_name="new packages")
+        new_packages_pane = new_packages_window.attached_pane
+        new_packages_pane.send_keys("cd ${config.attributes.paths.nixpkgs}")
+        new_packages_pane.send_keys("cat /tmp/nixpkgs_updates_new")
+        updated_packages_window = tmux_session_main.new_window(attach=False, window_name="updated packages")
+        updated_packages_pane = updated_packages_window.attached_pane
+        updated_packages_pane.send_keys("cd ${config.attributes.paths.nixpkgs}")
+        updated_packages_pane.send_keys("cat /tmp/nixpkgs_updates_installed")
+    else:
+        n = notify2.Notification("[nixpkgs] nothing new", "Come again later ;)")
+        n.set_urgency(URGENCY_NORMAL)
+        n.set_timeout(15000)
+        n.show()
+  '';
+  confctl = writePythonScriptWithPythonPackages "confctl" [
+    pkgs.python3Packages.GitPython
+    pkgs.python3Packages.libtmux
+    pkgs.python3Packages.notify2
+    pkgs.python3Packages.dmenu-python
+    pkgs.python3Packages.python-gnupg
+    pkgs.python3Packages.redis
+  ] ''
+    import glob
+    import os
+    import subprocess
+    import sys
+
+    from git import Repo
+    from git.cmd import Git
+    from git.exc import InvalidGitRepositoryError
+    from git.refs.tag import TagReference
+    from gnupg import GPG
+    import dmenu
+
+
+    def guess_machine_name():
+        return os.readlink("/etc/nixos/configuration.nix").split("/")[1]
+
+
+    def locate_nixpkgs():
+        locate_nixpkgs_task = subprocess.Popen("${pkgs.nix}/bin/nix-instantiate --find-file nixpkgs",
+                                               shell=True, stdout=subprocess.PIPE)
+        nixpkgs_path = locate_nixpkgs_task.stdout.read().decode().strip()
+        assert locate_nixpkgs_task.wait() == 0
+        return nixpkgs_path
+
+    def decrypt_secrets(machine):
+        secrets_dir = "/etc/nixos/machines/{0}/secrets".format(machine)
+        secrets = glob.glob('{0}/*.gpg'.format(secrets_dir))
+        gpg = GPG()
+        for secret in secrets:
+            secret_decrypted = os.path.splitext(secret)[0]
+            with open(secret, "rb") as src:
+                with open(secret_decrypted, "w") as dst:
+                      dst.write(str(gpg.decrypt_file(src)))
+
+    def decrypt_secrets(machine):
+        secrets_dir = "/etc/nixos/machines/{0}/secrets".format(machine)
+        secrets = glob.glob('{0}/*.gpg'.format(secrets_dir))
+        gpg = GPG()
+        for secret in secrets:
+            secret_decrypted = os.path.splitext(secret)[0]
+            with open(secret, "rb") as src:
+                with open(secret_decrypted, "w") as dst:
+                      dst.write(str(gpg.decrypt_file(src)))
+
+
+    def update_nixpkgs_suffix():
+        nixpkgs_path = locate_nixpkgs()
+        current_rev = os.readlink("/run/current-system").split(".")[-1]
+        new_rev = None
+        try:
+            nixpkgs_git = Git(nixpkgs_path)
+            new_rev = nixpkgs_git.rev_parse("--short", "HEAD")
+            if "dirty" in nixpkgs_git.describe("--always", "--dirty"):
+                new_rev += "M"
+        except InvalidGitRepositoryError:
             pass
-        if should_rebuild:
-            print("Nixpkgs updated, consider rebuilding!")
+        if new_rev:
+            with open("{0}/.version-suffix".format(nixpkgs_path), "w") as suffix:
+                suffix.write(".git.{0}".format(new_rev))
+        if current_rev != new_rev:
+            print("Updating Nixpkgs suffix: {0} --> {1}".format(current_rev, new_rev))
 
 
-    def update_nixpkgs_proposed():
-        nixpkgs_proposed_repo = Repo(nixpkgs_proposed_path)
-        nixpkgs_proposed_origin = nixpkgs_proposed_repo.remotes.origin
-
-        # check if fetch remote present
-        # if not present use dmenu to input and add it
-
-
-        # cd /etc/nixos/pkgs/nixpkgs-proposed
-        # remote_fetch_meta=$(git remote -v | grep fetch)
-        # has_upstream=$(echo $remote_fetch_meta | grep $upstream_remote_name)
-        # if [ -z $has_upstream ]; then
-        #     echo "No $upstream_remote_name remote found."
-        #     echo "Use 'git remote add $upstream_remote_name <upstream url>' to add it."
-        #     exit 1
-        # fi
-        # git fetch $upstream_remote_name
-        # git merge $upstream_remote_name/$branch
+    def build_configuration(path=None, debug=False):
+        build_configuration_task = subprocess.Popen("${pkgs.nix}/bin/nix build -f {0}/nixos system{1}{2}".format(
+                                                    locate_nixpkgs(),
+                                                    " --show-trace" if debug else "",
+                                                    ' -I nixos-config="{0}"'.format(path) if path else ""), shell=True,
+                                                    stdout=sys.stdout, stderr=sys.stdout)
+        result = build_configuration_task.wait()
+        if result in [1, 100]:
+            sys.exit(1)
 
 
-    def update_home_manager():
-        # branch=master
-        # branch_hash=$(git rev-parse --short $branch)
-        # current_hm_hash=$(cat /etc/current-home-manager)
-
-        # cd /etc/nixos/pkgs/home-manager
-        # git tag -a -s --force last_working -m "last home-manager built and working" $current_hm_hash
-        # git fetch origin
-        # git rebase origin/$branch
-        # branch_hash=$(git rev-parse --short $branch)
-        # if [ "$branch_hash" != "$current_hm_hash" ]; then
-        #     head_ts=$(git show -s --format=%ct HEAD)
-        #     git tag -a -s --force "v_$head_ts" -m "checkpoint at $(LC_ALL=C date -d @$head_ts)"
-        # fi
-        # exit 0
-        # ;;
-        pass
-
-    def update_home_manager_proposed():
-        # upstream_remote_name=upstream
-        # branch=master
-
-        # cd /etc/nixos/pkgs/home-manager-proposed
-        # remote_fetch_meta=$(git remote -v | grep fetch)
-        # has_upstream=$(echo $remote_fetch_meta | grep $upstream_remote_name)
-        # if [ -z $has_upstream ]; then
-        #     echo "No $upstream_remote_name remote found."
-        #     echo "Use 'git remote add $upstream_remote_name <upstream url>' to add it."
-        #     exit 1
-        # fi
-        # git fetch $upstream_remote_name
-        # git merge $upstream_remote_name/$branch
-
-        # exit 0
-        # ;;
-        pass
-
-    def list_installed_packages_updates():
-        # TODO: remove duplication
-        installed_packages = get_installed_packages()
-        nixpkgs_repo = Repo(nixpkgs_path)
-        local_head = nixpkgs_repo.heads[nixpkgs_branch].object.hexsha
-        fallback_head = nixpkgs_repo.heads[nixpkgs_fallback_branch].object.hexsha
-        git_log = nixpkgs_repo.git.log("--pretty=oneline","{0}...{1}".format(local_head, fallback_head))
-
-        for entry in git_log.split("\n"):
-            for package in installed_packages:
-                if package in entry and not "Merge" in entry and not "init" in entry:
-                    print(entry)
-                    break
+    def switch_configuration():
+        cwd = os.getcwd()
+        try:
+            new_system_path = os.readlink("{0}/result".format(cwd))
+        except FileNotFoundError as e:
+            new_system_path = None
+            print("Error switching configuration: {0}".format(e))
+            sys.exit(1)
+        switch_configuration_task = subprocess.Popen("pkexec ${pkgs.nix}/bin/nix-env --profile /nix/var/nix/profiles/system --set {0} && pkexec {1}/bin/switch-to-configuration switch".format(
+                                                     new_system_path, new_system_path), shell=True,
+                                                     stdout=sys.stdout, stderr=sys.stdout)
+        result = switch_configuration_task.wait()
+        if result != 0:
+            print("Error switching configuration") # TODO: add details
+            sys.exit(1)
 
 
-    def list_new_packages():
-        # TODO: remove duplication
-        nixpkgs_repo = Repo(nixpkgs_path)
-        local_head = nixpkgs_repo.heads[nixpkgs_branch].object.hexsha
-        fallback_head = nixpkgs_repo.heads[nixpkgs_fallback_branch].object.hexsha
-        git_log = nixpkgs_repo.git.log("--pretty=oneline","{0}...{1}".format(local_head, fallback_head))
-        for entry in git_log.split("\n"):
-            if "init" in entry and not "Merge" in entry:
-                print(entry)
+    def ensure_kernel_update():
+        current_kernel = os.readlink("/run/current-system/kernel")
+        booted_kernel = os.readlink("/run/booted-system/kernel")
+
+        if current_kernel != booted_kernel:
+            print("Rebooting in 5 sec...")
+            time.sleep(5)
+            os.system("reboot")
 
 
-    def review_home_manager_updates():
-        # cd /etc/nixos/pkgs/home-manager
-        # if [ "$branch_hash" = "$current_hm_hash" ]; then
-        #     echo "No fresh updates, try again a bit later"
-        #     exit 0
-        # fi
-        # echo "showing commits $branch_hash...$current_hm_hash"
-        # git log --pretty=oneline $branch_hash...$current_hm_hash | grep -v Merge | fzf --reverse | xargs git show
-        # exit 0
-        # ;;
-        pass
+    # unfinished
+    def manage_current_ref_tags(repo_path):
+        repo = Repo(repo_path)
+        tagrefs = TagReference.list_items(repo)
+        active_head = repo.heads[0]
 
-    def show_nixpkgs_git_tags():
-        # git tag | fzf --reverse | xargs git show
-        # exit 0
-        # ;;
-        pass
+        operations = [
+            "tag active HEAD",
+            "remove tags",
+            "checkout tag",
+            "checkout HEAD",
+        ] # TODO: think of some kind of submodule reset semantics (e.g. like `git submodule update --init`)
 
-    def show_home_manager_git_tags():
-        # cd /etc/nixos/pkgs/home-manager
-        # git tag | fzf --reverse | xargs git show
-        # exit 0
-        # ;;
-        pass
+        tag_choices = [
+            "current time",
+            "custom"
+        ]
 
-    operations = {
-        "update nixpkgs": update_nixpkgs,
-        "update nixpkgs-proposed": update_nixpkgs_proposed,
-        "updates to installed packages": list_installed_packages_updates,
-        "new packages": list_new_packages,
-        "home-manager git tags": "huy"
-    }
+        operation = dmenu.show(operations, prompt='>', lines=5)
+        if not operation:
+            sys.exit(1)
+        if operation == "tag active HEAD":
+            tag_type = dmenu.show(tag_choices, prompt='tag:', lines=5)
+            if not operation:
+                sys.exit(1)
+        elif operation == "remove tags":
+            pass
+        elif operation == "checkout tag":
+            pass
+        elif operation == "checkout HEAD":
+            pass
 
 
-    if __name__ == "__main__":
-        result = dmenu.show(operations.keys(), prompt='perform:', lines=10)
+    machine = guess_machine_name()
+
+    operations = [
+        "Update current configuration",
+        "Update current configuration (debug)",
+        "Select and build configuration",
+        "Select and build configuration (debug)"
+    ] # TODO: add submodules updating
+
+    operation = dmenu.show(operations, prompt='>', lines=10)
+
+    if operation == "Update current configuration":
+        decrypt_secrets(machine)
+        update_nixpkgs_suffix()
+        build_configuration()
+        switch_configuration()
+        ensure_kernel_update()
+    if operation == "Update current configuration (debug)":
+        decrypt_secrets(machine)
+        build_configuration(debug=True)
+    elif operation == "Select and build configuration":
+        MACHINES_CONFIG_PATH = "/etc/nixos/machines"
+        config_entries = os.listdir(MACHINES_CONFIG_PATH)
+        configs = { k: v for (k, v) in zip([entry[:-4] if entry.endswith("nix") else entry for entry in config_entries],
+                    config_entries)}
+        result = dmenu.show(configs.keys(), prompt='config', lines=5)
         if result:
-            operations[result]()
+            build_configuration(path="{0}/{1}".format(MACHINES_CONFIG_PATH, configs[result]))
+    elif operation == "Select and build configuration (debug)":
+        MACHINES_CONFIG_PATH = "/etc/nixos/machines"
+        config_entries = os.listdir(MACHINES_CONFIG_PATH)
+        configs = { k: v for (k, v) in zip([entry[:-4] if entry.endswith("nix") else entry for entry in config_entries],
+                    config_entries)}
+        result = dmenu.show(configs.keys(), prompt='config', lines=5)
+        if result:
+            build_configuration(path="{0}/{1}".format(MACHINES_CONFIG_PATH, configs[result]), debug=True)
 
-    # TODO: git submodule update --init (or some kind of versions pinning)
+    # TODO list
+    # implement building VM (and probably some other choices from nixos-rebuild)
   '';
   format-config = pkgs.writeShellScriptBin "format-config" ''
     sources=$(${pkgs.fd}/bin/fd -t file nix -E forges -E "*.gpg*" /etc/nixos)
     for file in "$sources"; do
       ${pkgs.nixfmt}/bin/nixfmt -w 120 $file
     done
-  '';
-  current_system_hash = pkgs.writeShellScriptBin "current_system_hash" ''
-    current_system_commit_hash=`${pkgs.coreutils}/bin/readlink -f /run/current-system | ${pkgs.coreutils}/bin/cut -f4 -d.`
-    cd ${config.attributes.paths.nixpkgs}
-    nixpkgs_current_branch=$(${pkgs.git}/bin/git symbolic-ref --short HEAD)
-    cd ${config.attributes.paths.home-manager}
-    hm_current_branch=$(${pkgs.git}/bin/git symbolic-ref --short HEAD)
-    hm_current_hash=$(${pkgs.git}/bin/git rev-parse --short HEAD)
-    ${pkgs.dunst}/bin/dunstify -t 15000 "nixpkgs: $current_system_commit_hash/$nixpkgs_current_branch
-    HM: $hm_current_hash/$hm_current_branch"
-  '';
-  update-system = pkgs.writeShellScriptBin "update-system" ''
-    nixpkgs=$(${pkgs.nix}/bin/nix-instantiate --find-file nixpkgs)
-    if [[ $? -ne 0 ]]; then
-        echo "Could not find nixpkgs"
-        exit 1
-    fi
-
-    decrypt_secrets() {
-        SECRETS_DIR="/etc/nixos/machines/laptoptop/secrets" # FIXME: unhardcode
-        for secret in "$SECRETS_DIR"/*.gpg
-        do
-            SECRET_NAME=$(basename "$secret")
-            DECRYPTED_NAME="''${SECRET_NAME%.*}"
-            ${pkgs.gnupg}/bin/gpg2 -dq "$SECRETS_DIR/$SECRET_NAME" > "$SECRETS_DIR/$DECRYPTED_NAME"
-        done
-    }
-
-    build_configuration() {
-        ${pkgs.nix}/bin/nix build -f $nixpkgs/nixos system $@
-        result=$?
-        if [[ $result == 1 ]] || [[ $result == 100 ]]
-        then
-            exit 1
-        fi
-    }
-
-    switch_configuration() {
-        dir=$(pwd)
-        pkexec ${pkgs.nix}/bin/nix-env --profile /nix/var/nix/profiles/system --set $(readlink $dir/result)
-        pkexec $dir/result/bin/switch-to-configuration switch
-    }
-
-    update_nixpkgs_suffix() {
-        current_rev=$(${pkgs.coreutils}/bin/readlink -f /run/current-system | ${pkgs.coreutils}/bin/cut -f4 -d.)
-        rev=
-        if [ -e "$nixpkgs/.git" ]; then
-            cd $nixpkgs
-            rev=$(${pkgs.git}/bin/git rev-parse --short HEAD)
-            if ${pkgs.git}/bin/git describe --always --dirty | grep -q dirty; then
-                rev+=M
-            fi
-        fi
-        if [ -n "$rev" ]; then
-            suffix=".git.$rev"
-            pkexec ${pkgs.bash}/bin/bash -c "echo -n $suffix > $nixpkgs/.version-suffix" || true
-        fi
-        if ! [[ $current_rev =~ $rev ]]
-        then
-            echo "Updating Nixpkgs suffix: $current_rev --> $rev"
-        fi
-    }
-
-    ensure_kernel_update() {
-        current=$(readlink -f /run/current-system/kernel)
-        booted=$(readlink -f /run/booted-system/kernel)
-
-        if [ "$current" != "$booted" ]; then
-            read -p "Kernel changed, reboot? " -n 1 -r
-            if [[ $REPLY =~ ^[Yy]$ ]]
-            then
-                echo "Rebooting in 5 sec..."
-                sleep 5
-                echo "kernel changed, reboot" | ${pkgs.systemd}/bin/systemd-cat --identifier "post-upgrade-check";
-                reboot
-            fi
-        else
-            echo "same kernel, do not reboot" | ${pkgs.systemd}/bin/systemd-cat --identifier "post-upgrade-check";
-        fi
-    }
-
-    decrypt_secrets
-    update_nixpkgs_suffix
-    build_configuration
-    switch_configuration
-    ensure_kernel_update
-  '';
-  gen-nix-du = pkgs.writeShellScriptBin "gen-nix-du" ''
-    set -eu
-
-    # TODO: think of moving these params to module level
-    nixDuBasedir=/tmp
-    nixDuFilename=nix-du
-    nixDuFileFormat=svg
-    nixDuSizeThreshold=500MB
-
-    ${pkgs.nix-du}/bin/nix-du -s $nixDuSizeThreshold | \
-    ${pkgs.graphviz}/bin/dot -T$nixDuFileFormat > $nixDuBasedir/$nixDuFilename.$nixDuFileFormat
-  '';
-  confctl = pkgs.writeScriptBin "confctl" ''
-    #! /usr/bin/env nix-shell
-    #! nix-shell -i python3 -p python3 python3Packages.dmenu-python
-    import os
-    import dmenu
-
-    MACHINES_CONFIG_PATH = "/etc/nixos/machines"
-
-    config_entries = os.listdir(MACHINES_CONFIG_PATH)
-    configs = { k: v for (k, v) in zip([entry[:-4] if entry.endswith("nix") else entry for entry in config_entries], config_entries)}
-    result = dmenu.show(configs.keys(), prompt='config', lines=5)
-    if result:
-        # TODO: migrate to update system after implementing (VM) builds there
-        os.system('sudo nixos-rebuild -I nixos-config="{0}/{1}" build'.format(
-            MACHINES_CONFIG_PATH, configs[result]))
   '';
   emacsPackagingSetup = ''
     (use-package nix-mode
@@ -432,7 +403,6 @@ in {
           nix-prefetch-github
           nix-prefetch-scripts
           nixos-generators
-          gen-nix-du
         ];
       };
     })
@@ -454,7 +424,6 @@ in {
     (mkIf (cfg.enable && cfg.nix.search.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          # custom.gen-nix-du
           nix-index # TODO: maybe make easier shell alias
         ];
       };
@@ -475,8 +444,36 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           confctl
-          update-system
         ];
+      };
+      system.activationScripts.ensureFilesPermissions = mkBefore ''
+        /run/wrappers/bin/sudo chmod -R a+rw /etc/nixos/.git/modules/pkgs/forges/github.com/NixOS/nixpkgs-channels/
+        /run/wrappers/bin/sudo chmod -R a+rw /etc/nixos/.git/modules/pkgs/forges/github.com/NixOS/nixos-hardware/
+        /run/wrappers/bin/sudo chmod -R a+rw /etc/nixos/.git/modules/pkgs/forges/github.com/rycee/home-manager/
+        /run/wrappers/bin/sudo chmod a+rw /etc/nixos/pkgs/forges/github.com/NixOS/nixpkgs-channels/.version-suffix
+      '';
+      systemd.services.redis.postStart = ''
+        ${update_pkgs_status}/bin/update_pkgs_status
+      '';
+      systemd.timers."update_pkgs_status" = {
+        description = "Update nixpkgs/home-manager versions status";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnBootSec = "5min";
+          OnUnitActiveSec = "1h";
+        };
+      };
+      systemd.services."update_pkgs_status" = {
+        description = "Update nixpkgs/home-manager versions status";
+        serviceConfig = {
+          Type = "oneshot";
+          Environment = [
+            "HOME=/home/${config.attributes.mainUser.name}"
+          ];
+          ExecStart = "${update_pkgs_status}/bin/update_pkgs_status";
+          StandardOutput = "journal+console";
+          StandardError = "inherit";
+        };
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
@@ -496,11 +493,9 @@ in {
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
-        "M-S-h" = ''spawn "${current_system_hash}/bin/current_system_hash"'';
+        "M-S-m" = ''spawn "${show_home_manager_status}/bin/show_home_manager_status"'';
+        "M-S-n" = ''spawn "${show_nixpkgs_status}/bin/show_nixpkgs_status"'';
       };
     })
   ];
 }
-
-
-# https://github.com/jwiegley/nix-config/blob/master/bin/nixpkgs-bisect - integrate into pkgsctl workflow
