@@ -141,6 +141,31 @@ in {
         default = false;
         description = ''Whether to enable XMonad keybindings.'';
       };
+      pythonLib = mkOption {
+        type = types.lines;
+        default = ''
+            def sendEvent(win, ctype, data, mask=None):
+                data = (data+[0]*(5-len(data)))[:5]
+                ev = Xlib.protocol.event.ClientMessage(window=win, client_type=ctype, data=(32,(data)))
+
+                if not mask:
+                    mask = (X.SubstructureRedirectMask|X.SubstructureNotifyMask)
+                win.send_event(ev, event_mask=mask)
+
+
+            def switch_desktop(index):
+                display = Xlib.display.Display()
+                sendEvent(display.screen().root, display.intern_atom("_NET_CURRENT_DESKTOP"),
+                          [index, X.CurrentTime])
+                display.flush()
+        '';
+        readOnly = true;
+        internal = true;
+        description = ''
+          Common python routines to be included into custom scripts,
+          but not yet deserving its own package/repo/etc.
+        '';
+      };
     };
   };
 

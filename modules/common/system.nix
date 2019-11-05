@@ -1,8 +1,92 @@
 { config, lib, pkgs, ... }:
+with import ../util.nix { inherit config lib pkgs; };
 with lib;
 
 let
   cfg = config.custom.system;
+  srvctl = writePythonScriptWithPythonPackages "srvctl" [
+    pkgs.python3Packages.dmenu-python
+    pkgs.python3Packages.libtmux
+    pkgs.python3Packages.notify2
+    pkgs.python3Packages.redis
+    pkgs.python3Packages.xlib
+  ] ''
+    import os
+    import subprocess
+    import sys
+
+    from Xlib import X, display, error, Xatom, Xutil
+    from notify2 import URGENCY_NORMAL, URGENCY_CRITICAL
+    import Xlib.protocol.event
+    import dmenu
+    import libtmux
+    import notify2
+    import redis
+
+    services = []
+
+    operations = [
+        "stop",
+        "restart",
+        "journal",
+        "status",
+    ]
+
+    ${config.custom.dev.pythonLib}
+
+    notify2.init("srvctl")
+    r = redis.Redis(host='localhost', port=6379, db=0)
+
+    services = r.lrange("system/services", 0, -1)
+
+    if not services:
+        system_units_task = subprocess.Popen("systemctl list-unit-files", shell=True, stdout=subprocess.PIPE)
+        services.extend(["{0} [system]".format(unit.split()[0].split(".")[0])
+                         for unit in system_units_task.stdout.read().decode().split("\n")[1:-3]
+                         if unit.split()[0].endswith("service")])
+        assert system_units_task.wait() == 0
+
+        user_units_task = subprocess.Popen("systemctl --user list-unit-files", shell=True, stdout=subprocess.PIPE)
+        services.extend(["{0} [user]".format(unit.split()[0].split(".")[0])
+                         for unit in user_units_task.stdout.read().decode().split("\n")[1:-3]
+                         if unit.split()[0].endswith("service")])
+        assert system_units_task.wait() == 0
+
+        r.lpush("system/services", *services)
+
+    service = dmenu.show(sorted(list(dict.fromkeys([service.decode() for service in services]))), prompt='service', lines=20)
+    if not service:
+        sys.exit(1)
+    operation = dmenu.show(operations, prompt='> ', lines=5)
+    if not operation:
+        sys.exit(1)
+    if operation == "stop":
+        os.system("systemctl {0}stop {1}".format("--user " if "user" in service else "", service.split()[0]))
+        n = notify2.Notification("[pkgsctl]", "Stopped {0}".format(service))
+        n.set_urgency(URGENCY_CRITICAL)
+        n.set_timeout(5000)
+        n.show()
+    elif operation == "restart":
+        os.system("systemctl {0}restart {1}".format("--user " if "user" in service else "", service.split()[0]))
+        n = notify2.Notification("[pkgsctl]", "Restarted {0}".format(service))
+        n.set_urgency(URGENCY_NORMAL)
+        n.set_timeout(5000)
+        n.show()
+    elif operation == "status":
+        tmux_server = libtmux.Server()
+        tmux_session_main = tmux_server.find_where({ "session_name": "main" }) # FIXME: templatize
+        status_window = tmux_session_main.new_window(attach=True, window_name="status for {0}".format(service),
+                                                     window_shell="sh -c 'systemctl {0} status {1}; read'".format("--user " if "user" in service else "",
+                                                                                                    service.split()[0]))
+        switch_desktop(1)
+    else:
+        tmux_server = libtmux.Server()
+        tmux_session_main = tmux_server.find_where({ "session_name": "main" }) # FIXME: templatize
+        journal_window = tmux_session_main.new_window(attach=True, window_name="journal for {0}".format(service),
+                                                      window_shell="sh -c 'journalctl {0}-u {1}; read'".format("--user " if "user" in service else "",
+                                                                                                 service.split()[0]))
+        switch_desktop(1)
+  '';
   systemctl-status = pkgs.writeScriptBin "systemctl-status" ''
     if [ $# -le 1 ]; then
         echo -e ""
@@ -49,35 +133,6 @@ let
   uptime_info = pkgs.writeScriptBin "uptime_info" ''
     ${pkgs.dunst}/bin/dunstify -t 7000 "Uptime: $(${pkgs.procps}/bin/w | \
     ${pkgs.gnused}/bin/sed -r '1 s/.*up *(.*),.*user.*/\1/g;q')"
-  '';
-  services_journals = pkgs.writeScriptBin "services_journals" ''
-    #! /usr/bin/env nix-shell
-    #! nix-shell -i python3 -p python3 python3Packages.dmenu-python
-
-    import os
-    import subprocess
-    import sys
-
-    import dmenu
-
-    services = []
-
-    system_units_task = subprocess.Popen("systemctl list-unit-files", shell=True, stdout=subprocess.PIPE)
-    services.extend(["{0} [system]".format(unit.split()[0].split(".")[0])
-                     for unit in system_units_task.stdout.read().decode().split("\n")[1:-3]
-                     if unit.split()[0].endswith("service")])
-    assert system_units_task.wait() == 0
-
-    user_units_task = subprocess.Popen("systemctl --user list-unit-files", shell=True, stdout=subprocess.PIPE)
-    services.extend(["{0} [user]".format(unit.split()[0].split(".")[0])
-                     for unit in user_units_task.stdout.read().decode().split("\n")[1:-3]
-                     if unit.split()[0].endswith("service")])
-    assert system_units_task.wait() == 0
-
-    journal = dmenu.show(sorted(list(dict.fromkeys(services))), prompt='journal for', lines=30)
-    if not journal:
-        sys.exit(1)
-    os.system('tmux new-window "journalctl {0}-u {1}"'.format("--user " if "user" in journal else "", journal.split()[0]))
   '';
 in {
   options = {
@@ -311,13 +366,13 @@ in {
     })
     (mkIf cfg.scripts.enable {
       environment.systemPackages = with pkgs; [
-        services_journals
+        srvctl
         wifi-status
       ];
     })
     (mkIf cfg.xmonad.enable {
       wm.xmonad.keybindings = {
-        "M-C-j" = ''spawn "${services_journals}/bin/services_journals" >> showWSOnProperScreen "shell"'';
+        "M-C-j" = ''spawn "${srvctl}/bin/srvctl"'';
         "M-S-u" = ''spawn "${uptime_info}/bin/uptime_info"'';
       };
     })
