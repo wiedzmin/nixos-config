@@ -557,14 +557,6 @@
 
   wm.xmonad.enable = true;
 
-  # FIXME: move functionality to pkgsctl
-  system.activationScripts.saveCurrentHMVersion = ''
-    touch /etc/current-home-manager
-    cd /etc/nixos/pkgs/forges/github.com/rycee/home-manager
-    hm_revision="upstream: $(${pkgs.git}/bin/git rev-parse --short HEAD)"
-    echo "$hm_revision" >> /etc/current-home-manager
-  '';
-
   home-manager.users."${config.attributes.mainUser.name}" = {
     nixpkgs.config.allowUnfree = true;
     xdg.enable = true;
