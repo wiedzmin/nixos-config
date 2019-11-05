@@ -87,32 +87,6 @@ let
                                                                                                  service.split()[0]))
         switch_desktop(1)
   '';
-  systemctl-status = pkgs.writeScriptBin "systemctl-status" ''
-    if [ $# -le 1 ]; then
-        echo -e ""
-    else
-        if [[ $# == 2 ]]; then
-            if [[ $2 =~ ^\[ ]]; then
-                STATUS=`${pkgs.systemd}/bin/systemctl status $1 | ${pkgs.gawk}/bin/awk 'NR==3 {print $2}'`
-            else
-                echo -e ""
-            fi
-        elif [[ $# == 3 ]]; then
-            STATUS=`${pkgs.systemd}/bin/systemctl --user status $1 | ${pkgs.gawk}/bin/awk 'NR==3 {print $2}'`
-        fi
-        if [ $STATUS == "inactive" ]
-        then
-            echo -e ""
-        else
-            if [ -z "$2" ]
-            then
-                echo -e "[*]"
-            else
-                echo -e $2
-            fi
-        fi
-    fi
-  '';
   wifi-status = pkgs.writeScriptBin "wifi-status" ''
     ESSID=`${pkgs.wirelesstools}/bin/iwgetid -r`
     STRENGTH=$((`awk 'NR==3 {print substr($3, 1, length($3)-1)}' /proc/net/wireless`*100/70))
