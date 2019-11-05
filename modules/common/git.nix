@@ -110,6 +110,7 @@ let
       echo ''${DIVERGED_MESSAGE:-"Diverged"}
     fi
   '';
+  # TODO: make custom script with basw of https://github.com/arc90/git-sweep
   emacsGitSetup = ''
     (use-package browse-at-remote
       :ensure t
@@ -482,7 +483,6 @@ in {
         git_remote_diff
         gitstats
         proposed.gitAndTools.git-quick-stats
-        python2Packages.git-sweep # FIXME: adapt to py3
       ] ++ lib.optionals (config.attributes.staging.enable) [
       ];
     })
