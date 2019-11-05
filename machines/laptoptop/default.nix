@@ -356,6 +356,7 @@
   custom.dataworks = {
     forensics.enable = true;
     codesearch.enable = true;
+    toolsng.enable = true;
     emacs.enable = true;
   };
 
@@ -447,6 +448,7 @@
 
   custom.networking = {
     enable = true;
+    clients.enable = true;
     xmonad.enable = true;
   };
 
@@ -456,6 +458,7 @@
       helpers.enable = true;
       srcfmt.enable = true;
     };
+    misc.enable = true;
     scripts.enable = true;
     emacs.enable = true;
     xmonad.enable = true;
@@ -549,6 +552,9 @@
     dbms = {
       mysql.enable = true;
       jobDbms.enable = true;
+      misc.enable = true;
+      xmonad.enable = true;
+    };
     ebooks = {
       readers.enable = true;
       xmonad.enable = true;
