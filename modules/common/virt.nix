@@ -483,6 +483,11 @@ in {
 
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "docker" ];
 
+      custom.dev.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli del job/swarm_endpoint_hosts
+        ${pkgs.redis}/bin/redis-cli lpush job/swarm_endpoint_hosts ${builtins.concatStringsSep " " config.secrets.job.infra.swarmEndpointHosts}
+      '';
+
       home-manager.users."${config.attributes.mainUser.name}" = {
         xdg.configFile."hadolint.yaml".text = ''
           ignored:

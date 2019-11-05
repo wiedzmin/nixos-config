@@ -536,6 +536,13 @@ in {
           j4-dmenu-desktop
         ];
       };
+
+      custom.dev.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set job/extra_hosts ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.infra.extraHosts)}
+        ${pkgs.redis}/bin/redis-cli set job/webjumps ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.webjumps)}
+        ${pkgs.redis}/bin/redis-cli set nav/searchengines ${lib.strings.escapeNixString (builtins.toJSON config.secrets.nav.searchEngines)}
+        ${pkgs.redis}/bin/redis-cli set nav/webjumps ${lib.strings.escapeNixString (builtins.toJSON config.secrets.nav.webjumps)}
+      '';
     })
     (mkIf (cfg.enable && cfg.gmrun.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

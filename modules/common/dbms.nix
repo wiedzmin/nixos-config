@@ -108,6 +108,9 @@ in {
       };
     })
     (mkIf (cfg.jobDbms.enable && cfg.xmonad.enable) {
+      custom.dev.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set job/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.infra.dbmsMeta)}
+      '';
       wm.xmonad.keybindings = {
         "M-C-y" = ''spawn "${dbms}/bin/dbms" >> showWSOnProperScreen "shell"'';
         "M-C-r" = ''spawn "${pkgs.tmux}/bin/tmux new-window '${pkgs.redis-tui}/bin/redis-tui'" >> showWSOnProperScreen "shell"'';

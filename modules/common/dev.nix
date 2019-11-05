@@ -3,16 +3,6 @@ with lib;
 
 let
   cfg = config.custom.dev;
-  init_dev_metadata = pkgs.writeShellScriptBin "init_dev_metadata" ''
-    ${pkgs.redis}/bin/redis-cli del job/swarm_endpoint_hosts
-    ${pkgs.redis}/bin/redis-cli lpush job/swarm_endpoint_hosts ${builtins.concatStringsSep " " config.secrets.job.infra.swarmEndpointHosts}
-
-    ${pkgs.redis}/bin/redis-cli set job/logs_host ${config.secrets.job.infra.logsHost}
-    ${pkgs.redis}/bin/redis-cli set job/remote_docker_logs_root ${config.secrets.job.infra.remoteDockerLogsRoot}
-
-    ${pkgs.redis}/bin/redis-cli set job/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.infra.dbmsMeta)}
-    ${pkgs.redis}/bin/redis-cli set job/extra_hosts ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.infra.extraHosts)}
-  '';
   emacsDevSetup = ''
     (use-package webpaste
       :ensure t
@@ -141,6 +131,11 @@ in {
         default = false;
         description = ''Whether to enable XMonad keybindings.'';
       };
+      metadataCacheInstructions = mkOption {
+        type = types.lines;
+        default = '''';
+        description = ''Set of commands needed to initialize develepment data cache.'';
+      };
       pythonLib = mkOption {
         type = types.lines;
         default = ''
@@ -217,17 +212,13 @@ in {
           pv
           loop
           ix
-
-          init_dev_metadata
         ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
         };
       };
-      systemd.services.redis.postStart = ''
-        ${init_dev_metadata}/bin/init_dev_metadata
-      '';
+      systemd.services.redis.postStart = cfg.metadataCacheInstructions;
     })
     (mkIf cfg.emacs.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
