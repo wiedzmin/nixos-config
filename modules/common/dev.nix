@@ -181,6 +181,7 @@ in {
           terracognita
           terraform
           tflint
+          vector
         ];
       };
     })
