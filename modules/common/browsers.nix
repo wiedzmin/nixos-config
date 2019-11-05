@@ -41,8 +41,8 @@ let
                   :require-match t
                   :caller 'custom/open-url-current-buffer))
       :custom
-      (browse-url-browser-function 'browse-url-generic)
-      (browse-url-generic-program "xdg-open"))
+      (browse-url-browser-function 'browse-url-firefox) ;; TODO: sync at module level
+      (browse-url-generic-program "${config.attributes.defaultCommands.browser}"))
 
     (use-package eww
       :defer 6
