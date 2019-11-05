@@ -88,8 +88,8 @@ let
         n.set_timeout(15000)
         n.show()
         tmux_server = libtmux.Server()
-        tmux_session_main = tmux_server.find_where({ "session_name": "main" }) # FIXME: templatize
-        commits_window = tmux_session_main.new_window(attach=True, window_name="commits")
+        tmux_session = tmux_server.find_where({ "session_name": "${config.attributes.tmux.defaultSession}" })
+        commits_window = tmux_session.new_window(attach=True, window_name="commits")
         commits_pane = commits_window.attached_pane
         commits_pane.send_keys("cd ${config.attributes.paths.home-manager}")
         commits_pane.send_keys("cat /tmp/home_manager_updates")
@@ -129,12 +129,12 @@ let
         n.set_timeout(15000)
         n.show()
         tmux_server = libtmux.Server()
-        tmux_session_main = tmux_server.find_where({ "session_name": "main" }) # FIXME: templatize
-        new_packages_window = tmux_session_main.new_window(attach=True, window_name="new packages")
+        tmux_session = tmux_server.find_where({ "session_name": "${config.attributes.tmux.defaultSession}" })
+        new_packages_window = tmux_session.new_window(attach=True, window_name="new packages")
         new_packages_pane = new_packages_window.attached_pane
         new_packages_pane.send_keys("cd ${config.attributes.paths.nixpkgs}")
         new_packages_pane.send_keys("cat /tmp/nixpkgs_updates_new")
-        updated_packages_window = tmux_session_main.new_window(attach=False, window_name="updated packages")
+        updated_packages_window = tmux_session.new_window(attach=False, window_name="updated packages")
         updated_packages_pane = updated_packages_window.attached_pane
         updated_packages_pane.send_keys("cd ${config.attributes.paths.nixpkgs}")
         updated_packages_pane.send_keys("cat /tmp/nixpkgs_updates_installed")

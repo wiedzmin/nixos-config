@@ -74,15 +74,15 @@ let
         n.show()
     elif operation == "status":
         tmux_server = libtmux.Server()
-        tmux_session_main = tmux_server.find_where({ "session_name": "main" }) # FIXME: templatize
-        status_window = tmux_session_main.new_window(attach=True, window_name="status for {0}".format(service),
+        tmux_session = tmux_server.find_where({ "session_name": "${config.attributes.tmux.defaultSession}" })
+        status_window = tmux_session.new_window(attach=True, window_name="status for {0}".format(service),
                                                      window_shell="sh -c 'systemctl {0} status {1}; read'".format("--user " if "user" in service else "",
                                                                                                     service.split()[0]))
         switch_desktop(1)
     else:
         tmux_server = libtmux.Server()
-        tmux_session_main = tmux_server.find_where({ "session_name": "main" }) # FIXME: templatize
-        journal_window = tmux_session_main.new_window(attach=True, window_name="journal for {0}".format(service),
+        tmux_session = tmux_server.find_where({ "session_name": "${config.attributes.tmux.defaultSession}" })
+        journal_window = tmux_session.new_window(attach=True, window_name="journal for {0}".format(service),
                                                       window_shell="sh -c 'journalctl {0}-u {1}; read'".format("--user " if "user" in service else "",
                                                                                                  service.split()[0]))
         switch_desktop(1)

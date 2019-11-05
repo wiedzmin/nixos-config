@@ -105,6 +105,11 @@ with lib;
       type = types.str;
       default = "";
     };
+    tmux.defaultSession = mkOption {
+      description = "Default tmux predefined session name to be used in automation scripts";
+      type = types.str;
+      default = "main";
+    };
     staging.enable = mkOption {
       description = "Whether to enable staging packages/configuration";
       type = types.bool;
