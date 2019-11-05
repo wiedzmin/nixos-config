@@ -3,6 +3,9 @@ with lib;
 
 let
   cfg = config.custom.networking;
+  # TODO: (re)write dmenu-based custom scripts for ssh and pass with bas of links below:
+  # https://github.com/menski/sshmenu/blob/master/sshmenu
+  # https://github.com/carnager/rofi-pass/blob/master/rofi-pass
   ssh_custom_user = pkgs.writeScriptBin "ssh_custom_user" ''
     #! /usr/bin/env nix-shell
     #! nix-shell -i python3 -p python3 python3Packages.dmenu-python
@@ -158,7 +161,6 @@ in {
         "M-M1-S-w" = ''spawn "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli" >> showWSOnProperScreen "shell"'';
         "M-s n <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart nscd.service"'';
       };
-      # https://github.com/menski/sshmenu/blob/master/sshmenu
     })
   ];
 }
