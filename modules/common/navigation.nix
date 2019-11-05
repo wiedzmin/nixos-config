@@ -1,8 +1,80 @@
 { config, lib, pkgs, ... }:
+with import ../util.nix { inherit config lib pkgs; };
 with lib;
 
 let
   cfg = config.custom.navigation;
+  search_prompt = writePythonScriptWithPythonPackages "search_prompt" [
+    pkgs.python3Packages.dmenu-python
+    pkgs.python3Packages.redis
+  ] ''
+    import json
+    import os
+    import subprocess
+
+    import dmenu
+    import redis
+
+    import redis
+    r = redis.Redis(host='localhost', port=6379, db=0)
+
+    searchengines = json.loads(r.get("nav/searchengines"))
+
+    searchengine = dmenu.show(searchengines.keys(), prompt="search with",
+                              case_insensitive=True, lines=15)
+    if searchengine:
+        searchengine_url = searchengines[searchengine]
+        search_term = dmenu.show([], prompt="term")
+        if search_term:
+            subprocess.run("${config.attributes.defaultCommands.browser} {0}{1}".format(
+                searchengine_url, search_term.replace(" ", "+")).split())
+  '';
+  search_selection = writePythonScriptWithPythonPackages "search_selection" [
+    pkgs.python3Packages.dmenu-python
+    pkgs.python3Packages.redis
+  ] ''
+    import json
+    import os
+    import subprocess
+
+    import dmenu
+    import redis
+
+    import redis
+    r = redis.Redis(host='localhost', port=6379, db=0)
+
+    searchengines = json.loads(r.get("nav/searchengines"))
+
+    searchengine = dmenu.show(searchengines.keys(), prompt="search with", case_insensitive=True, lines=15)
+    if searchengine:
+        searchengine_url = searchengines[searchengine]
+        search_term_task = subprocess.Popen("${pkgs.xsel}/bin/xsel -o", shell=True, stdout=subprocess.PIPE)
+        search_term = search_term_task.stdout.read().decode()
+        assert search_term_task.wait() == 0
+        subprocess.run("${config.attributes.defaultCommands.browser} {0}{1}".format(
+            searchengine_url, search_term.replace(" ", "+")).split())
+  '';
+  webjumps = writePythonScriptWithPythonPackages "webjumps" [
+    pkgs.python3Packages.dmenu-python
+    pkgs.python3Packages.redis
+  ] ''
+    import json
+    import os
+
+    import dmenu
+    import redis
+
+    import redis
+    r = redis.Redis(host='localhost', port=6379, db=0)
+
+    webjumps = json.loads(r.get("nav/webjumps"))
+    webjumps.update(json.loads(r.get("job/webjumps")))
+
+    webjump = dmenu.show(webjumps.keys(), prompt="jump to", lines=15)
+    if webjump:
+        browser_cmd = webjumps[webjump]
+        os.system("{0} {1}".format(browser_cmd, webjump))
+  '';
   emacsNavigationSetup = ''
     (use-package ace-link
       :ensure t
@@ -449,6 +521,11 @@ in {
           Whether to enable customized navigation for Emacs.
         '';
       };
+      xmonad.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable XMonad keybindings.";
+      };
     };
   };
 
@@ -582,6 +659,13 @@ in {
         ];
       };
       ide.emacs.config = ''${emacsNavigationSetup}'';
+    })
+    (mkIf (cfg.enable && cfg.xmonad.enable) {
+      wm.xmonad.keybindings = {
+        "M-/" = ''spawn "${search_selection}/bin/search_selection" >> showWSOnProperScreen "web"'';
+        "M-C-/" = ''spawn "${search_prompt}/bin/search_prompt" >> showWSOnProperScreen "web"'';
+        "M-j" = ''spawn "${webjumps}/bin/webjumps" >> showWSOnProperScreen "web"'';
+      };
     })
   ];
 }

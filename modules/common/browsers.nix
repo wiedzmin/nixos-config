@@ -4,84 +4,6 @@ with lib;
 let
   cfg = config.custom.browsers;
   firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../pkgs/firefox-addons { });
-  search_prompt = pkgs.writeShellScriptBin "search_prompt" ''
-    ${config.secrets.nav.searchenginesData}
-
-    list_searchengines() {
-        INDEX=1
-        for i in "''${!SEARCHENGINES[@]}"
-        do
-            echo "$INDEX $i"
-            (( INDEX++ ))
-        done
-    }
-
-    main() {
-        SELECTED_ENGINE=$( (list_searchengines) | ${pkgs.dmenu}/bin/dmenu -i -p "Search" -l 15 | ${pkgs.gawk}/bin/awk '{print $2}')
-        if [ ! -n "$SELECTED_ENGINE" ]; then
-            exit 1
-        fi
-        QUERY=$( (echo ) | ${pkgs.dmenu}/bin/dmenu -i -p "Query" -l 15)
-        if [ -n "$QUERY" ]; then
-            URL="''${SEARCHENGINES[$SELECTED_ENGINE]}$QUERY"
-            firefox --new-window "$URL"
-        fi
-    }
-
-    main
-
-    exit 0
-  '';
-  search_selection = pkgs.writeShellScriptBin "search_selection" ''
-    ${config.secrets.nav.searchenginesData}
-
-    list_searchengines() {
-        INDEX=1
-        for i in "''${!SEARCHENGINES[@]}"
-        do
-            echo "$INDEX $i"
-            (( INDEX++ ))
-        done
-    }
-
-    main() {
-        SELECTED_ENGINE=$( (list_searchengines) | ${pkgs.dmenu}/bin/dmenu -i -p "Search" -l 15 | ${pkgs.gawk}/bin/awk '{print $2}')
-        if [ ! -n "$SELECTED_ENGINE" ]; then
-            exit 1
-        fi
-        QUERY=$(${pkgs.xsel}/bin/xsel -o)
-        if [ -n "$QUERY" ]; then
-            URL="''${SEARCHENGINES[$SELECTED_ENGINE]}$QUERY"
-            firefox --new-window "$URL"
-        fi
-    }
-
-    main
-
-    exit 0
-  '';
-  webjumps = pkgs.writeShellScriptBin "webjumps" ''
-    function show_mapping_keys() {
-        eval "declare -A contents="''${1#*=}
-        for i in "''${!contents[@]}";
-        do
-            echo "$i"
-        done
-    }
-
-    ${config.secrets.nav.webjumpsData}
-
-    main() {
-        WEBJUMP=$( (show_mapping_keys "$(declare -p WEBJUMPS)") | ${pkgs.dmenu}/bin/dmenu -i -p "Jump to" -l 15)
-        if [ -n "$WEBJUMP" ]; then
-            ''${WEBJUMPS[$WEBJUMP]} "$WEBJUMP"
-        fi
-    }
-
-    main
-
-    exit 0
-  '';
   emacsBrowsersSetup = ''
     (use-package atomic-chrome
       :ensure t
@@ -181,11 +103,6 @@ in {
         description = ''
           Whether to enable Emacs browsers-related setup.
         '';
-      };
-      xmonad.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable XMonad keybindings.";
       };
     };
   };
@@ -433,13 +350,6 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.config = ''${emacsBrowsersSetup}'';
-    })
-    (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = {
-        "M-/" = ''spawn "${search_selection}/bin/search_selection" >> showWSOnProperScreen "web"'';
-        "M-C-/" = ''spawn "${search_prompt}/bin/search_prompt" >> showWSOnProperScreen "web"'';
-        "M-j" = ''spawn "${webjumps}/bin/webjumps" >> showWSOnProperScreen "web"'';
-      };
     })
   ];
 }

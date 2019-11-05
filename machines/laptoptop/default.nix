@@ -343,7 +343,6 @@
     chromium.enable = true;
     aux.enable = true;
     emacs.enable = true;
-    xmonad.enable = true;
   };
 
   custom.content = {
@@ -443,6 +442,7 @@
     mc.enable = true;
     misc.enable = true;
     emacs.enable = true;
+    xmonad.enable = true;
   };
 
   custom.networking = {
