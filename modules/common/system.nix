@@ -15,9 +15,7 @@ let
     import subprocess
     import sys
 
-    from Xlib import X, display, error, Xatom, Xutil
     from notify2 import URGENCY_NORMAL, URGENCY_CRITICAL
-    import Xlib.protocol.event
     import dmenu
     import libtmux
     import notify2
