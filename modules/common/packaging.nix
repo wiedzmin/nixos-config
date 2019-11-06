@@ -176,15 +176,6 @@ let
         assert locate_nixpkgs_task.wait() == 0
         return nixpkgs_path
 
-    def decrypt_secrets(machine):
-        secrets_dir = "/etc/nixos/machines/{0}/secrets".format(machine)
-        secrets = glob.glob('{0}/*.gpg'.format(secrets_dir))
-        gpg = GPG()
-        for secret in secrets:
-            secret_decrypted = os.path.splitext(secret)[0]
-            with open(secret, "rb") as src:
-                with open(secret_decrypted, "w") as dst:
-                      dst.write(str(gpg.decrypt_file(src)))
 
     def decrypt_secrets(machine):
         secrets_dir = "/etc/nixos/machines/{0}/secrets".format(machine)
@@ -330,7 +321,6 @@ let
         if result:
             os.remove("configuration.nix")
             os.symlink(os.path.relpath("machines/{0}/default.nix".format(result)), "configuration.nix")
-        # ex: configuration.nix -> machines/laptoptop/default.nix
 
 
     # TODO list
