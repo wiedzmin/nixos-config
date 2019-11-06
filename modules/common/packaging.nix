@@ -144,7 +144,7 @@ let
         n.set_timeout(15000)
         n.show()
   '';
-  confctl = writePythonScriptWithPythonPackages "confctl" [
+  confctl = writePythonScriptWithPythonPackages "confctl" [  # TODO: consider making relative config paths
     pkgs.python3Packages.GitPython
     pkgs.python3Packages.libtmux
     pkgs.python3Packages.notify2
@@ -292,7 +292,8 @@ let
         "Update current configuration",
         "Update current configuration (debug)",
         "Select and build configuration",
-        "Select and build configuration (debug)"
+        "Select and build configuration (debug)",
+        "Link configuration"
     ] # TODO: add submodules updating
 
     operation = dmenu.show(operations, prompt='>', lines=10)
@@ -303,7 +304,7 @@ let
         build_configuration()
         switch_configuration()
         ensure_kernel_update()
-    if operation == "Update current configuration (debug)":
+    elif operation == "Update current configuration (debug)":
         decrypt_secrets(machine)
         build_configuration(debug=True)
     elif operation == "Select and build configuration":
@@ -322,6 +323,15 @@ let
         result = dmenu.show(configs.keys(), prompt='config', lines=5)
         if result:
             build_configuration(path="{0}/{1}".format(MACHINES_CONFIG_PATH, configs[result]), debug=True)
+    elif operation == "Link configuration":
+        os.chdir("/etc/nixos")
+        machines = os.listdir("machines")
+        result = dmenu.show(machines, prompt='config', lines=5)
+        if result:
+            os.remove("configuration.nix")
+            os.symlink(os.path.relpath("machines/{0}/default.nix".format(result)), "configuration.nix")
+        # ex: configuration.nix -> machines/laptoptop/default.nix
+
 
     # TODO list
     # implement building VM (and probably some other choices from nixos-rebuild)
