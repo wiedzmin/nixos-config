@@ -142,7 +142,20 @@ in {
               });
               compression = true;
             };
+            "github" = {
+              hostname = "github.com";
+              user = "git";
+              serverAliveInterval = 60;
+              extraOptions = {
+                ControlMaster = "auto";
+                ControlPersist = "yes";
+                preferredAuthentications = "publickey";
+              };
+            };
           };
+          extraConfig = ''
+            AddKeysToAgent yes
+          '';
         };
       };
     })
