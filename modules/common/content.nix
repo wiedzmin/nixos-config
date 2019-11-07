@@ -4,6 +4,12 @@ with lib;
 
 let
   cfg = config.custom.content;
+  # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
+  paste_to_ix = pkgs.writeShellScriptBin "paste_to_ix" ''
+    # FIXME: check if there is actually something in clipboard
+    ix_url=$(${pkgs.xsel}/bin/xsel -ob | ${pkgs.ix}/bin/ix)
+    echo -n "$ix_url" | ${pkgs.xsel}/bin/xsel -ib
+  '';
   buku_add = writePythonScriptWithPythonPackages "buku_add" [
     pkgs.python3Packages.dmenu-python
     pkgs.python3Packages.notify2
@@ -289,6 +295,7 @@ in {
           ccextractor
           ffmpeg
           clipgrab
+          paste_to_ix
         ];
       };
     })
@@ -326,6 +333,7 @@ in {
     (mkIf cfg.xmonad.enable {
       wm.xmonad.keybindings = {
         "M-y" = ''spawn "${buku_add}/bin/buku_add"'';
+        "M-i" = ''spawn "${paste_to_ix}/bin/paste_to_ix"'';
       };
     })
   ];

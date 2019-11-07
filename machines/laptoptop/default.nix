@@ -576,5 +576,4 @@
   system.stateVersion = "19.03";
 }
 
-# TODO: some impl/binding for ix.io posts
 # https://github.com/embayer/org-note
