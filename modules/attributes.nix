@@ -35,10 +35,15 @@ with lib;
       description = "Default Font for Dmenu";
       type = types.str;
     };
-    paths.nixpkgs = mkOption {
+    paths.nixpkgs.local = mkOption {
       description = "Full path to `Nixpkgs`";
       type = types.str;
       default = "/etc/nixos/pkgs/forges/github.com/NixOS/nixpkgs-channels";
+    };
+    paths.nixpkgs.archive = mkOption {
+      description = "Github URL of Nixpkgs archive";
+      type = types.str;
+      default = "https://github.com/NixOS/nixpkgs/archive/";
     };
     paths.home-manager = mkOption {
       description = "Full path to `home-manager`";

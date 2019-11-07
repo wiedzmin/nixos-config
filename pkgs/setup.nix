@@ -3,12 +3,11 @@
 let
   path = ./overlay;
   content = builtins.readDir path;
-  nixpkgs-tars = "https://github.com/NixOS/nixpkgs/archive/";
 in {
   nix = {
     # For interactive usage
     nixPath = [
-      "nixpkgs=${config.attributes.paths.nixpkgs}"
+      "nixpkgs=${config.attributes.paths.nixpkgs.local}"
       "nixpkgs-overlays=/etc/nixos/pkgs/overlay"
       "nixos-config=/etc/nixos/configuration.nix"
       "home-manager=${config.attributes.paths.home-manager}"
@@ -30,22 +29,22 @@ in {
     config = {
       packageOverrides = pkgs: {
         litecliWorking = import (fetchTarball
-          "${nixpkgs-tars}f8a50fcca314e03feafcc15039f91fb829292fb1.tar.gz")
+          "${config.attributes.paths.nixpkgs.archive}f8a50fcca314e03feafcc15039f91fb829292fb1.tar.gz")
             { config = config.nixpkgs.config; };
         mypgWorking = import (fetchTarball
-          "${nixpkgs-tars}69c21be86e9f9f9eaba46e66aacffe550d23e0d7.tar.gz")
+          "${config.attributes.paths.nixpkgs.archive}69c21be86e9f9f9eaba46e66aacffe550d23e0d7.tar.gz")
             { config = config.nixpkgs.config; };
         hpWorking = import (fetchTarball
-          "${nixpkgs-tars}f0b49c4d10c86497e04a2b707134a8d7e2198783.tar.gz")
+          "${config.attributes.paths.nixpkgs.archive}f0b49c4d10c86497e04a2b707134a8d7e2198783.tar.gz")
             { config = config.nixpkgs.config; };
         ocrmypdfWorking = import (fetchTarball
-          "${nixpkgs-tars}352239e24a7da18f4eb22993cd05e8535d6b01a5.tar.gz")
+          "${config.attributes.paths.nixpkgs.archive}352239e24a7da18f4eb22993cd05e8535d6b01a5.tar.gz")
             { config = config.nixpkgs.config; };
         mpsytWorking = import (fetchTarball
-          "${nixpkgs-tars}4cd2cb43fb3a87f48c1e10bb65aee99d8f24cb9d.tar.gz")
+          "${config.attributes.paths.nixpkgs.archive}4cd2cb43fb3a87f48c1e10bb65aee99d8f24cb9d.tar.gz")
             { config = config.nixpkgs.config; };
         bukuWorking = import (fetchTarball
-          "${nixpkgs-tars}471869c9185fb610e67940a701eb13b1cfb335a4.tar.gz")
+          "${config.attributes.paths.nixpkgs.archive}471869c9185fb610e67940a701eb13b1cfb335a4.tar.gz")
             { config = config.nixpkgs.config; };
       };
     };

@@ -4,6 +4,14 @@ with lib;
 
 let
   cfg = config.custom.packaging;
+  get-pr-override = pkgs.writeShellScriptBin "get-pr-override" ''
+    PR_NO=$1
+    HASH=$(curl -sL https://github.com/NixOS/nixpkgs/pull/''${PR_NO}.patch \
+           | head -n 1 | grep -o -E -e "[0-9a-f]{40}")
+    echo pr''${PR_NO} = "import (fetchTarball"
+    echo "  \"\''${config.attributes.paths.nixpkgs.archive}''${HASH}.tar.gz\")"
+    echo "    { config = config.nixpkgs.config; };"
+  '';
   update_pkgs_status = writePythonScriptWithPythonPackages "update_pkgs_status" [
     pkgs.python3Packages.GitPython
     pkgs.python3Packages.redis
@@ -25,7 +33,7 @@ let
         },
         {
             "name": "nixpkgs-channels",
-            "repo_path": "${config.attributes.paths.nixpkgs}",
+            "repo_path": "${config.attributes.paths.nixpkgs.local}",
             "branch": "${config.attributes.branches.nixpkgs}"
         },
     ]
@@ -132,11 +140,11 @@ let
         tmux_session = tmux_server.find_where({ "session_name": "${config.attributes.tmux.defaultSession}" })
         new_packages_window = tmux_session.new_window(attach=True, window_name="new packages")
         new_packages_pane = new_packages_window.attached_pane
-        new_packages_pane.send_keys("cd ${config.attributes.paths.nixpkgs}")
+        new_packages_pane.send_keys("cd ${config.attributes.paths.nixpkgs.local}")
         new_packages_pane.send_keys("cat /tmp/nixpkgs_updates_new")
         updated_packages_window = tmux_session.new_window(attach=False, window_name="updated packages")
         updated_packages_pane = updated_packages_window.attached_pane
-        updated_packages_pane.send_keys("cd ${config.attributes.paths.nixpkgs}")
+        updated_packages_pane.send_keys("cd ${config.attributes.paths.nixpkgs.local}")
         updated_packages_pane.send_keys("cat /tmp/nixpkgs_updates_installed")
     else:
         n = notify2.Notification("[nixpkgs] nothing new", "Come again later ;)")
@@ -444,6 +452,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           confctl
+          get-pr-override
         ];
       };
       system.activationScripts.ensureFilesPermissions = mkBefore ''
