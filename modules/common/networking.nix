@@ -133,14 +133,30 @@ in {
           controlMaster = "auto";
           controlPath = "~/.ssh/sockets/%r@%h:%p";
           controlPersist = "4h";
-          serverAliveInterval = 30;
+          serverAliveInterval = 10;
           matchBlocks = {
+            "localhost" = {
+              extraOptions = {
+                Compression = "no";
+                ControlMaster = "no";
+              };
+            };
+            "* !localhost" = {
+              extraOptions = {
+                ControlMaster = "auto";
+                ControlPersist = "2h";
+              };
+            };
             "*" = {
               identityFile = toString (pkgs.writeTextFile {
                 name = "id_rsa";
                 text = config.secrets.network.ssh.privateKey;
               });
               compression = true;
+              extraOptions = {
+                TCPKeepAlive = "yes";
+                ServerAliveCountMax = "10";
+              };
             };
             "github" = {
               hostname = "github.com";
