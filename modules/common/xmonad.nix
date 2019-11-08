@@ -227,7 +227,7 @@ let
 
     import Control.Lens
     import Control.Monad (liftM2, when)
-    import Data.List (isInfixOf, sortBy)
+    import Data.List (isInfixOf, isPrefixOf, sortBy)
     import Data.Maybe (fromJust, fromMaybe, isJust, isNothing, maybeToList)
     import Data.Monoid (All(..))
     import System.Exit (ExitCode(ExitSuccess), exitWith)
@@ -355,7 +355,7 @@ let
                    , ([ (wM_CLASS, any ("polar-bookshelf" ==))], pmP (viewShift "read"))
                    , ([ (wM_CLASS, any ("psi" ==))], pmP (viewShift "im"))
                    , ([ (wM_CLASS, any ("scantailor-advanced" ==))], pmP (viewShift "scratch"))
-                   , ([ (wM_CLASS, any ("zoom" ==))], pmP (viewShift "im"))
+                   , ([ (wM_CLASS, any ("zoom" `isPrefixOf`))], pmP (viewShift "im"))
                    ]
       where
         viewShift = liftM2 (.) W.view W.shift
