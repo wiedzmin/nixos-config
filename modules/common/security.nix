@@ -58,6 +58,11 @@ in {
         default = false;
         description = "Whether to enable security tools.";
       };
+      pinentryFlavor = mkOption {
+        type = types.enum pkgs.pinentry.flavors;
+        example = "gnome3";
+        description = "Pinentry flavor to use.";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -73,6 +78,10 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
+      assertions = [{
+        assertion = cfg.pinentryFlavor != null;
+        message = "security: Must select exactly one pinentry flavor.";
+      }];
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           # jd-gui
@@ -113,7 +122,7 @@ in {
       };
       programs.gnupg.agent = {
         enable = true;
-        pinentryFlavor = "emacs";
+        pinentryFlavor = cfg.pinentryFlavor;
       };
       # FIXME: think how to make plug point(s) for secrets with example of this use case
       services.openvpn.servers."${config.secrets.job.vpn.name}" = {

@@ -481,6 +481,7 @@
 
   custom.security = {
     enable = true;
+    pinentryFlavor = "qt";
     emacs.enable = true;
     xmonad.enable = true;
   };
