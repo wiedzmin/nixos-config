@@ -242,7 +242,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
-        "M-M1-q" = ''spawn "${pkgs.xorg.xrdb}/bin/xrdb -merge $HOME/.Xresources"'';
+        "M-M1-q" = ''spawn "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources"'';
       };
     })
   ];
