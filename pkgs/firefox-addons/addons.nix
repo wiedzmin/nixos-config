@@ -1,4 +1,4 @@
-{ buildFirefoxXpiAddon, fetchurl, stdenv }: {
+{ buildFirefoxXpiAddon, buildFirefoxXpiAddonFromArchPkg, fetchurl, stdenv }: {
   "cookie-autodelete" = buildFirefoxXpiAddon {
     pname = "cookie-autodelete";
     version = "3.0.1";
@@ -183,12 +183,12 @@
       platforms = platforms.all;
     };
   };
-  "tridactyl" = buildFirefoxXpiAddon rec {
+  "tridactyl" = buildFirefoxXpiAddonFromArchPkg rec {
     pname = "tridactyl";
-    version = "1.16.1";
+    version = "1.17.1-1";
     addonId = "tridactyl.vim@cmcaine.co.uk";
-    url = "https://addons.mozilla.org/firefox/downloads/file/3027747/tridactyl-${version}-an+fx.xpi";
-    sha256 = "11rkvbv1q3qlpjackmlrk82yghb0ly49zd73d6rbc9xl2r02ql0b";
+    url = "https://archive.archlinux.org/packages/f/firefox-tridactyl/firefox-tridactyl-${version}-any.pkg.tar.xz";
+    sha256 = "174jkqq1pmma70is1b6xksc267wjqaf9xlijgg8mrqjj8bb4b6z0";
     meta = with stdenv.lib; {
       homepage = "https://github.com/tridactyl/tridactyl";
       description = ''
