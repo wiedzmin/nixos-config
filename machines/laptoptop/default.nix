@@ -348,6 +348,7 @@
 
   custom.content = {
     consumers.enable = true;
+    compression.enable = true;
     orderingTools.enable = true;
     videoTools.enable = true;
     mpd.enable = true;
