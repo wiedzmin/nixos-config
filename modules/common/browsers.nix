@@ -291,6 +291,9 @@ in {
           keymap нс yc
 
           keymap . /
+
+          set keytranslatemodes.ignoremaps true
+          set keytranslatemodes.hintmaps true
         '';
         home.file = {
           ".mozilla/firefox/profile.default/browser-extension-data/{d47d18bc-d6ba-4f96-a144-b3016175f3a7}/storage.js".text = builtins.toJSON {
