@@ -146,7 +146,22 @@ in {
                 "extensions.update.enabled" = false;
                 "extensions.update.url" = "";
                 "lightweightThemes.selectedThemeID" = "firefox-compact-dark@mozilla.org";
+                "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
               };
+              userChrome = ''
+                /* hides the native tabs */
+                #TabsToolbar {
+                  visibility: collapse;
+                }
+
+                #titlebar {
+                  visibility: collapse;
+                }
+
+                #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
+                  visibility: collapse !important;
+                }
+              '';
               handlers = {
                 defaultHandlersVersion = { "en-US" = 4; };
                 mimeTypes = { "application/pdf" = { action = 3; }; };
