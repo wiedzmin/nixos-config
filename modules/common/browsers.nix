@@ -123,6 +123,7 @@ in {
             display-anchors
             ghosttext
             passff
+            tree_style_tab
             tridactyl
             url-in-title
             web_media_controller

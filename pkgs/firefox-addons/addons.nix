@@ -268,4 +268,17 @@
       platforms = platforms.unix;
     };
   };
+  "tree_style_tab" = buildFirefoxXpiAddon {
+    pname = "tree_style_tab";
+    version = "3.2.4";
+    addonId = "treestyletab@piro.sakura.ne.jp";
+    url = "https://addons.mozilla.org/firefox/downloads/file/3441095/tree_style_tab-3.2.4-fx.xpi";
+    sha256 = "1nfj33dpdpsa8z1j2y8ag6pacc187adpgws4g788hqz86mynhmsi";
+    meta = with stdenv.lib; {
+      homepage = "https://piro.sakura.ne.jp/xul/_treestyletab.html.en";
+      description = "Show tabs like a tree.";
+      license = licenses.gpl2; # MPL 1.1/GPL 2.0/LGPL 2.1
+      platforms = platforms.unix;
+    };
+  };
 }
