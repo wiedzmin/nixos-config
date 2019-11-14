@@ -6,7 +6,9 @@ let
   dmenu_runapps = pkgs.writeShellScriptBin "dmenu_runapps" ''
     ${pkgs.j4-dmenu-desktop}/bin/j4-dmenu-desktop --display-binary \
       --dmenu="(${pkgs.coreutils}/bin/cat ; (${pkgs.dmenu}/bin/stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
-                                                                          ${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.fonts.dmenu}'"
+      ${if cfg.dmenuFrecency.enable
+        then "${pkgs.haskellPackages.yeganesh}/bin/yeganesh -- -i -l 15 -fn '${config.attributes.fonts.dmenu}'\""
+        else "${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.fonts.dmenu}'\""}
   '';
   dmenu_select_windows = pkgs.writeShellScriptBin "dmenu_select_windows" ''
     ${pkgs.wmctrl}/bin/wmctrl -a $(${pkgs.wmctrl}/bin/wmctrl -l | \
@@ -706,6 +708,13 @@ in {
           Whether to enable xmonad.
         '';
       };
+      dmenuFrecency.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable Frecency trakcing for Dmenu with Yeganesh.
+        '';
+      };
       font = mkOption {
         type = types.str;
         default = "";
@@ -723,49 +732,55 @@ in {
     };
   };
 
-  config = mkIf cfg.enable {
-    services.xserver.windowManager = {
-      default = "xmonad";
-      xmonad = {
-        enable = true;
-        enableContribAndExtras = true;
-        extraPackages = p: [ p.dbus p.monad-logger p.lens p.split ];
-      };
-    };
-    environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
-    home-manager.users."${config.attributes.mainUser.name}" = {
-      home.file = {
-        ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".text = extraCombinators;
-        ".xmonad/lib/XMonad/Util/WindowTypes.hs".text = windowTypes;
-        ".xmonad/lib/XMonad/Util/Xkb.hs".text = xkbToggle;
-        ".xmonad/xmonad.hs" = {
-          text = configText;
-          onChange = "xmonad --recompile";
+  config = mkMerge [
+    (mkIf cfg.enable {
+      services.xserver.windowManager = {
+        default = "xmonad";
+        xmonad = {
+          enable = true;
+          enableContribAndExtras = true;
+          extraPackages = p: [ p.dbus p.monad-logger p.lens p.split ];
         };
       };
-      xdg.configFile."xmobar/xmobarrc".text = ''
-        Config { ${lib.optionalString (config.attributes.fonts.xmobar != "") ''font = "${config.attributes.fonts.xmobar}"''}
-               , bgColor = "black"
-               , fgColor = "grey"
-               , position = TopW L 100
-               , lowerOnStart = False
-               , allDesktops = True
-               , persistent = True
-               , commands = [ Run Date "%a %d/%m/%y %H:%M:%S" "date" 10
-                            , Run StdinReader
-                            , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
-                                                     "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
-                                                     "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
-                            , Run Com "wifi-status" [] "wifi" 60
-                            , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
-                                      , ("ru", "<fc=green>ru</fc>")
-                                      ]
-                            ]
-               , sepChar = "%"
-               , alignSep = "}{"
-               , template = "%StdinReader% }{| %battery% | %wifi% | <fc=#ee9a00>%date%</fc> |%kbd%"
-               }
-      '';
-    };
-  };
+      environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.file = {
+          ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".text = extraCombinators;
+          ".xmonad/lib/XMonad/Util/WindowTypes.hs".text = windowTypes;
+          ".xmonad/lib/XMonad/Util/Xkb.hs".text = xkbToggle;
+          ".xmonad/xmonad.hs" = {
+            text = configText;
+            onChange = "xmonad --recompile";
+          };
+        };
+        home.packages = with pkgs; [ dmenu_runapps ];
+        xdg.configFile."xmobar/xmobarrc".text = ''
+          Config { ${lib.optionalString (config.attributes.fonts.xmobar != "") ''font = "${config.attributes.fonts.xmobar}"''}
+                 , bgColor = "black"
+                 , fgColor = "grey"
+                 , position = TopW L 100
+                 , lowerOnStart = False
+                 , allDesktops = True
+                 , persistent = True
+                 , commands = [ Run Date "%a %d/%m/%y %H:%M:%S" "date" 10
+                              , Run StdinReader
+                              , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
+                                                       "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
+                                                       "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
+                              , Run Com "wifi-status" [] "wifi" 60
+                              , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
+                                        , ("ru", "<fc=green>ru</fc>")
+                                        ]
+                              ]
+                 , sepChar = "%"
+                 , alignSep = "}{"
+                 , template = "%StdinReader% }{| %battery% | %wifi% | <fc=#ee9a00>%date%</fc> |%kbd%"
+                 }
+        '';
+      };
+    })
+    (mkIf cfg.dmenuFrecency.enable {
+      environment.systemPackages = with pkgs; [ dmenu ];
+    })
+  ];
 }

@@ -564,7 +564,10 @@
     };
   };
 
-  wm.xmonad.enable = true;
+  wm.xmonad = {
+    enable = true;
+    dmenuFrecency.enable = true;
+  };
 
   home-manager.users."${config.attributes.mainUser.name}" = {
     nixpkgs.config.allowUnfree = true;
