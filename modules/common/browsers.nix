@@ -133,7 +133,6 @@ in {
               name = "profile.default";
               path = "profile.default";
               settings = {
-                "extensions.autoDisableScopes" = 0;
                 "browser.ctrlTab.recentlyUsedOrder" = false;
                 "browser.download.dir" = "${cfg.downloadPath}";
                 "browser.link.open_newwindow" = 2;
@@ -141,7 +140,12 @@ in {
                 "browser.sessionstore.restore_tabs_lazily" = true;
                 "browser.shell.checkDefaultBrowser" = true;
                 "browser.startup.page" = 3;
+                "extensions.autoDisableScopes" = 0;
                 "extensions.pocket.enabled" = false;
+                "extensions.update.autoUpdateDefault" = false;
+                "extensions.update.background.url" = "";
+                "extensions.update.enabled" = false;
+                "extensions.update.url" = "";
                 "lightweightThemes.selectedThemeID" = "firefox-compact-dark@mozilla.org";
               };
               handlers = {
