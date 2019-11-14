@@ -185,10 +185,10 @@
   };
   "tridactyl" = buildFirefoxXpiAddonFromArchPkg rec {
     pname = "tridactyl";
-    version = "1.17.1-1";
+    version = "1.16.3-1";
     addonId = "tridactyl.vim@cmcaine.co.uk";
     url = "https://archive.archlinux.org/packages/f/firefox-tridactyl/firefox-tridactyl-${version}-any.pkg.tar.xz";
-    sha256 = "174jkqq1pmma70is1b6xksc267wjqaf9xlijgg8mrqjj8bb4b6z0";
+    sha256 = "0bzc4x7rx9p0srh9h4znz6hdb5v5hlym6a9mimj8bx26y5zwnbdr";
     meta = with stdenv.lib; {
       homepage = "https://github.com/tridactyl/tridactyl";
       description = ''
