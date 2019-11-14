@@ -175,10 +175,6 @@ in {
 
           colorscheme dark
 
-          guiset_quiet tabs autohide
-          guiset_quiet navbar autohide
-          guiset_quiet hoverlink top-right
-
           " Comment toggler for Reddit and Hacker News
           bind ;c hint -c [class*="expand"],[class="togg"]
 
@@ -215,8 +211,6 @@ in {
           set putfrom clipboard
 
           " Make Tridactyl work on more sites at the expense of some security
-          set csp clobber
-          fixamo_quiet
 
           " Make quickmarks for the sane Tridactyl issue view
           quickmark T https://github.com/cmcaine/tridactyl/issues?utf8=%E2%9C%93&q=sort%3Aupdated-desc+
