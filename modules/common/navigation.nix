@@ -564,10 +564,10 @@ in {
             TabTimeout = 0
 
             URL_http = ${config.attributes.defaultCommands.browser} %u
-            URL_man = ${config.attributes.defaultCommands.terminal} 'man %s'
-            URL_info = ${config.attributes.defaultCommands.terminal} 'info %s'
-            URL_readme = ${config.attributes.defaultCommands.terminal} '${config.attributes.defaultCommands.pager} /usr/doc/%s/README'
-            URL_info = ${config.attributes.defaultCommands.terminal} 'info %s'
+            URL_man = ${config.attributes.defaultCommands.terminal} -e 'man %s'
+            URL_info = ${config.attributes.defaultCommands.terminal} -e 'info %s'
+            URL_readme = ${config.attributes.defaultCommands.terminal} -e '${config.attributes.defaultCommands.pager} /usr/doc/%s/README'
+            URL_info = ${config.attributes.defaultCommands.terminal} -e 'info %s'
             URL_sh = sh -c '%s'
 
             EXT:doc,docx,rtf = ${config.attributes.defaultCommands.textProcessor} %s

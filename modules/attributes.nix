@@ -63,7 +63,7 @@ with lib;
     defaultCommands.terminal = mkOption {
       description = "Default terminal";
       type = types.str;
-      default = "${pkgs.alacritty}/bin/alacritty -e";
+      default = "${pkgs.alacritty}/bin/alacritty";
     };
     defaultCommands.remoteTerminal = mkOption {
       description = "Default remote terminal";
