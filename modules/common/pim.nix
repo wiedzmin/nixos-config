@@ -462,6 +462,13 @@ let
       (deft-use-filter-string-for-filename t)
       (deft-recursive t)
       (deft-extensions '("org" "txt")))
+
+    (use-package org-sticky-header
+      :ensure t
+      :hook (org-mode . org-sticky-header-mode)
+      :custom
+      (org-sticky-header-full-path 'full)
+      (org-sticky-header-outline-path-separator " > "))
   '';
 in {
   options = {
