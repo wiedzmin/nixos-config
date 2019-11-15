@@ -390,6 +390,11 @@ in {
         default = false;
         description = "Whether to enable custom scripts.";
       };
+      homeManagerBackups.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to try backing up existing files in the way of HM symlinks.";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -404,6 +409,9 @@ in {
   };
 
   config = mkMerge [
+    (mkIf (cfg.enable && cfg.homeManagerBackups.enable) {
+      environment.variables.HOME_MANAGER_BACKUP_EXT = "hm_backup";
+    })
     (mkIf (cfg.enable && cfg.nix.helpers.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
