@@ -75,6 +75,25 @@ let
         browser_cmd = webjumps[webjump]
         os.system("{0} {1}".format(browser_cmd, webjump))
   '';
+  insert_snippet = writePythonScriptWithPythonPackages "insert_snippet" [
+    pkgs.python3Packages.dmenu-python
+    pkgs.python3Packages.redis
+  ] ''
+    import json
+    import os
+
+    import dmenu
+    import redis
+
+    import redis
+    r = redis.Redis(host='localhost', port=6379, db=0)
+
+    snippets = json.loads(r.get("misc/snippets"))
+
+    snippet = dmenu.show(snippets, prompt="insert", lines=10)
+    if snippet:
+        os.system("${pkgs.xdotool}/bin/xdotool type \"{0}\"".format(snippet))
+  '';
   emacsNavigationSetup = ''
     (use-package ace-link
       :ensure t
@@ -542,6 +561,7 @@ in {
         ${pkgs.redis}/bin/redis-cli set job/webjumps ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.webjumps)}
         ${pkgs.redis}/bin/redis-cli set nav/searchengines ${lib.strings.escapeNixString (builtins.toJSON config.secrets.nav.searchEngines)}
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${lib.strings.escapeNixString (builtins.toJSON config.secrets.nav.webjumps)}
+        ${pkgs.redis}/bin/redis-cli set misc/snippets ${lib.strings.escapeNixString (builtins.toJSON config.secrets.misc.snippetsInventory)}
       '';
     })
     (mkIf (cfg.enable && cfg.gmrun.enable) {
@@ -672,6 +692,7 @@ in {
         "M-/" = ''spawn "${search_selection}/bin/search_selection" >> showWSOnProperScreen "web"'';
         "M-C-/" = ''spawn "${search_prompt}/bin/search_prompt" >> showWSOnProperScreen "web"'';
         "M-j" = ''spawn "${webjumps}/bin/webjumps" >> showWSOnProperScreen "web"'';
+        "M-o" = ''spawn "${insert_snippet}/bin/insert_snippet"'';
       };
     })
   ];
