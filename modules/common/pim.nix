@@ -452,6 +452,16 @@ let
         (f-files "/home/${config.attributes.mainUser.name}/docs/org-kb" nil t))
       :custom
       (ivy-omni-org-file-sources '(org-agenda-files custom/org-kb-files)))
+
+    (use-package deft
+      :ensure t
+      :bind
+      ("<f12>" . deft)
+      :custom
+      (deft-directory "/home/${config.attributes.mainUser.name}/docs/deft")
+      (deft-use-filter-string-for-filename t)
+      (deft-recursive t)
+      (deft-extensions '("org" "txt")))
   '';
 in {
   options = {
