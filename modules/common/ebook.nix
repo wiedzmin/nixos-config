@@ -55,6 +55,8 @@ in {
           calibre
           djview
           djvulibre
+        ] ++ lib.optionals config.attributes.staging.enable [
+          epr
         ];
         programs.zathura = {
           enable = true;

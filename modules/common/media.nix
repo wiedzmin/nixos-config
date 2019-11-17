@@ -52,6 +52,9 @@ in {
     (mkIf cfg.enable {
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "audio" "video" ];
     })
+    (mkIf (cfg.enable && config.attributes.staging.enable) {
+      hardware.brillo.enable = true;
+    })
     (mkIf cfg.pulse.enable {
       hardware.pulseaudio = {
         enable = true;

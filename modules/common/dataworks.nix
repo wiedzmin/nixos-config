@@ -126,6 +126,8 @@ in {
         home.packages = with pkgs; [
           fd
           sd
+        ] ++ lib.optionals config.attributes.staging.enable [
+          fselect
         ];
         programs = {
           lsd = {
@@ -162,6 +164,8 @@ in {
           xurls
         ] ++ lib.optionals (config.attributes.staging.enable) [
           lv
+          ruplacer
+          step-cli
         ];
       };
     })

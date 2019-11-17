@@ -254,6 +254,7 @@ in {
           you-get
           ytcc
         ] ++ lib.optionals config.attributes.staging.enable [
+          lsd2dsl
         ];
         services.syncthing.enable = true; # TODO: consider separate option(s)
       };
