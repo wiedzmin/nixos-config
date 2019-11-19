@@ -6,9 +6,7 @@ let
   emacsPythonSetup = ''
     (use-package ms-pyls-client
       :quelpa
-      (ms-pyls-client :repo "wiedzmin/ms-pyls-client" :fetcher github)
-      :config
-      (push "./src" lsp-python-ms-extra-paths))
+      (ms-pyls-client :repo "wiedzmin/ms-pyls-client" :fetcher github))
 
     (use-package python
       :mode ("\\.py$" . python-mode)
