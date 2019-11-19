@@ -459,6 +459,7 @@
     nix = {
       helpers.enable = true;
       srcfmt.enable = true;
+      importers.enable = true;
     };
     misc.enable = true;
     scripts.enable = true;
