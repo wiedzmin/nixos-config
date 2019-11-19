@@ -445,6 +445,11 @@ in {
         default = false;
         description = "Whether to enable Libvirt";
       };
+      virtualbox.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable VirtualBox";
+      };
       xmonad.enable = mkOption {
         type = types.bool;
         default = false;
@@ -465,7 +470,10 @@ in {
         "net.ipv4.ip_forward" = 1; # for VMs forwarding
       };
     })
-
+    (mkIf (cfg.enable && cfg.virtualbox.enable) {
+      virtualisation.virtualbox.host.enable = true;
+      users.users."${config.attributes.mainUser.name}".extraGroups = [ "vboxusers" ];
+    })
     (mkIf (cfg.enable && cfg.docker.enable && cfg.docker.aux.enable) {
       environment.systemPackages = with pkgs; [
         # docker-slim # TODO: make package https://github.com/docker-slim/docker-slim

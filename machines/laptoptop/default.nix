@@ -519,6 +519,7 @@
       };
     };
     libvirt.enable = true;
+    virtualbox.enable = true;
   };
 
   custom.xinput = {

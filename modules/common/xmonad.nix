@@ -346,6 +346,7 @@ let
                    , ([ (wM_CLASS, any ("URxvt" ==))], pmP (viewShift "shell"))
                    , ([ (wM_CLASS, any ("Virt-manager" ==))], pmP (viewShift "tools"))
                    , ([ (wM_CLASS, any ("Virt-viewer" ==))], pmP (viewShift "tools"))
+                   , ([ (wM_CLASS, any ("VirtualBox Manager" ==))], pmP (viewShift "tools"))
                    , ([ (wM_CLASS, any ("Wire" ==))], pmP (viewShift "im"))
                    , ([ (wM_CLASS, any ("Xsane" ==))], pmP (viewShift "scratch"))
                    , ([ (wM_CLASS, any ("aft-linux-qt" ==))], pmP (viewShift "scratch"))
