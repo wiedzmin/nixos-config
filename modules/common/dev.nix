@@ -97,6 +97,11 @@ let
       (lsp-ui-sideline-show-hover t)
       (lsp-ui-sideline-show-symbol t)
       (lsp-ui-sideline-update-mode 'point))
+
+    (use-package direnv
+      :ensure t
+      :config
+      (direnv-mode))
   '';
 in {
   options = {
@@ -217,6 +222,7 @@ in {
           pv
           loop
           ix
+          lorri
         ];
         programs.direnv = {
           enable = true;
@@ -224,6 +230,19 @@ in {
         };
       };
       systemd.services.redis.postStart = cfg.metadataCacheInstructions;
+      systemd.user.services."lorri-fixed" = { # one from nixpkgs fails to socket-start for some reason
+        description = "Start Lorri daemon";
+        path = with pkgs; [ config.nix.package gnutar gzip ];
+        serviceConfig = {
+          ExecStart = "${pkgs.lorri}/bin/lorri daemon";
+          PrivateTmp = true;
+          ProtectSystem = "strict";
+          ProtectHome = "read-only";
+          Restart = "on-failure";
+          StandardOutput = "journal+console";
+          StandardError = "inherit";
+        };
+      };
     })
     (mkIf cfg.emacs.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -234,6 +253,7 @@ in {
           epkgs.jinja2-mode
           epkgs.multi-compile
           epkgs.webpaste
+          epkgs.direnv
         ];
       };
       ide.emacs.config = ''${emacsDevSetup}'';
