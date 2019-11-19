@@ -174,6 +174,9 @@ in {
     (mkIf cfg.enable {
       programs.light.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; lib.optionals (config.attributes.staging.enable) [
+          blugon
+        ];
         # TODO: consider rework/restructure
         services = {
           compton = {

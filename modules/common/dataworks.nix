@@ -166,6 +166,8 @@ in {
           lv
           ruplacer
           step-cli
+          squashfs-tools-ng
+          hexdino
         ];
       };
     })
