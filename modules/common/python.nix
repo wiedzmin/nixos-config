@@ -34,25 +34,6 @@ let
 
     (use-package py-yapf :ensure t)
 
-    (use-package pyvenv
-      :ensure t
-      :after projectile dash
-      :init
-      (defun custom/switch-python-project-context ()
-        (let ((project-root (projectile-project-root)))
-          (when (-non-nil (mapcar (lambda (variant) (file-exists-p (concat project-root variant)))
-                                  '("requirements.pip" "requirements.txt")))
-            (pyvenv-deactivate)
-            (pyvenv-activate (format "%s/%s"
-                                     (pyvenv-workon-home)
-                                     (file-name-base
-                                      (directory-file-name
-                                       project-root)))))))
-      :config
-      (pyvenv-mode 1)
-      :hook ((projectile-after-switch-project-hook . custom/switch-python-project-context)
-             (python-mode-hook . custom/switch-python-project-context)))
-
     (use-package pip-requirements
       :ensure t
       :delight (pip-requirements-mode "PyPA Requirements")
