@@ -21,7 +21,7 @@ with lib;
             panes:
               - mc
       '';
-      ".ssh/id_rsa.pub".text = config.secrets.network.ssh.publicKey; # kept secrets, it tends to diverge otherwise
+      ".ssh/id_rsa.pub".text = config.secrets.identity.ssh.publicKey; # kept secrets, it tends to diverge otherwise
       "tmuxp/media.yml".text = ''
         session_name: media
         windows:

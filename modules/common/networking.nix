@@ -150,7 +150,7 @@ in {
             "*" = {
               identityFile = toString (pkgs.writeTextFile {
                 name = "id_rsa";
-                text = config.secrets.network.ssh.privateKey;
+                text = config.secrets.identity.ssh.privateKey;
               });
               compression = true;
               extraOptions = {
