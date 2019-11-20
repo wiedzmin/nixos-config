@@ -1,14 +1,11 @@
 { config, pkgs, lib, options, modulesPath }:
 
-let
-  path = ./overlay;
-  content = builtins.readDir path;
-in {
+{
   nix = {
     # For interactive usage
     nixPath = [
       "nixpkgs=${config.attributes.paths.nixpkgs.local}"
-      "nixpkgs-overlays=/etc/nixos/pkgs/overlay"
+      "nixpkgs-overlays=/etc/nixos/pkgs/overlays"
       "nixos-config=/etc/nixos/configuration.nix"
       "home-manager=${config.attributes.paths.home-manager}"
     ];
@@ -50,9 +47,9 @@ in {
     };
     overlays = [
       (import (builtins.fetchTarball { url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz"; }))
-    ] ++ map (n: import (path + ("/" + n)))
-      (builtins.filter (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (path + ("/" + n + "/default.nix")))
-        (lib.attrNames content));
+    ] ++ map (n: import (./overlays + ("/" + n)))
+      (builtins.filter (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (./overlays + ("/" + n + "/default.nix")))
+        (lib.attrNames (builtins.readDir ./overlays)));
   };
 
   systemd.services.nix-daemon = {
