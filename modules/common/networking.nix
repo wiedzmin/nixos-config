@@ -162,6 +162,25 @@ in {
               hostname = "github.com";
               user = "git";
               serverAliveInterval = 60;
+              identityFile = toString (pkgs.writeTextFile {
+                name = "github_id_rsa";
+                text = config.secrets.dev.github.ssh.privateKey;
+              });
+              extraOptions = {
+                ControlMaster = "auto";
+                ControlPersist = "yes";
+                preferredAuthentications = "publickey";
+              };
+            };
+            "bitbucket" = {
+              hostname = "bitbucket.org";
+              user = "git";
+              serverAliveInterval = 60;
+              identityFile = toString (pkgs.writeTextFile {
+                name = "bitbucket_id_rsa";
+                text = config.secrets.dev.bitbucket.ssh.privateKey;
+              });
+              identitiesOnly = true;
               extraOptions = {
                 ControlMaster = "auto";
                 ControlPersist = "yes";
