@@ -479,6 +479,28 @@ let
       :custom-face (swiper-match-face-2 ((t (:background "#bbbbbb" :weight bold))))
       :custom-face (swiper-match-face-3 ((t (:background "#bbbbff" :weight bold))))
       :custom-face (swiper-match-face-4 ((t (:background "#ffbbff" :weight bold)))))
+
+    (define-hostmode poly-nix-hostmode :mode 'nix-mode)
+
+    (define-innermode poly-emacs-innermode
+      :mode 'emacs-lisp-mode
+      :head-matcher (rx "(use-package" space (zero-or-more alnum))
+      :tail-matcher (rx ")")
+      :head-mode 'host
+      :tail-mode 'host)
+    (define-innermode poly-haskell-innermode
+      :mode 'haskell-mode
+      :head-matcher (rx (zero-or-more space) (or (minimal-match "--") "module" "{-# LANGUAGE"))
+      :tail-matcher (rx ")")
+      :head-mode 'host
+      :tail-mode 'host)
+
+    (define-polymode poly-nix-emacs-mode
+      :hostmode 'poly-nix-hostmode
+      :innermodes '(poly-emacs-innermode))
+    (define-polymode poly-nix-haskell-mode
+      :hostmode 'poly-nix-hostmode
+      :innermodes '(poly-haskell-innermode))
   '';
 in {
   options = {
@@ -680,6 +702,7 @@ in {
           epkgs.ivy-yasnippet
           epkgs.link-hint
           epkgs.phi-search
+          epkgs.polymode
           epkgs.projectile
           epkgs.rg
           epkgs.swiper
