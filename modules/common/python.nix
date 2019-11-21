@@ -6,7 +6,9 @@ let
   emacsPythonSetup = ''
     (use-package ms-pyls-client
       :quelpa
-      (ms-pyls-client :repo "wiedzmin/ms-pyls-client" :fetcher github))
+      (ms-pyls-client :repo "wiedzmin/ms-pyls-client" :fetcher github)
+      :custom
+      (lsp-python-ms-extra-paths '(${builtins.concatStringsSep " " (lib.forEach cfg.pylsExtraSourcePaths (path: ''"${path}"''))})))
 
     (use-package python
       :mode ("\\.py$" . python-mode)
@@ -83,6 +85,11 @@ in {
           "W504"
         ];
         description = "Error codes to ignore.";
+      };
+      pylsExtraSourcePaths = mkOption {
+        type = types.listOf types.str;
+        default = [];
+        description = "List of paths to search for Python packages, which will be fed to Python Language Server.";
       };
       emacs.enable = mkOption {
         type = types.bool;

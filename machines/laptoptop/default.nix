@@ -391,6 +391,7 @@
 
   custom.dev.python = {
     enable = true;
+    pylsExtraSourcePaths = config.secrets.job.pylsExtraSourcePaths;
     emacs.enable = true;
   };
 
