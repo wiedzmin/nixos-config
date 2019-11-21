@@ -241,4 +241,196 @@ self: super: {
     };
   };
 
+  django-js-asset = super.python3Packages.buildPythonPackage rec {
+    pname = "django-js-asset";
+    version = "1.2.2";
+
+    src = super.python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "0q3j2rsdb2i7mvncy9z160cghcggvk87q14qnn7jvcp0sa0awqy1";
+    };
+
+    doCheck = false;
+
+    meta = with super.stdenv.lib; {
+      homepage = "https://github.com/matthiask/django-js-asset/";
+      license = licenses.bsdOriginal;
+      description = "script tag with additional attributes for django.forms.Media";
+    };
+  };
+
+  django-choices = super.python3Packages.buildPythonPackage rec {
+    pname = "django-choices";
+    version = "1.7.0";
+
+    src = super.python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "1pzzbhc9l122a3pjai2x6qkimbcpxdr0q5h6gkyvbxzpdjwkc3rw";
+    };
+
+    doCheck = false;
+
+    propagatedBuildInputs = with super.python3Packages; [
+      django
+    ];
+
+    meta = with super.stdenv.lib; {
+      homepage = "https://github.com/bigjason/django-choices";
+      license = licenses.mit;
+      description = "Sanity for the django choices functionality.";
+    };
+  };
+
+  django-debug-toolbar = super.python3Packages.buildPythonPackage rec {
+    pname = "django-debug-toolbar";
+    version = "2.1";
+
+    src = super.python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "1a77jckf2bgz1faidrsc6l5a01xhn7n12xaqlvh4h5hfdjy5gh94";
+    };
+
+    doCheck = false;
+
+    propagatedBuildInputs = with super.python3Packages; [
+      django
+      sqlparse
+    ];
+
+    meta = with super.stdenv.lib; {
+      homepage = "https://github.com/jazzband/django-debug-toolbar";
+      license = licenses.bsdOriginal;
+      description = "A configurable set of panels that display various debug information about the current request/response.";
+    };
+  };
+
+  django-epiced = super.python3Packages.buildPythonPackage rec {
+    pname = "django-epiced";
+    version = "0.4.3";
+
+    src = super.python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "0c481mr8s9aizpg4315iaw2ys8x58pi0qxjvqnznzp9nbpshmvyh";
+    };
+
+    doCheck = false;
+
+    propagatedBuildInputs = with super.python3Packages; [
+      markdown
+    ];
+
+    meta = with super.stdenv.lib; {
+      homepage = "https://github.com/belug23/django-epiced";
+      license = licenses.bsdOriginal;
+      description = "A Django app to add the EpicEditor with easy to use widget.";
+    };
+  };
+
+  django-mptt = super.python3Packages.buildPythonPackage rec {
+    pname = "django-mptt";
+    version = "0.10.0";
+
+    src = super.python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "0pmrykyzrmvf1iba1vwanqnwv56j1dalifd81hpw5dfh3m8c2rf7";
+    };
+
+    doCheck = false;
+
+    propagatedBuildInputs = with super.python3Packages; [
+      django
+      self.django-js-asset
+    ];
+
+    meta = with super.stdenv.lib; {
+      homepage = "https://github.com/django-mptt/django-mptt";
+      license = licenses.mit;
+      description = "Utilities for implementing Modified Preorder Tree Traversal with your Django Models and working with trees of Model instances.";
+    };
+  };
+
+  django-related-select = super.python3Packages.buildPythonPackage rec {
+    pname = "django-related-select";
+    version = "0.9.3";
+
+    src = super.python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "150rghb84m0qbmbg5ncfw9c0536li8br9p4xxwsldavvlr6kwiv2";
+    };
+
+    doCheck = false;
+
+    propagatedBuildInputs = with super.python3Packages; [
+      django
+    ];
+
+    meta = with super.stdenv.lib; {
+      homepage = "https://github.com/zachmccormick/django-related-select";
+      license = "UNKNOWN";
+      description = "Class-based View and django form field for related select boxes";
+    };
+  };
+
+  drest = super.python3Packages.buildPythonPackage rec {
+    pname = "drest";
+    version = "0.9.12";
+
+    src = super.python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "0bjlar9kswp9353rka0jx0q31n6h5m2q1h7bmfx4965r34ysb22x";
+    };
+
+    doCheck = false;
+
+    propagatedBuildInputs = with super.python3Packages; [
+      httplib2
+    ];
+
+    meta = with super.stdenv.lib; {
+      homepage = "http://github.com/datafolklabs/drest/";
+      license = licenses.bsdOriginal;
+      description = "dRest API Client Library for Python";
+    };
+  };
+
+  json-rpc = super.python3Packages.buildPythonPackage rec {
+    pname = "json-rpc";
+    version = "1.12.2";
+
+    src = super.python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "0a7zf3z3zdx1kksl76b05gknn0ygk3db8xydk6cd67457jrw6wla";
+    };
+
+    doCheck = false;
+
+    meta = with super.stdenv.lib; {
+      homepage = "https://github.com/pavlov99/json-rpc";
+      license = licenses.mit;
+      description = "JSON-RPC transport implementation";
+    };
+  };
+
+  jsonfield = super.python3Packages.buildPythonPackage rec {
+    pname = "jsonfield";
+    version = "2.0.2";
+
+    src = super.python3Packages.fetchPypi {
+      inherit pname version;
+      sha256 = "0d5qmjja31rgcj524qy8x527fx81dj1cpvys68f3bmnna14cvcdy";
+    };
+
+    doCheck = false;
+
+    propagatedBuildInputs = with super.python3Packages; [
+      django
+    ];
+
+    meta = with super.stdenv.lib; {
+      homepage = "https://github.com/dmkoch/django-jsonfield/";
+      license = licenses.mit;
+      description = "A reusable Django field that allows you to store validated JSON in your model.";
+    };
+  };
+
 }
