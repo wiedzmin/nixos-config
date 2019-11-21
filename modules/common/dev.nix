@@ -223,6 +223,8 @@ in {
           loop
           ix
           lorri
+        ] ++ lib.optionals config.attributes.staging.enable [
+          async
         ];
         programs.direnv = {
           enable = true;
