@@ -38,6 +38,11 @@ in {
         default = false;
         description = "Whether to enable successors of some traditional tools like find, sed, etc.";
       };
+      tex.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable various TeX tools.";
+      };
       forensics.enable = mkOption {
         type = types.bool;
         default = false;
@@ -168,6 +173,14 @@ in {
           step-cli
           squashfs-tools-ng
           hexdino
+        ];
+      };
+    })
+    (mkIf cfg.tex.enable {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; lib.optionals (config.attributes.staging.enable) [
+          pplatex
+          texlab
         ];
       };
     })

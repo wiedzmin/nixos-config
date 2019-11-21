@@ -359,6 +359,7 @@
     forensics.enable = true;
     codesearch.enable = true;
     toolsng.enable = true;
+    tex.enable = true;
     emacs.enable = true;
   };
 
