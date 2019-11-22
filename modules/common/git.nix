@@ -137,6 +137,8 @@ let
             ("E" . nil)
             ("N" . magit-notes-edit)
             ("q" . custom/magit-kill-buffers))
+      (:map dired-mode-map
+            ("@" . magit-dired-log))
       :preface
       (defun open-global-repos-list ()
         (interactive)
