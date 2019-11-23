@@ -18,10 +18,14 @@ let
   ] ''
     import os
     import subprocess
+    import sys
 
     from git import Repo
     from git.cmd import Git
     import redis
+
+    if os.system("/run/wrappers/bin/ping -c 1 github.com") != 0:
+        sys.exit(0)
 
     r = redis.Redis(host='localhost', port=6379, db=0)
 
