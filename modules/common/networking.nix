@@ -1,38 +1,11 @@
 { config, lib, pkgs, ... }:
+with import ../util.nix { inherit config lib pkgs; };
 with lib;
 
 let
   cfg = config.custom.networking;
   # TODO: (re)write dmenu-based custom scripts for ssh and pass with bas of links below:
-  # https://github.com/menski/sshmenu/blob/master/sshmenu
   # https://github.com/carnager/rofi-pass/blob/master/rofi-pass
-  ssh_custom_user = pkgs.writeScriptBin "ssh_custom_user" ''
-    #! /usr/bin/env nix-shell
-    #! nix-shell -i python3 -p python3 python3Packages.dmenu-python
-    import os
-    import sys
-
-    import dmenu
-
-
-    users = [
-        "root",
-        "alex3rd", # FIXME: parameterize back again
-        "octocat"
-    ]
-
-    hosts = []
-    with open("/etc/hosts", "r") as hostsfile:
-        hosts = sorted(list(dict.fromkeys([entry.split()[1] for entry in hostsfile.read().split("\n") if len(entry)])))
-
-    user = dmenu.show(sorted(users), prompt='user', lines=5)
-    if not user:
-        sys.exit(1)
-    host = dmenu.show(sorted(hosts), prompt='host', lines=20)
-    if not host:
-        sys.exit(1)
-    os.system('tmux new-window "et {0}@{1}"'.format(user, host))
-  '';
   jnettop_hosts = pkgs.writeShellScriptBin "jnettop_hosts" ''
     main() {
         HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.dmenu}/bin/dmenu -i -p "Host" -l 15)
@@ -46,6 +19,36 @@ let
     main
 
     exit 0
+  '';
+  sshmenu = writePythonScriptWithPythonPackages "sshmenu" [
+    pkgs.python3Packages.dmenu-python
+    pkgs.python3Packages.libtmux
+    pkgs.python3Packages.redis
+  ] ''
+    import json
+    import subprocess
+
+    import dmenu
+    import libtmux
+    import redis
+
+
+    r = redis.Redis(host='localhost', port=6379, db=0)
+
+    extra_hosts_data = json.loads(r.get("job/extra_hosts"))
+    extra_hosts = []
+    for host in extra_hosts_data.values():
+        extra_hosts.extend(host)
+
+    host = dmenu.show(extra_hosts, prompt="ssh to",
+                      case_insensitive=True, lines=10)
+
+    if host:
+        tmux_server = libtmux.Server()
+        tmux_session = tmux_server.find_where({ "session_name": "${config.attributes.tmux.defaultSession}" })
+        ssh_window = tmux_session.new_window(attach=True, window_name=host,
+                                             window_shell="${pkgs.openssh}/bin/ssh {0}".format(host))
+
   '';
 in {
   options = {
@@ -204,8 +207,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
-        "M-S-d" = ''spawn "${ssh_custom_user}/bin/ssh_custom_user" >> showWSOnProperScreen "shell"'';
-        "M-S-s" = ''spawn "${pkgs.rofi}/bin/rofi -show ssh" >> showWSOnProperScreen "shell"'';
+        "M-S-s" = ''spawn "${sshmenu}/bin/sshmenu" >> showWSOnProperScreen "shell"'';
         "M-M1-w" = ''spawn "${pkgs.wpa_supplicant_gui}/bin/wpa_gui"'';
         "M-M1-S-w" = ''spawn "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli" >> showWSOnProperScreen "shell"'';
         "M-s n <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart nscd.service"'';
