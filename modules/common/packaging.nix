@@ -344,6 +344,18 @@ let
       ${pkgs.nixfmt}/bin/nixfmt -w 120 $file
     done
   '';
+  make-package-diff = pkgs.writeShellScriptBin "make-package-diff" ''
+    PACKAGE=$1
+    TMP=`${pkgs.coreutils}/bin/mktemp -d`
+    cd $TMP
+    {
+        ${pkgs.nix}/bin/nix-shell "<nixpkgs>" -A $PACKAGE --run "unpackPhase"
+        ${pkgs.coreutils}/bin/mv * a
+        ${pkgs.coreutils}/bin/cp -r a b
+        $EDITOR b
+    } 2>&1 > /dev/null
+    ${pkgs.diffutils}/bin/diff -u --suppress-common-lines a b
+  '';
   emacsPackagingSetup = ''
     (use-package nix-mode
       :ensure t
@@ -455,6 +467,7 @@ in {
           dotnet-sdk # for building some binary releases
           nix-zsh-completions
           nix-review # https://github.com/Mic92/nix-review
+          make-package-diff
         ] ++ lib.optionals (config.attributes.staging.enable) [
           niv
         ];
