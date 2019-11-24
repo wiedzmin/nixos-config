@@ -78,10 +78,23 @@ in {
         default = false;
         description = "Whether to enable XMonad keybindings.";
       };
+      extraHosts = mkOption {
+        type = types.attrs;
+        description = "Extra hosts.";
+        default = {};
+      };
     };
   };
 
   config = mkMerge [
+    (mkIf (cfg.enable) {
+      networking.extraHosts = ''
+        127.0.0.1   ${config.networking.hostName}
+        ${builtins.concatStringsSep "\n"
+          (lib.mapAttrsToList (ip: hosts: ip + "    " + (builtins.concatStringsSep " " hosts))
+            cfg.extraHosts)};
+      '';
+    })
     (mkIf (cfg.enable && cfg.tools.enable) {
       programs = {
         mtr.enable = true;

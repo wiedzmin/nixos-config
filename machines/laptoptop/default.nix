@@ -104,12 +104,6 @@
     useDHCP = true;
     dhcpcd.denyInterfaces = [ "docker*" "virbr*" "br*"];
     nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
-    extraHosts = ''
-      127.0.0.1 ${config.networking.hostName}
-      ${builtins.concatStringsSep "\n"
-        (lib.mapAttrsToList (ip: hosts: ip + "    " + (builtins.concatStringsSep " " hosts))
-          (config.secrets.job.infra.extraHosts // config.secrets.network.extraHosts))};
-    '';
   };
 
   nix = {
@@ -454,6 +448,7 @@
     enable = true;
     clients.enable = true;
     xmonad.enable = true;
+    extraHosts = config.secrets.job.infra.extraHosts // config.secrets.network.extraHosts;
   };
 
   custom.packaging = {

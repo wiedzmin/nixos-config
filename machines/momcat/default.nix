@@ -100,14 +100,6 @@
     };
     useDHCP = true;
     nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
-    # extraHosts = ''
-    #   127.0.0.1 ${config.networking.hostName}
-    #   ${builtins.concatStringsSep "\n"
-    #     (lib.mapAttrsToList (ip: hosts: ip + "    " + (builtins.concatStringsSep " " hosts))
-    #       (config.secrets.job.infra.extraHosts // config.secrets.network.extraHosts))};
-    # '';
-    # networking.extraHosts = (builtins.concatStringsSep "\n"
-    #     (map (host: host.ip + "   " + (builtins.concatStringsSep " " host.hostNames)) config.misc.extra_hosts));
   };
 
   nix = {
