@@ -195,9 +195,8 @@ let
         LOG=$( (ask_for_logs) | ${pkgs.dmenu}/bin/dmenu -i -p "View log" -l 15)
         if [ -n "$LOG" ]; then
             enforce_job_vpn_up || exit 1
-            ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
-            ${config.secrets.job.infra.logsHost} \
-            -c 'tail -f $LOG'"
+            ${pkgs.tmux}/bin/tmux new-window "${pkgs.openssh}/bin/ssh \
+            ${config.secrets.job.infra.logsHost} 'tail -f $LOG'"
         fi
     }
 
@@ -274,9 +273,8 @@ let
                 ;;
             logs)
                 TASK=$( (ask_for_stack_task $STACK) | ${pkgs.dmenu}/bin/dmenu -i -p "Task" -l 15 | ${pkgs.gawk}/bin/awk '{print $1}' )
-                ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
-                                                  $SWARM_LEADER_NODE \
-                                                  -c 'docker service logs --follow $TASK'"
+                ${pkgs.tmux}/bin/tmux new-window "${pkgs.openssh}/bin/ssh $SWARM_LEADER_NODE \
+                                                  'docker service logs --follow $TASK'"
                 ;;
             *)
                 echo "Unknown mode: $MODE"
@@ -339,19 +337,6 @@ let
   vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
   '';
-  ctop_hosts = pkgs.writeShellScriptBin "ctop_hosts" ''
-    main() {
-        HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.dmenu}/bin/dmenu -p "Host" -l 20)
-        if [ -n "$HOST" ]; then
-            enforce_job_vpn_up || exit 1
-            ${pkgs.tmux}/bin/tmux new-window "${config.attributes.defaultCommands.remoteTerminal} $HOST -c 'ctop'"
-        fi
-    }
-
-    main
-
-    exit 0
-  '';
   docker_shell = let
     dockerPsCommand = "docker ps --format '{{.Names}}'";
   in pkgs.writeShellScriptBin "docker_shell" ''
@@ -362,12 +347,11 @@ let
                 SELECTED_CONTAINER=$( ${dockerPsCommand} | ${pkgs.dmenu}/bin/dmenu -p "Container" -l 20)
             else
                 enforce_job_vpn_up || exit 1
-                SELECTED_CONTAINER=$( ${config.attributes.defaultCommands.remoteTerminal} $HOST -c '${dockerPsCommand}' | ${pkgs.dmenu}/bin/dmenu -p "Container" -l 20)
+                SELECTED_CONTAINER=$( ${pkgs.openssh}/bin/ssh $HOST '${dockerPsCommand}' | ${pkgs.dmenu}/bin/dmenu -p "Container" -l 20)
             fi
             if [ -n "$SELECTED_CONTAINER" ]; then
-                ${pkgs.tmux}/bin/tmux new-window "${config.attributes.defaultCommands.remoteTerminal} \
-                $HOST \
-                -c 'docker exec -it $SELECTED_CONTAINER ${config.custom.virtualization.docker.defaultContainerShell}'"
+                ${pkgs.tmux}/bin/tmux new-window "${pkgs.openssh}/bin/ssh $HOST \
+                'docker exec -it $SELECTED_CONTAINER ${config.custom.virtualization.docker.defaultContainerShell}'"
             fi
         fi
     }
@@ -504,7 +488,6 @@ in {
       };
 
       environment.systemPackages = with pkgs; [
-        ctop_hosts
         dlint
         docker-machine-export
         docker-machine-import
@@ -590,7 +573,6 @@ in {
     (mkIf (cfg.docker.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
         "M-C-c" = ''spawn "${docker_containers_traits}/bin/docker_containers_traits" >> showWSOnProperScreen "shell"'';
-        "M-C-h" = ''spawn "${ctop_hosts}/bin/ctop_hosts" >> showWSOnProperScreen "shell"'';
         "M-C-d" = ''spawn "${docker_shell}/bin/docker_shell" >> showWSOnProperScreen "shell"'';
         # "M-C-l" = ''spawn "${custom.remote_docker_logs}/bin/remote_docker_logs" >> showWSOnProperScreen "shell"'';
         # "M-C-s" = ''spawn "{custom.docker_stacks_info}/bin/docker_stacks_info" >> showWSOnProperScreen "shell"'';

@@ -65,11 +65,6 @@ with lib;
       type = types.str;
       default = "${pkgs.alacritty}/bin/alacritty";
     };
-    defaultCommands.remoteTerminal = mkOption {
-      description = "Default remote terminal";
-      type = types.str;
-      default = "${pkgs.eternal-terminal}/bin/et";
-    };
     defaultCommands.browser = mkOption {
       description = "Default browser";
       type = types.str;
@@ -114,6 +109,14 @@ with lib;
       description = "Default tmux predefined session name to be used in automation scripts";
       type = types.str;
       default = "main";
+    };
+    dev.remoteCommands = mkOption {
+      description = "Predefined commands list to execute remotely. Note that those must be present on ssh target.";
+      type = types.listOf types.str;
+      default = [
+        "ctop"
+        "jnettop"
+      ];
     };
     staging.enable = mkOption {
       description = "Whether to enable staging packages/configuration";

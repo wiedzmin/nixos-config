@@ -4,34 +4,28 @@ with lib;
 
 let
   cfg = config.custom.networking;
-  # TODO: (re)write dmenu-based custom scripts for ssh and pass with bas of links below:
-  # https://github.com/carnager/rofi-pass/blob/master/rofi-pass
-  jnettop_hosts = pkgs.writeShellScriptBin "jnettop_hosts" ''
-    main() {
-        HOST=$( cat /etc/hosts | ${pkgs.gawk}/bin/awk '{print $2}' | ${pkgs.dmenu}/bin/dmenu -i -p "Host" -l 15)
-        if [ -n "$HOST" ]; then
-            enforce_job_vpn_up || exit 1
-            ${pkgs.tmux}/bin/tmux new-window "${pkgs.eternal-terminal}/bin/et \
-            $HOST -c 'jnettop'"
-        fi
-    }
-
-    main
-
-    exit 0
-  '';
+  # TODO: (re)write dmenu-based custom scripts for pass based on https://github.com/carnager/rofi-pass/blob/master/rofi-pass
   sshmenu = writePythonScriptWithPythonPackages "sshmenu" [
     pkgs.python3Packages.dmenu-python
     pkgs.python3Packages.libtmux
     pkgs.python3Packages.redis
   ] ''
+    import argparse
     import json
     import subprocess
+    import sys
 
     import dmenu
-    import libtmux
+    from libtmux import Server
+    from libtmux.exc import LibTmuxException
     import redis
 
+
+    parser = argparse.ArgumentParser(description="Execute command over SSH.")
+    parser.add_argument("--choices", dest="show_choices", action="store_true",
+                       default=False, help="show predefined command choices")
+
+    args = parser.parse_args()
 
     r = redis.Redis(host='localhost', port=6379, db=0)
 
@@ -44,11 +38,25 @@ let
                       case_insensitive=True, lines=10)
 
     if host:
-        tmux_server = libtmux.Server()
-        tmux_session = tmux_server.find_where({ "session_name": "${config.attributes.tmux.defaultSession}" })
-        ssh_window = tmux_session.new_window(attach=True, window_name=host,
-                                             window_shell="${pkgs.openssh}/bin/ssh {0}".format(host))
+        cmd = "${pkgs.openssh}/bin/ssh {0}".format(host)
+        if args.show_choices:
+            command_choices = json.loads(r.get("job/command_choices"))
+            choice = dmenu.show(command_choices, prompt="execute", case_insensitive=True, lines=5)
+            if choice:
+               cmd += " -t '{0}'".format(choice)
+            else:
+               sys.exit(1)
 
+        tmux_server = Server()
+        try:
+            tmux_session = tmux_server.find_where({ "session_name": "${config.attributes.tmux.defaultSession}" })
+            ssh_window = tmux_session.new_window(attach=True, window_name=host,
+                                                 window_shell=cmd)
+        except LibTmuxException:
+            pparams = ["${config.attributes.defaultCommands.terminal}", "-e"]
+            pparams.extend(cmd.split())
+            subprocess.Popen(pparams)
+  '';
   '';
 in {
   options = {
@@ -130,7 +138,6 @@ in {
           # curlie
           # davfs2
           # vegeta # TODO: package
-          eternal-terminal
           gcalcli
           hasmail
           hpWorking.http-prompt
@@ -221,6 +228,7 @@ in {
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
         "M-S-s" = ''spawn "${sshmenu}/bin/sshmenu" >> showWSOnProperScreen "shell"'';
+        "M-S-d" = ''spawn "${sshmenu}/bin/sshmenu --choices" >> showWSOnProperScreen "shell"'';
         "M-M1-w" = ''spawn "${pkgs.wpa_supplicant_gui}/bin/wpa_gui"'';
         "M-M1-S-w" = ''spawn "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli" >> showWSOnProperScreen "shell"'';
         "M-s n <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart nscd.service"'';

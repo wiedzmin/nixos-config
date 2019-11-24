@@ -580,6 +580,7 @@ in {
 
       custom.dev.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set job/extra_hosts ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.infra.extraHosts)}
+        ${pkgs.redis}/bin/redis-cli set job/command_choices ${lib.strings.escapeNixString (builtins.toJSON config.attributes.dev.remoteCommands)}
         ${pkgs.redis}/bin/redis-cli set job/webjumps ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.webjumps)}
         ${pkgs.redis}/bin/redis-cli set nav/searchengines ${lib.strings.escapeNixString (builtins.toJSON config.secrets.nav.searchEngines)}
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${lib.strings.escapeNixString (builtins.toJSON config.secrets.nav.webjumps)}
