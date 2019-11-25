@@ -118,6 +118,11 @@ with lib;
         "jnettop"
       ];
     };
+    security.passwordStorePath = mkOption {
+      description = "Default path to Pass password store";
+      type = types.str;
+      default = "/home/${config.attributes.mainUser.name}/.password-store";
+    };
     staging.enable = mkOption {
       description = "Whether to enable staging packages/configuration";
       type = types.bool;
