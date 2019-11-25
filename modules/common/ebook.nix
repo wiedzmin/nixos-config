@@ -14,7 +14,7 @@ let
 
     books = []
 
-    books_task = subprocess.Popen("${pkgs.fd}/bin/fd --full-path /home/alex3rd/bookshelf -e pdf -e djvu",
+    books_task = subprocess.Popen("${pkgs.fd}/bin/fd --full-path /home/${config.attributes.mainUser.name}/bookshelf -e pdf -e djvu",
                                   shell=True, stdout=subprocess.PIPE)
     books.extend([book for book in books_task.stdout.read().decode().split("\n")])
     assert books_task.wait() == 0
