@@ -122,7 +122,7 @@ let
                    ("S" . magit-stash)
                    ("U" . magit-update-index)
                    ("a" . magit-stage-file)
-                   ("b" . magit-blame-addition)
+                   ("b" . magit-blame-addition) ; TODO: add for *-removal
                    ("c" . magit-checkout)
                    ("d" . magit-diff)
                    ("f" . magit-log-buffer-file)
