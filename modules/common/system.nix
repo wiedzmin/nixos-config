@@ -385,7 +385,7 @@ in {
           fi
 
           if [[ $battery_capacity -le ${builtins.toString cfg.powersave.notifications.suspendAfter} && $battery_status = "Discharging" ]]; then
-              ${pkgs.dunst}/bin/dunstify -u critical -t 5000 Battery CRITICALLY low, will suspend in ${cfg.powersave.notifications.suspendTimeout}."
+              ${pkgs.dunst}/bin/dunstify -u critical -t 5000 "Battery CRITICALLY low, will suspend in ${cfg.powersave.notifications.suspendTimeout}."
               sleep ${cfg.powersave.notifications.suspendTimeout}
 
               battery_status=$(${pkgs.coreutils}/bin/cat /sys/class/power_supply/${cfg.powersave.notifications.battery}/status)
