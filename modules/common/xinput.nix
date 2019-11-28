@@ -1,3 +1,7 @@
+let
+  deps = import ../../nix/sources.nix;
+  proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
+in
 { config, lib, pkgs, ... }:
 with lib;
 
@@ -222,7 +226,7 @@ in {
           PIDFile = "/run/xkeysnail.pid";
           Restart = "always";
           RestartSec = 1;
-          ExecStart = "/run/wrappers/bin/sudo ${pkgs.xkeysnail}/bin/xkeysnail ${
+          ExecStart = "/run/wrappers/bin/sudo ${proposed.xkeysnail}/bin/xkeysnail ${
             optionalString (cfg.xkeysnail.inputDevices != [ ]) "--devices ${lib.concatStringsSep " " cfg.xkeysnail.inputDevices}"
           } ${cfg.xkeysnail.configFile}";
         };

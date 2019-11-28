@@ -1,3 +1,7 @@
+let
+  deps = import ../../nix/sources.nix;
+  ocrmypdfPinned = import deps.nixpkgs-pinned-ocrmypdf { config.allowUnfree = true; };
+in
 { config, lib, pkgs, ... }:
 with lib;
 
@@ -88,7 +92,7 @@ in {
       environment.systemPackages = with pkgs; [
         deskew
         gImageReader
-        ocrmypdfWorking.ocrmypdf
+        ocrmypdfPinned.ocrmypdf
         pdfsandwich
         scantailor-advanced
         simple-scan

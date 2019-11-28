@@ -9,7 +9,7 @@
 common_settings*
 configuration.nix
 .gitattributes
+nix/private
 notice
-pkgs/overlays/*.private*
 result
 todo.org

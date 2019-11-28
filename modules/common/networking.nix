@@ -1,3 +1,7 @@
+let
+  deps = import ../../nix/sources.nix;
+  hpPinned = import deps.nixpkgs-pinned-httpprompt { config.allowUnfree = true; };
+in
 { config, lib, pkgs, ... }:
 with import ../util.nix { inherit config lib pkgs; };
 with lib;
@@ -140,7 +144,7 @@ in {
           # vegeta # TODO: package
           gcalcli
           hasmail
-          hpWorking.http-prompt
+          hpPinned.http-prompt
           httplab
           rclone
           socat

@@ -1,3 +1,6 @@
+let
+  deps = import ../../nix/sources.nix;
+in
 { config, lib, pkgs, ... }:
 with lib;
 
@@ -624,11 +627,11 @@ let
       :ensure t
       :demand t
       :delight yas-minor-mode
-      :mode (("/etc/nixos/pkgs/forges/github.com/wiedzmin/yasnippet-snippets" . snippet-mode)
+      :mode (("${deps.yasnippet-snippets}" . snippet-mode)
              ("\\.yasnippet$" . snippet-mode))
       :preface
       (defun custom/update-yasnippets-on-save ()
-        (when (string-match "/etc/nixos/pkgs/forges/github.com/wiedzmin/yasnippet-snippets" buffer-file-name)
+        (when (string-match "${deps.yasnippet-snippets}" buffer-file-name)
           (yas-load-directory "/home/${config.attributes.mainUser.name}/.emacs.d/resources/")))
       :bind
       ;; (:map custom-yasnippet-map
@@ -655,7 +658,7 @@ let
                               yas-no-prompt))
       (yas-wrap-around-region t)
       (yas-snippet-dirs '(yas-installed-snippets-dir
-                          "/etc/nixos/pkgs/forges/github.com/wiedzmin/yasnippet-snippets")))
+                          "${deps.yasnippet-snippets}")))
   '';
 in {
   options = {

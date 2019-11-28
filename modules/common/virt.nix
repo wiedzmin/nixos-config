@@ -501,7 +501,6 @@ in {
         docker-machine
         docker_compose
         libcgroup
-        promoter
         arion
       ];
     })

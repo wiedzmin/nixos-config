@@ -1,3 +1,7 @@
+let
+  deps = import ../../nix/sources.nix;
+  proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
+in
 { config, lib, pkgs, ... }:
 with lib;
 
@@ -103,13 +107,11 @@ in {
     (mkIf cfg.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          pipreqs
-          pipreqs3
           python3Packages.autopep8
           python3Packages.importmagic
           python3Packages.virtualenv
           python3Packages.virtualenvwrapper
-          yapf
+          python3Packages.yapf
         ];
         home.file = {
           ".pylintrc".text = lib.generators.toINI {} { # see https://github.com/PyCQA/pylint/blob/master/pylintrc for reference
@@ -375,7 +377,7 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          ms-pyls
+          proposed.ms-pyls
         ];
         programs.emacs.extraPackages = epkgs: [
           epkgs.pip-requirements

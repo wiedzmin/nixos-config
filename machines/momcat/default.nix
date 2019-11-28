@@ -1,16 +1,17 @@
 { config, pkgs, lib, ... }:
-
+let
+  deps = import ../../nix/sources.nix;
+in
 {
   imports = [
-    ../../pkgs/setup.nix
-    <home-manager/nixos>
+    ../../nix/setup.nix
+    "${deps.home-manager}/nixos"
     ./secrets
     ../../modules
-    ../../pkgs/forges/github.com/NixOS/nixos-hardware/common/cpu/intel/sandy-bridge
-    ../../pkgs/forges/github.com/NixOS/nixos-hardware/common/pc/ssd
-    ../../pkgs/forges/github.com/NixOS/nixos-hardware/lenovo/thinkpad/x230
+    "${deps.nixos-hardware}/common/cpu/intel/sandy-bridge"
+    "${deps.nixos-hardware}/common/pc/ssd"
+    "${deps.nixos-hardware}/lenovo/thinkpad/x230"
     ./filesvars.nix
-    <nixpkgs/nixos/modules/installer/scan/not-detected.nix>
   ];
 
   fileSystems."/" = {

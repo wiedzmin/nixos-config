@@ -461,7 +461,7 @@ in {
         gitAndTools.pass-git-helper
         gitAndTools.stgit
         gitstats
-        proposed.gitAndTools.git-quick-stats
+        git-quick-stats
       ] ++ lib.optionals (config.attributes.staging.enable) [
       ];
     })

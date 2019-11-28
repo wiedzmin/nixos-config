@@ -158,9 +158,9 @@ in {
           secureSocket = false;
           shell = "${pkgs.zsh}/bin/zsh";
           tmuxp.enable = true;
-          plugins = with pkgs; with tmuxPlugins; [
+          plugins = with pkgs.tmuxPlugins; [
             {
-              plugin = fzf-tmux-url-with-history; # patched version, see overlays
+              plugin = fzf-tmux-url; # patched version, see overlays
               extraConfig = "set -g @fzf-url-bind 'o'";
             }
             battery

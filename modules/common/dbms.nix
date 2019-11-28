@@ -1,3 +1,7 @@
+let
+  deps = import ../../nix/sources.nix;
+  dbcliPinned = import deps.nixpkgs-pinned-dbcli { config.allowUnfree = true; };
+in
 { config, lib, pkgs, ... }:
 with import ../util.nix { inherit config lib pkgs; };
 with lib;
@@ -27,13 +31,13 @@ let
         assert dbms_pass_task.wait() == 0
 
         if dbms_meta[dbms_entry]["command"] == "mycli":
-            os.system('${pkgs.tmux}/bin/tmux new-window "${pkgs.mypgWorking.mycli}/bin/mycli --host {0} --user {1} --password {2}"'.format(
+            os.system('${pkgs.tmux}/bin/tmux new-window "${dbcliPinned.mycli}/bin/mycli --host {0} --user {1} --password {2}"'.format(
                 dbms_meta[dbms_entry]["ip"],
                 dbms_meta[dbms_entry]["user"],
                 dbms_pass
             ))
         elif dbms_meta[dbms_entry]["command"] == "mycli":
-            os.system('${pkgs.tmux}/bin/tmux new-window "PGPASSWORD={2} ${pkgs.mypgWorking.pgcli}/bin/pgcli --host {0} --user {1}"'.format(
+            os.system('${pkgs.tmux}/bin/tmux new-window "PGPASSWORD={2} ${dbcliPinned.pgcli}/bin/pgcli --host {0} --user {1}"'.format(
                 dbms_meta[dbms_entry]["ip"],
                 dbms_meta[dbms_entry]["user"],
                 dbms_pass
@@ -80,14 +84,14 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           pgcenter
-          mypgWorking.pgcli
+          dbcliPinned.pgcli
         ];
       };
     })
     (mkIf cfg.mysql.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          mypgWorking.mycli
+          dbcliPinned.mycli
         ];
       };
     })
@@ -103,7 +107,6 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           nodePackages.elasticdump
-          redis-tui
         ];
       };
     })
@@ -113,7 +116,6 @@ in {
       '';
       wm.xmonad.keybindings = {
         "M-C-y" = ''spawn "${dbms}/bin/dbms" >> showWSOnProperScreen "shell"'';
-        "M-C-r" = ''spawn "${pkgs.tmux}/bin/tmux new-window '${pkgs.redis-tui}/bin/redis-tui'" >> showWSOnProperScreen "shell"'';
       };
     })
   ];

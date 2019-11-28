@@ -35,31 +35,6 @@ with lib;
       description = "Default Font for Dmenu";
       type = types.str;
     };
-    paths.nixpkgs.local = mkOption {
-      description = "Full path to `Nixpkgs`";
-      type = types.str;
-      default = "/etc/nixos/pkgs/forges/github.com/NixOS/nixpkgs-channels";
-    };
-    paths.nixpkgs.archive = mkOption {
-      description = "Github URL of Nixpkgs archive";
-      type = types.str;
-      default = "https://github.com/NixOS/nixpkgs/archive/";
-    };
-    paths.home-manager = mkOption {
-      description = "Full path to `home-manager`";
-      type = types.str;
-      default = "/etc/nixos/pkgs/forges/github.com/rycee/home-manager";
-    };
-    branches.nixpkgs = mkOption {
-      description = "`Nixpkgs` branch to use";
-      type = types.str;
-      default = "nixos-unstable";
-    };
-    branches.home-manager = mkOption {
-      description = "`home-manager` branch to use";
-      type = types.str;
-      default = "master";
-    };
     defaultCommands.terminal = mkOption {
       description = "Default terminal";
       type = types.str;
@@ -109,6 +84,11 @@ with lib;
       description = "Default tmux predefined session name to be used in automation scripts";
       type = types.str;
       default = "main";
+    };
+    tmux.paneHistoryDepthLines = mkOption {
+      description = "Tmux pane history depth in lines";
+      type = types.int;
+      default = 10000;
     };
     dev.remoteCommands = mkOption {
       description = "Predefined commands list to execute remotely. Note that those must be present on ssh target.";

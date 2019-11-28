@@ -3,7 +3,7 @@ with lib;
 
 let
   cfg = config.custom.browsers;
-  firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../pkgs/firefox-addons { });
+  firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../nix/firefox-addons { });
   emacsBrowsersSetup = ''
     (use-package atomic-chrome
       :ensure t

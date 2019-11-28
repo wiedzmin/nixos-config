@@ -1,3 +1,7 @@
+let
+  deps = import ../../nix/sources.nix;
+  mpsytPinned = import deps.nixpkgs-pinned-mpsyt { config.allowUnfree = true; };
+in
 {config, pkgs, lib, ...}:
 with lib;
 {
@@ -27,7 +31,7 @@ with lib;
         windows:
           - window_name: mps-youtube
             panes:
-              - ${pkgs.python3Packages.mps-youtube}/bin/mpsyt
+              - ${mpsytPinned.python3Packages.mps-youtube}/bin/mpsyt
       '';
       ".local/share/applications/defaults.list" = {
         text = ''
@@ -189,7 +193,7 @@ with lib;
         year $now == year $date ==> tag current-year,
       '';
       ".emacs.d/resources/yasnippet" = {
-        source = ../../pkgs/forges/github.com/wiedzmin/yasnippet-snippets;
+        source = deps.yasnippet-snippets;
         recursive = true;
       };
       ".authinfo.gpg".source = ./secrets/.authinfo.gpg;
