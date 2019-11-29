@@ -124,9 +124,6 @@ in
     allowUnfreeRedistributable = true;
 
     oraclejdk.accept_license = true;
-
-    dunst.dunstify = true;
-    vaapiIntel.enableHybridCodec = true;
   };
 
   environment = {

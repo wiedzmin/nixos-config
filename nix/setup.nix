@@ -31,9 +31,13 @@ in
         rec {
           inherit deps;
 
+          dunst = old.dunst.override { dunstify = true; };
+
           i3lock-color = old.i3lock-color.overrideAttrs (oa: rec {
             patches = [ ./patches/i3lock-color/forcefully-reset-keyboard-layout-group-to-0.patch ];
           });
+
+          vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
 
           tmuxPlugins = old.tmuxPlugins // old.tmuxPlugins.fzf-tmux-url.overrideAttrs (attrs: {
             postPatch = ''
