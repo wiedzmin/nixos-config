@@ -72,12 +72,12 @@ in {
           ${pkgs.xidlehook}/bin/xidlehook \
                 ${optionalString cfg.respectPlayback "--not-when-audio"} \
                 ${optionalString cfg.respectFullscreen "--not-when-fullscreen"} \
-                --timer normal ${builtins.toString cfg.alertingTimerSec} "${pkgs.dunst}/bin/dunstify \
-                               -t ${builtins.toString cfg.notificationTimeout} \
-                               -u ${cfg.notificationUrgency} \
-                               'Locking in ${builtins.toString cfg.lockingTimerSec} seconds'" "" \
-                --timer primary ${builtins.toString cfg.lockingTimerSec} \
-                               "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off" ""
+                --timer ${builtins.toString cfg.alertingTimerSec} "${pkgs.dunst}/bin/dunstify \
+                        -t ${builtins.toString cfg.notificationTimeout} \
+                        -u ${cfg.notificationUrgency} \
+                        'Locking in ${builtins.toString cfg.lockingTimerSec} seconds'" "" \
+                --timer ${builtins.toString cfg.lockingTimerSec} \
+                        "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off" ""
         '';
       };
     };
