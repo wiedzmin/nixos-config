@@ -463,6 +463,9 @@ in {
         gitstats
         git-quick-stats
       ] ++ lib.optionals (config.attributes.staging.enable) [
+        onefetch
+        overcommit
+        gitAndTools.git-machete
       ];
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
