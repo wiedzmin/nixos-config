@@ -399,7 +399,7 @@ in
       keyID = config.secrets.identity.gpgKeyID;
     };
     mbsync = {
-      enable = false;
+      enable = true;
       postExec = "${pkgs.notmuch}/bin/notmuch new";
     };
     msmtp.enable = true;
@@ -472,7 +472,7 @@ in
   };
 
   custom.screenshots = {
-    enable = false;
+    enable = true;
     baseDir = "/home/${config.attributes.mainUser.name}/screenshots";
     dateFormat = "+%Y-%m-%d_%H:%M:%S";
     calendarTimespec = "*-*-* 00:05:00";
