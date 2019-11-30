@@ -24,9 +24,7 @@ in
 
   nixpkgs = {
     overlays = [
-      (import (builtins.fetchTarball {
-        url = "https://github.com/nix-community/emacs-overlay/archive/master.tar.gz";
-      }))
+      (import deps.emacs-overlay)
       (self: old:
         rec {
           inherit deps;

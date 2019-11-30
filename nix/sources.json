@@ -1,4 +1,16 @@
 {
+    "emacs-overlay": {
+        "branch": "master",
+        "description": "Bleeding edge emacs overlay [maintainer=@adisbladis] ",
+        "homepage": "",
+        "owner": "nix-community",
+        "repo": "emacs-overlay",
+        "rev": "bd19b03df8dd1a535e3183a0849381114f0d6155",
+        "sha256": "1rcmpcjxjlswp848vi5rcffvaa0adv5igk01nycnhjyzk6gcgjq4",
+        "type": "tarball",
+        "url": "https://github.com/nix-community/emacs-overlay/archive/bd19b03df8dd1a535e3183a0849381114f0d6155.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "home-manager": {
         "branch": "master",
         "description": "Manage a user environment using Nix",
