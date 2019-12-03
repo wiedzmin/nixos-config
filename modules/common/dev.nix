@@ -91,12 +91,12 @@ let
       (:map custom-goto-map
             ("i" . lsp-ui-imenu))
       :custom
+      (lsp-ui-doc-enable nil)
+      (lsp-ui-flycheck-enable t)
+      (lsp-ui-imenu-enable t)
+      (lsp-ui-peek-enable t)
       (lsp-ui-sideline-enable t)
-      (lsp-ui-sideline-ignore-duplicate t)
-      (lsp-ui-sideline-show-code-actions t)
-      (lsp-ui-sideline-show-hover t)
-      (lsp-ui-sideline-show-symbol t)
-      (lsp-ui-sideline-update-mode 'point))
+      (lsp-ui-sideline-ignore-duplicate t))
 
     (use-package direnv
       :ensure t
