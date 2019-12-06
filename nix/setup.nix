@@ -46,6 +46,8 @@ in
               substituteInPlace fzf-url.sh --replace "--no-preview" ""
             '';
           });
+
+          xsane = old.xsane.override { gimpSupport = true; };
       })
     ] ++ map (n: import (./private + ("/" + n)))
       (builtins.filter (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (./private + ("/" + n + "/default.nix")))

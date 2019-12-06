@@ -466,6 +466,19 @@ in
     xmonad.enable = true;
   };
 
+  custom.paperworks = {
+    printing = {
+      enable = true;
+      drivers = [ pkgs.hplipWithPlugin ];
+    };
+    scanning = {
+      enable = true;
+      extraBackends = [ pkgs.epkowa ];
+      snapscan.firmware = "/etc/nixos/contrib/blobs/Esfw52.bin";
+      enableXsane = true;
+    };
+  };
+
   custom.pim = {
     enable = true;
     emacs.enable = true;

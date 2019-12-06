@@ -95,11 +95,9 @@ in {
         ocrmypdfPinned.ocrmypdf
         pdfsandwich
         scantailor-advanced
-        simple-scan
         tesseract
-        utsushi
-      ] ++ optional cfg.scanning.enableXsane [
-        (xsane.override { gimpSupport = true; })
+      ] ++ lib.optionals cfg.scanning.enableXsane [
+        xsane
       ];
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "scanner" ];
     })
