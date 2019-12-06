@@ -303,6 +303,7 @@ let
       [ ("web", Just "<F1>", True, True)
       , ("work", Just "<F2>", True, True)
       , ("tools", Just "<F4>", True, True)
+      , ("scan", Just "<F5>", True, True)
       ]
 
     secondaryWorkspaces =
@@ -338,7 +339,6 @@ let
                    , ([ (wM_CLASS, any ("Pidgin" ==))], pmP (viewShift "im"))
                    , ([ (wM_CLASS, any ("Rapid Photo Downloader" ==))], pmP (viewShift "scratch"))
                    , ([ (wM_CLASS, any ("Sakura" ==))], pmP (viewShift "shell"))
-                   , ([ (wM_CLASS, any ("Simple-scan" ==))], pmP (viewShift "scratch"))
                    , ([ (wM_CLASS, any ("Skype" ==))], pmP (viewShift "im"))
                    , ([ (wM_CLASS, any ("Slack" ==))], pmP (viewShift "im"))
                    , ([ (wM_CLASS, any ("Soffice" ==))], pmP (viewShift "read"))
@@ -348,7 +348,7 @@ let
                    , ([ (wM_CLASS, any ("Virt-viewer" ==))], pmP (viewShift "tools"))
                    , ([ (wM_CLASS, any ("VirtualBox Manager" ==))], pmP (viewShift "tools"))
                    , ([ (wM_CLASS, any ("Wire" ==))], pmP (viewShift "im"))
-                   , ([ (wM_CLASS, any ("Xsane" ==))], pmP (viewShift "scratch"))
+                   , ([ (wM_CLASS, any ("Xsane" ==))], pmP (viewShift "scan"))
                    , ([ (wM_CLASS, any ("aft-linux-qt" ==))], pmP (viewShift "scratch"))
                    , ([ (wM_CLASS, any ("athura" `isInfixOf`))], pmP (viewShift "read"))
                    , ([ (wM_CLASS, any ("calibre" ==))], pmP (viewShift "read"))
@@ -358,7 +358,7 @@ let
                    , ([ (wM_CLASS, any ("mpv" ==))], pmP (viewShift "media"))
                    , ([ (wM_CLASS, any ("polar-bookshelf" ==))], pmP (viewShift "read"))
                    , ([ (wM_CLASS, any ("psi" ==))], pmP (viewShift "im"))
-                   , ([ (wM_CLASS, any ("scantailor-advanced" ==))], pmP (viewShift "scratch"))
+                   , ([ (wM_CLASS, any ("scantailor-advanced" ==))], pmP (viewShift "scan"))
                    , ([ (wM_CLASS, any ("zoom" `isPrefixOf`))], pmP (viewShift "im"))
                    ]
       where
