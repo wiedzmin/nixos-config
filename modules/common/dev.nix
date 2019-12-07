@@ -63,6 +63,9 @@ let
       :config
       (push 'company-lsp company-backends))
 
+    (use-package company-tabnine
+      :ensure t)
+
     (use-package lsp-mode
       :ensure t
       :hook (lsp-mode . company-mode)
