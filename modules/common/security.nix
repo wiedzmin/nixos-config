@@ -88,7 +88,6 @@ in {
           (pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]))
           certigo
           dnsrecon
-          gnupg
           gopass
           mkcert
           paperkey
