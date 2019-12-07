@@ -38,6 +38,7 @@ let
     import os
     import subprocess
     import sys
+    import time
 
     from gnupg import GPG
     import dmenu
