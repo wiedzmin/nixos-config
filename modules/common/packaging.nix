@@ -266,6 +266,7 @@ in {
           make-package-diff
         ] ++ lib.optionals (config.attributes.staging.enable) [
           niv
+          nix-linter
         ];
       };
     })
