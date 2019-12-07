@@ -127,7 +127,7 @@ in {
         partOf = [ "graphical.target" ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${order_screenshots}";
+          ExecStart = "${order_screenshots}/bin/order_screenshots";
           StandardOutput = "journal+console";
           StandardError = "inherit";
         };
