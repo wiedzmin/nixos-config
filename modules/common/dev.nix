@@ -240,6 +240,9 @@ in {
       systemd.user.services."lorri-fixed" = { # one from nixpkgs fails to socket-start for some reason
         description = "Start Lorri daemon";
         path = with pkgs; [ config.nix.package gnutar gzip ];
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
         serviceConfig = {
           ExecStart = "${pkgs.lorri}/bin/lorri daemon";
           PrivateTmp = true;
