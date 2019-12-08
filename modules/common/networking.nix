@@ -61,7 +61,6 @@ let
             pparams.extend(cmd.split())
             subprocess.Popen(pparams)
   '';
-  '';
 in {
   options = {
     custom.networking = {
