@@ -64,7 +64,9 @@ let
       (push 'company-lsp company-backends))
 
     (use-package company-tabnine
-      :ensure t)
+      :ensure t
+      :config
+      (add-to-list 'company-backends #'company-tabnine))
 
     (use-package lsp-mode
       :ensure t
