@@ -108,6 +108,11 @@ with lib;
       type = types.bool;
       default = false;
     };
+    debug.enable = mkOption {
+      description = "Whether to enable unfinished/in-development/broken custom scripts/packages";
+      type = types.bool;
+      default = false;
+    };
     hardware.monitors = {
       internalHead = {
         name = mkOption {
