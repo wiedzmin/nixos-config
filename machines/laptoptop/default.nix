@@ -157,6 +157,7 @@ in
       allowSFTP = true;
       forwardX11 = false;
     };
+    paperless.enable = true;
     smartd = {
       enable = true;
       notifications = { x11.enable = true; };
