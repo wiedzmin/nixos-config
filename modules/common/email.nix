@@ -392,8 +392,8 @@ in {
         };
         services.mbsync = {
           enable = true;
-          postExec = "${cfg.mbsync.postExec}";
-          frequency = "${cfg.mbsync.frequency}";
+          postExec = cfg.mbsync.postExec;
+          frequency = cfg.mbsync.frequency;
         };
       };
     })

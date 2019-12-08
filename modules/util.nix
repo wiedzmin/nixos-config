@@ -1,17 +1,17 @@
-{ config, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 
 rec {
     addBuildInputs = pkg: inputs: pkg.overrideAttrs (attrs: {
         buildInputs = attrs.buildInputs ++ inputs;
     });
     withPatches = pkg: patches:
-        lib.overrideDerivation pkg (attrs: { inherit patches; });
-    writePythonScriptWithPythonPackages = name: packages: text:
+        lib.overrideDerivation pkg (_: { inherit patches; });
+    writePythonScriptWithPythonPackages = pname: packages: text:
       pkgs.python3Packages.buildPythonPackage rec {
-        pname = name;
+        inherit pname;
         version = "unstable";
         src = pkgs.writeTextFile {
-          name = "${name}.py";
+          name = "${pname}.py";
           text = "#!${pkgs.python3}/bin/python3\n${text}";
           executable = true;
         };
@@ -19,10 +19,10 @@ rec {
         unpackPhase = "true";
         buildInputs = with pkgs; [ makeWrapper ];
         propagatedBuildInputs = with pkgs; packages;
-        buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${name}";
+        buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${pname}";
         installPhase = "true";
         postInstall = ''
-          chmod a+x $out/bin/${name}
+          chmod a+x $out/bin/${pname}
         '';
       };
 }

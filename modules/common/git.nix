@@ -495,7 +495,7 @@ in {
       '';
       environment.etc."nixos/${cfg.hooks.dirName}/pre-push/stop-wip" = {
         mode = "0644";
-        user = "${config.attributes.mainUser.name}";
+        user = config.attributes.mainUser.name;
         group = "users";
         text = ''
           . ${git_lib}/bin/git_lib

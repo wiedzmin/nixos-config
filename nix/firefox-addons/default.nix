@@ -37,5 +37,5 @@ let
       '';
     };
 
-  packages = with pkgs; import ./addons.nix { inherit buildFirefoxXpiAddon buildFirefoxXpiAddonFromArchPkg fetchurl stdenv; };
+  packages = with pkgs; import ./addons.nix { inherit buildFirefoxXpiAddon buildFirefoxXpiAddonFromArchPkg stdenv; };
 in packages // { inherit buildFirefoxXpiAddon buildFirefoxXpiAddonFromArchPkg; }

@@ -2,7 +2,7 @@ let
   deps = import ../../nix/sources.nix;
   mpsytPinned = import deps.nixpkgs-pinned-mpsyt { config.allowUnfree = true; };
 in
-{config, pkgs, lib, ...}:
+{config, lib, ...}:
 with lib;
 {
   home-manager.users."${config.attributes.mainUser.name}" = {

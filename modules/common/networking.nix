@@ -230,6 +230,11 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          wpa_supplicant_gui
+        ];
+      };
       wm.xmonad.keybindings = {
         "M-S-s" = ''spawn "${sshmenu}/bin/sshmenu" >> showWSOnProperScreen "shell"'';
         "M-S-d" = ''spawn "${sshmenu}/bin/sshmenu --choices" >> showWSOnProperScreen "shell"'';

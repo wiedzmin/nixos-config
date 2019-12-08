@@ -495,13 +495,17 @@ in {
         docker_shell
         hadolintd
         vdi2qcow2
-      ] ++ [
         ctop
         dive
         docker-machine
         docker_compose
         libcgroup
         arion
+      ] ++ lib.optionals (config.attributes.debug.enable) [
+        discover_containerized_services
+        docker_stacks_info
+        docker_stacks_info_new
+        remote_docker_logs
       ];
     })
 

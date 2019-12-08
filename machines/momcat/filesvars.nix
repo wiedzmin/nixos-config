@@ -1,4 +1,4 @@
-{config, pkgs, lib, ...}:
+{config, lib, ...}:
 with lib;
 {
   home-manager.users."${config.attributes.mainUser.name}" = {

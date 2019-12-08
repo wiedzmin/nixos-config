@@ -275,6 +275,7 @@ in {
         home.packages = with pkgs; [
           get-pr-override
           confctl
+          format-config
         ];
       };
     })

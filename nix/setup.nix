@@ -1,4 +1,4 @@
-{ config, pkgs, lib, options, modulesPath }:
+{ config, lib, options, modulesPath }:
 let
   deps = import ../nix/sources.nix;
 in
@@ -25,19 +25,19 @@ in
   nixpkgs = {
     overlays = [
       (import deps.emacs-overlay)
-      (self: old:
+      (_: old:
         rec {
           inherit deps;
 
           dunst = old.dunst.override { dunstify = true; };
 
-          i3lock-color = old.i3lock-color.overrideAttrs (oa: rec {
+          i3lock-color = old.i3lock-color.overrideAttrs (_: rec {
             patches = [ ./patches/i3lock-color/forcefully-reset-keyboard-layout-group-to-0.patch ];
           });
 
           vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
 
-          tmuxPlugins = old.tmuxPlugins // old.tmuxPlugins.fzf-tmux-url.overrideAttrs (attrs: {
+          tmuxPlugins = old.tmuxPlugins // old.tmuxPlugins.fzf-tmux-url.overrideAttrs (_: {
             postPatch = ''
               substituteInPlace fzf-url.sh --replace "capture-pane -J -p" "capture-pane -S -${
                   builtins.toString config.attributes.tmux.paneHistoryDepthLines

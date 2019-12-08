@@ -363,7 +363,7 @@ in {
     })
     (mkIf cfg.xmodmap.enable {
       services.xserver.displayManager.sessionCommands = let
-        xmodmaprc = pkgs.writeText "xmodmaprc" "${cfg.xmodmap.rc}";
+        xmodmaprc = pkgs.writeText "xmodmaprc" cfg.xmodmap.rc;
         in ''
           ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
           ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"

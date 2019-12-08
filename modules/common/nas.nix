@@ -3,7 +3,6 @@ with lib;
 
 let
   cfg = config.custom.nas;
-  nasConfigPath = "$HOME/.config/synology/nas.yml";
   mount_nas_volume = pkgs.writeShellScriptBin "mount_nas_volume" ''
     function show_list() {
         contents=("$@")

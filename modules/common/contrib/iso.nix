@@ -1,4 +1,4 @@
-{ config, pkgs, ... }:
+{ pkgs, ... }:
 # NOTE: presumably broken by refactoring
 {
   imports = [

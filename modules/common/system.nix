@@ -230,6 +230,12 @@ in {
           tray = "never";
         };
       };
+      environment.systemPackages = with pkgs; with config.boot.kernelPackages; [
+        # ocz-ssd-guru # add as an overlay and fix hash (and installation instructions)
+        intelmetool
+        me_cleaner
+        cpupower
+      ];
     })
     (mkIf cfg.forensics.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -241,6 +247,10 @@ in {
           strace
         ];
       };
+      environment.systemPackages = with pkgs; with config.boot.kernelPackages; [
+        perf
+        # hotspot # rarely used
+      ];
     })
     (mkIf cfg.monitoring.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {

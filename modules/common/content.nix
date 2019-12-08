@@ -336,6 +336,12 @@ in {
       };
     })
     (mkIf cfg.xmonad.enable {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ # TODO: maybe bind to keys after debug
+          buku_search_tag
+          buku_search_url
+        ];
+      };
       wm.xmonad.keybindings = {
         "M-y" = ''spawn "${buku_add}/bin/buku_add"'';
         "M-i" = ''spawn "${paste_to_ix}/bin/paste_to_ix"'';

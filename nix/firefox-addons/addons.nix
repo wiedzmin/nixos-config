@@ -1,4 +1,4 @@
-{ buildFirefoxXpiAddon, buildFirefoxXpiAddonFromArchPkg, fetchurl, stdenv }: {
+{ buildFirefoxXpiAddon, buildFirefoxXpiAddonFromArchPkg, stdenv }: {
   "cookie-autodelete" = buildFirefoxXpiAddon {
     pname = "cookie-autodelete";
     version = "3.0.1";

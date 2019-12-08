@@ -47,7 +47,7 @@ in
     enable = true;
     powertop.enable = true;
     resumeCommands = lib.concatStringsSep "\n"
-      (lib.mapAttrsToList (server: conf: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
+      (lib.mapAttrsToList (server: _: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
         config.services.openvpn.servers);
   };
 
@@ -126,20 +126,7 @@ in
     oraclejdk.accept_license = true;
   };
 
-  environment = {
-    shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" ];
-    systemPackages = with pkgs;
-      with config.boot.kernelPackages;
-      [
-        # ocz-ssd-guru # add as an overlay and fix hash (and installation instructions)
-        intelmetool
-        me_cleaner
-      ] ++ [ wpa_supplicant_gui ] ++ [
-        perf
-        cpupower
-        # hotspot # rarely used
-      ];
-  };
+  environment.shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" ];
 
   users.extraUsers.root.hashedPassword =
     "586c56b7b6b6f68fca29c9ff2524e4dc52d51d5b6184a65f707dd3eae075e4c9afa81c9cd4042c26c9fb773d4f3de55fb55f363c6b0f5f6790baf4c4e3f32cb9";
