@@ -107,6 +107,9 @@ let
       :ensure t
       :config
       (direnv-mode))
+
+    (use-package elmacro
+      :ensure t)
   '';
 in {
   options = {
@@ -259,11 +262,12 @@ in {
         programs.emacs.extraPackages = epkgs: [
           epkgs.company-restclient
           epkgs.diff-hl
+          epkgs.direnv
+          epkgs.elmacro
           epkgs.fic-mode
           epkgs.jinja2-mode
           epkgs.multi-compile
           epkgs.webpaste
-          epkgs.direnv
         ];
       };
       ide.emacs.config = ''${emacsDevSetup}'';
