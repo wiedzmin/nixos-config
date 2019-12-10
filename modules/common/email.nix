@@ -325,55 +325,49 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         accounts.email = {
           accounts."${cfg.defaultAccountName}" = {
-            mbsync = {
-              enable = true;
-              create = "both";
-              expunge = "both";
-              remove = "both";
-              patterns = [ "!Cron*" "!Drafts" "!INBOX" "!Lists*" "!Sent" "!Trash" "![Gmail]*" "*" ];
-            };
+            mbsync.enable = true;
           };
         };
         programs.mbsync = {
           enable = true;
           extraConfig = ''
-            Channel ${cfg.emailAddress}-archive
-            Master ":${cfg.emailAddress}-remote:[Gmail]/All Mail"
-            Slave ":${cfg.emailAddress}-archive:Archive"
+            Channel ${cfg.defaultAccountName}-archive
+            Master ":${cfg.defaultAccountName}-remote:[Gmail]/All Mail"
+            Slave ":${cfg.defaultAccountName}-archive:Archive"
             Create Slave
             SyncState *
             Sync Push Flags
 
-            Channel ${cfg.emailAddress}-trash
-            Master ":${cfg.emailAddress}-remote:[Gmail]/Trash"
-            Slave ":${cfg.emailAddress}-archive:Trash"
+            Channel ${cfg.defaultAccountName}-trash
+            Master ":${cfg.defaultAccountName}-remote:[Gmail]/Trash"
+            Slave ":${cfg.defaultAccountName}-archive:Trash"
             Create Slave
             Sync All
 
-            Channel ${cfg.emailAddress}-drafts
-            Master ":${cfg.emailAddress}-remote:[Gmail]/Drafts"
-            Slave ":${cfg.emailAddress}-local:Drafts"
-            Create Slave
-            Sync All
-            Expunge Both
-
-            Channel ${cfg.emailAddress}-sent
-            Master ":${cfg.emailAddress}-remote:[Gmail]/Sent Mail"
-            Slave ":${cfg.emailAddress}-local:Sent"
+            Channel ${cfg.defaultAccountName}-drafts
+            Master ":${cfg.defaultAccountName}-remote:[Gmail]/Drafts"
+            Slave ":${cfg.defaultAccountName}-local:Drafts"
             Create Slave
             Sync All
             Expunge Both
 
-            Channel ${cfg.emailAddress}-inbox
-            Master ":${cfg.emailAddress}-remote:INBOX"
-            Slave ":${cfg.emailAddress}-local:INBOX"
+            Channel ${cfg.defaultAccountName}-sent
+            Master ":${cfg.defaultAccountName}-remote:[Gmail]/Sent Mail"
+            Slave ":${cfg.defaultAccountName}-local:Sent"
             Create Slave
             Sync All
             Expunge Both
 
-            Channel ${cfg.emailAddress}-mailing-lists-and-notifications
-            Master :${cfg.emailAddress}-remote:
-            Slave :${cfg.emailAddress}-local:
+            Channel ${cfg.defaultAccountName}-inbox
+            Master ":${cfg.defaultAccountName}-remote:INBOX"
+            Slave ":${cfg.defaultAccountName}-local:INBOX"
+            Create Slave
+            Sync All
+            Expunge Both
+
+            Channel ${cfg.defaultAccountName}-mailing-lists-and-notifications
+            Master :${cfg.defaultAccountName}-remote:
+            Slave :${cfg.defaultAccountName}-local:
             Create Slave
             Sync All
             Patterns "Lists*" "Cron*"

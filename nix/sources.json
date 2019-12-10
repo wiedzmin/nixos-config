@@ -17,10 +17,10 @@
         "homepage": "",
         "owner": "wiedzmin",
         "repo": "home-manager",
-        "rev": "d18deeeb27e81869c99c8484a839f4751392ba8f",
-        "sha256": "1by6162981jkilb0cak917j5lsh5nyj149bj0xp9h5dvgmd9bpw1",
+        "rev": "194240b937e13fb949c488e2b51958a69f8b58f2",
+        "sha256": "0g1wlgjjv0yadhsanvqdqgdra10x0bzwi214yapm32f7l55bf2an",
         "type": "tarball",
-        "url": "https://github.com/wiedzmin/home-manager/archive/d18deeeb27e81869c99c8484a839f4751392ba8f.tar.gz",
+        "url": "https://github.com/wiedzmin/home-manager/archive/194240b937e13fb949c488e2b51958a69f8b58f2.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
