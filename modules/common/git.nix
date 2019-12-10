@@ -420,9 +420,9 @@ in {
             };
           } // lib.optionalAttrs (cfg.pager.delta.enable) {
             "pager" = {
-              diff = ''${pkgs.gitAndTools.delta}/bin/delta --plus-color="#012800" --minus-color="#340001" --highlight-removed --theme="zenburn"'';
-              show = ''${pkgs.gitAndTools.delta}/bin/delta --plus-color="#012800" --minus-color="#340001" --highlight-removed --theme="zenburn"'';
-              log = ''${pkgs.gitAndTools.delta}/bin/delta --plus-color="#012800" --minus-color="#340001" --highlight-removed --theme="zenburn"'';
+              diff = ''${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
+              show = ''${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
+              log = ''${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
             };
           };
 
