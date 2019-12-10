@@ -431,6 +431,8 @@ in {
             merged = "branch --merged master";
             nomerged = "branch --no-merged master";
 
+            st = "status --short --branch";
+
             undo = "reset HEAD~1";
             hundo = "reset --hard HEAD~1";
 
