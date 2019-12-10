@@ -2,10 +2,22 @@ let
   deps = import ../../nix/sources.nix;
   mpsytPinned = import deps.nixpkgs-pinned-mpsyt { config.allowUnfree = true; };
 in
-{config, lib, ...}:
+{config, pkgs, lib, ...}:
 with lib;
 {
   home-manager.users."${config.attributes.mainUser.name}" = {
+    xdg.configFile."TabNine/TabNine.toml".source = (pkgs.runCommand "TabNine.toml" {
+      buildInputs = [ pkgs.remarshal ];
+      preferLocalBuild = true;
+    } ''
+      remarshal -if json -of toml \
+        < ${pkgs.writeText "TabNine.json" (builtins.toJSON {
+          language.python = {
+            command = "mspyls";
+          };
+      })} \
+        > $out
+    '');
     home.file = {
       "tmuxp/main.yml".text = ''
         session_name: main
