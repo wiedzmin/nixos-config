@@ -381,6 +381,7 @@ in
   custom.email = {
     enable = true;
     emailAddress = config.secrets.identity.email;
+    defaultAccountName = config.secrets.identity.email;
     passwordPath = config.secrets.identity.googleAccountPasswordPath;
     gpg = {
       sign = true;

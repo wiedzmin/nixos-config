@@ -331,6 +331,9 @@ in {
         programs.mbsync = {
           enable = true;
           extraConfig = ''
+            MaildirStore ${cfg.defaultAccountName}-archive
+            Path ${config.home-manager.users."${config.attributes.mainUser.name}".accounts.email.maildirBasePath}/archive-${cfg.defaultAccountName}/
+
             Channel ${cfg.defaultAccountName}-archive
             Master ":${cfg.defaultAccountName}-remote:[Gmail]/All Mail"
             Slave ":${cfg.defaultAccountName}-archive:Archive"
