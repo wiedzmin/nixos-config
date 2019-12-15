@@ -361,12 +361,11 @@ let
       (ivy-use-selectable-prompt t "Make the prompt line selectable")
       (ivy-use-virtual-buffers t) ;; add 'recentf-mode’and bookmarks to 'ivy-switch-buffer'.
       (ivy-height 20) ;; number of result lines to display
-      (ivy-count-format "%d/%d ")
       (ivy-initial-inputs-alist nil) ;; no regexp by default
       (ivy-re-builders-alist
-       ;; allow input not in order
-       '((read-file-name-internal . ivy--regex-fuzzy)
-         (t . ivy--regex-ignore-order))))
+        '((read-file-name-internal . ivy--regex-fuzzy)
+          (t . ivy--regex-ignore-order)))
+      )
 
     (use-package imenu-anywhere
       :ensure t

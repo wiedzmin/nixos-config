@@ -103,6 +103,16 @@ let
       (lsp-ui-sideline-enable t)
       (lsp-ui-sideline-ignore-duplicate t))
 
+    (use-package lsp-ivy
+      :ensure t
+      :after lsp-mode avy
+      :bind
+      (:map mode-specific-map
+            ("o b" . lsp-ivy-workspace-symbol)
+            ("o g" . lsp-ivy-global-workspace-symbol))
+      (:map lsp-mode-map
+            ([remap xref-find-apropos] . lsp-ivy-global-workspace-symbol)))
+
     (use-package direnv
       :ensure t
       :config
