@@ -324,6 +324,7 @@ in
   custom.browsers = {
     enable = true;
     firefox.enable = true;
+    sessions.firefox.backup.enable = true;
     chromium.enable = true;
     aux.enable = true;
     emacs.enable = true;

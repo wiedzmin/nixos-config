@@ -1,9 +1,116 @@
 { config, lib, pkgs, ... }:
+with import ../util.nix { inherit config lib pkgs; };
 with lib;
 
 let
   cfg = config.custom.browsers;
   firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../nix/firefox-addons { });
+  manage_firefox_sessions = writePythonScriptWithPythonPackages "manage_firefox_sessions" [
+    pkgs.python3Packages.dmenu-python
+    pkgs.python3Packages.notify2
+  ] ''
+    import argparse
+    import glob
+    import os
+    import subprocess
+    import time
+
+    import dmenu
+    import notify2
+    from notify2 import URGENCY_NORMAL
+
+
+    def collect_sessions():
+        return [os.path.basename(session) for session in glob.glob("${cfg.sessions.firefox.path}/*.org")]
+
+
+    parser = argparse.ArgumentParser(description="Manage Firefox stored sessions.")
+    parser.add_argument("--save", dest="save_session", action="store_true",
+                       default=False, help="Save current session")
+    parser.add_argument("--open", dest="open_session", action="store_true",
+                       default=False, help="Open stored session")
+    parser.add_argument("--delete", dest="delete_session", action="store_true",
+                       default=False, help="Delete stored session")
+
+    args = parser.parse_args()
+    notify2.init("manage_firefox_sessions")
+
+    if args.save_session:
+        session_name = dmenu.show([], prompt="save as",
+                                  case_insensitive=True, lines=1)
+        if session_name:
+            subprocess.Popen(
+                "${dump_firefox_session}/bin/dump_firefox_session {0}".format(session_name),
+                shell=True, stdout=subprocess.PIPE)
+    elif args.open_session:
+        session_name = dmenu.show(sorted(collect_sessions()), prompt="open",
+                                  case_insensitive=True, lines=15)
+        if session_name:
+            urls = None
+            with open("${cfg.sessions.firefox.path}/{0}".format(session_name), "r") as session:
+                urls = [url.strip()[2:] for url in session.readlines()]
+            if len(urls) <= ${builtins.toString cfg.sessions.sizeThreshold}:
+                subprocess.Popen(
+                    "${pkgs.firefox-unwrapped}/bin/firefox --new-window {0}".format(urls[0]),
+                    shell=True, stdout=subprocess.PIPE)
+                time.sleep(0.5)
+                urls_remainder = " --new-tab ".join(urls[1:])
+                if len(urls_remainder):
+                    subprocess.Popen(
+                        "${pkgs.firefox-unwrapped}/bin/firefox --new-tab {0}".format(urls_remainder),
+                        shell=True, stdout=subprocess.PIPE)
+            else:
+                emacsclient_task = subprocess.Popen(
+                    "${pkgs.emacs}/bin/emacsclient -c ${cfg.sessions.firefox.path}/{0}".format(session_name),
+                    shell=True, stdout=subprocess.PIPE)
+                assert emacsclient_task.wait() == 0
+    elif args.delete_session:
+        session_name = dmenu.show(sorted(collect_sessions()), prompt="delete",
+                                  case_insensitive=True, lines=15)
+        if session_name:
+            subprocess.Popen(
+                "${pkgs.coreutils}/bin/rm ${cfg.sessions.firefox.path}/{0}".format(session_name),
+                shell=True, stdout=subprocess.PIPE)
+            n = notify2.Notification("[Firefox]", "Removed {0}".format(session_name))
+            n.set_urgency(URGENCY_NORMAL)
+            n.set_timeout(5000)
+            n.show()
+  '';
+  dump_firefox_session = pkgs.writeShellScriptBin "dump_firefox_session" ''
+    DUMP_NAME=$1
+    PROFILE_NAME="${config.home-manager.users."${config.attributes.mainUser.name}".programs.firefox.profiles.default.path}"
+    SESSIONSTORE_PATH=/home/${config.attributes.mainUser.name}/.mozilla/firefox/$PROFILE_NAME/sessionstore-backups
+    TS=$(${pkgs.coreutils}/bin/date '+%Y-%m-%d_%H-%M-%S')
+
+    SESSION_DBFILE="$SESSIONSTORE_PATH/previous.jsonlz4"
+    if [ -f "$SESSIONSTORE_PATH/recovery.jsonlz4" ]; then
+      SESSION_DBFILE="$SESSIONSTORE_PATH/recovery.jsonlz4"
+    fi
+
+    if [ -z "$DUMP_NAME" ]; then
+      SESSION_DUMPFILE="${cfg.sessions.firefox.nameTemplate}-$TS.org"
+    else
+      SESSION_DUMPFILE="$DUMP_NAME.org"
+    fi
+
+    TAB_COUNT=$(${pkgs.dejsonlz4}/bin/dejsonlz4 $SESSION_DBFILE | \
+      ${pkgs.jq}/bin/jq -j '.windows[].tabs[].entries[] | .url, "\n"' | \
+      ${pkgs.gnused}/bin/sed 's/^/\* /g' | ${pkgs.coreutils}/bin/tee \
+      ${cfg.sessions.firefox.path}/$SESSION_DUMPFILE | ${pkgs.coreutils}/bin/wc -l)
+
+    ${pkgs.dunst}/bin/dunstify -u normal "[Firefox] Saved session ($TAB_COUNT tabs)."
+  '';
+  rotate_firefox_session_dumps = pkgs.writeShellScriptBin "rotate_firefox_session_dumps" ''
+    ls -a ${cfg.sessions.firefox.path} | ${pkgs.gnugrep}/bin/grep ${cfg.sessions.firefox.nameTemplate} | \
+    ${pkgs.coreutils}/bin/sort -n -r | (i=0; while read -r f; do
+      if [ $i -lt ${builtins.toString cfg.sessions.firefox.historyLength} ]; then
+          ((i++))
+          continue
+      else
+          rm -f "${cfg.sessions.firefox.path}/$f"
+      fi
+    done)
+  '';
   emacsBrowsersSetup = ''
     (use-package atomic-chrome
       :ensure t
@@ -88,6 +195,49 @@ in {
         default = false;
         description = ''
           Whether to enable Chromium.
+        '';
+      };
+      sessions.saveFrequency = mkOption {
+        type = types.str;
+        default = "30min";
+        description = ''
+          How often browser sessions should be saved.
+          Systemd timer notation is used.
+        '';
+      };
+      sessions.sizeThreshold = mkOption {
+        type = types.int;
+        default = 10;
+        description = ''
+          Maximum session size (in URLs), in which case it would be loaded completely.
+        '';
+      };
+      sessions.firefox.backup.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to backup Firefox session.
+        '';
+      };
+      sessions.firefox.path = mkOption {
+        type = types.str;
+        default = "/home/${config.attributes.mainUser.name}/docs/org/firefox";
+        description = ''
+          Where to save plaintext Firefox session contents.
+        '';
+      };
+      sessions.firefox.historyLength = mkOption {
+        type = types.int;
+        default = 10;
+        description = ''
+          How many recent sessions to keep.
+        '';
+      };
+      sessions.firefox.nameTemplate = mkOption {
+        type = types.str;
+        default = "firefox-session-auto";
+        description = ''
+          Filename template for Firefox session files.
         '';
       };
       aux.enable = mkOption {
@@ -362,6 +512,42 @@ in {
         };
       };
       # chrome-export
+    })
+    (mkIf (cfg.enable && cfg.firefox.enable && cfg.sessions.firefox.backup.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.activation.ensureFirefoxSessionsPath = {
+          after = [];
+          before = ["linkGeneration"];
+          data = "mkdir -p ${cfg.sessions.firefox.path}";
+        };
+        home.packages = with pkgs; [
+          dump_firefox_session
+          manage_firefox_sessions
+          rotate_firefox_session_dumps
+        ];
+      };
+      wm.xmonad.keybindings = lib.optionalAttrs (config.wm.xmonad.enable) {
+        "M-C-s" = ''spawn "${manage_firefox_sessions}/bin/manage_firefox_sessions --save"'';
+        "M-C-o" = ''spawn "${manage_firefox_sessions}/bin/manage_firefox_sessions --open"'';
+        "M-C-d" = ''spawn "${manage_firefox_sessions}/bin/manage_firefox_sessions --delete"'';
+      };
+      systemd.user.services."backup-current-session-firefox" = {
+        description = "Backup current firefox session (tabs)";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${dump_firefox_session}/bin/dump_firefox_session";
+          ExecStopPost = "${rotate_firefox_session_dumps}/bin/rotate_firefox_session_dumps";
+          StandardOutput = "journal+console";
+          StandardError = "inherit";
+        };
+      };
+      systemd.user.timers."backup-current-session-firefox" = {
+        description = "Backup current firefox session (tabs)";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnUnitActiveSec = cfg.sessions.saveFrequency;
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.aux.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
