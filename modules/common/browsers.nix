@@ -29,6 +29,8 @@ let
                        default=False, help="Save current session")
     parser.add_argument("--open", dest="open_session", action="store_true",
                        default=False, help="Open stored session")
+    parser.add_argument("--edit", dest="edit_session", action="store_true",
+                       default=False, help="Edit stored session")
     parser.add_argument("--delete", dest="delete_session", action="store_true",
                        default=False, help="Delete stored session")
 
@@ -64,6 +66,14 @@ let
                     "${pkgs.emacs}/bin/emacsclient -c ${cfg.sessions.firefox.path}/{0}".format(session_name),
                     shell=True, stdout=subprocess.PIPE)
                 assert emacsclient_task.wait() == 0
+    elif args.edit_session:
+        session_name = dmenu.show(sorted(collect_sessions()), prompt="edit",
+                                  case_insensitive=True, lines=15)
+        if session_name:
+            emacsclient_task = subprocess.Popen(
+                "${pkgs.emacs}/bin/emacsclient -c ${cfg.sessions.firefox.path}/{0}".format(session_name),
+                shell=True, stdout=subprocess.PIPE)
+            assert emacsclient_task.wait() == 0
     elif args.delete_session:
         session_name = dmenu.show(sorted(collect_sessions()), prompt="delete",
                                   case_insensitive=True, lines=15)
@@ -529,6 +539,7 @@ in {
       wm.xmonad.keybindings = lib.optionalAttrs (config.wm.xmonad.enable) {
         "M-C-s" = ''spawn "${manage_firefox_sessions}/bin/manage_firefox_sessions --save"'';
         "M-C-o" = ''spawn "${manage_firefox_sessions}/bin/manage_firefox_sessions --open"'';
+        "M-C-e" = ''spawn "${manage_firefox_sessions}/bin/manage_firefox_sessions --edit"'';
         "M-C-d" = ''spawn "${manage_firefox_sessions}/bin/manage_firefox_sessions --delete"'';
       };
       systemd.user.services."backup-current-session-firefox" = {
