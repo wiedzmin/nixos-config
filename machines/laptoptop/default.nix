@@ -157,7 +157,6 @@ in
       allowSFTP = true;
       forwardX11 = false;
     };
-    paperless.enable = true;
     smartd = {
       enable = true;
       notifications = { x11.enable = true; };
@@ -466,6 +465,16 @@ in
       extraBackends = [ pkgs.epkowa ];
       snapscan.firmware = "/etc/nixos/contrib/blobs/Esfw52.bin";
       enableXsane = true;
+      paperless = {
+        enable = true;
+        consumptionDir = "/home/${config.attributes.mainUser.name}/docs/paperless/consume";
+        dataDir = "/home/${config.attributes.mainUser.name}/docs/paperless/data";
+        user = config.attributes.mainUser.name;
+        extraConfig = {
+          PAPERLESS_FORGIVING_OCR = true;
+        };
+        group = "users";
+      };
     };
   };
 
