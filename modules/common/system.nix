@@ -119,6 +119,11 @@ in {
         default = false;
         description = "Whether to enable structured JSON manipulation tools.";
       };
+      hardware.ddc.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable talking to monitors using DDC.";
+      };
       forensics.enable = mkOption {
         type = types.bool;
         default = false;
@@ -236,6 +241,12 @@ in {
         me_cleaner
         cpupower
       ];
+    })
+    (mkIf cfg.hardware.ddc.enable {
+      security.wrappers = {
+        ddcutil = { source = "${pkgs.ddcutil}/bin/ddcutil"; };
+      };
+      boot.kernelModules = [ "i2c-dev" ];
     })
     (mkIf cfg.forensics.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {

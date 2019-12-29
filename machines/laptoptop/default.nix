@@ -516,6 +516,7 @@ in
         suspendAfter = 10;
       };
     };
+    hardware.ddc.enable = true;
     xmonad.enable = true;
   };
 
