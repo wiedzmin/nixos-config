@@ -230,6 +230,9 @@ in {
           profiles = cfg.autorandr.profiles;
         };
       };
+      services.udev.extraRules = ''
+        ACTION=="change", SUBSYSTEM=="drm", RUN+="${pkgs.autorandr}/bin/autorandr --batch --change --default default"
+      '';
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
