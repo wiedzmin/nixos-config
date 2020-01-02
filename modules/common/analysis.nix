@@ -28,7 +28,6 @@ in {
       radare2-cutter
       sysdig
       valgrind
-      vmtouch
     ];
   };
 }

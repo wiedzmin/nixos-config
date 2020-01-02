@@ -134,6 +134,16 @@ in {
         default = false;
         description = "Whether to enable monitoring/notification tools.";
       };
+      warmup.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable pulling some highly used data into memory.";
+      };
+      warmup.paths = mkOption {
+        type = types.listOf types.str;
+        default = [];
+        description = "List of paths to warm up.";
+      };
       powersave.enable = mkOption {
         type = types.bool;
         default = false;
@@ -355,6 +365,19 @@ in {
             };
           };
         };
+      };
+    })
+    (mkIf (cfg.warmup.enable && cfg.warmup.paths != []) {
+      systemd.user.services."warmup" = {
+        description = "Warm up paths";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.vmtouch}/bin/vmtouch -t ${lib.concatStringsSep " " cfg.warmup.paths}";
+          StandardOutput = "journal+console";
+          StandardError = "inherit";
+        };
+        partOf = [ "multi-user.target" ]; # FIXME: does not autostart
+        wantedBy = [ "multi-user.target" ];
       };
     })
     (mkIf cfg.scripts.enable {

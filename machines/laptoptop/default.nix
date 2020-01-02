@@ -505,6 +505,12 @@ in
   custom.system = {
     forensics.enable = true;
     monitoring.enable = true;
+    warmup = {
+      enable = true;
+      paths = [
+        "/home/${config.attributes.mainUser.name}/.mozilla"
+      ];
+    };
     scripts.enable = true;
     powersave = {
       enable = true;
