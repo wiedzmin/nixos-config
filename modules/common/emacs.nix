@@ -68,12 +68,6 @@ let
 
     (pinentry-start)
 
-    (use-package use-package-secrets
-      :custom
-      (use-package-secrets-default-directory "/home/alex3rd/.emacs.d/secrets")
-      :quelpa
-      (use-package-secrets :repo "a13/use-package-secrets" :fetcher github :version original))
-
     (use-package deferred :ensure t)
 
     (add-hook 'emacs-startup-hook
@@ -119,7 +113,6 @@ let
       :bind
       ("M-\"" . eval-region)
       ([remap kill-buffer] . kill-this-buffer)
-      :secret "identity.el"
       :custom
       (use-dialog-box nil)
       (minibuffer-prompt-properties
