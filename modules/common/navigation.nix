@@ -479,6 +479,13 @@ let
       :custom-face (swiper-match-face-3 ((t (:background "#bbbbff" :weight bold))))
       :custom-face (swiper-match-face-4 ((t (:background "#ffbbff" :weight bold)))))
 
+    (use-package avy-flycheck
+      :ensure t
+      :after link-hint
+      :bind
+      (:map link-hint-keymap
+            ("e" . avy-flycheck-goto-error)))
+
     (define-hostmode poly-nix-hostmode :mode 'nix-mode)
 
     (define-innermode poly-emacs-innermode
@@ -685,6 +692,7 @@ in {
           epkgs.ace-link
           epkgs.ace-window
           epkgs.avy
+          epkgs.avy-flycheck
           epkgs.avy-zap
           epkgs.counsel
           epkgs.counsel-projectile
