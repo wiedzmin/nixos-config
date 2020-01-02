@@ -108,6 +108,9 @@ with lib;
         alang = en,eng,us
 
         volume-max=200
+
+        cache = yes
+        cache-pause-initial = yes
         cache-default = 250000 # Use 250MB cache for network streams
 
         # Always use 1080p+ or 60 fps where available. Prefer VP9
