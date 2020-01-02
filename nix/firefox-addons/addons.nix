@@ -281,4 +281,17 @@
       platforms = platforms.unix;
     };
   };
+  "dark_reader" = buildFirefoxXpiAddon {
+    pname = "dark_reader";
+    version = "4.8.6";
+    addonId = "addon@darkreader.org";
+    url = "https://addons.mozilla.org/firefox/downloads/file/3461726/dark_reader-4.8.6-an+fx.xpi";
+    sha256 = "05mmyfhl0xynzbsncpfj24rajv945zj57pjlid3bar97w0xshfi4";
+    meta = with stdenv.lib; {
+      homepage = "https://darkreader.org/";
+      description = "Dark Reader Chrome and Firefox extension.";
+      license = licenses.mit;
+      platforms = platforms.unix;
+    };
+  };
 }

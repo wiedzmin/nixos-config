@@ -280,6 +280,7 @@ in {
         programs.firefox = {
           enable = true;
           extensions = with firefox-addons; [
+            dark_reader
             display-anchors
             ghosttext
             passff
