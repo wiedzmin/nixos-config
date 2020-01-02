@@ -552,6 +552,7 @@ in
         add mod1 = Alt_L
         add mod4 = Super_L
         add mod5 = Hyper_L
+        keysym Alt_R = Multi_key
       '';
     };
   };

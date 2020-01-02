@@ -177,6 +177,16 @@ in {
         home.packages = with pkgs; lib.optionals (config.attributes.staging.enable) [
           blugon
         ];
+        home.file = {
+          ".XCompose".text = ''
+            include "${pkgs.xorg.libX11}/share/X11/locale/en_EN.UTF-8/Compose"
+
+            <Multi_key> <m> <o> : "ө"
+            <Multi_key> <m> <O> : "Ө"
+            <Multi_key> <m> <u> : "ү"
+            <Multi_key> <m> <U> : "Ү"
+          '';
+        };
         # TODO: consider rework/restructure
         services = {
           compton = {
