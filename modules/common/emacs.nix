@@ -353,6 +353,11 @@ let
       :config
       (delete-selection-mode 1))
 
+    (use-package goto-char-preview
+      :ensure t
+      :bind
+      ([remap goto-char] . goto-char-preview))
+
     (use-package easy-kill
       :ensure t
       :bind
@@ -778,6 +783,7 @@ in {
             epkgs.flycheck
             epkgs.format-all
             epkgs.gcmh
+            epkgs.goto-char-preview
             epkgs.haskell-mode
             epkgs.hl-todo
             epkgs.ini-mode
