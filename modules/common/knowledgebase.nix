@@ -46,14 +46,6 @@ let
       :delight which-key-mode
       :config
       (which-key-mode))
-
-    (use-package which-key-posframe
-      :ensure t
-      :after which-key
-      :hook
-      (after-init-hook . which-key-posframe-mode)
-      :custom
-      (which-key-posframe-poshandler 'posframe-poshandler-frame-center))
   '';
 in {
   options = {
@@ -121,7 +113,6 @@ in {
         programs.emacs.extraPackages = epkgs: [
           epkgs.helpful
           epkgs.which-key
-          epkgs.which-key-posframe
         ];
       };
       ide.emacs.config = ''${emacsHelpSetup}'';
