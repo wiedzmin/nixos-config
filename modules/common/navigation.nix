@@ -172,6 +172,7 @@ let
        ("w" . counsel-wmctrl)
        :map ctl-x-map
        ("C-r" . counsel-recentf)
+       ("m" . counsel-minor)
        :map help-map
        ("l" . counsel-find-library)
        :map iso-transl-ctl-x-8-map
@@ -462,14 +463,9 @@ let
     (use-package swiper
       :ensure t
       :commands swiper swiper-multi
-      :preface
-      (defun custom/swiper (&optional tap)
-        (interactive "P")
-        (if tap
-            (swiper (thing-at-point 'symbol))
-          (swiper)))
       :bind
-      (("C-s" . custom/swiper)
+      (("C-s" . swiper)
+       ("C-S-s" . swiper-thing-at-point)
        :map custom-counsel-map
        ("m" . swiper-multi))
       :custom
