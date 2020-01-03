@@ -173,6 +173,7 @@ in {
           step-cli
           squashfs-tools-ng
           hexdino
+          txr # TODO: get started, read docs
         ];
       };
     })
