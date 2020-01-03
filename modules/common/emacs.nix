@@ -151,7 +151,6 @@ let
       (:map ctl-x-map
             ("f" . find-file))
       :custom
-      (require-final-newline t)
       ;; backup settings
       (auto-save-default nil)
       (backup-by-copying t)
