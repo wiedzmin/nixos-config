@@ -152,7 +152,6 @@ let
             ("f" . find-file))
       :custom
       (require-final-newline t)
-      (enable-local-variables nil)
       ;; backup settings
       (auto-save-default nil)
       (backup-by-copying t)
