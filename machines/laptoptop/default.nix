@@ -445,6 +445,7 @@ in
       helpers.enable = true;
       srcfmt.enable = true;
       importers.enable = true;
+      search.enable = true;
     };
     misc.enable = true;
     scripts.enable = true;

@@ -250,10 +250,25 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.nix.search.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          nix-index # TODO: maybe make easier shell alias
-        ];
+      programs.zsh.shellAliases = {
+        nl = "${pkgs.nix-index}/bin/nix-locate";
+      };
+      systemd.user.services."nix-update-index" = {
+        description = "Update nix packages metadata index";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.nix-index}/bin/nix-index";
+          StandardOutput = "journal+console";
+          StandardError = "inherit";
+        };
+      };
+      systemd.user.timers."nix-update-index" = {
+        description = "Update nix packages metadata index";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnBootSec = "1h";
+          OnUnitActiveSec = "12h";
+        };
       };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
