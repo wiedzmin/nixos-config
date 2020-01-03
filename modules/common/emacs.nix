@@ -311,7 +311,7 @@ let
         :custom
         (company-fuzzy-prefix-ontop t)
         (company-fuzzy-show-annotation t)
-        (company-fuzzy-sorting-backend 'flx)
+        (company-fuzzy-sorting-backend 'alphabetic)
         :config
         (add-to-list 'company-fuzzy--no-prefix-backends 'company-yasnippet)
         (global-company-fuzzy-mode 1))
