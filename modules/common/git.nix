@@ -181,7 +181,7 @@ let
     (use-package magit-todos
       :ensure t
       :hook
-      (magit-status-mode . magit-todos-mode))
+      (magit-status-mode-hook . magit-todos-mode))
 
     (use-package smerge-mode
       :delight (smerge-mode "∓")
