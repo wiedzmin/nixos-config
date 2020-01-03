@@ -52,6 +52,21 @@ in {
         default = false;
         description = "Whether to enable shell tools.";
       };
+      ohMyZshPrompt.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable oh-my-zsh theming.";
+      };
+      ohMyZshPrompt.theme = mkOption {
+        type = types.str;
+        default = "";
+        description = "Oh-my-zsh prompt theme name.";
+      };
+      liquidPrompt.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable liquidprompt.";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -67,6 +82,19 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      assertions = [
+        {
+          assertion = (cfg.ohMyZshPrompt.enable && !cfg.liquidPrompt.enable)
+                      || (!cfg.ohMyZshPrompt.enable && cfg.liquidPrompt.enable)
+                      || (!cfg.ohMyZshPrompt.enable && !cfg.liquidPrompt.enable);
+          message = "shell: exactly one or no theming should be used.";
+        }
+        {
+          assertion = cfg.liquidPrompt.enable || (cfg.ohMyZshPrompt.enable && cfg.ohMyZshPrompt.theme != "");
+          message = "shell: oh-my-zsh prompt theming enabled but no theme name provided.";
+        }
+      ];
+
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           checkbashism
@@ -81,6 +109,44 @@ in {
         ] ++ lib.optionals (config.attributes.staging.enable) [
           eva
         ];
+        home.file = lib.optionalAttrs (cfg.liquidPrompt.enable) {
+          ".lp.ps1".text = ''
+            LP_PS1="''${LP_PS1_PREFIX}''${LP_TIME}''${LP_JOBS}"
+            LP_PS1="''${LP_PS1}''${LP_BRACKET_OPEN}''${LP_USER}''${LP_PERM}"
+            LP_PS1="''${LP_PS1}''${LP_PWD}''${LP_BRACKET_CLOSE}"
+            LP_PS1="''${LP_PS1}''${LP_VCS}"
+            LP_PS1="''${LP_PS1}''${LP_RUNTIME}''${LP_ERR}''${LP_MARK_PREFIX}''${LP_MARK}''${LP_PS1_POSTFIX}"
+
+            LP_TITLE="$(_lp_title "$LP_PS1")"
+            LP_PS1="''${LP_TITLE}''${LP_PS1}"
+          '';
+          ".liquidpromptrc".text = ''
+            LP_PS1_FILE=/home/${config.attributes.mainUser.name}/.lp.ps1
+
+            LP_ENABLE_SHORTEN_PATH=1
+            LP_PATH_LENGTH=35
+            LP_PATH_KEEP=2
+            LP_HOSTNAME_ALWAYS=-1
+            LP_ENABLE_PERM=1
+            LP_ENABLE_JOBS=1
+            LP_ENABLE_LOAD=0
+            LP_ENABLE_BATT=0
+            LP_ENABLE_GIT=1
+            LP_ENABLE_SVN=0
+            LP_ENABLE_HG=1
+            LP_ENABLE_FOSSIL=0
+            LP_ENABLE_BZR=0
+            LP_ENABLE_TIME=1
+            LP_ENABLE_RUNTIME=1
+            LP_RUNTIME_THRESHOLD=2
+            LP_ENABLE_VIRTUALENV=0
+            LP_ENABLE_SCLS=0
+            LP_ENABLE_TEMP=0
+            LP_ENABLE_TITLE=0
+            LP_ENABLE_SCREEN_TITLE=0
+            LP_ENABLE_SSH_COLORS=1
+          '';
+        };
         programs.tmux = { # TODO: consider extracting options or config itself
           enable = true;
           baseIndex = 1;
@@ -206,7 +272,8 @@ in {
           oh-my-zsh = {
             enable = true;
             plugins = [ "colored-man-pages" "urltools" ];
-            theme = "muse";
+          } // lib.optionalAttrs (cfg.ohMyZshPrompt.enable) {
+            theme = cfg.ohMyZshPrompt.theme;
           };
           enableAutosuggestions = true;
           enableCompletion = true;
@@ -249,6 +316,7 @@ in {
             HISTFILE = ".histfile";
             YSU_IGNORED_ALIASES = [ "g" "ll" ]; # TODO: review list
             YSU_MODE = "ALL";
+          } // lib.optionalAttrs (!cfg.liquidPrompt.enable) {
             ZSH_COMMAND_TIME_COLOR = "cyan";
           };
           shellAliases = {
@@ -355,6 +423,16 @@ in {
                 repo = "zsh-command-time";
                 rev = "afb4a4c9ae7ce64ca9d4f334a79a25e46daad0aa";
                 sha256 = "1bvyjgz6bhgg1nwr56r50p6fblgah6yiql55pgm5abnn2h876fjq";
+              };
+            }
+            {
+              name = "liquidprompt";
+              file = "liquidprompt.plugin.zsh";
+              src = pkgs.fetchFromGitHub {
+                owner = "nojhan";
+                repo = "liquidprompt";
+                rev = "5f4aeece8d6cf98138e729f7833e11e985ca44d3";
+                sha256 = "1xbvfadcl2qnylsd6rf4fdm6spis2v3kh1lsqlyjn2gs48g0l24a";
               };
             }
             {
