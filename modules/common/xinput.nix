@@ -373,6 +373,7 @@ in {
       environment.systemPackages = with pkgs; [
         xlibs.xev
         xlibs.xprop
+        xorg.xkbcomp
       ];
     })
   ];
