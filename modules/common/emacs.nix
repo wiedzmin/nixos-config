@@ -502,7 +502,7 @@ let
        ("v" . view-mode)
        :prefix-map common-editing-map
        :prefix "C-z"
-       ("o" . just-one-space)
+       ("o" . cycle-spacing)
        ("w" . delete-trailing-whitespace)
        ("s" . transpose-sexps)
        ("6" . (lambda () (interactive) (custom/switch-case 'camel)))
