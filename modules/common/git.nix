@@ -88,7 +88,7 @@ let
           done
     }
   '';
-  # TODO: make custom script with basw of https://github.com/arc90/git-sweep
+  # TODO: make custom script with base of https://github.com/arc90/git-sweep
   emacsGitSetup = ''
     (use-package browse-at-remote
       :ensure t
