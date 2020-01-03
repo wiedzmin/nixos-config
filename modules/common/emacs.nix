@@ -609,6 +609,12 @@ let
                           face
                           tabs)))
 
+    (use-package aggressive-indent
+      :ensure t
+      :config
+      (global-aggressive-indent-mode 1)
+      (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
+
     (use-package ws-butler
       :ensure t
       :hook (after-init-hook . ws-butler-global-mode)
@@ -747,6 +753,7 @@ in {
           });
           # TODO: scan *.el and find packages not in list below
           extraPackages = epkgs: [
+            epkgs.aggressive-indent
             epkgs.amx
             epkgs.anaphora
             epkgs.auto-compile
