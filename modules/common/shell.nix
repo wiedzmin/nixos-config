@@ -109,7 +109,11 @@ in {
         ] ++ lib.optionals (config.attributes.staging.enable) [
           eva
         ];
-        home.file = lib.optionalAttrs (cfg.liquidPrompt.enable) {
+        home.file = {
+          ".inputrc".text = ''
+            set echo-control-characters off
+          '';
+        } // lib.optionalAttrs (cfg.liquidPrompt.enable) {
           ".lp.ps1".text = ''
             LP_PS1="''${LP_PS1_PREFIX}''${LP_TIME}''${LP_JOBS}"
             LP_PS1="''${LP_PS1}''${LP_BRACKET_OPEN}''${LP_USER}''${LP_PERM}"
