@@ -4,6 +4,11 @@ with lib;
 
 let
   cfg = config.custom.shell;
+  emacsShellSetup = ''
+    (use-package flycheck-checkbashisms
+      :ensure t
+      :hook (flycheck-mode-hook . flycheck-checkbashisms-setup))
+  '';
   tmuxp_sessions = writePythonScriptWithPythonPackages "tmuxp_sessions" [
     pkgs.python3Packages.dmenu-python
   ] ''
@@ -457,9 +462,14 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
+          checkbashisms
           nodePackages.bash-language-server
         ];
+        programs.emacs.extraPackages = epkgs: [
+          epkgs.flycheck-checkbashisms
+        ];
       };
+      ide.emacs.config = ''${emacsShellSetup}'';
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
