@@ -71,6 +71,9 @@ let
     (use-package lsp-mode
       :ensure t
       :hook (lsp-mode . company-mode)
+      :bind
+      (:map lsp-mode-map
+            ("C-M-r" . lsp-rename))
       :custom
       (lsp-before-save-edits t)
       (lsp-eldoc-render-all nil)
