@@ -612,6 +612,21 @@ let
                           face
                           tabs)))
 
+    (use-package fancy-dabbrev
+      :ensure t
+      :bind
+      ("C-<tab>" . fancy-dabbrev-expand-or-indent)
+      ("<backtab>" . fancy-dabbrev-backward)
+      :config
+      (global-fancy-dabbrev-mode)
+      :custom
+      (dabbrev-case-distinction nil)
+      (dabbrev-case-fold-search t)
+      (dabbrev-case-replace nil)
+      (fancy-dabbrev-menu-height 15)
+      (fancy-dabbrev-sort-menu t)
+      (fancy-dabbrev-preview-context 'before-non-word))
+
     (use-package aggressive-indent
       :ensure t
       :config
@@ -777,6 +792,7 @@ in {
             epkgs.easy-kill-extras # add to .el
             epkgs.editorconfig
             epkgs.f
+            epkgs.fancy-dabbrev
             epkgs.flycheck
             epkgs.format-all
             epkgs.gcmh
