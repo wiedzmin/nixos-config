@@ -216,8 +216,12 @@ let
       :custom
       (git-msg-prefix-log-flags " --since='1 week ago' ")
       (git-msg-prefix-input-method 'ivy-read))
+
     (use-package magit-todos
       :ensure t
+      :bind
+      (:map mode-specific-map
+            ("C-d" . ivy-magit-todos))
       :hook
       (magit-status-mode-hook . magit-todos-mode))
 
