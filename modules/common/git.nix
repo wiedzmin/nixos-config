@@ -193,6 +193,29 @@ let
                                             (magit-filenotify-mode)
                                           (error (magit-filenotify-mode -1))))))
 
+    (use-package git-walktree
+      :ensure t
+      :after magit
+      :bind
+      (:map custom-magit-map
+            ("o" . git-walktree)))
+
+    (use-package dired-git-info
+      :ensure t
+      :after dired
+      ;; :hook (dired-after-readin-hook . dired-git-info-auto-enable)
+      :bind
+      (:map dired-mode-map
+            (")" . dired-git-info-mode)))
+
+    (use-package git-msg-prefix
+      :ensure t
+      :bind
+      (:map git-commit-mode-map
+            ("C-c i" . git-msg-prefix))
+      :custom
+      (git-msg-prefix-log-flags " --since='1 week ago' ")
+      (git-msg-prefix-input-method 'ivy-read))
     (use-package magit-todos
       :ensure t
       :hook
@@ -721,6 +744,8 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.emacs.extraPackages = epkgs: [
+          epkgs.dired-git-info
+          epkgs.git-msg-prefix
           epkgs.git-timemachine
           epkgs.magit
           epkgs.magit-filenotify
