@@ -494,6 +494,7 @@ in
 
   custom.shell = {
     enable = true;
+    liquidPrompt.enable = true;
     emacs.enable = true;
     xmonad.enable = true;
   };
