@@ -108,6 +108,12 @@ with lib;
       type = types.bool;
       default = false;
     };
+    # TODO: think of per-module usage of staging flags
+    staging.settings.enable = mkOption {
+      description = "Whether to enable staging settings/setups for arbitrary packages";
+      type = types.bool;
+      default = false;
+    };
     debug.enable = mkOption {
       description = "Whether to enable unfinished/in-development/broken custom scripts/packages";
       type = types.bool;
