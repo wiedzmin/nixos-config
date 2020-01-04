@@ -181,6 +181,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
+      # TODO: try udisksctl
       wm.xmonad.keybindings = {
         "M-C-m" = ''spawn "${mount_nas_volume}/bin/mount_nas_volume"'';
         "M-C-u" = ''spawn "${unmount_nas_volume}/bin/unmount_nas_volume"'';
