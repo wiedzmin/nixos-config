@@ -763,7 +763,6 @@ in {
             epkgs.backup-each-save
             epkgs.beginend
             epkgs.blockdiag-mode
-            epkgs.browse-at-remote
             epkgs.comment-dwim-2
             epkgs.company
             epkgs.company-fuzzy

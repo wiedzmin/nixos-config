@@ -90,6 +90,7 @@ let
   '';
   # TODO: make custom script with base of https://github.com/arc90/git-sweep
   emacsGitSetup = ''
+    ${lib.optionalString (cfg.strictRemoteBrowsing) ''
     (use-package browse-at-remote
       :ensure t
       :after link-hint
@@ -101,6 +102,20 @@ let
             ("o" . browse-at-remote))
       :custom
       (browse-at-remote-prefer-symbolic nil))
+    ''}
+    ${lib.optionalString (!cfg.strictRemoteBrowsing) ''
+    (use-package git-link
+      :ensure t
+      :after link-hint
+      :bind
+      (:map link-hint-keymap
+            ("r" . git-link)
+            ("c" . git-link-commit))
+      (:map magit-status-mode-map
+            ("o" . git-link))
+      :custom
+      (git-link-open-in-browser t))
+    ''}
 
     (use-package git-timemachine
       :ensure t
@@ -216,6 +231,19 @@ in {
         type = types.str;
         default = "upstream";
         description = "Name of upstream repo remote.";
+      };
+      strictRemoteBrowsing = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to treat remote git references
+          strictly, while opening them in browser.
+
+          If strict references are used, then,
+          for example opening repository link will
+          fail, if there are uncommited/unpushed
+          changes.
+        '';
       };
       pager.diff-so-fancy.enable = mkOption {
         type = types.bool;
@@ -698,6 +726,10 @@ in {
           epkgs.magit-filenotify
           epkgs.magit-popup # *
           epkgs.magit-todos
+        ] ++ lib.optionals (cfg.strictRemoteBrowsing) [
+          epkgs.browse-at-remote
+        ] ++ lib.optionals (!cfg.strictRemoteBrowsing) [
+          epkgs.git-link
         ];
       };
       ide.emacs.config = ''${emacsGitSetup}'';
