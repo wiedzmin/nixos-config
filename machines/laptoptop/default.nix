@@ -205,12 +205,7 @@ in
         };
       };
     };
-    unclutter-xfixes = {
-      enable = true;
-      timeout = 2;
-      threshold = 15;
-      extraOptions = [ "exclude-root" "fork" "ignore-scrolling" ];
-    };
+    xbanish.enable = true;
   };
 
   polkit-silent-auth.enable = true;
