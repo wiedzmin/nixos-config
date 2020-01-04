@@ -207,6 +207,15 @@ in {
           Whether to enable Chromium.
         '';
       };
+      chromium.extraOpts = mkOption {
+        type = types.attrs;
+        description = ''
+          Extra chromium policy options, see
+          <link xlink:href="https://www.chromium.org/administrators/policy-list-3">https://www.chromium.org/administrators/policy-list-3</link>
+          for a list of available options
+        '';
+        default = {};
+      };
       sessions.saveFrequency = mkOption {
         type = types.str;
         default = "30min";
@@ -521,6 +530,7 @@ in {
           ];
         };
       };
+      environment.etc."chromium/policies/managed/extra.json".text = builtins.toJSON cfg.chromium.extraOpts;
       # chrome-export
     })
     (mkIf (cfg.enable && cfg.firefox.enable && cfg.sessions.firefox.backup.enable) {
