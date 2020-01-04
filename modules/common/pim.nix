@@ -453,6 +453,11 @@ let
       :custom
       (ivy-omni-org-file-sources '(org-agenda-files custom/org-kb-files)))
 
+    ;; TODO: bind to keys
+    (use-package counsel-org-clock
+      :ensure t
+      :commands counsel-org-clock-history counsel-org-clock-goto counsel-org-clock-context)
+
     (use-package deft
       :ensure t
       :bind
@@ -501,6 +506,7 @@ in {
           plantuml
         ];
         programs.emacs.extraPackages = epkgs: [
+          epkgs.counsel-org-clock
           epkgs.ob-async
           epkgs.ob-blockdiag
           epkgs.ob-restclient
