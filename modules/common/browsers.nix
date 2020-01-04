@@ -284,7 +284,6 @@ in {
             display-anchors
             ghosttext
             passff
-            tree_style_tab
             tridactyl # TODO: review and maybe redo manually csp/fixamo customizations
             url-in-title
             web_media_controller
