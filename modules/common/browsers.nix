@@ -50,7 +50,7 @@ let
         if session_name:
             urls = None
             with open("${cfg.sessions.firefox.path}/{0}".format(session_name), "r") as session:
-                urls = [url.strip()[2:] for url in session.readlines()]
+                urls = [url.strip()[2:] for url in session.readlines() if url.startswith("* http")]
             if len(urls) <= ${builtins.toString cfg.sessions.sizeThreshold}:
                 subprocess.Popen(
                     "${pkgs.firefox-unwrapped}/bin/firefox --new-window {0}".format(urls[0]),
