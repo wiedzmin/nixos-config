@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.custom.xorg;
+  cfg = config.custom.video;
   autorandr_profiles = pkgs.writeScriptBin "autorandr_profiles" ''
     #! /usr/bin/env nix-shell
     #! nix-shell -i python3 -p python3 python3Packages.dmenu-python
@@ -28,13 +28,11 @@ let
   '';
 in {
   options = {
-    custom.xorg = {
+    custom.video = {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = ''
-          Whether to enable xrandr helper harness.
-        '';
+        description = "Whether to enable video customizations.";
       };
       rate = mkOption {
         type = types.str;
@@ -56,6 +54,11 @@ in {
         description = ''
           Backlight delta percents.
         '';
+      };
+      opengl.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable OpenGL";
       };
       autorandr.enable = mkOption {
         type = types.bool;
@@ -153,6 +156,55 @@ in {
           };
         };
       };
+      screenlocker.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable automatic screen locking.
+        '';
+      };
+      screenlocker.respectPlayback = mkOption {
+        type = types.bool;
+        default = true;
+        description = ''
+          Do not lock, while playing media.
+        '';
+      };
+      screenlocker.respectFullscreen = mkOption {
+        type = types.bool;
+        default = true;
+        description = ''
+          Do not lock, when active window is fullscreen.
+        '';
+      };
+      screenlocker.notificationUrgency = mkOption {
+        type = types.str;
+        default = "critical";
+        description = ''
+          Notification urgency level.
+        '';
+      };
+      screenlocker.notificationTimeout = mkOption {
+        type = types.int;
+        default = 7000;
+        description = ''
+          Notification timeout.
+        '';
+      };
+      screenlocker.alertingTimerSec = mkOption {
+        type = types.int;
+        default = 150;
+        description = ''
+          Seconds of idle time, before notification fires.
+        '';
+      };
+      screenlocker.lockingTimerSec = mkOption {
+        type = types.int;
+        default = 30;
+        description = ''
+          Seconds of idle time between alert and locking.
+        '';
+      };
       scripts.enable = mkOption {
         type = types.bool;
         default = false;
@@ -172,7 +224,9 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      users.users."${config.attributes.mainUser.name}".extraGroups = [ "video" ];
       programs.light.enable = true;
+      hardware.brillo.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; lib.optionals (config.attributes.staging.enable) [
           blugon
@@ -216,6 +270,15 @@ in {
         };
       };
     })
+    (mkIf cfg.opengl.enable {
+      hardware.opengl = {
+        enable = true;
+        extraPackages = with pkgs; [ intel-media-driver libvdpau-va-gl vaapiIntel vaapiVdpau ];
+        driSupport32Bit = true;
+        extraPackages32 = with pkgs.pkgsi686Linux; [ libvdpau-va-gl vaapiIntel vaapiVdpau ];
+      };
+      environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+    })
     (mkIf (cfg.enable && cfg.autorandr.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
@@ -234,10 +297,34 @@ in {
         ACTION=="change", SUBSYSTEM=="drm", RUN+="${pkgs.autorandr}/bin/autorandr --batch --change --default default"
       '';
     })
+    (mkIf (cfg.enable && cfg.screenlocker.enable) {
+      systemd.user.services."xidlehook" = {
+        description = "Lock the screen automatically after a timeout";
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        path = [ pkgs.bash ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
+          ExecStart = ''
+            ${pkgs.xidlehook}/bin/xidlehook \
+                  ${optionalString cfg.screenlocker.respectPlayback "--not-when-audio"} \
+                  ${optionalString cfg.screenlocker.respectFullscreen "--not-when-fullscreen"} \
+                  --timer ${builtins.toString cfg.screenlocker.alertingTimerSec} "${pkgs.dunst}/bin/dunstify \
+                          -t ${builtins.toString cfg.screenlocker.notificationTimeout} \
+                          -u ${cfg.screenlocker.notificationUrgency} \
+                          'Locking in ${builtins.toString cfg.screenlocker.lockingTimerSec} seconds'" "" \
+                  --timer ${builtins.toString cfg.screenlocker.lockingTimerSec} \
+                          "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off" ""
+          '';
+        };
+      };
+    })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
-        "<XF86MonBrightnessUp>" = ''spawn "${pkgs.light}/bin/light -A ${toString config.custom.xorg.backlightDelta}"'';
-        "<XF86MonBrightnessDown>" = ''spawn "${pkgs.light}/bin/light -U ${toString config.custom.xorg.backlightDelta}"'';
+        "<XF86MonBrightnessUp>" = ''spawn "${pkgs.light}/bin/light -A ${toString cfg.backlightDelta}"'';
+        "<XF86MonBrightnessDown>" = ''spawn "${pkgs.light}/bin/light -U ${toString cfg.backlightDelta}"'';
         "C-<XF86MonBrightnessUp>" = ''spawn "${pkgs.light}/bin/light -S 100"'';
         "C-<XF86MonBrightnessDown>" = ''spawn "${pkgs.light}/bin/light -S 20"'';
         "M-C-a" = ''spawn "${autorandr_profiles}/bin/autorandr_profiles"'';

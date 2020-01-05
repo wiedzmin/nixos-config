@@ -187,6 +187,21 @@ let
 
     exit 0
   '';
+  screenshot_active_window = pkgs.writeShellScriptBin "screenshot_active_window" ''
+    ${pkgs.maim}/bin/maim -o -i $(${pkgs.xdotool}/bin/xdotool getactivewindow) --format png /dev/stdout | \
+        ${pkgs.coreutils}/bin/tee ${cfg.screenshots.baseDir}/screenshot-$(date ${cfg.screenshots.dateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
+        ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
+  '';
+  screenshot_full = pkgs.writeShellScriptBin "screenshot_full" ''
+    ${pkgs.maim}/bin/maim -o --format png /dev/stdout | \
+        ${pkgs.coreutils}/bin/tee ${cfg.screenshots.baseDir}/screenshot-$(date ${cfg.screenshots.dateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
+        ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
+  '';
+  screenshot_region = pkgs.writeShellScriptBin "screenshot_region" ''
+    ${pkgs.maim}/bin/maim -o -s --format png /dev/stdout | \
+        ${pkgs.coreutils}/bin/tee ${cfg.screenshots.baseDir}/screenshot-$(date ${cfg.screenshots.dateFormat}.png | ${pkgs.coreutils}/bin/tr -d '[:cntrl:]') | \
+        ${pkgs.xclip}/bin/xclip -selection primary -t image/png -i
+  '';
 in {
   options = {
     custom.content = {
@@ -210,30 +225,25 @@ in {
         default = false;
         description = "Whether to enable tools for working with videos.";
       };
-      orderingTools.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable various ordering/deduplication tools.";
-      };
       players.deltaSeconds = mkOption {
         type = types.int;
         default = 10;
         description = "Player rewinding delta in seconds";
       };
-      mpd.enable = mkOption {
+      screenshots.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable MPD";
+        description = "Whether to enable screenshots functionality.";
       };
-      ympd.enable = mkOption { # TODO: check how ympd relates to user-level mpd service
-        type = types.bool;
-        default = false;
-        description = "Whether to enable YMPD";
+      screenshots.baseDir = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "Screenshots base directory";
       };
-      ympd.port = mkOption {
-        type = types.str;
-        default = "9090";
-        description = "Port for YMPD to listen on";
+      screenshots.dateFormat = mkOption {
+        type = types.nullOr types.str;
+        default = null;
+        description = "screenshot date suffix format";
       };
       xmonad.enable = mkOption {
         type = types.bool;
@@ -245,20 +255,12 @@ in {
 
   config = mkMerge [
     (mkIf cfg.consumers.enable {
-      # transmission + service https://transmissionbt.com/ + stig
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           android-file-transfer
           aria2
-          gallery-dl
           jmtpfs # consider providing some (shell) automation
-          qbittorrent
-          uget
-          wayback_machine_downloader
           you-get
-          ytcc
-        ] ++ lib.optionals config.attributes.staging.enable [
-          lsd2dsl
         ];
         services.syncthing.enable = true; # TODO: consider separate option(s)
       };
@@ -267,23 +269,14 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           archiver
-          pbzip2
-          pigz
-          unar
         ];
       };
     })
     (mkIf cfg.imageTools.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          exif
-          exiftool
           exiv2
-          gimp
-          jhead
           mediainfo
-          mediainfo-gui
-          rawtherapee
         ];
       };
     })
@@ -297,47 +290,31 @@ in {
               }
             )
           )
-          ccextractor
-          ffmpeg
-          clipgrab
           paste_to_ix
         ];
       };
     })
-    (mkIf cfg.videoTools.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          dupd
-          jdupes
-          rmlint
-          fpart
-        ];
-      };
-    })
-    (mkIf cfg.mpd.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        services.mpd = { # TODO: check options' values
-          enable = true;
-          musicDirectory = "/home/${config.attributes.mainUser.name}/blobs/music";
-        };
-      };
-    })
-    (mkIf cfg.ympd.enable {
+    (mkIf cfg.screenshots.enable {
       assertions = [
         {
-          assertion = cfg.ympd.enable && cfg.mpd.enable;
-          message = "content: enabling YMPD makes no sense without enabling MPD beforehand.";
+          assertion = cfg.screenshots.baseDir != null;
+          message = "Must provide path to screenshots dir.";
+        }
+        {
+          assertion = cfg.screenshots.dateFormat != null;
+          message = "Must provide date format.";
         }
       ];
 
-      services.ympd = {
-        enable = true;
-        webPort = cfg.ympd.port;
-      };
+      environment.systemPackages = [
+        screenshot_active_window
+        screenshot_full
+        screenshot_region
+      ];
     })
     (mkIf cfg.xmonad.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ # TODO: maybe bind to keys after debug
+        home.packages = with pkgs; [
           buku_search_tag
           buku_search_url
         ];
@@ -345,6 +322,13 @@ in {
       wm.xmonad.keybindings = {
         "M-y" = ''spawn "${buku_add}/bin/buku_add"'';
         "M-i" = ''spawn "${paste_to_ix}/bin/paste_to_ix"'';
+      };
+    })
+    (mkIf (cfg.xmonad.enable && cfg.screenshots.enable) {
+      wm.xmonad.keybindings = {
+        "<Print>" = ''spawn "screenshot_active_window"'';
+        "C-<Print>" = ''spawn "screenshot_full"'';
+        "M-<Print>" = ''spawn "screenshot_region"'';
       };
     })
   ];

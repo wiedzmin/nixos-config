@@ -3,13 +3,24 @@ with lib;
 
 let
   cfg = config.custom.nas;
-  mount_nas_volume = pkgs.writeShellScriptBin "mount_nas_volume" ''
+  nas_lib = pkgs.writeShellScriptBin "nas_lib" ''
     function show_list() {
         contents=("$@")
         for i in "''${contents[@]}";
         do
             echo "$i"
         done
+    }
+
+    function unmount_volume() {
+        VOLUME=$1
+        YET_MOUNTED=$(cat /etc/mtab | ${pkgs.gnugrep}/bin/grep ${cfg.hostName} | ${pkgs.coreutils}/bin/cut -d ' '  -f 1 | ${pkgs.gnugrep}/bin/grep $VOLUME)
+        if [[ ! -z $YET_MOUNTED ]]; then
+            fusermount -u ${cfg.localMountBase}/$VOLUME
+            ${pkgs.dunst}/bin/dunstify -t 3000 "Volume $VOLUME succesfully unmounted!"
+        else
+            ${pkgs.dunst}/bin/dunstify -t 7000 "Volume '$VOLUME' already unmounted!"
+        fi
     }
 
     function ensure_nas_online() {
@@ -38,6 +49,10 @@ let
         fi
     }
 
+  '';
+  mount_nas_volume = pkgs.writeShellScriptBin "mount_nas_volume" ''
+    ${nas_lib}
+
     nas_volumes=(${builtins.concatStringsSep " " cfg.volumes})
 
     main() {
@@ -55,24 +70,7 @@ let
     exit 0
   '';
   unmount_nas_volume = pkgs.writeShellScriptBin "unmount_nas_volume" ''
-    function show_list() {
-        contents=("$@")
-        for i in "''${contents[@]}";
-        do
-            echo "$i"
-        done
-    }
-
-    function unmount_volume() {
-        VOLUME=$1
-        YET_MOUNTED=$(cat /etc/mtab | ${pkgs.gnugrep}/bin/grep ${cfg.hostName} | ${pkgs.coreutils}/bin/cut -d ' '  -f 1 | ${pkgs.gnugrep}/bin/grep $VOLUME)
-        if [[ ! -z $YET_MOUNTED ]]; then
-            fusermount -u ${cfg.localMountBase}/$VOLUME
-            ${pkgs.dunst}/bin/dunstify -t 3000 "Volume $VOLUME succesfully unmounted!"
-        else
-            ${pkgs.dunst}/bin/dunstify -t 7000 "Volume '$VOLUME' already unmounted!"
-        fi
-    }
+    ${nas_lib}
 
     main() {
         mounted_nas_volumes=$(cat /etc/mtab | ${pkgs.gnugrep}/bin/grep ${cfg.hostName} | ${pkgs.coreutils}/bin/cut -d ' '  -f 1)
@@ -87,16 +85,7 @@ let
     exit 0
   '';
   force_unmount_nas = pkgs.writeShellScriptBin "force_unmount_nas" ''
-    function unmount_volume() {
-        VOLUME=$1
-        YET_MOUNTED=$(cat /etc/mtab | ${pkgs.gnugrep}/bin/grep ${cfg.hostName} | ${pkgs.coreutils}/bin/cut -d ' '  -f 1 | ${pkgs.gnugrep}/bin/grep $VOLUME)
-        if [[ ! -z $YET_MOUNTED ]]; then
-            fusermount -u ${cfg.localMountBase}/$VOLUME
-            ${pkgs.dunst}/bin/dunstify -t 3000 "Volume $VOLUME succesfully unmounted!"
-        else
-            ${pkgs.dunst}/bin/dunstify -t 7000 "Volume '$VOLUME' already unmounted!"
-        fi
-    }
+    ${nas_lib}
 
     mounted_nas_volumes=$(cat /etc/mtab | ${pkgs.gnugrep}/bin/grep ${cfg.hostName} | ${pkgs.coreutils}/bin/cut -d ' '  -f 1)
     for i in "''${mounted_nas_volumes[@]}"

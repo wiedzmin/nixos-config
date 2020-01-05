@@ -221,6 +221,24 @@ in {
   };
 
   config = mkMerge [
+    (mkIf (cfg.enable) {
+      nix = { # TODO: extract options
+        maxJobs = lib.mkDefault config.attributes.hardware.cores;
+        buildCores = lib.mkDefault config.attributes.hardware.cores;
+        optimise.automatic = false;
+        gc = {
+          automatic = true;
+          dates = "weekly";
+          options = "--delete-older-than 7d";
+        };
+      };
+      nixpkgs.config = {
+        allowUnfree = true;
+        allowUnfreeRedistributable = true;
+
+        oraclejdk.accept_license = true;
+      };
+    })
     (mkIf (cfg.enable && cfg.homeManagerBackups.enable) {
       environment.variables.HOME_MANAGER_BACKUP_EXT = "hm_backup";
     })

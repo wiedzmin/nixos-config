@@ -43,9 +43,8 @@ in
     };
   };
 
-  powerManagement = {
+  custom.power-management = {
     enable = true;
-    powertop.enable = true;
   };
 
   boot = {
@@ -103,24 +102,7 @@ in
     nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
   };
 
-  nix = {
-    # per-machine settings
-    maxJobs = lib.mkDefault 4;
-    buildCores = lib.mkDefault 4;
-    optimise.automatic = true;
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-  };
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowUnfreeRedistributable = true;
-
-    oraclejdk.accept_license = true;
-  };
+  custom.packaging.enable = true;
 
   environment.shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" ];
 
@@ -151,7 +133,6 @@ in
       enable = true;
       forwardX11 = true;
     };
-    upower.enable = true;
     tlp.enable = true;
     acpid.enable = true;
     arbtt.enable = true;

@@ -144,67 +144,6 @@ in {
         default = [];
         description = "List of paths to warm up.";
       };
-      powersave.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable powersaving.";
-      };
-      powersave.notifications.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable notifications on low battery level.";
-      };
-      powersave.notifications.battery = mkOption {
-        type = types.str;
-        default = "BAT0";
-        description = ''
-          Battery to monitor.
-        '';
-      };
-      powersave.notifications.notifyAfter = mkOption {
-        type = types.int;
-        default = 10;
-        description = ''
-          Battery level after which notifications should be sent.
-        '';
-      };
-      powersave.notifications.suspendAfter = mkOption {
-        type = types.int;
-        default = 5;
-        description = ''
-          Battery level after which a suspend should be performed.
-        '';
-      };
-      powersave.notifications.suspendTimeout = mkOption {
-        type = types.str;
-        default = "60s";
-        description = ''
-          How much to wait before suspending.
-        '';
-      };
-      powersave.notifications.suspendCommand = mkOption {
-        type = types.str;
-        default = "systemctl suspend";
-        description = ''
-          Command to issue on suspend.
-        '';
-      };
-      powersave.rules = mkOption {
-        type = types.attrs;
-        default = {
-          Chromium = {
-            suspendDelay = 10;
-            matchWmClassContains = "Chromium-browser";
-            suspendSubtreePattern = "chromium";
-          };
-          Firefox = {
-            suspendDelay = 10;
-            matchWmClassContains = "Firefox";
-            suspendSubtreePattern = "firefox";
-          };
-        };
-        description = "Apps suspending rules.";
-      };
       scripts.enable = mkOption {
         type = types.bool;
         default = false;
@@ -398,54 +337,6 @@ in {
       wm.xmonad.keybindings = {
         "M-C-j" = ''spawn "${srvctl}/bin/srvctl"'';
         "M-S-u" = ''spawn "${uptime_info}/bin/uptime_info"'';
-      };
-    })
-    (mkIf cfg.powersave.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        services.xsuspender = {
-          enable = true;
-          defaults = {
-            suspendDelay = 10;
-            onlyOnBattery = false;
-          };
-          rules = cfg.powersave.rules;
-        };
-      };
-    })
-    (mkIf (cfg.xmonad.enable && cfg.powersave.enable) {
-      wm.xmonad.keybindings = {
-        "M-s x <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl --user restart xsuspender.service"'';
-        "M-s x <Down>" = ''spawn "${pkgs.systemd}/bin/systemctl --user stop xsuspender.service"'';
-      };
-    })
-    (mkIf (cfg.powersave.enable && cfg.powersave.notifications.enable) {
-      systemd.user.timers."lowbatt" = {
-        description = "check battery level";
-        timerConfig.OnBootSec = "1m";
-        timerConfig.OnUnitInactiveSec = "1m";
-        timerConfig.Unit = "lowbatt.service";
-        wantedBy = [ "timers.target" ];
-      };
-      systemd.user.services."lowbatt" = {
-        description = "battery level notifier";
-        serviceConfig.PassEnvironment = "DISPLAY";
-        script = ''
-          export battery_capacity=$(${pkgs.coreutils}/bin/cat /sys/class/power_supply/${cfg.powersave.notifications.battery}/capacity)
-          export battery_status=$(${pkgs.coreutils}/bin/cat /sys/class/power_supply/${cfg.powersave.notifications.battery}/status)
-          if [[ $battery_capacity -le ${builtins.toString cfg.powersave.notifications.notifyAfter} && $battery_status = "Discharging" ]]; then
-              ${pkgs.dunst}/bin/dunstify -u critical "Battery low, consider plugging in."
-          fi
-
-          if [[ $battery_capacity -le ${builtins.toString cfg.powersave.notifications.suspendAfter} && $battery_status = "Discharging" ]]; then
-              ${pkgs.dunst}/bin/dunstify -u critical -t 5000 "Battery CRITICALLY low, will suspend in ${cfg.powersave.notifications.suspendTimeout}."
-              sleep ${cfg.powersave.notifications.suspendTimeout}
-
-              battery_status=$(${pkgs.coreutils}/bin/cat /sys/class/power_supply/${cfg.powersave.notifications.battery}/status)
-              if [[ $battery_status = "Discharging" ]]; then
-                  ${cfg.powersave.notifications.suspendCommand}
-              fi
-          fi
-        '';
       };
     })
   ];

@@ -150,6 +150,11 @@ in {
           <literal>$dataDir/manage-paperless</literal>
         '';
       };
+      tex.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable TeX tooling.";
+      };
     };
   };
 
@@ -269,6 +274,14 @@ in {
           name = paperlessDefaultUser;
           gid = config.ids.gids.paperless;
         }];
+      };
+    })
+    (mkIf cfg.tex.enable {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; lib.optionals (config.attributes.staging.enable) [
+          pplatex
+          texlab
+        ];
       };
     })
   ];

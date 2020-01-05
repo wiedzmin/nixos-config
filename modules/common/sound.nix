@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.custom.media;
+let cfg = config.custom.sound;
 in {
   options = {
-    custom.media = {
+    custom.sound = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -35,11 +35,6 @@ in {
         default = {};
         description = "Pulseaudio daemon configuration";
       };
-      opengl.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable OpenGL";
-      };
       xmonad.enable = mkOption {
         type = types.bool;
         default = false;
@@ -50,10 +45,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      users.users."${config.attributes.mainUser.name}".extraGroups = [ "audio" "video" ];
-    })
-    (mkIf (cfg.enable && config.attributes.staging.enable) {
-      hardware.brillo.enable = true;
+      users.users."${config.attributes.mainUser.name}".extraGroups = [ "audio" ];
     })
     (mkIf cfg.pulse.enable {
       hardware.pulseaudio = {
@@ -68,19 +60,10 @@ in {
         lxqt.pavucontrol-qt
       ];
     })
-    (mkIf cfg.opengl.enable {
-      hardware.opengl = {
-        enable = true;
-        extraPackages = with pkgs; [ intel-media-driver libvdpau-va-gl vaapiIntel vaapiVdpau ];
-        driSupport32Bit = true;
-        extraPackages32 = with pkgs.pkgsi686Linux; [ libvdpau-va-gl vaapiIntel vaapiVdpau ];
-      };
-      environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
-    })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
-        "<XF86AudioRaiseVolume>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString config.custom.media.volume.deltaFraction}+"'';
-        "<XF86AudioLowerVolume>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString config.custom.media.volume.deltaFraction}-"'';
+        "<XF86AudioRaiseVolume>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}+"'';
+        "<XF86AudioLowerVolume>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}-"'';
         "<XF86AudioPrev>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players previous"'';
         "<XF86AudioPlay>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players play-pause"'';
         "<XF86AudioNext>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players next"'';

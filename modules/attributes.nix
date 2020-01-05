@@ -119,6 +119,11 @@ with lib;
       type = types.bool;
       default = false;
     };
+    hardware.cores = mkOption {
+      description = "CPU cores count";
+      type = types.int;
+      default = 4;
+    };
     hardware.monitors = {
       internalHead = {
         name = mkOption {

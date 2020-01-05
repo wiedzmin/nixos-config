@@ -1,12 +1,8 @@
 { ... }: {
   imports = [
-    ./analysis.nix
     ./appearance.nix
     ./browsers.nix
-    ./clean-trash.nix
-    ./clojure.nix
     ./content.nix
-    ./dataworks.nix
     ./dbms.nix
     ./dev.nix
     ./ebook.nix
@@ -14,26 +10,24 @@
     ./email.nix
     ./git.nix
     ./golang.nix
+    ./housekeeping.nix
     ./knowledgebase.nix
-    ./media.nix
-    ./messengers.nix
     ./nas.nix
     ./navigation.nix
     ./networking.nix
     ./packaging.nix
     ./paperworks.nix
     ./pim.nix
-    ./polkit-silent-auth.nix
+    ./powermanagement.nix
     ./python.nix
-    ./screenshots.nix
     ./security.nix
     ./shell.nix
+    ./sound.nix
     ./stumpwm.nix
     ./system.nix
+    ./video.nix
     ./virt.nix
-    ./xidlehook.nix
     ./xinput.nix
     ./xmonad.nix
-    ./xorg.nix
   ];
 }

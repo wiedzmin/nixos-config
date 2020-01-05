@@ -57,6 +57,11 @@ in {
         default = false;
         description = "Whether to enable shell tools.";
       };
+      toolsng.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable successors of some traditional tools like find, sed, etc.";
+      };
       ohMyZshPrompt.enable = mkOption {
         type = types.bool;
         default = false;
@@ -456,6 +461,51 @@ in {
               };
             }
           ];
+        };
+      };
+    })
+    (mkIf cfg.toolsng.enable {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          fd
+          sd
+          up
+          uq
+        ] ++ lib.optionals config.attributes.staging.enable [
+          dateutils
+          fselect
+          gron
+          jid
+          jl
+          lv
+          pdfgrep
+          ripgrep-all
+          yj
+        ];
+        programs = {
+          lsd = {
+            enable = true;
+            enableAliases = true;
+          };
+          bat = {
+            enable = true;
+            config = {
+              theme = "TwoDark";
+              pager = "less -FR";
+            };
+          };
+          jq = {
+            enable = true;
+            colors = {
+              null = "1;30";
+              false = "0;91";
+              true = "0;92";
+              numbers = "0;36";
+              strings = "1;96";
+              arrays = "1;94";
+              objects = "1;33";
+            };
+          };
         };
       };
     })

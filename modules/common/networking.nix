@@ -84,6 +84,16 @@ in {
         default = false;
         description = "Whether to enable clients to control remote machines.";
       };
+      messengers.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to install messengers.";
+      };
+      messengers.aux.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable auxillary messengers/tools.";
+      };
       xmonad.enable = mkOption {
         type = types.bool;
         default = false;
@@ -225,6 +235,24 @@ in {
         home.packages = with pkgs; [
           anydesk
           teamviewer
+        ];
+      };
+    })
+    (mkIf (cfg.enable && cfg.messengers.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          skype
+          tdesktop
+          zoom-us
+        ];
+      };
+    })
+    (mkIf (cfg.enable && cfg.messengers.aux.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          skype-call-recorder
+          slack
+          wire-desktop
         ];
       };
     })

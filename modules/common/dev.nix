@@ -124,6 +124,23 @@ let
     (use-package elmacro
       :ensure t)
   '';
+  emacsCodeSearchSetup = ''
+    (use-package codesearch
+      :ensure t
+      :custom
+      (codesearch-global-csearchindex "${config.secrets.dev.workspaceRoot}/.csearchindex"))
+
+    (use-package counsel-codesearch
+      :ensure t
+      :after codesearch
+      :bind
+      (:map mode-specific-map
+            ("c" . counsel-codesearch)))
+
+    (use-package projectile-codesearch
+      :ensure t
+      :after codesearch)
+  '';
 in {
   options = {
     custom.dev = {
@@ -132,10 +149,20 @@ in {
         default = false;
         description = "Whether to enable non-production tools to play with.";
       };
+      codesearch.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Codesearch dev infra.";
+      };
       patching.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable patching helper tools.";
+      };
+      analysis.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable dev analysis tools.";
       };
       statistics.enable = mkOption {
         type = types.bool;
@@ -215,11 +242,85 @@ in {
         ];
       };
     })
+    (mkIf cfg.codesearch.enable {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          codesearch
+        ];
+        programs = {
+          zsh.sessionVariables = {
+            CSEARCHINDEX = "${config.secrets.dev.workspaceRoot}/.csearchindex";
+          };
+          bash.sessionVariables = {
+            CSEARCHINDEX = "${config.secrets.dev.workspaceRoot}/.csearchindex";
+          };
+        };
+      };
+      systemd.user.services."codesearch-reindex" = {
+        description = "Codesearch index updating";
+        wantedBy = [ "graphical.target" ];
+        partOf = [ "graphical.target" ];
+        serviceConfig = {
+          Type = "oneshot";
+          Environment = [
+            "CSEARCHINDEX=${config.secrets.dev.workspaceRoot}/.csearchindex"
+          ];
+          ExecStart = "${pkgs.codesearch}/bin/cindex ${config.secrets.dev.workspaceRoot}";
+          StandardOutput = "journal+console";
+          StandardError = "inherit";
+        };
+      };
+      systemd.user.timers."codesearch-reindex" = {
+        description = "Codesearch index updating";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnBootSec = "5min";
+          OnUnitActiveSec = "1h";
+        };
+      };
+    })
+    (mkIf (cfg.codesearch.enable && cfg.emacs.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        programs.emacs.extraPackages = epkgs: [
+          epkgs.codesearch
+          epkgs.counsel-codesearch
+          epkgs.projectile-codesearch
+        ];
+      };
+      ide.emacs.config = ''${emacsCodeSearchSetup}'';
+    })
     (mkIf cfg.patching.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           patchutils
           wiggle
+          ruplacer
+        ];
+      };
+    })
+    (mkIf cfg.analysis.enable {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          diffoscope
+          elfinfo
+          flamegraph
+          gdb
+          gdbgui
+          hopper
+          patchelf
+          patchutils
+          radare2
+          radare2-cutter
+          sysdig
+          valgrind
+        ] ++ lib.optionals (config.attributes.staging.enable) [
+          q-text-as-data
+          textql
+          visidata # TODO: make overlay
+          datamash
+          xsv
+          xurls
+          txr # TODO: get started, read docs
         ];
       };
     })
@@ -238,14 +339,16 @@ in {
     (mkIf cfg.misc.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
+          icdiff
+          ix
+          loop
+          lorri
+          pv
           watchexec
           wstunnel
-          pv
-          loop
-          ix
-          lorri
         ] ++ lib.optionals config.attributes.staging.enable [
           async
+          mkcert
         ];
         programs.direnv = {
           enable = true;

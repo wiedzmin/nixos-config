@@ -43,14 +43,6 @@ in
     };
   };
 
-  powerManagement = {
-    enable = true;
-    powertop.enable = true;
-    resumeCommands = lib.concatStringsSep "\n"
-      (lib.mapAttrsToList (server: _: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
-        config.services.openvpn.servers);
-  };
-
   boot = {
     loader.grub = {
       enable = true;
@@ -107,25 +99,6 @@ in
     nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
   };
 
-  nix = {
-    # per-machine settings
-    maxJobs = lib.mkDefault 4;
-    buildCores = lib.mkDefault 4;
-    optimise.automatic = false;
-    gc = {
-      automatic = true;
-      dates = "weekly";
-      options = "--delete-older-than 7d";
-    };
-  };
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowUnfreeRedistributable = true;
-
-    oraclejdk.accept_license = true;
-  };
-
   environment.shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" "/run/current-system/sw/bin/zsh" ];
 
   users.extraUsers.root.hashedPassword =
@@ -171,7 +144,6 @@ in
       SUBSYSTEM=="backlight", ACTION=="add", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
       SUBSYSTEM=="leds", ACTION=="add", KERNEL=="*::kbd_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/leds/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/leds/%k/brightness"
     '';
-    upower.enable = true;
     tlp.enable = true;
     thermald.enable = true;
     acpid.enable = true;
@@ -179,12 +151,7 @@ in
 
     redis.enable = true; # for various caching needs
 
-    xidlehook.enable = true;
     arbtt.enable = true;
-    clean-trash = {
-      enable = true;
-      calendarTimespec = "*-*-* 23:00:00";
-    };
     openvpn.servers = {
       "${config.secrets.network.vpn.name}" = {
         config = config.secrets.network.vpn.config;
@@ -207,8 +174,6 @@ in
     };
     xbanish.enable = true;
   };
-
-  polkit-silent-auth.enable = true;
 
   attributes.hardware.monitors = {
     internalHead.name = "LVDS-1";
@@ -357,22 +322,19 @@ in
   custom.content = {
     consumers.enable = true;
     compression.enable = true;
-    orderingTools.enable = true;
     videoTools.enable = true;
-    mpd.enable = true;
+    screenshots = {
+      enable = true;
+      baseDir = "/home/${config.attributes.mainUser.name}/screenshots";
+      dateFormat = "+%Y-%m-%d_%H:%M:%S";
+    };
     xmonad.enable = true;
-  };
-
-  custom.dataworks = {
-    forensics.enable = true;
-    codesearch.enable = true;
-    toolsng.enable = true;
-    tex.enable = true;
-    emacs.enable = true;
   };
 
   custom.dev = {
     statistics.enable = true;
+    codesearch.enable = true;
+    patching.enable = true;
     misc.enable = true;
     emacs.enable = true;
     xmonad.enable = true;
@@ -429,6 +391,18 @@ in
     };
   };
 
+  custom.housekeeping = {
+    enable = true;
+    cleanTrash = {
+      enable = true;
+      calendarTimespec = "*-*-* 23:00:00";
+    };
+    orderScreenshots = {
+      enable = true;
+      calendarTimespec = "*-*-* 00:05:00";
+    };
+  };
+
   ide.emacs.enable = true;
 
   custom.knowledgebase = {
@@ -436,7 +410,7 @@ in
     emacs.enable = true;
   };
 
-  custom.media = {
+  custom.sound = {
     enable = true;
     pulse = {
       enable = true;
@@ -444,11 +418,8 @@ in
         flat-volumes = "no";
       };
     };
-    opengl.enable = true;
     xmonad.enable = true;
   };
-
-  tools.messengers.enable = true;
 
   custom.navigation = {
     enable = true;
@@ -462,6 +433,7 @@ in
   custom.networking = {
     enable = true;
     clients.enable = true;
+    messengers.enable = true;
     xmonad.enable = true;
     extraHosts = config.secrets.job.infra.extraHosts // config.secrets.network.extraHosts;
   };
@@ -509,23 +481,31 @@ in
     emacs.enable = true;
   };
 
-  custom.screenshots = {
+  custom.power-management = {
     enable = true;
-    baseDir = "/home/${config.attributes.mainUser.name}/screenshots";
-    dateFormat = "+%Y-%m-%d_%H:%M:%S";
-    calendarTimespec = "*-*-* 00:05:00";
+    resumeCommands = lib.concatStringsSep "\n"
+      (lib.mapAttrsToList (server: _: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
+        config.services.openvpn.servers);
+    batteryManagement = {
+      enable = true;
+      notificationThreshold = 20;
+      suspensionThreshold = 10;
+    };
+    appsSuspension.enable = true;
     xmonad.enable = true;
   };
 
   custom.security = {
     enable = true;
     pinentryFlavor = "qt";
+    polkit.silentAuth = true;
     emacs.enable = true;
     xmonad.enable = true;
   };
 
   custom.shell = {
     enable = true;
+    toolsng.enable = true;
     liquidPrompt.enable = true;
     emacs.enable = true;
     xmonad.enable = true;
@@ -541,14 +521,6 @@ in
       ];
     };
     scripts.enable = true;
-    powersave = {
-      enable = true;
-      notifications = {
-        enable = true;
-        notifyAfter = 20;
-        suspendAfter = 10;
-      };
-    };
     hardware.ddc.enable = true;
     xmonad.enable = true;
   };
@@ -590,9 +562,11 @@ in
     };
   };
 
-  custom.xorg = {
+  custom.video = {
     enable = true;
+    opengl.enable = true;
     autorandr.enable = true;
+    screenlocker.enable = true;
     xmonad.enable = true;
   };
 

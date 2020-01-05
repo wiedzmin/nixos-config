@@ -63,6 +63,11 @@ in {
         example = "gnome3";
         description = "Pinentry flavor to use.";
       };
+      polkit.silentAuth = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to allow special users to do some things without authentication.";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -84,16 +89,11 @@ in {
       }];
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          # jd-gui
           (pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]))
-          certigo
-          dnsrecon
           gopass
-          mkcert
           paperkey
           rofi-pass
           srm
-          sslscan
           vulnix
           # ===
           enforce_job_vpn_up
@@ -142,6 +142,25 @@ in {
         ];
       };
       ide.emacs.config = ''${emacsSecuritySetup}'';
+    })
+    (mkIf (cfg.polkit.silentAuth) {
+      security.polkit.extraConfig = ''
+        /* Allow users in wheel group to manage systemd units without authentication */
+        polkit.addRule(function(action, subject) {
+            if (action.id == "org.freedesktop.systemd1.manage-units" &&
+                subject.isInGroup("wheel")) {
+                return polkit.Result.YES;
+            }
+        });
+
+        /* Allow users in wheel group to run programs with pkexec without authentication */
+        polkit.addRule(function(action, subject) {
+            if (action.id == "org.freedesktop.policykit.exec" &&
+                subject.isInGroup("wheel")) {
+                return polkit.Result.YES;
+            }
+        });
+      '';
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
