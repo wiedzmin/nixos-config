@@ -367,6 +367,7 @@ in {
                 "browser.sessionstore.restore_tabs_lazily" = true;
                 "browser.shell.checkDefaultBrowser" = true;
                 "browser.startup.page" = 3;
+                "browser.urlbar.decodeURLsOnCopy" = true;
                 "extensions.autoDisableScopes" = 0;
                 "extensions.pocket.enabled" = false;
                 "extensions.update.autoUpdateDefault" = false;
