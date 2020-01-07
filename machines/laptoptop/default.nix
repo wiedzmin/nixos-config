@@ -476,7 +476,7 @@ in
     };
     misc.enable = true;
     scripts.enable = true;
-    homeManagerBackups.enable = true;
+    homeManagerBackups.enable = false;
     emacs.enable = true;
     xmonad.enable = true;
   };
