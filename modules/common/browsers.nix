@@ -687,6 +687,7 @@ in {
         description = "Backup current firefox session (tabs)";
         wantedBy = [ "timers.target" ];
         timerConfig = {
+          OnBootSec = cfg.sessions.saveFrequency;
           OnUnitActiveSec = cfg.sessions.saveFrequency;
         };
       };
