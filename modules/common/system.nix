@@ -219,7 +219,6 @@ in {
           iotop
           nmon
           pagemon
-          procs
         ];
         programs.htop = {
           enable = true;
