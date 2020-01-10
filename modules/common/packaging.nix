@@ -318,12 +318,6 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          cachix
-          dotnet-sdk # for building some binary releases
-          nix-zsh-completions
-          nix-review # https://github.com/Mic92/nix-review
-        ];
         programs.emacs.extraPackages = epkgs: [
           epkgs.company-nixos-options
           epkgs.nix-mode
