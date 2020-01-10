@@ -118,6 +118,7 @@ in {
           tmsu                        # ?
         ] ++ lib.optionals (config.attributes.staging.enable) [
           eva
+          tmux-xpanes
         ];
         home.file = {
           ".inputrc".text = ''
