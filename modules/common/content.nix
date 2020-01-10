@@ -1,6 +1,7 @@
 let
   deps = import ../../nix/sources.nix;
   bukuPinned = import deps.nixpkgs-pinned-buku { config.allowUnfree = true; };
+  nixpkgs-pinned-05_12_19  = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
 in
 { config, lib, pkgs, ... }:
 with import ../util.nix { inherit config lib pkgs; };
@@ -36,7 +37,7 @@ let
 
 
     def fetch_tags_cloud():
-        tags_cloud_task = subprocess.Popen("${bukuPinned.buku}/bin/buku --np --st",
+        tags_cloud_task = subprocess.Popen("${nixpkgs-pinned-05_12_19.buku}/bin/buku --np --st",
                                       shell=True, stdout=subprocess.PIPE)
         result = [" ".join(tag.strip().split(" ")[1:-1])
                   for tag in tags_cloud_task.stdout.read().decode().split("\n") if tag]
@@ -74,11 +75,11 @@ let
             else:
                break
         if bookmark_tags:
-            os.system("${bukuPinned.buku}/bin/buku -a {0} {1}".format(
+            os.system("${nixpkgs-pinned-05_12_19.buku}/bin/buku -a {0} {1}".format(
                       bookmark_text,
                       ",".join(bookmark_tags)))
         else:
-            os.system("${bukuPinned.buku}/bin/buku -a {0}".format(
+            os.system("${nixpkgs-pinned-05_12_19.buku}/bin/buku -a {0}".format(
                       bookmark_text))
         n = notify2.Notification("Success", "Bookmark added: {0} ({1})".format(
                                  bookmark_text,
@@ -99,7 +100,7 @@ let
     collect_tags () {
         taglist=()
         sep=''${1:-,}
-        tagcloud=$(${bukuPinned.buku}/bin/buku --np --st | \
+        tagcloud=$(${nixpkgs-pinned-05_12_19.buku}/bin/buku --np --st | \
                    ${pkgs.gawk}/bin/awk '{$NF=""; print $0}' | \
                    ${pkgs.coreutils}/bin/cut -d ' ' -f2 | sort -u )
         while true; do
@@ -117,8 +118,8 @@ let
     declare -A MODES
 
     MODES=(
-      ["urls"]="${bukuPinned.buku}/bin/buku -f 1 --np --st"
-      ["titles"]="${bukuPinned.buku}/bin/buku -f 3 --np --st"
+      ["urls"]="${nixpkgs-pinned-05_12_19.buku}/bin/buku -f 1 --np --st"
+      ["titles"]="${nixpkgs-pinned-05_12_19.buku}/bin/buku -f 3 --np --st"
     )
     DEFAULT_MODE=urls
 
@@ -167,7 +168,7 @@ let
         fi
 
         SELECTION=$( (list_search_results) | ${pkgs.gawk}/bin/awk '{print $1}' )
-        ${bukuPinned.buku}/bin/buku -o $SELECTION
+        ${nixpkgs-pinned-05_12_19.buku}/bin/buku -o $SELECTION
     }
 
     main
@@ -176,10 +177,10 @@ let
   '';
   buku_search_url = pkgs.writeScriptBin "buku_search_url" ''
     main() {
-        SEARCH_RESULTS="$(${bukuPinned.buku}/bin/buku -f 1 --nc -p)"
+        SEARCH_RESULTS="$(${nixpkgs-pinned-05_12_19.buku}/bin/buku -f 1 --nc -p)"
         SELECTION=$( echo "$SEARCH_RESULTS" | tr ' ' '\n' | ${pkgs.dmenu}/bin/dmenu -p '> ')
         if [ -n "$SELECTION" ]; then
-            ${bukuPinned.buku}/bin/buku -o $SELECTION
+            ${nixpkgs-pinned-05_12_19.buku}/bin/buku -o $SELECTION
         fi
     }
 

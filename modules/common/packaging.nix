@@ -1,3 +1,7 @@
+let
+  deps = import ../../nix/sources.nix;
+  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+in
 { config, lib, pkgs, ... }:
 with import ../util.nix { inherit config lib pkgs; };
 with lib;
@@ -292,7 +296,7 @@ in {
     (mkIf (cfg.enable && cfg.misc.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          cachix
+          nixpkgs-pinned-05_12_19.cachix
           dotnet-sdk # for building some binary releases
           nix-zsh-completions
           nix-review # https://github.com/Mic92/nix-review

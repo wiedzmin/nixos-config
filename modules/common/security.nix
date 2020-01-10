@@ -1,3 +1,7 @@
+let
+  deps = import ../../nix/sources.nix;
+  nixpkgs-pinned-05_12_19  = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+in
 { config, lib, pkgs, ... }:
 with lib;
 
@@ -94,7 +98,7 @@ in {
           paperkey
           rofi-pass
           srm
-          vulnix
+          nixpkgs-pinned-05_12_19.vulnix
           # ===
           enforce_job_vpn_up
         ];

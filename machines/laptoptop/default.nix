@@ -1,6 +1,7 @@
 { config, pkgs, lib, ... }:
 let
   deps = import ../../nix/sources.nix;
+  nixpkgs-pinned-05_12_19  = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
 in
 {
   imports = [
@@ -464,6 +465,7 @@ in
       enableXsane = true;
       paperless = {
         enable = true;
+        package = nixpkgs-pinned-05_12_19.paperless;
         consumptionDir = "/home/${config.attributes.mainUser.name}/docs/paperless/consume";
         dataDir = "/home/${config.attributes.mainUser.name}/docs/paperless/data";
         user = config.attributes.mainUser.name;

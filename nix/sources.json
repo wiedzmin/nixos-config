@@ -71,43 +71,7 @@
         "url": "https://github.com/NixOS/nixpkgs-channels/archive/e1eedf29e5d22e6824e614d75449b75a2e3455d6.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "nixpkgs-pinned-buku": {
-        "branch": "nixos-unstable",
-        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
-        "homepage": "https://github.com/NixOS/nixpkgs",
-        "owner": "NixOS",
-        "repo": "nixpkgs-channels",
-        "rev": "471869c9185fb610e67940a701eb13b1cfb335a4",
-        "sha256": "1klbclz8n4b9k1kfwv806bqdavld1mg32l1vxsmnrqzr6zck1c54",
-        "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/471869c9185fb610e67940a701eb13b1cfb335a4.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "nixpkgs-pinned-dbcli": {
-        "branch": "nixos-unstable",
-        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
-        "homepage": "https://github.com/NixOS/nixpkgs",
-        "owner": "NixOS",
-        "repo": "nixpkgs-channels",
-        "rev": "69c21be86e9f9f9eaba46e66aacffe550d23e0d7",
-        "sha256": "0baw0d7b1gckam6qg8240jwx6x682zqmln167vajpsp323nl3zbr",
-        "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/69c21be86e9f9f9eaba46e66aacffe550d23e0d7.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "nixpkgs-pinned-httpprompt": {
-        "branch": "nixos-unstable",
-        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
-        "homepage": "https://github.com/NixOS/nixpkgs",
-        "owner": "NixOS",
-        "repo": "nixpkgs-channels",
-        "rev": "f0b49c4d10c86497e04a2b707134a8d7e2198783",
-        "sha256": "0by8rc0s70nygrmc1yd7l5bw2a7prddhl18gs9y908mnrcqacczb",
-        "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/f0b49c4d10c86497e04a2b707134a8d7e2198783.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "nixpkgs-pinned-litecli": {
+    "nixpkgs-pinned-02_08_19": {
         "branch": "nixos-unstable",
         "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
         "homepage": "https://github.com/NixOS/nixpkgs",
@@ -119,28 +83,16 @@
         "url": "https://github.com/NixOS/nixpkgs-channels/archive/f8a50fcca314e03feafcc15039f91fb829292fb1.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
-    "nixpkgs-pinned-mpsyt": {
+    "nixpkgs-pinned-05_12_19": {
         "branch": "nixos-unstable",
         "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
         "homepage": "https://github.com/NixOS/nixpkgs",
         "owner": "NixOS",
         "repo": "nixpkgs-channels",
-        "rev": "4cd2cb43fb3a87f48c1e10bb65aee99d8f24cb9d",
-        "sha256": "1d6rmq67kdg5gmk94wx2774qw89nvbhy6g1f2lms3c9ph37hways",
+        "rev": "3140fa89c51233397f496f49014f6b23216667c2",
+        "sha256": "18p0d5lnfvzsyfah02mf6bi249990pfwnylwhqdh8qi70ncrk3f8",
         "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/4cd2cb43fb3a87f48c1e10bb65aee99d8f24cb9d.tar.gz",
-        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
-    },
-    "nixpkgs-pinned-ocrmypdf": {
-        "branch": "nixos-unstable",
-        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
-        "homepage": "https://github.com/NixOS/nixpkgs",
-        "owner": "NixOS",
-        "repo": "nixpkgs-channels",
-        "rev": "352239e24a7da18f4eb22993cd05e8535d6b01a5",
-        "sha256": "04w5wv9hh5djy8gqbdv05c894qqspyl4j6s2pzi42pcm308drmfw",
-        "type": "tarball",
-        "url": "https://github.com/NixOS/nixpkgs-channels/archive/352239e24a7da18f4eb22993cd05e8535d6b01a5.tar.gz",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/3140fa89c51233397f496f49014f6b23216667c2.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-proposed": {

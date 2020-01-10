@@ -1,6 +1,7 @@
 let
   deps = import ../../nix/sources.nix;
-  dbcliPinned = import deps.nixpkgs-pinned-dbcli { config.allowUnfree = true; };
+  nixpkgs-pinned-02_08_19  = import deps.nixpkgs-pinned-02_08_19 { config.allowUnfree = true; };
+  nixpkgs-pinned-05_12_19  = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
 in
 { config, lib, pkgs, ... }:
 with import ../util.nix { inherit config lib pkgs; };
@@ -31,13 +32,13 @@ let
         assert dbms_pass_task.wait() == 0
 
         if dbms_meta[dbms_entry]["command"] == "mycli":
-            os.system('${pkgs.tmux}/bin/tmux new-window "${dbcliPinned.mycli}/bin/mycli --host {0} --user {1} --password {2}"'.format(
+            os.system('${pkgs.tmux}/bin/tmux new-window "${nixpkgs-pinned-05_12_19.mycli}/bin/mycli --host {0} --user {1} --password {2}"'.format(
                 dbms_meta[dbms_entry]["ip"],
                 dbms_meta[dbms_entry]["user"],
                 dbms_pass
             ))
         elif dbms_meta[dbms_entry]["command"] == "mycli":
-            os.system('${pkgs.tmux}/bin/tmux new-window "PGPASSWORD={2} ${dbcliPinned.pgcli}/bin/pgcli --host {0} --user {1}"'.format(
+            os.system('${pkgs.tmux}/bin/tmux new-window "PGPASSWORD={2} ${nixpkgs-pinned-05_12_19.pgcli}/bin/pgcli --host {0} --user {1}"'.format(
                 dbms_meta[dbms_entry]["ip"],
                 dbms_meta[dbms_entry]["user"],
                 dbms_pass
@@ -84,14 +85,14 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           pgcenter
-          dbcliPinned.pgcli
+          nixpkgs-pinned-05_12_19.pgcli
         ];
       };
     })
     (mkIf cfg.mysql.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          dbcliPinned.mycli
+            nixpkgs-pinned-05_12_19.mycli
         ];
       };
     })
@@ -99,14 +100,14 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           sqlitebrowser
-          litecliWorking.litecli # TODO: shell automation: skim for selecting db file, you get the idea
+          nixpkgs-pinned-02_08_19.litecli # TODO: shell automation: skim for selecting db file, you get the idea
         ];
       };
     })
     (mkIf cfg.misc.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          nodePackages.elasticdump
+          nixpkgs-pinned-05_12_19.nodePackages.elasticdump
         ];
       };
     })

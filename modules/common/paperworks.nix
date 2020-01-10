@@ -1,6 +1,6 @@
 let
   deps = import ../../nix/sources.nix;
-  ocrmypdfPinned = import deps.nixpkgs-pinned-ocrmypdf { config.allowUnfree = true; };
+  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
 in
 { config, lib, pkgs, ... }:
 with lib;
@@ -174,7 +174,7 @@ in {
         webInterface = true;
       };
       environment.systemPackages = with pkgs; [
-        system-config-printer
+        nixpkgs-pinned-05_12_19.system-config-printer
       ];
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "lp" ];
     })
@@ -198,7 +198,7 @@ in {
       environment.systemPackages = with pkgs; [
         deskew
         gImageReader
-        ocrmypdfPinned.ocrmypdf
+        nixpkgs-pinned-05_12_19.ocrmypdf
         pdfsandwich
         scantailor-advanced
         tesseract
