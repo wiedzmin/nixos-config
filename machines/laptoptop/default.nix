@@ -191,7 +191,6 @@ in
     desktopManager = {
       xterm.enable = false;
       gnome3.enable = false;
-      default = "none";
     };
     displayManager = {
       lightdm = {

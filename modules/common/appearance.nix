@@ -163,10 +163,12 @@ in {
         enableGhostscriptFonts = true;
         enableDefaultFonts = true;
       };
+      console = {
+        font = cfg.fonts.console;
+        useXkbConfig = true;
+      };
       i18n = {
-        consoleFont = cfg.fonts.console;
         defaultLocale = cfg.fonts.locale;
-        consoleUseXkbConfig = true;
         inputMethod = {
           enabled = "ibus";
           ibus.engines = with pkgs.ibus-engines; [

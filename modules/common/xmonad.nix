@@ -735,12 +735,16 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      services.xserver.windowManager = {
-        default = "xmonad";
-        xmonad = {
-          enable = true;
-          enableContribAndExtras = true;
-          extraPackages = p: [ p.dbus p.monad-logger p.lens p.split ];
+      services.xserver = {
+        windowManager = {
+          xmonad = {
+            enable = true;
+            enableContribAndExtras = true;
+            extraPackages = p: [ p.dbus p.monad-logger p.lens p.split ];
+          };
+        };
+        displayManager = {
+          defaultSession = "none+xmonad";
         };
       };
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
