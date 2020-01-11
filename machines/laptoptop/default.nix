@@ -56,12 +56,12 @@ in
     extraModprobeConfig = ''
       options iwlwifi 11n_disable=1 power_save=1 power_level=2
     '';
-    extraModulePackages = with config.boot.kernelPackages; [ exfat-nofuse ddcci-driver ];
+    extraModulePackages = with config.boot.kernelPackages; [ exfat-nofuse ];
     tmpOnTmpfs = true;
     kernelPackages = pkgs.linuxPackages_4_19;
     kernelParams =
       [ "scsi_mod.use_blk_mq=1" "pti=off" "nospectre_v1" "nospectre_v2" "l1tf=off" "nospec_store_bypass_disable" ];
-    kernelModules = [ "bfq" "thinkpad_acpi" "thinkpad_hwmon" "ddcci" ];
+    kernelModules = [ "bfq" "thinkpad_acpi" "thinkpad_hwmon" ];
     kernel.sysctl = {
       "fs.inotify.max_user_instances" = 1024;
       "fs.inotify.max_user_watches" = 1048576;
@@ -328,6 +328,12 @@ in
       baseDir = "/home/${config.attributes.mainUser.name}/screenshots";
       dateFormat = "+%Y-%m-%d_%H:%M:%S";
     };
+    warmup = {
+      enable = true;
+      paths = [
+        "/home/${config.attributes.mainUser.name}/.mozilla"
+      ];
+    };
     xmonad.enable = true;
   };
 
@@ -434,6 +440,7 @@ in
     enable = true;
     clients.enable = true;
     messengers.enable = true;
+    scripts.enable = true;
     xmonad.enable = true;
     extraHosts = config.secrets.job.infra.extraHosts // config.secrets.network.extraHosts;
   };
@@ -513,16 +520,7 @@ in
   };
 
   custom.system = {
-    forensics.enable = true;
-    monitoring.enable = true;
-    warmup = {
-      enable = true;
-      paths = [
-        "/home/${config.attributes.mainUser.name}/.mozilla"
-      ];
-    };
-    scripts.enable = true;
-    hardware.ddc.enable = true;
+    enable = true;
     xmonad.enable = true;
   };
 
@@ -568,6 +566,7 @@ in
     opengl.enable = true;
     autorandr.enable = true;
     screenlocker.enable = true;
+    ddc.enable = true;
     xmonad.enable = true;
   };
 

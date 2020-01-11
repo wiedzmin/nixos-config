@@ -20,6 +20,11 @@ with lib;
       description = "Main user's GPG key ID";
       type = types.str;
     };
+    localGroup = mkOption {
+      description = "Default local group name";
+      type = types.str;
+      default = "users";
+    };
     # TODO: think if this is the proper location
     fonts.xmobar = mkOption {
       description = "Font definition for XMobar";

@@ -131,7 +131,7 @@ in {
       };
       scanning.paperless.group = mkOption {
         type = types.str;
-        default = paperlessDefaultUser;
+        default = config.attributes.localGroup;
         description = "Group under which Paperless runs.";
       };
       scanning.paperless.package = mkOption {
@@ -259,8 +259,6 @@ in {
         after = [ "paperless-consumer.service" ];
         wantedBy = [ "multi-user.target" ];
       };
-
-      # FIXME: add activation script for setting /tmp/paperless permissions
 
       users = optionalAttrs (cfg.scanning.paperless.user == paperlessDefaultUser) {
         users = [{

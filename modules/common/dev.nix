@@ -303,14 +303,23 @@ in {
         home.packages = with pkgs; [
           diffoscope
           elfinfo
+          extrace
           flamegraph
           gdb
           gdbgui
+          gotop
           hopper
+          iotop
+          libwhich
+          lsof
+          ltrace
+          nmon
+          pagemon
           patchelf
           patchutils
           radare2
           radare2-cutter
+          strace
           sysdig
           valgrind
         ] ++ lib.optionals (config.attributes.staging.enable) [
@@ -323,6 +332,10 @@ in {
           txr # TODO: get started, read docs
         ];
       };
+      environment.systemPackages = with pkgs; with config.boot.kernelPackages; [
+        perf
+        # hotspot # rarely used
+      ];
     })
     (mkIf cfg.statistics.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {

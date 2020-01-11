@@ -8,6 +8,23 @@ with lib;
 
 let
   cfg = config.custom.networking;
+  wifi-status = pkgs.writeScriptBin "wifi-status" ''
+    ESSID=`${pkgs.wirelesstools}/bin/iwgetid -r`
+    STRENGTH=$((`awk 'NR==3 {print substr($3, 1, length($3)-1)}' /proc/net/wireless`*100/70))
+    QUALITY_COLOR=
+    case 1 in
+        $((STRENGTH < 30)))
+            QUALITY_COLOR=red
+            ;;
+        $((STRENGTH >= 30 && STRENGTH < 70)))
+            QUALITY_COLOR=yellow
+            ;;
+        $((STRENGTH >= 70 && STRENGTH <= 100)))
+            QUALITY_COLOR=green
+            ;;
+    esac
+    echo $ESSID: "<fc=$QUALITY_COLOR>$STRENGTH</fc>%"
+  '';
   # TODO: (re)write dmenu-based custom scripts for pass based on https://github.com/carnager/rofi-pass/blob/master/rofi-pass
   sshmenu = writePythonScriptWithPythonPackages "sshmenu" [
     pkgs.python3Packages.dmenu-python
@@ -93,6 +110,11 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable auxillary messengers/tools.";
+      };
+      scripts.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable custom scripts.";
       };
       xmonad.enable = mkOption {
         type = types.bool;
@@ -255,6 +277,11 @@ in {
           wire-desktop
         ];
       };
+    })
+    (mkIf (cfg.enable && cfg.scripts.enable) {
+      environment.systemPackages = with pkgs; [
+        wifi-status
+      ];
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

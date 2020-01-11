@@ -44,16 +44,17 @@ in {
       gamma = mkOption {
         type = types.str;
         default = "1.0:0.909:0.833";
-        description = ''
-          XRandR gamma settings.
-        '';
+        description = "XRandR gamma settings.";
       };
       backlightDelta = mkOption {
         type = types.int;
         default = 10;
-        description = ''
-          Backlight delta percents.
-        '';
+        description = "Backlight delta percents.";
+      };
+      ddc.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable talking to monitors using DDC.";
       };
       opengl.enable = mkOption {
         type = types.bool;
@@ -63,16 +64,12 @@ in {
       autorandr.enable = mkOption {
         type = types.bool;
         default = false;
-        description = ''
-          Whether to enable autorandr.
-        '';
+        description = "Whether to enable autorandr.";
       };
       autorandr.hooks = mkOption {
         type = types.attrs;
         default = {};
-        description = ''
-          Autorandr hooks.
-        '';
+        description = "Autorandr hooks.";
       };
       autorandr.profiles = mkOption {
         type = types.attrs;
@@ -159,65 +156,57 @@ in {
       screenlocker.enable = mkOption {
         type = types.bool;
         default = false;
-        description = ''
-          Whether to enable automatic screen locking.
-        '';
+        description = "Whether to enable automatic screen locking.";
       };
       screenlocker.respectPlayback = mkOption {
         type = types.bool;
         default = true;
-        description = ''
-          Do not lock, while playing media.
-        '';
+        description = "Do not lock, while playing media.";
       };
       screenlocker.respectFullscreen = mkOption {
         type = types.bool;
         default = true;
-        description = ''
-          Do not lock, when active window is fullscreen.
-        '';
+        description = "Do not lock, when active window is fullscreen.";
       };
       screenlocker.notificationUrgency = mkOption {
         type = types.str;
         default = "critical";
-        description = ''
-          Notification urgency level.
-        '';
+        description = "Notification urgency level.";
       };
       screenlocker.notificationTimeout = mkOption {
         type = types.int;
         default = 7000;
-        description = ''
-          Notification timeout.
-        '';
+        description = "Notification timeout.";
       };
       screenlocker.alertingTimerSec = mkOption {
         type = types.int;
         default = 150;
-        description = ''
-          Seconds of idle time, before notification fires.
-        '';
+        description = "Seconds of idle time, before notification fires.";
       };
       screenlocker.lockingTimerSec = mkOption {
         type = types.int;
         default = 30;
-        description = ''
-          Seconds of idle time between alert and locking.
-        '';
+        description = "Seconds of idle time between alert and locking.";
       };
       scripts.enable = mkOption {
         type = types.bool;
         default = false;
-        description = ''
-          Whether to enable custom scripts.
-        '';
+        description = "Whether to enable custom scripts.";
+      };
+      scripts.debug = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable debug tools.";
       };
       xmonad.enable = mkOption {
         type = types.bool;
         default = false;
-        description = ''
-          Whether to enable XMonad bindings.
-        '';
+        description = "Whether to enable XMonad bindings.";
+      };
+      debug.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable debug tools.";
       };
     };
   };
@@ -270,7 +259,7 @@ in {
         };
       };
     })
-    (mkIf cfg.opengl.enable {
+    (mkIf (cfg.enable && cfg.opengl.enable) {
       hardware.opengl = {
         enable = true;
         extraPackages = with pkgs; [ intel-media-driver libvdpau-va-gl vaapiIntel vaapiVdpau ];
@@ -278,6 +267,25 @@ in {
         extraPackages32 = with pkgs.pkgsi686Linux; [ libvdpau-va-gl vaapiIntel vaapiVdpau ];
       };
       environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+    })
+    (mkIf (cfg.enable && cfg.ddc.enable) {
+      security.wrappers = {
+        ddcutil = { source = "${pkgs.ddcutil}/bin/ddcutil"; };
+      };
+      boot = {
+        kernelModules = [
+          "i2c-dev"
+          "ddcci"
+          "ddcci-backlight"
+        ];
+        extraModulePackages = with config.boot.kernelPackages; [ ddcci-driver ];
+        extraModprobeConfig = ''
+          options ddcci autoprobe_addrs=1
+        '';
+      };
+      services.udev.extraRules = ''
+        SUBSYSTEM=="i2c-dev", GROUP=${config.attributes.localGroup}, MODE="0660"
+      '';
     })
     (mkIf (cfg.enable && cfg.autorandr.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -331,6 +339,15 @@ in {
         "M-M1-x" = ''spawn "${pkgs.autorandr}/bin/autorandr --load mobile"'';
         "M-a c" = ''spawn "${pkgs.systemd}/bin/systemctl --user restart compton.service"'';
        };
+    })
+    (mkIf (cfg.enable && cfg.debug.enable) {
+      environment.systemPackages = with pkgs; [
+        xlibs.xev
+        xlibs.xprop
+        xorg.xkbcomp
+        drm_info
+        xtruss
+      ];
     })
   ];
 }

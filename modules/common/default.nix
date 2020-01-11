@@ -11,6 +11,7 @@
     ./git.nix
     ./golang.nix
     ./housekeeping.nix
+    ./infohub.nix
     ./knowledgebase.nix
     ./nas.nix
     ./navigation.nix
@@ -24,7 +25,6 @@
     ./shell.nix
     ./sound.nix
     ./stumpwm.nix
-    ./system.nix
     ./video.nix
     ./virt.nix
     ./xinput.nix

@@ -85,23 +85,6 @@ let
                                                                                                  service.split()[0]))
         switch_desktop(1)
   '';
-  wifi-status = pkgs.writeScriptBin "wifi-status" ''
-    ESSID=`${pkgs.wirelesstools}/bin/iwgetid -r`
-    STRENGTH=$((`awk 'NR==3 {print substr($3, 1, length($3)-1)}' /proc/net/wireless`*100/70))
-    QUALITY_COLOR=
-    case 1 in
-        $((STRENGTH < 30)))
-            QUALITY_COLOR=red
-            ;;
-        $((STRENGTH >= 30 && STRENGTH < 70)))
-            QUALITY_COLOR=yellow
-            ;;
-        $((STRENGTH >= 70 && STRENGTH <= 100)))
-            QUALITY_COLOR=green
-            ;;
-    esac
-    echo $ESSID: "<fc=$QUALITY_COLOR>$STRENGTH</fc>%"
-  '';
   uptime_info = pkgs.writeScriptBin "uptime_info" ''
     ${pkgs.dunst}/bin/dunstify -t 7000 "Uptime: $(${pkgs.procps}/bin/w | \
     ${pkgs.gnused}/bin/sed -r '1 s/.*up *(.*),.*user.*/\1/g;q')"
@@ -109,45 +92,10 @@ let
 in {
   options = {
     custom.system = {
-      graphics.enable = mkOption {
+      enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable graphics-related tools.";
-      };
-      hardware.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable structured JSON manipulation tools.";
-      };
-      hardware.ddc.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable talking to monitors using DDC.";
-      };
-      forensics.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''Whether to enable various "system forensics" tools.'';
-      };
-      monitoring.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable monitoring/notification tools.";
-      };
-      warmup.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable pulling some highly used data into memory.";
-      };
-      warmup.paths = mkOption {
-        type = types.listOf types.str;
-        default = [];
-        description = "List of paths to warm up.";
-      };
-      scripts.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable custom scripts.";
+        description = "Whether to enable various system tools.";
       };
       xmonad.enable = mkOption {
         type = types.bool;
@@ -158,68 +106,14 @@ in {
   };
 
   config = mkMerge [
-    (mkIf cfg.graphics.enable {
+    (mkIf cfg.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          drm_info
-          xtruss
-        ];
-      };
-    })
-    (mkIf cfg.hardware.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          acpitool
-          dmidecode
-          iw
-          lshw
-          pciutils
-          usbutils
-          # wirelesstools
-        ];
         services.udiskie = {
           enable = true;
           automount = true;
           notify = true;
           tray = "never";
         };
-      };
-      environment.systemPackages = with pkgs; with config.boot.kernelPackages; [
-        # ocz-ssd-guru # add as an overlay and fix hash (and installation instructions)
-        intelmetool
-        me_cleaner
-        cpupower
-      ];
-    })
-    (mkIf cfg.hardware.ddc.enable {
-      security.wrappers = {
-        ddcutil = { source = "${pkgs.ddcutil}/bin/ddcutil"; };
-      };
-      boot.kernelModules = [ "i2c-dev" ];
-    })
-    (mkIf cfg.forensics.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          extrace
-          libwhich
-          lsof
-          ltrace
-          strace
-        ];
-      };
-      environment.systemPackages = with pkgs; with config.boot.kernelPackages; [
-        perf
-        # hotspot # rarely used
-      ];
-    })
-    (mkIf cfg.monitoring.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          gotop
-          iotop
-          nmon
-          pagemon
-        ];
         programs.htop = {
           enable = true;
           fields = [
@@ -303,23 +197,6 @@ in {
             };
           };
         };
-      };
-    })
-    (mkIf (cfg.warmup.enable && cfg.warmup.paths != []) {
-      systemd.user.services."warmup" = {
-        description = "Warm up paths";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.vmtouch}/bin/vmtouch -t ${lib.concatStringsSep " " cfg.warmup.paths}";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
-        };
-        partOf = [ "multi-user.target" ]; # FIXME: does not autostart
-        wantedBy = [ "multi-user.target" ];
-      };
-    })
-    (mkIf cfg.scripts.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
         # without it we may not be able to see new or unsee removed services
         home.activation.removeServicesFromRedis = {
           after = ["linkGeneration"];
@@ -329,7 +206,6 @@ in {
       };
       environment.systemPackages = with pkgs; [
         srvctl
-        wifi-status
       ];
     })
     (mkIf cfg.xmonad.enable {

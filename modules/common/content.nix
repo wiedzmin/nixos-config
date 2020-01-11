@@ -246,6 +246,16 @@ in {
         default = null;
         description = "screenshot date suffix format";
       };
+      warmup.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable pulling some highly used data into memory.";
+      };
+      warmup.paths = mkOption {
+        type = types.listOf types.str;
+        default = [];
+        description = "List of paths to warm up.";
+      };
       xmonad.enable = mkOption {
         type = types.bool;
         default = false;
@@ -312,6 +322,19 @@ in {
         screenshot_full
         screenshot_region
       ];
+    })
+    (mkIf (cfg.warmup.enable && cfg.warmup.paths != []) {
+      systemd.user.services."warmup" = {
+        description = "Warm up paths";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.vmtouch}/bin/vmtouch -t ${lib.concatStringsSep " " cfg.warmup.paths}";
+          StandardOutput = "journal+console";
+          StandardError = "inherit";
+        };
+        partOf = [ "multi-user.target" ]; # FIXME: does not autostart
+        wantedBy = [ "multi-user.target" ];
+      };
     })
     (mkIf cfg.xmonad.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
