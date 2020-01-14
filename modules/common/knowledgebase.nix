@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 
 let
@@ -55,6 +55,14 @@ in {
         default = false;
         description = "Whether to enable knowledge base facilities.";
       };
+      secondBrain.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = ''
+          Whether to enable "second brain" functionality, such as various
+          information organizing tools, mindmaps implementations, etc.
+        '';
+      };
       man.enable = mkOption {
         type = types.bool;
         default = true;
@@ -106,6 +114,13 @@ in {
           info.enable = true;
           man.enable = true;
         };
+      };
+    })
+    (mkIf (cfg.enable && cfg.secondBrain.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          heimer
+        ];
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
