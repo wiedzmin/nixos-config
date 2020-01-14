@@ -121,11 +121,8 @@ in {
             allow-emacs-pinentry
             allow-loopback-pinentry
           '';
+          pinentryFlavor = cfg.pinentryFlavor;
         };
-      };
-      programs.gnupg.agent = {
-        enable = true;
-        pinentryFlavor = cfg.pinentryFlavor;
       };
       # FIXME: think how to make plug point(s) for secrets with example of this use case
       services.openvpn.servers."${config.secrets.job.vpn.name}" = {
