@@ -293,14 +293,13 @@ in {
     })
     (mkIf cfg.videoTools.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
+        programs.mpv = {
+          enable = true;
+          scripts = with pkgs.mpvScripts; [
+            mpris
+          ];
+        };
         home.packages = with pkgs; [
-          ( # FIXME: make closure for last working version
-            mpv-with-scripts.override (
-              {
-                scripts = [ mpvScripts.mpris ];
-              }
-            )
-          )
           paste_to_ix
         ];
       };
