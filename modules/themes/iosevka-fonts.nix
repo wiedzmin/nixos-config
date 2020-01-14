@@ -2,10 +2,10 @@
 
 with lib;
 let
-  cfg = config.themes.condensedFonts;
+    cfg = config.themes.fonts.iosevka;
 in {
-  options.themes.condensedFonts = {
-    enable = mkEnableOption "condensedFonts";
+  options.themes.fonts.iosevka = {
+    enable = mkEnableOption "iosevka";
   };
 
   config = mkIf cfg.enable {

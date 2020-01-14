@@ -1,7 +1,7 @@
 { ... }: {
   imports = [
-    ./zenburn.nix
-    ./condensed-fonts.nix
+    ./iosevka-fonts.nix
     ./hack-fonts.nix
+    ./zenburn.nix
   ];
 }
