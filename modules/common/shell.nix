@@ -121,9 +121,6 @@ in {
           tmux-xpanes
         ];
         home.file = {
-          ".inputrc".text = ''
-            set echo-control-characters off
-          '';
         } // lib.optionalAttrs (cfg.liquidPrompt.enable) {
           ".lp.ps1".text = ''
             LP_PS1="''${LP_PS1_PREFIX}''${LP_TIME}''${LP_JOBS}"
@@ -160,6 +157,12 @@ in {
             LP_ENABLE_TITLE=0
             LP_ENABLE_SCREEN_TITLE=0
             LP_ENABLE_SSH_COLORS=1
+          '';
+        };
+        programs.readline = {
+          enable = true;
+          extraConfig = ''
+            set echo-control-characters off
           '';
         };
         programs.tmux = { # TODO: consider extracting options or config itself
