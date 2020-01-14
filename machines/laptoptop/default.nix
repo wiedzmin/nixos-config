@@ -570,7 +570,7 @@ in
     xmonad.enable = true;
   };
 
-  themes.fonts.iosevka.enable = true;
+  themes.fonts.source-code-pro.enable = true;
   themes.zenburn.enable = true;
 
   tools = {
