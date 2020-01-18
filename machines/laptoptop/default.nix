@@ -463,7 +463,7 @@ in
   custom.paperworks = {
     printing = {
       enable = true;
-      drivers = [ pkgs.hplipWithPlugin ];
+      drivers = [ nixpkgs-pinned-05_12_19.hplipWithPlugin ];
     };
     scanning = {
       enable = true;

@@ -264,7 +264,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           skype
-          tdesktop
+          nixpkgs-pinned-05_12_19.tdesktop
           zoom-us
         ];
       };
