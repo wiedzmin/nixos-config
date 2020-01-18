@@ -345,6 +345,11 @@ in {
         home.packages = with pkgs; [
           xsel # for firefox native clients
         ];
+        home.activation.ensureFirefoxHandlers = {
+          after = [];
+          before = ["checkLinkTargets"];
+          data = "rm /home/${config.attributes.mainUser.name}/.mozilla/firefox/profile.default/handlers.json";
+        };
         programs.firefox = {
           enable = true;
           extensions = with firefox-addons; [
