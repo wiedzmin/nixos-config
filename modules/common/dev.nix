@@ -330,6 +330,7 @@ in {
           xsv
           xurls
           txr # TODO: get started, read docs
+          jwt-cli
         ];
       };
       environment.systemPackages = with pkgs; with config.boot.kernelPackages; [
