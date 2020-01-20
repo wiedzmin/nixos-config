@@ -40,6 +40,10 @@ let
 
     (use-package py-yapf :ensure t)
 
+    (use-package flycheck-prospector
+      :ensure t
+      :after flycheck)
+
     (use-package pip-requirements
       :ensure t
       :delight (pip-requirements-mode "PyPA Requirements")
@@ -112,6 +116,8 @@ in {
           python3Packages.virtualenv
           python3Packages.virtualenvwrapper
           python3Packages.yapf
+
+          prospector # TODO: review configuration https://github.com/PyCQA/prospector
         ];
         home.file = {
           ".pylintrc".text = lib.generators.toINI {} { # see https://github.com/PyCQA/pylint/blob/master/pylintrc for reference
@@ -383,6 +389,7 @@ in {
           epkgs.pip-requirements
           epkgs.py-yapf
           epkgs.pyvenv
+          epkgs.flycheck-prospector
         ];
       };
       ide.emacs.config = ''${emacsPythonSetup}'';
