@@ -66,6 +66,11 @@ let
        t "Improve startup performance"))
     (use-package anaphora :ensure t)
 
+    (use-package use-package-custom-update
+      :quelpa
+      (use-package-custom-update
+        :repo "a13/use-package-custom-update" :fetcher github :version original))
+
     (pinentry-start)
 
     (use-package deferred :ensure t)
