@@ -285,6 +285,7 @@ in {
       };
       services.udev.extraRules = ''
         SUBSYSTEM=="i2c-dev", GROUP=${config.attributes.localGroup}, MODE="0660"
+        ACTION=="add", KERNEL=="i2c-[0-9]*", GROUP="wheel", MODE="666"
       '';
     })
     (mkIf (cfg.enable && cfg.autorandr.enable) {
