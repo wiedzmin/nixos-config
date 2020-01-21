@@ -12,10 +12,12 @@ in {
     fonts = {
       fonts = with pkgs; [
         source-code-pro
+
+        config.attributes.fonts.basic.package
       ];
     };
     wm.xmonad.font = "xft:Source Code Pro:style=Bold:pixelsize=10";
-    attributes.fonts.xmobar = "xft:Source Code Pro:weight=Bold:size=8";
+    attributes.fonts.xmobar = config.attributes.fonts.basic.xft;
     attributes.fonts.dmenu = "xft:Source Code Pro:style=Bold:pixelsize=12";
     attributes.fonts.xmonadDefault = "xft:Source Code Pro:weight=Bold:size=10";
     home-manager.users."${config.attributes.mainUser.name}" = {

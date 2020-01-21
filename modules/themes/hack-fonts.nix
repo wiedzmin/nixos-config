@@ -12,6 +12,8 @@ in {
     fonts = {
       fonts = with pkgs; [
         hack-font
+
+        config.attributes.fonts.basic.package
       ];
     };
     home-manager.users."${config.attributes.mainUser.name}" = {

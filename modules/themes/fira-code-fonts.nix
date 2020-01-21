@@ -12,14 +12,19 @@ in {
     fonts = {
       fonts = with pkgs; [
         fira-code
+
+        config.attributes.fonts.basic.package
       ];
     };
     wm.xmonad.font = "xft:Fira Code:style=Bold:pixelsize=10";
-    attributes.fonts.xmobar = "xft:Fira Code:weight=Bold:size=8";
+    attributes.fonts.xmobar = config.attributes.fonts.basic.xft;
     attributes.fonts.dmenu = "xft:Fira Code:style=Bold:pixelsize=12";
     attributes.fonts.xmonadDefault = "xft:Fira Code:weight=Bold:size=10";
     home-manager.users."${config.attributes.mainUser.name}" = {
-      # skipping gtk fontification, it breaks things for some reason.
+      gtk.font = {
+        package = config.attributes.fonts.basic.package;
+        name = config.attributes.fonts.basic.raw;
+      };
       programs.alacritty.settings.font = {
         normal = {
           family = "Fira Code";

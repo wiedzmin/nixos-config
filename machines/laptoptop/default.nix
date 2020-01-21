@@ -263,6 +263,10 @@ in
     extraGroups = [ "wheel" ];
   };
 
+  attributes.fonts.basic.package = pkgs.iosevka;
+  attributes.fonts.basic.xft = "xft:Iosevka:weight=Bold:size=10";
+  attributes.fonts.basic.raw = "Iosevka Bold 10";
+
   custom.appearance = {
     enable = true;
     fonts = {
