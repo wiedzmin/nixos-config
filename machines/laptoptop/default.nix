@@ -574,7 +574,7 @@ in
     xmonad.enable = true;
   };
 
-  themes.fonts.fira-code.enable = true;
+  themes.fonts.jetbrains-mono.enable = true;
   themes.zenburn.enable = true;
 
   tools = {
