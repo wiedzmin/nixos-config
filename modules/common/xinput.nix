@@ -9,6 +9,11 @@ let cfg = config.custom.xinput;
 in {
   options = {
     custom.xinput = {
+      hardware.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to customize hardware settings (mouse, etc.).";
+      };
       gestures.enable = mkOption {
         type = types.bool;
         default = false;
@@ -84,6 +89,24 @@ in {
   };
 
   config = mkMerge [
+    (mkIf cfg.hardware.enable {
+      hardware = {
+        trackpoint = {
+          enable = true;
+          sensitivity = 255;
+          speed = 200;
+          emulateWheel = true;
+        };
+      };
+      services.xserver.libinput = {
+        enable = true;
+        naturalScrolling = true;
+        disableWhileTyping = true;
+        tapping = false;
+        tappingDragLock = false;
+        accelSpeed = "0.6";
+      };
+    })
     (mkIf cfg.gestures.enable {
       systemd.user.services."fusuma" = let
         fusumaConfig = pkgs.writeText "fusuma.yml" (builtins.toJSON {

@@ -28,20 +28,10 @@ in
   swapDevices = [ ];
 
   hardware = {
-    bluetooth = {
-      enable = true;
-      powerOnBoot = false;
-    };
     cpu.intel.updateMicrocode = true;
     enableAllFirmware = true;
     ksm.enable = true;
     sensor.iio.enable = true;
-    trackpoint = {
-      enable = true;
-      sensitivity = 255;
-      speed = 200;
-      emulateWheel = true;
-    };
   };
 
   boot = {
@@ -216,14 +206,6 @@ in
     autoRepeatInterval = 40;
     xkbOptions = "caps:none";
     layout = "us,ru";
-    libinput = {
-      enable = true;
-      naturalScrolling = true;
-      disableWhileTyping = true;
-      tapping = false;
-      tappingDragLock = false;
-      accelSpeed = "0.6";
-    };
   };
 
   attributes.mainUser = {
@@ -520,6 +502,7 @@ in
   };
 
   custom.xinput = {
+    hardware.enable = true;
     constraintMouse.enable = true;
     gestures.enable = true;
     keynav.enable = true;

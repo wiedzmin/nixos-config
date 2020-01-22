@@ -86,6 +86,11 @@ in {
         default = false;
         description = "Whether to enable networking support";
       };
+      bluetooth.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable Bluetooth support";
+      };
       tools.enable = mkOption {
         type = types.bool;
         default = false;
@@ -137,6 +142,14 @@ in {
           (lib.mapAttrsToList (ip: hosts: ip + "    " + (builtins.concatStringsSep " " hosts))
             cfg.extraHosts)};
       '';
+    })
+    (mkIf (cfg.bluetooth.enable) {
+      hardware = {
+        bluetooth = {
+          enable = true;
+          powerOnBoot = false;
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.tools.enable) {
       programs = {

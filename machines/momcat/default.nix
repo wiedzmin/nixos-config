@@ -27,20 +27,10 @@ in
   swapDevices = [ ];
 
   hardware = {
-    bluetooth = {
-      enable = true;
-      powerOnBoot = false;
-    };
     cpu.intel.updateMicrocode = true;
     enableAllFirmware = true;
     ksm.enable = true;
     sensor.iio.enable = true;
-    trackpoint = {
-      enable = true;
-      sensitivity = 255;
-      speed = 200;
-      emulateWheel = true;
-    };
   };
 
   custom.power-management = {
@@ -155,36 +145,6 @@ in
     };
     xkbOptions = "caps:none";
     layout = "us,ru";
-    libinput.enable = false;
-    multitouch = {
-      enable = true;
-      invertScroll = true;
-      ignorePalm = true;
-      tapButtons = false;
-      additionalOptions = ''
-        Option        "ButtonIntegrated" "true"
-        Option        "ButtonMoveEmulate" "false"
-        Option        "ClickTime" "25"
-        Option        "EdgeBottomSize" "5"
-        Option        "FingerHigh" "5"
-        Option        "FingerLow" "1"
-        Option        "Hold1Move1StationaryMaxMove" "1000"
-        Option        "IgnoreThumb" "true"
-        Option        "ScrollCoastDuration" "600"
-        Option        "ScrollCoastEnableSpeed" "0.05"
-        Option        "ScrollDistance" "100"
-        Option        "ScrollSensitivity" "0"
-        Option        "Sensitivity" "0.3"
-        Option        "SwipeDistance" "700"
-        Option        "SwipeDownButton" "0"
-        Option        "SwipeLeftButton" "8"
-        Option        "SwipeRightButton" "9"
-        Option        "SwipeUpButton" "0"
-        Option        "TapButton4" "0"
-        Option        "ThumbRatio" "70"
-        Option        "ThumbSize" "25"
-      '';
-    };
   };
 
   programs.light.enable = true;
@@ -239,6 +199,7 @@ in
   polkit-silent-auth.enable = true;
 
   xinput = {
+    hardware.enable = true;
     xmodmap = {
       enable = true;
       rc = ''
