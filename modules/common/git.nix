@@ -511,6 +511,7 @@ in {
         git-crecord
         git-sizer
         gitAndTools.git-absorb # TODO: review abilities and maybe use in some automation
+        gitAndTools.git-crypt
         gitAndTools.git-extras
         gitAndTools.git-octopus
         gitAndTools.lab
@@ -548,6 +549,7 @@ in {
       # FIXME: provide recursive permissions setting
       environment.etc."nixos/.gitattributes".text = ''
         *.gpg filter=gpg diff=gpg
+        **/secrets/* filter=git-crypt diff=git-crypt
       '';
       environment.etc."nixos/${cfg.hooks.dirName}/pre-push/stop-wip" = {
         mode = "0644";

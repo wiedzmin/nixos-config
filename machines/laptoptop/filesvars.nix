@@ -211,7 +211,7 @@ with lib;
         source = deps.yasnippet-snippets;
         recursive = true;
       };
-      ".authinfo.gpg".source = ./secrets/.authinfo.gpg;
+      ".authinfo".source = ./secrets/.authinfo;
     };
   };
 }

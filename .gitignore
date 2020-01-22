@@ -1,6 +1,3 @@
-**/secrets/*
-!**/secrets/default.nix
-!**/secrets/*.gpg
 *qcow2
 *zshrc
 .xsession

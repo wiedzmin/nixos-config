@@ -52,16 +52,6 @@ let
         return os.readlink("/etc/nixos/configuration.nix").split("/")[1]
 
 
-    def decrypt_secrets(machine):
-        secrets_dir = "/etc/nixos/machines/{0}/secrets".format(machine)
-        secrets = glob.glob('{0}/*.gpg'.format(secrets_dir))
-        gpg = GPG()
-        for secret in secrets:
-            secret_decrypted = os.path.splitext(secret)[0]
-            with open(secret, "rb") as src:
-                with open(secret_decrypted, "w") as dst:
-                      dst.write(str(gpg.decrypt_file(src)))
-
     def locate_nixpkgs():
         locate_nixpkgs_task = subprocess.Popen("nix-build /etc/nixos/nix/sources.nix -A nixpkgs --no-out-link",
                                                shell=True, stdout=subprocess.PIPE)
@@ -121,12 +111,10 @@ let
     operation = dmenu.show(operations, prompt='>', lines=10)
 
     if operation == "Update current configuration":
-        decrypt_secrets(machine)
         build_configuration()
         switch_configuration()
         ensure_kernel_update()
     elif operation == "Update current configuration (debug)":
-        decrypt_secrets(machine)
         build_configuration(debug=True)
     elif operation == "Select and build configuration":
         MACHINES_CONFIG_PATH = "/etc/nixos/machines"
