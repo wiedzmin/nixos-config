@@ -75,18 +75,30 @@ let
       (:map lsp-mode-map
             ("C-M-r" . lsp-rename))
       :custom
+      (lsp-auto-guess-root t)
       (lsp-before-save-edits t)
+      (lsp-document-sync-method 'incremental)
       (lsp-eldoc-render-all nil)
       (lsp-highlight-symbol-at-point nil)
       (lsp-inhibit-message t)
       (lsp-message-project-root-warning t)
       (lsp-prefer-flymake nil)
+      (lsp-response-timeout 20)
       :config
       (use-package lsp-clients))
 
     (use-package lsp-ui
       :ensure t
       :after lsp-mode avy
+      :preface
+      ; TODO: bind to key
+      (defun custom/toggle-lsp-ui-doc ()
+        (interactive)
+        (if lsp-ui-doc-mode
+          (progn
+            (lsp-ui-doc-mode -1)
+            (lsp-ui-doc--hide-frame))
+           (lsp-ui-doc-mode 1)))
       :hook
       (lsp-mode-hook . lsp-ui-mode)
       (lsp-after-open-hook . lsp-enable-imenu)
@@ -100,11 +112,22 @@ let
             ("i" . lsp-ui-imenu))
       :custom
       (lsp-ui-doc-enable nil)
+      (lsp-ui-doc-header t)
+      (lsp-ui-doc-max-width 120)
+      (lsp-ui-doc-max-height 30)
       (lsp-ui-flycheck-enable t)
       (lsp-ui-imenu-enable t)
+      (lsp-ui-imenu-kind-position 'left)
       (lsp-ui-peek-enable t)
-      (lsp-ui-sideline-enable t)
-      (lsp-ui-sideline-ignore-duplicate t))
+      (lsp-ui-peek-peek-height 20)
+      (lsp-ui-peek-list-width 50)
+      (lsp-ui-peek-fontify 'on-demand)
+      (lsp-ui-sideline-enable nil)
+      (lsp-ui-sideline-ignore-duplicate t)
+      (lsp-ui-sideline-show-symbol t)
+      (lsp-ui-sideline-show-hover t)
+      (lsp-ui-sideline-show-diagnostics nil)
+      (lsp-ui-sideline-code-actions-prefix ""))
 
     (use-package lsp-ivy
       :ensure t
