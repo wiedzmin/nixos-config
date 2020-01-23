@@ -174,6 +174,8 @@ in {
         default = false;
         description = "Whether to enable Nix source formatting tools.";
       };
+      # TODO: consider semantically split this option per-tool (e.g. python packaging,
+      # golang packaging, etc., with moving to respective modules)
       nix.importers.enable = mkOption {
         type = types.bool;
         default = false;

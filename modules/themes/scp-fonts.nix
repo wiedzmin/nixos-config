@@ -16,6 +16,7 @@ in {
         config.attributes.fonts.basic.package
       ];
     };
+    # TODO: think of providing some reasonable defaults when particular theme module does not apply some options
     wm.xmonad.font = "xft:Source Code Pro:style=Bold:pixelsize=10";
     attributes.fonts.xmobar = config.attributes.fonts.basic.xft;
     attributes.fonts.dmenu = "xft:Source Code Pro:style=Bold:pixelsize=12";
