@@ -286,9 +286,7 @@ in
   };
 
   custom.content = {
-    consumers.enable = true;
-    compression.enable = true;
-    videoTools.enable = true;
+    enable = true;
     screenshots = {
       enable = true;
       baseDir = "/home/${config.attributes.mainUser.name}/screenshots";

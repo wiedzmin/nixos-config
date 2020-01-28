@@ -205,25 +205,10 @@ let
 in {
   options = {
     custom.content = {
-      consumers.enable = mkOption {
+      enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable content-consumering tools.";
-      };
-      compression.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable (de)compression tools.";
-      };
-      imageTools.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable tools for working with images.";
-      };
-      videoTools.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable tools for working with videos.";
+        description = "Whether to enable content-related tools.";
       };
       players.deltaSeconds = mkOption {
         type = types.int;
@@ -264,7 +249,7 @@ in {
   };
 
   config = mkMerge [
-    (mkIf cfg.consumers.enable {
+    (mkIf cfg.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           android-file-transfer
@@ -272,36 +257,21 @@ in {
           jmtpfs # consider providing some (shell) automation
           saldl # consider providing some (shell) automation
           you-get
-        ];
-        services.syncthing.enable = true; # TODO: consider separate option(s)
-      };
-    })
-    (mkIf cfg.compression.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
+          # =======
           archiver
-        ];
-      };
-    })
-    (mkIf cfg.imageTools.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
+          # =======
           exiv2
           mediainfo
+          # =======
+          paste_to_ix
         ];
-      };
-    })
-    (mkIf cfg.videoTools.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+        services.syncthing.enable = true; # TODO: consider separate option(s)
         programs.mpv = {
           enable = true;
           scripts = with pkgs.mpvScripts; [
             mpris
           ];
         };
-        home.packages = with pkgs; [
-          paste_to_ix
-        ];
       };
     })
     (mkIf cfg.screenshots.enable {
