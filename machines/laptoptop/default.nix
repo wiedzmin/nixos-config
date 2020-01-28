@@ -27,6 +27,8 @@ in
 
   swapDevices = [ ];
 
+  environment.etc.current-configuration.source = ../../.;
+
   hardware = {
     cpu.intel.updateMicrocode = true;
     enableAllFirmware = true;
