@@ -113,7 +113,7 @@ let
     if operation == "Update current configuration":
         build_configuration()
         switch_configuration()
-        ensure_kernel_update()
+        # ensure_kernel_update()
     elif operation == "Update current configuration (debug)":
         build_configuration(debug=True)
     elif operation == "Select and build configuration":
