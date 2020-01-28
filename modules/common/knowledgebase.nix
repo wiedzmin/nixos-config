@@ -122,6 +122,10 @@ in {
           heimer
         ];
       };
+      services.dokuwiki = { # TODO: review module confiuration
+        enable = true;
+        aclUse = false;
+      };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
