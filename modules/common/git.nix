@@ -517,6 +517,7 @@ in {
         gitAndTools.lab
         gitAndTools.pass-git-helper
         gitAndTools.stgit
+        gitAndTools.thicket
         gitstats
         git-quick-stats
       ] ++ lib.optionals (config.attributes.staging.enable) [

@@ -270,6 +270,7 @@ in {
           android-file-transfer
           aria2
           jmtpfs # consider providing some (shell) automation
+          saldl # consider providing some (shell) automation
           you-get
         ];
         services.syncthing.enable = true; # TODO: consider separate option(s)
