@@ -287,6 +287,7 @@ in
 
   custom.content = {
     enable = true;
+    bookmarks.enable = true;
     screenshots = {
       enable = true;
       baseDir = "/home/${config.attributes.mainUser.name}/screenshots";
