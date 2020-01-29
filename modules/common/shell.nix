@@ -434,6 +434,7 @@ in {
                 sha256 = "1shhmda1iqwz79y2ianmjs5623zabckxfj2hqw4gl2axpkwnj1ib";
               };
             }
+          ] ++ lib.optionals (!cfg.liquidPrompt.enable) [
             {
               name = "zsh-command-time";
               file = "command-time.plugin.zsh";
@@ -444,6 +445,7 @@ in {
                 sha256 = "1bvyjgz6bhgg1nwr56r50p6fblgah6yiql55pgm5abnn2h876fjq";
               };
             }
+          ] ++ lib.optionals (cfg.liquidPrompt.enable) [
             {
               name = "liquidprompt";
               file = "liquidprompt.plugin.zsh";
@@ -454,6 +456,7 @@ in {
                 sha256 = "1xbvfadcl2qnylsd6rf4fdm6spis2v3kh1lsqlyjn2gs48g0l24a";
               };
             }
+          ] ++ [
             {
               # NOTE: should be last in the list
               name = "zsh-syntax-highlighting";
