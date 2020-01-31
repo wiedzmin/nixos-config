@@ -4,50 +4,6 @@ with lib;
 
 let
   cfg = config.custom.shell;
-  emacsShellSetup = ''
-    (use-package flycheck-checkbashisms
-      :ensure t
-      :hook (flycheck-mode-hook . flycheck-checkbashisms-setup))
-  '';
-  tmuxp_sessions = writePythonScriptWithPythonPackages "tmuxp_sessions" [
-    pkgs.python3Packages.dmenu-python
-  ] ''
-    import os
-    import dmenu
-
-    configs = []
-    TMUXP_SESSIONS_PATH = "{0}/tmuxp".format(os.getenv("HOME"))
-
-
-    for root, dirs, files in os.walk(TMUXP_SESSIONS_PATH):
-        for file in files:
-            if file.endswith(".yml"):
-                configs.append(os.path.splitext(file)[0])
-
-    result = dmenu.show(sorted(configs), prompt='config', lines=10)
-    if result:
-        os.system("tmuxp load -y -d {0}/{1}.yml".format(TMUXP_SESSIONS_PATH, result))
-  '';
-  shell-org-capture = pkgs.writeShellScriptBin "shell-org-capture" ''
-    TEMPLATE="$1"
-    if [[ ! -n $TEMPLATE ]]
-    then
-        exit 1
-    fi
-    TITLE="$*"
-    if [[ -n $TMUX ]]
-    then
-        TITLE=$(${pkgs.tmux}/bin/tmux display-message -p '#S')
-        ${pkgs.tmux}/bin/tmux send -X copy-pipe-and-cancel "${pkgs.xsel}/bin/xsel -i --primary"
-    fi
-
-    if [[ -n $TITLE ]]
-    then
-        ${pkgs.emacs}/bin/emacsclient -n "org-protocol://capture?template=$TEMPLATE&title=$TITLE"
-    else
-        ${pkgs.emacs}/bin/emacsclient -n "org-protocol://capture?template=$TEMPLATE"
-    fi
-  '';
 in {
   options = {
     # TODO: refine options
@@ -78,9 +34,9 @@ in {
         description = "Whether to enable liquidprompt.";
       };
       emacs.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable shell-related Emacs infra.";
+          type = types.bool;
+          default = false;
+          description = "Whether to enable shell-related Emacs infra.";
       };
       xmonad.enable = mkOption {
         type = types.bool;
@@ -104,6 +60,18 @@ in {
           message = "shell: oh-my-zsh prompt theming enabled but no theme name provided.";
         }
       ];
+
+      nixpkgs.config.packageOverrides = _: rec {
+        tmuxp_sessions = writePythonScriptWithPythonPackages "tmuxp_sessions" [
+          pkgs.python3Packages.dmenu-python
+        ] (builtins.readFile
+            (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tmuxp_sessions.py; })));
+        shell-org-capture = pkgs.writeScriptBin "shell-org-capture"
+          (builtins.readFile
+            (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./shell-org-capture.sh; })));
+      };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
@@ -190,10 +158,10 @@ in {
           };
           bindings = {
             copyMode = {
-              "M-e" = ''run-shell "${shell-org-capture}/bin/shell-org-capture es"'';
-              "M-j" = ''run-shell "${shell-org-capture}/bin/shell-org-capture js"'';
-              "M-n" = ''run-shell "${shell-org-capture}/bin/shell-org-capture ns"'';
-              "M-x" = ''run-shell "${shell-org-capture}/bin/shell-org-capture xs"'';
+              "M-e" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture es"'';
+              "M-j" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture js"'';
+              "M-n" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture ns"'';
+              "M-x" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture xs"'';
             };
             root = {
               "C-left" = "prev";
@@ -527,11 +495,13 @@ in {
           epkgs.flycheck-checkbashisms
         ];
       };
-      ide.emacs.config = ''${emacsShellSetup}'';
+      ide.emacs.config = builtins.readFile
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./shell.el; }));
+
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
-        "M-C-t" = ''spawn "${tmuxp_sessions}/bin/tmuxp_sessions"'';
+        "M-C-t" = ''spawn "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions"'';
       };
     })
   ];

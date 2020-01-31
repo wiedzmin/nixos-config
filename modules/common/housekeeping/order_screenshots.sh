@@ -11,7 +11,7 @@ REGEXP_TO_DATECMD=(
 
 for regexp in "''${!REGEXP_TO_DATECMD[@]}"
 do
-    FILELIST=$(ls -a @screenshotsBaseDir@ | grep -e $regexp)
+    FILELIST=$(ls -a @screenshotsBasedir@ | grep -e $regexp)
     DATECMD=''${REGEXP_TO_DATECMD[$regexp]}
     for FILENAME in $FILELIST
     do
@@ -19,10 +19,10 @@ do
         YEAR=''${DATE_PART[0]}
         MONTH=''${DATE_PART[1]}
         DAY=''${DATE_PART[2]}
-        DEST_PATH=@@screenshotsBaseDir@@/$YEAR/$MONTH/$DAY
-        mkdir -p @@screenshotsBaseDir@@/$YEAR/$MONTH/$DAY
+        DEST_PATH=@@screenshotsBasedir@@/$YEAR/$MONTH/$DAY
+        mkdir -p @@screenshotsbasedir@@/$YEAR/$MONTH/$DAY
         echo "moving $FILENAME to $DEST_PATH"
-        mv @@screenshotsBaseDir@@/$FILENAME @screenshotsBaseDir@/$YEAR/$MONTH/$DAY
+        mv @screenshotsBasedir@/$FILENAME @screenshotsBasedir@/$YEAR/$MONTH/$DAY
     done
 done
 

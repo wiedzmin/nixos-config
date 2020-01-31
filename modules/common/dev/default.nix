@@ -53,8 +53,7 @@ in {
       };
       pythonLib = mkOption {
         type = types.lines;
-        default = builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./pythonlib.py; }));
+        default = builtins.readFile ./pythonlib.py;
         readOnly = true;
         internal = true;
         description = ''

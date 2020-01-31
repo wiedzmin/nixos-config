@@ -1,28 +1,10 @@
 { config, lib, pkgs, ... }:
+with import ../../util.nix { inherit config lib pkgs; };
 
 with lib;
 
 let
   cfg = config.custom.video;
-  autorandr_profiles = pkgs.writeScriptBin "autorandr_profiles" ''
-    #! /usr/bin/env nix-shell
-    #! nix-shell -i python3 -p python3 python3Packages.dmenu-python
-    import os
-    import dmenu
-
-    profiles = []
-
-
-    for root, dirs, files in os.walk("/home/${config.attributes.mainUser.name}/.config/autorandr"):
-        for dir in dirs:
-            if not dir.endswith(".d"):
-                profiles.append(dir)
-
-    result = dmenu.show(profiles, prompt='profile', lines=5)
-    if result:
-        print(result)
-        os.system("${pkgs.autorandr}/bin/autorandr --load {0}".format(result))
-  '';
   kill-compton = pkgs.writeScriptBin "kill-compton" ''
     ${pkgs.procps}/bin/pkill -f compton
   '';
@@ -213,6 +195,14 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      nixpkgs.config.packageOverrides = _: rec {
+        autorandr_profiles = writePythonScriptWithPythonPackages "autorandr_profiles" [
+          pkgs.python3Packages.dmenu-python
+        ] (builtins.readFile
+            (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./autorandr_profiles.py; })));
+      };
+
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "video" ];
       programs.light.enable = true;
       hardware.brillo.enable = true;
@@ -335,7 +325,7 @@ in {
         "<XF86MonBrightnessDown>" = ''spawn "${pkgs.light}/bin/light -U ${toString cfg.backlightDelta}"'';
         "C-<XF86MonBrightnessUp>" = ''spawn "${pkgs.light}/bin/light -S 100"'';
         "C-<XF86MonBrightnessDown>" = ''spawn "${pkgs.light}/bin/light -S 20"'';
-        "M-C-a" = ''spawn "${autorandr_profiles}/bin/autorandr_profiles"'';
+        "M-C-a" = ''spawn "${pkgs.autorandr_profiles}/bin/autorandr_profiles"'';
         "M-M1-x" = ''spawn "${pkgs.autorandr}/bin/autorandr --load mobile"'';
         "M-a c" = ''spawn "${pkgs.systemd}/bin/systemctl --user restart compton.service"'';
        };

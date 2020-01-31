@@ -1,0 +1,25 @@
+AlwaysInTerm = @gmrunTerminalApps@
+
+Width = 400
+Top = 100
+Left = 200
+
+History = @gmrunHistorySize@
+
+ShowLast = 1
+ShowDotFiles = 1
+TabTimeout = 0
+
+URL_http = @defaultBrowser@ %u
+URL_man = @defaultTerminal@ -e 'man %s'
+URL_info = @defaultTerminal@ -e 'info %s'
+URL_readme = @defaultTerminal@ -e '@defaultPager@ /usr/doc/%s/README'
+URL_info = @defaultTerminal@ -e 'info %s'
+URL_sh = sh -c '%s'
+
+EXT:doc,docx,rtf = @defaultTextProcessor@ %s
+EXT:xls,xlsx = @defaultSpreadsheetEditor@ %s
+EXT:txt,cc,cpp,h,java,html,htm,epl,tex,latex,js,css,xml,xsl,am = emacs %s
+EXT:ps = @defaultEbookReader@ %s
+EXT:pdf = @defaultEbookReader@ %s
+EXT:djvu = @defaultEbookReader@ %s
