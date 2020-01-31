@@ -68,6 +68,7 @@ in {
             (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./paste_to_ix.sh; })));
       };
+      services.clipmenu.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           android-file-transfer
