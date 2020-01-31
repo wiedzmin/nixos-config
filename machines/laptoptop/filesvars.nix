@@ -1,6 +1,5 @@
 let
   deps = import ../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19  = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
 in
 {config, pkgs, lib, ...}:
 with lib;
@@ -43,7 +42,7 @@ with lib;
         windows:
           - window_name: mps-youtube
             panes:
-              - ${nixpkgs-pinned-05_12_19.python3Packages.mps-youtube}/bin/mpsyt
+              - ${pkgs.python3Packages.mps-youtube}/bin/mpsyt
       '';
       ".local/share/applications/defaults.list" = {
         text = ''
