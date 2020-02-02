@@ -209,7 +209,7 @@ in {
               "l" = "refresh-client";
               "m" = "select-pane -m";
               "|" = ''split-window -h -c "#{pane_current_path}"'';
-              "\\" = ''split-window -fh -c "#{pane_current_path}"'';
+              "'\\'" = ''split-window -fh -c "#{pane_current_path}"'';
               "-" = ''split-window -v -c "#{pane_current_path}"'';
               "_" = ''split-window -fv -c "#{pane_current_path}"'';
               "'#'" = ''split-window -h -c "#{pane_current_path}"'';
@@ -218,8 +218,7 @@ in {
               "r" = ''source-file ~/.tmux.conf \; display "  Config reloaded..."'';
               "y" = "set-window-option synchronize-panes";
               "T" = ''neww -n "Tmux manual" "exec man tmux"'';
-              "s" = ''
-                split-window -v "tmux list-sessions | sed -E 's/:.*$//' | \
+              "s" = ''split-window -v "tmux list-sessions | sed -E 's/:.*$//' | \
                                                       grep -v \"^$(tmux display-message -p '#S')\$\" | \
                                                       ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
             };
