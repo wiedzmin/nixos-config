@@ -231,6 +231,8 @@ in {
             set -g visual-bell off
             set -g visual-silence off
             setw -g monitor-activity on
+
+            set -g default-shell "/run/current-system/sw/bin/zsh"
           '';
           historyLimit = 102400;
           keyMode = "emacs";
@@ -239,7 +241,6 @@ in {
           shortcut = "M-x";
           terminal = "screen-256color";
           secureSocket = false;
-          shell = "${pkgs.zsh}/bin/zsh";
           tmuxp.enable = true;
           plugins = with pkgs.tmuxPlugins; [
             {
