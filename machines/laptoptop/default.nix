@@ -41,7 +41,7 @@ in
       enable = true;
       version = 2;
       device = "/dev/sda";
-      configurationLimit = 10;
+      configurationLimit = 30;
     };
     initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
     plymouth.enable = true;
