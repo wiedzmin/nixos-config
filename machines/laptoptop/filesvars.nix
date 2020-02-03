@@ -109,8 +109,9 @@ with lib;
         volume-max=200
 
         cache = yes
+        cache-on-disk = yes
         cache-pause-initial = yes
-        cache-default = 250000 # Use 250MB cache for network streams
+        cache-pause-wait = 10
 
         # Always use 1080p+ or 60 fps where available. Prefer VP9
         # over AVC and VP8 for high-resolution streams.
