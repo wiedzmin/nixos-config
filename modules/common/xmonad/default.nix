@@ -610,9 +610,9 @@ let
     customNavigation2DConfig = def { defaultTiledNavigation = hybridOf sideNavigation centerNavigation }
 
     scratchpadTerminal = "alacritty"
-    scratchpads = [ NS "htop" (scratchpadTerminal ++ " -t htop -e htop") (title =? "htop") nonFloating
-                  , NS "iotop" (scratchpadTerminal ++ " -t iotop -e sudo iotop") (title =? "iotop") nonFloating
-                  , NS "gotop" (scratchpadTerminal ++ " -t gotop -e gotop") (title =? "gotop") nonFloating
+    scratchpads = [ NS "htop" (scratchpadTerminal ++ " -t htop -e ${pkgs.htop}/bin/htop") (title =? "htop") nonFloating
+                  , NS "iotop" (scratchpadTerminal ++ " -t iotop -e sudo ${pkgs.iotop}/bin/iotop") (title =? "iotop") nonFloating
+                  , NS "gotop" (scratchpadTerminal ++ " -t gotop -e ${pkgs.gotop}/bin/gotop") (title =? "gotop") nonFloating
                   , NS "bc" (scratchpadTerminal ++ " -t calc -e bc") (title =? "calc") nonFloating
                   ]
 

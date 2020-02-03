@@ -151,9 +151,7 @@ in {
           flamegraph
           gdb
           gdbgui
-          gotop
           hopper
-          iotop
           libwhich
           lsof
           ltrace
