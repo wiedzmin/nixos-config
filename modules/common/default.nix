@@ -13,7 +13,6 @@
     ./housekeeping
     ./infohub
     ./knowledgebase
-    ./nas
     ./navigation
     ./networking
     ./packaging
