@@ -17,6 +17,7 @@ rec {
   cutBinary = "${pkgs.coreutils}/bin/cut";
   dateBinary = "${pkgs.coreutils}/bin/date";
   defaultBrowser = config.attributes.defaultCommands.browser;
+  defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;
   defaultEbookReader = config.attributes.defaultCommands.ebookReader;
   defaultPager = config.attributes.defaultCommands.pager;
   defaultSpreadsheetEditor = config.attributes.defaultCommands.spreadsheetEditor;
@@ -29,6 +30,7 @@ rec {
   diffBinary = "${pkgs.diffutils}/bin/diff";
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
   dmenuBinary = "${pkgs.dmenu}/bin/dmenu";
+  dockerBinary = "${pkgs.docker}/bin/docker";
   dunstifyBinary = "${pkgs.dunst}/bin/dunstify";
   emacsBrowserGenericProgram = config.attributes.defaultCommands.browser;
   emacsCustomFile = "/home/${config.attributes.mainUser.name}/.emacs.d/customizations.el";
@@ -53,6 +55,9 @@ rec {
   grepBinary = "${pkgs.gnugrep}/bin/grep";
   iwgetidBinary = "${pkgs.wirelesstools}/bin/iwgetid";
   ixBinary = "${pkgs.ix}/bin/ix";
+  jobInfraLogsHost = config.secrets.job.infra.logsHost;
+  jobInfraRemoteDockerLogsRoot = config.secrets.job.infra.remoteDockerLogsRoot;
+  jobInfraSwarmLeader = config.secrets.job.infra.swarmLeader;
   jobWorkspaceRoot = config.secrets.job.workspaceRoot;
   jqBinary = "${pkgs.jq}/bin/jq";
   lspPythonMsExtraPaths = builtins.concatStringsSep " "
@@ -90,4 +95,5 @@ rec {
   xdotoolBinary = "${pkgs.xdotool}/bin/xdotool";
   xprintidleBinary = "${pkgs.xprintidle-ng}/bin/xprintidle-ng";
   xselBinary = "${pkgs.xsel}/bin/xsel";
+  yadBinary = "${pkgs.yad}/bin/yad";
 }
