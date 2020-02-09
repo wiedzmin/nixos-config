@@ -23,7 +23,6 @@ rec {
   defaultSpreadsheetEditor = config.attributes.defaultCommands.spreadsheetEditor;
   defaultTerminal = config.attributes.defaultCommands.terminal;
   defaultTextProcessor = config.attributes.defaultCommands.textProcessor;
-  defaultTmuxSession = "config.attributes.tmux.defaultSession";
   deftPath = "/home/${config.attributes.mainUser.name}/docs/deft";
   dejsonlz4Binary = "${pkgs.dejsonlz4}/bin/dejsonlz4";
   devWorkspaceRoot = config.secrets.dev.workspaceRoot;

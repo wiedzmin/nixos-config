@@ -37,7 +37,7 @@ if host:
 
     tmux_server = Server()
     try:
-        tmux_session = tmux_server.find_where({ "session_name": "@defaultTmuxSession@" })
+        tmux_session = tmux_server.find_where({ "session_name": "@tmuxDefaultSession@" })
         ssh_window = tmux_session.new_window(attach=True, window_name=host,
                                              window_shell=cmd)
     except LibTmuxException:
