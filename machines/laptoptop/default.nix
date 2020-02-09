@@ -433,7 +433,7 @@ in
     scanning = {
       enable = true;
       extraBackends = [ pkgs.epkowa ];
-      snapscan.firmware = "/etc/nixos/contrib/blobs/Esfw52.bin";
+      snapscan.firmware = "/etc/nixos/assets/blobs/Esfw52.bin";
       enableXsane = true;
       paperless = {
         enable = true;

@@ -184,6 +184,10 @@ in {
           assertion = cfg.scanning.snapscan.enable && cfg.scanning.snapscan.firmware != "";
           message = "paperwork: must provide firmware file if snapscan is enabled.";
         }
+        {
+          assertion = builtins.pathExists cfg.scanning.snapscan.firmware;
+          message = "paperwork: no firmware file found at ${cfg.scanning.snapscan.firmware}.";
+        }
       ];
       hardware.sane = {
         enable = true;
