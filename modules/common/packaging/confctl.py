@@ -21,7 +21,7 @@ def locate_nixpkgs():
 
 
 def build_configuration(path=None, debug=False):
-    build_configuration_task = subprocess.Popen("@nixBinary@ build -f {0}/nixos system{1}{2}".format(
+    build_configuration_task = subprocess.Popen("nix build -f {0}/nixos system{1}{2}".format(
                                                 locate_nixpkgs(),
                                                 " --show-trace" if debug else "",
                                                 ' -I nixos-config="{0}"'.format(path) if path else ""), shell=True,
@@ -32,6 +32,7 @@ def build_configuration(path=None, debug=False):
 
 
 def switch_configuration():
+    sys.path += ["/run/current-system/sw/bin"]
     cwd = os.getcwd()
     try:
         new_system_path = os.readlink("{0}/result".format(cwd))
@@ -39,9 +40,8 @@ def switch_configuration():
         new_system_path = None
         print("Error switching configuration: {0}".format(e))
         sys.exit(1)
-    switch_configuration_task = subprocess.Popen("pkexec @nixEnvBinary@ --profile /nix/var/nix/profiles/system --set {0} && pkexec {1}/bin/switch-to-configuration switch".format(
-                                                 new_system_path, new_system_path), shell=True,
-                                                 stdout=sys.stdout, stderr=sys.stdout)
+    switch_configuration_task = subprocess.Popen("pkexec nix-env --profile /nix/var/nix/profiles/system --set {0} && pkexec {0}/bin/switch-to-configuration switch".format(
+                                                 new_system_path), shell=True, stdout=sys.stdout, stderr=sys.stdout)
     result = switch_configuration_task.wait()
     if result != 0:
         print("Error switching configuration") # TODO: add details
@@ -66,7 +66,7 @@ operations = [
     "Select and build configuration",
     "Select and build configuration (debug)",
     "Link configuration"
-] # TODO: add submodules updating
+]
 
 operation = dmenu.show(operations, prompt='>', lines=10)
 
