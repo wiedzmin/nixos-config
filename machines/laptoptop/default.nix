@@ -502,6 +502,7 @@ in
     };
     libvirt.enable = true;
     virtualbox.enable = true;
+    xmonad.enable = true;
   };
 
   custom.xinput = {
