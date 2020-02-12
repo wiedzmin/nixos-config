@@ -27,9 +27,6 @@
   (diff-hl-flydiff-mode 1)
   (global-diff-hl-mode 1))
 
-(use-package diff-mode
-  :mode "diff")
-
 (use-package fic-mode
   :hook
   (prog-mode . fic-mode))
