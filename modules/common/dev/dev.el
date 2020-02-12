@@ -1,5 +1,4 @@
 (use-package webpaste
-  :ensure t
   :bind
   (:prefix-map custom-webpaste-map
                :prefix "M-p"
@@ -9,7 +8,6 @@
   (webpaste-provider-priority '("ix.io" "gist.github.com")))
 
 (use-package jinja2-mode
-  :ensure t
   :mode "\\.j2$")
 
 (use-package yaml-mode
@@ -18,7 +16,6 @@
   (yaml-mode :repo "yoshiki/yaml-mode" :fetcher github :version original))
 
 (use-package diff-hl
-  :ensure t
   :hook
   (dired-mode-hook . diff-hl-dired-mode)
   (magit-post-refresh-hook . diff-hl-magit-post-refresh)
@@ -34,20 +31,17 @@
   :mode "diff")
 
 (use-package fic-mode
-  :ensure t
   :hook
   (prog-mode . fic-mode))
 
 (use-package multi-compile :ensure t)
 
 (use-package company-restclient
-  :ensure t
   :after company restclient
   :config
   (add-to-list 'company-backends 'company-restclient))
 
 (use-package company-lsp
-  :ensure t
   :after lsp-ui
   :custom
   (company-lsp-async t)
@@ -58,12 +52,11 @@
   (push 'company-lsp company-backends))
 
 (use-package company-tabnine
-  :ensure t
+  :after (company unicode-escape)
   :config
   (add-to-list 'company-backends #'company-tabnine))
 
 (use-package lsp-mode
-  :ensure t
   :hook (lsp-mode . company-mode)
   :bind
   (:map lsp-mode-map
@@ -82,10 +75,9 @@
   (use-package lsp-clients))
 
 (use-package lsp-ui
-  :ensure t
   :after lsp-mode avy
   :preface
-                                        ; TODO: bind to key
+  ;; TODO: bind to key
   (defun custom/toggle-lsp-ui-doc ()
     (interactive)
     (if lsp-ui-doc-mode
@@ -124,7 +116,6 @@
   (lsp-ui-sideline-code-actions-prefix ""))
 
 (use-package lsp-ivy
-  :ensure t
   :after lsp-mode avy
   :bind
   (:map mode-specific-map
@@ -134,9 +125,7 @@
         ([remap xref-find-apropos] . lsp-ivy-global-workspace-symbol)))
 
 (use-package direnv
-  :ensure t
   :config
   (direnv-mode))
 
-(use-package elmacro
-  :ensure t)
+(use-package elmacro)

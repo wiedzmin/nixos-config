@@ -1,5 +1,4 @@
 (use-package atomic-chrome
-  :ensure t
   :defer 2
   :custom
   (atomic-chrome-buffer-open-style 'frame)

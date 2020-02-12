@@ -1,5 +1,4 @@
 (use-package ace-link
-  :ensure t
   :after link-hint
   :bind
   (:map link-hint-keymap
@@ -8,7 +7,6 @@
   (ace-link-setup-default))
 
 (use-package ace-window
-  :ensure t
   :after avy
   :commands ace-window
   :custom
@@ -23,7 +21,6 @@
                               :height 0.1)))))
 
 (use-package avy
-  :ensure t
   :demand t
   :bind
   (("C-:" . avy-goto-char)
@@ -39,12 +36,10 @@
   (avy-setup-default))
 
 (use-package avy-zap
-  :ensure t
   :bind
   ([remap zap-to-char] . avy-zap-to-char-dwim))
 
 (use-package counsel
-  :ensure t
   :delight counsel-mode
   :init
   (require 'iso-transl)
@@ -90,7 +85,6 @@
   (counsel-mode 1))
 
 (use-package counsel-projectile
-  :ensure t
   :preface
   (defun custom/open-project-todos ()
     (interactive)
@@ -189,7 +183,7 @@
   (use-package dired-x)
   (put 'dired-find-alternate-file 'disabled nil)
   (ad-activate 'abort-if-file-too-large)
-  (use-package dired-filetype-face :ensure t))
+  (use-package dired-filetype-face))
 
 (use-package wdired
   :preface
@@ -199,7 +193,6 @@
   (wdired-allow-to-change-permissions 'advanced))
 
 (use-package dired-hide-dotfiles
-  :ensure t
   :bind
   (:map dired-mode-map
         ("." . dired-hide-dotfiles-mode))
@@ -243,7 +236,6 @@
   (setq truncate-partial-width-windows nil))
 
 (use-package ivy
-  :ensure t
   :delight ivy-mode
   :bind
   (("M-<f12>" . counsel-switch-buffer)
@@ -272,17 +264,14 @@
   )
 
 (use-package imenu-anywhere
-  :ensure t
   :commands ivy-imenu-anywhere)
 
 (use-package ivy-historian
-  :ensure t
   :after ivy
   :config
   (ivy-historian-mode))
 
 (use-package ivy-rich
-  :ensure t
   :after ivy
   :defines ivy-rich-abbreviate-paths ivy-rich-switch-buffer-name-max-length
   :custom
@@ -291,20 +280,17 @@
   (ivy-rich-mode 1))
 
 (use-package ivy-xref
-  :ensure t
   :after ivy
   :custom
   (xref-show-xrefs-function #'ivy-xref-show-xrefs "Use Ivy to show xrefs"))
 
 (use-package ivy-yasnippet
-  :ensure t
   :bind
   (:prefix-map custom-yasnippet-map
                :prefix "<f5>"
                ("i" . ivy-yasnippet)))
 
 (use-package link-hint
-  :ensure t
   :demand t
   :bind
   (:map mode-specific-map
@@ -319,16 +305,13 @@
   (link-hint-avy-style 'de-bruijn))
 
 (use-package phi-search
-  :ensure t
   :hook (isearch-mode-hook . phi-search-from-isearch-mc/setup-keys)
   :config
   (use-package phi-search-mc
-    :ensure t
     :config
     (phi-search-mc/setup-keys)))
 
 (use-package projectile
-  :ensure t
   :delight (projectile-mode " prj")
   :custom
   (projectile-enable-caching t)
@@ -345,7 +328,6 @@
   (after-init-hook . projectile-mode))
 
 (use-package rg
-  :ensure t
   :bind
   (:map mode-specific-map
         ("r" . rg)
@@ -364,7 +346,6 @@
   (rg-define-toggle "--context 3" (kbd "C-c c")))
 
 (use-package swiper
-  :ensure t
   :commands swiper swiper-multi
   :bind
   (("C-s" . swiper)
@@ -379,7 +360,6 @@
   :custom-face (swiper-match-face-4 ((t (:background "#ffbbff" :weight bold)))))
 
 (use-package avy-flycheck
-  :ensure t
   :after link-hint
   :bind
   (:map link-hint-keymap

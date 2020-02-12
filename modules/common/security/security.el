@@ -5,14 +5,12 @@
   (auth-sources '("~/.authinfo")))
 
 (use-package auth-source-pass
-  :ensure t
   :after auth-source
   :config
-                                        ;FIXME: source not being added
+  ;;FIXME: source not being added
   (auth-source-pass-enable))
 
 (use-package keychain-environment
-  :ensure t
   :hook
   (after-init-hook . keychain-refresh-environment))
 
@@ -22,11 +20,10 @@
   (password-cache t))
 
 (use-package pass
-  :ensure t
   :bind
   (:prefix-map custom-pass-map
                :prefix "<f6>"
                ("p" . pass)
                ("!" . ivy-pass))
   :config
-  (use-package ivy-pass :ensure t))
+  (use-package ivy-pass))

@@ -52,6 +52,8 @@ in {
         ];
         programs.emacs.extraPackages = epkgs: [
           epkgs.counsel-org-clock
+          epkgs.deft
+          epkgs.ivy-omni-org
           epkgs.ob-async
           epkgs.ob-blockdiag
           epkgs.ob-restclient
@@ -63,6 +65,7 @@ in {
           epkgs.org-randomnote
           epkgs.org-recent-headings
           epkgs.org-rich-yank
+          epkgs.org-sticky-header
           epkgs.orgit
           epkgs.orglink
           epkgs.plantuml-mode

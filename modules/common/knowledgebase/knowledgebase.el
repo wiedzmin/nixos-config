@@ -14,7 +14,6 @@
         ("e" . apropos-value)))
 
 (use-package helpful
-  :ensure t
   :defer t
   :bind
   (:prefix-map custom-help-map
@@ -36,7 +35,6 @@
         ("RET" . helpful-at-point)))
 
 (use-package which-key
-  :ensure t
   :delight which-key-mode
   :config
   (which-key-mode))

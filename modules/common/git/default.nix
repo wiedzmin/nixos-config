@@ -523,6 +523,7 @@ in {
           epkgs.dired-git-info
           epkgs.git-msg-prefix
           epkgs.git-timemachine
+          epkgs.git-walktree
           epkgs.magit
           epkgs.magit-filenotify
           epkgs.magit-popup # *

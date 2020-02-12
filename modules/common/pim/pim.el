@@ -1,5 +1,4 @@
 (use-package plantuml-mode
-  :ensure t
   :mode "\\.plantuml\\'"
   :custom
   (plantuml-jar-path "@plantumlJar@")
@@ -9,14 +8,13 @@
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((plantuml . t))))
 
-(use-package blockdiag-mode :ensure t)
+(use-package blockdiag-mode)
 
 (use-package calendar
   :custom
   (calendar-week-start-day 1))
 
 (use-package ob-blockdiag
-  :ensure t
   :config
   (org-babel-do-load-languages 'org-babel-load-languages
                                '((blockdiag . t))))
@@ -87,12 +85,10 @@
              org-babel-expand-body:bash))
 
 (use-package ob-async
-  :ensure t
   :defer t
   :after org ob)
 
 (use-package ob-restclient
-  :ensure t
   :after ob restclient
   :commands (org-babel-execute:restclient))
 
@@ -379,7 +375,7 @@
   (org-x11idle-exists-p t)
   (org-yank-adjusted-subtrees t)
   :config
-  (use-package org-capture-pop-frame :ensure t)
+  (use-package org-capture-pop-frame)
   (deferred:$
     (deferred:nextc
       (deferred:wait-idle 3000)
@@ -409,7 +405,6 @@
   (turn-on-orgtbl))
 
 (use-package org-bullets
-  :ensure t
   :hook
   (org-mode-hook . org-bullets-mode))
 
@@ -417,18 +412,16 @@
   :after org server)
 
 (use-package org-rich-yank
-  :ensure t
   :after org
   :bind
   (:map org-mode-map
         ("C-M-y" . org-rich-yank)))
 
-(use-package orgit
-  ;;TODO: automate insertion of links below (yasnippet/whatever)
-  ;;    orgit:/path/to/repo/            links to a `magit-status' buffer
-  ;;    orgit-rev:/path/to/repo/::REV   links to a `magit-revision' buffer
-  ;;    orgit-log:/path/to/repo/::ARGS  links to a `magit-log' buffer
-  :ensure t)
+;;TODO: automate insertion of links below (yasnippet/whatever)
+;;    orgit:/path/to/repo/            links to a `magit-status' buffer
+;;    orgit-rev:/path/to/repo/::REV   links to a `magit-revision' buffer
+;;    orgit-log:/path/to/repo/::ARGS  links to a `magit-log' buffer
+(use-package orgit)
 
 (use-package ox-html
   :ensure org-plus-contrib
@@ -437,7 +430,6 @@
              org-html-export-to-html))
 
 (use-package ivy-omni-org
-  :ensure t
   :bind
   (:map mode-specific-map
         ("O" . ivy-omni-org))
@@ -449,11 +441,9 @@
 
 ;; TODO: bind to keys
 (use-package counsel-org-clock
-  :ensure t
   :commands counsel-org-clock-history counsel-org-clock-goto counsel-org-clock-context)
 
 (use-package deft
-  :ensure t
   :bind
   ("<f12>" . deft)
   :custom
@@ -463,7 +453,6 @@
   (deft-extensions '("org" "txt")))
 
 (use-package org-sticky-header
-  :ensure t
   :hook (org-mode . org-sticky-header-mode)
   :custom
   (org-sticky-header-full-path 'full)

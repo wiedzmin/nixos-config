@@ -14,27 +14,12 @@
 
 (add-hook 'focus-out-hook #'garbage-collect)
 
-(when (and (>= libgnutls-version 30603)
-           (version<= emacs-version "26.2"))
-  (setq gnutls-algorithm-priority "NORMAL:-VERS-TLS1.3"))
-
 (require 'cl)
 (require 'package)
 
 (unless package--initialized
   (package-initialize))
 (setq package-enable-at-startup nil)
-
-(add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
-(add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-(add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/"))
-
-(setf (cdr (assoc "gnu" package-archives))
-      "https://elpa.gnu.org/packages/")
-(setq package-archive-priorities
-      '(("melpa-stable" . 5)
-        ("gnu" . 5)
-        ("melpa" . 10)))
 
 (mapcar
  (lambda (package)
@@ -51,7 +36,6 @@
 
 (use-package quelpa :ensure t :defer t)
 (use-package quelpa-use-package
-  :ensure t
   :custom
   (quelpa-use-package-inhibit-loading-quelpa
    t "Improve startup performance"))
@@ -82,7 +66,6 @@
 (global-set-key (kbd "C-x C-,") #'goto-char)
 
 (use-package amx
-  :ensure t
   :bind
   ("M-x" . amx)
   :custom
@@ -90,7 +73,6 @@
   (amx-save-file "@emacsDatadir@/amx-items"))
 
 (use-package auto-compile
-  :ensure t
   :config
   (auto-compile-on-load-mode 1)
   (auto-compile-on-save-mode 1)
@@ -137,7 +119,6 @@
   :hook (after-save-hook . executable-make-buffer-file-executable-if-script-p))
 
 (use-package f
-  :ensure t
   :after s dash)
 
 (use-package files
@@ -159,13 +140,11 @@
   (save-abbrevs 'silently))
 
 (use-package gcmh
-  :ensure t
   :delight " \ufe0f"
   :config
   (gcmh-mode 1))
 
 (use-package iqa
-  :ensure t
   :config
   (iqa-setup-default))
 
@@ -178,7 +157,6 @@
   (setq kmacro-ring-max 16))
 
 (use-package no-littering
-  :ensure t
   :custom
   (no-littering-var-directory "@emacsDatadir@/"))
 
@@ -187,7 +165,6 @@
   (disabled-command-function nil))
 
 (use-package restart-emacs
-  :ensure t
   :bind
   (:map ctl-x-map
         ("C-c" . restart-emacs)))
@@ -220,11 +197,9 @@
   (global-auto-revert-mode 1))
 
 (use-package backup-each-save
-  :ensure t
   :hook (after-save-hook . backup-each-save))
 
 (use-package hl-todo
-  :ensure t
   :config
   (global-hl-todo-mode))
 
@@ -252,7 +227,7 @@
      search-ring
      regexp-search-ring)))
 
-(use-package savekill :ensure t)
+(use-package savekill)
 
 (use-package saveplace
   :defer 1
@@ -260,7 +235,6 @@
   (save-place-mode 1))
 
 (use-package super-save
-  :ensure t
   :delight super-save-mode
   :custom
   (super-save-remote-files nil)
@@ -270,13 +244,11 @@
 (setf create-lockfiles nil)
 
 (use-package beginend
-  :ensure t
   :delight beginend-global-mode beginend-prog-mode beginend-magit-status-mode
   :config
   (beginend-global-mode))
 
 (use-package comment-dwim-2
-  :ensure t
   :bind
   (:map mode-specific-map
         ("]" . comment-dwim-2))
@@ -284,7 +256,6 @@
   (cd2/region-command 'cd2/comment-or-uncomment-region))
 
 (use-package company
-  :ensure t
   :delight (company-mode " γ")
   :hook (after-init-hook . global-company-mode)
   :bind
@@ -301,7 +272,6 @@
   (company-show-numbers t)
   :config
   (use-package company-fuzzy
-    :ensure t
     :custom
     (company-fuzzy-prefix-ontop t)
     (company-fuzzy-show-annotation t)
@@ -310,16 +280,13 @@
     (add-to-list 'company-fuzzy--no-prefix-backends 'company-yasnippet)
     (global-company-fuzzy-mode 1))
   (use-package company-quickhelp
-    :ensure t
     :config
     (company-quickhelp-mode 1))
   (use-package company-statistics
-    :ensure t
     :config
     (company-statistics-mode)))
 
 (use-package copy-as-format
-  :ensure t
   :bind
   (:map mode-specific-map
         :prefix-map custom-formatting-map
@@ -348,23 +315,19 @@
   (delete-selection-mode 1))
 
 (use-package goto-char-preview
-  :ensure t
   :bind
   ([remap goto-char] . goto-char-preview))
 
 (use-package easy-kill
-  :ensure t
   :bind
   ([remap kill-ring-save] . easy-kill)
   ([remap mark-sexp] . easy-mark))
 
 (use-package editorconfig
-  :ensure t
   :delight (editorconfig-mode " EC")
   :hook ((prog-mode-hook text-mode-hook) . editorconfig-mode))
 
 (use-package flycheck
-  :ensure t
   :preface
   ;; CREDITS: https://github.com/nathankot/dotemacs
   (defvar counsel-flycheck-history nil
@@ -403,14 +366,12 @@
   (global-flycheck-mode 1))
 
 (use-package format-all
-  :ensure t
   :after copy-as-format
   :bind
   (:map custom-formatting-map
         ("b" . format-all-buffer)))
 
 (use-package multiple-cursors
-  :ensure t
   :after region-bindings-mode
   :bind
   (:map region-bindings-mode-map
@@ -421,7 +382,6 @@
 ;; You must add swiper-mc to the mc/cmds-to-run-once list. I messed this up initially and had to fix it by hand.
 
 (use-package mwim
-  :ensure t
   :bind
   ([remap move-beginning-of-line] . mwim-beginning-of-code-or-line)
   ([remap move-end-of-line] . mwim-end-of-code-or-line))
@@ -432,7 +392,6 @@
   (show-paren-mode t))
 
 (use-package recursive-narrow
-  :ensure t
   :bind
   (:map mode-specific-map
         :prefix-map custom-narrowing-map
@@ -444,7 +403,6 @@
         ("D" . recursive-widen-dwim)))
 
 (use-package region-bindings-mode
-  :ensure t
   :custom
   (region-bindings-mode-disable-predicates '((lambda () buffer-read-only)))
   :config
@@ -456,7 +414,6 @@
   (x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
 
 (use-package shift-number
-  :ensure t
   :bind
   ("M-+" . shift-number-up)
   ("M-_" . shift-number-down))
@@ -530,7 +487,6 @@
   (put 'set-goal-column 'disabled nil))
 
 (use-package smartparens
-  :ensure t
   :after dash
   :demand t
   :hook (((prog-mode-hook yaml-mode-hook) . smartparens-mode)
@@ -575,7 +531,6 @@
         ("TAB" . tabify)))
 
 (use-package undo-propose
-  :ensure t
   :bind
   (:map ctl-x-map
         ("u" . undo-propose)))
@@ -588,7 +543,6 @@
         ("C-c C-c" . wgrep-finish-edit)))
 
 (use-package whitespace
-  :ensure t
   :hook
   ((prog-mode-hook text-mode-hook) . whitespace-turn-on)
   :bind
@@ -609,7 +563,6 @@
                       tabs)))
 
 (use-package fancy-dabbrev
-  :ensure t
   :bind
   ("C-<tab>" . fancy-dabbrev-expand-or-indent)
   ("<backtab>" . fancy-dabbrev-backward)
@@ -624,20 +577,17 @@
   (fancy-dabbrev-preview-context 'before-non-word))
 
 (use-package aggressive-indent
-  :ensure t
   :config
   (global-aggressive-indent-mode 1)
   (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 
 (use-package ws-butler
-  :ensure t
   :hook (after-init-hook . ws-butler-global-mode)
   :custom
   (ws-butler-convert-leading-tabs-or-spaces t)
   (ws-butler-global-exempt-modes '(markdown-mode)))
 
 (use-package yasnippet
-  :ensure t
   :demand t
   :delight yas-minor-mode
   :mode (("@emacsYasnippetSnippets@" . snippet-mode)

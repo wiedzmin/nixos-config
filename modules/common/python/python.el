@@ -28,14 +28,12 @@
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'(lambda () "")))
 
-(use-package py-yapf :ensure t)
+(use-package py-yapf)
 
 (use-package flycheck-prospector
-  :ensure t
   :after flycheck)
 
 (use-package pip-requirements
-  :ensure t
   :delight (pip-requirements-mode "PyPA Requirements")
   :preface
   (defun custom/pip-requirements-ignore-case ()

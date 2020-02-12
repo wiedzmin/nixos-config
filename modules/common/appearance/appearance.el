@@ -3,7 +3,6 @@
   (mouse-avoidance-mode 'jump))
 
 (use-package doom-modeline
-  :ensure t
   :hook
   (after-init-hook . doom-modeline-init)
   :custom
@@ -13,7 +12,6 @@
   (doom-modeline-minor-modes nil))
 
 (use-package default-text-scale
-  :ensure t
   :bind
   ("C-=" . default-text-scale-increase)
   ("C--" . default-text-scale-decrease)
@@ -40,7 +38,6 @@
   (display-time-string-forms '( day " " monthname " (" dayname ") " 24-hours ":" minutes)))
 
 (use-package unicode-fonts
-  :ensure t
   :after persistent-soft
   :hook
   (after-init-hook . unicode-fonts-setup))
@@ -53,10 +50,8 @@
   (uniquify-strip-common-suffix nil))
 
 (use-package diredfl
-  :ensure t
   :hook
   (dired-mode . diredfl-mode))
 
 (use-package rainbow-mode
-  :ensure t
   :hook (css-mode-hook . rainbow-mode))

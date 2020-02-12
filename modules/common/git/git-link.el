@@ -1,5 +1,4 @@
 (use-package git-link
-  :ensure t
   :after link-hint
   :bind
   (:map link-hint-keymap

@@ -1,5 +1,4 @@
 (use-package browse-at-remote
-  :ensure t
   :after link-hint
   :bind
   (:map link-hint-keymap

@@ -1,11 +1,9 @@
 (use-package git-timemachine
-  :ensure t
   :bind
   (:map mode-specific-map
         (";" . git-timemachine)))
 
 (use-package magit
-  :ensure t
   :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
          ("COMMIT" . git-commit-mode))
   :bind
@@ -67,7 +65,6 @@
   (magit-display-buffer-function 'magit-display-buffer-fullframe-status-topleft-v1))
 
 (use-package magit-filenotify
-  :ensure t
   :delight (magit-filenotify-mode " FN")
   :hook (magit-status-mode-hook . (lambda ()
                                     (condition-case nil
@@ -75,14 +72,12 @@
                                       (error (magit-filenotify-mode -1))))))
 
 (use-package git-walktree
-  :ensure t
   :after magit
   :bind
   (:map custom-magit-map
         ("o" . git-walktree)))
 
 (use-package dired-git-info
-  :ensure t
   :after dired
   ;; :hook (dired-after-readin-hook . dired-git-info-auto-enable)
   :bind
@@ -90,7 +85,6 @@
         (")" . dired-git-info-mode)))
 
 (use-package git-msg-prefix
-  :ensure t
   :bind
   (:map git-commit-mode-map
         ("C-c i" . git-msg-prefix))
@@ -99,7 +93,6 @@
   (git-msg-prefix-input-method 'ivy-read))
 
 (use-package magit-todos
-  :ensure t
   :bind
   (:map mode-specific-map
         ("C-d" . ivy-magit-todos))

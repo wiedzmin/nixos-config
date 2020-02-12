@@ -137,6 +137,7 @@ in {
             epkgs.markdown-mode
             epkgs.multiple-cursors
             epkgs.mwim
+            epkgs.names
             epkgs.no-littering
             epkgs.pinentry
             epkgs.posframe
@@ -151,6 +152,7 @@ in {
             epkgs.smartparens
             epkgs.super-save
             epkgs.undo-propose
+            epkgs.unicode-escape
             epkgs.wgrep
             epkgs.ws-butler
             epkgs.yasnippet

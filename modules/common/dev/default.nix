@@ -233,13 +233,16 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.emacs.extraPackages = epkgs: [
           epkgs.company-restclient
+          epkgs.company-tabnine
           epkgs.diff-hl
           epkgs.direnv
           epkgs.elmacro
           epkgs.fic-mode
           epkgs.jinja2-mode
+          epkgs.lsp-ivy
           epkgs.multi-compile
           epkgs.webpaste
+          epkgs.yaml-mode
         ];
       };
       ide.emacs.config = builtins.readFile
