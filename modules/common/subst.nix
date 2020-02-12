@@ -59,8 +59,7 @@ rec {
   jobInfraSwarmLeader = config.secrets.job.infra.swarmLeader;
   jobWorkspaceRoot = config.secrets.job.workspaceRoot;
   jqBinary = "${pkgs.jq}/bin/jq";
-  lspPythonMsExtraPaths = builtins.concatStringsSep " "
-    (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
+  lspPythonMsExtraPaths = builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
   maimBinary = "${pkgs.maim}/bin/maim";
   mktempBinary = "${pkgs.coreutils}/bin/mktemp";
   mvBinary = "${pkgs.coreutils}/bin/mv";
