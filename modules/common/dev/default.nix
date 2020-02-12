@@ -117,8 +117,8 @@ in {
         description = "Codesearch index updating";
         wantedBy = [ "timers.target" ];
         timerConfig = {
-          OnBootSec = "5min";
-          OnUnitActiveSec = "1h";
+          OnBootSec = "10min";
+          OnUnitActiveSec = "2h";
         };
       };
     })
