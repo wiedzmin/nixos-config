@@ -7,9 +7,9 @@ in {
   options = {
     custom.dev = {
       playground.enable = mkOption {
-          type = types.bool;
-          default = false;
-          description = "Whether to enable non-production tools to play with.";
+        type = types.bool;
+        default = false;
+        description = "Whether to enable non-production tools to play with.";
       };
       codesearch.enable = mkOption {
         type = types.bool;
