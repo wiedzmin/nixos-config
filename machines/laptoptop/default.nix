@@ -338,6 +338,14 @@ in
     emacs.enable = true;
   };
 
+  custom.dev.golang = {
+    enable = true;
+    goPath = config.secrets.dev.goPath;
+    privateModules = config.secrets.job.golangPrivateModules;
+    packaging.enable = true;
+    emacs.enable = true;
+  };
+
   custom.email = {
     enable = true;
     emailAddress = config.secrets.identity.email;

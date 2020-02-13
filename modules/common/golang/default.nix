@@ -10,65 +10,74 @@ in {
         default = false;
         description = "Whether to enable Golang dev infrastructure.";
       };
-      srcTools.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable tools for working with source code.";
+      goPath = mkOption {
+        type = types.str;
+        default = "";
+        description = "Path to be used as $GOPATH root.";
       };
-      infraTools.enable = mkOption {
+      privateModules = mkOption {
+        type = types.listOf types.str;
+        default = [];
+        description = "Glob patterns of Go modules to consider private (e.g. GOPRIVATE contents).";
+      };
+      packaging.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable infrastructure-related rools (packaging, etc.).";
+        description = "Whether to enable packaging toolset.";
+      };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Emacs Golang setup.";
       };
     };
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable && cfg.srcTools.enable) {
+    (mkIf (cfg.enable) {
+      assertions = [
+        {
+          assertion = (cfg.goPath != "" && builtins.pathExists cfg.goPath);
+          message = "dev/golang: cannot proceed without valid $GOPATH value.";
+        }
+      ];
+
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          # asmfmt # FIXME: try to solve problem with priorities (with gotools)
-          # gocode
-          deadcode
-          errcheck
-          go-check
-          go-langserver
-          go-tools
-          gocode-gomod
-          goconst
-          goconvey
-          gocyclo
-          godef
-          gogetdoc
-          golint
           gometalinter
           gomodifytags
-          gosec
-          gotags
-          gotools
-          govers
-          iferr
-          impl
-          ineffassign
-          interfacer
-          maligned
-          manul
-          reftools
-          unconvert
+          gotools # for gopls
+          dep
+          go
         ];
+        programs.zsh.sessionVariables = {
+          GOPATH = cfg.goPath;
+        } // lib.optionalAttrs (cfg.privateModules != []) {
+          GOPRIVATE = builtins.concatStringsSep "," cfg.privateModules;
+        };
       };
     })
-    (mkIf (cfg.enable && cfg.infraTools.enable) {
+    (mkIf (cfg.enable && cfg.packaging.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          dep
           dep2nix
-          glide
-          go
           go2nix
           vgo2nix
         ];
       };
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        programs.emacs.extraPackages = epkgs: [
+          epkgs.flycheck-gometalinter
+          epkgs.go-guru
+          epkgs.go-mode
+          epkgs.go-tag
+          epkgs.gotest
+        ];
+      };
+      ide.emacs.config = builtins.readFile
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./golang.el; }));
     })
   ];
 }
