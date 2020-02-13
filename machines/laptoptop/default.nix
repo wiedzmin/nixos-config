@@ -253,7 +253,9 @@ in
     chromium = {
       enable = true;
       extraOpts = {
-        AudioCaptureAllowed = false;
+        AudioCaptureAllowed = true;
+        VideoCaptureAllowed = true;
+        PrintingEnabled = true;
 
         AutofillAddressEnabled = false;
         AutofillCreditCardEnabled = false;
@@ -270,7 +272,6 @@ in
         EnableMediaRouter = false;
         MetricsReportingEnabled = false;
         PasswordManagerEnabled = false;
-        PrintingEnabled = false;
         PromotionalTabsEnabled = false;
         SSLErrorOverrideAllowed = false;
         SafeBrowsingEnabled  = false;
@@ -280,7 +281,6 @@ in
         SpellcheckEnabled = false;
         SyncDisabled = true;
         TranslateEnabled = false;
-        VideoCaptureAllowed = false;
       };
     };
     aux.enable = true;
