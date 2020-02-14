@@ -103,6 +103,11 @@ in {
           Whether to enable Emacs browsers-related setup.
         '';
       };
+      staging.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable staging settings.";
+      };
     };
   };
   config = mkMerge [
@@ -496,9 +501,10 @@ in {
     (mkIf (cfg.enable && cfg.aux.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          next
           w3m-full
           webmacs
+        ] ++ lib.optionals (cfg.staging.enable) [
+          next
         ];
         programs.emacs.extraPackages = epkgs: [
           epkgs.atomic-chrome

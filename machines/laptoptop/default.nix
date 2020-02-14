@@ -248,6 +248,7 @@ in
 
   custom.browsers = {
     enable = true;
+    staging.enable = false;
     firefox.enable = true;
     sessions.firefox.backup.enable = true;
     chromium = {
