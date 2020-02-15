@@ -324,6 +324,9 @@ in {
             zb = "z -b";
 
             zr = ". ~/.zshrc";
+          } // lib.optionalAttrs (config.custom.navigation.misc.enable) {
+            pus = "${pkgs.pueue}/bin/pueue status";
+            pul = "${pkgs.pueue}/bin/pueue log";
           };
           plugins = [
             {
