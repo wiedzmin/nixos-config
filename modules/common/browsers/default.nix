@@ -473,11 +473,11 @@ in {
         ];
       };
       wm.xmonad.keybindings = lib.optionalAttrs (config.wm.xmonad.enable) {
-        "M-C-s" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --save"'';
-        "M-C-o" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --open"'';
-        "M-C-e" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --edit"'';
-        "M-C-d" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --delete"'';
-        "M-C-c" = ''spawn "${pkgs.collect_links_on_page}/bin/collect_links_on_page"'';
+        "M-s b s" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --save"'';
+        "M-s b o" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --open"'';
+        "M-s b e" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --edit"'';
+        "M-s b d" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --delete"'';
+        "M-s b c" = ''spawn "${pkgs.collect_links_on_page}/bin/collect_links_on_page"'';
       };
       systemd.user.services."backup-current-session-firefox" = {
         description = "Backup current firefox session (tabs)";
