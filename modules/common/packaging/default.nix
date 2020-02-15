@@ -135,8 +135,10 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.nix.search.enable) {
-      programs.zsh.shellAliases = {
-        nl = "${pkgs.nix-index}/bin/nix-locate";
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        programs.zsh.shellAliases = {
+          nlo = "${pkgs.nix-index}/bin/nix-locate --";
+        };
       };
       systemd.user.services."nix-update-index" = {
         description = "Update nix packages metadata index";
