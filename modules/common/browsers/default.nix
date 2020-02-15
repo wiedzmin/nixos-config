@@ -124,7 +124,7 @@ in {
         home.activation.ensureFirefoxHandlers = {
           after = [];
           before = ["checkLinkTargets"];
-          data = "rm /home/${config.attributes.mainUser.name}/.mozilla/firefox/profile.default/handlers.json";
+          data = "rm -f /home/${config.attributes.mainUser.name}/.mozilla/firefox/profile.default/handlers.json";
         };
         programs.firefox = {
           enable = true;
