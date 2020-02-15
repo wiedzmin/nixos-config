@@ -22,6 +22,11 @@ in {
         default = false;
         description = "Whether to enable XMonad keybindings.";
       };
+      staging.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable staging settings.";
+      };
     };
   };
 
@@ -43,7 +48,7 @@ in {
           calibre
           djview
           djvulibre
-        ] ++ lib.optionals config.attributes.staging.enable [
+        ] ++ lib.optionals (cfg.staging.enable) [
           epr
         ];
         programs.zathura = {
@@ -62,7 +67,7 @@ in {
           pandoc
           pdfcpu
           pdftk
-        ] ++ lib.optionals (config.attributes.staging.enable) [
+        ] ++ lib.optionals (cfg.staging.enable) [
           pdfarranger
           wpWorking.python3Packages.weasyprint
         ];

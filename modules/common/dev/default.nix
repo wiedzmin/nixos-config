@@ -26,15 +26,30 @@ in {
         default = false;
         description = "Whether to enable dev analysis tools.";
       };
+      analysis.staging.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable staging settings for analysis.";
+      };
       statistics.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable code stats tools.";
       };
+      statistics.staging.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable staging settings for statistics.";
+      };
       misc.enable = mkOption {
         type = types.bool;
         default = false;
         description = ''Whether to enable various misc tools.'';
+      };
+      misc.staging.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable staging misc settings.";
       };
       emacs.enable = mkOption {
         type = types.bool;
@@ -164,7 +179,7 @@ in {
           strace
           sysdig
           valgrind
-        ] ++ lib.optionals (config.attributes.staging.enable) [
+        ] ++ lib.optionals (cfg.analysis.staging.enable) [
           q-text-as-data
           textql
           visidata # TODO: make overlay
@@ -187,7 +202,7 @@ in {
           gource
           sloccount
           tokei
-        ] ++ lib.optionals (config.attributes.staging.enable) [
+        ] ++ lib.optionals (cfg.statistics.staging.enable) [
           scc
         ];
       };
@@ -202,7 +217,7 @@ in {
           pv
           watchexec
           wstunnel
-        ] ++ lib.optionals config.attributes.staging.enable [
+        ] ++ lib.optionals (cfg.misc.staging.enable) [
           async
           mkcert
         ];

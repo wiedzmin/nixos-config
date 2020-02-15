@@ -43,6 +43,11 @@ in {
         default = false;
         description = "Whether to enable XMonad keybindings.";
       };
+      staging.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable staging settings.";
+      };
     };
   };
 
@@ -84,7 +89,7 @@ in {
           shell-hist
           shellcheck
           tmsu                        # ?
-        ] ++ lib.optionals (config.attributes.staging.enable) [
+        ] ++ lib.optionals (cfg.staging.enable) [
           eva
           tmux-xpanes
         ];
@@ -447,7 +452,7 @@ in {
           sd
           up
           uq
-        ] ++ lib.optionals config.attributes.staging.enable [
+        ] ++ lib.optionals cfg.staging.enable [
           dateutils
           fselect
           gron

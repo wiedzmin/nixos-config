@@ -63,6 +63,11 @@ in {
         default = false;
         description = "Whether to enable XMonad keybindings.";
       };
+      staging.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable staging settings.";
+      };
     };
   };
 
@@ -166,7 +171,7 @@ in {
           nix-zsh-completions
           nix-review # https://github.com/Mic92/nix-review
           make-package-diff
-        ] ++ lib.optionals (config.attributes.staging.enable) [
+        ] ++ lib.optionals (cfg.staging.enable) [
           niv
           nix-linter
         ];

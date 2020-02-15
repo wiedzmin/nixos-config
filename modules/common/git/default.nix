@@ -144,6 +144,11 @@ in {
         default = false;
         description = "Whether to enable Emacs git-related setup.";
       };
+      staging.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable staging settings for git.";
+      };
     };
   };
 
@@ -289,7 +294,7 @@ in {
         gitAndTools.thicket
         gitstats
         git-quick-stats
-      ] ++ lib.optionals (config.attributes.staging.enable) [
+      ] ++ lib.optionals (cfg.staging.enable) [
         onefetch
         overcommit
         gitAndTools.git-machete

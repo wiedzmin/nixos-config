@@ -155,6 +155,11 @@ in {
         default = false;
         description = "Whether to enable TeX tooling.";
       };
+      tex.staging.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable staging TeX settings.";
+      };
     };
   };
 
@@ -280,7 +285,7 @@ in {
     })
     (mkIf cfg.tex.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; lib.optionals (config.attributes.staging.enable) [
+        home.packages = with pkgs; lib.optionals (cfg.tex.staging.enable) [
           pplatex
           texlab
         ];

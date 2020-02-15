@@ -157,7 +157,7 @@ in {
                 "extensions.update.url" = "";
                 "lightweightThemes.selectedThemeID" = "firefox-compact-dark@mozilla.org";
                 "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-              } // lib.optionalAttrs (config.attributes.staging.settings.enable) {
+              } // lib.optionalAttrs (cfg.staging.enable) {
                 # entries picked from https://github.com/ilya-fedin/user-js/blob/master/user.js
                 "browser.cache.disk.enable" = false;
                 "browser.cache.memory.enable" = false;

@@ -190,6 +190,11 @@ in {
         default = false;
         description = "Whether to enable debug tools.";
       };
+      staging.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable staging settings.";
+      };
     };
   };
 
@@ -207,7 +212,7 @@ in {
       programs.light.enable = true;
       hardware.brillo.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; lib.optionals (config.attributes.staging.enable) [
+        home.packages = with pkgs; lib.optionals (cfg.staging.enable) [
           blugon
         ];
         home.file = {
