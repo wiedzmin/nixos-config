@@ -317,8 +317,6 @@ in {
             df = "${pkgs.dfc}/bin/dfc";
             du = "${pkgs.dua}/bin/dua";
 
-            yg = "${pkgs.you-get}/bin/you-get";
-
             zz =
               "cd $(z -i | ${pkgs.skim}/bin/sk --nth 2 --reverse --inline-info --tac | ${pkgs.gawk}/bin/awk '{print $2}')";
             zb = "z -b";

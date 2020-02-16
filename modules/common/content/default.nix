@@ -1,3 +1,7 @@
+let
+  deps = import ../../../nix/sources.nix;
+  proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
+in
 { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
@@ -75,7 +79,7 @@ in {
           aria2
           jmtpfs # consider providing some (shell) automation
           saldl # consider providing some (shell) automation
-          you-get
+          proposed.you-get
           # =======
           archiver
           # =======
@@ -90,6 +94,11 @@ in {
           scripts = with pkgs.mpvScripts; [
             mpris
           ];
+        };
+        programs.zsh.shellAliases = {
+          yg = "${proposed.you-get}/bin/you-get";
+        } // lib.optionalAttrs (config.custom.navigation.misc.enable) {
+          pyg = "${pkgs.pueue}/bin/pueue add -- ${proposed.you-get}/bin/you-get";
         };
       };
     })
