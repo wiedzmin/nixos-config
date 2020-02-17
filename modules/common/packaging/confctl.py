@@ -32,7 +32,6 @@ def build_configuration(path=None, debug=False):
 
 
 def switch_configuration():
-    sys.path += ["/run/current-system/sw/bin"]
     cwd = os.getcwd()
     try:
         new_system_path = os.readlink("{0}/result".format(cwd))
@@ -41,7 +40,7 @@ def switch_configuration():
         print("Error switching configuration: {0}".format(e))
         sys.exit(1)
     switch_configuration_task = subprocess.Popen("pkexec nix-env --profile /nix/var/nix/profiles/system --set {0} && pkexec {0}/bin/switch-to-configuration switch".format(
-                                                 new_system_path), shell=True, stdout=sys.stdout, stderr=sys.stdout)
+                                                 new_system_path), shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
     result = switch_configuration_task.wait()
     if result != 0:
         print("Error switching configuration") # TODO: add details
