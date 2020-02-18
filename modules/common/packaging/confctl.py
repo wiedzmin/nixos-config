@@ -20,21 +20,20 @@ def locate_nixpkgs():
     return nixpkgs_path
 
 
-def build_configuration(path=None, debug=False):
+def build_configuration(debug=False):
     build_configuration_task = subprocess.Popen("nix build -f {0}/nixos system{1}{2}".format(
-                                                locate_nixpkgs(),
-                                                " --show-trace" if debug else "",
-                                                ' -I nixos-config="{0}"'.format(path) if path else ""), shell=True,
-                                                stdout=sys.stdout, stderr=sys.stdout)
+        locate_nixpkgs(),
+        " --show-trace" if debug else "",
+        ' -I nixos-config="/etc/nixos/configuration.nix"'
+    ), shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
     result = build_configuration_task.wait()
     if result in [1, 100]:
         sys.exit(1)
 
 
 def switch_configuration():
-    cwd = os.getcwd()
     try:
-        new_system_path = os.readlink("{0}/result".format(cwd))
+        new_system_path = os.readlink("{0}/result".format(os.getcwd()))
     except FileNotFoundError as e:
         new_system_path = None
         print("Error switching configuration: {0}".format(e))
@@ -70,6 +69,7 @@ operations = [
 operation = dmenu.show(operations, prompt='>', lines=10)
 
 if operation == "Update current configuration":
+    os.chdir("/etc/nixos")
     build_configuration()
     switch_configuration()
     # ensure_kernel_update()
