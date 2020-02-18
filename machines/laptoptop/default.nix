@@ -84,7 +84,7 @@ in
         "E-HOME".pskRaw = "55a2afc011508c7ebafc06207e03217b57bd839aa82b46819d74ac532c849e98";
         "emobile".pskRaw = "34bc8341ed02ed5efa2da222f2a93bacc3e75f76dc635c9ddc5b852ba421c857";
         "RT-WiFi_6908".pskRaw = "acb8748ab0c195789d959d11268f8802865d082544fe077ff0d34b9da87603e7";
-        "${config.secrets.job.officeSSID}".pskRaw = "2d3409526a97aabf44bbbfc3afde3acbc252843e795969915b6c830387443906";
+        "${config.secrets.job.officeSSID}".pskRaw = "88d104773f66d699bc66b21268f786a91869382278d43f1dacad0aa0bb87c979"; #"2d3409526a97aabf44bbbfc3afde3acbc252843e795969915b6c830387443906";
       };
     };
     useDHCP = true;
