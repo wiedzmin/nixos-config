@@ -222,6 +222,7 @@ in {
         home.packages = with pkgs; [
           skype
           nixpkgs-pinned-05_12_19.tdesktop
+          slack
           zoom-us
         ];
       };
