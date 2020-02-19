@@ -10,11 +10,6 @@
 (use-package jinja2-mode
   :mode "\\.j2$")
 
-(use-package yaml-mode
-  :mode "\\.yml\\'"
-  :quelpa
-  (yaml-mode :repo "yoshiki/yaml-mode" :fetcher github :version original))
-
 (use-package diff-hl
   :hook
   (dired-mode-hook . diff-hl-dired-mode)
