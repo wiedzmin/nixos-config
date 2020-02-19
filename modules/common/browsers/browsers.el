@@ -35,17 +35,3 @@
   :custom
   (browse-url-browser-function 'browse-url-firefox) ;; TODO: sync at module level
   (browse-url-generic-program "@emacsBrowserGenericProgram@"))
-
-(use-package eww
-  :defer 6
-  :preface
-  (defun eww-more-readable () ;;TODO: add to appropriate hook
-    "Makes eww more pleasant to use. Run it after eww buffer is loaded."
-    (interactive)
-    (setq eww-header-line-format nil) ;; removes page title
-    (setq mode-line-format nil) ;; removes mode-line
-    (set-window-margins (get-buffer-window) 20 20) ;; increases size of margins
-    (redraw-display) ;; apply mode-line changes
-    (eww-reload 'local))
-  :custom
-  (eww-search-prefix "https://duckduckgo.com/html/?kd=-1&q="))
