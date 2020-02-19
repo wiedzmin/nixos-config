@@ -54,4 +54,5 @@
   (dired-mode . diredfl-mode))
 
 (use-package rainbow-mode
-  :hook (css-mode-hook . rainbow-mode))
+  :hook
+  (css-mode-hook . rainbow-mode))
