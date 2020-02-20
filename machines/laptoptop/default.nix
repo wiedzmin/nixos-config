@@ -522,7 +522,7 @@ in
       };
     };
     libvirt.enable = true;
-    virtualbox.enable = true;
+    virtualbox.enable = false;
     xmonad.enable = true;
   };
 
