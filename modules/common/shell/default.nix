@@ -297,7 +297,6 @@ in {
               setopt ${opt}
             '') [
               "braceccl"
-              "correctall"
               "extendedglob"
               "menucomplete"
             ]}
