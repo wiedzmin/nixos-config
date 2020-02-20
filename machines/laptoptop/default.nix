@@ -73,8 +73,21 @@ in
       dnsExtensionMechanism = false;
     };
     wlanInterfaces = { "wlan0" = { device = "wlp3s0"; }; };
-    wireless = {
+    # TODO: consider extracting dichotomy below to module
+    networkmanager = {
       enable = true;
+      enableStrongSwan = true;
+      unmanaged = [
+        "br0"
+        "interface-name:vb-*"
+        "interface-name:vbox*"
+        "interface-name:ve-*"
+        "lo"
+      ];
+    };
+    # useNetworkd = false;
+    wireless = {
+      enable = false;
       driver = "nl80211";
       userControlled.enable = true;
       interfaces = [ "wlan0" ];
