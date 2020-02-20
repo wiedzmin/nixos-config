@@ -11,6 +11,7 @@
   :hook
   (before-save-hook . gofmt-before-save)
   (go-mode-hook . lsp)
+  (go-mode-hook . whitespace-turn-off)
   :bind
   (:map go-mode-map
         ("C-c C-c" . multi-compile-run))
