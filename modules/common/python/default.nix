@@ -1,6 +1,7 @@
 let
   deps = import ../../../nix/sources.nix;
   proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
+  nixpkgs-pinned-08_02_20 = import deps.nixpkgs-pinned-08_02_20 { config.allowUnfree = true; };
 in
 { config, lib, pkgs, ... }:
 with lib;
@@ -71,7 +72,7 @@ in {
           python3Packages.virtualenvwrapper
           python3Packages.yapf
 
-          prospector # TODO: review configuration https://github.com/PyCQA/prospector
+          nixpkgs-pinned-08_02_20.prospector # TODO: review configuration https://github.com/PyCQA/prospector
         ];
         home.file = {
           ".pylintrc".text = lib.generators.toINI {} { # see https://github.com/PyCQA/pylint/blob/master/pylintrc for reference

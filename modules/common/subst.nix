@@ -91,7 +91,7 @@ rec {
   wcBinary = "${pkgs.coreutils}/bin/wc";
   xclipBinary = "${pkgs.xclip}/bin/xclip";
   xdotoolBinary = "${pkgs.xdotool}/bin/xdotool";
-  xprintidleBinary = "${pkgs.xprintidle-ng}/bin/xprintidle-ng";
+  xprintidleBinary = "${nixpkgs-pinned-05_12_19.xprintidle-ng}/bin/xprintidle-ng";
   xselBinary = "${pkgs.xsel}/bin/xsel";
   yadBinary = "${pkgs.yad}/bin/yad";
 }
