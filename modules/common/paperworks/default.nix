@@ -150,15 +150,15 @@ in {
           <literal>$dataDir/manage-paperless</literal>
         '';
       };
-      tex.enable = mkOption {
+      publishing.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable TeX tooling.";
+        description = "Whether to enable publishing tooling.";
       };
-      tex.staging.enable = mkOption {
+      publishing.staging.enable = mkOption {
         type = types.bool;
         default = true;
-        description = "Whether to enable staging TeX settings.";
+        description = "Whether to enable staging publishing settings.";
       };
     };
   };
@@ -283,9 +283,9 @@ in {
         }];
       };
     })
-    (mkIf cfg.tex.enable {
+    (mkIf cfg.publishing.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; lib.optionals (cfg.tex.staging.enable) [
+        home.packages = with pkgs; lib.optionals (cfg.publishing.staging.enable) [
           pplatex
           texlab
         ];

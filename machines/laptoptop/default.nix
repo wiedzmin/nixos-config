@@ -470,6 +470,7 @@ in
         group = "users";
       };
     };
+    publishing.enable = true;
   };
 
   custom.pim = {
