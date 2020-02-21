@@ -18,19 +18,11 @@
   :config
   (setq gofmt-command "goimports")
   (add-to-list 'multi-compile-alist
-               '(go-mode . (("build/git" "go build -v"
-                             (locate-dominating-file buffer-file-name ".git")) ;;TODO: try to guess binary name from project name (investigate how this refers to libraries builds, etc.)
-                            ("build/main" "go build -v"
-                             (locate-dominating-file buffer-file-name "main.go"))
-                            ("build+run/git" "go build -v && echo '########## build finished ##########' && eval ./${PWD##*/}"
-                             (multi-compile-locate-file-dir ".git"))
-                            ("build+run/main" "go build -v && echo '########## build finished ##########' && eval ./${PWD##*/}"
-                             (multi-compile-locate-file-dir "main.go"))
+               '(go-mode . (("build/git" "go build -v ./..."
+                             (locate-dominating-file buffer-file-name ".git"))
                             ("mod/deps/download" "go mod download"
                              (locate-dominating-file buffer-file-name "go.mod"))
-                            ("tools/generate" "go generate -v tools.go" ;FIXME: check where this file resides and if command is semantically correct therefore
-                             (locate-dominating-file buffer-file-name "go.mod"))
-                            ("all/generate" "go generate -v"
+                            ("all/generate" "go generate -v ./..."
                              (locate-dominating-file buffer-file-name "go.mod"))
                             ("bin/install" "go install -v ./cmd/..."
                              (locate-dominating-file buffer-file-name "go.mod"))
