@@ -50,7 +50,7 @@
   ;; gometalinter: only enable selected linters
   (flycheck-gometalinter-disable-all t)
   (flycheck-gometalinter-enable-linters
-   '("golint" "vet" "vetshadow" "ineffassign" "goconst" "errcheck" "deadcode"))
+   '("golint" "vet" "errcheck"))
   :config
   (flycheck-gometalinter-setup))
 
