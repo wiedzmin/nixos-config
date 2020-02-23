@@ -61,6 +61,7 @@ in
       "net.ipv4.ip_default_ttl" = 65;
       "net.ipv4.tcp_sack" = 0;
     };
+    supportedFilesystems = [ "ntfs" ];
   };
 
   networking = {
