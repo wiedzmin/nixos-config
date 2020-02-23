@@ -85,7 +85,6 @@ in
         "lo"
       ];
     };
-    # useNetworkd = false;
     wireless = {
       enable = false;
       driver = "nl80211";
@@ -100,7 +99,6 @@ in
         "${config.secrets.job.officeSSID}".pskRaw = "88d104773f66d699bc66b21268f786a91869382278d43f1dacad0aa0bb87c979"; #"2d3409526a97aabf44bbbfc3afde3acbc252843e795969915b6c830387443906";
       };
     };
-    useDHCP = true;
     dhcpcd.denyInterfaces = [ "docker*" "virbr*" "br*"];
     nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
   };
