@@ -1,3 +1,6 @@
+let
+  deps = import ../../../nix/sources.nix;
+in
 { config, lib, pkgs, ... }:
 with lib;
 
@@ -160,6 +163,10 @@ in {
         };
         home.file = {
           ".emacs.d/init.el".text = cfg.initElContent;
+          ".emacs.d/resources/yasnippet" = {
+            source = deps.yasnippet-snippets;
+            recursive = true;
+          };
         };
       };
     })

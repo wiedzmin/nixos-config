@@ -94,6 +94,16 @@ in {
           tmux-xpanes
         ];
         home.file = {
+          "tmuxp/main.yml".text = ''
+            session_name: main
+            windows:
+              - window_name: repl
+                panes:
+                  - nix repl '<nixpkgs/nixos>'
+              - window_name: files
+                panes:
+                  - mc
+          '';
         } // lib.optionalAttrs (cfg.liquidPrompt.enable) {
           ".lp.ps1".text = ''
             LP_PS1="''${LP_PS1_PREFIX}''${LP_TIME}''${LP_JOBS}"

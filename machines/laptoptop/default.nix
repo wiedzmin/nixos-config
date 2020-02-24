@@ -12,7 +12,6 @@ in
     "${deps.nixos-hardware}/common/cpu/intel/sandy-bridge"
     "${deps.nixos-hardware}/common/pc/ssd"
     "${deps.nixos-hardware}/lenovo/thinkpad/x230"
-    ./filesvars.nix
   ];
 
   fileSystems."/" = {
@@ -91,14 +90,6 @@ in
       driver = "nl80211";
       userControlled.enable = true;
       interfaces = [ "wlan0" ];
-      networks = {
-        "mgts161".pskRaw = "e01f873374ae7edfb0b00767e722a544b83b1127ab439ea835e087969a9e8e0c";
-        "dent guest".pskRaw = "d7c9d6ecb87d5791e21a50d51ad06d8756a02e85185cc74ccba2c7b219b9daf4";
-        "E-HOME".pskRaw = "55a2afc011508c7ebafc06207e03217b57bd839aa82b46819d74ac532c849e98";
-        "emobile".pskRaw = "34bc8341ed02ed5efa2da222f2a93bacc3e75f76dc635c9ddc5b852ba421c857";
-        "RT-WiFi_6908".pskRaw = "acb8748ab0c195789d959d11268f8802865d082544fe077ff0d34b9da87603e7";
-        "${config.secrets.job.officeSSID}".pskRaw = "88d104773f66d699bc66b21268f786a91869382278d43f1dacad0aa0bb87c979"; #"2d3409526a97aabf44bbbfc3afde3acbc252843e795969915b6c830387443906";
-      };
     };
     dhcpcd.denyInterfaces = [ "docker*" "virbr*" "br*"];
     nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
@@ -154,29 +145,6 @@ in
     acpid.enable = true;
     timesyncd.enable = true;
 
-    redis.enable = true; # for various caching needs
-
-    arbtt.enable = true;
-    openvpn.servers = {
-      "${config.secrets.network.vpn.name}" = {
-        config = config.secrets.network.vpn.config;
-        autoStart = false;
-        updateResolvConf = true;
-        authUserPass = {
-          username = config.secrets.network.vpn.username;
-          password = config.secrets.network.vpn.password;
-        };
-      };
-      "${config.secrets.job.vpn.name}" = {
-        config = config.secrets.job.vpn.config;
-        autoStart = true;
-        updateResolvConf = true;
-        authUserPass = {
-          username = config.secrets.job.vpn.username;
-          password = config.secrets.job.vpn.password;
-        };
-      };
-    };
     xbanish.enable = true;
   };
 
@@ -224,16 +192,16 @@ in
   };
 
   attributes.mainUser = {
-    name = config.secrets.identity.userName;
-    fullName = config.secrets.identity.fullName;
-    email = config.secrets.identity.email;
-    gpgKeyID = config.secrets.identity.gpgKeyID;
+    name = config.identity.secrets.userName;
+    fullName = config.identity.secrets.fullName;
+    email = config.identity.secrets.email;
+    gpgKeyID = config.identity.secrets.gpgKeyID;
   };
 
   users.extraUsers."${config.attributes.mainUser.name}" = {
     isNormalUser = true;
     uid = 1000;
-    description = config.secrets.identity.fullName;
+    description = config.identity.secrets.fullName;
     shell = pkgs.zsh;
     extraGroups = [ "wheel" ];
   };
@@ -241,6 +209,19 @@ in
   attributes.fonts.basic.package = pkgs.iosevka;
   attributes.fonts.basic.xft = "xft:Iosevka:weight=Bold:size=10";
   attributes.fonts.basic.raw = "Iosevka Bold 10";
+
+  job = {
+    "14f7646bef".secrets = {
+      enable = true;
+      vpn.enable = true;
+      wifi.enable = true;
+      scheduling.enable = true;
+    };
+    "b354e944b3".secrets = {
+      enable = true;
+      vpn.enable = true;
+    };
+  };
 
   custom.appearance = {
     enable = true;
@@ -317,6 +298,8 @@ in
   };
 
   custom.dev = {
+    enable = true;
+    globalWorkspaceRoot = "/home/${config.attributes.mainUser.name}/workspace/repos";
     statistics.enable = true;
     codesearch.enable = true;
     patching.enable = true;
@@ -330,14 +313,13 @@ in
     pager.delta.enable = true;
     myrepos.enable = false; # temporarily
     myrepos.subconfigs = [
-      "/home/${config.attributes.mainUser.name}/workspace/repos/.mrconfig"
+      "${config.custom.dev.globalWorkspaceRoot}/.mrconfig"
     ];
     ghq = { enable = true; };
     github = {
       enable = true;
       user = "wiedzmin";
     };
-    workspaceRoot = "/home/${config.attributes.mainUser.name}/workspace/repos";
     fetchUpdates.enable = false; # temporarily; bootTimespec = "1min"; activeTimespec = "30min";
     pushUpdates.enable = false; # temporarily; calendar = "*-*-* 18:00:00";
     saveWip.enable = false; # temporarily; bootTimespec = "30sec"; activeTimespec = "1hour";
@@ -346,26 +328,23 @@ in
 
   custom.dev.python = {
     enable = true;
-    pylsExtraSourcePaths = config.secrets.job.pylsExtraSourcePaths;
     emacs.enable = true;
   };
 
   custom.dev.golang = {
     enable = true;
-    goPath = config.secrets.dev.goPath;
-    privateModules = config.secrets.job.golangPrivateModules;
+    goPath = "/home/${config.attributes.mainUser.name}/workspace/go";
     packaging.enable = true;
     emacs.enable = true;
   };
 
   custom.email = {
     enable = true;
-    emailAddress = config.secrets.identity.email;
-    defaultAccountName = config.secrets.identity.email;
-    passwordPath = config.secrets.identity.googleAccountPasswordPath;
+    emailAddress = config.identity.secrets.email;
+    defaultAccountName = config.identity.secrets.email;
     gpg = {
       sign = true;
-      keyID = config.secrets.identity.gpgKeyID;
+      keyID = config.identity.secrets.gpgKeyID;
     };
     mbsync = {
       enable = true;
@@ -376,16 +355,11 @@ in
     imapfilter = {
       enable = true;
       server = "imap.google.com";
-      byFrom = config.secrets.email.imapfilter.byFrom;
-      byTo = config.secrets.email.imapfilter.byTo;
-      byCc = config.secrets.email.imapfilter.byCc;
-      bySubject = config.secrets.email.imapfilter.bySubject;
-      deleteByFrom = config.secrets.email.imapfilter.deleteByFrom;
     };
   };
 
   custom.housekeeping = {
-    enable = true;
+    enable = true; # !!! essential for metadata caching !!!
     cleanTrash = {
       enable = true;
       calendarTimespec = "*-*-* 23:00:00";
@@ -429,7 +403,11 @@ in
     messengers.enable = true;
     scripts.enable = true;
     xmonad.enable = true;
-    extraHosts = config.secrets.job.infra.extraHosts // config.secrets.network.extraHosts;
+    secrets = {
+      enable = true;
+      vpn.enable = true;
+      wifi.enable = true;
+    };
   };
 
   custom.packaging = {
@@ -584,9 +562,6 @@ in
   home-manager.users."${config.attributes.mainUser.name}" = {
     nixpkgs.config.allowUnfree = true;
     xdg.enable = true;
-    home.packages = with pkgs; [
-      haskellPackages.arbtt # for stats viewing
-    ];
 
     home.stateVersion = "19.09";
   };

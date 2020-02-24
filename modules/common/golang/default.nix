@@ -25,6 +25,11 @@ in {
         default = false;
         description = "Whether to enable packaging toolset.";
       };
+      packaging.path = mkOption {
+        type = types.str;
+        default = "temp/gobuild";
+        description = "Packaging sandbox root relative to $HOME.";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -75,6 +80,34 @@ in {
           epkgs.go-tag
           epkgs.gotest
         ];
+        home.file = {
+          "${cfg.packaging.path}/default.nix".text = ''
+              with import <nixpkgs> {};
+
+              stdenv.mkDerivation {
+                  name = "go-generate-nix";
+                  buildInputs = with pkgs; [
+                      go
+                      git
+                      go2nix
+                  ];
+                  src = null;
+                  shellHook = '''
+                      export GOPATH=`pwd`
+                      echo "====================================="
+                      echo " 1) go get <github.com/user/repo>    "
+                      echo "                                     "
+                      echo " 2) cd src/<github.com/user/repo>    "
+                      echo "                                     "
+                      echo " 3) go get                           "
+                      echo " 3') go build                        "
+                      echo "                                     "
+                      echo " 3) go2nix save                      "
+                      echo "====================================="
+                  ''';
+              }
+          '';
+        };
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./golang.el; }));

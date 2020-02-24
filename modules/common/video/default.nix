@@ -278,8 +278,8 @@ in {
           };
           redshift = {
             enable = true;
-            latitude = config.secrets.identity.redshiftLatitude;
-            longitude = config.secrets.identity.redshiftLongitude;
+            latitude = config.identity.secrets.redshiftLatitude;
+            longitude = config.identity.secrets.redshiftLongitude;
             temperature.day = 5500;
             temperature.night = 3100;
             brightness.day = "1.0";

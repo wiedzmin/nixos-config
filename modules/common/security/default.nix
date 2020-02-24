@@ -7,18 +7,6 @@ with lib;
 
 let
   cfg = config.custom.security;
-  cache_job_vpn_status_up = pkgs.writeShellScriptBin "cache_job_vpn_status_up" ''
-    ${pkgs.redis}/bin/redis-cli set job_vpn_status up
-  '';
-  cache_job_vpn_status_down = pkgs.writeShellScriptBin "cache_job_vpn_status_down" ''
-    ${pkgs.redis}/bin/redis-cli set job_vpn_status down
-  '';
-  enforce_job_vpn_up = pkgs.writeShellScriptBin "enforce_job_vpn_up" ''
-    if [[ $(${pkgs.redis}/bin/redis-cli get job_vpn_status) != "up" ]]; then
-      ${pkgs.dunst}/bin/dunstify -t 5000 -u critical "VPN is off, turn it on and retry"
-      exit 1
-    fi
-  '';
 in {
   options = {
     # TODO: refine options
@@ -65,8 +53,6 @@ in {
           rofi-pass
           srm
           nixpkgs-pinned-05_12_19.vulnix
-          # ===
-          enforce_job_vpn_up
         ];
         programs.gpg = {
           enable = true;
@@ -89,15 +75,6 @@ in {
           '';
           pinentryFlavor = cfg.pinentryFlavor;
         };
-      };
-      # FIXME: think how to make plug point(s) for secrets with example of this use case
-      services.openvpn.servers."${config.secrets.job.vpn.name}" = {
-        up = ''
-          ${cache_job_vpn_status_up}/bin/cache_job_vpn_status_up
-        '';
-        down = ''
-          ${cache_job_vpn_status_down}/bin/cache_job_vpn_status_down
-        '';
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
@@ -134,10 +111,6 @@ in {
       wm.xmonad.keybindings = {
         "<XF86ScreenSaver>" = ''spawn "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off"'';
         "M-a q" = ''spawn "${pkgs.rofi-pass}/bin/rofi-pass"'';
-        "M-s s <Down>" = ''spawn "${pkgs.systemd}/bin/systemctl stop openvpn-${config.secrets.network.vpn.name}.service"'';
-        "M-s s <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart openvpn-${config.secrets.network.vpn.name}.service"'';
-        "M-s v <Down>" = ''spawn "${pkgs.systemd}/bin/systemctl stop openvpn-${config.secrets.job.vpn.name}.service"'';
-        "M-s v <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart openvpn-${config.secrets.job.vpn.name}.service"'';
       };
     })
   ];

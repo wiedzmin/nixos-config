@@ -62,6 +62,10 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set job/extra_hosts ${lib.strings.escapeNixString (builtins.toJSON cfg.extraHosts)}
+        ${pkgs.redis}/bin/redis-cli set job/command_choices ${lib.strings.escapeNixString (builtins.toJSON config.attributes.dev.remoteCommands)}
+      '';
       networking.extraHosts = ''
         127.0.0.1   ${config.networking.hostName}
         ${builtins.concatStringsSep "\n"
@@ -160,7 +164,7 @@ in {
             "*" = {
               identityFile = toString (pkgs.writeTextFile {
                 name = "id_rsa";
-                text = config.secrets.identity.ssh.privateKey;
+                text = config.identity.secrets.ssh.privateKey;
               });
               compression = true;
               extraOptions = {
@@ -174,7 +178,7 @@ in {
               serverAliveInterval = 60;
               identityFile = toString (pkgs.writeTextFile {
                 name = "github_id_rsa";
-                text = config.secrets.dev.github.ssh.privateKey;
+                text = config.custom.dev.secrets.github.ssh.privateKey;
               });
               extraOptions = {
                 ControlMaster = "auto";
@@ -188,7 +192,7 @@ in {
               serverAliveInterval = 60;
               identityFile = toString (pkgs.writeTextFile {
                 name = "bitbucket_id_rsa";
-                text = config.secrets.dev.bitbucket.ssh.privateKey;
+                text = config.custom.dev.secrets.bitbucket.ssh.privateKey;
               });
               identitiesOnly = true;
               extraOptions = {
@@ -201,6 +205,9 @@ in {
           extraConfig = ''
             AddKeysToAgent yes
           '';
+        };
+        home.file = {
+          ".ssh/id_rsa.pub".text = config.identity.secrets.ssh.publicKey;
         };
       };
     })

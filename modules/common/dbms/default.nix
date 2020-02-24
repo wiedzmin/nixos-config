@@ -37,6 +37,11 @@ in {
         default = false;
         description = "Whether to enable job dbms connectivity.";
       };
+      jobDbms.meta = mkOption {
+        type = types.attrsOf types.attrs;
+        default = {};
+        description = "Job dbms metadata.";
+      };
       xmonad.enable = mkOption {
         type = types.bool;
         default = false;
@@ -85,8 +90,8 @@ in {
             (pkgs.substituteAll
                 ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dbms.py; })));
       };
-      custom.dev.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set job/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.infra.dbmsMeta)}
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set job/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.jobDbms.meta)}
       '';
       wm.xmonad.keybindings = {
         "M-C-y" = ''spawn "${pkgs.dbms}/bin/dbms" >> showWSOnProperScreen "shell"'';

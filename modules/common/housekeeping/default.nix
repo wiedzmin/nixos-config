@@ -71,10 +71,20 @@ in {
         default = false;
         description = "Whether to enable FS deduplication tools.";
       };
+      metadataCacheInstructions = mkOption {
+        type = types.lines;
+        default = '''';
+        description = ''Set of commands needed to initialize system-wide data cache.'';
+      };
     };
   };
 
   config = mkMerge [
+    (mkIf (cfg.enable) {
+      services.redis.enable = true; # for various caching needs
+
+      systemd.services.redis.postStart = cfg.metadataCacheInstructions;
+    })
     (mkIf (cfg.enable && cfg.cleanTrash.enable) {
       assertions = [
         {

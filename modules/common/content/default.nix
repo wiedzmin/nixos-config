@@ -74,6 +74,41 @@ in {
       };
       services.clipmenu.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
+        home.file = {
+          ".mpv/config".text = ''
+            hwdec=vdpau
+            hwdec-codecs=all
+
+            vo=gpu,xv
+            ao=pulse
+
+            af=scaletempo
+            audio-samplerate=48000
+
+            slang = en
+            alang = en,eng,us
+
+            volume-max=200
+
+            cache = yes
+            cache-on-disk = yes
+            cache-pause-initial = yes
+            cache-pause-wait = 10
+
+            # Always use 1080p+ or 60 fps where available. Prefer VP9
+            # over AVC and VP8 for high-resolution streams.
+            ytdl=yes
+            ytdl-format=(bestvideo[ext=webm]/bestvideo[height>720]/bestvideo[fps=60])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio)/best
+          '';
+        } // lib.optionalAttrs (config.custom.shell.enable) {
+          "tmuxp/media.yml".text = ''
+            session_name: media
+            windows:
+              - window_name: mps-youtube
+                panes:
+                  - ${pkgs.python3Packages.mps-youtube}/bin/mpsyt
+          '';
+        };
         home.packages = with pkgs; [
           android-file-transfer
           aria2

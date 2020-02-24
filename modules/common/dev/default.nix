@@ -6,6 +6,16 @@ let
 in {
   options = {
     custom.dev = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable custom development infrastructure.";
+      };
+      globalWorkspaceRoot = mkOption {
+        type = types.str;
+        default = "";
+        description = "Main workspace root.";
+      };
       playground.enable = mkOption {
         type = types.bool;
         default = false;
@@ -61,11 +71,6 @@ in {
         default = false;
         description = ''Whether to enable XMonad keybindings.'';
       };
-      metadataCacheInstructions = mkOption {
-        type = types.lines;
-        default = '''';
-        description = ''Set of commands needed to initialize develepment data cache.'';
-      };
       pythonLib = mkOption {
         type = types.lines;
         default = builtins.readFile ./pythonlib.py;
@@ -107,10 +112,10 @@ in {
         ];
         programs = {
           zsh.sessionVariables = {
-            CSEARCHINDEX = "${config.secrets.dev.workspaceRoot}/.csearchindex";
+            CSEARCHINDEX = "${cfg.globalWorkspaceRoot}/.csearchindex";
           };
           bash.sessionVariables = {
-            CSEARCHINDEX = "${config.secrets.dev.workspaceRoot}/.csearchindex";
+            CSEARCHINDEX = "${cfg.globalWorkspaceRoot}/.csearchindex";
           };
         };
       };
@@ -121,9 +126,9 @@ in {
         serviceConfig = {
           Type = "oneshot";
           Environment = [
-            "CSEARCHINDEX=${config.secrets.dev.workspaceRoot}/.csearchindex"
+            "CSEARCHINDEX=${cfg.globalWorkspaceRoot}/.csearchindex"
           ];
-          ExecStart = "${pkgs.codesearch}/bin/cindex ${config.secrets.dev.workspaceRoot}";
+          ExecStart = "${pkgs.codesearch}/bin/cindex ${cfg.globalWorkspaceRoot}";
           StandardOutput = "journal+console";
           StandardError = "inherit";
         };
@@ -209,6 +214,60 @@ in {
     })
     (mkIf cfg.misc.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
+        home.file = {
+          "workspace/.editorconfig".text = ''
+            # top-most EditorConfig file
+            root = true
+
+            # Unix-style newlines with a newline ending every file
+            [*]
+            end_of_line = lf
+            insert_final_newline = true
+            indent_style = space
+            charset = utf-8
+            trim_trailing_whitespace = true
+
+            # Matches multiple files with brace expansion notation
+            # Set default charset
+            [*.{js,py,go}]
+            charset = utf-8
+
+            # 4 space indentation
+            [*.py]
+            indent_style = space
+            indent_size = 4
+
+            # Tab indentation (no size specified)
+            [Makefile]
+            indent_style = tab
+
+            # Indentation override for all JS under lib directory
+            [lib/**.js]
+            indent_style = space
+            indent_size = 2
+
+            # Matches the exact files either package.json or .travis.yml
+            [{package.json,.travis.yml}]
+            indent_style = space
+            indent_size = 2
+
+            [*.{json,yml}]
+            indent_style = space
+            indent_size = 2
+
+            [*.md]
+            trim_trailing_whitespace = false
+          '';
+        } // lib.optionalAttrs (config.custom.shell.enable) {
+          "tmuxp/dev.yml".text = ''
+            session_name: dev
+            windows:
+              - window_name: mc
+                start_directory: ${config.custom.dev.globalWorkspaceRoot}/github.com/wiedzmin
+                panes:
+                  - mc
+          '';
+        };
         home.packages = with pkgs; [
           icdiff
           ix
@@ -226,7 +285,6 @@ in {
           enableZshIntegration = true;
         };
       };
-      systemd.services.redis.postStart = cfg.metadataCacheInstructions;
       systemd.user.services."lorri-fixed" = { # one from nixpkgs fails to socket-start for some reason
         description = "Start Lorri daemon";
         path = with pkgs; [ config.nix.package gnutar gzip ];
@@ -246,6 +304,18 @@ in {
     })
     (mkIf cfg.emacs.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
+        xdg.configFile."TabNine/TabNine.toml".source = (pkgs.runCommand "TabNine.toml" {
+          buildInputs = [ pkgs.remarshal ];
+          preferLocalBuild = true;
+        } ''
+          remarshal -if json -of toml \
+            < ${pkgs.writeText "TabNine.json" (builtins.toJSON {
+              language.python = {
+                command = "mspyls";
+              };
+          })} \
+            > $out
+        '');
         programs.emacs.extraPackages = epkgs: [
           epkgs.company-restclient
           epkgs.company-tabnine

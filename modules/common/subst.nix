@@ -25,7 +25,7 @@ rec {
   defaultTextProcessor = config.attributes.defaultCommands.textProcessor;
   deftPath = "/home/${config.attributes.mainUser.name}/docs/deft";
   dejsonlz4Binary = "${pkgs.dejsonlz4}/bin/dejsonlz4";
-  devWorkspaceRoot = config.secrets.dev.workspaceRoot;
+  devWorkspaceRoot = config.custom.dev.globalWorkspaceRoot;
   diffBinary = "${pkgs.diffutils}/bin/diff";
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
   dmenuBinary = "${pkgs.dmenu}/bin/dmenu";
@@ -54,10 +54,10 @@ rec {
   grepBinary = "${pkgs.gnugrep}/bin/grep";
   iwgetidBinary = "${pkgs.wirelesstools}/bin/iwgetid";
   ixBinary = "${pkgs.ix}/bin/ix";
-  jobInfraLogsHost = config.secrets.job.infra.logsHost;
-  jobInfraRemoteDockerLogsRoot = config.secrets.job.infra.remoteDockerLogsRoot;
-  jobInfraSwarmLeader = config.secrets.job.infra.swarmLeader;
-  jobWorkspaceRoot = config.secrets.job.workspaceRoot;
+  jobInfraLogsHost = config.job."b354e944b3".secrets.infra.logsHost;
+  jobInfraRemoteDockerLogsRoot = config.job."b354e944b3".secrets.infra.remoteDockerLogsRoot;
+  jobInfraSwarmLeader = config.job."b354e944b3".secrets.infra.swarmLeader;
+  jobWorkspaceRoot = config.job."b354e944b3".secrets.workspaceRoot;
   jqBinary = "${pkgs.jq}/bin/jq";
   lspPythonMsExtraPaths = builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
   maimBinary = "${pkgs.maim}/bin/maim";

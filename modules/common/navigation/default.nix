@@ -14,6 +14,26 @@ in {
           Whether to enable navigation infra.
         '';
       };
+      webjumps.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable webjumps.";
+      };
+      webjumps.entries = mkOption {
+        type = types.attrs;
+        default = {};
+        description = "Webjumps entries.";
+      };
+      searchengines.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable searchengines.";
+      };
+      searchengines.entries = mkOption {
+        type = types.attrs;
+        default = {};
+        description = "Searchengines entries.";
+      };
       gmrun.enable = mkOption {
         type = types.bool;
         default = false;
@@ -106,14 +126,29 @@ in {
           j4-dmenu-desktop
         ];
       };
+    })
+    (mkIf (cfg.enable && cfg.webjumps.enable) {
+      assertions = [
+        {
+          assertion = cfg.webjumps.enable && cfg.webjumps.entries != {};
+          message = "navigation: no webjumps to follow but they are enabled.";
+        }
+      ];
 
-      custom.dev.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set job/extra_hosts ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.infra.extraHosts)}
-        ${pkgs.redis}/bin/redis-cli set job/command_choices ${lib.strings.escapeNixString (builtins.toJSON config.attributes.dev.remoteCommands)}
-        ${pkgs.redis}/bin/redis-cli set job/webjumps ${lib.strings.escapeNixString (builtins.toJSON config.secrets.job.webjumps)}
-        ${pkgs.redis}/bin/redis-cli set nav/searchengines ${lib.strings.escapeNixString (builtins.toJSON config.secrets.nav.searchEngines)}
-        ${pkgs.redis}/bin/redis-cli set nav/webjumps ${lib.strings.escapeNixString (builtins.toJSON config.secrets.nav.webjumps)}
-        ${pkgs.redis}/bin/redis-cli set misc/snippets ${lib.strings.escapeNixString (builtins.toJSON config.secrets.misc.snippetsInventory)}
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set nav/webjumps ${lib.strings.escapeNixString (builtins.toJSON cfg.webjumps)}
+      '';
+    })
+    (mkIf (cfg.enable && cfg.searchengines.enable) {
+      assertions = [
+        {
+          assertion = cfg.searchengines.enable && cfg.searchengines.entries != {};
+          message = "navigation: no searchengines to follow but they are enabled.";
+        }
+      ];
+
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set nav/searchengines ${lib.strings.escapeNixString (builtins.toJSON cfg.searchEngines)}
       '';
     })
     (mkIf (cfg.enable && cfg.gmrun.enable) {

@@ -49,11 +49,6 @@ in {
         default = false;
         description = "Whether to enable delta pager.";
       };
-      workspaceRoot = mkOption {
-        type = types.str;
-        default = "";
-        description = "Root directory for all repositories.";
-      };
       signing.enable = mkOption {
         type = types.bool;
         default = true;
@@ -303,7 +298,7 @@ in {
     (mkIf (cfg.enable && cfg.ghq.enable) {
       assertions = [
         {
-          assertion = cfg.workspaceRoot != "";
+          assertion = config.custom.dev.globalWorkspaceRoot != "";
           message = "git: Must provide workspace root directory for ghq tool.";
         }
       ];
@@ -318,7 +313,7 @@ in {
           pgg = "${pkgs.pueue}/bin/pueue add -- ${pkgs.gitAndTools.ghq}/bin/ghq get";
         };
         programs.git.extraConfig = {
-          "ghq" = { root = cfg.workspaceRoot; };
+          "ghq" = { root = config.custom.dev.globalWorkspaceRoot; };
         };
       };
     })
@@ -326,7 +321,7 @@ in {
       # FIXME: provide recursive permissions setting
       environment.etc."nixos/.gitattributes".text = ''
         *.gpg filter=gpg diff=gpg
-        **/secrets/* filter=git-crypt diff=git-crypt
+        **/secrets/** filter=git-crypt diff=git-crypt
       '';
       environment.etc."nixos/${cfg.hooks.dirName}/pre-push/stop-wip" = {
         mode = "0644";

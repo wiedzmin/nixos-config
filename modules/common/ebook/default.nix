@@ -44,6 +44,14 @@ in {
               ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./bookshelf.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
+        home.file = {
+          ".local/share/applications/defaults.list" = {
+            text = ''
+              [Default Applications]
+              application/pdf=zathura.desktop
+            '';
+          };
+        };
         home.packages = with pkgs; [
           calibre
           djview
