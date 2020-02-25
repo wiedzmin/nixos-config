@@ -17,6 +17,30 @@ in {
         default = "$HOME/warnings.org";
         description = "Org-mode file to place accidental deletes diff.";
       };
+      scheduling.enable = mkOption {
+        type = types.bool;
+        description = ''
+          Whether to enable scheduled tasks, such as opening browser with links,
+          starting applications or so.
+        '';
+        default = false;
+      };
+      scheduling.entries = mkOption {
+        type = types.attrs;
+        example = {
+          "read_mail" = {
+              cal = "Mon,Tue *-*-01..04 12:00:00";
+              cmd = "${config.attributes.defaultCommands.browser} https://mail.google.com";
+          };
+        };
+        default = {};
+        description = ''
+          Scheduled task entries.
+
+          Timestamp for task issuing should be presented in systemd timers' OnCalendar entries format.
+          Task definition is simple a shell command line to execute.
+        '';
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -138,6 +162,25 @@ in {
           tt_capture
         ];
       };
+    })
+    (mkIf (cfg.enable && cfg.scheduling.enable) {
+      systemd.user.services = lib.mapAttrs (name: meta: {
+        description = "${name}";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
+          ExecStart = "${meta.cmd}";
+          StandardOutput = "journal+console";
+          StandardError = "inherit";
+        };
+      }) cfg.scheduling.entries;
+      systemd.user.timers = lib.mapAttrs (name: meta: {
+        description = "${name}";
+        wantedBy = [ "timers.target" ];
+        timerConfig = {
+          OnCalendar = meta.cal;
+        };
+      }) cfg.scheduling.entries;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
