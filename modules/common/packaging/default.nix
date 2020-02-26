@@ -1,13 +1,11 @@
 let
   deps = import ../../../nix/sources.nix;
   nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
-in
-{ config, lib, pkgs, ... }:
+in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  cfg = config.custom.packaging;
+let cfg = config.custom.packaging;
 in {
   options = {
     custom.packaging = {
@@ -90,24 +88,17 @@ in {
         oraclejdk.accept_license = true;
 
         packageOverrides = _: rec {
-          format-config = pkgs.writeScriptBin "format-config"
-            (builtins.readFile
-              (pkgs.substituteAll
-                ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./format-config.sh; })));
-          get-pr-override = pkgs.writeScriptBin "get-pr-override"
-            (builtins.readFile
-              (pkgs.substituteAll
-                ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./get-pr-override.sh; })));
-          make-package-diff = pkgs.writeScriptBin "make-package-diff"
-            (builtins.readFile
-              (pkgs.substituteAll
-                ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./make-package-diff.sh; })));
+          format-config = pkgs.writeScriptBin "format-config" (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./format-config.sh; })));
+          get-pr-override = pkgs.writeScriptBin "get-pr-override" (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./get-pr-override.sh; })));
+          make-package-diff = pkgs.writeScriptBin "make-package-diff" (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./make-package-diff.sh; })));
           confctl = writePythonScriptWithPythonPackages "confctl" [
             pkgs.python3Packages.dmenu-python
             pkgs.python3Packages.python-gnupg
           ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./confctl.py; })));
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./confctl.py; })));
         };
       };
     })
@@ -116,34 +107,20 @@ in {
     })
     (mkIf (cfg.enable && cfg.nix.helpers.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          nix-prefetch
-          nix-prefetch-github
-          nix-prefetch-scripts
-          nixos-generators
-        ];
+        home.packages = with pkgs; [ nix-prefetch nix-prefetch-github nix-prefetch-scripts nixos-generators ];
       };
     })
     (mkIf (cfg.enable && cfg.nix.srcfmt.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          nixfmt
-        ];
-      };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ nixfmt ]; };
     })
     (mkIf (cfg.enable && cfg.nix.importers.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          nodePackages.node2nix
-          pypi2nix
-        ];
+        home.packages = with pkgs; [ nodePackages.node2nix pypi2nix ];
       };
     })
     (mkIf (cfg.enable && cfg.nix.search.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.zsh.shellAliases = {
-          nlo = "${pkgs.nix-index}/bin/nix-locate --";
-        };
+        programs.zsh.shellAliases = { nlo = "${pkgs.nix-index}/bin/nix-locate --"; };
       };
       systemd.user.services."nix-update-index" = {
         description = "Update nix packages metadata index";
@@ -165,33 +142,24 @@ in {
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          nixpkgs-pinned-05_12_19.cachix
-          dotnet-sdk # for building some binary releases
-          nix-zsh-completions
-          nix-review # https://github.com/Mic92/nix-review
-          make-package-diff
-        ] ++ lib.optionals (cfg.staging.enable) [
-          niv
-          nix-linter
-        ];
+        home.packages = with pkgs;
+          [
+            nixpkgs-pinned-05_12_19.cachix
+            dotnet-sdk # for building some binary releases
+            nix-zsh-completions
+            nix-review # https://github.com/Mic92/nix-review
+            make-package-diff
+          ] ++ lib.optionals (cfg.staging.enable) [ niv nix-linter ];
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          get-pr-override
-          confctl
-          format-config
-        ];
+        home.packages = with pkgs; [ get-pr-override confctl format-config ];
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.company-nixos-options
-          epkgs.nix-mode
-        ];
+        programs.emacs.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./packaging.el; }));

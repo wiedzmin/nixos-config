@@ -1,12 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let
-  cfg = config.themes.fonts.source-code-pro;
+let cfg = config.themes.fonts.source-code-pro;
 in {
-  options.themes.fonts.source-code-pro = {
-    enable = mkEnableOption "source-code-pro";
-  };
+  options.themes.fonts.source-code-pro = { enable = mkEnableOption "source-code-pro"; };
 
   config = mkIf cfg.enable {
     fonts = {

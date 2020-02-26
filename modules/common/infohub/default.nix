@@ -2,8 +2,7 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  cfg = config.custom.system;
+let cfg = config.custom.system;
 in {
   options = {
     custom.system = {
@@ -31,12 +30,9 @@ in {
           pkgs.python3Packages.redis
           pkgs.python3Packages.xlib
         ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./srvctl.py; })));
-        uptime_info = pkgs.writeScriptBin "uptime_info"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./uptime_info.sh; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./srvctl.py; })));
+        uptime_info = pkgs.writeScriptBin "uptime_info" (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./uptime_info.sh; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         services.udiskie = {
@@ -47,17 +43,7 @@ in {
         };
         programs.htop = {
           enable = true;
-          fields = [
-            "USER"
-            "PRIORITY"
-            "NICE"
-            "M_SIZE"
-            "STATE"
-            "PERCENT_CPU"
-            "PERCENT_MEM"
-            "TIME"
-            "COMM"
-          ];
+          fields = [ "USER" "PRIORITY" "NICE" "M_SIZE" "STATE" "PERCENT_CPU" "PERCENT_MEM" "TIME" "COMM" ];
           meters.left = [ "AllCPUs" "Memory" ];
           colorScheme = 0;
           detailedCpuTime = true;
@@ -130,14 +116,12 @@ in {
         };
         # without it we may not be able to see new or unsee removed services
         home.activation.removeServicesFromRedis = {
-          after = ["linkGeneration"];
-          before = [];
+          after = [ "linkGeneration" ];
+          before = [ ];
           data = "${pkgs.redis}/bin/redis-cli del system/services";
         };
       };
-      environment.systemPackages = with pkgs; [
-        srvctl
-      ];
+      environment.systemPackages = with pkgs; [ srvctl ];
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {

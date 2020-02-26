@@ -1,7 +1,1 @@
-{ ... }: {
-  imports = [
-    ./attributes.nix
-    ./common
-    ./themes
-  ];
-}
+{ ... }: { imports = [ ./attributes.nix ./common ./themes ]; }

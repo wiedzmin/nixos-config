@@ -1,19 +1,12 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let
-    cfg = config.themes.fonts.iosevka;
+let cfg = config.themes.fonts.iosevka;
 in {
-  options.themes.fonts.iosevka = {
-    enable = mkEnableOption "iosevka";
-  };
+  options.themes.fonts.iosevka = { enable = mkEnableOption "iosevka"; };
 
   config = mkIf cfg.enable {
-    fonts = {
-      fonts = with pkgs; [
-        iosevka
-      ];
-    };
+    fonts = { fonts = with pkgs; [ iosevka ]; };
     wm.xmonad.font = "xft:Iosevka:style=Bold:pixelsize=10";
     attributes.fonts.xmobar = "xft:Iosevka:weight=Bold:size=10";
     attributes.fonts.dmenu = "xft:IosevkaCC:style=Bold:pixelsize=12";

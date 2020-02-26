@@ -140,27 +140,27 @@ in {
       };
       imapfilter.byFrom = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = "Rules to relocate mail by matching message's `From` field.";
       };
       imapfilter.byTo = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = "Rules to relocate mail by matching message's `To` field.";
       };
       imapfilter.byCc = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = "Rules to relocate mail by matching message's `Cc` field.";
       };
       imapfilter.bySubject = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = "Rules to relocate mail by matching message's `Subject` field.";
       };
       imapfilter.deleteByFrom = mkOption {
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
         description = "Rules to delete mail by matching message's `From` field.";
       };
     };
@@ -186,9 +186,7 @@ in {
       }];
 
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          gmvault
-        ];
+        home.packages = with pkgs; [ gmvault ];
         accounts.email = {
           accounts."${cfg.defaultAccountName}" = {
             address = cfg.emailAddress;
@@ -304,36 +302,26 @@ in {
     })
     (mkIf (cfg.enable && cfg.notmuch.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        accounts.email = {
-          accounts."${cfg.defaultAccountName}" = {
-            notmuch.enable = true;
-          };
-        };
+        accounts.email = { accounts."${cfg.defaultAccountName}" = { notmuch.enable = true; }; };
         programs.notmuch.enable = true;
       };
     })
     (mkIf (cfg.enable && cfg.msmtp.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        accounts.email = {
-          accounts."${cfg.defaultAccountName}" = {
-            msmtp.enable = true;
-          };
-        };
+        accounts.email = { accounts."${cfg.defaultAccountName}" = { msmtp.enable = true; }; };
         programs.msmtp.enable = true;
       };
     })
     (mkIf (cfg.enable && cfg.mbsync.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        accounts.email = {
-          accounts."${cfg.defaultAccountName}" = {
-            mbsync.enable = true;
-          };
-        };
+        accounts.email = { accounts."${cfg.defaultAccountName}" = { mbsync.enable = true; }; };
         programs.mbsync = {
           enable = true;
           extraConfig = ''
             MaildirStore ${cfg.defaultAccountName}-archive
-            Path ${config.home-manager.users."${config.attributes.mainUser.name}".accounts.email.maildirBasePath}/archive-${cfg.defaultAccountName}/
+            Path ${
+              config.home-manager.users."${config.attributes.mainUser.name}".accounts.email.maildirBasePath
+            }/archive-${cfg.defaultAccountName}/
 
             Channel ${cfg.defaultAccountName}-archive
             Master ":${cfg.defaultAccountName}-remote:[Gmail]/All Mail"

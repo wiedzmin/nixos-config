@@ -1,8 +1,7 @@
 let
   deps = import ../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19  = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
-in
-{ config, lib, pkgs, ... }:
+  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+in { config, lib, pkgs, ... }:
 
 rec {
   autorandrBinary = "${pkgs.autorandr}/bin/autorandr";
@@ -39,12 +38,14 @@ rec {
   emacsclientBinary = "${pkgs.emacs}/bin/emacsclient";
   fdBinary = "${pkgs.fd}/bin/fd";
   firefoxBinary = "${pkgs.firefox-unwrapped}/bin/firefox";
-  firefoxProfilePath = config.home-manager.users."${config.attributes.mainUser.name}".programs.firefox.profiles.default.path;
+  firefoxProfilePath =
+    config.home-manager.users."${config.attributes.mainUser.name}".programs.firefox.profiles.default.path;
   firefoxSessionsHistoryLength = builtins.toString config.custom.browsers.sessions.firefox.historyLength;
   firefoxSessionsNameTemplate = config.custom.browsers.sessions.firefox.nameTemplate;
   firefoxSessionsPath = config.custom.browsers.sessions.firefox.path;
   firefoxSessionsSizeThreshold = builtins.toString config.custom.browsers.sessions.sizeThreshold;
-  firefoxSessionstorePath = "/home/${config.attributes.mainUser.name}/.mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
+  firefoxSessionstorePath =
+    "/home/${config.attributes.mainUser.name}/.mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
   gitBinary = "${pkgs.git}/bin/git";
   gitHooksDirname = config.custom.dev.git.hooks.dirName;
   gitHooksShortCircuitPatch = if config.custom.dev.git.hooks.shortCircuit then "return $exitcode" else "";
@@ -59,7 +60,8 @@ rec {
   jobInfraSwarmLeader = config.job."b354e944b3".secrets.infra.swarmLeader;
   jobWorkspaceRoot = config.job."b354e944b3".secrets.workspaceRoot;
   jqBinary = "${pkgs.jq}/bin/jq";
-  lspPythonMsExtraPaths = builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
+  lspPythonMsExtraPaths =
+    builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
   maimBinary = "${pkgs.maim}/bin/maim";
   mktempBinary = "${pkgs.coreutils}/bin/mktemp";
   mvBinary = "${pkgs.coreutils}/bin/mv";

@@ -111,10 +111,7 @@ with lib;
     dev.remoteCommands = mkOption {
       description = "Predefined commands list to execute remotely. Note that those must be present on ssh target.";
       type = types.listOf types.str;
-      default = [
-        "ctop"
-        "jnettop"
-      ];
+      default = [ "ctop" "jnettop" ];
     };
     security.passwordStorePath = mkOption {
       description = "Default path to Pass password store";
@@ -134,17 +131,17 @@ with lib;
     hardware.monitors = {
       internalHead = {
         name = mkOption {
-          type = types.str ;
+          type = types.str;
           default = "";
           description = "Internal laptop head name";
         };
         edid = mkOption {
-          type = types.str ;
+          type = types.str;
           default = "";
           description = "Internal laptop head EDID value";
         };
         resolution = mkOption {
-          type = types.str ;
+          type = types.str;
           default = "";
           description = "Internal laptop head resolution";
         };

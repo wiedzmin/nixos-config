@@ -1,9 +1,8 @@
 { config, pkgs, lib, ... }:
 let
   deps = import ../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19  = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
-in
-{
+  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+in {
   imports = [
     ../../nix/setup.nix
     "${deps.home-manager}/nixos"
@@ -77,13 +76,7 @@ in
     networkmanager = {
       enable = true;
       enableStrongSwan = true;
-      unmanaged = [
-        "br0"
-        "interface-name:vb-*"
-        "interface-name:vbox*"
-        "interface-name:ve-*"
-        "lo"
-      ];
+      unmanaged = [ "br0" "interface-name:vb-*" "interface-name:vbox*" "interface-name:ve-*" "lo" ];
     };
     wireless = {
       enable = false;
@@ -91,7 +84,7 @@ in
       userControlled.enable = true;
       interfaces = [ "wlan0" ];
     };
-    dhcpcd.denyInterfaces = [ "docker*" "virbr*" "br*"];
+    dhcpcd.denyInterfaces = [ "docker*" "virbr*" "br*" ];
     nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
   };
 
@@ -152,7 +145,8 @@ in
 
   attributes.hardware.monitors = {
     internalHead.name = "LVDS-1";
-    internalHead.edid = "00ffffffffffff0030e4d8020000000000160103801c1078ea8855995b558f261d505400000001010101010101010101010101010101601d56d85000183030404700159c1000001b000000000000000000000000000000000000000000fe004c4720446973706c61790a2020000000fe004c503132355748322d534c42330059";
+    internalHead.edid =
+      "00ffffffffffff0030e4d8020000000000160103801c1078ea8855995b558f261d505400000001010101010101010101010101010101601d56d85000183030404700159c1000001b000000000000000000000000000000000000000000fe004c4720446973706c61790a2020000000fe004c503132355748322d534c42330059";
     internalHead.resolution = "1366x768";
   };
 
@@ -261,13 +255,13 @@ in
         DefaultPluginsSetting = 2; # Block the Flash plugin
         DefaultSearchProviderEnabled = true;
         DefaultSearchProviderSearchURL = "https://duckduckgo.com/"
-                                         + "?kae=d&k1=-1&kc=1&kav=1&kd=-1&kh=1&q={searchTerms}";
+          + "?kae=d&k1=-1&kc=1&kav=1&kd=-1&kh=1&q={searchTerms}";
         EnableMediaRouter = false;
         MetricsReportingEnabled = false;
         PasswordManagerEnabled = false;
         PromotionalTabsEnabled = false;
         SSLErrorOverrideAllowed = false;
-        SafeBrowsingEnabled  = false;
+        SafeBrowsingEnabled = false;
         SearchSuggestEnabled = false;
         SigninAllowed = false;
         SpellCheckServiceEnabled = false;
@@ -290,9 +284,7 @@ in
     };
     warmup = {
       enable = true;
-      paths = [
-        "/home/${config.attributes.mainUser.name}/.mozilla"
-      ];
+      paths = [ "/home/${config.attributes.mainUser.name}/.mozilla" ];
     };
     xmonad.enable = true;
   };
@@ -312,9 +304,7 @@ in
     enable = true;
     pager.delta.enable = true;
     myrepos.enable = false; # temporarily
-    myrepos.subconfigs = [
-      "${config.custom.dev.globalWorkspaceRoot}/.mrconfig"
-    ];
+    myrepos.subconfigs = [ "${config.custom.dev.globalWorkspaceRoot}/.mrconfig" ];
     ghq = { enable = true; };
     github = {
       enable = true;
@@ -381,9 +371,7 @@ in
     enable = true;
     pulse = {
       enable = true;
-      daemonConfig = {
-        flat-volumes = "no";
-      };
+      daemonConfig = { flat-volumes = "no"; };
     };
     xmonad.enable = true;
   };
@@ -441,9 +429,7 @@ in
         consumptionDir = "/home/${config.attributes.mainUser.name}/docs/paperless/consume";
         dataDir = "/home/${config.attributes.mainUser.name}/docs/paperless/data";
         user = config.attributes.mainUser.name;
-        extraConfig = {
-          PAPERLESS_FORGIVING_OCR = true;
-        };
+        extraConfig = { PAPERLESS_FORGIVING_OCR = true; };
         group = "users";
       };
     };

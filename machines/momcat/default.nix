@@ -1,8 +1,6 @@
 { config, pkgs, lib, ... }:
-let
-  deps = import ../../nix/sources.nix;
-in
-{
+let deps = import ../../nix/sources.nix;
+in {
   imports = [
     ../../nix/setup.nix
     "${deps.home-manager}/nixos"
@@ -33,9 +31,7 @@ in
     sensor.iio.enable = true;
   };
 
-  custom.power-management = {
-    enable = true;
-  };
+  custom.power-management = { enable = true; };
 
   boot = {
     loader.grub = {
@@ -54,7 +50,7 @@ in
     kernelPackages = pkgs.linuxPackages_4_19;
     kernelParams =
       [ "scsi_mod.use_blk_mq=1" "pti=off" "nospectre_v1" "nospectre_v2" "l1tf=off" "nospec_store_bypass_disable" ];
-    kernelModules = [ "bfq"  "thinkpad_acpi" "thinkpad_hwmon" ];
+    kernelModules = [ "bfq" "thinkpad_acpi" "thinkpad_hwmon" ];
     kernel.sysctl = {
       "fs.inotify.max_user_instances" = 1024;
       "fs.inotify.max_user_watches" = 1048576;
@@ -188,10 +184,8 @@ in
   media = {
     enable = true;
     pulse = {
-        enable = true;
-        daemonConfig = {
-          flat-volumes = "no";
-        };
+      enable = true;
+      daemonConfig = { flat-volumes = "no"; };
     };
     opengl.enable = true;
   };
@@ -250,8 +244,6 @@ in
         xrender-sync-fence = true;
       '';
     };
-    home.packages = with pkgs; [
-      anydesk
-    ];
+    home.packages = with pkgs; [ anydesk ];
   };
 }

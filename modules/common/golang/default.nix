@@ -17,7 +17,7 @@ in {
       };
       privateModules = mkOption {
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
         description = "Glob patterns of Go modules to consider private (e.g. GOPRIVATE contents).";
       };
       packaging.enable = mkOption {
@@ -40,12 +40,10 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      assertions = [
-        {
-          assertion = (cfg.goPath != "" && builtins.pathExists cfg.goPath);
-          message = "dev/golang: cannot proceed without valid $GOPATH value.";
-        }
-      ];
+      assertions = [{
+        assertion = (cfg.goPath != "" && builtins.pathExists cfg.goPath);
+        message = "dev/golang: cannot proceed without valid $GOPATH value.";
+      }];
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
@@ -57,18 +55,14 @@ in {
         ];
         programs.zsh.sessionVariables = {
           GOPATH = cfg.goPath;
-        } // lib.optionalAttrs (cfg.privateModules != []) {
+        } // lib.optionalAttrs (cfg.privateModules != [ ]) {
           GOPRIVATE = builtins.concatStringsSep "," cfg.privateModules;
         };
       };
     })
     (mkIf (cfg.enable && cfg.packaging.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          dep2nix
-          go2nix
-          vgo2nix
-        ];
+        home.packages = with pkgs; [ dep2nix go2nix vgo2nix ];
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
@@ -82,30 +76,30 @@ in {
         ];
         home.file = {
           "${cfg.packaging.path}/default.nix".text = ''
-              with import <nixpkgs> {};
+            with import <nixpkgs> {};
 
-              stdenv.mkDerivation {
-                  name = "go-generate-nix";
-                  buildInputs = with pkgs; [
-                      go
-                      git
-                      go2nix
-                  ];
-                  src = null;
-                  shellHook = '''
-                      export GOPATH=`pwd`
-                      echo "====================================="
-                      echo " 1) go get <github.com/user/repo>    "
-                      echo "                                     "
-                      echo " 2) cd src/<github.com/user/repo>    "
-                      echo "                                     "
-                      echo " 3) go get                           "
-                      echo " 3') go build                        "
-                      echo "                                     "
-                      echo " 3) go2nix save                      "
-                      echo "====================================="
-                  ''';
-              }
+            stdenv.mkDerivation {
+                name = "go-generate-nix";
+                buildInputs = with pkgs; [
+                    go
+                    git
+                    go2nix
+                ];
+                src = null;
+                shellHook = '''
+                    export GOPATH=`pwd`
+                    echo "====================================="
+                    echo " 1) go get <github.com/user/repo>    "
+                    echo "                                     "
+                    echo " 2) cd src/<github.com/user/repo>    "
+                    echo "                                     "
+                    echo " 3) go get                           "
+                    echo " 3') go build                        "
+                    echo "                                     "
+                    echo " 3) go2nix save                      "
+                    echo "====================================="
+                ''';
+            }
           '';
         };
       };

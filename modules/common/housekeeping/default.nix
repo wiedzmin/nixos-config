@@ -1,8 +1,7 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let
-  cfg = config.custom.housekeeping;
+let cfg = config.custom.housekeeping;
 in {
   options = {
     custom.housekeeping = {
@@ -73,8 +72,8 @@ in {
       };
       metadataCacheInstructions = mkOption {
         type = types.lines;
-        default = '''';
-        description = ''Set of commands needed to initialize system-wide data cache.'';
+        default = "";
+        description = "Set of commands needed to initialize system-wide data cache.";
       };
     };
   };
@@ -109,9 +108,7 @@ in {
       systemd.user.timers."clean-trash" = {
         description = "Clean trash";
         wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = cfg.cleanTrash.calendarTimespec;
-        };
+        timerConfig = { OnCalendar = cfg.cleanTrash.calendarTimespec; };
       };
     })
     (mkIf (cfg.enable && cfg.purgeExpired.enable) {
@@ -137,9 +134,7 @@ in {
       systemd.user.timers."purge-home-cache" = {
         description = "Purge homedir cache";
         wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = cfg.purgeExpired.calendarTimespec;
-        };
+        timerConfig = { OnCalendar = cfg.purgeExpired.calendarTimespec; };
       };
       systemd.user.services."purge-temp-files" = {
         description = "Purge temporary files";
@@ -159,24 +154,18 @@ in {
       systemd.user.timers."purge-temp-files" = {
         description = "Purge temporary files";
         wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = cfg.purgeExpired.calendarTimespec;
-        };
+        timerConfig = { OnCalendar = cfg.purgeExpired.calendarTimespec; };
       };
     })
     (mkIf (cfg.enable && cfg.orderScreenshots.enable) {
-      assertions = [
-        {
-          assertion = (cfg.orderScreenshots.enable && config.custom.content.screenshots.enable);
-          message = "housekeeping: it makes no sense to order screenshot without enabling making them first.";
-        }
-      ];
+      assertions = [{
+        assertion = (cfg.orderScreenshots.enable && config.custom.content.screenshots.enable);
+        message = "housekeeping: it makes no sense to order screenshot without enabling making them first.";
+      }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        order_screenshots = pkgs.writeShellScriptBin "order_screenshots"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./order_screenshots.sh; })));
+        order_screenshots = pkgs.writeShellScriptBin "order_screenshots" (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./order_screenshots.sh; })));
       };
 
       systemd.user.services."order-screenshots" = {
@@ -193,19 +182,12 @@ in {
       systemd.user.timers."order-screenshots" = {
         description = "Screenshots ordering";
         wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = cfg.orderScreenshots.calendarTimespec;
-        };
+        timerConfig = { OnCalendar = cfg.orderScreenshots.calendarTimespec; };
       };
     })
     (mkIf cfg.fsDeduplication.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          dupd
-          jdupes
-          rmlint
-          fpart
-        ];
+        home.packages = with pkgs; [ dupd jdupes rmlint fpart ];
       };
     })
   ];

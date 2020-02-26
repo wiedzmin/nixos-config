@@ -1,14 +1,12 @@
 let
-    deps = import ../../../nix/sources.nix;
-    nixpkgs-pinned-02_08_19  = import deps.nixpkgs-pinned-02_08_19 { config.allowUnfree = true; };
-    nixpkgs-pinned-05_12_19  = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
-in
-{ config, lib, pkgs, ... }:
+  deps = import ../../../nix/sources.nix;
+  nixpkgs-pinned-02_08_19 = import deps.nixpkgs-pinned-02_08_19 { config.allowUnfree = true; };
+  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  cfg = config.tools.dbms;
+let cfg = config.tools.dbms;
 in {
   options = {
     tools.dbms = {
@@ -39,7 +37,7 @@ in {
       };
       jobDbms.meta = mkOption {
         type = types.attrsOf types.attrs;
-        default = {};
+        default = { };
         description = "Job dbms metadata.";
       };
       xmonad.enable = mkOption {
@@ -53,17 +51,12 @@ in {
   config = mkMerge [
     (mkIf cfg.postgresql.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          pgcenter
-          nixpkgs-pinned-05_12_19.pgcli
-        ];
+        home.packages = with pkgs; [ pgcenter nixpkgs-pinned-05_12_19.pgcli ];
       };
     })
     (mkIf cfg.mysql.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          nixpkgs-pinned-05_12_19.mycli
-        ];
+        home.packages = with pkgs; [ nixpkgs-pinned-05_12_19.mycli ];
       };
     })
     (mkIf cfg.sqlite.enable {
@@ -76,26 +69,20 @@ in {
     })
     (mkIf cfg.misc.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          nixpkgs-pinned-05_12_19.nodePackages.elasticdump
-        ];
+        home.packages = with pkgs; [ nixpkgs-pinned-05_12_19.nodePackages.elasticdump ];
       };
     })
     (mkIf (cfg.jobDbms.enable && cfg.xmonad.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        dbms = writePythonScriptWithPythonPackages "dbms" [
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.redis
-        ] (builtins.readFile
-            (pkgs.substituteAll
-                ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dbms.py; })));
+        dbms =
+          writePythonScriptWithPythonPackages "dbms" [ pkgs.python3Packages.dmenu-python pkgs.python3Packages.redis ]
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dbms.py; })));
       };
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set job/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.jobDbms.meta)}
       '';
-      wm.xmonad.keybindings = {
-        "M-C-y" = ''spawn "${pkgs.dbms}/bin/dbms" >> showWSOnProperScreen "shell"'';
-      };
+      wm.xmonad.keybindings = { "M-C-y" = ''spawn "${pkgs.dbms}/bin/dbms" >> showWSOnProperScreen "shell"''; };
     })
   ];
 }

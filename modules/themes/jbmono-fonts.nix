@@ -1,12 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let
-  cfg = config.themes.fonts.jetbrains-mono;
+let cfg = config.themes.fonts.jetbrains-mono;
 in {
-  options.themes.fonts.jetbrains-mono = {
-    enable = mkEnableOption "jetbrains-mono";
-  };
+  options.themes.fonts.jetbrains-mono = { enable = mkEnableOption "jetbrains-mono"; };
 
   config = mkIf cfg.enable {
     fonts = {

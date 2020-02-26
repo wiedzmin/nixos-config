@@ -2,8 +2,7 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  cfg = config.custom.pim;
+let cfg = config.custom.pim;
 in {
   options = {
     custom.pim = {
@@ -29,11 +28,11 @@ in {
         type = types.attrs;
         example = {
           "read_mail" = {
-              cal = "Mon,Tue *-*-01..04 12:00:00";
-              cmd = "${config.attributes.defaultCommands.browser} https://mail.google.com";
+            cal = "Mon,Tue *-*-01..04 12:00:00";
+            cmd = "${config.attributes.defaultCommands.browser} https://mail.google.com";
           };
         };
-        default = {};
+        default = { };
         description = ''
           Scheduled task entries.
 
@@ -57,8 +56,7 @@ in {
           pkgs.python3Packages.pytz
           pkgs.python3Packages.xlib
         ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tt_capture.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tt_capture.py; })));
       };
       services.arbtt.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -177,16 +175,12 @@ in {
       systemd.user.timers = lib.mapAttrs (name: meta: {
         description = "${name}";
         wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = meta.cal;
-        };
+        timerConfig = { OnCalendar = meta.cal; };
       }) cfg.scheduling.entries;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          plantuml
-        ];
+        home.packages = with pkgs; [ plantuml ];
         programs.emacs.extraPackages = epkgs: [
           epkgs.counsel-org-clock
           epkgs.deft

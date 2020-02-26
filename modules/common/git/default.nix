@@ -81,7 +81,7 @@ in {
       };
       myrepos.subconfigs = mkOption {
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
         description = "Myrepos subconfigs to include.";
       };
       ghq.enable = mkOption {
@@ -91,7 +91,7 @@ in {
       };
       ghq.importCommands = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = "Custom import commands for ghq.";
       };
       github.enable = mkOption {
@@ -171,10 +171,8 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        gitlib = pkgs.writeShellScriptBin "gitlib"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./gitlib.sh; })));
+        gitlib = pkgs.writeShellScriptBin "gitlib" (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./gitlib.sh; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -225,29 +223,29 @@ in {
             "credential" = { helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper"; };
             "diff" = {
               algorithm = "patience";
-              gpg = {
-                textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt";
-              };
+              gpg = { textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt"; };
             };
             "init" = { templatedir = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/templates"; };
             "clone" = { templatedir = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/templates"; };
             "push" = { default = "current"; };
             "absorb" = { maxstack = 75; };
-          } // lib.optionalAttrs (cfg.github.enable) {
-            "github" = { user = cfg.github.user; };
-          } // lib.optionalAttrs (cfg.pager.diff-so-fancy.enable) {
-            "pager" = {
-              diff = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
-              show = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
-              log = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
+          } // lib.optionalAttrs (cfg.github.enable) { "github" = { user = cfg.github.user; }; }
+            // lib.optionalAttrs (cfg.pager.diff-so-fancy.enable) {
+              "pager" = {
+                diff = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
+                show = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
+                log = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
+              };
+            } // lib.optionalAttrs (cfg.pager.delta.enable) {
+              "pager" = {
+                diff = ''
+                  ${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
+                show = ''
+                  ${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
+                log = ''
+                  ${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
+              };
             };
-          } // lib.optionalAttrs (cfg.pager.delta.enable) {
-            "pager" = {
-              diff = ''${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
-              show = ''${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
-              log = ''${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
-            };
-          };
 
           aliases = {
             bl = "branch -l";
@@ -272,49 +270,38 @@ in {
             slice = "clone --depth 1";
           };
         };
-        programs.zsh.shellAliases = {
-          git = "${pkgs.gitAndTools.hub}/bin/hub";
-        };
+        programs.zsh.shellAliases = { git = "${pkgs.gitAndTools.hub}/bin/hub"; };
       };
-      environment.systemPackages = with pkgs; [
-        git-crecord
-        git-sizer
-        gitAndTools.git-absorb # TODO: review abilities and maybe use in some automation
-        gitAndTools.git-crypt
-        gitAndTools.git-extras
-        gitAndTools.git-octopus
-        gitAndTools.lab
-        gitAndTools.pass-git-helper
-        gitAndTools.stgit
-        gitAndTools.thicket
-        gitstats
-        git-quick-stats
-      ] ++ lib.optionals (cfg.staging.enable) [
-        onefetch
-        overcommit
-        gitAndTools.git-machete
-      ];
+      environment.systemPackages = with pkgs;
+        [
+          git-crecord
+          git-sizer
+          gitAndTools.git-absorb # TODO: review abilities and maybe use in some automation
+          gitAndTools.git-crypt
+          gitAndTools.git-extras
+          gitAndTools.git-octopus
+          gitAndTools.lab
+          gitAndTools.pass-git-helper
+          gitAndTools.stgit
+          gitAndTools.thicket
+          gitstats
+          git-quick-stats
+        ] ++ lib.optionals (cfg.staging.enable) [ onefetch overcommit gitAndTools.git-machete ];
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
-      assertions = [
-        {
-          assertion = config.custom.dev.globalWorkspaceRoot != "";
-          message = "git: Must provide workspace root directory for ghq tool.";
-        }
-      ];
+      assertions = [{
+        assertion = config.custom.dev.globalWorkspaceRoot != "";
+        message = "git: Must provide workspace root directory for ghq tool.";
+      }];
 
-      environment.systemPackages = with pkgs; [
-        gitAndTools.ghq
-      ];
+      environment.systemPackages = with pkgs; [ gitAndTools.ghq ];
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.zsh.shellAliases = {
           gg = "${pkgs.gitAndTools.ghq}/bin/ghq get";
         } // lib.optionalAttrs (config.custom.navigation.misc.enable) {
           pgg = "${pkgs.pueue}/bin/pueue add -- ${pkgs.gitAndTools.ghq}/bin/ghq get";
         };
-        programs.git.extraConfig = {
-          "ghq" = { root = config.custom.dev.globalWorkspaceRoot; };
-        };
+        programs.git.extraConfig = { "ghq" = { root = config.custom.dev.globalWorkspaceRoot; }; };
       };
     })
     (mkIf (cfg.enable && cfg.enableNixosConfigGoodies) {
@@ -411,12 +398,10 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.fetchUpdates.enable) {
-      assertions = [
-        {
-          assertion = cfg.myrepos.enable;
-          message = "git: automatic updates fetching requires myrepos setup to be enabled.";
-        }
-      ];
+      assertions = [{
+        assertion = cfg.myrepos.enable;
+        message = "git: automatic updates fetching requires myrepos setup to be enabled.";
+      }];
 
       systemd.user.services."git-fetch-updates" = {
         description = "Fetch updates from registered git upstream(s)";
@@ -431,28 +416,22 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.fetchUpdates.enable && cfg.fetchUpdates.when != "") {
-      assertions = [
-        {
-          assertion = cfg.myrepos.enable;
-          message = "git: automatic updates fetching requires myrepos setup to be enabled.";
-        }
-      ];
+      assertions = [{
+        assertion = cfg.myrepos.enable;
+        message = "git: automatic updates fetching requires myrepos setup to be enabled.";
+      }];
 
       systemd.user.timers."git-fetch-updates" = {
         description = "Fetch updates from registered git upstream(s)";
         wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = cfg.fetchUpdates.when;
-        };
+        timerConfig = { OnCalendar = cfg.fetchUpdates.when; };
       };
     })
     (mkIf (cfg.enable && cfg.pushUpdates.enable) {
-      assertions = [
-        {
-          assertion = cfg.myrepos.enable;
-          message = "git: automatic updates pushing requires myrepos setup to be enabled.";
-        }
-      ];
+      assertions = [{
+        assertion = cfg.myrepos.enable;
+        message = "git: automatic updates pushing requires myrepos setup to be enabled.";
+      }];
 
       systemd.services."git-push-updates" = {
         description = "Push updates to registered git upstream(s)";
@@ -467,28 +446,22 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.pushUpdates.enable && cfg.pushUpdates.when != "") {
-      assertions = [
-        {
-          assertion = cfg.myrepos.enable;
-          message = "git: automatic updates pushing requires myrepos setup to be enabled.";
-        }
-      ];
+      assertions = [{
+        assertion = cfg.myrepos.enable;
+        message = "git: automatic updates pushing requires myrepos setup to be enabled.";
+      }];
 
       systemd.timers."git-push-updates" = {
         description = "Push updates to registered git upstream(s)";
         wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = cfg.pushUpdates.when;
-        };
+        timerConfig = { OnCalendar = cfg.pushUpdates.when; };
       };
     })
     (mkIf (cfg.enable && cfg.saveWip.enable) {
-      assertions = [
-        {
-          assertion = cfg.myrepos.enable;
-          message = "git: automatic WIP saving requires myrepos setup to be enabled.";
-        }
-      ];
+      assertions = [{
+        assertion = cfg.myrepos.enable;
+        message = "git: automatic WIP saving requires myrepos setup to be enabled.";
+      }];
 
       systemd.user.services."git-save-wip" = {
         description = "Save work-in-progress in registered git repo(s)";
@@ -504,44 +477,36 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.saveWip.enable && cfg.saveWip.when != "") {
-      assertions = [
-        {
-          assertion = cfg.myrepos.enable;
-          message = "git: automatic WIP saving requires myrepos setup to be enabled.";
-        }
-      ];
+      assertions = [{
+        assertion = cfg.myrepos.enable;
+        message = "git: automatic WIP saving requires myrepos setup to be enabled.";
+      }];
 
       systemd.user.timers."git-save-wip" = {
         description = "Save work-in-progress in registered git repo(s)";
         wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnCalendar = cfg.saveWip.when;
-        };
+        timerConfig = { OnCalendar = cfg.saveWip.when; };
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.dired-git-info
-          epkgs.git-msg-prefix
-          epkgs.git-timemachine
-          epkgs.git-walktree
-          epkgs.magit
-          epkgs.magit-filenotify
-          epkgs.magit-popup # *
-          epkgs.magit-todos
-        ] ++ lib.optionals (cfg.strictRemoteBrowsing) [
-          epkgs.browse-at-remote
-        ] ++ lib.optionals (!cfg.strictRemoteBrowsing) [
-          epkgs.git-link
-        ];
+        programs.emacs.extraPackages = epkgs:
+          [
+            epkgs.dired-git-info
+            epkgs.git-msg-prefix
+            epkgs.git-timemachine
+            epkgs.git-walktree
+            epkgs.magit
+            epkgs.magit-filenotify
+            epkgs.magit-popup # *
+            epkgs.magit-todos
+          ] ++ lib.optionals (cfg.strictRemoteBrowsing) [ epkgs.browse-at-remote ]
+          ++ lib.optionals (!cfg.strictRemoteBrowsing) [ epkgs.git-link ];
       };
       ide.emacs.config = ''
-        ${lib.optionalString (cfg.strictRemoteBrowsing)
-          (builtins.readFile ./browse-at-remote.el)}
+        ${lib.optionalString (cfg.strictRemoteBrowsing) (builtins.readFile ./browse-at-remote.el)}
 
-        ${lib.optionalString (!cfg.strictRemoteBrowsing)
-          (builtins.readFile ./git-link.el)}
+        ${lib.optionalString (!cfg.strictRemoteBrowsing) (builtins.readFile ./git-link.el)}
 
         ${builtins.readFile ./git.el}
       '';

@@ -1,8 +1,7 @@
 let
   deps = import ../../../nix/sources.nix;
   nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
-in
-{ config, lib, pkgs, ... }:
+in { config, lib, pkgs, ... }:
 with lib;
 
 let
@@ -104,7 +103,7 @@ in {
       };
       scanning.paperless.extraConfig = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = ''
           Extra paperless config options.
 
@@ -165,12 +164,10 @@ in {
 
   config = mkMerge [
     (mkIf cfg.printing.enable {
-      assertions = [
-        {
-          assertion = cfg.printing.enable && cfg.printing.drivers != [];
-          message = "paperwork: must provide at least one printer driver package.";
-        }
-      ];
+      assertions = [{
+        assertion = cfg.printing.enable && cfg.printing.drivers != [ ];
+        message = "paperwork: must provide at least one printer driver package.";
+      }];
       services.printing = {
         enable = true;
         drivers = cfg.printing.drivers;
@@ -178,9 +175,7 @@ in {
         defaultShared = true;
         webInterface = true;
       };
-      environment.systemPackages = with pkgs; [
-        nixpkgs-pinned-05_12_19.system-config-printer
-      ];
+      environment.systemPackages = with pkgs; [ nixpkgs-pinned-05_12_19.system-config-printer ];
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "lp" ];
     })
     (mkIf cfg.scanning.enable {
@@ -201,36 +196,27 @@ in {
 
       services.saned.enable = true;
 
-      nixpkgs.config = optionalAttrs cfg.scanning.snapscan.enable {
-        sane.snapscanFirmware = cfg.scanning.snapscan.firmware;
-      };
-      environment.systemPackages = with pkgs; [
-        deskew
-        gImageReader
-        nixpkgs-pinned-05_12_19.ocrmypdf
-        pdfsandwich
-        scantailor-advanced
-        tesseract
-      ] ++ lib.optionals cfg.scanning.enableXsane [
-        xsane
-      ];
+      nixpkgs.config =
+        optionalAttrs cfg.scanning.snapscan.enable { sane.snapscanFirmware = cfg.scanning.snapscan.firmware; };
+      environment.systemPackages = with pkgs;
+        [ deskew gImageReader nixpkgs-pinned-05_12_19.ocrmypdf pdfsandwich scantailor-advanced tesseract ]
+        ++ lib.optionals cfg.scanning.enableXsane [ xsane ];
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "scanner" ];
     })
     (mkIf (cfg.scanning.enable && cfg.scanning.paperless.enable) {
-      assertions = [
-        {
-          assertion = cfg.scanning.paperless.enable && cfg.scanning.paperless.consumptionDir != "" && cfg.scanning.paperless.dataDir != "";
-          message = "paperless: must provide paths for consume and data directories.";
-        }
-      ];
+      assertions = [{
+        assertion = cfg.scanning.paperless.enable && cfg.scanning.paperless.consumptionDir != ""
+          && cfg.scanning.paperless.dataDir != "";
+        message = "paperless: must provide paths for consume and data directories.";
+      }];
 
-      systemd.tmpfiles.rules = [
-        "d '${cfg.scanning.paperless.dataDir}' - ${cfg.scanning.paperless.user} ${cfg.scanning.paperless.group} - -"
-      ] ++ (optional cfg.scanning.paperless.consumptionDirIsPublic
-        "d '${cfg.scanning.paperless.consumptionDir}' 777 ${cfg.scanning.paperless.user} ${cfg.scanning.paperless.group} - -"
-        # If the consumption dir is not created here, it's automatically created by
-        # 'manage' with the default permissions.
-      );
+      systemd.tmpfiles.rules =
+        [ "d '${cfg.scanning.paperless.dataDir}' - ${cfg.scanning.paperless.user} ${cfg.scanning.paperless.group} - -" ]
+        ++ (optional cfg.scanning.paperless.consumptionDirIsPublic
+          "d '${cfg.scanning.paperless.consumptionDir}' 777 ${cfg.scanning.paperless.user} ${cfg.scanning.paperless.group} - -"
+          # If the consumption dir is not created here, it's automatically created by
+          # 'manage' with the default permissions.
+        );
 
       systemd.services.paperless-consumer = {
         description = "Paperless document consumer";
@@ -259,7 +245,9 @@ in {
         description = "Paperless document server";
         serviceConfig = {
           User = cfg.scanning.paperless.user;
-          ExecStart = "${paperlessManageScript} runserver --noreload ${cfg.scanning.paperless.address}:${toString cfg.scanning.paperless.port}";
+          ExecStart = "${paperlessManageScript} runserver --noreload ${cfg.scanning.paperless.address}:${
+              toString cfg.scanning.paperless.port
+            }";
           Restart = "always";
         };
         # Bind to `paperless-consumer` so that the server never runs
@@ -285,10 +273,7 @@ in {
     })
     (mkIf cfg.publishing.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; lib.optionals (cfg.publishing.staging.enable) [
-          pplatex
-          texlab
-        ];
+        home.packages = with pkgs; lib.optionals (cfg.publishing.staging.enable) [ pplatex texlab ];
       };
     })
   ];

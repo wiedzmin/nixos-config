@@ -23,11 +23,9 @@ in {
   };
 
   config = mkIf cfg.enable {
-    ide.emacs.config = ''${zenburnEmacs}'';
+    ide.emacs.config = "${zenburnEmacs}";
     home-manager.users."${config.attributes.mainUser.name}" = {
-      programs.emacs.extraPackages = epkgs: [
-        epkgs.zenburn-theme
-      ];
+      programs.emacs.extraPackages = epkgs: [ epkgs.zenburn-theme ];
       programs.zathura.options = {
         completion-bg = "#404040";
         completion-fg = "#7cb8bb";
@@ -54,7 +52,7 @@ in {
       };
       gtk = lib.optionalAttrs (cfg.gtk.enable) {
         gtk2.extraConfig = builtins.readfile "/etc/assets/styles/zenburn-gtk2.styles";
-        gtk3.extraCss =  builtins.readfile "/etc/assets/styles/zenburn-gtk3.css";
+        gtk3.extraCss = builtins.readfile "/etc/assets/styles/zenburn-gtk3.css";
       };
     };
   };

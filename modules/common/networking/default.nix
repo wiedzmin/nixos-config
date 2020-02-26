@@ -1,8 +1,7 @@
 let
   deps = import ../../../nix/sources.nix;
   nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
-in
-{ config, lib, pkgs, ... }:
+in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -55,7 +54,7 @@ in {
       extraHosts = mkOption {
         type = types.attrs;
         description = "Extra hosts.";
-        default = {};
+        default = { };
       };
     };
   };
@@ -64,26 +63,26 @@ in {
     (mkIf (cfg.enable) {
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set job/extra_hosts ${lib.strings.escapeNixString (builtins.toJSON cfg.extraHosts)}
-        ${pkgs.redis}/bin/redis-cli set job/command_choices ${lib.strings.escapeNixString (builtins.toJSON config.attributes.dev.remoteCommands)}
+        ${pkgs.redis}/bin/redis-cli set job/command_choices ${
+          lib.strings.escapeNixString (builtins.toJSON config.attributes.dev.remoteCommands)
+        }
       '';
       networking.extraHosts = ''
         127.0.0.1   ${config.networking.hostName}
-        ${builtins.concatStringsSep "\n"
-          (lib.mapAttrsToList (ip: hosts: ip + "    " + (builtins.concatStringsSep " " hosts))
-            cfg.extraHosts)};
+        ${
+          builtins.concatStringsSep "\n"
+          (lib.mapAttrsToList (ip: hosts: ip + "    " + (builtins.concatStringsSep " " hosts)) cfg.extraHosts)
+        };
       '';
       nixpkgs.config.packageOverrides = _: rec {
-        wifi-status = pkgs.writeScriptBin "wifi-status"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./wifi-status.sh; })));
+        wifi-status = pkgs.writeScriptBin "wifi-status" (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./wifi-status.sh; })));
         sshmenu = writePythonScriptWithPythonPackages "sshmenu" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux
           pkgs.python3Packages.redis
         ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
       };
     })
     (mkIf (cfg.bluetooth.enable) {
@@ -206,40 +205,20 @@ in {
             AddKeysToAgent yes
           '';
         };
-        home.file = {
-          ".ssh/id_rsa.pub".text = config.identity.secrets.ssh.publicKey;
-        };
+        home.file = { ".ssh/id_rsa.pub".text = config.identity.secrets.ssh.publicKey; };
       };
     })
     (mkIf (cfg.enable && cfg.remoteControlling.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          anydesk
-          teamviewer
-        ];
-      };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ anydesk teamviewer ]; };
     })
     (mkIf (cfg.enable && cfg.messengers.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          skype
-          slack
-          tdesktop
-          zoom-us
-        ];
+        home.packages = with pkgs; [ skype slack tdesktop zoom-us ];
       };
     })
-    (mkIf (cfg.enable && cfg.scripts.enable) {
-      environment.systemPackages = with pkgs; [
-        wifi-status
-      ];
-    })
+    (mkIf (cfg.enable && cfg.scripts.enable) { environment.systemPackages = with pkgs; [ wifi-status ]; })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          wpa_supplicant_gui
-        ];
-      };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ wpa_supplicant_gui ]; };
       wm.xmonad.keybindings = {
         "M-S-s" = ''spawn "${pkgs.sshmenu}/bin/sshmenu" >> showWSOnProperScreen "shell"'';
         "M-S-d" = ''spawn "${pkgs.sshmenu}/bin/sshmenu --choices" >> showWSOnProperScreen "shell"'';

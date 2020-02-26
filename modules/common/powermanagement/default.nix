@@ -2,8 +2,7 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  cfg = config.custom.power-management;
+let cfg = config.custom.power-management;
 in {
   options = {
     custom.power-management = {
@@ -117,11 +116,15 @@ in {
         script = ''
           export battery_capacity=$(${pkgs.coreutils}/bin/cat /sys/class/power_supply/${cfg.batteryManagement.device}/capacity)
           export battery_status=$(${pkgs.coreutils}/bin/cat /sys/class/power_supply/${cfg.batteryManagement.device}/status)
-          if [[ $battery_capacity -le ${builtins.toString cfg.batteryManagement.notificationThreshold} && $battery_status = "Discharging" ]]; then
+          if [[ $battery_capacity -le ${
+            builtins.toString cfg.batteryManagement.notificationThreshold
+          } && $battery_status = "Discharging" ]]; then
               ${pkgs.dunst}/bin/dunstify -u critical "Battery low, consider plugging in."
           fi
 
-          if [[ $battery_capacity -le ${builtins.toString cfg.batteryManagement.suspensionThreshold} && $battery_status = "Discharging" ]]; then
+          if [[ $battery_capacity -le ${
+            builtins.toString cfg.batteryManagement.suspensionThreshold
+          } && $battery_status = "Discharging" ]]; then
               ${pkgs.dunst}/bin/dunstify -u critical -t 5000 "Battery CRITICALLY low, will suspend in ${cfg.batteryManagement.suspendTimeout}."
               sleep ${cfg.batteryManagement.suspendTimeout}
 

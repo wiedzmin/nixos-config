@@ -1,12 +1,10 @@
 let
   deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19  = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
-in
-{ config, lib, pkgs, ... }:
+  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+in { config, lib, pkgs, ... }:
 with lib;
 
-let
-  cfg = config.custom.security;
+let cfg = config.custom.security;
 in {
   options = {
     # TODO: refine options
@@ -79,11 +77,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.auth-source-pass
-          epkgs.ivy-pass
-          epkgs.pass
-        ];
+        programs.emacs.extraPackages = epkgs: [ epkgs.auth-source-pass epkgs.ivy-pass epkgs.pass ];
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./security.el; }));
@@ -109,7 +103,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
-        "<XF86ScreenSaver>" = ''spawn "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off"'';
+        "<XF86ScreenSaver>" =
+          ''spawn "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off"'';
         "M-a q" = ''spawn "${pkgs.rofi-pass}/bin/rofi-pass"'';
       };
     })

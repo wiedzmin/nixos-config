@@ -2,8 +2,7 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  cfg = config.custom.shell;
+let cfg = config.custom.shell;
 in {
   options = {
     # TODO: refine options
@@ -34,9 +33,9 @@ in {
         description = "Whether to enable liquidprompt.";
       };
       emacs.enable = mkOption {
-          type = types.bool;
-          default = false;
-          description = "Whether to enable shell-related Emacs infra.";
+        type = types.bool;
+        default = false;
+        description = "Whether to enable shell-related Emacs infra.";
       };
       xmonad.enable = mkOption {
         type = types.bool;
@@ -56,8 +55,8 @@ in {
       assertions = [
         {
           assertion = (cfg.ohMyZshPrompt.enable && !cfg.liquidPrompt.enable)
-                      || (!cfg.ohMyZshPrompt.enable && cfg.liquidPrompt.enable)
-                      || (!cfg.ohMyZshPrompt.enable && !cfg.liquidPrompt.enable);
+            || (!cfg.ohMyZshPrompt.enable && cfg.liquidPrompt.enable)
+            || (!cfg.ohMyZshPrompt.enable && !cfg.liquidPrompt.enable);
           message = "shell: exactly one or no theming should be used.";
         }
         {
@@ -67,32 +66,26 @@ in {
       ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        tmuxp_sessions = writePythonScriptWithPythonPackages "tmuxp_sessions" [
-          pkgs.python3Packages.dmenu-python
-        ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tmuxp_sessions.py; })));
-        shell-org-capture = pkgs.writeScriptBin "shell-org-capture"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./shell-org-capture.sh; })));
+        tmuxp_sessions = writePythonScriptWithPythonPackages "tmuxp_sessions" [ pkgs.python3Packages.dmenu-python ]
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tmuxp_sessions.py; })));
+        shell-org-capture = pkgs.writeScriptBin "shell-org-capture" (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./shell-org-capture.sh; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          checkbashism
-          fpp       # for tmux fpp plugin
-          haskellPackages.arbtt # for stats viewing
-          libnotify # for zsh-notify plugin
-          progress                    # use in automation
-          seturgent
-          shell-hist
-          shellcheck
-          tmsu                        # ?
-        ] ++ lib.optionals (cfg.staging.enable) [
-          eva
-          tmux-xpanes
-        ];
+        home.packages = with pkgs;
+          [
+            checkbashism
+            fpp # for tmux fpp plugin
+            haskellPackages.arbtt # for stats viewing
+            libnotify # for zsh-notify plugin
+            progress # use in automation
+            seturgent
+            shell-hist
+            shellcheck
+            tmsu # ?
+          ] ++ lib.optionals (cfg.staging.enable) [ eva tmux-xpanes ];
         home.file = {
           "tmuxp/main.yml".text = ''
             session_name: main
@@ -274,9 +267,7 @@ in {
           oh-my-zsh = {
             enable = true;
             plugins = [ "colored-man-pages" "urltools" ];
-          } // lib.optionalAttrs (cfg.ohMyZshPrompt.enable) {
-            theme = cfg.ohMyZshPrompt.theme;
-          };
+          } // lib.optionalAttrs (cfg.ohMyZshPrompt.enable) { theme = cfg.ohMyZshPrompt.theme; };
           enableAutosuggestions = true;
           enableCompletion = true;
           history = {
@@ -305,11 +296,7 @@ in {
 
             ${lib.concatMapStrings (opt: ''
               setopt ${opt}
-            '') [
-              "braceccl"
-              "extendedglob"
-              "menucomplete"
-            ]}
+            '') [ "braceccl" "extendedglob" "menucomplete" ]}
 
             bindkey '^P' fuzzy-search-and-edit
           '';
@@ -317,9 +304,7 @@ in {
             HISTFILE = ".histfile";
             YSU_IGNORED_ALIASES = [ "g" "ll" ]; # TODO: review list
             YSU_MODE = "ALL";
-          } // lib.optionalAttrs (!cfg.liquidPrompt.enable) {
-            ZSH_COMMAND_TIME_COLOR = "cyan";
-          };
+          } // lib.optionalAttrs (!cfg.liquidPrompt.enable) { ZSH_COMMAND_TIME_COLOR = "cyan"; };
           shellAliases = {
             cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
 
@@ -417,62 +402,43 @@ in {
                 sha256 = "1shhmda1iqwz79y2ianmjs5623zabckxfj2hqw4gl2axpkwnj1ib";
               };
             }
-          ] ++ lib.optionals (!cfg.liquidPrompt.enable) [
-            {
-              name = "zsh-command-time";
-              file = "command-time.plugin.zsh";
-              src = pkgs.fetchFromGitHub {
-                owner = "popstas";
-                repo = "zsh-command-time";
-                rev = "afb4a4c9ae7ce64ca9d4f334a79a25e46daad0aa";
-                sha256 = "1bvyjgz6bhgg1nwr56r50p6fblgah6yiql55pgm5abnn2h876fjq";
-              };
-            }
-          ] ++ lib.optionals (cfg.liquidPrompt.enable) [
-            {
-              name = "liquidprompt";
-              file = "liquidprompt.plugin.zsh";
-              src = pkgs.fetchFromGitHub {
-                owner = "nojhan";
-                repo = "liquidprompt";
-                rev = "5f4aeece8d6cf98138e729f7833e11e985ca44d3";
-                sha256 = "1xbvfadcl2qnylsd6rf4fdm6spis2v3kh1lsqlyjn2gs48g0l24a";
-              };
-            }
-          ] ++ [
-            {
-              # NOTE: should be last in the list
-              name = "zsh-syntax-highlighting";
-              file = "zsh-syntax-highlighting.plugin.zsh";
-              src = pkgs.fetchFromGitHub {
-                owner = "zsh-users";
-                repo = "zsh-syntax-highlighting";
-                rev = "e900ad8bad53501689afcb050456400d7a8466e5";
-                sha256 = "1dfy5wvkmnp2zzk81fhc7qlywgn0j6z0vjch5ak5r3j2kqv61cmi";
-              };
-            }
-          ];
+          ] ++ lib.optionals (!cfg.liquidPrompt.enable) [{
+            name = "zsh-command-time";
+            file = "command-time.plugin.zsh";
+            src = pkgs.fetchFromGitHub {
+              owner = "popstas";
+              repo = "zsh-command-time";
+              rev = "afb4a4c9ae7ce64ca9d4f334a79a25e46daad0aa";
+              sha256 = "1bvyjgz6bhgg1nwr56r50p6fblgah6yiql55pgm5abnn2h876fjq";
+            };
+          }] ++ lib.optionals (cfg.liquidPrompt.enable) [{
+            name = "liquidprompt";
+            file = "liquidprompt.plugin.zsh";
+            src = pkgs.fetchFromGitHub {
+              owner = "nojhan";
+              repo = "liquidprompt";
+              rev = "5f4aeece8d6cf98138e729f7833e11e985ca44d3";
+              sha256 = "1xbvfadcl2qnylsd6rf4fdm6spis2v3kh1lsqlyjn2gs48g0l24a";
+            };
+          }] ++ [{
+            # NOTE: should be last in the list
+            name = "zsh-syntax-highlighting";
+            file = "zsh-syntax-highlighting.plugin.zsh";
+            src = pkgs.fetchFromGitHub {
+              owner = "zsh-users";
+              repo = "zsh-syntax-highlighting";
+              rev = "e900ad8bad53501689afcb050456400d7a8466e5";
+              sha256 = "1dfy5wvkmnp2zzk81fhc7qlywgn0j6z0vjch5ak5r3j2kqv61cmi";
+            };
+          }];
         };
       };
     })
     (mkIf cfg.toolsng.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          fd
-          sd
-          up
-          uq
-        ] ++ lib.optionals cfg.staging.enable [
-          dateutils
-          fselect
-          gron
-          jid
-          jl
-          lv
-          pdfgrep
-          ripgrep-all
-          yj
-        ];
+        home.packages = with pkgs;
+          [ fd sd up uq ]
+          ++ lib.optionals cfg.staging.enable [ dateutils fselect gron jid jl lv pdfgrep ripgrep-all yj ];
         programs = {
           lsd = {
             enable = true;
@@ -502,22 +468,15 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          checkbashisms
-          nodePackages.bash-language-server
-        ];
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.flycheck-checkbashisms
-        ];
+        home.packages = with pkgs; [ checkbashisms nodePackages.bash-language-server ];
+        programs.emacs.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms ];
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./shell.el; }));
 
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = {
-        "M-C-t" = ''spawn "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions"'';
-      };
+      wm.xmonad.keybindings = { "M-C-t" = ''spawn "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions"''; };
     })
   ];
 }

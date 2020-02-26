@@ -1,8 +1,7 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let
-  cfg = config.custom.dev;
+let cfg = config.custom.dev;
 in {
   options = {
     custom.dev = {
@@ -54,7 +53,7 @@ in {
       misc.enable = mkOption {
         type = types.bool;
         default = false;
-        description = ''Whether to enable various misc tools.'';
+        description = "Whether to enable various misc tools.";
       };
       misc.staging.enable = mkOption {
         type = types.bool;
@@ -64,12 +63,12 @@ in {
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
-        description = ''Whether to enable development infra for Emacs.'';
+        description = "Whether to enable development infra for Emacs.";
       };
       xmonad.enable = mkOption {
         type = types.bool;
         default = false;
-        description = ''Whether to enable XMonad keybindings.'';
+        description = "Whether to enable XMonad keybindings.";
       };
       pythonLib = mkOption {
         type = types.lines;
@@ -107,16 +106,10 @@ in {
     })
     (mkIf cfg.codesearch.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          codesearch
-        ];
+        home.packages = with pkgs; [ codesearch ];
         programs = {
-          zsh.sessionVariables = {
-            CSEARCHINDEX = "${cfg.globalWorkspaceRoot}/.csearchindex";
-          };
-          bash.sessionVariables = {
-            CSEARCHINDEX = "${cfg.globalWorkspaceRoot}/.csearchindex";
-          };
+          zsh.sessionVariables = { CSEARCHINDEX = "${cfg.globalWorkspaceRoot}/.csearchindex"; };
+          bash.sessionVariables = { CSEARCHINDEX = "${cfg.globalWorkspaceRoot}/.csearchindex"; };
         };
       };
       systemd.user.services."codesearch-reindex" = {
@@ -125,9 +118,7 @@ in {
         partOf = [ "graphical.target" ];
         serviceConfig = {
           Type = "oneshot";
-          Environment = [
-            "CSEARCHINDEX=${cfg.globalWorkspaceRoot}/.csearchindex"
-          ];
+          Environment = [ "CSEARCHINDEX=${cfg.globalWorkspaceRoot}/.csearchindex" ];
           ExecStart = "${pkgs.codesearch}/bin/cindex ${cfg.globalWorkspaceRoot}";
           StandardOutput = "journal+console";
           StandardError = "inherit";
@@ -144,72 +135,61 @@ in {
     })
     (mkIf (cfg.codesearch.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.codesearch
-          epkgs.counsel-codesearch
-          epkgs.projectile-codesearch
-        ];
+        programs.emacs.extraPackages = epkgs: [ epkgs.codesearch epkgs.counsel-codesearch epkgs.projectile-codesearch ];
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./codesearch.el; }));
     })
     (mkIf cfg.patching.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          patchutils
-          wiggle
-          ruplacer
-        ];
+        home.packages = with pkgs; [ patchutils wiggle ruplacer ];
       };
     })
     (mkIf cfg.analysis.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          diffoscope
-          elfinfo
-          extrace
-          flamegraph
-          gdb
-          gdbgui
-          hopper
-          libwhich
-          lsof
-          ltrace
-          nmon
-          pagemon
-          patchelf
-          patchutils
-          radare2
-          radare2-cutter
-          strace
-          sysdig
-          valgrind
-        ] ++ lib.optionals (cfg.analysis.staging.enable) [
-          q-text-as-data
-          textql
-          visidata # TODO: make overlay
-          datamash
-          xsv
-          xurls
-          txr # TODO: get started, read docs
-          jwt-cli
-        ];
+        home.packages = with pkgs;
+          [
+            diffoscope
+            elfinfo
+            extrace
+            flamegraph
+            gdb
+            gdbgui
+            hopper
+            libwhich
+            lsof
+            ltrace
+            nmon
+            pagemon
+            patchelf
+            patchutils
+            radare2
+            radare2-cutter
+            strace
+            sysdig
+            valgrind
+          ] ++ lib.optionals (cfg.analysis.staging.enable) [
+            q-text-as-data
+            textql
+            visidata # TODO: make overlay
+            datamash
+            xsv
+            xurls
+            txr # TODO: get started, read docs
+            jwt-cli
+          ];
       };
-      environment.systemPackages = with pkgs; with config.boot.kernelPackages; [
-        perf
-        # hotspot # rarely used
-      ];
+      environment.systemPackages = with pkgs;
+        with config.boot.kernelPackages;
+        [
+          perf
+          # hotspot # rarely used
+        ];
     })
     (mkIf cfg.statistics.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          cloc
-          gource
-          sloccount
-          tokei
-        ] ++ lib.optionals (cfg.statistics.staging.enable) [
-          scc
-        ];
+        home.packages = with pkgs;
+          [ cloc gource sloccount tokei ] ++ lib.optionals (cfg.statistics.staging.enable) [ scc ];
       };
     })
     (mkIf cfg.misc.enable {
@@ -268,18 +248,8 @@ in {
                   - mc
           '';
         };
-        home.packages = with pkgs; [
-          icdiff
-          ix
-          loop
-          lorri
-          pv
-          watchexec
-          wstunnel
-        ] ++ lib.optionals (cfg.misc.staging.enable) [
-          async
-          mkcert
-        ];
+        home.packages = with pkgs;
+          [ icdiff ix loop lorri pv watchexec wstunnel ] ++ lib.optionals (cfg.misc.staging.enable) [ async mkcert ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
@@ -309,11 +279,7 @@ in {
           preferLocalBuild = true;
         } ''
           remarshal -if json -of toml \
-            < ${pkgs.writeText "TabNine.json" (builtins.toJSON {
-              language.python = {
-                command = "mspyls";
-              };
-          })} \
+            < ${pkgs.writeText "TabNine.json" (builtins.toJSON { language.python = { command = "mspyls"; }; })} \
             > $out
         '');
         programs.emacs.extraPackages = epkgs: [

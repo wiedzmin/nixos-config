@@ -44,7 +44,7 @@ in {
           <link xlink:href="https://www.chromium.org/administrators/policy-list-3">https://www.chromium.org/administrators/policy-list-3</link>
           for a list of available options
         '';
-        default = {};
+        default = { };
       };
       sessions.saveFrequency = mkOption {
         type = types.str;
@@ -112,18 +112,17 @@ in {
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.browserpass.enable = true;
-      };
+      home-manager.users."${config.attributes.mainUser.name}" = { programs.browserpass.enable = true; };
     })
     (mkIf (cfg.enable && cfg.firefox.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          xsel # for firefox native clients
-        ];
+        home.packages = with pkgs;
+          [
+            xsel # for firefox native clients
+          ];
         home.activation.ensureFirefoxHandlers = {
-          after = [];
-          before = ["checkLinkTargets"];
+          after = [ ];
+          before = [ "checkLinkTargets" ];
           data = "rm -f /home/${config.attributes.mainUser.name}/.mozilla/firefox/profile.default/handlers.json";
         };
         programs.firefox = {
@@ -383,11 +382,12 @@ in {
           set keytranslatemodes.hintmaps true
         '';
         home.file = {
-          ".mozilla/firefox/profile.default/browser-extension-data/{d47d18bc-d6ba-4f96-a144-b3016175f3a7}/storage.js".text = builtins.toJSON {
-            protocol = false;
-            path = true;
-            delimiter = " // ";
-          };
+          ".mozilla/firefox/profile.default/browser-extension-data/{d47d18bc-d6ba-4f96-a144-b3016175f3a7}/storage.js".text =
+            builtins.toJSON {
+              protocol = false;
+              path = true;
+              delimiter = " // ";
+            };
           ".mozilla/native-messaging-hosts/me.f1u77y.web_media_controller.json".text = builtins.toJSON {
             name = "me.f1u77y.web_media_controller";
             description = "Allows controlling embedded players (YT, etc) via MPRIS";
@@ -437,40 +437,31 @@ in {
     })
     (mkIf (cfg.enable && cfg.firefox.enable && cfg.sessions.firefox.backup.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        dump_firefox_session = pkgs.writeShellScriptBin "dump_firefox_session"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dump_firefox_session.sh; })));
-        rotate_firefox_session_dumps = pkgs.writeShellScriptBin "rotate_firefox_session_dumps"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./rotate_firefox_session_dumps.sh; })));
+        dump_firefox_session = pkgs.writeShellScriptBin "dump_firefox_session" (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dump_firefox_session.sh; })));
+        rotate_firefox_session_dumps = pkgs.writeShellScriptBin "rotate_firefox_session_dumps" (builtins.readFile
+          (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./rotate_firefox_session_dumps.sh; })));
         collect_links_on_page = writePythonScriptWithPythonPackages "collect_links_on_page" [
           pkgs.python3Packages.beautifulsoup4
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
-        ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./collect_links_on_page.py; })));
+        ] (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./collect_links_on_page.py; })));
         manage_firefox_sessions = writePythonScriptWithPythonPackages "manage_firefox_sessions" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
           pkgs.dump_firefox_session
-        ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./manage_firefox_sessions.py; })));
+        ] (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./manage_firefox_sessions.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.activation.ensureFirefoxSessionsPath = {
-          after = [];
-          before = ["linkGeneration"];
+          after = [ ];
+          before = [ "linkGeneration" ];
           data = "mkdir -p ${cfg.sessions.firefox.path}";
         };
-        home.packages = with pkgs; [
-          dump_firefox_session
-          manage_firefox_sessions
-          rotate_firefox_session_dumps
-        ];
+        home.packages = with pkgs; [ dump_firefox_session manage_firefox_sessions rotate_firefox_session_dumps ];
       };
       wm.xmonad.keybindings = lib.optionalAttrs (config.wm.xmonad.enable) {
         "M-s b s" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --save"'';
@@ -500,15 +491,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.aux.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          w3m-full
-          webmacs
-        ] ++ lib.optionals (cfg.staging.enable) [
-          next
-        ];
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.atomic-chrome
-        ];
+        home.packages = with pkgs; [ w3m-full webmacs ] ++ lib.optionals (cfg.staging.enable) [ next ];
+        programs.emacs.extraPackages = epkgs: [ epkgs.atomic-chrome ];
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

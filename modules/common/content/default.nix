@@ -1,13 +1,11 @@
 let
   deps = import ../../../nix/sources.nix;
   proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
-in
-{ config, lib, pkgs, ... }:
+in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  cfg = config.custom.content;
+let cfg = config.custom.content;
 in {
   options = {
     custom.content = {
@@ -53,7 +51,7 @@ in {
       };
       warmup.paths = mkOption {
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
         description = "List of paths to warm up.";
       };
       xmonad.enable = mkOption {
@@ -67,10 +65,8 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        paste_to_ix = pkgs.writeShellScriptBin "paste_to_ix"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./paste_to_ix.sh; })));
+        paste_to_ix = pkgs.writeShellScriptBin "paste_to_ix" (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./paste_to_ix.sh; })));
       };
       services.clipmenu.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -126,9 +122,7 @@ in {
         services.syncthing.enable = true; # TODO: consider separate option(s)
         programs.mpv = {
           enable = true;
-          scripts = with pkgs.mpvScripts; [
-            mpris
-          ];
+          scripts = with pkgs.mpvScripts; [ mpris ];
         };
         programs.zsh.shellAliases = {
           yg = "${proposed.you-get}/bin/you-get";
@@ -144,16 +138,11 @@ in {
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
         ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_add.py; })));
-        buku_search_tag = pkgs.writeScriptBin "buku_search_tag"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_tag.sh; })));
-        buku_search_url = pkgs.writeScriptBin "buku_search_url"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_url.sh; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_add.py; })));
+        buku_search_tag = pkgs.writeScriptBin "buku_search_tag" (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_tag.sh; })));
+        buku_search_url = pkgs.writeScriptBin "buku_search_url" (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_url.sh; })));
       };
     })
     (mkIf (cfg.enable && cfg.screenshots.enable) {
@@ -169,27 +158,17 @@ in {
       ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        screenshot_active_window = pkgs.writeScriptBin "screenshot_active_window"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_active_window.sh; })));
-        screenshot_full = pkgs.writeScriptBin "screenshot_full"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_full.sh; })));
-        screenshot_region = pkgs.writeScriptBin "screenshot_region"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_region.sh; })));
+        screenshot_active_window = pkgs.writeScriptBin "screenshot_active_window" (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_active_window.sh; })));
+        screenshot_full = pkgs.writeScriptBin "screenshot_full" (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_full.sh; })));
+        screenshot_region = pkgs.writeScriptBin "screenshot_region" (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_region.sh; })));
       };
 
-      environment.systemPackages = with pkgs; [
-        screenshot_active_window
-        screenshot_full
-        screenshot_region
-      ];
+      environment.systemPackages = with pkgs; [ screenshot_active_window screenshot_full screenshot_region ];
     })
-    (mkIf (cfg.warmup.enable && cfg.warmup.paths != []) {
+    (mkIf (cfg.warmup.enable && cfg.warmup.paths != [ ]) {
       systemd.user.services."warmup" = {
         description = "Warm up paths";
         serviceConfig = {
@@ -203,9 +182,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.xmonad.enable && cfg.bookmarks.enable) {
-      wm.xmonad.keybindings = {
-        "M-y" = ''spawn "${pkgs.buku_add}/bin/buku_add"'';
-      };
+      wm.xmonad.keybindings = { "M-y" = ''spawn "${pkgs.buku_add}/bin/buku_add"''; };
     })
     (mkIf (cfg.enable && cfg.xmonad.enable && cfg.screenshots.enable) {
       wm.xmonad.keybindings = {
@@ -215,9 +192,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = {
-        "M-i" = ''spawn "${pkgs.paste_to_ix}/bin/paste_to_ix"'';
-      };
+      wm.xmonad.keybindings = { "M-i" = ''spawn "${pkgs.paste_to_ix}/bin/paste_to_ix"''; };
     })
   ];
 }

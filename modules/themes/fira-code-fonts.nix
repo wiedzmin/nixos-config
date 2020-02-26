@@ -1,12 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let
-    cfg = config.themes.fonts.fira-code;
+let cfg = config.themes.fonts.fira-code;
 in {
-  options.themes.fonts.fira-code = {
-    enable = mkEnableOption "fira-code";
-  };
+  options.themes.fonts.fira-code = { enable = mkEnableOption "fira-code"; };
 
   config = mkIf cfg.enable {
     fonts = {

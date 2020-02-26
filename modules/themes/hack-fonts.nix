@@ -1,12 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let
-  cfg = config.themes.fonts.hack;
+let cfg = config.themes.fonts.hack;
 in {
-  options.themes.fonts.hack = {
-    enable = mkEnableOption "hack";
-  };
+  options.themes.fonts.hack = { enable = mkEnableOption "hack"; };
 
   config = mkIf cfg.enable {
     fonts = {

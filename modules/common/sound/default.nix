@@ -32,7 +32,7 @@ in {
       };
       pulse.daemonConfig = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = "Pulseaudio daemon configuration";
       };
       xmonad.enable = mkOption {
@@ -44,9 +44,7 @@ in {
   };
 
   config = mkMerge [
-    (mkIf cfg.enable {
-      users.users."${config.attributes.mainUser.name}".extraGroups = [ "audio" ];
-    })
+    (mkIf cfg.enable { users.users."${config.attributes.mainUser.name}".extraGroups = [ "audio" ]; })
     (mkIf cfg.pulse.enable {
       hardware.pulseaudio = {
         enable = true;
@@ -55,22 +53,27 @@ in {
         systemWide = cfg.pulse.systemwide;
         daemon.config = cfg.pulse.daemonConfig;
       };
-      environment.systemPackages = with pkgs; [
-        pasystray
-        lxqt.pavucontrol-qt
-      ];
+      environment.systemPackages = with pkgs; [ pasystray lxqt.pavucontrol-qt ];
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
-        "<XF86AudioRaiseVolume>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}+"'';
-        "<XF86AudioLowerVolume>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}-"'';
+        "<XF86AudioRaiseVolume>" = ''
+          spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}+"'';
+        "<XF86AudioLowerVolume>" = ''
+          spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}-"'';
         "<XF86AudioPrev>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players previous"'';
         "<XF86AudioPlay>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players play-pause"'';
         "<XF86AudioNext>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players next"'';
         "<XF86AudioMute>" = ''spawn "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle"'';
         "<XF86AudioMicMute>" = ''spawn "${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle"'';
-        "M-<XF86AudioNext>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString config.custom.content.players.deltaSeconds}+"'';
-        "M-<XF86AudioPrev>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString config.custom.content.players.deltaSeconds}-"'';
+        "M-<XF86AudioNext>" = ''
+          spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${
+            builtins.toString config.custom.content.players.deltaSeconds
+          }+"'';
+        "M-<XF86AudioPrev>" = ''
+          spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${
+            builtins.toString config.custom.content.players.deltaSeconds
+          }-"'';
         "M-p" = ''spawn "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt"'';
       };
     })

@@ -1,8 +1,7 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let
-  cfg = config.wm.stumpwm;
+let cfg = config.wm.stumpwm;
 in {
   options = {
     wm.stumpwm = {

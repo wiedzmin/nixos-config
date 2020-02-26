@@ -1,8 +1,7 @@
 let
   deps = import ../../../nix/sources.nix;
   proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
-in
-{ config, lib, pkgs, ... }:
+in { config, lib, pkgs, ... }:
 with lib;
 
 let cfg = config.custom.xinput;
@@ -245,8 +244,9 @@ in {
           Restart = "always";
           RestartSec = 1;
           ExecStart = "/run/wrappers/bin/sudo ${proposed.xkeysnail}/bin/xkeysnail ${
-            optionalString (cfg.xkeysnail.inputDevices != [ ]) "--devices ${lib.concatStringsSep " " cfg.xkeysnail.inputDevices}"
-          } ${cfg.xkeysnail.configFile}";
+              optionalString (cfg.xkeysnail.inputDevices != [ ])
+              "--devices ${lib.concatStringsSep " " cfg.xkeysnail.inputDevices}"
+            } ${cfg.xkeysnail.configFile}";
         };
       };
 
@@ -368,24 +368,23 @@ in {
         partOf = [ "graphical-session.target" ];
         wantedBy = [ "graphical-session.target" ];
         serviceConfig = {
-            Type = "simple";
-            ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
-            ExecStart = ''
-              ${pkgs.xpointerbarrier}/bin/xpointerbarrier ${builtins.toString cfg.constraintMouse.top} \
-                                                          ${builtins.toString cfg.constraintMouse.left} \
-                                                          ${builtins.toString cfg.constraintMouse.right} \
-                                                          ${builtins.toString cfg.constraintMouse.bottom}
-            '';
+          Type = "simple";
+          ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
+          ExecStart = ''
+            ${pkgs.xpointerbarrier}/bin/xpointerbarrier ${builtins.toString cfg.constraintMouse.top} \
+                                                        ${builtins.toString cfg.constraintMouse.left} \
+                                                        ${builtins.toString cfg.constraintMouse.right} \
+                                                        ${builtins.toString cfg.constraintMouse.bottom}
+          '';
         };
       };
     })
     (mkIf cfg.xmodmap.enable {
-      services.xserver.displayManager.sessionCommands = let
-        xmodmaprc = pkgs.writeText "xmodmaprc" cfg.xmodmap.rc;
-        in ''
-          ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
-          ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
-        '';
+      services.xserver.displayManager.sessionCommands = let xmodmaprc = pkgs.writeText "xmodmaprc" cfg.xmodmap.rc;
+      in ''
+        ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
+        ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
+      '';
     })
   ];
 }

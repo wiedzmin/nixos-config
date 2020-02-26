@@ -125,51 +125,42 @@ in {
 
     (mkIf (cfg.enable && cfg.docker.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        dlint = pkgs.writeShellScriptBin "dlint"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dlint.sh; })));
-        hadolintd = pkgs.writeShellScriptBin "hadolintd"
-          (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./hadolintd.sh; })));
+        dlint = pkgs.writeShellScriptBin "dlint" (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dlint.sh; })));
+        hadolintd = pkgs.writeShellScriptBin "hadolintd" (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./hadolintd.sh; })));
         docker_containers_traits = writePythonScriptWithPythonPackages "docker_containers_traits" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
           pkgs.python3Packages.redis
-        ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_containers_traits.py; })));
+        ] (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_containers_traits.py; })));
         discover_containerized_services = writePythonScriptWithPythonPackages "discover_containerized_services" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
-        ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./discover_containerized_services.py; })));
+        ] (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./discover_containerized_services.py; })));
         remote_docker_logs = writePythonScriptWithPythonPackages "remote_docker_logs" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux
           pkgs.python3Packages.notify2
           pkgs.python3Packages.redis
-        ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./remote_docker_logs.py; })));
+        ] (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./remote_docker_logs.py; })));
         docker_shell = writePythonScriptWithPythonPackages "docker_shell" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux
           pkgs.python3Packages.notify2
           pkgs.python3Packages.redis
         ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_shell.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_shell.py; })));
         docker_swarm_services_info = writePythonScriptWithPythonPackages "docker_swarm_services_info" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
           pkgs.python3Packages.redis
           pkgs.python3Packages.libtmux
-        ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_swarm_services_info.py; })));
+        ] (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_swarm_services_info.py; })));
       };
 
       virtualisation.docker = {
@@ -186,22 +177,22 @@ in {
         '';
       };
 
-      environment.systemPackages = with pkgs; [
-        arion
-        ctop
-        discover_containerized_services
-        dive
-        dlint
-        docker_compose
-        docker_containers_traits
-        docker_shell
-        docker_swarm_services_info
-        hadolintd
-        libcgroup
-        remote_docker_logs
-        vdi2qcow2
-      ] ++ lib.optionals (config.attributes.debug.enable) [
-      ];
+      environment.systemPackages = with pkgs;
+        [
+          arion
+          ctop
+          discover_containerized_services
+          dive
+          dlint
+          docker_compose
+          docker_containers_traits
+          docker_shell
+          docker_swarm_services_info
+          hadolintd
+          libcgroup
+          remote_docker_logs
+          vdi2qcow2
+        ] ++ lib.optionals (config.attributes.debug.enable) [ ];
     })
 
     (mkIf (cfg.enable && cfg.docker.enable && cfg.docker.devdns.enable) {
@@ -237,16 +228,12 @@ in {
 
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "libvirtd" ];
 
-      networking.nat.internalInterfaces = ["virbr0"];
+      networking.nat.internalInterfaces = [ "virbr0" ];
       services.dnsmasq.extraConfig = ''
         except-interface=virbr0 # ignore virbr0 as libvirtd listens here
       '';
 
-      boot.kernelParams = [
-        "kvm.allow_unsafe_assigned_interrupts=1"
-        "kvm.ignore_msrs=1"
-        "kvm-intel.nested=1"
-      ];
+      boot.kernelParams = [ "kvm.allow_unsafe_assigned_interrupts=1" "kvm.ignore_msrs=1" "kvm-intel.nested=1" ];
       boot.kernelModules = [ "kvm-intel" ];
       boot.extraModprobeConfig = ''
         options kvm-intel nested=1
@@ -256,24 +243,25 @@ in {
       security.wrappers.spice-client-glib-usb-acl-helper.source =
         "${pkgs.spice_gtk}/bin/spice-client-glib-usb-acl-helper";
 
-      environment.systemPackages = with pkgs; [
-        kvm
-        libvirt # for `vagrant plugin install vagrant-libvirt`
-        qemu-utils
-        spice
-        spice-gtk
-        virtmanager
-        virtviewer
-      ] ++ lib.optionals (cfg.libvirt.staging.enable) [
-        x11spice
-      ];
+      environment.systemPackages = with pkgs;
+        [
+          kvm
+          libvirt # for `vagrant plugin install vagrant-libvirt`
+          qemu-utils
+          spice
+          spice-gtk
+          virtmanager
+          virtviewer
+        ] ++ lib.optionals (cfg.libvirt.staging.enable) [ x11spice ];
     })
     (mkIf (cfg.docker.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
-        "M-s d t" = ''spawn "${pkgs.docker_containers_traits}/bin/docker_containers_traits" >> showWSOnProperScreen "shell"'';
+        "M-s d t" =
+          ''spawn "${pkgs.docker_containers_traits}/bin/docker_containers_traits" >> showWSOnProperScreen "shell"'';
         "M-s d s" = ''spawn "${pkgs.docker_shell}/bin/docker_shell" >> showWSOnProperScreen "shell"'';
         "M-s d l" = ''spawn "${pkgs.remote_docker_logs}/bin/remote_docker_logs" >> showWSOnProperScreen "shell"'';
-        "M-s d i" = ''spawn "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info" >> showWSOnProperScreen "shell"'';
+        "M-s d i" =
+          ''spawn "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info" >> showWSOnProperScreen "shell"'';
       };
     })
   ];

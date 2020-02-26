@@ -84,9 +84,7 @@ in {
         message = "appearance: must provide console font name.";
       }];
 
-      environment.systemPackages = with pkgs; [
-        screenfetch
-      ];
+      environment.systemPackages = with pkgs; [ screenfetch ];
 
       fonts = {
         fontconfig = {
@@ -121,9 +119,7 @@ in {
         message = "appearance: must provide wallpapers path and image to use.";
       }];
 
-      environment.systemPackages = with pkgs; [
-        rescale-wallpaper
-      ];
+      environment.systemPackages = with pkgs; [ rescale-wallpaper ];
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.autorandr.hooks = {
@@ -133,9 +129,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.gtk.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        gtk.enable = true;
-      };
+      home-manager.users."${config.attributes.mainUser.name}" = { gtk.enable = true; };
     })
     (mkIf (cfg.enable && cfg.xresources.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -161,8 +155,8 @@ in {
           "Xft.rgba" = "none";
         };
         home.activation.xrdb = {
-          after = ["linkGeneration"];
-          before = [];
+          after = [ "linkGeneration" ];
+          before = [ ];
           data = "DISPLAY=:0 ${pkgs.xorg.xrdb}/bin/xrdb /home/${config.attributes.mainUser.name}/.Xresources";
         };
       };
@@ -180,9 +174,7 @@ in {
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./appearance.el; }));
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = {
-        "M-M1-q" = ''spawn "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources"'';
-      };
+      wm.xmonad.keybindings = { "M-M1-q" = ''spawn "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources"''; };
     })
   ];
 }

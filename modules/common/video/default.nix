@@ -50,7 +50,7 @@ in {
       };
       autorandr.hooks = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = "Autorandr hooks.";
       };
       # TODO: make external to module, as this config repo may be used by multiple machines
@@ -237,20 +237,17 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        autorandr_profiles = writePythonScriptWithPythonPackages "autorandr_profiles" [
-          pkgs.python3Packages.dmenu-python
-        ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./autorandr_profiles.py; })));
+        autorandr_profiles =
+          writePythonScriptWithPythonPackages "autorandr_profiles" [ pkgs.python3Packages.dmenu-python ]
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./autorandr_profiles.py; })));
       };
 
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "video" ];
       programs.light.enable = true;
       hardware.brillo.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; lib.optionals (cfg.staging.enable) [
-          blugon
-        ];
+        home.packages = with pkgs; lib.optionals (cfg.staging.enable) [ blugon ];
         home.file = {
           ".XCompose".text = ''
             include "${pkgs.xorg.libX11}/share/X11/locale/en_EN.UTF-8/Compose"
@@ -299,15 +296,9 @@ in {
       environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
     })
     (mkIf (cfg.enable && cfg.ddc.enable) {
-      security.wrappers = {
-        ddcutil = { source = "${pkgs.ddcutil}/bin/ddcutil"; };
-      };
+      security.wrappers = { ddcutil = { source = "${pkgs.ddcutil}/bin/ddcutil"; }; };
       boot = {
-        kernelModules = [
-          "i2c-dev"
-          "ddcci"
-          "ddcci-backlight"
-        ];
+        kernelModules = [ "i2c-dev" "ddcci" "ddcci-backlight" ];
         extraModulePackages = with config.boot.kernelPackages; [ ddcci-driver ];
         extraModprobeConfig = ''
           options ddcci autoprobe_addrs=1
@@ -320,15 +311,13 @@ in {
     })
     (mkIf (cfg.enable && cfg.autorandr.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          autorandr_profiles
-        ];
+        home.packages = with pkgs; [ autorandr_profiles ];
         programs.autorandr = {
           enable = true;
-          hooks = lib.optionalAttrs
-            (config.home-manager.users."${config.attributes.mainUser.name}".services.compton.enable) {
+          hooks =
+            lib.optionalAttrs (config.home-manager.users."${config.attributes.mainUser.name}".services.compton.enable) {
               predetect = { "kill-compton" = "${kill-compton}/bin/kill-compton"; };
-          } // cfg.autorandr.hooks;
+            } // cfg.autorandr.hooks;
           profiles = cfg.autorandr.profiles;
         };
       };
@@ -369,16 +358,10 @@ in {
         "M-C-a" = ''spawn "${pkgs.autorandr_profiles}/bin/autorandr_profiles"'';
         "M-M1-x" = ''spawn "${pkgs.autorandr}/bin/autorandr --load mobile"'';
         "M-a c" = ''spawn "${pkgs.systemd}/bin/systemctl --user restart compton.service"'';
-       };
+      };
     })
     (mkIf (cfg.enable && cfg.debug.enable) {
-      environment.systemPackages = with pkgs; [
-        xlibs.xev
-        xlibs.xprop
-        xorg.xkbcomp
-        drm_info
-        xtruss
-      ];
+      environment.systemPackages = with pkgs; [ xlibs.xev xlibs.xprop xorg.xkbcomp drm_info xtruss ];
     })
   ];
 }

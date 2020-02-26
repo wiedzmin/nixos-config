@@ -2,8 +2,7 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  cfg = config.custom.navigation;
+let cfg = config.custom.navigation;
 in {
   options = {
     custom.navigation = {
@@ -21,7 +20,7 @@ in {
       };
       webjumps.entries = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = "Webjumps entries.";
       };
       searchengines.enable = mkOption {
@@ -31,7 +30,7 @@ in {
       };
       searchengines.entries = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = "Searchengines entries.";
       };
       gmrun.enable = mkOption {
@@ -50,15 +49,7 @@ in {
       };
       gmrun.terminalApps = mkOption {
         type = types.listOf types.str;
-        default = [
-          "info"
-          "lynx"
-          "man"
-          "mc"
-          "ssh"
-          "vi"
-          "vim"
-        ];
+        default = [ "info" "lynx" "man" "mc" "ssh" "vi" "vim" ];
         description = ''
           List of apps to always run in terminal.
         '';
@@ -99,75 +90,60 @@ in {
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
         ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_prompt.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_prompt.py; })));
         search_selection = writePythonScriptWithPythonPackages "search_selection" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
-        ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_selection.py; })));
+        ] (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_selection.py; })));
         webjumps = writePythonScriptWithPythonPackages "webjumps" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
         ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./webjumps.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./webjumps.py; })));
         insert_snippet = writePythonScriptWithPythonPackages "insert_snippet" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
         ] (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./insert_snippet.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./insert_snippet.py; })));
       };
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          j4-dmenu-desktop
-        ];
-      };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ j4-dmenu-desktop ]; };
     })
     (mkIf (cfg.enable && cfg.webjumps.enable) {
-      assertions = [
-        {
-          assertion = cfg.webjumps.enable && cfg.webjumps.entries != {};
-          message = "navigation: no webjumps to follow but they are enabled.";
-        }
-      ];
+      assertions = [{
+        assertion = cfg.webjumps.enable && cfg.webjumps.entries != { };
+        message = "navigation: no webjumps to follow but they are enabled.";
+      }];
 
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${lib.strings.escapeNixString (builtins.toJSON cfg.webjumps)}
       '';
     })
     (mkIf (cfg.enable && cfg.searchengines.enable) {
-      assertions = [
-        {
-          assertion = cfg.searchengines.enable && cfg.searchengines.entries != {};
-          message = "navigation: no searchengines to follow but they are enabled.";
-        }
-      ];
+      assertions = [{
+        assertion = cfg.searchengines.enable && cfg.searchengines.entries != { };
+        message = "navigation: no searchengines to follow but they are enabled.";
+      }];
 
       custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set nav/searchengines ${lib.strings.escapeNixString (builtins.toJSON cfg.searchEngines)}
+        ${pkgs.redis}/bin/redis-cli set nav/searchengines ${
+          lib.strings.escapeNixString (builtins.toJSON cfg.searchEngines)
+        }
       '';
     })
     (mkIf (cfg.enable && cfg.gmrun.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          gmrun
-        ];
+        home.packages = with pkgs; [ gmrun ];
         home.file = {
           ".gmrunrc".text = (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./gmrunrc; })));
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./gmrunrc; })));
         };
       };
     })
     (mkIf (cfg.enable && cfg.mc.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          mc
-        ];
+        home.packages = with pkgs; [ mc ];
         xdg.configFile."mc/mc.ext".text = ''
           regex/\.([pP][dD][fF])$
               Include=ebook
@@ -216,9 +192,7 @@ in {
             enableZshIntegration = true;
           };
         };
-        home.packages = with pkgs; [
-          pueue
-        ];
+        home.packages = with pkgs; [ pueue ];
       };
       systemd.user.services."pueue-daemon" = {
         description = "Pueue daemon";
@@ -235,9 +209,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          ripgrep
-        ];
+        home.packages = with pkgs; [ ripgrep ];
         programs.emacs.extraPackages = epkgs: [
           epkgs.ace-link
           epkgs.ace-window

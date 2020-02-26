@@ -1,6 +1,5 @@
-{config, lib, ...}:
-with lib;
-{
+{ config, lib, ... }:
+with lib; {
   home-manager.users."${config.attributes.mainUser.name}" = {
     home.file = {
       ".config/alacritty/alacritty.yml".text = ''

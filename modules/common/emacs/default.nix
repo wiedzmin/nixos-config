@@ -1,11 +1,8 @@
-let
-  deps = import ../../../nix/sources.nix;
-in
-{ config, lib, pkgs, ... }:
+let deps = import ../../../nix/sources.nix;
+in { config, lib, pkgs, ... }:
 with lib;
 
-let
-  cfg = config.ide.emacs;
+let cfg = config.ide.emacs;
 in {
   options = {
     ide.emacs = {
@@ -46,10 +43,7 @@ in {
           (setq debug-on-quit t)
 
           ${builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix {
-                inherit config pkgs lib;
-              }) // { src = ./base.el; }))}
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./base.el; }))}
           ${cfg.config}
           (setq debug-on-error nil)
           (setq debug-on-quit nil)
@@ -71,11 +65,7 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      fonts = {
-        fonts = with pkgs; [
-          emacs-all-the-icons-fonts
-        ];
-      };
+      fonts = { fonts = with pkgs; [ emacs-all-the-icons-fonts ]; };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           (makeDesktopItem {
@@ -89,12 +79,8 @@ in {
 
           ispell
         ];
-        programs.zsh.sessionVariables = {
-          EDITOR = "${pkgs.emacs}/bin/emacsclient";
-        };
-        programs.bash.sessionVariables = {
-          EDITOR = "${pkgs.emacs}/bin/emacsclient";
-        };
+        programs.zsh.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
+        programs.bash.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
         programs.emacs = {
           enable = true;
           package = (pkgs.emacs26.override {
@@ -171,9 +157,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = {
-        "M-w S-e" = ''spawn "${pkgs.procps}/bin/pkill -SIGUSR2 emacs"'';
-      };
+      wm.xmonad.keybindings = { "M-w S-e" = ''spawn "${pkgs.procps}/bin/pkill -SIGUSR2 emacs"''; };
     })
   ];
 }

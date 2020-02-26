@@ -2,12 +2,10 @@ let
   deps = import ../../../nix/sources.nix;
   proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
   nixpkgs-pinned-08_02_20 = import deps.nixpkgs-pinned-08_02_20 { config.allowUnfree = true; };
-in
-{ config, lib, pkgs, ... }:
+in { config, lib, pkgs, ... }:
 with lib;
 
-let
-  cfg = config.custom.dev.python;
+let cfg = config.custom.dev.python;
 in {
   options = {
     custom.dev.python = {
@@ -28,30 +26,17 @@ in {
       };
       excludes = mkOption {
         type = types.listOf types.str;
-        default = [
-          ".git"
-          "__pycache__"
-        ];
+        default = [ ".git" "__pycache__" ];
         description = "Filesystem entries to exclude.";
       };
       ignoredErrors = mkOption {
         type = types.listOf types.str;
-        default = [
-          "C901"
-          "E124"
-          "E128"
-          "E201"
-          "E203"
-          "E211"
-          "E251"
-          "W503"
-          "W504"
-        ];
+        default = [ "C901" "E124" "E128" "E201" "E203" "E211" "E251" "W503" "W504" ];
         description = "Error codes to ignore.";
       };
       pylsExtraSourcePaths = mkOption {
         type = types.listOf types.str;
-        default = [];
+        default = [ ];
         description = "List of paths to search for Python packages, which will be fed to Python Language Server.";
       };
       emacs.enable = mkOption {
@@ -75,237 +60,170 @@ in {
           nixpkgs-pinned-08_02_20.prospector # TODO: review configuration https://github.com/PyCQA/prospector
         ];
         home.file = {
-          ".pylintrc".text = lib.generators.toINI {} { # see https://github.com/PyCQA/pylint/blob/master/pylintrc for reference
-            "MASTER" = {
-              ignore = "CVS";
-              persistent = "yes";
-              jobs = "1";
-              unsafe-load-any-extension = "no";
-              optimize-ast = "no";
+          ".pylintrc".text =
+            lib.generators.toINI { } { # see https://github.com/PyCQA/pylint/blob/master/pylintrc for reference
+              "MASTER" = {
+                ignore = "CVS";
+                persistent = "yes";
+                jobs = "1";
+                unsafe-load-any-extension = "no";
+                optimize-ast = "no";
+              };
+              "MESSAGES CONTROL" = {
+                disable = lib.concatStringsSep "," [
+                  "apply-builtin"
+                  "backtick"
+                  "basestring-builtin"
+                  "buffer-builtin"
+                  "cmp-builtin"
+                  "cmp-method"
+                  "coerce-builtin"
+                  "coerce-method"
+                  "delslice-method"
+                  "dict-iter-method"
+                  "dict-view-method"
+                  "execfile-builtin"
+                  "file-builtin"
+                  "filter-builtin-not-iterating"
+                  "getslice-method"
+                  "hex-method"
+                  "import-star-module-level"
+                  "indexing-exception"
+                  "input-builtin"
+                  "intern-builtin"
+                  "long-builtin"
+                  "long-suffix"
+                  "map-builtin-not-iterating"
+                  "metaclass-assignment"
+                  "next-method-called"
+                  "no-absolute-import"
+                  "nonzero-method"
+                  "oct-method"
+                  "old-division"
+                  "old-ne-operator"
+                  "old-octal-literal"
+                  "old-raise-syntax"
+                  "parameter-unpacking"
+                  "print-statement"
+                  "raising-string"
+                  "range-builtin-not-iterating"
+                  "raw_input-builtin"
+                  "reduce-builtin"
+                  "reload-builtin"
+                  "round-builtin"
+                  "setslice-method"
+                  "standarderror-builtin"
+                  "suppressed-message"
+                  "unichr-builtin"
+                  "unicode-builtin"
+                  "unpacking-in-except"
+                  "useless-suppression"
+                  "using-cmp-argument"
+                  "xrange-builtin"
+                  "zip-builtin-not-iterating"
+                ];
+              };
+              "REPORTS" = {
+                output-format = "text";
+                files-output = "no";
+                reports = "yes";
+                evaluation = "10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)";
+              };
+              "VARIABLES" = {
+                init-import = "no";
+                dummy-variables-rgx = "_$|dummy";
+                callbacks = "cb_,_cb";
+              };
+              "TYPECHECK" = { ignore-mixin-members = "yes"; };
+              "SPELLING" = { spelling-store-unknown-words = "no"; };
+              "SIMILARITIES" = {
+                min-similarity-lines = "4";
+                ignore-comments = "yes";
+                ignore-docstrings = "yes";
+                ignore-imports = "no";
+              };
+              "MISCELLANEOUS" = { notes = lib.concatStringsSep "," [ "FIXME" "XXX" "TODO" ]; };
+              "FORMAT" = {
+                max-line-length = builtins.toString cfg.lineLengthThreshold;
+                ignore-long-lines = "^s*(# )?<?https?://S+>?$";
+                single-line-if-stmt = "no";
+                no-space-check = lib.concatStringsSep "," [ "trailing-comma" "dict-separator" ];
+                max-module-lines = "1000";
+                indent-string = "'    '";
+                indent-after-paren = "4";
+              };
+              "LOGGING" = { logging-modules = "logging"; };
+              "BASIC" = {
+                bad-functions = lib.concatStringsSep "," [ "map" "filter" "input" ];
+                good-names = lib.concatStringsSep "," [ "map" "filter" "input" "i" "j" "k" "ex" "Run" "_" ];
+                bad-names = lib.concatStringsSep "," [ "foo" "bar" "baz" "toto" "tutu" "tata" ];
+                include-naming-hint = "no";
+                function-rgx = "[a-z_][a-z0-9_]{2,30}$";
+                function-name-hint = "[a-z_][a-z0-9_]{2,30}$";
+                variable-rgx = "[a-z_][a-z0-9_]{2,30}$";
+                variable-name-hint = "[a-z_][a-z0-9_]{2,30}$";
+                const-rgx = "(([A-Z_][A-Z0-9_]*)|(__.*__))$";
+                const-name-hint = "(([A-Z_][A-Z0-9_]*)|(__.*__))$";
+                attr-rgx = "[a-z_][a-z0-9_]{2,30}$";
+                attr-name-hint = "[a-z_][a-z0-9_]{2,30}$";
+                argument-rgx = "[a-z_][a-z0-9_]{2,30}$";
+                argument-name-hint = "[a-z_][a-z0-9_]{2,30}$";
+                class-attribute-rgx = "([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$";
+                class-attribute-name-hint = "([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$";
+                inlinevar-rgx = "[A-Za-z_][A-Za-z0-9_]*$";
+                inlinevar-name-hint = "[A-Za-z_][A-Za-z0-9_]*$";
+                class-rgx = "[A-Z_][a-zA-Z0-9]+$";
+                class-name-hint = "[A-Z_][a-zA-Z0-9]+$";
+                module-rgx = "(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$";
+                module-name-hint = "(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$";
+                method-rgx = "[a-z_][a-z0-9_]{2,30}$";
+                method-name-hint = "[a-z_][a-z0-9_]{2,30}$";
+                no-docstring-rgx = "^_";
+                docstring-min-length = "-1";
+              };
+              "ELIF" = { max-nested-blocks = "5"; };
+              "DESIGN" = {
+                max-args = "5";
+                ignored-argument-names = "_.*";
+                max-locals = "15";
+                max-returns = "6";
+                max-branches = "12";
+                max-statements = "50";
+                max-parents = "7";
+                max-attributes = "7";
+                min-public-methods = "2";
+                max-public-methods = "20";
+                max-bool-expr = "5";
+              };
+              "IMPORTS" = { deprecated-modules = lib.concatStringsSep "," [ "regsub" "TERMIOS" "Bastion" "rexec" ]; };
+              "CLASSES" = {
+                defining-attr-methods = lib.concatStringsSep "," [ "__init__" "__new__" "setUp" ];
+                valid-classmethod-first-arg = "cls";
+                valid-metaclass-classmethod-first-arg = "mcs";
+                exclude-protected = lib.concatStringsSep "," [ "_asdict" "_fields" "_replace" "_source" "_make" ];
+              };
+              "EXCEPTIONS" = { overgeneral-exceptions = lib.concatStringsSep "," [ "Exception" ]; };
             };
-            "MESSAGES CONTROL" = {
-              disable = lib.concatStringsSep "," [
-                "apply-builtin"
-                "backtick"
-                "basestring-builtin"
-                "buffer-builtin"
-                "cmp-builtin"
-                "cmp-method"
-                "coerce-builtin"
-                "coerce-method"
-                "delslice-method"
-                "dict-iter-method"
-                "dict-view-method"
-                "execfile-builtin"
-                "file-builtin"
-                "filter-builtin-not-iterating"
-                "getslice-method"
-                "hex-method"
-                "import-star-module-level"
-                "indexing-exception"
-                "input-builtin"
-                "intern-builtin"
-                "long-builtin"
-                "long-suffix"
-                "map-builtin-not-iterating"
-                "metaclass-assignment"
-                "next-method-called"
-                "no-absolute-import"
-                "nonzero-method"
-                "oct-method"
-                "old-division"
-                "old-ne-operator"
-                "old-octal-literal"
-                "old-raise-syntax"
-                "parameter-unpacking"
-                "print-statement"
-                "raising-string"
-                "range-builtin-not-iterating"
-                "raw_input-builtin"
-                "reduce-builtin"
-                "reload-builtin"
-                "round-builtin"
-                "setslice-method"
-                "standarderror-builtin"
-                "suppressed-message"
-                "unichr-builtin"
-                "unicode-builtin"
-                "unpacking-in-except"
-                "useless-suppression"
-                "using-cmp-argument"
-                "xrange-builtin"
-                "zip-builtin-not-iterating"
-              ];
-            };
-            "REPORTS" = {
-              output-format = "text";
-              files-output = "no";
-              reports = "yes";
-              evaluation = "10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)";
-            };
-            "VARIABLES" = {
-              init-import = "no";
-              dummy-variables-rgx = "_$|dummy";
-              callbacks = "cb_,_cb";
-            };
-            "TYPECHECK" = {
-              ignore-mixin-members = "yes";
-            };
-            "SPELLING" = {
-              spelling-store-unknown-words = "no";
-            };
-            "SIMILARITIES" = {
-              min-similarity-lines = "4";
-              ignore-comments = "yes";
-              ignore-docstrings = "yes";
-              ignore-imports = "no";
-            };
-            "MISCELLANEOUS" = {
-              notes = lib.concatStringsSep "," [
-                "FIXME"
-                "XXX"
-                "TODO"
-              ];
-            };
-            "FORMAT" = {
-              max-line-length = builtins.toString cfg.lineLengthThreshold;
-              ignore-long-lines = "^\s*(# )?<?https?://\S+>?$";
-              single-line-if-stmt = "no";
-              no-space-check = lib.concatStringsSep "," [
-                "trailing-comma"
-                "dict-separator"
-              ];
-              max-module-lines = "1000";
-              indent-string="'    '";
-              indent-after-paren = "4";
-            };
-            "LOGGING" = {
-              logging-modules = "logging";
-            };
-            "BASIC" = {
-              bad-functions = lib.concatStringsSep "," [
-                "map"
-                "filter"
-                "input"
-              ];
-              good-names = lib.concatStringsSep "," [
-                "map"
-                "filter"
-                "input"
-                "i"
-                "j"
-                "k"
-                "ex"
-                "Run"
-                "_"
-              ];
-              bad-names = lib.concatStringsSep "," [
-                "foo"
-                "bar"
-                "baz"
-                "toto"
-                "tutu"
-                "tata"
-              ];
-              include-naming-hint = "no";
-              function-rgx = "[a-z_][a-z0-9_]{2,30}$";
-              function-name-hint = "[a-z_][a-z0-9_]{2,30}$";
-              variable-rgx = "[a-z_][a-z0-9_]{2,30}$";
-              variable-name-hint = "[a-z_][a-z0-9_]{2,30}$";
-              const-rgx = "(([A-Z_][A-Z0-9_]*)|(__.*__))$";
-              const-name-hint = "(([A-Z_][A-Z0-9_]*)|(__.*__))$";
-              attr-rgx = "[a-z_][a-z0-9_]{2,30}$";
-              attr-name-hint = "[a-z_][a-z0-9_]{2,30}$";
-              argument-rgx = "[a-z_][a-z0-9_]{2,30}$";
-              argument-name-hint = "[a-z_][a-z0-9_]{2,30}$";
-              class-attribute-rgx = "([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$";
-              class-attribute-name-hint = "([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$";
-              inlinevar-rgx = "[A-Za-z_][A-Za-z0-9_]*$";
-              inlinevar-name-hint = "[A-Za-z_][A-Za-z0-9_]*$";
-              class-rgx = "[A-Z_][a-zA-Z0-9]+$";
-              class-name-hint = "[A-Z_][a-zA-Z0-9]+$";
-              module-rgx = "(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$";
-              module-name-hint = "(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$";
-              method-rgx = "[a-z_][a-z0-9_]{2,30}$";
-              method-name-hint = "[a-z_][a-z0-9_]{2,30}$";
-              no-docstring-rgx = "^_";
-              docstring-min-length = "-1";
-            };
-            "ELIF" = {
-              max-nested-blocks = "5";
-            };
-            "DESIGN" = {
-              max-args = "5";
-              ignored-argument-names = "_.*";
-              max-locals = "15";
-              max-returns = "6";
-              max-branches = "12";
-              max-statements = "50";
-              max-parents = "7";
-              max-attributes = "7";
-              min-public-methods = "2";
-              max-public-methods = "20";
-              max-bool-expr = "5";
-            };
-            "IMPORTS" = {
-              deprecated-modules = lib.concatStringsSep "," [
-                "regsub"
-                "TERMIOS"
-                "Bastion"
-                "rexec"
-              ];
-            };
-            "CLASSES" = {
-              defining-attr-methods = lib.concatStringsSep "," [
-                "__init__"
-                "__new__"
-                "setUp"
-              ];
-              valid-classmethod-first-arg = "cls";
-              valid-metaclass-classmethod-first-arg = "mcs";
-              exclude-protected = lib.concatStringsSep "," [
-                "_asdict"
-                "_fields"
-                "_replace"
-                "_source"
-                "_make"
-              ];
-            };
-            "EXCEPTIONS" = {
-              overgeneral-exceptions = lib.concatStringsSep "," [
-                "Exception"
-              ];
-            };
-          };
-          ".isort.cfg".text = lib.generators.toINI {} {
+          ".isort.cfg".text = lib.generators.toINI { } {
             settings = {
               line_length = builtins.toString cfg.lineLengthThreshold;
               indent = "'    '";
               multi_line_output = "2";
-              sections = lib.concatStringsSep "," [
-                "FUTURE"
-                "STDLIB"
-                "FIRSTPARTY"
-                "THIRDPARTY"
-                "LOCALFOLDER"
-              ];
+              sections = lib.concatStringsSep "," [ "FUTURE" "STDLIB" "FIRSTPARTY" "THIRDPARTY" "LOCALFOLDER" ];
               length_sort = "0";
-              forced_separate = lib.concatStringsSep "," [
-                "django.contrib"
-                "django.utils"
-              ];
+              forced_separate = lib.concatStringsSep "," [ "django.contrib" "django.utils" ];
               default_section = "FIRSTPARTY";
             };
           };
         };
-        xdg.configFile."flake8".text = lib.generators.toINI {} {
+        xdg.configFile."flake8".text = lib.generators.toINI { } {
           flake8 = {
             max-line-length = builtins.toString cfg.lineLengthThreshold;
             exclude = lib.concatStringsSep "," cfg.excludes;
             ignore = lib.concatStringsSep ", " cfg.ignoredErrors;
           };
         };
-        xdg.configFile."pycodestyle".text = lib.generators.toINI {} {
+        xdg.configFile."pycodestyle".text = lib.generators.toINI { } {
           pycodestyle = {
             exclude = lib.concatStringsSep "," cfg.excludes;
             max-line-length = builtins.toString cfg.lineLengthThreshold;
@@ -314,7 +232,7 @@ in {
             statistics = "True";
           };
         };
-        xdg.configFile."yapf/style".text = lib.generators.toINI {} {
+        xdg.configFile."yapf/style".text = lib.generators.toINI { } {
           style = {
             based_on_style = "pep8";
             align_closing_bracket_with_visual_indent = "True";
@@ -337,9 +255,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          proposed.ms-pyls
-        ];
+        home.packages = with pkgs; [ proposed.ms-pyls ];
         programs.emacs.extraPackages = epkgs: [
           epkgs.pip-requirements
           epkgs.py-yapf
