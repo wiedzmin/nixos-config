@@ -20,6 +20,12 @@ def locate_nixpkgs():
     return nixpkgs_path
 
 
+def format_config():
+    format_config_task = subprocess.Popen("format-config",
+                                           shell=True, stdout=subprocess.PIPE)
+    assert format_config_task.wait() == 0
+
+
 def build_configuration(debug=False):
     build_configuration_task = subprocess.Popen("nix build -f {0}/nixos system{1}{2}".format(
         locate_nixpkgs(),
@@ -61,6 +67,7 @@ machine = guess_machine_name()
 operations = [
     "Update current configuration",
     "Update current configuration (debug)",
+    "Update current configuration + nixfmt beforehand",
     "Select and build configuration",
     "Select and build configuration (debug)",
     "Link configuration"
@@ -74,7 +81,13 @@ if operation == "Update current configuration":
     switch_configuration()
     # ensure_kernel_update()
 elif operation == "Update current configuration (debug)":
+    os.chdir("/etc/nixos")
     build_configuration(debug=True)
+elif operation == "Update current configuration + nixfmt beforehand":
+    os.chdir("/etc/nixos")
+    format_config()
+    build_configuration()
+    switch_configuration()
 elif operation == "Select and build configuration":
     MACHINES_CONFIG_PATH = "/etc/nixos/machines"
     config_entries = os.listdir(MACHINES_CONFIG_PATH)
