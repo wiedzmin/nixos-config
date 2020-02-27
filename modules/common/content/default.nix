@@ -102,7 +102,7 @@ in {
             windows:
               - window_name: mps-youtube
                 panes:
-                  - ${pkgs.python3Packages.mps-youtube}/bin/mpsyt
+                  - ${pkgs.mps-youtube}/bin/mpsyt
           '';
         };
         home.packages = with pkgs; [
