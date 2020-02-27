@@ -58,6 +58,9 @@ in {
         } // lib.optionalAttrs (cfg.privateModules != [ ]) {
           GOPRIVATE = builtins.concatStringsSep "," cfg.privateModules;
         };
+        programs.zsh.initExtra = ''
+          path+=${cfg.goPath}/bin
+        '';
       };
     })
     (mkIf (cfg.enable && cfg.packaging.enable) {
