@@ -26,7 +26,9 @@
   :hook
   (prog-mode . fic-mode))
 
-(use-package multi-compile :ensure t)
+(use-package multi-compile
+  :custom
+  (multi-compile-completion-system 'default))
 
 (use-package company-restclient
   :after company restclient
