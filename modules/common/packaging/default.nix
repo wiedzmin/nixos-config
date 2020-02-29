@@ -149,7 +149,7 @@ in {
             nix-zsh-completions
             nix-review # https://github.com/Mic92/nix-review
             make-package-diff
-          ] ++ lib.optionals (cfg.staging.enable) [ niv nix-linter ];
+          ] ++ lib.optionals (cfg.staging.enable) [ niv nix-linter nix-query-tree-viewer ];
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {

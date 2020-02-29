@@ -286,7 +286,7 @@ in {
           gitAndTools.thicket
           gitstats
           git-quick-stats
-        ] ++ lib.optionals (cfg.staging.enable) [ onefetch overcommit gitAndTools.git-machete ];
+        ] ++ lib.optionals (cfg.staging.enable) [ onefetch overcommit gitAndTools.git-machete gitAndTools.git-my ];
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
       assertions = [{
