@@ -108,15 +108,15 @@
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "nixpkgs-proposed": {
-        "branch": "master",
+        "branch": "nixos-unstable",
         "description": "Nix Packages collection",
         "homepage": null,
         "owner": "wiedzmin",
         "repo": "nixpkgs",
-        "rev": "34978285eed1695168ca73dd3bb726b2b8e0c08d",
-        "sha256": "1i1z2bdp6b6v7z0kr989fyh7dbh46md8c13bf0s1cvcdg22drwki",
+        "rev": "dfccbe629599014a413808f64395c84d6d3f7170",
+        "sha256": "1vmj21zhk3wlnn883hr21gmvzpp7s7l9ywmqxi4nphrs791rmkk1",
         "type": "tarball",
-        "url": "https://github.com/wiedzmin/nixpkgs/archive/34978285eed1695168ca73dd3bb726b2b8e0c08d.tar.gz",
+        "url": "https://github.com/wiedzmin/nixpkgs/archive/dfccbe629599014a413808f64395c84d6d3f7170.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "yasnippet-snippets": {
