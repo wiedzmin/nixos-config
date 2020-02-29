@@ -23,6 +23,7 @@ in
   };
 
   nixpkgs = {
+    config.permittedInsecurePackages = [ "openssl-1.0.2u" ];
     overlays = [
       (import deps.emacs-overlay)
       (_: old:
