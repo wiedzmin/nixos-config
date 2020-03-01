@@ -78,7 +78,6 @@ in {
           [
             checkbashism
             fpp # for tmux fpp plugin
-            haskellPackages.arbtt # for stats viewing
             libnotify # for zsh-notify plugin
             progress # use in automation
             seturgent
