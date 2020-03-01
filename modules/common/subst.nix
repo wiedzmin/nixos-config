@@ -69,7 +69,7 @@ rec {
   nixBinary = "${pkgs.nix}/bin/nix";
   nixEnvBinary = "${pkgs.nix}/bin/nix-env";
   nixShellBinary = "${pkgs.nix}/bin/nix-shell";
-  nixfmtBinary = "${pkgs.nixfmt}/bin/nixfmt";
+  nixfmtBinary = "${nixpkgs-pinned-05_12_19.nixfmt}/bin/nixfmt";
   orgDir = config.ide.emacs.orgDir;
   orgKbPath = "/home/${config.attributes.mainUser.name}/docs/org-kb";
   orgWarningsFiledir = builtins.dirOf config.custom.pim.org.warningsFile;

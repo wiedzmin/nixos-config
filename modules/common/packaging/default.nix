@@ -111,7 +111,11 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.nix.srcfmt.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ nixfmt ]; };
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+            nixpkgs-pinned-05_12_19.nixfmt
+        ];
+      };
     })
     (mkIf (cfg.enable && cfg.nix.importers.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -149,7 +153,7 @@ in {
             nix-zsh-completions
             nix-review # https://github.com/Mic92/nix-review
             make-package-diff
-          ] ++ lib.optionals (cfg.staging.enable) [ niv nix-linter nix-query-tree-viewer ];
+          ] ++ lib.optionals (cfg.staging.enable) [ niv nixpkgs-pinned-05_12_19.nix-linter nix-query-tree-viewer ];
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {
