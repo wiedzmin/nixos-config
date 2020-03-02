@@ -30,12 +30,12 @@ in {
         default = false;
         description = "Whether to enable misc helper tools.";
       };
-      jobDbms.enable = mkOption {
+      cli.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable job dbms connectivity.";
       };
-      jobDbms.meta = mkOption {
+      cli.meta = mkOption {
         type = types.attrsOf types.attrs;
         default = { };
         description = "Job dbms metadata.";
@@ -72,15 +72,17 @@ in {
         home.packages = with pkgs; [ nixpkgs-pinned-05_12_19.nodePackages.elasticdump ];
       };
     })
-    (mkIf (cfg.jobDbms.enable && cfg.xmonad.enable) {
+    (mkIf (cfg.cli.enable && cfg.xmonad.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        dbms =
-          writePythonScriptWithPythonPackages "dbms" [ pkgs.python3Packages.dmenu-python pkgs.python3Packages.redis ]
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dbms.py; })));
+        dbms = writePythonScriptWithPythonPackages "dbms" [
+          pkgs.python3Packages.dmenu-python
+          pkgs.python3Packages.redis
+          pkgs.python3Packages.notify2
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dbms.py; })));
       };
       custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set job/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.jobDbms.meta)}
+        ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.cli.meta)}
       '';
       wm.xmonad.keybindings = { "M-C-y" = ''spawn "${pkgs.dbms}/bin/dbms" >> showWSOnProperScreen "shell"''; };
     })

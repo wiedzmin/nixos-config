@@ -530,7 +530,7 @@ in {
   tools = {
     dbms = {
       mysql.enable = true;
-      jobDbms.enable = true;
+      cli.enable = true;
       misc.enable = true;
       xmonad.enable = true;
     };
