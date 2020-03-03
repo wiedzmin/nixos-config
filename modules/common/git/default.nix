@@ -26,6 +26,11 @@ in {
         default = "upstream";
         description = "Name of upstream repo remote.";
       };
+      urlSubstitutes = mkOption {
+        type = types.attrsOf types.attrs;
+        default = { };
+        description = "Config' `insteadOf` entries mapping.";
+      };
       strictRemoteBrowsing = mkOption {
         type = types.bool;
         default = false;
@@ -245,7 +250,7 @@ in {
                 log = ''
                   ${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
               };
-            };
+            } // lib.optionalAttrs (cfg.urlSubstitutes != { }) cfg.urlSubstitutes;
 
           aliases = {
             bl = "branch -l";
