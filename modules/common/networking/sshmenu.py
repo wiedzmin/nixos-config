@@ -17,7 +17,7 @@ args = parser.parse_args()
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 
-extra_hosts_data = json.loads(r.get("job/extra_hosts"))
+extra_hosts_data = json.loads(r.get("net/extra_hosts"))
 extra_hosts = []
 for host in extra_hosts_data.values():
     extra_hosts.extend(host)
@@ -28,7 +28,7 @@ host = dmenu.show(extra_hosts, prompt="ssh to",
 if host:
     cmd = "@sshBinary@ {0}".format(host)
     if args.show_choices:
-        command_choices = json.loads(r.get("job/command_choices"))
+        command_choices = json.loads(r.get("net/command_choices"))
         choice = dmenu.show(command_choices, prompt="execute", case_insensitive=True, lines=5)
         if choice:
            cmd += " -t '{0}'".format(choice)

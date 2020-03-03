@@ -62,8 +62,8 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set job/extra_hosts ${lib.strings.escapeNixString (builtins.toJSON cfg.extraHosts)}
-        ${pkgs.redis}/bin/redis-cli set job/command_choices ${
+        ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${lib.strings.escapeNixString (builtins.toJSON cfg.extraHosts)}
+        ${pkgs.redis}/bin/redis-cli set net/command_choices ${
           lib.strings.escapeNixString (builtins.toJSON config.attributes.dev.remoteCommands)
         }
       '';
