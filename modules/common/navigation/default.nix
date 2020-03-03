@@ -117,7 +117,7 @@ in {
       }];
 
       custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set nav/webjumps ${lib.strings.escapeNixString (builtins.toJSON cfg.webjumps)}
+        ${pkgs.redis}/bin/redis-cli set nav/webjumps ${lib.strings.escapeNixString (builtins.toJSON cfg.webjumps.entries)}
       '';
     })
     (mkIf (cfg.enable && cfg.searchengines.enable) {

@@ -210,10 +210,12 @@ in {
       vpn.enable = true;
       wifi.enable = true;
       scheduling.enable = true;
+      webjumps.enable = true;
     };
     "b354e944b3".secrets = {
       enable = true;
       vpn.enable = true;
+      webjumps.enable = true;
     };
   };
 
@@ -383,6 +385,7 @@ in {
     misc.enable = true;
     emacs.enable = true;
     xmonad.enable = true;
+    webjumps.enable = true;
   };
 
   custom.networking = {
