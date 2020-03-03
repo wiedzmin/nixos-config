@@ -386,6 +386,7 @@ in {
     emacs.enable = true;
     xmonad.enable = true;
     webjumps.enable = true;
+    searchengines.enable = true;
   };
 
   custom.networking = {

@@ -128,7 +128,7 @@ in {
 
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/searchengines ${
-          lib.strings.escapeNixString (builtins.toJSON cfg.searchEngines)
+          lib.strings.escapeNixString (builtins.toJSON cfg.searchengines.entries)
         }
       '';
     })
