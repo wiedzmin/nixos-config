@@ -87,6 +87,7 @@ in {
             # build Lucid version
             withGTK2 = false;
             withGTK3 = false;
+            inherit (pkgs) imagemagick;
           });
           # TODO: scan *.el and find packages not in list below
           extraPackages = epkgs: [
