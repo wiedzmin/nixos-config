@@ -96,4 +96,5 @@ rec {
   xprintidleBinary = "${nixpkgs-pinned-05_12_19.xprintidle-ng}/bin/xprintidle-ng";
   xselBinary = "${pkgs.xsel}/bin/xsel";
   yadBinary = "${pkgs.yad}/bin/yad";
+  golangPrivateModules = builtins.concatStringsSep "," config.custom.dev.golang.privateModules;
 }
