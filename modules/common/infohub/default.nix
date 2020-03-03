@@ -114,12 +114,6 @@ in {
             };
           };
         };
-        # without it we may not be able to see new or unsee removed services
-        home.activation.removeServicesFromRedis = {
-          after = [ "linkGeneration" ];
-          before = [ ];
-          data = "${pkgs.redis}/bin/redis-cli del system/services";
-        };
       };
       environment.systemPackages = with pkgs; [ srvctl ];
     })
