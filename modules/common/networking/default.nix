@@ -72,7 +72,7 @@ in {
         ${
           builtins.concatStringsSep "\n"
           (lib.mapAttrsToList (ip: hosts: ip + "    " + (builtins.concatStringsSep " " hosts)) cfg.extraHosts)
-        };
+        }
       '';
       nixpkgs.config.packageOverrides = _: rec {
         wifi-status = pkgs.writeScriptBin "wifi-status" (builtins.readFile
