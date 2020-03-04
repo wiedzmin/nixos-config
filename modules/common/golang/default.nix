@@ -62,6 +62,12 @@ in {
           path+=${cfg.goPath}/bin
         '';
       };
+
+      ide.emacs.environment = {
+        GOPATH = cfg.goPath;
+      } // lib.optionalAttrs (cfg.privateModules != [ ]) {
+        GOPRIVATE = builtins.concatStringsSep "," cfg.privateModules;
+      };
     })
     (mkIf (cfg.enable && cfg.packaging.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

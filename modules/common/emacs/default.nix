@@ -35,12 +35,31 @@ in {
           Path to store org-mode docs under.
         '';
       };
+      environment = mkOption {
+        type = types.attrs;
+        default = { };
+        description = ''
+          Environment variabled to be passed to Emacs.
+
+          These variables should be set explicitly, using #'setenv, because
+          emacs startup methods may vary between systems and packages like
+          "exec-path-from-shell" will not always help.
+
+          For example, in tiling WMs like xmonad/stumpwm, emacs is being started
+          from simple dumb sh executable, with no env defined for interactive
+          sessions.
+        '';
+      };
       initElContent = mkOption {
         type = types.lines;
         default = ''
           ;; -*- lexical-binding: t -*-
           (setq debug-on-error t)
           (setq debug-on-quit t)
+
+          ${lib.optionalString (cfg.environment != { })
+              (builtins.concatStringsSep "\n"
+              (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
 
           ${builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./base.el; }))}

@@ -75,5 +75,3 @@
         ("C-c T" . go-tag-remove))
   :custom
   (go-tag-args '("-transform" "camelcase")))
-
-(setenv "GOPRIVATE" "@golangPrivateModules@")
