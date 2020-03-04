@@ -242,10 +242,11 @@ in {
     chromium = {
       enable = true;
       extraOpts = {
+        # === Common workstation needs=======
         AudioCaptureAllowed = true;
         VideoCaptureAllowed = true;
         PrintingEnabled = true;
-
+        # ===================================
         AutofillAddressEnabled = false;
         AutofillCreditCardEnabled = false;
         AutoplayAllowed = false;
