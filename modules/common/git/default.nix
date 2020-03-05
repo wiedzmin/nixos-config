@@ -86,7 +86,8 @@ in {
       };
       myrepos.subconfigs = mkOption {
         type = types.listOf types.str;
-        default = [ ];
+        default = builtins.attrValues
+          (builtins.mapAttrs (_: value: value + "/.mrconfig") config.custom.dev.workspaceRoots);
         description = "Myrepos subconfigs to include.";
       };
       ghq.enable = mkOption {
@@ -295,7 +296,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
       assertions = [{
-        assertion = config.custom.dev.globalWorkspaceRoot != "";
+        assertion = config.custom.dev.workspaceRoots.global != "";
         message = "git: Must provide workspace root directory for ghq tool.";
       }];
 
@@ -306,7 +307,7 @@ in {
         } // lib.optionalAttrs (config.custom.navigation.misc.enable) {
           pgg = "${pkgs.pueue}/bin/pueue add -- ${pkgs.gitAndTools.ghq}/bin/ghq get";
         };
-        programs.git.extraConfig = { "ghq" = { root = config.custom.dev.globalWorkspaceRoot; }; };
+        programs.git.extraConfig = { "ghq" = { root = config.custom.dev.workspaceRoots.global; }; };
       };
     })
     (mkIf (cfg.enable && cfg.enableNixosConfigGoodies) {

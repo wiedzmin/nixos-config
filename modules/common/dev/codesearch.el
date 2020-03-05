@@ -1,6 +1,6 @@
 (use-package codesearch
   :custom
-  (codesearch-global-csearchindex "@devWorkspaceRoot@/.csearchindex"))
+  (codesearch-global-csearchindex "@globalWorkspaceRoot@/.csearchindex"))
 
 (use-package counsel-codesearch
   :after codesearch

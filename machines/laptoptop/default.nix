@@ -294,7 +294,9 @@ in {
 
   custom.dev = {
     enable = true;
-    globalWorkspaceRoot = "/home/${config.attributes.mainUser.name}/workspace/repos";
+    workspaceRoots = {
+      global = "/home/${config.attributes.mainUser.name}/workspace/repos";
+    };
     statistics.enable = true;
     codesearch.enable = true;
     patching.enable = true;
@@ -306,8 +308,7 @@ in {
   custom.dev.git = {
     enable = true;
     pager.delta.enable = true;
-    myrepos.enable = false; # temporarily
-    myrepos.subconfigs = [ "${config.custom.dev.globalWorkspaceRoot}/.mrconfig" ];
+    myrepos.enable = true; # temporarily
     ghq = { enable = true; };
     github = {
       enable = true;

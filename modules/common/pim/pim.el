@@ -377,27 +377,11 @@
   :config
   (use-package org-capture-pop-frame)
   (deferred:$
-    (deferred:nextc
-      (deferred:wait-idle 3000)
-      (lambda () (f-entries "@orgDir@"
-                            (lambda (entry) (when (and (f-file? entry)
-                                                       (s-suffix? "org" entry)
-                                                       (not (s-contains? "journal" entry))
-                                                       (file-exists-p entry))
-                                              (push entry org-agenda-files))) t)))
-    (deferred:nextc
-      (deferred:wait-idle 10000)
-      (lambda () (f-entries "@jobWorkspaceRoot@"
-                            (lambda (entry) (when (and (f-file? entry)
-                                                       (s-suffix? "org" entry)
-                                                       (not (s-contains? "journal" entry))
-                                                       (file-exists-p entry))
-                                              (push entry org-agenda-files))) t)))
+    @pimOrgAgendaElPatch@
     (deferred:nextc
       (deferred:wait-idle 100)
       (lambda ()
-        (push "/etc/nixos/todo.org" org-agenda-files)
-        (push "/etc/nixos/emacs-todo.org" org-agenda-files))))
+        (push "/etc/nixos/todo.org" org-agenda-files))))
   ;; run some commands
   (org-add-link-type "tag" 'custom/follow-tag-link)
   (org-clock-persistence-insinuate)

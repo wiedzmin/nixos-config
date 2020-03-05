@@ -24,7 +24,6 @@ rec {
   defaultTextProcessor = config.attributes.defaultCommands.textProcessor;
   deftPath = "/home/${config.attributes.mainUser.name}/docs/deft";
   dejsonlz4Binary = "${pkgs.dejsonlz4}/bin/dejsonlz4";
-  devWorkspaceRoot = config.custom.dev.globalWorkspaceRoot;
   diffBinary = "${pkgs.diffutils}/bin/diff";
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
   dmenuBinary = "${pkgs.dmenu}/bin/dmenu";
@@ -50,6 +49,7 @@ rec {
   gitHooksDirname = config.custom.dev.git.hooks.dirName;
   gitHooksShortCircuitPatch = if config.custom.dev.git.hooks.shortCircuit then "return $exitcode" else "";
   gitSecretsBinary = "${pkgs.gitAndTools.git-secrets}/bin/git-secrets";
+  globalWorkspaceRoot = config.custom.dev.workspaceRoots.global;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
   grepBinary = "${pkgs.gnugrep}/bin/grep";
@@ -58,7 +58,7 @@ rec {
   jobInfraLogsHost = config.job."b354e944b3".secrets.infra.logsHost;
   jobInfraRemoteDockerLogsRoot = config.job."b354e944b3".secrets.infra.remoteDockerLogsRoot;
   jobInfraSwarmLeader = config.job."b354e944b3".secrets.infra.swarmLeader;
-  jobWorkspaceRoot = config.job."b354e944b3".secrets.workspaceRoot;
+  jobWorkspaceRoot = ''/home/${config.identity.secrets.userName}/${config.custom.dev.workspaceRoots."b354e944b3"}'';
   jqBinary = "${pkgs.jq}/bin/jq";
   lspPythonMsExtraPaths =
     builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
@@ -76,6 +76,7 @@ rec {
   orgWarningsFilename = config.custom.pim.org.warningsFile;
   passBinary = "${pkgs.pass}/bin/pass";
   pgcliBinary = "${nixpkgs-pinned-05_12_19.pgcli}/bin/pgcli";
+  pimOrgAgendaElPatch = config.custom.pim.org.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   pythonLibPatch = config.custom.dev.pythonLib;
   rmBinary = "${pkgs.coreutils}/bin/rm";

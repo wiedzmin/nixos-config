@@ -10,10 +10,10 @@ in {
         default = false;
         description = "Whether to enable custom development infrastructure.";
       };
-      globalWorkspaceRoot = mkOption {
-        type = types.str;
-        default = "";
-        description = "Main workspace root.";
+      workspaceRoots = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Various workspace roots meta.";
       };
       playground.enable = mkOption {
         type = types.bool;
@@ -108,8 +108,8 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ codesearch ];
         programs = {
-          zsh.sessionVariables = { CSEARCHINDEX = "${cfg.globalWorkspaceRoot}/.csearchindex"; };
-          bash.sessionVariables = { CSEARCHINDEX = "${cfg.globalWorkspaceRoot}/.csearchindex"; };
+          zsh.sessionVariables = { CSEARCHINDEX = "${cfg.workspaceRoots.global}/.csearchindex"; };
+          bash.sessionVariables = { CSEARCHINDEX = "${cfg.workspaceRoots.global}/.csearchindex"; };
         };
       };
       systemd.user.services."codesearch-reindex" = {
@@ -118,8 +118,8 @@ in {
         partOf = [ "graphical.target" ];
         serviceConfig = {
           Type = "oneshot";
-          Environment = [ "CSEARCHINDEX=${cfg.globalWorkspaceRoot}/.csearchindex" ];
-          ExecStart = "${pkgs.codesearch}/bin/cindex ${cfg.globalWorkspaceRoot}";
+          Environment = [ "CSEARCHINDEX=${cfg.workspaceRoots.global}/.csearchindex" ];
+          ExecStart = "${pkgs.codesearch}/bin/cindex ${cfg.workspaceRoots.global}";
           StandardOutput = "journal+console";
           StandardError = "inherit";
         };
@@ -243,7 +243,7 @@ in {
             session_name: dev
             windows:
               - window_name: mc
-                start_directory: ${config.custom.dev.globalWorkspaceRoot}/github.com/wiedzmin
+                start_directory: ${config.custom.dev.workspaceRoots.global}/github.com/wiedzmin
                 panes:
                   - mc
           '';

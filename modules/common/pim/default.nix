@@ -12,12 +12,54 @@ in {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable personal informationmanagement infra/tools.";
+        description = "Whether to enable personal information management infra/tools.";
       };
-      org.warningsFile = mkOption { # TODO: consider commonalizing options names
+      org.warningsFile = mkOption {
         type = types.str;
         default = "$HOME/warnings.org";
         description = "Org-mode file to place accidental deletes diff.";
+      };
+      org.agendaUpdateDelay = mkOption {
+        type = types.int;
+        default = 15000;
+        description = "Msec amount of Emacs idle time to bass before updating Org agenda.";
+      };
+      org.agendaRoots = mkOption {
+        type = types.attrs;
+        default = {
+          "${config.ide.emacs.orgDir}" = 3000;
+        } // lib.optionalAttrs (config.custom.dev.workspaceRoots != { })
+          (lib.genAttrs
+            (builtins.attrValues (lib.filterAttrs (n: v: n != "global") config.custom.dev.workspaceRoots))
+            (_: cfg.org.agendaUpdateDelay));
+        description = ''
+          Paths to search Org files for agenda.
+
+          Each entry associates with msec timedelta, which means
+          the amount of idle Emacs time to pass before performing
+          particular path crawling.
+        '';
+      };
+      org.agendaElPatch = mkOption {
+        type = types.lines;
+        default = ''
+          ${lib.concatStringsSep "\n"
+            (lib.mapAttrsToList (root: delay: ''
+              (deferred:nextc
+                (deferred:wait-idle ${builtins.toString delay})
+                (lambda () (f-entries "${root}"
+                                      (lambda (entry) (when (and (f-file? entry)
+                                                                 (s-suffix? ".org" entry)
+                                                                 (not (s-prefix? "${config.custom.browsers.sessions.firefox.path}" entry))
+                                                                 (not (s-contains? "journal" entry)) ;; maybe make option for such ignores
+                                                                 (file-exists-p entry))
+                                                        (push entry org-agenda-files))) t)))
+            '') cfg.org.agendaRoots)}
+        '';
+        visible = false;
+        readOnly = true;
+        internal = true;
+        description = "Elisp code to insert to orgmode configuration.";
       };
       scheduling.enable = mkOption {
         type = types.bool;
