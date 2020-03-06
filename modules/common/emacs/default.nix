@@ -174,6 +174,11 @@ in {
             recursive = true;
           };
         };
+        home.activation.ensureLspSessionDir = { # lsp-deferred fails otherwise
+          after = [ ];
+          before = [ "linkGeneration" ];
+          data = "mkdir -p ${cfg.dataDir}/lsp";
+        };
       };
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {

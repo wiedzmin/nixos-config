@@ -18,7 +18,7 @@
                         (highlight-lines-matching-regexp "ipdb.set_trace()")
                         (highlight-lines-matching-regexp "import wdb")
                         (highlight-lines-matching-regexp "wdb.set_trace()")))
-  (python-mode-hook . lsp)
+  (python-mode-hook . lsp-deferred)
   (python-mode-hook . flycheck-mode)
   :bind
   (:map python-mode-map

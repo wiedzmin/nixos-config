@@ -10,7 +10,7 @@
   :mode ("\\.go$" . go-mode)
   :hook
   (before-save-hook . gofmt-before-save)
-  (go-mode-hook . lsp)
+  (go-mode-hook . lsp-deferred)
   (go-mode-hook . whitespace-turn-off)
   :bind
   (:map go-mode-map
