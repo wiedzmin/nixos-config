@@ -25,19 +25,6 @@ with lib;
       type = types.str;
       default = "users";
     };
-    fonts.basic.package = mkOption {
-      type = types.package;
-      example = literalExample "pkgs.iosevka";
-      description = "The package for font to be used as basic/default in certain cases.";
-    };
-    fonts.basic.xft = mkOption {
-      type = types.str;
-      description = "The XFT font definition to be used as basic/default in certain cases.";
-    };
-    fonts.basic.raw = mkOption {
-      type = types.str;
-      description = "The 'raw' font definition to be used as basic/default in certain cases.";
-    };
     # TODO: think if this is the proper location
     fonts.xmobar = mkOption {
       description = "Font definition for XMobar";
