@@ -30,6 +30,7 @@
   (:map magit-status-mode-map
         ("E" . nil)
         ("N" . magit-notes-edit)
+        ("C-c k" . magit-process-kill)
         ("q" . custom/magit-kill-buffers))
   (:map dired-mode-map
         ("@" . magit-dired-log))
