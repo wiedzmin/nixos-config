@@ -138,11 +138,6 @@ in {
           "Xmessage*defaultButton" = "Quit";
           "Xmessage*international" = true;
 
-          "Emacs.FontBackend" = "xft,x";
-          "Emacs.menuBar" = "0";
-          "Emacs.toolBar" = "0";
-          "Emacs.verticalScrollBars" = false;
-
           "urgentOnBell" = true;
           "visualBell" = true;
 
@@ -172,6 +167,16 @@ in {
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./appearance.el; }));
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable && cfg.xresources.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        xresources.properties = {
+          "Emacs.FontBackend" = "xft,x";
+          "Emacs.menuBar" = "0";
+          "Emacs.toolBar" = "0";
+          "Emacs.verticalScrollBars" = false;
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = { "M-M1-q" = ''spawn "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources"''; };
