@@ -224,7 +224,7 @@ in {
     wallpaper = {
       enable = true;
       root = "/home/${config.attributes.mainUser.name}/blobs/wallpaper";
-      current = "mongol-winter-3.jpg";
+      current = "mongolia-spring-1.jpg";
     };
     emacs.enable = true;
     xmonad.enable = true;
