@@ -1,3 +1,4 @@
+;; consider updating code from https://github.com/emacs-lsp/lsp-python-ms
 (use-package ms-pyls-client
   :quelpa
   (ms-pyls-client :repo "wiedzmin/ms-pyls-client" :fetcher github)
