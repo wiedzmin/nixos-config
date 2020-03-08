@@ -31,19 +31,6 @@ in {
         default = { };
         description = "Config' `insteadOf` entries mapping.";
       };
-      strictRemoteBrowsing = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to treat remote git references
-          strictly, while opening them in browser.
-
-          If strict references are used, then,
-          for example opening repository link will
-          fail, if there are uncommited/unpushed
-          changes.
-        '';
-      };
       pager.diff-so-fancy.enable = mkOption {
         type = types.bool;
         default = false;
@@ -144,6 +131,11 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable Emacs git-related setup.";
+      };
+      emacs.extraConfig = mkOption {
+        type = types.lines;
+        default = '''';
+        description = "Extra settings to be added to Emacs config.";
       };
       staging.enable = mkOption {
         type = types.bool;
@@ -499,6 +491,7 @@ in {
         programs.emacs.extraPackages = epkgs:
           [
             epkgs.dired-git-info
+            epkgs.git-link
             epkgs.git-msg-prefix
             epkgs.git-timemachine
             epkgs.git-walktree
@@ -506,16 +499,11 @@ in {
             epkgs.magit-filenotify
             epkgs.magit-popup # *
             epkgs.magit-todos
-          ] ++ lib.optionals (cfg.strictRemoteBrowsing) [ epkgs.browse-at-remote ]
-          ++ lib.optionals (!cfg.strictRemoteBrowsing) [ epkgs.git-link ];
+          ];
       };
-      ide.emacs.config = ''
-        ${lib.optionalString (cfg.strictRemoteBrowsing) (builtins.readFile ./browse-at-remote.el)}
-
-        ${lib.optionalString (!cfg.strictRemoteBrowsing) (builtins.readFile ./git-link.el)}
-
-        ${builtins.readFile ./git.el}
-      '';
+      ide.emacs.config = builtins.readFile
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./git.el; })) + "\n" +
+          cfg.emacs.extraConfig;
     })
   ];
 }
@@ -523,3 +511,6 @@ in {
 # * it seems some magit-dependent packages yet depend on magit-popup in some path, so we introduced
 #   this explicit dependency and will keep it until transition to "transient" library is fully done
 #   by all affected packages. (or some other root cause of "magit-popup"" will pop up)
+
+# think of automation (maybe using existing tools) for providing branch name for Jira-related (and
+# maybe not only) projects
