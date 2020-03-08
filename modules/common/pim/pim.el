@@ -20,65 +20,53 @@
                                '((blockdiag . t))))
 
 (use-package ob-css
-  :ensure org-plus-contrib
   :commands (org-babel-execute:css
              org-babel-prep-session:css))
 
 (use-package ob-dot
-  :ensure org-plus-contrib
   :commands (org-babel-execute:dot
              org-babel-expand-body:dot))
 
 (use-package ob-ditaa
-  :ensure org-plus-contrib
   :commands (org-babel-execute:ditaa
              org-babel-prep-session:ditaa))
 
 (use-package ob-emacs-lisp
-  :ensure org-plus-contrib
   :commands (org-babel-execute:emacs-lisp
              org-babel-expand-body:emacs-lisp))
 
 (use-package ob-lisp
-  :ensure org-plus-contrib
   :commands (org-babel-execute:lisp
              org-babel-expand-body:lisp))
 
 (use-package ob-js
-  :ensure org-plus-contrib
   :commands (org-babel-execute:js
              org-babel-prep-session:js
              org-babel-variable-assignments:js))
 
 (use-package ob-latex
-  :ensure org-plus-contrib
   :commands (org-babel-execute:latex
              org-babel-expand-body:latex
              org-babel-prep-session:latex))
 
 (use-package ob-org
-  :ensure org-plus-contrib
   :commands (org-babel-execute:org
              org-babel-expand-body:org
              org-babel-prep-session:org))
 
 (use-package ob-plantuml
-  :ensure org-plus-contrib
   :commands (org-babel-execute:plantuml
              org-babel-prep-session:plantuml
              org-babel-variable-assignments:plantuml))
 
 (use-package ob-scheme
-  :ensure org-plus-contrib
   :commands (org-babel-execute:scheme
              org-babel-expand-body:scheme))
 
 (use-package ob-python
-  :ensure org-plus-contrib
   :commands (org-babel-execute:python))
 
 (use-package ob-shell
-  :ensure org-plus-contrib
   :commands (org-babel-execute:sh
              org-babel-expand-body:sh
              org-babel-execute:bash
@@ -93,7 +81,6 @@
   :commands (org-babel-execute:restclient))
 
 (use-package org
-  :ensure org-plus-contrib
   :after f
   :preface
   ;; remove read-only props from yanked text (e.g. from jabber.el chat buffer)
@@ -408,7 +395,6 @@
 (use-package orgit)
 
 (use-package ox-html
-  :ensure org-plus-contrib
   :commands (org-html-convert-region-to-html
              org-html-export-as-html
              org-html-export-to-html))
