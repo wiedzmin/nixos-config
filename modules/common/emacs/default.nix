@@ -162,6 +162,7 @@ in {
             epkgs.super-save
             epkgs.undo-propose
             epkgs.unicode-escape
+            epkgs.use-package
             epkgs.wgrep
             epkgs.ws-butler
             epkgs.yasnippet
