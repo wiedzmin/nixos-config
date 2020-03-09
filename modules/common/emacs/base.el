@@ -34,12 +34,12 @@
 (setq use-package-hook-name-suffix "")
 (put 'use-package 'lisp-indent-function 1)
 
-(use-package quelpa :ensure t :defer t)
+(use-package quelpa :defer t)
 (use-package quelpa-use-package
   :custom
   (quelpa-use-package-inhibit-loading-quelpa
    t "Improve startup performance"))
-(use-package anaphora :ensure t)
+(use-package anaphora)
 
 (use-package use-package-custom-update
   :quelpa
@@ -48,7 +48,7 @@
 
 (pinentry-start)
 
-(use-package deferred :ensure t)
+(use-package deferred)
 
 (add-hook 'emacs-startup-hook
           (lambda ()
@@ -85,7 +85,7 @@
   :custom
   (custom-file "@emacsCustomFile@"))
 
-(use-package delight :ensure t)
+(use-package delight)
 
 (use-package emacs
   :bind
@@ -206,7 +206,7 @@
 (use-package recentf
   :defer 1
   :config
-  (use-package recentf-ext :ensure t)
+  (use-package recentf-ext)
   (add-to-list 'recentf-exclude no-littering-var-directory)
   (add-to-list 'recentf-exclude no-littering-etc-directory)
   (recentf-mode t)
@@ -536,7 +536,6 @@
         ("u" . undo-propose)))
 
 (use-package wgrep
-  :ensure t
   :bind
   (:map grep-mode-map
         ("C-x C-q" . wgrep-change-to-wgrep-mode)
