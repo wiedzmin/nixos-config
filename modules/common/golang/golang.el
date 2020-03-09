@@ -34,9 +34,6 @@
                              (locate-dominating-file buffer-file-name "go.mod"))
                             ))))
 
-(use-package go-guru
-  :hook (go-mode-hook . go-guru-hl-identifier-mode))
-
 (use-package flycheck-gometalinter
   :after flycheck
   :custom

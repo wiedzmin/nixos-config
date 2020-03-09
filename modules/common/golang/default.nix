@@ -78,7 +78,6 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.emacs.extraPackages = epkgs: [
           epkgs.flycheck-gometalinter
-          epkgs.go-guru
           epkgs.go-mode
           epkgs.go-tag
           epkgs.gotest
