@@ -34,22 +34,18 @@
                              (locate-dominating-file buffer-file-name "go.mod"))
                             ))))
 
-(use-package flycheck-gometalinter
+(use-package flycheck-golangci-lint
+  ;; something is broken about epkgs in current nixpkgs, so using quelpa
+  :quelpa
+  (flycheck-golangci-lint :repo "weijiangan/flycheck-golangci-lint" :fetcher github)
   :after (flycheck go-mode)
-  :hook
-  (go-mode-hook . flycheck-gometalinter-setup)
+  :hook (go-mode-hook . flycheck-golangci-lint-setup)
   :custom
-  ;; only run fast linters
-  (flycheck-gometalinter-fast t)
-  ;; use in tests files
-  (flycheck-gometalinter-test t)
-  (flycheck-gometalinter-deadline "10s")
-  ;; gometalinter: skips 'vendor' directories and sets GO15VENDOREXPERIMENT=1
-  (flycheck-gometalinter-vendor t)
-  ;; gometalinter: only enable selected linters
-  (flycheck-gometalinter-disable-all t)
-  (flycheck-gometalinter-enable-linters
-   '("golint" "vet" "errcheck")))
+  (flycheck-golangci-lint-deadline "10s")
+  (flycheck-golangci-lint-tests t)
+  (flycheck-golangci-lint-fast t)
+  (flycheck-golangci-lint-disable-all t)
+  (flycheck-golangci-lint-enable-linters '("golint" "vet" "errcheck")))
 
 (use-package gotest
   :after (go-mode)

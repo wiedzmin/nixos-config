@@ -47,9 +47,11 @@ in {
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          gometalinter
           gomodifytags
           gotools # for gopls
+          golangci-lint
+          golint
+          errcheck
           dep
           go
         ];
@@ -77,7 +79,7 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.emacs.extraPackages = epkgs: [
-          epkgs.flycheck-gometalinter
+          epkgs.flycheck-golangci-lint
           epkgs.go-mode
           epkgs.go-tag
           epkgs.gotest
