@@ -35,3 +35,10 @@
   :custom
   (browse-url-browser-function 'browse-url-firefox) ;; TODO: sync at module level
   (browse-url-generic-program "@emacsBrowserGenericProgram@"))
+
+(use-package bruh
+  :after browse-url
+  :quelpa
+  (bruh :repo "a13/bruh" :fetcher github)
+  :custom
+  (browse-url-browser-function #'bruh-browse-url))
