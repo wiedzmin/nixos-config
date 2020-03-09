@@ -448,7 +448,8 @@
         (goto-char from)
         (insert result))))
   :hook (((yaml-mode-hook emacs-lisp-mode-hook lisp-mode-hook python-mode-hook) . custom/newline-hook)
-         ((prog-mode-hook text-mode-hook) . turn-on-auto-fill))
+         ((prog-mode-hook text-mode-hook) . turn-on-auto-fill)
+         (eval-expression-minibuffer-setup-hook . eldoc-mode))
   :bind
   (("M-g" . goto-line)
    ("M-SPC" . cycle-spacing)
@@ -489,8 +490,10 @@
 (use-package smartparens
   :after dash
   :demand t
-  :hook (((prog-mode-hook yaml-mode-hook) . smartparens-mode)
-         ((lisp-mode-hook emacs-lisp-mode-hook markdown-mode-hook) . smartparens-strict-mode))
+  :hook
+  ((prog-mode-hook yaml-mode-hook) . smartparens-mode)
+  ((lisp-mode-hook emacs-lisp-mode-hook markdown-mode-hook) . smartparens-strict-mode)
+  (eval-expression-minibuffer-setup-hook . smartparens-mode)
   :bind
   (:map smartparens-mode-map
         ;;TODO: try to make more brief keybindings
@@ -505,14 +508,6 @@
   (use-package smartparens-config)
   (show-smartparens-global-mode t)
   (sp-use-smartparens-bindings))
-
-;; TODO: use-package'ize
-(dolist (mode '(paredit-mode smartparens-mode))
-  (when (fboundp mode)
-    (add-hook 'eval-expression-minibuffer-setup-hook mode)))
-
-(add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
-(add-hook 'eval-expression-minibuffer-setup-hook #'eldoc-mode)
 
 (use-package sort
   :bind
