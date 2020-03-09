@@ -100,7 +100,7 @@ in {
         ];
         programs.zsh.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
         programs.bash.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
-        programs.emacs = {
+        programs.emacs = { # TODO: play with https://github.com/jollheef/localhost/blob/adcdadaa68fdb17c41ed51fe28b19a53861b450d/packages.nix#L74
           enable = true;
           package = (pkgs.emacs26.override {
             # build Lucid version
