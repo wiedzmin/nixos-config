@@ -20,6 +20,13 @@
                               :foreground "green"
                               :height 0.1)))))
 
+;TODO: play  with groups/workspaces
+(use-package bufler
+  :quelpa
+  (bufler :repo "alphapapa/bufler.el" :fetcher github)
+  :bind
+  ("C-x C-b" . bufler-list))
+
 (use-package avy
   :demand t
   :bind
@@ -240,7 +247,6 @@
   :bind
   (("M-<f12>" . counsel-switch-buffer)
    ("<f10>" . ivy-resume)
-   ("C-x C-b" . nil)
    :map ctl-x-map
    ("b" . counsel-switch-buffer)
    :map mode-specific-map
