@@ -15,9 +15,7 @@
   (calendar-week-start-day 1))
 
 (use-package ob-blockdiag
-  :config
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '((blockdiag . t))))
+  :commands (org-babel-execute:blockdiag))
 
 (use-package ob-css
   :commands (org-babel-execute:css
