@@ -39,13 +39,7 @@
   :quelpa
   (flycheck-golangci-lint :repo "weijiangan/flycheck-golangci-lint" :fetcher github)
   :after (flycheck go-mode)
-  :hook (go-mode-hook . flycheck-golangci-lint-setup)
-  :custom
-  (flycheck-golangci-lint-deadline "10s")
-  (flycheck-golangci-lint-tests t)
-  (flycheck-golangci-lint-fast t)
-  (flycheck-golangci-lint-disable-all t)
-  (flycheck-golangci-lint-enable-linters '("golint" "vet" "errcheck")))
+  :hook (go-mode-hook . flycheck-golangci-lint-setup))
 
 (use-package gotest
   :after (go-mode)
