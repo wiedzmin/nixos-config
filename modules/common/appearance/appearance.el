@@ -24,6 +24,18 @@
   :config
   (global-hl-line-mode 1))
 
+(use-package prism
+  :quelpa
+  (prism :repo "alphapapa/prism.el" :fetcher github)
+  :hook
+  (prog-mode-hook . prism-mode)
+  (python-mode-hook . prism-whitespace-mode)
+  :bind
+  (:map prog-mode-map
+        ("C-c C-p" . prism-mode))
+  (:map python-mode-map
+        ("C-c C-w" . prism-whitespace-mode)))
+
 (use-package time
   :config
   (display-time)
