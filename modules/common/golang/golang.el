@@ -35,7 +35,9 @@
                             ))))
 
 (use-package flycheck-gometalinter
-  :after flycheck
+  :after (flycheck go-mode)
+  :hook
+  (go-mode-hook . flycheck-gometalinter-setup)
   :custom
   ;; only run fast linters
   (flycheck-gometalinter-fast t)
@@ -47,9 +49,7 @@
   ;; gometalinter: only enable selected linters
   (flycheck-gometalinter-disable-all t)
   (flycheck-gometalinter-enable-linters
-   '("golint" "vet" "errcheck"))
-  :config
-  (flycheck-gometalinter-setup))
+   '("golint" "vet" "errcheck")))
 
 (use-package gotest
   :after (go-mode)
