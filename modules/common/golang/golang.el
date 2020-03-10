@@ -20,6 +20,8 @@
   (add-to-list 'multi-compile-alist
                '(go-mode . (("build/git" "go build -v ./..."
                              (locate-dominating-file buffer-file-name ".git"))
+                            ("build/mod" "go build -v ./..."
+                             (locate-dominating-file buffer-file-name "go.mod"))
                             ("lint/git" "golangci-lint run ./..."
                              (locate-dominating-file buffer-file-name ".git"))
                             ("lint/git/fix" "golangci-lint run --fix ./..."
