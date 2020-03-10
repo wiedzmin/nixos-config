@@ -90,6 +90,7 @@ rec {
   tmuxBinary = "${pkgs.tmux}/bin/tmux";
   tmuxDefaultSession = config.attributes.tmux.defaultSession;
   trBinary = "${pkgs.coreutils}/bin/tr";
+  urlRegex = config.attributes.urlRegex;
   wBinary = "${pkgs.procps}/bin/w";
   wcBinary = "${pkgs.coreutils}/bin/wc";
   xclipBinary = "${pkgs.xclip}/bin/xclip";

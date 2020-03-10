@@ -8,12 +8,9 @@ import notify2
 from notify2 import URGENCY_NORMAL
 from bs4 import BeautifulSoup
 
-# FIXME: remove duplication across config
-URL_REGEX = "(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
-
 
 def is_valid_url(url):
-    return re.search(URL_REGEX, url) is not None
+    return re.search("@urlRegex@", url) is not None
 
 notify2.init("collect_links_on_page")
 
