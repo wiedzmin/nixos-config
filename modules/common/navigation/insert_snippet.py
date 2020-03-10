@@ -11,4 +11,4 @@ snippets = json.loads(r.get("misc/snippets"))
 
 snippet = dmenu.show(snippets, prompt="insert", lines=10)
 if snippet:
-    os.system("@xdotoolBinary@ type \"{0}\"".format(snippet))
+    os.system("@setxkbmapBinary@ && @xdotoolBinary@ type \"{0}\"".format(snippet))

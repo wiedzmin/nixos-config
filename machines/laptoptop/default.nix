@@ -207,6 +207,7 @@ in {
       wifi.enable = true;
       scheduling.enable = true;
       webjumps.enable = true;
+      snippets.enable = true;
     };
     "b354e944b3".secrets = {
       enable = true;
@@ -299,6 +300,7 @@ in {
     misc.enable = true;
     emacs.enable = true;
     xmonad.enable = true;
+    secrets.snippets.enable = true;
   };
 
   custom.dev.git = {
@@ -381,6 +383,7 @@ in {
     gmrun.enable = true;
     mc.enable = true;
     misc.enable = true;
+    snippets.enable = true;
     emacs.enable = true;
     xmonad.enable = true;
     webjumps.enable = true;

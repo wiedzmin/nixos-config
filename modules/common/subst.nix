@@ -83,6 +83,7 @@ rec {
   screenshotsBasedir = config.custom.content.screenshots.baseDir;
   screenshotsDateFormat = config.custom.content.screenshots.dateFormat;
   sedBinary = "${pkgs.gnused}/bin/sed";
+  setxkbmapBinary = "${pkgs.xorg.setxkbmap}/bin/setxkbmap";
   sortBinary = "${pkgs.coreutils}/bin/sort";
   sshBinary = "${pkgs.openssh}/bin/ssh";
   systemTimeZone = config.time.timeZone;

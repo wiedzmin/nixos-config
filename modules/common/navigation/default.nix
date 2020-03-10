@@ -68,6 +68,16 @@ in {
           Whether to enable misc setup.
         '';
       };
+      snippets.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable snippets automation.";
+      };
+      snippets.entries = mkOption {
+        type = types.listOf types.str;
+        description = "Various text snippets, mostly for development automation.";
+        default = [ ];
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -206,6 +216,11 @@ in {
         };
         wantedBy = [ "multi-user.target" ];
       };
+    })
+    (mkIf (cfg.enable && cfg.snippets.enable) {
+      custom.housekeeping.metadataCacheInstructions = lib.optionalString (cfg.snippets.entries != [ ]) ''
+        ${pkgs.redis}/bin/redis-cli set misc/snippets ${lib.strings.escapeNixString (builtins.toJSON cfg.snippets.entries)}
+      '';
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
