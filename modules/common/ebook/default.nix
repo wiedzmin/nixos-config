@@ -64,7 +64,7 @@ in {
       };
     })
     (mkIf (cfg.xmonad.enable && cfg.readers.enable) {
-      wm.xmonad.keybindings = { "M-S-b" = ''spawn "${pkgs.bookshelf}/bin/bookshelf"''; };
+      wm.xmonad.keybindings = { "M-r b" = ''spawn "${pkgs.bookshelf}/bin/bookshelf"''; };
     })
   ];
 }

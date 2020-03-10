@@ -182,7 +182,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.xmonad.enable && cfg.bookmarks.enable) {
-      wm.xmonad.keybindings = { "M-y" = ''spawn "${pkgs.buku_add}/bin/buku_add"''; };
+      wm.xmonad.keybindings = { "M-r m" = ''spawn "${pkgs.buku_add}/bin/buku_add"''; };
     })
     (mkIf (cfg.enable && cfg.xmonad.enable && cfg.screenshots.enable) {
       wm.xmonad.keybindings = {
@@ -192,7 +192,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = { "M-i" = ''spawn "${pkgs.paste_to_ix}/bin/paste_to_ix"''; };
+      wm.xmonad.keybindings = { "M-o i" = ''spawn "${pkgs.paste_to_ix}/bin/paste_to_ix"''; };
     })
   ];
 }

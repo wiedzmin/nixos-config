@@ -28,15 +28,12 @@ let
     "M-S-j" = "windows W.swapDown";
     "M-S-k" = "windows W.swapUp";
     "M-S-q" = "io (exitWith ExitSuccess)";
-    "M-b" = ''spawn "${dmenu_select_windows}/bin/dmenu_select_windows"'';
     "M-h" = "sendMessage Shrink";
     "M-l" = "sendMessage Expand";
     "M-m" = "windows W.focusMaster";
-    "M-n" = "refresh";
     "M-t" = "withFocused $ windows . W.sink";
     "M-x a" = "windows copyToAll"; # @@ Make focused window always visible
     "M-x k" = "killAllOtherCopies"; # @@ Toggle window state back
-    "M-r" = "placeWorkplaces";
     "M-C-q" = ''spawn "xmonad --recompile; xmonad --restart"'';
     "M-q" = ''spawn "xmonad --restart"'';
     "M-S-p" = ''spawn "${dmenu_runapps}/bin/dmenu_runapps"'';
@@ -55,6 +52,9 @@ let
     "M-S-w <Up>" = "prevWS";
     "M-S-w <Down>" = "nextWS";
     "M-w M-s" = "sinkAll";
+    "M-w w" = ''spawn "${dmenu_select_windows}/bin/dmenu_select_windows"'';
+    "M-w r" = "refresh";
+    "M-w M-w" = "placeWorkplaces";
     "M-S-." = "placeFocused placePolicy";
     "M-<Right>" = "windowGo R True";
     "M-<Left>" = "windowGo L True";

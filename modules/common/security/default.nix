@@ -105,7 +105,7 @@ in {
       wm.xmonad.keybindings = {
         "<XF86ScreenSaver>" =
           ''spawn "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off"'';
-        "M-a q" = ''spawn "${pkgs.rofi-pass}/bin/rofi-pass"'';
+        "M-r p" = ''spawn "${pkgs.rofi-pass}/bin/rofi-pass"'';
       };
     })
   ];

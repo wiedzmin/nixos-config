@@ -355,9 +355,9 @@ in {
         "<XF86MonBrightnessDown>" = ''spawn "${pkgs.light}/bin/light -U ${toString cfg.backlightDelta}"'';
         "C-<XF86MonBrightnessUp>" = ''spawn "${pkgs.light}/bin/light -S 100"'';
         "C-<XF86MonBrightnessDown>" = ''spawn "${pkgs.light}/bin/light -S 20"'';
-        "M-C-a" = ''spawn "${pkgs.autorandr_profiles}/bin/autorandr_profiles"'';
+        "M-r a" = ''spawn "${pkgs.autorandr_profiles}/bin/autorandr_profiles"'';
         "M-M1-x" = ''spawn "${pkgs.autorandr}/bin/autorandr --load mobile"'';
-        "M-a c" = ''spawn "${pkgs.systemd}/bin/systemctl --user restart compton.service"'';
+        "M-r c" = ''spawn "${pkgs.systemd}/bin/systemctl --user restart compton.service"'';
       };
     })
     (mkIf (cfg.enable && cfg.debug.enable) {

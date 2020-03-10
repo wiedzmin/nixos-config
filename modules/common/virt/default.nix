@@ -259,11 +259,11 @@ in {
     })
     (mkIf (cfg.docker.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {
-        "M-s d t" =
+        "M-d t" =
           ''spawn "${pkgs.docker_containers_traits}/bin/docker_containers_traits" >> showWSOnProperScreen "shell"'';
-        "M-s d s" = ''spawn "${pkgs.docker_shell}/bin/docker_shell" >> showWSOnProperScreen "shell"'';
-        "M-s d l" = ''spawn "${pkgs.remote_docker_logs}/bin/remote_docker_logs" >> showWSOnProperScreen "shell"'';
-        "M-s d i" =
+        "M-d s" = ''spawn "${pkgs.docker_shell}/bin/docker_shell" >> showWSOnProperScreen "shell"'';
+        "M-d l" = ''spawn "${pkgs.remote_docker_logs}/bin/remote_docker_logs" >> showWSOnProperScreen "shell"'';
+        "M-d i" =
           ''spawn "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info" >> showWSOnProperScreen "shell"'';
       };
     })

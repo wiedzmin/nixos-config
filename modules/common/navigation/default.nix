@@ -246,7 +246,7 @@ in {
         "M-/" = ''spawn "${pkgs.search_selection}/bin/search_selection" >> showWSOnProperScreen "web"'';
         "M-C-/" = ''spawn "${pkgs.search_prompt}/bin/search_prompt" >> showWSOnProperScreen "web"'';
         "M-j" = ''spawn "${pkgs.webjumps}/bin/webjumps" >> showWSOnProperScreen "web"'';
-        "M-o" = ''spawn "${pkgs.insert_snippet}/bin/insert_snippet"'';
+        "M-i s" = ''spawn "${pkgs.insert_snippet}/bin/insert_snippet"'';
       };
     })
   ];

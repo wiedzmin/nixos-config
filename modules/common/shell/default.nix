@@ -475,7 +475,7 @@ in {
 
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = { "M-C-t" = ''spawn "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions"''; };
+      wm.xmonad.keybindings = { "M-r t" = ''spawn "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions"''; };
     })
   ];
 }
