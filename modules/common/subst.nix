@@ -48,6 +48,7 @@ rec {
   gitBinary = "${pkgs.git}/bin/git";
   gitHooksDirname = config.custom.dev.git.hooks.dirName;
   gitHooksShortCircuitPatch = if config.custom.dev.git.hooks.shortCircuit then "return $exitcode" else "";
+  gitIdletimeStgit = builtins.toString config.custom.dev.git.idletime.stgit;
   gitSecretsBinary = "${pkgs.gitAndTools.git-secrets}/bin/git-secrets";
   globalWorkspaceRoot = config.custom.dev.workspaceRoots.global;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
@@ -86,6 +87,7 @@ rec {
   setxkbmapBinary = "${pkgs.xorg.setxkbmap}/bin/setxkbmap";
   sortBinary = "${pkgs.coreutils}/bin/sort";
   sshBinary = "${pkgs.openssh}/bin/ssh";
+  stgitBinary = "${pkgs.gitAndTools.stgit}/bin/stg";
   systemTimeZone = config.time.timeZone;
   teeBinary = "${pkgs.coreutils}/bin/tee";
   tmuxBinary = "${pkgs.tmux}/bin/tmux";

@@ -31,6 +31,11 @@ in {
         default = { };
         description = "Config' `insteadOf` entries mapping.";
       };
+      idletime.stgit = mkOption {
+        type = types.int;
+        default = 3600;
+        description = "Seconds of X idle time to start stgit actions.";
+      };
       pager.diff-so-fancy.enable = mkOption {
         type = types.bool;
         default = false;
@@ -171,6 +176,8 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         gitlib = pkgs.writeShellScriptBin "gitlib" (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./gitlib.sh; })));
+        git-save-wip = pkgs.writeShellScriptBin "git-save-wip" (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./git-save-wip.sh; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -284,6 +291,8 @@ in {
           gitAndTools.thicket
           gitstats
           git-quick-stats
+
+          git-save-wip
         ] ++ lib.optionals (cfg.staging.enable) [ onefetch overcommit gitAndTools.git-machete gitAndTools.git-my ];
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
