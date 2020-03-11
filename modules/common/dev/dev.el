@@ -51,6 +51,8 @@
   (add-to-list 'company-backends #'company-tabnine))
 
 (use-package lsp-mode
+  :preface
+  (defvar lsp-on-touch-time 0)
   :hook (lsp-mode . company-mode)
   :bind
   (:map lsp-mode-map
@@ -65,8 +67,20 @@
   (lsp-message-project-root-warning t)
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 20)
+  (lsp-enable-folding nil)
+  (lsp-enable-completion-at-point nil)  ;?
+  (lsp-enable-symbol-highlighting nil)  ;?
+  (lsp-enable-links nil)  ;?
+  (lsp-restart 'auto-restart)
+  (lsp-client-packages nil)
   :config
-  (use-package lsp-clients))
+  (use-package lsp-clients)
+  (defadvice lsp-on-change (around lsp-on-change-hack activate)
+    ;; don't run `lsp-on-change' too frequently
+    (when (> (- (float-time (current-time))
+                lsp-on-touch-time) 30) ;; 30 seconds
+      (setq lsp-on-touch-time (float-time (current-time)))
+      ad-do-it)))
 
 (use-package lsp-ui
   :after lsp-mode avy

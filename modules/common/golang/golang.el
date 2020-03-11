@@ -16,6 +16,7 @@
   (:map go-mode-map
         ("C-c C-c" . multi-compile-run))
   :config
+  (use-package lsp-go)
   (setq gofmt-command "goimports")
   (add-to-list 'multi-compile-alist
                '(go-mode . (("build/git" "go build -v ./..."
