@@ -426,11 +426,8 @@ in {
         message = "git: automatic updates fetching requires myrepos setup to be enabled.";
       }];
 
-      systemd.user.timers."git-fetch-updates" = {
-        description = "Fetch updates from registered git upstream(s)";
-        wantedBy = [ "timers.target" ];
-        timerConfig = { OnCalendar = cfg.fetchUpdates.when; };
-      };
+      systemd.user.timers."git-fetch-updates" =
+        renderTimer "Fetch updates from registered git upstream(s)" "1m" "2m" cfg.fetchUpdates.when;
     })
     (mkIf (cfg.enable && cfg.pushUpdates.enable) {
       assertions = [{
@@ -455,11 +452,8 @@ in {
         message = "git: automatic updates pushing requires myrepos setup to be enabled.";
       }];
 
-      systemd.timers."git-push-updates" = {
-        description = "Push updates to registered git upstream(s)";
-        wantedBy = [ "timers.target" ];
-        timerConfig = { OnCalendar = cfg.pushUpdates.when; };
-      };
+      systemd.timers."git-push-updates" =
+        renderTimer "Push updates to registered git upstream(s)" "10m" "15m" cfg.pushUpdates.when;
     })
     (mkIf (cfg.enable && cfg.saveWip.enable) {
       assertions = [{
@@ -485,11 +479,8 @@ in {
         message = "git: automatic WIP saving requires myrepos setup to be enabled.";
       }];
 
-      systemd.user.timers."git-save-wip" = {
-        description = "Save work-in-progress in registered git repo(s)";
-        wantedBy = [ "timers.target" ];
-        timerConfig = { OnCalendar = cfg.saveWip.when; };
-      };
+      systemd.user.timers."git-save-wip" =
+        renderTimer "Save work-in-progress in registered git repo(s)" "2m" "3m" cfg.saveWip.when;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

@@ -24,4 +24,15 @@ rec {
         chmod a+x $out/bin/${pname}
       '';
     };
+  renderTimer = desc: boot: active: cal: {
+    description = "${desc}";
+    wantedBy = [ "timers.target" ];
+    timerConfig = lib.optionalAttrs (boot != "") {
+      OnBootSec = "${boot}";
+    } // lib.optionalAttrs (active != "") {
+      OnUnitActiveSec = "${active}";
+    } // lib.optionalAttrs (cal != "") {
+      OnCalendar = "${cal}";
+    };
+  };
 }

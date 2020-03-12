@@ -1,4 +1,5 @@
 { config, lib, pkgs, ... }:
+with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
 let cfg = config.custom.housekeeping;
@@ -105,11 +106,7 @@ in {
           StandardError = "inherit";
         };
       };
-      systemd.user.timers."clean-trash" = {
-        description = "Clean trash";
-        wantedBy = [ "timers.target" ];
-        timerConfig = { OnCalendar = cfg.cleanTrash.calendarTimespec; };
-      };
+      systemd.user.timers."clean-trash" = renderTimer "Clean trash" "" "" cfg.cleanTrash.calendarTimespec;
     })
     (mkIf (cfg.enable && cfg.purgeExpired.enable) {
       assertions = [{
@@ -131,11 +128,7 @@ in {
           StandardError = "inherit";
         };
       };
-      systemd.user.timers."purge-home-cache" = {
-        description = "Purge homedir cache";
-        wantedBy = [ "timers.target" ];
-        timerConfig = { OnCalendar = cfg.purgeExpired.calendarTimespec; };
-      };
+      systemd.user.timers."purge-home-cache" = renderTimer "Purge homedir cache" "" "" cfg.purgeExpired.calendarTimespec;
       systemd.user.services."purge-temp-files" = {
         description = "Purge temporary files";
         serviceConfig = {
@@ -151,11 +144,7 @@ in {
           StandardError = "inherit";
         };
       };
-      systemd.user.timers."purge-temp-files" = {
-        description = "Purge temporary files";
-        wantedBy = [ "timers.target" ];
-        timerConfig = { OnCalendar = cfg.purgeExpired.calendarTimespec; };
-      };
+      systemd.user.timers."purge-temp-files" = renderTimer "Purge temporary files" "" "" cfg.purgeExpired.calendarTimespec;
     })
     (mkIf (cfg.enable && cfg.orderScreenshots.enable) {
       assertions = [{
@@ -179,11 +168,7 @@ in {
           StandardError = "inherit";
         };
       };
-      systemd.user.timers."order-screenshots" = {
-        description = "Screenshots ordering";
-        wantedBy = [ "timers.target" ];
-        timerConfig = { OnCalendar = cfg.orderScreenshots.calendarTimespec; };
-      };
+      systemd.user.timers."order-screenshots" = renderTimer "Screenshots ordering" "" "" cfg.orderScreenshots.calendarTimespec;
     })
     (mkIf cfg.fsDeduplication.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {

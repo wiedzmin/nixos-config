@@ -480,14 +480,8 @@ in {
           StandardError = "inherit";
         };
       };
-      systemd.user.timers."backup-current-session-firefox" = {
-        description = "Backup current firefox session (tabs)";
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnBootSec = cfg.sessions.saveFrequency;
-          OnUnitActiveSec = cfg.sessions.saveFrequency;
-        };
-      };
+      systemd.user.timers."backup-current-session-firefox" =
+        renderTimer "Backup current firefox session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
     })
     (mkIf (cfg.enable && cfg.aux.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

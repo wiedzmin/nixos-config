@@ -1,4 +1,5 @@
 { config, lib, pkgs, ... }:
+with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
 let cfg = config.custom.dev;
@@ -124,14 +125,7 @@ in {
           StandardError = "inherit";
         };
       };
-      systemd.user.timers."codesearch-reindex" = {
-        description = "Codesearch index updating";
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnBootSec = "10min";
-          OnUnitActiveSec = "2h";
-        };
-      };
+      systemd.user.timers."codesearch-reindex" = renderTimer "Codesearch index updating" "10min" "2h" "";
     })
     (mkIf (cfg.codesearch.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

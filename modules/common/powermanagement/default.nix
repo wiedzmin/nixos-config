@@ -103,13 +103,7 @@ in {
       };
     })
     (mkIf (cfg.batteryManagement.enable) {
-      systemd.user.timers."lowbatt" = {
-        description = "check battery level";
-        timerConfig.OnBootSec = "1m";
-        timerConfig.OnUnitInactiveSec = "1m";
-        timerConfig.Unit = "lowbatt.service";
-        wantedBy = [ "timers.target" ];
-      };
+      systemd.user.timers."lowbatt" = renderTimer "check battery level" "1m" "1m" "";
       systemd.user.services."lowbatt" = {
         description = "battery level notifier";
         serviceConfig.PassEnvironment = "DISPLAY";

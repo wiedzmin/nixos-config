@@ -135,14 +135,7 @@ in {
           StandardError = "inherit";
         };
       };
-      systemd.user.timers."nix-update-index" = {
-        description = "Update nix packages metadata index";
-        wantedBy = [ "timers.target" ];
-        timerConfig = {
-          OnBootSec = "1h";
-          OnUnitActiveSec = "12h";
-        };
-      };
+      systemd.user.timers."nix-update-index" = renderTimer "Update nix packages metadata index" "1h" "12h" "";
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
