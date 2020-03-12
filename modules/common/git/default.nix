@@ -411,7 +411,6 @@ in {
 
       systemd.user.services."git-fetch-updates" = {
         description = "Fetch updates from registered git upstream(s)";
-        path = pathPkgs;
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.mr}/bin/mr update";
@@ -441,7 +440,6 @@ in {
 
       systemd.services."git-push-updates" = {
         description = "Push updates to registered git upstream(s)";
-        path = pathPkgs;
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.mr}/bin/mr push";
@@ -471,7 +469,6 @@ in {
 
       systemd.user.services."git-save-wip" = {
         description = "Save work-in-progress in registered git repo(s)";
-        path = pathPkgs;
         serviceConfig = {
           Type = "oneshot";
           ExecStart = ''
