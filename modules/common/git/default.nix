@@ -1,4 +1,5 @@
 { config, lib, pkgs, ... }:
+with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
 let
@@ -404,10 +405,16 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.fetchUpdates.enable) {
-      assertions = [{
-        assertion = cfg.myrepos.enable;
-        message = "git: automatic updates fetching requires myrepos setup to be enabled.";
-      }];
+      assertions = [
+        {
+          assertion = cfg.myrepos.enable;
+          message = "git: automatic updates fetching requires myrepos setup to be enabled.";
+        }
+        {
+          assertion = cfg.fetchUpdates.when != "";
+          message = "git: automatic updates fetching is enabled while not scheduled.";
+        }
+      ];
 
       systemd.user.services."git-fetch-updates" = {
         description = "Fetch updates from registered git upstream(s)";
@@ -419,21 +426,20 @@ in {
           StandardError = "inherit";
         };
       };
-    })
-    (mkIf (cfg.enable && cfg.fetchUpdates.enable && cfg.fetchUpdates.when != "") {
-      assertions = [{
-        assertion = cfg.myrepos.enable;
-        message = "git: automatic updates fetching requires myrepos setup to be enabled.";
-      }];
-
       systemd.user.timers."git-fetch-updates" =
         renderTimer "Fetch updates from registered git upstream(s)" "1m" "2m" cfg.fetchUpdates.when;
     })
     (mkIf (cfg.enable && cfg.pushUpdates.enable) {
-      assertions = [{
-        assertion = cfg.myrepos.enable;
-        message = "git: automatic updates pushing requires myrepos setup to be enabled.";
-      }];
+      assertions = [
+        {
+          assertion = cfg.myrepos.enable;
+          message = "git: automatic updates pushing requires myrepos setup to be enabled.";
+        }
+        {
+          assertion = cfg.pushUpdates.when != "";
+          message = "git: automatic updates pushing is enabled while not scheduled.";
+        }
+      ];
 
       systemd.services."git-push-updates" = {
         description = "Push updates to registered git upstream(s)";
@@ -445,21 +451,20 @@ in {
           StandardError = "inherit";
         };
       };
-    })
-    (mkIf (cfg.enable && cfg.pushUpdates.enable && cfg.pushUpdates.when != "") {
-      assertions = [{
-        assertion = cfg.myrepos.enable;
-        message = "git: automatic updates pushing requires myrepos setup to be enabled.";
-      }];
-
       systemd.timers."git-push-updates" =
         renderTimer "Push updates to registered git upstream(s)" "10m" "15m" cfg.pushUpdates.when;
     })
     (mkIf (cfg.enable && cfg.saveWip.enable) {
-      assertions = [{
-        assertion = cfg.myrepos.enable;
-        message = "git: automatic WIP saving requires myrepos setup to be enabled.";
-      }];
+      assertions = [
+        {
+          assertion = cfg.myrepos.enable;
+          message = "git: automatic WIP saving requires myrepos setup to be enabled.";
+        }
+        {
+          assertion = cfg.saveWip.when != "";
+          message = "git: automatic WIP saving is enabled while not scheduled.";
+        }
+      ];
 
       systemd.user.services."git-save-wip" = {
         description = "Save work-in-progress in registered git repo(s)";
@@ -472,13 +477,6 @@ in {
           StandardError = "inherit";
         };
       };
-    })
-    (mkIf (cfg.enable && cfg.saveWip.enable && cfg.saveWip.when != "") {
-      assertions = [{
-        assertion = cfg.myrepos.enable;
-        message = "git: automatic WIP saving requires myrepos setup to be enabled.";
-      }];
-
       systemd.user.timers."git-save-wip" =
         renderTimer "Save work-in-progress in registered git repo(s)" "2m" "3m" cfg.saveWip.when;
     })
