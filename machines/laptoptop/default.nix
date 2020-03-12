@@ -306,15 +306,25 @@ in {
   custom.dev.git = {
     enable = true;
     pager.delta.enable = true;
-    myrepos.enable = true; # temporarily
+    myrepos.enable = true;
     ghq = { enable = true; };
     github = {
       enable = true;
       user = "wiedzmin";
     };
-    fetchUpdates.enable = false; # temporarily; bootTimespec = "1min"; activeTimespec = "30min";
-    pushUpdates.enable = false; # temporarily; calendar = "*-*-* 18:00:00";
-    saveWip.enable = false; # temporarily; bootTimespec = "30sec"; activeTimespec = "1hour";
+    # TODO: think of what timespecs do we need for services below
+    fetchUpdates = {
+      enable = true;
+      when = "hourly";
+    };
+    pushUpdates = {
+      enable = true;
+      when = "*-*-* 18:00:00";
+    };
+    saveWip = {
+      enable = true;
+      when = "hourly";
+    };
     emacs.enable = true;
   };
 
