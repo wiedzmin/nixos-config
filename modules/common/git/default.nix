@@ -334,22 +334,21 @@ in {
         home.file = {
           ".mrtrust".text = builtins.concatStringsSep "\n" cfg.myrepos.subconfigs;
           # TODO: review https://github.com/RichiH/myrepos/blob/master/mrconfig.complex
+          # TODO: consider stage and commit all WIP before pushing
           ".mrconfig".text = ''
             [DEFAULT]
+            lib =
+              on_master() {
+                test $(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD) = "master"
+              }
             update =
+              FORCE_STG=yes ${pkgs.git-save-wip}/bin/git-save-wip .
               ${pkgs.git}/bin/git fetch origin
               ${pkgs.git}/bin/git rebase origin/$(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD)
             savewip =
-              if [[ ! -z $(${pkgs.git}/bin/git status --porcelain) ]]; then
-                ${pkgs.git}/bin/git add .
-                ${pkgs.git}/bin/git commit -m "WIP $(${pkgs.coreutils}/bin/date -R)"
-              else
-                return 0
-              fi
+              ${pkgs.git-save-wip}/bin/git-save-wip .
             push =
-              if [[ $(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD) =~ master ]]; then
-                echo master is active, skipping...
-              else
+              if ! on_master; then
                 ${pkgs.git}/bin/git push origin $(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD)
               fi
             usync =
@@ -476,7 +475,7 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = ''
-            ${pkgs.bash}/bin/bash -c "[[ $(${pkgs.xprintidle-ng}/bin/xprintidle-ng) -ge $((3600*1000)) ]] && ${pkgs.mr}/bin/mr savewip"''; # TODO: only when not on master
+            ${pkgs.bash}/bin/bash -c "${pkgs.mr}/bin/mr savewip"'';
           WorkingDirectory = "/home/${config.attributes.mainUser.name}";
           StandardOutput = "journal+console";
           StandardError = "inherit";
