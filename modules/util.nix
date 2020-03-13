@@ -35,4 +35,7 @@ rec {
       OnCalendar = "${cal}";
     };
   };
+  renderHosts = metadata:
+    builtins.concatStringsSep "\n"
+      (lib.mapAttrsToList (ip: meta: ip + "    " + (builtins.concatStringsSep " " meta.hostnames)) metadata);
 }

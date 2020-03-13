@@ -406,6 +406,7 @@ in {
     messengers.enable = true;
     scripts.enable = true;
     xmonad.enable = true;
+    extraHosts.enable = true;
     secrets = {
       enable = true;
       vpn.enable = true;

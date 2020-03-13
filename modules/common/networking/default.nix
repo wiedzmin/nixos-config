@@ -51,9 +51,14 @@ in {
         default = false;
         description = "Whether to enable XMonad keybindings.";
       };
-      extraHosts = mkOption {
+      extraHosts.enable = mkOption {
+        type = types.bool;
+        description = "Whether to enable extra hosts.";
+        default = false;
+      };
+      extraHosts.entries = mkOption {
         type = types.attrs;
-        description = "Extra hosts.";
+        description = "Extra hosts metadata.";
         default = { };
       };
     };
@@ -62,16 +67,8 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${lib.strings.escapeNixString (builtins.toJSON cfg.extraHosts)}
         ${pkgs.redis}/bin/redis-cli set net/command_choices ${
           lib.strings.escapeNixString (builtins.toJSON config.attributes.dev.remoteCommands)
-        }
-      '';
-      networking.extraHosts = ''
-        127.0.0.1   ${config.networking.hostName}
-        ${
-          builtins.concatStringsSep "\n"
-          (lib.mapAttrsToList (ip: hosts: ip + "    " + (builtins.concatStringsSep " " hosts)) cfg.extraHosts)
         }
       '';
       nixpkgs.config.packageOverrides = _: rec {
@@ -84,6 +81,23 @@ in {
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
       };
+    })
+    (mkIf (cfg.enable && cfg.extraHosts.enable) {
+      networking.extraHosts = ''
+        127.0.0.1   ${config.networking.hostName}
+        ${renderHosts cfg.extraHosts.entries}
+      '';
+
+      home-manager.users."${config.attributes.mainUser.name}".programs.ssh.matchBlocks = lib.mapAttrs' (_: meta:
+        lib.nameValuePair (builtins.head meta.hostnames) {
+          hostname = "${builtins.head meta.hostnames}";
+          user = "${meta.user}";
+        }) cfg.extraHosts.entries;
+
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${lib.strings.escapeNixString
+          (builtins.toJSON (lib.mapAttrs (_: meta: meta.hostnames) cfg.extraHosts.entries))}
+      '';
     })
     (mkIf (cfg.bluetooth.enable) {
       hardware = {
