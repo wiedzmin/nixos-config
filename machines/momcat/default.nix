@@ -121,7 +121,6 @@ in {
     };
     tlp.enable = true;
     acpid.enable = true;
-    arbtt.enable = true;
   };
 
   services.xserver = {
@@ -133,11 +132,11 @@ in {
     desktopManager = {
       xterm.enable = false;
       gnome3.enable = true;
-      default = "none";
     };
     displayManager = {
       lightdm.enable = true;
       gdm.enable = false;
+      defaultSession = "gnome";
     };
     xkbOptions = "caps:none";
     layout = "us,ru";
@@ -154,20 +153,20 @@ in {
   system.stateVersion = "19.03";
 
   attributes.mainUser = {
-    name = config.secrets.identity.userName;
-    fullName = config.secrets.identity.fullName;
-    email = config.secrets.identity.email;
+    name = config.identity.secrets.userName;
+    fullName = config.identity.secrets.fullName;
+    email = config.identity.secrets.email;
   };
 
   users.extraUsers."${config.attributes.mainUser.name}" = {
     isNormalUser = true;
     uid = 1000;
-    description = config.secrets.identity.fullName;
+    description = config.identity.secrets.fullName;
     shell = pkgs.zsh;
     extraGroups = [ "wheel" ];
   };
 
-  appearance = {
+  custom.appearance = {
     enable = true;
     fonts = {
       antialias = true;
@@ -175,24 +174,27 @@ in {
     };
   };
 
-  browsers = {
+  custom.browsers = {
     enable = true;
     firefox.enable = true;
     chromium.enable = true;
   };
 
-  media = {
+  custom.sound = {
     enable = true;
     pulse = {
       enable = true;
       daemonConfig = { flat-volumes = "no"; };
     };
-    opengl.enable = true;
   };
 
-  polkit-silent-auth.enable = true;
+  custom.security = {
+    enable = true;
+    pinentryFlavor = "qt";
+    polkit.silentAuth = true;
+  };
 
-  xinput = {
+  custom.xinput = {
     hardware.enable = true;
     xmodmap = {
       enable = true;
@@ -212,6 +214,13 @@ in {
     };
   };
 
+  custom.video = {
+    enable = true;
+    opengl.enable = true;
+    autorandr.enable = true;
+    screenlocker.enable = true;
+  };
+
   themes.zenburn.enable = true;
 
   home-manager.users."${config.attributes.mainUser.name}" = {
@@ -227,22 +236,6 @@ in {
     programs.direnv = {
       enable = true;
       enableZshIntegration = true;
-    };
-    services.compton = {
-      enable = true;
-      fade = true;
-      fadeDelta = 5;
-      fadeSteps = [ "0.04" "0.04" ];
-      backend = "glx";
-      vSync = "opengl-swc";
-      package = pkgs.compton-git;
-      extraOptions = ''
-        clear-shadow = true;
-        glx-no-rebind-pixmap = true;
-        glx-no-stencil = true;
-        paint-on-overlay = true;
-        xrender-sync-fence = true;
-      '';
     };
     home.packages = with pkgs; [ anydesk ];
   };
