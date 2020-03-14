@@ -143,13 +143,6 @@ in {
           pkgs.python3Packages.notify2
         ] (builtins.readFile (pkgs.substituteAll
           ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./discover_containerized_services.py; })));
-        remote_docker_logs = writePythonScriptWithPythonPackages "remote_docker_logs" [
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.libtmux
-          pkgs.python3Packages.notify2
-          pkgs.python3Packages.redis
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./remote_docker_logs.py; })));
         docker_shell = writePythonScriptWithPythonPackages "docker_shell" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux
@@ -157,13 +150,6 @@ in {
           pkgs.python3Packages.redis
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_shell.py; })));
-        docker_swarm_services_info = writePythonScriptWithPythonPackages "docker_swarm_services_info" [
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.notify2
-          pkgs.python3Packages.redis
-          pkgs.python3Packages.libtmux
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_swarm_services_info.py; })));
       };
 
       virtualisation.docker = {

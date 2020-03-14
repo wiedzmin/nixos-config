@@ -455,6 +455,7 @@ in {
   custom.pim = {
     enable = true;
     emacs.enable = true;
+    secrets.enable = true;
   };
 
   custom.power-management = {

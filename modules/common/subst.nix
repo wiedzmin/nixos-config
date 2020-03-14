@@ -50,15 +50,11 @@ rec {
   gitHooksShortCircuitPatch = if config.custom.dev.git.hooks.shortCircuit then "return $exitcode" else "";
   gitIdletimeStgit = builtins.toString config.custom.dev.git.idletime.stgit;
   gitSecretsBinary = "${pkgs.gitAndTools.git-secrets}/bin/git-secrets";
-  globalWorkspaceRoot = config.custom.dev.workspaceRoots.global;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
   grepBinary = "${pkgs.gnugrep}/bin/grep";
   iwgetidBinary = "${pkgs.wirelesstools}/bin/iwgetid";
   ixBinary = "${pkgs.ix}/bin/ix";
-  jobInfraLogsHost = config.job."b354e944b3".secrets.infra.logsHost;
-  jobInfraRemoteDockerLogsRoot = config.job."b354e944b3".secrets.infra.remoteDockerLogsRoot;
-  jobInfraSwarmLeader = config.job."b354e944b3".secrets.infra.swarmLeader;
   jqBinary = "${pkgs.jq}/bin/jq";
   lspPythonMsExtraPaths =
     builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
@@ -100,4 +96,6 @@ rec {
   xprintidleBinary = "${nixpkgs-pinned-05_12_19.xprintidle-ng}/bin/xprintidle-ng";
   xselBinary = "${pkgs.xsel}/bin/xsel";
   yadBinary = "${pkgs.yad}/bin/yad";
+} // lib.optionalAttrs (config.ide.emacs.enable) {
+  globalWorkspaceRoot = config.custom.dev.workspaceRoots.global;
 }
