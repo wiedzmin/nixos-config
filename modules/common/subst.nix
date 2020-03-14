@@ -59,7 +59,6 @@ rec {
   jobInfraLogsHost = config.job."b354e944b3".secrets.infra.logsHost;
   jobInfraRemoteDockerLogsRoot = config.job."b354e944b3".secrets.infra.remoteDockerLogsRoot;
   jobInfraSwarmLeader = config.job."b354e944b3".secrets.infra.swarmLeader;
-  jobWorkspaceRoot = ''/home/${config.identity.secrets.userName}/${config.custom.dev.workspaceRoots."b354e944b3"}'';
   jqBinary = "${pkgs.jq}/bin/jq";
   lspPythonMsExtraPaths =
     builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
