@@ -30,7 +30,7 @@ in {
           "${config.ide.emacs.orgDir}" = 3000;
         } // lib.optionalAttrs (config.custom.dev.workspaceRoots != { })
           (lib.genAttrs
-            (builtins.attrValues (lib.filterAttrs (n: v: n != "global") config.custom.dev.workspaceRoots))
+            (builtins.attrValues (lib.filterAttrs (n: _: n != "global") config.custom.dev.workspaceRoots))
             (_: cfg.org.agendaUpdateDelay));
         description = ''
           Paths to search Org files for agenda.
