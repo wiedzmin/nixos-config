@@ -333,7 +333,8 @@ in {
     (mkIf (cfg.enable && cfg.myrepos.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
-          ".mrtrust".text = builtins.concatStringsSep "\n" cfg.myrepos.subconfigs;
+          ".mrtrust".text = builtins.concatStringsSep "\n"
+            (cfg.myrepos.subconfigs ++ ["/home/${config.attributes.mainUser.name}/.mrconfig"]);
           # TODO: review https://github.com/RichiH/myrepos/blob/master/mrconfig.complex
           # TODO: consider stage and commit all WIP before pushing
           ".mrconfig".text = ''
