@@ -25,12 +25,11 @@ def format_config():
                                            shell=True, stdout=subprocess.PIPE)
     assert format_config_task.wait() == 0
 
-
-def build_configuration(debug=False):
+def build_configuration(path=None, debug=False):
     build_configuration_task = subprocess.Popen("nix build -f {0}/nixos system{1}{2}".format(
         locate_nixpkgs(),
         " --show-trace" if debug else "",
-        ' -I nixos-config="/etc/nixos/configuration.nix"'
+        ' -I nixos-config="{0}"'.format(path if path else "/etc/nixos/configuration.nix")
     ), shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
     result = build_configuration_task.wait()
     if result in [1, 100]:
