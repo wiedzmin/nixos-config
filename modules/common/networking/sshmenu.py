@@ -20,12 +20,20 @@ r = redis.Redis(host='localhost', port=6379, db=0)
 extra_hosts_data = json.loads(r.get("net/extra_hosts"))
 extra_hosts = []
 for host in extra_hosts_data.values():
-    extra_hosts.extend(host)
+    extra_hosts.append(host)
 
 host = dmenu.show(extra_hosts, prompt="ssh to",
                   case_insensitive=True, lines=10)
 
 if host:
+    vpn_meta = json.loads(r.get("net/hosts_vpn"))
+    host_vpn = vpn_meta.get(host, None)
+    if host_vpn:
+        vpn_is_up = r.get("vpn/{0}/is_up".format(host_vpn)).decode() == "yes"
+        if not vpn_is_up:
+            vpn_start_task = subprocess.Popen("vpnctl --start {0}".format(host_vpn),
+                                              shell=True, stdout=subprocess.PIPE)
+            assert vpn_start_task.wait() == 0
     cmd = "@sshBinary@ {0}".format(host)
     if args.show_choices:
         command_choices = json.loads(r.get("net/command_choices"))

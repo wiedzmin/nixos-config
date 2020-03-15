@@ -61,6 +61,11 @@ in {
         description = "Extra hosts metadata.";
         default = { };
       };
+      vpnMeta = mkOption {
+        type = types.attrs;
+        description = "VPN metadata.";
+        default = { };
+      };
     };
   };
 
@@ -74,10 +79,16 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         wifi-status = pkgs.writeScriptBin "wifi-status" (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./wifi-status.sh; })));
+        vpnctl = writePythonScriptWithPythonPackages "vpnctl" [
+          pkgs.python3Packages.notify2
+          pkgs.python3Packages.redis
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./vpnctl.py; })));
         sshmenu = writePythonScriptWithPythonPackages "sshmenu" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux
           pkgs.python3Packages.redis
+          pkgs.vpnctl
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
       };
@@ -96,7 +107,15 @@ in {
 
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${lib.strings.escapeNixString
-          (builtins.toJSON (lib.mapAttrs (_: meta: meta.hostnames) cfg.extraHosts.entries))}
+          (builtins.toJSON (lib.mapAttrs (_: meta: builtins.head meta.hostnames) cfg.extraHosts.entries))}
+        ${pkgs.redis}/bin/redis-cli set net/vpn_meta ${lib.strings.escapeNixString
+          (builtins.toJSON cfg.vpnMeta)}
+        ${pkgs.redis}/bin/redis-cli set net/hosts_vpn ${lib.strings.escapeNixString
+          (builtins.toJSON (lib.mapAttrs'
+            (_: meta: lib.nameValuePair
+              (builtins.head meta.hostnames)
+              (if lib.hasAttrByPath ["vpn"] meta then meta.vpn else ""))
+            cfg.extraHosts.entries))}
       '';
     })
     (mkIf (cfg.bluetooth.enable) {

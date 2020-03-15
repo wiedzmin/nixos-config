@@ -109,6 +109,7 @@ in {
         webjumps = writePythonScriptWithPythonPackages "webjumps" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
+          pkgs.vpnctl
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./webjumps.py; })));
         insert_snippet = writePythonScriptWithPythonPackages "insert_snippet" [
@@ -127,7 +128,18 @@ in {
       }];
 
       custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set nav/webjumps ${lib.strings.escapeNixString (builtins.toJSON cfg.webjumps.entries)}
+        ${pkgs.redis}/bin/redis-cli set nav/webjumps ${lib.strings.escapeNixString
+          (builtins.toJSON (lib.mapAttrs'
+            (url: meta: lib.nameValuePair
+              (if lib.hasAttrByPath ["title"] meta then (url + " // " + meta.title) else url)
+              (if lib.hasAttrByPath ["browser"] meta then (meta.browser + " " + url) else meta))
+            cfg.webjumps.entries))}
+        ${pkgs.redis}/bin/redis-cli set nav/webjumps_vpn ${lib.strings.escapeNixString
+          (builtins.toJSON (lib.mapAttrs'
+            (url: meta: lib.nameValuePair
+              (if lib.hasAttrByPath ["title"] meta then (url + " // " + meta.title) else url)
+              (if lib.hasAttrByPath ["vpn"] meta then meta.vpn else ""))
+            cfg.webjumps.entries))}
       '';
     })
     (mkIf (cfg.enable && cfg.searchengines.enable) {
