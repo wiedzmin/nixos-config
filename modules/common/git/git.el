@@ -41,6 +41,11 @@
       (if repos-buffer
           (switch-to-buffer repos-buffer)
         (magit-list-repositories))))
+  (defun custom/toggle-magit-margin ()
+    (interactive)
+    (if (car magit-status-margin)
+        (setq magit-status-margin '(nil age magit-log-margin-width nil 18))
+      (setq magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))))
   (defun custom/magit-restore-window-configuration (&optional kill-buffer)
     "Bury or kill the current buffer and restore previous window configuration."
     (let ((winconf magit-previous-window-configuration)
