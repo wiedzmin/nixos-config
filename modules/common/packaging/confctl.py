@@ -72,6 +72,14 @@ operations = [
     "Link configuration"
 ]
 
+# fallback option, in case xserver is broken in some way
+# TODO: consider using fzf in such case
+if not os.environ.get("DISPLAY"):
+    os.chdir("/etc/nixos")
+    build_configuration()
+    switch_configuration()
+    sys.exit(0)
+
 operation = dmenu.show(operations, prompt='>', lines=10)
 
 if operation == "Update current configuration":

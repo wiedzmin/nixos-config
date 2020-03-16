@@ -152,7 +152,7 @@ in {
         home.activation.xrdb = {
           after = [ "linkGeneration" ];
           before = [ ];
-          data = "DISPLAY=:0 ${pkgs.xorg.xrdb}/bin/xrdb /home/${config.attributes.mainUser.name}/.Xresources";
+          data = "DISPLAY=:0 ${pkgs.xorg.xrdb}/bin/xrdb /home/${config.attributes.mainUser.name}/.Xresources || exit 0";
         };
       };
     })
