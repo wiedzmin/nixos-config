@@ -423,8 +423,8 @@ in {
           Type = "oneshot";
           ExecStart = "${pkgs.mr}/bin/mr update";
           WorkingDirectory = "/home/${config.attributes.mainUser.name}";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
       systemd.user.timers."git-fetch-updates" =
@@ -448,8 +448,8 @@ in {
           Type = "oneshot";
           ExecStart = "${pkgs.mr}/bin/mr push";
           WorkingDirectory = "/home/${config.attributes.mainUser.name}";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
       systemd.timers."git-push-updates" =
@@ -474,8 +474,8 @@ in {
           ExecStart = ''
             ${pkgs.bash}/bin/bash -c "${pkgs.mr}/bin/mr savewip"'';
           WorkingDirectory = "/home/${config.attributes.mainUser.name}";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
       systemd.user.timers."git-save-wip" =

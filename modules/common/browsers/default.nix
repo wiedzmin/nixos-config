@@ -476,8 +476,8 @@ in {
           Type = "oneshot";
           ExecStart = "${pkgs.dump_firefox_session}/bin/dump_firefox_session";
           ExecStopPost = "${pkgs.rotate_firefox_session_dumps}/bin/rotate_firefox_session_dumps";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
       systemd.user.timers."backup-current-session-firefox" =

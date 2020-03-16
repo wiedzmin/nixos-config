@@ -137,8 +137,8 @@ in {
           Type = "oneshot";
           ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
           ExecStart = "${meta.cmd}";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       }) cfg.scheduling.entries;
       systemd.user.timers = lib.mapAttrs (name: meta: {

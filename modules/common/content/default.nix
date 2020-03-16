@@ -174,8 +174,8 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.vmtouch}/bin/vmtouch -t ${lib.concatStringsSep " " cfg.warmup.paths}";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
         partOf = [ "multi-user.target" ]; # FIXME: does not autostart
         wantedBy = [ "multi-user.target" ];

@@ -102,8 +102,8 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.trash-cli}/bin/trash-empty ${builtins.toString cfg.cleanTrash.emptyInterval}";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
       systemd.user.timers."clean-trash" = renderTimer "Clean trash" "" "" cfg.cleanTrash.calendarTimespec;
@@ -124,8 +124,8 @@ in {
                               . /home/${config.attributes.mainUser.name}/.cache \
                               --exec rm -f {}
           '';
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
       systemd.user.timers."purge-home-cache" = renderTimer "Purge homedir cache" "" "" cfg.purgeExpired.calendarTimespec;
@@ -140,8 +140,8 @@ in {
                               . /home/${config.attributes.mainUser.name}/.config \
                               --exec ${pkgs.trash-cli}/bin/trash-put {}
           '';
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
       systemd.user.timers."purge-temp-files" = renderTimer "Purge temporary files" "" "" cfg.purgeExpired.calendarTimespec;
@@ -164,8 +164,8 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.order_screenshots}/bin/order_screenshots";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
       systemd.user.timers."order-screenshots" = renderTimer "Screenshots ordering" "" "" cfg.orderScreenshots.calendarTimespec;

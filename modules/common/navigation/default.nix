@@ -223,8 +223,8 @@ in {
           ExecStart = "${pkgs.pueue}/bin/pueued";
           ExecReload = "${pkgs.pueue}/bin/pueued";
           Restart = "no";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
         wantedBy = [ "multi-user.target" ];
       };

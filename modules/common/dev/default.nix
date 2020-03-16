@@ -121,8 +121,8 @@ in {
           Type = "oneshot";
           Environment = [ "CSEARCHINDEX=${cfg.workspaceRoots.global}/.csearchindex" ];
           ExecStart = "${pkgs.codesearch}/bin/cindex ${cfg.workspaceRoots.global}";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
       systemd.user.timers."codesearch-reindex" = renderTimer "Codesearch index updating" "10min" "2h" "";
@@ -261,8 +261,8 @@ in {
           ProtectSystem = "strict";
           ProtectHome = "read-only";
           Restart = "on-failure";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
     })

@@ -131,8 +131,8 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.nix-index}/bin/nix-index";
-          StandardOutput = "journal+console";
-          StandardError = "inherit";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
       systemd.user.timers."nix-update-index" = renderTimer "Update nix packages metadata index" "1h" "12h" "";
