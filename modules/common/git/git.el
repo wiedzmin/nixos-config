@@ -35,7 +35,7 @@
   (:map dired-mode-map
         ("@" . magit-dired-log))
   :preface
-  (defun open-global-repos-list ()
+  (defun custom/open-global-repos-list ()
     (interactive)
     (let ((repos-buffer (get-buffer "*Magit Repositories*")))
       (if repos-buffer
