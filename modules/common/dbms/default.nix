@@ -78,6 +78,7 @@ in {
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
           pkgs.python3Packages.notify2
+          pkgs.vpnctl
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dbms.py; })));
       };

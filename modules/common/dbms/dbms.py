@@ -28,6 +28,14 @@ if dbms_entry:
     dbms_pass = dbms_pass_task.stdout.read().decode().split("\n")[0]
     assert dbms_pass_task.wait() == 0
 
+    dbms_vpn = dbms_meta[dbms_entry].get("vpn", None)
+    if dbms_vpn:
+        vpn_is_up = r.get("vpn/{0}/is_up".format(dbms_vpn)).decode() == "yes"
+        if not vpn_is_up:
+            vpn_start_task = subprocess.Popen("vpnctl --start {0}".format(dbms_vpn),
+                                              shell=True, stdout=subprocess.PIPE)
+            assert vpn_start_task.wait() == 0
+
     if dbms_meta[dbms_entry]["command"] == "mycli":
         os.system('@tmuxBinary@ new-window "@mycliBinary@ --host {0} --user {1} --password {2}"'.format(
             dbms_meta[dbms_entry]["ip"],
