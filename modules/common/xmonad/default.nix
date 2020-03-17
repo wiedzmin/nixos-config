@@ -1,4 +1,5 @@
 { config, lib, pkgs, ... }:
+with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
 let
@@ -17,6 +18,7 @@ let
   '';
   basicKeys = {
     "C-\\\\" = "sendMessage (XkbToggle Nothing)";
+    "M-k" = ''spawn "keybindings"'';
     "M-<Home>" = "toggleWS";
     "M-<Return>" = "promote";
     "M-<Space>" = "sendMessage NextLayout";
@@ -584,6 +586,20 @@ in {
           defaultSession = "none+xmonad";
         };
       };
+
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
+          lib.strings.escapeNixString (builtins.toJSON (basicKeys // cfg.keybindings))
+        }
+      '';
+
+      nixpkgs.config.packageOverrides = _: rec {
+        keybindings = writePythonScriptWithPythonPackages "keybindings" [
+          pkgs.python3Packages.redis
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./keybindings.py; })));
+      };
+
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
