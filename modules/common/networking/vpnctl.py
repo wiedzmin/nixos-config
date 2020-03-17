@@ -26,9 +26,11 @@ def stop_running(omit=None):
     assert devdns_stop_task.wait() == 0
     if omit:
         del vpn_meta[omit]
-    stop_cmds = [cmds["down"] for cmds in vpn_meta.values()]
-    for cmd in stop_cmds:
-        vpn_stop_task = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
+    stop_cmds = {vpn: vpn_meta[vpn]["down"] for vpn in vpn_meta}
+    for vpn, cmd in stop_cmds.items:
+        vpn_up = json.loads(r.get("vpn/{0}/is_up").format(vpn)).decode() == "yes"
+        if vpn_up:
+            vpn_stop_task = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
 
 
 if args.vpn_service_tag:
