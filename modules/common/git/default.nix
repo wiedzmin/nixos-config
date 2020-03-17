@@ -294,6 +294,7 @@ in {
           git-quick-stats
 
           git-save-wip
+          gitAndTools.git-trim # TODO: review configuration options at https://github.com/foriequal0/git-trim
         ] ++ lib.optionals (cfg.staging.enable) [ onefetch overcommit gitAndTools.git-machete gitAndTools.git-my ];
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
