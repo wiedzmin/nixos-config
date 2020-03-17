@@ -499,7 +499,7 @@ in {
       enable = true;
       devdns = {
         enable = true;
-        autoStart = true;
+        autoStart = false;
       };
     };
     libvirt.enable = true;

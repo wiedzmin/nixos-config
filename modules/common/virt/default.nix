@@ -59,7 +59,7 @@ in {
         description = "Containet name for docker DNS service.";
       };
       docker.devdns.autoStart = mkOption {
-        default = true;
+        default = false;
         type = types.bool;
         description = "Whether DNS service should be started automatically.";
       };
