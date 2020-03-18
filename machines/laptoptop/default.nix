@@ -73,7 +73,7 @@ in {
     };
     wlanInterfaces = { "wlan0" = { device = "wlp3s0"; }; };
     # TODO: consider extracting dichotomy below to module
-    networkmanager = {
+    networkmanager = { # FIXME: add current user to `networkmanager`` group
       enable = true;
       enableStrongSwan = true;
       unmanaged = [ "br0" "interface-name:vb-*" "interface-name:vbox*" "interface-name:ve-*" "lo" ];
