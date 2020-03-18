@@ -20,10 +20,29 @@ def locate_nixpkgs():
     return nixpkgs_path
 
 
+def get_generations():
+    get_generations_task = subprocess.Popen("pkexec nix-env -p /nix/var/nix/profiles/system --list-generations",
+                                           shell=True, stdout=subprocess.PIPE)
+    generations = get_generations_task.stdout.read().decode().strip().split("\n")
+    assert get_generations_task.wait() == 0
+    return generations
+
+
+def parse_generation_meta(meta):
+    meta_items = meta.split()
+    is_current = False
+    if len(meta_items) == 4:
+        is_current = True
+    generation = meta_items[0]
+    timestamp = " ".join(meta_items[1:])
+    return generation, timestamp, is_current
+
+
 def format_config():
     format_config_task = subprocess.Popen("format-config",
                                            shell=True, stdout=subprocess.PIPE)
     assert format_config_task.wait() == 0
+
 
 def build_configuration(path=None, debug=False):
     build_configuration_task = subprocess.Popen("nix build -f {0}/nixos system{1}{2}".format(
@@ -36,9 +55,21 @@ def build_configuration(path=None, debug=False):
         sys.exit(1)
 
 
-def switch_configuration():
+def rollback_configuration():
+    generation = dmenu.show(get_generations(), prompt='>', lines=30)
+    parse_generation_meta(generation)
+    generation, timestamp, is_current = parse_generation_meta(generation)
+    if is_current:
+        print("Skipping rollback to *current* configuration")
+        sys.exit(0)
+    rollback_target_path = "/nix/var/nix/profiles/system-{0}-link".format(generation)
+    print(generation, timestamp, rollback_target_path)
+    switch_configuration(root=rollback_target_path)
+
+
+def switch_configuration(root=None):
     try:
-        new_system_path = os.readlink("{0}/result".format(os.getcwd()))
+        new_system_path = os.readlink("{0}/result".format(os.getcwd()) if not root else root)
     except FileNotFoundError as e:
         new_system_path = None
         print("Error switching configuration: {0}".format(e))
@@ -65,6 +96,7 @@ machine = guess_machine_name()
 
 operations = [
     "Update current configuration",
+    "Rollback current configuration",
     "Update current configuration (debug)",
     "Update current configuration + nixfmt beforehand",
     "Select and build configuration",
@@ -87,6 +119,8 @@ if operation == "Update current configuration":
     build_configuration()
     switch_configuration()
     # ensure_kernel_update()
+if operation == "Rollback current configuration":
+    rollback_configuration()
 elif operation == "Update current configuration (debug)":
     os.chdir("/etc/nixos")
     build_configuration(debug=True)
