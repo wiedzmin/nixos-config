@@ -254,7 +254,7 @@ in {
             draw_bold_text_with_bright_colors = true;
             visual_bell = {
               animation = "EaseOutExpo";
-              duration = 1;
+              duration = 0;
             };
             mouse_bindings = [{
               mouse = "Middle";
