@@ -68,9 +68,15 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         tmuxp_sessions = writePythonScriptWithPythonPackages "tmuxp_sessions" [ pkgs.python3Packages.dmenu-python ]
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tmuxp_sessions.py; })));
-        shell-org-capture = pkgs.writeScriptBin "shell-org-capture" (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./shell-org-capture.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // {
+              src = ./tmuxp_sessions.py; })));
+        shell-org-capture = writeShellScriptBinWithDeps "shell-org-capture" [
+          pkgs.emacs
+          pkgs.tmux
+          pkgs.xsel
+        ] (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // {
+            src = ./shell-org-capture.sh; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {

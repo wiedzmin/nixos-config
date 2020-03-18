@@ -3,7 +3,7 @@ if [[ ! -n $REPO_ROOT || ! -d $REPO_ROOT/.git ]]; then
     exit 1
 fi
 
-if [[ "$FORCE_STG" != "yes" && $(DISPLAY=:0 @xprintidleBinary@) -lt $((@gitIdletimeStgit@*1000)) ]]; then
+if [[ "$FORCE_STG" != "yes" && $(DISPLAY=:0 xprintidle-ng) -lt $((@gitIdletimeStgit@*1000)) ]]; then
     exit 0
 fi
 
@@ -11,13 +11,13 @@ set -x
 
 cd $REPO_ROOT
 
-@stgitBinary@ init
+stg init
 
-@stgitBinary@ repair
+stg repair
 
-if [[ ! -z $(@gitBinary@ status --porcelain) ]]; then
-    @gitBinary@ add .
+if [[ ! -z $(git status --porcelain) ]]; then
+    git add .
     PATCH_DESC="WIP $(date -R)"
-    @stgitBinary@ new -m "$PATCH_DESC"
-    @stgitBinary@ refresh
+    stg new -m "$PATCH_DESC"
+    stg refresh
 fi

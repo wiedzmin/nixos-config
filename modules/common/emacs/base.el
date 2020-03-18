@@ -1,6 +1,6 @@
 (setq load-prefer-newer t)
 (setq message-log-max t) ;; we don't want to lose any startup log info
-(setq shell-file-name "@bashBinary@")
+(setq shell-file-name "bash")
 
 (setq gc-cons-percentage 0.3)
 

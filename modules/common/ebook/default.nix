@@ -36,7 +36,7 @@ in {
         options = [ "bind" ];
       };
       nixpkgs.config.packageOverrides = _: rec {
-        bookshelf = writePythonScriptWithPythonPackages "bookshelf" [ pkgs.python3Packages.dmenu-python ]
+        bookshelf = writePythonScriptWithPythonPackages "bookshelf" [ pkgs.fd pkgs.python3Packages.dmenu-python ]
           (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./bookshelf.py; })));
       };

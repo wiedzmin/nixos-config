@@ -62,7 +62,8 @@ in {
               (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
 
           ${builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./base.el; }))}
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+              src = ./base.el; }))}
           ${cfg.config}
           (setq debug-on-error nil)
           (setq debug-on-quit nil)

@@ -1,3 +1,3 @@
-@maimBinary@ -o -i $(@xdotoolBinary@ getactivewindow) --format png /dev/stdout | \
-    @teeBinary@ @screenshotsBasedir@/screenshot-$(date @screenshotsDateFormat@.png | @trBinary@ -d '[:cntrl:]') | \
-    @xclipBinary@ -selection primary -t image/png -i
+maim -o -i $(xdotool getactivewindow) --format png /dev/stdout | \
+    tee @screenshotsBasedir@/screenshot-$(date @screenshotsDateFormat@.png | tr -d '[:cntrl:]') | \
+    xclip -selection primary -t image/png -i

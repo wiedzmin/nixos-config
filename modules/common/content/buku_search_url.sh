@@ -1,8 +1,8 @@
 main() {
-    SEARCH_RESULTS="$(@bukuBinary@ -f 1 --nc -p)"
-    SELECTION=$( echo "$SEARCH_RESULTS" | tr ' ' '\n' | @dmenuBinary@ -p '> ')
+    SEARCH_RESULTS="$(buku -f 1 --nc -p)"
+    SELECTION=$( echo "$SEARCH_RESULTS" | tr ' ' '\n' | dmenu -p '> ')
     if [ -n "$SELECTION" ]; then
-        @bukuBinary@ -o $SELECTION
+        buku -o $SELECTION
     fi
 }
 

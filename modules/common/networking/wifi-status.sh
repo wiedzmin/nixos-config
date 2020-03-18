@@ -1,4 +1,4 @@
-ESSID=`@iwgetidBinary@ -r`
+ESSID=`iwgetid -r`
 if [ $? == 255 ]; then
     echo "No WiFi"
 else

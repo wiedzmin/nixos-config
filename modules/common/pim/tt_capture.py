@@ -34,7 +34,7 @@ try:
 except XError:
     pass
 
-xprintidle_task = subprocess.Popen("@xprintidleBinary@",
+xprintidle_task = subprocess.Popen("xprintidle-ng",
     env={
         "DISPLAY": os.getenv("DISPLAY"),
         "XAUTHORITY": os.getenv("XAUTHORITY")

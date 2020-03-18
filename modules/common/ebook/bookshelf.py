@@ -6,7 +6,7 @@ import dmenu
 
 books = []
 
-books_task = subprocess.Popen("@fdBinary@ --full-path @bookshelfPath@ -e pdf -e djvu -e epub",
+books_task = subprocess.Popen("fd --full-path @bookshelfPath@ -e pdf -e djvu -e epub",
                               shell=True, stdout=subprocess.PIPE)
 books.extend([book for book in books_task.stdout.read().decode().split("\n")])
 assert books_task.wait() == 0

@@ -16,7 +16,7 @@ def is_valid_url(url):
 
 
 def fetch_tags_cloud():
-    tags_cloud_task = subprocess.Popen("@bukuBinary@ --np --st",
+    tags_cloud_task = subprocess.Popen("buku --np --st",
                                   shell=True, stdout=subprocess.PIPE)
     result = [" ".join(tag.strip().split(" ")[1:-1])
               for tag in tags_cloud_task.stdout.read().decode().split("\n") if tag]
@@ -26,7 +26,7 @@ def fetch_tags_cloud():
 
 notify2.init("buku_add")
 
-bookmark_text_task = subprocess.Popen("@xselBinary@ -o -b",
+bookmark_text_task = subprocess.Popen("xsel -o -b",
                                       shell=True, stdout=subprocess.PIPE)
 bookmark_text = bookmark_text_task.stdout.read().decode().strip()
 assert bookmark_text_task.wait() == 0
@@ -54,11 +54,11 @@ if bookmark_text is not None:
         else:
            break
     if bookmark_tags:
-        os.system("@bukuBinary@ -a {0} {1}".format(
+        os.system("buku -a {0} {1}".format(
                   bookmark_text,
                   ",".join(bookmark_tags)))
     else:
-        os.system("@bukuBinary@ -a {0}".format(
+        os.system("buku -a {0}".format(
                   bookmark_text))
     n = notify2.Notification("Success", "Bookmark added: {0} ({1})".format(
                              bookmark_text,

@@ -11,7 +11,6 @@
     ./git
     ./golang
     ./housekeeping
-    ./infohub
     ./knowledgebase
     ./navigation
     ./networking

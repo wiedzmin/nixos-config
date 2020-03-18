@@ -1,5 +1,5 @@
-ls -a @firefoxSessionsPath@ | @grepBinary@ @firefoxSessionsNameTemplate@ | \
-@sortBinary@ -n -r | (i=0; while read -r f; do
+ls -a @firefoxSessionsPath@ | grep @firefoxSessionsNameTemplate@ | \
+sort -n -r | (i=0; while read -r f; do
   if [ $i -lt @firefoxSessionsHistoryLength@ ]; then
     ((i++))
     continue

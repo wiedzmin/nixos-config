@@ -1,10 +1,10 @@
 PACKAGE=$1
-TMP=`@mktempBinary@ -d`
+TMP=`mktemp -d`
 cd $TMP
 {
-    @nixShellBinary@ "<nixpkgs>" -A $PACKAGE --run "unpackPhase"
-    @mvBinary@ * a
-    @cpBinary@ -r a b
+    nix-shell "<nixpkgs>" -A $PACKAGE --run "unpackPhase"
+    mv * a
+    cp -r a b
     $EDITOR b
 } 2>&1 > /dev/null
-@diffBinary@ -u --suppress-common-lines a b
+diff -u --suppress-common-lines a b

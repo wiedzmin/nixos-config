@@ -20,18 +20,18 @@ ports_format = "{{range $port, $mappings :=.NetworkSettings.Ports}}{{$port}}{{en
 if "DOCKER_HOST" in os.environ:
     del os.environ["DOCKER_HOST"] # ensure we cosidering only local containers
 
-select_container_task = subprocess.Popen("@dockerBinary@ ps --format '{{.Names}}'", shell=True, stdout=subprocess.PIPE)
+select_container_task = subprocess.Popen("docker ps --format '{{.Names}}'", shell=True, stdout=subprocess.PIPE)
 select_container_result = select_container_task.stdout.read().decode().split("\n")
 
 selected_container = dmenu.show(select_container_result, prompt="container", case_insensitive=True, lines=10)
 if not selected_container:
     sys.exit(1)
 
-container_ip_task = subprocess.Popen("@dockerBinary@ inspect {0} --format='{1}'".format(
+container_ip_task = subprocess.Popen("docker inspect {0} --format='{1}'".format(
     selected_container, ip_address_format), shell=True, stdout=subprocess.PIPE)
 container_ip_result = container_ip_task.stdout.read().decode().strip()
 
-container_ports_task = subprocess.Popen("@dockerBinary@ inspect {0} --format='{1}'".format(
+container_ports_task = subprocess.Popen("docker inspect {0} --format='{1}'".format(
     selected_container, ports_format), shell=True, stdout=subprocess.PIPE)
 container_ports_result = container_ports_task.stdout.read().decode().strip().split("\n")
 

@@ -34,7 +34,7 @@ if host:
             vpn_start_task = subprocess.Popen("vpnctl --start {0}".format(host_vpn),
                                               shell=True, stdout=subprocess.PIPE)
             assert vpn_start_task.wait() == 0
-    cmd = "@sshBinary@ {0}".format(host)
+    cmd = "ssh {0}".format(host)
     if args.show_choices:
         command_choices = json.loads(r.get("net/command_choices"))
         choice = dmenu.show(command_choices, prompt="execute", case_insensitive=True, lines=5)

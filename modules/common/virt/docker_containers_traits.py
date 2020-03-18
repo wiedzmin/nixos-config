@@ -64,7 +64,7 @@ container_status = dmenu.show(CONTAINER_STATUSES, prompt="status", case_insensit
 if not container_status:
     sys.exit(1)
 
-docker_ps_cmd = "@dockerBinary@ ps {0}--format {1}".format(
+docker_ps_cmd = "docker ps {0}--format {1}".format(
     "-a " if container_status == "all" else "", "'{{.Names}}'")
 select_container_task = subprocess.Popen(docker_ps_cmd, shell=True, stdout=subprocess.PIPE)
 select_container_result = select_container_task.stdout.read().decode().split("\n")
@@ -72,11 +72,11 @@ select_container_result = select_container_task.stdout.read().decode().split("\n
 selected_container = dmenu.show(select_container_result, prompt="container", case_insensitive=True, lines=10)
 selected_trait = dmenu.show(CONTAINER_TRAITS.keys(), prompt="inspect", case_insensitive=True, lines=10)
 
-docker_inspect_cmd = "@dockerBinary@ inspect {0} --format {1}".format(
+docker_inspect_cmd = "docker inspect {0} --format {1}".format(
     selected_container, '"{0}"'.format(CONTAINER_TRAITS[selected_trait]))
 
 # FIXME: remove nested "formats"
-subprocess.run(["@xselBinary@", "-ib"], universal_newlines=True, input="{0}{1}".format(
+subprocess.run(["xsel", "-ib"], universal_newlines=True, input="{0}{1}".format(
     "export DOCKER_HOST={0} && ".format(os.environ["DOCKER_HOST"]) if os.environ["DOCKER_HOST"] else "",
     docker_inspect_cmd))
 
@@ -84,7 +84,7 @@ get_traits_task = subprocess.Popen(docker_inspect_cmd, shell=True, stdout=subpro
 with open("/tmp/docker_traits", "w") as f:
     f.write(get_traits_task.stdout.read().decode())
 
-show_dialog_task = subprocess.Popen("@yadBinary@ --filename /tmp/docker_traits --text-info",
+show_dialog_task = subprocess.Popen("yad --filename /tmp/docker_traits --text-info",
                                     shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 show_dialog_task.wait()
 os.remove("/tmp/docker_traits")

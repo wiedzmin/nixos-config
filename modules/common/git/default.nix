@@ -175,10 +175,23 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        gitlib = pkgs.writeShellScriptBin "gitlib" (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./gitlib.sh; })));
-        git-save-wip = pkgs.writeShellScriptBin "git-save-wip" (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./git-save-wip.sh; })));
+        gitlib = writeShellScriptBinWithDeps "gitlib" [
+          pkgs.bash
+          pkgs.coreutils
+          pkgs.fd
+          pkgs.git
+          pkgs.gitAndTools.git-secrets
+          pkgs.gnugrep
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+            src = ./gitlib.sh; })));
+        git-save-wip = writeShellScriptBinWithDeps "git-save-wip" [
+          pkgs.git
+          pkgs.gitAndTools.stgit
+          pkgs.xprintidle-ng
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+            src = ./git-save-wip.sh; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {

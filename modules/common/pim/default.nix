@@ -110,8 +110,10 @@ in {
           pkgs.python3Packages.cbor2
           pkgs.python3Packages.pytz
           pkgs.python3Packages.xlib
+          pkgs.xprintidle-ng
         ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tt_capture.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+            src = ./tt_capture.py; })));
       };
       services.arbtt = {
         enable = true;

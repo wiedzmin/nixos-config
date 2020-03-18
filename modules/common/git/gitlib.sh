@@ -19,12 +19,12 @@ execute_hook_items() {
 
     shopt -s execfail
 
-    for TARGET_PATH in $(@fdBinary@ . -L --max-depth 1 --type f $TARGET_DIR | @sortBinary@)
+    for TARGET_PATH in $(fd . -L --max-depth 1 --type f $TARGET_DIR | sort)
     do
         if [ -x "$TARGET_PATH" ]; then # Run as an executable file
             "$TARGET_PATH" "$@"
         elif [ -f "$TARGET_PATH" ]; then  # Run as a Shell script
-            @bashBinary@ "$TARGET_PATH" "$@"
+            bash "$TARGET_PATH" "$@"
         fi
         exitcode=$?
         if (( exitcode != 0 )); then
@@ -39,7 +39,7 @@ execute_hook_items() {
 }
 
 check_for_wip() {
-    RESULTS=$(@gitBinary@ shortlog "@{u}.." | @grepBinary@ -w $WIP_RE);
+    RESULTS=$(git shortlog "@{u}.." | grep -w $WIP_RE);
     if [[ ! -z "$RESULTS" ]]; then
         echo "Found commits with stop snippets:"
         echo "$RESULTS"
@@ -49,7 +49,7 @@ check_for_wip() {
 }
 
 check_for_secrets() { # https://github.com/Luis-Hebendanz/nix-configs/blob/master/git.nix#L25
-    RESULTS=$(@gitSecretsBinary@ --scan --cached 2>&1)
+    RESULTS=$(git-secrets --scan --cached 2>&1)
     if [[ -z "$RESULTS" ]]; then
         return 0;
     fi
@@ -59,8 +59,8 @@ check_for_secrets() { # https://github.com/Luis-Hebendanz/nix-configs/blob/maste
 }
 
 check_org_delete_treshold() {
-    CURRENT_REV=`@gitBinary@ rev-parse HEAD`
-    PREVIOUS_REV=`@gitBinary@ rev-parse HEAD^1`
+    CURRENT_REV=`git rev-parse HEAD`
+    PREVIOUS_REV=`git rev-parse HEAD^1`
 
     OUTFILE="@orgWarningsFilename@"
     THRESHOLD=250
@@ -70,10 +70,10 @@ check_org_delete_treshold() {
     DETAILS="#+BEGIN_SRC sh :results output
       cd @orgWarningsFiledir@
       echo \"commit ''${CURRENT_REV}\"
-      @gitBinary@ diff --stat \"''${PREVIOUS_REV}\" \"''${CURRENT_REV}\"
+      git diff --stat \"''${PREVIOUS_REV}\" \"''${CURRENT_REV}\"
     #+END_SRC"
 
-    @gitBinary@ diff --numstat "''${PREVIOUS_REV}" "''${CURRENT_REV}" | \
+    git diff --numstat "''${PREVIOUS_REV}" "''${CURRENT_REV}" | \
         cut -f 2 | \
         while read line
         do test "$line" -gt "''${THRESHOLD}" && \

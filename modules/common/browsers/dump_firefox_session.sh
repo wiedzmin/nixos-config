@@ -1,6 +1,6 @@
 DUMP_NAME=$1
 SESSIONSTORE_PATH=@firefoxSessionstorePath@
-TS=$(@dateBinary@ '+%Y-%m-%d_%H-%M-%S')
+TS=$(date '+%Y-%m-%d_%H-%M-%S')
 
 SESSION_DBFILE="$SESSIONSTORE_PATH/previous.jsonlz4"
 if [ -f "$SESSIONSTORE_PATH/recovery.jsonlz4" ]; then
@@ -13,9 +13,9 @@ else
     SESSION_DUMPFILE="$DUMP_NAME.org"
 fi
 
-TAB_COUNT=$(@dejsonlz4Binary@ $SESSION_DBFILE | \
-                @jqBinary@ -j '.windows[].tabs[].entries[] | .url, "\n"' | \
-                @sedBinary@ 's/^/\* /g' | @teeBinary@ \
-@firefoxSessionsPath@/$SESSION_DUMPFILE | @wcBinary@ -l)
+TAB_COUNT=$(dejsonlz4 $SESSION_DBFILE | \
+                jq -j '.windows[].tabs[].entries[] | .url, "\n"' | \
+                sed 's/^/\* /g' | tee \
+@firefoxSessionsPath@/$SESSION_DUMPFILE | wc -l)
 
-@dunstifyBinary@ -u normal "[Firefox] Saved session ($TAB_COUNT tabs)."
+dunstify -u normal "[Firefox] Saved session ($TAB_COUNT tabs)."

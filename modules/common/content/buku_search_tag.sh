@@ -1,11 +1,11 @@
 collect_tags () {
     taglist=()
     sep=''${1:-,}
-    tagcloud=$(@bukuBinary@ --np --st | \
-                   @awkBinary@ '{$NF=""; print $0}' | \
-                   @cutBinary@ -d ' ' -f2 | sort -u )
+    tagcloud=$(buku --np --st | \
+                   awk '{$NF=""; print $0}' | \
+                   cut -d ' ' -f2 | sort -u )
     while true; do
-        tag=$(echo $tagcloud | tr ' ' '\n' | @dmenuBinary@ -p '> ' -mesg "Add tag" -custom)
+        tag=$(echo $tagcloud | tr ' ' '\n' | dmenu -p '> ' -mesg "Add tag" -custom)
         keep_going=$?
         if [[ $keep_going -ne 0 ]]; then
             break
@@ -19,8 +19,8 @@ collect_tags () {
 declare -A MODES
 
 MODES=(
-    ["urls"]="@bukuBinary@ -f 1 --np --st"
-    ["titles"]="@bukuBinary@ -f 3 --np --st"
+    ["urls"]="buku -f 1 --np --st"
+    ["titles"]="buku -f 3 --np --st"
 )
 DEFAULT_MODE=urls
 
@@ -43,7 +43,7 @@ HELP_COLOR="#774477"
 
 main() {
     collect_tags ","
-    MODE=$( (ask_for_mode) | @dmenuBinary@ -i -p "Mode" )
+    MODE=$( (ask_for_mode) | dmenu -i -p "Mode" )
     if [ -z $MODE ]; then
         MODE=$DEFAULT_MODE
     fi
@@ -56,7 +56,7 @@ main() {
     SEARCH_RESULTS="$($BUKU_CMD)"
     LEGEND="Select an entry or use <span color='$HELP_COLOR'>$OPEN_ALL</span> to open all bookmarks. You could open maximum @contentBookmarksBatchOpenThreshold@ bookmarks at once."
     SELECTION=$( echo "$SEARCH_RESULTS" | tr ' ' '\n' | \
-                     @dmenuBinary@ -p '> ' -mesg "''${LEGEND}" -kb-custom-10 "''${OPEN_ALL}")
+                     dmenu -p '> ' -mesg "''${LEGEND}" -kb-custom-10 "''${OPEN_ALL}")
     ROFI_EXIT=$?
     if [[ $ROFI_EXIT -eq 10 ]]; then
         if [[ $(echo "''${taglist}" | wc -l) -gt @contentBookmarksBatchOpenThreshold@ ]]; then
@@ -66,8 +66,8 @@ main() {
         fi
     fi
 
-    SELECTION=$( (list_search_results) | @awkBinary@ '{print $1}' )
-    @bukuBinary@ -o $SELECTION
+    SELECTION=$( (list_search_results) | awk '{print $1}' )
+    buku -o $SELECTION
 }
 
 main

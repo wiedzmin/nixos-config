@@ -21,7 +21,7 @@ for key, cmd in keybindings.items():
 with open("/tmp/wm_keybindings", "w") as f:
     f.writelines(legend)
 
-show_dialog_task = subprocess.Popen("@yadBinary@ --filename /tmp/wm_keybindings --text-info",
+show_dialog_task = subprocess.Popen("yad --filename /tmp/wm_keybindings --text-info",
                                     shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 show_dialog_task.wait()
 os.remove("/tmp/wm_keybindings")

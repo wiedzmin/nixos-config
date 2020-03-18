@@ -12,4 +12,4 @@ for root, dirs, files in os.walk("@autorandrProfiles@"):
 result = dmenu.show(profiles, prompt='profile', lines=5)
 if result:
     print(result)
-    os.system("@autorandrBinary@ --load {0}".format(result))
+    os.system("autorandr --load {0}".format(result))

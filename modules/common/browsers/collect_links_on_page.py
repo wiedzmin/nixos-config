@@ -14,7 +14,7 @@ def is_valid_url(url):
 
 notify2.init("collect_links_on_page")
 
-page_url_task = subprocess.Popen("@xselBinary@ -o -b",
+page_url_task = subprocess.Popen("xsel -o -b",
                                  shell=True, stdout=subprocess.PIPE)
 page_url = page_url_task.stdout.read().decode().strip()
 assert page_url_task.wait() == 0

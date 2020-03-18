@@ -1,4 +1,4 @@
-sources=$(@fdBinary@ -t file nix -E secrets -E xmonad /etc/nixos)
+sources=$(fd -t file nix -E secrets -E xmonad /etc/nixos)
 for file in "$sources"; do
-  @nixfmtBinary@ -w 120 $file
+  nixfmt -w 120 $file
 done

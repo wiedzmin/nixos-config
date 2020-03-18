@@ -75,9 +75,11 @@ in {
     (mkIf (cfg.cli.enable && cfg.xmonad.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         dbms = writePythonScriptWithPythonPackages "dbms" [
+          pkgs.pass
           pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.redis
           pkgs.python3Packages.notify2
+          pkgs.python3Packages.redis
+          pkgs.tmux
           pkgs.vpnctl
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dbms.py; })));

@@ -6,13 +6,13 @@ fi
 TITLE="$*"
 if [[ -n $TMUX ]]
 then
-    TITLE=$(@tmuxBinary@ display-message -p '#S')
-    @tmuxBinary@ send -X copy-pipe-and-cancel "@xselBinary@ -i --primary"
+    TITLE=$(tmux display-message -p '#S')
+    tmux send -X copy-pipe-and-cancel "xsel -i --primary"
 fi
 
 if [[ -n $TITLE ]]
 then
-    @emacsclientBinary@ -n "org-protocol://capture?template=$TEMPLATE&title=$TITLE"
+    emacsclient -n "org-protocol://capture?template=$TEMPLATE&title=$TITLE"
 else
-    @emacsclientBinary@ -n "org-protocol://capture?template=$TEMPLATE"
+    emacsclient -n "org-protocol://capture?template=$TEMPLATE"
 fi

@@ -370,6 +370,7 @@ in {
       enable = true;
       calendarTimespec = "*-*-* 00:05:00";
     };
+    xmonad.enable = true;
   };
 
   ide.emacs.enable = true;
@@ -485,11 +486,6 @@ in {
     toolsng.enable = true;
     liquidPrompt.enable = true;
     emacs.enable = true;
-    xmonad.enable = true;
-  };
-
-  custom.system = {
-    enable = true;
     xmonad.enable = true;
   };
 

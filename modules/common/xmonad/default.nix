@@ -596,6 +596,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         keybindings = writePythonScriptWithPythonPackages "keybindings" [
           pkgs.python3Packages.redis
+          pkgs.yad
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./keybindings.py; })));
       };

@@ -3,4 +3,4 @@ if [ -z $1 ]; then
     exit 1
 fi
 
-@dockerBinary@ run --rm -i -v $(realpath $1):/Dockerfile redcoolbeans/dockerlint
+docker run --rm -i -v $(realpath $1):/Dockerfile redcoolbeans/dockerlint

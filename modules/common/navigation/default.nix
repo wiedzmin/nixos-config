@@ -109,6 +109,7 @@ in {
         search_selection = writePythonScriptWithPythonPackages "search_selection" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
+          pkgs.xsel
         ] (builtins.readFile (pkgs.substituteAll
           ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_selection.py; })));
         webjumps = writePythonScriptWithPythonPackages "webjumps" [
@@ -120,6 +121,8 @@ in {
         insert_snippet = writePythonScriptWithPythonPackages "insert_snippet" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
+          pkgs.xdotool
+          pkgs.xorg.setxkbmap
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./insert_snippet.py; })));
       };

@@ -24,6 +24,31 @@ rec {
         chmod a+x $out/bin/${pname}
       '';
     };
+  writeShellScriptBinWithDeps = name: packages: contents:
+    pkgs.stdenv.mkDerivation rec {
+      inherit name;
+      version = "unstable";
+      src = pkgs.writeTextFile {
+        name = "${name}.sh";
+        text = ''
+          #!${pkgs.stdenv.shell}
+          ${contents}
+        '';
+        executable = true;
+      };
+      unpackPhase = "true";
+      buildInputs = with pkgs; [ makeWrapper ];
+      propagatedBuildInputs = with pkgs; packages;
+      buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${name}";
+      installPhase = ''
+        mkdir -p $out/bin
+        wrapProgram $out/bin/${name} \
+          --prefix PATH : ${pkgs.lib.makeBinPath packages}
+      '';
+      postInstall = ''
+        chmod a+x $out/bin/${name}
+      '';
+    };
   renderTimer = desc: boot: active: cal: {
     description = "${desc}";
     wantedBy = [ "timers.target" ];

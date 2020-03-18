@@ -77,20 +77,27 @@ in {
         }
       '';
       nixpkgs.config.packageOverrides = _: rec {
-        wifi-status = pkgs.writeScriptBin "wifi-status" (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./wifi-status.sh; })));
+        wifi-status = writeShellScriptBinWithDeps "wifi-status" [
+          pkgs.gawk
+          pkgs.wirelesstools
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+            src = ./wifi-status.sh; })));
         vpnctl = writePythonScriptWithPythonPackages "vpnctl" [
           pkgs.python3Packages.notify2
           pkgs.python3Packages.redis
         ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./vpnctl.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+            src = ./vpnctl.py; })));
         sshmenu = writePythonScriptWithPythonPackages "sshmenu" [
+          pkgs.openssh
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux
           pkgs.python3Packages.redis
           pkgs.vpnctl
         ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+            src = ./sshmenu.py; })));
       };
     })
     (mkIf (cfg.enable && cfg.extraHosts.enable) {

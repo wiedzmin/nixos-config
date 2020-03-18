@@ -1,3 +1,3 @@
 # FIXME: check if there is actually something in clipboard
-ix_url=$(@xselBinary@ -ob | @ixBinary@)
-echo -n "$ix_url" | @xselBinary@ -ib
+ix_url=$(xsel -ob | ix)
+echo -n "$ix_url" | xsel -ib
