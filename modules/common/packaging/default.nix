@@ -1,6 +1,7 @@
 let
   deps = import ../../../nix/sources.nix;
   nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+  nixpkgs-proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
@@ -111,6 +112,7 @@ in {
           confctl = writePythonScriptWithPythonPackages "confctl" [
             pkgs.python3Packages.dmenu-python
             pkgs.python3Packages.python-gnupg
+            nixpkgs-proposed.python3Packages.pyfzf
           ] (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
               src = ./confctl.py; })));

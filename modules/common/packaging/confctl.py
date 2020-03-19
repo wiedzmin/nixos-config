@@ -5,11 +5,19 @@ import sys
 import time
 
 from gnupg import GPG
+from pyfzf.pyfzf import FzfPrompt
 import dmenu
 
 
 def guess_machine_name():
     return os.readlink("/etc/nixos/configuration.nix").split("/")[1]
+
+
+def get_selection(seq, prompt, lines=5, fzf=FzfPrompt()):
+    if os.environ.get("CONFCTL_USE_FZF") == "yes":
+        return fzf.prompt(seq, '--cycle')[0]
+    else:
+        return dmenu.show(seq, prompt=prompt, lines=lines)
 
 
 def locate_nixpkgs():
@@ -56,7 +64,7 @@ def build_configuration(path=None, debug=False):
 
 
 def rollback_configuration():
-    generation = dmenu.show(get_generations(), prompt='>', lines=30)
+    generation = get_selection(get_generations(), prompt='>', lines=30)
     parse_generation_meta(generation)
     generation, timestamp, is_current = parse_generation_meta(generation)
     if is_current:
@@ -104,15 +112,13 @@ operations = [
     "Link configuration"
 ]
 
-# fallback option, in case xserver is broken in some way
-# TODO: consider using fzf in such case
-if not os.environ.get("DISPLAY"):
-    os.chdir("/etc/nixos")
-    build_configuration()
-    switch_configuration()
-    sys.exit(0)
+os.environ["CONFCTL_USE_FZF"] = "no"
 
-operation = dmenu.show(operations, prompt='>', lines=10)
+if not os.environ.get("DISPLAY"):
+    # fallback option, in case xserver is broken in some way
+    os.environ["CONFCTL_USE_FZF"] = "yes"
+
+operation = get_selection(operations, prompt='>', lines=10)
 
 if operation == "Update current configuration":
     os.chdir("/etc/nixos")
@@ -134,7 +140,7 @@ elif operation == "Select and build configuration":
     config_entries = os.listdir(MACHINES_CONFIG_PATH)
     configs = { k: v for (k, v) in zip([entry[:-4] if entry.endswith("nix") else entry for entry in config_entries],
                 config_entries)}
-    result = dmenu.show(configs.keys(), prompt='config', lines=5)
+    result = get_selection(configs.keys(), prompt='config', lines=5)
     if result:
         build_configuration(path="{0}/{1}".format(MACHINES_CONFIG_PATH, configs[result]))
 elif operation == "Select and build configuration (debug)":
@@ -142,13 +148,13 @@ elif operation == "Select and build configuration (debug)":
     config_entries = os.listdir(MACHINES_CONFIG_PATH)
     configs = { k: v for (k, v) in zip([entry[:-4] if entry.endswith("nix") else entry for entry in config_entries],
                 config_entries)}
-    result = dmenu.show(configs.keys(), prompt='config', lines=5)
+    result = get_selection(configs.keys(), prompt='config', lines=5)
     if result:
         build_configuration(path="{0}/{1}".format(MACHINES_CONFIG_PATH, configs[result]), debug=True)
 elif operation == "Link configuration":
     os.chdir("/etc/nixos")
     machines = os.listdir("machines")
-    result = dmenu.show(machines, prompt='config', lines=5)
+    result = get_selection(machines, prompt='config', lines=5)
     if result:
         os.remove("configuration.nix")
         os.symlink(os.path.relpath("machines/{0}/default.nix".format(result)), "configuration.nix")
