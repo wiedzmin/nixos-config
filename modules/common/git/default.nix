@@ -13,15 +13,6 @@ in {
         default = false;
         description = "Whether to enable Git VCS infrastructure.";
       };
-      enableNixosConfigGoodies = mkOption {
-        type = types.bool;
-        default = true;
-        description = ''
-          Whether to enable pre commit hook for NixOS config
-          repo, that checks for work-in-progress code.
-          ...and gpg-aware .gitattributes.
-        '';
-      };
       defaultUpstreamRemote = mkOption {
         type = types.str;
         default = "upstream";
@@ -56,16 +47,6 @@ in {
         type = types.bool;
         default = true;
         description = "Whether to enable custom hooks.";
-      };
-      hooks.shortCircuit = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to short-circuit hooks chain for particular repo.";
-      };
-      hooks.dirName = mkOption {
-        type = types.str;
-        default = ".hooks";
-        description = "Hooks storage dir name for particular repo.";
       };
       assets.dirName = mkOption {
         type = types.str;
@@ -175,16 +156,6 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        gitlib = writeShellScriptBinWithDeps "gitlib" [
-          pkgs.bash
-          pkgs.coreutils
-          pkgs.fd
-          pkgs.git
-          pkgs.gitAndTools.git-secrets
-          pkgs.gnugrep
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./gitlib.sh; })));
         git-save-wip = writeShellScriptBinWithDeps "git-save-wip" [
           pkgs.git
           pkgs.gitAndTools.stgit
@@ -206,8 +177,6 @@ in {
             *.out
             *.swp
             .mypy_cache/*
-
-            ${cfg.hooks.dirName}
           '';
         };
         # TODO: conditionalize/parameterize
@@ -236,8 +205,6 @@ in {
               excludesfile = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/.gitignore";
               quotepath = false;
               askPass = "";
-            } // lib.optionalAttrs (cfg.hooks.enable) {
-              hooksPath = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/templates/hooks";
             };
             "credential" = { helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper"; };
             "diff" = {
@@ -326,24 +293,6 @@ in {
         programs.git.extraConfig = { "ghq" = { root = config.custom.dev.workspaceRoots.global; }; };
       };
     })
-    (mkIf (cfg.enable && cfg.enableNixosConfigGoodies) {
-      # FIXME: provide recursive permissions setting
-      environment.etc."nixos/.gitattributes".text = ''
-        *.gpg filter=gpg diff=gpg
-        **/secrets/** filter=git-crypt diff=git-crypt
-      '';
-      environment.etc."nixos/${cfg.hooks.dirName}/pre-push/stop-wip" = {
-        mode = "0644";
-        user = config.attributes.mainUser.name;
-        group = "users";
-        text = ''
-          . ${pkgs.gitlib}/bin/gitlib
-
-          check_for_wip
-          exit $?
-        '';
-      };
-    })
     (mkIf (cfg.enable && cfg.myrepos.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
@@ -397,25 +346,25 @@ in {
     })
     (mkIf (cfg.enable && cfg.hooks.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.file = {
-          "${cfg.assets.dirName}/templates/hooks/pre-push" = {
-            executable = true;
-            text = ''
-              #!${pkgs.bash}/bin/bash
-              . ${pkgs.gitlib}/bin/gitlib
-              execute_hook_items pre-push
-              exit $?;
-            '';
-          };
-          "${cfg.assets.dirName}/templates/hooks/pre-commit" = {
-            executable = true;
-            text = ''
-              #!${pkgs.bash}/bin/bash
-              . ${pkgs.gitlib}/bin/gitlib
-              execute_hook_items pre-commit
-              exit $?;
-            '';
-          };
+        home.packages = with pkgs; [
+          gitAndTools.pre-commit
+        ];
+      };
+      environment.etc = {
+        "nixos/.pre-commit-config.yaml".text = builtins.toJSON {
+          repos = [
+            {
+              repo = "local";
+              hooks = [
+                {
+                  id = "forbid-pushing-wip";
+                  name = "forbid-pushing-wip";
+                  language = "script";
+                  entry = "assets/scripts/forbid-pushing-wip";
+                }
+              ];
+            }
+          ];
         };
       };
     })

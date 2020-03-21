@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# FIXME: extract to dedicated repo
+commit=$(git log --pretty=oneline | grep -e "\[wip\]" -e "\[WIP\]")
+if [ ! -z "$commit" ]; then
+    echo $commit
+    echo >&2 "Found WIP commit(s), canceled pushing"
+    exit 1
+fi

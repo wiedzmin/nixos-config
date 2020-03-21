@@ -30,8 +30,6 @@ rec {
   firefoxSessionsSizeThreshold = builtins.toString config.custom.browsers.sessions.sizeThreshold;
   firefoxSessionstorePath =
     "/home/${config.attributes.mainUser.name}/.mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
-  gitHooksDirname = config.custom.dev.git.hooks.dirName;
-  gitHooksShortCircuitPatch = if config.custom.dev.git.hooks.shortCircuit then "return $exitcode" else "";
   gitIdletimeStgit = builtins.toString config.custom.dev.git.idletime.stgit;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;

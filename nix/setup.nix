@@ -3,7 +3,14 @@ let
   deps = import ../nix/sources.nix;
 in
 {
-  environment.etc.nixpkgs.source = deps.nixpkgs;
+  environment.etc = {
+    nixpkgs.source = deps.nixpkgs;
+    "nixos/.gitattributes".text = ''
+      *.gpg filter=gpg diff=gpg
+      **/secrets/** filter=git-crypt diff=git-crypt
+    '';
+  };
+
   nix = {
     nixPath = lib.mkForce [
       "nixpkgs=/etc/nixpkgs"
