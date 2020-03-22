@@ -14,7 +14,10 @@
   (go-mode-hook . whitespace-turn-off)
   :bind
   (:map go-mode-map
-        ("C-c C-c" . multi-compile-run))
+        ("C-c C-c" . multi-compile-run)
+        ("C-k" . sp-kill-hybrid-sexp)
+        ("C-<down>" . sp-push-hybrid-sexp)
+        ("C-<right>" . sp-slurp-hybrid-sexp))
   :config
   (use-package lsp-go)
   (setq gofmt-command "goimports")

@@ -497,18 +497,26 @@
   (eval-expression-minibuffer-setup-hook . smartparens-mode)
   :bind
   (:map smartparens-mode-map
-        ;;TODO: try to make more brief keybindings
-        ("M-<backspace>" . nil)
-        ("M-B" . nil)
-        ("M-F" . nil)
         ("C-M-t" . sp-transpose-sexp)
-        ("C-S-a" . sp-beginning-of-sexp)
-        ("C-S-d" . sp-end-of-sexp)
-        ("C-<left_bracket>" . sp-select-previous-thing))
+        ("M-s" . nil)
+        ("M-e" . sp-splice-sexp))
   :config
   (use-package smartparens-config)
+  (smartparens-global-mode t)
   (show-smartparens-global-mode t)
-  (sp-use-smartparens-bindings))
+  (sp-use-paredit-bindings)
+  :custom
+  (sp-show-pair-delay 0.0)
+  :custom-face
+  (sp-show-pair-match-face
+   ((t (:inherit ace-jump-face-foreground
+                 :foreground "green" :background "#000000"))))
+  (sp-show-pair-mismatch-face
+   ((t (:inherit ace-jump-face-foreground
+                 :foreground "red" :background "#000000"))))
+  (sp-show-pair-match-content-face
+   ((t (:inherit ace-jump-face-foreground
+                 :foreground "#fcba03" :background "#f0f0fo0")))))
 
 (use-package sort
   :bind
