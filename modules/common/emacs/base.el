@@ -27,7 +27,7 @@
      (unless package-archive-contents
        (package-refresh-contents))
      (package-install package)))
- '(use-package pinentry))
+ '(use-package))
 
 (setq use-package-compute-statistics t)
 (setq use-package-verbose t)
@@ -45,8 +45,6 @@
   :quelpa
   (use-package-custom-update
    :repo "a13/use-package-custom-update" :fetcher github :version original))
-
-(pinentry-start)
 
 (use-package deferred)
 

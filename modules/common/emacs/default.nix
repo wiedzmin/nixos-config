@@ -149,7 +149,6 @@ in {
             epkgs.mwim
             epkgs.names
             epkgs.no-littering
-            epkgs.pinentry
             epkgs.posframe
             epkgs.quelpa
             epkgs.quelpa-use-package
