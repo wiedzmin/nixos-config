@@ -106,6 +106,7 @@
   (split-width-threshold nil)
   (split-height-threshold nil)
   (scroll-preserve-screen-position 'always)
+  (cursor-type 'bar)
   :config
   (fset 'yes-or-no-p 'y-or-n-p)
   (set-charset-priority 'unicode)
