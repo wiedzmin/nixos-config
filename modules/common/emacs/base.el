@@ -251,6 +251,7 @@
   :delight (company-mode " γ")
   :hook (after-init-hook . global-company-mode)
   :bind
+  ("C-<tab>" . company-complete)
   (:map company-active-map
         ("C-n" . company-select-next)
         ("C-p" . company-select-previous)
