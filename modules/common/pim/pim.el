@@ -82,7 +82,7 @@
   :after f
   :preface
   ;; remove read-only props from yanked text (e.g. from jabber.el chat buffer)
-  (defadvice org-yank (after make-yank-writeable disable)
+  (defun custom/make-yank-writeable (func &rest args)
     (let ((inhibit-read-only t))
       (remove-text-properties (region-beginning) (region-end)
                               '(read-only t))))
@@ -360,6 +360,7 @@
   (org-x11idle-exists-p t)
   (org-yank-adjusted-subtrees t)
   :config
+  (advice-add 'org-yank :after #'custom/make-yank-writeable)
   (use-package org-capture-pop-frame)
   (deferred:$
     @pimOrgAgendaElPatch@

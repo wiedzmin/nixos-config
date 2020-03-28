@@ -53,6 +53,12 @@
 (use-package lsp-mode
   :preface
   (defvar lsp-on-touch-time 0)
+  (defun custom/lsp-on-change (func &rest args)
+    ;; don't run `lsp-on-change' too frequently
+    (when (> (- (float-time (current-time))
+                lsp-on-touch-time) 30) ;; 30 seconds
+      (setq lsp-on-touch-time (float-time (current-time)))
+      (funcall func args)))
   :hook (lsp-mode . company-mode)
   :bind
   (:map lsp-mode-map
@@ -75,12 +81,7 @@
   (lsp-client-packages nil)
   :config
   (use-package lsp-clients)
-  (defadvice lsp-on-change (around lsp-on-change-hack activate)
-    ;; don't run `lsp-on-change' too frequently
-    (when (> (- (float-time (current-time))
-                lsp-on-touch-time) 30) ;; 30 seconds
-      (setq lsp-on-touch-time (float-time (current-time)))
-      ad-do-it)))
+  (advice-add 'lsp-on-change :around 'custom/lsp-on-change))
 
 (use-package lsp-ui
   :after lsp-mode avy

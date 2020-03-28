@@ -167,10 +167,7 @@
                        (message "Directories cannot be opened in EWW")
                      (eww-open-file (dired-get-file-for-visit)))))))
   :preface
-  (defadvice dired-do-rename (after revert-buffer activate)
-    (revert-buffer))
-  (defadvice dired-create-directory (after revert-buffer activate)
-    (revert-buffer))
+  (defun custom/revert-dired-buffer (func &rest args) (revert-buffer))
   :custom
   (dired-recursive-deletes 'top) ;; Allows recursive deletes
   (dired-dwim-target t)
@@ -178,14 +175,16 @@
   :config
   (use-package dired-x)
   (put 'dired-find-alternate-file 'disabled nil)
+  (advice-add 'dired-do-rename :after #'custom/revert-dired-buffer)
+  (advice-add 'dired-create-directory :after #'custom/revert-dired-buffer)
   (use-package dired-filetype-face))
 
 (use-package wdired
-  :preface
-  (defadvice wdired-abort-changes (after revert-buffer activate)
-    (revert-buffer))
+  :after dired
   :custom
-  (wdired-allow-to-change-permissions 'advanced))
+  (wdired-allow-to-change-permissions 'advanced)
+  :config
+  (advice-add 'wdired-abort-changes :after #'custom/revert-dired-buffer))
 
 (use-package dired-hide-dotfiles
   :bind
