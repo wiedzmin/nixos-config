@@ -562,7 +562,7 @@
   :hook (after-init-hook . ws-butler-global-mode)
   :custom
   (ws-butler-convert-leading-tabs-or-spaces t)
-  (ws-butler-global-exempt-modes '(markdown-mode)))
+  (ws-butler-global-exempt-modes '(markdown-mode go-mode)))
 
 (use-package yasnippet
   :demand t
