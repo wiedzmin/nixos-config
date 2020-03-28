@@ -43,7 +43,7 @@
   (magit-completing-read-function 'ivy-completing-read)
   (magit-blame-heading-format "%H %-20a %C %s")
   (magit-diff-refine-hunk t)
-  (magit-display-buffer-function 'magit-display-buffer-fullframe-status-topleft-v1))
+  (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package magit-filenotify
   :delight (magit-filenotify-mode " FN")
