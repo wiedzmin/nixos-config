@@ -1,13 +1,11 @@
 (use-package auth-source
-  :custom
-  ;;TODO: investigate and setup ghub according to https://github.com/magit/ghub/blob/master/ghub.org#user-content-manually-creating-and-storing-a-token
-  ;;TODO: check if it needed and resurrect .authinfo.gpg
-  (auth-sources '("~/.authinfo")))
+  :config
+  (add-to-list 'auth-sources "~/.authinfo"))
 
 (use-package auth-source-pass
+  :demand t
   :after auth-source
   :config
-  ;;FIXME: source not being added
   (auth-source-pass-enable))
 
 (use-package keychain-environment
