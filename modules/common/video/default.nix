@@ -251,7 +251,7 @@ in {
       programs.light.enable = true;
       hardware.brillo.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; lib.optionals (cfg.staging.enable) [ blugon ];
+        home.packages = with pkgs; lib.optionals (cfg.staging.enable) [ blugon edid-generator ];
         home.file = {
           ".XCompose".text = ''
             include "${pkgs.xorg.libX11}/share/X11/locale/en_EN.UTF-8/Compose"

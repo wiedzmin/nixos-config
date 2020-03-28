@@ -443,7 +443,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs;
           [ fd sd up uq ]
-          ++ lib.optionals cfg.staging.enable [ dateutils fselect gron jid jl lv pdfgrep ripgrep-all yj ];
+          ++ lib.optionals cfg.staging.enable [ dateutils fselect gron jid jl lv pdfgrep peep ripgrep-all yj ];
         programs = {
           lsd = {
             enable = true;
