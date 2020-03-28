@@ -2,17 +2,10 @@
 (setq message-log-max t) ;; we don't want to lose any startup log info
 (setq shell-file-name "bash")
 
-(setq gc-cons-percentage 0.3)
-
+(setq gc-cons-percentage 0.5)
 (setq gc-cons-threshold most-positive-fixnum)
-
 (add-hook 'after-init-hook #'(lambda ()
                                (setq gc-cons-threshold 800000)))
-
-(add-hook 'minibuffer-setup-hook (lambda () (setq gc-cons-threshold most-positive-fixnum)))
-(add-hook 'minibuffer-exit-hook (lambda () (setq gc-cons-threshold 800000)))
-
-(add-hook 'focus-out-hook #'garbage-collect)
 
 (require 'cl)
 (require 'package)
@@ -84,8 +77,13 @@
   :bind
   ("M-\"" . eval-region)
   ([remap kill-buffer] . kill-this-buffer)
+  :hook
+  (minibuffer-setup-hook . (lambda () (setq gc-cons-threshold most-positive-fixnum)))
+  (minibuffer-exit-hook . (lambda () (setq gc-cons-threshold 800000)))
+  (focus-out-hook . garbage-collect)
   :custom
   (use-dialog-box nil)
+  (create-lockfiles nil)
   (minibuffer-prompt-properties
    '(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt))
   (undo-limit 1000000)
@@ -181,7 +179,9 @@
   (advice-add 'save-buffers-kill-terminal :before 'custom/save-buffer-clients-on-exit)
   (advice-add 'server-edit :before 'save-buffer))
 
-(imagemagick-register-types)
+(use-package image
+  :config
+  (imagemagick-register-types))
 
 (use-package autorevert
   :defer 2
@@ -234,8 +234,6 @@
   (super-save-remote-files nil)
   :config
   (super-save-mode 1))
-
-(setf create-lockfiles nil)
 
 (use-package beginend
   :delight beginend-global-mode beginend-prog-mode beginend-magit-status-mode
