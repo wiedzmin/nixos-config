@@ -2,13 +2,17 @@
   :after link-hint
   :bind
   (:map link-hint-keymap
-        ("l" . counsel-ace-link))
+        ;; This is fallback option for link-hint itself
+        ;; because link-hint is currently does not work
+        ;; in some major modes.
+        ("l" . ace-link-org))
   :config
   (ace-link-setup-default))
 
 (use-package ace-window
   :after avy
-  :commands ace-window
+  :bind
+  ("M-o" . ace-window)
   :custom
   (aw-background nil)
   (aw-leading-char-style 'char)
@@ -30,11 +34,11 @@
 (use-package avy
   :demand t
   :bind
-  (("C-:" . avy-goto-char)
-   :prefix-map custom-goto-map
-   :prefix "M-s"
-   ("M-s" . avy-goto-word-0)
-   ("M-a" . swiper-avy))
+  ("C-:" . avy-goto-char)
+  (:prefix-map custom-goto-map
+               :prefix "M-s"
+               ("M-s" . avy-goto-word-0)
+               ("M-a" . swiper-avy))
   :custom
   (avy-timeout-seconds 0.5)
   (avy-keys '(?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
@@ -51,39 +55,33 @@
   :init
   (require 'iso-transl)
   :bind
-  (([remap menu-bar-open] . counsel-tmm)
-   ([remap insert-char] . counsel-unicode-char)
-   ([remap isearch-forward] . counsel-grep-or-swiper)
-   ("C-h L" . counsel-locate)
-   :prefix-map custom-counsel-map
-   :prefix "<f9>"
-   ("y" . counsel-yank-pop)
-   ("m" . counsel-mark-ring)
-   ("c" . counsel-command-history)
-   ("e" . counsel-expression-history)
-   ("p" . counsel-package)
-   ("l" . counsel-git-log)
-   ("g" . counsel-rg)
-   ("G" . (lambda () (interactive) (counsel-rg (thing-at-point 'symbol))))
-   ("I" . ivy-imenu-anywhere)
-   :prefix-map custom-help-map
-   :prefix "<f1>"
-   ("l" . counsel-find-library)
-   ("b" . counsel-descbinds)
-   ("i" . counsel-info-lookup-symbol)
-   :map mode-specific-map
-   ("C-SPC" . counsel-mark-ring)
-   ("C-." . counsel-fzf)
-   ("w" . counsel-wmctrl)
-   :map ctl-x-map
-   ("C-r" . counsel-recentf)
-   ("m" . counsel-minor)
-   :map help-map
-   ("l" . counsel-find-library)
-   :map iso-transl-ctl-x-8-map
-   ("RET" . counsel-unicode-char)
-   :map ivy-minibuffer-map
-   ("M-y" . ivy-next-line))
+  ([remap menu-bar-open] . counsel-tmm)
+  ([remap insert-char] . counsel-unicode-char)
+  ([remap isearch-forward] . counsel-grep-or-swiper)
+  (:prefix-map custom-nav-map
+               :prefix "C-q"
+               ("y" . counsel-yank-pop)
+               ("m" . counsel-mark-ring)
+               ("c" . counsel-command-history)
+               ("l" . counsel-git-log)
+               ("g" . counsel-rg)
+               ("G" . (lambda () (interactive) (counsel-rg (thing-at-point 'symbol))))
+               ("I" . ivy-imenu-anywhere))
+  (:prefix-map custom-help-map
+               :prefix "<f1>"
+               ("l" . counsel-find-library)
+               ("b" . counsel-descbinds)
+               ("i" . counsel-info-lookup-symbol))
+  (:map mode-specific-map
+        ("C-SPC" . counsel-mark-ring)
+        ("l" . counsel-locate))
+  (:map ctl-x-map
+        ("C-r" . counsel-recentf)
+        ("m" . counsel-minor))
+  (:map help-map
+        ("l" . counsel-find-library))
+  (:map iso-transl-ctl-x-8-map
+        ("RET" . counsel-unicode-char))
   :custom
   (counsel-git-cmd "rg --files")
   (counsel-grep-base-command "rg -i -M 120 --no-heading --line-number --color never '%s' %s")
@@ -214,13 +212,12 @@
                 100)
            `(,opacity-percent . 50) '(100 . 100)))))
   :bind
-  (("M-o" . ace-window)
-   :prefix-map frame-map
-   :prefix "<f2>"
-   ("n" . make-frame-command)
-   ("k" . delete-frame)
-   ("s" . delete-other-frames)
-   ("v" . custom/toggle-transparency))
+  (:prefix-map frame-map
+               :prefix "<f2>"
+               ("n" . make-frame-command)
+               ("k" . delete-frame)
+               ("s" . delete-other-frames)
+               ("v" . custom/toggle-transparency))
   :config
   (add-to-list 'default-frame-alist `(alpha . (100 . 100)))
   (blink-cursor-mode 0)
@@ -232,15 +229,15 @@
 (use-package ivy
   :delight ivy-mode
   :bind
-  (("M-<f12>" . counsel-switch-buffer)
-   ("<f10>" . ivy-resume)
-   :map ctl-x-map
-   ("b" . counsel-switch-buffer)
-   :map mode-specific-map
-   ("v" . ivy-push-view)
-   ("V" . ivy-pop-view)
-   :map ivy-minibuffer-map
-   ("C-j" . ivy-immediate-done))
+  ("M-<f12>" . counsel-switch-buffer)
+  ("<f10>" . ivy-resume)
+  (:map ctl-x-map
+        ("b" . counsel-switch-buffer))
+  (:map mode-specific-map
+        ("v" . ivy-push-view)
+        ("V" . ivy-pop-view))
+  (:map ivy-minibuffer-map
+        ("C-j" . ivy-immediate-done))
   :config
   (ivy-mode 1)
   :custom-face
@@ -253,8 +250,7 @@
   (ivy-initial-inputs-alist nil) ;; no regexp by default
   (ivy-re-builders-alist
    '((read-file-name-internal . ivy--regex-fuzzy)
-     (t . ivy--regex-ignore-order)))
-  )
+     (t . ivy--regex-ignore-order))))
 
 (use-package imenu-anywhere
   :commands ivy-imenu-anywhere)
@@ -321,11 +317,11 @@
   (after-init-hook . projectile-mode))
 
 (use-package rg
+  :after counsel
   :bind
-  (:map mode-specific-map
+  (:map custom-nav-map
         ("r" . rg)
-        ("d" . rg-project)
-        ("m" . rg-dwim))
+        ("d" . rg-project))
   :custom
   (rg-group-result t)
   (rg-show-columns t)
@@ -341,10 +337,10 @@
 (use-package swiper
   :commands swiper swiper-multi
   :bind
-  (("C-s" . swiper)
-   ("C-S-s" . swiper-thing-at-point)
-   :map custom-counsel-map
-   ("m" . swiper-multi))
+  ("C-s" . swiper)
+  ("C-S-s" . swiper-thing-at-point)
+  (:map custom-nav-map
+        ("m" . swiper-multi))
   :custom
   (swiper-include-line-number-in-search t)
   :custom-face (swiper-match-face-1 ((t (:background "#dddddd"))))
