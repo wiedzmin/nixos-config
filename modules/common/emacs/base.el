@@ -27,7 +27,7 @@
 (setq use-package-hook-name-suffix "")
 (put 'use-package 'lisp-indent-function 1)
 
-(use-package quelpa :defer t)
+(use-package quelpa)
 (use-package quelpa-use-package
   :custom
   (quelpa-use-package-inhibit-loading-quelpa
