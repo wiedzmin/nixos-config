@@ -16,15 +16,14 @@
 (use-package helpful
   :defer t
   :bind
-  (:prefix-map custom-help-map
-               :prefix "<f1>"
-               ("f" . helpful-function)
-               ("v" . helpful-variable)
-               ("C" . helpful-callable)
-               ("M" . helpful-macro)
-               ("c" . helpful-command)
-               ("k" . helpful-key)
-               ("RET" . helpful-at-point))
+  (:map custom-help-map
+        ("f" . helpful-function)
+        ("v" . helpful-variable)
+        ("C" . helpful-callable)
+        ("M" . helpful-macro)
+        ("c" . helpful-command)
+        ("k" . helpful-key)
+        ("RET" . helpful-at-point))
   (:map help-map
         ("f" . helpful-function)
         ("v" . helpful-variable)

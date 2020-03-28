@@ -278,10 +278,10 @@
   (xref-show-xrefs-function #'ivy-xref-show-xrefs "Use Ivy to show xrefs"))
 
 (use-package ivy-yasnippet
+  :after (ivy yasnippet)
   :bind
-  (:prefix-map custom-yasnippet-map
-               :prefix "<f5>"
-               ("i" . ivy-yasnippet)))
+  (:map custom-yasnippet-map
+        ("i" . ivy-yasnippet)))
 
 (use-package link-hint
   :demand t
