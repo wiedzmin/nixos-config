@@ -26,6 +26,12 @@
   :hook
   (prog-mode . fic-mode))
 
+(use-package yaml-mode
+  :bind
+  (:map yaml-mode-map
+        ("C-m" . newline-and-indent)
+        ("<return>" . newline-and-indent)))
+
 (use-package multi-compile
   :custom
   (multi-compile-completion-system 'default))

@@ -399,9 +399,6 @@
 
 (use-package simple
   :preface
-  (defun custom/newline-hook ()
-    (local-set-key (kbd "C-m") 'newline-and-indent)
-    (local-set-key (kbd "<return>") 'newline-and-indent))
   (defun custom/gnocchi-case (s)
     "Convert S to 'gnocchi case'."
     (declare (side-effect-free t))
@@ -423,8 +420,7 @@
         (delete-region from to)
         (goto-char from)
         (insert result))))
-  :hook (((yaml-mode-hook emacs-lisp-mode-hook lisp-mode-hook python-mode-hook) . custom/newline-hook)
-         ((prog-mode-hook text-mode-hook) . turn-on-auto-fill)
+  :hook (((prog-mode-hook text-mode-hook) . turn-on-auto-fill)
          (eval-expression-minibuffer-setup-hook . eldoc-mode))
   :bind
   (("M-g" . goto-line)
