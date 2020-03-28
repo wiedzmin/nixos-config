@@ -104,9 +104,9 @@ machine = guess_machine_name()
 
 operations = [
     "Update current configuration",
-    "Rollback current configuration",
     "Update current configuration (debug)",
     "Update current configuration + nixfmt beforehand",
+    "Rollback current configuration",
     "Select and build configuration",
     "Select and build configuration (debug)",
     "Link configuration"
