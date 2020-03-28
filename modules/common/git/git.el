@@ -76,11 +76,10 @@
   (git-msg-prefix-input-method 'ivy-read))
 
 (use-package magit-todos
+  :after magit
   :bind
   (:map mode-specific-map
-        ("C-d" . ivy-magit-todos))
-  :hook
-  (magit-status-mode-hook . magit-todos-mode))
+        ("C-d" . ivy-magit-todos)))
 
 (use-package git-link
   :after link-hint
