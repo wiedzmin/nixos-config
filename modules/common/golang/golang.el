@@ -1,9 +1,3 @@
-;;TODO: some harness either here or within shell to automate the burden of setting up new golang project's boilerplate
-
-;;TODO: update existing dep
-;; example command: go get -v -u "github.com/group/project/package"
-;; find/create command for squeezing dep references (see example above) from source tree
-;; then feed them up to ivy and make elisp to deal with selection
 (use-package go-mode
   :no-require t
   :after (multi-compile)
@@ -45,9 +39,6 @@
                             ))))
 
 (use-package flycheck-golangci-lint
-  ;; something is broken about epkgs in current nixpkgs, so using quelpa
-  :quelpa
-  (flycheck-golangci-lint :repo "weijiangan/flycheck-golangci-lint" :fetcher github)
   :after (flycheck go-mode)
   :hook (go-mode-hook . flycheck-golangci-lint-setup))
 

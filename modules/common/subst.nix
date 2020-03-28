@@ -20,7 +20,6 @@ rec {
   emacsBrowserGenericProgram = config.attributes.defaultCommands.browser;
   emacsCustomFile = "/home/${config.attributes.mainUser.name}/.emacs.d/customizations.el";
   emacsDatadir = config.ide.emacs.dataDir;
-  emacsResourcesDir = "/home/${config.attributes.mainUser.name}/.emacs.d/resources/";
   emacsYasnippetSnippets = deps.yasnippet-snippets;
   firefoxProfilePath =
     config.home-manager.users."${config.attributes.mainUser.name}".programs.firefox.profiles.default.path;

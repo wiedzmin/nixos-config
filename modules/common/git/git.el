@@ -28,41 +28,16 @@
                ("t" . magit-tag)
                ("w" . magit-diff-working-tree))
   (:map magit-status-mode-map
-        ("E" . nil)
         ("N" . magit-notes-edit)
-        ("C-c k" . magit-process-kill)
-        ("q" . custom/magit-kill-buffers))
+        ("C-c k" . magit-process-kill))
   (:map dired-mode-map
         ("@" . magit-dired-log))
   :preface
-  (defun custom/open-global-repos-list ()
-    (interactive)
-    (let ((repos-buffer (get-buffer "*Magit Repositories*")))
-      (if repos-buffer
-          (switch-to-buffer repos-buffer)
-        (magit-list-repositories))))
   (defun custom/toggle-magit-margin ()
     (interactive)
     (if (car magit-status-margin)
         (setq magit-status-margin '(nil age magit-log-margin-width nil 18))
       (setq magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))))
-  (defun custom/magit-restore-window-configuration (&optional kill-buffer)
-    "Bury or kill the current buffer and restore previous window configuration."
-    (let ((winconf magit-previous-window-configuration)
-          (buffer (current-buffer))
-          (frame (selected-frame)))
-      (quit-window kill-buffer (selected-window))
-      (when (and winconf (equal frame (window-configuration-frame winconf)))
-        (set-window-configuration winconf)
-        (when (buffer-live-p buffer)
-          (with-current-buffer buffer
-            (setq magit-previous-window-configuration nil))))))
-  (defun custom/magit-kill-buffers ()
-    "Restore window configuration and kill all Magit buffers."
-    (interactive)
-    (let ((buffers (magit-mode-get-buffers)))
-      (magit-restore-window-configuration)
-      (mapc #'kill-buffer buffers)))
   :custom
   (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
   (magit-completing-read-function 'ivy-completing-read)
@@ -85,7 +60,6 @@
 
 (use-package dired-git-info
   :after dired
-  ;; :hook (dired-after-readin-hook . dired-git-info-auto-enable)
   :bind
   (:map dired-mode-map
         (")" . dired-git-info-mode)))

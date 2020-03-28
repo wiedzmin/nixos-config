@@ -56,12 +56,7 @@
                               (time-subtract after-init-time before-init-time)))
                      gcs-done)))
 
-(global-set-key (kbd "C-x C-.") ;; Run use-package linter
-                (lambda ()
-                  (interactive)
-                  (find-file (concat user-emacs-directory "init.el"))
-                  (use-package-lint)))
-(global-set-key (kbd "C-x C-,") #'goto-char)
+(global-set-key (kbd "C-x C-.") #'goto-char)
 
 (use-package amx
   :bind
@@ -270,14 +265,6 @@
   (company-tooltip-align-annotations t)
   (company-show-numbers t)
   :config
-  (use-package company-fuzzy
-    :custom
-    (company-fuzzy-prefix-ontop t)
-    (company-fuzzy-show-annotation t)
-    (company-fuzzy-sorting-backend 'alphabetic)
-    :config
-    (add-to-list 'company-fuzzy--no-prefix-backends 'company-yasnippet)
-    (global-company-fuzzy-mode 1))
   (use-package company-quickhelp
     :config
     (company-quickhelp-mode 1))
@@ -385,11 +372,6 @@
   ([remap move-beginning-of-line] . mwim-beginning-of-code-or-line)
   ([remap move-end-of-line] . mwim-end-of-code-or-line))
 
-(use-package paren
-  :custom
-  (show-paren-delay 0)
-  (show-paren-mode t))
-
 (use-package recursive-narrow
   :bind
   (:map mode-specific-map
@@ -418,9 +400,6 @@
   ("M-_" . shift-number-down))
 
 (use-package simple
-  :delight
-  ((visual-line-mode . " ↩")
-   (auto-fill-function . " ↵"))
   :preface
   (defun custom/newline-hook ()
     (local-set-key (kbd "C-m") 'newline-and-indent)
@@ -596,27 +575,11 @@
   :delight yas-minor-mode
   :mode (("@emacsYasnippetSnippets@" . snippet-mode)
          ("\\.yasnippet$" . snippet-mode))
-  :preface
-  (defun custom/update-yasnippets-on-save ()
-    (when (string-match "@emacsYasnippetSnippets@" buffer-file-name)
-      (yas-load-directory "@emacsResourcesDir@")))
   :bind
-  ;; (:map custom-yasnippet-map
-  ;;      ("v" . yas-visit-snippet-file))
-  (:map yas-keymap
-        ([(tab)] . nil)
-        ([(shift tab)] . nil)
-        ([backtab] . nil)
-        ("TAB" . nil)
-        ("<return>" . yas-exit-all-snippets))
-  (:map yas-minor-mode-map
-        ([(tab)] . nil)
-        ("<tab>" . nil)
-        ("TAB" . nil))
+  (:prefix-map custom-yasnippet-map
+               :prefix "<f5>")
   :hook
-  (hippie-expand-try-functions-list . yas-hippie-try-expand)
   (after-init-hook . yas-global-mode)
-  (after-save-hook . custom/update-yasnippets-on-save)
   :custom
   (yas-key-syntaxes '("w" "w_" "w_." "^ " "w_.()" yas-try-key-from-whitespace))
   (yas-expand-only-for-last-commands '(self-insert-command))

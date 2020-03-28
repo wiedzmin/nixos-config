@@ -165,17 +165,8 @@
                  (when (derived-mode-p 'dired-mode)
                    (if (file-directory-p (dired-get-filename))
                        (message "Directories cannot be opened in EWW")
-                     (eww-open-file (dired-get-file-for-visit))))))
-        ("C-x C-k" . dired-do-delete))
+                     (eww-open-file (dired-get-file-for-visit)))))))
   :preface
-  (defvar custom/large-file-ok-types
-    (rx "." (or "mp4" "mkv" "pdf") string-end)
-    "Regexp matching filenames which are definitely ok to visit,
-         even when the file is larger than `large-file-warning-threshold'.")
-  (defadvice abort-if-file-too-large (around custom/check-large-file-ok-types)
-    "If FILENAME matches `custom/large-file-ok-types', do not abort."
-    (unless (string-match-p custom/large-file-ok-types (ad-get-arg 2))
-      ad-do-it))
   (defadvice dired-do-rename (after revert-buffer activate)
     (revert-buffer))
   (defadvice dired-create-directory (after revert-buffer activate)
@@ -184,12 +175,9 @@
   (dired-recursive-deletes 'top) ;; Allows recursive deletes
   (dired-dwim-target t)
   (dired-listing-switches "-lah1v --group-directories-first") ;;TODO: think of using TIME_STYLE env var
-  (dired-guess-shell-alist-user '(("\\.pdf\\'" "zathura")
-                                  ("\\.mp4\\'" "mpv")))
   :config
   (use-package dired-x)
   (put 'dired-find-alternate-file 'disabled nil)
-  (ad-activate 'abort-if-file-too-large)
   (use-package dired-filetype-face))
 
 (use-package wdired

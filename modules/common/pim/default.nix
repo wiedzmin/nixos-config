@@ -169,7 +169,6 @@ in {
           epkgs.org-rich-yank
           epkgs.org-sticky-header
           epkgs.orgit
-          epkgs.orglink
           epkgs.plantuml-mode
           epkgs.russian-holidays
         ];
