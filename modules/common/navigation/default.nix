@@ -90,6 +90,11 @@ in {
           Whether to enable customized navigation for Emacs.
         '';
       };
+      emacs.ivy.candidatesCount = mkOption {
+        type = types.int;
+        default = 10;
+        description = "Candidates count to display for Ivy completion engine.";
+      };
       xmonad.enable = mkOption {
         type = types.bool;
         default = false;

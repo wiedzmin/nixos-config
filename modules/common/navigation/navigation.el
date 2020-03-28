@@ -249,7 +249,7 @@
   (ivy-display-style 'fancy)
   (ivy-use-selectable-prompt t "Make the prompt line selectable")
   (ivy-use-virtual-buffers t) ;; add 'recentf-mode’and bookmarks to 'ivy-switch-buffer'.
-  (ivy-height 20) ;; number of result lines to display
+  (ivy-height @ivyCandidatesCount@) ;; number of result lines to display
   (ivy-initial-inputs-alist nil) ;; no regexp by default
   (ivy-re-builders-alist
    '((read-file-name-internal . ivy--regex-fuzzy)
