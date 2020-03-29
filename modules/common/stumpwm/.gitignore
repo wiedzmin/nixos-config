@@ -1,0 +1,9 @@
+common.lisp
+credentials.lisp
+layouts/*winner*
+layouts/.stumpwm-group
+persistent-setup
+private.lisp
+rc/**
+ssh-servers.lisp
+todo.org
