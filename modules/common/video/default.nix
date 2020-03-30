@@ -264,10 +264,10 @@ in {
         };
         # TODO: consider rework/restructure
         services = {
-          compton = {
+          picom = {
             enable = true;
             backend = "glx";
-            vSync = "opengl-swc";
+            vSync = true;
             package = pkgs.compton-git;
             extraOptions = ''
               clear-shadow = true;
