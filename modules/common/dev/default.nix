@@ -243,7 +243,7 @@ in {
           '';
         };
         home.packages = with pkgs;
-          [ icdiff ix loop lorri pv watchexec wstunnel ] ++ lib.optionals (cfg.misc.staging.enable) [ async mkcert ];
+          [ icdiff ix loop lorri pv wstunnel ] ++ lib.optionals (cfg.misc.staging.enable) [ async mkcert ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
