@@ -488,7 +488,7 @@
                  :foreground "red" :background "#000000"))))
   (sp-show-pair-match-content-face
    ((t (:inherit ace-jump-face-foreground
-                 :foreground "#fcba03" :background "#f0f0fo0")))))
+                 :foreground "#fcba03" :background "#f0f0f0")))))
 
 (use-package sort
   :bind
