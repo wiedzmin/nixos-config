@@ -103,42 +103,8 @@ in {
                   - mc
           '';
         } // lib.optionalAttrs (cfg.liquidPrompt.enable) {
-          ".lp.ps1".text = ''
-            LP_PS1="''${LP_PS1_PREFIX}''${LP_TIME}''${LP_JOBS}"
-            LP_PS1="''${LP_PS1}''${LP_BRACKET_OPEN}''${LP_USER}''${LP_PERM}"
-            LP_PS1="''${LP_PS1}''${LP_PWD}''${LP_BRACKET_CLOSE}"
-            LP_PS1="''${LP_PS1}''${LP_VCS}"
-            LP_PS1="''${LP_PS1}''${LP_RUNTIME}''${LP_ERR}''${LP_MARK_PREFIX}''${LP_MARK}''${LP_PS1_POSTFIX}"
-
-            LP_TITLE="$(_lp_title "$LP_PS1")"
-            LP_PS1="''${LP_TITLE}''${LP_PS1}"
-          '';
-          ".liquidpromptrc".text = ''
-            LP_PS1_FILE=/home/${config.attributes.mainUser.name}/.lp.ps1
-
-            LP_ENABLE_SHORTEN_PATH=1
-            LP_PATH_LENGTH=35
-            LP_PATH_KEEP=2
-            LP_HOSTNAME_ALWAYS=-1
-            LP_ENABLE_PERM=1
-            LP_ENABLE_JOBS=1
-            LP_ENABLE_LOAD=0
-            LP_ENABLE_BATT=0
-            LP_ENABLE_GIT=1
-            LP_ENABLE_SVN=0
-            LP_ENABLE_HG=1
-            LP_ENABLE_FOSSIL=0
-            LP_ENABLE_BZR=0
-            LP_ENABLE_TIME=1
-            LP_ENABLE_RUNTIME=1
-            LP_RUNTIME_THRESHOLD=2
-            LP_ENABLE_VIRTUALENV=0
-            LP_ENABLE_SCLS=0
-            LP_ENABLE_TEMP=0
-            LP_ENABLE_TITLE=0
-            LP_ENABLE_SCREEN_TITLE=0
-            LP_ENABLE_SSH_COLORS=1
-          '';
+          ".lp.ps1".text = builtins.readFile ./.lp.ps1;
+          ".liquidpromptrc".text = builtins.readFile ./.liquidpromptrc;
         };
         programs.readline = {
           enable = true;
