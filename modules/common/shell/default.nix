@@ -191,7 +191,6 @@ in {
               plugin = fzf-tmux-url; # patched version, see overlays
               extraConfig = "set -g @fzf-url-bind 'o'";
             }
-            battery
             copycat
             cpu
             fpp
@@ -199,7 +198,6 @@ in {
             open # TODO: setup and verify working
             prefix-highlight
             sessionist
-            yank
           ];
         };
         programs.alacritty = {
