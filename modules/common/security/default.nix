@@ -1,7 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 
 let cfg = config.custom.security;
@@ -46,11 +43,8 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           (pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]))
-          gopass
           paperkey
           rofi-pass
-          srm
-          nixpkgs-pinned-05_12_19.vulnix
         ];
         programs.gpg = {
           enable = true;
