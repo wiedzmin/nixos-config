@@ -132,8 +132,9 @@ in {
             inactive = "fg=colour235,bg=default";
           };
           hooks = {
-            "after-select-pane" =
-              "run-shell \\\"tmux set -g window-active-style \"bg='brightblack'\" && sleep .05 && tmux set -g window-active-style ''\\\"";
+            "after-select-pane" = ''
+              "run-shell 'tmux set -g window-active-style bg=brightblack && sleep .05 && tmux set -g window-active-style none'"
+            '';
           };
           bindings = {
             copyMode = {
@@ -148,8 +149,7 @@ in {
               "S-left" = "swap-window -t -1";
               "S-right" = "swap-window -t +1";
               "C-y" = ''
-                run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o --clipboard | tmux load-buffer - ; \
-                                                     tmux paste-buffer"'';
+                run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o -b | tmux load-buffer - ; tmux paste-buffer"'';
             };
             prefixed = {
               "*" = "list-clients";
@@ -165,9 +165,9 @@ in {
               "r" = ''source-file ~/.tmux.conf \; display "  Config reloaded..."'';
               "y" = "set-window-option synchronize-panes";
               "T" = ''neww -n "Tmux manual" "exec man tmux"'';
-              "s" = ''split-window -v "tmux list-sessions | sed -E 's/:.*$//' | \
-                                                      grep -v \"^$(tmux display-message -p '#S')\$\" | \
-                                                      ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
+              "s" = ''split-window -v "tmux list-sessions | cut -d: -f1 | \
+                                       grep -v $(tmux display-message -p '#S') | \
+                                       ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
             };
           };
           extraConfig = ''
