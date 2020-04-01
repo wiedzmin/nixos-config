@@ -86,6 +86,7 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       fonts = { fonts = with pkgs; [ emacs-all-the-icons-fonts ]; };
+      environment.variables.EDITOR = "${pkgs.emacs}/bin/emacsclient";
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           (makeDesktopItem {
