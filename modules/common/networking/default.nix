@@ -89,6 +89,14 @@ in {
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
             src = ./vpnctl.py; })));
+        ifconfless = writePythonScriptWithPythonPackages "ifconfless" [
+          pkgs.nettools
+          pkgs.python3Packages.dmenu-python
+          pkgs.xsel
+          pkgs.yad
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+            src = ./ifconfless.py; })));
         sshmenu = writePythonScriptWithPythonPackages "sshmenu" [
           pkgs.openssh
           pkgs.python3Packages.dmenu-python
@@ -265,6 +273,7 @@ in {
         "M-n c" = ''spawn "${pkgs.wpa_supplicant_gui}/bin/wpa_gui"'';
         "M-n t c" = ''spawn "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli" >> showWSOnProperScreen "shell"'';
         "M-s n <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart nscd.service"'';
+        "M-n i" = ''spawn "${pkgs.ifconfless}/bin/ifconfless"'';
       };
     })
   ];
