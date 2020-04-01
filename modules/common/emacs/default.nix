@@ -160,6 +160,7 @@ in {
             epkgs.savekill
             epkgs.shift-number
             epkgs.smartparens
+            epkgs.string-inflection
             epkgs.super-save
             epkgs.undo-propose
             epkgs.unicode-escape

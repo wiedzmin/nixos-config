@@ -398,29 +398,28 @@
   ("M-+" . shift-number-up)
   ("M-_" . shift-number-down))
 
-(use-package simple
+(use-package string-inflection
+  :after simple
+  :quelpa
+  (string-inflection :repo "akicho8/string-inflection" :fetcher github)
   :preface
-  (defun custom/gnocchi-case (s)
-    "Convert S to 'gnocchi case'."
-    (declare (side-effect-free t))
-    (s-join " " (mapcar 'downcase (s-split-words s))))
-  (defun custom/switch-case (&optional style)
+  (defun custom/string-inflection-gnocchi ()
+    "foo_bar => foo bar"
     (interactive)
-    (let* ((bounds (bounds-of-thing-at-point 'symbol))
-           (from (if (use-region-p) (region-beginning) (car bounds)))
-           (to (if (use-region-p) (region-end) (cdr bounds)))
-           (data (buffer-substring-no-properties from to))
-           (result (funcall (cond ((eq style 'camel) 's-lower-camel-case)
-                                  ((eq style 'camel-up) 's-upper-camel-case)
-                                  ((eq style 'snake) 's-snake-case)
-                                  ((eq style 'gnocchi) 'custom/gnocchi-case)
-                                  ((eq style 'kebab) 's-dashed-words)
-                                  (t 's-lower-camel-case))
-                            data)))
-      (save-excursion
-        (delete-region from to)
-        (goto-char from)
-        (insert result))))
+    (let ((case-fold-search nil)
+          (str (string-inflection-get-current-word)))
+      (setq str (string-inflection-underscore-function str))
+      (setq str (replace-regexp-in-string "_" " " str))
+      (string-inflection-insert str)))
+  :bind
+  (:map common-editing-map
+        ("6" . string-inflection-lower-camelcase)
+        ("^" . string-inflection-camelcase)
+        ("_" . string-inflection-underscore)
+        ("-" . string-inflection-kebab-case)
+        ("SPC" . custom/string-inflection-gnocchi)))
+
+(use-package simple
   :hook (((prog-mode-hook text-mode-hook) . turn-on-auto-fill)
          (eval-expression-minibuffer-setup-hook . eldoc-mode))
   :bind
@@ -434,12 +433,7 @@
    :prefix "C-z"
    ("o" . cycle-spacing)
    ("w" . delete-trailing-whitespace)
-   ("s" . transpose-sexps)
-   ("6" . (lambda () (interactive) (custom/switch-case 'camel)))
-   ("^" . (lambda () (interactive) (custom/switch-case 'camel-up)))
-   ("_" . (lambda () (interactive) (custom/switch-case 'snake)))
-   ("SPC" . (lambda () (interactive) (custom/switch-case 'gnocchi)))
-   ("-" . (lambda () (interactive) (custom/switch-case 'kebab))))
+   ("s" . transpose-sexps))
   :custom
   (bidi-display-reordering nil)
   (kill-whole-line t)
