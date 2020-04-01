@@ -42,10 +42,16 @@ in {
       }];
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          (pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]))
           paperkey
           rofi-pass
         ];
+        programs.password-store = {
+          enable = true;
+          package = pkgs.pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
+          settings = {
+            PASSWORD_STORE_CLIP_TIME = "60";
+          };
+        };
         programs.gpg = {
           enable = true;
           settings = {
