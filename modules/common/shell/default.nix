@@ -5,7 +5,6 @@ with lib;
 let cfg = config.custom.shell;
 in {
   options = {
-    # TODO: refine options
     custom.shell = {
       enable = mkOption {
         type = types.bool;
