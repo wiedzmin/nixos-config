@@ -10,7 +10,7 @@ in {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable shell tools.";
+        description = "Whether to enable shell tooling.";
       };
       toolsng.enable = mkOption {
         type = types.bool;
