@@ -318,11 +318,11 @@ in {
       when = "hourly";
     };
     pushUpdates = {
-      enable = true;
+      enable = false;
       when = "*-*-* 18:00:00";
     };
     saveWip = {
-      enable = true;
+      enable = false;
       when = "hourly";
     };
     emacs.enable = true;
