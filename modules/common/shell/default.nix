@@ -85,12 +85,9 @@ in {
             checkbashism
             fpp # for tmux fpp plugin
             libnotify # for zsh-notify plugin
-            progress # use in automation
             seturgent
-            shell-hist
             shellcheck
-            tmsu # ?
-          ] ++ lib.optionals (cfg.staging.enable) [ eva tmux-xpanes ];
+          ] ++ lib.optionals (cfg.staging.enable) [ tmux-xpanes ];
         home.file = {
           "tmuxp/main.yml".text = ''
             session_name: main
