@@ -173,12 +173,6 @@ in {
             jwt-cli
           ];
       };
-      environment.systemPackages = with pkgs;
-        with config.boot.kernelPackages;
-        [
-          perf
-          # hotspot # rarely used
-        ];
     })
     (mkIf cfg.statistics.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
