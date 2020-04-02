@@ -51,7 +51,7 @@
   ([remap zap-to-char] . avy-zap-to-char-dwim))
 
 (use-package counsel
-  :delight counsel-mode
+  :blackout
   :init
   (require 'iso-transl)
   :bind
@@ -227,7 +227,7 @@
   (setq truncate-partial-width-windows nil))
 
 (use-package ivy
-  :delight ivy-mode
+  :blackout
   :bind
   ("M-<f12>" . counsel-switch-buffer)
   ("<f10>" . ivy-resume)
@@ -301,7 +301,7 @@
     (phi-search-mc/setup-keys)))
 
 (use-package projectile
-  :delight (projectile-mode " prj")
+  :blackout " prj"
   :custom
   (projectile-enable-caching t)
   (projectile-require-project-root nil)

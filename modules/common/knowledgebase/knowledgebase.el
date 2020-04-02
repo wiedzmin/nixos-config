@@ -34,6 +34,6 @@
         ("RET" . helpful-at-point)))
 
 (use-package which-key
-  :delight which-key-mode
+  :blackout
   :config
   (which-key-mode))

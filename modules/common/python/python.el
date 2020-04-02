@@ -38,7 +38,7 @@
   :after flycheck)
 
 (use-package pip-requirements
-  :delight (pip-requirements-mode "PyPA Requirements")
+  :blackout
   :preface
   (defun custom/pip-requirements-ignore-case ()
     (setq-local completion-ignore-case t))

@@ -71,7 +71,7 @@
   :custom
   (custom-file "@emacsCustomFile@"))
 
-(use-package delight)
+(use-package blackout :quelpa (blackout :repo "raxod502/blackout" :fetcher github))
 
 (use-package emacs
   :bind
@@ -132,7 +132,7 @@
   (save-abbrevs 'silently))
 
 (use-package gcmh
-  :delight " \ufe0f"
+  :blackout " \ufe0f"
   :config
   (gcmh-mode 1))
 
@@ -229,14 +229,14 @@
   (save-place-mode 1))
 
 (use-package super-save
-  :delight super-save-mode
+  :blackout super-save-mode
   :custom
   (super-save-remote-files nil)
   :config
   (super-save-mode 1))
 
 (use-package beginend
-  :delight beginend-global-mode beginend-prog-mode beginend-magit-status-mode
+  :blackout (beginend-global-mode beginend-prog-mode beginend-magit-status-mode)
   :config
   (beginend-global-mode))
 
@@ -248,7 +248,7 @@
   (cd2/region-command 'cd2/comment-or-uncomment-region))
 
 (use-package company
-  :delight (company-mode " γ")
+  :blackout " γ"
   :hook (after-init-hook . global-company-mode)
   :bind
   ("C-<tab>" . company-complete)
@@ -309,7 +309,7 @@
   ([remap mark-sexp] . easy-mark))
 
 (use-package editorconfig
-  :delight (editorconfig-mode " EC")
+  :blackout " EC"
   :hook ((prog-mode-hook text-mode-hook) . editorconfig-mode))
 
 (use-package flycheck
@@ -561,7 +561,7 @@
 
 (use-package yasnippet
   :demand t
-  :delight yas-minor-mode
+  :blackout yas-minor-mode
   :mode (("@emacsYasnippetSnippets@" . snippet-mode)
          ("\\.yasnippet$" . snippet-mode))
   :bind
