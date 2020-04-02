@@ -344,15 +344,15 @@ in {
       };
       environment.etc = {
         "nixos/.pre-commit-config.yaml".text = builtins.toJSON {
-          repos = [{
-            repo = "local";
-            hooks = [{
-              id = "forbid-pushing-wip";
-              name = "forbid-pushing-wip";
-              language = "script";
-              entry = "assets/scripts/forbid-pushing-wip";
-            }];
-          }];
+          repos = [
+            {
+              repo = "https://github.com/wiedzmin/git-hooks";
+              rev = "master";
+              hooks = [
+                { id = "forbid-pushing-wip"; }
+              ];
+            }
+          ];
         };
       };
     })
