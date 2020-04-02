@@ -1,8 +1,6 @@
 { config, lib, options, modulesPath }:
-let
-  deps = import ../nix/sources.nix;
-in
-{
+let deps = import ../nix/sources.nix;
+in {
   environment.etc = {
     nixpkgs.source = deps.nixpkgs;
     "nixos/.gitattributes".text = ''
@@ -12,10 +10,7 @@ in
   };
 
   nix = {
-    nixPath = lib.mkForce [
-      "nixpkgs=/etc/nixpkgs"
-      "nixos-config=/etc/nixos/configuration.nix"
-    ];
+    nixPath = lib.mkForce [ "nixpkgs=/etc/nixpkgs" "nixos-config=/etc/nixos/configuration.nix" ];
     useSandbox = true;
     readOnlyStore = true;
     requireSignedBinaryCaches = true;
@@ -33,33 +28,31 @@ in
     config.permittedInsecurePackages = [ "openssl-1.0.2u" ];
     overlays = [
       (import deps.emacs-overlay)
-      (_: old:
-        rec {
-          inherit deps;
+      (_: old: rec {
+        inherit deps;
 
-          dunst = old.dunst.override { dunstify = true; };
+        dunst = old.dunst.override { dunstify = true; };
 
-          i3lock-color = old.i3lock-color.overrideAttrs (_: rec {
-            patches = [ ./patches/i3lock-color/forcefully-reset-keyboard-layout-group-to-0.patch ];
-          });
+        i3lock-color = old.i3lock-color.overrideAttrs
+          (_: rec { patches = [ ./patches/i3lock-color/forcefully-reset-keyboard-layout-group-to-0.patch ]; });
 
-          vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
+        vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
 
-          tmuxPlugins = old.tmuxPlugins // old.tmuxPlugins.fzf-tmux-url.overrideAttrs (_: {
-            postPatch = ''
-              substituteInPlace fzf-url.sh --replace "capture-pane -J -p" "capture-pane -S -${
-                  builtins.toString config.attributes.tmux.paneHistoryDepthLines
-              } -J -p"
-              substituteInPlace fzf-url.sh --replace "fzf-tmux" "${old.skim}/bin/sk-tmux"
-              substituteInPlace fzf-url.sh --replace "--no-preview" ""
-            '';
-          });
+        tmuxPlugins = old.tmuxPlugins // old.tmuxPlugins.fzf-tmux-url.overrideAttrs (_: {
+          postPatch = ''
+            substituteInPlace fzf-url.sh --replace "capture-pane -J -p" "capture-pane -S -${
+              builtins.toString config.attributes.tmux.paneHistoryDepthLines
+            } -J -p"
+            substituteInPlace fzf-url.sh --replace "fzf-tmux" "${old.skim}/bin/sk-tmux"
+            substituteInPlace fzf-url.sh --replace "--no-preview" ""
+          '';
+        });
 
-          xsane = old.xsane.override { gimpSupport = true; };
+        xsane = old.xsane.override { gimpSupport = true; };
       })
-    ] ++ map (n: import (./private + ("/" + n)))
-      (builtins.filter (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (./private + ("/" + n + "/default.nix")))
-        (lib.attrNames (builtins.readDir ./private)));
+    ] ++ map (n: import (./private + ("/" + n))) (builtins.filter
+      (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (./private + ("/" + n + "/default.nix")))
+      (lib.attrNames (builtins.readDir ./private)));
   };
 
   systemd.services.nix-daemon = {

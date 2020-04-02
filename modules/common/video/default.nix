@@ -238,13 +238,9 @@ in {
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
         autorandr_profiles =
-          writePythonScriptWithPythonPackages "autorandr_profiles" [
-            pkgs.autorandr
-            pkgs.python3Packages.dmenu-python
-          ]
+          writePythonScriptWithPythonPackages "autorandr_profiles" [ pkgs.autorandr pkgs.python3Packages.dmenu-python ]
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // {
-              src = ./autorandr_profiles.py; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./autorandr_profiles.py; })));
       };
 
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "video" ];

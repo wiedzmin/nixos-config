@@ -99,15 +99,10 @@ in {
           pkgs.python3Packages.redis
           pkgs.python3Packages.xlib
         ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./srvctl.py; })));
-        uptime_info = writePythonScriptWithPythonPackages "uptime_info" [
-          pkgs.dunst
-          pkgs.gnused
-          pkgs.procps
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./uptime_info.sh; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./srvctl.py; })));
+        uptime_info = writePythonScriptWithPythonPackages "uptime_info" [ pkgs.dunst pkgs.gnused pkgs.procps ]
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./uptime_info.sh; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         services.udiskie = {
@@ -235,7 +230,8 @@ in {
           StandardError = "journal";
         };
       };
-      systemd.user.timers."purge-home-cache" = renderTimer "Purge homedir cache" "" "" cfg.purgeExpired.calendarTimespec;
+      systemd.user.timers."purge-home-cache" =
+        renderTimer "Purge homedir cache" "" "" cfg.purgeExpired.calendarTimespec;
       systemd.user.services."purge-temp-files" = {
         description = "Purge temporary files";
         serviceConfig = {
@@ -251,7 +247,8 @@ in {
           StandardError = "journal";
         };
       };
-      systemd.user.timers."purge-temp-files" = renderTimer "Purge temporary files" "" "" cfg.purgeExpired.calendarTimespec;
+      systemd.user.timers."purge-temp-files" =
+        renderTimer "Purge temporary files" "" "" cfg.purgeExpired.calendarTimespec;
     })
     (mkIf (cfg.enable && cfg.orderScreenshots.enable) {
       assertions = [{
@@ -260,11 +257,9 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        order_screenshots = writeShellScriptBinWithDeps "order_screenshots" [
-          pkgs.coreutils
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./order_screenshots.sh; })));
+        order_screenshots = writeShellScriptBinWithDeps "order_screenshots" [ pkgs.coreutils ] (builtins.readFile
+          (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./order_screenshots.sh; })));
       };
 
       systemd.user.services."order-screenshots" = {
@@ -278,7 +273,8 @@ in {
           StandardError = "journal";
         };
       };
-      systemd.user.timers."order-screenshots" = renderTimer "Screenshots ordering" "" "" cfg.orderScreenshots.calendarTimespec;
+      systemd.user.timers."order-screenshots" =
+        renderTimer "Screenshots ordering" "" "" cfg.orderScreenshots.calendarTimespec;
     })
     (mkIf cfg.fsDeduplication.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {

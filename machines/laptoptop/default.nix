@@ -291,9 +291,7 @@ in {
 
   custom.dev = {
     enable = true;
-    workspaceRoots = {
-      global = "/home/${config.attributes.mainUser.name}/workspace/repos";
-    };
+    workspaceRoots = { global = "/home/${config.attributes.mainUser.name}/workspace/repos"; };
     statistics.enable = true;
     codesearch.enable = true;
     patching.enable = true;

@@ -58,8 +58,8 @@ in {
       };
       myrepos.subconfigs = mkOption {
         type = types.listOf types.str;
-        default = builtins.attrValues
-          (builtins.mapAttrs (_: value: value + "/.mrconfig") config.custom.dev.workspaceRoots);
+        default =
+          builtins.attrValues (builtins.mapAttrs (_: value: value + "/.mrconfig") config.custom.dev.workspaceRoots);
         description = "Myrepos subconfigs to include.";
       };
       ghq.enable = mkOption {
@@ -119,7 +119,7 @@ in {
       };
       emacs.extraConfig = mkOption {
         type = types.lines;
-        default = '''';
+        default = "";
         description = "Extra settings to be added to Emacs config.";
       };
       staging.packages = mkOption {
@@ -154,13 +154,9 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        git-save-wip = writeShellScriptBinWithDeps "git-save-wip" [
-          pkgs.git
-          pkgs.gitAndTools.stgit
-          pkgs.xprintidle-ng
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./git-save-wip.sh; })));
+        git-save-wip = writeShellScriptBinWithDeps "git-save-wip" [ pkgs.git pkgs.gitAndTools.stgit pkgs.xprintidle-ng ]
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./git-save-wip.sh; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -295,7 +291,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
           ".mrtrust".text = builtins.concatStringsSep "\n"
-            (cfg.myrepos.subconfigs ++ ["/home/${config.attributes.mainUser.name}/.mrconfig"]);
+            (cfg.myrepos.subconfigs ++ [ "/home/${config.attributes.mainUser.name}/.mrconfig" ]);
           # TODO: review https://github.com/RichiH/myrepos/blob/master/mrconfig.complex
           # TODO: consider stage and commit all WIP before pushing
           ".mrconfig".text = ''
@@ -344,25 +340,19 @@ in {
     })
     (mkIf (cfg.enable && cfg.hooks.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          gitAndTools.pre-commit
-        ];
+        home.packages = with pkgs; [ gitAndTools.pre-commit ];
       };
       environment.etc = {
         "nixos/.pre-commit-config.yaml".text = builtins.toJSON {
-          repos = [
-            {
-              repo = "local";
-              hooks = [
-                {
-                  id = "forbid-pushing-wip";
-                  name = "forbid-pushing-wip";
-                  language = "script";
-                  entry = "assets/scripts/forbid-pushing-wip";
-                }
-              ];
-            }
-          ];
+          repos = [{
+            repo = "local";
+            hooks = [{
+              id = "forbid-pushing-wip";
+              name = "forbid-pushing-wip";
+              language = "script";
+              entry = "assets/scripts/forbid-pushing-wip";
+            }];
+          }];
         };
       };
     })
@@ -432,8 +422,7 @@ in {
         description = "Save work-in-progress in registered git repo(s)";
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = ''
-            ${pkgs.bash}/bin/bash -c "${pkgs.mr}/bin/mr savewip"'';
+          ExecStart = ''${pkgs.bash}/bin/bash -c "${pkgs.mr}/bin/mr savewip"'';
           WorkingDirectory = "/home/${config.attributes.mainUser.name}";
           StandardOutput = "journal";
           StandardError = "journal";
@@ -444,22 +433,21 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs:
-          [
-            epkgs.dired-git-info
-            epkgs.git-link
-            epkgs.git-msg-prefix
-            epkgs.git-timemachine
-            epkgs.git-walktree
-            epkgs.magit
-            epkgs.magit-filenotify
-            epkgs.magit-popup # *
-            epkgs.magit-todos
-          ];
+        programs.emacs.extraPackages = epkgs: [
+          epkgs.dired-git-info
+          epkgs.git-link
+          epkgs.git-msg-prefix
+          epkgs.git-timemachine
+          epkgs.git-walktree
+          epkgs.magit
+          epkgs.magit-filenotify
+          epkgs.magit-popup # *
+          epkgs.magit-todos
+        ];
       };
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./git.el; })) + "\n" +
-          cfg.emacs.extraConfig;
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./git.el; })) + "\n"
+        + cfg.emacs.extraConfig;
     })
   ];
 }

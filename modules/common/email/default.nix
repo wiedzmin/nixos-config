@@ -228,10 +228,11 @@ in {
         messages_recent = account_personal['INBOX']:is_recent()
         messages_unseen = account_personal['INBOX']:is_unseen()
 
-        ${lib.optionalString (cfg.imapfilter.byFrom != {}) ''
+        ${lib.optionalString (cfg.imapfilter.byFrom != { }) ''
           local from_tofolder = {
-            ${(builtins.concatStringsSep '',
-              '' (lib.mapAttrsToList (from: folder: ''["${from}"] = "${folder}"'') cfg.imapfilter.byFrom))
+            ${
+              (builtins.concatStringsSep ", "
+                (lib.mapAttrsToList (from: folder: ''["${from}"] = "${folder}"'') cfg.imapfilter.byFrom))
             }
           }
 
@@ -241,10 +242,11 @@ in {
           end
         ''}
 
-        ${lib.optionalString (cfg.imapfilter.byTo != {}) ''
+        ${lib.optionalString (cfg.imapfilter.byTo != { }) ''
           local to_tofolder = {
-            ${(builtins.concatStringsSep '',
-              '' (lib.mapAttrsToList (to: folder: ''["${to}"] = "${folder}"'') cfg.imapfilter.byTo))
+            ${
+              (builtins.concatStringsSep ", "
+                (lib.mapAttrsToList (to: folder: ''["${to}"] = "${folder}"'') cfg.imapfilter.byTo))
             }
           }
 
@@ -254,10 +256,11 @@ in {
           end
         ''}
 
-        ${lib.optionalString (cfg.imapfilter.byCc != {}) ''
+        ${lib.optionalString (cfg.imapfilter.byCc != { }) ''
           local cc_tofolder = {
-            ${(builtins.concatStringsSep '',
-              '' (lib.mapAttrsToList (cc: folder: ''["${cc}"] = "${folder}"'') cfg.imapfilter.byCc))
+            ${
+              (builtins.concatStringsSep ", "
+                (lib.mapAttrsToList (cc: folder: ''["${cc}"] = "${folder}"'') cfg.imapfilter.byCc))
             }
           }
 
@@ -267,10 +270,11 @@ in {
           end
         ''}
 
-        ${lib.optionalString (cfg.imapfilter.bySubject != {}) ''
+        ${lib.optionalString (cfg.imapfilter.bySubject != { }) ''
           local subject_tofolder = {
-            ${(builtins.concatStringsSep '',
-              '' (lib.mapAttrsToList (subj: folder: ''["${subj}"] = "${folder}"'') cfg.imapfilter.bySubject))
+            ${
+              (builtins.concatStringsSep ", "
+                (lib.mapAttrsToList (subj: folder: ''["${subj}"] = "${folder}"'') cfg.imapfilter.bySubject))
             }
           }
 
@@ -280,12 +284,8 @@ in {
           end
         ''}
 
-        ${lib.optionalString (cfg.imapfilter.deleteByFrom != {}) ''
-          local from_delete = {
-            "${(builtins.concatStringsSep ''",
-              "'' cfg.imapfilter.deleteByFrom)
-            }"
-          }
+        ${lib.optionalString (cfg.imapfilter.deleteByFrom != { }) ''
+          local from_delete = { "${(builtins.concatStringsSep ''", "'' cfg.imapfilter.deleteByFrom)}" }
 
           for _, from in ipairs(from_delete) do
             local results_todelete = messages_all:contain_from(from)

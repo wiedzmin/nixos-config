@@ -141,18 +141,18 @@ in {
       }];
 
       custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set nav/webjumps ${lib.strings.escapeNixString
-          (builtins.toJSON (lib.mapAttrs'
-            (url: meta: lib.nameValuePair
-              (if lib.hasAttrByPath ["title"] meta then (url + cfg.webjumps.sep + meta.title) else url)
-              (if lib.hasAttrByPath ["browser"] meta then (meta.browser + " " + url) else meta))
-            cfg.webjumps.entries))}
-        ${pkgs.redis}/bin/redis-cli set nav/webjumps_vpn ${lib.strings.escapeNixString
-          (builtins.toJSON (lib.mapAttrs'
-            (url: meta: lib.nameValuePair
-              (if lib.hasAttrByPath ["title"] meta then (url + cfg.webjumps.sep + meta.title) else url)
-              (if lib.hasAttrByPath ["vpn"] meta then meta.vpn else ""))
-            cfg.webjumps.entries))}
+        ${pkgs.redis}/bin/redis-cli set nav/webjumps ${
+          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (url: meta:
+            lib.nameValuePair
+            (if lib.hasAttrByPath [ "title" ] meta then (url + cfg.webjumps.sep + meta.title) else url)
+            (if lib.hasAttrByPath [ "browser" ] meta then (meta.browser + " " + url) else meta)) cfg.webjumps.entries))
+        }
+        ${pkgs.redis}/bin/redis-cli set nav/webjumps_vpn ${
+          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (url: meta:
+            lib.nameValuePair
+            (if lib.hasAttrByPath [ "title" ] meta then (url + cfg.webjumps.sep + meta.title) else url)
+            (if lib.hasAttrByPath [ "vpn" ] meta then meta.vpn else "")) cfg.webjumps.entries))
+        }
       '';
     })
     (mkIf (cfg.enable && cfg.searchengines.enable) {
@@ -244,7 +244,9 @@ in {
     })
     (mkIf (cfg.enable && cfg.snippets.enable) {
       custom.housekeeping.metadataCacheInstructions = lib.optionalString (cfg.snippets.entries != [ ]) ''
-        ${pkgs.redis}/bin/redis-cli set misc/snippets ${lib.strings.escapeNixString (builtins.toJSON cfg.snippets.entries)}
+        ${pkgs.redis}/bin/redis-cli set misc/snippets ${
+          lib.strings.escapeNixString (builtins.toJSON cfg.snippets.entries)
+        }
       '';
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

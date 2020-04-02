@@ -52,15 +52,11 @@ rec {
   renderTimer = desc: boot: active: cal: {
     description = "${desc}";
     wantedBy = [ "timers.target" ];
-    timerConfig = lib.optionalAttrs (boot != "") {
-      OnBootSec = "${boot}";
-    } // lib.optionalAttrs (active != "") {
-      OnUnitActiveSec = "${active}";
-    } // lib.optionalAttrs (cal != "") {
-      OnCalendar = "${cal}";
-    };
+    timerConfig = lib.optionalAttrs (boot != "") { OnBootSec = "${boot}"; }
+      // lib.optionalAttrs (active != "") { OnUnitActiveSec = "${active}"; }
+      // lib.optionalAttrs (cal != "") { OnCalendar = "${cal}"; };
   };
   renderHosts = metadata:
     builtins.concatStringsSep "\n"
-      (lib.mapAttrsToList (ip: meta: ip + "    " + (builtins.concatStringsSep " " meta.hostnames)) metadata);
+    (lib.mapAttrsToList (ip: meta: ip + "    " + (builtins.concatStringsSep " " meta.hostnames)) metadata);
 }

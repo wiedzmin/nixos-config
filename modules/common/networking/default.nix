@@ -77,26 +77,19 @@ in {
         }
       '';
       nixpkgs.config.packageOverrides = _: rec {
-        wifi-status = writeShellScriptBinWithDeps "wifi-status" [
-          pkgs.gawk
-          pkgs.wirelesstools
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./wifi-status.sh; })));
-        vpnctl = writePythonScriptWithPythonPackages "vpnctl" [
-          pkgs.python3Packages.notify2
-          pkgs.python3Packages.redis
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./vpnctl.py; })));
+        wifi-status = writeShellScriptBinWithDeps "wifi-status" [ pkgs.gawk pkgs.wirelesstools ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./wifi-status.sh; })));
+        vpnctl =
+          writePythonScriptWithPythonPackages "vpnctl" [ pkgs.python3Packages.notify2 pkgs.python3Packages.redis ]
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./vpnctl.py; })));
         ifconfless = writePythonScriptWithPythonPackages "ifconfless" [
           pkgs.nettools
           pkgs.python3Packages.dmenu-python
           pkgs.xsel
           pkgs.yad
         ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./ifconfless.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./ifconfless.py; })));
         sshmenu = writePythonScriptWithPythonPackages "sshmenu" [
           pkgs.openssh
           pkgs.python3Packages.dmenu-python
@@ -104,8 +97,7 @@ in {
           pkgs.python3Packages.redis
           pkgs.vpnctl
         ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./sshmenu.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
       };
     })
     (mkIf (cfg.enable && cfg.extraHosts.enable) {
@@ -121,16 +113,16 @@ in {
         }) cfg.extraHosts.entries;
 
       custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${lib.strings.escapeNixString
-          (builtins.toJSON (lib.mapAttrs (_: meta: builtins.head meta.hostnames) cfg.extraHosts.entries))}
-        ${pkgs.redis}/bin/redis-cli set net/vpn_meta ${lib.strings.escapeNixString
-          (builtins.toJSON cfg.vpnMeta)}
-        ${pkgs.redis}/bin/redis-cli set net/hosts_vpn ${lib.strings.escapeNixString
-          (builtins.toJSON (lib.mapAttrs'
-            (_: meta: lib.nameValuePair
-              (builtins.head meta.hostnames)
-              (if lib.hasAttrByPath ["vpn"] meta then meta.vpn else ""))
-            cfg.extraHosts.entries))}
+        ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${
+          lib.strings.escapeNixString
+          (builtins.toJSON (lib.mapAttrs (_: meta: builtins.head meta.hostnames) cfg.extraHosts.entries))
+        }
+        ${pkgs.redis}/bin/redis-cli set net/vpn_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.vpnMeta)}
+        ${pkgs.redis}/bin/redis-cli set net/hosts_vpn ${
+          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (_: meta:
+            lib.nameValuePair (builtins.head meta.hostnames)
+            (if lib.hasAttrByPath [ "vpn" ] meta then meta.vpn else "")) cfg.extraHosts.entries))
+        }
       '';
     })
     (mkIf (cfg.bluetooth.enable) {

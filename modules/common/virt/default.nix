@@ -128,16 +128,10 @@ in {
 
     (mkIf (cfg.enable && cfg.docker.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        dlint = writeShellScriptBinWithDeps "dlint" [
-          pkgs.docker
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./dlint.sh; })));
-        hadolintd = writeShellScriptBinWithDeps "hadolintd" [
-          pkgs.docker
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./hadolintd.sh; })));
+        dlint = writeShellScriptBinWithDeps "dlint" [ pkgs.docker ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dlint.sh; })));
+        hadolintd = writeShellScriptBinWithDeps "hadolintd" [ pkgs.docker ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./hadolintd.sh; })));
         docker_containers_traits = writePythonScriptWithPythonPackages "docker_containers_traits" [
           pkgs.docker
           pkgs.python3Packages.dmenu-python
@@ -146,23 +140,20 @@ in {
           pkgs.xsel
           pkgs.yad
         ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./docker_containers_traits.py; })));
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_containers_traits.py; })));
         discover_containerized_services = writePythonScriptWithPythonPackages "discover_containerized_services" [
           pkgs.docker
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
         ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./discover_containerized_services.py; })));
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./discover_containerized_services.py; })));
         docker_shell = writePythonScriptWithPythonPackages "docker_shell" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux
           pkgs.python3Packages.notify2
           pkgs.python3Packages.redis
         ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./docker_shell.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_shell.py; })));
       };
 
       virtualisation.docker = {

@@ -50,6 +50,4 @@ rec {
   tmuxDefaultSession = config.attributes.tmux.defaultSession;
   urlRegex = config.attributes.urlRegex;
   xprintidleBinary = "${nixpkgs-pinned-05_12_19.xprintidle-ng}/bin/xprintidle-ng";
-} // lib.optionalAttrs (config.ide.emacs.enable) {
-  globalWorkspaceRoot = config.custom.dev.workspaceRoots.global;
-}
+} // lib.optionalAttrs (config.ide.emacs.enable) { globalWorkspaceRoot = config.custom.dev.workspaceRoots.global; }

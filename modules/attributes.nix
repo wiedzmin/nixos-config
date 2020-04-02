@@ -88,7 +88,7 @@ with lib;
     urlRegex = mkOption {
       description = "Common URL regular expression";
       type = types.str;
-      default = "(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]";
+      default = "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]";
     };
     tmux.defaultSession = mkOption {
       description = "Default tmux predefined session name to be used in automation scripts";

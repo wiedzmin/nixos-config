@@ -67,15 +67,10 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         tmuxp_sessions = writePythonScriptWithPythonPackages "tmuxp_sessions" [ pkgs.python3Packages.dmenu-python ]
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // {
-              src = ./tmuxp_sessions.py; })));
-        shell-org-capture = writeShellScriptBinWithDeps "shell-org-capture" [
-          pkgs.emacs
-          pkgs.tmux
-          pkgs.xsel
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./shell-org-capture.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tmuxp_sessions.py; })));
+        shell-org-capture = writeShellScriptBinWithDeps "shell-org-capture" [ pkgs.emacs pkgs.tmux pkgs.xsel ]
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./shell-org-capture.sh; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -144,8 +139,8 @@ in {
               "C-right" = "next";
               "S-left" = "swap-window -t -1";
               "S-right" = "swap-window -t +1";
-              "C-y" = ''
-                run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o -b | tmux load-buffer - ; tmux paste-buffer"'';
+              "C-y" =
+                ''run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o -b | tmux load-buffer - ; tmux paste-buffer"'';
             };
             prefixed = {
               "*" = "list-clients";
@@ -161,9 +156,10 @@ in {
               "r" = ''source-file ~/.tmux.conf \; display "  Config reloaded..."'';
               "y" = "set-window-option synchronize-panes";
               "T" = ''neww -n "Tmux manual" "exec man tmux"'';
-              "s" = ''split-window -v "tmux list-sessions | cut -d: -f1 | \
-                                       grep -v $(tmux display-message -p '#S') | \
-                                       ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
+              "s" = ''
+                split-window -v "tmux list-sessions | cut -d: -f1 | \
+                                                       grep -v $(tmux display-message -p '#S') | \
+                                                       ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
             };
           };
           extraConfig = ''

@@ -34,8 +34,7 @@ in {
         default = {
           "${config.ide.emacs.orgDir}" = 3000;
         } // lib.optionalAttrs (config.custom.dev.workspaceRoots != { })
-          (lib.genAttrs
-            (builtins.attrValues (lib.filterAttrs (n: _: n != "global") config.custom.dev.workspaceRoots))
+          (lib.genAttrs (builtins.attrValues (lib.filterAttrs (n: _: n != "global") config.custom.dev.workspaceRoots))
             (_: cfg.org.agendaUpdateDelay));
         description = ''
           Paths to search Org files for agenda.
@@ -48,18 +47,17 @@ in {
       org.agendaElPatch = mkOption {
         type = types.lines;
         default = ''
-          ${lib.concatStringsSep "\n"
-            (lib.mapAttrsToList (root: delay: ''
-              (deferred:nextc
-                (deferred:wait-idle ${builtins.toString delay})
-                (lambda () (f-entries "${root}"
-                                      (lambda (entry) (when (and (f-file? entry)
-                                                                 (s-suffix? ".org" entry)
-                                                                 (not (s-prefix? "${config.custom.browsers.sessions.firefox.path}" entry))
-                                                                 (not (s-contains? "journal" entry)) ;; maybe make option for such ignores
-                                                                 (file-exists-p entry))
-                                                        (push entry org-agenda-files))) t)))
-            '') cfg.org.agendaRoots)}
+          ${lib.concatStringsSep "\n" (lib.mapAttrsToList (root: delay: ''
+            (deferred:nextc
+              (deferred:wait-idle ${builtins.toString delay})
+              (lambda () (f-entries "${root}"
+                                    (lambda (entry) (when (and (f-file? entry)
+                                                               (s-suffix? ".org" entry)
+                                                               (not (s-prefix? "${config.custom.browsers.sessions.firefox.path}" entry))
+                                                               (not (s-contains? "journal" entry)) ;; maybe make option for such ignores
+                                                               (file-exists-p entry))
+                                                      (push entry org-agenda-files))) t)))
+          '') cfg.org.agendaRoots)}
         '';
         visible = false;
         readOnly = true;
@@ -101,7 +99,8 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable && cfg.timeTracking.enable) {
       assertions = [{ # FIXME: if this would not work, then try checking if corresponding secrets are enabled
-        assertion = cfg.timeTracking.enable && builtins.pathExists "/home/${config.attributes.mainUser.name}/.arbtt/categorize.cfg";
+        assertion = cfg.timeTracking.enable
+          && builtins.pathExists "/home/${config.attributes.mainUser.name}/.arbtt/categorize.cfg";
         message = "pim: no arbtt configuration found.";
       }];
 
@@ -112,8 +111,7 @@ in {
           pkgs.python3Packages.xlib
           pkgs.xprintidle-ng
         ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./tt_capture.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tt_capture.py; })));
       };
       services.arbtt = {
         enable = true;

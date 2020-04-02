@@ -66,12 +66,8 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        paste_to_ix = writePythonScriptWithPythonPackages "paste_to_ix" [
-          pkgs.ix
-          pkgs.xsel
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./paste_to_ix.sh; })));
+        paste_to_ix = writePythonScriptWithPythonPackages "paste_to_ix" [ pkgs.ix pkgs.xsel ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./paste_to_ix.sh; })));
       };
       services.clipmenu.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -145,23 +141,18 @@ in {
           pkgs.python3Packages.notify2
           pkgs.xsel
         ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./buku_add.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_add.py; })));
         buku_search_tag = writeShellScriptBinWithDeps "buku_search_tag" [
           nixpkgs-pinned-05_12_19.buku
           pkgs.coreutils
           pkgs.dmenu
           pkgs.gawk
         ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./buku_search_tag.sh; })));
-        buku_search_url = writeShellScriptBinWithDeps "buku_search_url" [
-          nixpkgs-pinned-05_12_19.buku
-          pkgs.coreutils
-          pkgs.dmenu
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./buku_search_url.sh; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_tag.sh; })));
+        buku_search_url =
+          writeShellScriptBinWithDeps "buku_search_url" [ nixpkgs-pinned-05_12_19.buku pkgs.coreutils pkgs.dmenu ]
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_url.sh; })));
       };
     })
     (mkIf (cfg.enable && cfg.screenshots.enable) {
@@ -177,28 +168,16 @@ in {
       ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        screenshot_active_window = writeShellScriptBinWithDeps "screenshot_active_window" [
-          pkgs.coreutils
-          pkgs.maim
-          pkgs.xclip
-          pkgs.xdotool
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./screenshot_active_window.sh; })));
-        screenshot_full = writeShellScriptBinWithDeps "screenshot_full" [
-          pkgs.coreutils
-          pkgs.maim
-          pkgs.xclip
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./screenshot_full.sh; })));
-        screenshot_region = writeShellScriptBinWithDeps "screenshot_region" [
-          pkgs.coreutils
-          pkgs.maim
-          pkgs.xclip
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // {
-            src = ./screenshot_region.sh; })));
+        screenshot_active_window =
+          writeShellScriptBinWithDeps "screenshot_active_window" [ pkgs.coreutils pkgs.maim pkgs.xclip pkgs.xdotool ]
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_active_window.sh; })));
+        screenshot_full = writeShellScriptBinWithDeps "screenshot_full" [ pkgs.coreutils pkgs.maim pkgs.xclip ]
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_full.sh; })));
+        screenshot_region = writeShellScriptBinWithDeps "screenshot_region" [ pkgs.coreutils pkgs.maim pkgs.xclip ]
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_region.sh; })));
       };
 
       environment.systemPackages = with pkgs; [ screenshot_active_window screenshot_full screenshot_region ];

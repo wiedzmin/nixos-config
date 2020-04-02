@@ -89,33 +89,20 @@ in {
         oraclejdk.accept_license = true;
 
         packageOverrides = _: rec {
-          format-config = writeShellScriptBinWithDeps "format-config" [
-            pkgs.fd
-            pkgs.nixfmt
-          ] (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-              src = ./format-config.sh; })));
-          get-pr-override = writeShellScriptBinWithDeps "get-pr-override" [
-            pkgs.coreutils
-            pkgs.curl
-            pkgs.gnugrep
-          ] (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // {
-              src = ./get-pr-override.sh; })));
-          make-package-diff = writeShellScriptBinWithDeps "make-package-diff" [
-            pkgs.coreutils
-            pkgs.diffutils
-            pkgs.nix
-          ] (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // {
-              src = ./make-package-diff.sh; })));
+          format-config = writeShellScriptBinWithDeps "format-config" [ pkgs.fd pkgs.nixfmt ] (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./format-config.sh; })));
+          get-pr-override = writeShellScriptBinWithDeps "get-pr-override" [ pkgs.coreutils pkgs.curl pkgs.gnugrep ]
+            (builtins.readFile (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./get-pr-override.sh; })));
+          make-package-diff = writeShellScriptBinWithDeps "make-package-diff" [ pkgs.coreutils pkgs.diffutils pkgs.nix ]
+            (builtins.readFile (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./make-package-diff.sh; })));
           confctl = writePythonScriptWithPythonPackages "confctl" [
             pkgs.python3Packages.dmenu-python
             pkgs.python3Packages.python-gnupg
             nixpkgs-proposed.python3Packages.pyfzf
           ] (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-              src = ./confctl.py; })));
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./confctl.py; })));
         };
       };
     })
@@ -129,9 +116,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.nix.srcfmt.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-            nixpkgs-pinned-05_12_19.nixfmt
-        ];
+        home.packages = with pkgs; [ nixpkgs-pinned-05_12_19.nixfmt ];
       };
     })
     (mkIf (cfg.enable && cfg.nix.importers.enable) {

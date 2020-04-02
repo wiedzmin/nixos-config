@@ -78,12 +78,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.flycheck-golangci-lint
-          epkgs.go-mode
-          epkgs.go-tag
-          epkgs.gotest
-        ];
+        programs.emacs.extraPackages = epkgs: [ epkgs.flycheck-golangci-lint epkgs.go-mode epkgs.go-tag epkgs.gotest ];
         home.file = {
           "${cfg.packaging.path}/default.nix".text = ''
             with import <nixpkgs> {};
