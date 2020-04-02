@@ -62,10 +62,10 @@ in {
         default = false;
         description = "Whether to enable XMonad keybindings.";
       };
-      staging.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable staging settings.";
+      staging.packages = mkOption {
+        type = types.listOf types.package;
+        default = [ ];
+        description = "List of staging packages.";
       };
     };
   };
@@ -163,7 +163,7 @@ in {
             nix-zsh-completions
             nix-review # https://github.com/Mic92/nix-review
             make-package-diff
-          ] ++ lib.optionals (cfg.staging.enable) [ niv nixpkgs-pinned-05_12_19.nix-linter nix-query-tree-viewer ];
+          ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {

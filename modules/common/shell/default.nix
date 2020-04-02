@@ -41,10 +41,10 @@ in {
         default = false;
         description = "Whether to enable XMonad keybindings.";
       };
-      staging.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable staging settings.";
+      staging.packages = mkOption {
+        type = types.listOf types.package;
+        default = [ ];
+        description = "List of staging settings.";
       };
     };
   };
@@ -86,7 +86,7 @@ in {
             libnotify # for zsh-notify plugin
             seturgent
             shellcheck
-          ] ++ lib.optionals (cfg.staging.enable) [ tmux-xpanes ];
+          ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
           "tmuxp/main.yml".text = ''
             session_name: main
@@ -401,9 +401,7 @@ in {
     })
     (mkIf cfg.toolsng.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs;
-          [ fd sd up uq ]
-          ++ lib.optionals cfg.staging.enable [ dateutils fselect gron jid jl lv pdfgrep peep ripgrep-all yj ];
+        home.packages = with pkgs; [ fd sd up uq ];
         programs = {
           lsd = {
             enable = true;

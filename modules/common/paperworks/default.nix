@@ -154,10 +154,10 @@ in {
         default = false;
         description = "Whether to enable publishing tooling.";
       };
-      publishing.staging.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable staging publishing settings.";
+      publishing.staging.packages = mkOption {
+        type = types.listOf types.package;
+        default = [ ];
+        description = "List of staging packages.";
       };
     };
   };
@@ -273,7 +273,7 @@ in {
     })
     (mkIf cfg.publishing.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; lib.optionals (cfg.publishing.staging.enable) [ pplatex texlab ];
+        home.packages = lib.optionals (cfg.publishing.staging.packages != [ ]) cfg.publishing.staging.packages;
       };
     })
   ];

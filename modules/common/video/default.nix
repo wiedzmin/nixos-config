@@ -226,10 +226,10 @@ in {
         default = false;
         description = "Whether to enable debug tools.";
       };
-      staging.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable staging settings.";
+      staging.packages = mkOption {
+        type = types.listOf types.package;
+        default = [ ];
+        description = "list of staging packages.";
       };
     };
   };
@@ -251,7 +251,7 @@ in {
       programs.light.enable = true;
       hardware.brillo.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; lib.optionals (cfg.staging.enable) [ blugon edid-generator ];
+        home.packages = with pkgs; lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
           ".XCompose".text = ''
             include "${pkgs.xorg.libX11}/share/X11/locale/en_EN.UTF-8/Compose"

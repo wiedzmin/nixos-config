@@ -36,35 +36,25 @@ in {
         default = false;
         description = "Whether to enable dev analysis tools.";
       };
-      analysis.staging.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable staging settings for analysis.";
-      };
       statistics.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable code stats tools.";
-      };
-      statistics.staging.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable staging settings for statistics.";
       };
       misc.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable various misc tools.";
       };
-      misc.staging.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable staging misc settings.";
-      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable development infra for Emacs.";
+      };
+      staging.packages = mkOption {
+        type = types.listOf types.package;
+        default = [ ];
+        description = "List of staging packages.";
       };
       xmonad.enable = mkOption {
         type = types.bool;
@@ -141,43 +131,32 @@ in {
     })
     (mkIf cfg.analysis.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs;
-          [
-            diffoscope
-            elfinfo
-            extrace
-            flamegraph
-            gdb
-            gdbgui
-            hopper
-            libwhich
-            lsof
-            ltrace
-            nmon
-            pagemon
-            patchelf
-            patchutils
-            radare2
-            radare2-cutter
-            strace
-            sysdig
-            valgrind
-          ] ++ lib.optionals (cfg.analysis.staging.enable) [
-            q-text-as-data
-            textql
-            visidata # TODO: make overlay
-            datamash
-            xsv
-            xurls
-            txr # TODO: get started, read docs
-            jwt-cli
-          ];
+        home.packages = with pkgs; [
+          diffoscope
+          elfinfo
+          extrace
+          flamegraph
+          gdb
+          gdbgui
+          hopper
+          libwhich
+          lsof
+          ltrace
+          nmon
+          pagemon
+          patchelf
+          patchutils
+          radare2
+          radare2-cutter
+          strace
+          sysdig
+          valgrind
+        ];
       };
     })
     (mkIf cfg.statistics.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs;
-          [ cloc gource sloccount tokei ] ++ lib.optionals (cfg.statistics.staging.enable) [ scc ];
+        home.packages = with pkgs; [ cloc gource sloccount tokei ];
       };
     })
     (mkIf cfg.misc.enable {
@@ -236,8 +215,7 @@ in {
                   - mc
           '';
         };
-        home.packages = with pkgs;
-          [ icdiff ix loop lorri pv wstunnel ] ++ lib.optionals (cfg.misc.staging.enable) [ async mkcert ];
+        home.packages = with pkgs; [ icdiff ix loop lorri pv wstunnel ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
@@ -292,6 +270,9 @@ in {
         "M-s d <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart docker-devdns.service"'';
         "M-s d <Down>" = ''spawn "${pkgs.systemd}/bin/systemctl stop docker-devdns.service"'';
       };
+    })
+    (mkIf (cfg.staging.packages != [ ]) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = cfg.staging.packages; };
     })
   ];
 }

@@ -103,9 +103,14 @@ in {
           Whether to enable Emacs browsers-related setup.
         '';
       };
-      staging.enable = mkOption {
+      staging.packages = mkOption {
+        type = types.listOf types.package;
+        default = [ ];
+        description = "List of staging packages.";
+      };
+      staging.enableSettings = mkOption {
         type = types.bool;
-        default = true;
+        default = false;
         description = "Whether to enable staging settings.";
       };
     };
@@ -156,7 +161,7 @@ in {
                 "extensions.update.url" = "";
                 "lightweightThemes.selectedThemeID" = "firefox-compact-dark@mozilla.org";
                 "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-              } // lib.optionalAttrs (cfg.staging.enable) {
+              } // lib.optionalAttrs (cfg.staging.enableSettings) {
                 # entries picked from https://github.com/ilya-fedin/user-js/blob/master/user.js
                 "browser.cache.disk.enable" = false;
                 "browser.cache.memory.enable" = false;
@@ -501,7 +506,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.aux.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ w3m-full webmacs ] ++ lib.optionals (cfg.staging.enable) [ next ];
+        home.packages = with pkgs;
+          [ w3m-full webmacs ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         programs.emacs.extraPackages = epkgs: [ epkgs.atomic-chrome ];
       };
     })

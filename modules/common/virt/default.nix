@@ -83,11 +83,6 @@ in {
         default = false;
         description = "Whether to enable Libvirt";
       };
-      libvirt.staging.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable staging settings for libvirt.";
-      };
       virtualbox.enable = mkOption {
         type = types.bool;
         default = false;
@@ -97,6 +92,11 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable XMonad keybindings.";
+      };
+      staging.packages = mkOption {
+        type = types.listOf types.package;
+        default = [ ];
+        description = "List of staging packages.";
       };
     };
   };
@@ -254,7 +254,7 @@ in {
           spice-gtk
           virtmanager
           virtviewer
-        ] ++ lib.optionals (cfg.libvirt.staging.enable) [ x11spice ];
+        ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
     })
     (mkIf (cfg.docker.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = {

@@ -21,10 +21,10 @@ in {
         default = false;
         description = "Whether to enable XMonad keybindings.";
       };
-      staging.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable staging settings.";
+      staging.packages = mkOption {
+        type = types.listOf types.package;
+        default = [ ];
+        description = "List of staging packages.";
       };
     };
   };
@@ -49,7 +49,7 @@ in {
             '';
           };
         };
-        home.packages = with pkgs; [ calibre djview djvulibre ] ++ lib.optionals (cfg.staging.enable) [ epr ];
+        home.packages = with pkgs; [ calibre djview djvulibre ];
         programs.zathura = {
           enable = true;
           options = { pages-per-row = 1; };
@@ -58,13 +58,14 @@ in {
     })
     (mkIf cfg.processors.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs;
-          [ enca img2pdf pandoc pdfcpu pdftk ]
-          ++ lib.optionals (cfg.staging.enable) [ pdfarranger wpWorking.python3Packages.weasyprint ];
+        home.packages = with pkgs; [ enca img2pdf pandoc pdfcpu pdftk ];
       };
     })
     (mkIf (cfg.xmonad.enable && cfg.readers.enable) {
       wm.xmonad.keybindings = { "M-r b" = ''spawn "${pkgs.bookshelf}/bin/bookshelf"''; };
+    })
+    (mkIf (cfg.staging.packages != [ ]) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = cfg.staging.packages; };
     })
   ];
 }

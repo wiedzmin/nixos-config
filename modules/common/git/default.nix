@@ -2,9 +2,7 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  cfg = config.custom.dev.git;
-  # TODO: make custom script with base of https://github.com/arc90/git-sweep
+let cfg = config.custom.dev.git;
 in {
   options = {
     custom.dev.git = {
@@ -124,10 +122,10 @@ in {
         default = '''';
         description = "Extra settings to be added to Emacs config.";
       };
-      staging.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable staging settings for git.";
+      staging.packages = mkOption {
+        type = types.listOf types.package;
+        default = [ ];
+        description = "List of staging packages.";
       };
     };
   };
@@ -275,7 +273,7 @@ in {
 
           git-save-wip
           gitAndTools.git-trim # TODO: review configuration options at https://github.com/foriequal0/git-trim
-        ] ++ lib.optionals (cfg.staging.enable) [ onefetch overcommit gitAndTools.git-machete gitAndTools.git-my ];
+        ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
       assertions = [{
