@@ -141,7 +141,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ get-pr-override confctl ];
+        home.packages = with pkgs; [ confctl get-pr-override ];
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
