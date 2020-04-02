@@ -9,6 +9,7 @@
 
 (require 'cl)
 (require 'package)
+(require 'subr-x) ;; NOTE: for those packages where it was suddenly forgotten
 
 (unless package--initialized
   (package-initialize))

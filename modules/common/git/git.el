@@ -58,6 +58,19 @@
   (:map custom-magit-map
         ("o" . git-walktree)))
 
+(use-package git-identity
+ :quelpa
+ (git-identity :repo "akirak/git-identity.el" :fetcher github)
+ :after magit
+ :bind
+ (:map magit-status-mode-map
+       ("I" . git-identity-info))
+ :config
+ (git-identity-magit-mode 1)
+ :custom
+ (git-identity-verify t)
+ (git-identity-default-username "@mainUserName@"))
+
 (use-package dired-git-info
   :after dired
   :bind

@@ -35,6 +35,7 @@ rec {
   ivyCandidatesCount = builtins.toString config.custom.navigation.emacs.ivy.candidatesCount;
   lspPythonMsExtraPaths =
     builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
+  mainUserName = config.attributes.mainUser.name;
   mycliBinary = "${nixpkgs-pinned-05_12_19.mycli}/bin/mycli"; # because of deps versions conflict with pgcli
   orgDir = config.ide.emacs.orgDir;
   orgKbPath = "/home/${config.attributes.mainUser.name}/docs/org-kb";

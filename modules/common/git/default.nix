@@ -439,6 +439,7 @@ in {
           epkgs.git-msg-prefix
           epkgs.git-timemachine
           epkgs.git-walktree
+          epkgs.git-identity
           epkgs.magit
           epkgs.magit-filenotify
           epkgs.magit-popup # *
