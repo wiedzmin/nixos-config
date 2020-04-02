@@ -431,7 +431,6 @@ in {
     enable = true;
     nix = {
       helpers.enable = true;
-      srcfmt.enable = true;
       importers.enable = true;
       search.enable = true;
     };

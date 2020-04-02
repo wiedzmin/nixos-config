@@ -20,11 +20,6 @@ in {
         default = false;
         description = "Whether to enable Nix helper tools.";
       };
-      nix.srcfmt.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable Nix source formatting tools.";
-      };
       # TODO: consider semantically split this option per-tool (e.g. python packaging,
       # golang packaging, etc., with moving to respective modules)
       nix.importers.enable = mkOption {
@@ -89,8 +84,6 @@ in {
         oraclejdk.accept_license = true;
 
         packageOverrides = _: rec {
-          format-config = writeShellScriptBinWithDeps "format-config" [ pkgs.fd pkgs.nixfmt ] (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./format-config.sh; })));
           get-pr-override = writeShellScriptBinWithDeps "get-pr-override" [ pkgs.coreutils pkgs.curl pkgs.gnugrep ]
             (builtins.readFile (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./get-pr-override.sh; })));
@@ -112,11 +105,6 @@ in {
     (mkIf (cfg.enable && cfg.nix.helpers.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ nix-prefetch nix-prefetch-github nix-prefetch-scripts nixos-generators ];
-      };
-    })
-    (mkIf (cfg.enable && cfg.nix.srcfmt.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ nixpkgs-pinned-05_12_19.nixfmt ];
       };
     })
     (mkIf (cfg.enable && cfg.nix.importers.enable) {
@@ -153,7 +141,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ get-pr-override confctl format-config ];
+        home.packages = with pkgs; [ get-pr-override confctl ];
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

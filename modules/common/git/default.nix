@@ -340,19 +340,15 @@ in {
     })
     (mkIf (cfg.enable && cfg.hooks.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ gitAndTools.pre-commit ];
+        home.packages = with pkgs; [ gitAndTools.pre-commit nixfmt ];
       };
       environment.etc = {
         "nixos/.pre-commit-config.yaml".text = builtins.toJSON {
-          repos = [
-            {
-              repo = "https://github.com/wiedzmin/git-hooks";
-              rev = "master";
-              hooks = [
-                { id = "forbid-pushing-wip"; }
-              ];
-            }
-          ];
+          repos = [{
+            repo = "https://github.com/wiedzmin/git-hooks";
+            rev = "master";
+            hooks = [ { id = "forbid-pushing-wip"; } { id = "nixfmt"; } ];
+          }];
         };
       };
     })
