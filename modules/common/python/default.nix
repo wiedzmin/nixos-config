@@ -5,7 +5,20 @@ let
 in { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.custom.dev.python;
+let
+  cfg = config.custom.dev.python;
+  jupyterWithPackages = pkgs.jupyter.override {
+    definitions = {
+      python3 = let env = (pkgs.python3.withPackages (ps: with ps; cfg.jupyter.packages));
+      in {
+        displayName = "Python 3";
+        argv = [ "${env.interpreter}" "-m" "ipykernel_launcher" "-f" "{connection_file}" ];
+        language = "python";
+        logo32 = "${env.sitePackages}/ipykernel/resources/logo-32x32.png";
+        logo64 = "${env.sitePackages}/ipykernel/resources/logo-64x64.png";
+      };
+    };
+  };
 in {
   options = {
     custom.dev.python = {
@@ -39,6 +52,16 @@ in {
         default = [ ];
         description = "List of paths to search for Python packages, which will be fed to Python Language Server.";
       };
+      jupyter.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Jupyter notebook.";
+      };
+      jupyter.packages = mkOption {
+        type = types.listOf types.package;
+        default = [ ];
+        description = "Python packages to make available in Jupyter notebook.";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -50,15 +73,16 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          python3Packages.autopep8
-          python3Packages.importmagic
-          python3Packages.virtualenv
-          python3Packages.virtualenvwrapper
-          python3Packages.yapf
+        home.packages = with pkgs;
+          [
+            python3Packages.autopep8
+            python3Packages.importmagic
+            python3Packages.virtualenv
+            python3Packages.virtualenvwrapper
+            python3Packages.yapf
 
-          nixpkgs-pinned-08_02_20.prospector # TODO: review configuration https://github.com/PyCQA/prospector
-        ];
+            nixpkgs-pinned-08_02_20.prospector # TODO: review configuration https://github.com/PyCQA/prospector
+          ] ++ lib.optionals (cfg.jupyter.enable) [ jupyterWithPackages ];
         home.file = {
           ".pylintrc".text =
             lib.generators.toINI { } { # see https://github.com/PyCQA/pylint/blob/master/pylintrc for reference
