@@ -26,6 +26,7 @@
 
 ;TODO: play  with groups/workspaces
 (use-package bufler
+  :disabled ;NOTE: temporarily, something has been broken upstream
   :quelpa
   (bufler :repo "alphapapa/bufler.el" :fetcher github)
   :bind
