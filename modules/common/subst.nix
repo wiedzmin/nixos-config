@@ -33,6 +33,7 @@ rec {
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
   ivyCandidatesCount = builtins.toString config.custom.navigation.emacs.ivy.candidatesCount;
+  keybindingsCachePath = config.wm.xmonad.keybindingsCachePath;
   lspPythonMsExtraPaths =
     builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
   mainUserName = config.attributes.mainUser.name;

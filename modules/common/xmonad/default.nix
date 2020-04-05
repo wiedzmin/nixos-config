@@ -544,30 +544,27 @@ in {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = ''
-          Whether to enable xmonad.
-        '';
+        description = "Whether to enable xmonad.";
       };
       dmenuFrecency.enable = mkOption {
         type = types.bool;
         default = false;
-        description = ''
-          Whether to enable Frecency trakcing for Dmenu with Yeganesh.
-        '';
+        description = "Whether to enable Frecency tracking for Dmenu with Yeganesh.";
       };
       font = mkOption {
         type = types.str;
         default = "";
-        description = ''
-          XMonad `internal` font' definition.
-        '';
+        description = "XMonad `internal` font' definition.";
       };
       keybindings = mkOption {
         type = types.attrs;
         default = {};
-        description = ''
-          XMonad keybindings.
-        '';
+        description = "XMonad keybindings.";
+      };
+      keybindingsCachePath = mkOption {
+        type = types.str;
+        default = "/home/${config.attributes.mainUser.name}/keybindings.list";
+        description = "Path to file with cached keybindings.";
       };
     };
   };
@@ -603,6 +600,11 @@ in {
 
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
       home-manager.users."${config.attributes.mainUser.name}" = {
+        home.activation.purgeKeybindingsCache = {
+          after = [ ];
+          before = [ "linkGeneration" ];
+          data = "rm -f ${cfg.keybindingsCachePath}";
+        };
         home.file = {
           ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./ExtraCombinators.hs;
           ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./WindowTypes.hs;
@@ -612,7 +614,7 @@ in {
             onChange = "xmonad --recompile";
           };
         };
-        home.packages = with pkgs; [ dmenu_runapps ];
+        home.packages = with pkgs; [ dmenu_runapps keybindings];
         xdg.configFile."xmobar/xmobarrc".text = ''
           Config { ${lib.optionalString (config.attributes.fonts.xmobar != "") ''font = "${config.attributes.fonts.xmobar}"''}
                  , bgColor = "black"
