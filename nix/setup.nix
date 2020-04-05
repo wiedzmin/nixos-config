@@ -52,7 +52,9 @@ in {
       })
     ] ++ map (n: import (./private + ("/" + n))) (builtins.filter
       (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (./private + ("/" + n + "/default.nix")))
-      (lib.attrNames (builtins.readDir ./private)));
+      (lib.attrNames (builtins.readDir ./private))) ++ map (n: import (./public + ("/" + n))) (builtins.filter
+        (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (./public + ("/" + n + "/default.nix")))
+        (lib.attrNames (builtins.readDir ./public)));
   };
 
   systemd.services.nix-daemon = {
