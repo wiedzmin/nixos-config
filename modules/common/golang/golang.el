@@ -14,6 +14,19 @@
         ("C-<right>" . sp-slurp-hybrid-sexp))
   :config
   (use-package lsp-go)
+  ;; (use-package dap-mode
+  ;;   :quelpa
+  ;;   (dap-mode :repo "emacs-lsp/dap-mode" :fetcher github))
+  ;; (use-package dap-go)
+  ;; references:
+  ;; https://github.com/emacs-lsp/dap-mode#go-1
+  ;; https://github.com/go-delve/delve/blob/master/Documentation/EditorIntegration.md
+  ;; https://github.com/benma/go-dlv.el/
+  ;; https://marketplace.visualstudio.com/_apis/public/gallery/publishers/ms-vscode/vsextensions/Go/0.13.1/vspackage
+  ;; https://github.com/derekparker/delve/blob/master/Documentation/cli/getting_started.md
+  ;; https://github.com/derekparker/delve/tree/master/Documentation
+  ;; https://code.visualstudio.com/docs/editor/extension-gallery#_can-i-download-an-extension-directly-from-the-marketplace
+  ;; https://stackoverflow.com/questions/37071388/how-can-i-install-visual-studio-code-extensions-offline/38866913#38866913
   (setq gofmt-command "goimports")
   (add-to-list 'multi-compile-alist
                '(go-mode . (("build/git" "go build -v ./..."
