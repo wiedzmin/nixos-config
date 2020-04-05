@@ -38,16 +38,6 @@ in {
 
         vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
 
-        tmuxPlugins = old.tmuxPlugins // old.tmuxPlugins.fzf-tmux-url.overrideAttrs (_: {
-          postPatch = ''
-            substituteInPlace fzf-url.sh --replace "capture-pane -J -p" "capture-pane -S -${
-              builtins.toString config.attributes.tmux.paneHistoryDepthLines
-            } -J -p"
-            substituteInPlace fzf-url.sh --replace "fzf-tmux" "${old.skim}/bin/sk-tmux"
-            substituteInPlace fzf-url.sh --replace "--no-preview" ""
-          '';
-        });
-
         xsane = old.xsane.override { gimpSupport = true; };
       })
     ] ++ map (n: import (./private + ("/" + n))) (builtins.filter
