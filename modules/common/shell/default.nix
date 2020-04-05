@@ -77,7 +77,6 @@ in {
         home.packages = with pkgs;
           [
             checkbashism
-            fpp # for tmux fpp plugin
             libnotify # for zsh-notify plugin
             seturgent
             shellcheck
@@ -190,7 +189,6 @@ in {
             cpu
             fpp
             logging
-            open # TODO: setup and verify working
             prefix-highlight
             sessionist
           ];
