@@ -42,7 +42,7 @@ if dbms_entry:
             dbms_meta[dbms_entry]["user"],
             dbms_pass
         ))
-    elif dbms_meta[dbms_entry]["command"] == "mycli":
+    elif dbms_meta[dbms_entry]["command"] == "pgcli":
         os.system('tmux new-window "PGPASSWORD={2} @pgcliBinary@ --host {0} --user {1}"'.format(
             dbms_meta[dbms_entry]["ip"],
             dbms_meta[dbms_entry]["user"],
