@@ -355,6 +355,11 @@ in {
               rev = "master";
               hooks = [{ id = "shfmt"; }];
             }
+            {
+              repo = "git://github.com/detailyang/pre-commit-shell";
+              rev = "v1.0.6";
+              hooks = [{ id = "shell-lint"; }];
+            }
           ];
         };
         "nixos/.envrc".text = ''
