@@ -73,7 +73,7 @@ with lib;
     defaultCommands.pager = mkOption {
       description = "Default pager";
       type = types.str;
-      default = "${pkgs.less}/bin/less";
+      default = "${pkgs.less}/bin/less -SRXF";
     };
     defaultCommands.videoPlayer = mkOption {
       description = "Default video player";
