@@ -561,6 +561,7 @@ in {
   tools = {
     dbms = {
       mysql.enable = true;
+      postgresql.enable = true;
       cli.enable = true;
       misc.enable = true;
       xmonad.enable = true;
