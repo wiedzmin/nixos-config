@@ -353,7 +353,10 @@ in {
             {
               repo = "https://github.com/jumanjihouse/pre-commit-hooks";
               rev = "master";
-              hooks = [{ id = "shfmt"; }];
+              hooks = [{
+                id = "shfmt";
+                args = [ "-i" "2" ];
+              }];
             }
             {
               repo = "git://github.com/detailyang/pre-commit-shell";
