@@ -2,6 +2,7 @@
   imports = [
     ./appearance
     ./browsers
+    ./ccpp
     ./content
     ./dbms
     ./dev

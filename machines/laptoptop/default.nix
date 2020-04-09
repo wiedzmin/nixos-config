@@ -349,6 +349,11 @@ in {
     emacs.enable = true;
   };
 
+  custom.dev.ccpp = {
+    enable = true;
+    emacs.enable = true;
+  };
+
   custom.dev.golang = {
     enable = true;
     goPath = "/home/${config.attributes.mainUser.name}/workspace/go";
