@@ -106,7 +106,7 @@ in {
       environment.systemPackages = with pkgs; [
         nfs-utils # for vagrant
         # tigervnc
-        vagrant
+        nixpkgs-pinned-05_12_19.vagrant
       ];
 
       boot.kernel.sysctl = {
