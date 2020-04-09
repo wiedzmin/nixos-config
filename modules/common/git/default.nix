@@ -358,11 +358,6 @@ in {
                 args = [ "-i" "2" ];
               }];
             }
-            {
-              repo = "git://github.com/detailyang/pre-commit-shell";
-              rev = "v1.0.6";
-              hooks = [{ id = "shell-lint"; }];
-            }
           ];
         };
         "nixos/.envrc".text = ''
