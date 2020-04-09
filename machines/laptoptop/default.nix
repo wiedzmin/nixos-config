@@ -214,6 +214,10 @@ in {
       vpn.enable = true;
       webjumps.enable = true;
     };
+    "8a1add5330".secrets = {
+      enable = true;
+      webjumps.enable = true;
+    };
   };
 
   custom.appearance = {
