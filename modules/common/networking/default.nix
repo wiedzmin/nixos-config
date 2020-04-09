@@ -253,7 +253,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.messengers.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ skype slack tdesktop zoom-us ];
+        home.packages = with pkgs; [ skype slack tdesktop ];
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) { environment.systemPackages = with pkgs; [ wifi-status ]; })
