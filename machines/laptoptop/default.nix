@@ -463,7 +463,7 @@ in {
       };
     };
     publishing = {
-      enable = true;
+      enable = false;
       staging.packages = with pkgs; [ pplatex texlab ];
     };
   };
