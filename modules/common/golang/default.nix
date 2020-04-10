@@ -20,6 +20,11 @@ in {
         default = [ ];
         description = "Glob patterns of Go modules to consider private (e.g. GOPRIVATE contents).";
       };
+      golangciLintConfig = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Initial config for golangci-lint";
+      };
       packaging.enable = mkOption {
         type = types.bool;
         default = false;

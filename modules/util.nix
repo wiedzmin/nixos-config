@@ -59,4 +59,14 @@ rec {
   renderHosts = metadata:
     builtins.concatStringsSep "\n"
     (lib.mapAttrsToList (ip: meta: ip + "    " + (builtins.concatStringsSep " " meta.hostnames)) metadata);
+  mkProjectShellNix = inputs: ''
+    let
+      pkgs = import <nixpkgs> {};
+    in
+      pkgs.mkShell {
+        buildInputs = with pkgs; [
+          ${builtins.concatStringsSep "\n      " inputs}
+        ];
+      }
+  '';
 }
