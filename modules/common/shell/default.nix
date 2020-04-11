@@ -204,7 +204,6 @@ in {
               };
               decorations = "full";
             };
-            tabspaces = 8;
             draw_bold_text_with_bright_colors = true;
             visual_bell = {
               animation = "EaseOutExpo";
