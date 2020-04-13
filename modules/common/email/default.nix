@@ -186,7 +186,7 @@ in {
       }];
 
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ gmvault ];
+        home.packages = with pkgs; [ gmvault gmailctl ]; # TODO: integrate gmailctl into build/activation
         accounts.email = {
           accounts."${cfg.defaultAccountName}" = {
             address = cfg.emailAddress;
