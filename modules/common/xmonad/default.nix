@@ -425,8 +425,21 @@ let
                                   renamed [Replace "Grid"] (dwmLayout Grid) |||
                                   renamed [Replace "Tiled"] (dwmLayout (autoMaster 1 (1/100)
                                                               (HT.HintedTile 1 (3/100) (1/2) HT.TopLeft HT.Tall)))) $
-              onWorkspace "shell" (renamed [Replace "OneBig"] (dwmLayout (OneBig (3/4) (3/4)))) $
-                                   renamed [Replace "OneBig"] (OneBig (3/4) (3/4))
+              onWorkspace "work2" (renamed [Replace "OneBig"] (dwmLayout (OneBig (3/4) (3/4))) |||
+                                  renamed [Replace "Dishes"] (dwmLayout (MultiDishes 2 3 (1/6))) |||
+                                  renamed [Replace "Grid"] (dwmLayout Grid) |||
+                                  renamed [Replace "Tiled"] (dwmLayout (autoMaster 1 (1/100)
+                                                              (HT.HintedTile 1 (3/100) (1/2) HT.TopLeft HT.Tall)))) $
+              onWorkspace "work3" (renamed [Replace "OneBig"] (dwmLayout (OneBig (3/4) (3/4))) |||
+                                  renamed [Replace "Dishes"] (dwmLayout (MultiDishes 2 3 (1/6))) |||
+                                  renamed [Replace "Grid"] (dwmLayout Grid) |||
+                                  renamed [Replace "Tiled"] (dwmLayout (autoMaster 1 (1/100)
+                                                              (HT.HintedTile 1 (3/100) (1/2) HT.TopLeft HT.Tall)))) $
+              onWorkspace "shell" (renamed [Replace "Dishes"] (dwmLayout (MultiDishes 2 3 (1/6))) |||
+                                  renamed [Replace "Grid"] (dwmLayout Grid) |||
+                                  renamed [Replace "Tiled"] (dwmLayout (autoMaster 1 (1/100)
+                                                              (HT.HintedTile 1 (3/100) (1/2) HT.TopLeft HT.Tall)))) $
+                                  renamed [Replace "OneBig"] (OneBig (3/4) (3/4))
 
     layoutMappings = [ ("g", "Grid")
                      , ("b", "OneBig")
