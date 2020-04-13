@@ -156,6 +156,7 @@ let
       , ("web2", Just "1", True, True)
       , ("web3", Just "`", True, True)
       , ("work2", Just "2", True, True)
+      , ("work3", Just "e", True, True)
       ]
 
     scratchpadWorkspace :: WSData
