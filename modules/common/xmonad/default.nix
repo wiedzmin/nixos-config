@@ -142,6 +142,8 @@ let
 
     primaryWorkspaces =
       [ ("web", Just "<F1>", True, True)
+      , ("web2", Just "1", True, True)
+      , ("web3", Just "`", True, True)
       , ("work", Just "<F2>", True, True)
       , ("tools", Just "<F4>", True, True)
       , ("scan", Just "<F5>", True, True)
@@ -152,8 +154,6 @@ let
       , ("read", Just "4", True, True)
       , ("media", Just "5", True, True)
       , ("im", Just "m", True, True)
-      , ("web2", Just "1", True, True)
-      , ("web3", Just "`", True, True)
       , ("work2", Just "2", True, True)
       , ("work3", Just "3", True, True)
       ]
