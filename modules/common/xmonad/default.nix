@@ -460,9 +460,8 @@ let
 
     customKeys conf = [
                ${lib.concatStringsSep ",\n           "
-                 (lib.mapAttrsToList (keys: command: ''"${keys}" ~> ${command}'') basicKeys)},
-               ${lib.concatStringsSep ",\n           "
-                 (lib.mapAttrsToList (keys: command: ''"${keys}" ~> ${command}'') cfg.keybindings)}
+                 (lib.mapAttrsToList (keys: command: ''"${keys}" ~> ${command}'')
+                   (basicKeys // cfg.keybindings))}
                ]
 
     layoutKeys = [ "M-; " ++ keys ~> sendMessage $ JumpToLayout $ layout | (keys, layout) <- layoutMappings ]
