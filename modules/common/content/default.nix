@@ -119,6 +119,8 @@ in {
           mediainfo
           # =======
           paste_to_ix
+
+          monolith
         ];
         services.syncthing.enable = true; # TODO: consider separate option(s)
         programs.mpv = {
