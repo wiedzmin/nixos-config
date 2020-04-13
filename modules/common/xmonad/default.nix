@@ -7,9 +7,12 @@ let
   dmenu_runapps = pkgs.writeShellScriptBin "dmenu_runapps" ''
     ${pkgs.j4-dmenu-desktop}/bin/j4-dmenu-desktop --display-binary \
       --dmenu="(${pkgs.coreutils}/bin/cat ; (${pkgs.dmenu}/bin/stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
-      ${if cfg.dmenuFrecency.enable
-        then "${pkgs.haskellPackages.yeganesh}/bin/yeganesh -- -i -l 15 -fn '${config.attributes.fonts.dmenu}'\""
-        else "${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.fonts.dmenu}'\""}
+      ${
+        if cfg.dmenuFrecency.enable then
+          ''${pkgs.haskellPackages.yeganesh}/bin/yeganesh -- -i -l 15 -fn '${config.attributes.fonts.dmenu}'"''
+        else
+          ''${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.fonts.dmenu}'"''
+      }
   '';
   dmenu_select_windows = pkgs.writeShellScriptBin "dmenu_select_windows" ''
     ${pkgs.wmctrl}/bin/wmctrl -a $(${pkgs.wmctrl}/bin/wmctrl -l | \
@@ -44,7 +47,7 @@ let
     "M-a 3" = ''namedScratchpadAction scratchpads "gotop"'';
     "M-a 4" = ''namedScratchpadAction scratchpads "bc"'';
     # -- TODO: recall and add "multiple app windows"-aware raising
-    "M-w <Backspace>" = ''nextMatch History (return True)'';
+    "M-w <Backspace>" = "nextMatch History (return True)";
     "<XF86Launch1>" = ''spawn "${dmenu_runapps}/bin/dmenu_runapps"'';
     "M-S-w M-S-n" = "moveTo Next EmptyWS"; # find a free workspace
     "M-S-w M-S-<Up>" = "shiftToPrev";
@@ -409,7 +412,7 @@ let
 
     tabbedLayout = Tabs.tabbed Tabs.shrinkText Tabs.def
     dwmLayout = Dwm.dwmStyle Dwm.shrinkText Dwm.def {
-      ${lib.optionalString (cfg.font != "") "fontName = \"${cfg.font}\""}
+      ${lib.optionalString (cfg.font != "") ''fontName = "${cfg.font}"''}
     }
 
     layouts = onWorkspace "scratch" (renamed [Replace "tabs"] tabbedLayout) $
@@ -456,10 +459,10 @@ let
                   ]
 
     customKeys conf = [
-               ${lib.concatStringsSep "\,\n           "
-                   (lib.mapAttrsToList (keys: command: ''"${keys}" ~> ${command}'') basicKeys)},
-               ${lib.concatStringsSep "\,\n           "
-                   (lib.mapAttrsToList (keys: command: ''"${keys}" ~> ${command}'') cfg.keybindings)}
+               ${lib.concatStringsSep ",\n           "
+                 (lib.mapAttrsToList (keys: command: ''"${keys}" ~> ${command}'') basicKeys)},
+               ${lib.concatStringsSep ",\n           "
+                 (lib.mapAttrsToList (keys: command: ''"${keys}" ~> ${command}'') cfg.keybindings)}
                ]
 
     layoutKeys = [ "M-; " ++ keys ~> sendMessage $ JumpToLayout $ layout | (keys, layout) <- layoutMappings ]
@@ -558,7 +561,7 @@ in {
       };
       keybindings = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = "XMonad keybindings.";
       };
       keybindingsCachePath = mkOption {
@@ -579,9 +582,7 @@ in {
             extraPackages = p: [ p.dbus p.monad-logger p.lens p.split ];
           };
         };
-        displayManager = {
-          defaultSession = "none+xmonad";
-        };
+        displayManager = { defaultSession = "none+xmonad"; };
       };
 
       custom.housekeeping.metadataCacheInstructions = ''
@@ -591,11 +592,9 @@ in {
       '';
 
       nixpkgs.config.packageOverrides = _: rec {
-        keybindings = writePythonScriptWithPythonPackages "keybindings" [
-          pkgs.python3Packages.redis
-          pkgs.yad
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./keybindings.py; })));
+        keybindings = writePythonScriptWithPythonPackages "keybindings" [ pkgs.python3Packages.redis pkgs.yad ]
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./keybindings.py; })));
       };
 
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
@@ -614,9 +613,11 @@ in {
             onChange = "xmonad --recompile";
           };
         };
-        home.packages = with pkgs; [ dmenu_runapps keybindings];
+        home.packages = with pkgs; [ dmenu_runapps keybindings ];
         xdg.configFile."xmobar/xmobarrc".text = ''
-          Config { ${lib.optionalString (config.attributes.fonts.xmobar != "") ''font = "${config.attributes.fonts.xmobar}"''}
+          Config { ${
+            lib.optionalString (config.attributes.fonts.xmobar != "") ''font = "${config.attributes.fonts.xmobar}"''
+          }
                  , bgColor = "black"
                  , fgColor = "grey"
                  , position = TopW L 100
@@ -640,8 +641,6 @@ in {
         '';
       };
     })
-    (mkIf cfg.dmenuFrecency.enable {
-      environment.systemPackages = with pkgs; [ dmenu ];
-    })
+    (mkIf cfg.dmenuFrecency.enable { environment.systemPackages = with pkgs; [ dmenu ]; })
   ];
 }
