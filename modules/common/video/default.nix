@@ -33,6 +33,16 @@ in {
         default = 10;
         description = "Backlight delta percents.";
       };
+      rotateSecondaryHead = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to rotate secondary head left (monitor place vertically)";
+      };
+      rotation = mkOption { # TODO: make enumeration
+        type = types.str;
+        default = "left";
+        description = "Secondary head rotation way";
+      };
       ddc.enable = mkOption {
         type = types.bool;
         default = false;
@@ -97,8 +107,7 @@ in {
                 mode = "1920x1080";
                 gamma = cfg.gamma;
                 rate = cfg.rate;
-                rotate = "left";
-              };
+              } // lib.optionalAttrs (cfg.rotateSecondaryHead) { rotate = cfg.rotation; };
               "${config.attributes.hardware.monitors.internalHead.name}" = {
                 enable = true;
                 primary = true;
@@ -132,8 +141,7 @@ in {
                 mode = "1920x1080";
                 gamma = cfg.gamma;
                 rate = cfg.rate;
-                rotate = "left";
-              };
+              } // lib.optionalAttrs (cfg.rotateSecondaryHead) { rotate = cfg.rotation; };
               "${config.attributes.hardware.monitors.internalHead.name}" = { # crtc 0
                 enable = true;
                 primary = true;
