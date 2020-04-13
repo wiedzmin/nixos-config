@@ -35,7 +35,6 @@ let
     "M-S-q" = "io (exitWith ExitSuccess)";
     "M-h" = "sendMessage Shrink";
     "M-l" = "sendMessage Expand";
-    "M-m" = "windows W.focusMaster";
     "M-t" = "withFocused $ windows . W.sink";
     "M-x a" = "windows copyToAll"; # @@ Make focused window always visible
     "M-x k" = "killAllOtherCopies"; # @@ Toggle window state back
@@ -152,11 +151,11 @@ let
       [ ("shell", Just "<F3>", True, True)
       , ("read", Just "4", True, True)
       , ("media", Just "5", True, True)
-      , ("im", Just "3", True, True)
+      , ("im", Just "m", True, True)
       , ("web2", Just "1", True, True)
       , ("web3", Just "`", True, True)
       , ("work2", Just "2", True, True)
-      , ("work3", Just "e", True, True)
+      , ("work3", Just "3", True, True)
       ]
 
     scratchpadWorkspace :: WSData
