@@ -153,7 +153,7 @@ let
       [ ("shell", Just "<F3>", True, True)
       , ("read", Just "4", True, True)
       , ("media", Just "5", True, True)
-      , ("im", Just "m", True, True)
+      , ("im", Just "c", True, True)
       , ("work2", Just "2", True, True)
       , ("work3", Just "3", True, True)
       ]
