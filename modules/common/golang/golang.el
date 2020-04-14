@@ -45,7 +45,7 @@
                              (locate-dominating-file buffer-file-name "go.mod"))
                             ("docker/build" "docker-compose build"
                              (locate-dominating-file buffer-file-name "go.mod"))
-                            ("mod/deps/update" "go get -v ./..."
+                            ("mod/deps/update" "go get -u ./..."
                              (locate-dominating-file buffer-file-name "go.mod"))
                             ("mod/deps/gc" "go mod tidy"
                              (locate-dominating-file buffer-file-name "go.mod"))
