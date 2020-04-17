@@ -474,8 +474,7 @@ let
     customKeys conf = [
     ${lib.concatStringsSep ''
       ,
-    '' (lib.mapAttrsToList (keys: command: (concatStrings (genList (const " ") 11)) + ''"${keys}" ~> ${command}'')
-      (basicKeys // cfg.keybindings))}
+    '' (lib.mapAttrsToList (keys: command: (mkIndent 11) + ''"${keys}" ~> ${command}'') (basicKeys // cfg.keybindings))}
                ]
 
     layoutKeys = [ "M-; " ++ keys ~> sendMessage $ JumpToLayout $ layout | (keys, layout) <- layoutMappings ]

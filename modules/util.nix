@@ -76,4 +76,5 @@ rec {
         }
       }
   '';
+  mkIndent = width: with lib; (concatStrings (genList (const " ") width));
 }
