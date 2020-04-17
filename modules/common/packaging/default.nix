@@ -133,7 +133,7 @@ in {
           [
             nixpkgs-pinned-05_12_19.cachix
             dotnet-sdk # for building some binary releases
-            nix-zsh-completions
+            # nix-zsh-completions # NOTE: collision emerged in last unstable
             nix-review # https://github.com/Mic92/nix-review
             make-package-diff
           ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
