@@ -216,25 +216,10 @@ in {
           '';
         };
         home.packages = with pkgs; [ icdiff ix loop lorri pv wstunnel ];
+        services.lorri.enable = true;
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
-        };
-      };
-      systemd.user.services."lorri-fixed" = { # one from nixpkgs fails to socket-start for some reason
-        description = "Lorri daemon";
-        path = with pkgs; [ config.nix.package gnutar gzip ];
-        after = [ "graphical-session-pre.target" ];
-        partOf = [ "graphical-session.target" ];
-        wantedBy = [ "graphical-session.target" ];
-        serviceConfig = {
-          ExecStart = "${pkgs.lorri}/bin/lorri daemon";
-          PrivateTmp = true;
-          ProtectSystem = "strict";
-          ProtectHome = "read-only";
-          Restart = "on-failure";
-          StandardOutput = "journal";
-          StandardError = "journal";
         };
       };
     })
