@@ -59,20 +59,26 @@ rec {
   renderHosts = metadata:
     builtins.concatStringsSep "\n"
     (lib.mapAttrsToList (ip: meta: ip + "    " + (builtins.concatStringsSep " " meta.hostnames)) metadata);
-  mkProjectShellNix = deps: nativedeps: ''
+  mkProjectShellNix = args: ''
     let
       pkgs = import <nixpkgs> {};
     in
       pkgs.mkShell {
-        buildInputs = with pkgs; [
-          ${builtins.concatStringsSep "\n      " deps}
-        ];
         ${
-          lib.optionalString (nativedeps != [ ]) ''
+          lib.optionalString ((builtins.hasAttr "simple" args) && args.simple != [ ]) ''
+            buildInputs = with pkgs; [
+            ${builtins.concatStringsSep "\n" (builtins.map (elt: (mkIndent 6) + elt) args.simple)}
+            ${mkIndent 4}];''
+        }
+        ${
+          lib.optionalString ((builtins.hasAttr "native" args) && args.native != [ ]) ''
             nativeBuildInputs = with pkgs; [
-              ${builtins.concatStringsSep "\n      " nativedeps}
-            ];
-          ''
+            ${builtins.concatStringsSep "\n" (builtins.map (elt: (mkIndent 6) + elt) args.native)}
+            ${mkIndent 4}];''
+        }
+        ${
+          lib.optionalString ((builtins.hasAttr "env" args) && args.env != { }) (builtins.concatStringsSep "\n"
+            (lib.mapAttrsToList (key: value: key + " = " + (lib.strings.escapeNixString value) + ";") args.env))
         }
       }
   '';
