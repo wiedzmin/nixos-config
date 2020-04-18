@@ -225,18 +225,10 @@ in {
                 "urlclassifier.trackingTable" = ""; # because 2md layer list blocks google captcha, use 1st layer
               };
               userChrome = ''
-                /* hides the native tabs */
-                #TabsToolbar {
-                  visibility: collapse;
-                }
-
-                #titlebar {
-                  visibility: collapse;
-                }
-
-                #sidebar-box[sidebarcommand="treestyletab_piro_sakura_ne_jp-sidebar-action"] #sidebar-header {
-                  visibility: collapse !important;
-                }
+                #TabsToolbar { visibility: collapse !important; }
+                #titlebar { visibility: collapse !important; }
+                #urlbar-container { visibility: collapse !important; }
+                #nav-bar { visibility: collapse !important; }
               '';
               handlers = {
                 defaultHandlersVersion = { "en-US" = 4; };
