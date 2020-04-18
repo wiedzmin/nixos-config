@@ -118,8 +118,8 @@ in {
             messageStyle = "fg=white,bg=black,bright";
           };
           borderStyle = {
-            active = "fg=colour240,bg=default";
-            inactive = "fg=colour235,bg=default";
+            active = "fg=yellow,bg=default";
+            inactive = "fg=yellow,bg=default";
           };
           hooks = {
             "after-select-pane" = ''
