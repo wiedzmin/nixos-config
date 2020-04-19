@@ -299,6 +299,7 @@ in {
     statistics.enable = true;
     codesearch.enable = true;
     patching.enable = true;
+    repoSearch.enable = true;
     misc.enable = true;
     emacs.enable = true;
     xmonad.enable = true;

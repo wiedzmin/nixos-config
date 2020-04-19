@@ -46,6 +46,21 @@ in {
         default = false;
         description = "Whether to enable various misc tools.";
       };
+      repoSearch.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable global repositories search.";
+      };
+      repoSearch.root = mkOption {
+        type = types.str;
+        default = cfg.workspaceRoots.global;
+        description = "Search root.";
+      };
+      repoSearch.depth = mkOption {
+        type = types.int;
+        default = 4;
+        description = "Search depth.";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -159,6 +174,20 @@ in {
         home.packages = with pkgs; [ cloc gource sloccount tokei ];
       };
     })
+    (mkIf cfg.repoSearch.enable {
+      nixpkgs.config.packageOverrides = _: rec {
+        reposearch = writePythonScriptWithPythonPackages "reposearch" [
+          pkgs.fd
+          pkgs.python3Packages.dmenu-python
+          pkgs.python3Packages.libtmux
+          pkgs.python3Packages.notify2
+          pkgs.xsel
+          pkgs.emacs
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./reposearch.py; })));
+      };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ reposearch ]; };
+    })
     (mkIf cfg.misc.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
@@ -254,7 +283,7 @@ in {
       wm.xmonad.keybindings = {
         "M-s d <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart docker-devdns.service"'';
         "M-s d <Down>" = ''spawn "${pkgs.systemd}/bin/systemctl stop docker-devdns.service"'';
-      };
+      } // lib.optionalAttrs (cfg.repoSearch.enable) { "M-r r" = ''spawn "${pkgs.reposearch}/bin/reposearch"''; };
     })
     (mkIf (cfg.staging.packages != [ ]) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = cfg.staging.packages; };
