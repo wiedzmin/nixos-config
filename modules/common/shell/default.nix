@@ -26,6 +26,26 @@ in {
         default = "";
         description = "Oh-my-zsh prompt theme name.";
       };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        description = "Whether to enable shell bookmarks.";
+        default = false;
+      };
+      bookmarks.path = mkOption {
+        type = types.str;
+        description = "Where to store shell bookmarks, relative to $HOME.";
+        default = ".bookmarks";
+      };
+      bookmarks.entries = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Bookmarks data.";
+      };
+      bookmarks.order = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Keep order of Bookmarks.";
+      };
       liquidPrompt.enable = mkOption {
         type = types.bool;
         default = false;
@@ -429,6 +449,31 @@ in {
               objects = "1;33";
             };
           };
+        };
+      };
+    })
+    (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      # TODO: debug keybinding customization
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.file = {
+          "${cfg.bookmarks.path}".text =
+            lib.concatStringsSep "\n" (lib.mapAttrsToList (name: path: name + " : " + path) cfg.bookmarks.entries);
+        };
+        programs.fzf.enable = true;
+        programs.zsh = {
+          sessionVariables = {
+            FZF_MARKS_FILE = "$HOME/${cfg.bookmarks.path}";
+          } // lib.optionalAttrs (cfg.bookmarks.order) { FZF_MARKS_KEEP_ORDER = "1"; };
+          plugins = [{
+            name = "fzf-marks";
+            file = "fzf-marks.plugin.zsh";
+            src = pkgs.fetchFromGitHub {
+              owner = "urbainvaes";
+              repo = "fzf-marks";
+              rev = "f2e8844ce813f8ad35a1903eb8c680c4492e153b";
+              sha256 = "0a8jlwc12m0xid2v4d7rxzci91w8qrc4x91jq4lv0lm62v2w4n1j";
+            };
+          }];
         };
       };
     })
