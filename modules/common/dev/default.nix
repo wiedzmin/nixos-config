@@ -244,7 +244,7 @@ in {
                   - mc
           '';
         };
-        home.packages = with pkgs; [ icdiff ix loop lorri pv wstunnel ];
+        home.packages = with pkgs; [ icdiff ix loop pv wstunnel ];
         services.lorri.enable = true;
         programs.direnv = {
           enable = true;
