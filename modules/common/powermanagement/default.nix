@@ -83,6 +83,7 @@ in {
         resumeCommands = cfg.resumeCommands;
       };
       services.upower.enable = true;
+      services.tuptime.enable = true;
     })
     (mkIf cfg.appsSuspension.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
