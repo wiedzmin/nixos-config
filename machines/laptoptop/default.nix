@@ -2,6 +2,7 @@
 let
   deps = import ../../nix/sources.nix;
   nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
 in {
   imports = [
     ../../nix/setup.nix
@@ -322,7 +323,7 @@ in {
       scc
       textql
       txr # TODO: get started, read docs
-      visidata # TODO: make overlay
+      nixpkgs-pinned-16_04_20.visidata # TODO: make overlay
       xsv
       xurls
     ];
@@ -589,7 +590,11 @@ in {
     ebooks = {
       readers.enable = true;
       xmonad.enable = true;
-      staging.packages = with pkgs; [ epr nixpkgs-pinned-05_12_19.python3Packages.weasyprint pdfarranger ];
+      staging.packages = with pkgs; [
+        epr
+        nixpkgs-pinned-05_12_19.python3Packages.weasyprint
+        nixpkgs-pinned-16_04_20.pdfarranger
+      ];
     };
   };
 

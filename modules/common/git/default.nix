@@ -1,4 +1,7 @@
-{ config, lib, pkgs, ... }:
+let
+  deps = import ../../../nix/sources.nix;
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
+in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -263,7 +266,7 @@ in {
           gitAndTools.lab
           gitAndTools.pass-git-helper
           gitAndTools.stgit
-          gitAndTools.thicket
+          nixpkgs-pinned-16_04_20.gitAndTools.thicket
           gitstats
           git-quick-stats
 
