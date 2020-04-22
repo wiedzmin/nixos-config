@@ -523,7 +523,7 @@ in {
     bookmarks.enable = true;
     emacs.enable = true;
     xmonad.enable = true;
-    staging.packages = with pkgs; [ dateutils fselect gron jid jl lv pdfgrep peep ripgrep-all tmux-xpanes yj ];
+    staging.packages = with pkgs; [ dateutils fselect gron jid jl lv pdfgrep peep ripgrep-all tmux-xpanes yj _3mux ];
   };
 
   custom.virtualization = {
