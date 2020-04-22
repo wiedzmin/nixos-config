@@ -14,7 +14,7 @@ in {
       ];
     };
     home-manager.users."${config.attributes.mainUser.name}" = {
-      gtk.font = {
+      gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.hack-font;
         name = "Hack Bold 8";
       };

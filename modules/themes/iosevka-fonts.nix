@@ -12,7 +12,7 @@ in {
     attributes.fonts.dmenu = "xft:IosevkaCC:style=Bold:pixelsize=12";
     attributes.fonts.xmonadDefault = "xft:Iosevka:weight=Bold:size=16";
     home-manager.users."${config.attributes.mainUser.name}" = {
-      gtk.font = {
+      gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.iosevka;
         name = "Iosevka Bold 10";
       };

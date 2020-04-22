@@ -19,7 +19,7 @@ in {
     attributes.fonts.dmenu = "xft:Source Code Pro:style=Bold:pixelsize=12";
     attributes.fonts.xmonadDefault = "xft:Source Code Pro:weight=Bold:size=10";
     home-manager.users."${config.attributes.mainUser.name}" = {
-      gtk.font = {
+      gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.source-code-pro;
         name = "Source Code Pro Bold 8";
       };

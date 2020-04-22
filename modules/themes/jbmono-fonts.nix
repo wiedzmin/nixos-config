@@ -18,7 +18,7 @@ in {
     attributes.fonts.dmenu = "xft:JetBrains Mono:size=8";
     attributes.fonts.xmonadDefault = "xft:JetBrains Mono:weight=Bold:size=6";
     home-manager.users."${config.attributes.mainUser.name}" = {
-      gtk.font = {
+      gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = config.attributes.fonts.basic.package;
         name = config.attributes.fonts.basic.raw;
       };

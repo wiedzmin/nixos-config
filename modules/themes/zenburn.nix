@@ -13,14 +13,7 @@ let
       (after-init-hook . (lambda () (load-theme 'zenburn t))))
   '';
 in {
-  options.themes.zenburn = {
-    enable = mkEnableOption "zenburn";
-    gtk.enable = mkOption {
-      type = types.bool;
-      default = false;
-      description = "Whether enable gtk* theming";
-    };
-  };
+  options.themes.zenburn = { enable = mkEnableOption "zenburn"; };
 
   config = mkIf cfg.enable {
     ide.emacs.config = "${zenburnEmacs}";
@@ -50,9 +43,9 @@ in {
         statusbar-bg = "#606060";
         statusbar-fg = "#808080";
       };
-      gtk = lib.optionalAttrs (cfg.gtk.enable) {
-        gtk2.extraConfig = builtins.readfile "/etc/assets/styles/zenburn-gtk2.styles";
-        gtk3.extraCss = builtins.readfile "/etc/assets/styles/zenburn-gtk3.css";
+      gtk = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
+        gtk2.extraConfig = builtins.readFile "/etc/nixos/assets/styles/zenburn-gtk2.styles";
+        gtk3.extraCss = builtins.readFile "/etc/nixos/assets/styles/zenburn-gtk3.css";
       };
     };
   };

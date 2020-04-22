@@ -18,7 +18,7 @@ in {
     attributes.fonts.dmenu = "xft:Fira Code:style=Bold:pixelsize=12";
     attributes.fonts.xmonadDefault = "xft:Fira Code:weight=Bold:size=10";
     home-manager.users."${config.attributes.mainUser.name}" = {
-      gtk.font = {
+      gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = config.attributes.fonts.basic.package;
         name = config.attributes.fonts.basic.raw;
       };
