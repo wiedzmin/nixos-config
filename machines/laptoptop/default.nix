@@ -612,5 +612,3 @@ in {
 
   system.stateVersion = "19.03";
 }
-
-# https://github.com/embayer/org-note
