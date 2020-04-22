@@ -227,8 +227,6 @@ in {
               userChrome = ''
                 #TabsToolbar { visibility: collapse !important; }
                 #titlebar { visibility: collapse !important; }
-                #urlbar-container { visibility: collapse !important; }
-                #nav-bar { visibility: collapse !important; }
               '';
               handlers = {
                 defaultHandlersVersion = { "en-US" = 4; };
