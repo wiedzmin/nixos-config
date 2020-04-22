@@ -41,6 +41,19 @@ in {
         default = false;
         description = "Whether to enable code stats tools.";
       };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        description = "Whether to enable shell bookmarks.";
+        default = false;
+      };
+      bookmarks.entries = mkOption {
+        type = types.attrs;
+        default = {
+          nixos = "/etc/nixos";
+          postgres = "${config.custom.dev.workspaceRoots.global}/github.com/postgres/postgres";
+        };
+        description = "Bookmarks data.";
+      };
       misc.enable = mkOption {
         type = types.bool;
         default = false;
@@ -174,6 +187,7 @@ in {
         home.packages = with pkgs; [ cloc gource sloccount tokei ];
       };
     })
+    (mkIf cfg.bookmarks.enable { custom.shell.bookmarks.entries = cfg.bookmarks.entries; })
     (mkIf cfg.repoSearch.enable {
       nixpkgs.config.packageOverrides = _: rec {
         reposearch = writePythonScriptWithPythonPackages "reposearch" [

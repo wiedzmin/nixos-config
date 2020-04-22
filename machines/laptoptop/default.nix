@@ -206,16 +206,19 @@ in {
       vpn.enable = true;
       wifi.enable = true;
       scheduling.enable = true;
+      bookmarks.enable = true;
       webjumps.enable = true;
       snippets.enable = true;
     };
     "b354e944b3".secrets = {
       enable = true;
       vpn.enable = true;
+      bookmarks.enable = true;
       webjumps.enable = true;
     };
     "8a1add5330".secrets = {
       enable = true;
+      bookmarks.enable = true;
       webjumps.enable = true;
     };
   };
@@ -300,6 +303,7 @@ in {
     codesearch.enable = true;
     patching.enable = true;
     repoSearch.enable = true;
+    bookmarks.enable = true;
     misc.enable = true;
     emacs.enable = true;
     xmonad.enable = true;
@@ -510,6 +514,7 @@ in {
     enable = true;
     toolsng.enable = true;
     liquidPrompt.enable = true;
+    bookmarks.enable = true;
     emacs.enable = true;
     xmonad.enable = true;
     staging.packages = with pkgs; [ dateutils fselect gron jid jl lv pdfgrep peep ripgrep-all tmux-xpanes yj ];
