@@ -221,6 +221,11 @@ in {
       bookmarks.enable = true;
       webjumps.enable = true;
     };
+    "4a05657203".secrets = {
+      enable = true;
+      bookmarks.enable = true;
+      webjumps.enable = true;
+    };
   };
 
   custom.appearance = {
