@@ -221,6 +221,7 @@ in {
       enable = true;
       bookmarks.enable = true;
       webjumps.enable = true;
+      snippets.enable = true;
     };
     "4a05657203".secrets = {
       enable = true;
