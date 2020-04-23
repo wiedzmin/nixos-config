@@ -145,6 +145,24 @@
                '("m" counsel-projectile-switch-project-action-open-magit-status "open project's magit status buffer") t)
   (setq projectile-switch-project-action 'counsel-projectile-switch-project))
 
+(use-package counsel-tramp
+  :quelpa
+  (counsel-tramp :repo "masasam/emacs-counsel-tramp" :fetcher github)
+  :hook
+  (counsel-tramp-pre-command-hook . (lambda ()
+                                      (setq make-backup-files nil)
+                                      (global-aggressive-indent-mode 0)
+                                      (projectile-mode 0)
+                                      (editorconfig-mode 0)))
+  (counsel-tramp-quit-hook . (lambda ()
+                               (setq make-backup-files t)
+                               (projectile-mode 1)
+                               (editorconfig-mode 1)))
+  :config
+  (setenv "SHELL" "/run/current-system/sw/bin/bash")
+  :custom
+  (tramp-default-method "ssh"))
+
 (use-package dired
   :commands dired
   :hook (dired-mode-hook . auto-revert-mode)

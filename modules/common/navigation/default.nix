@@ -260,6 +260,7 @@ in {
           epkgs.avy-zap
           epkgs.counsel
           epkgs.counsel-projectile
+          epkgs.counsel-tramp
           epkgs.dired-filetype-face
           epkgs.dired-git-info
           epkgs.dired-hide-dotfiles
