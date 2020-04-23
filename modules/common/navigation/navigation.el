@@ -120,6 +120,7 @@
     (let ((projectile-switch-project-action #'custom/open-project-magit-status))
       (counsel-projectile-switch-project-by-name project)))
   :bind
+  ("C-<f1>" . counsel-projectile-switch-project)
   (:prefix-map custom-projectile-map
                :prefix "<f8>"
                ("i" . projectile-invalidate-cache)
@@ -133,7 +134,6 @@
                ("h" . projectile-find-file)
                ("c" . projectile-codesearch-search))
   (:map ctl-x-map
-        ("j j" . counsel-projectile-switch-project)
         ("b" . custom/ensure-project-switch-buffer))
   :config
   (counsel-projectile-mode 1)
