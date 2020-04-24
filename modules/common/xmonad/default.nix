@@ -144,6 +144,7 @@ let
       [ ("web", Just "<F1>", True, True)
       , ("web2", Just "1", True, True)
       , ("web3", Just "`", True, True)
+      , ("web4", Just "<F6>", True, True)
       , ("work", Just "<F2>", True, True)
       , ("tools", Just "<F4>", True, True)
       , ("scan", Just "<F5>", True, True)
