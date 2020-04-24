@@ -50,6 +50,7 @@ in {
         type = types.attrs;
         default = {
           nixos = "/etc/nixos";
+          nixpkgs-channels = "${config.custom.dev.workspaceRoots.global}/github.com/NixOS/nixpkgs-channels";
           postgres = "${config.custom.dev.workspaceRoots.global}/github.com/postgres/postgres";
         };
         description = "Bookmarks data.";
