@@ -1,7 +1,5 @@
 ;;TODO: play with https://github.com/MaskRay/ccls/wiki/lsp-mode#user-content-cross-reference-extensions later
 (use-package ccls
-  :quelpa
-  (ccls :repo "MaskRay/emacs-ccls" :fetcher github)
   :preface
   (defun ccls/callee ()
     (interactive)

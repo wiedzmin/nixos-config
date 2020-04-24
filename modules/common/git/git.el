@@ -59,8 +59,6 @@
         ("o" . git-walktree)))
 
 (use-package git-identity
- :quelpa
- (git-identity :repo "akirak/git-identity.el" :fetcher github)
  :after magit
  :bind
  (:map magit-status-mode-map

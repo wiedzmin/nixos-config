@@ -146,8 +146,6 @@
   (setq projectile-switch-project-action 'counsel-projectile-switch-project))
 
 (use-package counsel-tramp
-  :quelpa
-  (counsel-tramp :repo "masasam/emacs-counsel-tramp" :fetcher github)
   :hook
   (counsel-tramp-pre-command-hook . (lambda ()
                                       (setq make-backup-files nil)

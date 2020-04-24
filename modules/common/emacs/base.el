@@ -72,7 +72,7 @@
   :custom
   (custom-file "@emacsCustomFile@"))
 
-(use-package blackout :quelpa (blackout :repo "raxod502/blackout" :fetcher github))
+(use-package blackout)
 
 (use-package emacs
   :bind
@@ -401,8 +401,6 @@
 
 (use-package string-inflection
   :after simple
-  :quelpa
-  (string-inflection :repo "akicho8/string-inflection" :fetcher github)
   :preface
   (defun custom/string-inflection-gnocchi ()
     "foo_bar => foo bar"
