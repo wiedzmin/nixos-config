@@ -99,6 +99,11 @@ in {
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
       };
+      services.openssh = {
+        enable = true;
+        startWhenNeeded = true;
+        authorizedKeysFiles = [ "/etc/nixos/machines/laptoptop/secrets/identity/id_rsa.mobile.pub" ];
+      };
     })
     (mkIf (cfg.enable && cfg.extraHosts.enable) {
       networking.extraHosts = ''
