@@ -29,7 +29,7 @@ let
     "M-S-<Space>" = "setLayout $ XMonad.layoutHook conf";
     "M-S-<Tab>" = "windows W.focusUp";
     "M-S-<Return>" = ''spawn "${config.attributes.defaultCommands.terminal}"'';
-    "M-S-c" = "kill1";
+    "M-<F12>" = "kill1";
     "M-S-j" = "windows W.swapDown";
     "M-S-k" = "windows W.swapUp";
     "M-S-q" = "io (exitWith ExitSuccess)";
