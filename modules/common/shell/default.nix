@@ -233,7 +233,7 @@ in {
               mouse = "Middle";
               action = "PasteSelection";
             }];
-            background_opacity = 0.8;
+            background_opacity = 0.5;
             selection = { semantic_escape_chars = '',│`|:"' ()[]{}<>''; };
             dynamic_title = true;
             cursor = { style = "Beam"; };
