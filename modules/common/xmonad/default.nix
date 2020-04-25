@@ -203,6 +203,7 @@ let
                    , ([ (wM_CLASS, any ("psi" ==))], pmP (viewShift "im"))
                    , ([ (wM_CLASS, any ("scantailor-advanced" ==))], pmP (viewShift "scan"))
                    , ([ (wM_CLASS, any ("zoom" `isPrefixOf`))], pmP (viewShift "im"))
+                   , ([ (wM_CLASS, any ("quassel" `isPrefixOf`))], pmP (viewShift "im"))
                    ]
       where
         viewShift = liftM2 (.) W.view W.shift

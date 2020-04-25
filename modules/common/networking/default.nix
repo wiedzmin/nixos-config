@@ -252,8 +252,9 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ anydesk teamviewer ]; };
     })
     (mkIf (cfg.enable && cfg.messengers.enable) {
+      services.quassel.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ skype slack tdesktop ];
+        home.packages = with pkgs; [ skype slack tdesktop quasselClient ];
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) { environment.systemPackages = with pkgs; [ wifi-status ]; })
