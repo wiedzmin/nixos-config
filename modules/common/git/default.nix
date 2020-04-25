@@ -208,8 +208,6 @@ in {
               algorithm = "patience";
               gpg = { textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt"; };
             };
-            "init" = { templatedir = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/templates"; };
-            "clone" = { templatedir = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/templates"; };
             "push" = { default = "current"; };
             "absorb" = { maxstack = 75; };
           } // lib.optionalAttrs (cfg.github.enable) { "github" = { user = cfg.github.user; }; }
