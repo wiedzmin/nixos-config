@@ -45,7 +45,10 @@ in {
         programs.password-store = {
           enable = true;
           package = pkgs.pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
-          settings = { PASSWORD_STORE_CLIP_TIME = "60"; };
+          settings = {
+            PASSWORD_STORE_CLIP_TIME = "60";
+            PASSWORD_STORE_DIR = "/home/${config.attributes.mainUser.name}/.password-store";
+          };
         };
         programs.gpg = {
           enable = true;
