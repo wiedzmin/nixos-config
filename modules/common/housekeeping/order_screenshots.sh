@@ -17,8 +17,8 @@ for regexp in "''${!REGEXP_TO_DATECMD[@]}"; do
     YEAR=''${DATE_PART[0]}
     MONTH=''${DATE_PART[1]}
     DAY=''${DATE_PART[2]}
-    DEST_PATH=@@screenshotsBasedir@@/$YEAR/$MONTH/$DAY
-    mkdir -p @@screenshotsbasedir@@/$YEAR/$MONTH/$DAY
+    DEST_PATH=@screenshotsBasedir@/$YEAR/$MONTH/$DAY
+    mkdir -p @screenshotsbasedir@/$YEAR/$MONTH/$DAY
     echo "moving $FILENAME to $DEST_PATH"
     mv @screenshotsBasedir@/$FILENAME @screenshotsBasedir@/$YEAR/$MONTH/$DAY
   done
