@@ -37,6 +37,13 @@ in {
           Whether to enable Chromium.
         '';
       };
+      qutebrowser.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable qutebrowser.
+        '';
+      };
       chromium.extraOpts = mkOption {
         type = types.attrs;
         description = ''
@@ -488,6 +495,13 @@ in {
       };
       systemd.user.timers."backup-current-session-firefox" =
         renderTimer "Backup current firefox session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
+    })
+    (mkIf (cfg.enable && cfg.qutebrowser.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ qutebrowser ];
+        xdg.configFile."qutebrowser/config.py".text = builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qutebrowser.py; }));
+      };
     })
     (mkIf (cfg.enable && cfg.aux.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

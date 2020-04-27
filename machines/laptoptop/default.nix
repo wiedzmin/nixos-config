@@ -247,7 +247,8 @@ in {
 
   custom.browsers = {
     enable = true;
-    firefox.enable = true;
+    firefox.enable = false;
+    qutebrowser.enable = true;
     sessions.firefox.backup.enable = true;
     chromium = {
       enable = true;

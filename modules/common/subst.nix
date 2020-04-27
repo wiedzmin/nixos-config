@@ -17,8 +17,10 @@ rec {
   defaultTextProcessor = config.attributes.defaultCommands.textProcessor;
   deftPath = "/home/${config.attributes.mainUser.name}/docs/deft";
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
+  downloadPath = config.custom.browsers.downloadPath;
   emacsBrowserGenericProgram = config.attributes.defaultCommands.browser;
   emacsCustomFile = "/home/${config.attributes.mainUser.name}/.emacs.d/customizations.el";
+  emacsClient = "${pkgs.emacs}/bin/emacsclient";
   emacsDatadir = config.ide.emacs.dataDir;
   emacsYasnippetSnippets = deps.yasnippet-snippets;
   gitIdletimeStgit = builtins.toString config.custom.dev.git.idletime.stgit;

@@ -166,6 +166,7 @@ let
     xPropMatches = [ ([ (wM_CLASS, any ("Alacritty" ==))], pmP (viewShift "shell"))
                    , ([ (wM_CLASS, any ("Apvlv" ==))], pmP (viewShift "read"))
                    , ([ (wM_CLASS, any ("Chromium-browser" ==))], pmP (viewShift "web"))
+                   , ([ (wM_CLASS, any ("qutebrowser" ==))], pmP (viewShift "web"))
                    , ([ (wM_CLASS, any ("Code" ==))], pmP (viewShift "work"))
                    , ([ (wM_CLASS, any ("Digikam" ==))], pmP (viewShift "scratch"))
                    , ([ (wM_CLASS, any ("Djview3" ==))], pmP (viewShift "read"))
