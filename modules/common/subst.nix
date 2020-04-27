@@ -21,14 +21,6 @@ rec {
   emacsCustomFile = "/home/${config.attributes.mainUser.name}/.emacs.d/customizations.el";
   emacsDatadir = config.ide.emacs.dataDir;
   emacsYasnippetSnippets = deps.yasnippet-snippets;
-  firefoxProfilePath =
-    config.home-manager.users."${config.attributes.mainUser.name}".programs.firefox.profiles.default.path;
-  firefoxSessionsHistoryLength = builtins.toString config.custom.browsers.sessions.firefox.historyLength;
-  firefoxSessionsNameTemplate = config.custom.browsers.sessions.firefox.nameTemplate;
-  firefoxSessionsPath = config.custom.browsers.sessions.firefox.path;
-  firefoxSessionsSizeThreshold = builtins.toString config.custom.browsers.sessions.sizeThreshold;
-  firefoxSessionstorePath =
-    "/home/${config.attributes.mainUser.name}/.mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
   gitIdletimeStgit = builtins.toString config.custom.dev.git.idletime.stgit;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
@@ -56,3 +48,13 @@ rec {
   searchReposRoot = config.custom.dev.repoSearch.root;
 
 } // lib.optionalAttrs (config.ide.emacs.enable) { globalWorkspaceRoot = config.custom.dev.workspaceRoots.global; }
+// lib.optionalAttrs (config.custom.browsers.firefox.enable) rec {
+  firefoxProfilePath =
+    config.home-manager.users."${config.attributes.mainUser.name}".programs.firefox.profiles.default.path;
+  firefoxSessionsHistoryLength = builtins.toString config.custom.browsers.sessions.firefox.historyLength;
+  firefoxSessionsNameTemplate = config.custom.browsers.sessions.firefox.nameTemplate;
+  firefoxSessionsPath = config.custom.browsers.sessions.firefox.path;
+  firefoxSessionsSizeThreshold = builtins.toString config.custom.browsers.sessions.sizeThreshold;
+  firefoxSessionstorePath =
+    "/home/${config.attributes.mainUser.name}/.mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
+}
