@@ -46,7 +46,7 @@
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package magit-filenotify
-  :blackout " FN"
+  :delight " FN"
   :hook (magit-status-mode-hook . (lambda ()
                                     (condition-case nil
                                         (magit-filenotify-mode)
@@ -106,7 +106,7 @@
   (git-link-use-commit t))
 
 (use-package smerge-mode
-  :blackout " ∓"
+  :delight " ∓"
   :bind
   (:map mode-specific-map
         ("g k" . smerge-prev)

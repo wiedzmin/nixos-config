@@ -72,8 +72,6 @@
   :custom
   (custom-file "@emacsCustomFile@"))
 
-(use-package blackout)
-
 (use-package emacs
   :bind
   ("M-\"" . eval-region)
@@ -133,7 +131,7 @@
   (save-abbrevs 'silently))
 
 (use-package gcmh
-  :blackout " \ufe0f"
+  :delight " \ufe0f"
   :config
   (gcmh-mode 1))
 
@@ -230,14 +228,14 @@
   (save-place-mode 1))
 
 (use-package super-save
-  :blackout super-save-mode
+  :delight super-save-mode
   :custom
   (super-save-remote-files nil)
   :config
   (super-save-mode 1))
 
 (use-package beginend
-  :blackout (beginend-global-mode beginend-prog-mode beginend-magit-status-mode)
+  :delight (beginend-global-mode beginend-prog-mode beginend-magit-status-mode)
   :config
   (beginend-global-mode))
 
@@ -249,7 +247,7 @@
   (cd2/region-command 'cd2/comment-or-uncomment-region))
 
 (use-package company
-  :blackout " γ"
+  :delight " γ"
   :hook (after-init-hook . global-company-mode)
   :bind
   ("C-<tab>" . company-complete)
@@ -310,7 +308,7 @@
   ([remap mark-sexp] . easy-mark))
 
 (use-package editorconfig
-  :blackout " EC"
+  :delight " EC"
   :hook ((prog-mode-hook text-mode-hook) . editorconfig-mode))
 
 (use-package flycheck
@@ -560,7 +558,7 @@
 
 (use-package yasnippet
   :demand t
-  :blackout yas-minor-mode
+  :delight yas-minor-mode
   :mode (("@emacsYasnippetSnippets@" . snippet-mode)
          ("\\.yasnippet$" . snippet-mode))
   :bind
