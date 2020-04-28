@@ -3,6 +3,8 @@
 config.aliases = {}
 
 c.auto_save.session = True
+c.auto_save.interval = 15000
+
 c.editor.command = ['@emacsClient@', '-c', '{file}']
 c.hints.chars = "9876543210"
 c.url.default_page = 'about:blank'
@@ -22,7 +24,6 @@ c.confirm_quit = ["always"]
 
 # c.content.user_stylesheets = "user.css"
 c.content.media_capture = 'ask'
-c.content.notifications = 'ask'
 c.content.pdfjs = True
 c.content.proxy = "none"
 c.content.ssl_strict = True
