@@ -53,7 +53,7 @@ with lib;
     defaultCommands.fallbackBrowser = mkOption {
       description = "Default browser to fallback to in some cases";
       type = types.str;
-      default = "${pkgs.chromium}/bin/chromium";
+      default = "${pkgs.chromium}/bin/chromium --new-window";
     };
     defaultCommands.ebookReader = mkOption {
       description = "Default ebooks reader";
