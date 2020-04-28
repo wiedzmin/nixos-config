@@ -6,7 +6,6 @@ let
   cfg = config.custom.browsers;
   firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../../nix/firefox-addons { });
 in {
-  # TODO: extract options
   options = {
     custom.browsers = {
       enable = mkOption {
@@ -37,13 +36,6 @@ in {
           Whether to enable Chromium.
         '';
       };
-      qutebrowser.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to enable qutebrowser.
-        '';
-      };
       chromium.extraOpts = mkOption {
         type = types.attrs;
         description = ''
@@ -52,6 +44,20 @@ in {
           for a list of available options
         '';
         default = { };
+      };
+      next.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable Next browser.
+        '';
+      };
+      qutebrowser.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable qutebrowser.
+        '';
       };
       sessions.saveFrequency = mkOption {
         type = types.str;
@@ -501,6 +507,13 @@ in {
         home.packages = with pkgs; [ qutebrowser ];
         xdg.configFile."qutebrowser/config.py".text = builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qutebrowser.py; }));
+      };
+    })
+    (mkIf (cfg.enable && cfg.next.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ next ];
+        xdg.configFile."next/init.lisp".text = builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./init.lisp; }));
       };
     })
     (mkIf (cfg.enable && cfg.aux.enable) {

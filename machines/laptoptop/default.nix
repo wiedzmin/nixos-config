@@ -286,7 +286,6 @@ in {
     };
     aux.enable = true;
     emacs.enable = true;
-    staging.packages = with pkgs; [ next ];
   };
 
   custom.content = {
