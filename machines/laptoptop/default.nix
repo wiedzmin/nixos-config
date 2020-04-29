@@ -281,6 +281,7 @@ in {
         SpellcheckEnabled = false;
         SyncDisabled = true;
         TranslateEnabled = false;
+        ExternalProtocolDialogShowAlwaysOpenCheckbox = true;
       };
     };
     aux.enable = true;
