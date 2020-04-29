@@ -11,6 +11,11 @@ in {
         default = false;
         description = "Whether to enable shell tooling.";
       };
+      alacritty.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Alacritty.";
+      };
       toolsng.enable = mkOption {
         type = types.bool;
         default = false;
@@ -213,33 +218,6 @@ in {
             sessionist
           ];
         };
-        programs.alacritty = {
-          enable = true;
-          settings = {
-            env = { TERM = "xterm-256color"; };
-            window = {
-              padding = {
-                x = 2;
-                y = 2;
-              };
-              decorations = "full";
-            };
-            draw_bold_text_with_bright_colors = true;
-            visual_bell = {
-              animation = "EaseOutExpo";
-              duration = 0;
-            };
-            mouse_bindings = [{
-              mouse = "Middle";
-              action = "PasteSelection";
-            }];
-            background_opacity = 0.5;
-            selection = { semantic_escape_chars = '',│`|:"' ()[]{}<>''; };
-            dynamic_title = true;
-            cursor = { style = "Beam"; };
-            live_config_reload = true;
-          };
-        };
         programs.zsh = {
           enable = true;
           oh-my-zsh = {
@@ -419,6 +397,37 @@ in {
               sha256 = "1dfy5wvkmnp2zzk81fhc7qlywgn0j6z0vjch5ak5r3j2kqv61cmi";
             };
           }];
+        };
+      };
+    })
+    (mkIf (cfg.enable && cfg.alacritty.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        programs.alacritty = {
+          enable = true;
+          settings = {
+            env = { TERM = "xterm-256color"; };
+            window = {
+              padding = {
+                x = 2;
+                y = 2;
+              };
+              decorations = "full";
+            };
+            draw_bold_text_with_bright_colors = true;
+            visual_bell = {
+              animation = "EaseOutExpo";
+              duration = 0;
+            };
+            mouse_bindings = [{
+              mouse = "Middle";
+              action = "PasteSelection";
+            }];
+            background_opacity = 0.5;
+            selection = { semantic_escape_chars = '',│`|:"' ()[]{}<>''; };
+            dynamic_title = true;
+            cursor = { style = "Beam"; };
+            live_config_reload = true;
+          };
         };
       };
     })

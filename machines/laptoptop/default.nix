@@ -519,6 +519,7 @@ in {
 
   custom.shell = {
     enable = true;
+    alacritty.enable = true;
     toolsng.enable = true;
     liquidPrompt.enable = true;
     bookmarks.enable = true;
