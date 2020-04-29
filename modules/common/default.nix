@@ -2,6 +2,7 @@
   imports = [
     ./appearance
     ./browsers
+    ./browsers/firefox.nix
     ./ccpp
     ./content
     ./dbms
@@ -9,6 +10,7 @@
     ./ebook
     ./emacs
     ./email
+    ./email/mbsync.nix
     ./git
     ./golang
     ./housekeeping
@@ -22,6 +24,7 @@
     ./python
     ./security
     ./shell
+    ./shell/tmux.nix
     ./sound
     ./stumpwm
     ./video

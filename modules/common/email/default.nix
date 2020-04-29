@@ -313,69 +313,69 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.mbsync.enable) {
+      custom.programs.mbsync = {
+        enable = true;
+        extraConfig = ''
+          MaildirStore ${cfg.defaultAccountName}-archive
+          Path ${
+            config.home-manager.users."${config.attributes.mainUser.name}".accounts.email.maildirBasePath
+          }/archive-${cfg.defaultAccountName}/
+
+          Channel ${cfg.defaultAccountName}-archive
+          Master ":${cfg.defaultAccountName}-remote:[Gmail]/All Mail"
+          Slave ":${cfg.defaultAccountName}-archive:Archive"
+          Create Slave
+          SyncState *
+          Sync Push Flags
+
+          Channel ${cfg.defaultAccountName}-trash
+          Master ":${cfg.defaultAccountName}-remote:[Gmail]/Trash"
+          Slave ":${cfg.defaultAccountName}-archive:Trash"
+          Create Slave
+          Sync All
+
+          Channel ${cfg.defaultAccountName}-drafts
+          Master ":${cfg.defaultAccountName}-remote:[Gmail]/Drafts"
+          Slave ":${cfg.defaultAccountName}-local:Drafts"
+          Create Slave
+          Sync All
+          Expunge Both
+
+          Channel ${cfg.defaultAccountName}-sent
+          Master ":${cfg.defaultAccountName}-remote:[Gmail]/Sent Mail"
+          Slave ":${cfg.defaultAccountName}-local:Sent"
+          Create Slave
+          Sync All
+          Expunge Both
+
+          Channel ${cfg.defaultAccountName}-inbox
+          Master ":${cfg.defaultAccountName}-remote:INBOX"
+          Slave ":${cfg.defaultAccountName}-local:INBOX"
+          Create Slave
+          Sync All
+          Expunge Both
+
+          Channel ${cfg.defaultAccountName}-mailing-lists-and-notifications
+          Master :${cfg.defaultAccountName}-remote:
+          Slave :${cfg.defaultAccountName}-local:
+          Create Slave
+          Sync All
+          Patterns "Lists*" "Cron*"
+          # MaxMessages 2000
+          Expunge Both
+
+          Group ${cfg.emailAddress}
+          Channel ${cfg.emailAddress}-trash
+          Channel ${cfg.emailAddress}-inbox
+          Channel ${cfg.emailAddress}-drafts
+          Channel ${cfg.emailAddress}-sent
+          Channel ${cfg.emailAddress}-user-labels
+          Channel ${cfg.emailAddress}-mailing-lists-and-notifications
+          Channel ${cfg.emailAddress}-archive
+        '';
+      };
       home-manager.users."${config.attributes.mainUser.name}" = {
         accounts.email = { accounts."${cfg.defaultAccountName}" = { mbsync.enable = true; }; };
-        programs.mbsync = {
-          enable = true;
-          extraConfig = ''
-            MaildirStore ${cfg.defaultAccountName}-archive
-            Path ${
-              config.home-manager.users."${config.attributes.mainUser.name}".accounts.email.maildirBasePath
-            }/archive-${cfg.defaultAccountName}/
-
-            Channel ${cfg.defaultAccountName}-archive
-            Master ":${cfg.defaultAccountName}-remote:[Gmail]/All Mail"
-            Slave ":${cfg.defaultAccountName}-archive:Archive"
-            Create Slave
-            SyncState *
-            Sync Push Flags
-
-            Channel ${cfg.defaultAccountName}-trash
-            Master ":${cfg.defaultAccountName}-remote:[Gmail]/Trash"
-            Slave ":${cfg.defaultAccountName}-archive:Trash"
-            Create Slave
-            Sync All
-
-            Channel ${cfg.defaultAccountName}-drafts
-            Master ":${cfg.defaultAccountName}-remote:[Gmail]/Drafts"
-            Slave ":${cfg.defaultAccountName}-local:Drafts"
-            Create Slave
-            Sync All
-            Expunge Both
-
-            Channel ${cfg.defaultAccountName}-sent
-            Master ":${cfg.defaultAccountName}-remote:[Gmail]/Sent Mail"
-            Slave ":${cfg.defaultAccountName}-local:Sent"
-            Create Slave
-            Sync All
-            Expunge Both
-
-            Channel ${cfg.defaultAccountName}-inbox
-            Master ":${cfg.defaultAccountName}-remote:INBOX"
-            Slave ":${cfg.defaultAccountName}-local:INBOX"
-            Create Slave
-            Sync All
-            Expunge Both
-
-            Channel ${cfg.defaultAccountName}-mailing-lists-and-notifications
-            Master :${cfg.defaultAccountName}-remote:
-            Slave :${cfg.defaultAccountName}-local:
-            Create Slave
-            Sync All
-            Patterns "Lists*" "Cron*"
-            # MaxMessages 2000
-            Expunge Both
-
-            Group ${cfg.emailAddress}
-            Channel ${cfg.emailAddress}-trash
-            Channel ${cfg.emailAddress}-inbox
-            Channel ${cfg.emailAddress}-drafts
-            Channel ${cfg.emailAddress}-sent
-            Channel ${cfg.emailAddress}-user-labels
-            Channel ${cfg.emailAddress}-mailing-lists-and-notifications
-            Channel ${cfg.emailAddress}-archive
-          '';
-        };
         services.mbsync = {
           enable = true;
           postExec = cfg.mbsync.postExec;

@@ -346,98 +346,95 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.tmux.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.tmux = {
-          enable = true;
-          baseIndex = 1;
-          clock24 = true;
-          escapeTime = 0;
-          status = {
-            currentWindowFormat = "#[bg=blue,fg=cyan,bold]#I#[bg=blue,fg=cyan]:#[fg=colour230]#T#[fg=dim]#F";
-            windowFormat = "#[fg=cyan,dim]#I#[fg=blue]:#[default]#W#[fg=grey,dim]#F";
-            leftFormat = "#{prefix_highlight}#[fg=green](#S) #(whoami)@#H";
-            rightFormat = "#[fg=blue,bright]%k:%M:%S %d/%m/%Y | #{cpu_fg_color}#{cpu_icon}#{cpu_percentage}";
-            style = "fg=white,bg=default,default";
-            windowStyle = "fg=cyan,bg=default,dim";
-            currentWindowStyle = "fg=colour166,bg=red,bright";
-            messageStyle = "fg=white,bg=black,bright";
-          };
-          borderStyle = {
-            active = "fg=yellow,bg=default";
-            inactive = "fg=yellow,bg=default";
-          };
-          hooks = {
-            "after-select-pane" = ''
-              "run-shell 'tmux set -g window-active-style bg=brightblack && sleep .05 && tmux set -g window-active-style none'"
-            '';
-          };
-          bindings = {
-            copyMode = {
-              "M-e" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture es"'';
-              "M-j" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture js"'';
-              "M-n" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture ns"'';
-              "M-x" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture xs"'';
-            };
-            root = {
-              "C-left" = "prev";
-              "C-right" = "next";
-              "S-left" = "swap-window -t -1";
-              "S-right" = "swap-window -t +1";
-              "C-y" =
-                ''run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o -b | tmux load-buffer - ; tmux paste-buffer"'';
-            };
-            prefixed = {
-              "*" = "list-clients";
-              "l" = "refresh-client";
-              "m" = "select-pane -m";
-              "|" = ''split-window -h -c "#{pane_current_path}"'';
-              "'\\'" = ''split-window -fh -c "#{pane_current_path}"'';
-              "-" = ''split-window -v -c "#{pane_current_path}"'';
-              "_" = ''split-window -fv -c "#{pane_current_path}"'';
-              "'#'" = ''split-window -h -c "#{pane_current_path}"'';
-              "@" = ''split-window -v -c "#{pane_current_path}"'';
-              "BSpace" = "last-window";
-              "r" = ''source-file ~/.tmux.conf \; display "  Config reloaded..."'';
-              "y" = "set-window-option synchronize-panes";
-              "T" = ''neww -n "Tmux manual" "exec man tmux"'';
-              "s" = ''
-                split-window -v "tmux list-sessions | cut -d: -f1 | \
-                                                       grep -v $(tmux display-message -p '#S') | \
-                                                       ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
-            };
-          };
-          extraConfig = ''
-            set -g renumber-windows on
-
-            set -g bell-action any
-            set -g visual-activity off
-            set -g visual-bell off
-            set -g visual-silence off
-            setw -g monitor-activity on
-
-            set -g default-shell "/run/current-system/sw/bin/zsh"
-          '';
-          historyLimit = 102400;
-          keyMode = "emacs";
-          nestedShortcut = "C-x";
-          sensibleOnTop = false;
-          shortcut = "M-x";
-          terminal = "screen-256color";
-          secureSocket = false;
-          tmuxp.enable = true;
-          plugins = with pkgs.tmuxPlugins; [
-            {
-              plugin = pkgs.fzf-tmux-url-with-history; # patched version, see overlays
-              extraConfig = "set -g @fzf-url-bind 'o'";
-            }
-            copycat
-            cpu
-            fpp
-            logging
-            prefix-highlight
-            sessionist
-          ];
+      custom.programs.tmux = {
+        enable = true;
+        baseIndex = 1;
+        clock24 = true;
+        escapeTime = 0;
+        status = {
+          currentWindowFormat = "#[bg=blue,fg=cyan,bold]#I#[bg=blue,fg=cyan]:#[fg=colour230]#T#[fg=dim]#F";
+          windowFormat = "#[fg=cyan,dim]#I#[fg=blue]:#[default]#W#[fg=grey,dim]#F";
+          leftFormat = "#{prefix_highlight}#[fg=green](#S) #(whoami)@#H";
+          rightFormat = "#[fg=blue,bright]%k:%M:%S %d/%m/%Y | #{cpu_fg_color}#{cpu_icon}#{cpu_percentage}";
+          style = "fg=white,bg=default,default";
+          windowStyle = "fg=cyan,bg=default,dim";
+          currentWindowStyle = "fg=colour166,bg=red,bright";
+          messageStyle = "fg=white,bg=black,bright";
         };
+        borderStyle = {
+          active = "fg=yellow,bg=default";
+          inactive = "fg=yellow,bg=default";
+        };
+        hooks = {
+          "after-select-pane" = ''
+            "run-shell 'tmux set -g window-active-style bg=brightblack && sleep .05 && tmux set -g window-active-style none'"
+          '';
+        };
+        bindings = {
+          copyMode = {
+            "M-e" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture es"'';
+            "M-j" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture js"'';
+            "M-n" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture ns"'';
+            "M-x" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture xs"'';
+          };
+          root = {
+            "C-left" = "prev";
+            "C-right" = "next";
+            "S-left" = "swap-window -t -1";
+            "S-right" = "swap-window -t +1";
+            "C-y" = ''run -b "exec </dev/null; ${pkgs.xsel}/bin/xsel -o -b | tmux load-buffer - ; tmux paste-buffer"'';
+          };
+          prefixed = {
+            "*" = "list-clients";
+            "l" = "refresh-client";
+            "m" = "select-pane -m";
+            "|" = ''split-window -h -c "#{pane_current_path}"'';
+            "'\\'" = ''split-window -fh -c "#{pane_current_path}"'';
+            "-" = ''split-window -v -c "#{pane_current_path}"'';
+            "_" = ''split-window -fv -c "#{pane_current_path}"'';
+            "'#'" = ''split-window -h -c "#{pane_current_path}"'';
+            "@" = ''split-window -v -c "#{pane_current_path}"'';
+            "BSpace" = "last-window";
+            "r" = ''source-file ~/.tmux.conf \; display "  Config reloaded..."'';
+            "y" = "set-window-option synchronize-panes";
+            "T" = ''neww -n "Tmux manual" "exec man tmux"'';
+            "s" = ''
+              split-window -v "tmux list-sessions | cut -d: -f1 | \
+                                                     grep -v $(tmux display-message -p '#S') | \
+                                                     ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
+          };
+        };
+        extraConfig = ''
+          set -g renumber-windows on
+
+          set -g bell-action any
+          set -g visual-activity off
+          set -g visual-bell off
+          set -g visual-silence off
+          setw -g monitor-activity on
+
+          set -g default-shell "/run/current-system/sw/bin/zsh"
+        '';
+        historyLimit = 102400;
+        keyMode = "emacs";
+        nestedShortcut = "C-x";
+        sensibleOnTop = false;
+        shortcut = "M-x";
+        terminal = "screen-256color";
+        secureSocket = false;
+        tmuxp.enable = true;
+        plugins = with pkgs.tmuxPlugins; [
+          {
+            plugin = pkgs.fzf-tmux-url-with-history; # patched version, see overlays
+            extraConfig = "set -g @fzf-url-bind 'o'";
+          }
+          copycat
+          cpu
+          fpp
+          logging
+          prefix-highlight
+          sessionist
+        ];
       };
     })
     (mkIf cfg.toolsng.enable {

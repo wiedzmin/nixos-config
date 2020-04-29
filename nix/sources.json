@@ -14,13 +14,13 @@
     "home-manager": {
         "branch": "master",
         "description": "Manage a user environment using Nix",
-        "homepage": "",
-        "owner": "wiedzmin",
+        "homepage": "https://rycee.gitlab.io/home-manager/",
+        "owner": "rycee",
         "repo": "home-manager",
-        "rev": "79ed14513e103e341d0ccc5027ef405c3fe82849",
-        "sha256": "0n22m1lh7qdg46afaysvz9a7arfp2as64pm1b4ap4z1a7d9n8h7p",
+        "rev": "a7cdfaa32585fce404cf8890bae099348e53e0ad",
+        "sha256": "0z3pmzdw6hwr72b00bn5j6l3xhwwd8jadwmz4cjb6af9x8jgdxpq",
         "type": "tarball",
-        "url": "https://github.com/wiedzmin/home-manager/archive/79ed14513e103e341d0ccc5027ef405c3fe82849.tar.gz",
+        "url": "https://github.com/rycee/home-manager/archive/a7cdfaa32585fce404cf8890bae099348e53e0ad.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {

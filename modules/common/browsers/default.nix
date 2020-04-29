@@ -133,6 +133,125 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = { programs.browserpass.enable = true; };
     })
     (mkIf (cfg.enable && cfg.firefox.enable) {
+      custom.programs.firefox = {
+        enable = true;
+        extensions = with firefox-addons; [
+          display-anchors
+          ghosttext
+          passff
+          tridactyl # TODO: review and maybe redo manually csp/fixamo customizations
+          url-in-title
+          web_media_controller
+        ];
+        profiles = {
+          default = {
+            name = "profile.default";
+            path = "profile.default";
+            settings = {
+              "browser.ctrlTab.recentlyUsedOrder" = false;
+              "browser.download.dir" = cfg.downloadPath;
+              "browser.link.open_newwindow" = 2;
+              "browser.sessionstore.restore_on_demand" = true;
+              "browser.sessionstore.restore_tabs_lazily" = true;
+              "browser.shell.checkDefaultBrowser" = true;
+              "browser.startup.page" = 3;
+              "browser.urlbar.decodeURLsOnCopy" = true;
+              "extensions.autoDisableScopes" = 0;
+              "extensions.pocket.enabled" = false;
+              "extensions.update.autoUpdateDefault" = false;
+              "extensions.update.background.url" = "";
+              "extensions.update.enabled" = false;
+              "extensions.update.url" = "";
+              "lightweightThemes.selectedThemeID" = "firefox-compact-dark@mozilla.org";
+              "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
+            } // lib.optionalAttrs (cfg.staging.enableSettings) {
+              # entries picked from https://github.com/ilya-fedin/user-js/blob/master/user.js
+              "browser.cache.disk.enable" = false;
+              "browser.cache.memory.enable" = false;
+              "browser.cache.offline.enable" = false;
+              "browser.contentblocking.category" = "custom";
+              "browser.discovery.enabled" = false;
+              "browser.download.autohideButton" = false;
+              "browser.newtab.preload" = false;
+              "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
+              "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
+              "browser.newtabpage.activity-stream.feeds.snippets" = false;
+              "browser.newtabpage.activity-stream.feeds.telemetry" = false;
+              "browser.newtabpage.activity-stream.prerender" = false;
+              "browser.newtabpage.activity-stream.showSponsored" = false;
+              "browser.newtabpage.activity-stream.telemetry" = false;
+              "browser.newtabpage.enabled" = false;
+              "browser.ping-centre.telemetry" = false;
+              "browser.safebrowsing.blockedURIs.enabled" = false;
+              "browser.safebrowsing.downloads.enabled" = false;
+              "browser.safebrowsing.malware.enabled" = false;
+              "browser.safebrowsing.phishing.enabled" = false;
+              "browser.sessionhistory.max_total_viewers" = 0;
+              "browser.tabs.drawInTitlebar" = true;
+              "browser.tabs.remote.separateFileUriProcess" = false;
+              "browser.tabs.remote.separatePrivilegedContentProcess" = false;
+              "browser.tabs.warnOnClose" = false;
+              "browser.uidensity" = 1;
+              "browser.urlbar.matchBuckets" = "general:5,suggestion:Infinity";
+              "datareporting.healthreport.uploadEnabled" = false;
+              "dom.ipc.processCount" = 1;
+              "dom.largeAllocationHeader.enabled" = false;
+              "dom.push.enabled" = false;
+              "dom.serviceWorkers.enabled" = false;
+              "dom.webnotifications.enabled" = false;
+              "extensions.webextensions.remote" = false;
+              "general.aboutConfig.showWarning" = false;
+              "geo.enabled" = false;
+              "gfx.webrender.all" = true;
+              "intl.accept_languages" = "ru,ru-ru,en-us,en";
+              "intl.locale.requested" = "ru";
+              "layers.gpu-process.enabled" = false;
+              "layout.css.devPixelsPerPx" = "1"; # "1.25"
+              "media.autoplay.block-event.enabled" = true;
+              "media.autoplay.block-webaudio" = true;
+              "media.autoplay.default" = 5;
+              "media.navigator.enabled" = false;
+              "media.peerconnection.enabled" = false;
+              "network.cookie.cookieBehavior" = 4;
+              "network.dns.disablePrefetch" = true;
+              "network.predictor.enabled" = false;
+              "network.prefetch-next" = false;
+              "network.proxy.type" = 0;
+              "network.tcp.tcp_fastopen_enable" = true;
+              "network.trr.mode" = 2; # "network.security.esni.enabled" = true; (RKN hates ESNI)
+              "privacy.donottrackheader.enabled" = true;
+              "privacy.resistFingerprinting" = true;
+              "privacy.trackingprotection.cryptomining.enabled" = true;
+              "privacy.trackingprotection.enabled" = true;
+              "privacy.trackingprotection.fingerprinting.enabled" = true;
+              "security.sandbox.content.level" = 2;
+              "urlclassifier.trackingTable" = ""; # because 2md layer list blocks google captcha, use 1st layer
+            };
+            userChrome = ''
+              #TabsToolbar { visibility: collapse !important; }
+              #titlebar { visibility: collapse !important; }
+            '';
+            handlers = {
+              defaultHandlersVersion = { "en-US" = 4; };
+              mimeTypes = { "application/pdf" = { action = 3; }; };
+              schemes = {
+                mailto = {
+                  action = 4;
+                  handlers = [
+                    null
+                    {
+                      name = "Gmail";
+                      uriTemplate = "https://mail.google.com/mail/?extsrc=mailto&url=%s";
+                    }
+                  ];
+                };
+                "org-protocol" = { action = 4; };
+                "tg" = { action = 4; };
+              };
+            };
+          };
+        };
+      };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs;
           [
@@ -142,125 +261,6 @@ in {
           after = [ ];
           before = [ "checkLinkTargets" ];
           data = "rm -f /home/${config.attributes.mainUser.name}/.mozilla/firefox/profile.default/handlers.json";
-        };
-        programs.firefox = {
-          enable = true;
-          extensions = with firefox-addons; [
-            display-anchors
-            ghosttext
-            passff
-            tridactyl # TODO: review and maybe redo manually csp/fixamo customizations
-            url-in-title
-            web_media_controller
-          ];
-          profiles = {
-            default = {
-              name = "profile.default";
-              path = "profile.default";
-              settings = {
-                "browser.ctrlTab.recentlyUsedOrder" = false;
-                "browser.download.dir" = cfg.downloadPath;
-                "browser.link.open_newwindow" = 2;
-                "browser.sessionstore.restore_on_demand" = true;
-                "browser.sessionstore.restore_tabs_lazily" = true;
-                "browser.shell.checkDefaultBrowser" = true;
-                "browser.startup.page" = 3;
-                "browser.urlbar.decodeURLsOnCopy" = true;
-                "extensions.autoDisableScopes" = 0;
-                "extensions.pocket.enabled" = false;
-                "extensions.update.autoUpdateDefault" = false;
-                "extensions.update.background.url" = "";
-                "extensions.update.enabled" = false;
-                "extensions.update.url" = "";
-                "lightweightThemes.selectedThemeID" = "firefox-compact-dark@mozilla.org";
-                "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-              } // lib.optionalAttrs (cfg.staging.enableSettings) {
-                # entries picked from https://github.com/ilya-fedin/user-js/blob/master/user.js
-                "browser.cache.disk.enable" = false;
-                "browser.cache.memory.enable" = false;
-                "browser.cache.offline.enable" = false;
-                "browser.contentblocking.category" = "custom";
-                "browser.discovery.enabled" = false;
-                "browser.download.autohideButton" = false;
-                "browser.newtab.preload" = false;
-                "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.addons" = false;
-                "browser.newtabpage.activity-stream.asrouter.userprefs.cfr.features" = false;
-                "browser.newtabpage.activity-stream.feeds.snippets" = false;
-                "browser.newtabpage.activity-stream.feeds.telemetry" = false;
-                "browser.newtabpage.activity-stream.prerender" = false;
-                "browser.newtabpage.activity-stream.showSponsored" = false;
-                "browser.newtabpage.activity-stream.telemetry" = false;
-                "browser.newtabpage.enabled" = false;
-                "browser.ping-centre.telemetry" = false;
-                "browser.safebrowsing.blockedURIs.enabled" = false;
-                "browser.safebrowsing.downloads.enabled" = false;
-                "browser.safebrowsing.malware.enabled" = false;
-                "browser.safebrowsing.phishing.enabled" = false;
-                "browser.sessionhistory.max_total_viewers" = 0;
-                "browser.tabs.drawInTitlebar" = true;
-                "browser.tabs.remote.separateFileUriProcess" = false;
-                "browser.tabs.remote.separatePrivilegedContentProcess" = false;
-                "browser.tabs.warnOnClose" = false;
-                "browser.uidensity" = 1;
-                "browser.urlbar.matchBuckets" = "general:5,suggestion:Infinity";
-                "datareporting.healthreport.uploadEnabled" = false;
-                "dom.ipc.processCount" = 1;
-                "dom.largeAllocationHeader.enabled" = false;
-                "dom.push.enabled" = false;
-                "dom.serviceWorkers.enabled" = false;
-                "dom.webnotifications.enabled" = false;
-                "extensions.webextensions.remote" = false;
-                "general.aboutConfig.showWarning" = false;
-                "geo.enabled" = false;
-                "gfx.webrender.all" = true;
-                "intl.accept_languages" = "ru,ru-ru,en-us,en";
-                "intl.locale.requested" = "ru";
-                "layers.gpu-process.enabled" = false;
-                "layout.css.devPixelsPerPx" = "1"; # "1.25"
-                "media.autoplay.block-event.enabled" = true;
-                "media.autoplay.block-webaudio" = true;
-                "media.autoplay.default" = 5;
-                "media.navigator.enabled" = false;
-                "media.peerconnection.enabled" = false;
-                "network.cookie.cookieBehavior" = 4;
-                "network.dns.disablePrefetch" = true;
-                "network.predictor.enabled" = false;
-                "network.prefetch-next" = false;
-                "network.proxy.type" = 0;
-                "network.tcp.tcp_fastopen_enable" = true;
-                "network.trr.mode" = 2; # "network.security.esni.enabled" = true; (RKN hates ESNI)
-                "privacy.donottrackheader.enabled" = true;
-                "privacy.resistFingerprinting" = true;
-                "privacy.trackingprotection.cryptomining.enabled" = true;
-                "privacy.trackingprotection.enabled" = true;
-                "privacy.trackingprotection.fingerprinting.enabled" = true;
-                "security.sandbox.content.level" = 2;
-                "urlclassifier.trackingTable" = ""; # because 2md layer list blocks google captcha, use 1st layer
-              };
-              userChrome = ''
-                #TabsToolbar { visibility: collapse !important; }
-                #titlebar { visibility: collapse !important; }
-              '';
-              handlers = {
-                defaultHandlersVersion = { "en-US" = 4; };
-                mimeTypes = { "application/pdf" = { action = 3; }; };
-                schemes = {
-                  mailto = {
-                    action = 4;
-                    handlers = [
-                      null
-                      {
-                        name = "Gmail";
-                        uriTemplate = "https://mail.google.com/mail/?extsrc=mailto&url=%s";
-                      }
-                    ];
-                  };
-                  "org-protocol" = { action = 4; };
-                  "tg" = { action = 4; };
-                };
-              };
-            };
-          };
         };
         xdg.configFile."tridactyl/tridactylrc".text = ''
           set storageloc local
