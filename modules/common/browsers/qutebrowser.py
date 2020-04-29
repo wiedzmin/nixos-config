@@ -46,7 +46,7 @@ c.tabs.background = True
 c.tabs.last_close = "close"
 c.tabs.new_position.related = 'next'
 c.tabs.padding = { "left": 5, "right": 5, "top": 0, "bottom": 1}
-c.tabs.select_on_remove = "prev"
+c.tabs.select_on_remove = "next"
 c.tabs.show = "multiple"
 c.tabs.tabs_are_windows = False
 
