@@ -344,6 +344,13 @@ in {
           };
         };
       };
+      custom.xinput.xkeysnail.rc = ''
+        define_keymap(re.compile("Alacritty"), {
+            K("C-x"): {
+                K("k"): K("C-d"),
+            },
+        }, "Alacritty")
+      '';
     })
     (mkIf (cfg.enable && cfg.tmux.enable) {
       custom.programs.tmux = {

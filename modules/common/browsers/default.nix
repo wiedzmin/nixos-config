@@ -252,6 +252,23 @@ in {
           };
         };
       };
+      custom.xinput.xkeysnail.rc = ''
+        define_keymap(re.compile("Firefox"), {
+            K("C-j"): K("C-f6"), # Type C-j to focus to the content
+            K("C-g"): K("f5"),
+            K("C-n"): K("C-g"),
+            K("C-Shift-n"): K("C-Shift-g"),
+            K("M-comma"): K("M-Left"),
+            K("M-dot"): K("M-Right"),
+            K("C-x"): {
+                K("b"): K("b"),
+                K("k"): K("C-w"),
+                K("u"): K("C-Shift-t"),
+                K("C-s"): K("C-s"),
+                K("C-c"): K("C-q"),
+            },
+        }, "Firefox")
+      '';
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs;
           [
@@ -503,6 +520,21 @@ in {
         renderTimer "Backup current firefox session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
     })
     (mkIf (cfg.enable && cfg.qutebrowser.enable) {
+      custom.xinput.xkeysnail.rc = ''
+        define_keymap(re.compile("qutebrowser"), {
+            K("C-g"): K("f5"),
+            K("C-n"): K("C-g"),
+            K("M-comma"): K(H"),
+            K("M-dot"): K("L"),
+            K("C-x"): {
+                K("b"): K("b"),
+                K("k"): [K("Esc"), K("d")],
+                K("u"): K("u"),
+                K("C-s"): [K("Esc"), K(":"), K("w"), K("enter")],
+                K("C-c"): [K("Esc"), K(":"), K("w"), K("q"), K("enter")],
+            },
+        }, "qutebrowser")
+      '';
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ qutebrowser ];
         xdg.configFile."qutebrowser/config.py".text = builtins.readFile

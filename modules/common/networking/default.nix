@@ -261,6 +261,15 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ skype slack tdesktop quasselClient ];
       };
+      custom.xinput.xkeysnail.rc = ''
+        define_keymap(re.compile("TelegramDesktop"), {
+            K("C-x"): {
+                K("C-c"): K("C-q"),
+            },
+            K("C-s"): K("Esc"),
+            K("C-t"): [K("Shift-Left"), K("C-x"), K("Left"), K("C-v"), K("Right")],
+        }, "Telegram")
+      '';
     })
     (mkIf (cfg.enable && cfg.scripts.enable) { environment.systemPackages = with pkgs; [ wifi-status ]; })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
