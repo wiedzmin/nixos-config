@@ -121,6 +121,7 @@ in {
           paste_to_ix
 
           monolith
+          tartube
         ];
         services.syncthing.enable = true; # TODO: consider separate option(s)
         programs.mpv = {
