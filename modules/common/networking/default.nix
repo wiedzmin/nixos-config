@@ -277,8 +277,10 @@ in {
       wm.xmonad.keybindings = {
         "M-n s" = ''spawn "${pkgs.sshmenu}/bin/sshmenu" >> showWSOnProperScreen "shell"'';
         "M-n d" = ''spawn "${pkgs.sshmenu}/bin/sshmenu --choices" >> showWSOnProperScreen "shell"'';
+        "M-n t" = ''spawn "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux" >> showWSOnProperScreen "shell"'';
         "M-n c" = ''spawn "${pkgs.wpa_supplicant_gui}/bin/wpa_gui"'';
-        "M-n t c" = ''spawn "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli" >> showWSOnProperScreen "shell"'';
+        "M-n w c" = ''
+          spawn "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli" >> showWSOnProperScreen "shell"''; # FIXME: make conditional
         "M-s n <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart nscd.service"'';
         "M-n i" = ''spawn "${pkgs.ifconfless}/bin/ifconfless"'';
       };

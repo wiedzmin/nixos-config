@@ -12,6 +12,8 @@ import redis
 parser = argparse.ArgumentParser(description="Execute command over SSH.")
 parser.add_argument("--choices", dest="show_choices", action="store_true",
                    default=False, help="show predefined command choices")
+parser.add_argument("--ignore-tmux", dest="ignore_tmux", action="store_true",
+                   default=False, help="open connection in new terminal window rather than tmux pane")
 
 args = parser.parse_args()
 
@@ -24,6 +26,13 @@ for host in extra_hosts_data.values():
 
 host = dmenu.show(extra_hosts, prompt="ssh to",
                   case_insensitive=True, lines=10)
+
+
+def open_terminal(cmd):
+    pparams = ["@defaultTerminal@", "-e"]
+    pparams.extend(cmd.split())
+    subprocess.Popen(pparams)
+
 
 if host:
     vpn_meta = json.loads(r.get("net/hosts_vpn"))
@@ -43,12 +52,13 @@ if host:
         else:
            sys.exit(1)
 
-    tmux_server = Server()
-    try:
-        tmux_session = tmux_server.find_where({ "session_name": "@tmuxDefaultSession@" })
-        ssh_window = tmux_session.new_window(attach=True, window_name=host,
-                                             window_shell=cmd)
-    except LibTmuxException:
-        pparams = ["@defaultTerminal@", "-e"]
-        pparams.extend(cmd.split())
-        subprocess.Popen(pparams)
+    if args.ignore_tmux:
+        open_terminal(cmd)
+    else:
+        tmux_server = Server()
+        try:
+            tmux_session = tmux_server.find_where({ "session_name": "@tmuxDefaultSession@" })
+            ssh_window = tmux_session.new_window(attach=True, window_name=host,
+                                                 window_shell=cmd)
+        except LibTmuxException:
+            open_terminal(cmd)
