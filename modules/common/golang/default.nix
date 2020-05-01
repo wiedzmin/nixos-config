@@ -51,7 +51,7 @@ in {
       }];
 
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ gomodifytags gopls golangci-lint golint errcheck dep delve go ];
+        home.packages = with pkgs; [ delve dep errcheck go golangci-lint golint gomodifytags gopls gotools ];
         programs.zsh.sessionVariables = {
           GOPATH = cfg.goPath;
         } // lib.optionalAttrs (cfg.privateModules != [ ]) {
