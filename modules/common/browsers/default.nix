@@ -563,8 +563,12 @@ in {
       '';
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ qutebrowser ];
-        xdg.configFile."qutebrowser/config.py".text = builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qutebrowser.py; }));
+        xdg.configFile = {
+          "qutebrowser/config.py".text = builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qutebrowser/qutebrowser.py; }));
+          "qutebrowser/keybindings.py".text = builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qutebrowser/keybindings.py; }));
+        };
       };
     })
     (mkIf (cfg.enable && cfg.next.enable) {
