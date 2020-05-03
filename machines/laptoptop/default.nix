@@ -247,6 +247,7 @@ in {
 
   custom.browsers = {
     enable = true;
+    default = pkgs.qutebrowser;
     qutebrowser.enable = true;
     sessions.firefox.backup.enable = true;
     chromium = {

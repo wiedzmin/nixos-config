@@ -33,7 +33,7 @@
               :require-match t
               :caller 'custom/open-url-current-buffer))
   :custom
-  (browse-url-browser-function 'browse-url-firefox) ;; TODO: sync at module level
+  (browse-url-browser-function 'browse-url-generic) ;; TODO: sync at module level
   (browse-url-generic-program "@emacsBrowserGenericProgram@"))
 
 (use-package bruh

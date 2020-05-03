@@ -1,5 +1,8 @@
-{ config, lib, pkgs, ... }:
+let deps = import ../../../nix/sources.nix;
+in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
+with import "${deps.home-manager}/modules/lib/dag.nix" { inherit lib; };
+
 with lib;
 
 let
@@ -20,6 +23,13 @@ in {
         default = "/home/${config.attributes.mainUser.name}/Downloads";
         description = ''
           Common downloads path'.
+        '';
+      };
+      default = mkOption {
+        type = types.package;
+        default = null;
+        description = ''
+          Default browser.
         '';
       };
       firefox.enable = mkOption {
@@ -130,7 +140,23 @@ in {
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = { programs.browserpass.enable = true; };
+      assertions = [{
+        assertion = cfg.default != null;
+        message = "browsers: no default selected.";
+      }];
+
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.activation.ensureDefaultBrowser = dagEntryAfter [ "checkLinkTargets" ] ''
+          current_default=$(${pkgs.xdg_utils}/bin/xdg-settings get default-web-browser)
+          new_default=$(ls ${cfg.default}/share/applications | grep -e "desktop$")
+          if [[ "$new_default" != "$current_default" ]]
+          then
+              echo "updating default browser to '$new_default'"
+              ${pkgs.xdg_utils}/bin/xdg-settings set default-web-browser $new_default
+          fi
+        '';
+        programs.browserpass.enable = true;
+      };
     })
     (mkIf (cfg.enable && cfg.firefox.enable) {
       custom.programs.firefox = {
