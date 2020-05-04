@@ -546,6 +546,10 @@ in {
         renderTimer "Backup current firefox session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
     })
     (mkIf (cfg.enable && cfg.qutebrowser.enable) {
+      nixpkgs.config.packageOverrides = _: rec {
+        yank-image = writeShellScriptBinWithDeps "yank-image" [ pkgs.wget pkgs.xclip ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./yank-image.sh; })));
+      };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {
             K("C-g"): K("f5"),
@@ -562,7 +566,7 @@ in {
         }, "qutebrowser")
       '';
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ qutebrowser ];
+        home.packages = with pkgs; [ qutebrowser yank-image ];
         xdg.configFile = {
           "qutebrowser/config.py".text = builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qutebrowser/qutebrowser.py; }));
