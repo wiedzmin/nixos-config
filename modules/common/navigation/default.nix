@@ -241,7 +241,7 @@ in {
         };
         wantedBy = [ "multi-user.target" ];
       };
-      custom.xinput.xkeysnail.rc = ''
+      custom.xinput.xkeysnail.rc = lib.mkAfter ''
         # Emacs-like keybindings in non-Emacs applications
         define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Alacritty"), {
             # Cursor
