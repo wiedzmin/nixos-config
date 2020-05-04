@@ -550,14 +550,14 @@ in {
         define_keymap(re.compile("qutebrowser"), {
             K("C-g"): K("f5"),
             K("C-n"): K("C-g"),
-            K("M-comma"): K(H"),
+            K("M-comma"): K("H"),
             K("M-dot"): K("L"),
             K("C-x"): {
                 K("b"): K("b"),
                 K("k"): [K("Esc"), K("d")],
                 K("u"): K("u"),
-                K("C-s"): [K("Esc"), K(":"), K("w"), K("enter")],
-                K("C-c"): [K("Esc"), K(":"), K("w"), K("q"), K("enter")],
+                K("C-s"): [K("Esc"), K("Shift-semicolon"), K("w"), K("enter")],
+                K("C-c"): [K("Esc"), K("Shift-semicolon"), K("w"), K("q"), K("enter")],
             },
         }, "qutebrowser")
       '';
