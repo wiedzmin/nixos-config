@@ -269,6 +269,10 @@ in {
             K("C-s"): K("Esc"),
             K("C-t"): [K("Shift-Left"), K("C-x"), K("Left"), K("C-v"), K("Right")],
         }, "Telegram")
+
+        define_keymap(re.compile("Slack"), {
+            K("C-y"): K("C-v"),
+        }, "Slack")
       '';
     })
     (mkIf (cfg.enable && cfg.scripts.enable) { environment.systemPackages = with pkgs; [ wifi-status ]; })
