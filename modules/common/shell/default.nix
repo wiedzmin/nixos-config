@@ -132,6 +132,10 @@ in {
             set echo-control-characters off
           '';
         };
+        programs.command-not-found = {
+          enable = true;
+          dbPath = ../../../assets/blobs/programs.sqlite;
+        };
         programs.zsh = {
           enable = true;
           oh-my-zsh = {
