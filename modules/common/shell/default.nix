@@ -185,10 +185,6 @@ in {
             df = "${pkgs.dfc}/bin/dfc";
             du = "${pkgs.dua}/bin/dua";
 
-            zz =
-              "cd $(z -i | ${pkgs.skim}/bin/sk --nth 2 --reverse --inline-info --tac | ${pkgs.gawk}/bin/awk '{print $2}')";
-            zb = "z -b";
-
             zr = ". ~/.zshrc";
           } // lib.optionalAttrs (config.custom.navigation.misc.enable) {
             pus = "${pkgs.pueue}/bin/pueue status";

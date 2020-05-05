@@ -211,11 +211,6 @@ in {
     (mkIf (cfg.enable && cfg.misc.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs = {
-          z-lua = {
-            enable = true;
-            enableZshIntegration = true;
-            options = [ "fzf" "enhanced" "once" ];
-          };
           skim = {
             enable = true;
             historyWidgetOptions = [ "--exact" ];
