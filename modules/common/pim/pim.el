@@ -404,7 +404,7 @@
         ("O" . ivy-omni-org))
   :preface
   (defun custom/org-kb-files ()
-    (f-files "@orgKbPath@" nil t))
+    (f-files "@orgKbDir@" nil t))
   :custom
   (ivy-omni-org-file-sources '(org-agenda-files custom/org-kb-files)))
 

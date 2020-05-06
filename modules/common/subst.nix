@@ -33,7 +33,7 @@ rec {
   mainUserName = config.attributes.mainUser.name;
   mycliBinary = "${nixpkgs-pinned-05_12_19.mycli}/bin/mycli"; # because of deps versions conflict with pgcli
   orgDir = config.ide.emacs.orgDir;
-  orgKbPath = "/home/${config.attributes.mainUser.name}/docs/org-kb";
+  orgKbDir = "/home/${config.attributes.mainUser.name}/docs/org-kb";
   orgWarningsFiledir = builtins.dirOf config.custom.pim.org.warningsFile;
   orgWarningsFilename = config.custom.pim.org.warningsFile;
   pgcliBinary = "${nixpkgs-pinned-05_12_19.pgcli}/bin/pgcli"; # because of deps versions conflict with mycli
