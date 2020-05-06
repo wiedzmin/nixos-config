@@ -47,9 +47,9 @@ in {
     extraModprobeConfig = ''
       options iwlwifi 11n_disable=1 power_save=1 power_level=2
     '';
-    kernelPackages = pkgs.linuxPackages_latest;
-    extraModulePackages = with config.boot.kernelPackages; [ ];
+    extraModulePackages = with config.boot.kernelPackages; [ exfat-nofuse ];
     tmpOnTmpfs = true;
+    kernelPackages = pkgs.linuxPackages_4_19;
     kernelParams =
       [ "scsi_mod.use_blk_mq=1" "pti=off" "nospectre_v1" "nospectre_v2" "l1tf=off" "nospec_store_bypass_disable" ];
     kernelModules = [ "bfq" "thinkpad_acpi" "thinkpad_hwmon" ];
