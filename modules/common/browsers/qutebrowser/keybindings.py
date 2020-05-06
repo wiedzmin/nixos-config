@@ -1,3 +1,11 @@
+RUSSIAN = 'йцукенгшщзхъфывапролджэячсмитьбю.'
+ENGLISH = 'qwertyuiop[]asdfghjkl;\'zxcvbnm,./'
+
+c.bindings.key_mappings = {
+    **{r: e for r, e in zip(RUSSIAN, ENGLISH)},
+    **{r.upper(): e.upper() for r, e in zip(RUSSIAN, ENGLISH)}
+}
+
 config.bind('xb', 'config-cycle statusbar.hide')
 
 # config.bind('e', 'open-editor') # TODO: bind appropriately
@@ -64,7 +72,6 @@ config.bind('<Ctrl-y>', 'insert-text {clipboard}', mode='insert')
 config.bind('<Shift-y>', 'insert-text -- {primary}', mode='insert')
 config.bind('<Shift-y>', 'insert-text {primary}', mode='insert')
 config.bind('i', 'enter-mode insert')
-config.bind('jj', 'leave-mode', mode='insert')
 
 config.bind(',P', 'spawn --userscript qute-pass --dmenu-invocation dmenu --password-only')
 config.bind(',p', 'spawn --userscript qute-pass --dmenu-invocation dmenu')
