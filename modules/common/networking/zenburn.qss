@@ -1,0 +1,110 @@
+// This file is free software; you can redistribute it and/or modify
+// it under the terms of the GNU General Public License as published by
+// the Free Software Foundation; version 2 of the License.
+
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU General Public License for more details.
+
+// You should have received a copy of the GNU General Public License
+// along with this file.  If not, see <http://www.gnu.org/licenses/>.
+
+// Copyright (c) Colin Dean 2011
+// based on a completely different theme by 
+// Copyright (C) Jussi Schultink 2009
+
+// rename this file zenburn.qss
+// improvements welcome!
+// https://gist.github.com/gists/1326836
+
+// Custom ChatView Colors
+Palette { marker-line: qlineargradient(x1: 0, y1: 0, x2: 0, y2: 1, stop:0 #ff0000, stop: 0.1 transparent); }
+
+ChatView { background: #333; }
+
+ChatLine[label="highlight"] {
+  foreground: #8cd0d3;
+  background: #3F3F3F;
+}
+
+ChatLine::timestamp { foreground: #dca3a3; }
+
+ChatLine#plain { foreground: #DCDCCC; }
+ChatLine#notice { foreground: #efef8f; }
+ChatLine#action { foreground: #007a80; font-weight: bold; font-style: italic; }
+ChatLine#nick { foreground: #8CD0D3; }
+ChatLine#mode { foreground: #346E9E; font-weight: bold; }
+ChatLine#join { foreground: #709080; }
+ChatLine#part { foreground: #333333; }
+ChatLine#quit { foreground: #333333; }
+ChatLine#kick { foreground: #333333; }
+ChatLine#kill { foreground: #333333; }
+ChatLine#server { foreground: #916409; }
+ChatLine#info { foreground: #916409; }
+ChatLine#error { foreground: #916409; }
+ChatLine#daychange { foreground: #916409; }
+ChatLine#topic { foreground: #EFEFEF; background: #464646; }
+
+
+// Sender Colors
+ChatLine::sender#plain[sender="self"] { foreground: #93E0E3; }
+
+ChatLine::sender#plain[sender="00"] { foreground: #e90d7f; }
+ChatLine::sender#plain[sender="01"] { foreground: #8e55e9; }
+ChatLine::sender#plain[sender="02"] { foreground: #b30e0e; }
+ChatLine::sender#plain[sender="03"] { foreground: #17b339; }
+ChatLine::sender#plain[sender="04"] { foreground: #58afb3; }
+ChatLine::sender#plain[sender="05"] { foreground: #9d54b3; }
+ChatLine::sender#plain[sender="06"] { foreground: #b39775; }
+ChatLine::sender#plain[sender="07"] { foreground: #3176b3; }
+ChatLine::sender#plain[sender="08"] { foreground: #e90d7f; }
+ChatLine::sender#plain[sender="09"] { foreground: #8e55e9; }
+ChatLine::sender#plain[sender="0a"] { foreground: #b30e0e; }
+ChatLine::sender#plain[sender="0b"] { foreground: #17b339; }
+ChatLine::sender#plain[sender="0c"] { foreground: #58afb3; }
+ChatLine::sender#plain[sender="0d"] { foreground: #9d54b3; }
+ChatLine::sender#plain[sender="0e"] { foreground: #b39775; }
+ChatLine::sender#plain[sender="0f"] { foreground: #3176b3; }
+
+// BufferView Colors
+ChatListItem { foreground: #DCDCCC; }
+ChatListItem[state="inactive"] { foreground: #a0a0a4; }
+ChatListItem[state="channel-event"] { foreground: #008000; }
+ChatListItem[state="unread-message"] { foreground: #ff7b00; }
+ChatListItem[state="highlighted"] { foreground: #ff00bf; }
+BufferView { background: #131313; }
+
+// NickView Colors
+NickListItem[type="category"] { foreground: #DCDCCC; }
+NickListItem[type="user"] { foreground: #DCDCCC; }
+NickListItem[type="user", state="away"] { foreground: #a0a0a4; }
+NickView { background: #333; }
+
+MultiLineEdit { background: #131313; color: #DCDCCC; }
+StyledLabel#topicLabel { background: #131313; }
+ChatLine#topic { foreground: #DCDCCC; }
+
+// Miscellaneous Colors
+QTreeView::item:selected { color: #00004b; }
+ChatMonitorSettingsPage BufferView::item { color: #DCDCCC; }QTreeView#settingsTree { background: #ddd; }
+QTreeView::item#settingsTree { color: #000; }
+QLineEdit:enabled { background: #333; color: #000; }
+QSpinBox:enabled { background: #333; color: #000; }
+QTableWidget { background-color: #333; color: #000; }
+QListWidget { background-color: #333; color: #000; }
+
+QTableView {
+  alternate-background-color: #42403B;
+  background-color: #42403B;
+  color: #DCDCCC; }
+
+Palette {
+  link: #539FA3; link-visited: #845B90;
+
+  window: #2b2b2b; window-text: #DCDCCC; text: #00004b;
+
+  light: #B7B4AC; midlight: #DCDCCC;  button: #292929;
+  mid: #202553; dark: #000533; button-text: #B6B3AB; }
+
+StyledLabel#topicLabel { background: #282828; }
