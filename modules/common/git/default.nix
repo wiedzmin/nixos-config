@@ -362,7 +362,7 @@ in {
           ];
         };
         "nixos/.envrc".text = ''
-          eval "$(lorri direnv)"
+          source <(direnv apply_dump .envrc.cache)
         '';
         "nixos/shell.nix".text = ''
           let
