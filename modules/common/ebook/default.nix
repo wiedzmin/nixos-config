@@ -52,7 +52,10 @@ in {
         home.packages = with pkgs; [ calibre djview djvulibre ];
         programs.zathura = {
           enable = true;
-          options = { pages-per-row = 1; };
+          options = {
+            pages-per-row = 1;
+            selection-clipboard = "clipboard";
+          };
         };
       };
     })
