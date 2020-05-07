@@ -18,7 +18,7 @@ in {
         default = false;
         description = "Whether to enable webjumps.";
       };
-      webjumps.entries = mkOption {
+      webjumps.entries = mkOption { # TODO: add enabled/disabled logic for entries
         type = types.attrs;
         default = { };
         description = "Webjumps entries.";

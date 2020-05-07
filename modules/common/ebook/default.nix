@@ -42,7 +42,7 @@ in {
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
-          ".local/share/applications/defaults.list" = {
+          ".local/share/applications/defaults.list" = { # TODO: migrate to xdg.dataFile (or such)
             text = ''
               [Default Applications]
               application/pdf=zathura.desktop
