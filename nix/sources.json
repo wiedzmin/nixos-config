@@ -137,10 +137,10 @@
         "homepage": null,
         "owner": "wiedzmin",
         "repo": "nixpkgs",
-        "rev": "48b5e60c4b5b36f77b281c469ee2bc9040f095b3",
-        "sha256": "1dwszpy68ac44dss7gzzkjjpxw2xgkbgwvvpxwlb4ikh4vjqvr0z",
+        "rev": "6fbc166bbe035e40cf2e2154213485b55c6d0e9b",
+        "sha256": "0ci8bkgb9qr016pyxf56vi7f5kximi7zpzpvdv42i7qypcbyck2g",
         "type": "tarball",
-        "url": "https://github.com/wiedzmin/nixpkgs/archive/48b5e60c4b5b36f77b281c469ee2bc9040f095b3.tar.gz",
+        "url": "https://github.com/wiedzmin/nixpkgs/archive/6fbc166bbe035e40cf2e2154213485b55c6d0e9b.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "yasnippet-snippets": {
