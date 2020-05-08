@@ -98,9 +98,6 @@ in {
         tmuxp_sessions = writePythonScriptWithPythonPackages "tmuxp_sessions" [ pkgs.python3Packages.dmenu-python ]
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tmuxp_sessions.py; })));
-        shell-org-capture = writeShellScriptBinWithDeps "shell-org-capture" [ pkgs.emacs pkgs.tmux pkgs.xsel ]
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./shell-org-capture.sh; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -378,12 +375,7 @@ in {
           '';
         };
         bindings = {
-          copyMode = {
-            "M-e" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture es"'';
-            "M-j" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture js"'';
-            "M-n" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture ns"'';
-            "M-x" = ''run-shell "${pkgs.shell-org-capture}/bin/shell-org-capture xs"'';
-          };
+          copyMode = { "M-n" = ''run-shell org-capture ns"''; };
           root = {
             "C-left" = "prev";
             "C-right" = "next";

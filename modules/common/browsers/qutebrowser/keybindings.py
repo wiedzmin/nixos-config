@@ -46,6 +46,8 @@ config.bind('ym', 'spawn mpv {url}')
 config.bind('yo', 'yank inline [[{url}][{title}]]')
 config.bind('yp', 'yank pretty-url')
 config.bind('yt', 'yank title')
+config.bind('y;', 'spawn org-capture -u "{url}" -t "{title}" -e title')
+config.bind("y'", 'spawn org-capture -u "{url}" -t "{title}" -b "{primary}" -e title')
 
 config.bind(';;', 'hint links download')
 config.bind(';I', 'hint images tab')

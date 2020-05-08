@@ -1,5 +1,6 @@
 let deps = import ../../../nix/sources.nix;
 in { config, lib, pkgs, ... }:
+with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
 let cfg = config.ide.emacs;
@@ -84,6 +85,11 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       fonts = { fonts = with pkgs; [ emacs-all-the-icons-fonts ]; };
+      nixpkgs.config.packageOverrides = _: rec {
+        org-capture = writePythonScriptWithPythonPackages "org-capture" [ pkgs.emacs pkgs.tmux pkgs.xsel ]
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./org-capture.py; })));
+      };
       environment.variables.EDITOR = "${pkgs.emacs}/bin/emacsclient";
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
@@ -97,6 +103,7 @@ in {
           })
 
           ispell
+          org-capture
         ];
         programs.zsh.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
         programs.bash.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
