@@ -41,14 +41,7 @@ in {
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./bookshelf.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.file = {
-          ".local/share/applications/defaults.list" = { # TODO: migrate to xdg.dataFile (or such)
-            text = ''
-              [Default Applications]
-              application/pdf=zathura.desktop
-            '';
-          };
-        };
+        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.ebook "org.pwmt.zathura.desktop";
         home.packages = with pkgs; [ calibre djview djvulibre ];
         programs.zathura = {
           enable = true;

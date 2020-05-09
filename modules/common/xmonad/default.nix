@@ -9,15 +9,15 @@ let
       --dmenu="(${pkgs.coreutils}/bin/cat ; (${pkgs.dmenu}/bin/stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
       ${
         if cfg.dmenuFrecency.enable then
-          ''${pkgs.haskellPackages.yeganesh}/bin/yeganesh -- -i -l 15 -fn '${config.attributes.fonts.dmenu}'"''
+          ''${pkgs.haskellPackages.yeganesh}/bin/yeganesh -- -i -l 15 -fn '${cfg.fonts.dmenu}'"''
         else
-          ''${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.fonts.dmenu}'"''
+          ''${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${cfg.fonts.dmenu}'"''
       }
   '';
   dmenu_select_windows = pkgs.writeShellScriptBin "dmenu_select_windows" ''
     ${pkgs.wmctrl}/bin/wmctrl -a $(${pkgs.wmctrl}/bin/wmctrl -l | \
                                  ${pkgs.coreutils}/bin/cut -d" " -f5- | \
-                                 ${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.fonts.dmenu}')
+                                 ${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${cfg.fonts.dmenu}')
   '';
   basicKeys = {
     "C-\\\\" = "sendMessage (XkbToggle Nothing)";
@@ -28,7 +28,7 @@ let
     "M-<Tab>" = "windows W.focusDown";
     "M-S-<Space>" = "setLayout $ XMonad.layoutHook conf";
     "M-S-<Tab>" = "windows W.focusUp";
-    "M-S-<Return>" = ''spawn "${config.attributes.defaultCommands.terminal}"'';
+    "M-S-<Return>" = ''spawn "${config.custom.shell.terminal}"'';
     "M-<F12>" = "kill1";
     "M-S-j" = "windows W.swapDown";
     "M-S-k" = "windows W.swapUp";
@@ -415,7 +415,7 @@ let
 
     tabbedLayout = Tabs.tabbed Tabs.shrinkText Tabs.def
     dwmLayout = Dwm.dwmStyle Dwm.shrinkText Dwm.def {
-      ${lib.optionalString (cfg.font != "") ''fontName = "${cfg.font}"''}
+      ${lib.optionalString (cfg.fonts.default != "") ''fontName = "${cfg.fonts.default}"''}
     }
 
     layouts = onWorkspace "scratch" (renamed [Replace "tabs"] tabbedLayout) $
@@ -569,10 +569,20 @@ in {
         default = false;
         description = "Whether to enable Frecency tracking for Dmenu with Yeganesh.";
       };
-      font = mkOption {
+      fonts.default = mkOption {
         type = types.str;
         default = "";
-        description = "XMonad `internal` font' definition.";
+        description = "XMonad `internal` default font' definition.";
+      };
+      fonts.dmenu = mkOption {
+        type = types.str;
+        default = "";
+        description = "XMonad `internal` dmenu font' definition.";
+      };
+      fonts.xmobar = mkOption {
+        type = types.str;
+        default = "";
+        description = "XMonad `internal` xmobar font' definition.";
       };
       keybindings = mkOption {
         type = types.attrs;
@@ -631,7 +641,7 @@ in {
         home.packages = with pkgs; [ dmenu_runapps keybindings ];
         xdg.configFile."xmobar/xmobarrc".text = ''
           Config { ${
-            lib.optionalString (config.attributes.fonts.xmobar != "") ''font = "${config.attributes.fonts.xmobar}"''
+            lib.optionalString (cfg.fonts.xmobar != "") ''font = "${cfg.fonts.xmobar}"''
           }
                  , bgColor = "black"
                  , fgColor = "grey"

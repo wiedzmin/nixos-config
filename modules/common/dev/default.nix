@@ -60,6 +60,11 @@ in {
         default = false;
         description = "Whether to enable various misc tools.";
       };
+      remoteCommands = mkOption {
+        description = "Predefined commands list to execute remotely. Note that those must be present on ssh target.";
+        type = types.listOf types.str;
+        default = [ "ctop" "jnettop" ];
+      };
       repoSearch.enable = mkOption {
         type = types.bool;
         default = false;

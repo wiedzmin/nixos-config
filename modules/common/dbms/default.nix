@@ -82,7 +82,6 @@ in {
             asterisk_column_order = "table_order";
             qualify_columns = "if_more_than_one_table";
             search_path_filter = "False";
-            pager = config.attributes.defaultCommands.pager;
             timing = "True";
             table_format = "psql";
             syntax_style = "emacs";

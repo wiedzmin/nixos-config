@@ -16,10 +16,22 @@ in {
         default = false;
         description = "Whether to enable Alacritty.";
       };
+      terminal = mkOption {
+        description = "Default terminal";
+        type = types.str;
+        visible = false;
+        internal = true;
+        default = "";
+      };
       tmux.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable tmux.";
+      };
+      tmux.defaultSession = mkOption {
+        description = "Default tmux predefined session name to be used in automation scripts";
+        type = types.str;
+        default = "main";
       };
       toolsng.enable = mkOption {
         type = types.bool;
@@ -316,7 +328,10 @@ in {
         programs.alacritty = {
           enable = true;
           settings = {
-            env = { TERM = "xterm-256color"; };
+            env = {
+              LESS = "-SRXF";
+              TERM = "xterm-256color";
+            };
             window = {
               padding = {
                 x = 2;
@@ -341,6 +356,7 @@ in {
           };
         };
       };
+      custom.shell.terminal = "${pkgs.alacritty}/bin/alacritty";
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("Alacritty"), {
             K("C-x"): {

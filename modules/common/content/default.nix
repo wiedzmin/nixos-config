@@ -45,6 +45,11 @@ in {
         default = null;
         description = "screenshot date suffix format";
       };
+      urlRegex.py = mkOption {
+        description = "Common URL regular expression";
+        type = types.str;
+        default = "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]";
+      };
       warmup.enable = mkOption {
         type = types.bool;
         default = false;
@@ -71,6 +76,17 @@ in {
       };
       services.clipmenu.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
+        home.activation.ensureMimeappsList = {
+          after = [ ];
+          before = [ "checkLinkTargets" ];
+          data = "rm -f /home/${config.attributes.mainUser.name}/.config/mimeapps.list";
+        };
+
+        # TODO: consider desktop files locating automation
+        xdg.mimeApps.defaultApplications = (mapMimesToApp config.attributes.mimetypes.images "feh.desktop") //
+                                           (mapMimesToApp config.attributes.mimetypes.video "mpv.desktop") //
+                                           (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop") //
+                                           (mapMimesToApp config.attributes.mimetypes.office.spreadsheets "calc.desktop");
         home.file = {
           ".mpv/config".text = ''
             hwdec=vdpau
@@ -124,6 +140,7 @@ in {
           tartube
         ];
         services.syncthing.enable = true; # TODO: consider separate option(s)
+        xdg.mimeApps.enable = true;
         programs.mpv = {
           enable = true;
           scripts = with pkgs.mpvScripts; [ mpris ];

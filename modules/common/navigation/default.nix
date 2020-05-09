@@ -145,7 +145,9 @@ in {
           lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (url: meta:
             lib.nameValuePair
             (if lib.hasAttrByPath [ "title" ] meta then (url + cfg.webjumps.sep + meta.title) else url)
-            (if lib.hasAttrByPath [ "browser" ] meta then (meta.browser + " " + url) else meta)) cfg.webjumps.entries))
+              (if lib.hasAttrByPath [ "browser" ] meta then (meta.browser + " " + url)
+               else ("${pkgs.xdg_utils}/bin/xdg-open " + url)))
+            cfg.webjumps.entries))
         }
         ${pkgs.redis}/bin/redis-cli set nav/webjumps_vpn ${
           lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (url: meta:
@@ -181,30 +183,43 @@ in {
         home.packages = with pkgs; [ mc ];
         xdg.configFile."mc/mc.ext".text = ''
           regex/\.([pP][dD][fF])$
-              Include=ebook
+              Include=shovel
           regex/\.([dD][jJ][vV][uU])$
-              Include=ebook
+              Include=shovel
 
           regex/\.([jJ][pP][gG])$
-              Include=image
+              Include=shovel
           regex/\.([pP][nN][gG])$
-              Include=image
+              Include=shovel
           regex/\.([jJ][pP][eE][gG])$
-              Include=image
+              Include=shovel
 
           regex/\.([mM][pP]4)$
-              Include=video
+              Include=shovel
           regex/\.([fF][lL][vV])$
-              Include=video
+              Include=shovel
+          regex/\.([mM][kK][vV])$
+              Include=shovel
 
-          include/ebook
-              Open=(${config.attributes.defaultCommands.ebookReader} %f >/dev/null 2>&1 &)
+          regex/\.([dD][oO][cC])$
+              Include=shovel
+          regex/\.([dD][oO][cC][xX])$
+              Include=shovel
+          regex/\.([xX][lL][sS])$
+              Include=shovel
+          regex/\.([xX][lL][sS][xX])$
+              Include=shovel
+          regex/\.([pP][pP][tT])$
+              Include=shovel
+          regex/\.([pP][pP][sS])$
+              Include=shovel
+          regex/\.([pP][pP][tT][xX])$
+              Include=shovel
+          regex/\.([pP][pP][sS][xX])$
+              Include=shovel
 
-          include/image
-              Open=(${config.attributes.defaultCommands.imageViewer} %f >/dev/null 2>&1 &)
-
-          include/video
-              Open=(${config.attributes.defaultCommands.videoPlayer} %f >/dev/null 2>&1 &)
+          include/shovel
+              Open=(${pkgs.xdg_utils}/bin/xdg-open %f >/dev/null 2>&1 &)
         '';
       };
     })

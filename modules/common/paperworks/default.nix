@@ -1,6 +1,7 @@
 let
   deps = import ../../../nix/sources.nix;
   nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+  stable = import deps.nixpkgs-stable-19_03 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with lib;
 
@@ -273,7 +274,8 @@ in {
     })
     (mkIf cfg.publishing.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = lib.optionals (cfg.publishing.staging.packages != [ ]) cfg.publishing.staging.packages;
+        home.packages = [ stable.libreoffice ]
+          ++ lib.optionals (cfg.publishing.staging.packages != [ ]) cfg.publishing.staging.packages;
       };
     })
   ];

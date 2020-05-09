@@ -446,7 +446,7 @@ in {
       };
 
       terminal = mkOption {
-        default = defaultTerminal;
+        default = "screen-256color";
         example = "screen-256color";
         type = types.str;
         description = "Set the $TERM variable.";

@@ -10,7 +10,7 @@ from bs4 import BeautifulSoup
 
 
 def is_valid_url(url):
-    return re.search("@urlRegex@", url) is not None
+    return re.search("@urlRegexPy@", url) is not None
 
 notify2.init("collect_links_on_page")
 

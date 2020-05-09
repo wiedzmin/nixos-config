@@ -21,6 +21,11 @@ in {
         default = false;
         description = "Whether to allow special users to do some things without authentication.";
       };
+      passwordStorePath = mkOption {
+        description = "Default path to Pass password store";
+        type = types.str;
+        default = "/home/${config.attributes.mainUser.name}/.password-store";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -47,7 +52,7 @@ in {
           package = pkgs.pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
           settings = {
             PASSWORD_STORE_CLIP_TIME = "60";
-            PASSWORD_STORE_DIR = "/home/${config.attributes.mainUser.name}/.password-store";
+            PASSWORD_STORE_DIR = cfg.passwordStorePath;
           };
         };
         programs.gpg = {

@@ -73,7 +73,7 @@ in {
     (mkIf (cfg.enable) {
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set net/command_choices ${
-          lib.strings.escapeNixString (builtins.toJSON config.attributes.dev.remoteCommands)
+          lib.strings.escapeNixString (builtins.toJSON config.custom.dev.remoteCommands)
         }
       '';
       nixpkgs.config.packageOverrides = _: rec {

@@ -39,6 +39,21 @@ in {
         default = "ru_RU.UTF-8";
         description = "Locale name.";
       };
+      fonts.basic.xft = mkOption {
+        type = types.str;
+        default = "xft:Iosevka:weight=Bold:size=10";
+        description = "Basic font XFT definition";
+      };
+      fonts.basic.raw = mkOption {
+        type = types.str;
+        default = "Iosevka Bold 10";
+        description = "Basic font raw definition";
+      };
+      fonts.basic.package = mkOption {
+        type = types.package;
+        default = pkgs.iosevka;
+        description = "Basic font package";
+      };
       gtk.enable = mkOption {
         type = types.bool;
         default = true;

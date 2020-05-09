@@ -5,20 +5,15 @@ in { config, lib, pkgs, ... }:
 
 rec {
   autorandrProfiles = "/home/${config.attributes.mainUser.name}/.config/autorandr";
-  bookReader = config.attributes.defaultCommands.ebookReader;
   bookshelfPath = "/home/${config.attributes.mainUser.name}/bookshelf";
   contentBookmarksBatchOpenThreshold = builtins.toString config.custom.content.bookmarks.batchOpenTreshold;
-  defaultBrowser = config.attributes.defaultCommands.browser;
+  defaultBrowser = "${pkgs.xdg_utils}/bin/xdg-open";
   defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;
-  defaultEbookReader = config.attributes.defaultCommands.ebookReader;
-  defaultPager = config.attributes.defaultCommands.pager;
-  defaultSpreadsheetEditor = config.attributes.defaultCommands.spreadsheetEditor;
-  defaultTerminal = config.attributes.defaultCommands.terminal;
-  defaultTextProcessor = config.attributes.defaultCommands.textProcessor;
+  defaultTerminal = config.custom.shell.terminal;
   deftPath = "/home/${config.attributes.mainUser.name}/docs/deft";
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
   downloadPath = config.custom.browsers.downloadPath;
-  emacsBrowserGenericProgram = config.attributes.defaultCommands.browser;
+  emacsBrowserGenericProgram = "${pkgs.xdg_utils}/bin/xdg-open";
   emacsCustomFile = "/home/${config.attributes.mainUser.name}/.emacs.d/customizations.el";
   emacsClient = "${pkgs.emacs}/bin/emacsclient";
   emacsDatadir = config.ide.emacs.dataDir;
@@ -43,8 +38,8 @@ rec {
   screenshotsBasedir = config.custom.content.screenshots.baseDir;
   screenshotsDateFormat = config.custom.content.screenshots.dateFormat;
   systemTimeZone = config.time.timeZone;
-  tmuxDefaultSession = config.attributes.tmux.defaultSession;
-  urlRegex = config.attributes.urlRegex;
+  tmuxDefaultSession = config.custom.shell.tmux.defaultSession;
+  urlRegexPy = config.custom.content.urlRegex.py;
   xprintidleBinary = "${nixpkgs-pinned-05_12_19.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
   searchReposRoot = config.custom.dev.repoSearch.root;

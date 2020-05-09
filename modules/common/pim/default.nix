@@ -77,7 +77,7 @@ in {
         example = {
           "read_mail" = {
             cal = "Mon,Tue *-*-01..04 12:00:00";
-            cmd = "${config.attributes.defaultCommands.browser} https://mail.google.com";
+            cmd = "${pkgs.xdg_utils}/bin/xdg-open https://mail.google.com";
           };
         };
         default = { };

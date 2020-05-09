@@ -247,9 +247,8 @@ in {
 
   custom.browsers = {
     enable = true;
-    default = pkgs.qutebrowser;
     qutebrowser.enable = true;
-    sessions.firefox.backup.enable = true;
+    qutebrowser.default = true;
     chromium = {
       enable = true;
       extraOpts = {
@@ -485,7 +484,7 @@ in {
       };
     };
     publishing = {
-      enable = false;
+      enable = true;
       staging.packages = with pkgs; [ pplatex texlab ];
     };
   };

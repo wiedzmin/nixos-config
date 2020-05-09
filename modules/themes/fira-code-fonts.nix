@@ -13,14 +13,13 @@ in {
         config.attributes.fonts.basic.package
       ];
     };
-    wm.xmonad.font = "xft:Fira Code:style=Bold:pixelsize=10";
-    attributes.fonts.xmobar = config.attributes.fonts.basic.xft;
-    attributes.fonts.dmenu = "xft:Fira Code:style=Bold:pixelsize=12";
-    attributes.fonts.xmonadDefault = "xft:Fira Code:weight=Bold:size=10";
+    wm.xmonad.fonts.default = "xft:Fira Code:style=Bold:pixelsize=10";
+    wm.xmonad.fonts.dmenu = "xft:Fira Code:style=Bold:pixelsize=12";
+    wm.xmonad.fonts.xmobar = config.custom.appearance.fonts.basic.xft;
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
-        package = config.attributes.fonts.basic.package;
-        name = config.attributes.fonts.basic.raw;
+        package = config.custom.appearance.fonts.basic.package;
+        name = config.custom.appearance.fonts.basic.raw;
       };
       programs.alacritty.settings.font = {
         normal = {

@@ -13,14 +13,13 @@ in {
         config.attributes.fonts.basic.package
       ];
     };
-    wm.xmonad.font = "xft:JetBrains Mono:weight=Bold:size=10";
-    attributes.fonts.xmobar = config.attributes.fonts.basic.xft;
-    attributes.fonts.dmenu = "xft:JetBrains Mono:size=8";
-    attributes.fonts.xmonadDefault = "xft:JetBrains Mono:weight=Bold:size=6";
+    wm.xmonad.fonts.default = "xft:JetBrains Mono:weight=Bold:size=10";
+    wm.xmonad.fonts.xmobar = config.custom.appearance.fonts.basic.xft;
+    wm.xmonad.fonts.dmenu = "xft:JetBrains Mono:size=8";
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
-        package = config.attributes.fonts.basic.package;
-        name = config.attributes.fonts.basic.raw;
+        package = config.custom.appearance.fonts.basic.package;
+        name = config.custom.appearance.fonts.basic.raw;
       };
       programs.alacritty.settings.font = {
         normal = {

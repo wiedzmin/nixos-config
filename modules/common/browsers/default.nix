@@ -25,13 +25,6 @@ in {
           Common downloads path'.
         '';
       };
-      default = mkOption {
-        type = types.package;
-        default = null;
-        description = ''
-          Default browser.
-        '';
-      };
       firefox.enable = mkOption {
         type = types.bool;
         default = false;
@@ -39,11 +32,25 @@ in {
           Whether to enable Firefox.
         '';
       };
+      firefox.default = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Firefox should be the default browser.
+        '';
+      };
       chromium.enable = mkOption {
         type = types.bool;
         default = false;
         description = ''
           Whether to enable Chromium.
+        '';
+      };
+      chromium.default = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Chromium should be the default browser.
         '';
       };
       chromium.extraOpts = mkOption {
@@ -62,12 +69,31 @@ in {
           Whether to enable Next browser.
         '';
       };
+      next.default = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Next should be the default browser.
+        '';
+      };
       qutebrowser.enable = mkOption {
         type = types.bool;
         default = false;
         description = ''
           Whether to enable qutebrowser.
         '';
+      };
+      qutebrowser.default = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Qutebrowser should be the default browser.
+        '';
+      };
+      fallback = mkOption {
+        type = types.str;
+        default = "${pkgs.chromium}/bin/chromium --new-window";
+        description = "Browser to fallback to in some cases";
       };
       sessions.saveFrequency = mkOption {
         type = types.str;
@@ -112,6 +138,15 @@ in {
           Filename template for Firefox session files.
         '';
       };
+      defaultFlags = mkOption {
+        type = types.attrs;
+        default = {};
+        visible = false;
+        internal = true;
+        description = ''
+          Default browsers flags, to simplify "exactly one" assertions.
+        '';
+      };
       aux.enable = mkOption {
         type = types.bool;
         default = false;
@@ -140,25 +175,19 @@ in {
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      assertions = [{
-        assertion = cfg.default != null;
-        message = "browsers: no default selected.";
-      }];
-
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.activation.ensureDefaultBrowser = dagEntryAfter [ "checkLinkTargets" ] ''
-          current_default=$(${pkgs.xdg_utils}/bin/xdg-settings get default-web-browser)
-          new_default=$(ls ${cfg.default}/share/applications | grep -e "desktop$")
-          if [[ "$new_default" != "$current_default" ]]
-          then
-              echo "updating default browser to '$new_default'"
-              ${pkgs.xdg_utils}/bin/xdg-settings set default-web-browser $new_default
-          fi
-        '';
         programs.browserpass.enable = true;
       };
     })
     (mkIf (cfg.enable && cfg.firefox.enable) {
+      custom.navigation.webjumps.entries = {
+        "about:config" = {
+          title = "Firefox configuration options";
+        };
+        "about:memory" = {
+          title = "Firefox addons reference";
+        };
+      };
       custom.programs.firefox = {
         enable = true;
         extensions = with firefox-addons; [
@@ -467,6 +496,15 @@ in {
         };
       };
     })
+    (mkIf (cfg.enable && cfg.firefox.enable && cfg.firefox.default) {
+      assertions = [{
+        assertion = cfg.firefox.default && !cfg.chromium.default && !cfg.next.default && !cfg.qutebrowser.default;
+        message = "browsers: there should be exactly one default.";
+      }];
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "firefox.desktop";
+      };
+    })
     (mkIf (cfg.enable && cfg.chromium.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.chromium = {
@@ -485,6 +523,15 @@ in {
       };
       environment.etc."chromium/policies/managed/extra.json".text = builtins.toJSON cfg.chromium.extraOpts;
       # chrome-export
+    })
+    (mkIf (cfg.enable && cfg.chromium.enable && cfg.chromium.default) {
+      assertions = [{
+        assertion = cfg.chromium.default && !cfg.firefox.default && !cfg.next.default && !cfg.qutebrowser.default;
+        message = "browsers: there should be exactly one default.";
+      }];
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "chromium-browser.desktop";
+      };
     })
     (mkIf (cfg.enable && cfg.firefox.enable && cfg.sessions.firefox.backup.enable) {
       nixpkgs.config.packageOverrides = _: rec {
@@ -575,11 +622,29 @@ in {
         };
       };
     })
+    (mkIf (cfg.enable && cfg.qutebrowser.enable && cfg.qutebrowser.default) {
+      assertions = [{
+        assertion = cfg.qutebrowser.default && !cfg.firefox.default && !cfg.next.default && !cfg.chromium.default;
+        message = "browsers: there should be exactly one default.";
+      }];
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "org.qutebrowser.qutebrowser.desktop";
+      };
+    })
     (mkIf (cfg.enable && cfg.next.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ next ];
         xdg.configFile."next/init.lisp".text = builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./init.lisp; }));
+      };
+    })
+    (mkIf (cfg.enable && cfg.next.enable && cfg.next.default) {
+      assertions = [{
+        assertion = cfg.next.default && !cfg.firefox.default && !cfg.qutebrowser.default && !cfg.chromium.default;
+        message = "browsers: there should be exactly one default.";
+      }];
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "next.desktop";
       };
     })
     (mkIf (cfg.enable && cfg.aux.enable) {

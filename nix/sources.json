@@ -143,6 +143,18 @@
         "url": "https://github.com/wiedzmin/nixpkgs/archive/6fbc166bbe035e40cf2e2154213485b55c6d0e9b.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "nixpkgs-stable-19_03": {
+        "branch": "nixos-unstable",
+        "description": "A read-only mirror of NixOS/nixpkgs tracking the released channels. Send issues and PRs to",
+        "homepage": "https://github.com/NixOS/nixpkgs",
+        "owner": "NixOS",
+        "repo": "nixpkgs-channels",
+        "rev": "nixos-19.03",
+        "sha256": "11z6ajj108fy2q5g8y4higlcaqncrbjm3dnv17pvif6avagw4mcb",
+        "type": "tarball",
+        "url": "https://github.com/NixOS/nixpkgs-channels/archive/nixos-19.03.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "yasnippet-snippets": {
         "branch": "master",
         "description": "a collection of yasnippet snippets for many languages",

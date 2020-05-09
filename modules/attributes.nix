@@ -25,90 +25,74 @@ with lib;
       type = types.str;
       default = "users";
     };
-    # TODO: think if this is the proper location
-    fonts.xmobar = mkOption {
-      description = "Font definition for XMobar";
-      type = types.str;
-    };
-    # TODO: think if this is the proper location
-    fonts.xmonadDefault = mkOption {
-      description = "Default Font for XMonad";
-      type = types.str;
-    };
-    # TODO: think if this is the proper location
-    fonts.dmenu = mkOption {
-      description = "Default Font for Dmenu";
-      type = types.str;
-    };
-    defaultCommands.terminal = mkOption {
-      description = "Default terminal";
-      type = types.str;
-      default = "${pkgs.alacritty}/bin/alacritty";
-    };
-    defaultCommands.browser = mkOption {
-      description = "Default browser";
-      type = types.str;
-      default = "${pkgs.qutebrowser}/bin/qutebrowser --target window";
-    };
-    defaultCommands.fallbackBrowser = mkOption {
-      description = "Default browser to fallback to in some cases";
-      type = types.str;
-      default = "${pkgs.chromium}/bin/chromium --new-window";
-    };
-    defaultCommands.ebookReader = mkOption {
-      description = "Default ebooks reader";
-      type = types.str;
-      default = "${pkgs.zathura}/bin/zathura";
-    };
-    defaultCommands.textProcessor = mkOption {
-      description = "Default text processor app";
-      type = types.str;
-      default = "libreoffice";
-    };
-    defaultCommands.spreadsheetEditor = mkOption {
-      description = "Default spreadheets editor";
-      type = types.str;
-      default = "libreoffice";
-    };
-    defaultCommands.pager = mkOption {
-      description = "Default pager";
-      type = types.str;
-      default = "${pkgs.less}/bin/less -SRXF";
-    };
-    defaultCommands.videoPlayer = mkOption {
-      description = "Default video player";
-      type = types.str;
-      default = "mpv";
-    };
-    defaultCommands.imageViewer = mkOption {
-      description = "Default image viewer";
-      type = types.str;
-      default = "";
-    };
-    urlRegex = mkOption {
-      description = "Common URL regular expression";
-      type = types.str;
-      default = "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]";
-    };
-    tmux.defaultSession = mkOption {
-      description = "Default tmux predefined session name to be used in automation scripts";
-      type = types.str;
-      default = "main";
-    };
-    tmux.paneHistoryDepthLines = mkOption {
-      description = "Tmux pane history depth in lines";
-      type = types.int;
-      default = 10000;
-    };
-    dev.remoteCommands = mkOption {
-      description = "Predefined commands list to execute remotely. Note that those must be present on ssh target.";
+    mimetypes.browser = mkOption {
+      description = "MIME types to handle with (default) browser";
       type = types.listOf types.str;
-      default = [ "ctop" "jnettop" ];
+      default = [
+        "text/html"
+        "x-scheme-handler/http"
+        "x-scheme-handler/https"
+        "application/x-extension-htm"
+        "application/x-extension-html"
+        "application/x-extension-shtml"
+        "application/xhtml+xml"
+        "application/x-extension-xht"
+        "x-scheme-handler/about"
+        "x-scheme-handler/unknown"
+      ];
     };
-    security.passwordStorePath = mkOption {
-      description = "Default path to Pass password store";
-      type = types.str;
-      default = "/home/${config.attributes.mainUser.name}/.password-store";
+    mimetypes.ebook = mkOption {
+      description = "MIME types to handle as e-books";
+      type = types.listOf types.str;
+      default = [
+        "application/pdf"
+        "image/vnd.djvu"
+      ];
+    };
+    mimetypes.images = mkOption {
+      description = "MIME types to handle as graphic images";
+      type = types.listOf types.str;
+      default = [
+        "image/png"
+        "image/jpg"
+        "image/jpeg"
+      ];
+    };
+    mimetypes.video = mkOption {
+      description = "MIME types to handle as video";
+      type = types.listOf types.str;
+      default = [
+        "video/3gpp"
+        "video/mp4"
+        "video/quicktime"
+        "video/x-flv"
+        "video/x-matroska"
+        "video/x-msvideo"
+      ];
+    };
+    mimetypes.office.docs = mkOption {
+      description = "MIME types to handle as documents";
+      type = types.listOf types.str;
+      default = [
+        "application/msword"
+        "application/vnd.ms-word.document.macroEnabled.12"
+        "application/vnd.ms-word.template.macroEnabled.12"
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.template"
+      ];
+    };
+    mimetypes.office.spreadsheets = mkOption {
+      description = "MIME types to handle as spreadsheets";
+      type = types.listOf types.str;
+      default = [
+        "application/vnd.ms-excel"
+        "application/vnd.ms-excel.addin.macroEnabled.12"
+        "application/vnd.ms-excel.sheet.binary.macroEnabled.12"
+        "application/vnd.ms-excel.sheet.macroEnabled.12"
+        "application/vnd.ms-excel.template.macroEnabled.12"
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
+        "application/vnd.openxmlformats-officedocument.spreadsheetml.template"
+      ];
     };
     debug.enable = mkOption {
       description = "Whether to enable unfinished/in-development/broken custom scripts/packages";

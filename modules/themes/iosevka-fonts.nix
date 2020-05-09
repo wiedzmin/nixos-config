@@ -7,10 +7,9 @@ in {
 
   config = mkIf cfg.enable {
     fonts = { fonts = with pkgs; [ iosevka ]; };
-    wm.xmonad.font = "xft:Iosevka:style=Bold:pixelsize=10";
-    attributes.fonts.xmobar = "xft:Iosevka:weight=Bold:size=10";
-    attributes.fonts.dmenu = "xft:IosevkaCC:style=Bold:pixelsize=12";
-    attributes.fonts.xmonadDefault = "xft:Iosevka:weight=Bold:size=16";
+    wm.xmonad.fonts.default = "xft:Iosevka:style=Bold:pixelsize=10";
+    wm.xmonad.fonts.xmobar = "xft:Iosevka:weight=Bold:size=10";
+    wm.xmonad.fonts.dmenu = "xft:IosevkaCC:style=Bold:pixelsize=12";
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.iosevka;
