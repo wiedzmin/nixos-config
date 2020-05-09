@@ -70,8 +70,10 @@
   (:map lsp-mode-map
         ("C-M-r" . lsp-rename))
   :custom
+  (lsp-enable-indentation nil)
+  (lsp-enable-on-type-formatting nil)
   (lsp-auto-guess-root t)
-  (lsp-before-save-edits t)
+  (lsp-before-save-edits nil)
   (lsp-document-sync-method 'incremental)
   (lsp-eldoc-render-all nil)
   (lsp-highlight-symbol-at-point nil)
