@@ -221,6 +221,7 @@ in {
       enable = true;
       bookmarks.enable = true;
       webjumps.enable = true;
+      sshfs.enable = true;
       snippets.enable = true;
     };
     "4a05657203".secrets = {
@@ -441,6 +442,7 @@ in {
     scripts.enable = true;
     xmonad.enable = true;
     extraHosts.enable = true;
+    sshfs.enable = true;
     secrets = {
       enable = true;
       vpn.enable = true;

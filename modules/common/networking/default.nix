@@ -31,6 +31,16 @@ in {
         default = false;
         description = "Whether to enable various network clients, mostly for development";
       };
+      sshfs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable SSHFS infra";
+      };
+      sshfs.entries = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "SSHFS mappings";
+      };
       remoteControlling.enable = mkOption {
         type = types.bool;
         default = false;
@@ -98,6 +108,13 @@ in {
           pkgs.vpnctl
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
+        sshfsmenu = writePythonScriptWithPythonPackages "sshfsmenu" [
+          pkgs.python3Packages.dmenu-python
+          pkgs.python3Packages.notify2
+          pkgs.python3Packages.redis
+          pkgs.sshfs-fuse
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshfsmenu.py; })));
       };
       services.openssh = {
         enable = true;
@@ -251,6 +268,16 @@ in {
           '';
         };
         home.file = { ".ssh/id_rsa.pub".text = config.identity.secrets.ssh.publicKey; };
+      };
+    })
+    (mkIf (cfg.enable && cfg.sshfs.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ sshfsmenu ]; };
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set net/sshfs_map ${lib.strings.escapeNixString (builtins.toJSON cfg.sshfs.entries)}
+      '';
+      wm.xmonad.keybindings = {
+        "M-n f" = ''spawn "${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount" >> showWSOnProperScreen "shell"'';
+        "M-n S-f" = ''spawn "${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount" >> showWSOnProperScreen "shell"'';
       };
     })
     (mkIf (cfg.enable && cfg.remoteControlling.enable) {
