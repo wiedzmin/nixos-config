@@ -161,7 +161,7 @@ in {
           "Xft.autohint" = false;
           "Xft.dpi" = "120.0";
           "Xft.hinting" = true;
-          "Xft.hintstyle" = "hintfull";
+          "Xft.hintstyle" = "hintmedium";
           "Xft.lcdfilter" = "lcdnone";
           "Xft.rgba" = "none";
         };
