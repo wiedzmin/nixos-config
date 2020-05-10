@@ -1,4 +1,4 @@
-{ lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 rec {
   addBuildInputs = pkg: inputs: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ inputs; });
@@ -89,5 +89,6 @@ rec {
       }
   '';
   mkIndent = width: with lib; (concatStrings (genList (const " ") width));
-  mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [app]);
+  mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
+  homePrefix = suffix: "/home/${config.attributes.mainUser.name}/" + suffix;
 }
