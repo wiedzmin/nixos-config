@@ -23,11 +23,6 @@
 @define-color text_selected #fcfcfc;
 
 * {
-    engine: xfce;
-
-    -xfce-smooth-edge: true;
-    -xfce-grip-style: disabled;
-
     -GtkButton-default-border        : 0;
     -GtkButton-default-outside-border: 0;
     -GtkButton-child-displacement-x  : 0;
@@ -44,14 +39,7 @@
     -GtkScrollbar-has-secondary-backward-stepper: false;
     -GtkScrollbar-min-slider-length  : 10;
     -GtkToolbar-shadow-type          : out;
-    -GtkWidget-focus-line-width      : 1;
-    -GtkWidget-focus-padding         : 1;
-    -GtkWidget-interior-focus        : true;
-    -GtkWidget-cursor-color          : #fcfcfc;
-    -GtkWidget-secondary-cursor-color: #fcfcfc;
     -GtkWidget-cursor-aspect-ratio   : 0.1;
-    -GtkWidget-link-color           : #569cc1;
-    -GtkWidget-visited-link-color   : #f2f2f2;
 
 
     border-width: 1px 1px;
@@ -71,7 +59,7 @@
     color: @fg_insensitive;
     background-color: @bg_insensitive;
     border-color: darker(@bg_insensitive);
-    text-shadow: 1 1 white;
+    text-shadow: 1px 1px white;
 }
 
 *:hover {
@@ -333,8 +321,6 @@ GtkComboBox .button {
 
 .button, .slider.horizontal {
     background-image: -gtk-gradient(linear, left top, left bottom, from(shade(@bg_normal, 1.25)), to(shade(@bg_normal, 1.0)));
-
-    -GtkWidget-focus-padding: 0;
 }
 
 .button:active, .slider.horizontal:active {
