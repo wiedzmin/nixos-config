@@ -1,16 +1,18 @@
+import json
 import os
 import re
 import subprocess
 
 import dmenu
+import redis
 
-books = []
 
-books_task = subprocess.Popen("fd --full-path @bookshelfPath@ -e pdf -e djvu -e epub",
-                              shell=True, stdout=subprocess.PIPE)
-books.extend([book for book in books_task.stdout.read().decode().split("\n")])
-assert books_task.wait() == 0
+r = redis.Redis(host='localhost', port=6379, db=0)
 
-result = dmenu.show(books, prompt='book', lines=30)
+ebooks = r.get("content/ebooks_list")
+if ebooks:
+    ebooks = json.loads(ebooks)
+
+result = dmenu.show(ebooks, prompt='book', case_insensitive=True, lines=30)
 if result:
-    os.system("@bookReader@ {0}".format(re.escape(result)))
+    subprocess.Popen("zathura {0}".format(re.escape(result)), shell=True, stdout=subprocess.PIPE)

@@ -5,7 +5,7 @@ in { config, lib, pkgs, ... }:
 
 rec {
   autorandrProfiles = "/home/${config.attributes.mainUser.name}/.config/autorandr";
-  bookshelfPath = "/home/${config.attributes.mainUser.name}/bookshelf";
+  booksSearchCommand = config.tools.ebooks.readers.booksSearchCommand;
   contentBookmarksBatchOpenThreshold = builtins.toString config.custom.content.bookmarks.batchOpenTreshold;
   defaultBrowser = "${pkgs.xdg_utils}/bin/xdg-open";
   defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;

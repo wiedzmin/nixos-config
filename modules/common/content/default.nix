@@ -74,6 +74,7 @@ in {
         paste_to_ix = writePythonScriptWithPythonPackages "paste_to_ix" [ pkgs.ix pkgs.xsel ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./paste_to_ix.sh; })));
       };
+      tools.ebooks.readers.roots = [ (homePrefix "bookshelf") ];
       services.clipmenu.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.activation.ensureMimeappsList = {
