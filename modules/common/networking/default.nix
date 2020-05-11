@@ -276,8 +276,8 @@ in {
         ${pkgs.redis}/bin/redis-cli set net/sshfs_map ${lib.strings.escapeNixString (builtins.toJSON cfg.sshfs.entries)}
       '';
       wm.xmonad.keybindings = {
-        "M-n f" = ''spawn "${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount" >> showWSOnProperScreen "shell"'';
-        "M-n S-f" = ''spawn "${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount" >> showWSOnProperScreen "shell"'';
+        "M-n f" = ''spawn "${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount"'';
+        "M-n S-f" = ''spawn "${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount"'';
       };
     })
     (mkIf (cfg.enable && cfg.remoteControlling.enable) {
