@@ -105,6 +105,7 @@ in {
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./uptime_info.sh; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ redis-tui ];
         services.udiskie = {
           enable = true;
           automount = true;

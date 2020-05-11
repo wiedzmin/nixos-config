@@ -45,6 +45,7 @@ let
     "M-a 2" = ''namedScratchpadAction scratchpads "iotop"'';
     "M-a 3" = ''namedScratchpadAction scratchpads "gotop"'';
     "M-a 4" = ''namedScratchpadAction scratchpads "bc"'';
+    "M-a 5" = ''namedScratchpadAction scratchpads "redis"'';
     # -- TODO: recall and add "multiple app windows"-aware raising
     "M-w <Backspace>" = "nextMatch History (return True)";
     "<XF86Launch1>" = ''spawn "${dmenu_runapps}/bin/dmenu_runapps"'';
@@ -472,6 +473,7 @@ let
                   , NS "iotop" (scratchpadTerminal ++ " -t iotop -e sudo ${pkgs.iotop}/bin/iotop") (title =? "iotop") nonFloating
                   , NS "gotop" (scratchpadTerminal ++ " -t gotop -e ${pkgs.gotop}/bin/gotop") (title =? "gotop") nonFloating
                   , NS "bc" (scratchpadTerminal ++ " -t calc -e bc") (title =? "calc") nonFloating
+                  , NS "redis" (scratchpadTerminal ++ " -t redis -e redis-tui") (title =? "redis") nonFloating
                   ]
 
     customKeys conf = [
@@ -640,9 +642,7 @@ in {
         };
         home.packages = with pkgs; [ dmenu_runapps keybindings ];
         xdg.configFile."xmobar/xmobarrc".text = ''
-          Config { ${
-            lib.optionalString (cfg.fonts.xmobar != "") ''font = "${cfg.fonts.xmobar}"''
-          }
+          Config { ${lib.optionalString (cfg.fonts.xmobar != "") ''font = "${cfg.fonts.xmobar}"''}
                  , bgColor = "black"
                  , fgColor = "grey"
                  , position = TopW L 100
