@@ -135,7 +135,6 @@ in {
         docker_containers_traits = writePythonScriptWithPythonPackages "docker_containers_traits" [
           pkgs.docker
           pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.notify2
           pkgs.python3Packages.redis
           pkgs.xsel
           pkgs.yad
@@ -150,7 +149,6 @@ in {
         docker_shell = writePythonScriptWithPythonPackages "docker_shell" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux
-          pkgs.python3Packages.notify2
           pkgs.python3Packages.redis
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_shell.py; })));

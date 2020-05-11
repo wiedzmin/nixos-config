@@ -2,14 +2,11 @@ import os
 import subprocess
 
 import dmenu
-import notify2
-from notify2 import URGENCY_CRITICAL
 import redis
 from libtmux import Server
 
 hostnames = []
 
-notify2.init("docker_shell")
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 with open("/etc/hosts", "r") as hosts:
@@ -26,13 +23,14 @@ if hostname == "localhost":
     del os.environ["DOCKER_HOST"]
 else:
     os.environ["DOCKER_HOST"] = "ssh://{0}".format(hostname)
-    # TODO: extract to utility function
-    if r.get("job_vpn_status").decode() != "up":
-        n = notify2.Notification("[docker]", "VPN is off, turn it on and retry")
-        n.set_urgency(URGENCY_CRITICAL)
-        n.set_timeout(5000)
-        n.show()
-        sys.exit(1)
+    vpn_meta = json.loads(r.get("net/hosts_vpn"))
+    host_vpn = vpn_meta.get(host, None)
+    if host_vpn:
+        vpn_is_up = r.get("vpn/{0}/is_up".format(host_vpn)).decode() == "yes"
+        if not vpn_is_up:
+            vpn_start_task = subprocess.Popen("vpnctl --start {0}".format(host_vpn),
+                                              shell=True, stdout=subprocess.PIPE)
+            assert vpn_start_task.wait() == 0
 
 select_container_task = subprocess.Popen("docker ps --format '{{.Names}}'", shell=True, stdout=subprocess.PIPE)
 select_container_result = select_container_task.stdout.read().decode().split("\n")

@@ -5,11 +5,8 @@ import sys
 
 import dmenu
 import redis
-import notify2
-from notify2 import URGENCY_CRITICAL
 
 
-notify2.init("docker_containers_traits")
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 CONTAINER_TRAITS = {
@@ -51,14 +48,14 @@ if hostname == "localhost":
     del os.environ["DOCKER_HOST"]
 else:
     os.environ["DOCKER_HOST"] = "ssh://{0}".format(hostname)
-    # TODO: extract to utility function
-    if r.get("job_vpn_status").decode() != "up":
-        n = notify2.Notification("[docker]", "VPN is off, turn it on and retry")
-        n.set_urgency(URGENCY_CRITICAL)
-        n.set_timeout(5000)
-        n.show()
-        sys.exit(1)
-
+    vpn_meta = json.loads(r.get("net/hosts_vpn"))
+    host_vpn = vpn_meta.get(host, None)
+    if host_vpn:
+        vpn_is_up = r.get("vpn/{0}/is_up".format(host_vpn)).decode() == "yes"
+        if not vpn_is_up:
+            vpn_start_task = subprocess.Popen("vpnctl --start {0}".format(host_vpn),
+                                              shell=True, stdout=subprocess.PIPE)
+            assert vpn_start_task.wait() == 0
 
 container_status = dmenu.show(CONTAINER_STATUSES, prompt="status", case_insensitive=True, lines=3)
 if not container_status:
