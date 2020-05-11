@@ -83,10 +83,10 @@ in {
         };
 
         # TODO: consider desktop files locating automation
-        xdg.mimeApps.defaultApplications = (mapMimesToApp config.attributes.mimetypes.images "feh.desktop") //
-                                           (mapMimesToApp config.attributes.mimetypes.video "mpv.desktop") //
-                                           (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop") //
-                                           (mapMimesToApp config.attributes.mimetypes.office.spreadsheets "calc.desktop");
+        xdg.mimeApps.defaultApplications = (mapMimesToApp config.attributes.mimetypes.images "feh.desktop")
+          // (mapMimesToApp config.attributes.mimetypes.video "mpv.desktop")
+          // (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop")
+          // (mapMimesToApp config.attributes.mimetypes.office.spreadsheets "calc.desktop");
         home.file = {
           ".mpv/config".text = ''
             hwdec=vdpau
