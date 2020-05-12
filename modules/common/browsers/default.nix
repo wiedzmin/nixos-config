@@ -590,6 +590,9 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         yank-image = writeShellScriptBinWithDeps "yank-image" [ pkgs.wget pkgs.xclip ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./yank-image.sh; })));
+        qb-fix-session = writePythonScriptWithPythonPackages "qb-fix-session" [ pkgs.python3Packages.pyyaml ]
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qb-fix-session.py; })));
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {
@@ -607,7 +610,7 @@ in {
         }, "qutebrowser")
       '';
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ qutebrowser yank-image ];
+        home.packages = with pkgs; [ qutebrowser yank-image qb-fix-session ];
         xdg.configFile = {
           "qutebrowser/config.py".text = builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qutebrowser/qutebrowser.py; }));
