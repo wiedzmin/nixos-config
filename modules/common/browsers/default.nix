@@ -140,7 +140,7 @@ in {
       };
       defaultFlags = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         visible = false;
         internal = true;
         description = ''
@@ -175,18 +175,12 @@ in {
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.browserpass.enable = true;
-      };
+      home-manager.users."${config.attributes.mainUser.name}" = { programs.browserpass.enable = true; };
     })
     (mkIf (cfg.enable && cfg.firefox.enable) {
       custom.navigation.webjumps.entries = {
-        "about:config" = {
-          title = "Firefox configuration options";
-        };
-        "about:memory" = {
-          title = "Firefox addons reference";
-        };
+        "about:config" = { title = "Firefox configuration options"; };
+        "about:memory" = { title = "Firefox addons reference"; };
       };
       custom.programs.firefox = {
         enable = true;
@@ -628,7 +622,8 @@ in {
         message = "browsers: there should be exactly one default.";
       }];
       home-manager.users."${config.attributes.mainUser.name}" = {
-        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "org.qutebrowser.qutebrowser.desktop";
+        xdg.mimeApps.defaultApplications =
+          mapMimesToApp config.attributes.mimetypes.browser "org.qutebrowser.qutebrowser.desktop";
       };
     })
     (mkIf (cfg.enable && cfg.next.enable) {
