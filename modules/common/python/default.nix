@@ -1,6 +1,5 @@
 let
   deps = import ../../../nix/sources.nix;
-  proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
   nixpkgs-pinned-08_02_20 = import deps.nixpkgs-pinned-08_02_20 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with lib;
@@ -279,12 +278,12 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ proposed.ms-pyls ];
         programs.emacs.extraPackages = epkgs: [
           epkgs.pip-requirements
           epkgs.py-yapf
           epkgs.pyvenv
           epkgs.flycheck-prospector
+          epkgs.lsp-python-ms
         ];
       };
       ide.emacs.config = builtins.readFile

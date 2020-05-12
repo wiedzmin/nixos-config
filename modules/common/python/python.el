@@ -1,8 +1,6 @@
-;; consider updating code from https://github.com/emacs-lsp/lsp-python-ms
-(use-package ms-pyls-client
-  :quelpa
-  (ms-pyls-client :repo "wiedzmin/ms-pyls-client" :fetcher github)
+(use-package lsp-python-ms
   :custom
+  (lsp-python-ms-executable "@lspPythonMsExecutable@")
   (lsp-python-ms-extra-paths '(@lspPythonMsExtraPaths@)))
 
 (use-package python

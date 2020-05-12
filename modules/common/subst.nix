@@ -23,6 +23,7 @@ rec {
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
   ivyCandidatesCount = builtins.toString config.custom.navigation.emacs.ivy.candidatesCount;
   keybindingsCachePath = config.wm.xmonad.keybindingsCachePath;
+  lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";
   lspPythonMsExtraPaths =
     builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
   mainUserName = config.attributes.mainUser.name;
