@@ -60,10 +60,29 @@ in {
         default = false;
         description = "Whether to enable various misc tools.";
       };
-      remoteCommands = mkOption {
+      remote.commands = mkOption {
         description = "Predefined commands list to execute remotely. Note that those must be present on ssh target.";
         type = types.listOf types.str;
         default = [ "ctop" "jnettop" ];
+      };
+      remote.rsync.options = mkOption {
+        type = types.str;
+        default = "-avz";
+        description = "rsync options for projects syncing.";
+      };
+      remote.rsync.excludes = mkOption {
+        type = types.listOf types.str;
+        default = [ ".git" ".ccls-root" ".envrc" "shell.nix" ".envrc.cache" ];
+        description = "Fileglobs to ignore during rsync run.";
+      };
+      remote.rsync.commandWithFlags = mkOption {
+        type = types.str;
+        default = "${pkgs.rsync}/bin/rsync ${cfg.remote.rsync.options} --exclude={${
+            lib.concatStringsSep "," (lib.forEach cfg.remote.rsync.excludes (exc: "'${exc}'"))
+          }}";
+        visible = false;
+        internal = true;
+        description = "Shell command to use for collecting ebooks' paths.";
       };
       repoSearch.enable = mkOption {
         type = types.bool;
