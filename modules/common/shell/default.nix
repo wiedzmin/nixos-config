@@ -391,7 +391,7 @@ in {
           '';
         };
         bindings = {
-          copyMode = { "M-n" = ''run-shell org-capture ns"''; };
+          copyMode = { "M-n" = ''run-shell "org-capture ns"''; };
           root = {
             "C-left" = "prev";
             "C-right" = "next";
