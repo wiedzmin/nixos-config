@@ -28,6 +28,9 @@
   ;; https://code.visualstudio.com/docs/editor/extension-gallery#_can-i-download-an-extension-directly-from-the-marketplace
   ;; https://stackoverflow.com/questions/37071388/how-can-i-install-visual-studio-code-extensions-offline/38866913#38866913
   (setq gofmt-command "goimports")
+  (lsp-register-custom-settings
+   '(("gopls.completeUnimported" t t)
+     ("gopls.usePlaceholders" t t)))
   (add-to-list 'multi-compile-alist
                '(go-mode . (("build/git" "go build -v ./..."
                              (locate-dominating-file buffer-file-name ".git"))
