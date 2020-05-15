@@ -35,11 +35,6 @@
    t "Improve startup performance"))
 (use-package anaphora)
 
-(use-package use-package-custom-update
-  :quelpa
-  (use-package-custom-update
-   :repo "a13/use-package-custom-update" :fetcher github :version original))
-
 (use-package deferred)
 
 (add-hook 'emacs-startup-hook
@@ -135,10 +130,6 @@
   :config
   (gcmh-mode 1))
 
-(use-package iqa
-  :config
-  (iqa-setup-default))
-
 (use-package jka-cmpr-hook
   :config
   (auto-compression-mode 1))
@@ -154,11 +145,6 @@
 (use-package novice
   :custom
   (disabled-command-function nil))
-
-(use-package restart-emacs
-  :bind
-  (:map ctl-x-map
-        ("C-c" . restart-emacs)))
 
 (use-package server
   :preface
