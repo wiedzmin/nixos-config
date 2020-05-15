@@ -132,14 +132,11 @@
   (lsp-ui-sideline-show-diagnostics nil)
   (lsp-ui-sideline-code-actions-prefix ""))
 
-(use-package lsp-ivy
-  :after lsp-mode avy
+(use-package helm-lsp
+  :after (lsp-mode helm)
   :bind
-  (:map mode-specific-map
-        ("o b" . lsp-ivy-workspace-symbol)
-        ("o g" . lsp-ivy-global-workspace-symbol))
-  (:map lsp-mode-map
-        ([remap xref-find-apropos] . lsp-ivy-global-workspace-symbol)))
+  (:map custom-nav-map
+        ("s" . helm-lsp-global-workspace-symbol)))
 
 (use-package direnv
   :config

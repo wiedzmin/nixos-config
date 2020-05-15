@@ -151,10 +151,9 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ plantuml ];
         programs.emacs.extraPackages = epkgs: [
-          epkgs.counsel-org-clock
+          epkgs.org-mru-clock
           epkgs.deft
           epkgs.doct
-          epkgs.ivy-omni-org
           epkgs.ob-async
           epkgs.ob-blockdiag
           epkgs.ob-restclient
@@ -166,6 +165,8 @@ in {
           epkgs.org-randomnote
           epkgs.org-recent-headings
           epkgs.org-rich-yank
+          epkgs.helm-org
+          epkgs.helm-org-rifle
           epkgs.org-sticky-header
           epkgs.orgit
           epkgs.plantuml-mode

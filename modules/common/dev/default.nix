@@ -172,7 +172,7 @@ in {
     })
     (mkIf (cfg.codesearch.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [ epkgs.codesearch epkgs.counsel-codesearch epkgs.projectile-codesearch ];
+        programs.emacs.extraPackages = epkgs: [ epkgs.codesearch epkgs.helm-codesearch ];
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./codesearch.el; }));
@@ -307,8 +307,8 @@ in {
           epkgs.direnv
           epkgs.elmacro
           epkgs.fic-mode
+          epkgs.helm-lsp
           epkgs.jinja2-mode
-          epkgs.lsp-ivy
           epkgs.multi-compile
           epkgs.webpaste
           epkgs.yaml-mode

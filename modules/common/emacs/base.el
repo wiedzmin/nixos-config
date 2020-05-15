@@ -56,7 +56,7 @@
   :bind
   ("M-x" . amx)
   :custom
-  (amx-backend 'ivy)
+  (amx-backend 'helm)
   (amx-save-file "@emacsDatadir@/amx-items"))
 
 (use-package auto-compile
@@ -312,34 +312,6 @@
   :hook ((prog-mode-hook text-mode-hook) . editorconfig-mode))
 
 (use-package flycheck
-  :preface
-  ;; CREDITS: https://github.com/nathankot/dotemacs
-  (defvar counsel-flycheck-history nil
-    "History for `counsel-flycheck'")
-  (defun counsel-flycheck ()
-    (interactive)
-    (if (not (bound-and-true-p flycheck-mode))
-        (message "Flycheck mode is not available or enabled")
-      (ivy-read "Error: "
-                (let ((source-buffer (current-buffer)))
-                  (with-current-buffer (or (get-buffer flycheck-error-list-buffer)
-                                           (progn
-                                             (with-current-buffer
-                                                 (get-buffer-create flycheck-error-list-buffer)
-                                               (flycheck-error-list-mode)
-                                               (current-buffer))))
-                    (flycheck-error-list-set-source source-buffer)
-                    (flycheck-error-list-reset-filter)
-                    (revert-buffer t t t)
-                    (split-string (buffer-string) "\n" t " *")))
-                :action (lambda (s &rest _)
-                          (-when-let* ( (error (get-text-property 0 'tabulated-list-id s))
-                                        (pos (flycheck-error-pos error)) )
-                            (goto-char (flycheck-error-pos error))))
-                :history 'counsel-flycheck-history)))
-  :bind
-  (:map mode-specific-map
-        ("y" . counsel-flycheck))
   :custom-face (flycheck-warning ((t (:foreground "yellow" :background "red"))))
   :custom
   (flycheck-check-syntax-automatically '(mode-enabled save idle-change))
@@ -348,6 +320,12 @@
   (flycheck-global-modes '(not emacs-lisp-mode))
   :config
   (global-flycheck-mode 1))
+
+(use-package helm-flycheck
+  :after helm
+  :bind
+  (:map mode-specific-map
+        ("y" . helm-flycheck)))
 
 (use-package format-all
   :after copy-as-format
@@ -363,7 +341,6 @@
         ("C-S-<up>" . mc/mark-previous-like-this)
         ("C-S-<down>" . mc/mark-next-like-this)
         ("C-%" . mc/mark-more-like-this-extended)))
-;; You must add swiper-mc to the mc/cmds-to-run-once list. I messed this up initially and had to fix it by hand.
 
 (use-package mwim
   :bind

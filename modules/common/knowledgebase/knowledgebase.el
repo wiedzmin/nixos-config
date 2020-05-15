@@ -1,8 +1,6 @@
 (use-package apropos
   :bind
-  (:map mode-specific-map
-        :prefix-map custom-help-map
-        :prefix "H"
+  (:map custom-help-map
         ("a" . apropos)
         ("d" . apropos-documentation)
         ("v" . apropos-variable)

@@ -90,11 +90,6 @@ in {
           Whether to enable customized navigation for Emacs.
         '';
       };
-      emacs.ivy.candidatesCount = mkOption {
-        type = types.int;
-        default = 10;
-        description = "Candidates count to display for Ivy completion engine.";
-      };
       xmonad.enable = mkOption {
         type = types.bool;
         default = false;
@@ -330,32 +325,29 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ ripgrep ];
         programs.emacs.extraPackages = epkgs: [
-          epkgs.ace-link
           epkgs.ace-window
           epkgs.avy
-          epkgs.avy-flycheck
           epkgs.avy-zap
-          epkgs.counsel
-          epkgs.counsel-projectile
-          epkgs.counsel-tramp
           epkgs.dired-filetype-face
           epkgs.dired-git-info
           epkgs.dired-hide-dotfiles
           epkgs.dired-launch
           epkgs.dired-narrow
           epkgs.dired-quick-sort
+          epkgs.helm-c-yasnippet
+          epkgs.helm-descbinds
+          epkgs.helm-describe-modes
+          epkgs.helm-projectile
+          epkgs.helm-swoop
+          epkgs.helm-tramp
+          epkgs.helm-xref
           epkgs.imenu-anywhere
-          epkgs.ivy
-          epkgs.ivy-historian
-          epkgs.ivy-rich
-          epkgs.ivy-xref
-          epkgs.ivy-yasnippet
           epkgs.link-hint
           epkgs.phi-search
+          epkgs.phi-search-mc
           epkgs.polymode
           epkgs.projectile
           epkgs.rg
-          epkgs.swiper
         ];
       };
       ide.emacs.config = builtins.readFile

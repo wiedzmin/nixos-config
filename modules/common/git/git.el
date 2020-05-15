@@ -3,7 +3,13 @@
   (:map mode-specific-map
         (";" . git-timemachine)))
 
+(use-package helm-ghq
+  :bind
+  (:map custom-nav-map
+        ("h" . helm-ghq)))
+
 (use-package magit
+  :after helm
   :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
          ("COMMIT" . git-commit-mode))
   :bind
@@ -40,7 +46,6 @@
       (setq magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))))
   :custom
   (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
-  (magit-completing-read-function 'ivy-completing-read)
   (magit-blame-heading-format "%H %-20a %C %s")
   (magit-diff-refine-hunk t)
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
@@ -84,13 +89,15 @@
    (rx bol (group (one-or-more
                    (group (zero-or-more alnum) ":" space)))))
   (git-msg-prefix-log-flags " --since='1 week ago' ")
-  (git-msg-prefix-input-method 'ivy-read))
+  (git-msg-prefix-input-method 'helm-comp-read))
 
 (use-package magit-todos
-  :after magit
+  :after (magit helm)
   :bind
   (:map mode-specific-map
-        ("C-d" . ivy-magit-todos)))
+        ("C-d" . helm-magit-todos))
+  (:map custom-projectile-map
+        ("t" . helm-magit-todos)))
 
 (use-package git-link
   :after link-hint

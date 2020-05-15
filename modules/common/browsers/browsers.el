@@ -15,23 +15,6 @@
   :if (and (eq system-type 'gnu/linux)
            (eq window-system 'x))
   :defer 5
-  :preface
-  (defun custom/buffer-urls--candidates ()
-    (save-excursion
-      (save-restriction
-        (let ((urls))
-          (goto-char (point-min))
-          (while (re-search-forward org-plain-link-re nil t)
-            (push (thing-at-point 'url) urls))
-          (remove nil urls)))))
-  (defun custom/open-url-current-buffer ()
-    (interactive)
-    (ivy-read "URLs: "
-              (funcall #'custom/buffer-urls--candidates)
-              :action #'(lambda (candidate)
-                          (browse-url candidate))
-              :require-match t
-              :caller 'custom/open-url-current-buffer))
   :custom
   (browse-url-browser-function 'browse-url-generic) ;; TODO: sync at module level
   (browse-url-generic-program "@emacsBrowserGenericProgram@"))

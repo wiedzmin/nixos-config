@@ -17,11 +17,8 @@
   (password-cache-expiry nil)
   (password-cache t))
 
-(use-package pass
+(use-package helm-pass
   :bind
   (:prefix-map custom-pass-map
-               :prefix "<f6>"
-               ("p" . pass)
-               ("!" . ivy-pass))
-  :config
-  (use-package ivy-pass))
+               :prefix  "<f6>"
+               ("p" . helm-pass)))

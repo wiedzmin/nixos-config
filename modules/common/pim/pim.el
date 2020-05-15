@@ -1,3 +1,20 @@
+(use-package helm-org-rifle
+  :after (helm org)
+  :bind
+  (:map custom-org-map
+        :prefix-map org-rifle-map
+        :prefix "r"
+        ("l" . helm-org-rifle)
+        ("o" . helm-org-rifle-occur)))
+
+(use-package helm-org
+  :after (helm-mode org)
+  :config
+  (add-to-list 'helm-completing-read-handlers-alist
+               '(org-capture . helm-org-completing-read-tags))
+  (add-to-list 'helm-completing-read-handlers-alist
+               '(org-set-tags . helm-org-completing-read-tags)))
+
 (use-package plantuml-mode
   :mode "\\.plantuml\\'"
   :custom
@@ -137,8 +154,6 @@
   (org-capture-mode-hook . (lambda ()
                              (setq-local org-complete-tags-always-offer-all-agenda-tags t)))
   :bind
-  (:map org-agenda-mode-map
-        ("<f7> o" . ace-link-org))
   (:prefix-map custom-org-map
                :prefix "<f7>"
                (";" . custom/org-tags-all)
@@ -149,14 +164,11 @@
                ("=" . org-show-todo-tree)
                ("D" . org-delete-property)
                ("G" . org-goto)
-               ("H" . org-recent-headings-ivy)
                ("S" . org-set-property)
                ("T" . org-table-create)
-               ("\\" . counsel-org-tag)
                ("a" . org-agenda)
                ("e" . org-capture)
                ("f" . ace-link-org)
-               ("l" . counsel-org-agenda-headlines)
                ("n" . org-narrow-to-subtree)
                ("r" . org-refile)
                ("s" . org-schedule)
@@ -414,19 +426,16 @@
              org-html-export-as-html
              org-html-export-to-html))
 
-(use-package ivy-omni-org
+(use-package org-mru-clock
+  :after (org helm)
   :bind
-  (:map mode-specific-map
-        ("O" . ivy-omni-org))
-  :preface
-  (defun custom/org-kb-files ()
-    (f-files "@orgKbDir@" nil t))
+  (:map custom-org-map
+        ("i" . org-mru-clock-in)
+        ("C-j" . org-mru-clock-select-recent-task))
   :custom
-  (ivy-omni-org-file-sources '(org-agenda-files custom/org-kb-files)))
-
-;; TODO: bind to keys
-(use-package counsel-org-clock
-  :commands counsel-org-clock-history counsel-org-clock-goto counsel-org-clock-context)
+  ;; (org-mru-clock-how-many 100)
+  (org-mru-clock-keep-formatting t)
+  (org-mru-clock-files #'org-agenda-files))
 
 (use-package deft
   :bind

@@ -455,11 +455,12 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.emacs.extraPackages = epkgs: [
           epkgs.dired-git-info
+          epkgs.git-identity
           epkgs.git-link
           epkgs.git-msg-prefix
           epkgs.git-timemachine
           epkgs.git-walktree
-          epkgs.git-identity
+          epkgs.helm-ghq
           epkgs.magit
           epkgs.magit-filenotify
           epkgs.magit-popup # *

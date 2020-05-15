@@ -21,7 +21,6 @@ rec {
   gitIdletimeStgit = builtins.toString config.custom.dev.git.idletime.stgit;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
-  ivyCandidatesCount = builtins.toString config.custom.navigation.emacs.ivy.candidatesCount;
   keybindingsCachePath = config.wm.xmonad.keybindingsCachePath;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";
   lspPythonMsExtraPaths =
