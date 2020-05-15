@@ -7,6 +7,9 @@
 (add-hook 'after-init-hook #'(lambda ()
                                (setq gc-cons-threshold 800000)))
 
+(setq initial-major-mode 'fundamental-mode)
+(setq frame-inhibit-implied-resize t)
+
 (require 'cl)
 (require 'package)
 (require 'subr-x) ;; NOTE: for those packages where it was suddenly forgotten
