@@ -104,7 +104,8 @@
   :config
   (setenv "SHELL" "@bashExecutable@")
   :custom
-  (tramp-default-method "ssh"))
+  (tramp-default-method "ssh")
+  (helm-tramp-docker-user "@mainUserName@"))
 
 (use-package dired
   :commands dired
