@@ -92,7 +92,7 @@
   (git-msg-prefix-input-method 'helm-comp-read))
 
 (use-package magit-todos
-  :after (magit helm)
+  :after (magit projectile helm)
   :bind
   (:map mode-specific-map
         ("C-d" . helm-magit-todos))
