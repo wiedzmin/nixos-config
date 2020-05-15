@@ -140,9 +140,10 @@ in {
           lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (url: meta:
             lib.nameValuePair
             (if lib.hasAttrByPath [ "title" ] meta then (url + cfg.webjumps.sep + meta.title) else url)
-              (if lib.hasAttrByPath [ "browser" ] meta then (meta.browser + " " + url)
-               else ("${pkgs.xdg_utils}/bin/xdg-open " + url)))
-            cfg.webjumps.entries))
+            (if lib.hasAttrByPath [ "browser" ] meta then
+              (meta.browser + " " + url)
+            else
+              ("${pkgs.xdg_utils}/bin/xdg-open " + url))) cfg.webjumps.entries))
         }
         ${pkgs.redis}/bin/redis-cli set nav/webjumps_vpn ${
           lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (url: meta:
