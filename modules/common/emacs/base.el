@@ -1,6 +1,6 @@
 (setq load-prefer-newer t)
 (setq message-log-max t) ;; we don't want to lose any startup log info
-(setq shell-file-name "bash")
+(setq shell-file-name "@bashExecutable@")
 
 (setq gc-cons-percentage 0.5)
 (setq gc-cons-threshold most-positive-fixnum)

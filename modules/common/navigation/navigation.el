@@ -102,7 +102,7 @@
                                (projectile-mode 1)
                                (editorconfig-mode 1)))
   :config
-  (setenv "SHELL" "/run/current-system/sw/bin/bash")
+  (setenv "SHELL" "@bashExecutable@")
   :custom
   (tramp-default-method "ssh"))
 
