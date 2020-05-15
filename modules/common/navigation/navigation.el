@@ -88,7 +88,8 @@
         ("b" . projectile-switch-to-buffer))
   :config
   (helm-projectile-on)
-  (setq projectile-switch-project-action 'helm-projectile-find-file))
+  (setq projectile-switch-project-action 'helm-projectile-find-file)
+  (setq helm-projectile-fuzzy-match nil))
 
 (use-package helm-tramp
   :hook
