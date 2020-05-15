@@ -68,7 +68,8 @@
   :hook (lsp-mode . company-mode)
   :bind
   (:map lsp-mode-map
-        ("C-M-r" . lsp-rename))
+        ("C-M-r" . lsp-rename)
+        ("C-c h" . lsp-ui-doc-glance))
   :custom
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil)
