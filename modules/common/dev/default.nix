@@ -297,7 +297,7 @@ in {
           preferLocalBuild = true;
         } ''
           remarshal -if json -of toml \
-            < ${pkgs.writeText "TabNine.json" (builtins.toJSON { language.python = { command = "mspyls"; }; })} \
+            < ${pkgs.writeText "TabNine.json" (builtins.toJSON { language.python = { command = "python-language-server"; }; })} \
             > $out
         '');
         programs.emacs.extraPackages = epkgs: [
