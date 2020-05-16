@@ -99,15 +99,22 @@
   (:map custom-projectile-map
         ("t" . helm-magit-todos)))
 
-(use-package git-link
+(use-package browse-at-remote
   :after link-hint
   :bind
   (:map link-hint-keymap
-        ("r" . git-link)
-        ("c" . git-link-commit))
+        ("r" . browse-at-remote)
+        ("R" . browse-at-remote-kill))
+  (:map magit-log-mode-map
+        ("o" . browse-at-remote)
+        ("y" . browse-at-remote-kill)))
+
+(use-package git-link
+  :after link-hint
+  :bind
   (:map magit-status-mode-map
         ("o" . git-link)
-        ("H" . git-link-commit))
+        ("O" . git-link-commit))
   :custom
   (git-link-open-in-browser t)
   (git-link-use-commit t))

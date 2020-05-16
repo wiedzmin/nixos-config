@@ -454,6 +454,7 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.emacs.extraPackages = epkgs: [
+          epkgs.browse-at-remote
           epkgs.dired-git-info
           epkgs.git-identity
           epkgs.git-link
