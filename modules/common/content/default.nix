@@ -125,7 +125,6 @@ in {
         };
         home.packages = with pkgs; [
           android-file-transfer
-          aria2
           jmtpfs # consider providing some (shell) automation
           saldl # consider providing some (shell) automation
           proposed.you-get
@@ -142,6 +141,7 @@ in {
         ];
         services.syncthing.enable = true; # TODO: consider separate option(s)
         xdg.mimeApps.enable = true;
+        programs.aria2.enable = true;
         programs.mpv = {
           enable = true;
           scripts = with pkgs.mpvScripts; [ mpris ];
