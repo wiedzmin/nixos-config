@@ -92,19 +92,7 @@ in {
       };
       environment.variables.EDITOR = "${pkgs.emacs}/bin/emacsclient";
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          (makeDesktopItem {
-            name = "org-protocol";
-            exec = "${emacs}/bin/emacsclient %U";
-            comment = "";
-            desktopName = "Custom org-protocol handler";
-            categories = "System";
-            mimeType = stdenv.lib.concatStringsSep ";" [ "x-scheme-handler/org-protocol" ];
-          })
-
-          ispell
-          org-capture
-        ];
+        home.packages = with pkgs; [ ispell org-capture ];
         programs.zsh.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
         programs.bash.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
         programs.emacs =
