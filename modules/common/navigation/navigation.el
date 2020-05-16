@@ -32,6 +32,7 @@
 
 (use-package helm
   :bind
+  ("<f10>" . helm-resume)
   (:prefix-map custom-nav-map
                :prefix "C-q"
                ("y" . helm-show-kill-ring)
@@ -47,18 +48,27 @@
         ("l" . helm-locate-library))
   (:map ctl-x-map
         ("C-r" . helm-recentf))
+  :custom
+  (helm-buffers-fuzzy-matching t)
+  (helm-recentf-fuzzy-match t)
+  (helm-locate-fuzzy-match t)
   :config
   (helm-mode 1)
-  (use-package helm-ring)
+  (helm-autoresize-mode 1)
+  (use-package helm-buffers)
   (use-package helm-elisp)
   (use-package helm-for-files)
-  (use-package helm-locate))
+  (use-package helm-locate)
+  (use-package helm-ring))
 
 (use-package helm-swoop ;TODO: compare with swoop
   :after helm
   :bind
   ("C-s" . helm-swoop)
-  ([remap isearch-forward] . helm-swoop))
+  ([remap isearch-forward] . helm-swoop)
+  :custom
+  ;TODO: make some kind of switch for this case, as it was for ivy/swiper
+  (helm-swoop-pre-input-function (lambda ())))
 
 (use-package helm-descbinds
   :after helm
@@ -88,7 +98,7 @@
         ("b" . projectile-switch-to-buffer))
   :config
   (helm-projectile-on)
-  (setq projectile-switch-project-action 'helm-projectile-find-file)
+  (setq projectile-switch-project-action 'helm-projectile)
   (setq helm-projectile-fuzzy-match nil))
 
 (use-package helm-tramp
