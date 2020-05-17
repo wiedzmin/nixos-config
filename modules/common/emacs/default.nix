@@ -119,6 +119,7 @@ in {
               epkgs.company-lsp
               epkgs.company-quickhelp
               epkgs.company-statistics
+              epkgs.compdef
               epkgs.copy-as-format
               epkgs.default-text-scale
               epkgs.deferred

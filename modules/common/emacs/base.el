@@ -259,6 +259,8 @@
     :config
     (company-statistics-mode)))
 
+(use-package compdef)
+
 (use-package copy-as-format
   :bind
   (:map mode-specific-map
