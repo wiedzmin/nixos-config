@@ -38,14 +38,7 @@
         ("C-c k" . magit-process-kill))
   (:map dired-mode-map
         ("@" . magit-dired-log))
-  :preface
-  (defun custom/toggle-magit-margin ()
-    (interactive)
-    (if (car magit-status-margin)
-        (setq magit-status-margin '(nil age magit-log-margin-width nil 18))
-      (setq magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))))
   :custom
-  (magit-status-margin '(t "%Y-%m-%d %H:%M " magit-log-margin-width t 18))
   (magit-blame-heading-format "%H %-20a %C %s")
   (magit-diff-refine-hunk t)
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
