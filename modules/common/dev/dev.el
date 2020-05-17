@@ -47,14 +47,16 @@
   (company-lsp-async t)
   (company-lsp-cache-candidates 'auto)
   (company-lsp-enable-recompletion t)
-  (company-lsp-enable-snippet t)
-  :config
-  (push 'company-lsp company-backends))
+  (company-lsp-enable-snippet t))
 
 (use-package company-tabnine
   :after (company unicode-escape)
+  :preface
+  (defun tabnine/bury-company-lsp ()
+    (when (memq 'company-lsp company-backends)
+      (setq-local company-backends (-flatten (remove 'company-lsp company-backends)))))
   :config
-  (add-to-list 'company-backends #'company-tabnine))
+  (advice-add 'lsp :after #'tabnine/bury-company-lsp))
 
 (use-package lsp-mode
   :preface
