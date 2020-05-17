@@ -1,4 +1,5 @@
 { config, lib, pkgs, ... }:
+with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
 let cfg = config.custom.dev.golang;
@@ -34,6 +35,11 @@ in {
         type = types.str;
         default = "temp/gobuild";
         description = "Packaging sandbox root relative to $HOME.";
+      };
+      misc.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable miscelanneous tools.";
       };
       emacs.enable = mkOption {
         type = types.bool;
@@ -72,6 +78,16 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ dep2nix go2nix vgo2nix ];
       };
+    })
+    (mkIf (cfg.enable && cfg.misc.enable) {
+      nixpkgs.config.packageOverrides = _: rec {
+        modedit = writePythonScriptWithPythonPackages "modedit" [
+          pkgs.python3Packages.dmenu-python
+          pkgs.python3Packages.notify2
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./modedit.py; })));
+      };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ modedit ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

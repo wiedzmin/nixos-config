@@ -44,9 +44,8 @@ rec {
   xprintidleBinary = "${nixpkgs-pinned-05_12_19.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
   searchReposRoot = config.custom.dev.repoSearch.root;
-
-} // lib.optionalAttrs (config.ide.emacs.enable) { globalWorkspaceRoot = config.custom.dev.workspaceRoots.global; }
-// lib.optionalAttrs (config.custom.browsers.firefox.enable) rec {
+  globalWorkspaceRoot = config.custom.dev.workspaceRoots.global;
+} // lib.optionalAttrs (config.custom.browsers.firefox.enable) rec {
   firefoxProfilePath =
     config.home-manager.users."${config.attributes.mainUser.name}".programs.firefox.profiles.default.path;
   firefoxSessionsHistoryLength = builtins.toString config.custom.browsers.sessions.firefox.historyLength;

@@ -371,6 +371,7 @@ in {
     enable = true;
     goPath = "/home/${config.attributes.mainUser.name}/workspace/go";
     packaging.enable = true;
+    misc.enable = true;
     emacs.enable = true;
   };
 
