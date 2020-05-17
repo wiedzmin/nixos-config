@@ -496,19 +496,11 @@
                       face
                       tabs)))
 
-(use-package fancy-dabbrev
-  :bind
-  ("C-<tab>" . fancy-dabbrev-expand-or-indent)
-  ("<backtab>" . fancy-dabbrev-backward)
-  :config
-  (global-fancy-dabbrev-mode)
+(use-package dabbrev
   :custom
   (dabbrev-case-distinction nil)
   (dabbrev-case-fold-search t)
-  (dabbrev-case-replace nil)
-  (fancy-dabbrev-menu-height 15)
-  (fancy-dabbrev-sort-menu t)
-  (fancy-dabbrev-preview-context 'before-non-word))
+  (dabbrev-case-replace nil))
 
 (use-package aggressive-indent
   :bind

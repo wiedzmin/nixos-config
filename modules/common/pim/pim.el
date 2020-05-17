@@ -146,6 +146,8 @@
                'custom/clockout-when-idle)))))
   :mode (("\\.org$" . org-mode)
          ("\\.org_archive$" . org-mode))
+  :company '(company-dabbrev company-capf)
+  :capf #'pcomplete-completions-at-point
   :hook
   (org-mode-hook . turn-on-font-lock)
   (org-mode-hook . visual-line-mode)
