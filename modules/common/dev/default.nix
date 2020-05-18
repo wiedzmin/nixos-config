@@ -128,7 +128,7 @@ in {
   };
 
   config = mkMerge [
-    (mkIf cfg.playground.enable {
+    (mkIf (cfg.enable && cfg.playground.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           # https://github.com/Matty9191/ssl-cert-check
@@ -148,7 +148,7 @@ in {
         ];
       };
     })
-    (mkIf cfg.codesearch.enable {
+    (mkIf (cfg.enable && cfg.codesearch.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ codesearch ];
         programs = {
@@ -170,19 +170,19 @@ in {
       };
       systemd.user.timers."codesearch-reindex" = renderTimer "Codesearch index updating" "10min" "2h" "";
     })
-    (mkIf (cfg.codesearch.enable && cfg.emacs.enable) {
+    (mkIf (cfg.enable && cfg.codesearch.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.emacs.extraPackages = epkgs: [ epkgs.codesearch epkgs.helm-codesearch ];
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./codesearch.el; }));
     })
-    (mkIf cfg.patching.enable {
+    (mkIf (cfg.enable && cfg.patching.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ patchutils wiggle ruplacer ];
       };
     })
-    (mkIf cfg.analysis.enable {
+    (mkIf (cfg.enable && cfg.analysis.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           diffoscope
@@ -207,13 +207,13 @@ in {
         ];
       };
     })
-    (mkIf cfg.statistics.enable {
+    (mkIf (cfg.enable && cfg.statistics.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ cloc gource sloccount tokei ];
       };
     })
-    (mkIf cfg.bookmarks.enable { custom.shell.bookmarks.entries = cfg.bookmarks.entries; })
-    (mkIf cfg.repoSearch.enable {
+    (mkIf (cfg.enable && cfg.bookmarks.enable) { custom.shell.bookmarks.entries = cfg.bookmarks.entries; })
+    (mkIf (cfg.enable && cfg.repoSearch.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         reposearch = writePythonScriptWithPythonPackages "reposearch" [
           pkgs.fd
@@ -227,7 +227,7 @@ in {
       };
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ reposearch ]; };
     })
-    (mkIf cfg.misc.enable {
+    (mkIf (cfg.enable && cfg.misc.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
           "workspace/.editorconfig".text = ''
@@ -290,14 +290,17 @@ in {
         };
       };
     })
-    (mkIf cfg.emacs.enable {
+    (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         xdg.configFile."TabNine/TabNine.toml".source = (pkgs.runCommand "TabNine.toml" {
           buildInputs = [ pkgs.remarshal ];
           preferLocalBuild = true;
         } ''
           remarshal -if json -of toml \
-            < ${pkgs.writeText "TabNine.json" (builtins.toJSON { language.python = { command = "python-language-server"; }; })} \
+            < ${
+              pkgs.writeText "TabNine.json"
+              (builtins.toJSON { language.python = { command = "python-language-server"; }; })
+            } \
             > $out
         '');
         programs.emacs.extraPackages = epkgs: [
@@ -317,7 +320,7 @@ in {
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dev.el; }));
     })
-    (mkIf (cfg.xmonad.enable && config.custom.virtualization.docker.enable) {
+    (mkIf (cfg.enable && cfg.xmonad.enable && config.custom.virtualization.docker.enable) {
       wm.xmonad.keybindings = {
         "M-s d <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart docker-devdns.service"'';
         "M-s d <Down>" = ''spawn "${pkgs.systemd}/bin/systemctl stop docker-devdns.service"'';
