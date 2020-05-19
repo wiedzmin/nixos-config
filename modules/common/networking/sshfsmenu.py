@@ -10,6 +10,7 @@ import notify2
 from notify2 import URGENCY_NORMAL, URGENCY_CRITICAL
 
 
+opts = "-oauto_cache,reconnect,Compression=no" # for speeding things up
 parser = argparse.ArgumentParser(description="Mount projects over SSHFS.")
 parser.add_argument("--mode", dest="mode",
                    default="mount", help="script acting mode") # TODO: use choices
@@ -45,8 +46,8 @@ if args.mode == "mount":
         n.show()
         sys.exit(1)
 
-    sshfs_mount_task = subprocess.Popen("sshfs {0} {1}".format(remote, local),
-                                        shell=True, stdout=subprocess.PIPE)
+    sshfs_mount_task = subprocess.Popen("sshfs {0} {1} {2}".format(remote, local, opts),
+                                        shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
 
     result = sshfs_mount_task.wait()
     if result == 0:
@@ -57,7 +58,8 @@ if args.mode == "mount":
         n.set_timeout(5000)
         n.show()
     else:
-        n = notify2.Notification("[sshfs]", "mount failed: {0}".format(remote))
+        n = notify2.Notification("[sshfs]", "mount failed: {0}:\ncause: {1}".format(
+            remote, sshfs_mount_task.stderr.read().decode()))
         n.set_urgency(URGENCY_CRITICAL)
         n.set_timeout(5000)
         n.show()
