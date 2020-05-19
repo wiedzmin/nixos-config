@@ -224,7 +224,7 @@ in {
           ExecStart = ''
             ${pkgs.fd}/bin/fd --no-ignore \
                               --changed-before ${purgeExpired.cacheDepth} \
-                              . /home/${config.attributes.mainUser.name}/.cache \
+                              . ${homePrefix ".cache"} \
                               --exec rm -f {}
           '';
           StandardOutput = "journal";
@@ -241,7 +241,7 @@ in {
             ${pkgs.fd}/bin/fd --no-ignore \
                               --changed-before ${purgeExpired.tempDepth} \
                               --type f --type e \
-                              . /home/${config.attributes.mainUser.name}/.config \
+                              . ${homePrefix ".config"} \
                               --exec ${pkgs.trash-cli}/bin/trash-put {}
           '';
           StandardOutput = "journal";

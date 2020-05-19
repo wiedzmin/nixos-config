@@ -51,7 +51,7 @@ in {
   config = mkMerge [
     (mkIf cfg.readers.enable {
       fileSystems."${config.services.syncthing.dataDir}/bookshelf" = {
-        device = "/home/${config.attributes.mainUser.name}/bookshelf";
+        device = homePrefix "bookshelf";
         options = [ "bind" ];
       };
       custom.housekeeping.metadataCacheInstructions = ''

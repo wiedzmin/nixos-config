@@ -13,6 +13,11 @@ in {
           Whether to enable navigation infra.
         '';
       };
+      workspaceRoots = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Various workspace roots meta. Either for development or any other aims.";
+      };
       webjumps.enable = mkOption {
         type = types.bool;
         default = false;

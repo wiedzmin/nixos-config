@@ -2,7 +2,11 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.dev;
+let
+  cfg = config.custom.dev;
+  globalRoot = config.custom.navigation.workspaceRoots.global;
+  githubRoot = config.custom.navigation.workspaceRoots.github;
+
 in {
   options = {
     custom.dev = {
@@ -10,11 +14,6 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable custom development infrastructure.";
-      };
-      workspaceRoots = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "Various workspace roots meta.";
       };
       playground.enable = mkOption {
         type = types.bool;
@@ -50,8 +49,8 @@ in {
         type = types.attrs;
         default = {
           nixos = "/etc/nixos";
-          nixpkgs-channels = "${config.custom.dev.workspaceRoots.global}/github.com/NixOS/nixpkgs-channels";
-          postgres = "${config.custom.dev.workspaceRoots.global}/github.com/postgres/postgres";
+          nixpkgs-channels = "${homePrefix githubRoot}/NixOS/nixpkgs-channels";
+          postgres = "${homePrefix githubRoot}/postgres/postgres";
         };
         description = "Bookmarks data.";
       };
@@ -65,25 +64,6 @@ in {
         type = types.listOf types.str;
         default = [ "ctop" "jnettop" ];
       };
-      remote.rsync.options = mkOption {
-        type = types.str;
-        default = "-avz";
-        description = "rsync options for projects syncing.";
-      };
-      remote.rsync.excludes = mkOption {
-        type = types.listOf types.str;
-        default = [ ".git" ".ccls-root" ".envrc" "shell.nix" ".envrc.cache" ];
-        description = "Fileglobs to ignore during rsync run.";
-      };
-      remote.rsync.commandWithFlags = mkOption {
-        type = types.str;
-        default = "${pkgs.rsync}/bin/rsync ${cfg.remote.rsync.options} --exclude={${
-            lib.concatStringsSep "," (lib.forEach cfg.remote.rsync.excludes (exc: "'${exc}'"))
-          }}";
-        visible = false;
-        internal = true;
-        description = "Shell command to use for collecting ebooks' paths.";
-      };
       repoSearch.enable = mkOption {
         type = types.bool;
         default = false;
@@ -91,7 +71,7 @@ in {
       };
       repoSearch.root = mkOption {
         type = types.str;
-        default = cfg.workspaceRoots.global;
+        default = homePrefix globalRoot;
         description = "Search root.";
       };
       repoSearch.depth = mkOption {
@@ -152,8 +132,8 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ codesearch ];
         programs = {
-          zsh.sessionVariables = { CSEARCHINDEX = "${cfg.workspaceRoots.global}/.csearchindex"; };
-          bash.sessionVariables = { CSEARCHINDEX = "${cfg.workspaceRoots.global}/.csearchindex"; };
+          zsh.sessionVariables = { CSEARCHINDEX = "${homePrefix globalRoot}/.csearchindex"; };
+          bash.sessionVariables = { CSEARCHINDEX = "${homePrefix globalRoot}/.csearchindex"; };
         };
       };
       systemd.user.services."codesearch-reindex" = {
@@ -162,8 +142,8 @@ in {
         partOf = [ "graphical.target" ];
         serviceConfig = {
           Type = "oneshot";
-          Environment = [ "CSEARCHINDEX=${cfg.workspaceRoots.global}/.csearchindex" ];
-          ExecStart = "${pkgs.codesearch}/bin/cindex ${cfg.workspaceRoots.global}";
+          Environment = [ "CSEARCHINDEX=${homePrefix globalRoot}/.csearchindex" ];
+          ExecStart = "${pkgs.codesearch}/bin/cindex ${homePrefix globalRoot}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -278,7 +258,7 @@ in {
             session_name: dev
             windows:
               - window_name: mc
-                start_directory: ${config.custom.dev.workspaceRoots.global}/github.com/wiedzmin
+                start_directory: ${homePrefix githubRoot}/wiedzmin
                 panes:
                   - mc
           '';

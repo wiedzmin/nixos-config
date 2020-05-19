@@ -20,7 +20,7 @@ in {
       };
       downloadPath = mkOption {
         type = types.str;
-        default = "/home/${config.attributes.mainUser.name}/Downloads";
+        default = homePrefix "Downloads";
         description = ''
           Common downloads path'.
         '';
@@ -119,7 +119,7 @@ in {
       };
       sessions.firefox.path = mkOption {
         type = types.str;
-        default = "/home/${config.attributes.mainUser.name}/docs/org/firefox";
+        default = homePrefix "docs/org/firefox";
         description = ''
           Where to save plaintext Firefox session contents.
         '';
@@ -326,7 +326,7 @@ in {
         home.activation.ensureFirefoxHandlers = {
           after = [ ];
           before = [ "checkLinkTargets" ];
-          data = "rm -f /home/${config.attributes.mainUser.name}/.mozilla/firefox/profile.default/handlers.json";
+          data = "rm -f ${homePrefix "/.mozilla/firefox/profile.default/handlers.json"} ";
         };
         xdg.configFile."tridactyl/tridactylrc".text = ''
           set storageloc local

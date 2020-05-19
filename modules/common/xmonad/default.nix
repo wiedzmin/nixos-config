@@ -593,7 +593,7 @@ in {
       };
       keybindingsCachePath = mkOption {
         type = types.str;
-        default = "/home/${config.attributes.mainUser.name}/keybindings.list";
+        default = homePrefix "keybindings.list";
         description = "Path to file with cached keybindings.";
       };
     };

@@ -1,4 +1,5 @@
 { config, pkgs, lib, ... }:
+with import ../../modules/util.nix { inherit config lib pkgs; };
 let
   deps = import ../../nix/sources.nix;
   nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
@@ -239,7 +240,7 @@ in {
     };
     wallpaper = {
       enable = true;
-      root = "/home/${config.attributes.mainUser.name}/blobs/wallpaper";
+      root = homePrefix "blobs/wallpaper";
       current = "mongolia-spring-1.jpg";
     };
     emacs.enable = true;
@@ -294,19 +295,18 @@ in {
     bookmarks.enable = true;
     screenshots = {
       enable = true;
-      baseDir = "/home/${config.attributes.mainUser.name}/screenshots";
+      baseDir = homePrefix "screenshots";
       dateFormat = "+%Y-%m-%d_%H:%M:%S";
     };
     warmup = {
       enable = true;
-      paths = [ "/home/${config.attributes.mainUser.name}/.mozilla" ];
+      paths = [ (homePrefix ".mozilla") ];
     };
     xmonad.enable = true;
   };
 
   custom.dev = {
     enable = true;
-    workspaceRoots = { global = "/home/${config.attributes.mainUser.name}/workspace/repos"; };
     statistics.enable = true;
     codesearch.enable = true;
     patching.enable = true;
@@ -369,7 +369,7 @@ in {
 
   custom.dev.golang = {
     enable = true;
-    goPath = "/home/${config.attributes.mainUser.name}/workspace/go";
+    goPath = homePrefix "workspace/go";
     packaging.enable = true;
     misc.enable = true;
     emacs.enable = true;
@@ -426,6 +426,7 @@ in {
 
   custom.navigation = {
     enable = true;
+    workspaceRoots = { global = "workspace/repos"; };
     gmrun.enable = true;
     mc.enable = true;
     misc.enable = true;
@@ -479,8 +480,8 @@ in {
       paperless = {
         enable = true;
         package = nixpkgs-pinned-05_12_19.paperless;
-        consumptionDir = "/home/${config.attributes.mainUser.name}/docs/paperless/consume";
-        dataDir = "/home/${config.attributes.mainUser.name}/docs/paperless/data";
+        consumptionDir = homePrefix "docs/paperless/consume";
+        dataDir = homePrefix "docs/paperless/data";
         user = config.attributes.mainUser.name;
         extraConfig = { PAPERLESS_FORGIVING_OCR = true; };
         group = "users";

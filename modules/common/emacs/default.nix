@@ -21,7 +21,7 @@ in {
       };
       dataDir = mkOption {
         type = types.str;
-        default = "/home/${config.attributes.mainUser.name}/.emacs.d/data";
+        default = homePrefix ".emacs.d/data";
         visible = false;
         readOnly = true;
         internal = true;
@@ -31,7 +31,7 @@ in {
       };
       orgDir = mkOption {
         type = types.str;
-        default = "/home/${config.attributes.mainUser.name}/docs/org";
+        default = homePrefix "docs/org";
         description = ''
           Path to store org-mode docs under.
         '';

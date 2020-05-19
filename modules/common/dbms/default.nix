@@ -17,12 +17,12 @@ in {
       };
       postgresql.logPath = mkOption {
         type = types.str;
-        default = "/home/${config.attributes.mainUser.name}/.config/pgcli/log";
+        default = homePrefix ".config/pgcli/log";
         description = "PgCLI log file location.";
       };
       postgresql.historyPath = mkOption {
         type = types.str;
-        default = "/home/${config.attributes.mainUser.name}/.config/pgcli/history";
+        default = homePrefix ".config/pgcli/history";
         description = "PgCLI historylog file location.";
       };
       mysql.enable = mkOption {

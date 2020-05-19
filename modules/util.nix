@@ -91,4 +91,5 @@ rec {
   mkIndent = width: with lib; (concatStrings (genList (const " ") width));
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
   homePrefix = suffix: "/home/${config.attributes.mainUser.name}/" + suffix;
+  xdgConfig = suffix: (homePrefix ".config") + suffix;
 }

@@ -31,11 +31,7 @@ in {
       };
       org.agendaRoots = mkOption {
         type = types.attrs;
-        default = {
-          "${config.ide.emacs.orgDir}" = 3000;
-        } // lib.optionalAttrs (config.custom.dev.workspaceRoots != { })
-          (lib.genAttrs (builtins.attrValues (lib.filterAttrs (n: _: n != "global") config.custom.dev.workspaceRoots))
-            (_: cfg.org.agendaUpdateDelay));
+        default = { };
         description = ''
           Paths to search Org files for agenda.
 
@@ -99,8 +95,7 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable && cfg.timeTracking.enable) {
       assertions = [{ # FIXME: if this would not work, then try checking if corresponding secrets are enabled
-        assertion = cfg.timeTracking.enable
-          && builtins.pathExists "/home/${config.attributes.mainUser.name}/.arbtt/categorize.cfg";
+        assertion = cfg.timeTracking.enable && builtins.pathExists (homePrefix ".arbtt/categorize.cfg");
         message = "pim: no arbtt configuration found.";
       }];
 
@@ -148,6 +143,7 @@ in {
       }) cfg.scheduling.entries;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
+      custom.pim.org.agendaRoots = { "${config.ide.emacs.orgDir}" = 3000; };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ plantuml ];
         programs.emacs.extraPackages = epkgs: [

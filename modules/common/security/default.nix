@@ -1,4 +1,5 @@
 { config, lib, pkgs, ... }:
+with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
 let cfg = config.custom.security;
@@ -24,7 +25,7 @@ in {
       passwordStorePath = mkOption {
         description = "Default path to Pass password store";
         type = types.str;
-        default = "/home/${config.attributes.mainUser.name}/.password-store";
+        default = homePrefix ".password-store";
       };
       emacs.enable = mkOption {
         type = types.bool;

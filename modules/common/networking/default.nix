@@ -271,6 +271,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.sshfs.enable) {
+      custom.navigation.workspaceRoots = { sshfs = "workspace/ssh"; };
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ sshfsmenu ]; };
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set net/sshfs_map ${lib.strings.escapeNixString (builtins.toJSON cfg.sshfs.entries)}

@@ -1,4 +1,5 @@
 { config, lib, pkgs, ... }:
+with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
 let
@@ -168,7 +169,7 @@ in {
         home.activation.xrdb = {
           after = [ "linkGeneration" ];
           before = [ ];
-          data = "DISPLAY=:0 ${pkgs.xorg.xrdb}/bin/xrdb /home/${config.attributes.mainUser.name}/.Xresources || exit 0";
+          data = "DISPLAY=:0 ${pkgs.xorg.xrdb}/bin/xrdb ${homePrefix ".Xresources"} || exit 0";
         };
       };
     })

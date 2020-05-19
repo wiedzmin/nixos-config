@@ -5,7 +5,9 @@ in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.dev.git;
+let
+  cfg = config.custom.dev.git;
+  globalRoot = config.custom.navigation.workspaceRoots.global;
 in {
   options = {
     custom.dev.git = {
@@ -61,8 +63,7 @@ in {
       };
       myrepos.subconfigs = mkOption {
         type = types.listOf types.str;
-        default =
-          builtins.attrValues (builtins.mapAttrs (_: value: value + "/.mrconfig") config.custom.dev.workspaceRoots);
+        default = [ ];
         description = "Myrepos subconfigs to include.";
       };
       ghq.enable = mkOption {
@@ -199,7 +200,7 @@ in {
             };
             "core" = {
               autocrlf = false;
-              excludesfile = "/home/${config.attributes.mainUser.name}/${cfg.assets.dirName}/.gitignore";
+              excludesfile = homePrefix "${cfg.assets.dirName}/.gitignore";
               quotepath = false;
               askPass = "";
             };
@@ -274,7 +275,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
       assertions = [{
-        assertion = config.custom.dev.workspaceRoots.global != "";
+        assertion = globalRoot != "";
         message = "git: Must provide workspace root directory for ghq tool.";
       }];
 
@@ -285,14 +286,19 @@ in {
         } // lib.optionalAttrs (config.custom.navigation.misc.enable) {
           pgg = "${pkgs.pueue}/bin/pueue add -- ${pkgs.gitAndTools.ghq}/bin/ghq get";
         };
-        programs.git.extraConfig = { "ghq" = { root = config.custom.dev.workspaceRoots.global; }; };
+        programs.git.extraConfig = { "ghq" = { root = homePrefix globalRoot; }; };
+      };
+      custom.navigation.workspaceRoots = let ghqRoot = globalRoot;
+      in {
+        github = "${ghqRoot}/github.com";
+        gitlab = "${ghqRoot}/gitlab.com";
+        bitbucket = "${ghqRoot}/bitbucket.org";
       };
     })
     (mkIf (cfg.enable && cfg.myrepos.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
-          ".mrtrust".text = builtins.concatStringsSep "\n"
-            (cfg.myrepos.subconfigs ++ [ "/home/${config.attributes.mainUser.name}/.mrconfig" ]);
+          ".mrtrust".text = builtins.concatStringsSep "\n" (cfg.myrepos.subconfigs ++ [ (homePrefix ".mrconfig") ]);
           # TODO: review https://github.com/RichiH/myrepos/blob/master/mrconfig.complex
           # TODO: consider stage and commit all WIP before pushing
           ".mrconfig".text = ''
@@ -393,7 +399,7 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.mr}/bin/mr update";
-          WorkingDirectory = "/home/${config.attributes.mainUser.name}";
+          WorkingDirectory = homePrefix "";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -418,7 +424,7 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.mr}/bin/mr push";
-          WorkingDirectory = "/home/${config.attributes.mainUser.name}";
+          WorkingDirectory = homePrefix "";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -443,7 +449,7 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = ''${pkgs.bash}/bin/bash -c "${pkgs.mr}/bin/mr savewip"'';
-          WorkingDirectory = "/home/${config.attributes.mainUser.name}";
+          WorkingDirectory = homePrefix "";
           StandardOutput = "journal";
           StandardError = "journal";
         };

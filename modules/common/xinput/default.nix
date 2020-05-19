@@ -2,6 +2,7 @@ let
   deps = import ../../../nix/sources.nix;
   proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
+with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
 let cfg = config.custom.xinput;
@@ -30,7 +31,7 @@ in {
       };
       xkeysnail.configFile = mkOption {
         type = types.str;
-        default = "/home/${config.attributes.mainUser.name}/.config/xkeysnail/config.py";
+        default = homePrefix ".config/xkeysnail/config.py";
         description = ''
           Config file absolute path.
         '';

@@ -80,7 +80,7 @@ in {
         home.activation.ensureMimeappsList = {
           after = [ ];
           before = [ "checkLinkTargets" ];
-          data = "rm -f /home/${config.attributes.mainUser.name}/.config/mimeapps.list";
+          data = "rm -f ${homePrefix ".config/mimeapps.list"} ";
         };
 
         # TODO: consider desktop files locating automation
