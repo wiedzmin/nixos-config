@@ -55,10 +55,16 @@ if host:
     if args.ignore_tmux:
         open_terminal(cmd)
     else:
+        tmux_sessions = json.loads(r.get("tmux/extra_hosts"))
+        session_name = tmux_sessions.get(host) or "@tmuxDefaultSession@"
         tmux_server = Server()
         try:
-            tmux_session = tmux_server.find_where({ "session_name": "@tmuxDefaultSession@" })
-            ssh_window = tmux_session.new_window(attach=True, window_name=host,
-                                                 window_shell=cmd)
+            tmux_session = tmux_server.find_where({ "session_name": session_name })
+            if not tmux_session:
+                open_terminal(cmd)
+            else:
+                tmux_session.switch_client()
+                ssh_window = tmux_session.new_window(attach=True, window_name=host,
+                                                     window_shell=cmd)
         except LibTmuxException:
             open_terminal(cmd)

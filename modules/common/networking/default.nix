@@ -139,6 +139,12 @@ in {
           lib.strings.escapeNixString
           (builtins.toJSON (lib.mapAttrs (_: meta: builtins.head meta.hostnames) cfg.extraHosts.entries))
         }
+        ${pkgs.redis}/bin/redis-cli set tmux/extra_hosts ${
+          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (_: meta:
+            lib.nameValuePair (builtins.head meta.hostnames)
+            (if lib.hasAttrByPath [ "tmux" ] meta then meta.tmux else config.custom.shell.tmux.defaultSession))
+            cfg.extraHosts.entries))
+        }
         ${pkgs.redis}/bin/redis-cli set net/vpn_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.vpnMeta)}
         ${pkgs.redis}/bin/redis-cli set net/hosts_vpn ${
           lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (_: meta:
