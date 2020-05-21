@@ -275,6 +275,9 @@ in {
           };
         };
       };
+      custom.dev.git.gitignore = ''
+        .mypy_cache/*
+      '';
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

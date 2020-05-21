@@ -25,6 +25,9 @@ in {
         * hard  nofile    32768
         * soft  nofile    32768
       '';
+      custom.dev.git.gitignore = ''
+        .ccls-root
+      '';
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

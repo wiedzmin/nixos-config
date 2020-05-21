@@ -208,6 +208,10 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ reposearch ]; };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
+      custom.dev.git.gitignore = ''
+        shell.nix
+        .envrc
+      '';
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
           "workspace/.editorconfig".text = ''

@@ -90,6 +90,10 @@ in {
           (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./org-capture.py; })));
       };
+      custom.dev.git.gitignore = ''
+        *.elc
+        .dir-locals.el
+      '';
       environment.variables.EDITOR = "${pkgs.emacs}/bin/emacsclient";
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ ispell org-capture ];

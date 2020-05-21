@@ -51,6 +51,13 @@ in {
         default = true;
         description = "Whether to enable custom hooks.";
       };
+      gitignore = mkOption {
+        type = types.lines;
+        default = "";
+        visible = false;
+        internal = true;
+        description = "Global gitignore contents.";
+      };
       assets.dirName = mkOption {
         type = types.str;
         default = "git-assets";
@@ -164,19 +171,7 @@ in {
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.file = {
-          # TODO: tear apart to respective modules later (e.g. emacs, vim, python, etc.)
-          "${cfg.assets.dirName}/.gitignore".text = ''
-            # emacs
-            *.elc
-            .dir-locals.el
-
-            # various
-            *.out
-            *.swp
-            .mypy_cache/*
-          '';
-        };
+        home.file = { "${cfg.assets.dirName}/.gitignore".text = cfg.gitignore; };
         # TODO: conditionalize/parameterize
         xdg.configFile."pass-git-helper/git-pass-mapping.ini".text = ''
           [github.com*]
