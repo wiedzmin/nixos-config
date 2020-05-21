@@ -47,7 +47,8 @@
   (:map help-map
         ("l" . helm-locate-library))
   (:map ctl-x-map
-        ("C-r" . helm-recentf))
+        ("C-r" . helm-recentf)
+        ("b" . helm-mini))
   :custom
   (helm-buffers-fuzzy-matching t)
   (helm-recentf-fuzzy-match t)
@@ -88,14 +89,23 @@
 
 (use-package helm-projectile
   :after (helm projectile)
+  :preface
+  (defun helm/combined ()
+    "Preconfigured `helm'."
+    (interactive)
+    (condition-case nil
+        (if (projectile-project-root)
+            (helm-projectile)
+          ;; otherwise fallback to `helm-mini'
+          (helm-mini))
+      ;; fall back to helm mini if an error occurs (usually in `projectile-project-root')
+      (error (helm-mini))))
   :bind
   ("C-<f1>" . helm-projectile-switch-project)
   (:map custom-nav-map
                ("g" . helm-projectile-rg))
   (:map custom-projectile-map
-               ("h" . helm-projectile-find-file))
-  (:map ctl-x-map
-        ("b" . projectile-switch-to-buffer))
+               ("h" . helm/combined))
   :config
   (helm-projectile-on)
   (setq projectile-switch-project-action 'helm-projectile)
