@@ -321,7 +321,7 @@ rules."
   "Lock the screen."
   (suspend-dunst)
   (xlib:lock-group *display* :group 0)
-  (run-shell-command "i3lock -c 232729 && sleep 1 && xset dpms force off")) ;; TODO: maybe use template value for CLI command
+  (run-shell-command "@lockScreenCommand@"))
 
 (defcommand warp-mouse-active-frame () ()
   (let* ((current-frame (tile-group-current-frame (current-group)))

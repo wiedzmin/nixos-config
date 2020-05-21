@@ -351,7 +351,7 @@ in {
                           -u ${cfg.screenlocker.notificationUrgency} \
                           'Locking in ${builtins.toString cfg.screenlocker.lockingTimerSec} seconds'" "" \
                   --timer ${builtins.toString cfg.screenlocker.lockingTimerSec} \
-                          "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off" ""
+                          "${config.custom.security.lockScreenCommand}" ""
           '';
         };
       };
