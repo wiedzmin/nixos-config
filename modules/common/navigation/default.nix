@@ -23,7 +23,7 @@ in {
         default = false;
         description = "Whether to enable webjumps.";
       };
-      webjumps.entries = mkOption { # TODO: add enabled/disabled logic for entries
+      webjumps.entries = mkOption {
         type = types.attrs;
         default = { };
         description = "Webjumps entries.";
@@ -148,7 +148,9 @@ in {
             (if lib.hasAttrByPath [ "browser" ] meta then
               (meta.browser + " " + url)
             else
-              ("${pkgs.xdg_utils}/bin/xdg-open " + url))) cfg.webjumps.entries))
+              ("${pkgs.xdg_utils}/bin/xdg-open " + url)))
+            (filterAttrs (_: v: (!builtins.hasAttr "enable" v) || ((builtins.hasAttr "enable" v) && v.enable == true))
+              cfg.webjumps.entries)))
         }
         ${pkgs.redis}/bin/redis-cli set nav/webjumps_vpn ${
           lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (url: meta:
