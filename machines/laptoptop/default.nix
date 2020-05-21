@@ -316,19 +316,6 @@ in {
     emacs.enable = true;
     xmonad.enable = true;
     secrets.snippets.enable = true;
-    staging.packages = with pkgs; [
-      async
-      datamash
-      jwt-cli
-      mkcert
-      q-text-as-data
-      scc
-      textql
-      txr # TODO: get started, read docs
-      nixpkgs-pinned-16_04_20.visidata # TODO: make overlay
-      xsv
-      xurls
-    ];
   };
 
   custom.dev.git = {
@@ -354,7 +341,6 @@ in {
       when = "hourly";
     };
     emacs.enable = true;
-    staging.packages = with pkgs; [ gitAndTools.git-machete gitAndTools.git-my onefetch overcommit ];
   };
 
   custom.dev.python = {
@@ -464,7 +450,6 @@ in {
     homeManagerBackups.enable = false;
     emacs.enable = true;
     xmonad.enable = true;
-    staging.packages = with pkgs; [ niv nix-query-tree-viewer nixpkgs-pinned-05_12_19.nix-linter ];
   };
 
   custom.paperworks = {
@@ -487,10 +472,7 @@ in {
         group = "users";
       };
     };
-    publishing = {
-      enable = true;
-      staging.packages = with pkgs; [ pplatex texlab ];
-    };
+    publishing = { enable = true; };
   };
 
   custom.pim = {
@@ -530,7 +512,6 @@ in {
     bookmarks.enable = true;
     emacs.enable = true;
     xmonad.enable = true;
-    staging.packages = with pkgs; [ dateutils fselect gron jid jl lv pdfgrep peep ripgrep-all tmux-xpanes yj _3mux oq ];
   };
 
   custom.virtualization = {
@@ -545,7 +526,6 @@ in {
     libvirt.enable = true;
     virtualbox.enable = false;
     xmonad.enable = true;
-    staging.packages = with pkgs; [ x11spice ];
   };
 
   custom.xinput = {
@@ -580,7 +560,6 @@ in {
     screenlocker.enable = true;
     ddc.enable = true;
     xmonad.enable = true;
-    staging.packages = with pkgs; [ blugon edid-generator ];
   };
 
   themes.fonts.iosevka.enable = true;
@@ -597,11 +576,6 @@ in {
     ebooks = {
       readers.enable = true;
       xmonad.enable = true;
-      staging.packages = with pkgs; [
-        epr
-        nixpkgs-pinned-05_12_19.python3Packages.weasyprint
-        nixpkgs-pinned-16_04_20.pdfarranger
-      ];
     };
   };
 

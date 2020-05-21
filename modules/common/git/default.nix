@@ -228,17 +228,18 @@ in {
       environment.systemPackages = with pkgs;
         [
           git-crecord
+          git-quick-stats
           git-sizer
           gitAndTools.git-absorb # TODO: review abilities and maybe use in some automation
           gitAndTools.git-crypt
           gitAndTools.git-extras
+          gitAndTools.git-machete
           gitAndTools.git-octopus
           gitAndTools.lab
           gitAndTools.pass-git-helper
           gitAndTools.stgit
-          nixpkgs-pinned-16_04_20.gitAndTools.thicket
           gitstats
-          git-quick-stats
+          nixpkgs-pinned-16_04_20.gitAndTools.thicket
 
           git-save-wip
           gitAndTools.git-trim # TODO: review configuration options at https://github.com/foriequal0/git-trim
