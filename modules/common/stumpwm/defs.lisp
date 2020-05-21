@@ -173,24 +173,6 @@ in which case pull it into the current frame."
   (with-emacs-noninteractive
     (org-agenda-list)))
 
-(defmacro define-filelist-selector (fn doc pathspec &body body)
-  `(defun ,(intern (string-upcase fn)) ()
-      ,doc
-      (let ((filelist (mapcar (lambda (pathname) (namestring pathname))
-                              (directory-file-list ,@pathspec))))
-        (let ((selected-file (select-from-menu (current-screen) filelist)))
-          (when (not (equal selected-file ""))
-            ,@body)))))
-
-(defmacro define-filelist-selector-recursive (fn doc path filterfn &body body)
-  `(defun ,(intern (string-upcase fn)) ()
-      ,doc
-      (let ((filelist nil))
-        (cl-fad:walk-directory ,path (lambda (fname) (push (namestring fname) filelist)) :test ,filterfn)
-        (let ((selected-file (select-from-menu (current-screen) filelist)))
-          (when (not (equal selected-file ""))
-            ,@body)))))
-
 (defun global-pointer-position ()
   "Get global position of the mouse pointer."
   (xlib:global-pointer-position *display*))
@@ -335,14 +317,6 @@ rules."
                          "width:    " (format nil "~a" (window-width w)) nl
                          "height    " (format nil "~a" (window-height w))))))
 
-(defcommand suspend-dunst () ()
-   "Suspend dunst"
-   (run-shell-command "killall -SIGUSR1 dunst"))
-
-(defcommand resume-dunst () ()
-   "Resume dunst and receive suspended messages"
-   (run-shell-command "killall -SIGUSR2 dunst"))
-
 (defcommand lock-screen () ()
   "Lock the screen."
   (suspend-dunst)
@@ -355,12 +329,6 @@ rules."
          (pointer-y (+ 100 (frame-y current-frame))))
     (warp-pointer (current-screen) pointer-x pointer-y)))
 
-(defcommand toggle-external-head-rotation () ()
-  (setf (psetup-ext-head-rotated *persistent-setup*)
-        (not (psetup-ext-head-rotated *persistent-setup*)))
-  (disable-external-monitor)
-  (save-persistent-setup))
-
 ;;TODO: incapsulate/relocate/improve
 (defparameter *heads-changed-hook* '())
 
@@ -372,48 +340,6 @@ rules."
 ;;TODO: incapsulate/relocate/improve
 (pushnew #'save-persistent-setup *heads-changed-hook*)
 (pushnew #'(lambda () (run-shell-command "rescale_wallpaper.sh" nil)) *heads-changed-hook*)
-
-(defcommand enable-external-monitor-right () ()
-  "Enables external monitor"
-  (run-shell-command
-   (format nil "ext_head_right.sh~a"
-           (if (psetup-ext-head-rotated *persistent-setup*) " rotate" "")) nil)
-  (setf *heads-updated* nil)
-  (after-heads-changed))
-
-(defcommand enable-external-monitor-left () ()
-  "Enables external monitor"
-  (run-shell-command
-   (format nil "ext_head_left.sh~a"
-           (if (psetup-ext-head-rotated *persistent-setup*) " rotate" "")) nil)
-  (setf *heads-updated* nil)
-  (after-heads-changed))
-
-(defcommand enable-external-monitor-above () ()
-  "Enables external monitor"
-  (run-shell-command "ext_head_above.sh" nil)
-  (setf *heads-updated* nil)
-  (after-heads-changed))
-
-(defcommand disable-external-monitor () ()
-  "Disables external monitor"
-  (run-shell-command "ext_head_off.sh")
-  (warp-mouse-active-frame)
-  (setf *heads-updated* nil)
-  (after-heads-changed))
-
-(defcommand ext-heads-dock () ()
-  "Enables dock-stationed monitors"
-  (run-shell-command "ext_heads_dock.sh" nil)
-  (setf *heads-updated* nil)
-  (after-heads-changed))
-
-(defcommand ext-heads-undock () ()
-  "Disables dock-stationed monitors"
-  (run-shell-command "ext_heads_undock.sh")
-  (warp-mouse-active-frame)
-  (setf *heads-updated* nil)
-  (after-heads-changed))
 
 ;TODO: fix "above" config as it fails to navigate windows after calling 'resize-heads
 (defcommand resize-heads () ()
@@ -454,18 +380,10 @@ rules."
   "Select windows layout from menu"
   (select-layout-from-menu))
 
-(defcommand custom/choose-book () ()
-  "Select books to read from menu"
-  (select-books-from-menu))
-
 ;TODO: abstract away terminal shell command
 (defcommand custom/run-htop () ()
   "Run htop"
   (run-shell-command "urxvt -e htop"))
-
-(defcommand custom/run-wicd-curses () ()
-  "Run wicd-curses"
-  (run-shell-command "urxvt -e wicd-curses"))
 
 (defcommand custom/run-iotop () ()
   "Run iotop"
@@ -499,28 +417,6 @@ rules."
     (dolist (head (screen-heads screen))
       (toggle-mode-line screen head))))
 
-;;TODO: incapsulate/relocate/improve
-(defparameter *job-vpn-status-changed-hook* '())
-
-(defcommand custom/start-job-vpn () ()
-  (run-shell-command "jobvpnctl start")
-  (run-hook *job-vpn-status-changed-hook*))
-
-(defcommand custom/stop-job-vpn () ()
-  (run-shell-command "jobvpnctl stop")
-  (run-hook *job-vpn-status-changed-hook*))
-
-;;TODO: incapsulate/relocate/improve
-(defparameter *sshuttle-status-changed-hook* '())
-
-(defcommand custom/start-sshuttle () ()
-  (run-shell-command "sshuttlectl start")
-  (run-hook *sshuttle-status-changed-hook*))
-
-(defcommand custom/stop-sshuttle () ()
-  (run-shell-command "sshuttlectl stop")
-  (run-hook *sshuttle-status-changed-hook*))
-
 (defcommand custom/bother-stuck-emacs () ()
   (run-shell-command "pkill -SIGUSR2 emacs"))
 
@@ -532,11 +428,5 @@ rules."
   "Echo current browser"
   (echo-string (current-screen) (browser-name (psetup-default-browser *persistent-setup*))))
 
-(defcommand custom/spawn-emacs-frame () ()
-  (run-shell-command "emacsclient -c -n -e '(switch-to-buffer nil)'"))
-
 (defcommand custom/sbcl-send-exit () () ;TODO: generalize
   (window-send-string "(exit)"))
-
-(defcommand custom/restart-wifi () ()
-  (run-shell-command "wifictl jog"))
