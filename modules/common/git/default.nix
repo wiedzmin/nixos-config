@@ -172,14 +172,12 @@ in {
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = { "${cfg.assets.dirName}/.gitignore".text = cfg.gitignore; };
-        # TODO: conditionalize/parameterize
-        xdg.configFile."pass-git-helper/git-pass-mapping.ini".text = ''
-          [github.com*]
-          target=${config.attributes.mainUser.name}/webservices/social/programming/github.com
-
-          [bitbucket.org*]
-          target=${config.attributes.mainUser.name}/webservices/social/programming/bitbucket.com
-        '';
+        xdg.configFile."pass-git-helper/git-pass-mapping.ini".text = lib.generators.toINI { } {
+          "github.com*" = { target = "${config.attributes.mainUser.name}/webservices/social/programming/github.com"; };
+          "bitbucket.org*" = {
+            target = "${config.attributes.mainUser.name}/webservices/social/programming/bitbucket.com";
+          };
+        };
         programs.git = {
           enable = true;
           userName = config.attributes.mainUser.fullName;
