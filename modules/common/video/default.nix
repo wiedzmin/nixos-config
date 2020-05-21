@@ -38,8 +38,8 @@ in {
         default = false;
         description = "Whether to rotate secondary head left (monitor place vertically)";
       };
-      rotation = mkOption { # TODO: make enumeration
-        type = types.str;
+      rotation = mkOption {
+        type = types.enum [ "normal" "left" "right" "inverted" ];
         default = "left";
         description = "Secondary head rotation way";
       };

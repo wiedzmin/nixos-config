@@ -483,7 +483,6 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
-      # TODO: debug keybinding customization
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
           "${cfg.bookmarks.path}".text =
