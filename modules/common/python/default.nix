@@ -61,6 +61,11 @@ in {
         default = [ ];
         description = "Python packages to make available in Jupyter notebook.";
       };
+      nix.importers.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable tools to convert alien package definitions to Nix ones.";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -278,6 +283,9 @@ in {
       custom.dev.git.gitignore = ''
         .mypy_cache/*
       '';
+    })
+    (mkIf (cfg.enable && cfg.nix.importers.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ pypi2nix ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

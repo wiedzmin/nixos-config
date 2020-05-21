@@ -442,7 +442,6 @@ in {
     enable = true;
     nix = {
       helpers.enable = true;
-      importers.enable = true;
       search.enable = true;
     };
     misc.enable = true;

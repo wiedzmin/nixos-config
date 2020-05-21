@@ -20,13 +20,6 @@ in {
         default = false;
         description = "Whether to enable Nix helper tools.";
       };
-      # TODO: consider semantically split this option per-tool (e.g. python packaging,
-      # golang packaging, etc., with moving to respective modules)
-      nix.importers.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable tools to convert package definitions to Nix ones.";
-      };
       nix.search.enable = mkOption {
         type = types.bool;
         default = false;
@@ -105,11 +98,6 @@ in {
     (mkIf (cfg.enable && cfg.nix.helpers.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ nix-prefetch nix-prefetch-github nix-prefetch-scripts nixos-generators ];
-      };
-    })
-    (mkIf (cfg.enable && cfg.nix.importers.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ nodePackages.node2nix pypi2nix ];
       };
     })
     (mkIf (cfg.enable && cfg.nix.search.enable) {
