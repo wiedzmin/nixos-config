@@ -185,7 +185,7 @@ in {
           '';
           sessionVariables = {
             HISTFILE = ".histfile";
-            YSU_IGNORED_ALIASES = [ "g" "ll" ]; # TODO: review list
+            YSU_IGNORED_ALIASES = [ "g" "ll" ];
             YSU_MODE = "ALL";
           } // lib.optionalAttrs (!cfg.liquidPrompt.enable) { ZSH_COMMAND_TIME_COLOR = "cyan"; };
           shellAliases = {

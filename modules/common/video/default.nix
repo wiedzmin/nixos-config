@@ -266,7 +266,6 @@ in {
             <Multi_key> <m> <U> : "Ү"
           '';
         };
-        # TODO: consider rework/restructure
         services = {
           picom = {
             enable = true;

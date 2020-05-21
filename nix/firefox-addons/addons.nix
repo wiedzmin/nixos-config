@@ -204,7 +204,7 @@
   "url-in-title" = buildFirefoxXpiAddon {
     pname = "url-in-title";
     version = "1.0";
-    addonId = "{d47d18bc-d6ba-4f96-a144-b3016175f3a7}"; # TODO: make variable somehow
+    addonId = "{d47d18bc-d6ba-4f96-a144-b3016175f3a7}";
     url = "https://addons.mozilla.org/firefox/downloads/file/736244/url_protocolhostnamepath_in_title-1.0-an+fx.xpi";
     sha256 = "1a69ka4044gda6gcf1pvjslhjqgnssh0rgm5bf56azrikkid2x11";
     meta = with stdenv.lib; {
@@ -217,7 +217,7 @@
   "midnight-lizard" = buildFirefoxXpiAddon {
     pname = "midnight-lizard";
     version = "10.3.6";
-    addonId = "{8fbc7259-8015-4172-9af1-20e1edfbbd3a}"; # TODO: make variable somehow
+    addonId = "{8fbc7259-8015-4172-9af1-20e1edfbbd3a}";
     url = "https://addons.mozilla.org/firefox/downloads/file/1713409/midnight_lizard-10.3.6-an+fx.xpi";
     sha256 = "1d4rh5d4dx6723z3ldnfrrnx0zzzzz6rcr48jd7gyy79s6pz28c7";
     meta = with stdenv.lib; {

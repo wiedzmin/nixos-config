@@ -40,7 +40,6 @@ in rec {
 
   inherit mkDerivation;
 
-  # TODO: think of integrating into nixpkgs' naming scheme (i.e. tmuxPlugins.<name>)
   fzf-tmux-url-with-history = mkDerivation {
     pluginName = "fzf-tmux-url";
     rtpFilePath = "fzf-url.tmux";

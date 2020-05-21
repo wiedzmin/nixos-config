@@ -270,7 +270,6 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
           ".mrtrust".text = builtins.concatStringsSep "\n" (cfg.myrepos.subconfigs ++ [ (homePrefix ".mrconfig") ]);
-          # TODO: review https://github.com/RichiH/myrepos/blob/master/mrconfig.complex
           # TODO: consider stage and commit all WIP before pushing
           ".mrconfig".text = ''
             [DEFAULT]

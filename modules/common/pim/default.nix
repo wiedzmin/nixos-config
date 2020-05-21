@@ -94,7 +94,7 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable && cfg.timeTracking.enable) {
-      assertions = [{ # FIXME: if this would not work, then try checking if corresponding secrets are enabled
+      assertions = [{
         assertion = cfg.timeTracking.enable && builtins.pathExists (homePrefix ".arbtt/categorize.cfg");
         message = "pim: no arbtt configuration found.";
       }];

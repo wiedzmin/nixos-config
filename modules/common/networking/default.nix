@@ -5,9 +5,7 @@ in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  # TODO: (re)write dmenu-based custom scripts for pass based on https://github.com/carnager/rofi-pass/blob/master/rofi-pass
-  cfg = config.custom.networking;
+let cfg = config.custom.networking;
 in {
   options = {
     custom.networking = {
@@ -195,7 +193,6 @@ in {
         home.packages = with pkgs; [
           # curlie
           # davfs2
-          # vegeta # TODO: package
           gcalcli
           hasmail
           nixpkgs-pinned-05_12_19.http-prompt

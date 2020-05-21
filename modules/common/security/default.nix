@@ -5,7 +5,6 @@ with lib;
 let cfg = config.custom.security;
 in {
   options = {
-    # TODO: refine options
     custom.security = {
       enable = mkOption {
         type = types.bool;
