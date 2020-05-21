@@ -134,8 +134,9 @@ in {
 
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${
-          lib.strings.escapeNixString
-          (builtins.toJSON (lib.mapAttrs (_: meta: builtins.head meta.hostnames) cfg.extraHosts.entries))
+          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs (_: meta: builtins.head meta.hostnames)
+            (filterAttrs (_: v: (!builtins.hasAttr "ssh" v) || ((builtins.hasAttr "ssh" v) && v.ssh == true))
+              cfg.extraHosts.entries)))
         }
         ${pkgs.redis}/bin/redis-cli set tmux/extra_hosts ${
           lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (_: meta:
