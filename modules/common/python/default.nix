@@ -289,13 +289,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.pip-requirements
-          epkgs.py-yapf
-          epkgs.pyvenv
-          epkgs.flycheck-prospector
-          epkgs.lsp-python-ms
-        ];
+        programs.emacs.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./python.el; }));

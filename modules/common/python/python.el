@@ -30,8 +30,6 @@
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'(lambda () "")))
 
-(use-package py-yapf)
-
 (use-package flycheck-prospector
   :after flycheck)
 
