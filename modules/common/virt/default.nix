@@ -162,10 +162,10 @@ in {
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "docker" ];
 
       home-manager.users."${config.attributes.mainUser.name}" = {
-        xdg.configFile."hadolint.yaml".text = ''
-          ignored:
-            - DL3007
-        '';
+        xdg.configFile."hadolint.yaml".text = builtins.toJSON {
+          ignored = [ "DL3007" ];
+          trustedRegistries = [ "docker.io" ];
+        };
       };
 
       environment.systemPackages = with pkgs;
