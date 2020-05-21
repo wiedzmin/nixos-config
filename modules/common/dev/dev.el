@@ -97,7 +97,6 @@
 (use-package lsp-ui
   :after lsp-mode avy
   :preface
-  ;; TODO: bind to key
   (defun custom/toggle-lsp-ui-doc ()
     (interactive)
     (if lsp-ui-doc-mode
@@ -113,7 +112,8 @@
         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
         ([remap xref-find-references] . lsp-ui-peek-find-references))
   (:map mode-specific-map
-        ("R" . lsp-restart-workspace))
+        ("R" . lsp-restart-workspace)
+        ("D" . custom/toggle-lsp-ui-doc))
   (:map custom-goto-map
         ("i" . lsp-ui-imenu))
   :custom
