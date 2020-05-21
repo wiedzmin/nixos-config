@@ -169,21 +169,7 @@ in {
         wavemon.enable = true;
       };
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          nload
-          speedtest-cli
-          nethogs
-          jnettop
-          bmon
-          ngrep
-          netsniff-ng
-          pcapfix
-          tcpreplay
-          vnstat # TODO: also review corrsponding service
-          hss
-        ];
-      };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ jnettop ]; };
 
       users.extraUsers."${config.attributes.mainUser.name}".extraGroups = [ "wireshark" ];
     })
