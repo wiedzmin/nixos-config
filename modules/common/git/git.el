@@ -22,7 +22,7 @@
                ("S" . magit-stash)
                ("U" . magit-update-index)
                ("a" . magit-stage-file)
-               ("b" . magit-blame-addition) ; TODO: add for *-removal
+               ("b" . magit-blame-addition)
                ("c" . magit-checkout)
                ("d" . magit-diff)
                ("f" . magit-log-buffer-file)

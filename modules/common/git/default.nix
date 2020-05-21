@@ -223,31 +223,7 @@ in {
                   ${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
               };
             } // lib.optionalAttrs (cfg.urlSubstitutes != { }) cfg.urlSubstitutes;
-
-          aliases = {
-            bl = "branch -l";
-            merged = "branch --merged master";
-            nomerged = "branch --no-merged master";
-
-            st = "status --short --branch";
-
-            undo = "reset HEAD~1";
-            hundo = "reset --hard HEAD~1";
-
-            who = "shortlog -n -s --no-merges";
-            sl = "log --name-only --oneline";
-
-            # TODO: think of using --patience
-            df = "diff --patch-with-stat --color --color-words --abbrev";
-            last = "diff --stat=150,120 HEAD^ HEAD";
-
-            pf = "format-patch -1 --no-prefix -s -p FETCH_HEAD";
-
-            remotes = "remote -v";
-            slice = "clone --depth 1";
-          };
         };
-        programs.zsh.shellAliases = { git = "${pkgs.gitAndTools.hub}/bin/hub"; };
       };
       environment.systemPackages = with pkgs;
         [
