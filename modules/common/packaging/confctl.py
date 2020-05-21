@@ -86,7 +86,8 @@ def switch_configuration(root=None):
                                                  new_system_path), shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
     result = switch_configuration_task.wait()
     if result != 0:
-        print("Error switching configuration") # TODO: add details
+        print("Error switching configuration, detail below:\n{0}".format(
+            switch_configuration_task.stderr.read().decode()))
         sys.exit(1)
 
 
