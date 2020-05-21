@@ -20,11 +20,6 @@ in {
         default = false;
         description = "Whether to enable bookmarking harness";
       };
-      bookmarks.batchOpenTreshold = mkOption {
-        type = types.int;
-        default = 20; # TODO: add assertion with upper bound
-        description = "Maximum bookmarks search results count to be opened in batch";
-      };
       players.deltaSeconds = mkOption {
         type = types.int;
         default = 10;
