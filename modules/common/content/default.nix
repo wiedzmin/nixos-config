@@ -207,8 +207,9 @@ in {
           StandardOutput = "journal";
           StandardError = "journal";
         };
-        partOf = [ "multi-user.target" ]; # FIXME: does not autostart
-        wantedBy = [ "multi-user.target" ];
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
       };
     })
     (mkIf (cfg.enable && cfg.xmonad.enable && cfg.bookmarks.enable) {
