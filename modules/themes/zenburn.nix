@@ -2,8 +2,6 @@
 
 with lib;
 
-# TODO: dunst
-
 let
   cfg = config.themes.zenburn;
   zenburnEmacs = ''
@@ -46,6 +44,21 @@ in {
       gtk = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         gtk2.extraConfig = builtins.readFile "/etc/nixos/assets/styles/zenburn-gtk2.styles";
         gtk3.extraCss = builtins.readFile "/etc/nixos/assets/styles/zenburn-gtk3.css";
+      };
+      services.dunst.settings = {
+        urgency_low = {
+          background = "#333333";
+          foreground = "#EFEFEF";
+        };
+        urgency_normal = {
+          background = "#333333";
+          foreground = "#58afb3";
+        };
+        urgency_critical = {
+          background = "#333333";
+          foreground = "#ff7b00";
+          frame_color = "#D64E4E";
+        };
       };
     };
   };

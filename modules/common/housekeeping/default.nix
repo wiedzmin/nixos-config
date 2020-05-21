@@ -167,22 +167,9 @@ in {
               history = "ctrl+grave";
               context = "ctrl+shift+period";
             };
-            urgency_low = {
-              background = "#232323";
-              foreground = "#A8A8A8";
-              timeout = 3;
-            };
-            urgency_normal = {
-              background = "#285577";
-              foreground = "#ffffff";
-              timeout = 5;
-            };
-            urgency_critical = {
-              background = "#D64E4E";
-              foreground = "#F0E0E0";
-              frame_color = "#D64E4E";
-              timeout = 7;
-            };
+            urgency_low = { timeout = 3; };
+            urgency_normal = { timeout = 5; };
+            urgency_critical = { timeout = 7; };
           };
         };
       };
