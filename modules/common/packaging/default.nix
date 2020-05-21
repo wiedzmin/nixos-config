@@ -25,6 +25,16 @@ in {
         default = false;
         description = "Whether to enable Nix searching helper tools.";
       };
+      gc.dates = mkOption {
+        type = types.str;
+        default = "weekly";
+        description = "How often Nix GC should be run.";
+      };
+      gc.howold = mkOption {
+        type = types.str;
+        default = "7d";
+        description = "How old store content should be to become collected by Nix GC.";
+      };
       misc.enable = mkOption {
         type = types.bool;
         default = false;
@@ -60,14 +70,14 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      nix = { # TODO: extract options
+      nix = {
         maxJobs = lib.mkDefault config.attributes.hardware.cores;
         buildCores = lib.mkDefault config.attributes.hardware.cores;
         optimise.automatic = false;
         gc = {
           automatic = true;
-          dates = "weekly";
-          options = "--delete-older-than 7d";
+          dates = cfg.gc.dates;
+          options = "--delete-older-than ${cfg.gc.howold}";
         };
       };
       nixpkgs.config = {
