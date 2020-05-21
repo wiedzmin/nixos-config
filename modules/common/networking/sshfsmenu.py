@@ -12,8 +12,8 @@ from notify2 import URGENCY_NORMAL, URGENCY_CRITICAL
 
 opts = "-oauto_cache,reconnect,Compression=no" # for speeding things up
 parser = argparse.ArgumentParser(description="Mount projects over SSHFS.")
-parser.add_argument("--mode", dest="mode",
-                   default="mount", help="script acting mode") # TODO: use choices
+parser.add_argument("--mode", dest="mode", choices = ["mount", "unmount"],
+                    default="mount", help="script acting mode")
 
 args = parser.parse_args()
 notify2.init("sshfsmenu")
