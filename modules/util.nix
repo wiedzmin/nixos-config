@@ -1,6 +1,7 @@
 { config, lib, pkgs, ... }:
 
-rec {
+let configBasePath = "/etc/nixos";
+in rec {
   addBuildInputs = pkg: inputs: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ inputs; });
   withPatches = pkg: patches: lib.overrideDerivation pkg (_: { inherit patches; });
   writePythonScriptWithPythonPackages = pname: packages: text:
