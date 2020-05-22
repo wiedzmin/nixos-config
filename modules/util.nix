@@ -93,4 +93,6 @@ in rec {
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
   homePrefix = suffix: "/home/${config.attributes.mainUser.name}/" + suffix;
   xdgConfig = suffix: (homePrefix ".config") + suffix;
+  secretsPrefix = suffix: configBasePath + "/machines/" + config.attributes.machine.name + "/secrets/" + suffix;
+  assetsPrefix = suffix: configBasePath + "/machines/" + config.attributes.machine.name + "/assets/" + suffix;
 }
