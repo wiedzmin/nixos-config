@@ -50,6 +50,13 @@ in {
         assertion = cfg.pinentryFlavor != null;
         message = "security: Must select exactly one pinentry flavor.";
       }];
+
+      security.wrappers.sudo = {
+        source = "${pkgs.sudo}/bin/sudo";
+        owner = "root";
+        permissions = "u+s";
+      };
+
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ paperkey rofi-pass ];
         programs.password-store = {

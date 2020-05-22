@@ -249,12 +249,6 @@ in {
         message = "XKeysnail: must provide config file path.";
       }];
 
-      security.wrappers.sudo = {
-        source = "${pkgs.sudo}/bin/sudo";
-        owner = "root";
-        permissions = "u+s";
-      };
-
       systemd.user.services."xkeysnail" = {
         description = "Xkeysnail";
         after = [ "graphical-session-pre.target" ];
