@@ -262,6 +262,8 @@ in {
               optionalString (cfg.xkeysnail.inputDevices != [ ])
               "--devices ${lib.concatStringsSep " " cfg.xkeysnail.inputDevices}"
             } ${cfg.xkeysnail.configFile}";
+          StandardOutput = "journal";
+          StandardError = "journal";
         };
       };
 
