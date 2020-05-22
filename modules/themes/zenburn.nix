@@ -16,6 +16,7 @@ in {
   config = mkIf cfg.enable {
     ide.emacs.config = "${zenburnEmacs}";
     home-manager.users."${config.attributes.mainUser.name}" = {
+      xdg.configFile."quassel-irc.org/settings.qss".source = ./zenburn.qss;
       programs.emacs.extraPackages = epkgs: [ epkgs.zenburn-theme ];
       programs.zathura.options = {
         completion-bg = "#404040";

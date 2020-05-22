@@ -278,7 +278,6 @@ in {
       services.quassel.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ skype slack tdesktop quasselClient ];
-        xdg.configFile."quassel-irc.org/settings.qss".source = ./zenburn.qss; # TODO: wire into theming
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {
