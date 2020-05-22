@@ -27,8 +27,8 @@ def stop_running(omit=None):
     if omit:
         del vpn_meta[omit]
     stop_cmds = {vpn: vpn_meta[vpn]["down"] for vpn in vpn_meta}
-    for vpn, cmd in stop_cmds.items:
-        vpn_up = json.loads(r.get("vpn/{0}/is_up").format(vpn)).decode() == "yes"
+    for vpn, cmd in stop_cmds.items():
+        vpn_up = r.get("vpn/{0}/is_up".format(vpn)).decode() == "yes"
         if vpn_up:
             vpn_stop_task = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
 
