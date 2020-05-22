@@ -4,6 +4,10 @@ with lib;
 
 {
   options.attributes = {
+    machine.name = mkOption {
+      description = "Name of configuration under /etc/nixos/machines";
+      type = types.str;
+    };
     mainUser.name = mkOption {
       description = "Main user to be granted various service-related rights to";
       type = types.str;

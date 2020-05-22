@@ -187,6 +187,7 @@ in {
     layout = "us,ru";
   };
 
+  attributes.machine.name = "laptoptop";
   attributes.mainUser = {
     name = config.identity.secrets.userName;
     fullName = config.identity.secrets.fullName;
