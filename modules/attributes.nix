@@ -44,31 +44,17 @@ with lib;
     mimetypes.ebook = mkOption {
       description = "MIME types to handle as e-books";
       type = types.listOf types.str;
-      default = [
-        "application/pdf"
-        "image/vnd.djvu"
-      ];
+      default = [ "application/pdf" "image/vnd.djvu" ];
     };
     mimetypes.images = mkOption {
       description = "MIME types to handle as graphic images";
       type = types.listOf types.str;
-      default = [
-        "image/png"
-        "image/jpg"
-        "image/jpeg"
-      ];
+      default = [ "image/png" "image/jpg" "image/jpeg" ];
     };
     mimetypes.video = mkOption {
       description = "MIME types to handle as video";
       type = types.listOf types.str;
-      default = [
-        "video/3gpp"
-        "video/mp4"
-        "video/quicktime"
-        "video/x-flv"
-        "video/x-matroska"
-        "video/x-msvideo"
-      ];
+      default = [ "video/3gpp" "video/mp4" "video/quicktime" "video/x-flv" "video/x-matroska" "video/x-msvideo" ];
     };
     mimetypes.office.docs = mkOption {
       description = "MIME types to handle as documents";
