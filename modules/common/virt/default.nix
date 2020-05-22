@@ -78,6 +78,11 @@ in {
         default = true;
         description = "Show only running services in stack.";
       };
+      docker.swarm.meta = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Swarm --> entrypoint host mappings.";
+      };
       libvirt.enable = mkOption {
         type = types.bool;
         default = false;
@@ -127,6 +132,11 @@ in {
     })
 
     (mkIf (cfg.enable && cfg.docker.enable) {
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set virt/swarm_meta ${
+          lib.strings.escapeNixString (builtins.toJSON cfg.docker.swarm.meta)
+        }
+      '';
       nixpkgs.config.packageOverrides = _: rec {
         dlint = writeShellScriptBinWithDeps "dlint" [ pkgs.docker ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dlint.sh; })));
@@ -152,6 +162,16 @@ in {
           pkgs.python3Packages.redis
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_shell.py; })));
+        docker_swarm_services_info = writePythonScriptWithPythonPackages "docker_swarm_services_info" [
+          pkgs.docker
+          pkgs.python3Packages.dmenu-python
+          pkgs.python3Packages.libtmux
+          pkgs.python3Packages.notify2
+          pkgs.python3Packages.redis
+          pkgs.vpnctl
+          pkgs.yad
+        ] (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_swarm_services_info.py; })));
       };
 
       virtualisation.docker = {
