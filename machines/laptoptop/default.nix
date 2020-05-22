@@ -556,7 +556,10 @@ in {
   custom.video = {
     enable = true;
     opengl.enable = true;
-    autorandr.enable = true;
+    autorandr = {
+      enable = true;
+      profiles = [ "docked_home" "docked_office" "mobile" "undocked_parents_dsub" ];
+    };
     screenlocker.enable = true;
     ddc.enable = true;
     xmonad.enable = true;

@@ -1,0 +1,11 @@
+mobile:
+  fingerprint:
+    @internalHeadName@: "@internalHeadEdid@"
+  config:
+    @internalHeadName@:
+      enable: true
+      primary: true
+      position: "0x0"
+      mode: "@internalHeadResolution@"
+      gamma: "@defaultGamma@"
+      rate: "@defaultRate@"

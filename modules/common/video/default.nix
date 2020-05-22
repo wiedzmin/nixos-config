@@ -58,126 +58,20 @@ in {
         default = false;
         description = "Whether to enable autorandr.";
       };
+      autorandr.profilesPath = mkOption {
+        type = types.str;
+        default = assetsPrefix "xrandr";
+        description = "Base path for autorandr profiles.";
+      };
+      autorandr.profiles = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "Autorandr profiles list.";
+      };
       autorandr.hooks = mkOption {
         type = types.attrs;
         default = { };
         description = "Autorandr hooks.";
-      };
-      # TODO: make external to module, as this config repo may be used by multiple machines
-      autorandr.profiles = mkOption {
-        type = types.attrs;
-        description = "Autorandr profiles.";
-        default = { # TODO: think if there should be a default value
-          "mobile" = {
-            fingerprint = {
-              "${config.attributes.hardware.monitors.internalHead.name}" =
-                config.attributes.hardware.monitors.internalHead.edid;
-            };
-            config = {
-              "${config.attributes.hardware.monitors.internalHead.name}" = {
-                enable = true;
-                primary = true;
-                position = "0x0";
-                mode = config.attributes.hardware.monitors.internalHead.resolution;
-                gamma = cfg.gamma;
-                rate = cfg.rate;
-              };
-            };
-          };
-          "docked-home" = {
-            fingerprint = {
-              "HDMI-2" =
-                "00ffffffffffff001e6dbc594f53010006170103803c2278ea3135a5554ea1260c5054a54b00714f81809500b300a9c0810081c09040023a801871382d40582c450056512100001e000000fd00384b1e530f000a202020202020000000fc003237454133330a202020202020000000ff0033303652414e4e324a3836330a00dd";
-              "HDMI-3" =
-                "00ffffffffffff000469b124010101011d18010380372378ea3d15a3544da027125054bfef00714f818081409500a940b300d1c00101283c80a070b023403020360022602100001a000000fd00324c1e5311000a202020202020000000fc0050413234380a20202020202020000000ff0045374c4d51533037373132380a0023";
-              "${config.attributes.hardware.monitors.internalHead.name}" =
-                config.attributes.hardware.monitors.internalHead.edid;
-            };
-            config = {
-              "HDMI-2" = {
-                enable = true;
-                position = "0x0";
-                mode = "1920x1080";
-                gamma = cfg.gamma;
-                rate = cfg.rate;
-              };
-              "HDMI-3" = {
-                enable = true;
-                position = "1366x1080";
-                mode = "1920x1080";
-                gamma = cfg.gamma;
-                rate = cfg.rate;
-              } // lib.optionalAttrs (cfg.rotateSecondaryHead) { rotate = cfg.rotation; };
-              "${config.attributes.hardware.monitors.internalHead.name}" = {
-                enable = true;
-                primary = true;
-                position = "0x1080";
-                mode = config.attributes.hardware.monitors.internalHead.resolution;
-                gamma = cfg.gamma;
-                rate = cfg.rate;
-              };
-            };
-          };
-          "docked-office" = {
-            fingerprint = {
-              "DP-2" =
-                "00ffffffffffff0009d12b8001010101211d0104a53c22783a4825a756529c270f5054a56b80d1c0b300a9c08180810081c001010101023a801871382d40582c450056502100001e000000ff0045544e384b3032303531534c30000000fd00324c1e5311010a202020202020000000fc0042656e5120424c323738300a2001b302031cf14f901f041303120211011406071516052309070783010000023a801871382d40582c450056502100001f011d8018711c1620582c250056502100009f011d007251d01e206e28550056502100001e8c0ad08a20e02d10103e9600565021000018000000000000000000000000000000000000000000000000000000d1";
-              "DP-3" =
-                "00ffffffffffff0009d12b8001010101211d0104a53c22783a4825a756529c270f5054a56b80d1c0b300a9c08180810081c001010101023a801871382d40582c450056502100001e000000ff0045544e384b3032303731534c30000000fd00324c1e5311010a202020202020000000fc0042656e5120424c323738300a2001b102031cf14f901f041303120211011406071516052309070783010000023a801871382d40582c450056502100001f011d8018711c1620582c250056502100009f011d007251d01e206e28550056502100001e8c0ad08a20e02d10103e9600565021000018000000000000000000000000000000000000000000000000000000d1";
-              "${config.attributes.hardware.monitors.internalHead.name}" =
-                config.attributes.hardware.monitors.internalHead.edid;
-            };
-            config = {
-              "DP-2" = { # crtc 1
-                enable = true;
-                position = "0x0";
-                mode = "1920x1080";
-                gamma = cfg.gamma;
-                rate = cfg.rate;
-              };
-              "DP-3" = { # crtc 2
-                enable = true;
-                position = "1366x1080";
-                mode = "1920x1080";
-                gamma = cfg.gamma;
-                rate = cfg.rate;
-              } // lib.optionalAttrs (cfg.rotateSecondaryHead) { rotate = cfg.rotation; };
-              "${config.attributes.hardware.monitors.internalHead.name}" = { # crtc 0
-                enable = true;
-                primary = true;
-                position = "0x1080";
-                mode = config.attributes.hardware.monitors.internalHead.resolution;
-                gamma = cfg.gamma;
-                rate = cfg.rate;
-              };
-            };
-          };
-          "undocked-parents-dsub" = {
-            fingerprint = {
-              "VGA-1" =
-                "00ffffffffffff004c2d0e0139314a4d100f01036c261e782aee95a3544c99260f5054bfef808180714f010101010101010101010101302a009851002a4030701300782d1100001e000000fd00384b1e510e000a202020202020000000fc0053796e634d61737465720a2020000000ff00485348593430323338330a202000d2";
-              "${config.attributes.hardware.monitors.internalHead.name}" =
-                config.attributes.hardware.monitors.internalHead.edid;
-            };
-            config = {
-              "VGA-1" = {
-                enable = true;
-                position = "0x0";
-                mode = "1280x1024";
-                gamma = cfg.gamma;
-                rate = cfg.rate;
-              };
-              "${config.attributes.hardware.monitors.internalHead.name}" = {
-                enable = true;
-                primary = true;
-                position = "0x1024";
-                mode = config.attributes.hardware.monitors.internalHead.resolution;
-                gamma = cfg.gamma;
-                rate = cfg.rate;
-              };
-            };
-          };
-        };
       };
       screenlocker.enable = mkOption {
         type = types.bool;
@@ -325,7 +219,11 @@ in {
             lib.optionalAttrs (config.home-manager.users."${config.attributes.mainUser.name}".services.compton.enable) {
               predetect = { "kill-compton" = "${kill-compton}/bin/kill-compton"; };
             } // cfg.autorandr.hooks;
-          profiles = cfg.autorandr.profiles;
+          profiles = lib.optionalAttrs (cfg.autorandr.profiles != [ ]) (fromYAML (lib.concatStringsSep "\n"
+            (lib.forEach cfg.autorandr.profiles (profile:
+              builtins.readFile (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+                src = /. + builtins.toPath (cfg.autorandr.profilesPath + "/" + profile + ".yml");
+              }))))));
         };
       };
       services.udev.extraRules = ''
