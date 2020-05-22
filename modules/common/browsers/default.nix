@@ -598,8 +598,8 @@ in {
         define_keymap(re.compile("qutebrowser"), {
             K("C-g"): K("f5"),
             K("C-n"): K("C-g"),
-            K("M-comma"): K("H"),
-            K("M-dot"): K("L"),
+            K("M-comma"): K("Shift-h"),
+            K("M-dot"): K("Shift-l"),
             K("C-x"): {
                 K("b"): K("b"),
                 K("k"): [K("Esc"), K("d")],
