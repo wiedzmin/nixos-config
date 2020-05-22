@@ -125,7 +125,7 @@ in {
       };
       imapfilter.server = mkOption {
         type = types.str;
-        default = ""; # TODO: assertion
+        default = "";
         description = "IMAP server to connect to.";
       };
       imapfilter.ssl = mkOption {
@@ -208,6 +208,11 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.imapfilter.enable) {
+      assertions = [{
+        assertion = cfg.imapfilter.server != "";
+        message = "email: Must provide remote server address for imapfilter.";
+      }];
+
       environment.etc."imapfilter_config.lua".text = ''
         options.timeout = ${builtins.toString cfg.imapfilter.timeout}
         options.subscribe = ${lib.boolToString cfg.imapfilter.subscribe}
