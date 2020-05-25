@@ -452,9 +452,6 @@ let
                      , ("t", "Tiled")
                      ]
 
-    replaceSubstring :: String -> String -> String -> String
-    replaceSubstring what to src = unpack (replace (pack $ take 1 what) (pack $ take 1 to) (pack src))
-
     loghookXmobar = do
       historyHook
       fadeInactiveLogHook 0.7
@@ -467,6 +464,8 @@ let
                           , ppHidden = check
                           }
       multiPP wsPP wsPP
+      where
+        replaceSubstring what to src = unpack (replace (pack $ take 1 what) (pack $ take 1 to) (pack src))
 
     customNavigation2DConfig = def { defaultTiledNavigation = hybridOf sideNavigation centerNavigation }
 
