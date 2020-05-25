@@ -642,29 +642,8 @@ in {
           };
         };
         home.packages = with pkgs; [ dmenu_runapps keybindings ];
-        xdg.configFile."xmobar/xmobarrc".text = ''
-          Config { ${lib.optionalString (cfg.fonts.xmobar != "") ''font = "${cfg.fonts.xmobar}"''}
-                 , bgColor = "black"
-                 , fgColor = "grey"
-                 , position = BottomW L 100
-                 , lowerOnStart = False
-                 , allDesktops = True
-                 , persistent = True
-                 , commands = [ Run Date "%a %d/%m/%y %H:%M:%S" "date" 10
-                              , Run StdinReader
-                              , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
-                                                       "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
-                                                       "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
-                              , Run Com "wifi-status" [] "wifi" 60
-                              , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
-                                        , ("ru", "<fc=green>ru</fc>")
-                                        ]
-                              ]
-                 , sepChar = "%"
-                 , alignSep = "}{"
-                 , template = "%StdinReader% }{| %battery% | %wifi% | <fc=#ee9a00>%date%</fc> |%kbd%"
-                 }
-        '';
+        xdg.configFile."xmobar/xmobarrc".text = builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./xmobarrc; }));
       };
     })
     (mkIf cfg.dmenuFrecency.enable { environment.systemPackages = with pkgs; [ dmenu ]; })
