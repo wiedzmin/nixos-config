@@ -647,7 +647,7 @@ in {
           Config { ${lib.optionalString (cfg.fonts.xmobar != "") ''font = "${cfg.fonts.xmobar}"''}
                  , bgColor = "black"
                  , fgColor = "grey"
-                 , position = TopW L 100
+                 , position = BottomW L 100
                  , lowerOnStart = False
                  , allDesktops = True
                  , persistent = True
