@@ -67,9 +67,6 @@ in {
           path+=${cfg.goPath}/bin
         '';
       };
-      custom.dev.git.gitignore = ''
-        .golangci.yml
-      '';
       ide.emacs.environment = {
         GOPATH = cfg.goPath;
       } // lib.optionalAttrs (cfg.privateModules != [ ]) {
