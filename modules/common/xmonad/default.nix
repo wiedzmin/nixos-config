@@ -106,6 +106,7 @@ let
     import XMonad.Hooks.ManageDocks (avoidStruts, docks, docksEventHook, manageDocks)
     import XMonad.Hooks.Place (fixed, placeFocused, placeHook)
     import XMonad.Hooks.XPropManage (XPropMatch, pmP, xPropManageHook)
+    import XMonad.Hooks.FadeInactive (fadeInactiveLogHook)
 
     import XMonad.Layout.AutoMaster
     import XMonad.Layout.DwmStyle as Dwm
@@ -456,6 +457,7 @@ let
 
     loghookXmobar = do
       historyHook
+      fadeInactiveLogHook 0.7
       ewmhDesktopsLogHook
       updatePointer (0.5, 0.5) (0, 0)
       copies <- wsContainingCopies
