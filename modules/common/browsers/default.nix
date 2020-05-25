@@ -610,7 +610,20 @@ in {
         }, "qutebrowser")
       '';
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ qutebrowser yank-image qb-fix-session ];
+        home.packages = with pkgs; [
+          qutebrowser
+          yank-image
+          qb-fix-session
+
+          (makeDesktopItem {
+            name = "org.custom.qutebrowser.windowed";
+            type = "Application";
+            exec = "${qutebrowser}/bin/qutebrowser --target window %U";
+            comment = "Qutebrowser that opens links preferably in new windows";
+            desktopName = "QuteBrowser";
+            categories = stdenv.lib.concatStringsSep ";" [ "Network" "WebBrowser" ];
+          })
+        ];
         xdg.configFile = {
           "qutebrowser/config.py".text = builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qutebrowser/qutebrowser.py; }));
@@ -626,7 +639,7 @@ in {
       }];
       home-manager.users."${config.attributes.mainUser.name}" = {
         xdg.mimeApps.defaultApplications =
-          mapMimesToApp config.attributes.mimetypes.browser "org.qutebrowser.qutebrowser.desktop";
+          mapMimesToApp config.attributes.mimetypes.browser "org.custom.qutebrowser.windowed.desktop";
       };
     })
     (mkIf (cfg.enable && cfg.next.enable) {
