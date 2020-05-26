@@ -212,12 +212,14 @@ in {
       bookmarks.enable = true;
       webjumps.enable = true;
       snippets.enable = true;
+      workspaces.enable = true;
     };
     "b354e944b3".secrets = {
       enable = true;
       vpn.enable = true;
       bookmarks.enable = true;
       webjumps.enable = true;
+      workspaces.enable = true;
     };
     "8a1add5330".secrets = {
       enable = true;
@@ -225,6 +227,7 @@ in {
       webjumps.enable = true;
       sshfs.enable = true;
       snippets.enable = true;
+      workspaces.enable = true;
     };
     "4a05657203".secrets = {
       enable = true;
@@ -584,6 +587,7 @@ in {
 
   wm.xmonad = {
     enable = true;
+    workspaces.enable = true;
     dmenuFrecency.enable = true;
   };
 

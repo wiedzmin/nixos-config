@@ -105,6 +105,6 @@ c.url.default_page = "about:blank"
 c.url.incdec_segments = ['path', 'query']
 c.url.yank_ignored_parameters = ['ref', 'utm_source', 'utm_medium', 'utm_campaign', 'utm_term', 'utm_content']
 
-c.window.title_format = "{private}{perc}{current_title}{title_sep}qutebrowser"
+c.window.title_format = "{private}{perc}{current_title}{title_sep}qutebrowser | {current_url}"
 
 config.source('keybindings.py')

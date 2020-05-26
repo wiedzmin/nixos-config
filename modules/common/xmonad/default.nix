@@ -240,6 +240,21 @@ in {
         default = "";
         description = "XMonad `internal` default font' definition.";
       };
+      workspaces.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable mapping windows to workspaces.";
+      };
+      workspaces.mappings = mkOption { # TODO: consider extract wm desktops metadata to nix level
+        type = types.attrs;
+        default = { };
+        example = {
+          "qutebrowser yandex" = "web3";
+          "qutebrowser youtube" = "web4";
+          "emacs" = "work2";
+        };
+        description = "Actual window-to-workspace mapping based on window title.";
+      };
       fonts.dmenu = mkOption {
         type = types.str;
         default = "";
@@ -299,6 +314,7 @@ in {
           "M-S-p" = ''spawn "${dmenu_runapps}/bin/dmenu_runapps"'';
           "<XF86Launch1>" = ''spawn "${dmenu_runapps}/bin/dmenu_runapps"'';
           "M-w w" = ''spawn "${dmenu_select_windows}/bin/dmenu_select_windows"'';
+          "M-C-w" = ''spawn "${pkgs.desktops}/bin/desktops"'';
         };
         description = "Basic XMonad keybindings.";
       };
@@ -338,6 +354,14 @@ in {
         keybindings = writePythonScriptWithPythonPackages "keybindings" [ pkgs.python3Packages.redis pkgs.yad ]
           (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./keybindings.py; })));
+        desktops = writePythonScriptWithPythonPackages "desktops" [
+          pkgs.python3Packages.ewmh
+          pkgs.python3Packages.fuzzywuzzy
+          pkgs.python3Packages.redis
+          pkgs.python3Packages.xlib
+          pkgs.wmctrl
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./desktops.py; })));
       };
 
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
@@ -357,11 +381,19 @@ in {
             onChange = "xmonad --recompile";
           };
         };
-        home.packages = with pkgs; [ dmenu_runapps keybindings ];
+        home.packages = with pkgs; [ dmenu_runapps keybindings desktops ];
         xdg.configFile."xmobar/xmobarrc".text = builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./xmobarrc; }));
       };
     })
     (mkIf cfg.dmenuFrecency.enable { environment.systemPackages = with pkgs; [ dmenu ]; })
+    (mkIf cfg.workspaces.enable {
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.desktops}/bin/desktops --init
+        ${pkgs.redis}/bin/redis-cli set xserver/window_rules ${
+          lib.strings.escapeNixString (builtins.toJSON cfg.workspaces.mappings)
+        }
+      '';
+    })
   ];
 }
