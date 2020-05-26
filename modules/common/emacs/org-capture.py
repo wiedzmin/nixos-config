@@ -42,7 +42,7 @@ def construct_proto_uri(template=None, url=None, title=None, body=None, dont_enc
 
 DEBUG_FILE = "{0}/org-capture.log".format(os.environ["HOME"])
 
-parser = argparse.ArgumentParser(description="Manage Firefox stored sessions.")
+parser = argparse.ArgumentParser(description="Org-capture proxy.")
 parser.add_argument("--debug", "-d", dest="debug", action="store_true",
                     help="dump org-protocol URI to <DEBUG_FILE>")
 parser.add_argument("--template", "-k", dest="template", help="org-capture template key")
