@@ -172,6 +172,7 @@ in {
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = { "${cfg.assets.dirName}/.gitignore".text = cfg.gitignore; };
+        # https://github.com/languitar/pass-git-helper - review for more fine-grained control
         xdg.configFile."pass-git-helper/git-pass-mapping.ini".text = lib.generators.toINI { } {
           "github.com*" = { target = "${config.attributes.mainUser.name}/webservices/social/programming/github.com"; };
           "bitbucket.org*" = {
@@ -203,7 +204,7 @@ in {
               gpg = { textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt"; };
             };
             "push" = { default = "current"; };
-            "absorb" = { maxstack = 75; };
+            "absorb" = { maxstack = 75; }; # TODO: package https://github.com/torbiak/git-autofixup
           } // lib.optionalAttrs (cfg.github.enable) { "github" = { user = cfg.github.user; }; }
             // lib.optionalAttrs (cfg.pager.diff-so-fancy.enable) {
               "pager" = {

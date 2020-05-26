@@ -75,6 +75,7 @@ config.bind('<Shift-y>', 'insert-text -- {primary}', mode='insert')
 config.bind('<Shift-y>', 'insert-text {primary}', mode='insert')
 config.bind('i', 'enter-mode insert')
 
+# TODO: review and rework pass setup
 config.bind(',P', 'spawn --userscript qute-pass --dmenu-invocation dmenu --password-only')
 config.bind(',p', 'spawn --userscript qute-pass --dmenu-invocation dmenu')
 config.bind('<z><l>', 'spawn --userscript qute-pass --username-target secret --username-pattern "^Username: (.+)$"')
