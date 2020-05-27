@@ -25,7 +25,7 @@ parser.add_argument("--session-path", "-s", dest="session_path", default=SESSION
 args = parser.parse_args()
 
 # backing up session
-shutil.copyfile(args.session_path, session_path + BACKUP_SUFFIX)
+shutil.copyfile(args.session_path, args.session_path + BACKUP_SUFFIX)
 
 session = None
 with open(SESSIONS_PATH + DEFAULT_SESSION, "r") as s:
