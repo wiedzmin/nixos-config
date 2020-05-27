@@ -398,7 +398,10 @@ in {
     xmonad.enable = true;
   };
 
-  ide.emacs.enable = true;
+  ide.emacs = {
+    enable = true;
+    xmonad.enable = true;
+  };
 
   custom.knowledgebase = {
     enable = true;

@@ -186,6 +186,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.xmonad.enable) {
       wm.xmonad.keybindings = { "M-w S-e" = ''spawn "${pkgs.procps}/bin/pkill -SIGUSR2 emacs"''; };
+      wm.xmonad.keybindings = { "M-w e" = ''spawn "${pkgs.emacs}/bin/emacsclient -c -a emacs"''; };
     })
   ];
 }
