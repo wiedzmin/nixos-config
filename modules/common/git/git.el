@@ -38,8 +38,11 @@
         ("C-c k" . magit-process-kill))
   (:map dired-mode-map
         ("@" . magit-dired-log))
+  :config
+  (advice-add 'magit-whitespace-disallowed :around (lambda (orig-fun &rest args) (interactive) (insert "-")))
   :custom
   (magit-blame-heading-format "%H %-20a %C %s")
+  (magit-section-initial-visibility-alist '((stashes . hide) (untracked . hide) (unpushed . hide)))
   (magit-diff-refine-hunk t)
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
 
