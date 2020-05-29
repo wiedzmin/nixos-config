@@ -375,7 +375,7 @@ in {
           currentWindowFormat = "#[bg=blue,fg=cyan,bold]#I#[bg=blue,fg=cyan]:#[fg=colour230]#T#[fg=dim]#F";
           windowFormat = "#[fg=cyan,dim]#I#[fg=blue]:#[default]#W#[fg=grey,dim]#F";
           leftFormat = "#{prefix_highlight}#[fg=green](#S) #(whoami)@#H";
-          rightFormat = "#[fg=blue,bright]%k:%M:%S %d/%m/%Y | #{cpu_fg_color}#{cpu_icon}#{cpu_percentage}";
+          rightFormat = "#[fg=blue,bright]%k:%M %d/%m/%Y";
           style = "fg=white,bg=default,default";
           windowStyle = "fg=cyan,bg=default,dim";
           currentWindowStyle = "fg=colour166,bg=red,bright";
@@ -444,7 +444,6 @@ in {
             extraConfig = "set -g @fzf-url-bind 'o'";
           }
           copycat
-          cpu
           fpp
           logging
           prefix-highlight
