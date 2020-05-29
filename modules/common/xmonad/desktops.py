@@ -52,12 +52,18 @@ for window in windows:
     if max_ >=70:
         rule = similarities[max_]
         desktop_name = window_rules[rule]
-        if args.verbosity >= 1 and args.needle in window_title:
-            print("rule '{0}' fired for '{1}' --> {2}".format(rule, window_title, desktop_name))
+        if args.verbosity >= 1:
+            if args.needle and args.needle not in window_title:
+                continue
+        print("rule '{0}' fired for '{1}' --> {2}".format(rule, window_title, desktop_name))
     else:
-        if args.verbosity >= 2 and args.needle in window_title:
-            print("no rule fired for '{0}'".format(window_title))
-    if args.verbosity >= 3 and args.needle in window_title:
+        if args.verbosity >= 2:
+            if args.needle and args.needle not in window_title:
+                continue
+        print("no rule fired for '{0}'".format(window_title))
+    if args.verbosity >= 3:
+        if args.needle and args.needle not in window_title:
+            continue
         print("similarities: {0}\n-----------------".format(similarities))
     if rule:
         desktop_index = int(desktops_map[desktop_name])
