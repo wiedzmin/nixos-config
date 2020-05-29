@@ -537,7 +537,11 @@ in {
 
   custom.xinput = {
     hardware.enable = true;
-    constraintMouse.enable = true;
+    constraintMouse = {
+      enable = true;
+      bottom = 25;
+      top = 0;
+    };
     gestures.enable = true;
     keynav.enable = true;
     xkeysnail.enable = true;
