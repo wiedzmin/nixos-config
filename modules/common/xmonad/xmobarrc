@@ -4,17 +4,16 @@ Config { @xmobarMaybeFont@bgColor = "black"
        , lowerOnStart = False
        , allDesktops = True
        , persistent = True
-       , commands = [ Run Date "%a %d/%m/%y %H:%M:%S" "date" 10
+       , commands = [ Run Date "%a %d/%m/%y %H:%M" "date" 600
                     , Run StdinReader
                     , Run BatteryP ["BAT0"] ["-t", "<acstatus><left>%(<timeleft>)", "-L", "10", "-H", "80", "-p", "3", "--", "-O",
                                              "<fc=green>▲</fc>", "-i", "<fc=green>=</fc>", "-o", "<fc=yellow>▼</fc>",
-                                             "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 200
-                    , Run Com "wifi-status" [] "wifi" 60
+                                             "-L", "-15", "-H", "-5", "-l", "red", "-m", "blue", "-h", "green"] 600
                     , Run Kbd [ ("us", "<fc=#ee9a00>us</fc>")
                               , ("ru", "<fc=green>ru</fc>")
                               ]
                     ]
        , sepChar = "%"
        , alignSep = "}{"
-       , template = "%StdinReader% }{| %battery% | %wifi% | <fc=#ee9a00>%date%</fc> |%kbd%"
+       , template = "%StdinReader% }{| %battery% | <fc=#ee9a00>%date%</fc> |%kbd%"
        }
