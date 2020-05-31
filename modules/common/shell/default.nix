@@ -428,6 +428,9 @@ in {
           set -g visual-silence off
           setw -g monitor-activity on
 
+          set -g set-titles on
+          set -g set-titles-string "#S #W #{pane_title}"
+
           set -g default-shell "/run/current-system/sw/bin/zsh"
         '';
         historyLimit = 102400;
