@@ -49,7 +49,7 @@ for window in windows:
     rule = None
     desktop_name = None
     max_ = max(similarities.keys())
-    if max_ >=70:
+    if max_ >= 75:
         rule = similarities[max_]
         desktop_name = window_rules[rule]
         if args.verbosity >= 1:
