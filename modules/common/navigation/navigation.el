@@ -195,7 +195,7 @@
   (add-to-list 'default-frame-alist `(alpha . (100 . 100)))
   (blink-cursor-mode 0)
   (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
-  (setq frame-title-format "emacs - %b %f") ;; for various external tools
+  (setq-default frame-title-format '("emacs - " "%b %f")) ;; for various external tools
   (setq opacity-percent 75)
   (setq truncate-partial-width-windows nil))
 
