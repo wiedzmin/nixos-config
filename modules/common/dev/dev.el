@@ -17,10 +17,7 @@
   (org-mode-hook . diff-hl-mode)
   (prog-mode . diff-hl-mode)
   :config
-  (diff-hl-margin-mode 1)
-  (diff-hl-amend-mode 1)
-  (diff-hl-flydiff-mode 1)
-  (global-diff-hl-mode 1))
+  (diff-hl-amend-mode 1))
 
 (use-package fic-mode
   :hook

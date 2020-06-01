@@ -171,19 +171,10 @@
   :config
   (imagemagick-register-types))
 
-(use-package autorevert
-  :defer 2
-  :custom
-  (auto-revert-check-vc-info t)
-  :config
-  (global-auto-revert-mode 1))
-
 (use-package backup-each-save
   :hook (after-save-hook . backup-each-save))
 
-(use-package hl-todo
-  :config
-  (global-hl-todo-mode))
+(use-package hl-todo)
 
 (use-package recentf
   :defer 1
@@ -224,9 +215,7 @@
   (super-save-mode 1))
 
 (use-package beginend
-  :delight (beginend-global-mode beginend-prog-mode beginend-magit-status-mode)
-  :config
-  (beginend-global-mode))
+  :delight (beginend-prog-mode beginend-magit-status-mode))
 
 (use-package comment-dwim-2
   :bind
@@ -237,7 +226,6 @@
 
 (use-package company
   :delight " γ"
-  :hook (after-init-hook . global-company-mode)
   :bind
   ("C-<tab>" . company-complete)
   (:map company-active-map
@@ -250,14 +238,7 @@
   (company-idle-delay 0)
   (company-minimum-prefix-length 2)
   (company-tooltip-align-annotations t)
-  (company-show-numbers t)
-  :config
-  (use-package company-quickhelp
-    :config
-    (company-quickhelp-mode 1))
-  (use-package company-statistics
-    :config
-    (company-statistics-mode)))
+  (company-show-numbers t))
 
 (use-package compdef)
 
@@ -307,10 +288,7 @@
   :custom
   (flycheck-check-syntax-automatically '(mode-enabled save idle-change))
   (flycheck-display-errors-delay 0.4)
-  (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
-  (flycheck-global-modes '(not emacs-lisp-mode))
-  :config
-  (global-flycheck-mode 1))
+  (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list))
 
 (use-package helm-flycheck
   :after helm
@@ -424,6 +402,7 @@
   :demand t
   :hook
   ((prog-mode-hook yaml-mode-hook) . smartparens-mode)
+  ((prog-mode-hook yaml-mode-hook) . show-smartparens-mode)
   ((lisp-mode-hook emacs-lisp-mode-hook markdown-mode-hook) . smartparens-strict-mode)
   (eval-expression-minibuffer-setup-hook . smartparens-mode)
   :bind
@@ -433,8 +412,6 @@
         ("M-e" . sp-splice-sexp))
   :config
   (use-package smartparens-config)
-  (smartparens-global-mode t)
-  (show-smartparens-global-mode t)
   (sp-use-paredit-bindings)
   :custom
   (sp-show-pair-delay 0.0)
@@ -483,8 +460,7 @@
   (:map mode-specific-map
         :prefix-map custom-ws-map
         :prefix "x"
-        ("w" . whitespace-mode)
-        ("W" . global-whitespace-mode))
+        ("w" . whitespace-mode))
   :custom
   (whitespace-line-column 121)
   (whitespace-style '(indentation::space
@@ -507,11 +483,13 @@
   (:map mode-specific-map
         ("a" . aggressive-indent-mode))
   :config
-  (global-aggressive-indent-mode 1)
   (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 
 (use-package ws-butler
-  :hook (after-init-hook . ws-butler-global-mode)
+  :after whitespace
+  :bind
+  (:map custom-ws-map
+        ("b" . ws-butler-mode))
   :custom
   (ws-butler-convert-leading-tabs-or-spaces t)
   (ws-butler-global-exempt-modes '(markdown-mode go-mode)))
@@ -524,8 +502,8 @@
   :bind
   (:prefix-map custom-yasnippet-map
                :prefix "<f5>")
-  :hook
-  (after-init-hook . yas-global-mode)
+  :config
+  (yas-global-mode)
   :custom
   (yas-key-syntaxes '("w" "w_" "w_." "^ " "w_.()" yas-try-key-from-whitespace))
   (yas-expand-only-for-last-commands '(self-insert-command))

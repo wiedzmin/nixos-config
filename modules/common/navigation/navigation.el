@@ -115,7 +115,6 @@
   :hook
   (helm-tramp-pre-command-hook . (lambda ()
                                    (setq make-backup-files nil)
-                                   (global-aggressive-indent-mode 0)
                                    (projectile-mode 0)
                                    (editorconfig-mode 0)))
   (helm-tramp-quit-hook . (lambda ()
@@ -172,6 +171,7 @@
 (use-package frame
   :preface
   (defvar opacity-percent 75 "Opacity percent")
+  (defvar custom-frame-title-format '("emacs - " "%b %f"))
   (defun custom/toggle-transparency ()
     (interactive)
     (let ((alpha (frame-parameter nil 'alpha)))
@@ -184,6 +184,8 @@
                       ((numberp (cadr alpha)) (cadr alpha)))
                 100)
            `(,opacity-percent . 50) '(100 . 100)))))
+  (defun keep-custom-frame-title (window)
+    (setq-default frame-title-format custom-frame-title-format))
   :bind
   (:prefix-map frame-map
                :prefix "<f2>"
@@ -191,11 +193,13 @@
                ("k" . delete-frame)
                ("s" . delete-other-frames)
                ("v" . custom/toggle-transparency))
+  :hook
+  (pre-redisplay-functions . keep-custom-frame-title)
   :config
   (add-to-list 'default-frame-alist `(alpha . (100 . 100)))
   (blink-cursor-mode 0)
   (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
-  (setq-default frame-title-format '("emacs - " "%b %f")) ;; for various external tools
+  (setq frame-title-format custom-frame-title-format) ;; for various external tools
   (setq opacity-percent 75)
   (setq truncate-partial-width-windows nil))
 
