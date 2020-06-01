@@ -291,7 +291,7 @@
   (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list))
 
 (use-package helm-flycheck
-  :after helm
+  :after (helm flycheck)
   :bind
   (:map mode-specific-map
         ("y" . helm-flycheck)))
