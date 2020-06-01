@@ -129,7 +129,7 @@
   (save-abbrevs 'silently))
 
 (use-package gcmh
-  :delight " \ufe0f"
+  :delight
   :config
   (gcmh-mode 1))
 
