@@ -399,7 +399,6 @@
 
 (use-package smartparens
   :after dash
-  :demand t
   :hook
   ((prog-mode-hook yaml-mode-hook) . smartparens-mode)
   ((prog-mode-hook yaml-mode-hook) . show-smartparens-mode)
@@ -495,7 +494,6 @@
   (ws-butler-global-exempt-modes '(markdown-mode go-mode)))
 
 (use-package yasnippet
-  :demand t
   :delight yas-minor-mode
   :mode (("@emacsYasnippetSnippets@" . snippet-mode)
          ("\\.yasnippet$" . snippet-mode))

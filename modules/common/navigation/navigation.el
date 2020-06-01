@@ -225,7 +225,6 @@
   (helm-yas-space-match-any-greedy t))
 
 (use-package link-hint
-  :demand t
   :bind
   (:map mode-specific-map
         :prefix-map link-hint-keymap
