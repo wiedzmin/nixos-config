@@ -85,7 +85,8 @@ let
     }
 
     layouts = onWorkspace "scratch" (renamed [Replace "tabs"] tabbedLayout) $
-              onWorkspace "im" (renamed [Replace "tabs"] tabbedLayout) $
+              onWorkspace "im" (renamed [Replace "tabs"] tabbedLayout |||
+                                renamed [Replace "Dishes"] (dwmLayout (MultiDishes 2 3 (1/6)))) $
               onWorkspace "web" (renamed [Replace "OneBig"] (dwmLayout (OneBig (3/4) (3/4)))) $
               onWorkspace "web2" (StackTile 1 (3/100) (1/2)) $
               onWorkspace "web3" (StackTile 1 (3/100) (1/2)) $
