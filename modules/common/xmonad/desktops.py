@@ -48,15 +48,16 @@ UTF8_STRING = ewmh.display.intern_atom('UTF8_STRING')
 windows = ewmh.getClientList()
 
 for window in sorted(windows, key=lambda w: w.get_full_text_property(NET_WM_NAME, UTF8_STRING)):
-    print("================================")
     similarities = {}
     rule = None
     desktop_name = None
+    print("================================")
     window_title = window.get_full_text_property(NET_WM_NAME, UTF8_STRING)
+    window_class = window.get_wm_class()[1]
     if args.verbosity >= 1:
-        print("window: {0}".format(window_title))
+        print("window ({0}): {1}".format(window_class, window_title))
     for tokens in window_rules.keys():
-        ratio = fuzz.token_set_ratio(tokens, window_title, force_ascii=False)
+        ratio = fuzz.token_set_ratio(" ".join(tokens.split()[1:]), window_title, force_ascii=False)
         similarities.setdefault(ratio, []).append(tokens)
     sim_groups = {k: list(g) for k, g in itertools.groupby(sorted(similarities.keys()), key=lambda n: n // 10)}
     group_max, group_second = heapq.nlargest(2, sim_groups.keys())
@@ -69,16 +70,30 @@ for window in sorted(windows, key=lambda w: w.get_full_text_property(NET_WM_NAME
         print("--------------------------------")
         for sim, rule in sorted(similarities.items()):
             print("{0}: {1}".format(sim, rule))
-    if group_delta > SIMILARITY_GROUP_TRESHOLD or direct_delta < SIMILARITY_DIRECT_TRESHOLD:
-        rule = similarities[sim_groups[group_max][0]][0]
-        desktop_name = window_rules[rule]
-        desktop_index = int(desktops_map[desktop_name])
-        if not args.dry_run:
-            ewmh.setWmDesktop(window, desktop_index)
+    rule = similarities[sim_groups[group_max][0]][0]
+    rule_class = rule.split()[0]
+    desktop_name = window_rules[rule]
+    desktop_index = int(desktops_map[desktop_name])
+    move_window = False
+    if window_class != rule_class:
         if args.verbosity >= 1:
-            print("rule: '{0}' --> {1}".format(rule, desktop_name))
+            print("skipping window, overriding rule, non-matching window classes: {0} != {1}".format(window_class, rule_class))
     else:
         if args.verbosity >= 1:
-            print("no rule")
+            print("window classes matched: {0} == {1}, checking rule...".format(window_class, rule_class))
+        if group_delta > SIMILARITY_GROUP_TRESHOLD or direct_delta < SIMILARITY_DIRECT_TRESHOLD:
+            move_window = True
+            if args.verbosity >= 1:
+                print("rule: '{0}' fired".format(rule))
+        elif window_class == rule_class:
+            move_window = True
+            if args.verbosity >= 1:
+                print("no rule fired, but window classes matched, moving window")
+
+    if move_window:
+        if args.verbosity >= 1:
+            print("--> {0}".format(desktop_name))
+        if not args.dry_run:
+            ewmh.setWmDesktop(window, desktop_index)
 
 ewmh.display.flush()
