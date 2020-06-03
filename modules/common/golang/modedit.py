@@ -22,6 +22,8 @@ if not (os.path.exists(go_mod_path) and os.path.isfile(go_mod_path)):
 
 with open(go_mod_path, "r") as f:
     deps_list = re.search(pattern, f.read(), re.DOTALL).group(0).split("\n")[1:-1]
+    deps_list = [dep for dep in deps_list if not dep.startswith("//")]
+    deps_list = [dep for dep in deps_list if dep.startswith("\t")]
     for dep in deps_list:
         deps_dict[dep.split()[0]] = dep.split()[1]
 
