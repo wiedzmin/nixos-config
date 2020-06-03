@@ -241,6 +241,7 @@ in {
 
           git-save-wip
           gitAndTools.git-trim
+          gitAndTools.git-reparent
         ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
