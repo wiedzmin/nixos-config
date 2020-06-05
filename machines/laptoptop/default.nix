@@ -584,7 +584,6 @@ in {
   wm.xmonad = {
     enable = true;
     workspaces.enable = true;
-    dmenuFrecency.enable = true;
   };
 
   home-manager.users."${config.attributes.mainUser.name}" = {

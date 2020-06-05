@@ -7,12 +7,7 @@ let
   dmenu_runapps = pkgs.writeShellScriptBin "dmenu_runapps" ''
     ${pkgs.j4-dmenu-desktop}/bin/j4-dmenu-desktop --display-binary \
       --dmenu="(${pkgs.coreutils}/bin/cat ; (${pkgs.dmenu}/bin/stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
-      ${
-        if cfg.dmenuFrecency.enable then
-          ''${pkgs.haskellPackages.yeganesh}/bin/yeganesh -- -i -l 15 -fn '${config.attributes.wm.fonts.dmenu}'"''
-        else
-          ''${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.wm.fonts.dmenu}'"''
-      }
+      ${pkgs.haskellPackages.yeganesh}/bin/yeganesh -- -i -l 15 -fn '${config.attributes.wm.fonts.dmenu}'"
   '';
   dmenu_select_windows = pkgs.writeShellScriptBin "dmenu_select_windows" ''
     ${pkgs.wmctrl}/bin/wmctrl -a $(${pkgs.wmctrl}/bin/wmctrl -l | \
@@ -353,7 +348,7 @@ in {
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./desktops.py; })));
       };
 
-      environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
+      environment.systemPackages = with pkgs; [ dmenu haskellPackages.xmobar ];
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.activation.purgeKeybindingsCache = {
           after = [ ];
@@ -375,7 +370,6 @@ in {
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./xmobarrc; }));
       };
     })
-    (mkIf cfg.dmenuFrecency.enable { environment.systemPackages = with pkgs; [ dmenu ]; })
     (mkIf cfg.workspaces.enable {
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.desktops}/bin/desktops --init
