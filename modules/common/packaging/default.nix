@@ -101,6 +101,7 @@ in {
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./confctl.py; })));
         };
       };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ niv ]; };
     })
     (mkIf (cfg.enable && cfg.homeManagerBackups.enable) {
       environment.variables.HOME_MANAGER_BACKUP_EXT = "hm_backup";
