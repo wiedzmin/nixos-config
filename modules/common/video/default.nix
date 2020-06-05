@@ -165,12 +165,10 @@ in {
             enable = true;
             backend = "glx";
             vSync = true;
-            package = pkgs.compton-git;
+            package = pkgs.picom;
             extraOptions = ''
-              clear-shadow = true;
               glx-no-rebind-pixmap = true;
               glx-no-stencil = true;
-              paint-on-overlay = true;
               xrender-sync-fence = true;
             '';
           };
