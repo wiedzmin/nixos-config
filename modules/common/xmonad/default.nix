@@ -9,15 +9,15 @@ let
       --dmenu="(${pkgs.coreutils}/bin/cat ; (${pkgs.dmenu}/bin/stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
       ${
         if cfg.dmenuFrecency.enable then
-          ''${pkgs.haskellPackages.yeganesh}/bin/yeganesh -- -i -l 15 -fn '${cfg.fonts.dmenu}'"''
+          ''${pkgs.haskellPackages.yeganesh}/bin/yeganesh -- -i -l 15 -fn '${config.attributes.wm.fonts.dmenu}'"''
         else
-          ''${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${cfg.fonts.dmenu}'"''
+          ''${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.wm.fonts.dmenu}'"''
       }
   '';
   dmenu_select_windows = pkgs.writeShellScriptBin "dmenu_select_windows" ''
     ${pkgs.wmctrl}/bin/wmctrl -a $(${pkgs.wmctrl}/bin/wmctrl -l | \
                                  ${pkgs.coreutils}/bin/cut -d" " -f5- | \
-                                 ${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${cfg.fonts.dmenu}')
+                                 ${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.wm.fonts.dmenu}')
   '';
   configText = ''
     module Main where
@@ -81,7 +81,10 @@ let
     -- TODO: make layouts negotiable, i.e. they could live in separate module
     tabbedLayout = Tabs.tabbed Tabs.shrinkText Tabs.def
     dwmLayout = Dwm.dwmStyle Dwm.shrinkText Dwm.def {
-      ${lib.optionalString (cfg.fonts.default != "") ''fontName = "${cfg.fonts.default}"''}
+      ${
+        lib.optionalString (config.attributes.wm.fonts.default != "")
+        ''fontName = "${config.attributes.wm.fonts.default}"''
+      }
     }
 
     layouts = onWorkspace "scratch" (renamed [Replace "tabs"] tabbedLayout) $
@@ -236,11 +239,6 @@ in {
         default = false;
         description = "Whether to enable Frecency tracking for Dmenu with Yeganesh.";
       };
-      fonts.default = mkOption {
-        type = types.str;
-        default = "";
-        description = "XMonad `internal` default font' definition.";
-      };
       workspaces.enable = mkOption {
         type = types.bool;
         default = false;
@@ -255,16 +253,6 @@ in {
           "emacs" = "work2";
         };
         description = "Actual window-to-workspace mapping based on window title.";
-      };
-      fonts.dmenu = mkOption {
-        type = types.str;
-        default = "";
-        description = "XMonad `internal` dmenu font' definition.";
-      };
-      fonts.xmobar = mkOption {
-        type = types.str;
-        default = "";
-        description = "XMonad `internal` xmobar font' definition.";
       };
       basicKeys = mkOption {
         type = types.attrs;

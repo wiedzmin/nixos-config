@@ -13,9 +13,9 @@ in {
         config.attributes.fonts.basic.package
       ];
     };
-    wm.xmonad.fonts.default = "xft:Fira Code:style=Bold:pixelsize=10";
-    wm.xmonad.fonts.dmenu = "xft:Fira Code:style=Bold:pixelsize=12";
-    wm.xmonad.fonts.xmobar = config.custom.appearance.fonts.basic.xft;
+    attributes.wm.fonts.default = "xft:Fira Code:style=Bold:pixelsize=10";
+    attributes.wm.fonts.dmenu = "xft:Fira Code:style=Bold:pixelsize=12";
+    attributes.wm.fonts.statusbar = config.custom.appearance.fonts.basic.xft;
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = config.custom.appearance.fonts.basic.package;
