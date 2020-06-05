@@ -73,7 +73,6 @@
 (use-package emacs
   :bind
   ("M-\"" . eval-region)
-  ([remap kill-buffer] . kill-this-buffer)
   :hook
   (minibuffer-setup-hook . (lambda () (setq gc-cons-threshold most-positive-fixnum)))
   (minibuffer-exit-hook . (lambda () (setq gc-cons-threshold 800000)))
