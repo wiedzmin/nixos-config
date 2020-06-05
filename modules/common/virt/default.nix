@@ -201,7 +201,6 @@ in {
           docker_swarm_services_info
           hadolintd
           libcgroup
-          remote_docker_logs
           vdi2qcow2
         ] ++ lib.optionals (config.attributes.debug.enable) [ ];
     })
@@ -270,7 +269,6 @@ in {
         "M-d t" =
           ''spawn "${pkgs.docker_containers_traits}/bin/docker_containers_traits" >> showWSOnProperScreen "shell"'';
         "M-d s" = ''spawn "${pkgs.docker_shell}/bin/docker_shell" >> showWSOnProperScreen "shell"'';
-        "M-d l" = ''spawn "${pkgs.remote_docker_logs}/bin/remote_docker_logs" >> showWSOnProperScreen "shell"'';
         "M-d i" =
           ''spawn "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info" >> showWSOnProperScreen "shell"'';
       };
