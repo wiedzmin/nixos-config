@@ -50,6 +50,7 @@ in {
         default = {
           nixos = "/etc/nixos";
           nixpkgs-channels = "${homePrefix githubRoot}/NixOS/nixpkgs-channels";
+          home-manager = "${homePrefix githubRoot}/rycee/home-manager";
           postgres = "${homePrefix githubRoot}/postgres/postgres";
         };
         description = "Bookmarks data.";
