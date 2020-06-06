@@ -275,14 +275,6 @@ in {
         };
         description = "Internal (quite tightly coupled with) XMonad keybindings.";
       };
-      keybindingsCachePath = mkOption {
-        type = types.str;
-        default = homePrefix "keybindings.list";
-        description = "Path to file with cached keybindings.";
-        visible = false;
-        internal = true;
-        readOnly = true;
-      };
     };
   };
 
@@ -303,7 +295,6 @@ in {
         "M-C-q" = { cmd = "xmonad --recompile; xmonad --restart"; };
         "M-q" = { cmd = "xmonad --restart"; };
         "M-C-w" = { cmd = "${pkgs.desktops}/bin/desktops"; };
-        "M-k" = { cmd = "keybindings"; };
       };
 
       custom.housekeeping.metadataCacheInstructions = ''
@@ -313,9 +304,6 @@ in {
       '';
 
       nixpkgs.config.packageOverrides = _: rec {
-        keybindings = writePythonScriptWithPythonPackages "keybindings" [ pkgs.python3Packages.redis pkgs.yad ]
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./keybindings.py; })));
         desktops = writePythonScriptWithPythonPackages "desktops" [
           pkgs.python3Packages.ewmh
           pkgs.python3Packages.fuzzywuzzy
@@ -328,11 +316,6 @@ in {
 
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.activation.purgeKeybindingsCache = {
-          after = [ ];
-          before = [ "linkGeneration" ];
-          data = "rm -f ${cfg.keybindingsCachePath}";
-        };
         home.file = {
           ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./ExtraCombinators.hs;
           ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./WindowTypes.hs;
@@ -343,7 +326,7 @@ in {
             onChange = "xmonad --recompile";
           };
         };
-        home.packages = with pkgs; [ dmenu_runapps keybindings desktops ];
+        home.packages = with pkgs; [ dmenu_runapps desktops ];
         xdg.configFile."xmobar/xmobarrc".text = builtins.readFile
           (pkgs.substituteAll ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./xmobarrc; }));
       };

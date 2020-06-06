@@ -27,7 +27,7 @@ rec {
   internalHeadName = config.attributes.hardware.monitors.internalHead.name;
   internalHeadEdid = config.attributes.hardware.monitors.internalHead.edid;
   internalHeadResolution = config.attributes.hardware.monitors.internalHead.resolution;
-  keybindingsCachePath = config.wm.xmonad.keybindingsCachePath;
+  keybindingsCachePath = config.wmCommon.keybindingsCachePath;
   lockScreenCommand = config.custom.security.lockScreenCommand;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";
   lspPythonMsExtraPaths =
