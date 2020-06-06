@@ -74,7 +74,7 @@ in {
     };
     wlanInterfaces = { "wlan0" = { device = "wlp3s0"; }; };
     # TODO: consider extracting dichotomy below to module
-    networkmanager = { # FIXME: add current user to `networkmanager` group
+    networkmanager = {
       enable = true;
       enableStrongSwan = true;
       unmanaged = [ "br0" "interface-name:vb-*" "interface-name:vbox*" "interface-name:ve-*" "lo" ];
@@ -89,6 +89,7 @@ in {
     dhcpcd.denyInterfaces = [ "docker*" "virbr*" "br*" ];
     nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
   };
+  users.users."${config.attributes.mainUser.name}".extraGroups = [ "networkmanager" ];
 
   environment.shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" "/run/current-system/sw/bin/zsh" ];
 
