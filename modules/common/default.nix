@@ -29,7 +29,7 @@
     ./stumpwm
     ./video
     ./virt
+    ./wm
     ./xinput
-    ./xmonad
   ];
 }

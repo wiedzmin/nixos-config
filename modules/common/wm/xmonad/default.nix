@@ -1,19 +1,10 @@
 { config, lib, pkgs, ... }:
-with import ../../util.nix { inherit config lib pkgs; };
+with import ../../../util.nix { inherit config lib pkgs; };
+with import ../wmutil.nix { inherit config lib pkgs; };
 with lib;
 
 let
   cfg = config.wm.xmonad;
-  dmenu_runapps = pkgs.writeShellScriptBin "dmenu_runapps" ''
-    ${pkgs.j4-dmenu-desktop}/bin/j4-dmenu-desktop --display-binary \
-      --dmenu="(${pkgs.coreutils}/bin/cat ; (${pkgs.dmenu}/bin/stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
-      ${pkgs.haskellPackages.yeganesh}/bin/yeganesh -- -i -l 15 -fn '${config.attributes.wm.fonts.dmenu}'"
-  '';
-  dmenu_select_windows = pkgs.writeShellScriptBin "dmenu_select_windows" ''
-    ${pkgs.wmctrl}/bin/wmctrl -a $(${pkgs.wmctrl}/bin/wmctrl -l | \
-                                 ${pkgs.coreutils}/bin/cut -d" " -f5- | \
-                                 ${pkgs.dmenu}/bin/dmenu -i -l 15 -fn '${config.attributes.wm.fonts.dmenu}')
-  '';
   configText = ''
     module Main where
 
@@ -336,8 +327,8 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         keybindings = writePythonScriptWithPythonPackages "keybindings" [ pkgs.python3Packages.redis pkgs.yad ]
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./keybindings.py; })));
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./keybindings.py; })));
         desktops = writePythonScriptWithPythonPackages "desktops" [
           pkgs.python3Packages.ewmh
           pkgs.python3Packages.fuzzywuzzy
@@ -345,10 +336,10 @@ in {
           pkgs.python3Packages.xlib
           pkgs.wmctrl
         ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./desktops.py; })));
+          (pkgs.substituteAll ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./desktops.py; })));
       };
 
-      environment.systemPackages = with pkgs; [ dmenu haskellPackages.xmobar ];
+      environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.activation.purgeKeybindingsCache = {
           after = [ ];
@@ -367,7 +358,7 @@ in {
         };
         home.packages = with pkgs; [ dmenu_runapps keybindings desktops ];
         xdg.configFile."xmobar/xmobarrc".text = builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./xmobarrc; }));
+          (pkgs.substituteAll ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./xmobarrc; }));
       };
     })
     (mkIf cfg.workspaces.enable {
