@@ -220,11 +220,6 @@ in {
         default = false;
         description = "Whether to enable xmonad.";
       };
-      dmenuFrecency.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable Frecency tracking for Dmenu with Yeganesh.";
-      };
       workspaces.enable = mkOption {
         type = types.bool;
         default = false;
