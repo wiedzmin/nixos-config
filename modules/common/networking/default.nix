@@ -54,10 +54,10 @@ in {
         default = false;
         description = "Whether to enable custom scripts.";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
       extraHosts.enable = mkOption {
         type = types.bool;
@@ -266,9 +266,9 @@ in {
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set net/sshfs_map ${lib.strings.escapeNixString (builtins.toJSON cfg.sshfs.entries)}
       '';
-      wm.xmonad.keybindings = {
-        "M-n f" = ''spawn "${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount"'';
-        "M-n S-f" = ''spawn "${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount"'';
+      wmCommon.keys = {
+        "M-n S-f" = { cmd = "${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount"; };
+        "M-n f" = { cmd = "${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount"; };
       };
     })
     (mkIf (cfg.enable && cfg.remoteControlling.enable) {
@@ -294,17 +294,28 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.scripts.enable) { environment.systemPackages = with pkgs; [ wifi-status ]; })
-    (mkIf (cfg.enable && cfg.xmonad.enable) {
+    (mkIf (cfg.enable && cfg.wm.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ wpa_supplicant_gui ]; };
-      wm.xmonad.keybindings = {
-        "M-n s" = ''spawn "${pkgs.sshmenu}/bin/sshmenu" >> showWSOnProperScreen "shell"'';
-        "M-n d" = ''spawn "${pkgs.sshmenu}/bin/sshmenu --choices" >> showWSOnProperScreen "shell"'';
-        "M-n t" = ''spawn "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux" >> showWSOnProperScreen "shell"'';
-        "M-n c" = ''spawn "${pkgs.wpa_supplicant_gui}/bin/wpa_gui"'';
-        "M-n w c" = ''
-          spawn "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli" >> showWSOnProperScreen "shell"''; # FIXME: make conditional
-        "M-s n <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart nscd.service"'';
-        "M-n i" = ''spawn "${pkgs.ifconfless}/bin/ifconfless"'';
+      wmCommon.keys = {
+        "M-n c" = { cmd = "${pkgs.wpa_supplicant_gui}/bin/wpa_gui"; };
+        "M-n i" = { cmd = "${pkgs.ifconfless}/bin/ifconfless"; };
+        "M-s n <Up>" = { cmd = "${pkgs.systemd}/bin/systemctl restart nscd.service"; };
+        "M-n d" = {
+          cmd = "${pkgs.sshmenu}/bin/sshmenu --choices";
+          desktop = "shell";
+        };
+        "M-n s" = {
+          cmd = "${pkgs.sshmenu}/bin/sshmenu";
+          desktop = "shell";
+        };
+        "M-n t" = {
+          cmd = "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux";
+          desktop = "shell";
+        };
+        "M-n w c" = {
+          cmd = "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli";
+          desktop = "shell";
+        }; # FIXME: make conditional
       };
     })
   ];

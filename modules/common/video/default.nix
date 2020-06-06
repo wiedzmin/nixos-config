@@ -118,10 +118,10 @@ in {
         default = false;
         description = "Whether to enable debug tools.";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad bindings.";
+        description = "Whether to enable WM bindings.";
       };
       debug.enable = mkOption {
         type = types.bool;
@@ -252,15 +252,15 @@ in {
         };
       };
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = {
-        "<XF86MonBrightnessUp>" = ''spawn "${pkgs.light}/bin/light -A ${toString cfg.backlightDelta}"'';
-        "<XF86MonBrightnessDown>" = ''spawn "${pkgs.light}/bin/light -U ${toString cfg.backlightDelta}"'';
-        "C-<XF86MonBrightnessUp>" = ''spawn "${pkgs.light}/bin/light -S 100"'';
-        "C-<XF86MonBrightnessDown>" = ''spawn "${pkgs.light}/bin/light -S 20"'';
-        "M-r a" = ''spawn "${pkgs.autorandr_profiles}/bin/autorandr_profiles"'';
-        "M-M1-x" = ''spawn "${pkgs.autorandr}/bin/autorandr --load mobile"'';
-        "M-r c" = ''spawn "${pkgs.systemd}/bin/systemctl --user restart compton.service"'';
+    (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.keys = {
+        "<XF86MonBrightnessDown>" = { cmd = "${pkgs.light}/bin/light -U ${toString cfg.backlightDelta}"; };
+        "<XF86MonBrightnessUp>" = { cmd = "${pkgs.light}/bin/light -A ${toString cfg.backlightDelta}"; };
+        "C-<XF86MonBrightnessDown>" = { cmd = "${pkgs.light}/bin/light -S 20"; };
+        "C-<XF86MonBrightnessUp>" = { cmd = "${pkgs.light}/bin/light -S 100"; };
+        "M-M1-x" = { cmd = "${pkgs.autorandr}/bin/autorandr --load mobile"; };
+        "M-r a" = { cmd = "${pkgs.autorandr_profiles}/bin/autorandr_profiles"; };
+        "M-r c" = { cmd = "${pkgs.systemd}/bin/systemctl --user restart compton.service"; };
       };
     })
     (mkIf (cfg.enable && cfg.debug.enable) {

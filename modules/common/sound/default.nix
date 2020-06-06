@@ -35,10 +35,10 @@ in {
         default = { };
         description = "Pulseaudio daemon configuration";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings";
+        description = "Whether to enable WM keybindings";
       };
     };
   };
@@ -55,26 +55,30 @@ in {
       };
       environment.systemPackages = with pkgs; [ pasystray lxqt.pavucontrol-qt ];
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = {
-        "<XF86AudioRaiseVolume>" = ''
-          spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}+"'';
-        "<XF86AudioLowerVolume>" = ''
-          spawn "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}-"'';
-        "<XF86AudioPrev>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players previous"'';
-        "<XF86AudioPlay>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players play-pause"'';
-        "<XF86AudioNext>" = ''spawn "${pkgs.playerctl}/bin/playerctl --all-players next"'';
-        "<XF86AudioMute>" = ''spawn "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle"'';
-        "<XF86AudioMicMute>" = ''spawn "${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle"'';
-        "M-<XF86AudioNext>" = ''
-          spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${
-            builtins.toString config.custom.content.players.deltaSeconds
-          }+"'';
-        "M-<XF86AudioPrev>" = ''
-          spawn "${pkgs.playerctl}/bin/playerctl --all-players position ${
-            builtins.toString config.custom.content.players.deltaSeconds
-          }-"'';
-        "M-p" = ''spawn "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt"'';
+    (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.keys = {
+        "<XF86AudioRaiseVolume>" = {
+          cmd = "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}+";
+        };
+        "<XF86AudioLowerVolume>" = {
+          cmd = "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}-";
+        };
+        "<XF86AudioPrev>" = { cmd = "${pkgs.playerctl}/bin/playerctl --all-players previous"; };
+        "<XF86AudioPlay>" = { cmd = "${pkgs.playerctl}/bin/playerctl --all-players play-pause"; };
+        "<XF86AudioNext>" = { cmd = "${pkgs.playerctl}/bin/playerctl --all-players next"; };
+        "<XF86AudioMute>" = { cmd = "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle"; };
+        "<XF86AudioMicMute>" = { cmd = "${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle"; };
+        "M-<XF86AudioNext>" = {
+          cmd = "${pkgs.playerctl}/bin/playerctl --all-players position ${
+              builtins.toString config.custom.content.players.deltaSeconds
+            }+";
+        };
+        "M-<XF86AudioPrev>" = {
+          cmd = "${pkgs.playerctl}/bin/playerctl --all-players position ${
+              builtins.toString config.custom.content.players.deltaSeconds
+            }-";
+        };
+        "M-p" = { cmd = "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt"; };
       };
     })
   ];

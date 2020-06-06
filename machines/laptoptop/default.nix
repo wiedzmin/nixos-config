@@ -237,7 +237,7 @@ in {
       current = "mongolia-spring-1.jpg";
     };
     emacs.enable = true;
-    xmonad.enable = true;
+    wm.enable = true;
   };
 
   custom.browsers = {
@@ -295,7 +295,7 @@ in {
       enable = true;
       paths = [ (homePrefix ".mozilla") ];
     };
-    xmonad.enable = true;
+    wm.enable = true;
   };
 
   custom.dev = {
@@ -307,7 +307,7 @@ in {
     bookmarks.enable = true;
     misc.enable = true;
     emacs.enable = true;
-    xmonad.enable = true;
+    wm.enable = true;
     secrets.snippets.enable = true;
   };
 
@@ -384,12 +384,12 @@ in {
       enable = true;
       calendarTimespec = "*-*-* 00:05:00";
     };
-    xmonad.enable = true;
+    wm.enable = true;
   };
 
   ide.emacs = {
     enable = true;
-    xmonad.enable = true;
+    wm.enable = true;
   };
 
   custom.knowledgebase = {
@@ -403,7 +403,7 @@ in {
       enable = true;
       daemonConfig = { flat-volumes = "no"; };
     };
-    xmonad.enable = true;
+    wm.enable = true;
   };
 
   custom.navigation = {
@@ -414,7 +414,7 @@ in {
     misc.enable = true;
     snippets.enable = true;
     emacs.enable = true;
-    xmonad.enable = true;
+    wm.enable = true;
     webjumps.enable = true;
     searchengines.enable = true;
   };
@@ -424,7 +424,7 @@ in {
     clients.enable = true;
     messengers.enable = true;
     scripts.enable = true;
-    xmonad.enable = true;
+    wm.enable = true;
     extraHosts.enable = true;
     sshfs.enable = true;
     secrets = {
@@ -444,7 +444,6 @@ in {
     scripts.enable = true;
     homeManagerBackups.enable = false;
     emacs.enable = true;
-    xmonad.enable = true;
   };
 
   custom.paperworks = {
@@ -487,7 +486,7 @@ in {
       suspensionThreshold = 10;
     };
     appsSuspension.enable = true;
-    xmonad.enable = true;
+    wm.enable = true;
   };
 
   custom.security = {
@@ -495,7 +494,7 @@ in {
     pinentryFlavor = "qt";
     polkit.silentAuth = true;
     emacs.enable = true;
-    xmonad.enable = true;
+    wm.enable = true;
   };
 
   custom.shell = {
@@ -506,7 +505,7 @@ in {
     liquidPrompt.enable = true;
     bookmarks.enable = true;
     emacs.enable = true;
-    xmonad.enable = true;
+    wm.enable = true;
   };
 
   custom.virtualization = {
@@ -520,7 +519,7 @@ in {
     };
     libvirt.enable = true;
     virtualbox.enable = false;
-    xmonad.enable = true;
+    wm.enable = true;
   };
 
   custom.xinput = {
@@ -561,7 +560,7 @@ in {
     };
     screenlocker.enable = true;
     ddc.enable = true;
-    xmonad.enable = true;
+    wm.enable = true;
   };
 
   themes.fonts.iosevka.enable = true;
@@ -573,11 +572,11 @@ in {
       postgresql.enable = true;
       cli.enable = true;
       misc.enable = true;
-      xmonad.enable = true;
+      wm.enable = true;
     };
     ebooks = {
       readers.enable = true;
-      xmonad.enable = true;
+      wm.enable = true;
     };
   };
 

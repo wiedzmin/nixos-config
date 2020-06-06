@@ -76,10 +76,10 @@ in {
         default = "";
         description = "Set of commands needed to initialize system-wide data cache.";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
     };
   };
@@ -269,10 +269,10 @@ in {
         home.packages = with pkgs; [ dupd jdupes rmlint fpart ];
       };
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = {
-        "M-C-j" = ''spawn "${pkgs.srvctl}/bin/srvctl"'';
-        "M-S-u" = ''spawn "${pkgs.uptime_info}/bin/uptime_info"'';
+    (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.keys = {
+        "M-C-j" = { cmd = "${pkgs.srvctl}/bin/srvctl"; };
+        "M-S-u" = { cmd = "${pkgs.uptime_info}/bin/uptime_info"; };
       };
     })
   ];

@@ -35,10 +35,10 @@ in {
         default = false;
         description = "Whether to enable ebooks processors (mostly pdf-centric).";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
       staging.packages = mkOption {
         type = types.listOf types.package;
@@ -97,8 +97,8 @@ in {
         home.packages = with pkgs; [ enca img2pdf pandoc pdfcpu pdftk ];
       };
     })
-    (mkIf (cfg.xmonad.enable && cfg.readers.enable) {
-      wm.xmonad.keybindings = { "M-r b" = ''spawn "${pkgs.bookshelf}/bin/bookshelf"''; };
+    (mkIf (cfg.wm.enable && cfg.readers.enable) {
+      wmCommon.keys = { "M-r b" = { cmd = "${pkgs.bookshelf}/bin/bookshelf"; }; };
     })
     (mkIf (cfg.staging.packages != [ ]) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = cfg.staging.packages; };

@@ -36,10 +36,10 @@ in {
         default = false;
         description = "Whether to enable Emacs security-related setup.";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
     };
   };
@@ -116,10 +116,10 @@ in {
         });
       '';
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = {
-        "<XF86ScreenSaver>" = ''spawn "${cfg.lockScreenCommand}"'';
-        "M-r p" = ''spawn "${pkgs.rofi-pass}/bin/rofi-pass"'';
+    (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.keys = {
+        "<XF86ScreenSaver>" = { cmd = "${cfg.lockScreenCommand}"; };
+        "M-r p" = { cmd = "${pkgs.rofi-pass}/bin/rofi-pass"; };
       };
     })
   ];

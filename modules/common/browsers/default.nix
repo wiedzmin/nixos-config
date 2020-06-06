@@ -566,12 +566,12 @@ in {
         };
         home.packages = with pkgs; [ dump_firefox_session manage_firefox_sessions rotate_firefox_session_dumps ];
       };
-      wm.xmonad.keybindings = lib.optionalAttrs (config.wm.xmonad.enable) {
-        "M-b s s" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --save"'';
-        "M-b s o" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --open"'';
-        "M-b s e" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --edit"'';
-        "M-b s d" = ''spawn "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --delete"'';
-        "M-b s c" = ''spawn "${pkgs.collect_links_on_page}/bin/collect_links_on_page"'';
+      wmCommon.keys = {
+        "M-b s s" = { cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --save"; };
+        "M-b s o" = { cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --open"; };
+        "M-b s e" = { cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --edit"; };
+        "M-b s d" = { cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --delete"; };
+        "M-b s c" = { cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page"; };
       };
       systemd.user.services."backup-current-session-firefox" = {
         description = "Backup current firefox session (tabs)";

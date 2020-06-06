@@ -90,10 +90,10 @@ in {
         default = [ ];
         description = "List of staging packages.";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
       pythonLib = mkOption {
         type = types.lines;
@@ -305,11 +305,11 @@ in {
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dev.el; }));
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable && config.custom.virtualization.docker.enable) {
-      wm.xmonad.keybindings = {
-        "M-s d <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl restart docker-devdns.service"'';
-        "M-s d <Down>" = ''spawn "${pkgs.systemd}/bin/systemctl stop docker-devdns.service"'';
-      } // lib.optionalAttrs (cfg.repoSearch.enable) { "M-r r" = ''spawn "${pkgs.reposearch}/bin/reposearch"''; };
+    (mkIf (cfg.enable && cfg.wm.enable && config.custom.virtualization.docker.enable) {
+      wmCommon.keys = {
+        "M-s d <Up>" = { cmd = "${pkgs.systemd}/bin/systemctl restart docker-devdns.service"; };
+        "M-s d <Down>" = { cmd = "${pkgs.systemd}/bin/systemctl stop docker-devdns.service"; };
+      } // lib.optionalAttrs (cfg.repoSearch.enable) { "M-r r" = { cmd = "${pkgs.reposearch}/bin/reposearch"; }; };
     })
     (mkIf (cfg.staging.packages != [ ]) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = cfg.staging.packages; };

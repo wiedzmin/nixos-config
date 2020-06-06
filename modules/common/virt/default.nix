@@ -93,10 +93,10 @@ in {
         default = false;
         description = "Whether to enable VirtualBox";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
       staging.packages = mkOption {
         type = types.listOf types.package;
@@ -264,13 +264,20 @@ in {
           virtviewer
         ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
     })
-    (mkIf (cfg.docker.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = {
-        "M-d t" =
-          ''spawn "${pkgs.docker_containers_traits}/bin/docker_containers_traits" >> showWSOnProperScreen "shell"'';
-        "M-d s" = ''spawn "${pkgs.docker_shell}/bin/docker_shell" >> showWSOnProperScreen "shell"'';
-        "M-d i" =
-          ''spawn "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info" >> showWSOnProperScreen "shell"'';
+    (mkIf (cfg.docker.enable && cfg.wm.enable) {
+      wmCommon.keys = {
+        "M-d t" = {
+          cmd = "${pkgs.docker_containers_traits}/bin/docker_containers_traits";
+          desktop = "shell";
+        };
+        "M-d s" = {
+          cmd = "${pkgs.docker_shell}/bin/docker_shell";
+          desktop = "shell";
+        };
+        "M-d i" = {
+          cmd = "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info";
+          desktop = "shell";
+        };
       };
     })
   ];

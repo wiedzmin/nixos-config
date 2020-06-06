@@ -1,5 +1,6 @@
 { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
+with import ../wm/wmutil.nix { inherit config lib pkgs; };
 with lib;
 
 let cfg = config.custom.navigation;
@@ -95,10 +96,10 @@ in {
           Whether to enable customized navigation for Emacs.
         '';
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
     };
   };
@@ -361,12 +362,25 @@ in {
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./navigation.el; }));
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = {
-        "M-/" = ''spawn "${pkgs.search_selection}/bin/search_selection" >> showWSOnProperScreen "web"'';
-        "M-C-/" = ''spawn "${pkgs.search_prompt}/bin/search_prompt" >> showWSOnProperScreen "web"'';
-        "M-j" = ''spawn "${pkgs.webjumps}/bin/webjumps" >> showWSOnProperScreen "web"'';
-        "M-i s" = ''spawn "${pkgs.insert_snippet}/bin/insert_snippet"'';
+    (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.keys = {
+        "M-/" = {
+          cmd = "${pkgs.search_selection}/bin/search_selection";
+          desktop = "web";
+        };
+        "M-C-/" = {
+          cmd = "${pkgs.search_prompt}/bin/search_prompt";
+          desktop = "web";
+        };
+        "M-j" = {
+          cmd = "${pkgs.webjumps}/bin/webjumps";
+          desktop = "web";
+        };
+        "<XF86Launch1>" = { cmd = "${dmenu_runapps}/bin/dmenu_runapps"; };
+        "M-S-<Return>" = { cmd = "${config.custom.shell.terminal}"; };
+        "M-S-p" = { cmd = "${dmenu_runapps}/bin/dmenu_runapps"; };
+        "M-i s" = { cmd = "${pkgs.insert_snippet}/bin/insert_snippet"; };
+        "M-w w" = { cmd = "${dmenu_select_windows}/bin/dmenu_select_windows"; };
       };
     })
   ];

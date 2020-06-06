@@ -67,10 +67,10 @@ in {
         };
         description = "Apps suspending rules.";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
     };
   };
@@ -97,10 +97,10 @@ in {
         };
       };
     })
-    (mkIf (cfg.xmonad.enable && cfg.appsSuspension.enable) {
-      wm.xmonad.keybindings = {
-        "M-s x <Up>" = ''spawn "${pkgs.systemd}/bin/systemctl --user restart xsuspender.service"'';
-        "M-s x <Down>" = ''spawn "${pkgs.systemd}/bin/systemctl --user stop xsuspender.service"'';
+    (mkIf (cfg.wm.enable && cfg.appsSuspension.enable) {
+      wmCommon.keys = {
+        "M-s x <Up>" = { cmd = "${pkgs.systemd}/bin/systemctl --user restart xsuspender.service"; };
+        "M-s x <Down>" = { cmd = "${pkgs.systemd}/bin/systemctl --user stop xsuspender.service"; };
       };
     })
     (mkIf (cfg.batteryManagement.enable) {

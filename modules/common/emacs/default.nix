@@ -74,10 +74,10 @@ in {
           Aggregated content of init.el file.
         '';
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
     };
   };
@@ -184,9 +184,11 @@ in {
         };
       };
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = { "M-w S-e" = ''spawn "${pkgs.procps}/bin/pkill -SIGUSR2 emacs"''; };
-      wm.xmonad.keybindings = { "M-w e" = ''spawn "${pkgs.emacs}/bin/emacsclient -c -a emacs"''; };
+    (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.keys = {
+        "M-w S-e" = { cmd = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs"; };
+        "M-w e" = { cmd = "${pkgs.emacs}/bin/emacsclient -c -a emacs"; };
+      };
     })
   ];
 }

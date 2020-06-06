@@ -55,10 +55,10 @@ in {
         default = [ ];
         description = "List of paths to warm up.";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
     };
   };
@@ -212,18 +212,18 @@ in {
         wantedBy = [ "graphical-session.target" ];
       };
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable && cfg.bookmarks.enable) {
-      wm.xmonad.keybindings = { "M-r m" = ''spawn "${pkgs.buku_add}/bin/buku_add"''; };
+    (mkIf (cfg.enable && cfg.wm.enable && cfg.bookmarks.enable) {
+      wmCommon.keys = { "M-r m" = { cmd = "${pkgs.buku_add}/bin/buku_add"; }; };
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable && cfg.screenshots.enable) {
-      wm.xmonad.keybindings = {
-        "<Print>" = ''spawn "${pkgs.screenshot_active_window}/bin/screenshot_active_window"'';
-        "C-<Print>" = ''spawn "${pkgs.screenshot_full}/bin/screenshot_full"'';
-        "M-<Print>" = ''spawn "${pkgs.screenshot_region}/bin/screenshot_region"'';
+    (mkIf (cfg.enable && cfg.wm.enable && cfg.screenshots.enable) {
+      wmCommon.keys = {
+        "<Print>" = { cmd = "${pkgs.screenshot_active_window}/bin/screenshot_active_window"; };
+        "C-<Print>" = { cmd = "${pkgs.screenshot_full}/bin/screenshot_full"; };
+        "M-<Print>" = { cmd = "${pkgs.screenshot_region}/bin/screenshot_region"; };
       };
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = { "M-o i" = ''spawn "${pkgs.paste_to_ix}/bin/paste_to_ix"''; };
+    (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.keys = { "M-o i" = { cmd = "${pkgs.paste_to_ix}/bin/paste_to_ix"; }; };
     })
   ];
 }

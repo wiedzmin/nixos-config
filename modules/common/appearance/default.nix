@@ -85,10 +85,10 @@ in {
         default = false;
         description = "Whether to enable Emacs appearance setup.";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
     };
   };
@@ -195,8 +195,8 @@ in {
         };
       };
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = { "M-M1-q" = ''spawn "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources"''; };
+    (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.keys = { "M-M1-q" = { cmd = "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources"; }; };
     })
   ];
 }

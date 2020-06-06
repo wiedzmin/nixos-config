@@ -55,11 +55,6 @@ in {
         default = false;
         description = "Whether to enable packaging-related Emacs setup.";
       };
-      xmonad.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable XMonad keybindings.";
-      };
       staging.packages = mkOption {
         type = types.listOf types.package;
         default = [ ];

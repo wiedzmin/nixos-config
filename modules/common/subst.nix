@@ -51,8 +51,8 @@ rec {
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
   searchReposRoot = config.custom.dev.repoSearch.root;
   globalWorkspaceRoot = config.custom.navigation.workspaceRoots.global;
-  xmobarMaybeFont = lib.optionalString (config.attributes.wm.fonts.statusbar != "")
-    ''font = "${config.attributes.wm.fonts.statusbar}"${mkNewlineAndIndent 7}, '';
+  xmobarMaybeFont = lib.optionalString (config.wmCommon.fonts.statusbar != "")
+    ''font = "${config.wmCommon.fonts.statusbar}"${mkNewlineAndIndent 7}, '';
 } // lib.optionalAttrs (config.custom.browsers.firefox.enable) rec {
   firefoxProfilePath =
     config.home-manager.users."${config.attributes.mainUser.name}".programs.firefox.profiles.default.path;

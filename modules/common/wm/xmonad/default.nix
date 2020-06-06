@@ -67,10 +67,7 @@ let
     -- TODO: make layouts negotiable, i.e. they could live in separate module
     tabbedLayout = Tabs.tabbed Tabs.shrinkText Tabs.def
     dwmLayout = Dwm.dwmStyle Dwm.shrinkText Dwm.def {
-      ${
-        lib.optionalString (config.attributes.wm.fonts.default != "")
-        ''fontName = "${config.attributes.wm.fonts.default}"''
-      }
+      ${lib.optionalString (config.wmCommon.fonts.default != "") ''fontName = "${config.wmCommon.fonts.default}"''}
     }
 
     layouts = onWorkspace "scratch" (renamed [Replace "tabs"] tabbedLayout) $
@@ -129,10 +126,9 @@ let
                   , NS "redis" (scratchpadTerminal ++ " -t redis -e redis-tui") (title =? "redis") nonFloating
                   ]
 
-    customKeys conf = [ ${
-      lib.concatStringsSep "${mkNewlineAndIndent 18}, "
-      (lib.mapAttrsToList (keys: command: ''"${keys}" ~> ${command}'') (with cfg; basicKeys // keybindings))
-    }${mkNewlineAndIndent 18}]
+    customKeys conf = [ ${mkKeysXmonadRaw cfg.internalKeys 18}
+                      , ${mkKeysXmonadSpawn config.wmCommon.keys 18}
+                      ]
 
     layoutKeys = [ "M-; " ++ keys ~> sendMessage $ JumpToLayout $ layout | (keys, layout) <- layoutMappings ]
 
@@ -235,9 +231,9 @@ in {
         };
         description = "Actual window-to-workspace mapping based on window title.";
       };
-      basicKeys = mkOption {
+      internalKeys = mkOption {
         type = types.attrs;
-        default = { # internal xmonad bindings
+        default = {
           "C-\\\\" = "sendMessage (XkbToggle Nothing)";
           "M-<Home>" = "toggleWS";
           "M-<Return>" = "promote";
@@ -254,8 +250,6 @@ in {
           "M-t" = "withFocused $ windows . W.sink";
           "M-x a" = "windows copyToAll"; # @@ Make focused window always visible
           "M-x k" = "killAllOtherCopies"; # @@ Toggle window state back
-          "M-C-q" = ''spawn "xmonad --recompile; xmonad --restart"'';
-          "M-q" = ''spawn "xmonad --restart"'';
           "M-a 1" = ''namedScratchpadAction scratchpads "htop"'';
           "M-a 2" = ''namedScratchpadAction scratchpads "iotop"'';
           "M-a 3" = ''namedScratchpadAction scratchpads "gotop"'';
@@ -278,25 +272,16 @@ in {
           "M-<Left>" = "windowGo L True";
           "M-<Up>" = "windowGo U True";
           "M-<Down>" = "windowGo D True";
-          # -- # TODO: consider split below bindings from internal ones above
-          "M-k" = ''spawn "keybindings"'';
-          "M-S-<Return>" = ''spawn "${config.custom.shell.terminal}"'';
-          "M-S-p" = ''spawn "${dmenu_runapps}/bin/dmenu_runapps"'';
-          "<XF86Launch1>" = ''spawn "${dmenu_runapps}/bin/dmenu_runapps"'';
-          "M-w w" = ''spawn "${dmenu_select_windows}/bin/dmenu_select_windows"'';
-          "M-C-w" = ''spawn "${pkgs.desktops}/bin/desktops"'';
         };
-        description = "Basic XMonad keybindings.";
-      };
-      keybindings = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "XMonad keybindings.";
+        description = "Internal (quite tightly coupled with) XMonad keybindings.";
       };
       keybindingsCachePath = mkOption {
         type = types.str;
         default = homePrefix "keybindings.list";
         description = "Path to file with cached keybindings.";
+        visible = false;
+        internal = true;
+        readOnly = true;
       };
     };
   };
@@ -314,9 +299,16 @@ in {
         displayManager = { defaultSession = "none+xmonad"; };
       };
 
+      wmCommon.keys = {
+        "M-C-q" = { cmd = "xmonad --recompile; xmonad --restart"; };
+        "M-q" = { cmd = "xmonad --restart"; };
+        "M-C-w" = { cmd = "${pkgs.desktops}/bin/desktops"; };
+        "M-k" = { cmd = "keybindings"; };
+      };
+
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
-          lib.strings.escapeNixString (builtins.toJSON (with cfg; basicKeys // keybindings))
+          lib.strings.escapeNixString (builtins.toJSON (cfg.internalKeys // config.wmCommon.keys))
         }
       '';
 

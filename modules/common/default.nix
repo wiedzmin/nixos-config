@@ -26,10 +26,11 @@
     ./shell
     ./shell/tmux.nix
     ./sound
-    ./stumpwm
     ./video
     ./virt
     ./wm
+    ./wm/stumpwm
+    ./wm/xmonad
     ./xinput
   ];
 }

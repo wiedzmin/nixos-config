@@ -50,10 +50,10 @@ in {
         default = { };
         description = "Job dbms metadata.";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
     };
   };
@@ -147,7 +147,7 @@ in {
         home.packages = with pkgs; [ nixpkgs-pinned-05_12_19.nodePackages.elasticdump ];
       };
     })
-    (mkIf (cfg.cli.enable && cfg.xmonad.enable) {
+    (mkIf (cfg.cli.enable && cfg.wm.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         dbms = writePythonScriptWithPythonPackages "dbms" [
           pkgs.pass
@@ -162,7 +162,12 @@ in {
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.cli.meta)}
       '';
-      wm.xmonad.keybindings = { "M-r d" = ''spawn "${pkgs.dbms}/bin/dbms" >> showWSOnProperScreen "shell"''; };
+      wmCommon.keys = {
+        "M-r d" = {
+          cmd = "${pkgs.dbms}/bin/dbms";
+          desktop = "shell";
+        };
+      };
     })
   ];
 }

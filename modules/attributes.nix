@@ -84,21 +84,6 @@ with lib;
         "application/vnd.openxmlformats-officedocument.spreadsheetml.template"
       ];
     };
-    wm.fonts.default = mkOption {
-      type = types.str;
-      default = "";
-      description = "Current WM `internal` default font' definition.";
-    };
-    wm.fonts.dmenu = mkOption {
-      type = types.str;
-      default = "";
-      description = "Current WM `internal` dmenu font' definition.";
-    };
-    wm.fonts.statusbar = mkOption {
-      type = types.str;
-      default = "";
-      description = "Current WM `internal` statusbar font' definition.";
-    };
     debug.enable = mkOption {
       description = "Whether to enable unfinished/in-development/broken custom scripts/packages";
       type = types.bool;

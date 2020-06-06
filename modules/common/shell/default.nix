@@ -78,10 +78,10 @@ in {
         default = false;
         description = "Whether to enable shell-related Emacs infra.";
       };
-      xmonad.enable = mkOption {
+      wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable XMonad keybindings.";
+        description = "Whether to enable WM keybindings.";
       };
       staging.packages = mkOption {
         type = types.listOf types.package;
@@ -518,8 +518,8 @@ in {
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./shell.el; }));
 
     })
-    (mkIf (cfg.enable && cfg.xmonad.enable) {
-      wm.xmonad.keybindings = { "M-r t" = ''spawn "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions"''; };
+    (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.keys = { "M-r t" = { cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions"; }; };
     })
   ];
 }
