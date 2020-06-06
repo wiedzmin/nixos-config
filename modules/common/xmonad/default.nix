@@ -371,8 +371,10 @@ in {
       };
     })
     (mkIf cfg.workspaces.enable {
-      custom.housekeeping.metadataCacheInstructions = ''
+      services.xserver.displayManager.sessionCommands = ''
         ${pkgs.desktops}/bin/desktops --init
+      '';
+      custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set xserver/window_rules ${
           lib.strings.escapeNixString (builtins.toJSON cfg.workspaces.mappings)
         }

@@ -88,11 +88,6 @@ in {
     (mkIf (cfg.enable) {
       services.redis.enable = true; # for various caching needs
 
-      # xhost local:root &>/dev/null - investigate how this command could be automated
-      systemd.services.redis.environment = {
-        DISPLAY = ":0";
-        XAUTHORITY = "${homePrefix ".Xauthority"}";
-      };
       systemd.services.redis.postStart = cfg.metadataCacheInstructions;
 
       nixpkgs.config.packageOverrides = _: rec {

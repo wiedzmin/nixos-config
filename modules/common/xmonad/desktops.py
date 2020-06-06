@@ -19,7 +19,7 @@ def prepare_desktops_map():
     desktops = get_desktops_meta_task.stdout.read().decode().strip().split("\n")
     result = get_desktops_meta_task.wait()
     if result != 0:
-        raise Exception(message=get_desktops_meta_task.stderr.read().decode())
+        return None
     return { desktop[-1]: desktop[0] for desktop in [desktop.split() for desktop in desktops]}
 
 
@@ -33,14 +33,17 @@ parser.add_argument("--grep", "-g", dest="needle",
 parser.add_argument("--dry-run", "-0", dest="dry_run", action="store_true",
                     help="Do not change anything")
 args = parser.parse_args()
-
 r = redis.Redis(host='localhost', port=6379, db=0)
-desktops_map = json.loads(r.get("xserver/desktops_map"))
-window_rules = json.loads(r.get("xserver/window_rules"))
 
 if args.init:
-    r.set("xserver/desktops_map", json.dumps(prepare_desktops_map()))
+    desktops_map = prepare_desktops_map()
+    if not desktops_map:
+        sys.exit(128)
+    r.set("xserver/desktops_map", json.dumps(desktops_map))
     sys.exit(0)
+
+desktops_map = json.loads(r.get("xserver/desktops_map"))
+window_rules = json.loads(r.get("xserver/window_rules"))
 
 ewmh = EWMH()
 NET_WM_NAME = ewmh.display.intern_atom('_NET_WM_NAME')
