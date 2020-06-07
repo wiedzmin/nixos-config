@@ -193,8 +193,10 @@
                ("k" . delete-frame)
                ("s" . delete-other-frames)
                ("v" . custom/toggle-transparency))
-  :hook
-  (pre-redisplay-functions . keep-custom-frame-title)
+  ;;TODO: investigate further and maybe kinda revert commit about global-modes et al
+  ;;      It seems like xmonad is responsible for corrupted emacs window titles
+  ;; :hook
+  ;; (pre-redisplay-functions . keep-custom-frame-title)
   :config
   (add-to-list 'default-frame-alist `(alpha . (100 . 100)))
   (blink-cursor-mode 0)
