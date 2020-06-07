@@ -580,10 +580,7 @@ in {
     };
   };
 
-  wm.xmonad = {
-    enable = true;
-    workspaces.enable = true;
-  };
+  wm.i3.enable = true;
 
   home-manager.users."${config.attributes.mainUser.name}" = {
     nixpkgs.config.allowUnfree = true;

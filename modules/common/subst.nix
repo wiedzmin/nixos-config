@@ -53,6 +53,7 @@ rec {
   globalWorkspaceRoot = config.custom.navigation.workspaceRoots.global;
   xmobarMaybeFont = lib.optionalString (config.wmCommon.fonts.statusbar != "")
     ''font = "${config.wmCommon.fonts.statusbar}"${mkNewlineAndIndent 7}, '';
+  reverseImPatch = config.ide.emacs.reverseImPatch;
 } // lib.optionalAttrs (config.custom.browsers.firefox.enable) rec {
   firefoxProfilePath =
     config.home-manager.users."${config.attributes.mainUser.name}".programs.firefox.profiles.default.path;

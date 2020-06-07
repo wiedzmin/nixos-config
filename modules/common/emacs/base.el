@@ -70,6 +70,9 @@
   :custom
   (custom-file "@emacsCustomFile@"))
 
+;;TODO: review new `reverse-im' options
+@reverseImPatch@
+
 (use-package emacs
   :bind
   ("M-\"" . eval-region)

@@ -29,6 +29,7 @@
     ./video
     ./virt
     ./wm
+    ./wm/i3
     ./wm/stumpwm
     ./wm/xmonad
     ./xinput

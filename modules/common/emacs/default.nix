@@ -29,6 +29,23 @@ in {
           Path to store user data under.
         '';
       };
+      reverseImPatch = mkOption {
+        type = types.str;
+        default = lib.optionalString (config.wm.i3.enable) ''
+          (use-package reverse-im
+            :ensure t
+            :custom
+            (reverse-im-input-methods '("russian-computer"))
+            :config
+            (reverse-im-mode t))
+        '';
+        visible = false;
+        readOnly = true;
+        internal = true;
+        description = ''
+          Path to store user data under.
+        '';
+      };
       orgDir = mkOption {
         type = types.str;
         default = homePrefix "docs/org";
@@ -109,66 +126,67 @@ in {
             inherit (pkgs) imagemagick;
           });
           # TODO: scan *.el and find packages not in list below
-          extraPackages = epkgs: [
-            epkgs.aggressive-indent
-            epkgs.amx
-            epkgs.anaphora
-            epkgs.auto-compile
-            epkgs.backup-each-save
-            epkgs.beginend
-            epkgs.blockdiag-mode
-            epkgs.comment-dwim-2
-            epkgs.company
-            epkgs.company-fuzzy
-            epkgs.company-lsp
-            epkgs.company-quickhelp
-            epkgs.company-statistics
-            epkgs.compdef
-            epkgs.copy-as-format
-            epkgs.default-text-scale
-            epkgs.deferred
-            epkgs.delight
-            epkgs.easy-kill
-            epkgs.easy-kill-extras # add to .el
-            epkgs.editorconfig
-            epkgs.f
-            epkgs.fancy-dabbrev
-            epkgs.flycheck
-            epkgs.format-all
-            epkgs.gcmh
-            epkgs.goto-char-preview
-            epkgs.haskell-mode
-            epkgs.helm-flycheck
-            epkgs.hl-todo
-            epkgs.ini-mode
-            epkgs.iqa
-            epkgs.keychain-environment
-            epkgs.lsp-mode
-            epkgs.lsp-ui
-            epkgs.markdown-mode
-            epkgs.multiple-cursors
-            epkgs.mwim
-            epkgs.names
-            epkgs.no-littering
-            epkgs.posframe
-            epkgs.quelpa
-            epkgs.quelpa-use-package
-            epkgs.recentf-ext
-            epkgs.recursive-narrow
-            epkgs.region-bindings-mode
-            epkgs.restart-emacs
-            epkgs.savekill
-            epkgs.shift-number
-            epkgs.smartparens
-            epkgs.string-inflection
-            epkgs.super-save
-            epkgs.undo-propose
-            epkgs.unicode-escape
-            epkgs.use-package
-            epkgs.wgrep
-            epkgs.ws-butler
-            epkgs.yasnippet
-          ];
+          extraPackages = epkgs:
+            [
+              epkgs.aggressive-indent
+              epkgs.amx
+              epkgs.anaphora
+              epkgs.auto-compile
+              epkgs.backup-each-save
+              epkgs.beginend
+              epkgs.blockdiag-mode
+              epkgs.comment-dwim-2
+              epkgs.company
+              epkgs.company-fuzzy
+              epkgs.company-lsp
+              epkgs.company-quickhelp
+              epkgs.company-statistics
+              epkgs.compdef
+              epkgs.copy-as-format
+              epkgs.default-text-scale
+              epkgs.deferred
+              epkgs.delight
+              epkgs.easy-kill
+              epkgs.easy-kill-extras # add to .el
+              epkgs.editorconfig
+              epkgs.f
+              epkgs.fancy-dabbrev
+              epkgs.flycheck
+              epkgs.format-all
+              epkgs.gcmh
+              epkgs.goto-char-preview
+              epkgs.haskell-mode
+              epkgs.helm-flycheck
+              epkgs.hl-todo
+              epkgs.ini-mode
+              epkgs.iqa
+              epkgs.keychain-environment
+              epkgs.lsp-mode
+              epkgs.lsp-ui
+              epkgs.markdown-mode
+              epkgs.multiple-cursors
+              epkgs.mwim
+              epkgs.names
+              epkgs.no-littering
+              epkgs.posframe
+              epkgs.quelpa
+              epkgs.quelpa-use-package
+              epkgs.recentf-ext
+              epkgs.recursive-narrow
+              epkgs.region-bindings-mode
+              epkgs.restart-emacs
+              epkgs.savekill
+              epkgs.shift-number
+              epkgs.smartparens
+              epkgs.string-inflection
+              epkgs.super-save
+              epkgs.undo-propose
+              epkgs.unicode-escape
+              epkgs.use-package
+              epkgs.wgrep
+              epkgs.ws-butler
+              epkgs.yasnippet
+            ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
         };
         home.file = {
           ".emacs.d/init.el".text = cfg.initElContent;
