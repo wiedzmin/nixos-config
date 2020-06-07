@@ -16,10 +16,16 @@ in {
   };
 
   config = mkIf cfg.enable {
+    assertions = [{
+      assertion = (!config.wm.xmonad.enable && !config.wm.i3.enable);
+      message = "stumpwm: exactly one WM could be enabled.";
+    }];
+
     services.xserver.windowManager = {
       default = "stumpwm";
       stumpwm.enable = true;
     };
+
     home-manager.users."${config.attributes.mainUser.name}" = {
       home.file = {
         ".stumpwm.d".source = pkgs.fetchFromGitHub {

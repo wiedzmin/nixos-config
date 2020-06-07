@@ -280,6 +280,11 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      assertions = [{
+        assertion = (!config.wm.i3.enable && !config.wm.stumpwm.enable);
+        message = "xmonad: exactly one WM could be enabled.";
+      }];
+
       services.xserver = {
         windowManager = {
           xmonad = {
