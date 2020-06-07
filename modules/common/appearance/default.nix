@@ -129,7 +129,7 @@ in {
         };
       };
     })
-    (mkIf (cfg.enable && cfg.wallpaper.enable) {
+    (mkIf (cfg.enable && cfg.wallpaper.enable) { # TODO: review/try services.xserver.desktopManager.wallpaper.*
       assertions = [{
         assertion = cfg.wallpaper.root != "" && cfg.wallpaper.current != "";
         message = "appearance: must provide wallpapers path and image to use.";
