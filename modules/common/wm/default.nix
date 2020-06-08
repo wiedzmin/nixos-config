@@ -16,6 +16,81 @@ in {
         default = { };
         description = "Keybindings map.";
       };
+      workspaces.primary = mkOption {
+        type = types.attrs;
+        default = {
+          "web" = {
+            key = "F1";
+            transient = false;
+          };
+          "web2" = {
+            key = "1";
+            transient = true;
+          };
+          "web3" = {
+            key = "`";
+            transient = true;
+          };
+          "web4" = {
+            key = "F6";
+            transient = true;
+          };
+          "work" = {
+            key = "F2";
+            transient = false;
+          };
+          "tools" = {
+            key = "F4";
+            transient = false;
+          };
+          "scan" = {
+            key = "F5";
+            transient = false;
+          };
+        };
+        description = "Workspaces to pin on primary screen, if attached.";
+      };
+      workspaces.secondary = mkOption {
+        type = types.attrs;
+        default = {
+          "shell" = {
+            key = "F3";
+            transient = false;
+          };
+          "read" = {
+            key = "4";
+            transient = false;
+          };
+          "media" = {
+            key = "5";
+            transient = false;
+          };
+          "im" = {
+            key = "c";
+            transient = false;
+          };
+          "work2" = {
+            key = "2";
+            transient = true;
+          };
+          "work3" = {
+            key = "3";
+            transient = true;
+          };
+        };
+        description = "Workspaces to pin on secondary screen, if attached.";
+      };
+      workspaces.tertiary = mkOption {
+        type = types.attrs;
+        default = {
+          "scratch" = {
+            key = "Esc";
+            transient = false;
+          };
+        };
+        description = "Workspaces to pin on tertiary screen, if attached.";
+      };
+
       fonts.default = mkOption {
         type = types.str;
         default = "";

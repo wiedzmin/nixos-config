@@ -29,28 +29,14 @@ type WSData = ( String         -- name
 
 primaryWorkspaces, secondaryWorkspaces, tertiaryWorkspaces :: [WSData]
 
-primaryWorkspaces =
-  [ ("web", Just "<F1>", False)
-  , ("web2", Just "1", True)
-  , ("web3", Just "`", True)
-  , ("web4", Just "<F6>", True)
-  , ("work", Just "<F2>", False)
-  , ("tools", Just "<F4>", False)
-  , ("scan", Just "<F5>", False)
-  ]
+primaryWorkspaces = [ @xmonadPrimaryWorkspaces@
+                    ]
 
-secondaryWorkspaces =
-  [ ("shell", Just "<F3>", False)
-  , ("read", Just "4", False)
-  , ("media", Just "5", False)
-  , ("im", Just "c", False)
-  , ("work2", Just "2", True)
-  , ("work3", Just "3", True)
-  ]
+secondaryWorkspaces = [ @xmonadSecondaryWorkspaces@
+                      ]
 
-tertiaryWorkspaces =
-  [ ("scratch", Just "<Esc>", False)
-  ]
+tertiaryWorkspaces = [ @xmonadTertiaryWorkspaces@
+                     ]
 
 xPropMatches :: [XPropMatch]
 xPropMatches = [ ([ (wM_CLASS, any ("Alacritty" ==))], pmP (viewShift "shell"))
