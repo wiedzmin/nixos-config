@@ -50,13 +50,6 @@ toggleGroup l@(XkbLayout d m l') Nothing w =
                       setKeyEvent ev w root 0 controlMask keyCode True
                       sendEvent dpy w False 0 ev
                 return Nothing
-        else if resClass classHint == "Conkeror"
-         then do io $ allocaXEvent $ \ev ->
-                   do setEventType ev keyPress
-                      keyCode <- keysymToKeycode dpy xK_backslash
-                      setKeyEvent ev w root 0 controlMask keyCode True
-                      sendEvent dpy w False 0 ev
-                 return Nothing
          else return $ Just (XkbLayout d (M.insert w (flop $ xkbGetGroup l w) m) l')
                where flop 0 = 1
                      flop _ = 0
