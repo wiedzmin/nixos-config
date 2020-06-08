@@ -79,34 +79,10 @@ in {
           bindsym $mod+a focus parent
           bindsym $mod+d focus child
 
-          set $ws1 1: 
-          set $ws2 2: 
-          set $ws3 3: 
-          set $ws4 4: 
-          set $ws5 5: 
-          set $ws6 6: 
+          ${mkWorkspacesI3 config.wmCommon.workspaces.primary}
+          ${mkWorkspacesI3 config.wmCommon.workspaces.secondary}
+          ${mkWorkspacesI3 config.wmCommon.workspaces.tertiary}
 
-          bindsym $mod+1 workspace $ws1
-          bindsym $mod+2 workspace $ws2
-          bindsym $mod+3 workspace $ws3
-          bindsym $mod+4 workspace $ws4
-          bindsym $mod+5 workspace $ws5
-          bindsym $mod+6 workspace $ws6
-          bindsym $mod+7 workspace 7
-          bindsym $mod+8 workspace 8
-          bindsym $mod+9 workspace 9
-          bindsym $mod+0 workspace 10
-
-          bindsym $mod+Shift+1 move container to workspace $ws1
-          bindsym $mod+Shift+2 move container to workspace $ws2
-          bindsym $mod+Shift+3 move container to workspace $ws3
-          bindsym $mod+Shift+4 move container to workspace $ws4
-          bindsym $mod+Shift+5 move container to workspace $ws5
-          bindsym $mod+Shift+6 move container to workspace $ws6
-          bindsym $mod+Shift+7 move container to workspace 7
-          bindsym $mod+Shift+8 move container to workspace 8
-          bindsym $mod+Shift+9 move container to workspace 9
-          bindsym $mod+Shift+0 move container to workspace 10
           #workspace 1 output HDMI1
           #workspace 2 output eDP1
           bindsym $mod+q exec "i3-msg reload"

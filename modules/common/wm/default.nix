@@ -21,30 +21,37 @@ in {
         default = {
           "web" = {
             key = "F1";
+            index = 1;
             transient = false;
           };
           "web2" = {
             key = "1";
+            index = 7;
             transient = true;
           };
           "web3" = {
             key = "`";
+            index = 7;
             transient = true;
           };
           "web4" = {
             key = "F6";
+            index = 9;
             transient = true;
           };
           "work" = {
             key = "F2";
+            index = 2;
             transient = false;
           };
           "tools" = {
             key = "F4";
+            index = 5;
             transient = false;
           };
           "scan" = {
             key = "F5";
+            index = 6;
             transient = false;
           };
         };
@@ -55,26 +62,32 @@ in {
         default = {
           "shell" = {
             key = "F3";
+            index = 3;
             transient = false;
           };
           "read" = {
             key = "4";
+            index = 4;
             transient = false;
           };
           "media" = {
             key = "5";
+            index = 10;
             transient = false;
           };
           "im" = {
             key = "c";
+            index = 11;
             transient = false;
           };
           "work2" = {
             key = "2";
+            index = 12;
             transient = true;
           };
           "work3" = {
             key = "3";
+            index = 13;
             transient = true;
           };
         };
@@ -85,6 +98,7 @@ in {
         default = {
           "scratch" = {
             key = "Esc";
+            index = 14;
             transient = false;
           };
         };
