@@ -12,15 +12,14 @@ rec {
   '';
   mkKeysXmonadSpawn = keys: indent:
     "${
-      lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList (keys: meta:
+      lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList (key: meta:
         ''
-          "${keys}" ~> spawn "${meta.cmd}"${
+          "${key}" ~> spawn "${meta.cmd}"${
             if lib.hasAttrByPath [ "desktop" ] meta then " >> showWSOnProperScreen \"${meta.desktop}\"" else ""
           }'') keys)
     }${mkIndent indent}";
   mkKeysXmonadRaw = keys: indent:
     "${
-      lib.concatStringsSep "${mkNewlineAndIndent indent}, "
-      (lib.mapAttrsToList (keys: cmd: ''"${keys}" ~> ${cmd}'') keys)
+      lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList (key: cmd: ''"${key}" ~> ${cmd}'') keys)
     }${mkIndent indent}";
 }
