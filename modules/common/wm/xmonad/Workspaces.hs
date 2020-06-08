@@ -24,33 +24,33 @@ newWSName = "new ws"
 
 type WSData = ( String         -- name
               , (Maybe [Char]) -- mapping
-              , Bool           -- enabled
-              , Bool           -- permanent
+              , Bool           -- transient
               )
 
-primaryWorkspaces, secondaryWorkspaces :: [WSData]
+primaryWorkspaces, secondaryWorkspaces, tertiaryWorkspaces :: [WSData]
 
 primaryWorkspaces =
-  [ ("web", Just "<F1>", True, True)
-  , ("web2", Just "1", True, True)
-  , ("web3", Just "`", True, True)
-  , ("web4", Just "<F6>", True, True)
-  , ("work", Just "<F2>", True, True)
-  , ("tools", Just "<F4>", True, True)
-  , ("scan", Just "<F5>", True, True)
+  [ ("web", Just "<F1>", False)
+  , ("web2", Just "1", True)
+  , ("web3", Just "`", True)
+  , ("web4", Just "<F6>", True)
+  , ("work", Just "<F2>", False)
+  , ("tools", Just "<F4>", False)
+  , ("scan", Just "<F5>", False)
   ]
 
 secondaryWorkspaces =
-  [ ("shell", Just "<F3>", True, True)
-  , ("read", Just "4", True, True)
-  , ("media", Just "5", True, True)
-  , ("im", Just "c", True, True)
-  , ("work2", Just "2", True, True)
-  , ("work3", Just "3", True, True)
+  [ ("shell", Just "<F3>", False)
+  , ("read", Just "4", False)
+  , ("media", Just "5", False)
+  , ("im", Just "c", False)
+  , ("work2", Just "2", True)
+  , ("work3", Just "3", True)
   ]
 
-scratchpadWorkspace :: WSData
-scratchpadWorkspace = ("scratch", Just "<Esc>", True, True)
+tertiaryWorkspaces =
+  [ ("scratch", Just "<Esc>", False)
+  ]
 
 xPropMatches :: [XPropMatch]
 xPropMatches = [ ([ (wM_CLASS, any ("Alacritty" ==))], pmP (viewShift "shell"))
@@ -99,21 +99,21 @@ xPropMatches = [ ([ (wM_CLASS, any ("Alacritty" ==))], pmP (viewShift "shell"))
   where
     viewShift = liftM2 (.) W.view W.shift
 
-wsEnabled (_, _, enabled, _) = enabled
-wsMapped (_, mapping, _, _) = isJust mapping
-wsMapping (name, mapping, _, _) = (name, fromJust mapping)
-wsName (name, _, _, _) = name
-wsTransient (_, _, _, permanent) = not permanent
+wsMapped (_, mapping, _) = isJust mapping
+wsMapping (name, mapping, _) = (name, fromJust mapping)
+wsName (name, _, _) = name
+wsTransient (_, _, transient) = transient
 
-mergedWorkspaces = (p:s:scratchpadWorkspace:ps) ++ ss
+mergedWorkspaces = (p:s:t:ps) ++ ss ++ tt
   where p:ps = primaryWorkspaces
         s:ss = secondaryWorkspaces
+        t:tt = tertiaryWorkspaces
 
 isCurrentWorkspaceEmpty ss = isNothing . W.stack . W.workspace . W.current $ ss
 
 isCurrentWorkspaceTransient ss = (W.currentTag $ ss) `elem` transientWorkspaceNames
   where
-    transientWorkspaceNames = map wsName $ filter wsTransient $ filter wsEnabled mergedWorkspaces
+    transientWorkspaceNames = map wsName $ filter wsTransient $ mergedWorkspaces
 
 deleteLastWSWindowHook :: Event -> X All
 deleteLastWSWindowHook (DestroyWindowEvent {ev_window = w}) = do
@@ -221,7 +221,7 @@ instance ExtensionClass WorkspaceChoice where
   initialValue = WorkspaceChoice
     (wsName $ head primaryWorkspaces)
     (wsName $ head secondaryWorkspaces)
-    (wsName scratchpadWorkspace)
+    (wsName $ head tertiaryWorkspaces)
   extensionType = PersistentExtension
 
 primaryChoiceL :: Lens' WorkspaceChoice WorkspaceId

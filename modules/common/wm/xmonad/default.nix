@@ -154,7 +154,7 @@ let
                                [ ("M-" ++ key, switchToSecondary name)
                                | (name, key) <- map wsMapping $ filter wsMapped secondaryWorkspaces ] ++
                                [ ("M-" ++ key, switchToTertiary name)
-                               | (name, key) <- map wsMapping $ filter wsMapped [scratchpadWorkspace]]
+                               | (name, key) <- map wsMapping $ filter wsMapped tertiaryWorkspaces ]
 
     myKeys = \conf -> mkKeymap conf $ customKeys conf ++ layoutKeys ++ switchScreenKeys ++ switchWorkspaceKeys conf
 
@@ -186,7 +186,7 @@ let
         focusFollowsMouse  = False,
         borderWidth        = 3,
         modMask            = mod4Mask,
-        workspaces         = map wsName $ filter wsEnabled $ mergedWorkspaces,
+        workspaces         = map wsName mergedWorkspaces,
         normalBorderColor  = "#507060",
         focusedBorderColor = "orange",
         keys               = myKeys,
