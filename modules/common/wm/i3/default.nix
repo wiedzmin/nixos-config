@@ -120,6 +120,8 @@ in {
             exec_always --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
 
             bar {
+                tray_output none
+                workspace_buttons yes
                 strip_workspace_numbers yes
                 font ${config.wmCommon.fonts.statusbar}
                 status_command i3status
