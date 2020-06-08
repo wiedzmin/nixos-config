@@ -8,8 +8,8 @@ in {
   config = mkIf cfg.enable {
     fonts = { fonts = with pkgs; [ iosevka ]; };
     wmCommon.fonts.default = "xft:Iosevka:style=Bold:pixelsize=10";
-    wmCommon.fonts.dmenu = "xft:IosevkaCC:style=Bold:pixelsize=12";
-    wmCommon.fonts.statusbar = "xft:Iosevka:weight=Bold:size=10";
+    wmCommon.fonts.dmenu = "Iosevka Bold-10";
+    wmCommon.fonts.statusbar = "pango:Iosevka Bold 10";
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.iosevka;
