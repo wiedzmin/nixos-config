@@ -117,7 +117,7 @@ in {
             # exec --no-startup-id alacritty urxvt -name "main-terminal"
             # exec --no-startup-id slack
             # exec --no-startup-id telegram-desktop
-            exec --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
+            exec_always --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
 
             bar {
                 strip_workspace_numbers yes
