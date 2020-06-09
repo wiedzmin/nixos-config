@@ -98,7 +98,7 @@ in {
         default = {
           "scratch" = {
             key = "Esc";
-            index = 14;
+            index = 15;
             transient = false;
           };
         };
