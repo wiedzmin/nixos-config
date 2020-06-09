@@ -144,6 +144,7 @@ in {
             order += "wireless wlan0"
             order += "battery 0"
             order += "tztime local"
+            order += "keyboard_layout"
 
             wireless wlan0 {
               format_up = "%essid:%quality"
@@ -174,6 +175,10 @@ in {
 
             disk "/" {
               format = "%free"
+            }
+
+            keyboard_layout {
+              layouts = ['us', 'ru']
             }
           '';
         };
