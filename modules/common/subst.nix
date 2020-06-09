@@ -11,8 +11,6 @@ rec {
   defaultBrowser = "${pkgs.xdg_utils}/bin/xdg-open";
   defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;
   defaultTerminal = config.custom.shell.terminal;
-  defaultGamma = config.custom.video.gamma;
-  defaultRate = config.custom.video.rate;
   deftPath = homePrefix "docs/deft";
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
   downloadPath = config.custom.browsers.downloadPath;
@@ -24,9 +22,6 @@ rec {
   gitIdletimeStgit = builtins.toString config.custom.dev.git.idletime.stgit;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
-  internalHeadName = config.attributes.hardware.monitors.internalHead.name;
-  internalHeadEdid = config.attributes.hardware.monitors.internalHead.edid;
-  internalHeadResolution = config.attributes.hardware.monitors.internalHead.resolution;
   keybindingsCachePath = config.wmCommon.keybindingsCachePath;
   lockScreenCommand = config.custom.security.lockScreenCommand;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";

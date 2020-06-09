@@ -217,11 +217,6 @@ in {
             lib.optionalAttrs (config.home-manager.users."${config.attributes.mainUser.name}".services.compton.enable) {
               predetect = { "kill-compton" = "${kill-compton}/bin/kill-compton"; };
             } // cfg.autorandr.hooks;
-          profiles = lib.optionalAttrs (cfg.autorandr.profiles != [ ]) (fromYAML (lib.concatStringsSep "\n"
-            (lib.forEach cfg.autorandr.profiles (profile:
-              builtins.readFile (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
-                src = /. + builtins.toPath (cfg.autorandr.profilesPath + "/" + profile + ".yml");
-              }))))));
         };
       };
       services.udev.extraRules = ''

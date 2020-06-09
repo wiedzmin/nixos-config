@@ -9,6 +9,7 @@ in {
     ../../nix/setup.nix
     "${deps.home-manager}/nixos"
     ./secrets
+    ./assets
     ../../modules
     "${deps.nixos-hardware}/common/cpu/intel/sandy-bridge"
     "${deps.nixos-hardware}/common/pc/ssd"
