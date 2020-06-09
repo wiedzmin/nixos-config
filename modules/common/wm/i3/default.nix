@@ -149,6 +149,8 @@ in {
               status_full = "☻"
               path = "/sys/class/power_supply/BAT%d/uevent"
               low_threshold = 10
+              integer_battery_capacity = true
+              last_full_capacity = true
             }
 
             tztime local {
