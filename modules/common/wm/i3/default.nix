@@ -90,8 +90,8 @@ in {
             ${mkWorkspacesI3 config.wmCommon.workspaces.secondary}
             ${mkWorkspacesI3 config.wmCommon.workspaces.tertiary}
 
-            bindsym $mod+q exec "i3-msg reload"
-            bindsym $mod+Shift+q restart
+            bindsym $mod+Shift+q exec "i3-msg reload"
+            bindsym $mod+q restart
 
             mode "resize" {
                     bindsym Left resize shrink width 10 px or 10 ppt
