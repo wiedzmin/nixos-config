@@ -82,7 +82,7 @@ in {
             }
             bindsym $mod+less mode "layout"
 
-            bindsym $mod+Shift+space floating toggle
+            bindsym $mod+Shift+f floating toggle
 
             bindsym $mod+t focus mode_toggle
 
