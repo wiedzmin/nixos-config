@@ -85,13 +85,8 @@ in {
             ${mkWorkspacesI3 config.wmCommon.workspaces.secondary}
             ${mkWorkspacesI3 config.wmCommon.workspaces.tertiary}
 
-            #workspace 1 output HDMI1
-            #workspace 2 output eDP1
             bindsym $mod+q exec "i3-msg reload"
             bindsym $mod+Shift+q restart
-
-            # bindsym $mod+Shift+g exec "paswitch alsa_output.usb-Logitech_Logitech_USB_Headset-00.analog-stereo"
-            # bindsym $mod+Shift+m exec "paswitch alsa_output.pci-0000_00_1f.3.analog-stereo"
 
             mode "resize" {
                     bindsym Left resize shrink width 10 px or 10 ppt
