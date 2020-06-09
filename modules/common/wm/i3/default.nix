@@ -41,6 +41,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = [ pkgs.kbdctl ];
         xdg.configFile = {
+          # TODO: review and adopt https://github.com/guillaumecherel/i3-modal
           "i3/config".text = ''
             # i3 config file (v4)
 
