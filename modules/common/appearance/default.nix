@@ -145,6 +145,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.gtk.enable) {
+      programs.dconf.enable = true;
       services.dbus.packages = with pkgs; [ gnome3.dconf ];
       home-manager.users."${config.attributes.mainUser.name}" = { gtk.enable = true; };
     })
