@@ -29,6 +29,14 @@ with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; 
               rate = config.custom.video.rate;
             };
           };
+          hooks.postswitch = ''
+            i3-msg --quiet "${mvWorkspacesI3Msg config.wmCommon.workspaces.primary "VGA-1"}${
+              mvWorkspacesI3Msg config.wmCommon.workspaces.secondary "VGA-1"
+            }${
+              mvWorkspacesI3Msg config.wmCommon.workspaces.tertiary
+              config.attributes.hardware.monitors.internalHead.name
+            }"
+                      '';
         };
       };
     };

@@ -20,6 +20,17 @@ with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; 
               rate = config.custom.video.rate;
             };
           };
+          hooks.postswitch = ''
+            i3-msg --quiet "${
+              mvWorkspacesI3Msg config.wmCommon.workspaces.primary config.attributes.hardware.monitors.internalHead.name
+            }${
+              mvWorkspacesI3Msg config.wmCommon.workspaces.secondary
+              config.attributes.hardware.monitors.internalHead.name
+            }${
+              mvWorkspacesI3Msg config.wmCommon.workspaces.tertiary
+              config.attributes.hardware.monitors.internalHead.name
+            }"
+                      '';
         };
       };
     };

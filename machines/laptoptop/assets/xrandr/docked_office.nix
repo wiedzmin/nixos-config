@@ -38,6 +38,14 @@ with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; 
               rate = config.custom.video.rate;
             };
           };
+          hooks.postswitch = ''
+            i3-msg --quiet "${mvWorkspacesI3Msg config.wmCommon.workspaces.primary "DP-2"}${
+              mvWorkspacesI3Msg config.wmCommon.workspaces.secondary "DP-3"
+            }${
+              mvWorkspacesI3Msg config.wmCommon.workspaces.tertiary
+              config.attributes.hardware.monitors.internalHead.name
+            }"
+                      '';
         };
       };
     };
