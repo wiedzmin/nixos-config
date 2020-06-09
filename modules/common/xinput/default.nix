@@ -72,7 +72,7 @@ in {
 
       constraintMouse.enable = mkOption {
         type = types.bool;
-        default = false;
+        default = !config.wm.i3.enable;
         description = "Whether to constraint mouse within xrandr screen(s).";
       };
       constraintMouse.top = mkOption {
