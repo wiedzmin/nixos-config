@@ -24,7 +24,12 @@ in {
       environment.pathsToLink = [ "/libexec" ]; # for i3blocks (later)
 
       services.xserver = {
-        windowManager = { i3 = { enable = true; }; };
+        windowManager = {
+          i3 = {
+            enable = true;
+            extraPackages = with pkgs; [ i3status python3Packages.py3status ];
+          };
+        };
         displayManager = { defaultSession = "none+i3"; };
       };
 
@@ -116,16 +121,21 @@ in {
             exec_always --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
 
             bar {
-                tray_output none
+                tray_output LVDS-1
+                mode hide
+                modifier $mod
                 workspace_buttons yes
                 strip_workspace_numbers yes
                 font ${config.wmCommon.fonts.statusbar}
-                status_command i3status
+                status_command py3status
             }
           '';
           "i3status/config".text = ''
             general {
               colors = true
+              color_good = "#BBBBBB"
+              color_bad = "#CC1616"
+              color_degraded = "#55858E"
               interval = 5
             }
 
