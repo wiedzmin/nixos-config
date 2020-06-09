@@ -31,12 +31,12 @@ in {
           };
           "web3" = {
             key = "`";
-            index = 7;
+            index = 8;
             transient = true;
           };
           "web4" = {
             key = "F6";
-            index = 9;
+            index = 10;
             transient = true;
           };
           "work" = {
@@ -72,22 +72,22 @@ in {
           };
           "media" = {
             key = "5";
-            index = 10;
+            index = 11;
             transient = false;
           };
           "im" = {
             key = "c";
-            index = 11;
+            index = 12;
             transient = false;
           };
           "work2" = {
             key = "2";
-            index = 12;
+            index = 13;
             transient = true;
           };
           "work3" = {
             key = "3";
-            index = 13;
+            index = 14;
             transient = true;
           };
         };
