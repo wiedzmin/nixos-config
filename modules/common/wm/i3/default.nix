@@ -49,15 +49,18 @@ in {
           # TODO: review and adopt https://github.com/guillaumecherel/i3-modal
           "i3/config".text = ''
             # i3 config file (v4)
-
-            set $mod Mod4
             font ${config.wmCommon.fonts.default}
 
+            set $mod Mod4
             floating_modifier Mod1
+            hide_edge_borders smart
+
+            bindsym $mod+Shift+q exec "i3-msg reload"
+            bindsym $mod+q restart
+
             bindsym $mod+Shift+Return exec alacritty
             bindsym $mod+F12 kill
             bindsym $mod+Shift+p exec ${dmenu_runapps}/bin/dmenu_runapps -fn '${config.wmCommon.fonts.dmenu}'
-
             bindsym Control+backslash nop
 
             bindsym $mod+Left focus left
@@ -74,6 +77,11 @@ in {
             bindsym $mod+minus split v
 
             bindsym $mod+f fullscreen toggle
+            bindsym $mod+Shift+f floating toggle
+
+            bindsym $mod+t focus mode_toggle
+            bindsym $mod+a focus parent
+            bindsym $mod+d focus child
 
             mode "layout" {
               bindsym s layout stacking; mode "default"
@@ -82,30 +90,19 @@ in {
             }
             bindsym $mod+less mode "layout"
 
-            bindsym $mod+Shift+f floating toggle
-
-            bindsym $mod+t focus mode_toggle
-
-            bindsym $mod+a focus parent
-            bindsym $mod+d focus child
+            mode "resize" {
+              bindsym Left resize shrink width 10 px or 10 ppt
+              bindsym Down resize grow height 10 px or 10 ppt
+              bindsym Up resize shrink height 10 px or 10 ppt
+              bindsym Right resize grow width 10 px or 10 ppt
+              bindsym Return mode "default"
+              bindsym Escape mode "default"
+            }
+            bindsym $mod+r mode "resize"
 
             ${mkWorkspacesI3 config.wmCommon.workspaces.primary}
             ${mkWorkspacesI3 config.wmCommon.workspaces.secondary}
             ${mkWorkspacesI3 config.wmCommon.workspaces.tertiary}
-
-            bindsym $mod+Shift+q exec "i3-msg reload"
-            bindsym $mod+q restart
-
-            mode "resize" {
-                    bindsym Left resize shrink width 10 px or 10 ppt
-                    bindsym Down resize grow height 10 px or 10 ppt
-                    bindsym Up resize shrink height 10 px or 10 ppt
-                    bindsym Right resize grow width 10 px or 10 ppt
-                    bindsym Return mode "default"
-                    bindsym Escape mode "default"
-            }
-            bindsym $mod+r mode "resize"
-            hide_edge_borders smart
 
             # assign [class="Emacs"] $ws1
             # assign [class="Google-chrome"] $ws2
