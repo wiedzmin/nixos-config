@@ -75,9 +75,12 @@ in {
 
             bindsym $mod+f fullscreen toggle
 
-            bindsym $mod+s layout stacking
-            bindsym $mod+w layout tabbed
-            bindsym $mod+e layout toggle split
+            mode "layout" {
+              bindsym s layout stacking; mode "default"
+              bindsym t layout tabbed; mode "default"
+              bindsym w layout toggle split; mode "default"
+            }
+            bindsym $mod+less mode "layout"
 
             bindsym $mod+Shift+space floating toggle
 
