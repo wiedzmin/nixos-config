@@ -13,6 +13,17 @@ in {
         default = false;
         description = "Whether to enable i3.";
       };
+      autostart.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Start some applications automatically.";
+      };
+      autostart.entries = mkOption {
+        type = types.listOf types.str;
+        default =
+          [ "alacritty" "emacs" "nm-applet" "qutebrowser -P default --class qb-default" "slack" "telegram-desktop" ];
+        description = "Applications to start automatically.";
+      };
     };
   };
 
@@ -209,11 +220,7 @@ in {
             assign [class="^Xsane"] $ws_scan
             assign [class="^mpv"] $ws_media
 
-            exec --no-startup-id emacs
-            exec --no-startup-id qutebrowser -P default --class qb-default
-            exec --no-startup-id alacritty -name "main-terminal"
-            exec --no-startup-id telegram-desktop
-            exec --no-startup-id slack
+            ${lib.concatStringsSep "\n" (lib.forEach cfg.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
             exec_always --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
 
