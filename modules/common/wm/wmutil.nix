@@ -42,7 +42,7 @@ rec {
       bindsym $mod+${convertKeyI3 meta.key} workspace $ws_${ws}
       bindsym $mod+Shift+${convertKeyI3 meta.key} move container to workspace $ws_${ws}
     '') wss);
-  mvWorkspacesI3Msg = wss: head:
+  mvWorkspacesI3Msg = wss: head: # TODO: provide handle to perform this out of autorandr context
     "${lib.concatStringsSep " " (lib.mapAttrsToList (ws: meta:
       "workspace --no-auto-back-and-forth ${builtins.toString meta.index}: ${ws}; move workspace to output ${head}; ")
       wss)}";
