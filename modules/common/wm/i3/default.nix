@@ -135,12 +135,12 @@ in {
             }
             bindsym $mod+s mode "services"
 
-            mode "docker" {
+            mode "virt" {
               bindsym t exec --no-startup-id ${pkgs.docker_containers_traits}/bin/docker_containers_traits; workspace $ws_shell; mode "default"
               bindsym s exec --no-startup-id ${pkgs.docker_shell}/bin/docker_shell; workspace $ws_shell; mode "default"
               bindsym i exec --no-startup-id ${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info; workspace $ws_shell; mode "default"
             }
-            bindsym $mod+d mode "docker"
+            bindsym $mod+v mode "virt"
 
             mode "windows" {
               bindsym e exec --no-startup-id ${pkgs.emacs}/bin/emacsclient -c -a emacs; mode "default"
