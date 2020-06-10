@@ -134,7 +134,7 @@ in {
             bindsym $mod+n mode "network"
 
             mode "services" {
-              bindsym s exec --no-startup-id ${pkgs.systemd}/bin/systemctl restart nscd.service; mode "default"
+              bindsym n exec --no-startup-id ${pkgs.systemd}/bin/systemctl restart nscd.service; mode "default"
               bindsym ${config.custom.networking.secrets.vpn.mnemoChar} exec --no-startup-id ${config.custom.networking.secrets.vpn.upCommand}; mode "default"
               bindsym Shift-${config.custom.networking.secrets.vpn.mnemoChar} exec --no-startup-id ${config.custom.networking.secrets.vpn.downCommand}; mode "default"
               bindsym ${config.job."14f7646bef".secrets.vpn.mnemoChar} exec --no-startup-id ${
