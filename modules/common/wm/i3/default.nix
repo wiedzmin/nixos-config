@@ -33,6 +33,31 @@ in {
         '';
         description = "Custom settings for i3.";
       };
+      internalKeys = mkOption {
+        type = types.attrs;
+        default = {
+          "$mod+Shift+q" = ''exec "i3-msg reload"'';
+          "$mod+q" = "restart";
+          "Control+backslash" = "nop";
+          "$mod+Left" = "focus left";
+          "$mod+Down" = "focus down";
+          "$mod+Up" = "focus up";
+          "$mod+Right" = "focus right";
+          "$mod+Shift+Left" = "move left";
+          "$mod+Shift+Down" = "move down";
+          "$mod+Shift+Up" = "move up";
+          "$mod+Shift+Right" = "move right";
+          "$mod+bar" = "split h";
+          "$mod+minus" = "split v";
+          "$mod+f" = "fullscreen toggle";
+          "$mod+Shift+f" = "floating toggle";
+          "$mod+t" = "focus mode_toggle";
+          "$mod+Shift+a" = "focus parent";
+          "$mod+Shift+d" = "focus child";
+          "$mod+F12" = "kill";
+        };
+        description = "Internal (quite tightly coupled with) i3 keybindings.";
+      };
       autostart.enable = mkOption {
         type = types.bool;
         default = true;
@@ -81,34 +106,11 @@ in {
           "i3/config".text = ''
             # i3 config file (v4)
 
-            bindsym $mod+Shift+q exec "i3-msg reload"
-            bindsym $mod+q restart
             ${cfg.settings}
+            ${lib.concatStringsSep "\n" (lib.mapAttrsToList (key: cmd: "bindsym ${key} ${cmd}") cfg.internalKeys)}
 
             bindsym $mod+Shift+Return exec alacritty
-            bindsym $mod+F12 kill
             bindsym $mod+Shift+p exec ${dmenu_runapps}/bin/dmenu_runapps -fn '${config.wmCommon.fonts.dmenu}'
-            bindsym Control+backslash nop
-
-            bindsym $mod+Left focus left
-            bindsym $mod+Down focus down
-            bindsym $mod+Up focus up
-            bindsym $mod+Right focus right
-
-            bindsym $mod+Shift+Left move left
-            bindsym $mod+Shift+Down move down
-            bindsym $mod+Shift+Up move up
-            bindsym $mod+Shift+Right move right
-
-            bindsym $mod+bar split h
-            bindsym $mod+minus split v
-
-            bindsym $mod+f fullscreen toggle
-            bindsym $mod+Shift+f floating toggle
-
-            bindsym $mod+t focus mode_toggle
-            bindsym $mod+a focus parent
-            bindsym $mod+d focus child
 
             mode "layout" {
               bindsym s layout stacking; mode "default"
