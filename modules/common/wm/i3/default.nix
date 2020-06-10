@@ -13,6 +13,26 @@ in {
         default = false;
         description = "Whether to enable i3.";
       };
+      settings = mkOption {
+        type = types.lines;
+        default = ''
+          font ${config.wmCommon.fonts.default}
+
+          set $mod Mod4
+          floating_modifier $mod
+          hide_edge_borders smart
+
+          workspace_layout stacked
+
+          # gaps inner 5
+          # gaps outer 5
+          mode "Passthrough Mode - Press M+F11 to exit" {
+            bindsym $mod+F11 mode "default"
+          }
+          bindsym $mod+F11 mode "Passthrough Mode - Press M+F11 to exit"
+        '';
+        description = "Custom settings for i3.";
+      };
       autostart.enable = mkOption {
         type = types.bool;
         default = true;
@@ -60,14 +80,10 @@ in {
           # TODO: review and adopt https://github.com/guillaumecherel/i3-modal
           "i3/config".text = ''
             # i3 config file (v4)
-            font ${config.wmCommon.fonts.default}
-
-            set $mod Mod4
-            floating_modifier Mod1
-            hide_edge_borders smart
 
             bindsym $mod+Shift+q exec "i3-msg reload"
             bindsym $mod+q restart
+            ${cfg.settings}
 
             bindsym $mod+Shift+Return exec alacritty
             bindsym $mod+F12 kill
@@ -199,11 +215,6 @@ in {
             bindsym $mod+slash exec --no-startup-id ${pkgs.search_selection}/bin/search_selection; workspace $ws_web
             bindsym $mod+Control+slash exec --no-startup-id ${pkgs.search_prompt}/bin/search_prompt; workspace $ws_web
             bindsym $mod+j exec --no-startup-id ${pkgs.webjumps}/bin/webjumps; workspace $ws_web
-
-            mode "Passthrough Mode - Press M+F11 to exit" {
-              bindsym $mod+F11 mode "default"
-            }
-            bindsym $mod+F11 mode "Passthrough Mode - Press M+F11 to exit"
 
             ${mkWorkspacesI3 config.wmCommon.workspaces.primary}
             ${mkWorkspacesI3 config.wmCommon.workspaces.secondary}
