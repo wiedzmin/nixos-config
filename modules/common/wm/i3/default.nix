@@ -58,6 +58,31 @@ in {
         };
         description = "Internal (quite tightly coupled with) i3 keybindings.";
       };
+      internalKeymaps = mkOption {
+        type = types.attrs;
+        default = {
+          "layout" = {
+            binding = "$mod+less";
+            entries = {
+              "s" = ''layout stacking; mode "default"'';
+              "t" = ''layout tabbed; mode "default"'';
+              "w" = ''layout toggle split; mode "default"'';
+            };
+          };
+          "resize" = {
+            binding = "$mod+z";
+            entries = {
+              "Left" = "resize shrink width 10 px or 10 ppt";
+              "Down" = "resize grow height 10 px or 10 ppt";
+              "Up" = "resize shrink height 10 px or 10 ppt";
+              "Right" = "resize grow width 10 px or 10 ppt";
+              "Return" = ''mode "default"'';
+              "Escape" = ''mode "default"'';
+            };
+          };
+        };
+        description = "Internal (quite tightly coupled with) i3 keymaps.";
+      };
       autostart.enable = mkOption {
         type = types.bool;
         default = true;
@@ -109,25 +134,10 @@ in {
             ${cfg.settings}
             ${lib.concatStringsSep "\n" (lib.mapAttrsToList (key: cmd: "bindsym ${key} ${cmd}") cfg.internalKeys)}
 
+            ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: meta: mkKeymapI3 name meta) cfg.internalKeymaps)}
+
             bindsym $mod+Shift+Return exec alacritty
             bindsym $mod+Shift+p exec ${dmenu_runapps}/bin/dmenu_runapps -fn '${config.wmCommon.fonts.dmenu}'
-
-            mode "layout" {
-              bindsym s layout stacking; mode "default"
-              bindsym t layout tabbed; mode "default"
-              bindsym w layout toggle split; mode "default"
-            }
-            bindsym $mod+less mode "layout"
-
-            mode "resize" {
-              bindsym Left resize shrink width 10 px or 10 ppt
-              bindsym Down resize grow height 10 px or 10 ppt
-              bindsym Up resize shrink height 10 px or 10 ppt
-              bindsym Right resize grow width 10 px or 10 ppt
-              bindsym Return mode "default"
-              bindsym Escape mode "default"
-            }
-            bindsym $mod+r mode "resize"
 
             mode "run" {
               bindsym t exec --no-startup-id ${pkgs.tmuxp_sessions}/bin/tmuxp_sessions; mode "default"

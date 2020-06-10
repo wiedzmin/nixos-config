@@ -46,4 +46,11 @@ rec {
     "${lib.concatStringsSep " " (lib.mapAttrsToList (ws: meta:
       "workspace --no-auto-back-and-forth ${builtins.toString meta.index}: ${ws}; move workspace to output ${head}; ")
       wss)}";
+  mkKeymapI3 = name: meta: ''
+    mode "${name}" {${mkNewlineAndIndent 2}${
+      lib.concatStringsSep (mkNewlineAndIndent 2) (lib.mapAttrsToList (key: cmd: "bindsym ${key} ${cmd}") meta.entries)
+    }
+    }
+    bindsym ${meta.binding} mode "${name}"
+  '';
 }
