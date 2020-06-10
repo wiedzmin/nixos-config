@@ -161,7 +161,7 @@ in {
 
           "Xft.antialias" = true;
           "Xft.autohint" = false;
-          "Xft.dpi" = "120.0";
+          "Xft.dpi" = "120";
           "Xft.hinting" = true;
           "Xft.hintstyle" = "hintmedium";
           "Xft.lcdfilter" = "lcdnone";
