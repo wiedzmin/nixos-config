@@ -74,8 +74,14 @@
 @reverseImPatch@
 
 (use-package emacs
+  :preface
+  (defun custom/kill-buffer ()
+    (interactive)
+    (kill-buffer nil))
   :bind
   ("M-\"" . eval-region)
+  (:map ctl-x-map
+        ("k" . custom/kill-buffer))
   :hook
   (minibuffer-setup-hook . (lambda () (setq gc-cons-threshold most-positive-fixnum)))
   (minibuffer-exit-hook . (lambda () (setq gc-cons-threshold 800000)))
