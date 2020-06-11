@@ -260,9 +260,6 @@ in {
           "i3status/config".text = ''
             general {
               colors = true
-              color_good = "#BBBBBB"
-              color_bad = "#CC1616"
-              color_degraded = "#55858E"
               interval = 5
             }
 
