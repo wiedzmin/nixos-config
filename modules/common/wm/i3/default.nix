@@ -213,264 +213,262 @@ in {
         default = [
           {
             key = "${cfg.prefix}+Shift+Return";
-            cmd = "exec alacritty";
+            cmd = "alacritty";
             mode = "root";
           }
           {
             key = "${cfg.prefix}+Shift+p";
-            cmd = "exec ${dmenu_runapps}/bin/dmenu_runapps -fn '${config.wmCommon.fonts.dmenu}'";
+            cmd = "${dmenu_runapps}/bin/dmenu_runapps -fn '${config.wmCommon.fonts.dmenu}'";
             mode = "root";
           }
           {
             key = "t";
-            cmd = ''exec --no-startup-id ${pkgs.tmuxp_sessions}/bin/tmuxp_sessions; mode "default"'';
+            cmd = ''${pkgs.tmuxp_sessions}/bin/tmuxp_sessions; mode "default"'';
             mode = "run";
           }
           {
             key = "d";
-            cmd = ''exec --no-startup-id ${pkgs.dbms}/bin/dbms; workspace $ws_shell; mode "default"'';
+            cmd = ''${pkgs.dbms}/bin/dbms; workspace $ws_shell; mode "default"'';
             mode = "run";
           }
           {
             key = "a";
-            cmd = ''exec --no-startup-id ${pkgs.autorandr_profiles}/bin/autorandr_profiles; mode "default"'';
+            cmd = ''${pkgs.autorandr_profiles}/bin/autorandr_profiles; mode "default"'';
             mode = "run";
           }
           {
             key = "c";
-            cmd = ''exec --no-startup-id ${pkgs.systemd}/bin/systemctl --user restart compton.service; mode "default"'';
+            cmd = ''${pkgs.systemd}/bin/systemctl --user restart compton.service; mode "default"'';
             mode = "run";
           }
           {
             key = "r";
-            cmd = ''exec --no-startup-id ${pkgs.reposearch}/bin/reposearch; mode "default"'';
+            cmd = ''${pkgs.reposearch}/bin/reposearch; mode "default"'';
             mode = "run";
           }
           {
             key = "p";
-            cmd = ''exec --no-startup-id ${pkgs.rofi-pass}/bin/rofi-pass; mode "default"'';
+            cmd = ''${pkgs.rofi-pass}/bin/rofi-pass; mode "default"'';
             mode = "run";
           }
           {
             key = "b";
-            cmd = ''exec --no-startup-id ${pkgs.bookshelf}/bin/bookshelf; mode "default"'';
+            cmd = ''${pkgs.bookshelf}/bin/bookshelf; mode "default"'';
             mode = "run";
           }
           {
             key = "Shift-f";
-            cmd = ''exec --no-startup-id ${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount; mode "default"'';
+            cmd = ''${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount; mode "default"'';
             mode = "network";
           }
           {
             key = "f";
-            cmd = ''exec --no-startup-id ${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount; mode "default"'';
+            cmd = ''${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount; mode "default"'';
             mode = "network";
           }
           {
             key = "i";
-            cmd = ''exec --no-startup-id ${pkgs.ifconfless}/bin/ifconfless; mode "default"'';
+            cmd = ''${pkgs.ifconfless}/bin/ifconfless; mode "default"'';
             mode = "network";
           }
           {
             key = "d";
-            cmd = ''exec --no-startup-id ${pkgs.sshmenu}/bin/sshmenu --choices; workspace $ws_shell; mode "default"'';
+            cmd = ''${pkgs.sshmenu}/bin/sshmenu --choices; workspace $ws_shell; mode "default"'';
             mode = "network";
           }
           {
             key = "s";
-            cmd = ''exec --no-startup-id ${pkgs.sshmenu}/bin/sshmenu; workspace $ws_shell; mode "default"'';
+            cmd = ''${pkgs.sshmenu}/bin/sshmenu; workspace $ws_shell; mode "default"'';
             mode = "network";
           }
           {
             key = "t";
-            cmd =
-              ''exec --no-startup-id ${pkgs.sshmenu}/bin/sshmenu --ignore-tmux; workspace $ws_shell; mode "default"'';
+            cmd = ''${pkgs.sshmenu}/bin/sshmenu --ignore-tmux; workspace $ws_shell; mode "default"'';
             mode = "network";
           }
           {
             key = "u";
-            cmd = ''
-              exec --no-startup-id tmux new-window ${pkgs.networkmanager}/bin/nmtui; workspace $ws_shell; mode "default"'';
+            cmd = ''tmux new-window ${pkgs.networkmanager}/bin/nmtui; workspace $ws_shell; mode "default"'';
             mode = "network";
           }
           {
             key = "n";
-            cmd = ''exec --no-startup-id ${pkgs.systemd}/bin/systemctl restart nscd.service; mode "default"'';
+            cmd = ''${pkgs.systemd}/bin/systemctl restart nscd.service; mode "default"'';
             mode = "services";
           }
           {
             key = "${config.custom.networking.secrets.vpn.mnemoChar}";
-            cmd = ''exec --no-startup-id ${config.custom.networking.secrets.vpn.upCommand}; mode "default"'';
+            cmd = ''${config.custom.networking.secrets.vpn.upCommand}; mode "default"'';
             mode = "services";
           }
           {
             key = "Shift-${config.custom.networking.secrets.vpn.mnemoChar}";
-            cmd = ''exec --no-startup-id ${config.custom.networking.secrets.vpn.downCommand}; mode "default"'';
+            cmd = ''${config.custom.networking.secrets.vpn.downCommand}; mode "default"'';
             mode = "services";
           }
           {
             key = "${config.job."14f7646bef".secrets.vpn.mnemoChar}";
-            cmd = ''exec --no-startup-id ${config.job."14f7646bef".secrets.vpn.upCommand}; mode "default"'';
+            cmd = ''${config.job."14f7646bef".secrets.vpn.upCommand}; mode "default"'';
             mode = "services";
           }
           {
             key = "Shift-${config.job."14f7646bef".secrets.vpn.mnemoChar}";
-            cmd = ''exec --no-startup-id ${config.job."14f7646bef".secrets.vpn.downCommand}; mode "default"'';
+            cmd = ''${config.job."14f7646bef".secrets.vpn.downCommand}; mode "default"'';
             mode = "services";
           }
           {
             key = "t";
-            cmd = ''
-              exec --no-startup-id ${pkgs.docker_containers_traits}/bin/docker_containers_traits; workspace $ws_shell; mode "default"'';
+            cmd =
+              ''${pkgs.docker_containers_traits}/bin/docker_containers_traits; workspace $ws_shell; mode "default"'';
             mode = "virt";
           }
           {
             key = "s";
-            cmd = ''exec --no-startup-id ${pkgs.docker_shell}/bin/docker_shell; workspace $ws_shell; mode "default"'';
+            cmd = ''${pkgs.docker_shell}/bin/docker_shell; workspace $ws_shell; mode "default"'';
             mode = "virt";
           }
           {
             key = "i";
             cmd = ''
-              exec --no-startup-id ${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info; workspace $ws_shell; mode "default"'';
+              ${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info; workspace $ws_shell; mode "default"'';
             mode = "virt";
           }
           {
             key = "e";
-            cmd = ''exec --no-startup-id ${pkgs.emacs}/bin/emacsclient -c -a emacs; mode "default"'';
+            cmd = ''${pkgs.emacs}/bin/emacsclient -c -a emacs; mode "default"'';
             mode = "windows";
           }
           {
             key = "w";
-            cmd = ''exec --no-startup-id ${dmenu_select_windows}/bin/dmenu_select_windows; mode "default"'';
+            cmd = ''${dmenu_select_windows}/bin/dmenu_select_windows; mode "default"'';
             mode = "windows";
           }
           {
             key = "s";
-            cmd = ''exec --no-startup-id ${pkgs.insert_snippet}/bin/insert_snippet; mode "default"'';
+            cmd = ''${pkgs.insert_snippet}/bin/insert_snippet; mode "default"'';
             mode = "windows";
           }
           {
             key = "XF86ScreenSaver";
-            cmd = "exec --no-startup-id ${config.custom.security.lockScreenCommand}";
+            cmd = "${config.custom.security.lockScreenCommand}";
             mode = "root";
           }
           {
             key = "${cfg.prefix}+p";
-            cmd = "exec --no-startup-id ${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt";
+            cmd = "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt";
             mode = "root";
           }
           {
             key = "${cfg.prefix}+Control+j";
-            cmd = "exec --no-startup-id ${pkgs.srvctl}/bin/srvctl";
+            cmd = "${pkgs.srvctl}/bin/srvctl";
             mode = "root";
           }
           {
             key = "${cfg.prefix}+Shift+u";
-            cmd = "exec --no-startup-id ${pkgs.uptime_info}/bin/uptime_info";
+            cmd = "${pkgs.uptime_info}/bin/uptime_info";
             mode = "root";
           }
           {
             key = "Print";
-            cmd = "exec --no-startup-id ${pkgs.screenshot_active_window}/bin/screenshot_active_window";
+            cmd = "${pkgs.screenshot_active_window}/bin/screenshot_active_window";
             mode = "root";
           }
           {
             key = "Control+Print";
-            cmd = "exec --no-startup-id ${pkgs.screenshot_full}/bin/screenshot_full";
+            cmd = "${pkgs.screenshot_full}/bin/screenshot_full";
             mode = "root";
           }
           {
             key = "${cfg.prefix}+Print";
-            cmd = "exec --no-startup-id ${pkgs.screenshot_region}/bin/screenshot_region";
+            cmd = "${pkgs.screenshot_region}/bin/screenshot_region";
             mode = "root";
           }
           {
             key = "XF86MonBrightnessDown";
-            cmd = "exec --no-startup-id ${pkgs.light}/bin/light -U ${toString config.custom.video.backlightDelta}";
+            cmd = "${pkgs.light}/bin/light -U ${toString config.custom.video.backlightDelta}";
             mode = "root";
           }
           {
             key = "XF86MonBrightnessUp";
-            cmd = "exec --no-startup-id ${pkgs.light}/bin/light -A ${toString config.custom.video.backlightDelta}";
+            cmd = "${pkgs.light}/bin/light -A ${toString config.custom.video.backlightDelta}";
             mode = "root";
           }
           {
             key = "XF86AudioRaiseVolume";
-            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players volume ${
+            cmd = "${pkgs.playerctl}/bin/playerctl --all-players volume ${
                 builtins.toString config.custom.sound.volume.deltaFraction
               }+";
             mode = "root";
           }
           {
             key = "XF86AudioLowerVolume";
-            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players volume ${
+            cmd = "${pkgs.playerctl}/bin/playerctl --all-players volume ${
                 builtins.toString config.custom.sound.volume.deltaFraction
               }-";
             mode = "root";
           }
           {
             key = "XF86AudioPrev";
-            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players previous";
+            cmd = "${pkgs.playerctl}/bin/playerctl --all-players previous";
             mode = "root";
           }
           {
             key = "XF86AudioPlay";
-            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players play-pause";
+            cmd = "${pkgs.playerctl}/bin/playerctl --all-players play-pause";
             mode = "root";
           }
           {
             key = "XF86AudioNext";
-            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players next";
+            cmd = "${pkgs.playerctl}/bin/playerctl --all-players next";
             mode = "root";
           }
           {
             key = "XF86AudioMute";
-            cmd = "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
+            cmd = "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
             mode = "root";
           }
           {
             key = "XF86AudioMicMute";
-            cmd = "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+            cmd = "${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
             mode = "root";
           }
           {
             key = "Control+XF86MonBrightnessDown";
-            cmd = "exec --no-startup-id ${pkgs.light}/bin/light -S 20";
+            cmd = "${pkgs.light}/bin/light -S 20";
             mode = "root";
           }
           {
             key = "Control+XF86MonBrightnessUp";
-            cmd = "exec --no-startup-id ${pkgs.light}/bin/light -S 100";
+            cmd = "${pkgs.light}/bin/light -S 100";
             mode = "root";
           }
           {
             key = "${cfg.prefix}+XF86AudioNext";
-            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players position ${
+            cmd = "${pkgs.playerctl}/bin/playerctl --all-players position ${
                 builtins.toString config.custom.content.players.deltaSeconds
               }+";
             mode = "root";
           }
           {
             key = "${cfg.prefix}+XF86AudioPrev";
-            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players position ${
+            cmd = "${pkgs.playerctl}/bin/playerctl --all-players position ${
                 builtins.toString config.custom.content.players.deltaSeconds
               }-";
             mode = "root";
           }
           {
             key = "${cfg.prefix}+slash";
-            cmd = "exec --no-startup-id ${pkgs.search_selection}/bin/search_selection; workspace $ws_web";
+            cmd = "${pkgs.search_selection}/bin/search_selection; workspace $ws_web";
             mode = "root";
           }
           {
             key = "${cfg.prefix}+Control+slash";
-            cmd = "exec --no-startup-id ${pkgs.search_prompt}/bin/search_prompt; workspace $ws_web";
+            cmd = "${pkgs.search_prompt}/bin/search_prompt; workspace $ws_web";
             mode = "root";
           }
           {
             key = "${cfg.prefix}+j";
-            cmd = "exec --no-startup-id ${pkgs.webjumps}/bin/webjumps; workspace $ws_web";
+            cmd = "${pkgs.webjumps}/bin/webjumps; workspace $ws_web";
             mode = "root";
           }
         ];
