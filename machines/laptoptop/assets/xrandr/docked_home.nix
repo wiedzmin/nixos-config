@@ -39,10 +39,10 @@ with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; 
             };
           };
           hooks.postswitch = ''
-            i3-msg --quiet "${mvWorkspacesI3Msg config.wmCommon.workspaces.primary "HDMI-2"}${
-              mvWorkspacesI3Msg config.wmCommon.workspaces.secondary "HDMI-3"
+            i3-msg --quiet "${mvWorkspacesI3Cmd config.wmCommon.workspaces.primary "HDMI-2"}${
+              mvWorkspacesI3Cmd config.wmCommon.workspaces.secondary "HDMI-3"
             }${
-              mvWorkspacesI3Msg config.wmCommon.workspaces.tertiary
+              mvWorkspacesI3Cmd config.wmCommon.workspaces.tertiary
               config.attributes.hardware.monitors.internalHead.name
             }"
                       '';

@@ -22,12 +22,12 @@ with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; 
           };
           hooks.postswitch = ''
             i3-msg --quiet "${
-              mvWorkspacesI3Msg config.wmCommon.workspaces.primary config.attributes.hardware.monitors.internalHead.name
+              mvWorkspacesI3Cmd config.wmCommon.workspaces.primary config.attributes.hardware.monitors.internalHead.name
             }${
-              mvWorkspacesI3Msg config.wmCommon.workspaces.secondary
+              mvWorkspacesI3Cmd config.wmCommon.workspaces.secondary
               config.attributes.hardware.monitors.internalHead.name
             }${
-              mvWorkspacesI3Msg config.wmCommon.workspaces.tertiary
+              mvWorkspacesI3Cmd config.wmCommon.workspaces.tertiary
               config.attributes.hardware.monitors.internalHead.name
             }"
                       '';
