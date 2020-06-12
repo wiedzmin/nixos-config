@@ -33,55 +33,460 @@ in {
         '';
         description = "Custom settings for i3.";
       };
-      internalKeys = mkOption {
-        type = types.attrs;
-        default = {
-          "$mod+Shift+q" = ''exec "i3-msg reload"'';
-          "$mod+q" = "restart";
-          "Control+backslash" = "nop";
-          "$mod+Left" = "focus left";
-          "$mod+Down" = "focus down";
-          "$mod+Up" = "focus up";
-          "$mod+Right" = "focus right";
-          "$mod+Shift+Left" = "move left";
-          "$mod+Shift+Down" = "move down";
-          "$mod+Shift+Up" = "move up";
-          "$mod+Shift+Right" = "move right";
-          "$mod+bar" = "split h";
-          "$mod+minus" = "split v";
-          "$mod+f" = "fullscreen toggle";
-          "$mod+Shift+f" = "floating toggle";
-          "$mod+t" = "focus mode_toggle";
-          "$mod+Shift+a" = "focus parent";
-          "$mod+Shift+d" = "focus child";
-          "$mod+F12" = "kill";
-        };
-        description = "Internal (quite tightly coupled with) i3 keybindings.";
+      keys = mkOption {
+        type = types.listOf types.attrs;
+        default = [
+          {
+            key = "$mod+Shift+q";
+            cmd = ''exec "i3-msg reload"'';
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+q";
+            cmd = "restart";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "Control+backslash";
+            cmd = "nop";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+Left";
+            cmd = "focus left";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+Down";
+            cmd = "focus down";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+Up";
+            cmd = "focus up";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+Right";
+            cmd = "focus right";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+Shift+Left";
+            cmd = "move left";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+Shift+Down";
+            cmd = "move down";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+Shift+Up";
+            cmd = "move up";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+Shift+Right";
+            cmd = "move right";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+bar";
+            cmd = "split h";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+minus";
+            cmd = "split v";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+f";
+            cmd = "fullscreen toggle";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+Shift+f";
+            cmd = "floating toggle";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+t";
+            cmd = "focus mode_toggle";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+Shift+a";
+            cmd = "focus parent";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+Shift+d";
+            cmd = "focus child";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "$mod+F12";
+            cmd = "kill";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = "s";
+            cmd = ''layout stacking; mode "default"'';
+            mode = "layout";
+            raw = true;
+          }
+          {
+            key = "t";
+            cmd = ''layout tabbed; mode "default"'';
+            mode = "layout";
+            raw = true;
+          }
+          {
+            key = "w";
+            cmd = ''layout toggle split; mode "default"'';
+            mode = "layout";
+            raw = true;
+          }
+          {
+            key = "Left";
+            cmd = "resize shrink width 10 px or 10 ppt";
+            mode = "resize";
+            raw = true;
+          }
+          {
+            key = "Down";
+            cmd = "resize grow height 10 px or 10 ppt";
+            mode = "resize";
+            raw = true;
+          }
+          {
+            key = "Up";
+            cmd = "resize shrink height 10 px or 10 ppt";
+            mode = "resize";
+            raw = true;
+          }
+          {
+            key = "Right";
+            cmd = "resize grow width 10 px or 10 ppt";
+            mode = "resize";
+            raw = true;
+          }
+          {
+            key = "Return";
+            cmd = ''mode "default"'';
+            mode = "resize";
+            raw = true;
+          }
+          {
+            key = "Escape";
+            cmd = ''mode "default"'';
+            mode = "resize";
+            raw = true;
+          }
+        ];
+        description = "i3-related keybindings.";
       };
-      internalKeymaps = mkOption {
+      commonKeys = mkOption { # TODO: strip WM traits (i.e. exec, etc.) later
+        type = types.listOf types.attrs;
+        default = [
+          {
+            key = "$mod+Shift+Return";
+            cmd = "exec alacritty";
+            mode = "root";
+          }
+          {
+            key = "$mod+Shift+p";
+            cmd = "exec ${dmenu_runapps}/bin/dmenu_runapps -fn '${config.wmCommon.fonts.dmenu}'";
+            mode = "root";
+          }
+          {
+            key = "t";
+            cmd = ''exec --no-startup-id ${pkgs.tmuxp_sessions}/bin/tmuxp_sessions; mode "default"'';
+            mode = "run";
+          }
+          {
+            key = "d";
+            cmd = ''exec --no-startup-id ${pkgs.dbms}/bin/dbms; workspace $ws_shell; mode "default"'';
+            mode = "run";
+          }
+          {
+            key = "a";
+            cmd = ''exec --no-startup-id ${pkgs.autorandr_profiles}/bin/autorandr_profiles; mode "default"'';
+            mode = "run";
+          }
+          {
+            key = "c";
+            cmd = ''exec --no-startup-id ${pkgs.systemd}/bin/systemctl --user restart compton.service; mode "default"'';
+            mode = "run";
+          }
+          {
+            key = "r";
+            cmd = ''exec --no-startup-id ${pkgs.reposearch}/bin/reposearch; mode "default"'';
+            mode = "run";
+          }
+          {
+            key = "p";
+            cmd = ''exec --no-startup-id ${pkgs.rofi-pass}/bin/rofi-pass; mode "default"'';
+            mode = "run";
+          }
+          {
+            key = "b";
+            cmd = ''exec --no-startup-id ${pkgs.bookshelf}/bin/bookshelf; mode "default"'';
+            mode = "run";
+          }
+          {
+            key = "Shift-f";
+            cmd = ''exec --no-startup-id ${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount; mode "default"'';
+            mode = "network";
+          }
+          {
+            key = "f";
+            cmd = ''exec --no-startup-id ${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount; mode "default"'';
+            mode = "network";
+          }
+          {
+            key = "i";
+            cmd = ''exec --no-startup-id ${pkgs.ifconfless}/bin/ifconfless; mode "default"'';
+            mode = "network";
+          }
+          {
+            key = "d";
+            cmd = ''exec --no-startup-id ${pkgs.sshmenu}/bin/sshmenu --choices; workspace $ws_shell; mode "default"'';
+            mode = "network";
+          }
+          {
+            key = "s";
+            cmd = ''exec --no-startup-id ${pkgs.sshmenu}/bin/sshmenu; workspace $ws_shell; mode "default"'';
+            mode = "network";
+          }
+          {
+            key = "t";
+            cmd =
+              ''exec --no-startup-id ${pkgs.sshmenu}/bin/sshmenu --ignore-tmux; workspace $ws_shell; mode "default"'';
+            mode = "network";
+          }
+          {
+            key = "u";
+            cmd = ''
+              exec --no-startup-id tmux new-window ${pkgs.networkmanager}/bin/nmtui; workspace $ws_shell; mode "default"'';
+            mode = "network";
+          }
+          {
+            key = "n";
+            cmd = ''exec --no-startup-id ${pkgs.systemd}/bin/systemctl restart nscd.service; mode "default"'';
+            mode = "services";
+          }
+          {
+            key = "${config.custom.networking.secrets.vpn.mnemoChar}";
+            cmd = ''exec --no-startup-id ${config.custom.networking.secrets.vpn.upCommand}; mode "default"'';
+            mode = "services";
+          }
+          {
+            key = "Shift-${config.custom.networking.secrets.vpn.mnemoChar}";
+            cmd = ''exec --no-startup-id ${config.custom.networking.secrets.vpn.downCommand}; mode "default"'';
+            mode = "services";
+          }
+          {
+            key = "${config.job."14f7646bef".secrets.vpn.mnemoChar}";
+            cmd = ''exec --no-startup-id ${config.job."14f7646bef".secrets.vpn.upCommand}; mode "default"'';
+            mode = "services";
+          }
+          {
+            key = "Shift-${config.job."14f7646bef".secrets.vpn.mnemoChar}";
+            cmd = ''exec --no-startup-id ${config.job."14f7646bef".secrets.vpn.downCommand}; mode "default"'';
+            mode = "services";
+          }
+          {
+            key = "t";
+            cmd = ''
+              exec --no-startup-id ${pkgs.docker_containers_traits}/bin/docker_containers_traits; workspace $ws_shell; mode "default"'';
+            mode = "virt";
+          }
+          {
+            key = "s";
+            cmd = ''exec --no-startup-id ${pkgs.docker_shell}/bin/docker_shell; workspace $ws_shell; mode "default"'';
+            mode = "virt";
+          }
+          {
+            key = "i";
+            cmd = ''
+              exec --no-startup-id ${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info; workspace $ws_shell; mode "default"'';
+            mode = "virt";
+          }
+          {
+            key = "e";
+            cmd = ''exec --no-startup-id ${pkgs.emacs}/bin/emacsclient -c -a emacs; mode "default"'';
+            mode = "windows";
+          }
+          {
+            key = "w";
+            cmd = ''exec --no-startup-id ${dmenu_select_windows}/bin/dmenu_select_windows; mode "default"'';
+            mode = "windows";
+          }
+          {
+            key = "s";
+            cmd = ''exec --no-startup-id ${pkgs.insert_snippet}/bin/insert_snippet; mode "default"'';
+            mode = "windows";
+          }
+          {
+            key = "XF86ScreenSaver";
+            cmd = "exec --no-startup-id ${config.custom.security.lockScreenCommand}";
+            mode = "root";
+          }
+          {
+            key = "$mod+p";
+            cmd = "exec --no-startup-id ${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt";
+            mode = "root";
+          }
+          {
+            key = "$mod+Control+j";
+            cmd = "exec --no-startup-id ${pkgs.srvctl}/bin/srvctl";
+            mode = "root";
+          }
+          {
+            key = "$mod+Shift+u";
+            cmd = "exec --no-startup-id ${pkgs.uptime_info}/bin/uptime_info";
+            mode = "root";
+          }
+          {
+            key = "Print";
+            cmd = "exec --no-startup-id ${pkgs.screenshot_active_window}/bin/screenshot_active_window";
+            mode = "root";
+          }
+          {
+            key = "Control+Print";
+            cmd = "exec --no-startup-id ${pkgs.screenshot_full}/bin/screenshot_full";
+            mode = "root";
+          }
+          {
+            key = "$mod+Print";
+            cmd = "exec --no-startup-id ${pkgs.screenshot_region}/bin/screenshot_region";
+            mode = "root";
+          }
+          {
+            key = "XF86MonBrightnessDown";
+            cmd = "exec --no-startup-id ${pkgs.light}/bin/light -U ${toString config.custom.video.backlightDelta}";
+            mode = "root";
+          }
+          {
+            key = "XF86MonBrightnessUp";
+            cmd = "exec --no-startup-id ${pkgs.light}/bin/light -A ${toString config.custom.video.backlightDelta}";
+            mode = "root";
+          }
+          {
+            key = "XF86AudioRaiseVolume";
+            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players volume ${
+                builtins.toString config.custom.sound.volume.deltaFraction
+              }+";
+            mode = "root";
+          }
+          {
+            key = "XF86AudioLowerVolume";
+            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players volume ${
+                builtins.toString config.custom.sound.volume.deltaFraction
+              }-";
+            mode = "root";
+          }
+          {
+            key = "XF86AudioPrev";
+            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players previous";
+            mode = "root";
+          }
+          {
+            key = "XF86AudioPlay";
+            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players play-pause";
+            mode = "root";
+          }
+          {
+            key = "XF86AudioNext";
+            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players next";
+            mode = "root";
+          }
+          {
+            key = "XF86AudioMute";
+            cmd = "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
+            mode = "root";
+          }
+          {
+            key = "XF86AudioMicMute";
+            cmd = "exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+            mode = "root";
+          }
+          {
+            key = "Control+XF86MonBrightnessDown";
+            cmd = "exec --no-startup-id ${pkgs.light}/bin/light -S 20";
+            mode = "root";
+          }
+          {
+            key = "Control+XF86MonBrightnessUp";
+            cmd = "exec --no-startup-id ${pkgs.light}/bin/light -S 100";
+            mode = "root";
+          }
+          {
+            key = "$mod+XF86AudioNext";
+            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players position ${
+                builtins.toString config.custom.content.players.deltaSeconds
+              }+";
+            mode = "root";
+          }
+          {
+            key = "$mod+XF86AudioPrev";
+            cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players position ${
+                builtins.toString config.custom.content.players.deltaSeconds
+              }-";
+            mode = "root";
+          }
+          {
+            key = "$mod+slash";
+            cmd = "exec --no-startup-id ${pkgs.search_selection}/bin/search_selection; workspace $ws_web";
+            mode = "root";
+          }
+          {
+            key = "$mod+Control+slash";
+            cmd = "exec --no-startup-id ${pkgs.search_prompt}/bin/search_prompt; workspace $ws_web";
+            mode = "root";
+          }
+          {
+            key = "$mod+j";
+            cmd = "exec --no-startup-id ${pkgs.webjumps}/bin/webjumps; workspace $ws_web";
+            mode = "root";
+          }
+        ];
+        description = "i3-related keybindings.";
+      };
+      modeBindings = mkOption {
         type = types.attrs;
         default = {
-          "layout" = {
-            binding = "$mod+less";
-            entries = {
-              "s" = ''layout stacking; mode "default"'';
-              "t" = ''layout tabbed; mode "default"'';
-              "w" = ''layout toggle split; mode "default"'';
-            };
-          };
-          "resize" = {
-            binding = "$mod+z";
-            entries = {
-              "Left" = "resize shrink width 10 px or 10 ppt";
-              "Down" = "resize grow height 10 px or 10 ppt";
-              "Up" = "resize shrink height 10 px or 10 ppt";
-              "Right" = "resize grow width 10 px or 10 ppt";
-              "Return" = ''mode "default"'';
-              "Escape" = ''mode "default"'';
-            };
-          };
+          "layout" = "$mod+less";
+          "resize" = "$mod+z";
+          "run" = "$mod+r";
+          "network" = "$mod+n";
+          "virt" = "$mod+v";
+          "services" = "$mod+s";
+          "windows" = "$mod+w";
         };
-        description = "Internal (quite tightly coupled with) i3 keymaps.";
+        description = "Modes keybindings.";
       };
       autostart.enable = mkOption {
         type = types.bool;
@@ -132,105 +537,14 @@ in {
             # i3 config file (v4)
 
             ${cfg.settings}
-            ${lib.concatStringsSep "\n" (lib.mapAttrsToList (key: cmd: "bindsym ${key} ${cmd}") cfg.internalKeys)}
-
-            ${lib.concatStringsSep "\n" (lib.mapAttrsToList (name: meta: mkKeymapI3 name meta) cfg.internalKeymaps)}
-
-            bindsym $mod+Shift+Return exec alacritty
-            bindsym $mod+Shift+p exec ${dmenu_runapps}/bin/dmenu_runapps -fn '${config.wmCommon.fonts.dmenu}'
-
-            mode "run" {
-              bindsym t exec --no-startup-id ${pkgs.tmuxp_sessions}/bin/tmuxp_sessions; mode "default"
-              bindsym d exec --no-startup-id ${pkgs.dbms}/bin/dbms; workspace $ws_shell; mode "default"
-              bindsym a exec --no-startup-id ${pkgs.autorandr_profiles}/bin/autorandr_profiles; mode "default"
-              bindsym c exec --no-startup-id ${pkgs.systemd}/bin/systemctl --user restart compton.service; mode "default"
-              bindsym r exec --no-startup-id ${pkgs.reposearch}/bin/reposearch; mode "default"
-              bindsym p exec --no-startup-id ${pkgs.rofi-pass}/bin/rofi-pass; mode "default"
-              bindsym b exec --no-startup-id ${pkgs.bookshelf}/bin/bookshelf; mode "default"
-            }
-            bindsym $mod+r mode "run"
-
-            mode "network" {
-              bindsym Shift-f exec --no-startup-id ${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount; mode "default"
-              bindsym f exec --no-startup-id ${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount; mode "default"
-              bindsym i exec --no-startup-id ${pkgs.ifconfless}/bin/ifconfless; mode "default"
-              bindsym d exec --no-startup-id ${pkgs.sshmenu}/bin/sshmenu --choices; workspace $ws_shell; mode "default"
-              bindsym s exec --no-startup-id ${pkgs.sshmenu}/bin/sshmenu; workspace $ws_shell; mode "default"
-              bindsym t exec --no-startup-id ${pkgs.sshmenu}/bin/sshmenu --ignore-tmux; workspace $ws_shell; mode "default"
-              bindsym u exec --no-startup-id tmux new-window ${pkgs.networkmanager}/bin/nmtui; workspace $ws_shell; mode "default"
-            }
-            bindsym $mod+n mode "network"
-
-            mode "services" {
-              bindsym n exec --no-startup-id ${pkgs.systemd}/bin/systemctl restart nscd.service; mode "default"
-              bindsym ${config.custom.networking.secrets.vpn.mnemoChar} exec --no-startup-id ${config.custom.networking.secrets.vpn.upCommand}; mode "default"
-              bindsym Shift-${config.custom.networking.secrets.vpn.mnemoChar} exec --no-startup-id ${config.custom.networking.secrets.vpn.downCommand}; mode "default"
-              bindsym ${config.job."14f7646bef".secrets.vpn.mnemoChar} exec --no-startup-id ${
-                config.job."14f7646bef".secrets.vpn.upCommand
-              }; mode "default"
-              bindsym Shift-${config.job."14f7646bef".secrets.vpn.mnemoChar} exec --no-startup-id ${
-                config.job."14f7646bef".secrets.vpn.downCommand
-              }; mode "default"
-            }
-            bindsym $mod+s mode "services"
-
-            mode "virt" {
-              bindsym t exec --no-startup-id ${pkgs.docker_containers_traits}/bin/docker_containers_traits; workspace $ws_shell; mode "default"
-              bindsym s exec --no-startup-id ${pkgs.docker_shell}/bin/docker_shell; workspace $ws_shell; mode "default"
-              bindsym i exec --no-startup-id ${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info; workspace $ws_shell; mode "default"
-            }
-            bindsym $mod+v mode "virt"
-
-            mode "windows" {
-              bindsym e exec --no-startup-id ${pkgs.emacs}/bin/emacsclient -c -a emacs; mode "default"
-              bindsym w exec --no-startup-id ${dmenu_select_windows}/bin/dmenu_select_windows; mode "default"
-              bindsym s exec --no-startup-id ${pkgs.insert_snippet}/bin/insert_snippet; mode "default"
-            }
-            bindsym $mod+w mode "windows"
-
-            bindsym XF86ScreenSaver exec --no-startup-id ${config.custom.security.lockScreenCommand}
-            bindsym $mod+p exec --no-startup-id ${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt
-            bindsym $mod+Control+j exec --no-startup-id ${pkgs.srvctl}/bin/srvctl
-            bindsym $mod+Shift+u exec --no-startup-id ${pkgs.uptime_info}/bin/uptime_info
-
-            bindsym Print exec --no-startup-id ${pkgs.screenshot_active_window}/bin/screenshot_active_window
-            bindsym Control+Print exec --no-startup-id ${pkgs.screenshot_full}/bin/screenshot_full
-            bindsym $mod+Print exec --no-startup-id ${pkgs.screenshot_region}/bin/screenshot_region
-
-            bindsym XF86MonBrightnessDown exec --no-startup-id ${pkgs.light}/bin/light -U ${
-              toString config.custom.video.backlightDelta
-            }
-            bindsym XF86MonBrightnessUp exec --no-startup-id ${pkgs.light}/bin/light -A ${
-              toString config.custom.video.backlightDelta
-            }
-            bindsym XF86AudioRaiseVolume exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players volume ${
-              builtins.toString config.custom.sound.volume.deltaFraction
-            }+
-            bindsym XF86AudioLowerVolume exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players volume ${
-              builtins.toString config.custom.sound.volume.deltaFraction
-            }-
-            bindsym XF86AudioPrev exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players previous
-            bindsym XF86AudioPlay exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players play-pause
-            bindsym XF86AudioNext exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players next
-            bindsym XF86AudioMute exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle
-            bindsym XF86AudioMicMute exec --no-startup-id ${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle
-
-            bindsym Control+XF86MonBrightnessDown exec --no-startup-id ${pkgs.light}/bin/light -S 20
-            bindsym Control+XF86MonBrightnessUp exec --no-startup-id ${pkgs.light}/bin/light -S 100
-            bindsym $mod+XF86AudioNext exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players position ${
-              builtins.toString config.custom.content.players.deltaSeconds
-            }+
-            bindsym $mod+XF86AudioPrev exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players position ${
-              builtins.toString config.custom.content.players.deltaSeconds
-            }-
-
-            bindsym $mod+slash exec --no-startup-id ${pkgs.search_selection}/bin/search_selection; workspace $ws_web
-            bindsym $mod+Control+slash exec --no-startup-id ${pkgs.search_prompt}/bin/search_prompt; workspace $ws_web
-            bindsym $mod+j exec --no-startup-id ${pkgs.webjumps}/bin/webjumps; workspace $ws_web
+            ${mkKeysI3 (cfg.keys ++ cfg.commonKeys)}
+            ${mkModeBindsI3 cfg.modeBindings}
 
             ${mkWorkspacesI3 config.wmCommon.workspaces.primary}
             ${mkWorkspacesI3 config.wmCommon.workspaces.secondary}
             ${mkWorkspacesI3 config.wmCommon.workspaces.tertiary}
+
+            ${lib.concatStringsSep "\n" (lib.forEach cfg.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
             assign [class=".*athura.*"] $ws_read
             assign [class="^(Chromium-browser|qutebrowser)"] $ws_web
@@ -242,8 +556,6 @@ in {
             assign [class="^Emacs"] $ws_work
             assign [class="^Xsane"] $ws_scan
             assign [class="^mpv"] $ws_media
-
-            ${lib.concatStringsSep "\n" (lib.forEach cfg.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
             exec_always --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
 
