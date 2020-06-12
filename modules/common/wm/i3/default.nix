@@ -20,13 +20,6 @@ in {
           floating_modifier ${cfg.prefix}
           hide_edge_borders smart
           workspace_layout stacked
-
-          # gaps inner 5
-          # gaps outer 5
-          mode "Passthrough Mode - Press M+F11 to exit" {
-            bindsym $mod+F11 mode "default"
-          }
-          bindsym $mod+F11 mode "Passthrough Mode - Press M+F11 to exit"
         '';
         description = "Custom settings for i3.";
       };
@@ -204,6 +197,12 @@ in {
             key = "Escape";
             cmd = ''mode "default"'';
             mode = "resize";
+            raw = true;
+          }
+          {
+            key = "${cfg.prefix}+F11";
+            cmd = ''mode "default"'';
+            mode = "Passthrough Mode - Press M+F11 to exit";
             raw = true;
           }
         ];
