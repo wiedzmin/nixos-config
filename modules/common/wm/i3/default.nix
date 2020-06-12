@@ -28,6 +28,8 @@ in {
         default = "Mod4";
         description = "WM prefix key";
       };
+      # TODO: implement `transient` flag (whether to issue --no-startup-id)
+      # TODO: implement `sticky` flag (whether to revert mode back to `default` immediately)
       keys = mkOption {
         type = types.listOf types.attrs;
         default = [
@@ -208,7 +210,7 @@ in {
         ];
         description = "i3-related keybindings.";
       };
-      commonKeys = mkOption { # TODO: strip WM traits (i.e. exec, etc.) later
+      commonKeys = mkOption {
         type = types.listOf types.attrs;
         default = [
           {
@@ -538,11 +540,9 @@ in {
 
             ${cfg.settings}
             ${mkKeysI3 (cfg.keys ++ cfg.commonKeys) cfg.modeBindings}
-
             ${mkWorkspacesI3 config.wmCommon.workspaces.primary cfg.prefix}
             ${mkWorkspacesI3 config.wmCommon.workspaces.secondary cfg.prefix}
             ${mkWorkspacesI3 config.wmCommon.workspaces.tertiary cfg.prefix}
-
             ${lib.concatStringsSep "\n" (lib.forEach cfg.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
             assign [class=".*athura.*"] $ws_read
