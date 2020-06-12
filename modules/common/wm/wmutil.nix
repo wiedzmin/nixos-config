@@ -36,11 +36,11 @@ rec {
         "Esc" = "Escape";
       };
     in if builtins.hasAttr key keysyms then builtins.getAttr key keysyms else key;
-  mkWorkspacesI3 = wss:
+  mkWorkspacesI3 = wss: mod:
     lib.concatStringsSep "\n" (lib.mapAttrsToList (ws: meta: ''
       set $ws_${ws} ${builtins.toString meta.index}: ${ws}
-      bindsym $mod+${convertKeyI3 meta.key} workspace $ws_${ws}
-      bindsym $mod+Shift+${convertKeyI3 meta.key} move container to workspace $ws_${ws}
+      bindsym ${mod}+${convertKeyI3 meta.key} workspace $ws_${ws}
+      bindsym ${mod}+Shift+${convertKeyI3 meta.key} move container to workspace $ws_${ws}
     '') wss);
   mvWorkspacesI3Msg = wss: head: # TODO: provide handle to perform this out of autorandr context
     "${lib.concatStringsSep " " (lib.mapAttrsToList (ws: meta:

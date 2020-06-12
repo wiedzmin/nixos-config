@@ -17,11 +17,8 @@ in {
         type = types.lines;
         default = ''
           font ${config.wmCommon.fonts.default}
-
-          set $mod Mod4
-          floating_modifier $mod
+          floating_modifier ${cfg.prefix}
           hide_edge_borders smart
-
           workspace_layout stacked
 
           # gaps inner 5
@@ -33,17 +30,22 @@ in {
         '';
         description = "Custom settings for i3.";
       };
+      prefix = mkOption {
+        type = types.str;
+        default = "Mod4";
+        description = "WM prefix key";
+      };
       keys = mkOption {
         type = types.listOf types.attrs;
         default = [
           {
-            key = "$mod+Shift+q";
+            key = "${cfg.prefix}+Shift+q";
             cmd = ''exec "i3-msg reload"'';
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+q";
+            key = "${cfg.prefix}+q";
             cmd = "restart";
             mode = "root";
             raw = true;
@@ -55,97 +57,97 @@ in {
             raw = true;
           }
           {
-            key = "$mod+Left";
+            key = "${cfg.prefix}+Left";
             cmd = "focus left";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+Down";
+            key = "${cfg.prefix}+Down";
             cmd = "focus down";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+Up";
+            key = "${cfg.prefix}+Up";
             cmd = "focus up";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+Right";
+            key = "${cfg.prefix}+Right";
             cmd = "focus right";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+Shift+Left";
+            key = "${cfg.prefix}+Shift+Left";
             cmd = "move left";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+Shift+Down";
+            key = "${cfg.prefix}+Shift+Down";
             cmd = "move down";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+Shift+Up";
+            key = "${cfg.prefix}+Shift+Up";
             cmd = "move up";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+Shift+Right";
+            key = "${cfg.prefix}+Shift+Right";
             cmd = "move right";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+bar";
+            key = "${cfg.prefix}+bar";
             cmd = "split h";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+minus";
+            key = "${cfg.prefix}+minus";
             cmd = "split v";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+f";
+            key = "${cfg.prefix}+f";
             cmd = "fullscreen toggle";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+Shift+f";
+            key = "${cfg.prefix}+Shift+f";
             cmd = "floating toggle";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+t";
+            key = "${cfg.prefix}+t";
             cmd = "focus mode_toggle";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+Shift+a";
+            key = "${cfg.prefix}+Shift+a";
             cmd = "focus parent";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+Shift+d";
+            key = "${cfg.prefix}+Shift+d";
             cmd = "focus child";
             mode = "root";
             raw = true;
           }
           {
-            key = "$mod+F12";
+            key = "${cfg.prefix}+F12";
             cmd = "kill";
             mode = "root";
             raw = true;
@@ -211,12 +213,12 @@ in {
         type = types.listOf types.attrs;
         default = [
           {
-            key = "$mod+Shift+Return";
+            key = "${cfg.prefix}+Shift+Return";
             cmd = "exec alacritty";
             mode = "root";
           }
           {
-            key = "$mod+Shift+p";
+            key = "${cfg.prefix}+Shift+p";
             cmd = "exec ${dmenu_runapps}/bin/dmenu_runapps -fn '${config.wmCommon.fonts.dmenu}'";
             mode = "root";
           }
@@ -355,17 +357,17 @@ in {
             mode = "root";
           }
           {
-            key = "$mod+p";
+            key = "${cfg.prefix}+p";
             cmd = "exec --no-startup-id ${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt";
             mode = "root";
           }
           {
-            key = "$mod+Control+j";
+            key = "${cfg.prefix}+Control+j";
             cmd = "exec --no-startup-id ${pkgs.srvctl}/bin/srvctl";
             mode = "root";
           }
           {
-            key = "$mod+Shift+u";
+            key = "${cfg.prefix}+Shift+u";
             cmd = "exec --no-startup-id ${pkgs.uptime_info}/bin/uptime_info";
             mode = "root";
           }
@@ -380,7 +382,7 @@ in {
             mode = "root";
           }
           {
-            key = "$mod+Print";
+            key = "${cfg.prefix}+Print";
             cmd = "exec --no-startup-id ${pkgs.screenshot_region}/bin/screenshot_region";
             mode = "root";
           }
@@ -444,47 +446,48 @@ in {
             mode = "root";
           }
           {
-            key = "$mod+XF86AudioNext";
+            key = "${cfg.prefix}+XF86AudioNext";
             cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players position ${
                 builtins.toString config.custom.content.players.deltaSeconds
               }+";
             mode = "root";
           }
           {
-            key = "$mod+XF86AudioPrev";
+            key = "${cfg.prefix}+XF86AudioPrev";
             cmd = "exec --no-startup-id ${pkgs.playerctl}/bin/playerctl --all-players position ${
                 builtins.toString config.custom.content.players.deltaSeconds
               }-";
             mode = "root";
           }
           {
-            key = "$mod+slash";
+            key = "${cfg.prefix}+slash";
             cmd = "exec --no-startup-id ${pkgs.search_selection}/bin/search_selection; workspace $ws_web";
             mode = "root";
           }
           {
-            key = "$mod+Control+slash";
+            key = "${cfg.prefix}+Control+slash";
             cmd = "exec --no-startup-id ${pkgs.search_prompt}/bin/search_prompt; workspace $ws_web";
             mode = "root";
           }
           {
-            key = "$mod+j";
+            key = "${cfg.prefix}+j";
             cmd = "exec --no-startup-id ${pkgs.webjumps}/bin/webjumps; workspace $ws_web";
             mode = "root";
           }
         ];
-        description = "i3-related keybindings.";
+        description = "Common keybindings.";
       };
       modeBindings = mkOption {
         type = types.attrs;
         default = {
-          "layout" = "$mod+less";
-          "resize" = "$mod+z";
-          "run" = "$mod+r";
-          "network" = "$mod+n";
-          "virt" = "$mod+v";
-          "services" = "$mod+s";
-          "windows" = "$mod+w";
+          "layout" = "${cfg.prefix}+less";
+          "resize" = "${cfg.prefix}+z";
+          "run" = "${cfg.prefix}+r";
+          "network" = "${cfg.prefix}+n";
+          "virt" = "${cfg.prefix}+v";
+          "services" = "${cfg.prefix}+s";
+          "windows" = "${cfg.prefix}+w";
+          "Passthrough Mode - Press M+F11 to exit" = "${cfg.prefix}+F11";
         };
         description = "Modes keybindings.";
       };
@@ -540,9 +543,9 @@ in {
             ${mkKeysI3 (cfg.keys ++ cfg.commonKeys)}
             ${mkModeBindsI3 cfg.modeBindings}
 
-            ${mkWorkspacesI3 config.wmCommon.workspaces.primary}
-            ${mkWorkspacesI3 config.wmCommon.workspaces.secondary}
-            ${mkWorkspacesI3 config.wmCommon.workspaces.tertiary}
+            ${mkWorkspacesI3 config.wmCommon.workspaces.primary cfg.prefix}
+            ${mkWorkspacesI3 config.wmCommon.workspaces.secondary cfg.prefix}
+            ${mkWorkspacesI3 config.wmCommon.workspaces.tertiary cfg.prefix}
 
             ${lib.concatStringsSep "\n" (lib.forEach cfg.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
@@ -562,7 +565,7 @@ in {
             bar {
                 tray_output LVDS-1
                 mode hide
-                modifier $mod
+                modifier ${cfg.prefix}
                 workspace_buttons yes
                 strip_workspace_numbers yes
                 font ${config.wmCommon.fonts.statusbar}
