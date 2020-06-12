@@ -46,9 +46,9 @@ rec {
     "${lib.concatStringsSep " " (lib.mapAttrsToList (ws: meta:
       "workspace --no-auto-back-and-forth ${builtins.toString meta.index}: ${ws}; move workspace to output ${head}; ")
       wss)}";
-  mkKeysI3 = keys:
   mkKeyI3 = meta:
     "bindsym ${meta.key}${if builtins.hasAttr "raw" meta then " " else " exec --no-startup-id "}${meta.cmd}";
+  mkKeysI3 = keys: modeBindings:
     let
       prefixedModesMeta = lib.filterAttrs (k: _: k != "root") (lib.groupBy (x: x.mode) keys);
       rootModeBindings = (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) keys)).root;
@@ -59,8 +59,7 @@ rec {
         }
       '') prefixedModesMeta)}
       ${lib.concatStringsSep "\n" (lib.forEach rootModeBindings (x: mkKeyI3 x))}
+
+      ${lib.concatStringsSep "\n" (lib.mapAttrsToList (mode: key: ''bindsym ${key} mode "${mode}"'') modeBindings)}
     '';
-  mkModeBindsI3 = bindings: ''
-    ${lib.concatStringsSep "\n" (lib.mapAttrsToList (key: cmd: ''bindsym ${cmd} mode "${key}"'') bindings)}
-  '';
 }

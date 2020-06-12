@@ -537,8 +537,7 @@ in {
             # i3 config file (v4)
 
             ${cfg.settings}
-            ${mkKeysI3 (cfg.keys ++ cfg.commonKeys)}
-            ${mkModeBindsI3 cfg.modeBindings}
+            ${mkKeysI3 (cfg.keys ++ cfg.commonKeys) cfg.modeBindings}
 
             ${mkWorkspacesI3 config.wmCommon.workspaces.primary cfg.prefix}
             ${mkWorkspacesI3 config.wmCommon.workspaces.secondary cfg.prefix}
