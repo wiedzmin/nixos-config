@@ -56,30 +56,62 @@ in {
       environment.systemPackages = with pkgs; [ pasystray lxqt.pavucontrol-qt ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = {
-        "<XF86AudioRaiseVolume>" = {
+      wmCommon.keys = [
+        {
+          key = "XF86AudioRaiseVolume";
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}+";
-        };
-        "<XF86AudioLowerVolume>" = {
+          mode = "root";
+        }
+        {
+          key = "XF86AudioLowerVolume";
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}-";
-        };
-        "<XF86AudioPrev>" = { cmd = "${pkgs.playerctl}/bin/playerctl --all-players previous"; };
-        "<XF86AudioPlay>" = { cmd = "${pkgs.playerctl}/bin/playerctl --all-players play-pause"; };
-        "<XF86AudioNext>" = { cmd = "${pkgs.playerctl}/bin/playerctl --all-players next"; };
-        "<XF86AudioMute>" = { cmd = "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle"; };
-        "<XF86AudioMicMute>" = { cmd = "${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle"; };
-        "M-<XF86AudioNext>" = {
+          mode = "root";
+        }
+        {
+          key = "XF86AudioPrev";
+          cmd = "${pkgs.playerctl}/bin/playerctl --all-players previous";
+          mode = "root";
+        }
+        {
+          key = "XF86AudioPlay";
+          cmd = "${pkgs.playerctl}/bin/playerctl --all-players play-pause";
+          mode = "root";
+        }
+        {
+          key = "XF86AudioNext";
+          cmd = "${pkgs.playerctl}/bin/playerctl --all-players next";
+          mode = "root";
+        }
+        {
+          key = "XF86AudioMute";
+          cmd = "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
+          mode = "root";
+        }
+        {
+          key = "XF86AudioMicMute";
+          cmd = "${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
+          mode = "root";
+        }
+        {
+          key = "Alt+XF86AudioNext";
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players position ${
               builtins.toString config.custom.content.players.deltaSeconds
             }+";
-        };
-        "M-<XF86AudioPrev>" = {
+          mode = "root";
+        }
+        {
+          key = "Alt+XF86AudioPrev";
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players position ${
               builtins.toString config.custom.content.players.deltaSeconds
             }-";
-        };
-        "M-p" = { cmd = "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt"; };
-      };
+          mode = "root";
+        }
+        {
+          key = "Alt+p";
+          cmd = "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt";
+          mode = "root";
+        }
+      ];
     })
   ];
 }

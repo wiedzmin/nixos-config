@@ -98,7 +98,11 @@ in {
       };
     })
     (mkIf (cfg.wm.enable && cfg.readers.enable) {
-      wmCommon.keys = { "M-r b" = { cmd = "${pkgs.bookshelf}/bin/bookshelf"; }; };
+      wmCommon.keys = [{
+        key = "b";
+        cmd = "${pkgs.bookshelf}/bin/bookshelf";
+        mode = "run";
+      }];
     })
     (mkIf (cfg.staging.packages != [ ]) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = cfg.staging.packages; };

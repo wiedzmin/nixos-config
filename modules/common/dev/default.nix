@@ -306,10 +306,22 @@ in {
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dev.el; }));
     })
     (mkIf (cfg.enable && cfg.wm.enable && config.custom.virtualization.docker.enable) {
-      wmCommon.keys = {
-        "M-s d <Up>" = { cmd = "${pkgs.systemd}/bin/systemctl restart docker-devdns.service"; };
-        "M-s d <Down>" = { cmd = "${pkgs.systemd}/bin/systemctl stop docker-devdns.service"; };
-      } // lib.optionalAttrs (cfg.repoSearch.enable) { "M-r r" = { cmd = "${pkgs.reposearch}/bin/reposearch"; }; };
+      wmCommon.keys = [
+        {
+          key = "d";
+          cmd = "${pkgs.systemd}/bin/systemctl restart docker-devdns.service";
+          mode = "service";
+        }
+        {
+          key = "Shift+d";
+          cmd = "${pkgs.systemd}/bin/systemctl stop docker-devdns.service";
+          mode = "service";
+        }
+      ] ++ lib.optionals (cfg.repoSearch.enable) [{
+        key = "r";
+        cmd = "${pkgs.reposearch}/bin/reposearch";
+        mode = "run";
+      }];
     })
     (mkIf (cfg.staging.packages != [ ]) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = cfg.staging.packages; };

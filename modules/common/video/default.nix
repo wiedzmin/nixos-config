@@ -248,15 +248,43 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = {
-        "<XF86MonBrightnessDown>" = { cmd = "${pkgs.light}/bin/light -U ${toString cfg.backlightDelta}"; };
-        "<XF86MonBrightnessUp>" = { cmd = "${pkgs.light}/bin/light -A ${toString cfg.backlightDelta}"; };
-        "C-<XF86MonBrightnessDown>" = { cmd = "${pkgs.light}/bin/light -S 20"; };
-        "C-<XF86MonBrightnessUp>" = { cmd = "${pkgs.light}/bin/light -S 100"; };
-        "M-M1-x" = { cmd = "${pkgs.autorandr}/bin/autorandr --load mobile"; };
-        "M-r a" = { cmd = "${pkgs.autorandr_profiles}/bin/autorandr_profiles"; };
-        "M-r c" = { cmd = "${pkgs.systemd}/bin/systemctl --user restart compton.service"; };
-      };
+      wmCommon.keys = [
+        {
+          key = "XF86MonBrightnessDown";
+          cmd = "${pkgs.light}/bin/light -U ${toString cfg.backlightDelta}";
+          mode = "root";
+        }
+        {
+          key = "XF86MonBrightnessUp";
+          cmd = "${pkgs.light}/bin/light -A ${toString cfg.backlightDelta}";
+          mode = "root";
+        }
+        {
+          key = "Control+XF86MonBrightnessDown";
+          cmd = "${pkgs.light}/bin/light -S 20";
+          mode = "root";
+        }
+        {
+          key = "Control+XF86MonBrightnessUp";
+          cmd = "${pkgs.light}/bin/light -S 100";
+          mode = "root";
+        }
+        {
+          key = "Mod4+Alt+x";
+          cmd = "${pkgs.autorandr}/bin/autorandr --load mobile";
+          mode = "root";
+        }
+        {
+          key = "a";
+          cmd = "${pkgs.autorandr_profiles}/bin/autorandr_profiles";
+          mode = "run";
+        }
+        {
+          key = "c";
+          cmd = "${pkgs.systemd}/bin/systemctl --user restart compton.service";
+          mode = "run";
+        }
+      ];
     })
     (mkIf (cfg.enable && cfg.debug.enable) {
       environment.systemPackages = with pkgs; [ xlibs.xev xlibs.xprop xorg.xkbcomp drm_info xtruss ];

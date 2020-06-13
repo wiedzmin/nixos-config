@@ -2,7 +2,9 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.housekeeping;
+let
+  cfg = config.custom.housekeeping;
+  prefix = config.wmCommon.prefix;
 in {
   options = {
     custom.housekeeping = {
@@ -270,10 +272,18 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = {
-        "M-C-j" = { cmd = "${pkgs.srvctl}/bin/srvctl"; };
-        "M-S-u" = { cmd = "${pkgs.uptime_info}/bin/uptime_info"; };
-      };
+      wmCommon.keys = [
+        {
+          key = "${prefix}+Control+j";
+          cmd = "${pkgs.srvctl}/bin/srvctl";
+          mode = "root";
+        }
+        {
+          key = "${prefix}+Shift+u";
+          cmd = "${pkgs.uptime_info}/bin/uptime_info";
+          mode = "root";
+        }
+      ];
     })
   ];
 }

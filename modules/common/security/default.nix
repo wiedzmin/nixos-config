@@ -117,10 +117,18 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = {
-        "<XF86ScreenSaver>" = { cmd = "${cfg.lockScreenCommand}"; };
-        "M-r p" = { cmd = "${pkgs.rofi-pass}/bin/rofi-pass"; };
-      };
+      wmCommon.keys = [
+        {
+          key = "XF86ScreenSaver";
+          cmd = "${cfg.lockScreenCommand}";
+          mode = "root";
+        }
+        {
+          key = "p";
+          cmd = "${pkgs.rofi-pass}/bin/rofi-pass";
+          mode = "run";
+        }
+      ];
     })
   ];
 }

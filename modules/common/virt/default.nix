@@ -265,20 +265,27 @@ in {
         ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
     })
     (mkIf (cfg.docker.enable && cfg.wm.enable) {
-      wmCommon.keys = {
-        "M-d t" = {
+      wmCommon.keys = [
+        {
+          key = "t";
           cmd = "${pkgs.docker_containers_traits}/bin/docker_containers_traits";
           desktop = "shell";
-        };
-        "M-d s" = {
+          mode = "virt";
+        }
+        {
+          key = "s";
           cmd = "${pkgs.docker_shell}/bin/docker_shell";
           desktop = "shell";
-        };
-        "M-d i" = {
+          mode = "virt";
+        }
+        {
+          key = "i";
           cmd = "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info";
           desktop = "shell";
-        };
-      };
+          mode = "virt";
+        }
+      ];
+      wmCommon.modeBindings.virt = "${prefix}-d";
     })
   ];
 }

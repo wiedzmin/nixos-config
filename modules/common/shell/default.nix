@@ -519,7 +519,11 @@ in {
 
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = { "M-r t" = { cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions"; }; };
+      wmCommon.keys = [{
+        key = "t";
+        cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions";
+        mode = "run";
+      }];
     })
   ];
 }

@@ -3,7 +3,9 @@ with import ../../util.nix { inherit config lib pkgs; };
 with import ../wm/wmutil.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.navigation;
+let
+  cfg = config.custom.navigation;
+  prefix = config.wmCommon.prefix;
 in {
   options = {
     custom.navigation = {
@@ -363,25 +365,51 @@ in {
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./navigation.el; }));
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = {
-        "M-/" = {
+      wmCommon.keys = [
+        {
+          key = "${prefix}+/";
           cmd = "${pkgs.search_selection}/bin/search_selection";
           desktop = "web";
-        };
-        "M-C-/" = {
+          mode = "root";
+        }
+        {
+          key = "${prefix}+Control+/";
           cmd = "${pkgs.search_prompt}/bin/search_prompt";
           desktop = "web";
-        };
-        "M-j" = {
+          mode = "root";
+        }
+        {
+          key = "${prefix}+j";
           cmd = "${pkgs.webjumps}/bin/webjumps";
           desktop = "web";
-        };
-        "<XF86Launch1>" = { cmd = "${dmenu_runapps}/bin/dmenu_runapps"; };
-        "M-S-<Return>" = { cmd = "${config.custom.shell.terminal}"; };
-        "M-S-p" = { cmd = "${dmenu_runapps}/bin/dmenu_runapps"; };
-        "M-i s" = { cmd = "${pkgs.insert_snippet}/bin/insert_snippet"; };
-        "M-w w" = { cmd = "${dmenu_select_windows}/bin/dmenu_select_windows"; };
-      };
+          mode = "root";
+        }
+        {
+          key = "XF86Launch1";
+          cmd = "${dmenu_runapps}/bin/dmenu_runapps";
+          mode = "root";
+        }
+        {
+          key = "${prefix}+Shift+Return";
+          cmd = "${config.custom.shell.terminal}";
+          mode = "root";
+        }
+        {
+          key = "${prefix}+Shift+p";
+          cmd = "${dmenu_runapps}/bin/dmenu_runapps";
+          mode = "root";
+        }
+        {
+          key = "s";
+          cmd = "${pkgs.insert_snippet}/bin/insert_snippet";
+          mode = "window";
+        }
+        {
+          key = "w";
+          cmd = "${dmenu_select_windows}/bin/dmenu_select_windows";
+          mode = "window";
+        }
+      ];
     })
   ];
 }

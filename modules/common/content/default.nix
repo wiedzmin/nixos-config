@@ -6,7 +6,9 @@ in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.content;
+let
+  cfg = config.custom.content;
+  prefix = config.wmCommon.prefix;
 in {
   options = {
     custom.content = {
@@ -213,17 +215,37 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable && cfg.bookmarks.enable) {
-      wmCommon.keys = { "M-r m" = { cmd = "${pkgs.buku_add}/bin/buku_add"; }; };
+      wmCommon.keys = [{
+        key = "m";
+        cmd = "${pkgs.buku_add}/bin/buku_add";
+        mode = "run";
+      }];
     })
     (mkIf (cfg.enable && cfg.wm.enable && cfg.screenshots.enable) {
-      wmCommon.keys = {
-        "<Print>" = { cmd = "${pkgs.screenshot_active_window}/bin/screenshot_active_window"; };
-        "C-<Print>" = { cmd = "${pkgs.screenshot_full}/bin/screenshot_full"; };
-        "M-<Print>" = { cmd = "${pkgs.screenshot_region}/bin/screenshot_region"; };
-      };
+      wmCommon.keys = [
+        {
+          key = "Print";
+          cmd = "${pkgs.screenshot_active_window}/bin/screenshot_active_window";
+          mode = "root";
+        }
+        {
+          key = "Control+Print";
+          cmd = "${pkgs.screenshot_full}/bin/screenshot_full";
+          mode = "root";
+        }
+        {
+          key = "${prefix}+Print";
+          cmd = "${pkgs.screenshot_region}/bin/screenshot_region";
+          mode = "root";
+        }
+      ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = { "M-o i" = { cmd = "${pkgs.paste_to_ix}/bin/paste_to_ix"; }; };
+      wmCommon.keys = [{
+        key = "p";
+        cmd = "${pkgs.paste_to_ix}/bin/paste_to_ix";
+        mode = "window";
+      }];
     })
   ];
 }

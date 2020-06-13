@@ -162,12 +162,12 @@ in {
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.cli.meta)}
       '';
-      wmCommon.keys = {
-        "M-r d" = {
-          cmd = "${pkgs.dbms}/bin/dbms";
-          desktop = "shell";
-        };
-      };
+      wmCommon.keys = [{
+        key = "d";
+        cmd = "${pkgs.dbms}/bin/dbms";
+        mode = "run";
+        desktop = "shell";
+      }];
     })
   ];
 }

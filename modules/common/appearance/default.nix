@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.appearance;
+  prefix = config.wmCommon.prefix;
   rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
     ${pkgs.feh}/bin/feh --bg-fill ${cfg.wallpaper.root}/${cfg.wallpaper.current}
   '';
@@ -197,7 +198,11 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = { "M-M1-q" = { cmd = "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources"; }; };
+      wmCommon.keys = [{
+        key = "${prefix}+Alt+q";
+        cmd = "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources";
+        mode = "root";
+      }];
     })
   ];
 }

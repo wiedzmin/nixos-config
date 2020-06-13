@@ -98,10 +98,18 @@ in {
       };
     })
     (mkIf (cfg.wm.enable && cfg.appsSuspension.enable) {
-      wmCommon.keys = {
-        "M-s x <Up>" = { cmd = "${pkgs.systemd}/bin/systemctl --user restart xsuspender.service"; };
-        "M-s x <Down>" = { cmd = "${pkgs.systemd}/bin/systemctl --user stop xsuspender.service"; };
-      };
+      wmCommon.keys = [
+        {
+          key = "x";
+          cmd = "${pkgs.systemd}/bin/systemctl --user restart xsuspender.service";
+          mode = "service";
+        }
+        {
+          key = "Shift+x";
+          cmd = "${pkgs.systemd}/bin/systemctl --user stop xsuspender.service";
+          mode = "service";
+        }
+      ];
     })
     (mkIf (cfg.batteryManagement.enable) {
       systemd.user.timers."lowbatt" = renderTimer "check battery level" "1m" "1m" "";

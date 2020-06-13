@@ -266,10 +266,18 @@ in {
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set net/sshfs_map ${lib.strings.escapeNixString (builtins.toJSON cfg.sshfs.entries)}
       '';
-      wmCommon.keys = {
-        "M-n S-f" = { cmd = "${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount"; };
-        "M-n f" = { cmd = "${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount"; };
-      };
+      wmCommon.keys = [
+        {
+          key = "Shift+f";
+          cmd = "${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount";
+          mode = "network";
+        }
+        {
+          key = "f";
+          cmd = "${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount";
+          mode = "network";
+        }
+      ];
     })
     (mkIf (cfg.enable && cfg.remoteControlling.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ anydesk teamviewer ]; };
@@ -296,27 +304,43 @@ in {
     (mkIf (cfg.enable && cfg.scripts.enable) { environment.systemPackages = with pkgs; [ wifi-status ]; })
     (mkIf (cfg.enable && cfg.wm.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ wpa_supplicant_gui ]; };
-      wmCommon.keys = {
-        "M-n c" = { cmd = "${pkgs.wpa_supplicant_gui}/bin/wpa_gui"; };
-        "M-n i" = { cmd = "${pkgs.ifconfless}/bin/ifconfless"; };
-        "M-s n <Up>" = { cmd = "${pkgs.systemd}/bin/systemctl restart nscd.service"; };
-        "M-n d" = {
+      wmCommon.keys = [
+        {
+          key = "c";
+          cmd = "${pkgs.wpa_supplicant_gui}/bin/wpa_gui";
+          mode = "network";
+        }
+        {
+          key = "i";
+          cmd = "${pkgs.ifconfless}/bin/ifconfless";
+          mode = "network";
+        }
+        {
+          key = "n";
+          cmd = "${pkgs.systemd}/bin/systemctl restart nscd.service";
+          mode = "service";
+        }
+        {
+          key = "d";
           cmd = "${pkgs.sshmenu}/bin/sshmenu --choices";
           desktop = "shell";
-        };
-        "M-n s" = {
+          mode = "network";
+        }
+        {
+          key = "s";
           cmd = "${pkgs.sshmenu}/bin/sshmenu";
           desktop = "shell";
-        };
-        "M-n t" = {
+          mode = "network";
+        }
+        {
+          key = "t";
           cmd = "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux";
           desktop = "shell";
-        };
-        "M-n w c" = {
-          cmd = "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli";
-          desktop = "shell";
-        }; # FIXME: make conditional
-      };
+          mode = "network";
+        }
+        # { key = "w"; # FIXME: make conditional
+        #   cmd = "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli"; desktop = "shell"; mode = "network"; }
+      ];
     })
   ];
 }

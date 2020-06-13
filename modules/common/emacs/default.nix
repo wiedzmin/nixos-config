@@ -203,10 +203,18 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = {
-        "M-w S-e" = { cmd = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs"; };
-        "M-w e" = { cmd = "${pkgs.emacs}/bin/emacsclient -c -a emacs"; };
-      };
+      wmCommon.keys = [
+        {
+          key = "Shift+e";
+          cmd = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";
+          mode = "window";
+        }
+        {
+          key = "e";
+          cmd = "${pkgs.emacs}/bin/emacsclient -c -a emacs";
+          mode = "window";
+        }
+      ];
     })
   ];
 }

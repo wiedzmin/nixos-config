@@ -7,6 +7,7 @@ with lib;
 
 let
   cfg = config.custom.browsers;
+  prefix = config.wmCommon.prefix;
   firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../../nix/firefox-addons { });
 in {
   options = {
@@ -566,13 +567,34 @@ in {
         };
         home.packages = with pkgs; [ dump_firefox_session manage_firefox_sessions rotate_firefox_session_dumps ];
       };
-      wmCommon.keys = {
-        "M-b s s" = { cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --save"; };
-        "M-b s o" = { cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --open"; };
-        "M-b s e" = { cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --edit"; };
-        "M-b s d" = { cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --delete"; };
-        "M-b s c" = { cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page"; };
-      };
+      wmCommon.keys = [
+        {
+          key = "s";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --save";
+          mode = "browser";
+        }
+        {
+          key = "o";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --open";
+          mode = "browser";
+        }
+        {
+          key = "e";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --edit";
+          mode = "browser";
+        }
+        {
+          key = "d";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --delete";
+          mode = "browser";
+        }
+        {
+          key = "c";
+          cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page";
+          mode = "browser";
+        }
+      ];
+      wmCommon.modeBindings.browser = "${prefix}-b";
       systemd.user.services."backup-current-session-firefox" = {
         description = "Backup current firefox session (tabs)";
         serviceConfig = {

@@ -1,5 +1,6 @@
 { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
+with import ./wmutil.nix { inherit config lib pkgs; };
 with lib;
 
 let cfg = config.wmCommon;
@@ -11,100 +12,125 @@ in {
         default = config.wm.xmonad.enable; # TODO: add entries `or` later
         description = "Whether to enable common WM infrastructure.";
       };
-      keys = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "Keybindings map.";
-      };
-      workspaces.primary = mkOption {
-        type = types.attrs;
-        default = {
-          "web" = {
+      workspaces = mkOption {
+        type = types.listOf types.attrs;
+        default = [
+          {
+            name = "web";
             key = "F1";
             index = 1;
             transient = false;
-          };
-          "web2" = {
+            type = "primary";
+          }
+          {
+            name = "web2";
             key = "1";
             index = 7;
             transient = true;
-          };
-          "web3" = {
+            type = "primary";
+          }
+          {
+            name = "web3";
             key = "`";
             index = 8;
             transient = true;
-          };
-          "web4" = {
+            type = "primary";
+          }
+          {
+            name = "web4";
             key = "F6";
             index = 10;
             transient = true;
-          };
-          "work" = {
+            type = "primary";
+          }
+          {
+            name = "work";
             key = "F2";
             index = 2;
             transient = false;
-          };
-          "tools" = {
+            type = "primary";
+          }
+          {
+            name = "tools";
             key = "F4";
             index = 5;
             transient = false;
-          };
-          "scan" = {
+            type = "primary";
+          }
+          {
+            name = "scan";
             key = "F5";
             index = 6;
             transient = false;
-          };
-        };
-        description = "Workspaces to pin on primary screen, if attached.";
-      };
-      workspaces.secondary = mkOption {
-        type = types.attrs;
-        default = {
-          "shell" = {
+            type = "primary";
+          }
+          {
+            name = "shell";
             key = "F3";
             index = 3;
             transient = false;
-          };
-          "read" = {
+            type = "secondary";
+          }
+          {
+            name = "read";
             key = "4";
             index = 4;
             transient = false;
-          };
-          "media" = {
+            type = "secondary";
+          }
+          {
+            name = "media";
             key = "5";
             index = 11;
             transient = false;
-          };
-          "im" = {
+            type = "secondary";
+          }
+          {
+            name = "im";
             key = "c";
             index = 12;
             transient = false;
-          };
-          "work2" = {
+            type = "secondary";
+          }
+          {
+            name = "work2";
             key = "2";
             index = 13;
             transient = true;
-          };
-          "work3" = {
+            type = "secondary";
+          }
+          {
+            name = "work3";
             key = "3";
             index = 14;
             transient = true;
-          };
-        };
-        description = "Workspaces to pin on secondary screen, if attached.";
-      };
-      workspaces.tertiary = mkOption {
-        type = types.attrs;
-        default = {
-          "scratch" = {
+            type = "secondary";
+          }
+          {
+            name = "scratch";
             key = "Esc";
             index = 15;
             transient = false;
-          };
-        };
-        description = "Workspaces to pin on tertiary screen, if attached.";
+            type = "tertiary";
+          }
+        ];
+        description = "Workspaces metadata.";
       };
-
+      prefix = mkOption {
+        type = types.str;
+        default = "Mod4";
+        description = "WM prefix key";
+      };
+      keys = mkOption {
+        type = types.listOf types.attrs;
+        default = [ ];
+        description = "Common keybindings.";
+      };
+      modeBindings = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Modes keybindings.";
+      };
       fonts.default = mkOption {
         type = types.str;
         default = "";
@@ -146,7 +172,11 @@ in {
         };
         home.packages = with pkgs; [ keybindings ];
       };
-      wmCommon.keys = { "M-k" = { cmd = "keybindings"; }; };
+      wmCommon.keys = [{
+        key = "${cfg.prefix}+k";
+        cmd = "keybindings";
+        mode = "root";
+      }];
     })
   ];
 }

@@ -30,13 +30,13 @@ with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; 
             };
           };
           hooks.postswitch = ''
-            i3-msg --quiet "${mvWorkspacesI3Cmd config.wmCommon.workspaces.primary "VGA-1"}${
-              mvWorkspacesI3Cmd config.wmCommon.workspaces.secondary "VGA-1"
+            i3-msg --quiet "${mvWorkspacesI3Cmd config.wmCommon.workspaces "primary" "VGA-1"}${
+              mvWorkspacesI3Cmd config.wmCommon.workspaces "secondary" "VGA-1"
             }${
-              mvWorkspacesI3Cmd config.wmCommon.workspaces.tertiary
+              mvWorkspacesI3Cmd config.wmCommon.workspaces "tertiary"
               config.attributes.hardware.monitors.internalHead.name
             }"
-                      '';
+          '';
         };
       };
     };
