@@ -214,7 +214,7 @@ in {
       bookmarks.enable = true;
       webjumps.enable = true;
       snippets.enable = true;
-      workspaces.enable = true;
+      wsMapping.enable = true;
     };
     "8a1add5330".secrets = {
       enable = true;
@@ -222,7 +222,7 @@ in {
       webjumps.enable = true;
       sshfs.enable = true;
       snippets.enable = true;
-      workspaces.enable = true;
+      wsMapping.enable = true;
     };
   };
 

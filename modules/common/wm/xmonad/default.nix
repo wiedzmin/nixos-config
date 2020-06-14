@@ -216,21 +216,17 @@ in {
         default = false;
         description = "Whether to enable xmonad.";
       };
-      workspaces.enable = mkOption {
+      wsMapping.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable mapping windows to workspaces.";
       };
-      workspaces.mappings = mkOption { # TODO: consider extract wm desktops metadata to nix level
+      wsMapping.rules = mkOption {
         type = types.attrs;
         default = { };
-        example = {
-          "qutebrowser yandex" = "web3";
-          "qutebrowser youtube" = "web4";
-          "emacs" = "work2";
-        };
         description = "Actual window-to-workspace mapping based on window title.";
       };
+      # FIXME: adopt new workspace keybindings implementation (presumably broken)
       internalKeys = mkOption {
         type = types.attrs;
         default = {
@@ -296,6 +292,7 @@ in {
         displayManager = { defaultSession = "none+xmonad"; };
       };
 
+      # FIXME: adopt new workspace keybindings implementation (presumably broken)
       wmCommon.keys = {
         "M-C-q" = { cmd = "xmonad --recompile; xmonad --restart"; };
         "M-q" = { cmd = "xmonad --restart"; };
@@ -337,10 +334,11 @@ in {
           (pkgs.substituteAll ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./xmobarrc; }));
       };
     })
-    (mkIf cfg.workspaces.enable {
+    (mkIf cfg.wsMapping.enable {
       services.xserver.displayManager.sessionCommands = ''
         ${pkgs.desktops}/bin/desktops --init
       '';
+      # FIXME: adopt new workspace mappings structure (presumably broken)
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set xserver/window_rules ${
           lib.strings.escapeNixString (builtins.toJSON cfg.workspaces.mappings)

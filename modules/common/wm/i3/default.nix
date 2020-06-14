@@ -227,8 +227,10 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      wm.xmonad.enable = false;
-      wm.stumpwm.enable = false;
+      assertions = [{
+        assertion = (!config.wm.xmonad.enable && !config.wm.stumpwm.enable);
+        message = "i3: exactly one WM could be enabled.";
+      }];
 
       environment.pathsToLink = [ "/libexec" ]; # for i3blocks (later)
 
@@ -276,16 +278,7 @@ in {
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix keySep}
             ${lib.concatStringsSep "\n" (lib.forEach cfg.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
-            assign [class=".*athura.*"] $ws_read
-            assign [class="^(Chromium-browser|qutebrowser)"] $ws_web
-            assign [class="^(Gimp|aft-linux-qt)"] $ws_scratch
-            assign [class="^(Skype|qutebrowser|Slack|TelegramDesktop|zoom|quassel)"] $ws_im
-            assign [class="^(Soffice|calibre)"] $ws_read
-            assign [class="^(Virt-manager|Virt-viewer|VirtualBox Manager)"] $ws_tools
-            assign [class="^Alacritty"] $ws_shell
-            assign [class="^Emacs"] $ws_work
-            assign [class="^Xsane"] $ws_scan
-            assign [class="^mpv"] $ws_media
+            ${with config.wmCommon; mkPlacementRulesI3 workspaces wsMapping.rules}
 
             exec_always --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
 

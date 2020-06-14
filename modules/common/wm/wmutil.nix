@@ -95,4 +95,12 @@ in rec {
       ${lib.concatStringsSep "\n"
       (lib.mapAttrsToList (mode: key: ''bindsym ${mkKeyI3 key sep} mode "${mode}"'') modeBindings)}
     '';
+  mkPlacementRulesI3 = wsdata: rules:
+    lib.concatStringsSep "\n" (lib.forEach rules (rule:
+      "for_window [ ${if builtins.hasAttr "class" rule then ''class="^${rule.class}$" '' else ""}${
+        if builtins.hasAttr "title" rule then
+          ''title=".*${builtins.replaceStrings [ " " ] [ ".*" ] rule.title}.*"''
+        else
+          ""
+      } ] move to workspace ${getWorkspaceByNameI3 wsdata rule.desktop}"));
 }

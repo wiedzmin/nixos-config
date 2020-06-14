@@ -126,6 +126,11 @@ in {
         default = [ ];
         description = "Common keybindings.";
       };
+      wsMapping.rules = mkOption {
+        type = types.listOf types.attrs;
+        default = [ ];
+        description = "Window-to-workspace mapping rules.";
+      };
       modeBindings = mkOption {
         type = types.attrs;
         default = { };

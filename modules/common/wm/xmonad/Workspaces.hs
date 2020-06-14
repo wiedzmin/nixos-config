@@ -38,6 +38,7 @@ secondaryWorkspaces = [ @xmonadSecondaryWorkspaces@
 tertiaryWorkspaces = [ @xmonadTertiaryWorkspaces@
                      ]
 
+-- FIXME: adopt new workspace mappings structure (presumably broken)
 xPropMatches :: [XPropMatch]
 xPropMatches = [ ([ (wM_CLASS, any ("Alacritty" ==))], pmP (viewShift "shell"))
                , ([ (wM_CLASS, any ("Apvlv" ==))], pmP (viewShift "read"))
