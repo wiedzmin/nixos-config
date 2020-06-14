@@ -9,7 +9,7 @@ in {
     wmCommon = {
       enable = mkOption {
         type = types.bool;
-        default = config.wm.xmonad.enable; # TODO: add entries `or` later
+        default = config.wm.xmonad.enable || config.wm.i3.enable || config.wm.stumpwm.enable;
         description = "Whether to enable common WM infrastructure.";
       };
       workspaces = mkOption {

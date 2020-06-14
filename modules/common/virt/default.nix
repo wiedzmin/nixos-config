@@ -7,6 +7,7 @@ with lib;
 
 let
   cfg = config.custom.virtualization;
+  prefix = config.wmCommon.prefix;
   vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
   '';

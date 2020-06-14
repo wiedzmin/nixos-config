@@ -306,8 +306,9 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ wpa_supplicant_gui ]; };
       wmCommon.keys = [
         {
-          key = [ "c" ];
-          cmd = "${pkgs.wpa_supplicant_gui}/bin/wpa_gui";
+          key = [ "u" ];
+          cmd = "tmux new-window ${pkgs.networkmanager}/bin/nmtui";
+          desktop = "shell";
           mode = "network";
         }
         {
