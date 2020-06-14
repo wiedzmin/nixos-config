@@ -7,6 +7,7 @@ with lib;
 let
   cfg = config.wm.i3;
   prefix = config.wmCommon.prefix;
+  keySep = "+";
 in {
   options = {
     wm.i3 = {
@@ -29,175 +30,175 @@ in {
         type = types.listOf types.attrs;
         default = [
           {
-            key = "${prefix}+Shift+q";
+            key = [ prefix "Shift" "q" ];
             cmd = ''exec "i3-msg reload"'';
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+q";
+            key = [ prefix "q" ];
             cmd = "restart";
             mode = "root";
             raw = true;
           }
           {
-            key = "Control+backslash";
+            key = [ "Control" "backslash" ];
             cmd = "nop";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+Left";
+            key = [ prefix "Left" ];
             cmd = "focus left";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+Down";
+            key = [ prefix "Down" ];
             cmd = "focus down";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+Up";
+            key = [ prefix "Up" ];
             cmd = "focus up";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+Right";
+            key = [ prefix "Right" ];
             cmd = "focus right";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+Shift+Left";
+            key = [ prefix "Shift" "Left" ];
             cmd = "move left";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+Shift+Down";
+            key = [ prefix "Shift" "Down" ];
             cmd = "move down";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+Shift+Up";
+            key = [ prefix "Shift" "Up" ];
             cmd = "move up";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+Shift+Right";
+            key = [ prefix "Shift" "Right" ];
             cmd = "move right";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+bar";
+            key = [ prefix "bar" ];
             cmd = "split h";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+minus";
+            key = [ prefix "minus" ];
             cmd = "split v";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+f";
+            key = [ prefix "f" ];
             cmd = "fullscreen toggle";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+Shift+f";
+            key = [ prefix "Shift" "f" ];
             cmd = "floating toggle";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+t";
+            key = [ prefix "t" ];
             cmd = "focus mode_toggle";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+Shift+a";
+            key = [ prefix "Shift" "a" ];
             cmd = "focus parent";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+Shift+d";
+            key = [ prefix "Shift" "d" ];
             cmd = "focus child";
             mode = "root";
             raw = true;
           }
           {
-            key = "${prefix}+F12";
+            key = [ prefix "F12" ];
             cmd = "kill";
             mode = "root";
             raw = true;
           }
           {
-            key = "s";
+            key = [ "s" ];
             cmd = ''layout stacking; mode "default"'';
             mode = "layout";
             raw = true;
           }
           {
-            key = "t";
+            key = [ "t" ];
             cmd = ''layout tabbed; mode "default"'';
             mode = "layout";
             raw = true;
           }
           {
-            key = "w";
+            key = [ "w" ];
             cmd = ''layout toggle split; mode "default"'';
             mode = "layout";
             raw = true;
           }
           {
-            key = "Left";
+            key = [ "Left" ];
             cmd = "resize shrink width 10 px or 10 ppt";
             mode = "resize";
             raw = true;
           }
           {
-            key = "Down";
+            key = [ "Down" ];
             cmd = "resize grow height 10 px or 10 ppt";
             mode = "resize";
             raw = true;
           }
           {
-            key = "Up";
+            key = [ "Up" ];
             cmd = "resize shrink height 10 px or 10 ppt";
             mode = "resize";
             raw = true;
           }
           {
-            key = "Right";
+            key = [ "Right" ];
             cmd = "resize grow width 10 px or 10 ppt";
             mode = "resize";
             raw = true;
           }
           {
-            key = "Return";
+            key = [ "Return" ];
             cmd = ''mode "default"'';
             mode = "resize";
             raw = true;
           }
           {
-            key = "Escape";
+            key = [ "Escape" ];
             cmd = ''mode "default"'';
             mode = "resize";
             raw = true;
           }
           {
-            key = "${prefix}+F11";
+            key = [ prefix "F11" ];
             cmd = ''mode "default"'';
             mode = "Passthrough Mode - Press M+F11 to exit";
             raw = true;
@@ -207,17 +208,7 @@ in {
       };
       modeBindings = mkOption {
         type = types.attrs;
-        default = {
-          "layout" = "${prefix}+less";
-          "resize" = "${prefix}+z";
-          "run" = "${prefix}+r";
-          "network" = "${prefix}+n";
-          "virt" = "${prefix}+d";
-          "services" = "${prefix}+s";
-          "windows" = "${prefix}+w";
-          "vpn" = "${prefix}+v";
-          "Passthrough Mode - Press M+F11 to exit" = "${prefix}+F11";
-        };
+        default = { };
         description = "Modes keybindings.";
       };
       autostart.enable = mkOption {
@@ -262,14 +253,15 @@ in {
       };
 
       wmCommon.modeBindings = {
-        "layout" = "${prefix}+less";
-        "resize" = "${prefix}+z";
-        "run" = "${prefix}+r";
-        "network" = "${prefix}+n";
-        "virt" = "${prefix}+v";
-        "services" = "${prefix}+s";
-        "windows" = "${prefix}+w";
-        "Passthrough Mode - Press M+F11 to exit" = "${prefix}+F11";
+        "layout" = [ prefix "less" ];
+        "resize" = [ prefix "z" ];
+        "run" = [ prefix "r" ];
+        "network" = [ prefix "n" ];
+        "virt" = [ prefix "d" ];
+        "services" = [ prefix "s" ];
+        "windows" = [ prefix "w" ];
+        "vpn" = [ prefix "v" ];
+        "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -280,8 +272,8 @@ in {
             # i3 config file (v4)
 
             ${cfg.settings}
-            ${mkKeysI3 (cfg.keys ++ config.wmCommon.keys) cfg.modeBindings}
-            ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
+            ${mkKeybindingsI3 (cfg.keys ++ config.wmCommon.keys) cfg.modeBindings keySep}
+            ${mkWorkspacesI3 config.wmCommon.workspaces prefix keySep}
             ${lib.concatStringsSep "\n" (lib.forEach cfg.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
             assign [class=".*athura.*"] $ws_read

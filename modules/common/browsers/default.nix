@@ -569,27 +569,27 @@ in {
       };
       wmCommon.keys = [
         {
-          key = "s";
+          key = [ "s" ];
           cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --save";
           mode = "browser";
         }
         {
-          key = "o";
+          key = [ "o" ];
           cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --open";
           mode = "browser";
         }
         {
-          key = "e";
+          key = [ "e" ];
           cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --edit";
           mode = "browser";
         }
         {
-          key = "d";
+          key = [ "d" ];
           cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --delete";
           mode = "browser";
         }
         {
-          key = "c";
+          key = [ "c" ];
           cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page";
           mode = "browser";
         }

@@ -100,12 +100,12 @@ in {
     (mkIf (cfg.wm.enable && cfg.appsSuspension.enable) {
       wmCommon.keys = [
         {
-          key = "x";
+          key = [ "x" ];
           cmd = "${pkgs.systemd}/bin/systemctl --user restart xsuspender.service";
           mode = "service";
         }
         {
-          key = "Shift+x";
+          key = [ "Shift" "x" ];
           cmd = "${pkgs.systemd}/bin/systemctl --user stop xsuspender.service";
           mode = "service";
         }

@@ -49,15 +49,17 @@ in rec {
       lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList
         (ws: meta: ''("${ws}", Just "${convertKeyXmonad meta.key}", ${toHaskellBool meta.transient})'') wss)
     }${mkIndent indent}";
-  mkKeysymI3 = key: if builtins.hasAttr key keysymsI3 then builtins.getAttr key keysymsI3 else key;
+  mkKeyI3 = keys: sep:
+    lib.concatStringsSep sep
+    (lib.forEach keys (k: if builtins.hasAttr k keysymsI3 then builtins.getAttr k keysymsI3 else k));
   getWorkspaceByNameI3 = wsdata: name:
     let ws = builtins.head (builtins.filter (ws: ws.name == name) wsdata);
     in "${builtins.toString ws.index}: ${ws.name}";
-  mkWorkspacesI3 = wsdata: mod:
+  mkWorkspacesI3 = wsdata: mod: sep:
     lib.concatStringsSep "\n" (lib.forEach wsdata (ws: ''
       set $ws_${ws.name} ${builtins.toString ws.index}: ${ws.name}
-      bindsym ${mod}+${mkKeysymI3 ws.key} workspace $ws_${ws.name}
-      bindsym ${mod}+Shift+${mkKeysymI3 ws.key} move container to workspace $ws_${ws.name}
+      bindsym ${mod}+${mkKeyI3 ws.key sep} workspace $ws_${ws.name}
+      bindsym ${mod}+Shift+${mkKeyI3 ws.key sep} move container to workspace $ws_${ws.name}
     ''));
   mvWorkspacesI3Cmd = wsdata: type: head:
     "${lib.concatStringsSep " " (lib.forEach (getWorkspacesByType wsdata type) (ws:
@@ -65,9 +67,11 @@ in rec {
         builtins.toString ws.index
       }: ${ws.name}; move workspace to output ${head}; "))}";
   # TODO: implement `transient` flag (whether to issue --no-startup-id)
-  mkKeyI3 = meta:
+  mkKeybindingI3 = meta: sep:
     let wss = config.wmCommon.workspaces;
-    in "bindsym ${meta.key}${if builtins.hasAttr "raw" meta then " " else " exec --no-startup-id "}${meta.cmd}${
+    in "bindsym ${mkKeyI3 meta.key sep}${
+      if builtins.hasAttr "raw" meta then " " else " exec --no-startup-id "
+    }${meta.cmd}${
       if builtins.hasAttr "desktop" meta then "; workspace ${getWorkspaceByNameI3 wss meta.desktop}" else ""
     }${
       if ((!builtins.hasAttr "sticky" meta) || ((builtins.hasAttr "sticky" meta) && meta.sticky == false)) && meta.mode
@@ -76,18 +80,19 @@ in rec {
       else
         ""
     }";
-  mkKeysI3 = keys: modeBindings:
+  mkKeybindingsI3 = keys: modeBindings: sep:
     let
       prefixedModesMeta = lib.filterAttrs (k: _: k != "root") (lib.groupBy (x: x.mode) keys);
       rootModeBindings = (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) keys)).root;
     in ''
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (mode: bindings: ''
         mode "${mode}" {
-          ${lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach bindings (x: mkKeyI3 x))}
+          ${lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach bindings (x: mkKeybindingI3 x sep))}
         }
       '') prefixedModesMeta)}
-      ${lib.concatStringsSep "\n" (lib.forEach rootModeBindings (x: mkKeyI3 x))}
+      ${lib.concatStringsSep "\n" (lib.forEach rootModeBindings (x: mkKeybindingI3 x sep))}
 
-      ${lib.concatStringsSep "\n" (lib.mapAttrsToList (mode: key: ''bindsym ${key} mode "${mode}"'') modeBindings)}
+      ${lib.concatStringsSep "\n"
+      (lib.mapAttrsToList (mode: key: ''bindsym ${mkKeyI3 key sep} mode "${mode}"'') modeBindings)}
     '';
 }

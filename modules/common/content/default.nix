@@ -216,7 +216,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.wm.enable && cfg.bookmarks.enable) {
       wmCommon.keys = [{
-        key = "m";
+        key = [ "m" ];
         cmd = "${pkgs.buku_add}/bin/buku_add";
         mode = "run";
       }];
@@ -224,17 +224,17 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable && cfg.screenshots.enable) {
       wmCommon.keys = [
         {
-          key = "Print";
+          key = [ "Print" ];
           cmd = "${pkgs.screenshot_active_window}/bin/screenshot_active_window";
           mode = "root";
         }
         {
-          key = "Control+Print";
+          key = [ "Control" "Print" ];
           cmd = "${pkgs.screenshot_full}/bin/screenshot_full";
           mode = "root";
         }
         {
-          key = "${prefix}+Print";
+          key = [ prefix "Print" ];
           cmd = "${pkgs.screenshot_region}/bin/screenshot_region";
           mode = "root";
         }
@@ -242,7 +242,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
-        key = "p";
+        key = [ "p" ];
         cmd = "${pkgs.paste_to_ix}/bin/paste_to_ix";
         mode = "window";
       }];

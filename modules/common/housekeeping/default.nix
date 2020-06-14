@@ -274,12 +274,12 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
         {
-          key = "${prefix}+Control+j";
+          key = [ prefix "Control" "j" ];
           cmd = "${pkgs.srvctl}/bin/srvctl";
           mode = "root";
         }
         {
-          key = "${prefix}+Shift+u";
+          key = [ prefix "Shift" "u" ];
           cmd = "${pkgs.uptime_info}/bin/uptime_info";
           mode = "root";
         }

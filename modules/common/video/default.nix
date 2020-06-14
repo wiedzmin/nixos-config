@@ -250,37 +250,37 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
         {
-          key = "XF86MonBrightnessDown";
+          key = [ "XF86MonBrightnessDown" ];
           cmd = "${pkgs.light}/bin/light -U ${toString cfg.backlightDelta}";
           mode = "root";
         }
         {
-          key = "XF86MonBrightnessUp";
+          key = [ "XF86MonBrightnessUp" ];
           cmd = "${pkgs.light}/bin/light -A ${toString cfg.backlightDelta}";
           mode = "root";
         }
         {
-          key = "Control+XF86MonBrightnessDown";
+          key = [ "Control" "XF86MonBrightnessDown" ];
           cmd = "${pkgs.light}/bin/light -S 20";
           mode = "root";
         }
         {
-          key = "Control+XF86MonBrightnessUp";
+          key = [ "Control" "XF86MonBrightnessUp" ];
           cmd = "${pkgs.light}/bin/light -S 100";
           mode = "root";
         }
         {
-          key = "Mod4+Alt+x";
+          key = [ "Mod4" "Alt" "x" ];
           cmd = "${pkgs.autorandr}/bin/autorandr --load mobile";
           mode = "root";
         }
         {
-          key = "a";
+          key = [ "a" ];
           cmd = "${pkgs.autorandr_profiles}/bin/autorandr_profiles";
           mode = "run";
         }
         {
-          key = "c";
+          key = [ "c" ];
           cmd = "${pkgs.systemd}/bin/systemctl --user restart compton.service";
           mode = "run";
         }

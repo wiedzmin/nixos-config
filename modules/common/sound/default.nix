@@ -58,56 +58,56 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
         {
-          key = "XF86AudioRaiseVolume";
+          key = [ "XF86AudioRaiseVolume" ];
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}+";
           mode = "root";
         }
         {
-          key = "XF86AudioLowerVolume";
+          key = [ "XF86AudioLowerVolume" ];
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}-";
           mode = "root";
         }
         {
-          key = "XF86AudioPrev";
+          key = [ "XF86AudioPrev" ];
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players previous";
           mode = "root";
         }
         {
-          key = "XF86AudioPlay";
+          key = [ "XF86AudioPlay" ];
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players play-pause";
           mode = "root";
         }
         {
-          key = "XF86AudioNext";
+          key = [ "XF86AudioNext" ];
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players next";
           mode = "root";
         }
         {
-          key = "XF86AudioMute";
+          key = [ "XF86AudioMute" ];
           cmd = "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";
           mode = "root";
         }
         {
-          key = "XF86AudioMicMute";
+          key = [ "XF86AudioMicMute" ];
           cmd = "${pkgs.pulseaudio}/bin/pactl set-source-mute @DEFAULT_SOURCE@ toggle";
           mode = "root";
         }
         {
-          key = "Alt+XF86AudioNext";
+          key = [ "Alt" "XF86AudioNext" ];
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players position ${
               builtins.toString config.custom.content.players.deltaSeconds
             }+";
           mode = "root";
         }
         {
-          key = "Alt+XF86AudioPrev";
+          key = [ "Alt" "XF86AudioPrev" ];
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players position ${
               builtins.toString config.custom.content.players.deltaSeconds
             }-";
           mode = "root";
         }
         {
-          key = "Alt+p";
+          key = [ "Alt" "p" ];
           cmd = "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt";
           mode = "root";
         }

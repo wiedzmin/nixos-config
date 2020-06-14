@@ -199,7 +199,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
-        key = "${prefix}+Alt+q";
+        key = [ prefix "Alt" "q" ];
         cmd = "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources";
         mode = "root";
       }];

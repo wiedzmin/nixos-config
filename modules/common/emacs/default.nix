@@ -205,12 +205,12 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
         {
-          key = "Shift+e";
+          key = [ "Shift" "e" ];
           cmd = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";
           mode = "window";
         }
         {
-          key = "e";
+          key = [ "e" ];
           cmd = "${pkgs.emacs}/bin/emacsclient -c -a emacs";
           mode = "window";
         }

@@ -163,7 +163,7 @@ in {
         ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.cli.meta)}
       '';
       wmCommon.keys = [{
-        key = "d";
+        key = [ "d" ];
         cmd = "${pkgs.dbms}/bin/dbms";
         mode = "run";
         desktop = "shell";

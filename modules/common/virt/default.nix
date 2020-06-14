@@ -267,25 +267,25 @@ in {
     (mkIf (cfg.docker.enable && cfg.wm.enable) {
       wmCommon.keys = [
         {
-          key = "t";
+          key = [ "t" ];
           cmd = "${pkgs.docker_containers_traits}/bin/docker_containers_traits";
           desktop = "shell";
           mode = "virt";
         }
         {
-          key = "s";
+          key = [ "s" ];
           cmd = "${pkgs.docker_shell}/bin/docker_shell";
           desktop = "shell";
           mode = "virt";
         }
         {
-          key = "i";
+          key = [ "i" ];
           cmd = "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info";
           desktop = "shell";
           mode = "virt";
         }
       ];
-      wmCommon.modeBindings.virt = "${prefix}-d";
+      wmCommon.modeBindings.virt = [ prefix "d" ];
     })
   ];
 }

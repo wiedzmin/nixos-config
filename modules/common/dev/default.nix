@@ -308,17 +308,17 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable && config.custom.virtualization.docker.enable) {
       wmCommon.keys = [
         {
-          key = "d";
+          key = [ "d" ];
           cmd = "${pkgs.systemd}/bin/systemctl restart docker-devdns.service";
           mode = "service";
         }
         {
-          key = "Shift+d";
+          key = [ "Shift" "d" ];
           cmd = "${pkgs.systemd}/bin/systemctl stop docker-devdns.service";
           mode = "service";
         }
       ] ++ lib.optionals (cfg.repoSearch.enable) [{
-        key = "r";
+        key = [ "r" ];
         cmd = "${pkgs.reposearch}/bin/reposearch";
         mode = "run";
       }];

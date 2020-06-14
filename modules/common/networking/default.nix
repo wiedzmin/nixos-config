@@ -268,12 +268,12 @@ in {
       '';
       wmCommon.keys = [
         {
-          key = "Shift+f";
+          key = [ "Shift" "f" ];
           cmd = "${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount";
           mode = "network";
         }
         {
-          key = "f";
+          key = [ "f" ];
           cmd = "${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount";
           mode = "network";
         }
@@ -306,39 +306,39 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ wpa_supplicant_gui ]; };
       wmCommon.keys = [
         {
-          key = "c";
+          key = [ "c" ];
           cmd = "${pkgs.wpa_supplicant_gui}/bin/wpa_gui";
           mode = "network";
         }
         {
-          key = "i";
+          key = [ "i" ];
           cmd = "${pkgs.ifconfless}/bin/ifconfless";
           mode = "network";
         }
         {
-          key = "n";
+          key = [ "n" ];
           cmd = "${pkgs.systemd}/bin/systemctl restart nscd.service";
           mode = "service";
         }
         {
-          key = "d";
+          key = [ "d" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu --choices";
           desktop = "shell";
           mode = "network";
         }
         {
-          key = "s";
+          key = [ "s" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu";
           desktop = "shell";
           mode = "network";
         }
         {
-          key = "t";
+          key = [ "t" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux";
           desktop = "shell";
           mode = "network";
         }
-        # { key = "w"; # FIXME: make conditional
+        # { key = [ "w" ]; # FIXME: make conditional
         #   cmd = "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli"; desktop = "shell"; mode = "network"; }
       ];
     })

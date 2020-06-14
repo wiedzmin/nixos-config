@@ -99,7 +99,7 @@ in {
     })
     (mkIf (cfg.wm.enable && cfg.readers.enable) {
       wmCommon.keys = [{
-        key = "b";
+        key = [ "b" ];
         cmd = "${pkgs.bookshelf}/bin/bookshelf";
         mode = "run";
       }];

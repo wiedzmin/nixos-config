@@ -367,45 +367,45 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
         {
-          key = "${prefix}+/";
+          key = [ prefix "slash" ];
           cmd = "${pkgs.search_selection}/bin/search_selection";
           desktop = "web";
           mode = "root";
         }
         {
-          key = "${prefix}+Control+/";
+          key = [ prefix "Control" "slash" ];
           cmd = "${pkgs.search_prompt}/bin/search_prompt";
           desktop = "web";
           mode = "root";
         }
         {
-          key = "${prefix}+j";
+          key = [ prefix "j" ];
           cmd = "${pkgs.webjumps}/bin/webjumps";
           desktop = "web";
           mode = "root";
         }
         {
-          key = "XF86Launch1";
+          key = [ "XF86Launch1" ];
           cmd = "${dmenu_runapps}/bin/dmenu_runapps";
           mode = "root";
         }
         {
-          key = "${prefix}+Shift+Return";
+          key = [ prefix "Shift" "Return" ];
           cmd = "${config.custom.shell.terminal}";
           mode = "root";
         }
         {
-          key = "${prefix}+Shift+p";
+          key = [ prefix "Shift" "p" ];
           cmd = "${dmenu_runapps}/bin/dmenu_runapps";
           mode = "root";
         }
         {
-          key = "s";
+          key = [ "s" ];
           cmd = "${pkgs.insert_snippet}/bin/insert_snippet";
           mode = "window";
         }
         {
-          key = "w";
+          key = [ "w" ];
           cmd = "${dmenu_select_windows}/bin/dmenu_select_windows";
           mode = "window";
         }
