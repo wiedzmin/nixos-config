@@ -280,6 +280,8 @@ in {
 
             ${with config.wmCommon; mkPlacementRulesI3 workspaces wsMapping.rules}
 
+            bindsym ${prefix}+Tab workspace back_and_forth
+
             exec_always --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
 
             bar {
