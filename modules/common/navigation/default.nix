@@ -369,19 +369,16 @@ in {
         {
           key = [ prefix "slash" ];
           cmd = "${pkgs.search_selection}/bin/search_selection";
-          desktop = "web";
           mode = "root";
         }
         {
           key = [ prefix "Control" "slash" ];
           cmd = "${pkgs.search_prompt}/bin/search_prompt";
-          desktop = "web";
           mode = "root";
         }
         {
           key = [ prefix "j" ];
           cmd = "${pkgs.webjumps}/bin/webjumps";
-          desktop = "web";
           mode = "root";
         }
         {
