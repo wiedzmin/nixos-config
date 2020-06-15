@@ -282,6 +282,8 @@ in {
 
             bindsym ${prefix}+Tab workspace back_and_forth
 
+            ${mkKeybindingsFocusI3 config.wmCommon.wsMapping.rules keySep}
+
             exec_always --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
 
             bar {

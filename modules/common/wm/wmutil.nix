@@ -95,6 +95,12 @@ in rec {
       ${lib.concatStringsSep "\n"
       (lib.mapAttrsToList (mode: key: ''bindsym ${mkKeyI3 key sep} mode "${mode}"'') modeBindings)}
     '';
+  mkKeybindingsFocusI3 = rules: sep:
+    lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "focus" r) rules) (r:
+      "bindsym ${mkKeyI3 r.focus sep} [ ${if builtins.hasAttr "class" r then ''class="^${r.class}$" '' else ""}${
+        if builtins.hasAttr "title" r then ''title=".*${builtins.replaceStrings [ " " ] [ ".*" ] r.title}.*"'' else ""
+      } ] focus"));
+  # FIXME: remove duplicaion ^V
   mkPlacementRulesI3 = wsdata: rules:
     lib.concatStringsSep "\n" (lib.forEach rules (rule:
       "for_window [ ${if builtins.hasAttr "class" rule then ''class="^${rule.class}$" '' else ""}${
