@@ -6,7 +6,6 @@ with lib;
 let
   cfg = config.wm.i3;
   prefix = config.wmCommon.prefix;
-  keySep = "+";
 in {
   options = {
     wm.i3 = {
@@ -144,19 +143,19 @@ in {
           }
           {
             key = [ "s" ];
-            cmd = ''layout stacking; mode "default"'';
+            cmd = "layout stacking";
             mode = "layout";
             raw = true;
           }
           {
             key = [ "t" ];
-            cmd = ''layout tabbed; mode "default"'';
+            cmd = "layout tabbed";
             mode = "layout";
             raw = true;
           }
           {
             key = [ "w" ];
-            cmd = ''layout toggle split; mode "default"'';
+            cmd = "layout toggle split";
             mode = "layout";
             raw = true;
           }
@@ -184,20 +183,6 @@ in {
           {
             key = [ "Right" ];
             cmd = "resize grow width 10 px or 10 ppt";
-            mode = "resize";
-            raw = true;
-            sticky = true;
-          }
-          {
-            key = [ "Return" ];
-            cmd = ''mode "default"'';
-            mode = "resize";
-            raw = true;
-            sticky = true;
-          }
-          {
-            key = [ "Escape" ];
-            cmd = ''mode "default"'';
             mode = "resize";
             raw = true;
             sticky = true;
@@ -284,16 +269,17 @@ in {
             # i3 config file (v4)
 
             ${cfg.settings}
-            ${mkKeybindingsI3 (cfg.keys ++ config.wmCommon.keys) config.wmCommon.modeBindings cfg.modeExitBindings
-            keySep}
-            ${mkWorkspacesI3 config.wmCommon.workspaces prefix keySep}
+            ${mkKeybindingsI3 (cfg.keys ++ config.wmCommon.keys) config.wmCommon.modeBindings cfg.modeExitBindings}
+            ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
             ${lib.concatStringsSep "\n" (lib.forEach cfg.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
             ${with config.wmCommon; mkPlacementRulesI3 workspaces wsMapping.rules}
 
-            bindsym ${prefix}+Tab workspace back_and_forth
+            ${mkWindowRulesFloatI3 config.wmCommon.wsMapping.rules}
 
-            ${mkKeybindingsFocusI3 config.wmCommon.wsMapping.rules keySep}
+            ${mkKeybindingsFocusI3 config.wmCommon.wsMapping.rules}
+
+            bindsym ${prefix}+Tab workspace back_and_forth
 
             exec_always --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
 

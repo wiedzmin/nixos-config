@@ -2,6 +2,7 @@
 with import ../../util.nix { inherit config lib pkgs; };
 
 let
+  keySepI3 = "+";
   keysymsI3 = {
     "`" = "grave";
     "Esc" = "Escape";
@@ -19,6 +20,12 @@ let
     "F10" = "<F10>";
     "F11" = "<F11>";
     "F12" = "<F12>";
+  };
+  windowCriteriaPlaceholdersI3 = {
+    "class" = ''class="^@$"'';
+    "title" = ''title=".*@.*"'';
+    "role" = ''role="^@$"'';
+    "instance" = ''instance="^@$"'';
   };
 in rec {
   dmenu_runapps = writeShellScriptBinWithDeps "dmenu_runapps"
@@ -49,36 +56,41 @@ in rec {
       lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList
         (ws: meta: ''("${ws}", Just "${convertKeyXmonad meta.key}", ${toHaskellBool meta.transient})'') wss)
     }${mkIndent indent}";
-  mkKeyI3 = keys: sep:
-    lib.concatStringsSep sep
+  mkWindowCriteriaI3 = criteria:
+    "[${
+      lib.concatStringsSep " " (lib.remove "" (lib.mapAttrsToList (k: v:
+        if builtins.hasAttr k criteria then
+          builtins.replaceStrings [ "@" ]
+          [ (if k == "title" then builtins.replaceStrings [ " " ] [ ".*" ] criteria."${k}" else criteria."${k}") ] v
+        else
+          "") windowCriteriaPlaceholdersI3))
+    }]";
+  mkKeyI3 = keys:
+    lib.concatStringsSep keySepI3
     (lib.forEach keys (k: if builtins.hasAttr k keysymsI3 then builtins.getAttr k keysymsI3 else k));
   getWorkspaceByNameI3 = wsdata: name:
     let ws = builtins.head (builtins.filter (ws: ws.name == name) wsdata);
     in "${builtins.toString ws.index}: ${ws.name}";
-  mkWorkspacesI3 = wsdata: mod: sep:
+  mkWorkspacesI3 = wsdata: mod:
     lib.concatStringsSep "\n" (lib.forEach wsdata (ws: ''
-      set $ws_${ws.name} ${builtins.toString ws.index}: ${ws.name}
-      bindsym ${mod}+${mkKeyI3 ws.key sep} workspace $ws_${ws.name}
-      bindsym ${mod}+Shift+${mkKeyI3 ws.key sep} move container to workspace $ws_${ws.name}
+      bindsym ${mod}+${mkKeyI3 ws.key} workspace ${builtins.toString ws.index}: ${ws.name}
+      bindsym ${mod}+Shift+${mkKeyI3 ws.key} move container to workspace ${builtins.toString ws.index}: ${ws.name}
     ''));
   mvWorkspacesI3Cmd = wsdata: type: head:
     "${lib.concatStringsSep " " (lib.forEach (getWorkspacesByType wsdata type) (ws:
       "workspace --no-auto-back-and-forth ${
         builtins.toString ws.index
       }: ${ws.name}; move workspace to output ${head}; "))}";
-  # TODO: implement `transient` flag (whether to issue --no-startup-id)
-  mkKeybindingI3 = meta: sep:
-    let wss = config.wmCommon.workspaces;
-    in "bindsym ${mkKeyI3 meta.key sep}${if builtins.hasAttr "raw" meta then " " else " exec --no-startup-id "}${
-      if builtins.hasAttr "cmd" meta then meta.cmd else ""
-    }${if builtins.hasAttr "desktop" meta then "; workspace ${getWorkspaceByNameI3 wss meta.desktop}" else ""}${
-      if ((!builtins.hasAttr "sticky" meta) || ((builtins.hasAttr "sticky" meta) && meta.sticky == false)) && meta.mode
-      != "root" then
-        ''; mode "default"''
-      else
-        ""
-    }";
-  mkKeybindingsI3 = keys: modeBindings: exitBindings: sep:
+  mkKeybindingI3 = meta:
+    builtins.concatStringsSep " " ([ "bindsym" (mkKeyI3 meta.key) ]
+      ++ lib.optionals (!maybeAttrBool "raw" meta) [ "exec" ]
+      ++ lib.optionals (maybeAttrBool "transient" meta) [ "--no-startup-id" ] ++ [
+        (builtins.concatStringsSep "; " (lib.optionals (builtins.hasAttr "cmd" meta) [ meta.cmd ]
+          ++ lib.optionals (builtins.hasAttr "desktop" meta)
+          [ "workspace ${getWorkspaceByNameI3 config.wmCommon.workspaces meta.desktop}" ]
+          ++ lib.optionals (!maybeAttrBool "sticky" meta && meta.mode != "root") [ ''mode "default"'' ]))
+      ]);
+  mkKeybindingsI3 = keys: modeBindings: exitBindings:
     let
       prefixedModesMeta = lib.filterAttrs (k: _: k != "root") (lib.groupBy (x: x.mode) keys);
       rootModeBindings = (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) keys)).root;
@@ -86,31 +98,37 @@ in rec {
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (mode: bindings: ''
         mode "${mode}" {
           ${
-            lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach (bindings ++ (map (b: {
-              key = b;
-              mode = "${mode}";
-              raw = true;
-            }) exitBindings)) (x: mkKeybindingI3 x sep))
+            lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach (bindings
+              ++ lib.optionals (!lib.hasPrefix "Passthrough" mode) (map (b: {
+                key = b;
+                mode = "${mode}";
+                raw = true;
+              }) exitBindings)) (x: mkKeybindingI3 x))
           }
         }
       '') prefixedModesMeta)}
-      ${lib.concatStringsSep "\n" (lib.forEach rootModeBindings (x: mkKeybindingI3 x sep))}
+      ${lib.concatStringsSep "\n" (lib.forEach rootModeBindings (x: mkKeybindingI3 x))}
 
       ${lib.concatStringsSep "\n"
-      (lib.mapAttrsToList (mode: key: ''bindsym ${mkKeyI3 key sep} mode "${mode}"'') modeBindings)}
+      (lib.mapAttrsToList (mode: key: ''bindsym ${mkKeyI3 key} mode "${mode}"'') modeBindings)}
     '';
-  mkKeybindingsFocusI3 = rules: sep:
-    lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "focus" r) rules) (r:
-      "bindsym ${mkKeyI3 r.focus sep} [ ${if builtins.hasAttr "class" r then ''class="^${r.class}$" '' else ""}${
-        if builtins.hasAttr "title" r then ''title=".*${builtins.replaceStrings [ " " ] [ ".*" ] r.title}.*"'' else ""
-      } ] focus"));
-  # FIXME: remove duplicaion ^V
-  mkPlacementRulesI3 = wsdata: rules:
-    lib.concatStringsSep "\n" (lib.forEach rules (rule:
-      "for_window [ ${if builtins.hasAttr "class" rule then ''class="^${rule.class}$" '' else ""}${
-        if builtins.hasAttr "title" rule then
-          ''title=".*${builtins.replaceStrings [ " " ] [ ".*" ] rule.title}.*"''
+  mkKeybindingsFocusI3 = rules:
+    lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "focus" r) rules)
+      (r: "bindsym ${mkKeyI3 r.focus} ${mkWindowCriteriaI3 r} focus"));
+  mkWindowRulesFloatI3 = rules:
+    lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "float" r) rules) (r:
+      "for_window ${mkWindowCriteriaI3 r} floating ${
+        if r.float then
+          "toggle${
+            if builtins.hasAttr "resize" r then
+              "; ${lib.concatStringsSep "; " (lib.forEach r.resize (d: "resize ${d}"))}"
+            else
+              ""
+          }"
         else
-          ""
-      } ] move to workspace ${getWorkspaceByNameI3 wsdata rule.desktop}"));
+          "disable"
+      }"));
+  mkPlacementRulesI3 = wsdata: rules:
+    lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "desktop" r) rules)
+      (r: "for_window ${mkWindowCriteriaI3 r} move to workspace ${getWorkspaceByNameI3 wsdata r.desktop}"));
 }

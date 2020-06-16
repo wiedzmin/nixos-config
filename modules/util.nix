@@ -108,4 +108,5 @@ in rec {
         -of json \
         -o $out
     ''));
+  maybeAttrBool = name: set: (builtins.hasAttr name set) && (set."${name}" == true);
 }
