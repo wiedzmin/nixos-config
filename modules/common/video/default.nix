@@ -139,10 +139,12 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        autorandr_profiles =
-          writePythonScriptWithPythonPackages "autorandr_profiles" [ pkgs.autorandr pkgs.python3Packages.dmenu-python ]
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./autorandr_profiles.py; })));
+        xctl = writePythonScriptWithPythonPackages "xctl" [
+          pkgs.autorandr
+          pkgs.python3Packages.dmenu-python
+          pkgs.python3Packages.ewmh
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./xctl.py; })));
       };
 
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "video" ];
@@ -210,7 +212,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.autorandr.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ autorandr_profiles ];
+        home.packages = with pkgs; [ xctl ];
         programs.autorandr = {
           enable = true;
           hooks =
@@ -276,7 +278,7 @@ in {
         }
         {
           key = [ "a" ];
-          cmd = "${pkgs.autorandr_profiles}/bin/autorandr_profiles";
+          cmd = "${pkgs.xctl}/bin/xctl --switch";
           mode = "run";
         }
         {
