@@ -166,36 +166,42 @@ in {
             cmd = "resize shrink width 10 px or 10 ppt";
             mode = "resize";
             raw = true;
+            sticky = true;
           }
           {
             key = [ "Down" ];
             cmd = "resize grow height 10 px or 10 ppt";
             mode = "resize";
             raw = true;
+            sticky = true;
           }
           {
             key = [ "Up" ];
             cmd = "resize shrink height 10 px or 10 ppt";
             mode = "resize";
             raw = true;
+            sticky = true;
           }
           {
             key = [ "Right" ];
             cmd = "resize grow width 10 px or 10 ppt";
             mode = "resize";
             raw = true;
+            sticky = true;
           }
           {
             key = [ "Return" ];
             cmd = ''mode "default"'';
             mode = "resize";
             raw = true;
+            sticky = true;
           }
           {
             key = [ "Escape" ];
             cmd = ''mode "default"'';
             mode = "resize";
             raw = true;
+            sticky = true;
           }
           {
             key = [ prefix "F11" ];
