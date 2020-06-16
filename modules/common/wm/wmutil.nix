@@ -69,25 +69,29 @@ in rec {
   # TODO: implement `transient` flag (whether to issue --no-startup-id)
   mkKeybindingI3 = meta: sep:
     let wss = config.wmCommon.workspaces;
-    in "bindsym ${mkKeyI3 meta.key sep}${
-      if builtins.hasAttr "raw" meta then " " else " exec --no-startup-id "
-    }${meta.cmd}${
-      if builtins.hasAttr "desktop" meta then "; workspace ${getWorkspaceByNameI3 wss meta.desktop}" else ""
-    }${
+    in "bindsym ${mkKeyI3 meta.key sep}${if builtins.hasAttr "raw" meta then " " else " exec --no-startup-id "}${
+      if builtins.hasAttr "cmd" meta then meta.cmd else ""
+    }${if builtins.hasAttr "desktop" meta then "; workspace ${getWorkspaceByNameI3 wss meta.desktop}" else ""}${
       if ((!builtins.hasAttr "sticky" meta) || ((builtins.hasAttr "sticky" meta) && meta.sticky == false)) && meta.mode
       != "root" then
         ''; mode "default"''
       else
         ""
     }";
-  mkKeybindingsI3 = keys: modeBindings: sep:
+  mkKeybindingsI3 = keys: modeBindings: exitBindings: sep:
     let
       prefixedModesMeta = lib.filterAttrs (k: _: k != "root") (lib.groupBy (x: x.mode) keys);
       rootModeBindings = (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) keys)).root;
     in ''
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (mode: bindings: ''
         mode "${mode}" {
-          ${lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach bindings (x: mkKeybindingI3 x sep))}
+          ${
+            lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach (bindings ++ (map (b: {
+              key = b;
+              mode = "${mode}";
+              raw = true;
+            }) exitBindings)) (x: mkKeybindingI3 x sep))
+          }
         }
       '') prefixedModesMeta)}
       ${lib.concatStringsSep "\n" (lib.forEach rootModeBindings (x: mkKeybindingI3 x sep))}

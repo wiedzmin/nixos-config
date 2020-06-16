@@ -211,6 +211,11 @@ in {
         default = { };
         description = "Modes keybindings.";
       };
+      modeExitBindings = mkOption {
+        type = types.listOf (types.listOf types.str);
+        default = [ [ "q" ] [ "Escape" ] [ "Control" "g" ] ];
+        description = "Unified collection of keybindings used to exit to default mode.";
+      };
       autostart.enable = mkOption {
         type = types.bool;
         default = true;
@@ -274,7 +279,8 @@ in {
             # i3 config file (v4)
 
             ${cfg.settings}
-            ${mkKeybindingsI3 (cfg.keys ++ config.wmCommon.keys) config.wmCommon.modeBindings keySep}
+            ${mkKeybindingsI3 (cfg.keys ++ config.wmCommon.keys) config.wmCommon.modeBindings cfg.modeExitBindings
+            keySep}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix keySep}
             ${lib.concatStringsSep "\n" (lib.forEach cfg.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
