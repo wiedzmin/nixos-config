@@ -3,7 +3,6 @@ with import ../../../util.nix { inherit config lib pkgs; };
 with import ../wmutil.nix { inherit config lib pkgs; };
 with lib;
 
-# FIXME: integrate into common WM infra after config stabilization
 let
   cfg = config.wm.i3;
   prefix = config.wmCommon.prefix;
