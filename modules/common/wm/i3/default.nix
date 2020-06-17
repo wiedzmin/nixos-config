@@ -118,6 +118,12 @@ in {
             raw = true;
           }
           {
+            key = [ prefix "Shift" "s" ];
+            cmd = "sticky toggle";
+            mode = "root";
+            raw = true;
+          }
+          {
             key = [ prefix "t" ];
             cmd = "focus mode_toggle";
             mode = "root";
