@@ -303,7 +303,7 @@ in {
             order += "disk /"
             order += "wireless wlan0"
             order += "battery 0"
-            order += "tztime local"
+            order += "clock"
             order += "keyboard_layout"
 
             wireless wlan0 {
@@ -324,9 +324,8 @@ in {
               last_full_capacity = true
             }
 
-            tztime local {
-              format = "%d-%m-%Y %H:%M"
-              hide_if_equals_localtime = false
+            clock {
+              format_time = "%a %d-%m-%Y %H:%M"
             }
 
             load {
