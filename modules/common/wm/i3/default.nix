@@ -262,7 +262,7 @@ in {
         "network" = [ prefix "n" ];
         "virt" = [ prefix "d" ];
         "services" = [ prefix "s" ];
-        "windows" = [ prefix "w" ];
+        "window" = [ prefix "w" ];
         "vpn" = [ prefix "v" ];
         "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
       };
