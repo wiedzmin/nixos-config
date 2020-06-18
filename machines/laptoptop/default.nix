@@ -224,6 +224,11 @@ in {
       snippets.enable = true;
       wsMapping.enable = true;
     };
+    "b354e944b3".secrets = {
+      enable = true;
+      vpn.enable = true;
+      wsMapping.enable = true;
+    };
   };
 
   custom.appearance = {
