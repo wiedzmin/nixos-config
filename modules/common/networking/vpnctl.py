@@ -2,6 +2,7 @@ import argparse
 import json
 import subprocess
 import sys
+import time
 
 import notify2
 import redis
@@ -44,6 +45,7 @@ if args.vpn_service_tag:
     stop_running(omit=args.vpn_service_tag)
     vpn_start_task = subprocess.Popen(service["up"], shell=True, stdout=subprocess.PIPE)
     assert vpn_start_task.wait() == 0
+    time.sleep(3)
     n = notify2.Notification("[VPN]", "Started {0} service".format(args.vpn_service_tag))
     n.set_urgency(URGENCY_NORMAL)
     n.set_timeout(5000)
