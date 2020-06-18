@@ -273,7 +273,7 @@ in {
         xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText;
       };
     })
-    (mkIf cfg.constraintMouse.enable {
+    (mkIf (cfg.constraintMouse.enable && !config.wm.i3.enable) {
       systemd.user.services."xpointerbarrier" = {
         description = "Create pointer barriers around each XRandR screen";
         after = [ "graphical-session-pre.target" ];
