@@ -3,21 +3,15 @@ import re
 import sys
 
 import dmenu
-import notify2
-from notify2 import URGENCY_NORMAL, URGENCY_CRITICAL
-
 
 pattern = "\(.*\)"
 deps_dict = {}
 
-notify2.init("modedit")
+@pythonPatchNotify@
 
 go_mod_path = os.getcwd() + "/go.mod"
 if not (os.path.exists(go_mod_path) and os.path.isfile(go_mod_path)):
-    n = notify2.Notification("[modedit]", "No go.mod found")
-    n.set_urgency(URGENCY_CRITICAL)
-    n.set_timeout(5000)
-    n.show()
+    notify("[modedit]", "No go.mod found", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
 with open(go_mod_path, "r") as f:
@@ -31,10 +25,7 @@ dep_path = dmenu.show(deps_dict.keys(), prompt="replace",
                       case_insensitive=True, lines=10)
 
 if not dep_path:
-    n = notify2.Notification("[modedit]", "Nothing selected")
-    n.set_urgency(URGENCY_NORMAL)
-    n.set_timeout(5000)
-    n.show()
+    notify("[modedit]", "Nothing selected", timeout=5000)
     sys.exit(0)
 
 dep_path_local = "@globalWorkspaceRoot@/" + dep_path
@@ -42,10 +33,7 @@ if dep_path_local.endswith(".git"):
     dep_path_local = dep_path_local[:-4]
 
 if not (os.path.exists(dep_path_local) and os.path.isdir(dep_path_local)):
-    n = notify2.Notification("[modedit]", "No dependency repo found locally")
-    n.set_urgency(URGENCY_CRITICAL)
-    n.set_timeout(5000)
-    n.show()
+    notify("[modedit]", "No dependency repo found locally", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
 with open(go_mod_path, "a") as f:

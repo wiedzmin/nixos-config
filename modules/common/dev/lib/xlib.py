@@ -1,5 +1,5 @@
-from Xlib import X, display, error, Xatom, Xutil
 import Xlib.protocol.event
+from Xlib import X, display, error, Xatom, Xutil
 
 
 def sendEvent(win, ctype, data, mask=None):

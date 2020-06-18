@@ -5,8 +5,6 @@ import sys
 import time
 
 import dmenu
-import notify2
-from notify2 import URGENCY_NORMAL, URGENCY_CRITICAL
 
 URL_REGEX = "(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
 
@@ -23,8 +21,7 @@ def fetch_tags_cloud():
     assert tags_cloud_task.wait() == 0
     return result
 
-
-notify2.init("buku_add")
+@pythonPatchNotify@
 
 bookmark_text_task = subprocess.Popen("xsel -o -b",
                                       shell=True, stdout=subprocess.PIPE)
@@ -32,17 +29,11 @@ bookmark_text = bookmark_text_task.stdout.read().decode().strip()
 assert bookmark_text_task.wait() == 0
 if bookmark_text is not None:
     if not is_valid_url(bookmark_text):
-        n = notify2.Notification("error", "URL is not valid")
-        n.set_urgency(URGENCY_CRITICAL)
-        n.set_timeout(5000)
-        n.show()
+        notify("error", "URL is not valid", urgency=URGENCY_CRITICAL, timeout=5000)
         sys.exit(1)
     result = dmenu.show([bookmark_text], prompt='bookmark')
     if not result:
-        n = notify2.Notification("OK", "Aborted adding bookmark")
-        n.set_urgency(URGENCY_NORMAL)
-        n.set_timeout(5000)
-        n.show()
+        notify("OK", "Aborted adding bookmark", timeout=5000)
         sys.exit(1)
     tags_cloud = fetch_tags_cloud()
     bookmark_tags = []
@@ -60,15 +51,8 @@ if bookmark_text is not None:
     else:
         os.system("buku -a {0}".format(
                   bookmark_text))
-    n = notify2.Notification("Success", "Bookmark added: {0} ({1})".format(
-                             bookmark_text,
-                             ",".join(bookmark_tags)))
-    n.set_urgency(URGENCY_NORMAL)
-    n.set_timeout(2000)
-    n.show()
+    notify("Success", "Bookmark added: {0} ({1})".format(
+        bookmark_text, ",".join(bookmark_tags)))
 else:
-    n = notify2.Notification("Error", "No text in clipboard")
-    n.set_urgency(URGENCY_CRITICAL)
-    n.set_timeout(2000)
-    n.show()
+    notify("Error", "No text in clipboard", urgency=URGENCY_CRITICAL)
     sys.exit(1)

@@ -5,9 +5,8 @@ import subprocess
 import time
 
 import dmenu
-import notify2
-from notify2 import URGENCY_NORMAL
 
+@pythonPatchNotify@
 
 def collect_sessions():
     return [os.path.basename(session) for session in glob.glob("@firefoxSessionsPath@/*.org")]
@@ -24,7 +23,6 @@ parser.add_argument("--delete", dest="delete_session", action="store_true",
                    default=False, help="Delete stored session")
 
 args = parser.parse_args()
-notify2.init("manage_firefox_sessions")
 
 if args.save_session:
     session_name = dmenu.show([], prompt="save as",
@@ -70,7 +68,4 @@ elif args.delete_session:
         subprocess.Popen(
             "rm @firefoxSessionsPath@/{0}".format(session_name),
             shell=True, stdout=subprocess.PIPE)
-        n = notify2.Notification("[Firefox]", "Removed {0}".format(session_name))
-        n.set_urgency(URGENCY_NORMAL)
-        n.set_timeout(5000)
-        n.show()
+        notify("[Firefox]", "Removed {0}".format(session_name), timeout=5000)

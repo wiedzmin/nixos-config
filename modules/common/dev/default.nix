@@ -96,8 +96,17 @@ in {
         description = "Whether to enable WM keybindings.";
       };
       pythonLib = mkOption {
-        type = types.lines;
-        default = builtins.readFile ./pythonlib.py;
+        type = types.attrs;
+        default = {
+          "notify" = {
+            packages = with pkgs; [ ]; # TODO: integrate later
+            patch = builtins.readFile ./lib/notify.py;
+          };
+          "xlib" = {
+            packages = with pkgs; [ ];
+            patch = builtins.readFile ./lib/xlib.py;
+          };
+        };
         readOnly = true;
         internal = true;
         description = ''

@@ -36,7 +36,8 @@ rec {
   pgcliBinary = "${nixpkgs-pinned-05_12_19.pgcli}/bin/pgcli"; # because of deps versions conflict with mycli
   pimOrgAgendaElPatch = config.custom.pim.org.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
-  pythonLibPatch = config.custom.dev.pythonLib;
+  pythonPatchNotify = config.custom.dev.pythonLib."notify".patch;
+  pythonPatchXlib = config.custom.dev.pythonLib."xlib".patch;
   screenshotsBasedir = config.custom.content.screenshots.baseDir;
   screenshotsDateFormat = config.custom.content.screenshots.dateFormat;
   systemTimeZone = config.time.timeZone;

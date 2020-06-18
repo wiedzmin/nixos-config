@@ -4,15 +4,13 @@ import sys
 from urllib.request import urlopen
 
 import dmenu
-import notify2
-from notify2 import URGENCY_NORMAL
 from bs4 import BeautifulSoup
 
 
+@pythonPatchNotify@
+
 def is_valid_url(url):
     return re.search("@urlRegexPy@", url) is not None
-
-notify2.init("collect_links_on_page")
 
 page_url_task = subprocess.Popen("xsel -o -b",
                                  shell=True, stdout=subprocess.PIPE)
@@ -36,15 +34,9 @@ if page_url is not None:
             org_content.append("* {0}\n".format(tag.get('href')))
         with open("@firefoxSessionsPath@/{0}.org".format(session_name), "w") as f:
             f.writelines(org_content)
-        n = notify2.Notification("[scrape]", "Scraped {0} links".format(len(org_content) - 2))
-        n.set_urgency(URGENCY_NORMAL)
-        n.set_timeout(5000)
-        n.show()
+        notify("[scrape]", "Scraped {0} links".format(len(org_content) - 2), timeout=5000)
         for line in org_content:
             print(line)
     else:
         print(page_url)
-        n = notify2.Notification("[scrape]", "Non-URL content in clipboard, skipping")
-        n.set_urgency(URGENCY_NORMAL)
-        n.set_timeout(5000)
-        n.show()
+        notify("[scrape]", "Non-URL content in clipboard, skipping", timeout=5000)

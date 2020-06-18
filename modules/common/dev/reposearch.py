@@ -2,12 +2,10 @@ import subprocess
 import sys
 
 from libtmux import Server
-from notify2 import URGENCY_NORMAL, URGENCY_CRITICAL
 import dmenu
-import notify2
 
 
-notify2.init("reposearch")
+@pythonPatchNotify@
 
 keyword_task = subprocess.Popen("xsel -o -b", shell=True, stdout=subprocess.PIPE)
 keyword_text = keyword_task.stdout.read().decode().strip()
@@ -19,10 +17,7 @@ else:
     keyword_result = dmenu.show([], prompt='keyword')
 
 if not keyword_result:
-    n = notify2.Notification("[search repos]", "no keyword provided")
-    n.set_urgency(URGENCY_CRITICAL)
-    n.set_timeout(5000)
-    n.show()
+    notify("[search repos]", "no keyword provided", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
 search_repos_task = subprocess.Popen("fd -t d -d 4 {0} @searchReposRoot@".format(keyword_result),
@@ -31,10 +26,7 @@ search_repos_result = search_repos_task.stdout.read().decode().strip().split("\n
 
 selected_repo = dmenu.show(search_repos_result, prompt='repo', case_insensitive=True, lines=10)
 if not selected_repo:
-    n = notify2.Notification("[search repos]", "no repository selected")
-    n.set_urgency(URGENCY_NORMAL)
-    n.set_timeout(5000)
-    n.show()
+    notify("[search repos]", "no repository selected", timeout=5000)
     sys.exit(0)
 
 tmux_server = Server()

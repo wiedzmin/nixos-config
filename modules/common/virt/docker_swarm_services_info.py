@@ -4,8 +4,6 @@ import subprocess
 import sys
 
 import dmenu
-import notify2
-from notify2 import URGENCY_CRITICAL
 import redis
 from libtmux import Server
 
@@ -15,15 +13,14 @@ service_modes = [
     "logs"
 ]
 
-notify2.init("docker_swarm_services_info")
+@pythonPatchNotify@
+
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 swarm_meta = json.loads(r.get("virt/swarm_meta"))
 swarm = dmenu.show(swarm_meta.keys(), prompt="swarm", case_insensitive=True, lines=5)
 if not swarm:
-    n = notify2.Notification("[virt]", "No swarm selected")
-    n.set_urgency(URGENCY_NORMAL)
-    n.show()
+    notify("[virt]", "No swarm selected")
     sys.exit(0)
 
 swarm_host = swarm_meta[swarm]

@@ -4,21 +4,16 @@ import subprocess
 import sys
 
 import dmenu
-import notify2
 import redis
 
-from notify2 import URGENCY_CRITICAL
 
-
-notify2.init("dbms")
 r = redis.Redis(host='localhost', port=6379, db=0)
 dbms_meta = json.loads(r.get("misc/dbms_meta"))
 
+@pythonPatchNotify@
+
 if not len(dbms_meta):
-    n = notify2.Notification("[dbms]", "No entries")
-    n.set_urgency(URGENCY_CRITICAL)
-    n.set_timeout(5000)
-    n.show()
+    notify("[dbms]", "No entries", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
 dbms_entry = dmenu.show(dbms_meta.keys(), lines=5)
@@ -32,10 +27,8 @@ if dbms_entry:
     elif dbms_meta[dbms_entry].get("password"): # password in plaintext
         dbms_pass = dbms_meta[dbms_entry].get("password")
     else:
-        n = notify2.Notification("[dbms]", "No password provided for '{0}'".format(dbms_entry))
-        n.set_urgency(URGENCY_CRITICAL)
-        n.set_timeout(5000)
-        n.show()
+        notify("[dbms]", "No password provided for '{0}'".format(dbms_entry),
+               urgency=URGENCY_CRITICAL, timeout=5000)
         sys.exit(1)
 
     dbms_vpn = dbms_meta[dbms_entry].get("vpn", None)
