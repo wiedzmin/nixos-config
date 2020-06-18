@@ -73,6 +73,6 @@ elif args.get_apptraits:
         if title:
             meta.append("title=\"{0}\"".format(title))
         if role:
-            meta.append("role=\"{0}\"".format(role))
+            meta.append("window_role=\"{0}\"".format(role))
         print("[{0}]".format(" ".join(meta)))
     ewmh.display.flush()
