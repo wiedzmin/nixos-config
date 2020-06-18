@@ -84,6 +84,8 @@ in {
           lib.strings.escapeNixString (builtins.toJSON config.custom.dev.remote.commands)
         }
       '';
+      programs.nm-applet.enable = config.wm.i3.enable;
+
       nixpkgs.config.packageOverrides = _: rec {
         wifi-status = writeShellScriptBinWithDeps "wifi-status" [ pkgs.gawk pkgs.wirelesstools ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./wifi-status.sh; })));
