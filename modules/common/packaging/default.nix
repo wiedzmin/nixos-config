@@ -94,9 +94,14 @@ in {
             nixpkgs-proposed.python3Packages.pyfzf
           ] (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./confctl.py; })));
+          rollback = writeShellScriptBinWithDeps "rollback" [ pkgs.fzf ] ''
+            GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
+            GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
+            pkexec nix-env --profile /nix/var/nix/profiles/system --set $GENERATION_PATH && pkexec $GENERATION_PATH/bin/switch-to-configuration switch
+          '';
         };
       };
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ niv ]; };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ niv rollback ]; };
     })
     (mkIf (cfg.enable && cfg.homeManagerBackups.enable) {
       environment.variables.HOME_MANAGER_BACKUP_EXT = "hm_backup";
