@@ -52,9 +52,9 @@ def format_config():
     assert format_config_task.wait() == 0
 
 
-def build_configuration(path=None, debug=False):
+def build_configuration(path="/etc/nixos/configuration.nix", debug=False):
     build_configuration_task = subprocess.Popen(
-        f'nix build -f {locate_nixpkgs()}/nixos system{" --show-trace" if debug else ""} -I nixos-config="{path if path else '/etc/nixos/configuration.nix'}"',
+        f'nix build -f {locate_nixpkgs()}/nixos system{" --show-trace" if debug else ""} -I nixos-config="{path}"',
         shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
     result = build_configuration_task.wait()
     if result in [1, 100]:
