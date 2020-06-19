@@ -16,5 +16,4 @@ if searchengine:
     searchengine_url = searchengines[searchengine]
     search_term = dmenu.show([], prompt="term")
     if search_term:
-        subprocess.run("@defaultBrowser@ {0}{1}".format(
-            searchengine_url, search_term.replace(" ", "+")).split())
+        subprocess.run(f'@defaultBrowser@ {searchengine_url}{search_term.replace(" ", "+")}'.split())

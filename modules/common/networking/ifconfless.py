@@ -9,7 +9,7 @@ iface_names = [iface_meta.split()[0] for iface_meta in get_ifaces_task.stdout.re
 
 iface_name = dmenu.show(iface_names, prompt="describe", case_insensitive=True, lines=10)
 
-get_iface_traits_task = subprocess.Popen("ifconfig {0}".format(iface_name), shell=True, stdout=subprocess.PIPE)
+get_iface_traits_task = subprocess.Popen(f"ifconfig {iface_name}", shell=True, stdout=subprocess.PIPE)
 iface_traits = get_iface_traits_task.stdout.read().decode()
 
 fill_clipboard_task = subprocess.Popen("xsel -ib", shell=True, stdin=subprocess.PIPE, stdout=subprocess.PIPE)

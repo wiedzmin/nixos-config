@@ -26,15 +26,12 @@ if page_url is not None:
         page_content = urlopen(page_url)
         soup = BeautifulSoup(page_content, "html.parser")
         tags = soup.findAll("a", attrs={"href": re.compile("^https?://")})
-        org_content = [
-            "#+TITLE: {0}\n".format(soup.title.string),
-            "#+PROPERTY: url {0}\n".format(page_url)
-        ]
+        org_content = [f"#+TITLE: {soup.title.string}\n", f"#+PROPERTY: url {page_url}\n"]
         for tag in tags:
-            org_content.append("* {0}\n".format(tag.get('href')))
-        with open("@firefoxSessionsPath@/{0}.org".format(session_name), "w") as f:
+            org_content.append(f"* {tag.get('href')}\n")
+        with open(f"@firefoxSessionsPath@/{session_name}.org", "w") as f:
             f.writelines(org_content)
-        notify("[scrape]", "Scraped {0} links".format(len(org_content) - 2), timeout=5000)
+        notify("[scrape]", f"Scraped {len(org_content) - 2} links", timeout=5000)
         for line in org_content:
             print(line)
     else:

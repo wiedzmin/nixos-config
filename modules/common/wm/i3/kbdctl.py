@@ -11,7 +11,8 @@ def get_focused_window_ws_and_class(i3):
 
 
 def get_window_id(i3):
-    return "{0}-{1}".format(*get_focused_window_ws_and_class(i3))
+    ws, _class = get_focused_window_ws_and_class(i3)
+    return f"{ws}-{_class}"
 
 
 def get_current_kbd_layout():

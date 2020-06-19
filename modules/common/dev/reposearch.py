@@ -20,7 +20,7 @@ if not keyword_result:
     notify("[search repos]", "no keyword provided", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
-search_repos_task = subprocess.Popen("fd -t d -d 4 {0} @searchReposRoot@".format(keyword_result),
+search_repos_task = subprocess.Popen(f"fd -t d -d 4 {keyword_result} @searchReposRoot@",
                                      shell=True, stdout=subprocess.PIPE)
 search_repos_result = search_repos_task.stdout.read().decode().strip().split("\n")
 
@@ -34,5 +34,5 @@ tmux_session = tmux_server.find_where({ "session_name": "@tmuxDefaultSession@" }
 repo_window = tmux_session.new_window(attach=True, window_name=selected_repo.split("/")[-1],
                                       start_directory=selected_repo)
 
-open_emacs_frame_task = subprocess.Popen("emacsclient -c -a '' {0}".format(selected_repo),
+open_emacs_frame_task = subprocess.Popen(f"emacsclient -c -a '' {selected_repo}",
                                          shell=True, stdout=subprocess.PIPE)

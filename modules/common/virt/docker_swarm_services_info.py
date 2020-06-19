@@ -24,13 +24,13 @@ if not swarm:
     sys.exit(0)
 
 swarm_host = swarm_meta[swarm]
-os.environ["DOCKER_HOST"] = "ssh://{0}".format(swarm_host)
+os.environ["DOCKER_HOST"] = f"ssh://{swarm_host}"
 vpn_meta = json.loads(r.get("net/hosts_vpn"))
 host_vpn = vpn_meta.get(swarm_host, None)
 if host_vpn:
-    vpn_is_up = r.get("vpn/{0}/is_up".format(host_vpn)).decode() == "yes"
+    vpn_is_up = r.get(f"vpn/{host_vpn}/is_up").decode() == "yes"
     if not vpn_is_up:
-        vpn_start_task = subprocess.Popen("vpnctl --start {0}".format(host_vpn),
+        vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
                                           shell=True, stdout=subprocess.PIPE)
         assert vpn_start_task.wait() == 0
 
@@ -42,7 +42,7 @@ selected_service_meta = dmenu.show(select_service_result, prompt="service", case
 selected_service_name = selected_service_meta.split("|")[0].strip()
 selected_mode = dmenu.show(service_modes, prompt="show", case_insensitive=True, lines=5)
 
-get_service_status_task = subprocess.Popen("docker service ps {0}".format(selected_service_name),
+get_service_status_task = subprocess.Popen(f"docker service ps {selected_service_name}",
                                            shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 get_service_status_result = get_service_status_task.stdout.read().decode()
 
@@ -64,12 +64,9 @@ elif selected_mode == "logs":
 
     tmux_sessions = json.loads(r.get("tmux/extra_hosts"))
     session_name = tmux_sessions.get(swarm_host) or "@tmuxDefaultSession@"
-    show_log_cmd = "{0}docker service logs --follow {1}".format(
-        "export DOCKER_HOST={0} && ".format(os.environ["DOCKER_HOST"]) if os.environ["DOCKER_HOST"] else "",
-        task_mappings.get(selected_task) if selected_task in task_mappings else selected_service_name)
+    task_or_service = task_mappings.get(selected_task) if selected_task in task_mappings else selected_service_name
+    show_log_cmd = f"DOCKER_HOST={os.environ['DOCKER_HOST']} docker service logs --follow {task_or_service}"
     tmux_server = Server()
     tmux_session = tmux_server.find_where({ "session_name": session_name })
-    docker_task_log_window = tmux_session.new_window(
-        attach=True,
-        window_name="{0} logs".format(selected_task),
-        window_shell=show_log_cmd)
+    docker_task_log_window = tmux_session.new_window(attach=True, window_name=f"{selected_task} logs",
+                                                     window_shell=show_log_cmd)

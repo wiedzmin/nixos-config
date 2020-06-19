@@ -45,14 +45,10 @@ if bookmark_text is not None:
         else:
            break
     if bookmark_tags:
-        os.system("buku -a {0} {1}".format(
-                  bookmark_text,
-                  ",".join(bookmark_tags)))
+        os.system(f"buku -a {bookmark_text} {','.join(bookmark_tags)}")
     else:
-        os.system("buku -a {0}".format(
-                  bookmark_text))
-    notify("Success", "Bookmark added: {0} ({1})".format(
-        bookmark_text, ",".join(bookmark_tags)))
+        os.system(f"buku -a {bookmark_text}")
+    notify("Success", f"Bookmark added: {bookmark_text} ({','.join(bookmark_tags)})")
 else:
     notify("Error", "No text in clipboard", urgency=URGENCY_CRITICAL)
     sys.exit(1)

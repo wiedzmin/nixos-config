@@ -52,7 +52,7 @@ if args.switch_profile:
 
     result = dmenu.show(profiles, prompt='profile', lines=5)
     if result:
-        os.system("autorandr --load {0}".format(result))
+        os.system(f"autorandr --load {result}")
 elif args.get_fingerprint:
     print(json.dumps({"fingerprint": get_fingerprint()}, indent=2))
 elif args.get_apptraits:
@@ -68,11 +68,11 @@ elif args.get_apptraits:
         title = window.get_full_text_property(NET_WM_NAME, UTF8_STRING)
         role = window.get_full_text_property(WM_WINDOW_ROLE, STRING)
         instance, _class = window.get_wm_class()
-        meta.append("class=\"{0}\"".format(_class))
-        meta.append("instance=\"{0}\"".format(instance))
+        meta.append(f'class="{_class}"')
+        meta.append(f'instance="{instance}"')
         if title:
-            meta.append("title=\"{0}\"".format(title))
+            meta.append(f'title="{title}"')
         if role:
-            meta.append("window_role=\"{0}\"".format(role))
-        print("[{0}]".format(" ".join(meta)))
+            meta.append(f'window_role="{role}"')
+        print(f"[{' '.join(meta)}]")
     ewmh.display.flush()

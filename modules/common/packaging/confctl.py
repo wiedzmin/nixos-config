@@ -53,11 +53,9 @@ def format_config():
 
 
 def build_configuration(path=None, debug=False):
-    build_configuration_task = subprocess.Popen("nix build -f {0}/nixos system{1}{2}".format(
-        locate_nixpkgs(),
-        " --show-trace" if debug else "",
-        ' -I nixos-config="{0}"'.format(path if path else "/etc/nixos/configuration.nix")
-    ), shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
+    build_configuration_task = subprocess.Popen(
+        f'nix build -f {locate_nixpkgs()}/nixos system{" --show-trace" if debug else ""} -I nixos-config="{path if path else '/etc/nixos/configuration.nix'}"',
+        shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
     result = build_configuration_task.wait()
     if result in [1, 100]:
         sys.exit(1)
@@ -70,24 +68,24 @@ def rollback_configuration():
     if is_current:
         print("Skipping rollback to *current* configuration")
         sys.exit(0)
-    rollback_target_path = "/nix/var/nix/profiles/system-{0}-link".format(generation)
+    rollback_target_path = f"/nix/var/nix/profiles/system-{generation}-link"
     print(generation, timestamp, rollback_target_path)
     switch_configuration(root=rollback_target_path)
 
 
 def switch_configuration(root=None):
     try:
-        new_system_path = os.readlink("{0}/result".format(os.getcwd()) if not root else root)
+        new_system_path = os.readlink(f"{os.getcwd()}/result" if not root else root)
     except FileNotFoundError as e:
         new_system_path = None
-        print("Error switching configuration: {0}".format(e))
+        print(f"Error switching configuration: {e}")
         sys.exit(1)
-    switch_configuration_task = subprocess.Popen("pkexec nix-env --profile /nix/var/nix/profiles/system --set {0} && pkexec {0}/bin/switch-to-configuration switch".format(
-                                                 new_system_path), shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
+    switch_configuration_task = subprocess.Popen(
+        f"pkexec nix-env --profile /nix/var/nix/profiles/system --set {new_system_path} && pkexec {new_system_path}/bin/switch-to-configuration switch",
+        shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
     result = switch_configuration_task.wait()
     if result != 0:
-        print("Error switching configuration, detail below:\n{0}".format(
-            switch_configuration_task.stderr.read().decode()))
+        print(f"Error switching configuration, details below:\n{switch_configuration_task.stderr.read().decode()}")
         sys.exit(1)
 
 
@@ -143,7 +141,7 @@ elif operation == "Select and build configuration":
                 config_entries)}
     result = get_selection(configs.keys(), prompt='config', lines=5)
     if result:
-        build_configuration(path="{0}/{1}".format(MACHINES_CONFIG_PATH, configs[result]))
+        build_configuration(path=f"{MACHINES_CONFIG_PATH}/{configs[result]}")
 elif operation == "Select and build configuration (debug)":
     MACHINES_CONFIG_PATH = "/etc/nixos/machines"
     config_entries = os.listdir(MACHINES_CONFIG_PATH)
@@ -151,14 +149,14 @@ elif operation == "Select and build configuration (debug)":
                 config_entries)}
     result = get_selection(configs.keys(), prompt='config', lines=5)
     if result:
-        build_configuration(path="{0}/{1}".format(MACHINES_CONFIG_PATH, configs[result]), debug=True)
+        build_configuration(path=f"{MACHINES_CONFIG_PATH}/{configs[result]}", debug=True)
 elif operation == "Link configuration":
     os.chdir("/etc/nixos")
     machines = os.listdir("machines")
     result = get_selection(machines, prompt='config', lines=5)
     if result:
         os.remove("configuration.nix")
-        os.symlink(os.path.relpath("machines/{0}/default.nix".format(result)), "configuration.nix")
+        os.symlink(os.path.relpath(f"machines/{result}/default.nix"), "configuration.nix")
 
 
 # TODO list

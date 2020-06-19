@@ -2,7 +2,7 @@ import os
 import dmenu
 
 configs = []
-TMUXP_SESSIONS_PATH = "{0}/tmuxp".format(os.getenv("HOME"))
+TMUXP_SESSIONS_PATH = f'{os.getenv("HOME")}/tmuxp'
 
 
 for root, dirs, files in os.walk(TMUXP_SESSIONS_PATH):
@@ -12,4 +12,4 @@ for root, dirs, files in os.walk(TMUXP_SESSIONS_PATH):
 
 result = dmenu.show(sorted(configs), prompt='config', lines=10)
 if result:
-    os.system("tmuxp load -y -d {0}/{1}.yml".format(TMUXP_SESSIONS_PATH, result))
+    os.system(f"tmuxp load -y -d {TMUXP_SESSIONS_PATH}/{result}.yml")

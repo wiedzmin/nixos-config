@@ -45,15 +45,15 @@ hostnames = sorted(list(set(hostnames)))
 hostname = dmenu.show(hostnames, prompt="host", case_insensitive=True, lines=10)
 
 if hostname == "localhost":
-    del os.environ["DOCKER_HOST"]
+    os.environ["DOCKER_HOST"] = "unix:///var/run/docker.sock"
 else:
-    os.environ["DOCKER_HOST"] = "ssh://{0}".format(hostname)
+    os.environ["DOCKER_HOST"] = f"ssh://{hostname}"
     vpn_meta = json.loads(r.get("net/hosts_vpn"))
     host_vpn = vpn_meta.get(host, None)
     if host_vpn:
-        vpn_is_up = r.get("vpn/{0}/is_up".format(host_vpn)).decode() == "yes"
+        vpn_is_up = r.get(f"vpn/{host_vpn}/is_up").decode() == "yes"
         if not vpn_is_up:
-            vpn_start_task = subprocess.Popen("vpnctl --start {0}".format(host_vpn),
+            vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
                                               shell=True, stdout=subprocess.PIPE)
             assert vpn_start_task.wait() == 0
 
@@ -61,21 +61,18 @@ container_status = dmenu.show(CONTAINER_STATUSES, prompt="status", case_insensit
 if not container_status:
     sys.exit(1)
 
-docker_ps_cmd = "docker ps {0}--format {1}".format(
-    "-a " if container_status == "all" else "", "'{{.Names}}'")
+docker_ps_cmd = f"docker ps {'-a ' if container_status == 'all' else ''}--format '{{.Names}}'"
 select_container_task = subprocess.Popen(docker_ps_cmd, shell=True, stdout=subprocess.PIPE)
 select_container_result = select_container_task.stdout.read().decode().split("\n")
 
 selected_container = dmenu.show(select_container_result, prompt="container", case_insensitive=True, lines=10)
 selected_trait = dmenu.show(CONTAINER_TRAITS.keys(), prompt="inspect", case_insensitive=True, lines=10)
 
-docker_inspect_cmd = "docker inspect {0} --format {1}".format(
-    selected_container, '"{0}"'.format(CONTAINER_TRAITS[selected_trait]))
+docker_inspect_cmd = f'docker inspect {selected_container} --format "{CONTAINER_TRAITS[selected_trait]}"'
 
 # FIXME: remove nested "formats"
-subprocess.run(["xsel", "-ib"], universal_newlines=True, input="{0}{1}".format(
-    "export DOCKER_HOST={0} && ".format(os.environ["DOCKER_HOST"]) if os.environ["DOCKER_HOST"] else "",
-    docker_inspect_cmd))
+subprocess.run(["xsel", "-ib"], universal_newlines=True,
+               input=f"export DOCKER_HOST={os.environ['DOCKER_HOST']} && {docker_inspect_cmd}")
 
 get_traits_task = subprocess.Popen(docker_inspect_cmd, shell=True, stdout=subprocess.PIPE)
 with open("/tmp/docker_traits", "w") as f:

@@ -20,15 +20,15 @@ hostnames = sorted(list(set(hostnames)))
 hostname = dmenu.show(hostnames, prompt="host", case_insensitive=True, lines=10)
 
 if hostname == "localhost":
-    del os.environ["DOCKER_HOST"]
+    os.environ["DOCKER_HOST"] = "unix:///var/run/docker.sock"
 else:
-    os.environ["DOCKER_HOST"] = "ssh://{0}".format(hostname)
+    os.environ["DOCKER_HOST"] = f"ssh://{hostname}"
     vpn_meta = json.loads(r.get("net/hosts_vpn"))
     host_vpn = vpn_meta.get(host, None)
     if host_vpn:
-        vpn_is_up = r.get("vpn/{0}/is_up".format(host_vpn)).decode() == "yes"
+        vpn_is_up = r.get(f"vpn/{host_vpn}/is_up").decode() == "yes"
         if not vpn_is_up:
-            vpn_start_task = subprocess.Popen("vpnctl --start {0}".format(host_vpn),
+            vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
                                               shell=True, stdout=subprocess.PIPE)
             assert vpn_start_task.wait() == 0
 
@@ -39,15 +39,8 @@ selected_container = dmenu.show(select_container_result, prompt="container", cas
 if not selected_container:
     sys.exit(1)
 
-get_shell_cmd = "{0}docker exec -it {1} {2}".format(
-    "export DOCKER_HOST={0} && ".format(os.environ["DOCKER_HOST"]) if os.environ["DOCKER_HOST"] else "",
-    selected_container,
-    "@defaultContainerShell@"
-)
-
+get_shell_cmd = f"export DOCKER_HOST={os.environ['DOCKER_HOST']} && docker exec -it {selected_container} @defaultContainerShell@"
 tmux_server = Server()
 tmux_session = tmux_server.find_where({ "session_name": "@tmuxDefaultSession@" })
-docker_shell_window = tmux_session.new_window(
-    attach=True,
-    window_name="{0} shell".format(selected_container),
-    window_shell=get_shell_cmd)
+docker_shell_window = tmux_session.new_window(attach=True, window_name=f"{selected_container} shell",
+                                              window_shell=get_shell_cmd)

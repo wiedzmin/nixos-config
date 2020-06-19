@@ -15,4 +15,4 @@ if ebooks:
 
 result = dmenu.show(ebooks, prompt='book', case_insensitive=True, lines=30)
 if result:
-    subprocess.Popen("zathura {0}".format(re.escape(result)), shell=True, stdout=subprocess.PIPE)
+    subprocess.Popen(f"zathura {re.escape(result)}", shell=True, stdout=subprocess.PIPE)

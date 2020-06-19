@@ -16,10 +16,10 @@ def construct_proto_uri(template=None, url=None, title=None, body=None, dont_enc
         sys.exit(1)
     raw_inputs = dont_encode.split(",")
 
-    params = ["url={0}".format(urlencode(url) if url not in raw_inputs else url)]
+    params = [f"url={urlencode(url) if url not in raw_inputs else url}"]
 
     if template:
-        params.append("template={0}".format(template))
+        params.append(f"template={template}")
     if title:
         actual_title = title
         if in_tmux:
@@ -27,7 +27,7 @@ def construct_proto_uri(template=None, url=None, title=None, body=None, dont_enc
                                                  shell=True, stdout=subprocess.PIPE)
             actual_title = tmux_session_task.stdout.read().decode().strip()
             assert tmux_session_task.wait() == 0
-        params.append("title={0}".format(urlencode(actual_title) if actual_title not in raw_inputs else actual_title))
+        params.append(f"title={urlencode(actual_title) if actual_title not in raw_inputs else actual_title}")
     if body:
         actual_body = body
         if in_tmux:
@@ -35,12 +35,12 @@ def construct_proto_uri(template=None, url=None, title=None, body=None, dont_enc
                                                    shell=True, stdout=subprocess.PIPE)
             actual_body = tmux_selection_task.stdout.read().decode().strip()
             assert tmux_selection_task.wait() == 0
-        params.append("body={0}".format(urlencode(body) if body not in raw_inputs else body))
+        params.append(f"body={urlencode(body) if body not in raw_inputs else body}")
 
-    return "org-protocol://capture?{0}".format("&".join(params))
+    return f"org-protocol://capture?{'&'.join(params)}"
 
 
-DEBUG_FILE = "{0}/org-capture.log".format(os.environ["HOME"])
+DEBUG_FILE = f'{os.environ["HOME"]}/org-capture.log'
 
 parser = argparse.ArgumentParser(description="Org-capture proxy.")
 parser.add_argument("--debug", "-d", dest="debug", action="store_true",
@@ -62,5 +62,5 @@ if args.debug:
     with open(DEBUG_FILE, "w") as debug:
         debug.write(capture_uri + "\n")
 
-capture_uri_task = subprocess.Popen('emacsclient "{0}"'.format(capture_uri), shell=True, stdout=subprocess.PIPE)
+capture_uri_task = subprocess.Popen(f'emacsclient "{capture_uri}"', shell=True, stdout=subprocess.PIPE)
 assert capture_uri_task.wait() == 0

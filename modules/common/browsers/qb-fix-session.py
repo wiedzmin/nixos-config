@@ -4,7 +4,7 @@ import shutil
 
 import yaml
 
-SESSIONS_PATH = "{0}/.local/share/qutebrowser/sessions/".format(os.environ["HOME"])
+SESSIONS_PATH = f'{os.environ["HOME"]}/.local/share/qutebrowser/sessions/'
 DEFAULT_SESSION = "default.yml"
 BACKUP_SUFFIX = ".backup"
 

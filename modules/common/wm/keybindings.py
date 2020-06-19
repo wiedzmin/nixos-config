@@ -27,8 +27,9 @@ if not os.path.exists("@keybindingsCachePath@"):
             cmd_result = cmd
         else:
             cmd_result = cmd[:ands_index]
-        legend.append('{0}: {1}{2}\n'.format(key, cmd_result[cmd_result.rfind("/")+1:].strip('"/').replace('"', ''),
-                                             " (" + desktop + ")" if desktop else ""))
+        cmd_clean = cmd_result[cmd_result.rfind("/")+1:].strip('"/').replace('"', '')
+        maybe_desktop = " (" + desktop + ")" if desktop else ""
+        legend.append('{key}: {cmd_clean}{maybe_desktop}\n')
 
     with open("@keybindingsCachePath@", "w") as f:
         f.writelines(legend)

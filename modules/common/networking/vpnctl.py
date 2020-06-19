@@ -26,7 +26,7 @@ def stop_running(omit=None):
         del vpn_meta[omit]
     stop_cmds = {vpn: vpn_meta[vpn]["down"] for vpn in vpn_meta}
     for vpn, cmd in stop_cmds.items():
-        vpn_up = r.get("vpn/{0}/is_up".format(vpn)).decode() == "yes"
+        vpn_up = r.get(f"vpn/{vpn}/is_up").decode() == "yes"
         if vpn_up:
             vpn_stop_task = subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE)
 
@@ -34,12 +34,12 @@ def stop_running(omit=None):
 if args.vpn_service_tag:
     service = vpn_meta.get(args.vpn_service_tag, None)
     if not service:
-        notify("[VPN]", "Cannot find {0} service".format(args.vpn_service_tag), urgency=URGENCY_CRITICAL, timeout=5000)
+        notify("[VPN]", f"Cannot find {args.vpn_service_tag} service", urgency=URGENCY_CRITICAL, timeout=5000)
         sys.exit(1)
     stop_running(omit=args.vpn_service_tag)
     vpn_start_task = subprocess.Popen(service["up"], shell=True, stdout=subprocess.PIPE)
     assert vpn_start_task.wait() == 0
     time.sleep(3)
-    notify("[VPN]", "Started {0} service".format(args.vpn_service_tag), timeout=5000)
+    notify("[VPN]", f"Started {args.vpn_service_tag} service", timeout=5000)
 elif args.stop_running:
     stop_running()

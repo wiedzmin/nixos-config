@@ -58,7 +58,7 @@ for window in sorted(windows, key=lambda w: w.get_full_text_property(NET_WM_NAME
     window_title = window.get_full_text_property(NET_WM_NAME, UTF8_STRING)
     window_class = window.get_wm_class()[1]
     if args.verbosity >= 1:
-        print("window ({0}): {1}".format(window_class, window_title))
+        print(f"window ({window_class}): {window_title}")
     for tokens in window_rules.keys():
         ratio = fuzz.token_set_ratio(" ".join(tokens.split()[1:]), window_title, force_ascii=False)
         similarities.setdefault(ratio, []).append(tokens)
@@ -69,10 +69,10 @@ for window in sorted(windows, key=lambda w: w.get_full_text_property(NET_WM_NAME
     direct_delta = direct_max - direct_second
     if args.verbosity >= 3:
         for k, g in sim_groups.items():
-            print("{0}: {1}".format(k, g))
+            print(f"{k}: {g}")
         print("--------------------------------")
         for sim, rule in sorted(similarities.items()):
-            print("{0}: {1}".format(sim, rule))
+            print(f"{sim}: {rule}")
     rule = similarities[sim_groups[group_max][0]][0]
     rule_class = rule.split()[0]
     desktop_name = window_rules[rule]
@@ -80,14 +80,14 @@ for window in sorted(windows, key=lambda w: w.get_full_text_property(NET_WM_NAME
     move_window = False
     if window_class != rule_class:
         if args.verbosity >= 1:
-            print("skipping window, overriding rule, non-matching window classes: {0} != {1}".format(window_class, rule_class))
+            print(f"skipping window, overriding rule, non-matching window classes: {window_class} != {rule_class}")
     else:
         if args.verbosity >= 1:
-            print("window classes matched: {0} == {1}, checking rule...".format(window_class, rule_class))
+            print(f"window classes matched: {window_class} == {rule_class}, checking rule...")
         if group_delta > SIMILARITY_GROUP_TRESHOLD or direct_delta < SIMILARITY_DIRECT_TRESHOLD:
             move_window = True
             if args.verbosity >= 1:
-                print("rule: '{0}' fired".format(rule))
+                print(f"rule: '{rule}' fired")
         elif window_class == rule_class:
             move_window = True
             if args.verbosity >= 1:
@@ -95,7 +95,7 @@ for window in sorted(windows, key=lambda w: w.get_full_text_property(NET_WM_NAME
 
     if move_window:
         if args.verbosity >= 1:
-            print("--> {0}".format(desktop_name))
+            print(f"--> {desktop_name}")
         if not args.dry_run:
             ewmh.setWmDesktop(window, desktop_index)
 

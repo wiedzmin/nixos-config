@@ -15,11 +15,11 @@ if webjump:
     vpn_meta = json.loads(r.get("nav/webjumps_vpn"))
     webjump_vpn = vpn_meta.get(webjump, None)
     if webjump_vpn:
-        vpn_is_up = r.get("vpn/{0}/is_up".format(webjump_vpn)).decode() == "yes"
+        vpn_is_up = r.get(f"vpn/{webjump_vpn}/is_up").decode() == "yes"
         if not vpn_is_up:
-            vpn_start_task = subprocess.Popen("vpnctl --start {0}".format(webjump_vpn),
+            vpn_start_task = subprocess.Popen(f"vpnctl --start {webjump_vpn}",
                                               shell=True, stdout=subprocess.PIPE)
             assert vpn_start_task.wait() == 0
 
     browser_cmd = webjumps[webjump]
-    os.system("{0}".format(browser_cmd))
+    os.system(f"{browser_cmd}")

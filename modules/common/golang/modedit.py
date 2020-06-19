@@ -37,4 +37,4 @@ if not (os.path.exists(dep_path_local) and os.path.isdir(dep_path_local)):
     sys.exit(1)
 
 with open(go_mod_path, "a") as f:
-    f.write("\nreplace {0} => {1}".format(dep_path, dep_path_local))
+    f.write(f"\nreplace {dep_path} => {dep_path_local}")

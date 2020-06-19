@@ -16,5 +16,4 @@ if searchengine:
     search_term_task = subprocess.Popen("xsel -o", shell=True, stdout=subprocess.PIPE)
     search_term = search_term_task.stdout.read().decode()
     assert search_term_task.wait() == 0
-    subprocess.run("@defaultBrowser@ {0}{1}".format(
-        searchengine_url, search_term.replace(" ", "+")).split())
+    subprocess.run(f'@defaultBrowser@ {searchengine_url}{search_term.replace(" ", "+")}'.split())

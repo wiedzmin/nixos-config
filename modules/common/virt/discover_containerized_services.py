@@ -25,12 +25,12 @@ selected_container = dmenu.show(select_container_result, prompt="container", cas
 if not selected_container:
     sys.exit(1)
 
-container_ip_task = subprocess.Popen("docker inspect {0} --format='{1}'".format(
-    selected_container, ip_address_format), shell=True, stdout=subprocess.PIPE)
+container_ip_task = subprocess.Popen(f"docker inspect {selected_container} --format='{ip_address_format}'",
+                                     shell=True, stdout=subprocess.PIPE)
 container_ip_result = container_ip_task.stdout.read().decode().strip()
 
-container_ports_task = subprocess.Popen("docker inspect {0} --format='{1}'".format(
-    selected_container, ports_format), shell=True, stdout=subprocess.PIPE)
+container_ports_task = subprocess.Popen(f"docker inspect {selected_container} --format='{ports_format}'",
+                                        shell=True, stdout=subprocess.PIPE)
 container_ports_result = container_ports_task.stdout.read().decode().strip().split("\n")
 
 port_result = None
@@ -42,8 +42,8 @@ for port in container_ports_result:
         break
 
 if not port_result:
-    notify("[docker]", "No suitable port between exposed:\n{0}".format("\n".join(container_ports_result)), timeout=5000)
+    notify("[docker]", f"No suitable port between exposed:\n{'\n'.join(container_ports_result)}", timeout=5000)
     sys.exit(0)
 
-open_cmd = "{0} http://{1}:{2}".format(port_cmd_mapping[port_result], container_ip_result, port_result)
+open_cmd = f"{port_cmd_mapping[port_result]} http://{container_ip_result}:{port_result}"
 subprocess.run(open_cmd.split())
