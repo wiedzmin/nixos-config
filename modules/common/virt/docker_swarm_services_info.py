@@ -28,11 +28,9 @@ os.environ["DOCKER_HOST"] = f"ssh://{swarm_host}"
 vpn_meta = json.loads(r.get("net/hosts_vpn"))
 host_vpn = vpn_meta.get(swarm_host, None)
 if host_vpn:
-    vpn_is_up = r.get(f"vpn/{host_vpn}/is_up").decode() == "yes"
-    if not vpn_is_up:
-        vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
-                                          shell=True, stdout=subprocess.PIPE)
-        assert vpn_start_task.wait() == 0
+    vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
+                                      shell=True, stdout=subprocess.PIPE)
+    assert vpn_start_task.wait() == 0
 
 select_service_task = subprocess.Popen("docker service ls --format '{{.Name}} | {{.Mode}} | {{.Replicas}} | {{.Image}}'",
                                        shell=True, stdout=subprocess.PIPE)

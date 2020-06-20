@@ -26,11 +26,9 @@ else:
     vpn_meta = json.loads(r.get("net/hosts_vpn"))
     host_vpn = vpn_meta.get(host, None)
     if host_vpn:
-        vpn_is_up = r.get(f"vpn/{host_vpn}/is_up").decode() == "yes"
-        if not vpn_is_up:
-            vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
-                                              shell=True, stdout=subprocess.PIPE)
-            assert vpn_start_task.wait() == 0
+        vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
+                                          shell=True, stdout=subprocess.PIPE)
+        assert vpn_start_task.wait() == 0
 
 select_container_task = subprocess.Popen("docker ps --format '{{.Names}}'", shell=True, stdout=subprocess.PIPE)
 select_container_result = select_container_task.stdout.read().decode().split("\n")

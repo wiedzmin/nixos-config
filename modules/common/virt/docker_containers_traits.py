@@ -51,11 +51,9 @@ else:
     vpn_meta = json.loads(r.get("net/hosts_vpn"))
     host_vpn = vpn_meta.get(host, None)
     if host_vpn:
-        vpn_is_up = r.get(f"vpn/{host_vpn}/is_up").decode() == "yes"
-        if not vpn_is_up:
-            vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
-                                              shell=True, stdout=subprocess.PIPE)
-            assert vpn_start_task.wait() == 0
+        vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
+                                          shell=True, stdout=subprocess.PIPE)
+        assert vpn_start_task.wait() == 0
 
 container_status = dmenu.show(CONTAINER_STATUSES, prompt="status", case_insensitive=True, lines=3)
 if not container_status:

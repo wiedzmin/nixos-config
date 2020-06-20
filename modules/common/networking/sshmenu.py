@@ -38,11 +38,9 @@ if host:
     vpn_meta = json.loads(r.get("net/hosts_vpn"))
     host_vpn = vpn_meta.get(host, None)
     if host_vpn:
-        vpn_is_up = r.get(f"vpn/{host_vpn}/is_up").decode() == "yes"
-        if not vpn_is_up:
-            vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
-                                              shell=True, stdout=subprocess.PIPE)
-            assert vpn_start_task.wait() == 0
+        vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
+                                          shell=True, stdout=subprocess.PIPE)
+        assert vpn_start_task.wait() == 0
     cmd = f"ssh {host}"
     if args.show_choices:
         command_choices = json.loads(r.get("net/command_choices"))

@@ -33,11 +33,9 @@ if dbms_entry:
 
     dbms_vpn = dbms_meta[dbms_entry].get("vpn", None)
     if dbms_vpn:
-        vpn_is_up = r.get(f"vpn/{dbms_vpn}/is_up").decode() == "yes"
-        if not vpn_is_up:
-            vpn_start_task = subprocess.Popen(f"vpnctl --start {dbms_vpn}",
-                                              shell=True, stdout=subprocess.PIPE)
-            assert vpn_start_task.wait() == 0
+        vpn_start_task = subprocess.Popen(f"vpnctl --start {dbms_vpn}",
+                                          shell=True, stdout=subprocess.PIPE)
+        assert vpn_start_task.wait() == 0
 
     if dbms_meta[dbms_entry]["command"] == "mycli":
         cmd = f"@mycliBinary@ --host {dbms_meta[dbms_entry]['ip']} --user {dbms_meta[dbms_entry]['user']} --password {dbms_pass}"
