@@ -185,10 +185,21 @@
   :config
   (imagemagick-register-types))
 
+(use-package autorevert
+  :if (string-equal "i3" (getenv "CURRENT_WM"))
+  :defer 2
+  :custom
+  (auto-revert-check-vc-info t)
+  :config
+  (global-auto-revert-mode 1))
+
 (use-package backup-each-save
   :hook (after-save-hook . backup-each-save))
 
-(use-package hl-todo)
+(use-package hl-todo
+  :if (string-equal "i3" (getenv "CURRENT_WM"))
+  :config
+  (global-hl-todo-mode))
 
 (use-package recentf
   :defer 1
@@ -229,7 +240,10 @@
   (super-save-mode 1))
 
 (use-package beginend
-  :delight (beginend-prog-mode beginend-magit-status-mode))
+  :if (string-equal "i3" (getenv "CURRENT_WM"))
+  :delight (beginend-global-mode beginend-prog-mode beginend-magit-status-mode)
+  :config
+  (beginend-global-mode))
 
 (use-package comment-dwim-2
   :bind
@@ -252,7 +266,16 @@
   (company-idle-delay 0)
   (company-minimum-prefix-length 2)
   (company-tooltip-align-annotations t)
-  (company-show-numbers t))
+  (company-show-numbers t)
+  :config
+  (when (string-equal "i3" (getenv "CURRENT_WM"))
+    (add-hook 'after-init-hook 'global-company-mode)
+    (use-package company-quickhelp
+      :config
+      (company-quickhelp-mode 1))
+    (use-package company-statistics
+      :config
+      (company-statistics-mode))))
 
 (use-package compdef)
 
@@ -302,7 +325,11 @@
   :custom
   (flycheck-check-syntax-automatically '(mode-enabled save idle-change))
   (flycheck-display-errors-delay 0.4)
-  (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list))
+  (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
+  (flycheck-global-modes '(not emacs-lisp-mode))
+  :config
+  (when (string-equal "i3" (getenv "CURRENT_WM"))
+    (global-flycheck-mode 1)))
 
 (use-package helm-flycheck
   :after (helm flycheck)
@@ -424,6 +451,9 @@
         ("M-s" . nil)
         ("M-e" . sp-splice-sexp))
   :config
+  (when (string-equal "i3" (getenv "CURRENT_WM"))
+    (smartparens-global-mode t)
+    (show-smartparens-global-mode t))
   (use-package smartparens-config)
   (sp-use-paredit-bindings)
   :custom
@@ -473,7 +503,8 @@
   (:map mode-specific-map
         :prefix-map custom-ws-map
         :prefix "x"
-        ("w" . whitespace-mode))
+        ("w" . whitespace-mode)
+        ("W" . global-whitespace-mode))
   :custom
   (whitespace-line-column 121)
   (whitespace-style '(indentation::space
@@ -496,16 +527,20 @@
   (:map mode-specific-map
         ("a" . aggressive-indent-mode))
   :config
+  (when (string-equal "i3" (getenv "CURRENT_WM"))
+    (global-aggressive-indent-mode 1))
   (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 
 (use-package ws-butler
   :after whitespace
   :bind
   (:map custom-ws-map
-        ("b" . ws-butler-mode))
+        ("b" . ws-butler-mode)
+        ("B" . ws-butler-global-mode))
   :custom
   (ws-butler-convert-leading-tabs-or-spaces t)
-  (ws-butler-global-exempt-modes '(markdown-mode go-mode)))
+  (ws-butler-global-exempt-modes '(markdown-mode go-mode))
+  (ws-butler-global-mode))
 
 (use-package yasnippet
   :delight yas-minor-mode

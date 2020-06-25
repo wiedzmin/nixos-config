@@ -2,6 +2,16 @@
   :custom
   (mouse-avoidance-mode 'jump))
 
+(use-package doom-modeline
+  :if (string-equal "i3" (getenv "CURRENT_WM"))
+  :hook
+  (after-init-hook . doom-modeline-init)
+  :custom
+  (doom-modeline-height 25)
+  (doom-modeline-icon t)
+  (doom-modeline-major-mode-icon nil)
+  (doom-modeline-minor-modes nil))
+
 (use-package default-text-scale
   :bind
   ("C-=" . default-text-scale-increase)
@@ -10,6 +20,11 @@
   (default-text-scale-amount 10)
   :config
   (default-text-scale-mode 1))
+
+(use-package hl-line
+  :if (string-equal "i3" (getenv "CURRENT_WM"))
+  :config
+  (global-hl-line-mode 1))
 
 (use-package time
   :config

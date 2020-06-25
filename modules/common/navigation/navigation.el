@@ -115,6 +115,7 @@
   :hook
   (helm-tramp-pre-command-hook . (lambda ()
                                    (setq make-backup-files nil)
+                                   (global-aggressive-indent-mode 0)
                                    (projectile-mode 0)
                                    (editorconfig-mode 0)))
   (helm-tramp-quit-hook . (lambda ()
@@ -193,11 +194,9 @@
                ("k" . delete-frame)
                ("s" . delete-other-frames)
                ("v" . custom/toggle-transparency))
-  ;;TODO: investigate further and maybe kinda revert commit about global-modes et al
-  ;;      It seems like xmonad is responsible for corrupted emacs window titles
-  ;; :hook
-  ;; (pre-redisplay-functions . keep-custom-frame-title)
   :config
+  (unless (string-equal "i3" (getenv "CURRENT_WM"))
+    (add-hook 'pre-redisplay-functions 'keep-custom-frame-title))
   (add-to-list 'default-frame-alist `(alpha . (100 . 100)))
   (blink-cursor-mode 0)
   (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
