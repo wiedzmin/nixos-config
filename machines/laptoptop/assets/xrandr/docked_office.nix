@@ -15,15 +15,17 @@ with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; 
               config.attributes.hardware.monitors.internalHead.edid;
           };
           config = {
-            DP-2 = { # crtc 1
+            DP-2 = {
               enable = true;
+              crtc = 1;
               position = "0x0";
               mode = "1920x1080";
               gamma = config.custom.video.gamma;
               rate = config.custom.video.rate;
             };
-            DP-3 = { # crtc 2
+            DP-3 = {
               enable = true;
+              crtc = 2;
               position = "1366x1080";
               mode = "1920x1080";
               gamma = config.custom.video.gamma;
