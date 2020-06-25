@@ -29,23 +29,6 @@ in {
           Path to store user data under.
         '';
       };
-      reverseImPatch = mkOption {
-        type = types.str;
-        default = lib.optionalString (config.wm.i3.enable) ''
-          (use-package reverse-im
-            :ensure t
-            :custom
-            (reverse-im-input-methods '("russian-computer"))
-            :config
-            (reverse-im-mode t))
-        '';
-        visible = false;
-        readOnly = true;
-        internal = true;
-        description = ''
-          Path to store user data under.
-        '';
-      };
       orgDir = mkOption {
         type = types.str;
         default = homePrefix "docs/org";

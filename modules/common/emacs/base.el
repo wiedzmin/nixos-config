@@ -71,7 +71,13 @@
   (custom-file "@emacsCustomFile@"))
 
 ;;TODO: review new `reverse-im' options
-@reverseImPatch@
+(use-package reverse-im
+  :if (string-equal "i3" (getenv "CURRENT_WM"))
+  :ensure t
+  :custom
+  (reverse-im-input-methods '("russian-computer"))
+  :config
+  (reverse-im-mode t))
 
 (use-package emacs
   :preface
