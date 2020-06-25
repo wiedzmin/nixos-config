@@ -245,6 +245,8 @@ in {
         displayManager = { defaultSession = "none+i3"; };
       };
 
+      ide.emacs.environment = { CURRENT_WM = "i3"; };
+
       nixpkgs.config.packageOverrides = _: rec {
         kbdctl = writePythonScriptWithPythonPackages "kbdctl" [
           pkgs.python3Packages.i3ipc

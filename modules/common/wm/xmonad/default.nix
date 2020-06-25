@@ -281,6 +281,8 @@ in {
         message = "xmonad: exactly one WM could be enabled.";
       }];
 
+      ide.emacs.environment = { CURRENT_WM = "xmonad"; };
+
       services.xserver = {
         windowManager = {
           xmonad = {
