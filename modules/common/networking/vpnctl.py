@@ -56,7 +56,8 @@ def start_service(name, meta):
             else:
                 r.set(f"vpn/{name}/is_up", "unk")
                 result = False
-                notify("[VPN]", f"error starting `{name}`", urgency=URGENCY_CRITICAL, timeout=5000)
+                notify("[VPN]", f"error starting `{name}`\n\n{vpn_start_task.stdout.read().decode()}",
+                       urgency=URGENCY_CRITICAL, timeout=5000)
     elif meta["type"] == "ipsec":
         if is_nm_vpn_up(name):
             r.set(f"vpn/{name}/is_up", "yes")
@@ -77,7 +78,8 @@ def start_service(name, meta):
                 else:
                     r.set(f"vpn/{name}/is_up", "unk")
                     result = False
-                    notify("[VPN]", f"error starting `{name}`", urgency=URGENCY_CRITICAL, timeout=5000)
+                    notify("[VPN]", f"error starting `{name}`\n\n{' '.join(vpn_stderr)}",
+                           urgency=URGENCY_CRITICAL, timeout=5000)
             else:
                 r.set(f"vpn/{name}/is_up", "yes")
                 result = True
@@ -110,7 +112,8 @@ def stop_service(name, meta):
             else:
                 r.set(f"vpn/{name}/is_up", "unk")
                 result = False
-                notify("[VPN]", f"error stopping `{name}`", urgency=URGENCY_CRITICAL, timeout=5000)
+                notify("[VPN]", f"error stopping `{name}`\n\n{vpn_stop_task.stdout.read().decode()}",
+                       urgency=URGENCY_CRITICAL, timeout=5000)
     elif meta["type"] == "ipsec":
         if not is_nm_vpn_up(name):
             r.set(f"vpn/{name}/is_up", "no")
@@ -131,7 +134,8 @@ def stop_service(name, meta):
                 else:
                     r.set(f"vpn/{name}/is_up", "unk")
                     result = False
-                    notify("[VPN]", f"error stopping `{name}`", urgency=URGENCY_CRITICAL, timeout=5000)
+                    notify("[VPN]", f"error stopping `{name}`\n\n{' '.join(vpn_stderr)}",
+                           urgency=URGENCY_CRITICAL, timeout=5000)
             else:
                 r.set(f"vpn/{name}/is_up", "no")
                 result = True
