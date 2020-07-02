@@ -88,7 +88,7 @@ in {
           make-package-diff = mkShellScriptWithDeps "make-package-diff" [ pkgs.coreutils pkgs.diffutils pkgs.nix ]
             (builtins.readFile (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./make-package-diff.sh; })));
-          confctl = mkPythonScriptWithDeps "confctl" [
+          confctl = mkPythonScriptWithDepsAndConflicts "confctl" [
             pkgs.python3Packages.dmenu-python
             pkgs.python3Packages.python-gnupg
             nixpkgs-proposed.python3Packages.pyfzf

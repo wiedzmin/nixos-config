@@ -4,7 +4,9 @@ let configBasePath = "/etc/nixos";
 in rec {
   addBuildInputs = pkg: inputs: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ inputs; });
   withPatches = pkg: patches: lib.overrideDerivation pkg (_: { inherit patches; });
-  mkPythonScriptWithDeps = pname: packages: text:
+  mkPythonScriptWithDeps = pname: packages: text: buildPythonScriptWithDeps pname false packages text;
+  mkPythonScriptWithDepsAndConflicts = pname: packages: text: buildPythonScriptWithDeps pname true packages text;
+  buildPythonScriptWithDeps = pname: allowConflicts: packages: text:
     pkgs.python3Packages.buildPythonPackage rec {
       inherit pname;
       version = "unstable";
@@ -19,6 +21,7 @@ in rec {
       unpackPhase = "true";
       buildInputs = with pkgs; [ makeWrapper ];
       propagatedBuildInputs = with pkgs; packages;
+      dontUsePythonCatchConflicts = allowConflicts;
       buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${pname}";
       installPhase = "true";
       postInstall = ''
