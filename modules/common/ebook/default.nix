@@ -1,4 +1,7 @@
-{ config, lib, pkgs, ... }:
+let
+  deps = import ../../../nix/sources.nix;
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
+in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -82,7 +85,7 @@ in {
       systemd.user.timers."update-ebooks" = renderTimer "Update ebooks entries" "1h" "1h" "";
       home-manager.users."${config.attributes.mainUser.name}" = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.ebook "org.pwmt.zathura.desktop";
-        home.packages = with pkgs; [ calibre djview djvulibre ];
+        home.packages = with pkgs; [ nixpkgs-pinned-16_04_20.calibre djview djvulibre ];
         programs.zathura = {
           enable = true;
           options = {

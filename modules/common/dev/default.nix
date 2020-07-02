@@ -278,7 +278,7 @@ in {
                   - mc
           '';
         };
-        home.packages = with pkgs; [ icdiff ix loop pv wstunnel ];
+        home.packages = with pkgs; [ icdiff ix loop pv wstunnel fastmod the-way devdocs-desktop ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;

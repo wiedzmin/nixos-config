@@ -84,7 +84,7 @@ in {
           (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./modedit.py; })));
       };
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ modedit ]; };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ gore modedit ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

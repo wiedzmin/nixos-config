@@ -447,6 +447,7 @@ in {
             extraConfig = "set -g @fzf-url-bind 'o'";
           }
           copycat
+          # fingers # broken at the moment, retry later
           fpp
           logging
           prefix-highlight

@@ -340,6 +340,7 @@ in {
       when = "hourly";
     };
     emacs.enable = true;
+    staging.packages = with pkgs; [ gitAndTools.git-subset ];
   };
 
   custom.dev.python = {
@@ -512,6 +513,7 @@ in {
     bookmarks.enable = true;
     emacs.enable = true;
     wm.enable = true;
+    staging.packages = with pkgs; [ diskonaut k4dirstat ];
   };
 
   custom.virtualization = {
@@ -567,6 +569,7 @@ in {
     screenlocker.enable = true;
     ddc.enable = true;
     wm.enable = true;
+    staging.packages = with pkgs; [ ddcui ];
   };
 
   themes.fonts.iosevka.enable = true;
