@@ -82,19 +82,19 @@ in {
         oraclejdk.accept_license = true;
 
         packageOverrides = _: rec {
-          get-pr-override = writeShellScriptBinWithDeps "get-pr-override" [ pkgs.coreutils pkgs.curl pkgs.gnugrep ]
+          get-pr-override = mkShellScriptWithDeps "get-pr-override" [ pkgs.coreutils pkgs.curl pkgs.gnugrep ]
             (builtins.readFile (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./get-pr-override.sh; })));
-          make-package-diff = writeShellScriptBinWithDeps "make-package-diff" [ pkgs.coreutils pkgs.diffutils pkgs.nix ]
+          make-package-diff = mkShellScriptWithDeps "make-package-diff" [ pkgs.coreutils pkgs.diffutils pkgs.nix ]
             (builtins.readFile (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./make-package-diff.sh; })));
-          confctl = writePythonScriptWithPythonPackages "confctl" [
+          confctl = mkPythonScriptWithDeps "confctl" [
             pkgs.python3Packages.dmenu-python
             pkgs.python3Packages.python-gnupg
             nixpkgs-proposed.python3Packages.pyfzf
           ] (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./confctl.py; })));
-          rollback = writeShellScriptBinWithDeps "rollback" [ pkgs.fzf ] ''
+          rollback = mkShellScriptWithDeps "rollback" [ pkgs.fzf ] ''
             GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
             GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
             pkexec nix-env --profile /nix/var/nix/profiles/system --set $GENERATION_PATH && pkexec $GENERATION_PATH/bin/switch-to-configuration switch

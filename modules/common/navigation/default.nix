@@ -109,24 +109,21 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        search_prompt = writePythonScriptWithPythonPackages "search_prompt" [
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.redis
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_prompt.py; })));
-        search_selection = writePythonScriptWithPythonPackages "search_selection" [
+        search_prompt =
+          mkPythonScriptWithDeps "search_prompt" [ pkgs.python3Packages.dmenu-python pkgs.python3Packages.redis ]
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_prompt.py; })));
+        search_selection = mkPythonScriptWithDeps "search_selection" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
           pkgs.xsel
         ] (builtins.readFile (pkgs.substituteAll
           ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_selection.py; })));
-        webjumps = writePythonScriptWithPythonPackages "webjumps" [
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.redis
-          pkgs.vpnctl
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./webjumps.py; })));
-        insert_snippet = writePythonScriptWithPythonPackages "insert_snippet" [
+        webjumps =
+          mkPythonScriptWithDeps "webjumps" [ pkgs.python3Packages.dmenu-python pkgs.python3Packages.redis pkgs.vpnctl ]
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./webjumps.py; })));
+        insert_snippet = mkPythonScriptWithDeps "insert_snippet" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
           pkgs.xdotool

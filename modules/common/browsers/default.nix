@@ -530,26 +530,22 @@ in {
     })
     (mkIf (cfg.enable && cfg.firefox.enable && cfg.sessions.firefox.backup.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        dump_firefox_session = writeShellScriptBinWithDeps "dump_firefox_session" [
-          pkgs.coreutils
-          pkgs.dejsonlz4
-          pkgs.dunst
-          pkgs.gnused
-          pkgs.jq
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dump_firefox_session.sh; })));
+        dump_firefox_session =
+          mkShellScriptWithDeps "dump_firefox_session" [ pkgs.coreutils pkgs.dejsonlz4 pkgs.dunst pkgs.gnused pkgs.jq ]
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dump_firefox_session.sh; })));
         rotate_firefox_session_dumps =
-          writeShellScriptBinWithDeps "rotate_firefox_session_dumps" [ pkgs.coreutils pkgs.gnugrep ] (builtins.readFile
+          mkShellScriptWithDeps "rotate_firefox_session_dumps" [ pkgs.coreutils pkgs.gnugrep ] (builtins.readFile
             (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./rotate_firefox_session_dumps.sh; })));
-        collect_links_on_page = writePythonScriptWithPythonPackages "collect_links_on_page" [
+        collect_links_on_page = mkPythonScriptWithDeps "collect_links_on_page" [
           pkgs.python3Packages.beautifulsoup4
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
           pkgs.xsel
         ] (builtins.readFile (pkgs.substituteAll
           ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./collect_links_on_page.py; })));
-        manage_firefox_sessions = writePythonScriptWithPythonPackages "manage_firefox_sessions" [
+        manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions" [
           pkgs.coreutils
           pkgs.dump_firefox_session
           pkgs.emacs
@@ -610,11 +606,10 @@ in {
     })
     (mkIf (cfg.enable && cfg.qutebrowser.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        yank-image = writeShellScriptBinWithDeps "yank-image" [ pkgs.wget pkgs.xclip ] (builtins.readFile
+        yank-image = mkShellScriptWithDeps "yank-image" [ pkgs.wget pkgs.xclip ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./yank-image.sh; })));
-        qb-fix-session = writePythonScriptWithPythonPackages "qb-fix-session" [ pkgs.python3Packages.pyyaml ]
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qb-fix-session.py; })));
+        qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" [ pkgs.python3Packages.pyyaml ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qb-fix-session.py; })));
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {

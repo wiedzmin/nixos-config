@@ -4,7 +4,7 @@ let configBasePath = "/etc/nixos";
 in rec {
   addBuildInputs = pkg: inputs: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ inputs; });
   withPatches = pkg: patches: lib.overrideDerivation pkg (_: { inherit patches; });
-  writePythonScriptWithPythonPackages = pname: packages: text:
+  mkPythonScriptWithDeps = pname: packages: text:
     pkgs.python3Packages.buildPythonPackage rec {
       inherit pname;
       version = "unstable";
@@ -25,7 +25,7 @@ in rec {
         chmod a+x $out/bin/${pname}
       '';
     };
-  writeShellScriptBinWithDeps = name: packages: contents:
+  mkShellScriptWithDeps = name: packages: contents:
     pkgs.stdenv.mkDerivation rec {
       inherit name;
       version = "unstable";

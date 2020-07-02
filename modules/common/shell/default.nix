@@ -107,7 +107,7 @@ in {
       ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        tmuxp_sessions = writePythonScriptWithPythonPackages "tmuxp_sessions" [ pkgs.python3Packages.dmenu-python ]
+        tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" [ pkgs.python3Packages.dmenu-python ]
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tmuxp_sessions.py; })));
       };

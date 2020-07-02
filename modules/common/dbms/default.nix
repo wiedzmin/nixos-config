@@ -149,7 +149,7 @@ in {
     })
     (mkIf (cfg.cli.enable && cfg.wm.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        dbms = writePythonScriptWithPythonPackages "dbms" [
+        dbms = mkPythonScriptWithDeps "dbms" [
           pkgs.pass
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2

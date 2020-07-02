@@ -60,14 +60,14 @@ in {
         }
       '';
       nixpkgs.config.packageOverrides = _: rec {
-        bookshelf = writePythonScriptWithPythonPackages "bookshelf" [
+        bookshelf = mkPythonScriptWithDeps "bookshelf" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
           pkgs.zathura
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./bookshelf.py; })));
-        update-bookshelf = writePythonScriptWithPythonPackages "update-bookshelf" [ pkgs.python3Packages.redis ]
-          (builtins.readFile (pkgs.substituteAll
+        update-bookshelf = mkPythonScriptWithDeps "update-bookshelf" [ pkgs.python3Packages.redis ] (builtins.readFile
+          (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./update-bookshelf.py; })));
       };
       systemd.user.services."update-ebooks" = {

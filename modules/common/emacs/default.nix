@@ -86,9 +86,8 @@ in {
     (mkIf (cfg.enable) {
       fonts = { fonts = with pkgs; [ emacs-all-the-icons-fonts ]; };
       nixpkgs.config.packageOverrides = _: rec {
-        org-capture = writePythonScriptWithPythonPackages "org-capture" [ pkgs.emacs pkgs.tmux pkgs.xsel ]
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./org-capture.py; })));
+        org-capture = mkPythonScriptWithDeps "org-capture" [ pkgs.emacs pkgs.tmux pkgs.xsel ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./org-capture.py; })));
       };
       custom.dev.git.gitignore = ''
         *.elc

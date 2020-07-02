@@ -206,7 +206,7 @@ in {
     (mkIf (cfg.enable && cfg.bookmarks.enable) { custom.shell.bookmarks.entries = cfg.bookmarks.entries; })
     (mkIf (cfg.enable && cfg.repoSearch.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        reposearch = writePythonScriptWithPythonPackages "reposearch" [
+        reposearch = mkPythonScriptWithDeps "reposearch" [
           pkgs.fd
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux

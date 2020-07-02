@@ -100,7 +100,7 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        tt_capture = writePythonScriptWithPythonPackages "tt_capture" [
+        tt_capture = mkPythonScriptWithDeps "tt_capture" [
           pkgs.python3Packages.cbor2
           pkgs.python3Packages.pytz
           pkgs.python3Packages.xlib

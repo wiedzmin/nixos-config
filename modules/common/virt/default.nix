@@ -139,11 +139,11 @@ in {
         }
       '';
       nixpkgs.config.packageOverrides = _: rec {
-        dlint = writeShellScriptBinWithDeps "dlint" [ pkgs.docker ] (builtins.readFile
+        dlint = mkShellScriptWithDeps "dlint" [ pkgs.docker ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dlint.sh; })));
-        hadolintd = writeShellScriptBinWithDeps "hadolintd" [ pkgs.docker ] (builtins.readFile
+        hadolintd = mkShellScriptWithDeps "hadolintd" [ pkgs.docker ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./hadolintd.sh; })));
-        docker_containers_traits = writePythonScriptWithPythonPackages "docker_containers_traits" [
+        docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits" [
           pkgs.docker
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.redis
@@ -151,19 +151,19 @@ in {
           pkgs.yad
         ] (builtins.readFile (pkgs.substituteAll
           ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_containers_traits.py; })));
-        discover_containerized_services = writePythonScriptWithPythonPackages "discover_containerized_services" [
+        discover_containerized_services = mkPythonScriptWithDeps "discover_containerized_services" [
           pkgs.docker
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
         ] (builtins.readFile (pkgs.substituteAll
           ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./discover_containerized_services.py; })));
-        docker_shell = writePythonScriptWithPythonPackages "docker_shell" [
+        docker_shell = mkPythonScriptWithDeps "docker_shell" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux
           pkgs.python3Packages.redis
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_shell.py; })));
-        docker_swarm_services_info = writePythonScriptWithPythonPackages "docker_swarm_services_info" [
+        docker_swarm_services_info = mkPythonScriptWithDeps "docker_swarm_services_info" [
           pkgs.docker
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux

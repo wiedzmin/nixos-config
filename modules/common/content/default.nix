@@ -68,7 +68,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        paste_to_ix = writePythonScriptWithPythonPackages "paste_to_ix" [ pkgs.ix pkgs.xsel ] (builtins.readFile
+        paste_to_ix = mkPythonScriptWithDeps "paste_to_ix" [ pkgs.ix pkgs.xsel ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./paste_to_ix.sh; })));
       };
       tools.ebooks.readers.roots = [ (homePrefix "bookshelf") ];
@@ -153,22 +153,19 @@ in {
     (mkIf cfg.bookmarks.enable {
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
-        buku_add = writePythonScriptWithPythonPackages "buku_add" [
+        buku_add = mkPythonScriptWithDeps "buku_add" [
           nixpkgs-pinned-05_12_19.buku
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
           pkgs.xsel
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_add.py; })));
-        buku_search_tag = writeShellScriptBinWithDeps "buku_search_tag" [
-          nixpkgs-pinned-05_12_19.buku
-          pkgs.coreutils
-          pkgs.dmenu
-          pkgs.gawk
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_tag.sh; })));
+        buku_search_tag =
+          mkShellScriptWithDeps "buku_search_tag" [ nixpkgs-pinned-05_12_19.buku pkgs.coreutils pkgs.dmenu pkgs.gawk ]
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_tag.sh; })));
         buku_search_url =
-          writeShellScriptBinWithDeps "buku_search_url" [ nixpkgs-pinned-05_12_19.buku pkgs.coreutils pkgs.dmenu ]
+          mkShellScriptWithDeps "buku_search_url" [ nixpkgs-pinned-05_12_19.buku pkgs.coreutils pkgs.dmenu ]
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_url.sh; })));
       };
@@ -187,13 +184,13 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         screenshot_active_window =
-          writeShellScriptBinWithDeps "screenshot_active_window" [ pkgs.coreutils pkgs.maim pkgs.xclip pkgs.xdotool ]
+          mkShellScriptWithDeps "screenshot_active_window" [ pkgs.coreutils pkgs.maim pkgs.xclip pkgs.xdotool ]
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_active_window.sh; })));
-        screenshot_full = writeShellScriptBinWithDeps "screenshot_full" [ pkgs.coreutils pkgs.maim pkgs.xclip ]
+        screenshot_full = mkShellScriptWithDeps "screenshot_full" [ pkgs.coreutils pkgs.maim pkgs.xclip ]
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_full.sh; })));
-        screenshot_region = writeShellScriptBinWithDeps "screenshot_region" [ pkgs.coreutils pkgs.maim pkgs.xclip ]
+        screenshot_region = mkShellScriptWithDeps "screenshot_region" [ pkgs.coreutils pkgs.maim pkgs.xclip ]
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_region.sh; })));
       };

@@ -87,20 +87,16 @@ in {
       programs.nm-applet.enable = config.wm.i3.enable;
 
       nixpkgs.config.packageOverrides = _: rec {
-        wifi-status = writeShellScriptBinWithDeps "wifi-status" [ pkgs.gawk pkgs.wirelesstools ] (builtins.readFile
+        wifi-status = mkShellScriptWithDeps "wifi-status" [ pkgs.gawk pkgs.wirelesstools ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./wifi-status.sh; })));
-        vpnctl =
-          writePythonScriptWithPythonPackages "vpnctl" [ pkgs.python3Packages.notify2 pkgs.python3Packages.redis ]
+        vpnctl = mkPythonScriptWithDeps "vpnctl" [ pkgs.python3Packages.notify2 pkgs.python3Packages.redis ]
           (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./vpnctl.py; })));
-        ifconfless = writePythonScriptWithPythonPackages "ifconfless" [
-          pkgs.nettools
-          pkgs.python3Packages.dmenu-python
-          pkgs.xsel
-          pkgs.yad
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./ifconfless.py; })));
-        sshmenu = writePythonScriptWithPythonPackages "sshmenu" [
+        ifconfless =
+          mkPythonScriptWithDeps "ifconfless" [ pkgs.nettools pkgs.python3Packages.dmenu-python pkgs.xsel pkgs.yad ]
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./ifconfless.py; })));
+        sshmenu = mkPythonScriptWithDeps "sshmenu" [
           pkgs.openssh
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.libtmux
@@ -108,7 +104,7 @@ in {
           pkgs.vpnctl
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
-        sshfsmenu = writePythonScriptWithPythonPackages "sshfsmenu" [
+        sshfsmenu = mkPythonScriptWithDeps "sshfsmenu" [
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
           pkgs.python3Packages.redis

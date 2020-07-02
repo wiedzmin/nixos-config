@@ -165,7 +165,7 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        git-save-wip = writeShellScriptBinWithDeps "git-save-wip" [ pkgs.git pkgs.gitAndTools.stgit pkgs.xprintidle-ng ]
+        git-save-wip = mkShellScriptWithDeps "git-save-wip" [ pkgs.git pkgs.gitAndTools.stgit pkgs.xprintidle-ng ]
           (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./git-save-wip.sh; })));
       };
