@@ -151,6 +151,7 @@ in {
               epkgs.names
               epkgs.no-littering
               epkgs.posframe
+              epkgs.pos-tip
               epkgs.quelpa
               epkgs.quelpa-use-package
               epkgs.recentf-ext

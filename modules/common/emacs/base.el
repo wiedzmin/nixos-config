@@ -265,14 +265,17 @@
   :custom
   (company-idle-delay 0)
   (company-minimum-prefix-length 2)
-  (company-tooltip-align-annotations t)
   (company-show-numbers t)
+  (company-tooltip-align-annotations t)
+  (company-tooltip-flip-when-above t)
   :config
   (when (string-equal "i3" (getenv "CURRENT_WM"))
     (add-hook 'after-init-hook 'global-company-mode)
     (use-package company-quickhelp
       :config
-      (company-quickhelp-mode 1))
+      (company-quickhelp-mode 1)
+      (use-package pos-tip
+        :ensure t))
     (use-package company-statistics
       :config
       (company-statistics-mode))))
