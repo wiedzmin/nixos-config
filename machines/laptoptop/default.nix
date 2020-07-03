@@ -325,7 +325,7 @@ in {
     };
     # TODO: think of what timespecs do we need for services below
     fetchUpdates = {
-      enable = true;
+      enable = false;
       when = "hourly";
     };
     pushUpdates = {
