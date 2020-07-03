@@ -1,4 +1,7 @@
-{ config, lib, pkgs, ... }:
+let
+  deps = import ../../../nix/sources.nix;
+  nixpkgs-pinned-02_06_20 = import deps.nixpkgs-pinned-02_06_20 { config.allowUnfree = true; };
+in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -457,7 +460,7 @@ in {
     })
     (mkIf cfg.toolsng.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ fd gron oq pdfgrep ripgrep-all sd up uq yj ];
+        home.packages = with pkgs; [ fd gron pdfgrep ripgrep-all sd nixpkgs-pinned-02_06_20.oq up uq yj ];
         programs = {
           lsd = {
             enable = true;

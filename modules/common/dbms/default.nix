@@ -1,7 +1,6 @@
 let
   deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-02_08_19 = import deps.nixpkgs-pinned-02_08_19 { config.allowUnfree = true; };
-  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
@@ -61,7 +60,7 @@ in {
   config = mkMerge [
     (mkIf cfg.postgresql.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ pgcenter nixpkgs-pinned-05_12_19.pgcli ];
+        home.packages = with pkgs; [ pgcenter nixpkgs-pinned-16_04_20.pgcli ];
         xdg.configFile."pgcli/config".text = lib.generators.toINI { } {
           main = {
             smart_completion = "True";
@@ -131,20 +130,20 @@ in {
     })
     (mkIf cfg.mysql.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ nixpkgs-pinned-05_12_19.mycli ];
+        home.packages = with pkgs; [ nixpkgs-pinned-16_04_20.mycli ];
       };
     })
     (mkIf cfg.sqlite.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           sqlitebrowser
-          nixpkgs-pinned-02_08_19.litecli # TODO: shell automation: skim for selecting db file, you get the idea
+          nixpkgs-pinned-16_04_20.litecli # TODO: shell automation: skim for selecting db file, you get the idea
         ];
       };
     })
     (mkIf cfg.misc.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ nixpkgs-pinned-05_12_19.nodePackages.elasticdump ];
+        home.packages = with pkgs; [ nixpkgs-pinned-16_04_20.nodePackages.elasticdump ];
       };
     })
     (mkIf (cfg.cli.enable && cfg.wm.enable) {

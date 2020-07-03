@@ -1,6 +1,6 @@
 let
   deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
@@ -110,11 +110,11 @@ in {
       };
       services.arbtt = {
         enable = true;
-        package = nixpkgs-pinned-05_12_19.haskellPackages.arbtt;
+        package = nixpkgs-pinned-16_04_20.haskellPackages.arbtt;
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          nixpkgs-pinned-05_12_19.haskellPackages.arbtt # for stats viewing
+          nixpkgs-pinned-16_04_20.haskellPackages.arbtt # for stats viewing
           tt_capture
         ];
       };

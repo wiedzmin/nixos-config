@@ -1,6 +1,6 @@
 let
   deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
   nixpkgs-proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
@@ -130,7 +130,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs;
           [
-            nixpkgs-pinned-05_12_19.cachix
+            nixpkgs-pinned-16_04_20.cachix
             # nix-zsh-completions # NOTE: collision emerged in last unstable
             nix-review # https://github.com/Mic92/nix-review
             make-package-diff

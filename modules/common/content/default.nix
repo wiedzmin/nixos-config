@@ -1,7 +1,7 @@
 let
   deps = import ../../../nix/sources.nix;
   proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
-  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
@@ -154,18 +154,18 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
         buku_add = mkPythonScriptWithDeps "buku_add" [
-          nixpkgs-pinned-05_12_19.buku
+          nixpkgs-pinned-16_04_20.buku
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
           pkgs.xsel
         ] (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_add.py; })));
         buku_search_tag =
-          mkShellScriptWithDeps "buku_search_tag" [ nixpkgs-pinned-05_12_19.buku pkgs.coreutils pkgs.dmenu pkgs.gawk ]
+          mkShellScriptWithDeps "buku_search_tag" [ nixpkgs-pinned-16_04_20.buku pkgs.coreutils pkgs.dmenu pkgs.gawk ]
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_tag.sh; })));
         buku_search_url =
-          mkShellScriptWithDeps "buku_search_url" [ nixpkgs-pinned-05_12_19.buku pkgs.coreutils pkgs.dmenu ]
+          mkShellScriptWithDeps "buku_search_url" [ nixpkgs-pinned-16_04_20.buku pkgs.coreutils pkgs.dmenu ]
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_url.sh; })));
       };

@@ -2,8 +2,7 @@
 with import ../../modules/util.nix { inherit config lib pkgs; };
 let
   deps = import ../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
 in {
   imports = [
     ../../nix/setup.nix
@@ -456,7 +455,7 @@ in {
   custom.paperworks = {
     printing = {
       enable = true;
-      drivers = [ nixpkgs-pinned-05_12_19.hplipWithPlugin ];
+      drivers = [ nixpkgs-pinned-16_04_20.hplipWithPlugin ];
     };
     scanning = {
       enable = true;
@@ -465,7 +464,7 @@ in {
       enableXsane = true;
       paperless = {
         enable = true;
-        package = nixpkgs-pinned-05_12_19.paperless;
+        package = nixpkgs-pinned-16_04_20.paperless;
         consumptionDir = homePrefix "docs/paperless/consume";
         dataDir = homePrefix "docs/paperless/data";
         user = config.attributes.mainUser.name;

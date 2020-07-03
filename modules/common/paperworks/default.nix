@@ -1,7 +1,7 @@
 let
   deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
-  stable = import deps.nixpkgs-stable-19_03 { config.allowUnfree = true; };
+  nixpkgs-pinned-08_02_20 = import deps.nixpkgs-pinned-08_02_20 { config.allowUnfree = true; };
+  stable = import deps.nixpkgs-stable { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with lib;
 
@@ -176,7 +176,7 @@ in {
         defaultShared = true;
         webInterface = true;
       };
-      environment.systemPackages = with pkgs; [ nixpkgs-pinned-05_12_19.system-config-printer ];
+      environment.systemPackages = with pkgs; [ nixpkgs-pinned-08_02_20.system-config-printer ];
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "lp" ];
     })
     (mkIf cfg.scanning.enable {
@@ -200,7 +200,7 @@ in {
       nixpkgs.config =
         optionalAttrs cfg.scanning.snapscan.enable { sane.snapscanFirmware = cfg.scanning.snapscan.firmware; };
       environment.systemPackages = with pkgs;
-        [ deskew gImageReader nixpkgs-pinned-05_12_19.ocrmypdf pdfsandwich scantailor-advanced tesseract ]
+        [ deskew gImageReader nixpkgs-pinned-08_02_20.ocrmypdf pdfsandwich scantailor-advanced tesseract ]
         ++ lib.optionals cfg.scanning.enableXsane [ xsane ];
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "scanner" ];
     })

@@ -1,6 +1,6 @@
 let
   deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
@@ -112,7 +112,7 @@ in {
       environment.systemPackages = with pkgs; [
         nfs-utils # for vagrant
         # tigervnc
-        nixpkgs-pinned-05_12_19.vagrant
+        nixpkgs-pinned-16_04_20.vagrant
       ];
 
       boot.kernel.sysctl = {
@@ -191,7 +191,7 @@ in {
 
       environment.systemPackages = with pkgs;
         [
-          nixpkgs-pinned-05_12_19.arion
+          nixpkgs-pinned-16_04_20.arion
           ctop
           discover_containerized_services
           dive

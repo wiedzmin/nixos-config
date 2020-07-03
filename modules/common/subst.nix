@@ -1,6 +1,6 @@
 let
   deps = import ../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../util.nix { inherit config lib pkgs; };
 
@@ -28,13 +28,13 @@ rec {
   lspPythonMsExtraPaths =
     builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
   mainUserName = config.attributes.mainUser.name;
-  mycliBinary = "${nixpkgs-pinned-05_12_19.mycli}/bin/mycli"; # because of deps versions conflict with pgcli
+  mycliBinary = "${nixpkgs-pinned-16_04_20.mycli}/bin/mycli"; # because of deps versions conflict with pgcli
   nmcliBinary = "${pkgs.networkmanager}/bin/nmcli"; # because there is no `bin` output for some reason
   orgDir = config.ide.emacs.orgDir;
   orgKbDir = homePrefix "docs/org-kb";
   orgWarningsFiledir = builtins.dirOf config.custom.pim.org.warningsFile;
   orgWarningsFilename = config.custom.pim.org.warningsFile;
-  pgcliBinary = "${nixpkgs-pinned-05_12_19.pgcli}/bin/pgcli"; # because of deps versions conflict with mycli
+  pgcliBinary = "${nixpkgs-pinned-16_04_20.pgcli}/bin/pgcli"; # because of deps versions conflict with mycli
   pimOrgAgendaElPatch = config.custom.pim.org.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   pythonPatchNotify = config.custom.dev.pythonLib."notify".patch;
@@ -44,7 +44,7 @@ rec {
   systemTimeZone = config.time.timeZone;
   tmuxDefaultSession = config.custom.shell.tmux.defaultSession;
   urlRegexPy = config.custom.content.urlRegex.py;
-  xprintidleBinary = "${nixpkgs-pinned-05_12_19.xprintidle-ng}/bin/xprintidle-ng";
+  xprintidleBinary = "${nixpkgs-pinned-16_04_20.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
   searchReposRoot = config.custom.dev.repoSearch.root;
   globalWorkspaceRoot = config.custom.navigation.workspaceRoots.global;

@@ -1,6 +1,6 @@
 let
   deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-05_12_19 = import deps.nixpkgs-pinned-05_12_19 { config.allowUnfree = true; };
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
@@ -180,7 +180,7 @@ in {
           # davfs2
           gcalcli
           hasmail
-          nixpkgs-pinned-05_12_19.http-prompt
+          nixpkgs-pinned-16_04_20.http-prompt
           httplab
           rclone
           socat
