@@ -578,6 +578,7 @@ in {
     dbms = {
       mysql.enable = true;
       postgresql.enable = true;
+      sqlite.enable = true;
       cli.enable = true;
       misc.enable = true;
       wm.enable = true;
