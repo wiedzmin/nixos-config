@@ -87,8 +87,11 @@ in {
         description = "Whether to enable snippets automation.";
       };
       snippets.entries = mkOption {
-        type = types.listOf types.str;
-        description = "Various text snippets, mostly for development automation.";
+        type = types.listOf types.attrs;
+        description = ''
+          Various text snippets, mostly for development automation.
+          Espanso util is used.
+        '';
         default = [ ];
       };
       emacs.enable = mkOption {
@@ -123,13 +126,6 @@ in {
           mkPythonScriptWithDeps "webjumps" [ pkgs.python3Packages.dmenu-python pkgs.python3Packages.redis pkgs.vpnctl ]
           (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./webjumps.py; })));
-        insert_snippet = mkPythonScriptWithDeps "insert_snippet" [
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.redis
-          pkgs.xdotool
-          pkgs.xorg.setxkbmap
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./insert_snippet.py; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ j4-dmenu-desktop ]; };
@@ -323,11 +319,29 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.snippets.enable) {
-      custom.housekeeping.metadataCacheInstructions = lib.optionalString (cfg.snippets.entries != [ ]) ''
-        ${pkgs.redis}/bin/redis-cli set misc/snippets ${
-          lib.strings.escapeNixString (builtins.toJSON cfg.snippets.entries)
-        }
-      '';
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ espanso ];
+        home.file = {
+          ".config/espanso/user/common.yml".text = builtins.toJSON {
+            name = "common";
+            parent = "default";
+            matches = cfg.snippets.entries;
+          };
+        };
+      };
+      systemd.user.services."espanso" = {
+        description = "Snippets";
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        path = with pkgs; [ libnotify xclip ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${pkgs.espanso}/bin/espanso daemon";
+          Restart = "on-failure";
+          RestartSec = 3;
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -394,16 +408,15 @@ in {
           mode = "root";
         }
         {
-          key = [ "s" ];
-          cmd = "${pkgs.insert_snippet}/bin/insert_snippet";
-          mode = "window";
-        }
-        {
           key = [ "w" ];
           cmd = "${dmenu_select_windows}/bin/dmenu_select_windows";
           mode = "window";
         }
-      ];
+      ] ++ lib.optionals (cfg.snippets.enable) [{
+        key = [ "o" ];
+        cmd = "${config.systemd.package}/bin/systemctl --user restart espanso.service";
+        mode = "run";
+      }];
     })
   ];
 }
