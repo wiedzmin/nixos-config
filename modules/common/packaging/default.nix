@@ -91,7 +91,7 @@ in {
           confctl = mkPythonScriptWithDepsAndConflicts "confctl" [
             pkgs.python3Packages.dmenu-python
             pkgs.python3Packages.python-gnupg
-            nixpkgs-proposed.python3Packages.pyfzf
+            pkgs.pyfzf
           ] (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./confctl.py; })));
           rollback = mkShellScriptWithDeps "rollback" [ pkgs.fzf ] ''
