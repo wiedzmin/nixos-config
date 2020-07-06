@@ -315,6 +315,11 @@ in {
           mode = "network";
         }
         {
+          key = [ "v" ];
+          cmd = "${pkgs.vpnctl}/bin/vpnctl --status";
+          mode = "network";
+        }
+        {
           key = [ "n" ];
           cmd = "${pkgs.systemd}/bin/systemctl restart nscd.service";
           mode = "service";

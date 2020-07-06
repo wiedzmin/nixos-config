@@ -15,6 +15,8 @@ parser = argparse.ArgumentParser(description="Manage enabled VPN services.")
 parser.add_argument("--start", dest="vpn_service_tag", help="Start selected VPN service")
 parser.add_argument("--stop-running", dest="stop_running", action="store_true",
                    default=False, help="Stop currently running VPN service")
+parser.add_argument("--status", dest="vpn_status", action="store_true",
+                   default=False, help="Get statuses of all touched VPN services")
 parser.add_argument("--verbose", dest="verbose", action="store_true",
                    default=False, help="Be verbose")
 
@@ -168,3 +170,10 @@ if args.vpn_service_tag:
         start_service(args.vpn_service_tag, meta)
 elif args.stop_running:
     stop_running()
+elif args.vpn_status:
+    statuses = {}
+    for key in r.scan_iter("vpn/*/is_up"):
+        value = r.get(key)
+        statuses[key.decode().split("/")[1]] = value.decode()
+    notify("[VPN]", "\n".join([f"{key}: {value}" for key, value in statuses.items()]),
+           urgency=URGENCY_NORMAL, timeout=5000)
