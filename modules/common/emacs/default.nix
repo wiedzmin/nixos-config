@@ -95,7 +95,7 @@ in {
       '';
       environment.variables.EDITOR = "${pkgs.emacs}/bin/emacsclient";
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ ispell org-capture ];
+        home.packages = with pkgs; [ ispell org-capture editorconfig-checker ];
         programs.zsh.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
         programs.bash.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
         # TODO: check i we need https://github.com/jollheef/localhost/blob/adcdadaa68fdb17c41ed51fe28b19a53861b450d/packages.nix#L74 here
