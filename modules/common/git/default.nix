@@ -252,9 +252,7 @@ in {
 
       environment.systemPackages = with pkgs; [ gitAndTools.ghq ];
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.zsh.shellAliases = {
-          gg = "${pkgs.gitAndTools.ghq}/bin/ghq get";
-        } // lib.optionalAttrs (config.custom.navigation.misc.enable) {
+        programs.zsh.shellAliases = lib.optionalAttrs (config.custom.navigation.misc.enable) {
           pgg = "${pkgs.pueue}/bin/pueue add -- ${pkgs.gitAndTools.ghq}/bin/ghq get";
         };
         programs.git.extraConfig = { "ghq" = { root = homePrefix globalRoot; }; };
