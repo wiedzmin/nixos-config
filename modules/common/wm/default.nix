@@ -97,7 +97,7 @@ in {
             key = [ "2" ];
             index = 13;
             transient = true;
-            type = "secondary";
+            type = "primary";
           }
           {
             name = "work3";
