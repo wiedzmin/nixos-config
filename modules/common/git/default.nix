@@ -307,6 +307,10 @@ in {
                 echo No upstream defined, skipping...
                 return 0
               fi
+            direnv =
+              [ -f .envrc ] && direnv allow || exit 0
+            trim =
+              ${pkgs.gitAndTools.git-trim}/bin/git-trim --delete=merged-local
 
             ${lib.concatMapStrings (config: ''
               include = cat ${config}
