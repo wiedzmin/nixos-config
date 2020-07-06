@@ -137,6 +137,7 @@ in {
         ${pkgs.redis}/bin/redis-cli set virt/swarm_meta ${
           lib.strings.escapeNixString (builtins.toJSON cfg.docker.swarm.meta)
         }
+        ${pkgs.redis}/bin/redis-cli expire virt/swarm_meta 604800
       '';
       nixpkgs.config.packageOverrides = _: rec {
         dlint = mkShellScriptWithDeps "dlint" [ pkgs.docker ] (builtins.readFile
