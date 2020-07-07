@@ -14,7 +14,12 @@
         ("C-<right>" . sp-slurp-hybrid-sexp))
   :company '(company-tabnine company-lsp)
   :config
-  (use-package lsp-go)
+  (use-package lsp-go
+    :custom
+    (lsp-clients-go-server-args
+     '("--cache-style=always"
+       "--diagnostics-style=onsave"
+       "--format-style=goimports")))
   ;; (use-package dap-mode
   ;;   :quelpa
   ;;   (dap-mode :repo "emacs-lsp/dap-mode" :fetcher github))
