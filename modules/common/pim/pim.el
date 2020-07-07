@@ -259,7 +259,6 @@
   (org-columns-default-format "%42ITEM %TODO %3Effort(E){:} %3CLOCKSUM_T(R) %SCHEDULED")
   (org-confirm-babel-evaluate nil)
   (org-confirm-elisp-link-function 'y-or-n-p)
-  (org-confirm-elisp-link-function 'y-or-n-p)
   (org-confirm-elisp-link-not-regexp "org-tags-view")
   (org-confirm-shell-link-function 'y-or-n-p)
   (org-ctrl-k-protect-subtree t)
