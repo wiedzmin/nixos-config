@@ -304,9 +304,6 @@
         ("f" . copy-as-format)))
 
 (use-package delsel
-  :bind
-  (:map mode-specific-map
-        ("C-g" . minibuffer-keyboard-quit))
   :config
   (delete-selection-mode 1))
 
