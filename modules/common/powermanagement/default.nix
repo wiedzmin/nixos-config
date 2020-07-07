@@ -16,6 +16,11 @@ in {
         default = "";
         description = "Commands to perform on wakeup.";
       };
+      powerDownCommands = mkOption {
+        type = types.lines;
+        default = "";
+        description = "Commands to perform on system shutdown.";
+      };
       batteryManagement.enable = mkOption {
         type = types.bool;
         default = false;

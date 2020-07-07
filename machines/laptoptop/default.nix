@@ -484,6 +484,9 @@ in {
     resumeCommands = lib.concatStringsSep "\n"
       (lib.mapAttrsToList (server: _: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
         config.services.openvpn.servers);
+    powerDownCommands = ''
+      redis-cli --scan --pattern "*is_up" | xargs redis-cli del
+    '';
     batteryManagement = {
       enable = true;
       notificationThreshold = 20;
