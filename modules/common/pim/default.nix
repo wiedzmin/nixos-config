@@ -158,6 +158,7 @@ in {
           epkgs.org-clock-today
           epkgs.org-plus-contrib
           epkgs.org-pomodoro
+          epkgs.org-ql
           epkgs.org-randomnote
           epkgs.org-recent-headings
           epkgs.org-rich-yank

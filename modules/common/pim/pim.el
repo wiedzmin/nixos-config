@@ -204,39 +204,6 @@
   (calendar-date-style 'european)
   (org-M-RET-may-split-line '((default . nil)))
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :narrow 60))
-  (org-agenda-custom-commands
-   `(("db" "BACKLOG tasks" todo "BACKLOG" nil)
-     ("ds" "SOON tasks" todo "SOON" nil)
-     ("dc" "CANCELLED tasks" todo "CANCELLED" nil)
-     ("dw" "WAITING/FEEDBACK tasks" todo "WAITING|FEEDBACK" nil)
-     ("dg" "GOING tasks" todo "GOING" ,agenda-opts-all-with-time)
-     ("Pa" "Prioritized tasks A"
-      ((tags-todo "+PRIORITY=\"A\"") ))
-     ("Pb" "Prioritized tasks B"
-      ((tags-todo "+PRIORITY=\"B\"")))
-     ("Pc" "Prioritized tasks C"
-      ((tags-todo "+PRIORITY=\"C\"")))
-     ("Pd" "Prioritized tasks D"
-      ((tags-todo "+PRIORITY=\"D\"") ))
-     ("Pe" "Prioritized tasks E"
-      ((tags-todo "+PRIORITY=\"E\"")))
-     ("Pf" "Prioritized tasks F"
-      ((tags-todo "+PRIORITY=\"F\"")))
-     ("S" "Scheduled tasks" agenda ""
-      ((org-agenda-time-grid nil)
-       (org-deadline-warning-days 32)
-       (org-agenda-entry-types '(:scheduled))))
-     ("up" "Unprioritized TODO entries" alltodo "Unprioritized TODO entries"
-      ((org-agenda-skip-function
-        (lambda nil
-          (org-agenda-skip-entry-if 'regexp "\\[#[ABCDEF]]")))
-       (org-tags-match-list-sublevels 'indented)
-       (org-agenda-sorting-strategy
-        '((agenda time-up tag-up) ))
-       ;; '(org-agenda-sorting-strategy '((agenda time-up priority-down tag-up) (todo tag-up)))
-       (org-agenda-overriding-header "Unprioritized TODO entries: ")))
-     ("jc" "Active job tasks" tags "+@job+current/GOING|FEEDBACK")
-     ))
   (org-agenda-dim-blocked-tasks 'invisible)
   (org-agenda-include-all-todo t)
   (org-agenda-include-diary t)
@@ -403,6 +370,36 @@
                 ("Bookmarks" :keys "b" :file "/etc/nixos/todo.org" :template "* %?%:link %U :bookmark:"))))
   (run-with-idle-timer custom/idle-clockout-timeout t 'custom/clockout-when-idle)
   (turn-on-orgtbl))
+
+(use-package org-ql
+  :after org
+  :custom
+  (org-agenda-custom-commands
+   `(("dr" "Tasks to review"
+      ((org-ql-block '(or (todo "BACKLOG")
+                          (todo "SOON"))
+                     ((org-ql-block-header "Tasks to review")))))
+     ("dp" "Paused tasks"
+      ((org-ql-block '(or (todo "WAITING")
+                          (todo "FEEDBACK"))
+                     ((org-ql-block-header "Paused tasks")))))
+     ("ds" "Started tasks"
+      ((org-ql-block '(or (todo "GOING")
+                          (todo "FEEDBACK"))
+                     ((org-ql-block-header "Started tasks")))))
+     ("dc" "CANCELLED tasks" todo "CANCELLED" nil)
+     ("ph" "High priority tasks"
+      ((org-ql-block '(priority >= "B")
+                     ((org-ql-block-header "High priority tasks")))))
+     ("pl" "Low priority tasks"
+      ((org-ql-block '(priority < "B")
+                     ((org-ql-block-header "Low priority tasks")))))
+     ("pn" "Unprioritized TODO entries"
+      ((org-ql-block '(and (todo) (not (priority)))
+                     ((org-ql-block-header "Unprioritized TODO entries")))))
+     ("S" "Scheduled tasks"
+      ((org-ql-block '(scheduled)
+                     ((org-ql-block-header "Scheduled tasks"))))))))
 
 (use-package org-bullets
   :hook
