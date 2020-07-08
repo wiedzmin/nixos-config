@@ -19,6 +19,7 @@ rec {
   emacsClient = "${pkgs.emacs}/bin/emacsclient";
   emacsDatadir = config.ide.emacs.dataDir;
   emacsYasnippetSnippets = deps.yasnippet-snippets;
+  fallbackPackageArchives = emacsBoolToString false;
   gitIdletimeStgit = builtins.toString config.custom.dev.git.idletime.stgit;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;

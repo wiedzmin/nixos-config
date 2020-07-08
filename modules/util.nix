@@ -112,4 +112,5 @@ in rec {
         -o $out
     ''));
   maybeAttrBool = name: set: (builtins.hasAttr name set) && (set."${name}" == true);
+  emacsBoolToString = v: if v == true then "t" else "nil";
 }

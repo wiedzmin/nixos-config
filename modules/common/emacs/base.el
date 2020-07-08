@@ -14,6 +14,11 @@
 (require 'package)
 (require 'subr-x) ;; NOTE: for those packages where it was suddenly forgotten
 
+(when @fallbackPackageArchives@
+  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
+  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
+  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/")))
+
 (unless package--initialized
   (package-initialize))
 (setq package-enable-at-startup nil)
