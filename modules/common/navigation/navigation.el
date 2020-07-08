@@ -171,20 +171,7 @@
 
 (use-package frame
   :preface
-  (defvar opacity-percent 75 "Opacity percent")
   (defvar custom-frame-title-format '("emacs - " "%b %f"))
-  (defun custom/toggle-transparency ()
-    (interactive)
-    (let ((alpha (frame-parameter nil 'alpha)))
-      (set-frame-parameter
-       nil 'alpha
-       (if (eql (cond ((numberp alpha) alpha)
-                      ((numberp (cdr alpha))
-                       (cdr alpha))
-                      ;; Also handle undocumented (<active> <inactive>) form.
-                      ((numberp (cadr alpha)) (cadr alpha)))
-                100)
-           `(,opacity-percent . 50) '(100 . 100)))))
   (defun keep-custom-frame-title (window)
     (setq-default frame-title-format custom-frame-title-format))
   :bind
@@ -192,16 +179,12 @@
                :prefix "<f2>"
                ("n" . make-frame-command)
                ("k" . delete-frame)
-               ("s" . delete-other-frames)
-               ("v" . custom/toggle-transparency))
+               ("s" . delete-other-frames))
   :config
   (unless (string-equal "i3" (getenv "CURRENT_WM"))
     (add-hook 'pre-redisplay-functions 'keep-custom-frame-title))
-  (add-to-list 'default-frame-alist `(alpha . (100 . 100)))
   (blink-cursor-mode 0)
-  (set-frame-parameter (selected-frame) 'alpha '(100 . 100))
   (setq frame-title-format custom-frame-title-format) ;; for various external tools
-  (setq opacity-percent 75)
   (setq truncate-partial-width-windows nil))
 
 (use-package imenu-anywhere

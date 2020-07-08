@@ -12,6 +12,17 @@
   (doom-modeline-major-mode-icon nil)
   (doom-modeline-minor-modes nil))
 
+(use-package transwin
+  :quelpa
+  (transwin :repo "jcs-elpa/transwin" :fetcher github)
+  :after frame
+  :bind
+  (:map frame-map
+       ("v" . transwin-toggle-transparent-frame)
+       ("V" . transwin-ask-set-transparency)
+       ("<up>" . transwin-increment-frame-transparent)
+       ("<down>" . transwin-decrement-frame-transparent)))
+
 (use-package default-text-scale
   :bind
   ("C-=" . default-text-scale-increase)
