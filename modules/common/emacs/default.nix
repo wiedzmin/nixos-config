@@ -107,7 +107,6 @@ in {
             withGTK3 = false;
             inherit (pkgs) imagemagick;
           });
-          # TODO: scan *.el and find packages not in list below
           extraPackages = epkgs:
             [
               epkgs.aggressive-indent
