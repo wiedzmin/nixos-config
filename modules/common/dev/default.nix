@@ -1,4 +1,7 @@
-{ config, lib, pkgs, ... }:
+let
+  deps = import ../../../nix/sources.nix;
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
+in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -29,11 +32,6 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable patching helper tools.";
-      };
-      analysis.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable dev analysis tools.";
       };
       statistics.enable = mkOption {
         type = types.bool;
@@ -170,32 +168,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ patchutils wiggle ruplacer ];
-      };
-    })
-    (mkIf (cfg.enable && cfg.analysis.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          diffoscope
-          elfinfo
-          extrace
-          flamegraph
-          gdb
-          gdbgui
-          hopper
-          libwhich
-          lsof
-          ltrace
-          nmon
-          pagemon
-          patchelf
-          patchutils
-          radare2
-          radare2-cutter
-          strace
-          sysdig
-          valgrind
-        ];
+        home.packages = with pkgs; [ patchutils wiggle ruplacer nixpkgs-pinned-16_04_20.diffoscope ];
       };
     })
     (mkIf (cfg.enable && cfg.statistics.enable) {
