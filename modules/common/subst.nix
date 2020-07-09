@@ -48,7 +48,7 @@ rec {
   xprintidleBinary = "${nixpkgs-pinned-16_04_20.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
   searchReposRoot = config.custom.dev.repoSearch.root;
-  globalWorkspaceRoot = config.custom.navigation.workspaceRoots.global;
+  globalWorkspaceRoot = homePrefix config.custom.navigation.workspaceRoots.global;
   xmobarMaybeFont = lib.optionalString (config.wmCommon.fonts.statusbar != "")
     ''font = "${config.wmCommon.fonts.statusbar}"${mkNewlineAndIndent 7}, '';
 } // lib.optionalAttrs (config.custom.browsers.firefox.enable) rec {
