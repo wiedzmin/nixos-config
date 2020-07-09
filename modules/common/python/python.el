@@ -26,6 +26,7 @@
         ("C-<right>" . sp-slurp-hybrid-sexp)
         ("M-_" . python-indent-shift-left)
         ("M-+" . python-indent-shift-right))
+  :capf python-completion-at-point
   :config
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'(lambda () "")))

@@ -76,6 +76,11 @@
   (:map dired-mode-map
         (")" . dired-git-info-mode)))
 
+(use-package git-commit
+  :after company-dabbrev
+  :hook (text-mode-hook . company-mode)
+  :company company-dabbrev)
+
 (use-package git-msg-prefix
   :bind
   (:map git-commit-mode-map

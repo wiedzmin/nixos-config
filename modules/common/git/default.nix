@@ -434,6 +434,7 @@ in {
         programs.emacs.extraPackages = epkgs: [
           epkgs.browse-at-remote
           epkgs.dired-git-info
+          epkgs.git-commit
           epkgs.git-identity
           epkgs.git-link
           epkgs.git-msg-prefix
