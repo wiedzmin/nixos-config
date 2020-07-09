@@ -12,7 +12,7 @@
         ("C-k" . sp-kill-hybrid-sexp)
         ("C-<down>" . sp-push-hybrid-sexp)
         ("C-<right>" . sp-slurp-hybrid-sexp))
-  :company '(company-tabnine company-lsp)
+  :company company-tabnine
   :config
   (use-package lsp-go
     :custom

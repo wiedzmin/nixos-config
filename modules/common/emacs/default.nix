@@ -120,7 +120,6 @@ in {
               epkgs.comment-dwim-2
               epkgs.company
               epkgs.company-fuzzy
-              epkgs.company-lsp
               epkgs.company-quickhelp
               epkgs.company-statistics
               epkgs.compdef

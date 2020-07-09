@@ -42,14 +42,6 @@
   :config
   (add-to-list 'company-backends 'company-restclient))
 
-(use-package company-lsp
-  :after lsp-ui
-  :custom
-  (company-lsp-async t)
-  (company-lsp-cache-candidates 'auto)
-  (company-lsp-enable-recompletion t)
-  (company-lsp-enable-snippet t))
-
 (use-package company-tabnine
   :after (company unicode-escape)
   :preface
