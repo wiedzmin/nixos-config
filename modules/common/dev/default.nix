@@ -157,7 +157,7 @@ in {
           StandardError = "journal";
         };
       };
-      systemd.user.timers."codesearch-reindex" = renderTimer "Codesearch index updating" "10min" "2h" "";
+      systemd.user.timers."codesearch-reindex" = renderTimer "Codesearch index updating" "" "" "*-*-* 4:00:00";
     })
     (mkIf (cfg.enable && cfg.codesearch.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
