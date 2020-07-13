@@ -134,8 +134,16 @@
   (:map custom-nav-map
         ("s" . helm-lsp-global-workspace-symbol)))
 
-(use-package direnv
-  :config
-  (direnv-mode))
+(when @direnvGranularityProject@
+  (use-package direnv
+    :config
+    (direnv-mode)))
+
+(when @direnvGranularityFile@
+  (use-package envrc
+    :quelpa
+    (envrc :repo "purcell/envrc" :fetcher github)
+    :config
+    (envrc-global-mode)))
 
 (use-package elmacro)

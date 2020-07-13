@@ -309,6 +309,7 @@ in {
     repoSearch.enable = true;
     bookmarks.enable = true;
     misc.enable = true;
+    direnvGranularity = "file";
     emacs.enable = true;
     wm.enable = true;
     secrets.snippets.enable = true;

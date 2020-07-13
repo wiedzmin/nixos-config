@@ -59,6 +59,11 @@ in {
         default = false;
         description = "Whether to enable various misc tools.";
       };
+      direnvGranularity = mkOption {
+        type = types.enum [ "project" "file" ];
+        default = "project";
+        description = "The approach to direnv environments switching";
+      };
       remote.commands = mkOption {
         description = "Predefined commands list to execute remotely. Note that those must be present on ssh target.";
         type = types.listOf types.str;
@@ -271,19 +276,20 @@ in {
             } \
             > $out
         '');
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.company-restclient
-          epkgs.company-tabnine
-          epkgs.diff-hl
-          epkgs.direnv
-          epkgs.elmacro
-          epkgs.fic-mode
-          epkgs.helm-lsp
-          epkgs.jinja2-mode
-          epkgs.multi-compile
-          epkgs.webpaste
-          epkgs.yaml-mode
-        ];
+        programs.emacs.extraPackages = epkgs:
+          [
+            epkgs.company-restclient
+            epkgs.company-tabnine
+            epkgs.diff-hl
+            epkgs.elmacro
+            epkgs.fic-mode
+            epkgs.helm-lsp
+            epkgs.jinja2-mode
+            epkgs.multi-compile
+            epkgs.webpaste
+            epkgs.yaml-mode
+          ] ++ lib.optionals (cfg.direnvGranularity == "project") [ epkgs.direnv ]
+          ++ lib.optionals (cfg.direnvGranularity == "file") [ ]; # when envrc.el will arrive to nixpkgs
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dev.el; }));
