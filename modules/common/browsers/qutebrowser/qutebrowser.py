@@ -84,7 +84,6 @@ c.scrolling.smooth = True
 
 c.search.ignore_case = 'smart'
 
-c.statusbar.hide = False
 c.statusbar.padding = {'top': 4, 'bottom': 4, 'left': 4, 'right': 4}
 c.statusbar.widgets = ['keypress', 'url', 'history', 'tabs', 'progress']
 
