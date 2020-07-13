@@ -289,7 +289,7 @@ in {
 
             bar {
                 tray_output LVDS-1
-                mode hide
+                mode dock
                 modifier ${prefix}
                 workspace_buttons yes
                 strip_workspace_numbers yes
