@@ -212,7 +212,7 @@ in {
             };
             "*" = {
               identityFile = toString (pkgs.writeTextFile {
-                name = "id_rsa";
+                name = "ssh_private_key";
                 text = config.identity.secrets.ssh.privateKey;
               });
               compression = true;
@@ -226,7 +226,7 @@ in {
               user = "git";
               serverAliveInterval = 60;
               identityFile = toString (pkgs.writeTextFile {
-                name = "github_id_rsa";
+                name = "ssh_private_key";
                 text = config.custom.dev.secrets.github.ssh.privateKey;
               });
               extraOptions = {
@@ -240,7 +240,7 @@ in {
               user = "git";
               serverAliveInterval = 60;
               identityFile = toString (pkgs.writeTextFile {
-                name = "bitbucket_id_rsa";
+                name = "ssh_private_key";
                 text = config.custom.dev.secrets.bitbucket.ssh.privateKey;
               });
               identitiesOnly = true;
