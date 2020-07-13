@@ -16,20 +16,40 @@ in {
         default = false;
         description = "Whether to enable Git VCS infrastructure.";
       };
+      defaultMainBranchName = mkOption {
+        type = types.str;
+        default = "master";
+        description = "Name of main branch.";
+      };
       defaultUpstreamRemote = mkOption {
         type = types.str;
         default = "upstream";
         description = "Name of upstream repo remote.";
+      };
+      defaultOriginRemote = mkOption {
+        type = types.str;
+        default = "origin";
+        description = "Name of origin repo remote.";
+      };
+      forges.creds = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Git forges credentials mapping.";
       };
       urlSubstitutes = mkOption {
         type = types.attrsOf types.attrs;
         default = { };
         description = "Config' `insteadOf` entries mapping.";
       };
-      idletime.stgit = mkOption {
+      wip.idleTime = mkOption {
         type = types.int;
         default = 3600;
-        description = "Seconds of X idle time to start stgit actions.";
+        description = "Seconds of X idle time to start WIP-saving actions.";
+      };
+      wip.minChangedLines = mkOption {
+        type = types.int;
+        default = 100;
+        description = "Changed WIP LOC count to consider pushing upstream.";
       };
       pager.diff-so-fancy.enable = mkOption {
         type = types.bool;
@@ -165,10 +185,20 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        git-save-wip = mkShellScriptWithDeps "git-save-wip" [ pkgs.git pkgs.gitAndTools.stgit pkgs.xprintidle-ng ]
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./git-save-wip.sh; })));
+        gitctl = mkPythonScriptWithDeps "gitctl" [
+          pkgs.python3Packages.dmenu-python
+          pkgs.python3Packages.notify2
+          pkgs.python3Packages.pygit2
+          pkgs.python3Packages.redis
+        ] (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./gitctl.py; })));
       };
+
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set git/forges_creds ${
+          lib.strings.escapeNixString (builtins.toJSON cfg.forges.creds)
+        }
+      '';
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = { "${cfg.assets.dirName}/.gitignore".text = cfg.gitignore; };
@@ -235,11 +265,9 @@ in {
           gitAndTools.git-machete
           gitAndTools.git-octopus
           gitAndTools.pass-git-helper
-          gitAndTools.stgit
           gitstats
           nixpkgs-pinned-16_04_20.gitAndTools.thicket
 
-          git-save-wip
           gitAndTools.git-trim
           gitAndTools.git-reparent
         ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
@@ -265,10 +293,11 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.myrepos.enable) {
+      custom.dev.git.myrepos.subconfigs = [ "${homePrefix globalRoot}/github.com/wiedzmin/.mrconfig" ];
       home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ mr gitctl ];
         home.file = {
           ".mrtrust".text = builtins.concatStringsSep "\n" (cfg.myrepos.subconfigs ++ [ (homePrefix ".mrconfig") ]);
-          # TODO: consider stage and commit all WIP before pushing
           ".mrconfig".text = ''
             [DEFAULT]
             lib =
@@ -314,6 +343,59 @@ in {
               include = cat ${config}
             '') cfg.myrepos.subconfigs}
           '';
+          "${globalRoot}/github.com/wiedzmin/.mrconfig".text = lib.generators.toINI { } {
+            "${homePrefix globalRoot}/github.com/wiedzmin/bitcoinbook" = {
+              checkout = "git clone 'https://github.com/wiedzmin/bitcoinbook.git' 'bitcoinbook'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/git-hooks" = {
+              checkout = "git clone 'https://github.com/wiedzmin/git-hooks.git' 'git-hooks'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/kbdd" = {
+              checkout = "git clone 'https://github.com/wiedzmin/kbdd.git' 'kbdd'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/pgsql-listen-exchange" = {
+              checkout = "git clone 'https://github.com/wiedzmin/pgsql-listen-exchange.git' 'pgsql-listen-exchange'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/rc" = {
+              checkout = "git clone 'https://github.com/wiedzmin/rc.git' 'rc'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/shepherd" = {
+              checkout = "git clone 'https://github.com/wiedzmin/shepherd.git' 'shepherd'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/cl-study" = {
+              checkout = "git clone 'https://github.com/wiedzmin/cl-study.git' 'cl-study'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/gourmet" = {
+              checkout = "git clone 'https://github.com/wiedzmin/gourmet.git' 'gourmet'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/lisp-koans" = {
+              checkout = "git clone 'https://github.com/wiedzmin/lisp-koans.git' 'lisp-koans'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/mlbot" = {
+              checkout = "git clone 'https://github.com/wiedzmin/mlbot.git' 'mlbot'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/nixpkgs" = {
+              checkout = "git clone 'https://github.com/wiedzmin/nixpkgs.git' 'nixpkgs'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/science_chemphys" = {
+              checkout = "git clone 'https://github.com/wiedzmin/science_chemphys.git' 'science_chemphys'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/stumpwm" = {
+              checkout = "git clone 'https://github.com/wiedzmin/stumpwm.git' 'stumpwm'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/first-order-model" = {
+              checkout = "git clone 'https://github.com/wiedzmin/first-order-model.git' 'first-order-model'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/passdmenu" = {
+              checkout = "git clone 'https://github.com/wiedzmin/passdmenu.git' 'passdmenu'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/stumpwm-contrib" = {
+              checkout = "git clone 'https://github.com/wiedzmin/stumpwm-contrib.git' 'stumpwm-contrib'";
+            };
+            "${homePrefix globalRoot}/github.com/wiedzmin/xmonad-config" = {
+              checkout = "git clone 'https://github.com/wiedzmin/xmonad-config.git' 'xmonad-config'";
+            };
+          };
         };
       };
     })

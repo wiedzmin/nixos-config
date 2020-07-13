@@ -22,7 +22,9 @@ rec {
   emacsDatadir = config.ide.emacs.dataDir;
   emacsYasnippetSnippets = deps.yasnippet-snippets;
   fallbackPackageArchives = emacsBoolToString false;
-  gitIdletimeStgit = builtins.toString config.custom.dev.git.idletime.stgit;
+  gitDefaultMainBranchName = config.custom.dev.git.defaultMainBranchName;
+  gitWipChangedLinesTreshold = builtins.toString config.custom.dev.git.wip.minChangedLines;
+  gitWipIdletimeTreshold = builtins.toString config.custom.dev.git.wip.idleTime;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
   keybindingsCachePath = config.wmCommon.keybindingsCachePath;
