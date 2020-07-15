@@ -59,10 +59,15 @@ in {
         default = false;
         description = "Whether to enable various misc tools.";
       };
-      direnvGranularity = mkOption {
+      direnv.granularity = mkOption {
         type = types.enum [ "project" "file" ];
         default = "project";
         description = "The approach to direnv environments switching";
+      };
+      direnv.whitelist = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "The collection of whitelisting prefixes for direnv to allow";
       };
       remote.commands = mkOption {
         description = "Predefined commands list to execute remotely. Note that those must be present on ssh target.";
@@ -261,6 +266,10 @@ in {
           enable = true;
           enableZshIntegration = true;
         };
+        xdg.configFile."direnv/direnv.toml".text = toToml {
+          global = { disable_stdin = true; };
+          whitelist = { prefix = cfg.direnv.whitelist; };
+        };
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
@@ -279,8 +288,8 @@ in {
             epkgs.multi-compile
             epkgs.webpaste
             epkgs.yaml-mode
-          ] ++ lib.optionals (cfg.direnvGranularity == "project") [ epkgs.direnv ]
-          ++ lib.optionals (cfg.direnvGranularity == "file") [ ]; # when envrc.el will arrive to nixpkgs
+          ] ++ lib.optionals (cfg.direnv.granularity == "project") [ epkgs.direnv ]
+          ++ lib.optionals (cfg.direnv.granularity == "file") [ ]; # when envrc.el will arrive to nixpkgs
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dev.el; }));

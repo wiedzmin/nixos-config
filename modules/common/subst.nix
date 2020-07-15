@@ -12,8 +12,8 @@ rec {
   defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;
   defaultTerminal = config.custom.shell.terminal;
   deftPath = homePrefix "docs/deft";
-  direnvGranularityProject = emacsBoolToString (config.custom.dev.direnvGranularity == "project");
-  direnvGranularityFile = emacsBoolToString (config.custom.dev.direnvGranularity == "file");
+  direnvGranularityProject = emacsBoolToString (config.custom.dev.direnv.granularity == "project");
+  direnvGranularityFile = emacsBoolToString (config.custom.dev.direnv.granularity == "file");
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
   downloadPath = config.custom.browsers.downloadPath;
   emacsBrowserGenericProgram = "${pkgs.xdg_utils}/bin/xdg-open";
