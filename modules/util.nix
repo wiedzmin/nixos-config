@@ -111,6 +111,18 @@ in rec {
         -of json \
         -o $out
     ''));
+  toToml = attrs:
+    builtins.readFile (pkgs.runCommand "to-toml" {
+      # inherit attrs;
+      allowSubstitutes = false;
+      preferLocalBuild = true;
+    } ''
+      ${pkgs.remarshal}/bin/remarshal  \
+        -if json \
+        -of toml \
+        < ${pkgs.writeText "attrs.json" (builtins.toJSON attrs)} \
+        > $out
+    '');
   maybeAttrBool = name: set: (builtins.hasAttr name set) && (set."${name}" == true);
   emacsBoolToString = v: if v == true then "t" else "nil";
 }

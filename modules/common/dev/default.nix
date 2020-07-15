@@ -265,17 +265,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        xdg.configFile."TabNine/TabNine.toml".source = (pkgs.runCommand "TabNine.toml" {
-          buildInputs = [ pkgs.remarshal ];
-          preferLocalBuild = true;
-        } ''
-          remarshal -if json -of toml \
-            < ${
-              pkgs.writeText "TabNine.json"
-              (builtins.toJSON { language.python = { command = "python-language-server"; }; })
-            } \
-            > $out
-        '');
+        xdg.configFile."TabNine/TabNine.toml".text =
+          toToml { language.python = { command = "python-language-server"; }; };
         programs.emacs.extraPackages = epkgs:
           [
             epkgs.company-restclient
