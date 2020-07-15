@@ -115,6 +115,10 @@ in {
             packages = with pkgs; [ ];
             patch = builtins.readFile ./lib/xlib.py;
           };
+          "pass" = {
+            packages = with pkgs; [ ];
+            patch = builtins.readFile ./lib/pass.py;
+          };
         };
         readOnly = true;
         internal = true;
