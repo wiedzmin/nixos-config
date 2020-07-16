@@ -1,4 +1,5 @@
 import argparse
+import fnmatch
 import json
 import os
 import subprocess
@@ -9,8 +10,9 @@ from pygit2 import Repository, GIT_STATUS_CURRENT, GIT_STATUS_IGNORED, \
     GIT_DIFF_STATS_FULL, Tag, Signature, RemoteCallbacks, UserPass
 import redis
 
-
 @pythonPatchNotify@
+@pythonPatchPass@
+
 
 def is_idle_enough():
     xprintidle_task = subprocess.Popen("@xprintidleBinary@", env={"DISPLAY": os.getenv("DISPLAY"),
@@ -58,18 +60,34 @@ def collect_tags(repo):
     return result
 
 
-def build_auth_callbacks(creds, remote_name):
-    username, password = None, None
-    for forge_regexp in creds.keys():
-        if forge_regexp in remote_name:
-            username = creds[forge_regexp]["username"]
-            password = creds[forge_regexp]["password"]
+def build_auth_callbacks(repo, credentials):
+    remote_url = repo.remotes[args.remote].url
+    pass_path = None
+    for glob in credentials.keys():
+        if fnmatch.fnmatch(remote_url, glob):
+            pass_path = credentials[glob]["target"]
             break
+
+    if not pass_path:
+        print("pass entry not found")
+        sys.exit(1)
+
+    entry_data = read_entry(pass_path)
+    password = extract_specific_line(entry_data, 0)
+    username = extract_by_regex(entry_data, field_regex_mappings["login"])
+
+    if not username:
+        print("username not found")
+        sys.exit(1)
+    if not password:
+        print("password not found")
+        sys.exit(1)
+
     return RemoteCallbacks(credentials=UserPass(username, password))
 
 
 r = redis.Redis(host='localhost', port=6379, db=0)
-forges_creds = json.loads(r.get("git/forges_creds"))
+credentials_mapping = json.loads(r.get("git/credentials_mapping"))
 
 is_interactive = sys.stdin.isatty()
 in_xsession = os.environ.get("DISPLAY")
@@ -142,7 +160,7 @@ if args.cmd == "wip":
         tree = index.write_tree()
         wip_commit = repo.create_commit("HEAD", author, committer, wip_message, tree, parents)
         if args.wip_push:
-            remote.push(specs=["HEAD"], callbacks=build_auth_callbacks(forges_creds, repo.remotes[args.remote].url))
+            remote.push(specs=["HEAD"], callbacks=build_auth_callbacks(repo, credentials_mapping))
 elif args.cmd == "tags":
     if args.tags_sync:
         remote = resolve_remote(repo, args.remote)
@@ -150,7 +168,7 @@ elif args.cmd == "tags":
             print("error")
             sys.exit(1)
         remote.fetch(refspecs=["refs/tags/*:refs/tags/*"])
-        remote.push(specs=collect_tags(repo), callbacks=build_auth_callbacks(forges_creds, repo.remotes[args.remote].url))
+        remote.push(specs=collect_tags(repo), callbacks=build_auth_callbacks(repo, credentials_mapping))
     elif args.tags_checkout:
         tag_name = args.tags_name
         if is_interactive:

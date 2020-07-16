@@ -210,6 +210,15 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ reposearch ]; };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
+      custom.dev.git.credentials.mapping = {
+        "*github.com*" = {
+          skip_username = 7;
+          target = "${config.attributes.mainUser.name}/webservices/social/programming/github.com";
+        };
+        "*bitbucket.org*" = {
+          target = "${config.attributes.mainUser.name}/webservices/social/programming/bitbucket.com";
+        };
+      };
       custom.dev.git.gitignore = ''
         shell.nix
         .envrc

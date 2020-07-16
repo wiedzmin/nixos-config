@@ -31,10 +31,10 @@ in {
         default = "origin";
         description = "Name of origin repo remote.";
       };
-      forges.creds = mkOption {
+      credentials.mapping = mkOption {
         type = types.attrs;
         default = { };
-        description = "Git forges credentials mapping.";
+        description = "Mapping forges urls to pass credentials paths.";
       };
       urlSubstitutes = mkOption {
         type = types.attrsOf types.attrs;
@@ -195,20 +195,15 @@ in {
       };
 
       custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set git/forges_creds ${
-          lib.strings.escapeNixString (builtins.toJSON cfg.forges.creds)
+        ${pkgs.redis}/bin/redis-cli set git/credentials_mapping ${
+          lib.strings.escapeNixString (builtins.toJSON cfg.credentials.mapping)
         }
       '';
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = { "${cfg.assets.dirName}/.gitignore".text = cfg.gitignore; };
         # https://github.com/languitar/pass-git-helper - review for more fine-grained control
-        xdg.configFile."pass-git-helper/git-pass-mapping.ini".text = lib.generators.toINI { } {
-          "github.com*" = { target = "${config.attributes.mainUser.name}/webservices/social/programming/github.com"; };
-          "bitbucket.org*" = {
-            target = "${config.attributes.mainUser.name}/webservices/social/programming/bitbucket.com";
-          };
-        };
+        xdg.configFile."pass-git-helper/git-pass-mapping.ini".text = lib.generators.toINI { } cfg.credentials.mapping;
         programs.git = {
           enable = true;
           userName = config.attributes.mainUser.fullName;
