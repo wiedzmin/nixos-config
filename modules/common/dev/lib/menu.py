@@ -15,3 +15,10 @@ def get_selection(seq, prompt, lines=5):
     else:
         fzf = FzfPrompt()
         return fzf.prompt(seq, '--cycle')[0]
+
+
+# TODO: consider renaming patch
+def log():
+    pass
+
+# notify(header, msg, urgency=URGENCY_NORMAL, timeout=3000)

@@ -5,8 +5,8 @@ import os
 import subprocess
 from datetime import datetime
 
-from pygit2 import Repository, GIT_STATUS_CURRENT, GIT_STATUS_IGNORED, \
-    GIT_DIFF_STATS_FULL, Tag, Signature, RemoteCallbacks, UserPass
+from pygit2 import GIT_BRANCH_REMOTE, GIT_DIFF_STATS_FULL, GIT_RESET_HARD, GIT_STATUS_CURRENT, \
+    GIT_STATUS_IGNORED, RemoteCallbacks, Repository, Signature, Tag, UserPass
 import redis
 
 
@@ -33,14 +33,34 @@ def is_git_repo(path=None):
     if not path:
         return False
     root = os.path.abspath(path) + "/.git"
-    if os.path.exists(root) and os.path.isdir(root):
-        return True
-    return False
+    return os.path.exists(root) and os.path.isdir(root)
 
 
-def is_main_active(repo):
-    head = repo.references['HEAD'].resolve()
-    return not head.endswith("@gitDefaultMainBranchName@")
+def get_active_branch(repo):
+    head = None
+    try:
+        head = repo.references['HEAD'].resolve()
+    except KeyError as e:
+        return head
+    return head.name
+
+
+def is_main_branch_active(repo):
+    return get_active_branch(repo).endswith("@gitDefaultMainBranchName@")
+
+
+def is_main_branch_protected():
+    allow_token = os.path.abspath(os.getcwd()) + "/.unseal_@gitDefaultMainBranchName@"
+    return os.path.exists(allow_token) and (os.path.isfile(allow_token) or os.path.islink(allow_token))
+
+
+def get_diff_size(repo):
+    active_branch = get_active_branch(repo)
+    if not active_branch:
+        print("probably empty repo")
+        return 0
+    diff = repo.diff()
+    return diff.stats.insertions + diff.stats.deletions
 
 
 def resolve_remote(repo, remote_name):
@@ -48,7 +68,7 @@ def resolve_remote(repo, remote_name):
     try:
         remote = repo.remotes[remote_name]
     except KeyError:
-        return False
+        pass
     return remote
 
 
@@ -122,11 +142,10 @@ parser_tags.add_argument("--tag", dest="tags_name", # TODO: think of params rest
 
 parser_update = subparsers.add_parser("update", help="Updating WIP branches")
 parser_update.add_argument("--op", dest="update_op",
-                           default="merge", help="Merge|Rebase") # TODO: use choices
-parser_update.add_argument("--branch", dest="update_branch",
-                           default="master", help="Branch to get updates from")
-parser_update.add_argument("--abort", dest="update_abort", action="store_true",
-                           default=False, help="Abort unfinished operation")
+                           default="merge", choices=["fetch", "merge", "rebase", "push"],
+                           help="Operation to perform")
+parser_update.add_argument("--branch", dest="update_source_branch",
+                           default="", help="Branch to get updates from")
 
 args = parser.parse_args()
 
@@ -137,28 +156,38 @@ if not is_git_repo(os.getcwd()):
 repo = Repository(os.getcwd() + "/.git")
 config = repo.config
 
+
+# FIXME: user identity (name + email) is not always set at repo level
+# that said, we need a SPOT for git identities as used/implemented
+# in git-identity emacs package
 if args.cmd == "wip":
     if not args.wip_force and not is_idle_enough():
         sys.exit(0)
-    if is_main_active(repo):
-        print("@gitDefaultMainBranchName@ is untouchable")
-        sys.exit(1)
-    diff = repo.diff("HEAD")
-    changed_lines = diff.stats.insertions + diff.stats.deletions
-    if changed_lines > @gitWipChangedLinesTreshold@ or args.wip_force:
+    diff_size = get_diff_size(repo)
+    if diff_size == 0:
+        print("no changes to commit")
+        sys.exit(0)
+    if diff_size > @gitWipChangedLinesTreshold@ or args.wip_force:
         branch = f"{repo.references['HEAD'].resolve().split('/')[-1]}: " if args.wip_add_branch_name else ""
         wip_message = f"{branch}WIP {datetime.now().strftime('%a %d/%m/%Y %H:%M:%S')}"
         index = repo.index
         index.read()
         index.add_all()
         index.write()
-        name, email = config.get_multivar("user")
+        # user = repo.default_signature
+        name = list(config.get_multivar('user.name'))[0]
+        email = list(config.get_multivar('user.email'))[0]
         author = committer = Signature(name, email)
-        parents = [repo.head.get_object().hex]
+        parents = [repo.references['HEAD'].resolve().target]
         tree = index.write_tree()
         wip_commit = repo.create_commit("HEAD", author, committer, wip_message, tree, parents)
         if args.wip_push:
-            remote.push(specs=["HEAD"], callbacks=build_auth_callbacks(repo, credentials_mapping))
+            if is_main_branch_active(repo) and is_main_branch_protected():
+                print("@gitDefaultMainBranchName@ is untouchable")
+                sys.exit(1)
+            else:
+                remote = resolve_remote(repo, args.remote)
+                remote.push(specs=["HEAD"], callbacks=build_auth_callbacks(repo, credentials_mapping))
 elif args.cmd == "tags":
     if args.tags_sync:
         remote = resolve_remote(repo, args.remote)
@@ -176,10 +205,26 @@ elif args.cmd == "tags":
             sys.exit(1)
         repo.checkout(tag_name)
 elif args.cmd == "update":
-    # merge or rebase upstream/origin (elaborate on this)
-    print("update")
+    source_branch_name = args.update_source_branch if args.update_source_branch != "" else get_active_branch(repo)
+    remote = resolve_remote(repo, args.remote)
+    if not remote:
+        print("error")
+        sys.exit(1)
+    if args.update_op == "fetch":
+        remote.fetch(refspecs=[f"refs/heads/*:refs/heads/*"])
+    elif args.update_op == "merge":
+        source_branch_head = repo.references[source_branch_name].resolve().target
+        repo.merge(source_branch_head)
+    elif args.update_op == "rebase":
+        source_branch = repo.lookup_branch(source_branch_name, GIT_BRANCH_REMOTE)
+        dest_branch = repo.lookup_branch(get_active_branch(repo))
+        dest_branch.set_target(source_branch.target)
+        # Fast-forwarding with set_target() leaves the index and the working tree
+        # in their old state. That's why we need to checkout() and reset()
+        repo.checkout(f"refs/heads/{dest_branch.name}")
+        repo.reset(dest_branch.target, GIT_RESET_HARD)
+    elif args.update_op == "push":
+        remote.push(specs=["HEAD"], callbacks=build_auth_callbacks(repo, credentials_mapping))
 else:
     print("No command issued")
     sys.exit(0)
-
-# notify(header, msg, urgency=URGENCY_NORMAL, timeout=3000)
