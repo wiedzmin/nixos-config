@@ -5,12 +5,13 @@ import os
 import subprocess
 from datetime import datetime
 
-import dmenu
 from pygit2 import Repository, GIT_STATUS_CURRENT, GIT_STATUS_IGNORED, \
     GIT_DIFF_STATS_FULL, Tag, Signature, RemoteCallbacks, UserPass
 import redis
 
+
 @pythonPatchNotify@
+@pythonPatchMenu@
 @pythonPatchPass@
 
 
@@ -88,9 +89,6 @@ def build_auth_callbacks(repo, credentials):
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 credentials_mapping = json.loads(r.get("git/credentials_mapping"))
-
-is_interactive = sys.stdin.isatty()
-in_xsession = os.environ.get("DISPLAY")
 
 parser = argparse.ArgumentParser(description="Some git automation")
 subparsers = parser.add_subparsers(help="command", dest="cmd")

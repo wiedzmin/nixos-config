@@ -186,6 +186,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         gitctl = mkPythonScriptWithDeps "gitctl" [
+          pkgs.pyfzf
           pkgs.python3Packages.dmenu-python
           pkgs.python3Packages.notify2
           pkgs.python3Packages.pygit2
