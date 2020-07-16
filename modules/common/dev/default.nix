@@ -119,6 +119,10 @@ in {
             packages = with pkgs; [ ];
             patch = builtins.readFile ./lib/pass.py;
           };
+          "menu" = {
+            packages = with pkgs; [ ];
+            patch = builtins.readFile ./lib/menu.py;
+          };
         };
         readOnly = true;
         internal = true;

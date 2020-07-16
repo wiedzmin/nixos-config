@@ -5,19 +5,12 @@ import sys
 import time
 
 from gnupg import GPG
-from pyfzf.pyfzf import FzfPrompt
-import dmenu
 
+
+@pythonPatchMenu@
 
 def guess_machine_name():
     return os.readlink("/etc/nixos/configuration.nix").split("/")[1]
-
-
-def get_selection(seq, prompt, lines=5, fzf=FzfPrompt()):
-    if os.environ.get("CONFCTL_USE_FZF") == "yes":
-        return fzf.prompt(seq, '--cycle')[0]
-    else:
-        return dmenu.show(seq, prompt=prompt, lines=lines)
 
 
 def locate_nixpkgs():

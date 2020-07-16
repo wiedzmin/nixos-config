@@ -43,6 +43,7 @@ rec {
   pgcliBinary = "${nixpkgs-pinned-16_04_20.pgcli}/bin/pgcli"; # because of deps versions conflict with mycli
   pimOrgAgendaElPatch = config.custom.pim.org.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
+  pythonPatchMenu = config.custom.dev.pythonLib."menu".patch;
   pythonPatchNotify = config.custom.dev.pythonLib."notify".patch;
   pythonPatchPass = config.custom.dev.pythonLib."pass".patch;
   pythonPatchXlib = config.custom.dev.pythonLib."xlib".patch;
