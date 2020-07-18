@@ -11,7 +11,7 @@ import redis
 
 
 @pythonPatchNotify@
-@pythonPatchMenu@
+@pythonPatchUIShim@
 @pythonPatchPass@
 
 

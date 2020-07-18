@@ -17,7 +17,6 @@ def get_selection(seq, prompt, lines=5):
         return fzf.prompt(seq, '--cycle')[0]
 
 
-# TODO: consider renaming patch
 def log():
     pass
 

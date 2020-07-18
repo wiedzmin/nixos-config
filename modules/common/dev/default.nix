@@ -128,9 +128,9 @@ in {
             packages = with pkgs; [ ];
             patch = builtins.readFile ./lib/pass.py;
           };
-          "menu" = {
+          "uishim" = {
             packages = with pkgs; [ ];
-            patch = builtins.readFile ./lib/menu.py;
+            patch = builtins.readFile ./lib/uishim.py;
           };
         };
         readOnly = true;
