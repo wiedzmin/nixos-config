@@ -7,7 +7,7 @@ import dmenu
 from bs4 import BeautifulSoup
 
 
-@pythonPatchNotify@
+@pythonPatchUIShim@
 
 def is_valid_url(url):
     return re.search("@urlRegexPy@", url) is not None

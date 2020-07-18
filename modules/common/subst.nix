@@ -45,7 +45,6 @@ rec {
   pimOrgAgendaElPatch = config.custom.pim.org.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   pythonPatchUIShim = config.custom.dev.pythonLib."uishim".patch;
-  pythonPatchNotify = config.custom.dev.pythonLib."notify".patch;
   pythonPatchPass = config.custom.dev.pythonLib."pass".patch;
   pythonPatchXlib = config.custom.dev.pythonLib."xlib".patch;
   screenshotsBasedir = config.custom.content.screenshots.baseDir;

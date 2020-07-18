@@ -6,7 +6,7 @@ import time
 
 import dmenu
 
-@pythonPatchNotify@
+@pythonPatchUIShim@
 
 def collect_sessions():
     return [os.path.basename(session) for session in glob.glob("@firefoxSessionsPath@/*.org")]

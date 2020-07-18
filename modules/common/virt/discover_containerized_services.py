@@ -10,7 +10,7 @@ port_cmd_mapping = {
     "8000": "@defaultBrowser@"
 }
 
-@pythonPatchNotify@
+@pythonPatchUIShim@
 
 ip_address_format = "{{range $network, $settings :=.NetworkSettings.Networks}}{{$settings.IPAddress}}{{end}}"
 ports_format = "{{range $port, $mappings :=.NetworkSettings.Ports}}{{$port}}{{end}}"

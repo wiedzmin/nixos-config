@@ -23,7 +23,7 @@ parser.add_argument("--verbose", dest="verbose", action="store_true",
 
 args = parser.parse_args()
 
-@pythonPatchNotify@
+@pythonPatchUIShim@
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 vpn_meta = json.loads(r.get("net/vpn_meta"))

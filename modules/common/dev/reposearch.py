@@ -5,7 +5,7 @@ from libtmux import Server
 import dmenu
 
 
-@pythonPatchNotify@
+@pythonPatchUIShim@
 
 keyword_task = subprocess.Popen("xsel -o -b", shell=True, stdout=subprocess.PIPE)
 keyword_text = keyword_task.stdout.read().decode().strip()

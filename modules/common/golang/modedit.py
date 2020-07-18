@@ -7,7 +7,7 @@ import dmenu
 pattern = "\(.*\)"
 deps_dict = {}
 
-@pythonPatchNotify@
+@pythonPatchUIShim@
 
 go_mod_path = os.getcwd() + "/go.mod"
 if not (os.path.exists(go_mod_path) and os.path.isfile(go_mod_path)):

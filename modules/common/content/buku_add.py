@@ -21,7 +21,7 @@ def fetch_tags_cloud():
     assert tags_cloud_task.wait() == 0
     return result
 
-@pythonPatchNotify@
+@pythonPatchUIShim@
 
 bookmark_text_task = subprocess.Popen("xsel -o -b",
                                       shell=True, stdout=subprocess.PIPE)

@@ -116,12 +116,8 @@ in {
       pythonLib = mkOption {
         type = types.attrs;
         default = {
-          "notify" = {
-            packages = with pkgs; [ ]; # TODO: integrate later
-            patch = builtins.readFile ./lib/notify.py;
-          };
           "xlib" = {
-            packages = with pkgs; [ ];
+            packages = with pkgs; [ ]; # TODO: integrate later
             patch = builtins.readFile ./lib/xlib.py;
           };
           "pass" = {

@@ -10,7 +10,6 @@ from pygit2 import GIT_BRANCH_REMOTE, GIT_DIFF_STATS_FULL, GIT_RESET_HARD, GIT_S
 import redis
 
 
-@pythonPatchNotify@
 @pythonPatchUIShim@
 @pythonPatchPass@
 

@@ -15,7 +15,7 @@ parser.add_argument("--mode", dest="mode", choices = ["mount", "unmount"],
 
 args = parser.parse_args()
 
-@pythonPatchNotify@
+@pythonPatchUIShim@
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 

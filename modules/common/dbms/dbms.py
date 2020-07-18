@@ -10,7 +10,7 @@ import redis
 r = redis.Redis(host='localhost', port=6379, db=0)
 dbms_meta = json.loads(r.get("misc/dbms_meta"))
 
-@pythonPatchNotify@
+@pythonPatchUIShim@
 
 if not len(dbms_meta):
     notify("[dbms]", "No entries", urgency=URGENCY_CRITICAL, timeout=5000)
