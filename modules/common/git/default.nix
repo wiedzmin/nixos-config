@@ -296,40 +296,20 @@ in {
           ".mrtrust".text = builtins.concatStringsSep "\n" (cfg.myrepos.subconfigs ++ [ (homePrefix ".mrconfig") ]);
           ".mrconfig".text = ''
             [DEFAULT]
-            lib =
-              on_master() {
-                test $(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD) = "master"
-              }
             update =
-              FORCE_STG=yes ${pkgs.git-save-wip}/bin/git-save-wip .
-              ${pkgs.git}/bin/git fetch origin
-              ${pkgs.git}/bin/git rebase origin/$(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD)
+              ${pkgs.gitctl}/bin/gitctl update --op fetch
+              ${pkgs.gitctl}/bin/gitctl update --op rebase
             savewip =
-              ${pkgs.git-save-wip}/bin/git-save-wip .
+              ${pkgs.gitctl}/bin/gitctl wip
             push =
-              if ! on_master; then
-                ${pkgs.git}/bin/git push origin $(${pkgs.git}/bin/git rev-parse --abbrev-ref HEAD)
-              fi
+              ${pkgs.gitctl}/bin/gitctl update --op push
             usync =
-              if [[ ! -z $(${pkgs.git}/bin/git remote | grep ${cfg.defaultUpstreamRemote}) ]]; then
-                ${pkgs.git}/bin/git fetch ${cfg.defaultUpstreamRemote}
-                current_branch=$(${pkgs.git}/bin/git branch | ${pkgs.gnugrep}/bin/grep \* | ${pkgs.coreutils}/bin/cut -d ' ' -f2)
-                ${pkgs.git}/bin/git merge ${cfg.defaultUpstreamRemote}/$current_branch
-              else
-                echo No upstream defined, skipping...
-                return 0
-              fi
+              ${pkgs.gitctl}/bin/gitctl update --op fetch --remote ${cfg.defaultUpstreamRemote}
+              ${pkgs.gitctl}/bin/gitctl update --op merge
             synctags =
-              ${pkgs.git}/bin/git fetch origin --tags
-              ${pkgs.git}/bin/git push origin --tags
+              ${pkgs.gitctl}/bin/gitctl tags --sync
             usynctags =
-              if [[ ! -z $(${pkgs.git}/bin/git remote | grep ${cfg.defaultUpstreamRemote}) ]]; then
-                ${pkgs.git}/bin/git fetch ${cfg.defaultUpstreamRemote} --tags
-                ${pkgs.git}/bin/git push ${cfg.defaultUpstreamRemote} --tags
-              else
-                echo No upstream defined, skipping...
-                return 0
-              fi
+              ${pkgs.gitctl}/bin/gitctl tags --sync --remote ${cfg.defaultUpstreamRemote}
             direnv =
               [ -f .envrc ] && direnv allow || exit 0
             trim =
