@@ -28,6 +28,15 @@ in {
         default = false;
         description = "Whether to enable Codesearch dev infra.";
       };
+      comby.excludes = mkOption {
+        type = types.listOf types.str;
+        default = [ ".envrc" ".gitattributes" ".pre-commit-config.yaml" "configuration.nix" "shell.nix" ];
+        description = ''
+          Patterns to ignore when running Comby refactoring.
+
+          Comby plays badly with symlinks to /nix/store, so here they are.
+        '';
+      };
       patching.enable = mkOption {
         type = types.bool;
         default = false;
@@ -278,7 +287,7 @@ in {
                   - mc
           '';
         };
-        home.packages = with pkgs; [ icdiff ix loop pv wstunnel fastmod the-way devdocs-desktop ];
+        home.packages = with pkgs; [ comby devdocs-desktop fastmod icdiff ix loop pv the-way wstunnel ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
