@@ -8,12 +8,15 @@ field_regex_mappings = {
 }
 
 # TODO: add logging
-def collect_entries():
+def collect_entries(path):
     entries = []
-    entries_task = subprocess.Popen("@passFindEntriesCmd@", shell=True, stdout=subprocess.PIPE)
+    entries_task = subprocess.Popen("find . -type f -name '*.gpg'", cwd=path,
+                                    shell=True, stdout=subprocess.PIPE) # FIXME: debug and change to `fd`
     result = entries_task.wait()
     if result == 0:
-        entries.extend([entry for entry in entries_task.stdout.read().decode().split("\n")])
+        entries.extend([entry[2:-4] for entry in entries_task.stdout.read().decode().split("\n")])
+    else:
+        log_error(entries_task.stderr.read().decode())
     return entries
 
 

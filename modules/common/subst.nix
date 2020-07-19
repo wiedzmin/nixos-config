@@ -41,7 +41,7 @@ rec {
   orgKbDir = homePrefix "docs/org-kb";
   orgWarningsFiledir = builtins.dirOf config.custom.pim.org.warningsFile;
   orgWarningsFilename = config.custom.pim.org.warningsFile;
-  passFindEntriesCmd = "${pkgs.fd}/bin/fd --full-path ${config.custom.security.passwordStorePath} -e gpg";
+  passwordStorePath = config.custom.security.passwordStorePath;
   pgcliBinary = "${nixpkgs-pinned-16_04_20.pgcli}/bin/pgcli"; # because of deps versions conflict with mycli
   pimOrgAgendaElPatch = config.custom.pim.org.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
