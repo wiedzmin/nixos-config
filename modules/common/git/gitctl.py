@@ -198,7 +198,7 @@ elif args.cmd == "tags":
     elif args.tags_checkout:
         tag_name = args.tags_name
         if is_interactive:
-            tag_name = dmenu.show(collect_tags(repo), lines=10) # TODO: consider using (py)fzf
+            tag_name = dmenu.show(collect_tags(repo), lines=10, font="@wmFontDmenu@") # TODO: consider using (py)fzf
         if not tag_name:
             log_error("No tag to checkout")
             sys.exit(1)

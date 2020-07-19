@@ -7,7 +7,7 @@ import dmenu
 get_ifaces_task = subprocess.Popen("ifconfig -s", shell=True, stdout=subprocess.PIPE)
 iface_names = [iface_meta.split()[0] for iface_meta in get_ifaces_task.stdout.read().decode().strip().split("\n")[1:]]
 
-iface_name = dmenu.show(iface_names, prompt="describe", case_insensitive=True, lines=10)
+iface_name = dmenu.show(iface_names, prompt="describe", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 
 get_iface_traits_task = subprocess.Popen(f"ifconfig {iface_name}", shell=True, stdout=subprocess.PIPE)
 iface_traits = get_iface_traits_task.stdout.read().decode()

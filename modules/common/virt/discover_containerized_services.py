@@ -21,7 +21,7 @@ if "DOCKER_HOST" in os.environ:
 select_container_task = subprocess.Popen("docker ps --format '{{.Names}}'", shell=True, stdout=subprocess.PIPE)
 select_container_result = select_container_task.stdout.read().decode().split("\n")
 
-selected_container = dmenu.show(select_container_result, prompt="container", case_insensitive=True, lines=10)
+selected_container = dmenu.show(select_container_result, prompt="container", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 if not selected_container:
     sys.exit(1)
 

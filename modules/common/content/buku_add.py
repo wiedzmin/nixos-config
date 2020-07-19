@@ -31,14 +31,14 @@ if bookmark_text is not None:
     if not is_valid_url(bookmark_text):
         notify("error", "URL is not valid", urgency=URGENCY_CRITICAL, timeout=5000)
         sys.exit(1)
-    result = dmenu.show([bookmark_text], prompt='bookmark')
+    result = dmenu.show([bookmark_text], prompt='bookmark', font="@wmFontDmenu@")
     if not result:
         notify("OK", "Aborted adding bookmark", timeout=5000)
         sys.exit(1)
     tags_cloud = fetch_tags_cloud()
     bookmark_tags = []
     while True:
-        tag = dmenu.show(tags_cloud, prompt='add tag', lines=15)
+        tag = dmenu.show(tags_cloud, prompt='add tag', lines=15, font="@wmFontDmenu@")
         if tag:
            bookmark_tags.append(tag)
            tags_cloud.remove(tag)

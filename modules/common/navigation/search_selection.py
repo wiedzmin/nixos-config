@@ -10,7 +10,7 @@ r = redis.Redis(host='localhost', port=6379, db=0)
 
 searchengines = json.loads(r.get("nav/searchengines"))
 
-searchengine = dmenu.show(searchengines.keys(), prompt="search with", case_insensitive=True, lines=15)
+searchengine = dmenu.show(searchengines.keys(), prompt="search with", case_insensitive=True, lines=15, font="@wmFontDmenu@")
 if searchengine:
     searchengine_url = searchengines[searchengine]
     search_term_task = subprocess.Popen("xsel -o", shell=True, stdout=subprocess.PIPE)

@@ -12,9 +12,9 @@ keyword_text = keyword_task.stdout.read().decode().strip()
 
 keyword_result = None
 if keyword_text:
-    keyword_result = dmenu.show([keyword_text], prompt='keyword')
+    keyword_result = dmenu.show([keyword_text], prompt='keyword', font="@wmFontDmenu@")
 else:
-    keyword_result = dmenu.show([], prompt='keyword')
+    keyword_result = dmenu.show([], prompt='keyword', font="@wmFontDmenu@")
 
 if not keyword_result:
     notify("[search repos]", "no keyword provided", urgency=URGENCY_CRITICAL, timeout=5000)
@@ -24,7 +24,7 @@ search_repos_task = subprocess.Popen(f"fd -t d -d 4 {keyword_result} @searchRepo
                                      shell=True, stdout=subprocess.PIPE)
 search_repos_result = search_repos_task.stdout.read().decode().strip().split("\n")
 
-selected_repo = dmenu.show(search_repos_result, prompt='repo', case_insensitive=True, lines=10)
+selected_repo = dmenu.show(search_repos_result, prompt='repo', case_insensitive=True, lines=10, font="@wmFontDmenu@")
 if not selected_repo:
     notify("[search repos]", "no repository selected", timeout=5000)
     sys.exit(0)

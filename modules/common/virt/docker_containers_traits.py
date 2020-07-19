@@ -42,7 +42,7 @@ with open("/etc/hosts", "r") as hosts:
 
 hostnames = sorted(list(set(hostnames)))
 
-hostname = dmenu.show(hostnames, prompt="host", case_insensitive=True, lines=10)
+hostname = dmenu.show(hostnames, prompt="host", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 
 if hostname == "localhost":
     os.environ["DOCKER_HOST"] = "unix:///var/run/docker.sock"
@@ -55,7 +55,7 @@ else:
                                           shell=True, stdout=subprocess.PIPE)
         assert vpn_start_task.wait() == 0
 
-container_status = dmenu.show(CONTAINER_STATUSES, prompt="status", case_insensitive=True, lines=3)
+container_status = dmenu.show(CONTAINER_STATUSES, prompt="status", case_insensitive=True, lines=3, font="@wmFontDmenu@")
 if not container_status:
     sys.exit(1)
 
@@ -63,8 +63,8 @@ docker_ps_cmd = f"docker ps {'-a ' if container_status == 'all' else ''}--format
 select_container_task = subprocess.Popen(docker_ps_cmd, shell=True, stdout=subprocess.PIPE)
 select_container_result = select_container_task.stdout.read().decode().split("\n")
 
-selected_container = dmenu.show(select_container_result, prompt="container", case_insensitive=True, lines=10)
-selected_trait = dmenu.show(CONTAINER_TRAITS.keys(), prompt="inspect", case_insensitive=True, lines=10)
+selected_container = dmenu.show(select_container_result, prompt="container", case_insensitive=True, lines=10, font="@wmFontDmenu@")
+selected_trait = dmenu.show(CONTAINER_TRAITS.keys(), prompt="inspect", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 
 docker_inspect_cmd = f'docker inspect {selected_container} --format "{CONTAINER_TRAITS[selected_trait]}"'
 

@@ -17,7 +17,7 @@ with open("/etc/hosts", "r") as hosts:
 
 hostnames = sorted(list(set(hostnames)))
 
-hostname = dmenu.show(hostnames, prompt="host", case_insensitive=True, lines=10)
+hostname = dmenu.show(hostnames, prompt="host", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 
 if hostname == "localhost":
     os.environ["DOCKER_HOST"] = "unix:///var/run/docker.sock"
@@ -33,7 +33,7 @@ else:
 select_container_task = subprocess.Popen("docker ps --format '{{.Names}}'", shell=True, stdout=subprocess.PIPE)
 select_container_result = select_container_task.stdout.read().decode().split("\n")
 
-selected_container = dmenu.show(select_container_result, prompt="container", case_insensitive=True, lines=10)
+selected_container = dmenu.show(select_container_result, prompt="container", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 if not selected_container:
     sys.exit(1)
 

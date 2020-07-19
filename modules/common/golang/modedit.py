@@ -22,7 +22,7 @@ with open(go_mod_path, "r") as f:
         deps_dict[dep.split()[0]] = dep.split()[1]
 
 dep_path = dmenu.show(deps_dict.keys(), prompt="replace",
-                      case_insensitive=True, lines=10)
+                      case_insensitive=True, lines=10, font="@wmFontDmenu@")
 
 if not dep_path:
     notify("[modedit]", "Nothing selected", timeout=5000)

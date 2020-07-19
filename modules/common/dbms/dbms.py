@@ -16,7 +16,7 @@ if not len(dbms_meta):
     notify("[dbms]", "No entries", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
-dbms_entry = dmenu.show(dbms_meta.keys(), lines=5)
+dbms_entry = dmenu.show(dbms_meta.keys(), lines=5, font="@wmFontDmenu@")
 if dbms_entry:
     dbms_pass = None
     if dbms_meta[dbms_entry].get("passwordPassPath"): # using pass

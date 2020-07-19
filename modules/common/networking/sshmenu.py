@@ -25,7 +25,7 @@ for host in extra_hosts_data.values():
     extra_hosts.append(host)
 
 host = dmenu.show(extra_hosts, prompt="ssh to",
-                  case_insensitive=True, lines=10)
+                  case_insensitive=True, lines=10, font="@wmFontDmenu@")
 
 
 def open_terminal(cmd):
@@ -44,7 +44,7 @@ if host:
     cmd = f"ssh {host}"
     if args.show_choices:
         command_choices = json.loads(r.get("net/command_choices"))
-        choice = dmenu.show(command_choices, prompt="execute", case_insensitive=True, lines=5)
+        choice = dmenu.show(command_choices, prompt="execute", case_insensitive=True, lines=5, font="@wmFontDmenu@")
         if choice:
            cmd += f" -t '{choice}'"
         else:

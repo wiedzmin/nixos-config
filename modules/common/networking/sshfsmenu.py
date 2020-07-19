@@ -27,7 +27,7 @@ if args.mode == "mount":
     else:
         sshfs_mounts = {}
 
-    remote = dmenu.show(sshfs_map.keys(), prompt="mount", case_insensitive=True, lines=10)
+    remote = dmenu.show(sshfs_map.keys(), prompt="mount", case_insensitive=True, lines=10, font="@wmFontDmenu@")
     if not remote:
         notify("[sshfs]", "nothing selected", timeout=5000)
         sys.exit(1)
@@ -58,7 +58,7 @@ elif args.mode == "unmount":
         notify("[sshfs]", "nothing mounted", timeout=5000)
         sys.exit(1)
 
-    remote = dmenu.show(sshfs_mounts.keys(), prompt="unmount", case_insensitive=True, lines=10)
+    remote = dmenu.show(sshfs_mounts.keys(), prompt="unmount", case_insensitive=True, lines=10, font="@wmFontDmenu@")
     local = sshfs_mounts[remote]
 
     if not remote:

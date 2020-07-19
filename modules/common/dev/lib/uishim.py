@@ -34,9 +34,9 @@ def log_error(msg, header="[ERROR]", urgency=URGENCY_CRITICAL, timeout=3000):
     do_log(msg, header, urgency, timeout)
 
 
-def get_selection(seq, prompt, lines=5):
+def get_selection(seq, prompt, lines=5, font=None):
     if in_xsession:
-        return dmenu.show(seq, prompt=prompt, lines=lines)
+        return dmenu.show(seq, prompt=prompt, lines=lines, font=font)
     else:
         fzf = FzfPrompt()
         return fzf.prompt(seq, '--cycle')[0]

@@ -50,7 +50,7 @@ if args.switch_profile:
             if not dir.endswith(".d"):
                 profiles.append(dir)
 
-    result = dmenu.show(profiles, prompt='profile', lines=5)
+    result = dmenu.show(profiles, prompt='profile', lines=5, font="@wmFontDmenu@")
     if result:
         os.system(f"autorandr --load {result}")
 elif args.get_fingerprint:

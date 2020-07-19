@@ -19,7 +19,7 @@ assert page_url_task.wait() == 0
 if page_url is not None:
     if is_valid_url(page_url):
         session_name = dmenu.show([], prompt="save as",
-                                  case_insensitive=True, lines=1)
+                                  case_insensitive=True, lines=1, font="@wmFontDmenu@")
         if not session_name:
             sys.exit(1)
 

@@ -55,7 +55,7 @@ def build_configuration(path="/etc/nixos/configuration.nix", debug=False):
 
 
 def rollback_configuration():
-    generation = get_selection(get_generations(), prompt='>', lines=30)
+    generation = get_selection(get_generations(), prompt='>', lines=30, font="@wmFontDmenu@")
     parse_generation_meta(generation)
     generation, timestamp, is_current = parse_generation_meta(generation)
     if is_current:
@@ -110,7 +110,7 @@ if not os.environ.get("DISPLAY"):
     # fallback option, in case xserver is broken in some way
     os.environ["CONFCTL_USE_FZF"] = "yes"
 
-operation = get_selection(operations, prompt='>', lines=10)
+operation = get_selection(operations, prompt='>', lines=10, font="@wmFontDmenu@")
 
 if operation == "Update current configuration":
     os.chdir("/etc/nixos")
@@ -132,7 +132,7 @@ elif operation == "Select and build configuration":
     config_entries = os.listdir(MACHINES_CONFIG_PATH)
     configs = { k: v for (k, v) in zip([entry[:-4] if entry.endswith("nix") else entry for entry in config_entries],
                 config_entries)}
-    result = get_selection(configs.keys(), prompt='config', lines=5)
+    result = get_selection(configs.keys(), prompt='config', lines=5, font="@wmFontDmenu@")
     if result:
         build_configuration(path=f"{MACHINES_CONFIG_PATH}/{configs[result]}")
 elif operation == "Select and build configuration (debug)":
@@ -140,13 +140,13 @@ elif operation == "Select and build configuration (debug)":
     config_entries = os.listdir(MACHINES_CONFIG_PATH)
     configs = { k: v for (k, v) in zip([entry[:-4] if entry.endswith("nix") else entry for entry in config_entries],
                 config_entries)}
-    result = get_selection(configs.keys(), prompt='config', lines=5)
+    result = get_selection(configs.keys(), prompt='config', lines=5, font="@wmFontDmenu@")
     if result:
         build_configuration(path=f"{MACHINES_CONFIG_PATH}/{configs[result]}", debug=True)
 elif operation == "Link configuration":
     os.chdir("/etc/nixos")
     machines = os.listdir("machines")
-    result = get_selection(machines, prompt='config', lines=5)
+    result = get_selection(machines, prompt='config', lines=5, font="@wmFontDmenu@")
     if result:
         os.remove("configuration.nix")
         os.symlink(os.path.relpath(f"machines/{result}/default.nix"), "configuration.nix")

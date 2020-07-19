@@ -23,6 +23,7 @@ rec {
   emacsDatadir = config.ide.emacs.dataDir;
   emacsYasnippetSnippets = deps.yasnippet-snippets;
   fallbackPackageArchives = emacsBoolToString false;
+  wmFontDmenu = config.wmCommon.fonts.dmenu;
   gitDefaultMainBranchName = config.custom.dev.git.defaultMainBranchName;
   gitWipChangedLinesTreshold = builtins.toString config.custom.dev.git.wip.minChangedLines;
   gitWipIdletimeTreshold = builtins.toString config.custom.dev.git.wip.idleTime;

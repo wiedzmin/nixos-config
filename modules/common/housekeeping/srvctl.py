@@ -37,10 +37,10 @@ if not services:
 
     r.lpush("system/services", *services)
 
-service = dmenu.show(sorted(list(dict.fromkeys([service.decode() for service in services]))), prompt='service', lines=20)
+service = dmenu.show(sorted(list(dict.fromkeys([service.decode() for service in services]))), prompt='service', lines=20, font="@wmFontDmenu@")
 if not service:
     sys.exit(1)
-operation = dmenu.show(operations, prompt='> ', lines=5)
+operation = dmenu.show(operations, prompt='> ', lines=5, font="@wmFontDmenu@")
 if not operation:
     sys.exit(1)
 if operation == "stop":
