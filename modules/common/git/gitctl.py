@@ -56,7 +56,7 @@ def is_main_branch_protected():
 def get_diff_size(repo):
     active_branch = get_active_branch(repo)
     if not active_branch:
-        print("probably empty repo")
+        log_info("probably empty repo")
         return 0
     diff = repo.diff()
     return diff.stats.insertions + diff.stats.deletions
@@ -89,7 +89,7 @@ def build_auth_callbacks(repo, credentials):
             break
 
     if not pass_path:
-        print("pass entry not found")
+        log_error("pass entry not found")
         sys.exit(1)
 
     entry_data = read_entry(pass_path)
@@ -97,10 +97,10 @@ def build_auth_callbacks(repo, credentials):
     username = extract_by_regex(entry_data, field_regex_mappings["login"])
 
     if not username:
-        print("username not found")
+        log_error("username not found")
         sys.exit(1)
     if not password:
-        print("password not found")
+        log_error("password not found")
         sys.exit(1)
 
     return RemoteCallbacks(credentials=UserPass(username, password))
@@ -149,7 +149,7 @@ parser_update.add_argument("--branch", dest="update_source_branch",
 args = parser.parse_args()
 
 if not is_git_repo(os.getcwd()):
-    print("Not a git repo")
+    log_error("Not a git repo")
     sys.exit(1)
 
 repo = Repository(os.getcwd() + "/.git")
@@ -164,7 +164,7 @@ if args.cmd == "wip":
         sys.exit(0)
     diff_size = get_diff_size(repo)
     if diff_size == 0:
-        print("no changes to commit")
+        log_info("no changes to commit")
         sys.exit(0)
     if diff_size > @gitWipChangedLinesTreshold@ or args.wip_force:
         branch = f"{repo.references['HEAD'].resolve().split('/')[-1]}: " if args.wip_add_branch_name else ""
@@ -182,7 +182,7 @@ if args.cmd == "wip":
         wip_commit = repo.create_commit("HEAD", author, committer, wip_message, tree, parents)
         if args.wip_push:
             if is_main_branch_active(repo) and is_main_branch_protected():
-                print("@gitDefaultMainBranchName@ is untouchable")
+                log_info("@gitDefaultMainBranchName@ is untouchable")
                 sys.exit(1)
             else:
                 remote = resolve_remote(repo, args.remote)
@@ -191,7 +191,7 @@ elif args.cmd == "tags":
     if args.tags_sync:
         remote = resolve_remote(repo, args.remote)
         if not remote:
-            print("error")
+            log_error(f"cannot find remote '{args.remote}'")
             sys.exit(1)
         remote.fetch(refspecs=["refs/tags/*:refs/tags/*"])
         remote.push(specs=collect_tags(repo), callbacks=build_auth_callbacks(repo, credentials_mapping))
@@ -200,14 +200,14 @@ elif args.cmd == "tags":
         if is_interactive:
             tag_name = dmenu.show(collect_tags(repo), lines=10) # TODO: consider using (py)fzf
         if not tag_name:
-            print("No tag to checkout")
+            log_error("No tag to checkout")
             sys.exit(1)
         repo.checkout(tag_name)
 elif args.cmd == "update":
     source_branch_name = args.update_source_branch if args.update_source_branch != "" else get_active_branch(repo)
     remote = resolve_remote(repo, args.remote)
     if not remote:
-        print("error")
+        log_error(f"cannot find remote '{args.remote}'")
         sys.exit(1)
     if args.update_op == "fetch":
         remote.fetch(refspecs=[f"refs/heads/*:refs/heads/*"])
@@ -225,5 +225,5 @@ elif args.cmd == "update":
     elif args.update_op == "push":
         remote.push(specs=["HEAD"], callbacks=build_auth_callbacks(repo, credentials_mapping))
 else:
-    print("No command issued")
+    log_error("No command issued")
     sys.exit(0)
