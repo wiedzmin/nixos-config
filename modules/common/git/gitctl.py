@@ -8,10 +8,7 @@ from datetime import datetime
 from pygit2 import GIT_BRANCH_REMOTE, GIT_DIFF_STATS_FULL, GIT_RESET_HARD, GIT_STATUS_CURRENT, \
     GIT_STATUS_IGNORED, RemoteCallbacks, Repository, Signature, Tag, UserPass
 import redis
-
-
-@pythonPatchUIShim@
-@pythonPatchPass@
+from pystdlib.uishim import get_selection, log_info, log_error
 
 
 def is_idle_enough():
@@ -92,7 +89,7 @@ def build_auth_callbacks(repo, credentials):
         log_error("pass entry not found")
         sys.exit(1)
 
-    entry_data = read_entry(pass_path)
+    entry_data = read_entry_raw(pass_path)
     password = extract_specific_line(entry_data, 0)
     username = extract_by_regex(entry_data, field_regex_mappings["login"])
 
@@ -198,7 +195,7 @@ elif args.cmd == "tags":
     elif args.tags_checkout:
         tag_name = args.tags_name
         if is_interactive:
-            tag_name = dmenu.show(collect_tags(repo), lines=10, font="@wmFontDmenu@") # TODO: consider using (py)fzf
+            tag_name = get_selection(collect_tags(repo), "", lines=10, font="@wmFontDmenu@")
         if not tag_name:
             log_error("No tag to checkout")
             sys.exit(1)

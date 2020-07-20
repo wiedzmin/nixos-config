@@ -2,7 +2,7 @@ import json
 import os
 import subprocess
 
-import dmenu
+from pystdlib.uishim import get_selection
 import redis
 
 
@@ -10,7 +10,7 @@ r = redis.Redis(host='localhost', port=6379, db=0)
 
 webjumps = json.loads(r.get("nav/webjumps"))
 
-webjump = dmenu.show(webjumps.keys(), prompt="jump to", case_insensitive=True, lines=15, font="@wmFontDmenu@")
+webjump = get_selection(webjumps.keys(), "jump to", case_insensitive=True, lines=15, font="@wmFontDmenu@")
 if webjump:
     vpn_meta = json.loads(r.get("nav/webjumps_vpn"))
     webjump_vpn = vpn_meta.get(webjump, None)

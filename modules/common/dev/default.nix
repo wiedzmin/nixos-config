@@ -113,29 +113,6 @@ in {
         default = false;
         description = "Whether to enable WM keybindings.";
       };
-      pythonLib = mkOption {
-        type = types.attrs;
-        default = {
-          "xlib" = {
-            packages = with pkgs; [ ]; # TODO: integrate later
-            patch = builtins.readFile ./lib/xlib.py;
-          };
-          "pass" = {
-            packages = with pkgs; [ ];
-            patch = builtins.readFile ./lib/pass.py;
-          };
-          "uishim" = {
-            packages = with pkgs; [ ];
-            patch = builtins.readFile ./lib/uishim.py;
-          };
-        };
-        readOnly = true;
-        internal = true;
-        description = ''
-          Common python routines to be included into custom scripts,
-          but not yet deserving its own package/repo/etc.
-        '';
-      };
     };
   };
 
@@ -202,15 +179,10 @@ in {
     (mkIf (cfg.enable && cfg.bookmarks.enable) { custom.shell.bookmarks.entries = cfg.bookmarks.entries; })
     (mkIf (cfg.enable && cfg.repoSearch.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        reposearch = mkPythonScriptWithDeps "reposearch" [
-          pkgs.fd
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.libtmux
-          pkgs.python3Packages.notify2
-          pkgs.xsel
-          pkgs.emacs
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./reposearch.py; })));
+        reposearch =
+          mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd pystdlib python3Packages.libtmux xsel emacs pystdlib ])
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./reposearch.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ reposearch ]; };
     })

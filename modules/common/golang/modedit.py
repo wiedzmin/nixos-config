@@ -2,12 +2,11 @@ import os
 import re
 import sys
 
-import dmenu
+from pystdlib.uishim import get_selection, notify
 
 pattern = "\(.*\)"
 deps_dict = {}
 
-@pythonPatchUIShim@
 
 go_mod_path = os.getcwd() + "/go.mod"
 if not (os.path.exists(go_mod_path) and os.path.isfile(go_mod_path)):
@@ -21,8 +20,7 @@ with open(go_mod_path, "r") as f:
     for dep in deps_list:
         deps_dict[dep.split()[0]] = dep.split()[1]
 
-dep_path = dmenu.show(deps_dict.keys(), prompt="replace",
-                      case_insensitive=True, lines=10, font="@wmFontDmenu@")
+dep_path = get_selection(deps_dict.keys(), "replace", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 
 if not dep_path:
     notify("[modedit]", "Nothing selected", timeout=5000)

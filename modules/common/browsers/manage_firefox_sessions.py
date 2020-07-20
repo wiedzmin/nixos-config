@@ -4,9 +4,8 @@ import os
 import subprocess
 import time
 
-import dmenu
-
-@pythonPatchUIShim@
+from pystdlib.uishim import get_selection
+from pystdlib.uishim import notify
 
 def collect_sessions():
     return [os.path.basename(session) for session in glob.glob("@firefoxSessionsPath@/*.org")]
@@ -25,14 +24,12 @@ parser.add_argument("--delete", dest="delete_session", action="store_true",
 args = parser.parse_args()
 
 if args.save_session:
-    session_name = dmenu.show([], prompt="save as",
-                              case_insensitive=True, lines=1, font="@wmFontDmenu@")
+    session_name = get_selection([], "save as", case_insensitive=True, lines=1, font="@wmFontDmenu@")
     if session_name:
         subprocess.Popen(f"dump_firefox_session {session_name}",
                          shell=True, stdout=subprocess.PIPE)
 elif args.open_session:
-    session_name = dmenu.show(sorted(collect_sessions()), prompt="open",
-                              case_insensitive=True, lines=15, font="@wmFontDmenu@")
+    session_name = get_selection(sorted(collect_sessions()), "open", case_insensitive=True, lines=15, font="@wmFontDmenu@")
     if session_name:
         urls = None
         with open(f"@firefoxSessionsPath@/{session_name}", "r") as session:
@@ -51,15 +48,13 @@ elif args.open_session:
                                                 shell=True, stdout=subprocess.PIPE)
             assert emacsclient_task.wait() == 0
 elif args.edit_session:
-    session_name = dmenu.show(sorted(collect_sessions()), prompt="edit",
-                              case_insensitive=True, lines=15, font="@wmFontDmenu@")
+    session_name = get_selection(sorted(collect_sessions()), "edit", case_insensitive=True, lines=15, font="@wmFontDmenu@")
     if session_name:
         emacsclient_task = subprocess.Popen(f"emacsclient -c @firefoxSessionsPath@/{session_name}",
                                             shell=True, stdout=subprocess.PIPE)
         assert emacsclient_task.wait() == 0
 elif args.delete_session:
-    session_name = dmenu.show(sorted(collect_sessions()), prompt="delete",
-                              case_insensitive=True, lines=15, font="@wmFontDmenu@")
+    session_name = get_selection(sorted(collect_sessions()), "delete", case_insensitive=True, lines=15, font="@wmFontDmenu@")
     if session_name:
         subprocess.Popen(f"rm @firefoxSessionsPath@/{session_name}",
                          shell=True, stdout=subprocess.PIPE)

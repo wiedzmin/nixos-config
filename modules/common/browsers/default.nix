@@ -531,29 +531,21 @@ in {
     (mkIf (cfg.enable && cfg.firefox.enable && cfg.sessions.firefox.backup.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         dump_firefox_session =
-          mkShellScriptWithDeps "dump_firefox_session" [ pkgs.coreutils pkgs.dejsonlz4 pkgs.dunst pkgs.gnused pkgs.jq ]
+          mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dump_firefox_session.sh; })));
         rotate_firefox_session_dumps =
-          mkShellScriptWithDeps "rotate_firefox_session_dumps" [ pkgs.coreutils pkgs.gnugrep ] (builtins.readFile
+          mkShellScriptWithDeps "rotate_firefox_session_dumps" (with pkgs; [ coreutils gnugrep ]) (builtins.readFile
             (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./rotate_firefox_session_dumps.sh; })));
-        collect_links_on_page = mkPythonScriptWithDeps "collect_links_on_page" [
-          pkgs.python3Packages.beautifulsoup4
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.notify2
-          pkgs.xsel
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./collect_links_on_page.py; })));
-        manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions" [
-          pkgs.coreutils
-          pkgs.dump_firefox_session
-          pkgs.emacs
-          pkgs.firefox-unwrapped
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.notify2
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./manage_firefox_sessions.py; })));
+        collect_links_on_page =
+          mkPythonScriptWithDeps "collect_links_on_page" (with pkgs; [ pystdlib python3Packages.beautifulsoup4 xsel ])
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./collect_links_on_page.py; })));
+        manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
+          (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped pystdlib ]) (builtins.readFile
+            (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./manage_firefox_sessions.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.activation.ensureFirefoxSessionsPath = {
@@ -606,10 +598,11 @@ in {
     })
     (mkIf (cfg.enable && cfg.qutebrowser.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        yank-image = mkShellScriptWithDeps "yank-image" [ pkgs.wget pkgs.xclip ] (builtins.readFile
+        yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ]) (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./yank-image.sh; })));
-        qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" [ pkgs.python3Packages.pyyaml ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qb-fix-session.py; })));
+        qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ python3Packages.pyyaml ])
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qb-fix-session.py; })));
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {

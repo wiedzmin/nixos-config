@@ -112,18 +112,14 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        search_prompt =
-          mkPythonScriptWithDeps "search_prompt" [ pkgs.python3Packages.dmenu-python pkgs.python3Packages.redis ]
+        search_prompt = mkPythonScriptWithDeps "search_prompt" (with pkgs; [ pystdlib python3Packages.redis ])
           (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_prompt.py; })));
-        search_selection = mkPythonScriptWithDeps "search_selection" [
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.redis
-          pkgs.xsel
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_selection.py; })));
-        webjumps =
-          mkPythonScriptWithDeps "webjumps" [ pkgs.python3Packages.dmenu-python pkgs.python3Packages.redis pkgs.vpnctl ]
+        search_selection = mkPythonScriptWithDeps "search_selection"
+          (with pkgs; [ pystdlib python3Packages.dmenu-python python3Packages.redis xsel ]) (builtins.readFile
+            (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_selection.py; })));
+        webjumps = mkPythonScriptWithDeps "webjumps" (with pkgs; [ pystdlib python3Packages.redis vpnctl ])
           (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./webjumps.py; })));
       };

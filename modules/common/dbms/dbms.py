@@ -3,20 +3,19 @@ import os
 import subprocess
 import sys
 
-import dmenu
+from pystdlib.uishim import get_selection, notify
 import redis
 
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 dbms_meta = json.loads(r.get("misc/dbms_meta"))
 
-@pythonPatchUIShim@
 
 if not len(dbms_meta):
     notify("[dbms]", "No entries", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
-dbms_entry = dmenu.show(dbms_meta.keys(), lines=5, font="@wmFontDmenu@")
+dbms_entry = get_selection(dbms_meta.keys(), "", lines=5, font="@wmFontDmenu@")
 if dbms_entry:
     dbms_pass = None
     if dbms_meta[dbms_entry].get("passwordPassPath"): # using pass

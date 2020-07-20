@@ -2,7 +2,7 @@ import os
 import sys
 import subprocess
 
-import dmenu
+from pystdlib.uishim import get_selection, notify
 
 port_cmd_mapping = {
     "80": "@defaultBrowser@",
@@ -10,7 +10,6 @@ port_cmd_mapping = {
     "8000": "@defaultBrowser@"
 }
 
-@pythonPatchUIShim@
 
 ip_address_format = "{{range $network, $settings :=.NetworkSettings.Networks}}{{$settings.IPAddress}}{{end}}"
 ports_format = "{{range $port, $mappings :=.NetworkSettings.Ports}}{{$port}}{{end}}"
@@ -21,7 +20,7 @@ if "DOCKER_HOST" in os.environ:
 select_container_task = subprocess.Popen("docker ps --format '{{.Names}}'", shell=True, stdout=subprocess.PIPE)
 select_container_result = select_container_task.stdout.read().decode().split("\n")
 
-selected_container = dmenu.show(select_container_result, prompt="container", case_insensitive=True, lines=10, font="@wmFontDmenu@")
+selected_container = get_selection(select_container_result, "container", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 if not selected_container:
     sys.exit(1)
 

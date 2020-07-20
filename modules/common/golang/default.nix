@@ -80,9 +80,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        modedit = mkPythonScriptWithDeps "modedit" [ pkgs.python3Packages.dmenu-python pkgs.python3Packages.notify2 ]
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./modedit.py; })));
+        modedit = mkPythonScriptWithDeps "modedit" (with pkgs; [ pystdlib ]) (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./modedit.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ gore modedit ]; };
     })

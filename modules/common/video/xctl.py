@@ -5,7 +5,7 @@ import subprocess
 import sys
 
 from ewmh import EWMH
-import dmenu
+from pystdlib.uishim import get_selection
 
 profiles = []
 
@@ -50,7 +50,7 @@ if args.switch_profile:
             if not dir.endswith(".d"):
                 profiles.append(dir)
 
-    result = dmenu.show(profiles, prompt='profile', lines=5, font="@wmFontDmenu@")
+    result = get_selection(profiles, 'profile', lines=5, font="@wmFontDmenu@")
     if result:
         os.system(f"autorandr --load {result}")
 elif args.get_fingerprint:

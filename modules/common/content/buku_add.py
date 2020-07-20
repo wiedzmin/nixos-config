@@ -4,7 +4,7 @@ import subprocess
 import sys
 import time
 
-import dmenu
+from pystdlib.uishim import get_selection, notify
 
 URL_REGEX = "(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
 
@@ -21,7 +21,6 @@ def fetch_tags_cloud():
     assert tags_cloud_task.wait() == 0
     return result
 
-@pythonPatchUIShim@
 
 bookmark_text_task = subprocess.Popen("xsel -o -b",
                                       shell=True, stdout=subprocess.PIPE)
@@ -31,14 +30,14 @@ if bookmark_text is not None:
     if not is_valid_url(bookmark_text):
         notify("error", "URL is not valid", urgency=URGENCY_CRITICAL, timeout=5000)
         sys.exit(1)
-    result = dmenu.show([bookmark_text], prompt='bookmark', font="@wmFontDmenu@")
+    result = get_selection([bookmark_text], 'bookmark', font="@wmFontDmenu@")
     if not result:
         notify("OK", "Aborted adding bookmark", timeout=5000)
         sys.exit(1)
     tags_cloud = fetch_tags_cloud()
     bookmark_tags = []
     while True:
-        tag = dmenu.show(tags_cloud, prompt='add tag', lines=15, font="@wmFontDmenu@")
+        tag = get_selection(tags_cloud, 'add tag', lines=15, font="@wmFontDmenu@")
         if tag:
            bookmark_tags.append(tag)
            tags_cloud.remove(tag)

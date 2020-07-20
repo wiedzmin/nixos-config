@@ -3,11 +3,9 @@ import subprocess
 import sys
 from urllib.request import urlopen
 
-import dmenu
+from pystdlib.uishim import get_selection, notify
 from bs4 import BeautifulSoup
 
-
-@pythonPatchUIShim@
 
 def is_valid_url(url):
     return re.search("@urlRegexPy@", url) is not None
@@ -18,8 +16,7 @@ page_url = page_url_task.stdout.read().decode().strip()
 assert page_url_task.wait() == 0
 if page_url is not None:
     if is_valid_url(page_url):
-        session_name = dmenu.show([], prompt="save as",
-                                  case_insensitive=True, lines=1, font="@wmFontDmenu@")
+        session_name = get_selection([], "save as", lines=1, font="@wmFontDmenu@")
         if not session_name:
             sys.exit(1)
 

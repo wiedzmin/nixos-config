@@ -2,7 +2,7 @@ import os
 import subprocess
 import sys
 
-import dmenu
+from pystdlib.uishim import get_selection, notify
 import libtmux
 import redis
 
@@ -15,8 +15,6 @@ operations = [
     "status",
 ]
 
-@pythonPatchUIShim@
-@pythonPatchXlib@
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 
@@ -37,10 +35,10 @@ if not services:
 
     r.lpush("system/services", *services)
 
-service = dmenu.show(sorted(list(dict.fromkeys([service.decode() for service in services]))), prompt='service', lines=20, font="@wmFontDmenu@")
+service = get_selection(sorted(list(dict.fromkeys([service.decode() for service in services]))), 'service', lines=20, font="@wmFontDmenu@")
 if not service:
     sys.exit(1)
-operation = dmenu.show(operations, prompt='> ', lines=5, font="@wmFontDmenu@")
+operation = get_selection(operations, '> ', lines=5, font="@wmFontDmenu@")
 if not operation:
     sys.exit(1)
 if operation == "stop":

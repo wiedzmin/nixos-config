@@ -94,15 +94,11 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
-        srvctl = mkPythonScriptWithDeps "srvctl" [
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.libtmux
-          pkgs.python3Packages.notify2
-          pkgs.python3Packages.redis
-          pkgs.python3Packages.xlib
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./srvctl.py; })));
-        uptime_info = mkPythonScriptWithDeps "uptime_info" [ pkgs.dunst pkgs.gnused pkgs.procps ] (builtins.readFile
+        srvctl = mkPythonScriptWithDeps "srvctl"
+          (with pkgs; [ pyfzf pystdlib python3Packages.libtmux python3Packages.redis python3Packages.xlib ])
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./srvctl.py; })));
+        uptime_info = mkPythonScriptWithDeps "uptime_info" (with pkgs; [ dunst gnused procps ]) (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./uptime_info.sh; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -246,7 +242,7 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        order_screenshots = mkShellScriptWithDeps "order_screenshots" [ pkgs.coreutils ] (builtins.readFile
+        order_screenshots = mkShellScriptWithDeps "order_screenshots" (with pkgs; [ coreutils ]) (builtins.readFile
           (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./order_screenshots.sh; })));
       };

@@ -3,7 +3,7 @@ import json
 import subprocess
 import sys
 
-import dmenu
+from pystdlib.uishim import get_selection
 from libtmux import Server
 from libtmux.exc import LibTmuxException
 import redis
@@ -24,8 +24,7 @@ extra_hosts = []
 for host in extra_hosts_data.values():
     extra_hosts.append(host)
 
-host = dmenu.show(extra_hosts, prompt="ssh to",
-                  case_insensitive=True, lines=10, font="@wmFontDmenu@")
+host = get_selection(extra_hosts, "ssh to", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 
 
 def open_terminal(cmd):
@@ -44,7 +43,7 @@ if host:
     cmd = f"ssh {host}"
     if args.show_choices:
         command_choices = json.loads(r.get("net/command_choices"))
-        choice = dmenu.show(command_choices, prompt="execute", case_insensitive=True, lines=5, font="@wmFontDmenu@")
+        choice = get_selection(command_choices, "execute", case_insensitive=True, lines=5, font="@wmFontDmenu@")
         if choice:
            cmd += f" -t '{choice}'"
         else:

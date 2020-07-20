@@ -3,7 +3,7 @@ import os
 import subprocess
 import sys
 
-import dmenu
+from pystdlib.uishim import get_selection, notify
 import redis
 from libtmux import Server
 
@@ -13,12 +13,11 @@ service_modes = [
     "logs"
 ]
 
-@pythonPatchUIShim@
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 swarm_meta = json.loads(r.get("virt/swarm_meta"))
-swarm = dmenu.show(swarm_meta.keys(), prompt="swarm", case_insensitive=True, lines=5, font="@wmFontDmenu@")
+swarm = get_selection(swarm_meta.keys(), "swarm", case_insensitive=True, lines=5, font="@wmFontDmenu@")
 if not swarm:
     notify("[virt]", "No swarm selected")
     sys.exit(0)
@@ -36,9 +35,9 @@ select_service_task = subprocess.Popen("docker service ls --format '{{.Name}} | 
                                        shell=True, stdout=subprocess.PIPE)
 select_service_result = select_service_task.stdout.read().decode().split("\n")
 
-selected_service_meta = dmenu.show(select_service_result, prompt="service", case_insensitive=True, lines=10, font="@wmFontDmenu@")
+selected_service_meta = get_selection(select_service_result, "service", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 selected_service_name = selected_service_meta.split("|")[0].strip()
-selected_mode = dmenu.show(service_modes, prompt="show", case_insensitive=True, lines=5, font="@wmFontDmenu@")
+selected_mode = get_selection(service_modes, "show", case_insensitive=True, lines=5, font="@wmFontDmenu@")
 
 get_service_status_task = subprocess.Popen(f"docker service ps {selected_service_name}",
                                            shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
@@ -55,8 +54,7 @@ elif selected_mode == "logs":
     service_running_tasks_items = [task.split() for task in get_service_status_result.split("\n")
                                    if "Running" in task]
     task_mappings = dict([(task_meta[1], task_meta[0]) for task_meta in service_running_tasks_items])
-    selected_task = dmenu.show(list(task_mappings.keys()) + [selected_service_name],
-                               prompt="task", case_insensitive=True, lines=10, font="@wmFontDmenu@")
+    selected_task = get_selection(list(task_mappings.keys()) + [selected_service_name], "task", case_insensitive=True, lines=10, font="@wmFontDmenu@")
     if not selected_task:
         sys.exit(1)
 

@@ -1,13 +1,13 @@
 import os
 import subprocess
 
-import dmenu
+from pystdlib.uishim import get_selection
 
 
 get_ifaces_task = subprocess.Popen("ifconfig -s", shell=True, stdout=subprocess.PIPE)
 iface_names = [iface_meta.split()[0] for iface_meta in get_ifaces_task.stdout.read().decode().strip().split("\n")[1:]]
 
-iface_name = dmenu.show(iface_names, prompt="describe", case_insensitive=True, lines=10, font="@wmFontDmenu@")
+iface_name = get_selection(iface_names, "describe", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 
 get_iface_traits_task = subprocess.Popen(f"ifconfig {iface_name}", shell=True, stdout=subprocess.PIPE)
 iface_traits = get_iface_traits_task.stdout.read().decode()

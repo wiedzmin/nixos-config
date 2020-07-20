@@ -100,13 +100,10 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        tt_capture = mkPythonScriptWithDeps "tt_capture" [
-          pkgs.python3Packages.cbor2
-          pkgs.python3Packages.pytz
-          pkgs.python3Packages.xlib
-          pkgs.xprintidle-ng
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tt_capture.py; })));
+        tt_capture = mkPythonScriptWithDeps "tt_capture"
+          (with pkgs; [ python3Packages.cbor2 python3Packages.pytz python3Packages.xlib xprintidle-ng ])
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tt_capture.py; })));
       };
       services.arbtt = {
         enable = true;

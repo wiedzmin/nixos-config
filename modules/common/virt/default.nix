@@ -140,40 +140,25 @@ in {
         ${pkgs.redis}/bin/redis-cli expire virt/swarm_meta 604800
       '';
       nixpkgs.config.packageOverrides = _: rec {
-        dlint = mkShellScriptWithDeps "dlint" [ pkgs.docker ] (builtins.readFile
+        dlint = mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dlint.sh; })));
-        hadolintd = mkShellScriptWithDeps "hadolintd" [ pkgs.docker ] (builtins.readFile
+        hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ]) (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./hadolintd.sh; })));
-        docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits" [
-          pkgs.docker
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.redis
-          pkgs.xsel
-          pkgs.yad
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_containers_traits.py; })));
-        discover_containerized_services = mkPythonScriptWithDeps "discover_containerized_services" [
-          pkgs.docker
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.notify2
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./discover_containerized_services.py; })));
-        docker_shell = mkPythonScriptWithDeps "docker_shell" [
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.libtmux
-          pkgs.python3Packages.redis
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_shell.py; })));
-        docker_swarm_services_info = mkPythonScriptWithDeps "docker_swarm_services_info" [
-          pkgs.docker
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.libtmux
-          pkgs.python3Packages.notify2
-          pkgs.python3Packages.redis
-          pkgs.vpnctl
-          pkgs.yad
-        ] (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_swarm_services_info.py; })));
+        docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits"
+          (with pkgs; [ docker pystdlib python3Packages.redis xsel yad ]) (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_containers_traits.py; })));
+        discover_containerized_services =
+          mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker pystdlib ]) (builtins.readFile
+            (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./discover_containerized_services.py; })));
+        docker_shell =
+          mkPythonScriptWithDeps "docker_shell" (with pkgs; [ pystdlib python3Packages.libtmux python3Packages.redis ])
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_shell.py; })));
+        docker_swarm_services_info = mkPythonScriptWithDeps "docker_swarm_services_info"
+          (with pkgs; [ docker pystdlib python3Packages.libtmux python3Packages.redis vpnctl yad ]) (builtins.readFile
+            (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./docker_swarm_services_info.py; })));
       };
 
       virtualisation.docker = {

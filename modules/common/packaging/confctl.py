@@ -5,9 +5,8 @@ import sys
 import time
 
 from gnupg import GPG
+from pystdlib.uishim import get_selection
 
-
-@pythonPatchUIShim@
 
 def guess_machine_name():
     return os.readlink("/etc/nixos/configuration.nix").split("/")[1]

@@ -8,6 +8,8 @@ import os
 import redis
 import dbus
 
+from pystdlib.uishim import notify
+
 IPV4_STATUS_PATH = "/proc/sys/net/ipv4/conf/"
 NM_VPN_ACTIVE_STATUS_CODES = ["3", "5"]
 
@@ -23,7 +25,6 @@ parser.add_argument("--verbose", dest="verbose", action="store_true",
 
 args = parser.parse_args()
 
-@pythonPatchUIShim@
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 vpn_meta = json.loads(r.get("net/vpn_meta"))

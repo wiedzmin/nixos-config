@@ -87,30 +87,18 @@ in {
       programs.nm-applet.enable = config.wm.i3.enable;
 
       nixpkgs.config.packageOverrides = _: rec {
-        wifi-status = mkShellScriptWithDeps "wifi-status" [ pkgs.gawk pkgs.wirelesstools ] (builtins.readFile
+        wifi-status = mkShellScriptWithDeps "wifi-status" (with pkgs; [ gawk wirelesstools ]) (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./wifi-status.sh; })));
-        vpnctl = mkPythonScriptWithDeps "vpnctl" [ pkgs.python3Packages.notify2 pkgs.python3Packages.redis ]
+        vpnctl = mkPythonScriptWithDeps "vpnctl" (with pkgs; [ pystdlib python3Packages.redis ]) (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./vpnctl.py; })));
+        ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools pystdlib xsel yad ]) (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./ifconfless.py; })));
+        sshmenu = mkPythonScriptWithDeps "sshmenu"
+          (with pkgs; [ openssh pystdlib python3Packages.libtmux python3Packages.redis vpnctl ]) (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
+        sshfsmenu = mkPythonScriptWithDeps "sshfsmenu" (with pkgs; [ pystdlib python3Packages.redis sshfs-fuse ])
           (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./vpnctl.py; })));
-        ifconfless =
-          mkPythonScriptWithDeps "ifconfless" [ pkgs.nettools pkgs.python3Packages.dmenu-python pkgs.xsel pkgs.yad ]
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./ifconfless.py; })));
-        sshmenu = mkPythonScriptWithDeps "sshmenu" [
-          pkgs.openssh
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.libtmux
-          pkgs.python3Packages.redis
-          pkgs.vpnctl
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
-        sshfsmenu = mkPythonScriptWithDeps "sshfsmenu" [
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.notify2
-          pkgs.python3Packages.redis
-          pkgs.sshfs-fuse
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshfsmenu.py; })));
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshfsmenu.py; })));
       };
       services.openssh = {
         enable = true;

@@ -139,10 +139,8 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        xctl =
-          mkPythonScriptWithDeps "xctl" [ pkgs.autorandr pkgs.python3Packages.dmenu-python pkgs.python3Packages.ewmh ]
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./xctl.py; })));
+        xctl = mkPythonScriptWithDeps "xctl" (with pkgs; [ autorandr pystdlib python3Packages.ewmh ]) (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./xctl.py; })));
       };
 
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "video" ];

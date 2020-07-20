@@ -308,13 +308,13 @@ in {
       '';
 
       nixpkgs.config.packageOverrides = _: rec {
-        desktops = mkPythonScriptWithDeps "desktops" [
-          pkgs.python3Packages.ewmh
-          pkgs.python3Packages.fuzzywuzzy
-          pkgs.python3Packages.redis
-          pkgs.python3Packages.xlib
-          pkgs.wmctrl
-        ] (builtins.readFile
+        desktops = mkPythonScriptWithDeps "desktops" (with pkgs; [
+          python3Packages.ewmh
+          python3Packages.fuzzywuzzy
+          python3Packages.redis
+          python3Packages.xlib
+          wmctrl
+        ]) (builtins.readFile
           (pkgs.substituteAll ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./desktops.py; })));
       };
 

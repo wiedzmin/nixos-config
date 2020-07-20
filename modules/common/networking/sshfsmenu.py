@@ -3,7 +3,7 @@ import json
 import subprocess
 import sys
 
-import dmenu
+from pystdlib.uishim import get_selection, notify
 import redis
 
 
@@ -15,7 +15,6 @@ parser.add_argument("--mode", dest="mode", choices = ["mount", "unmount"],
 
 args = parser.parse_args()
 
-@pythonPatchUIShim@
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 
@@ -27,7 +26,7 @@ if args.mode == "mount":
     else:
         sshfs_mounts = {}
 
-    remote = dmenu.show(sshfs_map.keys(), prompt="mount", case_insensitive=True, lines=10, font="@wmFontDmenu@")
+    remote = get_selection(sshfs_map.keys(), "mount", case_insensitive=True, lines=10, font="@wmFontDmenu@")
     if not remote:
         notify("[sshfs]", "nothing selected", timeout=5000)
         sys.exit(1)
@@ -58,7 +57,7 @@ elif args.mode == "unmount":
         notify("[sshfs]", "nothing mounted", timeout=5000)
         sys.exit(1)
 
-    remote = dmenu.show(sshfs_mounts.keys(), prompt="unmount", case_insensitive=True, lines=10, font="@wmFontDmenu@")
+    remote = get_selection(sshfs_mounts.keys(), "unmount", case_insensitive=True, lines=10, font="@wmFontDmenu@")
     local = sshfs_mounts[remote]
 
     if not remote:

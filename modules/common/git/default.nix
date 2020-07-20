@@ -185,14 +185,10 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        gitctl = mkPythonScriptWithDeps "gitctl" [
-          pkgs.pyfzf
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.notify2
-          pkgs.python3Packages.pygit2
-          pkgs.python3Packages.redis
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./gitctl.py; })));
+        gitctl =
+          mkPythonScriptWithDeps "gitctl" (with pkgs; [ pyfzf pystdlib python3Packages.pygit2 python3Packages.redis ])
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./gitctl.py; })));
       };
 
       custom.housekeeping.metadataCacheInstructions = ''

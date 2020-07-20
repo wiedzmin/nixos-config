@@ -148,15 +148,9 @@ in {
     })
     (mkIf (cfg.cli.enable && cfg.wm.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        dbms = mkPythonScriptWithDeps "dbms" [
-          pkgs.pass
-          pkgs.python3Packages.dmenu-python
-          pkgs.python3Packages.notify2
-          pkgs.python3Packages.redis
-          pkgs.tmux
-          pkgs.vpnctl
-        ] (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dbms.py; })));
+        dbms = mkPythonScriptWithDeps "dbms" (with pkgs; [ pass pystdlib python3Packages.redis tmux vpnctl ])
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dbms.py; })));
       };
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.cli.meta)}

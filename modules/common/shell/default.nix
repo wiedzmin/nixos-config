@@ -110,9 +110,8 @@ in {
       ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" [ pkgs.python3Packages.dmenu-python ]
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tmuxp_sessions.py; })));
+        tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" (with pkgs; [ pkgs.pystdlib ]) (builtins.readFile
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tmuxp_sessions.py; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
