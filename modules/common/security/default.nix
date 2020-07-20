@@ -65,7 +65,7 @@ in {
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ paperkey rofi-pass ];
+        home.packages = with pkgs; [ paperkey rofi-pass passctl ];
         programs.password-store = {
           enable = true;
           package = pkgs.pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
@@ -139,6 +139,3 @@ in {
     })
   ];
 }
-
-# TODO: review https://github.com/faulesocke/pass-dmenu/blob/master/pass-dmenu.py and try to make own script
-# also https://github.com/Kwpolska/upass/blob/master/upass/__main__.py
