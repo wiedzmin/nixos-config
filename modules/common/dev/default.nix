@@ -1,6 +1,7 @@
 let
   deps = import ../../../nix/sources.nix;
   nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
+  nixpkgs-pinned-09_07_20 = import deps.nixpkgs-pinned-09_07_20 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
@@ -255,7 +256,17 @@ in {
                   - mc
           '';
         };
-        home.packages = with pkgs; [ comby devdocs-desktop fastmod icdiff ix loop pv the-way wstunnel ];
+        home.packages = with pkgs; [
+          comby
+          nixpkgs-pinned-09_07_20.devdocs-desktop
+          fastmod
+          icdiff
+          ix
+          loop
+          pv
+          the-way
+          wstunnel
+        ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
