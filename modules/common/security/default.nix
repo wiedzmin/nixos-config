@@ -58,9 +58,8 @@ in {
       };
 
       nixpkgs.config.packageOverrides = _: rec {
-        passctl =
-          mkPythonScriptWithDeps "passctl" (with pkgs; [ pyfzf pystdlib python3Packages.pygit2 python3Packages.redis ])
-          (builtins.readFile
+        passctl = mkPythonScriptWithDeps "passctl"
+          (with pkgs; [ pyfzf pystdlib python3Packages.pygit2 python3Packages.redis xdotool ]) (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./passctl.py; })));
       };
 
