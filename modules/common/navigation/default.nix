@@ -219,20 +219,6 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        programs = {
-          skim = {
-            enable = true;
-            historyWidgetOptions = [ "--exact" ];
-            defaultOptions = [ "--height 40%" "--prompt ⟫" ];
-            fileWidgetCommand = "${pkgs.fd}/bin/fd --type f";
-            fileWidgetOptions = [ "--preview 'head {}'" ];
-            changeDirWidgetCommand = "${pkgs.fd}/bin/fd --type d";
-            changeDirWidgetOptions = [ "--preview 'tree -C {} | head -200'" ];
-            enableZshIntegration = true;
-          };
-        };
-      };
       custom.xinput.xkeysnail.rc = lib.mkAfter ''
         # Emacs-like keybindings in non-Emacs applications
         define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Alacritty"), {

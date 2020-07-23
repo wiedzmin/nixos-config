@@ -220,7 +220,7 @@ in {
               };
             }
             {
-              # TODO: try to integrate with fzf-based/skim utils, expecially commit browser
+              # TODO: try to integrate with fzf-based utils, expecially commit browser
               name = "browse-commit";
               file = "browse-commit.plugin.zsh";
               src = pkgs.fetchFromGitHub {
@@ -415,7 +415,7 @@ in {
             "s" = ''
               split-window -v "tmux list-sessions | cut -d: -f1 | \
                                                      grep -v $(tmux display-message -p '#S') | \
-                                                     ${pkgs.skim}/bin/sk --reverse | xargs tmux switch-client -t"'';
+                                                     ${pkgs.fzf}/bin/fzf --reverse | xargs tmux switch-client -t"'';
           };
         };
         extraConfig = ''

@@ -53,8 +53,6 @@ in rec {
       substituteInPlace fzf-url.sh --replace "capture-pane -J -p" "capture-pane -S -${
         builtins.toString paneHistoryDepthLines
       } -J -p"
-      substituteInPlace fzf-url.sh --replace "fzf-tmux" "${super.skim}/bin/sk-tmux"
-      substituteInPlace fzf-url.sh --replace "--no-preview" ""
     '';
   };
 }

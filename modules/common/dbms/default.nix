@@ -137,7 +137,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           sqlitebrowser
-          nixpkgs-pinned-16_04_20.litecli # TODO: shell automation: skim for selecting db file, you get the idea
+          nixpkgs-pinned-16_04_20.litecli # TODO: shell automation: fzf for selecting db file, you get the idea
         ];
       };
     })
