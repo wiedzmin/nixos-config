@@ -1,4 +1,6 @@
-let deps = import ../../../nix/sources.nix;
+let
+  deps = import ../../../nix/sources.nix;
+  nixpkgs-pinned-09_07_20 = import deps.nixpkgs-pinned-09_07_20 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with import "${deps.home-manager}/modules/lib/dag.nix" { inherit lib; };
@@ -621,7 +623,7 @@ in {
       '';
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          qutebrowser
+          nixpkgs-pinned-09_07_20.qutebrowser
           yank-image
           qb-fix-session
 
