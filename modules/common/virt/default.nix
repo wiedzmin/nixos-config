@@ -126,7 +126,6 @@ in {
     (mkIf (cfg.enable && cfg.docker.enable && cfg.docker.aux.enable) {
       environment.systemPackages = with pkgs; [
         # docker-slim # TODO: make package https://github.com/docker-slim/docker-slim
-        clair # https://werner-dijkerman.nl/2019/01/28/scanning-docker-images-with-coreos-clair/
         nsjail
         skopeo
       ];

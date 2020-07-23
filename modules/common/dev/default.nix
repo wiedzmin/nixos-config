@@ -19,11 +19,6 @@ in {
         default = false;
         description = "Whether to enable custom development infrastructure.";
       };
-      playground.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable non-production tools to play with.";
-      };
       codesearch.enable = mkOption {
         type = types.bool;
         default = false;
@@ -118,26 +113,6 @@ in {
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable && cfg.playground.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          # https://github.com/Matty9191/ssl-cert-check
-          # https://github.com/alexmavr/swarm-nbt
-          # https://github.com/moncho/dry
-          # https://hub.docker.com/r/nicolaka/netshoot/
-          # rstudio # qt plugins broken
-          drone
-          drone-cli
-          jenkins
-          python3Packages.deprecated
-          python3Packages.unittest-data-provider
-          terracognita
-          terraform
-          tflint
-          vector
-        ];
-      };
-    })
     (mkIf (cfg.enable && cfg.codesearch.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ codesearch ];
@@ -169,7 +144,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ patchutils wiggle ruplacer nixpkgs-pinned-16_04_20.diffoscope ];
+        home.packages = with pkgs; [ patchutils wiggle nixpkgs-pinned-16_04_20.diffoscope ];
       };
     })
     (mkIf (cfg.enable && cfg.statistics.enable) {
@@ -259,13 +234,8 @@ in {
         home.packages = with pkgs; [
           comby
           nixpkgs-pinned-09_07_20.devdocs-desktop
-          fastmod
           icdiff
-          ix
-          loop
-          pv
           the-way
-          wstunnel
         ];
         programs.direnv = {
           enable = true;

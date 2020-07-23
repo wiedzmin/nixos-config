@@ -462,13 +462,9 @@ in {
         home.packages = with pkgs; [
           fd
           gron
-          pdfgrep
           nixpkgs-pinned-02_06_20.ripgrep-all
           sd
-          nixpkgs-pinned-02_06_20.oq
-          up
           uq
-          yj
         ];
         programs = {
           lsd = {

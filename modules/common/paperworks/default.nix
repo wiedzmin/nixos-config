@@ -200,7 +200,7 @@ in {
       nixpkgs.config =
         optionalAttrs cfg.scanning.snapscan.enable { sane.snapscanFirmware = cfg.scanning.snapscan.firmware; };
       environment.systemPackages = with pkgs;
-        [ deskew gImageReader nixpkgs-pinned-08_02_20.ocrmypdf pdfsandwich scantailor-advanced tesseract ]
+        [ deskew scantailor-advanced ]
         ++ lib.optionals cfg.scanning.enableXsane [ xsane ];
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "scanner" ];
     })

@@ -94,7 +94,7 @@ in {
     })
     (mkIf cfg.processors.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ enca img2pdf pandoc pdfcpu pdftk ];
+        home.packages = with pkgs; [ enca pandoc pdfcpu pdftk ];
       };
     })
     (mkIf (cfg.wm.enable && cfg.readers.enable) {

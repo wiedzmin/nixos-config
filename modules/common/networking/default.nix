@@ -164,18 +164,8 @@ in {
       systemd.services.dhcpcd.serviceConfig.Type = lib.mkForce "simple"; # NOTE: forking is not acceptable for dhcpcd.
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          # curlie
           # davfs2
           gcalcli
-          hasmail
-          nixpkgs-pinned-16_04_20.http-prompt
-          httplab
-          rclone
-          socat
-          tcpdump
-          websocat
-          weighttp
-          wuzz
         ];
         programs.ssh = {
           enable = true;
