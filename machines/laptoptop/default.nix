@@ -134,7 +134,14 @@ in {
       SUBSYSTEM=="backlight", ACTION=="add", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
       SUBSYSTEM=="leds", ACTION=="add", KERNEL=="*::kbd_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/leds/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/leds/%k/brightness"
     '';
-    tlp.enable = true;
+    tlp = {
+      enable = true;
+      extraConfig = ''
+        TLP_DEFAULT_MODE=BAT
+        START_CHARGE_THRESH_BAT0=40
+        STOP_CHARGE_THRESH_BAT0=80
+      '';
+    };
     thermald.enable = true;
     acpid.enable = true;
     timesyncd.enable = true;
