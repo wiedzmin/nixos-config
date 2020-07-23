@@ -151,11 +151,7 @@ in {
           enable = true;
           scripts = with pkgs.mpvScripts; [ mpris ];
         };
-        programs.zsh.shellAliases = {
-          yg = "${proposed.you-get}/bin/you-get";
-        } // lib.optionalAttrs (config.custom.navigation.misc.enable) {
-          pyg = "${pkgs.pueue}/bin/pueue add -- ${proposed.you-get}/bin/you-get";
-        };
+        programs.zsh.shellAliases = { yg = "${proposed.you-get}/bin/you-get"; };
       };
     })
     (mkIf cfg.bookmarks.enable {

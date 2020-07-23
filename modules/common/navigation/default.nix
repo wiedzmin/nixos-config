@@ -232,19 +232,6 @@ in {
             enableZshIntegration = true;
           };
         };
-        home.packages = with pkgs; [ pueue ];
-      };
-      systemd.user.services."pueue-daemon" = {
-        description = "Pueue daemon";
-        path = [ pkgs.bash ];
-        serviceConfig = {
-          ExecStart = "${pkgs.pueue}/bin/pueued";
-          ExecReload = "${pkgs.pueue}/bin/pueued";
-          Restart = "no";
-          StandardOutput = "journal";
-          StandardError = "journal";
-        };
-        wantedBy = [ "multi-user.target" ];
       };
       custom.xinput.xkeysnail.rc = lib.mkAfter ''
         # Emacs-like keybindings in non-Emacs applications

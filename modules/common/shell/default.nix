@@ -197,9 +197,6 @@ in {
             du = "${pkgs.dua}/bin/dua";
 
             zr = ". ~/.zshrc";
-          } // lib.optionalAttrs (config.custom.navigation.misc.enable) {
-            pus = "${pkgs.pueue}/bin/pueue status";
-            pul = "${pkgs.pueue}/bin/pueue log";
           };
           plugins = [
             {
@@ -459,13 +456,7 @@ in {
     })
     (mkIf cfg.toolsng.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          fd
-          gron
-          nixpkgs-pinned-02_06_20.ripgrep-all
-          sd
-          uq
-        ];
+        home.packages = with pkgs; [ fd gron nixpkgs-pinned-02_06_20.ripgrep-all sd uq ];
         programs = {
           lsd = {
             enable = true;
