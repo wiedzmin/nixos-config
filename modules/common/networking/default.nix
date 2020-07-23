@@ -163,10 +163,7 @@ in {
     (mkIf (cfg.enable && cfg.clients.enable) {
       systemd.services.dhcpcd.serviceConfig.Type = lib.mkForce "simple"; # NOTE: forking is not acceptable for dhcpcd.
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          # davfs2
-          gcalcli
-        ];
+        home.packages = with pkgs; [ davfs2 gcalcli ];
         programs.ssh = {
           enable = true;
           forwardAgent = true;
