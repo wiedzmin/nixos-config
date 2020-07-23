@@ -21,6 +21,9 @@ in {
           floating_modifier ${prefix}
           hide_edge_borders smart
           workspace_layout stacked
+
+          mouse_warping output
+          focus_follows_mouse no
         '';
         description = "Custom settings for i3.";
       };
