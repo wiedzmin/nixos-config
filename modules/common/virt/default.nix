@@ -124,11 +124,7 @@ in {
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "vboxusers" ];
     })
     (mkIf (cfg.enable && cfg.docker.enable && cfg.docker.aux.enable) {
-      environment.systemPackages = with pkgs; [
-        # docker-slim # TODO: make package https://github.com/docker-slim/docker-slim
-        nsjail
-        skopeo
-      ];
+      environment.systemPackages = with pkgs; [ docker-slim nsjail skopeo ];
     })
 
     (mkIf (cfg.enable && cfg.docker.enable) {
