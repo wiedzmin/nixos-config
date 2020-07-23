@@ -57,8 +57,7 @@ rec {
   xmobarMaybeFont = lib.optionalString (config.wmCommon.fonts.statusbar != "")
     ''font = "${config.wmCommon.fonts.statusbar}"${mkNewlineAndIndent 7}, '';
 } // lib.optionalAttrs (config.custom.browsers.firefox.enable) rec {
-  firefoxProfilePath =
-    config.home-manager.users."${config.attributes.mainUser.name}".programs.firefox.profiles.default.path;
+  firefoxProfilePath = config.custom.programs.firefox.profiles.default.path;
   firefoxSessionsHistoryLength = builtins.toString config.custom.browsers.sessions.firefox.historyLength;
   firefoxSessionsNameTemplate = config.custom.browsers.sessions.firefox.nameTemplate;
   firefoxSessionsPath = config.custom.browsers.sessions.firefox.path;

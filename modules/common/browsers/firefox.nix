@@ -212,45 +212,48 @@ in {
       })
     ];
 
-    home-manager.users."${config.attributes.mainUser.name}".home.packages = let
-      # The configuration expected by the Firefox wrapper.
-      fcfg = { enableAdobeFlash = cfg.enableAdobeFlash; };
+    home-manager.users."${config.attributes.mainUser.name}" = {
+      home.packages = let
+        # The configuration expected by the Firefox wrapper.
+        fcfg = { enableAdobeFlash = cfg.enableAdobeFlash; };
 
-      # A bit of hackery to force a config into the wrapper.
-      browserName = cfg.package.browserName or (builtins.parseDrvName cfg.package.name).name;
+        # A bit of hackery to force a config into the wrapper.
+        browserName = cfg.package.browserName or (builtins.parseDrvName cfg.package.name).name;
 
-      # The configuration expected by the Firefox wrapper builder.
-      bcfg = setAttrByPath [ browserName ] fcfg;
+        # The configuration expected by the Firefox wrapper builder.
+        bcfg = setAttrByPath [ browserName ] fcfg;
 
-      package = if isDarwin then
-        cfg.package
-      else if versionAtLeast config.home.stateVersion "19.09" then
-        cfg.package.override { cfg = fcfg; }
-      else
-        (pkgs.wrapFirefox.override { config = bcfg; }) cfg.package { };
-    in [ package ];
+        package = if isDarwin then
+          cfg.package
+        else if versionAtLeast config.home-manager.users."${config.attributes.mainUser.name}".home.stateVersion
+        "19.09" then
+          cfg.package.override { cfg = fcfg; }
+        else
+          (pkgs.wrapFirefox.override { config = bcfg; }) cfg.package { };
+      in [ package ];
 
-    home-manager.users."${config.attributes.mainUser.name}".home.file = mkMerge
-      ([{ "${firefoxConfigPath}/profiles.ini" = mkIf (cfg.profiles != { }) { text = profilesIni; }; }]
-        ++ flip mapAttrsToList cfg.profiles (_: profile: {
-          "${profilesPath}/${profile.path}/chrome/userChrome.css" =
-            mkIf (profile.userChrome != "") { text = profile.userChrome; };
+      home.file = mkMerge
+        ([{ "${firefoxConfigPath}/profiles.ini" = mkIf (cfg.profiles != { }) { text = profilesIni; }; }]
+          ++ flip mapAttrsToList cfg.profiles (_: profile: {
+            "${profilesPath}/${profile.path}/chrome/userChrome.css" =
+              mkIf (profile.userChrome != "") { text = profile.userChrome; };
 
-          "${profilesPath}/${profile.path}/chrome/userContent.css" =
-            mkIf (profile.userContent != "") { text = profile.userContent; };
+            "${profilesPath}/${profile.path}/chrome/userContent.css" =
+              mkIf (profile.userContent != "") { text = profile.userContent; };
 
-          "${profilesPath}/${profile.path}/user.js" = mkIf (profile.settings != { } || profile.extraConfig != "") {
-            text = mkUserJs profile.settings profile.extraConfig;
-          };
+            "${profilesPath}/${profile.path}/user.js" = mkIf (profile.settings != { } || profile.extraConfig != "") {
+              text = mkUserJs profile.settings profile.extraConfig;
+            };
 
-          "${profilesPath}/${profile.path}/extensions" = mkIf (cfg.extensions != [ ]) {
-            source = "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
-            recursive = true;
-            force = true;
-          };
+            "${profilesPath}/${profile.path}/extensions" = mkIf (cfg.extensions != [ ]) {
+              source = "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
+              recursive = true;
+              force = true;
+            };
 
-          ".mozilla/firefox/${profile.path}/handlers.json" =
-            mkIf (profile.handlers != { }) { text = builtins.toJSON profile.handlers; };
-        }));
+            ".mozilla/firefox/${profile.path}/handlers.json" =
+              mkIf (profile.handlers != { }) { text = builtins.toJSON profile.handlers; };
+          }));
+    };
   };
 }
