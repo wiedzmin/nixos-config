@@ -64,7 +64,7 @@ in {
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ paperkey rofi-pass passctl ];
+        home.packages = with pkgs; [ paperkey passctl ];
         programs.password-store = {
           enable = true;
           package = pkgs.pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
@@ -131,7 +131,7 @@ in {
         }
         {
           key = [ "p" ];
-          cmd = "${pkgs.rofi-pass}/bin/rofi-pass";
+          cmd = "${pkgs.passctl}/bin/passctl";
           mode = "run";
         }
       ];
