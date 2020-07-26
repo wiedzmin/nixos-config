@@ -63,6 +63,8 @@ in {
     supportedFilesystems = [ "ntfs" ];
   };
 
+  console.useXkbConfig = true;
+
   networking = {
     hostName = "laptoptop";
     hostId = "2ab69157";
