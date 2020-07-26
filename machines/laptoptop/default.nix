@@ -331,7 +331,6 @@ in {
 
   custom.dev.git = {
     enable = true;
-    pager.delta.enable = true;
     myrepos.enable = true;
     ghq = { enable = true; };
     github = {

@@ -51,16 +51,6 @@ in {
         default = 100;
         description = "Changed WIP LOC count to consider pushing upstream.";
       };
-      pager.diff-so-fancy.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable diff-so-fancy pager.";
-      };
-      pager.delta.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable delta pager.";
-      };
       signing.enable = mkOption {
         type = types.bool;
         default = true;
@@ -172,13 +162,6 @@ in {
           assertion = cfg.github.enable && cfg.github.user != "";
           message = "git: Must provide github ID when enabling Github connectivity.";
         }
-        {
-          assertion = let
-            p = cfg.pager.diff-so-fancy.enable;
-            q = cfg.pager.delta.enable;
-          in (p || q) && !(p && q) || (!p && !q);
-          message = "git: Must choose either none or exactly one (`diff-so-fancy` or `delta`) custom pager.";
-        }
       ] ++ lib.optionals (cfg.signing.enable) [{
         assertion = config.attributes.mainUser.gpgKeyID != "";
         message = "git: Must provide GPG key ID when objects signing is enabled.";
@@ -209,6 +192,24 @@ in {
             key = config.attributes.mainUser.gpgKeyID;
             signByDefault = true;
           };
+          delta = {
+            enable = true;
+            options = {
+              features = "decorations";
+              theme = "zenburn";
+              diff-so-fancy = true;
+              dark = true;
+              highlight-removed = true;
+              plus-color = "#34ad3a";
+              minus-color = "#ad3436";
+              whitespace-error-style = "22 reverse";
+              decorations = {
+                commit-decoration-style = "bold yellow box ul";
+                file-style = "bold yellow ul";
+                file-decoration-style = "none";
+              };
+            };
+          };
           extraConfig = {
             "rebase" = {
               autoSquash = true;
@@ -228,22 +229,7 @@ in {
             "push" = { default = "current"; };
             "absorb" = { maxstack = 75; }; # TODO: package https://github.com/torbiak/git-autofixup
           } // lib.optionalAttrs (cfg.github.enable) { "github" = { user = cfg.github.user; }; }
-            // lib.optionalAttrs (cfg.pager.diff-so-fancy.enable) {
-              "pager" = {
-                diff = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
-                show = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
-                log = "${pkgs.gitAndTools.diff-so-fancy}/bin/diff-so-fancy | ${pkgs.less}/bin/less --tabs=4 -CR";
-              };
-            } // lib.optionalAttrs (cfg.pager.delta.enable) {
-              "pager" = {
-                diff = ''
-                  ${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
-                show = ''
-                  ${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
-                log = ''
-                  ${pkgs.gitAndTools.delta}/bin/delta --dark --plus-color="#34ad3a" --minus-color="#ad3436" --highlight-removed --theme="zenburn"'';
-              };
-            } // lib.optionalAttrs (cfg.urlSubstitutes != { }) cfg.urlSubstitutes;
+            // lib.optionalAttrs (cfg.urlSubstitutes != { }) cfg.urlSubstitutes;
         };
       };
       environment.systemPackages = with pkgs;
