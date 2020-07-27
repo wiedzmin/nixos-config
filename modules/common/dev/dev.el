@@ -153,3 +153,5 @@
   (comby :repo "s-kostyaev/comby.el" :fetcher github)
   :custom
   (comby-args '("-exclude" "@combyExcludes@")))
+
+(use-package nix-buffer)

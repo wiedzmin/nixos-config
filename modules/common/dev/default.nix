@@ -231,12 +231,7 @@ in {
                   - mc
           '';
         };
-        home.packages = with pkgs; [
-          comby
-          nixpkgs-pinned-09_07_20.devdocs-desktop
-          icdiff
-          the-way
-        ];
+        home.packages = with pkgs; [ comby nixpkgs-pinned-09_07_20.devdocs-desktop icdiff the-way ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
@@ -264,7 +259,8 @@ in {
             epkgs.webpaste
             epkgs.yaml-mode
           ] ++ lib.optionals (cfg.direnv.granularity == "project") [ epkgs.direnv ]
-          ++ lib.optionals (cfg.direnv.granularity == "file") [ ]; # when envrc.el will arrive to nixpkgs
+          ++ lib.optionals (cfg.direnv.granularity == "file")
+          [ epkgs.nix-buffer ]; # when envrc.el will arrive to nixpkgs
       };
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dev.el; }));
