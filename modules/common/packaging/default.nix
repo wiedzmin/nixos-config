@@ -15,6 +15,11 @@ in {
         default = false;
         description = "Whether to enable packaging infra.";
       };
+      configResultPath = mkOption {
+        type = types.str;
+        default = homePrefix "result";
+        description = "Path of the symlink to the build result.";
+      };
       nix.helpers.enable = mkOption {
         type = types.bool;
         default = false;

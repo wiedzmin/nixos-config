@@ -9,6 +9,7 @@ rec {
   bashExecutable = "/run/current-system/sw/bin/bash";
   booksSearchCommand = config.tools.ebooks.readers.booksSearchCommand;
   combyExcludes = lib.concatStringsSep "," config.custom.dev.comby.excludes;
+  configResultPath = config.custom.packaging.configResultPath;
   defaultBrowser = "${pkgs.xdg_utils}/bin/xdg-open";
   defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;
   defaultTerminal = config.custom.shell.terminal;

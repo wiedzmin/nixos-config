@@ -46,7 +46,7 @@ def format_config():
 
 def build_configuration(path="/etc/nixos/configuration.nix", debug=False):
     build_configuration_task = subprocess.Popen(
-        f'nix build -f {locate_nixpkgs()}/nixos system{" --show-trace" if debug else ""} -I nixos-config="{path}"',
+        f'nix build -f {locate_nixpkgs()}/nixos system{" --show-trace" if debug else ""} -I nixos-config="{path}" -o @configResultPath@',
         shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
     result = build_configuration_task.wait()
     if result in [1, 100]:
@@ -67,7 +67,7 @@ def rollback_configuration():
 
 def switch_configuration(root=None):
     try:
-        new_system_path = os.readlink(f"{os.getcwd()}/result" if not root else root)
+        new_system_path = os.readlink("@configResultPath@" if not root else root)
     except FileNotFoundError as e:
         new_system_path = None
         print(f"Error switching configuration: {e}")
