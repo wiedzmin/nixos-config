@@ -8,9 +8,9 @@ with lib;
 
 let
   cfg = config.custom.dev;
-  globalRoot = config.custom.navigation.workspaceRoots.global;
-  githubRoot = config.custom.navigation.workspaceRoots.github;
-
+  globalRoot =
+    optionalString (builtins.hasAttr "global" config.custom.dev.workspaceRoots) config.custom.dev.workspaceRoots.global;
+  githubRoot = config.custom.dev.workspaceRoots.github;
 in {
   options = {
     custom.dev = {
@@ -18,6 +18,11 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable custom development infrastructure.";
+      };
+      workspaceRoots = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Various workspace roots meta.";
       };
       codesearch.enable = mkOption {
         type = types.bool;

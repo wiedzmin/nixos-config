@@ -7,7 +7,7 @@ with lib;
 
 let
   cfg = config.custom.dev.git;
-  globalRoot = config.custom.navigation.workspaceRoots.global;
+  globalRoot = config.custom.dev.workspaceRoots.global;
 in {
   options = {
     custom.dev.git = {
@@ -260,7 +260,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.git.extraConfig = { "ghq" = { root = homePrefix globalRoot; }; };
       };
-      custom.navigation.workspaceRoots = let ghqRoot = globalRoot;
+      custom.dev.workspaceRoots = let ghqRoot = globalRoot;
       in {
         github = "${ghqRoot}/github.com";
         gitlab = "${ghqRoot}/gitlab.com";

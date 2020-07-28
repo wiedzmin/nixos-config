@@ -52,8 +52,6 @@ rec {
   urlRegexPy = config.custom.content.urlRegex.py;
   xprintidleBinary = "${nixpkgs-pinned-16_04_20.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
-  searchReposRoot = config.custom.dev.repoSearch.root;
-  globalWorkspaceRoot = homePrefix config.custom.navigation.workspaceRoots.global;
   xmobarMaybeFont = lib.optionalString (config.wmCommon.fonts.statusbar != "")
     ''font = "${config.wmCommon.fonts.statusbar}"${mkNewlineAndIndent 7}, '';
 } // lib.optionalAttrs (config.custom.browsers.firefox.enable) rec {
@@ -63,4 +61,7 @@ rec {
   firefoxSessionsPath = config.custom.browsers.sessions.firefox.path;
   firefoxSessionsSizeThreshold = builtins.toString config.custom.browsers.sessions.sizeThreshold;
   firefoxSessionstorePath = homePrefix ".mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
+} // lib.optionalAttrs (builtins.hasAttr "global" config.custom.dev.workspaceRoots) rec {
+  globalWorkspaceRoot = homePrefix config.custom.dev.workspaceRoots.global;
+  searchReposRoot = config.custom.dev.repoSearch.root;
 }

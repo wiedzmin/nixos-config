@@ -317,6 +317,7 @@ in {
 
   custom.dev = {
     enable = true;
+    workspaceRoots = { global = "workspace/repos"; };
     statistics.enable = true;
     codesearch.enable = true;
     patching.enable = true;
@@ -426,7 +427,6 @@ in {
 
   custom.navigation = {
     enable = true;
-    workspaceRoots = { global = "workspace/repos"; };
     gmrun.enable = true;
     mc.enable = true;
     misc.enable = true;
