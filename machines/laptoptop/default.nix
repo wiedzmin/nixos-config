@@ -231,7 +231,6 @@ in {
       enable = true;
       bookmarks.enable = true;
       webjumps.enable = true;
-      sshfs.enable = true;
       snippets.enable = true;
       wsMapping.enable = true;
     };
@@ -444,7 +443,6 @@ in {
     scripts.enable = true;
     wm.enable = true;
     extraHosts.enable = true;
-    sshfs.enable = true;
     secrets = {
       enable = true;
       vpn.enable = true;

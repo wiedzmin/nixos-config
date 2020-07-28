@@ -29,16 +29,6 @@ in {
         default = false;
         description = "Whether to enable various network clients, mostly for development";
       };
-      sshfs.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable SSHFS infra";
-      };
-      sshfs.entries = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "SSHFS mappings";
-      };
       remoteControlling.enable = mkOption {
         type = types.bool;
         default = false;
@@ -96,9 +86,6 @@ in {
         sshmenu = mkPythonScriptWithDeps "sshmenu"
           (with pkgs; [ openssh pystdlib python3Packages.libtmux python3Packages.redis vpnctl ]) (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
-        sshfsmenu = mkPythonScriptWithDeps "sshfsmenu" (with pkgs; [ pystdlib python3Packages.redis sshfs-fuse ])
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshfsmenu.py; })));
       };
       services.openssh = {
         enable = true;
@@ -232,25 +219,6 @@ in {
         };
         home.file = { ".ssh/id_rsa.pub".text = config.identity.secrets.ssh.publicKey; };
       };
-    })
-    (mkIf (cfg.enable && cfg.sshfs.enable) {
-      custom.dev.workspaceRoots = { sshfs = "workspace/ssh"; };
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ sshfsmenu ]; };
-      custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set net/sshfs_map ${lib.strings.escapeNixString (builtins.toJSON cfg.sshfs.entries)}
-      '';
-      wmCommon.keys = [
-        {
-          key = [ "Shift" "f" ];
-          cmd = "${pkgs.sshfsmenu}/bin/sshfsmenu --mode unmount";
-          mode = "network";
-        }
-        {
-          key = [ "f" ];
-          cmd = "${pkgs.sshfsmenu}/bin/sshfsmenu --mode mount";
-          mode = "network";
-        }
-      ];
     })
     (mkIf (cfg.enable && cfg.remoteControlling.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ anydesk teamviewer ]; };
