@@ -5,9 +5,7 @@ in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  cfg = config.custom.dev.git;
-  globalRoot = config.custom.dev.workspaceRoots.global;
+let cfg = config.custom.dev.git;
 in {
   options = {
     custom.dev.git = {
@@ -251,24 +249,18 @@ in {
         ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
-      assertions = [{
-        assertion = globalRoot != "";
-        message = "git: Must provide workspace root directory for ghq tool.";
-      }];
-
       environment.systemPackages = with pkgs; [ gitAndTools.ghq ];
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.git.extraConfig = { "ghq" = { root = homePrefix globalRoot; }; };
+        programs.git.extraConfig = { "ghq" = { root = wsRootAbs "global"; }; };
       };
-      custom.dev.workspaceRoots = let ghqRoot = globalRoot;
-      in {
-        github = "${ghqRoot}/github.com";
-        gitlab = "${ghqRoot}/gitlab.com";
-        bitbucket = "${ghqRoot}/bitbucket.org";
+      custom.dev.workspaceRoots = {
+        github = "${wsRootAbs "global"}/github.com";
+        gitlab = "${wsRootAbs "global"}/gitlab.com";
+        bitbucket = "${wsRootAbs "global"}/bitbucket.org";
       };
     })
     (mkIf (cfg.enable && cfg.myrepos.enable) {
-      custom.dev.git.myrepos.subconfigs = [ "${homePrefix globalRoot}/github.com/wiedzmin/.mrconfig" ];
+      custom.dev.git.myrepos.subconfigs = [ "${wsRootAbs "github"}/wiedzmin/.mrconfig" ];
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ mr gitctl ];
         home.file = {
@@ -298,59 +290,6 @@ in {
               include = cat ${config}
             '') cfg.myrepos.subconfigs}
           '';
-          "${globalRoot}/github.com/wiedzmin/.mrconfig".text = lib.generators.toINI { } {
-            "${homePrefix globalRoot}/github.com/wiedzmin/bitcoinbook" = {
-              checkout = "git clone 'https://github.com/wiedzmin/bitcoinbook.git' 'bitcoinbook'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/git-hooks" = {
-              checkout = "git clone 'https://github.com/wiedzmin/git-hooks.git' 'git-hooks'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/kbdd" = {
-              checkout = "git clone 'https://github.com/wiedzmin/kbdd.git' 'kbdd'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/pgsql-listen-exchange" = {
-              checkout = "git clone 'https://github.com/wiedzmin/pgsql-listen-exchange.git' 'pgsql-listen-exchange'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/rc" = {
-              checkout = "git clone 'https://github.com/wiedzmin/rc.git' 'rc'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/shepherd" = {
-              checkout = "git clone 'https://github.com/wiedzmin/shepherd.git' 'shepherd'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/cl-study" = {
-              checkout = "git clone 'https://github.com/wiedzmin/cl-study.git' 'cl-study'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/gourmet" = {
-              checkout = "git clone 'https://github.com/wiedzmin/gourmet.git' 'gourmet'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/lisp-koans" = {
-              checkout = "git clone 'https://github.com/wiedzmin/lisp-koans.git' 'lisp-koans'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/mlbot" = {
-              checkout = "git clone 'https://github.com/wiedzmin/mlbot.git' 'mlbot'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/nixpkgs" = {
-              checkout = "git clone 'https://github.com/wiedzmin/nixpkgs.git' 'nixpkgs'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/science_chemphys" = {
-              checkout = "git clone 'https://github.com/wiedzmin/science_chemphys.git' 'science_chemphys'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/stumpwm" = {
-              checkout = "git clone 'https://github.com/wiedzmin/stumpwm.git' 'stumpwm'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/first-order-model" = {
-              checkout = "git clone 'https://github.com/wiedzmin/first-order-model.git' 'first-order-model'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/passdmenu" = {
-              checkout = "git clone 'https://github.com/wiedzmin/passdmenu.git' 'passdmenu'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/stumpwm-contrib" = {
-              checkout = "git clone 'https://github.com/wiedzmin/stumpwm-contrib.git' 'stumpwm-contrib'";
-            };
-            "${homePrefix globalRoot}/github.com/wiedzmin/xmonad-config" = {
-              checkout = "git clone 'https://github.com/wiedzmin/xmonad-config.git' 'xmonad-config'";
-            };
-          };
         };
       };
     })

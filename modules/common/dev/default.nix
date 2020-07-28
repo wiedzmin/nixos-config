@@ -6,11 +6,7 @@ in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let
-  cfg = config.custom.dev;
-  globalRoot =
-    optionalString (builtins.hasAttr "global" config.custom.dev.workspaceRoots) config.custom.dev.workspaceRoots.global;
-  githubRoot = config.custom.dev.workspaceRoots.github;
+let cfg = config.custom.dev;
 in {
   options = {
     custom.dev = {
@@ -57,10 +53,10 @@ in {
         type = types.attrs;
         default = {
           nixos = "/etc/nixos";
-          nixpkgs-channels = "${homePrefix githubRoot}/NixOS/nixpkgs-channels";
-          nixpkgs-proposed = "${homePrefix githubRoot}/wiedzmin/nixpkgs";
-          home-manager = "${homePrefix githubRoot}/rycee/home-manager";
-          postgres = "${homePrefix githubRoot}/postgres/postgres";
+          nixpkgs-channels = "${wsRootAbs "github"}/NixOS/nixpkgs-channels";
+          nixpkgs-proposed = "${wsRootAbs "github"}/wiedzmin/nixpkgs";
+          home-manager = "${wsRootAbs "github"}/rycee/home-manager";
+          postgres = "${wsRootAbs "github"}/postgres/postgres";
         };
         description = "Bookmarks data.";
       };
@@ -91,7 +87,7 @@ in {
       };
       repoSearch.root = mkOption {
         type = types.str;
-        default = homePrefix globalRoot;
+        default = wsRootAbs "global";
         description = "Search root.";
       };
       repoSearch.depth = mkOption {
@@ -122,8 +118,8 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ codesearch ];
         programs = {
-          zsh.sessionVariables = { CSEARCHINDEX = "${homePrefix globalRoot}/.csearchindex"; };
-          bash.sessionVariables = { CSEARCHINDEX = "${homePrefix globalRoot}/.csearchindex"; };
+          zsh.sessionVariables = { CSEARCHINDEX = "${wsRootAbs "global"}/.csearchindex"; };
+          bash.sessionVariables = { CSEARCHINDEX = "${wsRootAbs "global"}/.csearchindex"; };
         };
       };
       systemd.user.services."codesearch-reindex" = {
@@ -132,8 +128,8 @@ in {
         partOf = [ "graphical.target" ];
         serviceConfig = {
           Type = "oneshot";
-          Environment = [ "CSEARCHINDEX=${homePrefix globalRoot}/.csearchindex" ];
-          ExecStart = "${pkgs.codesearch}/bin/cindex ${homePrefix globalRoot}";
+          Environment = [ "CSEARCHINDEX=${wsRootAbs "global"}/.csearchindex" ];
+          ExecStart = "${pkgs.codesearch}/bin/cindex ${wsRootAbs "global"}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -231,7 +227,7 @@ in {
             session_name: dev
             windows:
               - window_name: mc
-                start_directory: ${homePrefix githubRoot}/wiedzmin
+                start_directory: ${wsRootAbs "github"}/wiedzmin
                 panes:
                   - mc
           '';

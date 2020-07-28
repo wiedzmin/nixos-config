@@ -63,6 +63,6 @@ rec {
   firefoxSessionsSizeThreshold = builtins.toString config.custom.browsers.sessions.sizeThreshold;
   firefoxSessionstorePath = homePrefix ".mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
 } // lib.optionalAttrs (builtins.hasAttr "global" config.custom.dev.workspaceRoots) rec {
-  globalWorkspaceRoot = homePrefix config.custom.dev.workspaceRoots.global;
+  globalWorkspaceRoot = wsRootAbs "global";
   searchReposRoot = config.custom.dev.repoSearch.root;
 }
