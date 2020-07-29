@@ -226,7 +226,7 @@ in {
     (mkIf (cfg.enable && cfg.messengers.enable) {
       services.quassel.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ skype slack mattermost-desktop tdesktop quasselClient ];
+        home.packages = with pkgs; [ skype nixpkgs-pinned-16_04_20.mattermost-desktop tdesktop quasselClient ];
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {
