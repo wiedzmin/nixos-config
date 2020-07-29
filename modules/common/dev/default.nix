@@ -49,6 +49,7 @@ in {
         description = "Whether to enable shell bookmarks.";
         default = false;
       };
+      # IDEA: make script for extracting from shell history based on substring
       bookmarks.entries = mkOption {
         type = types.attrs;
         default = {
@@ -57,6 +58,36 @@ in {
           nixpkgs-proposed = "${wsRootAbs "github"}/wiedzmin/nixpkgs";
           home-manager = "${wsRootAbs "github"}/rycee/home-manager";
           postgres = "${wsRootAbs "github"}/postgres/postgres";
+          # RSS_Feederbot = "${wsRootAbs "github"}/Dextroz/RSS_Feederbot";
+          # SIM-UoW-Timetable-bot = "${wsRootAbs "github"}/xlanor/SIM-UoW-Timetable-bot";
+          # VorpalRobot = "${wsRootAbs "github"}/Tronikart/VorpalRobot";
+          # boobsbot = "${wsRootAbs "github"}/ouhettur/boobsbot";
+          # bot-motivator = "${wsRootAbs "github"}/SabaunT/bot-motivator";
+          # bot_against_humanity = "${wsRootAbs "gitlab"}/OctoNezd/bot_against_humanity";
+          # cmsysbot-telegram = "${wsRootAbs "github"}/oddworldng/cmsysbot-telegram";
+          # crypto-coins-info-bot-v2 = "${wsRootAbs "github"}/lytves/crypto-coins-info-bot-v2";
+          # dclavorofvg-bot = "${wsRootAbs "github"}/marcotessarotto/dclavorofvg-bot";
+          # friendship-quiz-bot = "${wsRootAbs "github"}/alistvt/friendship-quiz-bot";
+          # gatekeeper-bot = "${wsRootAbs "github"}/Juhannuspukki/gatekeeper-bot";
+          # homework-help-bot = "${wsRootAbs "github"}/leeweiminsg/homework-help-bot";
+          # logbot = "${wsRootAbs "github"}/apiad/logbot";
+          # mau_mau_bot = "${wsRootAbs "github"}/jh0ker/mau_mau_bot";
+          # mvc_model_bot_developing = "${wsRootAbs "github"}/mmdaz/mvc_model_bot_developing";
+          # nmjpeg-bot = "${wsRootAbs "github"}/zeroone2numeral2/nmjpeg-bot";
+          # pricebot = "${wsRootAbs "github"}/lytves/pricebot";
+          # privibot = "${wsRootAbs "github"}/pawamoy/privibot";
+          # python-telegram-bot = "${wsRootAbs "github"}/python-telegram-bot/python-telegram-bot";
+          # regex-bot = "${wsRootAbs "github"}/zeroone2numeral2/regex-bot";
+          # remind_me_bot = "${wsRootAbs "github"}/dmakeienko/remind_me_bot";
+          # someone-bot = "${wsRootAbs "github"}/zeroone2numeral2/someone-bot";
+          # sudobot = "${wsRootAbs "github"}/bvanrijn/sudobot";
+          # telegram-facebook-bot = "${wsRootAbs "github"}/MorenK1/telegram-facebook-bot";
+          # telegram-movie-bot = "${wsRootAbs "github"}/rpolve/telegram-movie-bot";
+          # tgbot = "${wsRootAbs "github"}/PaulSonOfLars/tgbot";
+          # toptracksbot = "${wsRootAbs "github"}/pltnk/toptracksbot";
+          # tt-bot = "${wsRootAbs "github"}/MgCoders/tt-bot";
+          # twitter-lists-bot = "${wsRootAbs "github"}/lytves/twitter-lists-bot";
+          # watermarker-bot = "${wsRootAbs "github"}/alistvt/watermarker-bot";
         };
         description = "Bookmarks data.";
       };
