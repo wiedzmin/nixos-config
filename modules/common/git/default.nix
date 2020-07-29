@@ -146,12 +146,10 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      assertions = [
-        {
-          assertion = config.attributes.mainUser.fullName != "" && config.attributes.mainUser.email != "";
-          message = "git: Must provide authoring identity.";
-        }
-      ] ++ lib.optionals (cfg.signing.enable) [{
+      assertions = [{
+        assertion = config.attributes.mainUser.fullName != "" || config.attributes.mainUser.email != "";
+        message = "git: Must provide authoring identity.";
+      }] ++ lib.optionals (cfg.signing.enable) [{
         assertion = config.attributes.mainUser.gpgKeyID != "";
         message = "git: Must provide GPG key ID when objects signing is enabled.";
       }];
