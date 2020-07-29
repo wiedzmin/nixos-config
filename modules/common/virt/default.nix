@@ -245,6 +245,10 @@ in {
           virtmanager
           virtviewer
         ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
+      wmCommon.wsMapping.rules = [{
+        class = "Virt-manager";
+        desktop = "tools";
+      }];
     })
     (mkIf (cfg.docker.enable && cfg.wm.enable) {
       wmCommon.keys = [
