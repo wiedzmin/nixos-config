@@ -236,7 +236,10 @@ in {
     };
     "b354e944b3".secrets = {
       enable = true;
+      bookmarks.enable = true;
+      extraHosts.enable = true;
       vpn.enable = true;
+      webjumps.enable = true;
       wsMapping.enable = true;
     };
   };
