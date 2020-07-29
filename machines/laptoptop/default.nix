@@ -327,6 +327,7 @@ in {
     emacs.enable = true;
     wm.enable = true;
     secrets.snippets.enable = true;
+    staging.packages = with pkgs; [ go-task ];
   };
 
   custom.dev.git = {
@@ -525,7 +526,7 @@ in {
     bookmarks.enable = true;
     emacs.enable = true;
     wm.enable = true;
-    staging.packages = with pkgs; [ diskonaut k4dirstat ];
+    staging.packages = with pkgs; [ diskonaut k4dirstat ugrep ];
   };
 
   custom.virtualization = {
