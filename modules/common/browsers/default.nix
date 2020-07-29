@@ -1,6 +1,6 @@
 let
   deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-09_07_20 = import deps.nixpkgs-pinned-09_07_20 { config.allowUnfree = true; };
+  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with import "${deps.home-manager}/modules/lib/dag.nix" { inherit lib; };
@@ -623,7 +623,7 @@ in {
       '';
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
-          nixpkgs-pinned-09_07_20.qutebrowser
+          nixpkgs-pinned-16_04_20.qutebrowser
           yank-image
           qb-fix-session
 
