@@ -91,11 +91,6 @@ in {
         default = { };
         description = "Custom import commands for ghq.";
       };
-      github.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable Github connectivity.";
-      };
       github.user = mkOption {
         type = types.str;
         default = "";
@@ -155,10 +150,6 @@ in {
         {
           assertion = config.attributes.mainUser.fullName != "" && config.attributes.mainUser.email != "";
           message = "git: Must provide authoring identity.";
-        }
-        {
-          assertion = cfg.github.enable && cfg.github.user != "";
-          message = "git: Must provide github ID when enabling Github connectivity.";
         }
       ] ++ lib.optionals (cfg.signing.enable) [{
         assertion = config.attributes.mainUser.gpgKeyID != "";
@@ -226,8 +217,8 @@ in {
             };
             "push" = { default = "current"; };
             "absorb" = { maxstack = 75; }; # TODO: package https://github.com/torbiak/git-autofixup
-          } // lib.optionalAttrs (cfg.github.enable) { "github" = { user = cfg.github.user; }; }
-            // lib.optionalAttrs (cfg.urlSubstitutes != { }) cfg.urlSubstitutes;
+            "github" = { user = cfg.github.user; };
+          } // lib.optionalAttrs (cfg.urlSubstitutes != { }) cfg.urlSubstitutes;
         };
       };
       environment.systemPackages = with pkgs;
