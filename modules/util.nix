@@ -128,13 +128,13 @@ in rec {
   wsRoot = key:
     let roots = config.custom.dev.workspaceRoots;
     in if builtins.hasAttr key roots then
-      homePrefix (lib.getAttrFromPath [ key ] roots)
-    else
-      builtins.trace "no '${key}' workspace root found";
-  wsRootAbs = key:
-    let roots = config.custom.dev.workspaceRoots;
-    in if builtins.hasAttr key roots then
       lib.getAttrFromPath [ key ] roots
     else
       throw "no '${key}' workspace root found";
+  wsRootAbs = key:
+    let roots = config.custom.dev.workspaceRoots;
+    in if builtins.hasAttr key roots then
+      homePrefix (lib.getAttrFromPath [ key ] roots)
+    else
+      builtins.trace "no '${key}' workspace root found";
 }

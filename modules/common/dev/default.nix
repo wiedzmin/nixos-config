@@ -54,10 +54,10 @@ in {
         type = types.attrs;
         default = {
           nixos = "/etc/nixos";
-          nixpkgs-channels = "${wsRootAbs "github"}/NixOS/nixpkgs-channels";
-          nixpkgs-proposed = "${wsRootAbs "github"}/wiedzmin/nixpkgs";
-          home-manager = "${wsRootAbs "github"}/rycee/home-manager";
-          postgres = "${wsRootAbs "github"}/postgres/postgres";
+          nixpkgs-channels = "${wsRoot "github"}/NixOS/nixpkgs-channels";
+          nixpkgs-proposed = "${wsRoot "github"}/wiedzmin/nixpkgs";
+          home-manager = "${wsRoot "github"}/rycee/home-manager";
+          postgres = "${wsRoot "github"}/postgres/postgres";
           # RSS_Feederbot = "${wsRootAbs "github"}/Dextroz/RSS_Feederbot";
           # SIM-UoW-Timetable-bot = "${wsRootAbs "github"}/xlanor/SIM-UoW-Timetable-bot";
           # VorpalRobot = "${wsRootAbs "github"}/Tronikart/VorpalRobot";
