@@ -139,13 +139,9 @@ in {
     tlp = {
       enable = true;
       extraConfig = ''
-        TLP_DEFAULT_MODE=BAT
-        START_CHARGE_THRESH_BAT0=40
-        STOP_CHARGE_THRESH_BAT0=80
+        START_CHARGE_THRESH_BAT0=80
+        STOP_CHARGE_THRESH_BAT0=90
         DEVICES_TO_DISABLE_ON_WIFI_CONNECT="wwan"
-        RUNTIME_PM_ON_AC=auto
-        CPU_MAX_PERF_ON_AC=99
-        CPU_MAX_PERF_ON_BAT=70
         USB_BLACKLIST_PHONE=1
       '';
     };
