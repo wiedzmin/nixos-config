@@ -535,7 +535,7 @@ in {
       };
     };
     libvirt.enable = true;
-    virtualbox.enable = false;
+    virtualbox.enable = true;
     wm.enable = true;
   };
 
