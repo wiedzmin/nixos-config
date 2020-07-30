@@ -141,13 +141,16 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         xctl = mkPythonScriptWithDeps "xctl" (with pkgs; [ autorandr pystdlib python3Packages.ewmh ]) (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./xctl.py; })));
+        rescreen = mkShellScriptWithDeps "rescreen" (with pkgs; [ autorandr ]) ''
+          rescreen-$(autorandr --detected)-i3
+        '';
       };
 
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "video" ];
       programs.light.enable = true;
       hardware.brillo.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
+        home.packages = with pkgs; lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages ++ [ rescreen ];
         home.file = {
           ".XCompose".text = ''
             include "${pkgs.xorg.libX11}/share/X11/locale/en_EN.UTF-8/Compose"
@@ -275,6 +278,11 @@ in {
         {
           key = [ "a" ];
           cmd = "${pkgs.xctl}/bin/xctl --switch";
+          mode = "run";
+        }
+        {
+          key = [ "s" ];
+          cmd = "${pkgs.rescreen}/bin/rescreen";
           mode = "run";
         }
         {

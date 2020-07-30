@@ -1,11 +1,21 @@
 { config, pkgs, lib, ... }:
 with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; };
+with import ../../../../modules/util.nix { inherit config lib pkgs; };
 
-{
+let profileName = "docked-home";
+in {
+  nixpkgs.config.packageOverrides = _: rec {
+    "rescreen-${profileName}-i3" = mkShellScriptWithDeps "rescreen-${profileName}-i3" (with pkgs; [ i3 ]) ''
+      i3-msg --quiet "${mvWorkspacesI3Cmd config.wmCommon.workspaces "primary" "HDMI-2"}${
+        mvWorkspacesI3Cmd config.wmCommon.workspaces "secondary" "HDMI-3"
+      }${mvWorkspacesI3Cmd config.wmCommon.workspaces "tertiary" config.attributes.hardware.monitors.internalHead.name}"
+    '';
+  };
   home-manager.users."${config.attributes.mainUser.name}" = {
+    home.packages = [ pkgs."rescreen-${profileName}-i3" ];
     programs.autorandr = {
       profiles = {
-        "docked-home" = {
+        "${profileName}" = {
           fingerprint = {
             HDMI-2 =
               "00ffffffffffff001e6dbc594f53010006170103803c2278ea3135a5554ea1260c5054a54b00714f81809500b300a9c0810081c09040023a801871382d40582c450056512100001e000000fd00384b1e530f000a202020202020000000fc003237454133330a202020202020000000ff0033303652414e4e324a3836330a00dd";
@@ -38,14 +48,7 @@ with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; 
               rate = config.custom.video.rate;
             };
           };
-          hooks.postswitch = ''
-            i3-msg --quiet "${mvWorkspacesI3Cmd config.wmCommon.workspaces "primary" "HDMI-2"}${
-              mvWorkspacesI3Cmd config.wmCommon.workspaces "secondary" "HDMI-3"
-            }${
-              mvWorkspacesI3Cmd config.wmCommon.workspaces "tertiary"
-              config.attributes.hardware.monitors.internalHead.name
-            }"
-          '';
+          hooks.postswitch = "rescreen-${profileName}-i3";
         };
       };
     };

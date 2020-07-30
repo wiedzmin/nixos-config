@@ -1,11 +1,23 @@
 { config, pkgs, lib, ... }:
 with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; };
+with import ../../../../modules/util.nix { inherit config lib pkgs; };
 
-{
+let profileName = "mobile";
+in {
+  nixpkgs.config.packageOverrides = _: rec {
+    "rescreen-${profileName}-i3" = mkShellScriptWithDeps "rescreen-${profileName}-i3" (with pkgs; [ i3 ]) ''
+      i3-msg --quiet "${
+        mvWorkspacesI3Cmd config.wmCommon.workspaces "primary" config.attributes.hardware.monitors.internalHead.name
+      }${
+        mvWorkspacesI3Cmd config.wmCommon.workspaces "secondary" config.attributes.hardware.monitors.internalHead.name
+      }${mvWorkspacesI3Cmd config.wmCommon.workspaces "tertiary" config.attributes.hardware.monitors.internalHead.name}"
+    '';
+  };
   home-manager.users."${config.attributes.mainUser.name}" = {
+    home.packages = [ pkgs."rescreen-${profileName}-i3" ];
     programs.autorandr = {
       profiles = {
-        "mobile" = {
+        "${profileName}" = {
           fingerprint = {
             "${config.attributes.hardware.monitors.internalHead.name}" =
               config.attributes.hardware.monitors.internalHead.edid;
@@ -20,18 +32,7 @@ with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; 
               rate = config.custom.video.rate;
             };
           };
-          hooks.postswitch = ''
-            i3-msg --quiet "${
-              mvWorkspacesI3Cmd config.wmCommon.workspaces "primary"
-              config.attributes.hardware.monitors.internalHead.name
-            }${
-              mvWorkspacesI3Cmd config.wmCommon.workspaces "secondary"
-              config.attributes.hardware.monitors.internalHead.name
-            }${
-              mvWorkspacesI3Cmd config.wmCommon.workspaces "tertiary"
-              config.attributes.hardware.monitors.internalHead.name
-            }"
-          '';
+          hooks.postswitch = "rescreen-${profileName}-i3";
           # TODO: activate some non-empty workspace afterwards
         };
       };
