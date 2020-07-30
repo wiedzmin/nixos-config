@@ -151,6 +151,23 @@ in {
         default = "";
         description = "Current WM `internal` statusbar font' definition.";
       };
+      autostart.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Start some applications automatically.";
+      };
+      autostart.entries = mkOption {
+        type = types.listOf types.str;
+        default = [
+          "alacritty"
+          "emacs"
+          "nm-applet"
+          "qutebrowser -P default --class qb-default"
+          "mattermost-desktop"
+          "telegram-desktop"
+        ];
+        description = "Applications to start automatically.";
+      };
       keybindingsCachePath = mkOption {
         type = types.str;
         default = homePrefix "keybindings.list";

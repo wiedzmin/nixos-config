@@ -215,23 +215,6 @@ in {
         default = [ [ "q" ] [ "Escape" ] [ "Control" "g" ] ];
         description = "Unified collection of keybindings used to exit to default mode.";
       };
-      autostart.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Start some applications automatically.";
-      };
-      autostart.entries = mkOption {
-        type = types.listOf types.str;
-        default = [
-          "alacritty"
-          "emacs"
-          "nm-applet"
-          "qutebrowser -P default --class qb-default"
-          "mattermost-desktop"
-          "telegram-desktop"
-        ];
-        description = "Applications to start automatically.";
-      };
     };
   };
 
@@ -284,7 +267,8 @@ in {
             ${cfg.settings}
             ${mkKeybindingsI3 (cfg.keys ++ config.wmCommon.keys) config.wmCommon.modeBindings cfg.modeExitBindings}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
-            ${lib.concatStringsSep "\n" (lib.forEach cfg.autostart.entries (e: "exec --no-startup-id ${e}"))}
+            ${lib.concatStringsSep "\n"
+            (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
             ${with config.wmCommon; mkPlacementRulesI3 workspaces wsMapping.rules}
 
