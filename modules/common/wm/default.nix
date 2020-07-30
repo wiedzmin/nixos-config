@@ -158,14 +158,7 @@ in {
       };
       autostart.entries = mkOption {
         type = types.listOf types.str;
-        default = [
-          "alacritty"
-          "emacs"
-          "nm-applet"
-          "qutebrowser -P default --class qb-default"
-          "mattermost-desktop"
-          "telegram-desktop"
-        ];
+        default = [ ];
         description = "Applications to start automatically.";
       };
       keybindingsCachePath = mkOption {

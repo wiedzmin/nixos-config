@@ -601,6 +601,9 @@ in {
 
   wm.i3.enable = true;
 
+  wmCommon.autostart.entries =
+    [ "alacritty" "emacs" "nm-applet" "qutebrowser -P default --class qb-default" "telegram-desktop" ];
+
   home-manager.users."${config.attributes.mainUser.name}" = {
     nixpkgs.config.allowUnfree = true;
     xdg.enable = true;
