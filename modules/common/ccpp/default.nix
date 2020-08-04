@@ -20,7 +20,9 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ ccls clang ]; };
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ ccls clang clang-tools ];
+      };
       environment.etc."security/limits.conf".text = ''
         * hard  nofile    32768
         * soft  nofile    32768
