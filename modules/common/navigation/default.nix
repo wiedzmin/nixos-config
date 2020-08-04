@@ -324,6 +324,7 @@ in {
           epkgs.helm-descbinds
           epkgs.helm-describe-modes
           epkgs.helm-projectile
+          epkgs.helm-rg
           epkgs.helm-swoop
           epkgs.helm-tramp
           epkgs.helm-xref

@@ -103,10 +103,11 @@
   :bind
   ("C-<f1>" . helm-projectile-switch-project)
   (:map custom-nav-map
-               ("g" . helm-projectile-rg))
+               ("d" . helm-projectile-rg))
   (:map custom-projectile-map
                ("h" . helm/combined))
   :config
+  (use-package helm-rg)
   (helm-projectile-on)
   (setq projectile-switch-project-action 'helm-projectile)
   (setq helm-projectile-fuzzy-match nil))
@@ -256,7 +257,7 @@
   :bind
   (:map custom-nav-map
         ("r" . rg)
-        ("d" . rg-project))
+        ("p" . rg-project))
   :custom
   (rg-group-result t)
   (rg-show-columns t)
