@@ -213,32 +213,9 @@ in {
   };
 
   job = {
-    "14f7646bef".secrets = {
-      enable = true;
-      vpn.enable = true;
-      wifi.enable = true;
-      scheduling.enable = true;
-      bookmarks.enable = true;
-      webjumps.enable = true;
-      expansions.enable = true;
-      wsMapping.enable = true;
-    };
-    "8a1add5330".secrets = {
-      enable = true;
-      bookmarks.enable = true;
-      webjumps.enable = true;
-      expansions.enable = true;
-      wsMapping.enable = true;
-    };
-    "b354e944b3".secrets = {
-      enable = true;
-      bookmarks.enable = true;
-      extraHosts.enable = true;
-      snippets.enable = true;
-      vpn.enable = true;
-      webjumps.enable = true;
-      wsMapping.enable = true;
-    };
+    "14f7646bef".secrets.enable = true;
+    "8a1add5330".secrets.enable = true;
+    "b354e944b3".secrets.enable = true;
   };
 
   custom.appearance = {
