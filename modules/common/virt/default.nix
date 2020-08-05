@@ -111,7 +111,6 @@ in {
     (mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
         nfs-utils # for vagrant
-        # tigervnc
         nixpkgs-pinned-16_04_20.vagrant
       ];
 

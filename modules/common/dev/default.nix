@@ -187,8 +187,7 @@ in {
     (mkIf (cfg.enable && cfg.bookmarks.enable) { custom.shell.bookmarks.entries = cfg.bookmarks.entries; })
     (mkIf (cfg.enable && cfg.repoSearch.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        reposearch =
-          mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd pystdlib python3Packages.libtmux xsel emacs pystdlib ])
+        reposearch = mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd python3Packages.libtmux xsel emacs pystdlib ])
           (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./reposearch.py; })));
       };
