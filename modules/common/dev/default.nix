@@ -264,6 +264,7 @@ in {
           '';
         };
         home.packages = with pkgs; [ comby nixpkgs-pinned-09_07_20.devdocs-desktop icdiff the-way ];
+        programs.zsh.shellAliases = { tws = "${pkgs.the-way}/bin/the-way search"; };
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;

@@ -220,20 +220,21 @@ in {
       scheduling.enable = true;
       bookmarks.enable = true;
       webjumps.enable = true;
-      snippets.enable = true;
+      expansions.enable = true;
       wsMapping.enable = true;
     };
     "8a1add5330".secrets = {
       enable = true;
       bookmarks.enable = true;
       webjumps.enable = true;
-      snippets.enable = true;
+      expansions.enable = true;
       wsMapping.enable = true;
     };
     "b354e944b3".secrets = {
       enable = true;
       bookmarks.enable = true;
       extraHosts.enable = true;
+      snippets.enable = true;
       vpn.enable = true;
       webjumps.enable = true;
       wsMapping.enable = true;
@@ -324,8 +325,8 @@ in {
     misc.enable = true;
     direnv.granularity = "file";
     emacs.enable = true;
-    wm.enable = true;
     secrets.snippets.enable = true;
+    wm.enable = true;
     staging.packages = with pkgs; [ go-task ];
   };
 
@@ -427,6 +428,7 @@ in {
     mc.enable = true;
     misc.enable = true;
     snippets.enable = true;
+    expansions.enable = true;
     emacs.enable = true;
     wm.enable = true;
     webjumps.enable = true;

@@ -85,6 +85,18 @@ in {
         type = types.listOf types.attrs;
         description = ''
           Various text snippets, mostly for development automation.
+        '';
+        default = [ ];
+      };
+      expansions.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable expansions automation.";
+      };
+      expansions.entries = mkOption {
+        type = types.listOf types.attrs;
+        description = ''
+          Various text expansions, mostly for development automation.
           Espanso util is used.
         '';
         default = [ ];
@@ -284,17 +296,28 @@ in {
     })
     (mkIf (cfg.enable && cfg.snippets.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
+        xdg.configFile."the-way/snippets.json".text = builtins.toJSON cfg.snippets.entries;
+        home.activation.importSnippets = {
+          after = [ ];
+          before = [ "linkGeneration" ];
+          data =
+            "the-way clear -f && cat /home/${config.attributes.mainUser.name}/.config/the-way/snippets.json | jq -c '.[]' | the-way import";
+        };
+      };
+    })
+    (mkIf (cfg.enable && cfg.expansions.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ espanso ];
         home.file = {
           ".config/espanso/user/common.yml".text = builtins.toJSON {
             name = "common";
             parent = "default";
-            matches = cfg.snippets.entries;
+            matches = cfg.expansions.entries;
           };
         };
       };
       systemd.user.services."espanso" = {
-        description = "Snippets";
+        description = "Expansions";
         after = [ "graphical-session-pre.target" ];
         partOf = [ "graphical-session.target" ];
         wantedBy = [ "graphical-session.target" ];
@@ -377,7 +400,7 @@ in {
           cmd = "${dmenu_select_windows}/bin/dmenu_select_windows";
           mode = "window";
         }
-      ] ++ lib.optionals (cfg.snippets.enable) [{
+      ] ++ lib.optionals (cfg.expansions.enable) [{
         key = [ "o" ];
         cmd = "${config.systemd.package}/bin/systemctl --user restart espanso.service";
         mode = "run";
