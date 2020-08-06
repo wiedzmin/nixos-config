@@ -6,7 +6,10 @@ in {
   options.themes.fonts.iosevka = { enable = mkEnableOption "iosevka"; };
 
   config = mkIf cfg.enable {
-    fonts = { fonts = with pkgs; [ iosevka ]; };
+    fonts = {
+      fonts = with pkgs; [ iosevka ];
+      fontconfig = { defaultFonts = { monospace = [ "Iosevka" ]; }; };
+    };
     wmCommon.fonts.default = "pango:Iosevka Bold 9";
     wmCommon.fonts.dmenu = "Iosevka:bold:size=9";
     wmCommon.fonts.statusbar = "pango:Iosevka Bold 9";
@@ -33,9 +36,7 @@ in {
       programs.zathura.options.font = "Iosevka Bold 10";
       services.dunst.settings.global.font = "Iosevka Bold 10";
       xresources.properties = {
-        "Emacs*XlwMenu.font" = "Iosevka:weight=Bold:size=14";
         "Emacs.Font" = "Iosevka:weight=Bold:size=14";
-        "Emacs.dialog*.font" = "Iosevka:weight=Bold:size=14";
 
         "Xmessage*faceName" = "Iosevka";
         "Xmessage*faceSize" = "16";

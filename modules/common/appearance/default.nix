@@ -26,11 +26,6 @@ in {
         default = 115;
         description = "Font DPI.";
       };
-      fonts.default.monospace = mkOption {
-        type = types.str;
-        default = "Iosevka";
-        description = "Default monospace font family.";
-      };
       fonts.console = mkOption {
         type = types.str;
         default = "";
@@ -40,21 +35,6 @@ in {
         type = types.str;
         default = "ru_RU.UTF-8";
         description = "Locale name.";
-      };
-      fonts.basic.xft = mkOption {
-        type = types.str;
-        default = "xft:Iosevka:weight=Bold:size=10";
-        description = "Basic font XFT definition";
-      };
-      fonts.basic.raw = mkOption {
-        type = types.str;
-        default = "Iosevka Bold 10";
-        description = "Basic font raw definition";
-      };
-      fonts.basic.package = mkOption {
-        type = types.package;
-        default = pkgs.iosevka;
-        description = "Basic font package";
       };
       gtk.enable = mkOption {
         type = types.bool;
@@ -108,7 +88,6 @@ in {
           enable = true;
           antialias = cfg.fonts.antialias;
           dpi = cfg.fonts.dpi;
-          defaultFonts = { monospace = [ cfg.fonts.default.monospace ]; };
         };
         enableFontDir = true;
         enableGhostscriptFonts = true;

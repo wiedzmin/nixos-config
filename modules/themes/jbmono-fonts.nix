@@ -7,20 +7,13 @@ in {
 
   config = mkIf cfg.enable {
     fonts = {
-      fonts = with pkgs; [
-        jetbrains-mono
-
-        config.attributes.fonts.basic.package
-      ];
+      fonts = with pkgs; [ jetbrains-mono ];
+      fontconfig = { defaultFonts = { monospace = [ "JetBrains Mono" ]; }; };
     };
-    wmCommon.fonts.default = "xft:JetBrains Mono:weight=Bold:size=10";
-    wmCommon.fonts.dmenu = "xft:JetBrains Mono:size=8";
-    wmCommon.fonts.statusbar = config.custom.appearance.fonts.basic.xft;
+    wmCommon.fonts.default = "pango:JetBrains Mono Bold 8";
+    wmCommon.fonts.dmenu = "JetBrains Mono:bold:size=8";
+    wmCommon.fonts.statusbar = "pango:JetBrains Mono Bold 8";
     home-manager.users."${config.attributes.mainUser.name}" = {
-      gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
-        package = config.custom.appearance.fonts.basic.package;
-        name = config.custom.appearance.fonts.basic.raw;
-      };
       programs.alacritty.settings.font = {
         normal = {
           family = "JetBrains Mono";
@@ -36,12 +29,10 @@ in {
         };
         size = 11.0;
       };
-      programs.zathura.options.font = "JetBrains Mono Bold 10";
+      programs.zathura.options.font = "JetBrains Mono Bold 9";
       services.dunst.settings.global.font = "JetBrains Mono Bold 8";
       xresources.properties = {
-        "Emacs*XlwMenu.font" = "JetBrains Mono:weight=Bold:size=12";
         "Emacs.Font" = "JetBrains Mono:weight=Bold:size=12";
-        "Emacs.dialog*.font" = "JetBrains Mono:weight=Bold:size=12";
 
         "Xmessage*faceName" = "JetBrains Mono";
         "Xmessage*faceSize" = "12";

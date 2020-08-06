@@ -7,20 +7,13 @@ in {
 
   config = mkIf cfg.enable {
     fonts = {
-      fonts = with pkgs; [
-        fira-code
-
-        config.attributes.fonts.basic.package
-      ];
+      fonts = with pkgs; [ fira-code ];
+      fontconfig = { defaultFonts = { monospace = [ "Fira Code" ]; }; };
     };
-    wmCommon.fonts.default = "xft:Fira Code:style=Bold:pixelsize=10";
-    wmCommon.fonts.dmenu = "xft:Fira Code:style=Bold:pixelsize=12";
-    wmCommon.fonts.statusbar = config.custom.appearance.fonts.basic.xft;
+    wmCommon.fonts.default = "pango:Fira Code Bold 8";
+    wmCommon.fonts.dmenu = "Fira Code:bold:pixelsize=12";
+    wmCommon.fonts.statusbar = "pango:Fira Code Bold 8";
     home-manager.users."${config.attributes.mainUser.name}" = {
-      gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
-        package = config.custom.appearance.fonts.basic.package;
-        name = config.custom.appearance.fonts.basic.raw;
-      };
       programs.alacritty.settings.font = {
         normal = {
           family = "Fira Code";
@@ -36,12 +29,10 @@ in {
         };
         size = 11.0;
       };
-      programs.zathura.options.font = "Fira Code Bold 10";
-      services.dunst.settings.global.font = "Fira Code Bold 10";
+      programs.zathura.options.font = "Fira Code Bold 8";
+      services.dunst.settings.global.font = "Fira Code Bold 8";
       xresources.properties = {
-        "Emacs*XlwMenu.font" = "Fira Code:weight=Bold:size=12";
         "Emacs.Font" = "Fira Code:weight=Bold:size=12";
-        "Emacs.dialog*.font" = "Fira Code:weight=Bold:size=12";
 
         "Xmessage*faceName" = "Fira Code";
         "Xmessage*faceSize" = "12";

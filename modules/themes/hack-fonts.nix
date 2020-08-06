@@ -7,12 +7,12 @@ in {
 
   config = mkIf cfg.enable {
     fonts = {
-      fonts = with pkgs; [
-        hack-font
-
-        config.attributes.fonts.basic.package
-      ];
+      fonts = with pkgs; [ hack-font ];
+      fontconfig = { defaultFonts = { monospace = [ "Hack" ]; }; };
     };
+    wmCommon.fonts.default = "pango:Hack Bold 8";
+    wmCommon.fonts.dmenu = "Hack:bold:size=8";
+    wmCommon.fonts.statusbar = "pango:Hack Bold 8";
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.hack-font;
@@ -36,9 +36,7 @@ in {
       programs.zathura.options.font = "Hack Bold 10";
       services.dunst.settings.global.font = "Hack Bold 10";
       xresources.properties = {
-        "Emacs*XlwMenu.font" = "Hack:weight=Bold:size=14";
         "Emacs.Font" = "Hack:weight=Bold:size=14";
-        "Emacs.dialog*.font" = "Hack:weight=Bold:size=14";
 
         "Xmessage*faceName" = "Hack";
         "Xmessage*faceSize" = "16";

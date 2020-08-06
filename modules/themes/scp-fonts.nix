@@ -7,16 +7,12 @@ in {
 
   config = mkIf cfg.enable {
     fonts = {
-      fonts = with pkgs; [
-        source-code-pro
-
-        config.attributes.fonts.basic.package
-      ];
+      fonts = with pkgs; [ source-code-pro ];
+      fontconfig = { defaultFonts = { monospace = [ "Source Code Pro" ]; }; };
     };
-    # TODO: think of providing some reasonable defaults when particular theme module does not apply some options
-    wmCommon.fonts.default = "xft:Source Code Pro:style=Bold:pixelsize=10";
-    wmCommon.fonts.dmenu = "xft:Source Code Pro:style=Bold:pixelsize=12";
-    wmCommon.fonts.statusbar = config.custom.appearance.fonts.basic.xft;
+    wmCommon.fonts.default = "pango:Source Code Pro Bold 9";
+    wmCommon.fonts.dmenu = "Source Code Pro:bold:size=9";
+    wmCommon.fonts.statusbar = "pango:Source Code Pro Bold 9";
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.source-code-pro;
@@ -40,9 +36,7 @@ in {
       programs.zathura.options.font = "Source Code Pro Bold 10";
       services.dunst.settings.global.font = "Source Code Pro Bold 10";
       xresources.properties = {
-        "Emacs*XlwMenu.font" = "Source Code Pro:weight=Bold:size=12";
         "Emacs.Font" = "Source Code Pro:weight=Bold:size=12";
-        "Emacs.dialog*.font" = "Source Code Pro:weight=Bold:size=12";
 
         "Xmessage*faceName" = "Source Code Pro";
         "Xmessage*faceSize" = "12";
