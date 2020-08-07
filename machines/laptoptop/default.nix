@@ -227,7 +227,7 @@ in {
     wallpaper = {
       enable = true;
       root = homePrefix "blobs/wallpaper";
-      current = "mongolia-spring-1.jpg";
+      current = "mongolia_2.jpg";
     };
     emacs.enable = true;
     wm.enable = true;
