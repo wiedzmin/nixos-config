@@ -138,12 +138,12 @@ in {
     '';
     tlp = {
       enable = true;
-      extraConfig = ''
-        START_CHARGE_THRESH_BAT0=80
-        STOP_CHARGE_THRESH_BAT0=90
-        DEVICES_TO_DISABLE_ON_WIFI_CONNECT="wwan"
-        USB_BLACKLIST_PHONE=1
-      '';
+      settings = {
+        START_CHARGE_THRESH_BAT0 = "80";
+        STOP_CHARGE_THRESH_BAT0 = "90";
+        DEVICES_TO_DISABLE_ON_WIFI_CONNECT = "wwan";
+        USB_BLACKLIST_PHONE = 1;
+      };
     };
     thermald.enable = true;
     acpid.enable = true;
