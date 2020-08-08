@@ -169,7 +169,6 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable && cfg.xresources.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         xresources.properties = {
-          "Emacs.FontBackend" = "xft,x";
           "Emacs.menuBar" = "0";
           "Emacs.toolBar" = "0";
           "Emacs.verticalScrollBars" = false;
