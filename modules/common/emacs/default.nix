@@ -101,7 +101,7 @@ in {
         # TODO: check i we need https://github.com/jollheef/localhost/blob/adcdadaa68fdb17c41ed51fe28b19a53861b450d/packages.nix#L74 here
         programs.emacs = {
           enable = true;
-          package = (pkgs.emacs26.override {
+          package = (pkgs.emacs.override {
             # build Lucid version
             withGTK2 = false;
             withGTK3 = false;
