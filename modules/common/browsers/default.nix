@@ -599,6 +599,7 @@ in {
         renderTimer "Backup current firefox session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
     })
     (mkIf (cfg.enable && cfg.qutebrowser.enable) {
+      # FIXME: migrate to nix-attributes settings
       nixpkgs.config.packageOverrides = _: rec {
         yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ]) (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./yank-image.sh; })));
