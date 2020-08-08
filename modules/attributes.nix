@@ -94,6 +94,11 @@ with lib;
       type = types.int;
       default = 4;
     };
+    nix.jobs = mkOption {
+      description = "Simultaneous build jobs count";
+      type = types.int;
+      default = 1;
+    };
     hardware.monitors = {
       internalHead = {
         name = mkOption {

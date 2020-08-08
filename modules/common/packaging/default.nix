@@ -71,7 +71,7 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       nix = {
-        maxJobs = lib.mkDefault config.attributes.hardware.cores;
+        maxJobs = lib.mkDefault config.attributes.nix.jobs;
         buildCores = lib.mkDefault config.attributes.hardware.cores;
         optimise.automatic = false;
         gc = {
