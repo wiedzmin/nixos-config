@@ -1,6 +1,7 @@
 let
   deps = import ../../../nix/sources.nix;
   nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
+  nixpkgs-pinned-09_07_20 = import deps.nixpkgs-pinned-09_07_20 { config.allowUnfree = true; };
 in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
@@ -226,7 +227,12 @@ in {
     (mkIf (cfg.enable && cfg.messengers.enable) {
       services.quassel.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ skype nixpkgs-pinned-16_04_20.mattermost-desktop tdesktop quasselClient ];
+        home.packages = with pkgs; [
+          skype
+          nixpkgs-pinned-16_04_20.mattermost-desktop
+          nixpkgs-pinned-09_07_20.tdesktop
+          quasselClient
+        ];
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {
