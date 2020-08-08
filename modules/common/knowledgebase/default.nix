@@ -75,9 +75,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ heimer ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [ epkgs.helpful epkgs.which-key ];
-      };
+      ide.emacs.extraPackages = epkgs: [ epkgs.helpful epkgs.which-key ];
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./knowledgebase.el; }));
     })

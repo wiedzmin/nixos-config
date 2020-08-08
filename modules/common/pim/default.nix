@@ -141,32 +141,30 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       custom.pim.org.agendaRoots = { "${config.ide.emacs.orgDir}" = 3000; };
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ plantuml ];
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.org-mru-clock
-          epkgs.deft
-          epkgs.doct
-          epkgs.ob-async
-          epkgs.ob-blockdiag
-          epkgs.ob-restclient
-          epkgs.org-bullets
-          epkgs.org-capture-pop-frame
-          epkgs.org-clock-today
-          epkgs.org-plus-contrib
-          epkgs.org-pomodoro
-          epkgs.org-ql
-          epkgs.org-randomnote
-          epkgs.org-recent-headings
-          epkgs.org-rich-yank
-          epkgs.helm-org
-          epkgs.helm-org-rifle
-          epkgs.org-sticky-header
-          epkgs.orgit
-          epkgs.plantuml-mode
-          epkgs.russian-holidays
-        ];
-      };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ plantuml ]; };
+      ide.emacs.extraPackages = epkgs: [
+        epkgs.org-mru-clock
+        epkgs.deft
+        epkgs.doct
+        epkgs.ob-async
+        epkgs.ob-blockdiag
+        epkgs.ob-restclient
+        epkgs.org-bullets
+        epkgs.org-capture-pop-frame
+        epkgs.org-clock-today
+        epkgs.org-plus-contrib
+        epkgs.org-pomodoro
+        epkgs.org-ql
+        epkgs.org-randomnote
+        epkgs.org-recent-headings
+        epkgs.org-rich-yank
+        epkgs.helm-org
+        epkgs.helm-org-rifle
+        epkgs.org-sticky-header
+        epkgs.orgit
+        epkgs.plantuml-mode
+        epkgs.russian-holidays
+      ];
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./pim.el; }));
     })

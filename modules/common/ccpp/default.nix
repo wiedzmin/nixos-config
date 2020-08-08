@@ -32,9 +32,7 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [ epkgs.ccls ];
-      };
+      ide.emacs.extraPackages = epkgs: [ epkgs.ccls ];
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./ccpp.el; }));
     })

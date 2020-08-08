@@ -137,4 +137,11 @@ in rec {
       homePrefix (lib.getAttrFromPath [ key ] roots)
     else
       builtins.trace "no '${key}' workspace root found";
+  selectorFunction = lib.mkOptionType {
+    name = "selectorFunction";
+    description = "Function that takes an attribute set and returns a list"
+      + " containing a selection of the values of the input set";
+    check = lib.isFunction;
+    merge = _loc: defs: as: lib.concatMap (select: select as) (lib.getValues defs);
+  };
 }

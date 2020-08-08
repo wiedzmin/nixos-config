@@ -146,9 +146,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
-      };
+      ide.emacs.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./packaging.el; }));
     })

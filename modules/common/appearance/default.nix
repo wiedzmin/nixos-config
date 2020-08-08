@@ -155,14 +155,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.diredfl
-          epkgs.doom-modeline
-          epkgs.rainbow-mode
-          epkgs.unicode-fonts
-        ];
-      };
+      ide.emacs.extraPackages = epkgs: [ epkgs.diredfl epkgs.doom-modeline epkgs.rainbow-mode epkgs.unicode-fonts ];
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./appearance.el; }));
     })

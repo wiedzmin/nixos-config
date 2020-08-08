@@ -87,13 +87,6 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.dap-mode
-          epkgs.flycheck-golangci-lint
-          epkgs.go-mode
-          epkgs.go-tag
-          epkgs.gotest
-        ];
         home.file = {
           "${cfg.packaging.path}/default.nix".text = ''
             with import <nixpkgs> {};
@@ -123,6 +116,13 @@ in {
           '';
         };
       };
+      ide.emacs.extraPackages = epkgs: [
+        epkgs.dap-mode
+        epkgs.flycheck-golangci-lint
+        epkgs.go-mode
+        epkgs.go-tag
+        epkgs.gotest
+      ];
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./golang.el; }));
     })

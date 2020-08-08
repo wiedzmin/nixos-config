@@ -672,10 +672,10 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.aux.enable) {
+      ide.emacs.extraPackages = epkgs: [ epkgs.atomic-chrome ];
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs;
           [ w3m-full webmacs ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
-        programs.emacs.extraPackages = epkgs: [ epkgs.atomic-chrome ];
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

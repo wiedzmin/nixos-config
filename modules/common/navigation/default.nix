@@ -331,35 +331,33 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ ripgrep ];
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.ace-window
-          epkgs.avy
-          epkgs.avy-zap
-          epkgs.dired-filetype-face
-          epkgs.dired-git-info
-          epkgs.dired-hide-dotfiles
-          epkgs.dired-launch
-          epkgs.dired-narrow
-          epkgs.dired-quick-sort
-          epkgs.helm-c-yasnippet
-          epkgs.helm-descbinds
-          epkgs.helm-describe-modes
-          epkgs.helm-projectile
-          epkgs.helm-rg
-          epkgs.helm-swoop
-          epkgs.helm-tramp
-          epkgs.helm-xref
-          epkgs.imenu-anywhere
-          epkgs.link-hint
-          epkgs.phi-search
-          epkgs.phi-search-mc
-          epkgs.polymode
-          epkgs.projectile
-          epkgs.rg
-        ];
-      };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ ripgrep ]; };
+      ide.emacs.extraPackages = epkgs: [
+        epkgs.ace-window
+        epkgs.avy
+        epkgs.avy-zap
+        epkgs.dired-filetype-face
+        epkgs.dired-git-info
+        epkgs.dired-hide-dotfiles
+        epkgs.dired-launch
+        epkgs.dired-narrow
+        epkgs.dired-quick-sort
+        epkgs.helm-c-yasnippet
+        epkgs.helm-descbinds
+        epkgs.helm-describe-modes
+        epkgs.helm-projectile
+        epkgs.helm-rg
+        epkgs.helm-swoop
+        epkgs.helm-tramp
+        epkgs.helm-xref
+        epkgs.imenu-anywhere
+        epkgs.link-hint
+        epkgs.phi-search
+        epkgs.phi-search-mc
+        epkgs.polymode
+        epkgs.projectile
+        epkgs.rg
+      ];
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./navigation.el; }));
     })

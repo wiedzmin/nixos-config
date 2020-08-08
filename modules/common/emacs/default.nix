@@ -51,6 +51,17 @@ in {
           sessions.
         '';
       };
+      extraPackages = mkOption {
+        default = self: [ ];
+        type = selectorFunction;
+        defaultText = "epkgs: []";
+        example = literalExample "epkgs: [ epkgs.emms epkgs.magit ]";
+        description = ''
+          Extra packages available to Emacs. To get a list of
+          available packages run:
+          <command>nix-env -f '&lt;nixpkgs&gt;' -qaP -A emacsPackages</command>.
+        '';
+      };
       initElContent = mkOption {
         type = types.lines;
         default = ''
@@ -94,81 +105,77 @@ in {
         .dir-locals.el
       '';
       environment.variables.EDITOR = "${pkgs.emacs}/bin/emacsclient";
+      ide.emacs.extraPackages = epkgs:
+        [
+          epkgs.aggressive-indent
+          epkgs.amx
+          epkgs.anaphora
+          epkgs.auto-compile
+          epkgs.backup-each-save
+          epkgs.beginend
+          epkgs.blockdiag-mode
+          epkgs.comment-dwim-2
+          epkgs.company
+          epkgs.company-fuzzy
+          epkgs.company-quickhelp
+          epkgs.company-statistics
+          epkgs.compdef
+          epkgs.copy-as-format
+          epkgs.default-text-scale
+          epkgs.deferred
+          epkgs.delight
+          epkgs.easy-kill
+          epkgs.easy-kill-extras # add to .el
+          epkgs.editorconfig
+          epkgs.f
+          epkgs.fancy-dabbrev
+          epkgs.flycheck
+          epkgs.format-all
+          epkgs.gcmh
+          epkgs.goto-char-preview
+          epkgs.haskell-mode
+          epkgs.helm-flycheck
+          epkgs.hl-todo
+          epkgs.ini-mode
+          epkgs.iqa
+          epkgs.keychain-environment
+          epkgs.lsp-mode
+          epkgs.lsp-ui
+          epkgs.markdown-mode
+          epkgs.multiple-cursors
+          epkgs.mwim
+          epkgs.names
+          epkgs.no-littering
+          epkgs.posframe
+          epkgs.pos-tip
+          epkgs.quelpa
+          epkgs.quelpa-use-package
+          epkgs.recentf-ext
+          epkgs.recursive-narrow
+          epkgs.region-bindings-mode
+          epkgs.restart-emacs
+          epkgs.savekill
+          epkgs.shift-number
+          epkgs.smartparens
+          epkgs.string-inflection
+          epkgs.super-save
+          epkgs.undo-propose
+          epkgs.unicode-escape
+          epkgs.use-package
+          epkgs.wgrep
+          epkgs.ws-butler
+          epkgs.yasnippet
+        ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ ispell org-capture editorconfig-checker ];
         programs.zsh.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
         programs.bash.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
-        # TODO: check i we need https://github.com/jollheef/localhost/blob/adcdadaa68fdb17c41ed51fe28b19a53861b450d/packages.nix#L74 here
-        programs.emacs = {
-          enable = true;
-          package = (pkgs.emacs.override {
-            # build Lucid version
+        home.packages = (with pkgs; [ ispell org-capture editorconfig-checker ]) ++ [
+          ((pkgs.emacsPackagesFor (pkgs.emacs.override {
             withGTK2 = false;
             withGTK3 = false;
-            inherit (pkgs) imagemagick;
-          });
-          extraPackages = epkgs:
-            [
-              epkgs.aggressive-indent
-              epkgs.amx
-              epkgs.anaphora
-              epkgs.auto-compile
-              epkgs.backup-each-save
-              epkgs.beginend
-              epkgs.blockdiag-mode
-              epkgs.comment-dwim-2
-              epkgs.company
-              epkgs.company-fuzzy
-              epkgs.company-quickhelp
-              epkgs.company-statistics
-              epkgs.compdef
-              epkgs.copy-as-format
-              epkgs.default-text-scale
-              epkgs.deferred
-              epkgs.delight
-              epkgs.easy-kill
-              epkgs.easy-kill-extras # add to .el
-              epkgs.editorconfig
-              epkgs.f
-              epkgs.fancy-dabbrev
-              epkgs.flycheck
-              epkgs.format-all
-              epkgs.gcmh
-              epkgs.goto-char-preview
-              epkgs.haskell-mode
-              epkgs.helm-flycheck
-              epkgs.hl-todo
-              epkgs.ini-mode
-              epkgs.iqa
-              epkgs.keychain-environment
-              epkgs.lsp-mode
-              epkgs.lsp-ui
-              epkgs.markdown-mode
-              epkgs.multiple-cursors
-              epkgs.mwim
-              epkgs.names
-              epkgs.no-littering
-              epkgs.posframe
-              epkgs.pos-tip
-              epkgs.quelpa
-              epkgs.quelpa-use-package
-              epkgs.recentf-ext
-              epkgs.recursive-narrow
-              epkgs.region-bindings-mode
-              epkgs.restart-emacs
-              epkgs.savekill
-              epkgs.shift-number
-              epkgs.smartparens
-              epkgs.string-inflection
-              epkgs.super-save
-              epkgs.undo-propose
-              epkgs.unicode-escape
-              epkgs.use-package
-              epkgs.wgrep
-              epkgs.ws-butler
-              epkgs.yasnippet
-            ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
-        };
+            imagemagick = pkgs.imagemagickBig;
+          })).emacsWithPackages cfg.extraPackages)
+        ];
         home.file = {
           ".emacs.d/init.el".text = cfg.initElContent;
           ".emacs.d/resources/yasnippet" = {

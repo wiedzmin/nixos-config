@@ -395,23 +395,21 @@ in {
         renderTimer "Save work-in-progress in registered git repo(s)" "2m" "3m" cfg.saveWip.when;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.emacs.extraPackages = epkgs: [
-          epkgs.browse-at-remote
-          epkgs.dired-git-info
-          epkgs.git-commit
-          epkgs.git-identity
-          epkgs.git-link
-          epkgs.git-msg-prefix
-          epkgs.git-timemachine
-          epkgs.git-walktree
-          epkgs.helm-ghq
-          epkgs.magit
-          epkgs.magit-filenotify
-          epkgs.magit-popup # *
-          epkgs.magit-todos
-        ];
-      };
+      ide.emacs.extraPackages = epkgs: [
+        epkgs.browse-at-remote
+        epkgs.dired-git-info
+        epkgs.git-commit
+        epkgs.git-identity
+        epkgs.git-link
+        epkgs.git-msg-prefix
+        epkgs.git-timemachine
+        epkgs.git-walktree
+        epkgs.helm-ghq
+        epkgs.magit
+        epkgs.magit-filenotify
+        epkgs.magit-popup # *
+        epkgs.magit-todos
+      ];
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./git.el; })) + "\n"
         + cfg.emacs.extraConfig;

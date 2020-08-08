@@ -512,8 +512,8 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ checkbashisms nodePackages.bash-language-server ];
-        programs.emacs.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms ];
       };
+      ide.emacs.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms ];
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./shell.el; }));
 
