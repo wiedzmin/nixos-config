@@ -176,7 +176,7 @@ in {
           EDITOR = "${pkgs.emacs}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
         };
         home.packages = (with pkgs; [ ispell org-capture editorconfig-checker ]) ++ [
-          ((pkgs.emacsPackagesFor (pkgs.emacs.override {
+          ((pkgs.emacsPackagesFor (pkgs.emacsGit.override {
             withGTK2 = false;
             withGTK3 = false;
             imagemagick = pkgs.imagemagickBig;
