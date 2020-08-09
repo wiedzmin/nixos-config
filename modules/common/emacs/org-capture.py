@@ -62,5 +62,5 @@ if args.debug:
     with open(DEBUG_FILE, "w") as debug:
         debug.write(capture_uri + "\n")
 
-capture_uri_task = subprocess.Popen(f'emacsclient "{capture_uri}"', shell=True, stdout=subprocess.PIPE)
+capture_uri_task = subprocess.Popen(f'emacsclient -s @emacsServerSocketPath@ "{capture_uri}"', shell=True, stdout=subprocess.PIPE)
 assert capture_uri_task.wait() == 0

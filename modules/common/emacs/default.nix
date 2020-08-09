@@ -3,7 +3,9 @@ in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.ide.emacs;
+let
+  cfg = config.ide.emacs;
+  uid = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
 in {
   options = {
     ide.emacs = {
@@ -167,8 +169,12 @@ in {
           epkgs.yasnippet
         ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
       home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.zsh.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
-        programs.bash.sessionVariables = { EDITOR = "${pkgs.emacs}/bin/emacsclient"; };
+        programs.zsh.sessionVariables = {
+          EDITOR = "${pkgs.emacs}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
+        };
+        programs.bash.sessionVariables = {
+          EDITOR = "${pkgs.emacs}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
+        };
         home.packages = (with pkgs; [ ispell org-capture editorconfig-checker ]) ++ [
           ((pkgs.emacsPackagesFor (pkgs.emacs.override {
             withGTK2 = false;
@@ -199,7 +205,7 @@ in {
         }
         {
           key = [ "e" ];
-          cmd = "${pkgs.emacs}/bin/emacsclient -c -a emacs";
+          cmd = "${pkgs.emacs}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
           mode = "window";
         }
       ];

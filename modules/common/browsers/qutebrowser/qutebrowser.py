@@ -6,7 +6,7 @@ config.aliases = {
 c.auto_save.interval = 15000
 c.auto_save.session = True
 
-c.editor.command = ['@emacsClient@', '-c', '+{line}:{column}', '{}']
+c.editor.command = ['@emacsClient@', '-c', '-s @emacsServerSocketPath@', '+{line}:{column}', '{}']
 c.new_instance_open_target = "window"
 c.url.default_page = 'about:blank'
 c.zoom.levels = ['25%', '33%', '50%', '67%', '75%', '90%', '100%', '110%', '125%', '150%', '175%', '200%', '250%', '300%', '400%', '500%']
