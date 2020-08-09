@@ -144,8 +144,6 @@ in {
           "Xft.dpi" = "120";
           "Xft.hinting" = true;
           "Xft.hintstyle" = "hintmedium";
-          "Xft.lcdfilter" = "lcdnone";
-          "Xft.rgba" = "none";
         };
         home.activation.xrdb = {
           after = [ "linkGeneration" ];
