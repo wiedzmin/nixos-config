@@ -53,6 +53,17 @@ in {
           sessions.
         '';
       };
+      package = mkOption {
+        type = types.package;
+        default = pkgs.emacsGit.override {
+          withGTK2 = false;
+          withGTK3 = false;
+          imagemagick = pkgs.imagemagickBig;
+        };
+        description = ''
+          Emacs derivation to use.
+        '';
+      };
       extraPackages = mkOption {
         default = self: [ ];
         type = selectorFunction;
@@ -175,13 +186,8 @@ in {
         programs.bash.sessionVariables = {
           EDITOR = "${pkgs.emacs}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
         };
-        home.packages = (with pkgs; [ ispell org-capture editorconfig-checker ]) ++ [
-          ((pkgs.emacsPackagesFor (pkgs.emacsGit.override {
-            withGTK2 = false;
-            withGTK3 = false;
-            imagemagick = pkgs.imagemagickBig;
-          })).emacsWithPackages cfg.extraPackages)
-        ];
+        home.packages = (with pkgs; [ ispell org-capture editorconfig-checker ])
+          ++ [ ((pkgs.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
         home.file = {
           ".emacs.d/init.el".text = cfg.initElContent;
           ".emacs.d/resources/yasnippet" = {
