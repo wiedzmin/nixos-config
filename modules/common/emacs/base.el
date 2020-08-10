@@ -134,7 +134,8 @@
   (before-save-hook . delete-trailing-whitespace)
   :bind
   (:map ctl-x-map
-        ("f" . find-file))
+        ("f" . find-file)
+        ("C-c" . delete-frame)) ;; for keeping daemon running
   :custom
   ;; backup settings
   (auto-save-default nil)
@@ -167,24 +168,6 @@
 (use-package novice
   :custom
   (disabled-command-function nil))
-
-(use-package server
-  :preface
-  (defun custom/save-buffer-clients-on-exit ()
-    (interactive)
-    (if (and (boundp 'server-buffer-clients) server-buffer-clients)
-        (server-save-edit)
-      (save-buffers-kill-emacs t)))
-  (defun custom/ensure-server ()
-    (unless (and (string-equal "root" (getenv "USER"))
-                 (server-running-p))
-      (require 'server)
-      (server-start)))
-  :hook
-  (after-init-hook . custom/ensure-server)
-  :config
-  (advice-add 'save-buffers-kill-terminal :before 'custom/save-buffer-clients-on-exit)
-  (advice-add 'server-edit :before 'save-buffer))
 
 (use-package image
   :config
