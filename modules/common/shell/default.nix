@@ -337,9 +337,10 @@ in {
                 y = 2;
               };
               decorations = "full";
+              dynamic_title = true;
             };
             draw_bold_text_with_bright_colors = true;
-            visual_bell = {
+            bell = {
               animation = "EaseOutExpo";
               duration = 0;
             };
@@ -349,7 +350,6 @@ in {
             }];
             background_opacity = 0.5;
             selection = { semantic_escape_chars = '',│`|:"' ()[]{}<>''; };
-            dynamic_title = true;
             cursor = { style = "Beam"; };
             live_config_reload = true;
           };
