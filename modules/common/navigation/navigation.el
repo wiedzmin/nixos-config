@@ -241,13 +241,13 @@
                ("h" . helm-projectile-find-file))
   :custom
   (projectile-enable-caching t)
-  (projectile-require-project-root nil)
+  (projectile-require-project-root t)
   (projectile-completion-system 'helm)
   (projectile-track-known-projects-automatically t)
   (projectile-project-root-files-functions
    '(projectile-root-local
-     projectile-root-top-down
      projectile-root-bottom-up
+     projectile-root-top-down
      projectile-root-top-down-recurring))
   :hook
   (after-init-hook . projectile-mode))
