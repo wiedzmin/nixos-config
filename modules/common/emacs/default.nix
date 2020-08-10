@@ -201,6 +201,20 @@ in {
           data = "mkdir -p ${cfg.dataDir}/lsp";
         };
       };
+      systemd.user.services."emacs" = { # TODO: review/add socket activation
+        description = "Emacs: the extensible, self-documenting text editor";
+        documentation = [ "info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/" ];
+        restartIfChanged = false;
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
+          ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
+          Restart = "on-failure";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+        wantedBy = [ "default.target" ];
+      };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
