@@ -41,6 +41,16 @@ in {
         default = { };
         description = "Searchengines entries.";
       };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        description = "Whether to enable bookmarks.";
+        default = false;
+      };
+      bookmarks.entries = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Bookmarks data.";
+      };
       gmrun.enable = mkOption {
         type = types.bool;
         default = false;
@@ -132,6 +142,13 @@ in {
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ j4-dmenu-desktop ]; };
+    })
+    (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set nav/bookmarks ${
+          lib.strings.escapeNixString (builtins.toJSON cfg.bookmarks.entries)
+        }
+      '';
     })
     (mkIf (cfg.enable && cfg.webjumps.enable) {
       assertions = [{

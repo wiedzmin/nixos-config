@@ -44,11 +44,6 @@ in {
         default = false;
         description = "Whether to enable code stats tools.";
       };
-      bookmarks.enable = mkOption {
-        type = types.bool;
-        description = "Whether to enable shell bookmarks.";
-        default = false;
-      };
       # IDEA: make script for extracting from shell history based on substring
       bookmarks.entries = mkOption {
         type = types.attrs;
@@ -145,6 +140,15 @@ in {
   };
 
   config = mkMerge [
+    (mkIf (cfg.enable && config.custom.navigation.bookmarks.enable) {
+      nixpkgs.config.packageOverrides = _: rec {
+        open-project = mkPythonScriptWithDeps "open-project" (with pkgs; [ pystdlib python3Packages.redis ])
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./open-project.py; })));
+      };
+      custom.navigation.bookmarks.entries = cfg.bookmarks.entries;
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ open-project ]; };
+    })
     (mkIf (cfg.enable && cfg.codesearch.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ codesearch ];
@@ -182,7 +186,6 @@ in {
         home.packages = with pkgs; [ cloc gource sloccount tokei ];
       };
     })
-    (mkIf (cfg.enable && cfg.bookmarks.enable) { custom.shell.bookmarks.entries = cfg.bookmarks.entries; })
     (mkIf (cfg.enable && cfg.repoSearch.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         reposearch = mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd python3Packages.libtmux xsel emacs pystdlib ])
@@ -309,6 +312,10 @@ in {
       ] ++ lib.optionals (cfg.repoSearch.enable) [{
         key = [ "r" ];
         cmd = "${pkgs.reposearch}/bin/reposearch";
+        mode = "run";
+      }] ++ lib.optionals (config.custom.navigation.bookmarks.enable) [{
+        key = [ "Shift" "p" ];
+        cmd = "${pkgs.open-project}/bin/open-project";
         mode = "run";
       }];
     })

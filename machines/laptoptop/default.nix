@@ -278,7 +278,7 @@ in {
 
   custom.content = {
     enable = true;
-    bookmarks.enable = true;
+    bookmarking.enable = true;
     screenshots = {
       enable = true;
       baseDir = homePrefix "screenshots";
@@ -298,7 +298,6 @@ in {
     codesearch.enable = true;
     patching.enable = true;
     repoSearch.enable = true;
-    bookmarks.enable = true;
     misc.enable = true;
     direnv.granularity = "file";
     emacs.enable = true;
@@ -410,6 +409,7 @@ in {
     wm.enable = true;
     webjumps.enable = true;
     searchengines.enable = true;
+    bookmarks.enable = true;
   };
 
   custom.networking = {
@@ -495,10 +495,10 @@ in {
   custom.shell = {
     enable = true;
     alacritty.enable = true;
+    bookmarks.enable = true;
     tmux.enable = true;
     toolsng.enable = true;
     liquidPrompt.enable = true;
-    bookmarks.enable = true;
     emacs.enable = true;
     wm.enable = true;
     staging.packages = with pkgs; [ diskonaut k4dirstat ugrep ];

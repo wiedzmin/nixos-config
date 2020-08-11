@@ -17,7 +17,7 @@ in {
         default = false;
         description = "Whether to enable content-related tools.";
       };
-      bookmarks.enable = mkOption {
+      bookmarking.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable bookmarking harness";
@@ -154,7 +154,7 @@ in {
         programs.zsh.shellAliases = { yg = "${proposed.you-get}/bin/you-get"; };
       };
     })
-    (mkIf cfg.bookmarks.enable {
+    (mkIf cfg.bookmarking.enable {
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
         buku_add = mkPythonScriptWithDeps "buku_add" (with pkgs; [ nixpkgs-pinned-16_04_20.buku pystdlib xsel ])
@@ -211,7 +211,7 @@ in {
         wantedBy = [ "graphical-session.target" ];
       };
     })
-    (mkIf (cfg.enable && cfg.wm.enable && cfg.bookmarks.enable) {
+    (mkIf (cfg.enable && cfg.wm.enable && cfg.bookmarking.enable) {
       wmCommon.keys = [{
         key = [ "m" ];
         cmd = "${pkgs.buku_add}/bin/buku_add";

@@ -61,11 +61,6 @@ in {
         description = "Where to store shell bookmarks, relative to $HOME.";
         default = ".bookmarks";
       };
-      bookmarks.entries = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "Bookmarks data.";
-      };
       bookmarks.order = mkOption {
         type = types.bool;
         default = false;
@@ -487,8 +482,8 @@ in {
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
-          "${cfg.bookmarks.path}".text =
-            lib.concatStringsSep "\n" (lib.mapAttrsToList (name: path: name + " : " + path) cfg.bookmarks.entries);
+          "${cfg.bookmarks.path}".text = lib.concatStringsSep "\n"
+            (lib.mapAttrsToList (name: path: name + " : " + path) config.custom.navigation.bookmarks.entries);
         };
         programs.fzf.enable = true;
         programs.zsh = {
