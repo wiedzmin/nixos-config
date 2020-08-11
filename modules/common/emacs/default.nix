@@ -82,12 +82,17 @@ in {
           (setq debug-on-error t)
           (setq debug-on-quit t)
 
+          (require 'notifications)
+
           ${lib.optionalString (cfg.environment != { }) (builtins.concatStringsSep "\n"
             (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
 
           ${builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./base.el; }))}
           ${cfg.config}
+
+          (notifications-notify :title "Emacs" :body "Started server")
+
           (setq debug-on-error nil)
           (setq debug-on-quit nil)
         '';
@@ -209,6 +214,7 @@ in {
           Type = "simple";
           ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
           ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
+          ExecStopPost = "${pkgs.libnotify}/bin/notify-send 'Stopped EMACS server'";
           Restart = "on-failure";
           StandardOutput = "journal";
           StandardError = "journal";
