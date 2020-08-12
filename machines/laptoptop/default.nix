@@ -311,6 +311,7 @@ in {
     myrepos.enable = true;
     ghq = { enable = true; };
     github.user = "wiedzmin";
+    hooks.enable = true;
     # TODO: think of what timespecs do we need for services below
     fetchUpdates = {
       enable = false;
