@@ -172,7 +172,20 @@
 
 (use-package frame
   :preface
-  (defvar custom-frame-title-format '("emacs - " "%b %f"))
+  (defvar custom-frame-title-format '(:eval
+   (format "%s@%s: %s %s"
+           (or (file-remote-p default-directory 'user)
+               user-real-login-name)
+           (or (file-remote-p default-directory 'host)
+               system-name)
+           (buffer-name)
+           (cond
+            (buffer-file-truename
+             (concat "(" buffer-file-truename ")"))
+            (dired-directory
+             (concat "{" dired-directory "}"))
+            (t
+             "[no file]")))))
   (defun keep-custom-frame-title (window)
     (setq-default frame-title-format custom-frame-title-format))
   :bind
@@ -185,7 +198,7 @@
   (unless (string-equal "i3" (getenv "CURRENT_WM"))
     (add-hook 'pre-redisplay-functions 'keep-custom-frame-title))
   (blink-cursor-mode 0)
-  (setq frame-title-format custom-frame-title-format) ;; for various external tools
+  (setq-default frame-title-format custom-frame-title-format) ;; for various external tools
   (setq truncate-partial-width-windows nil))
 
 (use-package imenu-anywhere
