@@ -312,15 +312,18 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.snippets.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        xdg.configFile."the-way/snippets.json".text = builtins.toJSON cfg.snippets.entries;
-        home.activation.importSnippets = {
-          after = [ ];
-          before = [ "linkGeneration" ];
-          data =
-            "the-way clear -f && cat /home/${config.attributes.mainUser.name}/.config/the-way/snippets.json | jq -c '.[]' | the-way import";
-        };
+      nixpkgs.config.packageOverrides = _: rec {
+        snippets = mkPythonScriptWithDeps "snippets" (with pkgs; [ pystdlib python3Packages.redis xsel ])
+          (builtins.readFile
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./snippets.py; })));
       };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ snippets ]; };
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set nav/snippets ${
+          lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (forEach cfg.snippets.entries (s:
+            nameValuePair "${lib.concatStringsSep ":" s.tags} | ${s.description} | ${s.language} | ${s.code}" s.code))))
+        }
+      '';
     })
     (mkIf (cfg.enable && cfg.expansions.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -418,6 +421,10 @@ in {
       ] ++ lib.optionals (cfg.expansions.enable) [{
         key = [ "o" ];
         cmd = "${config.systemd.package}/bin/systemctl --user restart espanso.service";
+        mode = "run";
+      }] ++ lib.optionals (cfg.snippets.enable) [{
+        key = [ "Shift" "s" ];
+        cmd = "${pkgs.snippets}/bin/snippets";
         mode = "run";
       }];
     })
