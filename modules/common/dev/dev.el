@@ -66,6 +66,10 @@
         ("C-M-r" . lsp-rename)
         ("C-c h" . lsp-ui-doc-glance))
   :custom
+  (read-process-output-max (* 1024 1024))
+  (gc-cons-threshold 100000000)
+  (lsp-completion-provider :capf)
+  (lsp-enable-file-watchers nil)
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil)
   (lsp-auto-guess-root t)
