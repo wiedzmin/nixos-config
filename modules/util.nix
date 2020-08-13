@@ -124,6 +124,8 @@ in rec {
         > $out
     '');
   maybeAttrIsBool = name: set: (builtins.hasAttr name set) && (set."${name}" == true);
+  maybeAttrString = name: set: if (builtins.hasAttr name set) then set."${name}" else "";
+  maybeAttrList = name: set: if (builtins.hasAttr name set) then set."${name}" else [ ];
   emacsBoolToString = v: if v == true then "t" else "nil";
   wsRoot = key:
     let roots = config.custom.dev.workspaceRoots;

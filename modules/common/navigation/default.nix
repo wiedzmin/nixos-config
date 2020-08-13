@@ -321,7 +321,10 @@ in {
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/snippets ${
           lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (forEach cfg.snippets.entries (s:
-            nameValuePair "${lib.concatStringsSep ":" s.tags} | ${s.description} | ${s.language} | ${s.code}" s.code))))
+            nameValuePair
+            "${lib.concatStringsSep ":" (maybeAttrList "tags" s)} | ${(maybeAttrString "description" s)} | ${
+              (maybeAttrString "language" s)
+            } | ${s.code}" s.code))))
         }
       '';
     })
