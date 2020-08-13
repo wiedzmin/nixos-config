@@ -309,8 +309,8 @@ in {
         ${pkgs.redis}/bin/redis-cli set nav/snippets ${
           lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (forEach cfg.snippets.entries (s:
             nameValuePair
-            "${lib.concatStringsSep ":" (maybeAttrList "tags" s)} | ${(maybeAttrString "description" s)} | ${
-              (maybeAttrString "language" s)
+            "${lib.concatStringsSep ":" (maybeAttrList "tags" s "-")} | ${(maybeAttrString "description" s "-")} | ${
+              (maybeAttrString "language" s "-")
             } | ${s.code}" s.code))))
         }
       '';
