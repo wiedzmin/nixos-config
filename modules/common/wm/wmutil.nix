@@ -83,12 +83,12 @@ in rec {
       }: ${ws.name}; move workspace to output ${head}; "))}";
   mkKeybindingI3 = meta:
     builtins.concatStringsSep " " ([ "bindsym" (mkKeyI3 meta.key) ]
-      ++ lib.optionals (!maybeAttrBool "raw" meta) [ "exec" ]
-      ++ lib.optionals (maybeAttrBool "transient" meta) [ "--no-startup-id" ] ++ [
+      ++ lib.optionals (!maybeAttrIsBool "raw" meta) [ "exec" ]
+      ++ lib.optionals (maybeAttrIsBool "transient" meta) [ "--no-startup-id" ] ++ [
         (builtins.concatStringsSep "; " (lib.optionals (builtins.hasAttr "cmd" meta) [ meta.cmd ]
           ++ lib.optionals (builtins.hasAttr "desktop" meta)
           [ "workspace ${getWorkspaceByNameI3 config.wmCommon.workspaces meta.desktop}" ]
-          ++ lib.optionals (!maybeAttrBool "sticky" meta && meta.mode != "root") [ ''mode "default"'' ]))
+          ++ lib.optionals (!maybeAttrIsBool "sticky" meta && meta.mode != "root") [ ''mode "default"'' ]))
       ]);
   mkKeybindingsI3 = keys: modeBindings: exitBindings:
     let

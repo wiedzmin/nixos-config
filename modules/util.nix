@@ -123,7 +123,7 @@ in rec {
         < ${pkgs.writeText "attrs.json" (builtins.toJSON attrs)} \
         > $out
     '');
-  maybeAttrBool = name: set: (builtins.hasAttr name set) && (set."${name}" == true);
+  maybeAttrIsBool = name: set: (builtins.hasAttr name set) && (set."${name}" == true);
   emacsBoolToString = v: if v == true then "t" else "nil";
   wsRoot = key:
     let roots = config.custom.dev.workspaceRoots;
