@@ -405,7 +405,6 @@ in {
     mc.enable = true;
     misc.enable = true;
     snippets.enable = true;
-    expansions.enable = true;
     emacs.enable = true;
     wm.enable = true;
     webjumps.enable = true;

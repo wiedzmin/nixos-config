@@ -169,6 +169,7 @@ in {
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = { "${cfg.assets.dirName}/.gitignore".text = cfg.gitignore; };
+        programs.zsh.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
         # https://github.com/languitar/pass-git-helper - review for more fine-grained control
         xdg.configFile."pass-git-helper/git-pass-mapping.ini".text = lib.generators.toINI { } cfg.credentials.mapping;
         programs.git = {

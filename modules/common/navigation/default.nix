@@ -98,19 +98,6 @@ in {
         '';
         default = [ ];
       };
-      expansions.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable expansions automation.";
-      };
-      expansions.entries = mkOption {
-        type = types.listOf types.attrs;
-        description = ''
-          Various text expansions, mostly for development automation.
-          Espanso util is used.
-        '';
-        default = [ ];
-      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -328,31 +315,6 @@ in {
         }
       '';
     })
-    (mkIf (cfg.enable && cfg.expansions.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ espanso ];
-        home.file = {
-          ".config/espanso/user/common.yml".text = builtins.toJSON {
-            name = "common";
-            parent = "default";
-            matches = cfg.expansions.entries;
-          };
-        };
-      };
-      systemd.user.services."espanso" = {
-        description = "Expansions";
-        after = [ "graphical-session-pre.target" ];
-        partOf = [ "graphical-session.target" ];
-        wantedBy = [ "graphical-session.target" ];
-        path = with pkgs; [ libnotify xclip ];
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${pkgs.espanso}/bin/espanso daemon";
-          Restart = "on-failure";
-          RestartSec = 3;
-        };
-      };
-    })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ ripgrep ]; };
       ide.emacs.extraPackages = epkgs: [
@@ -421,11 +383,7 @@ in {
           cmd = "${dmenu_select_windows}/bin/dmenu_select_windows";
           mode = "window";
         }
-      ] ++ lib.optionals (cfg.expansions.enable) [{
-        key = [ "o" ];
-        cmd = "${config.systemd.package}/bin/systemctl --user restart espanso.service";
-        mode = "run";
-      }] ++ lib.optionals (cfg.snippets.enable) [{
+      ] ++ lib.optionals (cfg.snippets.enable) [{
         key = [ "Shift" "s" ];
         cmd = "${pkgs.snippets}/bin/snippets";
         mode = "run";

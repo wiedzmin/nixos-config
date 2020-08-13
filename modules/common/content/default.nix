@@ -111,14 +111,6 @@ in {
             ytdl=yes
             ytdl-format=(bestvideo[ext=webm]/bestvideo[height>720]/bestvideo[fps=60])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio)/best
           '';
-          ".config/espanso/user/content.yml".text = builtins.toJSON {
-            name = "content";
-            parent = "default";
-            matches = [{
-              trigger = ":a2";
-              replace = "aria2c ";
-            }];
-          };
         } // lib.optionalAttrs (config.custom.shell.enable) {
           "tmuxp/media.yml".text = ''
             session_name: media
