@@ -11,6 +11,18 @@
         "url": "https://github.com/nix-community/emacs-overlay/archive/787ca42ba5b88684b0099699fc37ee3d75ec079a.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "git-extra-commands": {
+        "branch": "master",
+        "description": "A collection of git utilities and useful extra git scripts I've discovered or written, packaged for ease of use with shell frameworks.",
+        "homepage": "",
+        "owner": "unixorn",
+        "repo": "git-extra-commands",
+        "rev": "547f215b81e3ded4f9fe19d0835b22fa65e06bd2",
+        "sha256": "1p8ka9dabbr9k40xchr09mwcalq265rg9hiq5prbg86b9aj380kj",
+        "type": "tarball",
+        "url": "https://github.com/unixorn/git-extra-commands/archive/547f215b81e3ded4f9fe19d0835b22fa65e06bd2.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "home-manager": {
         "branch": "master",
         "description": "Manage a user environment using Nix",
@@ -21,6 +33,18 @@
         "sha256": "10svwspmsf46rijzsh0h9nmz1mq2998wcml8yp36mwksgi8695pc",
         "type": "tarball",
         "url": "https://github.com/rycee/home-manager/archive/223e3c38a13fb45726c7a9d97e2612ae53ab4f98.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "liquidprompt": {
+        "branch": "master",
+        "description": "A full-featured & carefully designed adaptive prompt for Bash & Zsh",
+        "homepage": "",
+        "owner": "nojhan",
+        "repo": "liquidprompt",
+        "rev": "deff598f30f097279d6f6959ba49441923dec041",
+        "sha256": "0ibp1bz9s4bp3y5anivg5gp31q78024w39v7hbfw05qy25ax5h60",
+        "type": "tarball",
+        "url": "https://github.com/nojhan/liquidprompt/archive/deff598f30f097279d6f6959ba49441923dec041.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
     "niv": {
@@ -155,6 +179,30 @@
         "url": "https://github.com/NixOS/nixpkgs-channels/archive/nixos-19.03.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     },
+    "pass-zsh-completion": {
+        "branch": "master",
+        "description": "pass zsh completion plugin",
+        "homepage": null,
+        "owner": "ninrod",
+        "repo": "pass-zsh-completion",
+        "rev": "e4d8d2c27d8999307e8f34bf81b2e15df4b76177",
+        "sha256": "1z83hgdljl7yqd1lqb10an8zkrv7s01khky27mgc1wargkslkxi9",
+        "type": "tarball",
+        "url": "https://github.com/ninrod/pass-zsh-completion/archive/e4d8d2c27d8999307e8f34bf81b2e15df4b76177.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "stumpwm-config": {
+        "branch": "master",
+        "description": "my stumpwm configuration",
+        "homepage": null,
+        "owner": "wiedzmin",
+        "repo": "stumpwm-config",
+        "rev": "832513053bb70fc0d24620bc4607b0031193f526",
+        "sha256": "0yx3xnw33zkmgl92jnzvzqqvqb7q80gz9ysm3ngbba3hawn2vmma",
+        "type": "tarball",
+        "url": "https://github.com/wiedzmin/stumpwm-config/archive/832513053bb70fc0d24620bc4607b0031193f526.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
     "yasnippet-snippets": {
         "branch": "master",
         "description": "a collection of yasnippet snippets for many languages",
@@ -165,6 +213,102 @@
         "sha256": "1s16hi32167yasc262dz82laxv2vm6s3vsymhrwbnydfnm871v9v",
         "type": "tarball",
         "url": "https://github.com/wiedzmin/yasnippet-snippets/archive/a29b6b0a75a4c86b1a687570d8a601dc674b94bb.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "zsh-async": {
+        "branch": "master",
+        "description": "Because your terminal should be able to perform tasks asynchronously without external tools!",
+        "homepage": null,
+        "owner": "mafredri",
+        "repo": "zsh-async",
+        "rev": "490167c4aa5a870b3da1458859bcf3a9d1e24f97",
+        "sha256": "1vlr8fkk3k4cz3sxz3qmlkfsqxw251igbn9raz3lga4p213m98jb",
+        "type": "tarball",
+        "url": "https://github.com/mafredri/zsh-async/archive/490167c4aa5a870b3da1458859bcf3a9d1e24f97.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "zsh-command-time": {
+        "branch": "master",
+        "description": "Show execution time for long commands in zsh",
+        "homepage": "",
+        "owner": "popstas",
+        "repo": "zsh-command-time",
+        "rev": "2737cb8dd8edbc6fcbc01f046e3e0e57fded7c8b",
+        "sha256": "1si57pp2wjx81iv206xcrqydvrzajnglczw2igcy5amc9abq6h7w",
+        "type": "tarball",
+        "url": "https://github.com/popstas/zsh-command-time/archive/2737cb8dd8edbc6fcbc01f046e3e0e57fded7c8b.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "zsh-fuzzy-search-and-edit": {
+        "branch": "master",
+        "description": "Find and open editor on matched line lightning-fast",
+        "homepage": "",
+        "owner": "seletskiy",
+        "repo": "zsh-fuzzy-search-and-edit",
+        "rev": "bd4182bd81b176fedd8fa13c62e2c6662390e025",
+        "sha256": "005l5ihhzlb3rpa34ikwfjc10glcdjph6qzjs5w7vdznd8gdcag2",
+        "type": "tarball",
+        "url": "https://github.com/seletskiy/zsh-fuzzy-search-and-edit/archive/bd4182bd81b176fedd8fa13c62e2c6662390e025.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "zsh-nix-shell": {
+        "branch": "master",
+        "description": "zsh plugin that lets you use zsh in nix-shell shell.",
+        "homepage": "",
+        "owner": "chisui",
+        "repo": "zsh-nix-shell",
+        "rev": "6ae30544a284301026d4ee1c437b44f5d1a9952e",
+        "sha256": "1y6nx0ww2vlgwwbajwlvf1ywczpd8115c1my4mmv4fkb6q97i05g",
+        "type": "tarball",
+        "url": "https://github.com/chisui/zsh-nix-shell/archive/6ae30544a284301026d4ee1c437b44f5d1a9952e.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "zsh-notify": {
+        "branch": "master",
+        "description": "Desktop notifications for long-running commands in zsh.",
+        "homepage": "",
+        "owner": "marzocchi",
+        "repo": "zsh-notify",
+        "rev": "8a4abe7611ea7f49c31b6e741983fd5201e3a26f",
+        "sha256": "0v7fjpd8gzyhjbs9d2yggkib6ji670bzgw924s9p4vn0n72m5gvs",
+        "type": "tarball",
+        "url": "https://github.com/marzocchi/zsh-notify/archive/8a4abe7611ea7f49c31b6e741983fd5201e3a26f.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "zsh-reentry-hook": {
+        "branch": "master",
+        "description": "ZSH plugin that re-enters working directory if it has been removed and re-created.",
+        "homepage": null,
+        "owner": "RobSis",
+        "repo": "zsh-reentry-hook",
+        "rev": "8587186df8f08b8a57ae7f87ab0bc7d503909031",
+        "sha256": "1jgin1gmw05vxf7vw414zvhq9dg06yzlzxas723f710vs58mf11a",
+        "type": "tarball",
+        "url": "https://github.com/RobSis/zsh-reentry-hook/archive/8587186df8f08b8a57ae7f87ab0bc7d503909031.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "zsh-syntax-highlighting": {
+        "branch": "master",
+        "description": "Fish shell like syntax highlighting for Zsh.",
+        "homepage": "github.com/zsh-users/zsh-syntax-highlighting",
+        "owner": "zsh-users",
+        "repo": "zsh-syntax-highlighting",
+        "rev": "6d5372a937c63a565a1ff93aa6efa9a2b6179917",
+        "sha256": "0fij9xvcgx4g8s6c9h36vcf9vs3yxp3xsq8xg2j4nb8xx4fdi15j",
+        "type": "tarball",
+        "url": "https://github.com/zsh-users/zsh-syntax-highlighting/archive/6d5372a937c63a565a1ff93aa6efa9a2b6179917.tar.gz",
+        "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
+    },
+    "zsh-you-should-use": {
+        "branch": "master",
+        "description": "📎 ZSH plugin that reminds you to use existing aliases for commands you just typed",
+        "homepage": "",
+        "owner": "MichaelAquilina",
+        "repo": "zsh-you-should-use",
+        "rev": "b4aec740f23d195116d1fddec91d67b5e9c2c5c7",
+        "sha256": "0bq15d6jk750cdbbjfdmdijp644d1pn2z80pk1r1cld6qqjnsaaq",
+        "type": "tarball",
+        "url": "https://github.com/MichaelAquilina/zsh-you-should-use/archive/b4aec740f23d195116d1fddec91d67b5e9c2c5c7.tar.gz",
         "url_template": "https://github.com/<owner>/<repo>/archive/<rev>.tar.gz"
     }
 }

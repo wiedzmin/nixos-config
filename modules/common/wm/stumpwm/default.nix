@@ -1,4 +1,5 @@
-{ config, lib, pkgs, ... }:
+let deps = import ../../nix/sources.nix;
+in { config, lib, pkgs, ... }:
 with lib;
 
 let cfg = config.wm.stumpwm;
@@ -29,14 +30,7 @@ in {
     };
 
     home-manager.users."${config.attributes.mainUser.name}" = {
-      home.file = {
-        ".stumpwm.d".source = pkgs.fetchFromGitHub {
-          owner = "wiedzmin";
-          repo = "stumpwm-config";
-          rev = "832513053bb70fc0d24620bc4607b0031193f526";
-          sha256 = "0yx3xnw33zkmgl92jnzvzqqvqb7q80gz9ysm3ngbba3hawn2vmma";
-        };
-      };
+      home.file = { ".stumpwm.d".source = deps.stumpwm-config; };
     };
   };
 }
