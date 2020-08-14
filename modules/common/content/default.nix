@@ -69,7 +69,8 @@ in {
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
         paste_to_ix = mkPythonScriptWithDeps "paste_to_ix" (with pkgs; [ ix xsel ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./paste_to_ix.sh; })));
+          (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/paste_to_ix.sh; })));
       };
       tools.ebooks.readers.roots = [ (homePrefix "bookshelf") ];
       services.clipmenu.enable = true;
@@ -150,16 +151,16 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
         buku_add = mkPythonScriptWithDeps "buku_add" (with pkgs; [ nixpkgs-pinned-16_04_20.buku pystdlib xsel ])
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_add.py; })));
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/buku_add.py; })));
         buku_search_tag =
           mkShellScriptWithDeps "buku_search_tag" (with pkgs; [ coreutils dmenu gawk nixpkgs-pinned-16_04_20.buku ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_tag.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/buku_search_tag.sh; })));
         buku_search_url =
           mkShellScriptWithDeps "buku_search_url" (with pkgs; [ coreutils dmenu nixpkgs-pinned-16_04_20.buku ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./buku_search_url.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/buku_search_url.sh; })));
       };
     })
     (mkIf (cfg.enable && cfg.screenshots.enable) {
@@ -178,13 +179,13 @@ in {
         screenshot_active_window =
           mkShellScriptWithDeps "screenshot_active_window" (with pkgs; [ coreutils maim xclip xdotool ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_active_window.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/screenshot_active_window.sh; })));
         screenshot_full = mkShellScriptWithDeps "screenshot_full" (with pkgs; [ coreutils maim xclip ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_full.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/screenshot_full.sh; })));
         screenshot_region = mkShellScriptWithDeps "screenshot_region" (with pkgs; [ coreutils maim xclip ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./screenshot_region.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/screenshot_region.sh; })));
       };
 
       environment.systemPackages = with pkgs; [ screenshot_active_window screenshot_full screenshot_region ];

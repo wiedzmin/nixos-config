@@ -106,7 +106,8 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" (with pkgs; [ pkgs.pystdlib ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./tmuxp_sessions.py; })));
+          (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/tmuxp_sessions.py; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -129,8 +130,8 @@ in {
                   - mc
           '';
         } // lib.optionalAttrs (cfg.liquidPrompt.enable) {
-          ".lp.ps1".text = builtins.readFile ./.lp.ps1;
-          ".liquidpromptrc".text = builtins.readFile ./.liquidpromptrc;
+          ".lp.ps1".text = builtins.readFile ./misc/.lp.ps1;
+          ".liquidpromptrc".text = builtins.readFile ./misc/.liquidpromptrc;
         };
         programs.readline = {
           enable = true;
@@ -444,7 +445,7 @@ in {
       };
       ide.emacs.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms ];
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./shell.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/shell.el; }));
 
     })
     (mkIf (cfg.enable && cfg.wm.enable) {

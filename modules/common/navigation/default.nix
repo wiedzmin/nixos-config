@@ -117,15 +117,15 @@ in {
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
         search_prompt = mkPythonScriptWithDeps "search_prompt" (with pkgs; [ pystdlib python3Packages.redis ])
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_prompt.py; })));
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/search_prompt.py; })));
         search_selection = mkPythonScriptWithDeps "search_selection"
           (with pkgs; [ pystdlib python3Packages.dmenu-python python3Packages.redis xsel ]) (builtins.readFile
             (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./search_selection.py; })));
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/search_selection.py; })));
         webjumps = mkPythonScriptWithDeps "webjumps" (with pkgs; [ pystdlib python3Packages.redis vpnctl ])
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./webjumps.py; })));
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/webjumps.py; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ j4-dmenu-desktop ]; };
@@ -301,8 +301,8 @@ in {
     (mkIf (cfg.enable && cfg.snippets.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         snippets = mkPythonScriptWithDeps "snippets" (with pkgs; [ pystdlib python3Packages.redis xsel ])
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./snippets.py; })));
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/snippets.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ snippets ]; };
       custom.housekeeping.metadataCacheInstructions = ''
@@ -344,7 +344,7 @@ in {
         epkgs.rg
       ];
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./navigation.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/navigation.el; }));
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [

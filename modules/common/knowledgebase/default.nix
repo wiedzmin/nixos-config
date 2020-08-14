@@ -76,8 +76,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.helpful epkgs.which-key ];
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./knowledgebase.el; }));
+      ide.emacs.config = builtins.readFile (pkgs.substituteAll
+        ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/knowledgebase.el; }));
     })
   ];
 }

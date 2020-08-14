@@ -157,8 +157,8 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         gitctl =
           mkPythonScriptWithDeps "gitctl" (with pkgs; [ pyfzf pystdlib python3Packages.pygit2 python3Packages.redis ])
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./gitctl.py; })));
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/gitctl.py; })));
       };
 
       custom.housekeeping.metadataCacheInstructions = ''
@@ -412,7 +412,7 @@ in {
         epkgs.magit-todos
       ];
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./git.el; })) + "\n"
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/git.el; })) + "\n"
         + cfg.emacs.extraConfig;
     })
   ];

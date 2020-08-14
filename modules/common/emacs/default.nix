@@ -88,7 +88,7 @@ in {
             (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
 
           ${builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./base.el; }))}
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/base.el; }))}
           ${cfg.config}
 
           (notifications-notify :title "Emacs" :body "Started server")
@@ -116,7 +116,8 @@ in {
       fonts = { fonts = with pkgs; [ emacs-all-the-icons-fonts ]; };
       nixpkgs.config.packageOverrides = _: rec {
         org-capture = mkPythonScriptWithDeps "org-capture" (with pkgs; [ emacs tmux xsel ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./org-capture.py; })));
+          (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/org-capture.py; })));
       };
       custom.dev.git.gitignore = ''
         *.elc

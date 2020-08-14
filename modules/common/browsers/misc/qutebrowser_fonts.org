@@ -1,0 +1,104 @@
+* fonts.completion.category - Font used in the completion categories.
+  Font used in the completion categories.
+  Type: Font
+  Default: bold default_size default_family
+* fonts.completion.entry - Font used in the completion widget.
+  Font used in the completion widget.
+  Type: Font
+  Default: default_size default_family
+* fonts.contextmenu - Font used for the context menu.
+  Font used for the context menu. If set to null, the Qt default is used.
+  Type: Font
+  Default: empty
+* fonts.debug_console - Font used for the debugging console.
+  Font used for the debugging console.
+  Type: Font
+  Default: default_size default_family
+* fonts.default_family - Default font families to use.
+  Default font families to use. Whenever "default_family" is used in a font setting, it’s replaced with the fonts listed here. If set to an empty value, a system-specific monospace default is used.
+  Type: List of Font, or Font
+  Default: empty
+* fonts.default_size - Default font size to use.
+  Default font size to use. Whenever "default_size" is used in a font setting, it’s replaced with the size listed here. Valid values are either a float value with a "pt" suffix, or an integer value with a "px" suffix.
+  Type: String
+  Default: 10pt
+* fonts.downloads - Font used for the downloadbar.
+  Font used for the downloadbar.
+  Type: Font
+  Default: default_size default_family
+* fonts.hints - Font used for the hints.
+  Font used for the hints.
+  Type: Font
+  Default: bold default_size default_family
+* fonts.keyhint - Font used in the keyhint widget.
+  Font used in the keyhint widget.
+  Type: Font
+  Default: default_size default_family
+* fonts.messages.error - Font used for error messages.
+  Font used for error messages.
+  Type: Font
+  Default: default_size default_family
+* fonts.messages.info - Font used for info messages.
+  Font used for info messages.
+  Type: Font
+  Default: default_size default_family
+* fonts.messages.warning - Font used for warning messages.
+  Font used for warning messages.
+  Type: Font
+  Default: default_size default_family
+* fonts.prompts - Font used for prompts.
+  Font used for prompts.
+  Type: Font
+  Default: default_size sans-serif
+* fonts.statusbar - Font used in the statusbar.
+  Font used in the statusbar.
+  Type: Font
+  Default: default_size default_family
+* fonts.tabs.selected - Font used for selected tabs.
+  Font used for selected tabs.
+  Type: Font
+  Default: default_size default_family
+* fonts.tabs.unselected - Font used for unselected tabs.
+  Font used for unselected tabs.
+  Type: Font
+  Default: default_size default_family
+* fonts.web.family.cursive - Font family for cursive fonts.
+  Font family for cursive fonts.
+  Type: FontFamily
+  Default: empty
+* fonts.web.family.fantasy - Font family for fantasy fonts.
+  Font family for fantasy fonts.
+  Type: FontFamily
+  Default: empty
+* fonts.web.family.fixed - Font family for fixed fonts.
+  Font family for fixed fonts.
+  Type: FontFamily
+  Default: empty
+* fonts.web.family.sans_serif - Font family for sans-serif fonts.
+  Font family for sans-serif fonts.
+  Type: FontFamily
+  Default: empty
+* fonts.web.family.serif - Font family for serif fonts.
+  Font family for serif fonts.
+  Type: FontFamily
+  Default: empty
+* fonts.web.family.standard - Font family for standard fonts.
+  Font family for standard fonts.
+  Type: FontFamily
+  Default: empty
+* fonts.web.size.default - Default font size (in pixels) for regular text.
+  Default font size (in pixels) for regular text.
+  Type: Int
+  Default: 16
+* fonts.web.size.default_fixed - Default font size (in pixels) for fixed-pitch text.
+  Default font size (in pixels) for fixed-pitch text.
+  Type: Int
+  Default: 13
+* fonts.web.size.minimum - Hard minimum font size (in pixels).
+  Hard minimum font size (in pixels).
+  Type: Int
+  Default: 0
+* fonts.web.size.minimum_logical - Minimum logical font size (in pixels) that is applied when zooming out.
+  Minimum logical font size (in pixels) that is applied when zooming out.
+  Type: Int
+  Default: 6

@@ -143,8 +143,8 @@ in {
     (mkIf (cfg.enable && config.custom.navigation.bookmarks.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         open-project = mkPythonScriptWithDeps "open-project" (with pkgs; [ pystdlib python3Packages.redis ])
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./open-project.py; })));
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/open-project.py; })));
       };
       custom.navigation.bookmarks.entries = cfg.bookmarks.entries;
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ open-project ]; };
@@ -174,7 +174,7 @@ in {
     (mkIf (cfg.enable && cfg.codesearch.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.codesearch epkgs.helm-codesearch ];
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./codesearch.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/codesearch.el; }));
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -189,8 +189,8 @@ in {
     (mkIf (cfg.enable && cfg.repoSearch.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         reposearch = mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd python3Packages.libtmux xsel emacs pystdlib ])
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./reposearch.py; })));
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/reposearch.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ reposearch ]; };
     })
@@ -294,7 +294,7 @@ in {
           toToml { language.python = { command = "python-language-server"; }; };
       };
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dev.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/dev.el; }));
     })
     (mkIf (cfg.enable && cfg.wm.enable && config.custom.virtualization.docker.enable) {
       wmCommon.keys = [

@@ -81,7 +81,7 @@ in {
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         modedit = mkPythonScriptWithDeps "modedit" (with pkgs; [ pystdlib ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./modedit.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/modedit.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ gore modedit ]; };
     })
@@ -124,7 +124,7 @@ in {
         epkgs.gotest
       ];
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./golang.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/golang.el; }));
     })
   ];
 }

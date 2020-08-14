@@ -79,14 +79,17 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         wifi-status = mkShellScriptWithDeps "wifi-status" (with pkgs; [ gawk wirelesstools ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./wifi-status.sh; })));
+          (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/wifi-status.sh; })));
         vpnctl = mkPythonScriptWithDeps "vpnctl" (with pkgs; [ pystdlib python3Packages.redis ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./vpnctl.py; })));
+          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/vpnctl.py; })));
         ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools pystdlib xsel yad ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./ifconfless.py; })));
+          (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/ifconfless.py; })));
         sshmenu = mkPythonScriptWithDeps "sshmenu"
           (with pkgs; [ openssh pystdlib python3Packages.libtmux python3Packages.redis vpnctl ]) (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./sshmenu.py; })));
+            (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/sshmenu.py; })));
       };
       services.openssh = {
         enable = true;

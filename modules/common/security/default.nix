@@ -60,7 +60,8 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         passctl = mkPythonScriptWithDeps "passctl"
           (with pkgs; [ pyfzf pystdlib python3Packages.pygit2 python3Packages.redis xdotool ]) (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./passctl.py; })));
+            (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/passctl.py; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -99,7 +100,7 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.auth-source-pass epkgs.helm-pass ];
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./security.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/security.el; }));
     })
     (mkIf (cfg.polkit.silentAuth) {
       security.polkit.extraConfig = ''

@@ -96,10 +96,11 @@ in {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
         srvctl = mkPythonScriptWithDeps "srvctl"
           (with pkgs; [ pyfzf pystdlib python3Packages.libtmux python3Packages.redis python3Packages.xlib ])
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./srvctl.py; })));
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/srvctl.py; })));
         uptime_info = mkPythonScriptWithDeps "uptime_info" (with pkgs; [ dunst gnused procps ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./uptime_info.sh; })));
+          (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/uptime_info.sh; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ redis-tui ];
@@ -244,7 +245,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         order_screenshots = mkShellScriptWithDeps "order_screenshots" (with pkgs; [ coreutils ]) (builtins.readFile
           (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./order_screenshots.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/order_screenshots.sh; })));
       };
 
       systemd.user.services."order-screenshots" = {

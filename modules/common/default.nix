@@ -2,7 +2,7 @@
   imports = [
     ./appearance
     ./browsers
-    ./browsers/firefox.nix
+    ./browsers/misc/firefox.nix
     ./ccpp
     ./content
     ./dbms
@@ -24,7 +24,7 @@
     ./python
     ./security
     ./shell
-    ./shell/tmux.nix
+    ./shell/misc/tmux.nix
     ./sound
     ./video
     ./virt

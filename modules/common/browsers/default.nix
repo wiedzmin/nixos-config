@@ -535,19 +535,20 @@ in {
         dump_firefox_session =
           mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dump_firefox_session.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/dump_firefox_session.sh; })));
         rotate_firefox_session_dumps =
           mkShellScriptWithDeps "rotate_firefox_session_dumps" (with pkgs; [ coreutils gnugrep ]) (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./rotate_firefox_session_dumps.sh; })));
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+              src = ./scripts/rotate_firefox_session_dumps.sh;
+            })));
         collect_links_on_page =
           mkPythonScriptWithDeps "collect_links_on_page" (with pkgs; [ pystdlib python3Packages.beautifulsoup4 xsel ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./collect_links_on_page.py; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/collect_links_on_page.py; })));
         manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
           (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped pystdlib ]) (builtins.readFile
             (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./manage_firefox_sessions.py; })));
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/manage_firefox_sessions.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.activation.ensureFirefoxSessionsPath = {
@@ -602,10 +603,11 @@ in {
       # FIXME: migrate to nix-attributes settings
       nixpkgs.config.packageOverrides = _: rec {
         yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./yank-image.sh; })));
+          (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/yank-image.sh; })));
         qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ python3Packages.pyyaml ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qb-fix-session.py; })));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/qb-fix-session.py; })));
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {
@@ -639,9 +641,9 @@ in {
         ];
         xdg.configFile = {
           "qutebrowser/config.py".text = builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qutebrowser/qutebrowser.py; }));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./misc/qutebrowser/qutebrowser.py; }));
           "qutebrowser/keybindings.py".text = builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./qutebrowser/keybindings.py; }));
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./misc/qutebrowser/keybindings.py; }));
         };
       };
     })
@@ -658,8 +660,8 @@ in {
     (mkIf (cfg.enable && cfg.next.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ next ];
-        xdg.configFile."next/init.lisp".text = builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./init.lisp; }));
+        xdg.configFile."next/init.lisp".text = builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./init.lisp; })); # NOTE: actually absent
       };
     })
     (mkIf (cfg.enable && cfg.next.enable && cfg.next.default) {
@@ -680,7 +682,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./browsers.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/browsers.el; }));
     })
   ];
 }

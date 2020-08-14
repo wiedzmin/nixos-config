@@ -89,14 +89,14 @@ in {
         packageOverrides = _: rec {
           get-pr-override = mkShellScriptWithDeps "get-pr-override" (with pkgs; [ coreutils curl gnugrep ])
             (builtins.readFile (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./get-pr-override.sh; })));
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/get-pr-override.sh; })));
           make-package-diff = mkShellScriptWithDeps "make-package-diff" (with pkgs; [ coreutils diffutils nix ])
             (builtins.readFile (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./make-package-diff.sh; })));
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/make-package-diff.sh; })));
           confctl =
             mkPythonScriptWithDepsAndConflicts "confctl" (with pkgs; [ pyfzf pystdlib python3Packages.python-gnupg ])
-            (builtins.readFile
-              (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./confctl.py; })));
+            (builtins.readFile (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/confctl.py; })));
           rollback = mkShellScriptWithDeps "rollback" (with pkgs; [ fzf ]) ''
             GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
             GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
@@ -148,7 +148,7 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./packaging.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/packaging.el; }));
     })
   ];
 }

@@ -155,7 +155,7 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.diredfl epkgs.doom-modeline epkgs.rainbow-mode epkgs.unicode-fonts ];
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./appearance.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/appearance.el; }));
     })
     (mkIf (cfg.enable && cfg.emacs.enable && cfg.xresources.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

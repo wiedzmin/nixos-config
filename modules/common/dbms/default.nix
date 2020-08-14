@@ -150,7 +150,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         dbms = mkPythonScriptWithDeps "dbms" (with pkgs; [ pass pystdlib python3Packages.redis tmux vpnctl ])
           (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./dbms.py; })));
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/dbms.py; })));
       };
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.cli.meta)}
