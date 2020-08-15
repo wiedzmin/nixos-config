@@ -235,11 +235,13 @@ in {
   };
 
   custom.browsers = {
-    enable = true;
-    qutebrowser.enable = true;
-    qutebrowser.default = true;
+    qutebrowser = {
+      enable = true;
+      isDefault = true;
+    };
     chromium = {
       enable = true;
+      isFallback = true;
       extraOpts = {
         # === Common workstation needs=======
         AudioCaptureAllowed = true;
@@ -273,8 +275,6 @@ in {
         ExternalProtocolDialogShowAlwaysOpenCheckbox = true;
       };
     };
-    aux.enable = true;
-    emacs.enable = true;
   };
 
   custom.content = {

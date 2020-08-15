@@ -17,7 +17,7 @@ rec {
   direnvGranularityProject = emacsBoolToString (config.custom.dev.direnv.granularity == "project");
   direnvGranularityFile = emacsBoolToString (config.custom.dev.direnv.granularity == "file");
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
-  downloadPath = config.custom.browsers.downloadPath;
+  qbDownloadPath = config.custom.browsers.qutebrowser.downloadPath;
   emacsBrowserGenericProgram = "${pkgs.xdg_utils}/bin/xdg-open";
   emacsCustomFile = homePrefix ".emacs.d/customizations.el";
   emacsClient = "${pkgs.emacs}/bin/emacsclient";

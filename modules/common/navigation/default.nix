@@ -356,6 +356,9 @@ in {
       ];
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/navigation.el; }));
+    } // lib.optionalAttrs (true) {
+      ide.emacs.config = builtins.readFile
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/browsers.el; }));
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [

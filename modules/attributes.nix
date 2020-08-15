@@ -45,6 +45,11 @@ with lib;
         "x-scheme-handler/unknown"
       ];
     };
+    browser.fallback = mkOption {
+      description = "Fallback browser command";
+      type = types.str;
+      default = "";
+    };
     mimetypes.ebook = mkOption {
       description = "MIME types to handle as e-books";
       type = types.listOf types.str;

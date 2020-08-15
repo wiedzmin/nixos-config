@@ -1,8 +1,11 @@
 { ... }: {
   imports = [
     ./appearance
-    ./browsers
-    ./browsers/misc/firefox.nix
+    ./browsers/chromium
+    ./browsers/firefox
+    ./browsers/firefox/impl.nix
+    ./browsers/next
+    ./browsers/qutebrowser
     ./ccpp
     ./content
     ./dbms

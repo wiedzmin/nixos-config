@@ -1,102 +1,44 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
-with import ../../util.nix { inherit config lib pkgs; };
-with import "${deps.home-manager}/modules/lib/dag.nix" { inherit lib; };
+{ config, lib, pkgs, ... }:
+with import ../../../util.nix { inherit config lib pkgs; };
 
 with lib;
 
 let
-  cfg = config.custom.browsers;
+  cfg = config.custom.browsers.firefox;
   prefix = config.wmCommon.prefix;
-  firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../../nix/firefox-addons { });
+  firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../../../nix/firefox-addons { });
 in {
   options = {
-    custom.browsers = {
+    custom.browsers.firefox = {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = ''
-          Whether to enable some browsers'.
-        '';
+        description = "Whether to enable firefox.";
       };
       downloadPath = mkOption {
         type = types.str;
         default = homePrefix "Downloads";
-        description = ''
-          Common downloads path'.
-        '';
+        description = "Downloads path";
       };
-      firefox.enable = mkOption {
+      isDefault = mkOption {
         type = types.bool;
         default = false;
-        description = ''
-          Whether to enable Firefox.
-        '';
+        description = "Set firefox as default browser.";
       };
-      firefox.default = mkOption {
+      isFallback = mkOption {
         type = types.bool;
         default = false;
-        description = ''
-          Firefox should be the default browser.
-        '';
+        description = "Set firefox as fallback browser.";
       };
-      chromium.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to enable Chromium.
-        '';
-      };
-      chromium.default = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Chromium should be the default browser.
-        '';
-      };
-      chromium.extraOpts = mkOption {
-        type = types.attrs;
-        description = ''
-          Extra chromium policy options, see
-          <link xlink:href="https://www.chromium.org/administrators/policy-list-3">https://www.chromium.org/administrators/policy-list-3</link>
-          for a list of available options
-        '';
-        default = { };
-      };
-      next.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to enable Next browser.
-        '';
-      };
-      next.default = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Next should be the default browser.
-        '';
-      };
-      qutebrowser.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to enable qutebrowser.
-        '';
-      };
-      qutebrowser.default = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Qutebrowser should be the default browser.
-        '';
-      };
-      fallback = mkOption {
+      command = mkOption {
         type = types.str;
-        default = "${pkgs.chromium}/bin/chromium --new-window";
-        description = "Browser to fallback to in some cases";
+        default = "${pkgs.firefox-unwrapped}/bin/firefox --new-window";
+        description = "Default command line to invoke";
+      };
+      sessions.backup.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to backup browser session.";
       };
       sessions.saveFrequency = mkOption {
         type = types.str;
@@ -109,65 +51,22 @@ in {
       sessions.sizeThreshold = mkOption {
         type = types.int;
         default = 10;
-        description = ''
-          Maximum session size (in URLs), in which case it would be loaded completely.
-        '';
+        description = "Maximum session size (in URLs), in which case it would be loaded completely.";
       };
-      sessions.firefox.backup.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to backup Firefox session.
-        '';
-      };
-      sessions.firefox.path = mkOption {
+      sessions.path = mkOption {
         type = types.str;
         default = homePrefix "docs/org/firefox";
-        description = ''
-          Where to save plaintext Firefox session contents.
-        '';
+        description = "Where to save plaintext Firefox session contents.";
       };
-      sessions.firefox.historyLength = mkOption {
+      sessions.historyLength = mkOption {
         type = types.int;
         default = 10;
-        description = ''
-          How many recent sessions to keep.
-        '';
+        description = "How many recent sessions to keep.";
       };
-      sessions.firefox.nameTemplate = mkOption {
+      sessions.nameTemplate = mkOption {
         type = types.str;
         default = "firefox-session-auto";
-        description = ''
-          Filename template for Firefox session files.
-        '';
-      };
-      defaultFlags = mkOption {
-        type = types.attrs;
-        default = { };
-        visible = false;
-        internal = true;
-        description = ''
-          Default browsers flags, to simplify "exactly one" assertions.
-        '';
-      };
-      aux.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to enable Next, w3m and such.
-        '';
-      };
-      emacs.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to enable Emacs browsers-related setup.
-        '';
-      };
-      staging.packages = mkOption {
-        type = types.listOf types.package;
-        default = [ ];
-        description = "List of staging packages.";
+        description = "Filename template for Firefox session files.";
       };
       staging.enableSettings = mkOption {
         type = types.bool;
@@ -177,10 +76,7 @@ in {
     };
   };
   config = mkMerge [
-    (mkIf cfg.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = { programs.browserpass.enable = true; };
-    })
-    (mkIf (cfg.enable && cfg.firefox.enable) {
+    (mkIf (cfg.enable) {
       custom.navigation.webjumps.entries = {
         "about:config" = { title = "Firefox configuration options"; };
         "about:memory" = { title = "Firefox addons reference"; };
@@ -493,44 +389,38 @@ in {
         };
       };
     })
-    (mkIf (cfg.enable && cfg.firefox.enable && cfg.firefox.default) {
-      assertions = [{
-        assertion = cfg.firefox.default && !cfg.chromium.default && !cfg.next.default && !cfg.qutebrowser.default;
-        message = "browsers: there should be exactly one default.";
-      }];
+    (mkIf (cfg.enable && cfg.isDefault) {
+      assertions = [
+        {
+          assertion = !cfg.isFallback;
+          message = "browsers: firefox: cannot be the default and fallback at the same time.";
+        }
+        {
+          assertion = !config.custom.browsers.chromium.isDefault && !config.custom.browsers.next.isDefault
+            && !config.custom.browsers.qutebrowser.isDefault;
+          message = "browsers: firefox: there should be exactly one default.";
+        }
+      ];
+
       home-manager.users."${config.attributes.mainUser.name}" = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "firefox.desktop";
       };
     })
-    (mkIf (cfg.enable && cfg.chromium.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        programs.chromium = {
-          enable = true;
-          extensions = [
-            "gfbliohnnapiefjpjlpjnehglfpaknnc" # Surfingkeys
-            "ignpacbgnbnkaiooknalneoeladjnfgb" # Url in title
-            "poahndpaaanbpbeafbkploiobpiiieko" # Display anchors
-            # "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
-            # "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
-            # "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
-            # "naepdomgkenhinolocfifgehidddafch" # Browserpass
-            # "ogfcmafjalglgifnmanfmnieipoejdcf" # uMatrix
-          ];
-        };
-      };
-      environment.etc."chromium/policies/managed/extra.json".text = builtins.toJSON cfg.chromium.extraOpts;
-      # chrome-export
+    (mkIf (cfg.enable && cfg.isFallback) {
+      assertions = [
+        {
+          assertion = !cfg.isDefault;
+          message = "browsers: firefox: cannot be the default and fallback at the same time.";
+        }
+        {
+          assertion = !config.custom.browsers.chromium.isFallback && !config.custom.browsers.next.isFallback
+            && !config.custom.browsers.qutebrowser.isFallback;
+          message = "browsers: firefox: there should be exactly one fallback.";
+        }
+      ];
+      attributes.browser.fallback = cfg.command;
     })
-    (mkIf (cfg.enable && cfg.chromium.enable && cfg.chromium.default) {
-      assertions = [{
-        assertion = cfg.chromium.default && !cfg.firefox.default && !cfg.next.default && !cfg.qutebrowser.default;
-        message = "browsers: there should be exactly one default.";
-      }];
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "chromium-browser.desktop";
-      };
-    })
-    (mkIf (cfg.enable && cfg.firefox.enable && cfg.sessions.firefox.backup.enable) {
+    (mkIf (cfg.enable && cfg.sessions.backup.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         dump_firefox_session =
           mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
@@ -558,7 +448,7 @@ in {
         };
         home.packages = with pkgs; [ dump_firefox_session manage_firefox_sessions rotate_firefox_session_dumps ];
       };
-      wmCommon.keys = [
+      wmCommon.keys = [ # FIXME: move under own mkIf
         {
           key = [ "s" ];
           cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --save";
@@ -598,91 +488,6 @@ in {
       };
       systemd.user.timers."backup-current-session-firefox" =
         renderTimer "Backup current firefox session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
-    })
-    (mkIf (cfg.enable && cfg.qutebrowser.enable) {
-      # FIXME: migrate to nix-attributes settings
-      nixpkgs.config.packageOverrides = _: rec {
-        yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ]) (builtins.readFile
-          (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/yank-image.sh; })));
-        qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ python3Packages.pyyaml ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/qb-fix-session.py; })));
-      };
-      custom.xinput.xkeysnail.rc = ''
-        define_keymap(re.compile("qutebrowser"), {
-            K("C-g"): K("f5"),
-            K("C-n"): K("C-g"),
-            K("M-comma"): K("Shift-h"),
-            K("M-dot"): K("Shift-l"),
-            K("C-x"): {
-                K("b"): K("b"),
-                K("k"): [K("Esc"), K("d")],
-                K("u"): K("u"),
-                K("C-s"): [K("Esc"), K("Shift-semicolon"), K("w"), K("enter")],
-                K("C-c"): [K("Esc"), K("Shift-semicolon"), K("w"), K("q"), K("enter")],
-            },
-        }, "qutebrowser")
-      '';
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          nixpkgs-pinned-16_04_20.qutebrowser
-          yank-image
-          qb-fix-session
-
-          (makeDesktopItem {
-            name = "org.custom.qutebrowser.windowed";
-            type = "Application";
-            exec = "${qutebrowser}/bin/qutebrowser --target window %U";
-            comment = "Qutebrowser that opens links preferably in new windows";
-            desktopName = "QuteBrowser";
-            categories = stdenv.lib.concatStringsSep ";" [ "Network" "WebBrowser" ];
-          })
-        ];
-        xdg.configFile = {
-          "qutebrowser/config.py".text = builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./misc/qutebrowser/qutebrowser.py; }));
-          "qutebrowser/keybindings.py".text = builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./misc/qutebrowser/keybindings.py; }));
-        };
-      };
-    })
-    (mkIf (cfg.enable && cfg.qutebrowser.enable && cfg.qutebrowser.default) {
-      assertions = [{
-        assertion = cfg.qutebrowser.default && !cfg.firefox.default && !cfg.next.default && !cfg.chromium.default;
-        message = "browsers: there should be exactly one default.";
-      }];
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        xdg.mimeApps.defaultApplications =
-          mapMimesToApp config.attributes.mimetypes.browser "org.custom.qutebrowser.windowed.desktop";
-      };
-    })
-    (mkIf (cfg.enable && cfg.next.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ next ];
-        xdg.configFile."next/init.lisp".text = builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./init.lisp; })); # NOTE: actually absent
-      };
-    })
-    (mkIf (cfg.enable && cfg.next.enable && cfg.next.default) {
-      assertions = [{
-        assertion = cfg.next.default && !cfg.firefox.default && !cfg.qutebrowser.default && !cfg.chromium.default;
-        message = "browsers: there should be exactly one default.";
-      }];
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "next.desktop";
-      };
-    })
-    (mkIf (cfg.enable && cfg.aux.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.atomic-chrome ];
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs;
-          [ w3m-full webmacs ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
-      };
-    })
-    (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/browsers.el; }));
     })
   ];
 }

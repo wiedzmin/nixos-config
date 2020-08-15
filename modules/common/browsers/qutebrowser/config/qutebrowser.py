@@ -48,7 +48,7 @@ config.set('content.javascript.enabled', True, 'chrome://*/*')
 config.set('content.javascript.enabled', True, 'file://*')
 config.set('content.javascript.enabled', True, 'qute://*/*')
 
-c.downloads.location.directory = "@downloadPath@"
+c.downloads.location.directory = "@qbDownloadPath@"
 c.downloads.location.prompt = False
 c.downloads.location.remember = True
 c.downloads.location.suggestion = 'both'
