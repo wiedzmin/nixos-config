@@ -153,7 +153,6 @@ in {
           epkgs.gcmh
           epkgs.goto-char-preview
           epkgs.haskell-mode
-          epkgs.helm-flycheck
           epkgs.hl-todo
           epkgs.ini-mode
           epkgs.iqa

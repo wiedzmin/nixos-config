@@ -59,7 +59,7 @@
   :bind
   ("M-x" . amx)
   :custom
-  (amx-backend 'helm)
+  (amx-backend 'ivy)
   (amx-save-file "@emacsDatadir@/amx-items"))
 
 (use-package auto-compile
@@ -258,7 +258,7 @@
   (company-tooltip-flip-when-above t)
   :config
   (when (string-equal "i3" (getenv "CURRENT_WM"))
-    (add-hook 'after-init-hook 'global-company-mode)
+    (global-company-mode 1)
     (use-package company-quickhelp
       :config
       (company-quickhelp-mode 1)
@@ -319,11 +319,15 @@
   (when (string-equal "i3" (getenv "CURRENT_WM"))
     (global-flycheck-mode 1)))
 
-(use-package helm-flycheck
-  :after (helm flycheck)
+(use-package ivy-flycheck
+  :after (ivy flycheck)
+  :quelpa
+  (ivy-flycheck :repo "caisah/ivy-flycheck" :fetcher github)
   :bind
   (:map mode-specific-map
-        ("y" . helm-flycheck)))
+        ("y" . ivy-flycheck))
+  (:map flycheck-mode-map
+        ("C-c ! o" . ivy-flycheck)))
 
 (use-package format-all
   :after copy-as-format

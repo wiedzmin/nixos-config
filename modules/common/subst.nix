@@ -31,6 +31,7 @@ rec {
   gitWipIdletimeTreshold = builtins.toString config.custom.dev.git.wip.idleTime;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
+  ivyCandidatesCount = builtins.toString config.custom.navigation.emacs.ivy.candidatesCount;
   keybindingsCachePath = config.wmCommon.keybindingsCachePath;
   lockScreenCommand = config.custom.security.lockScreenCommand;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";

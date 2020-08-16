@@ -1,3 +1,4 @@
+;; TODO: test for correctness
 (use-package webpaste
   :bind
   (:prefix-map custom-webpaste-map
@@ -10,6 +11,7 @@
 (use-package jinja2-mode
   :mode "\\.j2$")
 
+;TODO: investigate fringe updates lifecycle
 (use-package diff-hl
   :hook
   (dired-mode-hook . diff-hl-dired-mode)
@@ -60,7 +62,7 @@
                 lsp-on-touch-time) 30) ;; 30 seconds
       (setq lsp-on-touch-time (float-time (current-time)))
       (funcall func args)))
-  :hook (lsp-mode . company-mode)
+  :hook (lsp-mode . (lambda (x) (company-mode 1)))
   :bind
   (:map lsp-mode-map
         ("C-M-r" . lsp-rename)
@@ -92,7 +94,7 @@
   (advice-add 'lsp-on-change :around 'custom/lsp-on-change))
 
 (use-package lsp-ui
-  :after lsp-mode avy
+  :after lsp-mode
   :preface
   (defun custom/toggle-lsp-ui-doc ()
     (interactive)
@@ -132,11 +134,16 @@
   (lsp-ui-sideline-show-diagnostics nil)
   (lsp-ui-sideline-code-actions-prefix ""))
 
-(use-package helm-lsp
-  :after (lsp-mode helm)
+(use-package lsp-ivy
+  :after (lsp-mode ivy)
   :bind
+  (:map mode-specific-map
+        ("o b" . lsp-ivy-workspace-symbol)
+        ("o g" . lsp-ivy-global-workspace-symbol))
+  (:map lsp-mode-map
+        ([remap xref-find-apropos] . lsp-ivy-global-workspace-symbol))
   (:map custom-nav-map
-        ("s" . helm-lsp-global-workspace-symbol)))
+        ("s" . lsp-ivy-global-workspace-symbol)))
 
 (when @direnvGranularityProject@
   (use-package direnv

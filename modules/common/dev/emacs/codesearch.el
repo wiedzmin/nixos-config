@@ -2,12 +2,11 @@
   :custom
   (codesearch-global-csearchindex "@globalWorkspaceRoot@/.csearchindex"))
 
-(use-package helm-codesearch
+(use-package counsel-codesearch
   :after codesearch
   :bind
   (:map mode-specific-map
-        ("h f" . helm-codesearch-find-file)
-        ("h t" . helm-codesearch-find-pattern))
-  :custom
-  (helm-codesearch-overwrite-search-result t)
-  (helm-codesearch-global-csearchindex "@globalWorkspaceRoot@/.csearchindex"))
+         ("c" . counsel-codesearch)))
+
+(use-package projectile-codesearch
+  :after codesearch)

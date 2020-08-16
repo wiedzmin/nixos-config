@@ -143,9 +143,11 @@ in {
       custom.pim.org.agendaRoots = { "${config.ide.emacs.orgDir}" = 3000; };
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ plantuml ]; };
       ide.emacs.extraPackages = epkgs: [
-        epkgs.org-mru-clock
+        epkgs.counsel-org-clock
         epkgs.deft
         epkgs.doct
+        epkgs.helm-org-rifle
+        epkgs.ivy-omni-org
         epkgs.ob-async
         epkgs.ob-blockdiag
         epkgs.ob-restclient
@@ -158,8 +160,6 @@ in {
         epkgs.org-randomnote
         epkgs.org-recent-headings
         epkgs.org-rich-yank
-        epkgs.helm-org
-        epkgs.helm-org-rifle
         epkgs.org-sticky-header
         epkgs.orgit
         epkgs.plantuml-mode

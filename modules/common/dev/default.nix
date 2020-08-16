@@ -142,7 +142,7 @@ in {
       systemd.user.timers."codesearch-reindex" = renderTimer "Codesearch index updating" "" "" "*-*-* 4:00:00";
     })
     (mkIf (cfg.enable && cfg.codesearch.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.codesearch epkgs.helm-codesearch ];
+      ide.emacs.extraPackages = epkgs: [ epkgs.codesearch epkgs.counsel-codesearch epkgs.projectile-codesearch ];
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/codesearch.el; }));
     })
@@ -252,8 +252,8 @@ in {
           epkgs.diff-hl
           epkgs.elmacro
           epkgs.fic-mode
-          epkgs.helm-lsp
           epkgs.jinja2-mode
+          epkgs.lsp-ivy
           epkgs.multi-compile
           epkgs.webpaste
           epkgs.yaml-mode

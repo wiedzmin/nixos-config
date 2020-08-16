@@ -9,7 +9,6 @@
         ("h" . helm-ghq)))
 
 (use-package magit
-  :after helm
   :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
          ("COMMIT" . git-commit-mode))
   :bind
@@ -42,6 +41,7 @@
   (advice-add 'magit-whitespace-disallowed :around (lambda (orig-fun &rest args) (interactive) (insert "-")))
   :custom
   (magit-blame-heading-format "%H %-20a %C %s")
+  (magit-completing-read-function 'ivy-completing-read)
   (magit-section-initial-visibility-alist '((stashes . hide) (untracked . hide) (unpushed . hide)))
   (magit-diff-refine-hunk t)
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
@@ -90,15 +90,15 @@
    (rx bol (group (one-or-more
                    (group (zero-or-more alnum) ":" space)))))
   (git-msg-prefix-log-flags " --since='1 week ago' ")
-  (git-msg-prefix-input-method 'helm-comp-read))
+  (git-msg-prefix-input-method 'ivy-read))
 
 (use-package magit-todos
-  :after (magit projectile helm)
+  :after (magit projectile ivy)
   :bind
   (:map mode-specific-map
-        ("C-d" . helm-magit-todos))
+        ("C-d" . ivy-magit-todos))
   (:map custom-projectile-map
-        ("t" . helm-magit-todos)))
+        ("t" . ivy-magit-todos)))
 
 (use-package browse-at-remote
   :after link-hint

@@ -7,14 +7,6 @@
         ("l" . helm-org-rifle)
         ("o" . helm-org-rifle-occur)))
 
-(use-package helm-org
-  :after (helm-mode org)
-  :config
-  (add-to-list 'helm-completing-read-handlers-alist
-               '(org-capture . helm-org-completing-read-tags))
-  (add-to-list 'helm-completing-read-handlers-alist
-               '(org-set-tags . helm-org-completing-read-tags)))
-
 (use-package plantuml-mode
   :mode "\\.plantuml\\'"
   :custom
@@ -158,6 +150,7 @@
   :bind
   (:prefix-map custom-org-map
                :prefix "<f7>"
+               ("o" . ace-link-org)
                (";" . custom/org-tags-all)
                ("<down>" . org-forward-heading-same-level)
                ("<left>" . outline-previous-visible-heading)
@@ -166,11 +159,14 @@
                ("=" . org-show-todo-tree)
                ("D" . org-delete-property)
                ("G" . org-goto)
+               ("H" . org-recent-headings-ivy)
                ("S" . org-set-property)
+               ("\\" . counsel-org-tag)
                ("T" . org-table-create)
                ("a" . org-agenda)
                ("e" . org-capture)
                ("f" . ace-link-org)
+               ("l" . counsel-org-agenda-headlines)
                ("n" . org-narrow-to-subtree)
                ("r" . org-refile)
                ("s" . org-schedule)
@@ -424,16 +420,20 @@
              org-html-export-as-html
              org-html-export-to-html))
 
-(use-package org-mru-clock
-  :after (org helm)
+(use-package ivy-omni-org
+  :after (org ivy)
   :bind
-  (:map custom-org-map
-        ("i" . org-mru-clock-in)
-        ("C-j" . org-mru-clock-select-recent-task))
+  (:map mode-specific-map
+        ("O" . ivy-omni-org))
+  :preface
+  (defun custom/org-kb-files ()
+    (f-files "@orgKbDir@" nil t))
   :custom
-  ;; (org-mru-clock-how-many 100)
-  (org-mru-clock-keep-formatting t)
-  (org-mru-clock-files #'org-agenda-files))
+  (ivy-omni-org-file-sources '(org-agenda-files custom/org-kb-files)))
+
+;; TODO: bind to keys
+(use-package counsel-org-clock
+  :commands counsel-org-clock-history counsel-org-clock-goto counsel-org-clock-context)
 
 (use-package deft
   :bind

@@ -1,3 +1,14 @@
+(use-package ace-link
+  :after link-hint
+  :bind
+  (:map link-hint-keymap
+        ;; This is fallback option for link-hint itself
+        ;; because link-hint is spuriously stops working
+        ;; between package upgrades.
+        ("l" . ace-link-org))
+  :config
+  (ace-link-setup-default))
+
 (use-package ace-window
   :after avy
   :bind
@@ -12,6 +23,32 @@
                 ((t (:inherit ace-jump-face-foreground
                               :foreground "green"
                               :height 0.1)))))
+
+(use-package ivy
+  :delight
+  :bind
+  ("M-<f12>" . counsel-switch-buffer)
+  ("<f10>" . ivy-resume)
+  (:map ctl-x-map
+        ("b" . counsel-switch-buffer))
+  (:map mode-specific-map
+        ("v" . ivy-push-view)
+        ("V" . ivy-pop-view))
+  (:map ivy-minibuffer-map
+        ("C-j" . ivy-immediate-done))
+  :config
+  (ivy-mode 1)
+  :custom-face
+  (ivy-current-match ((t (:background "gray1"))))
+  :custom
+  (ivy-display-style 'fancy)
+  (ivy-use-selectable-prompt t "Make the prompt line selectable")
+  (ivy-use-virtual-buffers t) ;; add 'recentf-mode’and bookmarks to 'ivy-switch-buffer'.
+  (ivy-height @ivyCandidatesCount@) ;; number of result lines to display
+  (ivy-initial-inputs-alist nil) ;; no regexp by default
+  (ivy-re-builders-alist
+   '((read-file-name-internal . ivy--regex-fuzzy)
+     (t . ivy--regex-ignore-order))))
 
 (use-package avy
   :bind
@@ -30,104 +67,107 @@
   :bind
   ([remap zap-to-char] . avy-zap-to-char-dwim))
 
-(use-package helm
+(use-package counsel
+  :delight
+  :init
+  (require 'iso-transl)
   :bind
-  ("<f10>" . helm-resume)
+  ([remap menu-bar-open] . counsel-tmm)
+  ([remap insert-char] . counsel-unicode-char)
+  ([remap isearch-forward] . counsel-grep-or-swiper)
   (:prefix-map custom-nav-map
                :prefix "C-q"
-               ("y" . helm-show-kill-ring)
-               ("c" . helm-complex-command-history))
+               ("y" . counsel-yank-pop)
+               ("m" . counsel-mark-ring)
+               ("c" . counsel-command-history)
+               ("l" . counsel-git-log)
+               ("g" . counsel-rg)
+               ("G" . (lambda () (interactive) (counsel-rg (thing-at-point 'symbol))))
+               ("I" . ivy-imenu-anywhere))
   (:prefix-map custom-help-map
                :prefix "<f1>"
-               ("l" . helm-locate-library)
-               ("i" . helm-info-lookup-symbol))
+               ("l" . counsel-find-library)
+               ("b" . counsel-descbinds)
+               ("i" . counsel-info-lookup-symbol))
   (:map mode-specific-map
-        ("C-SPC" . helm-mark-ring)
-        ("l" . helm-locate))
+        ("C-SPC" . counsel-mark-ring)
+        ("l" . counsel-locate))
   (:map help-map
-        ("l" . helm-locate-library))
+        ("l" . counsel-find-library))
   (:map ctl-x-map
-        ("C-r" . helm-recentf)
-        ("b" . helm-mini))
+        ("C-r" . counsel-recentf)
+        ("m" . counsel-minor))
+  (:map iso-transl-ctl-x-8-map
+        ("RET" . counsel-unicode-char))
   :custom
-  (helm-buffers-fuzzy-matching t)
-  (helm-recentf-fuzzy-match t)
-  (helm-locate-fuzzy-match t)
+  (counsel-git-cmd "rg --files")
+  (counsel-grep-base-command "rg -i -M 120 --no-heading --line-number --color never '%s' %s")
+  (counsel-rg-base-command "rg -i -M 120 --no-heading --line-number --color never %s .")
   :config
-  (helm-mode 1)
-  (helm-autoresize-mode 1)
-  (use-package helm-buffers)
-  (use-package helm-elisp)
-  (use-package helm-for-files)
-  (use-package helm-locate)
-  (use-package helm-ring))
+  (counsel-mode 1))
 
-(use-package helm-swoop ;TODO: compare with swoop
-  :after helm
-  :bind
-  ("C-s" . helm-swoop)
-  ([remap isearch-forward] . helm-swoop)
-  :custom
-  ;TODO: make some kind of switch for this case, as it was for ivy/swiper
-  (helm-swoop-pre-input-function (lambda ())))
-
-(use-package helm-descbinds
-  :after helm
-  :bind
-  (:map custom-help-map
-               ("b" . helm-descbinds))
-  :config
-  (helm-descbinds-mode))
-
-(use-package helm-describe-modes
-  :bind
-  (:map ctl-x-map
-        ("m" . helm-describe-modes))
-  ([remap describe-mode] . helm-describe-modes)
-  :config
-  (helm-descbinds-mode))
-
-(use-package helm-projectile
-  :after (helm projectile)
+(use-package counsel-projectile
+  :after (counsel projectile)
   :preface
-  (defun helm/combined ()
-    "Preconfigured `helm'."
+  (defun custom/open-project-todos ()
     (interactive)
-    (condition-case nil
-        (if (projectile-project-root)
-            (helm-projectile)
-          ;; otherwise fallback to `helm-mini'
-          (helm-mini))
-      ;; fall back to helm mini if an error occurs (usually in `projectile-project-root')
-      (error (helm-mini))))
+    (let ((todos-file (expand-file-name "todo.org" (projectile-project-root))))
+      (condition-case nil
+          (when (file-exists-p todos-file)
+            (find-file todos-file))
+        (error (message "Cannot find project todos")))))
+  (defun custom/open-project-magit-status ()
+    (interactive)
+    (let ((current-project-name (projectile-default-project-name (locate-dominating-file buffer-file-name ".git"))))
+      (aif (get-buffer (concat "magit: " current-project-name))
+          (switch-to-buffer it)
+        (magit-status))))
+  (defun counsel-projectile-switch-project-action-codesearch-search (project)
+    "Search project's files with Codesearch."
+    (let ((projectile-switch-project-action #'projectile-codesearch-search))
+      (counsel-projectile-switch-project-by-name project)))
+  (defun counsel-projectile-switch-project-action-open-todos (project)
+    "Open project's TODOs."
+    (let ((projectile-switch-project-action #'custom/open-project-todos))
+      (counsel-projectile-switch-project-by-name project)))
+  (defun counsel-projectile-switch-project-action-open-magit-status (project)
+    "Open project's Magit status buffer."
+    (let ((projectile-switch-project-action #'custom/open-project-magit-status))
+      (counsel-projectile-switch-project-by-name project)))
   :bind
-  ("C-<f1>" . helm-projectile-switch-project)
-  (:map custom-nav-map
-               ("d" . helm-projectile-rg))
+  ("C-<f1>" . counsel-projectile-switch-project)
   (:map custom-projectile-map
-               ("h" . helm/combined))
+       ("t" . custom/open-project-todos)
+       ("m" . custom/open-project-magit-status)
+       ("T" . doom/ivy-tasks)
+       ("h" . projectile-find-file)
+       ("c" . projectile-codesearch-search))
   :config
-  (use-package helm-rg)
-  (helm-projectile-on)
-  (setq projectile-switch-project-action 'helm-projectile)
-  (setq helm-projectile-fuzzy-match nil))
+  (counsel-projectile-mode 1)
+  (add-to-list 'counsel-projectile-switch-project-action
+               '("c" counsel-projectile-switch-project-action-codesearch-search "search project's files with Codesearch") t)
+  (add-to-list 'counsel-projectile-switch-project-action
+               '("t" counsel-projectile-switch-project-action-open-todos "open project's todos") t)
+  (add-to-list 'counsel-projectile-switch-project-action
+               '("m" counsel-projectile-switch-project-action-open-magit-status "open project's magit status buffer") t)
+  (setq projectile-switch-project-action 'counsel-projectile-switch-project))
 
-(use-package helm-tramp
+
+(use-package counsel-tramp
   :hook
-  (helm-tramp-pre-command-hook . (lambda ()
-                                   (setq make-backup-files nil)
-                                   (global-aggressive-indent-mode 0)
-                                   (projectile-mode 0)
-                                   (editorconfig-mode 0)))
-  (helm-tramp-quit-hook . (lambda ()
-                               (setq make-backup-files t)
+  (counsel-tramp-pre-command-hook . (lambda ()
+                                      (setq make-backup-files nil)
+                                      (global-aggressive-indent-mode 0)
+                                      (projectile-mode 0)
+                                      (editorconfig-mode 0)))
+  (counsel-tramp-quit-hook . (lambda ()
                                (projectile-mode 1)
                                (editorconfig-mode 1)))
   :config
   (setenv "SHELL" "@bashExecutable@")
   :custom
   (tramp-default-method "ssh")
-  (helm-tramp-docker-user "@mainUserName@"))
+  (counsel-tramp-docker-user "@mainUserName@"))
 
 (use-package dired
   :commands dired
@@ -168,7 +208,10 @@
   :hook
   (dired-mode . dired-hide-dotfiles-mode))
 
-;; https://github.com/emacs-helm/helm-navi
+(use-package doom-todo-ivy
+  :quelpa
+  (doom-todo-ivy :repo "jsmestad/doom-todo-ivy" :fetcher github)
+  :commands doom/ivy-tasks)
 
 (use-package frame
   :preface
@@ -202,31 +245,42 @@
   (setq truncate-partial-width-windows nil))
 
 (use-package imenu-anywhere
-  :after helm
-  :commands helm-imenu-anywhere
+  :commands ivy-imenu-anywhere
   :bind
   (:map custom-nav-map
-               ("I" . helm-imenu-anywhere)))
+               ("I" . ivy-imenu-anywhere)))
+
+(use-package ivy-historian
+  :after ivy
+  :config
+  (ivy-historian-mode))
+
+(use-package ivy-rich
+  :after ivy
+  :defines ivy-rich-abbreviate-paths ivy-rich-switch-buffer-name-max-length
+  :custom
+  (ivy-rich-switch-buffer-name-max-length 60 "Increase max length of buffer name.")
+  :config
+  (ivy-rich-mode 1))
 
 ;TODO: setup xref package itself
-(use-package helm-xref
-  :after helm
+(use-package ivy-xref
+  :after ivy
   :custom
-  (xref-show-xrefs-function #'helm-xref-show-xrefs "Use Helm to show xrefs"))
+  (xref-show-xrefs-function #'ivy-xref-show-xrefs "Use Ivy to show xrefs"))
 
-(use-package helm-c-yasnippet
-  :after (helm yasnippet)
-  :bind
-  (:map custom-yasnippet-map
-        ("i" . helm-yas-complete))
-  :custom
-  (helm-yas-space-match-any-greedy t))
+(use-package ivy-yasnippet
+  :after (ivy yasnippet)
+   :bind
+   (:map custom-yasnippet-map
+        ("i" . ivy-yasnippet)))
 
 (use-package link-hint
   :bind
   (:map mode-specific-map
         :prefix-map link-hint-keymap
         :prefix "o"
+        ; ("s" . custom/open-url-current-buffer)
         ("f" . link-hint-open-link)
         ("y" . link-hint-copy-link)
         ("F" . link-hint-open-multiple-links)
@@ -251,11 +305,11 @@
                ("C" . projectile-commander)
                ("d" . projectile-dired)
                ("f" . projectile-recentf)
-               ("h" . helm-projectile-find-file))
+               ("h" . projectile-find-file))
   :custom
   (projectile-enable-caching t)
   (projectile-require-project-root t)
-  (projectile-completion-system 'helm)
+  (projectile-completion-system 'ivy)
   (projectile-track-known-projects-automatically t)
   (projectile-project-root-files-functions
    '(projectile-root-local
@@ -266,7 +320,7 @@
   (after-init-hook . projectile-mode))
 
 (use-package rg
-  :after helm
+  :after counsel
   :bind
   (:map custom-nav-map
         ("r" . rg)
@@ -282,6 +336,28 @@
   (rg-align-position-content-separator "|")
   :config
   (rg-define-toggle "--context 3" (kbd "C-c c")))
+
+(use-package swiper
+  :after avy                            ;check
+  :commands swiper swiper-multi
+  :bind
+  ("C-s" . swiper)
+  ("C-S-s" . swiper-thing-at-point)
+  (:map custom-nav-map
+        ("M-a" . swiper-avy)
+        ("m" . swiper-multi))
+  :custom
+  (swiper-include-line-number-in-search t)
+  :custom-face (swiper-match-face-1 ((t (:background "#dddddd"))))
+  :custom-face (swiper-match-face-2 ((t (:background "#bbbbbb" :weight bold))))
+  :custom-face (swiper-match-face-3 ((t (:background "#bbbbff" :weight bold))))
+  :custom-face (swiper-match-face-4 ((t (:background "#ffbbff" :weight bold)))))
+
+(use-package avy-flycheck
+  :after link-hint
+  :bind
+  (:map link-hint-keymap
+        ("e" . avy-flycheck-goto-error)))
 
 (define-hostmode poly-nix-hostmode :mode 'nix-mode)
 
