@@ -206,7 +206,8 @@ in {
           data = "mkdir -p ${cfg.dataDir}/lsp";
         };
       };
-      systemd.user.services."emacs" = { # TODO: review/add socket activation
+      systemd.user.services."emacs" = let icon = "${pkgs.emacs}/share/icons/hicolor/scalable/apps/emacs.svg";
+      in { # TODO: review/add socket activation
         description = "Emacs: the extensible, self-documenting text editor";
         documentation = [ "info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/" ];
         restartIfChanged = false;
@@ -214,7 +215,7 @@ in {
           Type = "simple";
           ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
           ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
-          ExecStopPost = "${pkgs.libnotify}/bin/notify-send 'Stopped EMACS server'";
+          ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
           Restart = "on-failure";
           StandardOutput = "journal";
           StandardError = "journal";
