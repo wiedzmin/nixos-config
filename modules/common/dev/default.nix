@@ -168,11 +168,9 @@ in {
       custom.dev.git.credentials.mapping = {
         "*github.com*" = {
           skip_username = 7;
-          target = "${config.attributes.mainUser.name}/webservices/social/programming/github.com";
+          target = "dev/forges/github.com";
         };
-        "*bitbucket.org*" = {
-          target = "${config.attributes.mainUser.name}/webservices/social/programming/bitbucket.com";
-        };
+        "*bitbucket.org*" = { target = "dev/forges/bitbucket.org"; };
       };
       custom.dev.git.gitignore = ''
         shell.nix
