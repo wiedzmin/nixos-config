@@ -61,7 +61,8 @@
   (avy-keys '(?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
   :custom-face (avy-goto-char-timer-face ((nil (:foreground "green" :weight bold))))
   :config
-  (avy-setup-default))
+  (avy-setup-default)
+  (use-package ivy-avy))
 
 (use-package avy-zap
   :bind

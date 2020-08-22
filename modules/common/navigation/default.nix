@@ -350,6 +350,7 @@ in {
         epkgs.dired-quick-sort
         epkgs.imenu-anywhere
         epkgs.ivy
+        epkgs.ivy-avy
         epkgs.ivy-historian
         epkgs.ivy-rich
         epkgs.ivy-xref
