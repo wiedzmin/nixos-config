@@ -112,12 +112,8 @@ in {
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs;
-          [
-            checkbashism
-            libnotify # for zsh-notify plugin
-            seturgent
-            shellcheck
-          ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
+          [ checkbashism libnotify wmctrl xdotool seturgent shellcheck ]
+          ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
           "tmuxp/main.yml".text = ''
             session_name: main
