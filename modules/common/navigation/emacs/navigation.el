@@ -325,7 +325,7 @@
   :bind
   (:map custom-nav-map
         ("r" . rg)
-        ("p" . rg-project))
+        ("d" . rg-project))
   :custom
   (rg-group-result t)
   (rg-show-columns t)
