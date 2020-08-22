@@ -1,23 +1,17 @@
 import argparse
 import json
 import os
-import subprocess
 import sys
 
 from ewmh import EWMH
 from pystdlib.uishim import get_selection
+from pystdlib import shell_cmd
 
 profiles = []
 
 
 def get_fingerprint():
-    get_edids_task = subprocess.Popen("xrandr --prop", shell=True,
-                                      stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    result = get_edids_task.wait()
-    if result != 0:
-        return None
-    output = get_edids_task.stdout.read().decode().strip().split("\n")
-
+    output = shell_cmd("xrandr --prop", split_output="\n")
     edids_map = {}
     head = None
     edid = None
@@ -31,6 +25,7 @@ def get_fingerprint():
             head = None
             edid = None
     return edids_map
+
 
 parser = argparse.ArgumentParser(description="Manage XRandR-related activities.")
 parser.add_argument("--switch", dest="switch_profile", action="store_true",
@@ -52,7 +47,7 @@ if args.switch_profile:
 
     result = get_selection(profiles, 'profile', lines=5, font="@wmFontDmenu@")
     if result:
-        os.system(f"autorandr --load {result}")
+        shell_cmd(f"autorandr --load {result}", oneshot=True)
 elif args.get_fingerprint:
     print(json.dumps({"fingerprint": get_fingerprint()}, indent=2))
 elif args.get_apptraits:

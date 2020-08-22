@@ -2,27 +2,20 @@ import argparse
 import fnmatch
 import json
 import os
-import subprocess
 from datetime import datetime
 
 from pygit2 import GIT_BRANCH_REMOTE, GIT_DIFF_STATS_FULL, GIT_RESET_HARD, GIT_STATUS_CURRENT, \
     GIT_STATUS_IGNORED, RemoteCallbacks, Repository, Signature, Tag, UserPass
 import redis
+
 from pystdlib.uishim import get_selection, log_info, log_error
+from pystdlib import shell_cmd
 
 
 def is_idle_enough():
-    xprintidle_task = subprocess.Popen("@xprintidleBinary@", env={"DISPLAY": os.getenv("DISPLAY"),
-                                                                  "XAUTHORITY": os.getenv("XAUTHORITY")},
-                                       shell=True, stdout=subprocess.PIPE)
-    result = xprintidle_task.wait()
-    if result != 0:
-        return False
-    idle_time = xprintidle_task.stdout.read().decode().strip()
-    if int(idle_time) >= int("@gitWipIdletimeTreshold@") * 1000:
-        return True
-    else:
-        return False
+    idle_time = shell_cmd("@xprintidleBinary@", env={"DISPLAY": os.getenv("DISPLAY"),
+                                                     "XAUTHORITY": os.getenv("XAUTHORITY")})
+    return int(idle_time) >= int("@gitWipIdletimeTreshold@") * 1000
 
 
 def is_git_repo(path=None):

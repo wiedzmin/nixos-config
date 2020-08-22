@@ -1,10 +1,10 @@
 import os
-import subprocess
 import sys
 
-from pystdlib.uishim import get_selection, notify
-import libtmux
 import redis
+
+from pystdlib.uishim import get_selection, notify
+from pystdlib.systemd import list_services, unit_perform, unit_show
 
 services = []
 
@@ -19,20 +19,8 @@ operations = [
 r = redis.Redis(host='localhost', port=6379, db=0)
 
 services = r.lrange("system/services", 0, -1)
-
 if not services:
-    system_units_task = subprocess.Popen("systemctl list-unit-files", shell=True, stdout=subprocess.PIPE)
-    services.extend([f"{unit.split()[0].split('.')[0]} [system]"
-                     for unit in system_units_task.stdout.read().decode().split("\n")[1:-3]
-                     if unit.split()[0].endswith("service")])
-    assert system_units_task.wait() == 0
-
-    user_units_task = subprocess.Popen("systemctl --user list-unit-files", shell=True, stdout=subprocess.PIPE)
-    services.extend([f"{unit.split()[0].split('.')[0]} [user]"
-                     for unit in user_units_task.stdout.read().decode().split("\n")[1:-3]
-                     if unit.split()[0].endswith("service")])
-    assert system_units_task.wait() == 0
-
+    services = list_units()
     r.lpush("system/services", *services)
 
 service = get_selection(sorted(list(dict.fromkeys([service.decode() for service in services]))), 'service', lines=20, font="@wmFontDmenu@")
@@ -41,23 +29,11 @@ if not service:
 operation = get_selection(operations, '> ', lines=5, font="@wmFontDmenu@")
 if not operation:
     sys.exit(1)
-if operation == "stop":
-    os.system(f"systemctl {'--user ' if 'user' in service else ''}stop {service.split()[0]}")
-    notify("[srvctl]", f"Stopped {service}", urgency=URGENCY_CRITICAL, timeout=5000)
-elif operation == "restart":
-    os.system(f"systemctl {'--user ' if 'user' in service else ''}restart {service.split()[0]}")
-    notify("[srvctl]", f"Restarted {service}", urgency=URGENCY_NORMAL, timeout=5000)
-elif operation == "status":
-    tmux_server = libtmux.Server()
-    tmux_session = tmux_server.find_where({ "session_name": "@tmuxDefaultSession@}" })
-    status_window = tmux_session.new_window(
-        attach=True, window_name=f"status for {service}",
-        window_shell=f"sh -c 'systemctl {'--user ' if 'user' in service else ''} status {service.split()[0]}; read'")
+
+if operation in ["journal", "status"]:
+    unit_show(service, operation, user=('user' in service),
+              shell=["@defaultTerminal@", "-e"], tmux_session="@tmuxDefaultSession@")
     switch_desktop(1)
 else:
-    tmux_server = libtmux.Server()
-    tmux_session = tmux_server.find_where({ "session_name": "@tmuxDefaultSession@" })
-    journal_window = tmux_session.new_window(
-        attach=True, window_name=f"journal for {service}",
-        window_shell=f"sh -c 'journalctl {'--user ' if 'user' in service else ''}-u {service.split()[0]}; read'")
-    switch_desktop(1)
+    unit_perform(service, operation, user=('user' in service))
+notify(f"[srvctl :: {operation}]", f"{service}", timeout=5000)

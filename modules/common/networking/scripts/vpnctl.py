@@ -29,6 +29,7 @@ args = parser.parse_args()
 r = redis.Redis(host='localhost', port=6379, db=0)
 vpn_meta = json.loads(r.get("net/vpn_meta"))
 
+# TODO: adapt `shell_cmd` to this script specifics
 
 def is_nm_vpn_up(name):
     vpn_status_task = subprocess.Popen(f"@nmcliBinary@ con show id {name}", shell=True,

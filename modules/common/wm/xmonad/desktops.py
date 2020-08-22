@@ -2,24 +2,21 @@ import argparse
 import heapq
 import itertools
 import json
-import subprocess
 import sys
 
 import redis
-
 from fuzzywuzzy import fuzz
 from ewmh import EWMH
+
+from pystdlib import shell_cmd
+
 
 SIMILARITY_GROUP_TRESHOLD = 1
 SIMILARITY_DIRECT_TRESHOLD = 20
 
+
 def prepare_desktops_map():
-    get_desktops_meta_task = subprocess.Popen("wmctrl -d", shell=True,
-                                              stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    desktops = get_desktops_meta_task.stdout.read().decode().strip().split("\n")
-    result = get_desktops_meta_task.wait()
-    if result != 0:
-        return None
+    desktops = shell_cmd("wmctrl -d", split_output="\n")
     return { desktop[-1]: desktop[0] for desktop in [desktop.split() for desktop in desktops]}
 
 

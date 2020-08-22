@@ -1,8 +1,9 @@
 import json
 import os
-import subprocess
 
 import redis
+
+from pystdlib.uishim import show_text_dialog
 
 
 # TODO: add parameter for various search approaches
@@ -31,9 +32,4 @@ if not os.path.exists("@keybindingsCachePath@"):
         maybe_desktop = " (" + desktop + ")" if desktop else ""
         legend.append('{key}: {cmd_clean}{maybe_desktop}\n')
 
-    with open("@keybindingsCachePath@", "w") as f:
-        f.writelines(legend)
-
-show_dialog_task = subprocess.Popen("yad --filename @keybindingsCachePath@ --text-info",
-                                    shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-show_dialog_task.wait()
+show_text_dialog(text=legend, title="keybindings", keep=True, path="@keybindingsCachePath@")

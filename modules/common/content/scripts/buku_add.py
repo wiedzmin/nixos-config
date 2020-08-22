@@ -1,10 +1,10 @@
-import os
 import re
-import subprocess
 import sys
 import time
 
 from pystdlib.uishim import get_selection, notify
+from pystdlib import shell_cmd
+
 
 URL_REGEX = "(https?|ftp|file)://[-A-Za-z0-9\+&@#/%?=~_|!:,.;]*[-A-Za-z0-9\+&@#/%=~_|]"
 
@@ -14,18 +14,11 @@ def is_valid_url(url):
 
 
 def fetch_tags_cloud():
-    tags_cloud_task = subprocess.Popen("buku --np --st",
-                                  shell=True, stdout=subprocess.PIPE)
-    result = [" ".join(tag.strip().split(" ")[1:-1])
-              for tag in tags_cloud_task.stdout.read().decode().split("\n") if tag]
-    assert tags_cloud_task.wait() == 0
-    return result
+    tags_cloud = shell_cmd("buku --np --st", split_output="\n")
+    return [" ".join(tag.strip().split(" ")[1:-1]) for tag in tags_cloud if tag]
 
 
-bookmark_text_task = subprocess.Popen("xsel -o -b",
-                                      shell=True, stdout=subprocess.PIPE)
-bookmark_text = bookmark_text_task.stdout.read().decode().strip()
-assert bookmark_text_task.wait() == 0
+bookmark_text = shell_cmd("xsel -o -b")
 if bookmark_text is not None:
     if not is_valid_url(bookmark_text):
         notify("error", "URL is not valid", urgency=URGENCY_CRITICAL, timeout=5000)
@@ -44,9 +37,9 @@ if bookmark_text is not None:
         else:
            break
     if bookmark_tags:
-        os.system(f"buku -a {bookmark_text} {','.join(bookmark_tags)}")
+        shell_cmd(f"buku -a {bookmark_text} {','.join(bookmark_tags)}", oneshot=True)
     else:
-        os.system(f"buku -a {bookmark_text}")
+        shell_cmd(f"buku -a {bookmark_text}", oneshot=True)
     notify("Success", f"Bookmark added: {bookmark_text} ({','.join(bookmark_tags)})")
 else:
     notify("Error", "No text in clipboard", urgency=URGENCY_CRITICAL)

@@ -1,10 +1,10 @@
 import json
-import subprocess
 import sys
 
 import redis
 
 from pystdlib.uishim import get_selection
+from pystdlib import shell_cmd
 
 
 r = redis.Redis(host='localhost', port=6379, db=0)
@@ -19,5 +19,4 @@ if selected_bookmark:
     bookmark_path = bookmarks[selected_bookmark]
     elisp_cmd = f'(dired "{bookmark_path}")'
     emacs_cmd = f'emacsclient -c -s /run/user/1000/emacs/server -e \'{elisp_cmd}\'' # TODO: make SPOT for socket path
-    open_project_task = subprocess.Popen(emacs_cmd, shell=True, stdout=subprocess.PIPE)
-    assert open_project_task.wait() == 0
+    shell_cmd(emacs_cmd)

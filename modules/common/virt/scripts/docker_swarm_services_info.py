@@ -1,11 +1,12 @@
 import json
 import os
-import subprocess
 import sys
 
-from pystdlib.uishim import get_selection, notify
 import redis
-from libtmux import Server
+
+from pystdlib.uishim import get_selection, notify, show_text_dialog
+from pystdlib.shell import tmux_create_window
+from pystdlib import shell_cmd
 
 
 service_modes = [
@@ -32,41 +33,29 @@ if not host_meta:
 
 host_vpn = host_meta.get("vpn", None)
 if host_vpn:
-    vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
-                                      shell=True, stdout=subprocess.PIPE)
-    assert vpn_start_task.wait() == 0
+    shell_cmd(f"vpnctl --start {host_vpn}")
 
-select_service_task = subprocess.Popen("docker service ls --format '{{.Name}} | {{.Mode}} | {{.Replicas}} | {{.Image}}'",
-                                       shell=True, stdout=subprocess.PIPE)
-select_service_result = select_service_task.stdout.read().decode().split("\n")
+services_meta = shell_cmd("docker service ls --format '{{.Name}} | {{.Mode}} | {{.Replicas}} | {{.Image}}'",
+                          split_output="\n")
 
-selected_service_meta = get_selection(select_service_result, "service", case_insensitive=True, lines=10, font="@wmFontDmenu@")
+selected_service_meta = get_selection(services_meta, "service", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 selected_service_name = selected_service_meta.split("|")[0].strip()
 selected_mode = get_selection(service_modes, "show", case_insensitive=True, lines=5, font="@wmFontDmenu@")
 
-get_service_status_task = subprocess.Popen(f"docker service ps {selected_service_name}",
-                                           shell=True, stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-get_service_status_result = get_service_status_task.stdout.read().decode()
+service_status = shell_cmd(f"docker service ps {selected_service_name}", split_output="\n")
 
 if selected_mode == "status":
-    with open("/tmp/docker_swarm_service_info", "w") as f:
-        f.write(get_service_status_result)
-    show_dialog_task = subprocess.Popen("yad --filename /tmp/docker_swarm_service_info --text-info",
-                                        shell=True, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-    show_dialog_task.wait()
-    os.remove("/tmp/docker_swarm_service_info")
+    show_text_dialog(text=service_status)
 elif selected_mode == "logs":
-    service_running_tasks_items = [task.split() for task in get_service_status_result.split("\n")
-                                   if "Running" in task]
+    service_running_tasks_items = [task.split() for task in service_status if "Running" in task]
     task_mappings = dict([(task_meta[1], task_meta[0]) for task_meta in service_running_tasks_items])
-    selected_task = get_selection(list(task_mappings.keys()) + [selected_service_name], "task", case_insensitive=True, lines=10, font="@wmFontDmenu@")
+    selected_task = get_selection(list(task_mappings.keys()) + [selected_service_name], "task",
+                                  case_insensitive=True, lines=10, font="@wmFontDmenu@")
     if not selected_task:
         sys.exit(1)
 
-    session_name =  host_meta.get("tmux", "@tmuxDefaultSession@")
     task_or_service = task_mappings.get(selected_task) if selected_task in task_mappings else selected_service_name
     show_log_cmd = f"DOCKER_HOST={os.environ['DOCKER_HOST']} docker service logs --follow {task_or_service}"
-    tmux_server = Server()
-    tmux_session = tmux_server.find_where({ "session_name": session_name })
-    docker_task_log_window = tmux_session.new_window(attach=True, window_name=f"{selected_task} logs",
-                                                     window_shell=show_log_cmd)
+    tmux_create_window(show_log_cmd,
+                       session_name=host_meta.get("tmux", "@tmuxDefaultSession@"),
+                       window_title=f"{selected_task} logs")

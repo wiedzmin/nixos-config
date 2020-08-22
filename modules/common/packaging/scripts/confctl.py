@@ -1,31 +1,16 @@
 import glob
 import os
-import subprocess
 import sys
 import time
 
 from gnupg import GPG
+
 from pystdlib.uishim import get_selection
+from pystdlib import shell_cmd
 
 
 def guess_machine_name():
     return os.readlink("/etc/nixos/configuration.nix").split("/")[1]
-
-
-def locate_nixpkgs():
-    locate_nixpkgs_task = subprocess.Popen("nix-build /etc/nixos/nix/sources.nix -A nixpkgs --no-out-link",
-                                           shell=True, stdout=subprocess.PIPE)
-    nixpkgs_path = locate_nixpkgs_task.stdout.read().decode().strip()
-    assert locate_nixpkgs_task.wait() == 0
-    return nixpkgs_path
-
-
-def get_generations():
-    get_generations_task = subprocess.Popen("pkexec nix-env -p /nix/var/nix/profiles/system --list-generations",
-                                           shell=True, stdout=subprocess.PIPE)
-    generations = get_generations_task.stdout.read().decode().strip().split("\n")
-    assert get_generations_task.wait() == 0
-    return generations
 
 
 def parse_generation_meta(meta):
@@ -38,23 +23,18 @@ def parse_generation_meta(meta):
     return generation, timestamp, is_current
 
 
-def format_config():
-    format_config_task = subprocess.Popen("format-config",
-                                           shell=True, stdout=subprocess.PIPE)
-    assert format_config_task.wait() == 0
-
-
 def build_configuration(path="/etc/nixos/configuration.nix", debug=False):
-    build_configuration_task = subprocess.Popen(
-        f'nix build -f {locate_nixpkgs()}/nixos system{" --show-trace" if debug else ""} -I nixos-config="{path}" -o @configResultPath@',
-        shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
-    result = build_configuration_task.wait()
-    if result in [1, 100]:
-        sys.exit(1)
+    nixpkgs_path = shell_cmd("nix-build /etc/nixos/nix/sources.nix -A nixpkgs --no-out-link")
+    shell_cmd(f'nix build -f {nixpkgs_path}/nixos system{" --show-trace" if debug else ""} -I nixos-config="{path}" -o @configResultPath@',
+              shell=True, executable="/run/current-system/sw/bin/zsh",
+              stdout=sys.stdout, stderr=sys.stdout,
+              exit_error_codes=[1, 100])
 
 
 def rollback_configuration():
-    generation = get_selection(get_generations(), prompt='>', lines=30, font="@wmFontDmenu@")
+    generations = shell_cmd("pkexec nix-env -p /nix/var/nix/profiles/system --list-generations",
+                            split_output="\n")
+    generation = get_selection(generations, prompt='>', lines=30, font="@wmFontDmenu@")
     parse_generation_meta(generation)
     generation, timestamp, is_current = parse_generation_meta(generation)
     if is_current:
@@ -72,12 +52,12 @@ def switch_configuration(root=None):
         new_system_path = None
         print(f"Error switching configuration: {e}")
         sys.exit(1)
-    switch_configuration_task = subprocess.Popen(
-        f"pkexec nix-env --profile /nix/var/nix/profiles/system --set {new_system_path} && pkexec {new_system_path}/bin/switch-to-configuration switch",
-        shell=True, executable="/run/current-system/sw/bin/zsh", stdout=sys.stdout, stderr=sys.stdout)
-    result = switch_configuration_task.wait()
-    if result != 0:
-        print(f"Error switching configuration, details below:\n{switch_configuration_task.stderr.read().decode()}")
+    try:
+        shell_cmd(f"pkexec nix-env --profile /nix/var/nix/profiles/system --set {new_system_path} && pkexec {new_system_path}/bin/switch-to-configuration switch",
+                  shell=True, executable="/run/current-system/sw/bin/zsh",
+                  stdout=sys.stdout, stderr=sys.stdout)
+    except:
+        print(f"Error switching configuration")
         sys.exit(1)
 
 
@@ -88,7 +68,7 @@ def ensure_kernel_update():
     if current_kernel != booted_kernel:
         print("Rebooting in 5 sec...")
         time.sleep(5)
-        os.system("reboot")
+        shell_cmd("reboot", oneshot=True)
 
 
 machine = guess_machine_name()
@@ -123,7 +103,7 @@ elif operation == "Update current configuration (debug)":
     build_configuration(debug=True)
 elif operation == "Update current configuration + nixfmt beforehand":
     os.chdir("/etc/nixos")
-    format_config()
+    shell_cmd("format-config")
     build_configuration()
     switch_configuration()
 elif operation == "Select and build configuration":

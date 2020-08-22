@@ -1,10 +1,11 @@
 import json
 import os
 import re
-import subprocess
+
+import redis
 
 from pystdlib.uishim import get_selection
-import redis
+from pystdlib import shell_cmd
 
 
 r = redis.Redis(host='localhost', port=6379, db=0)
@@ -15,4 +16,4 @@ if ebooks:
 
 result = get_selection(ebooks, 'book', case_insensitive=True, lines=30, font="@wmFontDmenu@")
 if result:
-    subprocess.Popen(f"zathura {re.escape(result)}", shell=True, stdout=subprocess.PIPE)
+    shell_cmd(f"zathura {re.escape(result)}")

@@ -66,7 +66,7 @@ in {
         bookshelf = mkPythonScriptWithDeps "bookshelf" (with pkgs; [ pystdlib python3Packages.redis zathura ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/bookshelf.py; })));
-        update-bookshelf = mkPythonScriptWithDeps "update-bookshelf" (with pkgs; [ python3Packages.redis ])
+        update-bookshelf = mkPythonScriptWithDeps "update-bookshelf" (with pkgs; [ pystdlib python3Packages.redis ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/update-bookshelf.py; })));
       };

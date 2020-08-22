@@ -1,16 +1,10 @@
 import os
+
+from pystdlib import shell_cmd
+from pystdlib.shell import tmuxp_load_session, tmuxp_collect_sessions
 from pystdlib.uishim import get_selection
 
-configs = []
-TMUXP_SESSIONS_PATH = f'{os.getenv("HOME")}/tmuxp'
-
-
-for root, dirs, files in os.walk(TMUXP_SESSIONS_PATH):
-    for file in files:
-        if file.endswith(".yml"):
-            configs.append(os.path.splitext(file)[0])
-
-result = get_selection(sorted(configs), 'config', lines=10, font="@wmFontDmenu@")
+result = get_selection(sorted(tmuxp_collect_sessions()), 'config', lines=10, font="@wmFontDmenu@")
 
 if result:
-    os.system(f"tmuxp load -y -d {TMUXP_SESSIONS_PATH}/{result}.yml")
+    shell_cmd(f"tmuxp load -y -d {os.getenv('HOME')}/tmuxp/{result}.yml")

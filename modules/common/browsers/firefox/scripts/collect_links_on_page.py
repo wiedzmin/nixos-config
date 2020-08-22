@@ -1,19 +1,17 @@
 import re
-import subprocess
 import sys
 from urllib.request import urlopen
 
-from pystdlib.uishim import get_selection, notify
 from bs4 import BeautifulSoup
+
+from pystdlib.uishim import get_selection, notify
+from pystdlib import shell_cmd
 
 
 def is_valid_url(url):
     return re.search("@urlRegexPy@", url) is not None
 
-page_url_task = subprocess.Popen("xsel -o -b",
-                                 shell=True, stdout=subprocess.PIPE)
-page_url = page_url_task.stdout.read().decode().strip()
-assert page_url_task.wait() == 0
+page_url = shell_cmd("xsel -o -b")
 if page_url is not None:
     if is_valid_url(page_url):
         session_name = get_selection([], "save as", lines=1, font="@wmFontDmenu@")

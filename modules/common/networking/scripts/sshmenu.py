@@ -1,12 +1,12 @@
 import argparse
 import json
-import subprocess
 import sys
 
-from pystdlib.uishim import get_selection
-from libtmux import Server
-from libtmux.exc import LibTmuxException
 import redis
+
+from pystdlib.uishim import get_selection
+from pystdlib.shell import term_create_window, tmux_create_window
+from pystdlib import shell_cmd
 
 
 parser = argparse.ArgumentParser(description="Execute command over SSH.")
@@ -22,19 +22,12 @@ extra_hosts_data = json.loads(r.get("net/extra_hosts"))
 
 host = get_selection(extra_hosts_data.keys(), "ssh to", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 
-def open_terminal(cmd):
-    pparams = ["@defaultTerminal@", "-e"]
-    pparams.extend(cmd.split())
-    subprocess.Popen(pparams)
-
 
 if host:
     host_meta = extra_hosts_data[host]
     host_vpn = host_meta.get("vpn", None)
     if host_vpn:
-        vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
-                                          shell=True, stdout=subprocess.PIPE)
-        assert vpn_start_task.wait() == 0
+        shell_cmd(f"vpnctl --start {host_vpn}")
     ssh_user = host_meta.get("user", None)
     ssh_port = host_meta.get("port", None)
     cmd = f"ssh{' -l ' + ssh_user if ssh_user else ''}{' -p ' + str(ssh_port) if ssh_port else ''} {host_meta['ips'][0]}"
@@ -47,17 +40,9 @@ if host:
            sys.exit(1)
 
     if args.ignore_tmux:
-        open_terminal(cmd)
+        term_create_window(cmd, term_cmd=["@defaultTerminal@", "-e"])
     else:
-        session_name = host_meta.get("tmux", "@tmuxDefaultSession@")
-        tmux_server = Server()
-        try:
-            tmux_session = tmux_server.find_where({ "session_name": session_name })
-            if not tmux_session:
-                open_terminal(cmd)
-            else:
-                tmux_session.switch_client()
-                ssh_window = tmux_session.new_window(attach=True, window_name=host,
-                                                     window_shell=cmd)
-        except LibTmuxException:
-            open_terminal(cmd)
+        result = tmux_create_window(cmd, session_name=host_meta.get("tmux", "@tmuxDefaultSession@"),
+                                    window_title="ssh :: {host}")
+        if not result:
+            term_create_window(cmd, term_cmd=["@defaultTerminal@", "-e"])

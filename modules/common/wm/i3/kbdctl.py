@@ -1,5 +1,7 @@
 import i3ipc
-import subprocess
+
+from pystdlib import shell_cmd
+
 
 windows = {}
 default = "us"
@@ -16,8 +18,7 @@ def get_window_id(i3):
 
 
 def get_current_kbd_layout():
-    return subprocess.Popen("xkb-switch", shell=True,
-                            stdout=subprocess.PIPE).stdout.read().strip().decode("utf-8")
+    return shell_cmd("xkb-switch")
 
 
 def on_focus(i3, e):
@@ -25,15 +26,14 @@ def on_focus(i3, e):
     saved_layout = windows.get(name, default)
     current_layout = get_current_kbd_layout()
     if current_layout != saved_layout:
-        subprocess.Popen("xkb-switch -n", shell=True,
-                         stdout=subprocess.PIPE)
+        shell_cmd("xkb-switch -n")
 
 
 def on_binding(i3, e):
     if e.binding.command == "nop" and e.binding.symbol == "backslash":
-        subprocess.Popen("xkb-switch -n", shell=True,
-                         stdout=subprocess.PIPE)
+        shell_cmd("xkb-switch -n")
         windows[get_window_id(i3)] = get_current_kbd_layout()
+
 
 i3 = i3ipc.Connection()
 

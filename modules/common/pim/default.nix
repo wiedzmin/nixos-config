@@ -101,7 +101,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         tt_capture = mkPythonScriptWithDeps "tt_capture"
-          (with pkgs; [ python3Packages.cbor2 python3Packages.pytz python3Packages.xlib xprintidle-ng ])
+          (with pkgs; [ pystdlib python3Packages.cbor2 python3Packages.pytz python3Packages.xlib xprintidle-ng ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/tt_capture.py; })));
       };

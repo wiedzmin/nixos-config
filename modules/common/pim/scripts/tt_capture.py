@@ -1,5 +1,4 @@
 import os
-import subprocess
 import datetime
 import time
 
@@ -7,6 +6,9 @@ from Xlib import X, display, Xatom
 from Xlib.error import XError
 from cbor2 import dumps, loads
 import pytz
+
+from pystdlib import shell_cmd
+
 
 d = display.Display()
 root = d.screen().root
@@ -34,14 +36,8 @@ try:
 except XError:
     pass
 
-xprintidle_task = subprocess.Popen("xprintidle-ng",
-    env={
-        "DISPLAY": os.getenv("DISPLAY"),
-        "XAUTHORITY": os.getenv("XAUTHORITY")
-    },
-    shell=True, stdout=subprocess.PIPE)
-idle_time = xprintidle_task.stdout.read().decode().strip()
-assert xprintidle_task.wait() == 0
+idle_time = shell_cmd("xprintidle-ng", env={"DISPLAY": os.getenv("DISPLAY"),
+                                            "XAUTHORITY": os.getenv("XAUTHORITY")})
 
 data = dumps([current_time, tz_offset_sec, current_desktop, active_window_name, active_window_class, idle_time])
 

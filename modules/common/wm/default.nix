@@ -175,8 +175,9 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        keybindings = mkPythonScriptWithDeps "keybindings" (with pkgs; [ python3Packages.redis yad ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/keybindings.py; })));
+        keybindings = mkPythonScriptWithDeps "keybindings" (with pkgs; [ pystdlib python3Packages.redis yad ])
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/keybindings.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.activation.purgeKeybindingsCache = {

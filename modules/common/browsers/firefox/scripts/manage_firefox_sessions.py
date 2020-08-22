@@ -1,11 +1,11 @@
 import argparse
 import glob
 import os
-import subprocess
 import time
 
-from pystdlib.uishim import get_selection
-from pystdlib.uishim import notify
+from pystdlib.uishim import get_selection, notify
+from pystdlib import shell_cmd
+
 
 def collect_sessions():
     return [os.path.basename(session) for session in glob.glob("@firefoxSessionsPath@/*.org")]
@@ -26,8 +26,7 @@ args = parser.parse_args()
 if args.save_session:
     session_name = get_selection([], "save as", case_insensitive=True, lines=1, font="@wmFontDmenu@")
     if session_name:
-        subprocess.Popen(f"dump_firefox_session {session_name}",
-                         shell=True, stdout=subprocess.PIPE)
+        shell_cmd(f"dump_firefox_session {session_name}")
 elif args.open_session:
     session_name = get_selection(sorted(collect_sessions()), "open", case_insensitive=True, lines=15, font="@wmFontDmenu@")
     if session_name:
@@ -35,27 +34,19 @@ elif args.open_session:
         with open(f"@firefoxSessionsPath@/{session_name}", "r") as session:
             urls = [url.strip()[2:] for url in session.readlines() if url.startswith("* http")]
         if len(urls) <= @firefoxSessionsSizeThreshold@:
-            subprocess.Popen(
-                f"firefox --new-window {urls[0]}",
-                shell=True, stdout=subprocess.PIPE)
+            shell_cmd(f"firefox --new-window {urls[0]}")
             time.sleep(0.5)
             urls_remainder = " --new-tab ".join(urls[1:])
             if len(urls_remainder):
-                subprocess.Popen(f"firefox --new-tab {urls_remainder}",
-                                 shell=True, stdout=subprocess.PIPE)
+                shell_cmd(f"firefox --new-tab {urls_remainder}")
         else:
-            emacsclient_task = subprocess.Popen(f"emacsclient -c @firefoxSessionsPath@/{session_name}",
-                                                shell=True, stdout=subprocess.PIPE)
-            assert emacsclient_task.wait() == 0
+            shell_cmd(f"emacsclient -c @firefoxSessionsPath@/{session_name}")
 elif args.edit_session:
     session_name = get_selection(sorted(collect_sessions()), "edit", case_insensitive=True, lines=15, font="@wmFontDmenu@")
     if session_name:
-        emacsclient_task = subprocess.Popen(f"emacsclient -c @firefoxSessionsPath@/{session_name}",
-                                            shell=True, stdout=subprocess.PIPE)
-        assert emacsclient_task.wait() == 0
+        shell_cmd(f"emacsclient -c @firefoxSessionsPath@/{session_name}")
 elif args.delete_session:
     session_name = get_selection(sorted(collect_sessions()), "delete", case_insensitive=True, lines=15, font="@wmFontDmenu@")
     if session_name:
-        subprocess.Popen(f"rm @firefoxSessionsPath@/{session_name}",
-                         shell=True, stdout=subprocess.PIPE)
+        shell_cmd(f"rm @firefoxSessionsPath@/{session_name}")
         notify("[Firefox]", f"Removed {session_name}", timeout=5000)

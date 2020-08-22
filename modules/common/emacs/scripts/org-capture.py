@@ -1,9 +1,9 @@
 import argparse
 import os
-import subprocess
 import sys
 
 import urllib.parse as up
+from pystdlib import shell_cmd
 
 
 def urlencode(src):
@@ -23,18 +23,12 @@ def construct_proto_uri(template=None, url=None, title=None, body=None, dont_enc
     if title:
         actual_title = title
         if in_tmux:
-            tmux_session_task = subprocess.Popen("tmux display-message -p '#S'",
-                                                 shell=True, stdout=subprocess.PIPE)
-            actual_title = tmux_session_task.stdout.read().decode().strip()
-            assert tmux_session_task.wait() == 0
+            actual_title = shell_cmd("tmux display-message -p '#S'")
         params.append(f"title={urlencode(actual_title) if actual_title not in raw_inputs else actual_title}")
     if body:
         actual_body = body
         if in_tmux:
-            tmux_selection_task = subprocess.Popen('tmux send -X copy-pipe-and-cancel "xsel -i --primary"',
-                                                   shell=True, stdout=subprocess.PIPE)
-            actual_body = tmux_selection_task.stdout.read().decode().strip()
-            assert tmux_selection_task.wait() == 0
+            actual_body = shell_cmd('tmux send -X copy-pipe-and-cancel "xsel -i --primary"')
         params.append(f"body={urlencode(body) if body not in raw_inputs else body}")
 
     return f"org-protocol://capture?{'&'.join(params)}"
@@ -62,5 +56,4 @@ if args.debug:
     with open(DEBUG_FILE, "w") as debug:
         debug.write(capture_uri + "\n")
 
-capture_uri_task = subprocess.Popen(f'emacsclient -s @emacsServerSocketPath@ "{capture_uri}"', shell=True, stdout=subprocess.PIPE)
-assert capture_uri_task.wait() == 0
+shell_cmd(f'emacsclient -s @emacsServerSocketPath@ "{capture_uri}"')

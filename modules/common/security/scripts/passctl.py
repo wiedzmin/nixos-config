@@ -1,8 +1,9 @@
 import argparse
-import subprocess
 
 from pystdlib.uishim import get_selection
 from pystdlib.passutils import collect_entries, read_entry_raw, annotate_entry
+from pystdlib import shell_cmd
+
 
 parser = argparse.ArgumentParser(description="Some pass automation")
 parser.add_argument("--add", dest="add_entry", action="store_true",
@@ -34,5 +35,4 @@ else:
         annotated = annotate_entry(read_entry_raw(path))
         field = get_selection(annotated.keys(), "type >", lines=3, font="@wmFontDmenu@")
         if field:
-            sendkeys_task = subprocess.Popen(f"xdotool type {annotated[field]}", shell=True, stdout=subprocess.PIPE)
-            result = sendkeys_task.wait()
+            shell_cmd(f"xdotool type {annotated[field]}")
