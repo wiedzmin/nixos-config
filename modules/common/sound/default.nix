@@ -1,7 +1,9 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.custom.sound;
+let
+  cfg = config.custom.sound;
+  prefix = config.wmCommon.prefix;
 in {
   options = {
     custom.sound = {
@@ -107,7 +109,7 @@ in {
           mode = "root";
         }
         {
-          key = [ "Alt" "p" ];
+          key = [ prefix "p" ];
           cmd = "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt";
           mode = "root";
         }
