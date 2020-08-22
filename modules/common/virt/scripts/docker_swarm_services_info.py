@@ -15,6 +15,7 @@ service_modes = [
 
 
 r = redis.Redis(host='localhost', port=6379, db=0)
+extra_hosts_data = json.loads(r.get("net/extra_hosts"))
 
 swarm_meta = json.loads(r.get("virt/swarm_meta"))
 swarm = get_selection(swarm_meta.keys(), "swarm", case_insensitive=True, lines=5, font="@wmFontDmenu@")
@@ -24,8 +25,12 @@ if not swarm:
 
 swarm_host = swarm_meta[swarm]
 os.environ["DOCKER_HOST"] = f"ssh://{swarm_host}"
-vpn_meta = json.loads(r.get("net/hosts_vpn"))
-host_vpn = vpn_meta.get(swarm_host, None)
+host_meta = extra_hosts_data.get(swarm_host, None)
+if not host_meta:
+    notify("[docker]", f"Host '{swarm_host}' not found", urgency=URGENCY_CRITICAL, timeout=5000)
+    sys.exit(1)
+
+host_vpn = host_meta.get("vpn", None)
 if host_vpn:
     vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
                                       shell=True, stdout=subprocess.PIPE)
@@ -58,8 +63,7 @@ elif selected_mode == "logs":
     if not selected_task:
         sys.exit(1)
 
-    tmux_sessions = json.loads(r.get("tmux/extra_hosts"))
-    session_name = tmux_sessions.get(swarm_host) or "@tmuxDefaultSession@"
+    session_name =  host_meta.get("tmux", "@tmuxDefaultSession@")
     task_or_service = task_mappings.get(selected_task) if selected_task in task_mappings else selected_service_name
     show_log_cmd = f"DOCKER_HOST={os.environ['DOCKER_HOST']} docker service logs --follow {task_or_service}"
     tmux_server = Server()

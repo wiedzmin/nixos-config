@@ -8,6 +8,7 @@ import redis
 
 
 r = redis.Redis(host='localhost', port=6379, db=0)
+extra_hosts_data = json.loads(r.get("net/extra_hosts"))
 
 CONTAINER_TRAITS = {
     "name": '{{index (split .Name \\"/\\") 1}}',
@@ -44,12 +45,16 @@ hostnames = sorted(list(set(hostnames)))
 
 hostname = get_selection(hostnames, "host", case_insensitive=True, lines=10, font="@wmFontDmenu@")
 
+host_meta = extra_hosts_data.get(hostname, None)
+if not host_meta:
+    notify("[docker]", f"Host '{hostname}' not found", urgency=URGENCY_CRITICAL, timeout=5000)
+    sys.exit(1)
+
 if hostname == "localhost":
     os.environ["DOCKER_HOST"] = "unix:///var/run/docker.sock"
 else:
     os.environ["DOCKER_HOST"] = f"ssh://{hostname}"
-    vpn_meta = json.loads(r.get("net/hosts_vpn"))
-    host_vpn = vpn_meta.get(host, None)
+    host_vpn = host_meta.get("vpn", None)
     if host_vpn:
         vpn_start_task = subprocess.Popen(f"vpnctl --start {host_vpn}",
                                           shell=True, stdout=subprocess.PIPE)

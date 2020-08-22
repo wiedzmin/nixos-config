@@ -103,31 +103,20 @@ in {
         ${renderHosts cfg.extraHosts.entries}
       '';
 
-      home-manager.users."${config.attributes.mainUser.name}".programs.ssh.matchBlocks = lib.mapAttrs' (_: meta:
-        lib.nameValuePair (builtins.head meta.hostnames) {
-          hostname = "${builtins.head meta.hostnames}";
+      home-manager.users."${config.attributes.mainUser.name}".programs.ssh.matchBlocks = lib.mapAttrs' (hostname: meta:
+        lib.nameValuePair hostname ({
+          hostname = hostname;
           user = "${meta.user}";
-        }) cfg.extraHosts.entries;
+          port = if (builtins.hasAttr "port" meta) then meta.port else null;
+        })) cfg.extraHosts.entries;
 
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${
-          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs
-            (_: meta: filterAttrs (n: _: n != "hostnames") (meta // { host = builtins.head meta.hostnames; }))
+          lib.strings.escapeNixString (builtins.toJSON
             (filterAttrs (_: v: (!builtins.hasAttr "ssh" v) || ((builtins.hasAttr "ssh" v) && v.ssh == true))
-              cfg.extraHosts.entries)))
-        }
-        ${pkgs.redis}/bin/redis-cli set tmux/extra_hosts ${
-          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (_: meta:
-            lib.nameValuePair (builtins.head meta.hostnames)
-            (if lib.hasAttrByPath [ "tmux" ] meta then meta.tmux else config.custom.shell.tmux.defaultSession))
-            cfg.extraHosts.entries))
+              cfg.extraHosts.entries))
         }
         ${pkgs.redis}/bin/redis-cli set net/vpn_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.vpnMeta)}
-        ${pkgs.redis}/bin/redis-cli set net/hosts_vpn ${
-          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (_: meta:
-            lib.nameValuePair (builtins.head meta.hostnames)
-            (if lib.hasAttrByPath [ "vpn" ] meta then meta.vpn else "")) cfg.extraHosts.entries))
-        }
       '';
     })
     (mkIf (cfg.bluetooth.enable) {

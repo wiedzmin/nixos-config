@@ -62,7 +62,12 @@ in rec {
   };
   renderHosts = metadata:
     builtins.concatStringsSep "\n"
-    (lib.mapAttrsToList (ip: meta: ip + "    " + (builtins.concatStringsSep " " meta.hostnames)) metadata);
+    (lib.mapAttrsToList (ip: meta: ip + "   " + (builtins.concatStringsSep " " (lib.forEach meta (x: x.host))))
+      (lib.groupBy (x: x.ip) (lib.flatten (lib.mapAttrsToList (host: meta:
+        (lib.forEach meta.ips (ip: {
+          "ip" = ip;
+          "host" = host;
+        }))) metadata))));
   mkProjectShellNix = args: ''
     let
       pkgs = import <nixpkgs> {};
