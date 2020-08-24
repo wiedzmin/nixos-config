@@ -6,7 +6,6 @@ let
   cfg = config.themes.zenburn;
   zenburnEmacs = ''
     (use-package zenburn-theme
-      :ensure t
       :hook
       (after-init-hook . (lambda () (load-theme 'zenburn t))))
   '';
