@@ -107,53 +107,6 @@
   :config
   (counsel-mode 1))
 
-(use-package counsel-projectile
-  :after (counsel projectile)
-  :preface
-  (defun custom/open-project-todos ()
-    (interactive)
-    (let ((todos-file (expand-file-name "todo.org" (projectile-project-root))))
-      (condition-case nil
-          (when (file-exists-p todos-file)
-            (find-file todos-file))
-        (error (message "Cannot find project todos")))))
-  (defun custom/open-project-magit-status ()
-    (interactive)
-    (let ((current-project-name (projectile-default-project-name (locate-dominating-file buffer-file-name ".git"))))
-      (aif (get-buffer (concat "magit: " current-project-name))
-          (switch-to-buffer it)
-        (magit-status))))
-  (defun counsel-projectile-switch-project-action-codesearch-search (project)
-    "Search project's files with Codesearch."
-    (let ((projectile-switch-project-action #'projectile-codesearch-search))
-      (counsel-projectile-switch-project-by-name project)))
-  (defun counsel-projectile-switch-project-action-open-todos (project)
-    "Open project's TODOs."
-    (let ((projectile-switch-project-action #'custom/open-project-todos))
-      (counsel-projectile-switch-project-by-name project)))
-  (defun counsel-projectile-switch-project-action-open-magit-status (project)
-    "Open project's Magit status buffer."
-    (let ((projectile-switch-project-action #'custom/open-project-magit-status))
-      (counsel-projectile-switch-project-by-name project)))
-  :bind
-  ("C-<f1>" . counsel-projectile-switch-project)
-  (:map custom-projectile-map
-       ("t" . custom/open-project-todos)
-       ("m" . custom/open-project-magit-status)
-       ("T" . doom/ivy-tasks)
-       ("h" . projectile-find-file)
-       ("c" . projectile-codesearch-search))
-  :config
-  (counsel-projectile-mode 1)
-  (add-to-list 'counsel-projectile-switch-project-action
-               '("c" counsel-projectile-switch-project-action-codesearch-search "search project's files with Codesearch") t)
-  (add-to-list 'counsel-projectile-switch-project-action
-               '("t" counsel-projectile-switch-project-action-open-todos "open project's todos") t)
-  (add-to-list 'counsel-projectile-switch-project-action
-               '("m" counsel-projectile-switch-project-action-open-magit-status "open project's magit status buffer") t)
-  (setq projectile-switch-project-action 'counsel-projectile-switch-project))
-
-
 (use-package counsel-tramp
   :hook
   (counsel-tramp-pre-command-hook . (lambda ()
@@ -305,8 +258,7 @@
                ("k" . projectile-kill-buffers)
                ("C" . projectile-commander)
                ("d" . projectile-dired)
-               ("f" . projectile-recentf)
-               ("h" . projectile-find-file))
+               ("f" . projectile-recentf))
   :custom
   (projectile-enable-caching t)
   (projectile-require-project-root t)
@@ -319,6 +271,52 @@
      projectile-root-top-down-recurring))
   :hook
   (after-init-hook . projectile-mode))
+
+(use-package counsel-projectile
+  :after (counsel projectile)
+  :preface
+  (defun custom/open-project-todos ()
+    (interactive)
+    (let ((todos-file (expand-file-name "todo.org" (projectile-project-root))))
+      (condition-case nil
+          (when (file-exists-p todos-file)
+            (find-file todos-file))
+        (error (message "Cannot find project todos")))))
+  (defun custom/open-project-magit-status ()
+    (interactive)
+    (let ((current-project-name (projectile-default-project-name (locate-dominating-file buffer-file-name ".git"))))
+      (aif (get-buffer (concat "magit: " current-project-name))
+          (switch-to-buffer it)
+        (magit-status))))
+  (defun counsel-projectile-switch-project-action-codesearch-search (project)
+    "Search project's files with Codesearch."
+    (let ((projectile-switch-project-action #'projectile-codesearch-search))
+      (counsel-projectile-switch-project-by-name project)))
+  (defun counsel-projectile-switch-project-action-open-todos (project)
+    "Open project's TODOs."
+    (let ((projectile-switch-project-action #'custom/open-project-todos))
+      (counsel-projectile-switch-project-by-name project)))
+  (defun counsel-projectile-switch-project-action-open-magit-status (project)
+    "Open project's Magit status buffer."
+    (let ((projectile-switch-project-action #'custom/open-project-magit-status))
+      (counsel-projectile-switch-project-by-name project)))
+  :bind
+  ("C-<f1>" . counsel-projectile-switch-project)
+  (:map custom-projectile-map
+        ("t" . custom/open-project-todos)
+        ("m" . custom/open-project-magit-status)
+        ("T" . doom/ivy-tasks)
+        ("h" . counsel-projectile)
+        ("c" . projectile-codesearch-search))
+  :config
+  (counsel-projectile-mode 1)
+  (add-to-list 'counsel-projectile-switch-project-action
+               '("c" counsel-projectile-switch-project-action-codesearch-search "search project's files with Codesearch") t)
+  (add-to-list 'counsel-projectile-switch-project-action
+               '("t" counsel-projectile-switch-project-action-open-todos "open project's todos") t)
+  (add-to-list 'counsel-projectile-switch-project-action
+               '("m" counsel-projectile-switch-project-action-open-magit-status "open project's magit status buffer") t)
+  (setq projectile-switch-project-action 'counsel-projectile-switch-project))
 
 (use-package rg
   :after counsel
