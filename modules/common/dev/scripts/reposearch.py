@@ -19,4 +19,6 @@ if not selected_repo:
 
 tmux_create_window(None, "@tmuxDefaultSession@", window_title=selected_repo.split("/")[-1],
                    start_directory=selected_repo)
-open_emacs_frame_task = shell_cmd(f"emacsclient -c -a '' {selected_repo}")
+elisp_cmd = f'(dired "{selected_repo}")'
+emacs_cmd = f'emacsclient -c -s /run/user/1000/emacs/server -e \'{elisp_cmd}\'' # TODO: make SPOT for socket path
+shell_cmd(emacs_cmd)
