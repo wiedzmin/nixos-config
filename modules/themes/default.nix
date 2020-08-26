@@ -1,4 +1,11 @@
 { ... }: {
-  imports =
-    [ ./jbmono-fonts.nix ./fira-code-fonts.nix ./hack-fonts.nix ./iosevka-fonts.nix ./scp-fonts.nix ./zenburn.nix ];
+  imports = [
+    ./fonts/jbmono-fonts.nix
+    ./fonts/fira-code-fonts.nix
+    ./fonts/hack-fonts.nix
+    ./fonts/iosevka-fonts.nix
+    ./fonts/scp-fonts.nix
+    ./color/zenburn.nix
+    ./emacs/doom-modeline.nix
+  ];
 }

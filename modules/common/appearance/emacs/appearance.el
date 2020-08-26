@@ -2,16 +2,6 @@
   :custom
   (mouse-avoidance-mode 'jump))
 
-(use-package doom-modeline
-  :if (string-equal "i3" (getenv "CURRENT_WM"))
-  :hook
-  (after-init-hook . doom-modeline-init)
-  :custom
-  (doom-modeline-height 25)
-  (doom-modeline-icon t)
-  (doom-modeline-major-mode-icon nil)
-  (doom-modeline-minor-modes nil))
-
 (use-package transwin
   :quelpa
   (transwin :repo "jcs-elpa/transwin" :fetcher github)

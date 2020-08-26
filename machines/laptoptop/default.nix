@@ -563,6 +563,7 @@ in {
 
   themes.fonts.iosevka.enable = true;
   themes.zenburn.enable = true;
+  themes.emacs.modeline.doom.enable = true;
 
   tools = {
     dbms = {
