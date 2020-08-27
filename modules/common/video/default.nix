@@ -170,8 +170,10 @@ in {
             extraOptions = ''
               glx-no-rebind-pixmap = true;
               glx-no-stencil = true;
+              glx-swap-method = 2;
               xrender-sync-fence = true;
             '';
+            inactiveOpacity = "0.8";
           };
           redshift = {
             enable = true;
