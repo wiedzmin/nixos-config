@@ -33,7 +33,7 @@ in {
       };
       packaging.path = mkOption {
         type = types.str;
-        default = "temp/gobuild";
+        default = "workspace/go2nix";
         description = "Packaging sandbox root relative to $HOME.";
       };
       misc.enable = mkOption {
