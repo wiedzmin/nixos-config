@@ -50,10 +50,11 @@ in {
       bookmarks.entries = mkOption {
         type = types.attrs;
         default = {
+          gourmet = "${wsRoot "github"}/wiedzmin/gourmet";
+          home-manager = "${wsRoot "github"}/rycee/home-manager";
           nixos = "/etc/nixos";
           nixpkgs-channels = "${wsRoot "github"}/NixOS/nixpkgs-channels";
           nixpkgs-proposed = "${wsRoot "github"}/wiedzmin/nixpkgs";
-          home-manager = "${wsRoot "github"}/rycee/home-manager";
           postgres = "${wsRoot "github"}/postgres/postgres";
         };
         description = "Bookmarks data.";
