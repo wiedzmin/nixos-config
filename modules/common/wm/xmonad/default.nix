@@ -283,6 +283,7 @@ in {
 
       ide.emacs.environment = { CURRENT_WM = "xmonad"; };
 
+      # TODO: ensure config dir exists (~/.xmonad or another if changeable)
       services.xserver = {
         windowManager = {
           xmonad = {
