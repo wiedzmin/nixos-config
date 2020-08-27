@@ -402,6 +402,7 @@ in {
         }
       ];
 
+      environment.sessionVariables = { BROWSER = cfg.command; };
       home-manager.users."${config.attributes.mainUser.name}" = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "firefox.desktop";
       };

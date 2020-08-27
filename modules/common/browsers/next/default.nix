@@ -58,6 +58,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.isDefault) {
+      environment.sessionVariables = { BROWSER = cfg.command; };
       assertions = [
         {
           assertion = !cfg.isFallback;
