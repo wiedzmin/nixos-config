@@ -225,7 +225,7 @@ in {
             trim_trailing_whitespace = false
           '';
         } // lib.optionalAttrs (config.custom.shell.enable) {
-          "tmuxp/dev.yml".text = ''
+          ".tmuxp/dev.yml".text = ''
             session_name: dev
             windows:
               - window_name: mc

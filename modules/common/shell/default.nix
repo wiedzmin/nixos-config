@@ -115,7 +115,7 @@ in {
           [ checkbashism libnotify wmctrl xdotool seturgent shellcheck ]
           ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
-          "tmuxp/main.yml".text = ''
+          ".tmuxp/main.yml".text = ''
             session_name: main
             windows:
               - window_name: repl

@@ -124,7 +124,7 @@ in {
             ytdl-format=(bestvideo[ext=webm]/bestvideo[height>720]/bestvideo[fps=60])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio)/best
           '';
         } // lib.optionalAttrs (config.custom.shell.enable) {
-          "tmuxp/media.yml".text = ''
+          ".tmuxp/media.yml".text = ''
             session_name: media
             windows:
               - window_name: mps-youtube

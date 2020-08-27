@@ -7,8 +7,8 @@ self: super: {
     src = super.fetchFromGitHub {
       owner = "wiedzmin";
       repo = "pystdlib";
-      rev = "5bb1c74561039adec326b9e328118066a2411ab5";
-      sha256 = "0lkfssynwfrnnawrmbbg8cani3vw6q5jdv6fqiv4iiyzvw35z834";
+      rev = "6028cf4ba0b8be0ec126003968ff39657612e7c1";
+      sha256 = "0mqv08kjpdmrp4nx104qq425crfhqal9s4qbzf9yx2qmgs2i2q89";
     };
 
     propagatedBuildInputs = with super; with python3Packages; [ dmenu-python libtmux notify2 pyfzf xlib ];
