@@ -81,6 +81,17 @@ in {
           data = "rm -f ${homePrefix ".config/mimeapps.list"} ";
         };
 
+        xdg.dataHome = homePrefix ".local/share";
+        xdg.userDirs = {
+          enable = true;
+          desktop = homePrefix "Desktop";
+          documents = homePrefix "docs";
+          download = homePrefix "Downloads";
+          music = homePrefix "blobs/music";
+          pictures = homePrefix "blobs/pics";
+          videos = homePrefix "blobs/video";
+        };
+
         # TODO: consider desktop files locating automation
         xdg.mimeApps.defaultApplications = (mapMimesToApp config.attributes.mimetypes.images "feh.desktop")
           // (mapMimesToApp config.attributes.mimetypes.video "mpv.desktop")
