@@ -305,6 +305,7 @@ in {
     secrets.snippets.enable = true;
     wm.enable = true;
     staging.packages = with pkgs; [ go-task ];
+    ansible.enable = true;
   };
 
   custom.dev.git = {

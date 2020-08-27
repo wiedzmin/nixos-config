@@ -8,6 +8,8 @@ with lib;
 
 let cfg = config.custom.dev;
 in {
+  imports = [ ./ansible.nix ];
+
   options = {
     custom.dev = {
       enable = mkOption {
