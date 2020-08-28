@@ -11,6 +11,7 @@ let
   vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
   '';
+  configHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.configHome;
 in {
   options = {
     custom.virtualization = {
@@ -136,23 +137,25 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         dlint = mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (builtins.readFile
           (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/dlint.sh; })));
-        hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/hadolintd.sh; })));
+        hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ]) (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/hadolintd.sh; })));
         docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits"
           (with pkgs; [ docker pystdlib python3Packages.redis xsel yad ]) (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/docker_containers_traits.py; })));
         discover_containerized_services =
           mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker pystdlib ]) (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/discover_containerized_services.py; })));
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+              src = ./scripts/discover_containerized_services.py;
+            })));
         docker_shell =
           mkPythonScriptWithDeps "docker_shell" (with pkgs; [ pystdlib python3Packages.libtmux python3Packages.redis ])
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/docker_shell.py; })));
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/docker_shell.py; })));
         docker_swarm_services_info = mkPythonScriptWithDeps "docker_swarm_services_info"
           (with pkgs; [ docker pystdlib python3Packages.libtmux python3Packages.redis vpnctl yad ]) (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/docker_swarm_services_info.py; })));
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+              src = ./scripts/docker_swarm_services_info.py;
+            })));
       };
 
       virtualisation.docker = {
@@ -168,6 +171,8 @@ in {
           trustedRegistries = [ "docker.io" ];
         };
       };
+
+      environment.variables.DOCKER_CONFIG = "${configHome}/docker";
 
       environment.systemPackages = with pkgs;
         [

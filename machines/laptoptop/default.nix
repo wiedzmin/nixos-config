@@ -282,7 +282,7 @@ in {
     bookmarking.enable = true;
     screenshots = {
       enable = true;
-      baseDir = homePrefix "screenshots";
+      baseDir = homePrefix "blobs/screenshots";
       dateFormat = "+%Y-%m-%d_%H:%M:%S";
     };
     warmup = {

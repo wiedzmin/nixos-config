@@ -7,6 +7,7 @@ let
   pass_imap_helper = pkgs.writeShellScriptBin "pass_imap_helper" ''
     echo $(${pkgs.pass}/bin/pass $1 | ${pkgs.coreutils}/bin/head -n 1)
   '';
+  dataHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.dataHome;
 in {
   options = {
     custom.email = {
@@ -212,6 +213,8 @@ in {
         assertion = cfg.imapfilter.server != "";
         message = "email: Must provide remote server address for imapfilter.";
       }];
+
+      environment.variables.IMAPFILTER_HOME = "${dataHome}/imapfilter";
 
       environment.etc."imapfilter_config.lua".text = ''
         options.timeout = ${builtins.toString cfg.imapfilter.timeout}

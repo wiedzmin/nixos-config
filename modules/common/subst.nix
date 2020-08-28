@@ -4,7 +4,8 @@ let
 in { config, lib, pkgs, ... }:
 with import ../util.nix { inherit config lib pkgs; };
 
-rec {
+let configHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.configHome;
+in rec {
   autorandrProfiles = homePrefix ".config/autorandr";
   bashExecutable = "/run/current-system/sw/bin/bash";
   booksSearchCommand = config.tools.ebooks.readers.booksSearchCommand;
@@ -39,14 +40,16 @@ rec {
     builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
   mainUserName = config.attributes.mainUser.name;
   mainUserID = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
-  mycliBinary = "${nixpkgs-pinned-16_04_20.mycli}/bin/mycli"; # because of deps versions conflict with pgcli
+  mycliCmd =
+    "${nixpkgs-pinned-16_04_20.mycli}/bin/mycli --myclirc ${configHome}/.myclirc"; # because of deps versions conflict with pgcli
   nmcliBinary = "${pkgs.networkmanager}/bin/nmcli"; # because there is no `bin` output for some reason
   orgDir = config.ide.emacs.orgDir;
   orgKbDir = homePrefix "docs/org-kb";
   orgWarningsFiledir = builtins.dirOf config.custom.pim.org.warningsFile;
   orgWarningsFilename = config.custom.pim.org.warningsFile;
   passwordStorePath = config.custom.security.passwordStorePath;
-  pgcliBinary = "${nixpkgs-pinned-16_04_20.pgcli}/bin/pgcli"; # because of deps versions conflict with mycli
+  pgcliCmd =
+    "${nixpkgs-pinned-16_04_20.pgcli}/bin/pgcli --pgclirc ${configHome}/.pgclirc"; # because of deps versions conflict with mycli
   pimOrgAgendaElPatch = config.custom.pim.org.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   screenshotsBasedir = config.custom.content.screenshots.baseDir;

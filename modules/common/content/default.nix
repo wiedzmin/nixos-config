@@ -97,33 +97,8 @@ in {
           // (mapMimesToApp config.attributes.mimetypes.video "mpv.desktop")
           // (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop")
           // (mapMimesToApp config.attributes.mimetypes.office.spreadsheets "calc.desktop");
-        home.file = {
-          ".mpv/config".text = ''
-            hwdec=vdpau
-            hwdec-codecs=all
 
-            vo=gpu,xv
-            ao=pulse
-
-            af=scaletempo
-            audio-samplerate=48000
-
-            slang = en
-            alang = en,eng,us
-
-            volume-max=200
-
-            cache = yes
-            cache-on-disk = yes
-            cache-pause-initial = yes
-            cache-pause-wait = 10
-
-            # Always use 1080p+ or 60 fps where available. Prefer VP9
-            # over AVC and VP8 for high-resolution streams.
-            ytdl=yes
-            ytdl-format=(bestvideo[ext=webm]/bestvideo[height>720]/bestvideo[fps=60])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio)/best
-          '';
-        } // lib.optionalAttrs (config.custom.shell.enable) {
+        home.file = lib.optionalAttrs (config.custom.shell.enable) {
           ".tmuxp/media.yml".text = ''
             session_name: media
             windows:
@@ -154,6 +129,29 @@ in {
         programs.mpv = {
           enable = true;
           scripts = with pkgs.mpvScripts; [ mpris ];
+          config = {
+            save-position-on-quit = true;
+            hdr-compute-peak = false; # prevents brightness changes
+            keep-open = true;
+            watch-later-directory = "~/.local/share/mpv/watch_later";
+            hwdec = "vdpau";
+            hwdec-codecs = "all";
+            vo = "gpu,xv";
+            ao = "pulse";
+            af = "scaletempo";
+            audio-samplerate = "48000";
+            slang = "en";
+            alang = "en,eng,us";
+            volume-max = "200";
+            cache = "yes";
+            cache-on-disk = "yes";
+            cache-pause-initial = "yes";
+            cache-pause-wait = "10";
+            # # Always use 1080p+ or 60 fps where available. Prefer VP9
+            # # over AVC and VP8 for high-resolution streams.
+            # ytdl=yes
+            # ytdl-format=(bestvideo[ext=webm]/bestvideo[height>720]/bestvideo[fps=60])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio)/best
+          };
         };
         programs.zsh.shellAliases = { yg = "${proposed.you-get}/bin/you-get"; };
       };

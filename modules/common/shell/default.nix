@@ -177,8 +177,10 @@ in {
 
             bindkey '^P' fuzzy-search-and-edit
           '';
-          sessionVariables = {
-            HISTFILE = ".histfile";
+          sessionVariables = let dataHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.dataHome;
+          in {
+            HISTFILE = "${dataHome}/.histfile";
+            LESSHISTFILE = "${dataHome}/.lesshst";
             YSU_IGNORED_ALIASES = [ "g" "ll" ];
             YSU_MODE = "ALL";
           } // lib.optionalAttrs (!cfg.liquidPrompt.enable) { ZSH_COMMAND_TIME_COLOR = "cyan"; };
