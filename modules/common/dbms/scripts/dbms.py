@@ -41,5 +41,5 @@ if dbms_entry:
         # TODO: elaborate more sophisticated cmd construction logic
         cmd = f"PGPASSWORD={dbms_pass} @pgcliCmd@ --host {dbms_meta[dbms_entry]['host']} --user {dbms_meta[dbms_entry]['user']} --no-password"
 
-    tmux_create_window(cmd, extra_hosts_data[host].get("tmux", "@tmuxDefaultSession@")
+    tmux_create_window(cmd, extra_hosts_data[host].get("tmux", "@tmuxDefaultSession@"),
                        window_title=dbms_entry, create_if_not=True, attach=True)
