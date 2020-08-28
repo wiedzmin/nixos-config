@@ -85,7 +85,7 @@ in {
         xdg.userDirs = {
           enable = true;
           desktop = homePrefix "Desktop";
-          documents = homePrefix "docs";
+          documents = homePrefix "docs/inbox";
           download = homePrefix "Downloads";
           music = homePrefix "blobs/music";
           pictures = homePrefix "blobs/pics";
