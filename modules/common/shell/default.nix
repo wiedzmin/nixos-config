@@ -251,7 +251,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.alacritty.enable) {
-      environment.sessionVariables.TERMINAL = [ "alacritty" ];
+      environment.sessionVariables.TERMINAL = [ "${pkgs.alacritty}/bin/alacritty" ];
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.alacritty = {
           enable = true;
