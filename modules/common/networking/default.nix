@@ -8,6 +8,8 @@ with lib;
 
 let cfg = config.custom.networking;
 in {
+  imports = [ ./l2vpn.nix ];
+
   options = {
     custom.networking = {
       enable = mkOption {

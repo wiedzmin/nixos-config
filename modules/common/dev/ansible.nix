@@ -2,7 +2,7 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-# TODO: implement profiles
+# TODO: implement profiles (refer to l2vpn module)
 let cfg = config.custom.dev.ansible;
 in {
   options = {

@@ -78,7 +78,6 @@ in {
     # TODO: consider extracting dichotomy below to module
     networkmanager = {
       enable = true;
-      enableStrongSwan = true;
       unmanaged = [ "br0" "interface-name:vb-*" "interface-name:vbox*" "interface-name:ve-*" "lo" ];
       wifi = { macAddress = "60:67:20:ec:34:14"; };
     };
