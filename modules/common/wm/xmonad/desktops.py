@@ -5,7 +5,7 @@ import json
 import sys
 
 import redis
-from fuzzywuzzy import fuzz
+from fuzzywuzzy import fuzz # TODO: play with https://pypi.org/project/pyjarowinkler/
 from ewmh import EWMH
 
 from pystdlib import shell_cmd
