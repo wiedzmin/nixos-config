@@ -258,6 +258,15 @@ in {
         "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
       };
 
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set misc/emacs_projects_desktops ${
+          lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (lib.forEach (builtins.filter
+            (e: lib.all (x: builtins.hasAttr x e) [ "class" "title" "desktop" ] && lib.hasInfix "Emacs" e.class)
+            config.wmCommon.wsMapping.rules)
+            (r: lib.nameValuePair (builtins.replaceStrings [ " " ] [ ".*" ] (".*" + r.title + ".*")) r.desktop))))
+        }
+      '';
+
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = [ pkgs.kbdctl ];
         xdg.configFile = {
