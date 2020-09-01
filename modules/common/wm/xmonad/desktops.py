@@ -9,15 +9,11 @@ from fuzzywuzzy import fuzz # TODO: play with https://pypi.org/project/pyjarowin
 from ewmh import EWMH
 
 from pystdlib import shell_cmd
+from pystdlib.xlib import prepare_desktops_map
 
 
 SIMILARITY_GROUP_TRESHOLD = 1
 SIMILARITY_DIRECT_TRESHOLD = 20
-
-
-def prepare_desktops_map():
-    desktops = shell_cmd("wmctrl -d", split_output="\n")
-    return { desktop[-1]: desktop[0] for desktop in [desktop.split() for desktop in desktops]}
 
 
 parser = argparse.ArgumentParser(description="Org-capture proxy.")
