@@ -238,6 +238,7 @@ in {
       };
 
       ide.emacs.environment = { CURRENT_WM = "i3"; };
+      environment.sessionVariables.CURRENT_WM = [ "i3" ];
 
       nixpkgs.config.packageOverrides = _: rec {
         kbdctl =

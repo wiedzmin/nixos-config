@@ -78,7 +78,6 @@
 ;;TODO: review new `reverse-im' options
 (use-package reverse-im
   :if (string-equal "i3" (getenv "CURRENT_WM"))
-  :ensure t
   :custom
   (reverse-im-input-methods '("russian-computer"))
   :config
