@@ -300,7 +300,7 @@
   (org-refile-allow-creating-parent-nodes 'confirm)
   (org-refile-target-verify-function 'custom/verify-refile-target)
   (org-refile-targets '((org-agenda-files :maxlevel . 5) (nil :maxlevel . 5)))
-  (org-refile-use-outline-path 'file)
+  (org-refile-use-outline-path 'full-file-path)
   (org-return-follows-link t)
   (org-special-ctrl-a/e t)
   (org-special-ctrl-k t)
@@ -346,7 +346,9 @@
     (deferred:nextc
       (deferred:wait-idle 100)
       (lambda ()
-        (push "/etc/nixos/todo.org" org-agenda-files))))
+        (push "/etc/nixos/todo.org" org-agenda-files)
+        (push "/etc/nixos/modules/common/emacs/todo.org" org-agenda-files)
+        (push "/home/alex3rd/docs/org/bookmarks.org" org-agenda-files))))
   ;; run some commands
   (org-add-link-type "tag" 'custom/follow-tag-link)
   (org-clock-persistence-insinuate)
