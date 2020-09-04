@@ -4,7 +4,7 @@ import sys
 
 import redis
 
-from pystdlib.uishim import get_selection, notify, show_text_dialog
+from pystdlib.uishim import get_selection, notify, show_text_dialog, URGENCY_CRITICAL
 from pystdlib.shell import tmux_create_window
 from pystdlib import shell_cmd
 

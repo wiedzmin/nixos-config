@@ -2,7 +2,7 @@ import re
 import sys
 import time
 
-from pystdlib.uishim import get_selection, notify
+from pystdlib.uishim import get_selection, notify, URGENCY_CRITICAL
 from pystdlib import shell_cmd
 
 

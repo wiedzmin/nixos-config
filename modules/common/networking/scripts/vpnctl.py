@@ -8,7 +8,8 @@ import os
 import redis
 import dbus
 
-from pystdlib.uishim import notify
+from pystdlib.uishim import notify, URGENCY_NORMAL, URGENCY_CRITICAL
+
 
 IPV4_STATUS_PATH = "/proc/sys/net/ipv4/conf/"
 NM_VPN_ACTIVE_STATUS_CODES = ["3", "5"]

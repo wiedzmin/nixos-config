@@ -2,7 +2,7 @@ import os
 import re
 import sys
 
-from pystdlib.uishim import get_selection, notify
+from pystdlib.uishim import get_selection, notify, URGENCY_CRITICAL
 
 pattern = "\(.*\)"
 deps_dict = {}
