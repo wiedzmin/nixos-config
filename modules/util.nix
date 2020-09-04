@@ -88,12 +88,19 @@ in rec {
         ${
           lib.optionalString ((builtins.hasAttr "prop" args) && args.prop != [ ]) ''
             propagatedBuildInputs = with pkgs; [
-            ${builtins.concatStringsSep "\n" (builtins.map (elt: (mkIndent 6) + elt) args.native)}
+            ${builtins.concatStringsSep "\n" (builtins.map (elt: (mkIndent 6) + elt) args.prop)}
             ${mkIndent 4}];''
         }
         ${
           lib.optionalString ((builtins.hasAttr "env" args) && args.env != { }) (builtins.concatStringsSep "\n"
             (lib.mapAttrsToList (key: value: key + " = " + (lib.strings.escapeNixString value) + ";") args.env))
+        }
+        ${
+          lib.optionalString ((builtins.hasAttr "shell" args) && args.shell != "") ''
+            shellHook = '''
+            ${builtins.concatStringsSep "\n" (builtins.map (elt: (mkIndent 6) + elt) (lib.splitString "\n" args.shell))}
+            ${mkIndent 4}''';
+          ''
         }
       }
   '';
