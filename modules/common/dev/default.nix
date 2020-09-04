@@ -178,6 +178,7 @@ in {
       custom.dev.git.gitignore = ''
         shell.nix
         .envrc
+        .direnv/
       '';
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
@@ -238,6 +239,7 @@ in {
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
+          enableNixDirenvIntegration = true;
         };
         xdg.configFile."direnv/direnv.toml".text = toToml {
           global = { disable_stdin = true; };

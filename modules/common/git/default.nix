@@ -306,7 +306,7 @@ in {
           ];
         };
         "nixos/.envrc".text = ''
-          source <(direnv apply_dump .envrc.cache)
+          use nix
         '';
         "nixos/shell.nix".text = ''
           let
