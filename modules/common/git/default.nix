@@ -5,7 +5,9 @@ in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.dev.git;
+let
+  cfg = config.custom.dev.git;
+  dataHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.dataHome;
 in {
   options = {
     custom.dev.git = {
@@ -205,7 +207,7 @@ in {
             };
             "core" = {
               autocrlf = false;
-              excludesfile = homePrefix "${cfg.assets.dirName}/.gitignore";
+              excludesfile = "${dataHome}/${cfg.assets.dirName}/.gitignore";
               quotepath = false;
               askPass = "";
             };
