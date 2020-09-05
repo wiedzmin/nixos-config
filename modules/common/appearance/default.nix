@@ -6,7 +6,7 @@ let
   cfg = config.custom.appearance;
   prefix = config.wmCommon.prefix;
   rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
-    ${pkgs.feh}/bin/feh --bg-fill ${cfg.wallpaper.root}/${cfg.wallpaper.current}
+    ${pkgs.feh}/bin/feh --bg-${cfg.wallpaper.transform} ${cfg.wallpaper.root}/${cfg.wallpaper.current}
   '';
 in {
   options = {
@@ -60,6 +60,19 @@ in {
         type = types.str;
         default = "";
         description = "Current wallpaper.";
+      };
+      wallpaper.transform = mkOption {
+        default = "fill";
+        type = types.enum [ "fill" "max" "scale" "tile" ];
+        description = ''
+          `fill`: Like `scale`, but preserves aspect ratio by zooming the image until it fits.
+                  Either a horizontal or a vertical part of the image will be cut off.
+          `max`: Like `fill`, but scale the image to the maximum size that fits the screen with borders on one side.
+                 The border color can be set using --image-bg.
+          `scale`: Fit the file into the background without repeating it, cutting off stuff or using borders.
+                   But the aspect ratio is not preserved either.
+          `tile`: Tile (repeat) the image in case it is too small for the screen
+        '';
       };
       emacs.enable = mkOption {
         type = types.bool;
