@@ -328,6 +328,16 @@
   (:map flycheck-mode-map
         ("C-c ! o" . ivy-flycheck)))
 
+(use-package flycheck-projectile
+  :after (projectile flycheck)
+  :quelpa
+  (flycheck-projectile :repo "nbfalcon/flycheck-projectile" :fetcher github)
+  :bind
+  (:map mode-specific-map
+        ("p" . flycheck-projectile-list-errors))
+  (:map flycheck-mode-map
+        ("C-c ! p" . flycheck-projectile-list-errors)))
+
 (use-package format-all
   :after copy-as-format
   :bind
