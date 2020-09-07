@@ -582,8 +582,7 @@ in {
 
   wm.i3.enable = true;
 
-  wmCommon.autostart.entries =
-    [ "alacritty" "nm-applet" "qutebrowser -P default --class qb-default" "telegram-desktop" ];
+  wmCommon.autostart.entries = [ "alacritty" "qutebrowser -P default --class qb-default" "telegram-desktop" ];
 
   home-manager.users."${config.attributes.mainUser.name}" = {
     nixpkgs.config.allowUnfree = true;
