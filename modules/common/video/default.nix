@@ -153,7 +153,7 @@ in {
         home.packages = with pkgs; lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages ++ [ rescreen ];
         home.file = {
           ".XCompose".text = ''
-            include "${pkgs.xorg.libX11}/share/X11/locale/en_EN.UTF-8/Compose"
+            include "${pkgs.xorg.libX11}/share/X11/locale/en_US.UTF-8/Compose"
 
             <Multi_key> <m> <o> : "ө"
             <Multi_key> <m> <O> : "Ө"
