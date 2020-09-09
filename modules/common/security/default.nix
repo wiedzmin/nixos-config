@@ -29,7 +29,7 @@ in {
       lockScreenCommand = mkOption {
         description = "Command to use for screen locking";
         type = types.str;
-        default = "${pkgs.i3lock-color}/bin/i3lock-color -c 232729 && ${pkgs.xorg.xset}/bin/xset dpms force off";
+        default = "${pkgs.i3lock-fancy-rapid}/bin/i3lock-fancy-rapid 5 3 && ${pkgs.xorg.xset}/bin/xset dpms force off";
       };
       emacs.enable = mkOption {
         type = types.bool;
