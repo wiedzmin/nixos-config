@@ -112,7 +112,7 @@ in {
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs;
-          [ checkbashism libnotify wmctrl xdotool seturgent shellcheck ]
+          [ checkbashism libnotify wmctrl xdotool seturgent shellcheck perl ]
           ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
           ".tmuxp/main.yml".text = ''
