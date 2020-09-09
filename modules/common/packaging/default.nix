@@ -111,7 +111,13 @@ in {
     })
     (mkIf (cfg.enable && cfg.nix.helpers.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ nix-prefetch nix-prefetch-github nix-prefetch-scripts nixos-generators ];
+        home.packages = with pkgs; [
+          nix-prefetch
+          nix-prefetch-github
+          nix-prefetch-scripts
+          nixos-generators
+          nix-template
+        ];
       };
     })
     (mkIf (cfg.enable && cfg.nix.search.enable) {
