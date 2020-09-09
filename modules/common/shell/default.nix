@@ -191,6 +191,8 @@ in {
             du = "${pkgs.dua}/bin/dua";
 
             zr = ". ~/.zshrc";
+
+            vg = "EDITOR=emacsclient ${pkgs.vgrep}/bin/vgrep --interactive --show c5";
           };
           plugins = [
             {
@@ -385,7 +387,7 @@ in {
     })
     (mkIf cfg.toolsng.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ fd gron nixpkgs-pinned-02_06_20.ripgrep-all sd uq ];
+        home.packages = with pkgs; [ fd gron nixpkgs-pinned-02_06_20.ripgrep-all sd uq vgrep ];
         programs = {
           lsd = {
             enable = true;
