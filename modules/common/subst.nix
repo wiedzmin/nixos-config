@@ -21,7 +21,7 @@ in rec {
   qbDownloadPath = config.custom.browsers.qutebrowser.downloadPath;
   emacsBrowserGenericProgram = "${pkgs.xdg_utils}/bin/xdg-open";
   emacsCustomFile = homePrefix ".emacs.d/customizations.el";
-  emacsClient = "${pkgs.emacs}/bin/emacsclient";
+  emacsClient = "${config.ide.emacs.package}/bin/emacsclient";
   emacsDatadir = config.ide.emacs.dataDir;
   emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
   emacsYasnippetSnippets = deps.yasnippet-snippets;

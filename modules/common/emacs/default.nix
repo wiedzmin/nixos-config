@@ -123,7 +123,6 @@ in {
         *.elc
         .dir-locals.el
       '';
-      environment.variables.EDITOR = "${pkgs.emacs}/bin/emacsclient";
       ide.emacs.extraPackages = epkgs:
         [
           epkgs.aggressive-indent
@@ -186,10 +185,10 @@ in {
         ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.zsh.sessionVariables = {
-          EDITOR = "${pkgs.emacs}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
+          EDITOR = "${config.ide.emacs.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
         };
         programs.bash.sessionVariables = {
-          EDITOR = "${pkgs.emacs}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
+          EDITOR = "${config.ide.emacs.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
         };
         home.packages = (with pkgs; [ ispell org-capture editorconfig-checker ])
           ++ [ ((pkgs.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
@@ -206,7 +205,7 @@ in {
           data = "mkdir -p ${cfg.dataDir}/lsp";
         };
       };
-      systemd.user.services."emacs" = let icon = "${pkgs.emacs}/share/icons/hicolor/scalable/apps/emacs.svg";
+      systemd.user.services."emacs" = let icon = "${cfg.package}/share/icons/hicolor/scalable/apps/emacs.svg";
       in { # TODO: review/add socket activation
         description = "Emacs: the extensible, self-documenting text editor";
         documentation = [ "info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/" ];
@@ -232,7 +231,7 @@ in {
         }
         {
           key = [ "e" ];
-          cmd = "${pkgs.emacs}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
+          cmd = "${cfg.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
           mode = "window";
         }
       ];

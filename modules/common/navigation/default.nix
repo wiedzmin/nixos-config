@@ -146,7 +146,7 @@ in {
           after = [ "linkGeneration" ];
           before = [ ];
           data =
-            "${pkgs.emacs}/bin/emacsclient -s /run/user/1000/emacs/server -e '(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
+            "${config.ide.emacs.package}/bin/emacsclient -s /run/user/1000/emacs/server -e '(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
               builtins.concatStringsSep " "
               (forEach (lib.attrValues cfg.bookmarks.entries) (entry: ''"'' + entry + ''"''))
             }))' ";
