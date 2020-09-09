@@ -185,11 +185,15 @@
              "[no file]")))))
   (defun keep-custom-frame-title (window)
     (setq-default frame-title-format custom-frame-title-format))
+  (defun mark-done-kill-frame ()
+    (interactive)
+    (server-edit)
+    (delete-frame))
   :bind
   (:prefix-map frame-map
                :prefix "<f2>"
                ("n" . make-frame-command)
-               ("k" . delete-frame)
+               ("k" . mark-done-kill-frame)
                ("s" . delete-other-frames))
   :config
   (unless (string-equal "i3" (getenv "CURRENT_WM"))
