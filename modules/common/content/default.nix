@@ -128,7 +128,7 @@ in {
         programs.aria2.enable = true;
         programs.mpv = {
           enable = true;
-          scripts = with pkgs.mpvScripts; [ mpris ];
+          scripts = with pkgs.mpvScripts; [ mpris sponsorblock ];
           config = {
             save-position-on-quit = true;
             hdr-compute-peak = false; # prevents brightness changes
