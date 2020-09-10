@@ -18,98 +18,84 @@ in {
           {
             name = "web";
             key = [ "F1" ];
-            index = 1;
             transient = false;
             type = "primary";
           }
           {
             name = "web2";
             key = [ "1" ];
-            index = 7;
             transient = true;
             type = "primary";
           }
           {
             name = "web3";
             key = [ "`" ];
-            index = 8;
             transient = true;
             type = "primary";
           }
           {
             name = "web4";
             key = [ "F6" ];
-            index = 10;
             transient = true;
             type = "primary";
           }
           {
             name = "work";
             key = [ "F2" ];
-            index = 2;
             transient = false;
             type = "primary";
           }
           {
             name = "tools";
             key = [ "F4" ];
-            index = 5;
             transient = false;
             type = "primary";
           }
           {
             name = "scan";
             key = [ "F5" ];
-            index = 6;
             transient = false;
             type = "primary";
           }
           {
             name = "shell";
             key = [ "F3" ];
-            index = 3;
             transient = false;
             type = "secondary";
           }
           {
             name = "read";
             key = [ "4" ];
-            index = 4;
             transient = false;
             type = "secondary";
           }
           {
             name = "media";
             key = [ "5" ];
-            index = 11;
             transient = false;
             type = "secondary";
           }
           {
             name = "im";
             key = [ "c" ];
-            index = 12;
             transient = false;
             type = "secondary";
           }
           {
             name = "work2";
             key = [ "2" ];
-            index = 13;
             transient = true;
             type = "primary";
           }
           {
             name = "work3";
             key = [ "3" ];
-            index = 14;
             transient = true;
             type = "secondary";
           }
           {
             name = "scratch";
             key = [ "Esc" ];
-            index = 15;
             transient = false;
             type = "tertiary";
           }

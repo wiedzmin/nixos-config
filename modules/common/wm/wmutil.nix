@@ -36,7 +36,8 @@ in rec {
   dmenu_select_windows = mkShellScriptWithDeps "dmenu_select_windows" (with pkgs; [ coreutils dmenu wmctrl ]) ''
     wmctrl -a $(wmctrl -l | cut -d" " -f5- | dmenu -i -l 15 -fn '${config.wmCommon.fonts.dmenu}')
   '';
-  getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.type) wsdata)."${type}";
+  enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: v: i) wsdata) wsdata;
+  getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
   toHaskellBool = v: builtins.replaceStrings [ "true" "false" ] [ "True" "False" ] (lib.trivial.boolToString v);
   mkKeysymXmonad = key: if builtins.hasAttr key keysymsXmonad then builtins.getAttr key keysymsXmonad else key;
   mkKeysXmonadSpawn = keys: indent: # FIXME: update logic (presumably broken)
@@ -69,18 +70,20 @@ in rec {
     lib.concatStringsSep keySepI3
     (lib.forEach keys (k: if builtins.hasAttr k keysymsI3 then builtins.getAttr k keysymsI3 else k));
   getWorkspaceByNameI3 = wsdata: name:
-    let ws = builtins.head (builtins.filter (ws: ws.name == name) wsdata);
-    in "${builtins.toString ws.index}: ${ws.name}";
+    let ws = builtins.head (builtins.filter (ws: ws.snd.name == name) (enumerateWorkspaces wsdata));
+    in "${builtins.toString ws.fst}: ${ws.snd.name}";
   mkWorkspacesI3 = wsdata: mod:
-    lib.concatStringsSep "\n" (lib.forEach wsdata (ws: ''
-      bindsym ${mod}+${mkKeyI3 ws.key} workspace ${builtins.toString ws.index}: ${ws.name}
-      bindsym ${mod}+Shift+${mkKeyI3 ws.key} move container to workspace ${builtins.toString ws.index}: ${ws.name}
+    lib.concatStringsSep "\n" (lib.forEach (enumerateWorkspaces wsdata) (elt: ''
+      bindsym ${mod}+${mkKeyI3 elt.snd.key} workspace ${builtins.toString elt.fst}: ${elt.snd.name}
+      bindsym ${mod}+Shift+${mkKeyI3 elt.snd.key} move container to workspace ${
+        builtins.toString elt.fst
+      }: ${elt.snd.name}
     ''));
   mvWorkspacesI3Cmd = wsdata: type: head:
-    "${lib.concatStringsSep " " (lib.forEach (getWorkspacesByType wsdata type) (ws:
+    "${lib.concatStringsSep " " (lib.forEach (getWorkspacesByType (enumerateWorkspaces wsdata) type) (ws:
       "workspace --no-auto-back-and-forth ${
-        builtins.toString ws.index
-      }: ${ws.name}; move workspace to output ${head}; "))}";
+        builtins.toString ws.fst
+      }: ${ws.snd.name}; move workspace to output ${head}; "))}";
   mkKeybindingI3 = meta:
     builtins.concatStringsSep " " ([ "bindsym" (mkKeyI3 meta.key) ]
       ++ lib.optionals (!maybeAttrIsBool "raw" meta) [ "exec" ]
