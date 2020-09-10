@@ -18,10 +18,8 @@ in rec {
   direnvGranularityProject = emacsBoolToString (config.custom.dev.direnv.granularity == "project");
   direnvGranularityFile = emacsBoolToString (config.custom.dev.direnv.granularity == "file");
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
-  qbDownloadPath = config.custom.browsers.qutebrowser.downloadPath;
   emacsBrowserGenericProgram = "${pkgs.xdg_utils}/bin/xdg-open";
   emacsCustomFile = homePrefix ".emacs.d/customizations.el";
-  emacsClient = "${config.ide.emacs.package}/bin/emacsclient";
   emacsDatadir = config.ide.emacs.dataDir;
   emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
   emacsYasnippetSnippets = deps.yasnippet-snippets;
