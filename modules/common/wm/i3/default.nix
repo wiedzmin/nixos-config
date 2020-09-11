@@ -14,13 +14,18 @@ in {
         default = false;
         description = "Whether to enable i3.";
       };
+      containerLayout = mkOption {
+        type = types.enum [ "default" "stacking" "tabbed" ];
+        default = "tabbed";
+        description = "Default container layout.";
+      };
       settings = mkOption {
         type = types.lines;
         default = ''
           font ${config.wmCommon.fonts.default}
           floating_modifier ${prefix}
           hide_edge_borders smart
-          workspace_layout stacked
+          workspace_layout ${cfg.containerLayout}
 
           mouse_warping output
           focus_follows_mouse no
