@@ -582,6 +582,63 @@ in {
 
   wm.i3.enable = true;
 
+  wmCommon.workspaces = [
+    {
+      name = "web";
+      key = [ "F1" ];
+      transient = false;
+      type = "primary";
+    }
+    {
+      name = "edit";
+      key = [ "F2" ];
+      transient = false;
+      type = "primary";
+    }
+    {
+      name = "tools";
+      key = [ "F4" ];
+      transient = false;
+      type = "primary";
+    }
+    {
+      name = "scan";
+      key = [ "F5" ];
+      transient = false;
+      type = "primary";
+    }
+    {
+      name = "shell";
+      key = [ "F3" ];
+      transient = false;
+      type = "secondary";
+    }
+    {
+      name = "read";
+      key = [ "4" ];
+      transient = false;
+      type = "secondary";
+    }
+    {
+      name = "media";
+      key = [ "5" ];
+      transient = false;
+      type = "secondary";
+    }
+    {
+      name = "im";
+      key = [ "c" ];
+      transient = false;
+      type = "secondary";
+    }
+    {
+      name = "scratch";
+      key = [ "Esc" ];
+      transient = false;
+      type = "tertiary";
+    }
+  ];
+
   wmCommon.autostart.entries = [ "alacritty" "qutebrowser -P default --class qb-default" "telegram-desktop" ];
 
   home-manager.users."${config.attributes.mainUser.name}" = {
