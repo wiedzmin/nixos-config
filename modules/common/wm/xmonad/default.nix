@@ -221,11 +221,6 @@ in {
         default = false;
         description = "Whether to enable mapping windows to workspaces.";
       };
-      wsMapping.rules = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "Actual window-to-workspace mapping based on window title.";
-      };
       # FIXME: adopt new workspace keybindings implementation (presumably broken)
       internalKeys = mkOption {
         type = types.attrs;
