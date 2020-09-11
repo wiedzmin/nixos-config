@@ -608,6 +608,12 @@ in {
       type = "primary";
     }
     {
+      name = "ent";
+      key = [ "F6" ];
+      transient = false;
+      type = "primary";
+    }
+    {
       name = "shell";
       key = [ "F3" ];
       transient = false;
