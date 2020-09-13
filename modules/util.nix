@@ -70,9 +70,16 @@ in rec {
         }))) metadata))));
   mkProjectShellNix = args: ''
     let
-      pkgs = import <nixpkgs> {};
+      deps = import /etc/nixos/nix/sources.nix;
+      pkgs = import deps.${
+        if builtins.hasAttr "nixpkgs" args then args.nixpkgs else "nixpkgs"
+      } { config.allowUnfree = true; };
     in
-      pkgs.mkShell {
+      pkgs.${
+        lib.optionalString ((builtins.hasAttr "useShell" args && args.useShell) || !builtins.hasAttr "useShell" args)
+        "mkShell"
+      }${lib.optionalString ((builtins.hasAttr "useShell" args) && !args.useShell) "stdenv.mkDerivation"} {
+        ${lib.optionalString ((builtins.hasAttr "useShell" args) && !args.useShell) ''name = "env";''}
         ${
           lib.optionalString ((builtins.hasAttr "simple" args) && args.simple != [ ]) ''
             buildInputs = with pkgs; [
