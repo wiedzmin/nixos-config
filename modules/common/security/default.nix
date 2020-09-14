@@ -65,7 +65,7 @@ in {
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ paperkey passctl ];
+        home.packages = with pkgs; [ paperkey ];
         programs.password-store = {
           enable = true;
           package = pkgs.pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
@@ -134,6 +134,9 @@ in {
           mode = "run";
         }
       ];
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ passctl ]; };
     })
   ];
 }

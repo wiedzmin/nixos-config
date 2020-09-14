@@ -277,5 +277,18 @@ in {
       ];
       wmCommon.modeBindings.virt = [ prefix "d" ];
     })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          discover_containerized_services
+          dlint
+          docker_containers_traits
+          docker_shell
+          docker_swarm_services_info
+          hadolintd
+          vdi2qcow2
+        ];
+      };
+    })
   ];
 }

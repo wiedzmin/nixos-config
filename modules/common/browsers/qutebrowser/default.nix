@@ -342,8 +342,8 @@ in {
               "yo" = "yank inline [[{url}][{title}]]";
               "yp" = "yank pretty-url";
               "yt" = "yank title";
-              "y;" = ''spawn org-capture -u "{url}" -t "{title}" -e title'';
-              "y'" = ''spawn org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
+              "y;" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
+              "y'" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
               ";;" = "hint links download";
               ";I" = "hint images tab";
               ";O" = "hint links fill :open -t -r {hint-url}";
@@ -422,6 +422,11 @@ in {
         }
       ];
       attributes.browser.fallback = cfg.command;
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ yank-image qb-fix-session ];
+      };
     })
   ];
 }

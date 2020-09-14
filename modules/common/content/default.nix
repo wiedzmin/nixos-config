@@ -196,8 +196,6 @@ in {
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/screenshot_region.sh; })));
       };
-
-      environment.systemPackages = with pkgs; [ screenshot_active_window screenshot_full screenshot_region ];
     })
     (mkIf (cfg.warmup.enable && cfg.warmup.paths != [ ]) {
       systemd.user.services."warmup" = {
@@ -245,6 +243,19 @@ in {
         cmd = "${pkgs.paste_to_ix}/bin/paste_to_ix";
         mode = "window";
       }];
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          buku_add
+          buku_search_tag
+          buku_search_url
+          paste_to_ix
+          screenshot_active_window
+          screenshot_full
+          screenshot_region
+        ];
+      };
     })
   ];
 }

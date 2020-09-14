@@ -128,8 +128,6 @@ in {
         message = "appearance: must provide wallpapers path and image to use.";
       }];
 
-      environment.systemPackages = with pkgs; [ rescale-wallpaper ];
-
       home-manager.users."${config.attributes.mainUser.name}" = {
         programs.autorandr.hooks = {
           postswitch = { "rescale-wallpaper" = "${rescale-wallpaper}/bin/rescale-wallpaper"; };
@@ -180,11 +178,21 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [{
-        key = [ prefix "Alt" "q" ];
-        cmd = "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources";
-        mode = "root";
-      }];
+      wmCommon.keys = [
+        {
+          key = [ prefix "Alt" "q" ];
+          cmd = "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources";
+          mode = "root";
+        }
+        {
+          key = [ "s" ];
+          cmd = "${rescale-wallpaper}/bin/rescale-wallpaper";
+          mode = "xserver";
+        }
+      ];
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ rescale-wallpaper ]; };
     })
   ];
 }

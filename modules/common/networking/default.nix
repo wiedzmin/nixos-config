@@ -285,5 +285,10 @@ in {
         #   cmd = "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli"; desktop = "shell"; mode = "network"; }
       ];
     })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ ifconfless sshmenu vpnctl wifi-status ];
+      };
+    })
   ];
 }

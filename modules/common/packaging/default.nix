@@ -156,5 +156,10 @@ in {
       ide.emacs.config = builtins.readFile
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/packaging.el; }));
     })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ confctl get-pr-override make-package-diff rollback ];
+      };
+    })
   ];
 }

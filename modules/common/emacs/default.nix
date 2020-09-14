@@ -190,7 +190,7 @@ in {
         programs.bash.sessionVariables = {
           EDITOR = "${config.ide.emacs.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
         };
-        home.packages = (with pkgs; [ ispell org-capture editorconfig-checker ])
+        home.packages = (with pkgs; [ ispell editorconfig-checker ])
           ++ [ ((pkgs.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
         home.file = {
           ".emacs.d/init.el".text = cfg.initElContent;
@@ -235,6 +235,9 @@ in {
           mode = "window";
         }
       ];
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ org-capture ]; };
     })
   ];
 }

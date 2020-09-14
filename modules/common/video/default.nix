@@ -150,7 +150,7 @@ in {
       programs.light.enable = true;
       hardware.brillo.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages ++ [ rescreen ];
+        home.packages = with pkgs; lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
           ".XCompose".text = ''
             include "${pkgs.xorg.libX11}/share/X11/locale/en_US.UTF-8/Compose"
@@ -211,7 +211,6 @@ in {
     })
     (mkIf (cfg.enable && cfg.autorandr.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ xctl ];
         programs.autorandr = {
           enable = true;
           hooks =
@@ -294,6 +293,9 @@ in {
     })
     (mkIf (cfg.enable && cfg.debug.enable) {
       environment.systemPackages = with pkgs; [ xlibs.xev xlibs.xprop xorg.xkbcomp drm_info xtruss ];
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ rescreen xctl ]; };
     })
   ];
 }

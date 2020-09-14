@@ -107,5 +107,10 @@ in {
     (mkIf (cfg.staging.packages != [ ]) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = cfg.staging.packages; };
     })
+    (mkIf (config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ bookshelf update-bookshelf ];
+      };
+    })
   ];
 }

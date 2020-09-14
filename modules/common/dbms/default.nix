@@ -245,5 +245,8 @@ in {
         desktop = "shell";
       }];
     })
+    (mkIf (config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ dbms ]; };
+    })
   ];
 }

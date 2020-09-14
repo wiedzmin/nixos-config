@@ -344,5 +344,8 @@ in {
         }
       '';
     })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ desktops ]; };
+    })
   ];
 }

@@ -261,6 +261,7 @@ in {
         "services" = [ prefix "s" ];
         "window" = [ prefix "w" ];
         "vpn" = [ prefix "v" ];
+        "xserver" = [ prefix "x" ];
         "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
       };
 
@@ -274,7 +275,6 @@ in {
       '';
 
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = [ pkgs.kbdctl ];
         xdg.configFile = {
           # TODO: review and adopt https://github.com/guillaumecherel/i3-modal
           "i3/config".text = ''
@@ -355,6 +355,9 @@ in {
           '';
         };
       };
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ kbdctl ]; };
     })
   ];
 }

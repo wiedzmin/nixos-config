@@ -110,10 +110,10 @@ in {
         package = nixpkgs-pinned-16_04_20.haskellPackages.arbtt;
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          nixpkgs-pinned-16_04_20.haskellPackages.arbtt # for stats viewing
-          tt_capture
-        ];
+        home.packages = with pkgs;
+          [
+            nixpkgs-pinned-16_04_20.haskellPackages.arbtt # for stats viewing
+          ] ++ lib.optionals config.attributes.debug.scripts [ tt_capture ];
       };
     })
     (mkIf (cfg.enable && cfg.scheduling.enable) {

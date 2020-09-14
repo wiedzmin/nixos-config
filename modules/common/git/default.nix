@@ -417,6 +417,9 @@ in {
         (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/git.el; })) + "\n"
         + cfg.emacs.extraConfig;
     })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ gitctl ]; };
+    })
   ];
 }
 

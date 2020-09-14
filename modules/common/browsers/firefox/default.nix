@@ -447,7 +447,6 @@ in {
           before = [ "linkGeneration" ];
           data = "mkdir -p ${cfg.sessions.firefox.path}";
         };
-        home.packages = with pkgs; [ dump_firefox_session manage_firefox_sessions rotate_firefox_session_dumps ];
       };
       wmCommon.keys = [ # FIXME: move under own mkIf
         {
@@ -489,6 +488,16 @@ in {
       };
       systemd.user.timers."backup-current-session-firefox" =
         renderTimer "Backup current firefox session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [
+          collect_links_on_page
+          dump_firefox_session
+          manage_firefox_sessions
+          rotate_firefox_session_dumps
+        ];
+      };
     })
   ];
 }

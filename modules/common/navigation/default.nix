@@ -412,5 +412,10 @@ in {
         mode = "run";
       }];
     })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ search_prompt search_selection snippets webjumps ];
+      };
+    })
   ];
 }

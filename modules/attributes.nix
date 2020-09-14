@@ -104,6 +104,11 @@ with lib;
       type = types.int;
       default = 4;
     };
+    debug.scripts = mkOption {
+      description = "Whethet to expose custom scripts to shell for debugging";
+      type = types.bool;
+      default = false;
+    };
     hardware.monitors = {
       internalHead = {
         name = mkOption {

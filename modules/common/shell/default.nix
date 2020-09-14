@@ -321,7 +321,7 @@ in {
           '';
         };
         bindings = {
-          copyMode = { "M-n" = ''run-shell "org-capture ns"''; };
+          copyMode = { "M-n" = ''run-shell "${pkgs.org-capture}/bin/org-capture ns"''; };
           root = {
             "C-left" = "prev";
             "C-right" = "next";
@@ -455,6 +455,9 @@ in {
         cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions";
         mode = "run";
       }];
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ tmuxp_sessions ]; };
     })
   ];
 }

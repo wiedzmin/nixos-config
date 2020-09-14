@@ -120,7 +120,6 @@ in {
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/open-project.py; })));
       };
       custom.navigation.bookmarks.entries = cfg.bookmarks.entries;
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ open-project ]; };
     })
     (mkIf (cfg.enable && cfg.codesearch.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -165,7 +164,6 @@ in {
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/reposearch.py; })));
       };
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ reposearch ]; };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       custom.dev.git.credentials.mapping = {
@@ -293,6 +291,11 @@ in {
     })
     (mkIf (cfg.staging.packages != [ ]) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = cfg.staging.packages; };
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ open-project reposearch ];
+      };
     })
   ];
 }
