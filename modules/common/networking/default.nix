@@ -8,7 +8,7 @@ with lib;
 
 let cfg = config.custom.networking;
 in {
-  imports = [ ./l2vpn.nix ./openvpn.nix ];
+  imports = [ ./l2vpn.nix ];
 
   options = {
     custom.networking = {
