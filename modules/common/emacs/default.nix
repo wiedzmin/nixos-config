@@ -58,7 +58,6 @@ in {
         default = pkgs.emacsGit.override {
           withGTK2 = false;
           withGTK3 = false;
-          imagemagick = pkgs.imagemagickBig;
         };
         description = ''
           Emacs derivation to use.
