@@ -166,6 +166,10 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
+      wmCommon.wsMapping.rules = [{
+        class = "Cutter";
+        desktop = "tools";
+      }];
       custom.dev.git.credentials.mapping = {
         "*github.com*" = {
           skip_username = 7;
