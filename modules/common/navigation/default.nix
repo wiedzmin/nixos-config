@@ -145,11 +145,14 @@ in {
         home.activation.emacsKnownProjects = {
           after = [ "linkGeneration" ];
           before = [ ];
-          data =
-            "${config.ide.emacs.package}/bin/emacsclient -s /run/user/1000/emacs/server -e '(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
-              builtins.concatStringsSep " "
-              (forEach (lib.attrValues cfg.bookmarks.entries) (entry: ''"'' + entry + ''"''))
-            }))' ";
+          data = let # FIXME: duplication
+            mainUserID = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
+            emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
+            # TODO: consider extracting to a function (for ensuring running emacs instance)
+          in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.package}/bin/emacsclient -s /run/user/1000/emacs/server -e '(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
+            builtins.concatStringsSep " "
+            (forEach (lib.attrValues cfg.bookmarks.entries) (entry: ''"'' + entry + ''"''))
+          }))' ";
         };
       };
     })
