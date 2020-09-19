@@ -162,8 +162,8 @@ in {
           epkgs.mwim
           epkgs.names
           epkgs.no-littering
-          epkgs.posframe
           epkgs.pos-tip
+          epkgs.posframe
           epkgs.quelpa
           epkgs.quelpa-use-package
           epkgs.rainbow-delimiters
@@ -180,6 +180,7 @@ in {
           epkgs.unicode-escape
           epkgs.use-package
           epkgs.wgrep
+          epkgs.whole-line-or-region
           epkgs.ws-butler
           epkgs.yasnippet
         ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];

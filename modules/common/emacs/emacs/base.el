@@ -239,6 +239,11 @@
   :custom
   (cd2/region-command 'cd2/comment-or-uncomment-region))
 
+(use-package whole-line-or-region
+  :bind
+  (:map mode-specific-map
+        ("w" . whole-line-or-region-local-mode)))
+
 (use-package company
   :delight " γ"
   :bind
