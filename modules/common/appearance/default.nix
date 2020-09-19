@@ -171,6 +171,7 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable && cfg.xresources.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         xresources.properties = {
+          "Emacs.fontBackend" = "xfthb"; # FIXME: add conditional depending on emacs version (27+ or not)
           "Emacs.menuBar" = "0";
           "Emacs.toolBar" = "0";
           "Emacs.verticalScrollBars" = false;
