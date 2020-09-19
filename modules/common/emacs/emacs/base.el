@@ -439,6 +439,10 @@
   (put 'transient-mark-mode 'permanent-local t)
   (put 'set-goal-column 'disabled nil))
 
+(use-package rainbow-delimiters
+  :hook
+  (prog-mode-hook . rainbow-delimiters-mode))
+
 (use-package smartparens
   :after dash
   :hook

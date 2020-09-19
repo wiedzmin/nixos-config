@@ -166,6 +166,7 @@ in {
           epkgs.pos-tip
           epkgs.quelpa
           epkgs.quelpa-use-package
+          epkgs.rainbow-delimiters
           epkgs.recentf-ext
           epkgs.recursive-narrow
           epkgs.region-bindings-mode
