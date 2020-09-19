@@ -387,7 +387,7 @@ in {
     })
     (mkIf cfg.toolsng.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ fd gron nixpkgs-pinned-02_06_20.ripgrep-all sd uq vgrep ];
+        home.packages = with pkgs; [ choose fd gron nixpkgs-pinned-02_06_20.ripgrep-all sd uq vgrep ];
         programs = {
           lsd = {
             enable = true;
