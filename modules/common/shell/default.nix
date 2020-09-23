@@ -302,16 +302,6 @@ in {
         baseIndex = 1;
         clock24 = true;
         escapeTime = 0;
-        status = {
-          currentWindowFormat = "#[bg=blue,fg=cyan,bold]#I#[bg=blue,fg=cyan]:#[fg=colour230]#T#[fg=dim]#F";
-          windowFormat = "#[fg=cyan,dim]#I#[fg=blue]:#[default]#W#[fg=grey,dim]#F";
-          leftFormat = "#{prefix_highlight}#[fg=green](#S) #(whoami)@#H";
-          rightFormat = "#[fg=blue,bright]%k:%M %d/%m/%Y";
-          style = "fg=white,bg=default,default";
-          windowStyle = "fg=cyan,bg=default,dim";
-          currentWindowStyle = "fg=colour166,bg=red,bright";
-          messageStyle = "fg=white,bg=black,bright";
-        };
         borderStyle = {
           active = "fg=yellow,bg=default";
           inactive = "fg=yellow,bg=default";
@@ -380,6 +370,7 @@ in {
           copycat
           # fingers # broken at the moment, retry later
           fpp
+          gruvbox
           logging
           prefix-highlight
           sessionist
