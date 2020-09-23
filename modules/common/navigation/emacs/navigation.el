@@ -199,8 +199,14 @@
   (unless (string-equal "i3" (getenv "CURRENT_WM"))
     (add-hook 'pre-redisplay-functions 'keep-custom-frame-title))
   (blink-cursor-mode 0)
+  (menu-bar-mode -1)
+  (tool-bar-mode -1)
   (setq-default frame-title-format custom-frame-title-format) ;; for various external tools
   (setq truncate-partial-width-windows nil))
+
+(use-package scroll-bar
+  :config
+  (scroll-bar-mode -1))
 
 (use-package imenu-anywhere
   :commands ivy-imenu-anywhere
