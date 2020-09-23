@@ -447,7 +447,6 @@ in {
     scanning = {
       enable = true;
       extraBackends = [ pkgs.hplipWithPlugin ];
-      snapscan.firmware = "/etc/nixos/assets/blobs/Esfw52.bin";
       enableXsane = true;
       paperless = {
         enable = true;
