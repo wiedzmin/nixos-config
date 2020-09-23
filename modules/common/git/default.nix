@@ -235,6 +235,7 @@ in {
           gitAndTools.pass-git-helper
           gitstats
           nixpkgs-pinned-16_04_20.gitAndTools.thicket
+          gomp
 
           gitAndTools.git-trim
           gitAndTools.git-reparent
