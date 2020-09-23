@@ -46,7 +46,7 @@ in {
       };
       scanning.snapscan.enable = mkOption {
         type = types.bool;
-        default = true;
+        default = false;
         description = ''
           Whether we are using Epson Snapscan series scanner which is
           currently true for this configuration.
@@ -54,7 +54,7 @@ in {
       };
       scanning.snapscan.firmware = mkOption {
         type = types.str;
-        default = "";
+        default = "/homeless-shelter";
         description = "Path to snapscan firmware file.";
       };
       scanning.enableXsane = mkOption {
@@ -180,16 +180,6 @@ in {
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "lp" ];
     })
     (mkIf cfg.scanning.enable {
-      assertions = [
-        {
-          assertion = cfg.scanning.snapscan.enable && cfg.scanning.snapscan.firmware != "";
-          message = "paperwork: must provide firmware file if snapscan is enabled.";
-        }
-        {
-          assertion = builtins.pathExists cfg.scanning.snapscan.firmware;
-          message = "paperwork: no firmware file found at ${cfg.scanning.snapscan.firmware}.";
-        }
-      ];
       hardware.sane = {
         enable = true;
         extraBackends = cfg.scanning.extraBackends;
@@ -197,12 +187,22 @@ in {
 
       services.saned.enable = true;
 
-      nixpkgs.config =
-        optionalAttrs cfg.scanning.snapscan.enable { sane.snapscanFirmware = cfg.scanning.snapscan.firmware; };
       environment.systemPackages = with pkgs;
-        [ deskew scantailor-advanced ]
-        ++ lib.optionals cfg.scanning.enableXsane [ xsane ];
+        [ deskew scantailor-advanced ] ++ lib.optionals cfg.scanning.enableXsane [ xsane ];
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "scanner" ];
+    })
+    (mkIf (cfg.scanning.enable && cfg.scanning.snapscan.enable) {
+      assertions = [
+        {
+          assertion = cfg.scanning.snapscan.enable && cfg.scanning.snapscan.firmware != "";
+          message = "paperwork: must provide firmware file if snapscan is enabled.";
+        }
+        {
+          assertion = cfg.scanning.snapscan.enable && builtins.pathExists cfg.scanning.snapscan.firmware;
+          message = "paperwork: no firmware file found at ${cfg.scanning.snapscan.firmware}.";
+        }
+      ];
+      nixpkgs.config = { sane.snapscanFirmware = cfg.scanning.snapscan.firmware; };
     })
     (mkIf (cfg.scanning.enable && cfg.scanning.paperless.enable) {
       assertions = [{
