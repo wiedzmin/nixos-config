@@ -63,6 +63,11 @@ in {
           Emacs derivation to use.
         '';
       };
+      fontSpec = mkOption {
+        type = types.str;
+        default = "";
+        description = "Emacs frame font specification.";
+      };
       extraPackages = mkOption {
         default = self: [ ];
         type = selectorFunction;

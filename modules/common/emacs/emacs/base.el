@@ -114,6 +114,10 @@
   (scroll-preserve-screen-position 'always)
   (cursor-type 'bar)
   :config
+  (add-to-list
+   'default-frame-alist
+   '(font . "@emacsFontSpec@"))
+  (set-frame-font "@emacsFontSpec@" t t)
   (fset 'yes-or-no-p 'y-or-n-p)
   (set-charset-priority 'unicode)
   (set-default 'indent-tabs-mode nil) ;; Never insert tabs, !!!DO NOT REMOVE!!!
