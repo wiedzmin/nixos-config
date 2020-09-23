@@ -218,7 +218,7 @@ in {
         restartIfChanged = false;
         serviceConfig = {
           Type = "simple";
-          ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
+          ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --no-x-resources --fg-daemon"'';
           ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
           ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
           Restart = "on-failure";
