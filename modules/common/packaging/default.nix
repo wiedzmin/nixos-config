@@ -102,6 +102,9 @@ in {
             GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
             pkexec nix-env --profile /nix/var/nix/profiles/system --set $GENERATION_PATH && pkexec $GENERATION_PATH/bin/switch-to-configuration switch
           '';
+          nix-doc-lookup = mkShellScriptWithDeps "nix-doc-lookup" (with pkgs; [ fzf gnused manix ]) ''
+            manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
+          '';
         };
       };
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ niv rollback ]; };
@@ -143,6 +146,7 @@ in {
             # nix-zsh-completions # NOTE: collision emerged in last unstable
             nix-review # https://github.com/Mic92/nix-review
             make-package-diff
+            nix-doc-lookup
           ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
       };
     })
