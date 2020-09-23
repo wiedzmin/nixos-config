@@ -112,7 +112,7 @@ in {
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs;
-          [ checkbashism libnotify wmctrl xdotool seturgent shellcheck perl ]
+          [ checkbashism libnotify wmctrl xdotool seturgent shellcheck perl cod ]
           ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
           ".tmuxp/main.yml".text = ''
@@ -170,6 +170,7 @@ in {
             setopt MENU_COMPLETE
 
             ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
+            source <(cod init $$ zsh)
 
             ${lib.concatMapStrings (opt: ''
               setopt ${opt}
