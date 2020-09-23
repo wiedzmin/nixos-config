@@ -13,6 +13,7 @@ in {
     wmCommon.fonts.default = "pango:Source Code Pro Bold 9";
     wmCommon.fonts.dmenu = "Source Code Pro:bold:size=9";
     wmCommon.fonts.statusbar = "pango:Source Code Pro Bold 9";
+    ide.emacs.fontSpec = "Source Code Pro:size=12";
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.source-code-pro;
@@ -36,8 +37,6 @@ in {
       programs.zathura.options.font = "Source Code Pro Bold 10";
       services.dunst.settings.global.font = "Source Code Pro Bold 10";
       xresources.properties = {
-        "Emacs.Font" = "Source Code Pro:weight=Bold:size=12";
-
         "Xmessage*faceName" = "Source Code Pro";
         "Xmessage*faceSize" = "12";
         "Xmessage*faceWeight" = "Bold";

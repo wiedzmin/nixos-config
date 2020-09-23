@@ -13,6 +13,7 @@ in {
     wmCommon.fonts.default = "pango:Fira Code Bold 8";
     wmCommon.fonts.dmenu = "Fira Code:bold:pixelsize=12";
     wmCommon.fonts.statusbar = "pango:Fira Code Bold 8";
+    ide.emacs.fontSpec = "Fira Code:size=12";
     home-manager.users."${config.attributes.mainUser.name}" = {
       programs.alacritty.settings.font = {
         normal = {
@@ -32,8 +33,6 @@ in {
       programs.zathura.options.font = "Fira Code Bold 8";
       services.dunst.settings.global.font = "Fira Code Bold 8";
       xresources.properties = {
-        "Emacs.Font" = "Fira Code:weight=Bold:size=12";
-
         "Xmessage*faceName" = "Fira Code";
         "Xmessage*faceSize" = "12";
         "Xmessage*faceWeight" = "Bold";
