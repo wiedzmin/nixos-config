@@ -188,7 +188,7 @@ in {
           shellAliases = {
             cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
 
-            df = "${pkgs.dfc}/bin/dfc";
+            df = "${pkgs.duf}/bin/duf";
             du = "${pkgs.dua}/bin/dua";
 
             zr = ". ~/.zshrc";
