@@ -165,4 +165,35 @@ in rec {
     check = lib.isFunction;
     merge = _loc: defs: as: lib.concatMap (select: select as) (lib.getValues defs);
   };
+  # tmux plugin utils
+  addRtpTmux = path: rtpFilePath: attrs: derivation:
+    derivation // {
+      rtp = "${derivation}/${path}/${rtpFilePath}";
+    } // {
+      overrideAttrs = f: mkDerivationTmux (attrs // f attrs);
+    };
+  mkDerivationTmux = a@{ pluginName, rtpFilePath ? (builtins.replaceStrings [ "-" ] [ "_" ] pluginName) + ".tmux"
+    , namePrefix ? "tmuxplugin-", src, unpackPhase ? "", postPatch ? "", configurePhase ? ":", buildPhase ? ":"
+    , addonInfo ? null, preInstall ? "", postInstall ? "", path ? lib.getName pluginName, dependencies ? [ ], ... }:
+    let rtpPath = "share/tmux-plugins";
+    in addRtpTmux "${rtpPath}/${path}" rtpFilePath a (pkgs.stdenv.mkDerivation (a // {
+      name = namePrefix + pluginName;
+
+      inherit pluginName unpackPhase postPatch configurePhase buildPhase addonInfo preInstall postInstall;
+
+      installPhase = ''
+        runHook preInstall
+
+        target=$out/${rtpPath}/${path}
+        mkdir -p $out/${rtpPath}
+        cp -r . $target
+        if [ -n "$addonInfo" ]; then
+          echo "$addonInfo" > $target/addon-info.json
+        fi
+
+        runHook postInstall
+      '';
+
+      dependencies = [ pkgs.bash ] ++ dependencies;
+    }));
 }
