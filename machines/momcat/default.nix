@@ -94,6 +94,8 @@ in {
     scripts.enable = true;
   };
 
+  custom.paperworks.publishing.enable = true;
+
   environment.shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" ];
 
   nix.trustedUsers = [ "root" config.attributes.mainUser.name ];
