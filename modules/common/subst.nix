@@ -62,10 +62,10 @@ in rec {
     ''font = "${config.wmCommon.fonts.statusbar}"${mkNewlineAndIndent 7}, '';
 } // lib.optionalAttrs (config.custom.browsers.firefox.enable) rec {
   firefoxProfilePath = config.custom.programs.firefox.profiles.default.path;
-  firefoxSessionsHistoryLength = builtins.toString config.custom.browsers.sessions.firefox.historyLength;
-  firefoxSessionsNameTemplate = config.custom.browsers.sessions.firefox.nameTemplate;
-  firefoxSessionsPath = config.custom.browsers.sessions.firefox.path;
-  firefoxSessionsSizeThreshold = builtins.toString config.custom.browsers.sessions.sizeThreshold;
+  firefoxSessionsHistoryLength = builtins.toString config.custom.browsers.firefox.sessions.historyLength;
+  firefoxSessionsNameTemplate = config.custom.browsers.firefox.sessions.nameTemplate;
+  firefoxSessionsPath = config.custom.browsers.firefox.sessions.path;
+  firefoxSessionsSizeThreshold = builtins.toString config.custom.browsers.firefox.sessions.sizeThreshold;
   firefoxSessionstorePath = homePrefix ".mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
 } // lib.optionalAttrs (builtins.hasAttr "global" config.custom.dev.workspaceRoots) rec {
   globalWorkspaceRoot = wsRootAbs "global";

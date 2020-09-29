@@ -88,7 +88,11 @@ in {
     nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
   };
 
-  custom.packaging.enable = true;
+  custom.packaging = {
+    enable = true;
+    misc.enable = true;
+    scripts.enable = true;
+  };
 
   environment.shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" ];
 
@@ -173,9 +177,14 @@ in {
   };
 
   custom.browsers = {
-    enable = true;
-    firefox.enable = true;
-    chromium.enable = true;
+    firefox = {
+      enable = true;
+      isDefault = true;
+    };
+    chromium = {
+      enable = true;
+      isFallback = true;
+    };
   };
 
   custom.sound = {
