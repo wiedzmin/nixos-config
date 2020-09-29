@@ -359,12 +359,12 @@
                   :keys "c"
                   :template "* %^{title} :nix:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC nix\n %i%?\n#+END_SRC\n")
                  ("Shell excerpt" :keys "s" :template "* %? %U :%:description:\n  %:initial")))
-                ("Emacs" :keys "e" :file "/etc/nixos/todo.org" :children
+                ("Emacs" :keys "e" :file "/etc/nixos/modules/common/emacs/todo.org" :children
                  (("Common" :keys "t" :template "* BACKLOG %?[[%:link][%:description]] %U :emacs:\n  %:initial")
                  ("Code snippet"
                   :keys "s"
                   :template "* %^{title} :emacs:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC emacs-lisp\n %i%?\n#+END_SRC\n")))
-                ("Bookmarks" :keys "b" :file "/etc/nixos/todo.org" :template "* %?%:link %U :bookmark:"))))
+                ("Bookmarks" :keys "b" :file "@orgDir@/bookmarks.org" :template "* %?%:link %U :bookmark:"))))
   (run-with-idle-timer custom/idle-clockout-timeout t 'custom/clockout-when-idle)
   (turn-on-orgtbl))
 
