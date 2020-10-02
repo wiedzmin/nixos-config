@@ -1,5 +1,8 @@
 { config, lib, options, modulesPath }:
-let deps = import ../nix/sources.nix;
+let
+  deps = import ../nix/sources.nix;
+  nixpkgs = import deps.nixpkgs { config.allowUnfree = true; };
+
 in {
   environment.etc = {
     nixpkgs.source = deps.nixpkgs;
@@ -10,6 +13,7 @@ in {
   };
 
   nix = {
+    package = nixpkgs.nixUnstable;
     nixPath = lib.mkForce [ "nixpkgs=/etc/nixpkgs" "nixos-config=/etc/nixos/configuration.nix" ];
     useSandbox = true;
     readOnlyStore = true;
@@ -21,6 +25,7 @@ in {
       keep-outputs = true
       keep-derivations = true
       http-connections = 10
+      experimental-features = nix-command flakes
     '';
   };
 
