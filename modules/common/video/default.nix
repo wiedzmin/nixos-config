@@ -89,7 +89,7 @@ in {
         description = "Do not lock, when active window is fullscreen.";
       };
       screenlocker.notificationUrgency = mkOption {
-        type = types.str;
+        type = types.enum [ "normal" "critical" ];
         default = "critical";
         description = "Notification urgency level.";
       };
