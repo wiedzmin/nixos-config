@@ -154,6 +154,8 @@ in {
         }
       ];
 
+      fonts = { fonts = with pkgs; [ powerline-fonts ]; };
+
       nixpkgs.config.packageOverrides = _: rec {
         tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" (with pkgs; [ pystdlib ]) (builtins.readFile
           (pkgs.substituteAll
