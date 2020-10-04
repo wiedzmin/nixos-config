@@ -43,11 +43,9 @@ in {
 
         vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
       })
-    ] ++ map (n: import (./private + ("/" + n))) (builtins.filter
-      (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (./private + ("/" + n + "/default.nix")))
-      (lib.attrNames (builtins.readDir ./private))) ++ map (n: import (./public + ("/" + n))) (builtins.filter
-        (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (./public + ("/" + n + "/default.nix")))
-        (lib.attrNames (builtins.readDir ./public)));
+    ] ++ map (n: import (./overlays + ("/" + n))) (builtins.filter
+      (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (./public + ("/" + n + "/default.nix")))
+      (lib.attrNames (builtins.readDir ./overlays)));
   };
 
   systemd.services.nix-daemon = {

@@ -37,6 +37,20 @@ let
       sed -i -e 's|PARAMS=(--dir "''${CURRENT_DIR}")|PARAMS=(-u -r)|g' $target/tmux-thumbs.sh
     '';
   };
+  fzf-tmux-url-with-history = mkDerivationTmux {
+    pluginName = "fzf-tmux-url";
+    rtpFilePath = "fzf-url.tmux";
+    src = pkgs.fetchgit {
+      url = "https://github.com/wfxr/tmux-fzf-url";
+      rev = "ecd518eec1067234598c01e655b048ff9d06ef2f";
+      sha256 = "0png8hdv91y2nivq5vdii2192mb2qcrkwwn69lzxrdnbfa27qrgv";
+    };
+    postPatch = ''
+      substituteInPlace fzf-url.sh --replace "capture-pane -J -p" "capture-pane -S -${
+        builtins.toString cfg.tmux.historyDepth
+      } -J -p"
+    '';
+  };
 in {
   options = {
     custom.shell = {
@@ -66,6 +80,11 @@ in {
         description = "Default tmux predefined session name to be used in automation scripts";
         type = types.str;
         default = "main";
+      };
+      tmux.historyDepth = mkOption { # we should have access not only to visible pane's content
+        type = types.int;
+        default = 10000;
+        description = "Tmux pane's lines count to search (for fzf-tmux-url at the moment)";
       };
       toolsng.enable = mkOption {
         type = types.bool;
@@ -395,7 +414,7 @@ in {
         tmuxp.enable = true;
         plugins = with pkgs.tmuxPlugins; [
           {
-            plugin = pkgs.fzf-tmux-url-with-history; # patched version, see overlays
+            plugin = fzf-tmux-url-with-history;
             extraConfig = "set -g @fzf-url-bind 'o'";
           }
           copycat
