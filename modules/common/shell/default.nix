@@ -5,7 +5,38 @@ in { config, lib, pkgs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.shell;
+let
+  cfg = config.custom.shell;
+  thumbs-bin = pkgs.rustPlatform.buildRustPackage rec {
+    pname = "thumbs-bin";
+    version = "unstable-2020-09-07";
+
+    src = pkgs.fetchFromGitHub {
+      owner = "fcsonline";
+      repo = "tmux-thumbs";
+      rev = "fc6d5833a32e7a4d73c85be6712512a6b47cea69";
+      sha256 = "1n1qp9z574hrx2p3xx316vwfkjjg37kskpmsigfpz26sdnxldk7r";
+      fetchSubmodules = true;
+    };
+    cargoSha256 = "13z469xgz7478kfgw457fyc8lbf32wjvan1dxhf7kfzfjy15mlf4";
+  };
+  thumbs = mkDerivationTmux { # FIXME: broken at the moment, fixes pending
+    pluginName = "thumbs";
+    version = "unstable-2020-09-07";
+    rtpFilePath = "tmux-thumbs.tmux";
+    src = pkgs.fetchFromGitHub {
+      owner = "fcsonline";
+      repo = "tmux-thumbs";
+      rev = "fc6d5833a32e7a4d73c85be6712512a6b47cea69";
+      sha256 = "1n1qp9z574hrx2p3xx316vwfkjjg37kskpmsigfpz26sdnxldk7r";
+      fetchSubmodules = true;
+    };
+    postInstall = ''
+      sed -i -e '/BINARY/,$d' $target/tmux-thumbs.tmux
+      sed -i -e 's|''${CURRENT_DIR}/target/release/tmux-thumbs|${thumbs-bin}/bin/thumbs|g' $target/tmux-thumbs.sh
+      sed -i -e 's|PARAMS=(--dir "''${CURRENT_DIR}")|PARAMS=(-u -r)|g' $target/tmux-thumbs.sh
+    '';
+  };
 in {
   options = {
     custom.shell = {
@@ -112,7 +143,7 @@ in {
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs;
-          [ checkbashism libnotify wmctrl xdotool seturgent shellcheck perl cod ]
+          [ checkbashism libnotify wmctrl xdotool seturgent shellcheck perl cod thumbs-bin ]
           ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
           ".tmuxp/main.yml".text = ''
@@ -368,12 +399,15 @@ in {
             extraConfig = "set -g @fzf-url-bind 'o'";
           }
           copycat
-          # fingers # broken at the moment, retry later
           fpp
           gruvbox
           logging
           prefix-highlight
           sessionist
+          {
+            plugin = thumbs;
+            extraConfig = "set -g @thumbs-key 't'";
+          }
         ];
       };
     })
