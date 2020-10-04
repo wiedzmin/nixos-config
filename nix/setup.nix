@@ -42,8 +42,6 @@ in {
           (_: rec { patches = [ ./patches/i3lock-color/forcefully-reset-keyboard-layout-group-to-0.patch ]; });
 
         vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
-
-        xsane = old.xsane.override { gimpSupport = true; };
       })
     ] ++ map (n: import (./private + ("/" + n))) (builtins.filter
       (n: builtins.match ".*\\.nix" n != null || builtins.pathExists (./private + ("/" + n + "/default.nix")))
