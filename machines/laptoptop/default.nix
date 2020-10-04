@@ -554,7 +554,12 @@ in {
       enable = true;
       profiles = [ "docked_home" "docked_office" "mobile" "undocked_parents_dsub" ];
     };
-    screenlocker.enable = true;
+    screenlocker = {
+      enable = true;
+      notificationTimeout = 5000;
+      alertingTimerSec = 210;
+      lockingTimerSec = 60;
+    };
     ddc.enable = true;
     wm.enable = true;
     staging.packages = with pkgs; [ ddcui ];
