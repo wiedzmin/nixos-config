@@ -12,7 +12,6 @@
         ("e" . apropos-value)))
 
 (use-package helpful
-  :defer t
   :bind
   (:map custom-help-map
         ("f" . helpful-function)

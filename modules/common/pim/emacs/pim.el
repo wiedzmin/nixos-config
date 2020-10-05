@@ -83,7 +83,6 @@
              org-babel-expand-body:bash))
 
 (use-package ob-async
-  :defer t
   :after org ob)
 
 (use-package ob-restclient
