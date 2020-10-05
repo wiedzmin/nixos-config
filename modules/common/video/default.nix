@@ -224,7 +224,7 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.screenlocker.enable) {
-      systemd.user.services."xidlehook" = {
+      systemd.user.services."screenlocker" = {
         description = "Lock the screen automatically after a timeout";
         after = [ "graphical-session-pre.target" ];
         partOf = [ "graphical-session.target" ];
