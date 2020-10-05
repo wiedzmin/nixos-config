@@ -108,7 +108,7 @@ in {
           enable = true;
           automount = true;
           notify = true;
-          tray = "never";
+          tray = "auto";
         };
         programs.htop = {
           enable = true;
