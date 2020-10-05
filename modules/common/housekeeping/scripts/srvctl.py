@@ -4,7 +4,7 @@ import sys
 import redis
 
 from pystdlib.uishim import get_selection, notify
-from pystdlib.systemd import list_services, unit_perform, unit_show
+from pystdlib.systemd import list_units, unit_perform, unit_show
 
 services = []
 
