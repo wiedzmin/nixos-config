@@ -131,8 +131,7 @@
   (before-save-hook . delete-trailing-whitespace)
   :bind
   (:map ctl-x-map
-        ("f" . find-file)
-        ("C-c" . delete-frame)) ;; for keeping daemon running
+        ("f" . find-file))
   :custom
   ;; backup settings
   (auto-save-default nil)

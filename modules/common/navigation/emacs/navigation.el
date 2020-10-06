@@ -195,6 +195,8 @@
                ("n" . make-frame-command)
                ("k" . mark-done-kill-frame)
                ("s" . delete-other-frames))
+  (:map ctl-x-map
+        ("C-c" . delete-frame)) ;; for keeping daemon running
   :config
   (unless (string-equal "i3" (getenv "CURRENT_WM"))
     (add-hook 'pre-redisplay-functions 'keep-custom-frame-title))
