@@ -651,11 +651,12 @@ in {
 
   wmCommon.autostart.entries = [ "alacritty" "qutebrowser -P default --class qb-default" "telegram-desktop" ];
 
-  home-manager.users."${config.attributes.mainUser.name}" = {
-    nixpkgs.config.allowUnfree = true;
-    xdg.enable = true;
-
-    home.stateVersion = "19.09";
+  home-manager = {
+    useGlobalPkgs = true;
+    users."${config.attributes.mainUser.name}" = {
+      xdg.enable = true;
+      home.stateVersion = "19.09";
+    };
   };
 
   system.stateVersion = "19.03";
