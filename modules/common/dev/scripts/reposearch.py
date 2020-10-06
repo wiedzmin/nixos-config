@@ -5,8 +5,7 @@ from pystdlib.shell import tmux_create_window
 from pystdlib import shell_cmd
 
 
-keyword = shell_cmd("xsel -o -b")
-keyword_result = get_selection([keyword] if keyword else [], 'keyword', font="@wmFontDmenu@")
+keyword_result = get_selection([], 'keyword', font="@wmFontDmenu@")
 if not keyword_result:
     notify("[search repos]", "no keyword provided", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
