@@ -178,7 +178,6 @@
 
 (use-package autorevert
   :if (string-equal "i3" (getenv "CURRENT_WM"))
-  :defer 2
   :custom
   (auto-revert-check-vc-info t)
   :config
@@ -193,7 +192,6 @@
   (global-hl-todo-mode))
 
 (use-package recentf
-  :defer 1
   :config
   (use-package recentf-ext)
   (add-to-list 'recentf-exclude no-littering-var-directory)
@@ -219,7 +217,6 @@
 (use-package savekill)
 
 (use-package saveplace
-  :defer 1
   :config
   (save-place-mode 1))
 
