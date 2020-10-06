@@ -294,6 +294,7 @@
         (error (message "Cannot find project todos")))))
   (defun custom/open-project-magit-status ()
     (interactive)
+    (require 'anaphora)
     (let ((current-project-name (projectile-default-project-name (locate-dominating-file buffer-file-name ".git"))))
       (aif (get-buffer (concat "magit: " current-project-name))
           (switch-to-buffer it)

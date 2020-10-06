@@ -41,9 +41,6 @@
   :custom
   (quelpa-use-package-inhibit-loading-quelpa
    t "Improve startup performance"))
-(use-package anaphora)
-
-(use-package deferred)
 
 (add-hook 'emacs-startup-hook
           (lambda ()
@@ -128,9 +125,6 @@
 
 (use-package executable
   :hook (after-save-hook . executable-make-buffer-file-executable-if-script-p))
-
-(use-package f
-  :after s dash)
 
 (use-package files
   :hook

@@ -340,6 +340,7 @@
   :config
   (advice-add 'org-yank :after #'custom/make-yank-writeable)
   (use-package org-capture-pop-frame)
+  (require 'deferred)
   (deferred:$
     @pimOrgAgendaElPatch@
     (deferred:nextc
