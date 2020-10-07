@@ -1,11 +1,11 @@
 build:
-	nixos-rebuild build
+	nixos-rebuild build --flake .
 
 build/no-net:
-	nixos-rebuild build --option binary-caches ''
+	nixos-rebuild build  --flake . --option binary-caches ''
 
 switch:
-	sudo nixos-rebuild switch
+	sudo nixos-rebuild switch --flake .
 
 enable/laptoptop:
 	ln -svf /etc/nixos/machines/laptoptop/default.nix /etc/nixos/configuration.nix

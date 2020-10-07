@@ -1,7 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-08_02_20 = import deps.nixpkgs-pinned-08_02_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with lib;
 
 let
@@ -85,7 +82,7 @@ in {
             python3Packages.virtualenvwrapper
             python3Packages.yapf
 
-            nixpkgs-pinned-08_02_20.prospector # TODO: review configuration https://github.com/PyCQA/prospector
+            # inputs.nixpkgs-08_02_20.legacyPackages.x86_64-linux.prospector # TODO: review configuration https://github.com/PyCQA/prospector
           ] ++ lib.optionals (cfg.jupyter.enable) [ jupyterWithPackages ];
         home.file = {
           ".pylintrc".text =
@@ -289,8 +286,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/python.el; }));
+      ide.emacs.config = builtins.readFile (pkgs.substituteAll
+        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/python.el; }));
     })
   ];
 }

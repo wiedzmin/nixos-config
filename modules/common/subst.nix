@@ -1,7 +1,4 @@
-let
-  deps = import ../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../util.nix { inherit config lib pkgs; };
 
 let configHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.configHome;
@@ -23,7 +20,7 @@ in rec {
   emacsDatadir = config.ide.emacs.dataDir;
   emacsFontSpec = config.ide.emacs.fontSpec;
   emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
-  emacsYasnippetSnippets = deps.yasnippet-snippets;
+  emacsYasnippetSnippets = inputs.yasnippet-snippets;
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;
   gitDefaultMainBranchName = config.custom.dev.git.defaultMainBranchName;
@@ -40,7 +37,7 @@ in rec {
   mainUserName = config.attributes.mainUser.name;
   mainUserID = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
   mycliCmd =
-    "${nixpkgs-pinned-16_04_20.mycli}/bin/mycli --myclirc ${configHome}/.myclirc"; # because of deps versions conflict with pgcli
+    "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.mycli}/bin/mycli --myclirc ${configHome}/.myclirc"; # because of deps versions conflict with pgcli
   nmcliBinary = "${pkgs.networkmanager}/bin/nmcli"; # because there is no `bin` output for some reason
   orgDir = config.ide.emacs.orgDir;
   orgKbDir = homePrefix "docs/org-kb";
@@ -48,7 +45,7 @@ in rec {
   orgWarningsFilename = config.custom.pim.org.warningsFile;
   passwordStorePath = config.custom.security.passwordStorePath;
   pgcliCmd =
-    "${nixpkgs-pinned-16_04_20.pgcli}/bin/pgcli --pgclirc ${configHome}/.pgclirc"; # because of deps versions conflict with mycli
+    "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.pgcli}/bin/pgcli --pgclirc ${configHome}/.pgclirc"; # because of deps versions conflict with mycli
   pimOrgAgendaElPatch = config.custom.pim.org.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   screenshotsBasedir = config.custom.content.screenshots.baseDir;
@@ -56,7 +53,7 @@ in rec {
   systemTimeZone = config.time.timeZone;
   tmuxDefaultSession = config.custom.shell.tmux.defaultSession;
   urlRegexPy = config.custom.content.urlRegex.py;
-  xprintidleBinary = "${nixpkgs-pinned-16_04_20.xprintidle-ng}/bin/xprintidle-ng";
+  xprintidleBinary = "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
   xmobarMaybeFont = lib.optionalString (config.wmCommon.fonts.statusbar != "")
     ''font = "${config.wmCommon.fonts.statusbar}"${mkNewlineAndIndent 7}, '';

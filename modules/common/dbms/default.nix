@@ -1,7 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -96,7 +93,7 @@ in {
   config = mkMerge [
     (mkIf cfg.postgresql.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ pgcenter nixpkgs-pinned-16_04_20.pgcli ];
+        home.packages = with pkgs; [ pgcenter inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.pgcli ];
         xdg.configFile.".pgclirc".text = lib.generators.toINI { } {
           main = {
             asterisk_column_order = "table_order";
@@ -167,7 +164,7 @@ in {
     (mkIf cfg.mysql.enable {
       environment.variables.MYCLI_HISTFILE = cfg.mysql.historyPath;
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ nixpkgs-pinned-16_04_20.mycli ];
+        home.packages = with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.mycli ];
         xdg.configFile.".myclirc".text = lib.generators.toINI { } {
           main = {
             audit_log = cfg.mysql.auditLogPath;
@@ -220,20 +217,20 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
           sqlitebrowser
-          nixpkgs-pinned-16_04_20.litecli # TODO: shell automation: fzf for selecting db file, you get the idea
+          inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.litecli # TODO: shell automation: fzf for selecting db file, you get the idea
         ];
       };
     })
     (mkIf cfg.misc.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ nixpkgs-pinned-16_04_20.nodePackages.elasticdump ];
+        home.packages = with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.nodePackages.elasticdump ];
       };
     })
     (mkIf (cfg.cli.enable && cfg.wm.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         dbms = mkPythonScriptWithDeps "dbms" (with pkgs; [ pass pystdlib python3Packages.redis tmux vpnctl ])
-          (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/dbms.py; })));
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/dbms.py; })));
       };
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.cli.meta)}

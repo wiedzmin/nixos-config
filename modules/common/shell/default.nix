@@ -1,7 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-02_06_20 = import deps.nixpkgs-pinned-02_06_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -159,7 +156,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" (with pkgs; [ pystdlib ]) (builtins.readFile
           (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/tmuxp_sessions.py; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/tmuxp_sessions.py; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -251,56 +248,56 @@ in {
             {
               name = "zsh-notify";
               file = "notify.plugin.zsh";
-              src = deps.zsh-notify;
+              src = inputs.zsh-notify;
             }
             {
               name = "zsh-nix-shell";
               file = "nix-shell.plugin.zsh";
-              src = deps.zsh-nix-shell;
+              src = inputs.zsh-nix-shell;
             }
             {
               name = "you-should-use";
               file = "you-should-use.plugin.zsh";
-              src = deps.zsh-you-should-use;
+              src = inputs.zsh-you-should-use;
             }
             {
               name = "pass-zsh-completion";
               file = "pass-zsh-completion.plugin.zsh";
-              src = deps.pass-zsh-completion;
+              src = inputs.pass-zsh-completion;
             }
             {
               name = "zsh-async";
               file = "async.plugin.zsh";
-              src = deps.zsh-async;
+              src = inputs.zsh-async;
             }
             {
               name = "git-extra-commands";
               file = "git-extra-commands.plugin.zsh";
-              src = deps.git-extra-commands;
+              src = inputs.git-extra-commands;
             }
             {
               name = "zsh-reentry-hook";
               file = "zsh-reentry-hook.plugin.zsh";
-              src = deps.zsh-reentry-hook;
+              src = inputs.zsh-reentry-hook;
             }
             {
               name = "zsh-fuzzy-search-and-edit";
               file = "plugin.zsh";
-              src = deps.zsh-fuzzy-search-and-edit;
+              src = inputs.zsh-fuzzy-search-and-edit;
             }
           ] ++ lib.optionals (!cfg.liquidPrompt.enable) [{
             name = "zsh-command-time";
             file = "command-time.plugin.zsh";
-            src = deps.zsh-command-time;
+            src = inputs.zsh-command-time;
           }] ++ lib.optionals (cfg.liquidPrompt.enable) [{
             name = "liquidprompt";
             file = "liquidprompt.plugin.zsh";
-            src = deps.liquidprompt;
+            src = inputs.liquidprompt;
           }] ++ [{
             # NOTE: should be last in the list
             name = "zsh-syntax-highlighting";
             file = "zsh-syntax-highlighting.plugin.zsh";
-            src = deps.zsh-syntax-highlighting;
+            src = inputs.zsh-syntax-highlighting;
           }];
         };
       };
@@ -434,7 +431,15 @@ in {
     })
     (mkIf cfg.toolsng.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ choose fd gron nixpkgs-pinned-02_06_20.ripgrep-all sd uq vgrep ];
+        home.packages = with pkgs; [
+          choose
+          fd
+          gron
+          inputs.nixpkgs-02_06_20.legacyPackages.x86_64-linux.ripgrep-all
+          sd
+          uq
+          vgrep
+        ];
         programs = {
           lsd = {
             enable = true;
@@ -493,7 +498,7 @@ in {
       };
       ide.emacs.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms ];
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/shell.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/shell.el; }));
 
     })
     (mkIf (cfg.enable && cfg.wm.enable) {

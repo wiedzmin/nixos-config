@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../../util.nix { inherit config lib pkgs; };
 
 with lib;
@@ -425,21 +425,24 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         dump_firefox_session =
           mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/dump_firefox_session.sh; })));
+          (builtins.readFile (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
+            src = ./scripts/dump_firefox_session.sh;
+          })));
         rotate_firefox_session_dumps =
           mkShellScriptWithDeps "rotate_firefox_session_dumps" (with pkgs; [ coreutils gnugrep ]) (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
               src = ./scripts/rotate_firefox_session_dumps.sh;
             })));
         collect_links_on_page =
           mkPythonScriptWithDeps "collect_links_on_page" (with pkgs; [ pystdlib python3Packages.beautifulsoup4 xsel ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/collect_links_on_page.py; })));
+          (builtins.readFile (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
+            src = ./scripts/collect_links_on_page.py;
+          })));
         manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
           (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped pystdlib ]) (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/manage_firefox_sessions.py; })));
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
+              src = ./scripts/manage_firefox_sessions.py;
+            })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.activation.ensureFirefoxSessionsPath = {

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -92,8 +92,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        modedit = mkPythonScriptWithDeps "modedit" (with pkgs; [ pystdlib ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/modedit.py; })));
+        modedit = mkPythonScriptWithDeps "modedit" (with pkgs; [ pystdlib ]) (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/modedit.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ gore modedit ]; };
     })
@@ -135,8 +135,8 @@ in {
         epkgs.go-tag
         epkgs.gotest
       ];
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/golang.el; }));
+      ide.emacs.config = builtins.readFile (pkgs.substituteAll
+        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/golang.el; }));
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ modedit ]; };

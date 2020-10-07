@@ -1,7 +1,4 @@
-let
-  deps = import ../../../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../../util.nix { inherit config lib pkgs; };
 
 with lib;
@@ -34,7 +31,7 @@ in {
       };
       command = mkOption {
         type = types.str;
-        default = "${nixpkgs-pinned-16_04_20.qutebrowser}/bin/qutebrowser --target window";
+        default = "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.qutebrowser}/bin/qutebrowser --target window";
         description = "Default command line to invoke";
       };
       staging.enableSettings = mkOption {
@@ -49,10 +46,10 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ]) (builtins.readFile
           (pkgs.substituteAll
-            ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/yank-image.sh; })));
+            ((import ../../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/yank-image.sh; })));
         qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ python3Packages.pyyaml ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/qb-fix-session.py; })));
+            ((import ../../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/qb-fix-session.py; })));
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {
@@ -85,7 +82,7 @@ in {
         ];
         programs.qutebrowser = {
           enable = true;
-          package = nixpkgs-pinned-16_04_20.qutebrowser;
+          package = inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.qutebrowser;
           aliases = {
             jsd = "set content.javascript.enabled false";
             jse = "set content.javascript.enabled true";

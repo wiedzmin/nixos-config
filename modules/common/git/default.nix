@@ -1,7 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -160,7 +157,7 @@ in {
         gitctl =
           mkPythonScriptWithDeps "gitctl" (with pkgs; [ pyfzf pystdlib python3Packages.pygit2 python3Packages.redis ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/gitctl.py; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/gitctl.py; })));
       };
 
       custom.housekeeping.metadataCacheInstructions = ''
@@ -234,7 +231,7 @@ in {
           gitAndTools.git-octopus
           gitAndTools.pass-git-helper
           gitstats
-          nixpkgs-pinned-16_04_20.gitAndTools.thicket
+          inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.gitAndTools.thicket
           gomp
 
           gitAndTools.git-trim
@@ -378,8 +375,8 @@ in {
         epkgs.magit-todos
       ];
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/git.el; })) + "\n"
-        + cfg.emacs.extraConfig;
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/git.el; }))
+        + "\n" + cfg.emacs.extraConfig;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ gitctl ]; };

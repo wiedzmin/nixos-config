@@ -1,7 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -103,16 +100,16 @@ in {
         tt_capture = mkPythonScriptWithDeps "tt_capture"
           (with pkgs; [ pystdlib python3Packages.cbor2 python3Packages.pytz python3Packages.xlib xprintidle-ng ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/tt_capture.py; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/tt_capture.py; })));
       };
       services.arbtt = {
         enable = true;
-        package = nixpkgs-pinned-16_04_20.haskellPackages.arbtt;
+        package = inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.haskellPackages.arbtt;
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs;
           [
-            nixpkgs-pinned-16_04_20.haskellPackages.arbtt # for stats viewing
+            inputs.nixpkgs-16_04_20.haskellPackages.arbtt # for stats viewing
           ] ++ lib.optionals config.attributes.debug.scripts [ tt_capture ];
       };
     })
@@ -166,7 +163,7 @@ in {
         epkgs.russian-holidays
       ];
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/pim.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/pim.el; }));
     })
   ];
 }

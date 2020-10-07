@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with lib;
 
 let cfg = config.custom.knowledgebase;
@@ -77,7 +77,7 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.helpful epkgs.which-key ];
       ide.emacs.config = builtins.readFile (pkgs.substituteAll
-        ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/knowledgebase.el; }));
+        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/knowledgebase.el; }));
     })
   ];
 }

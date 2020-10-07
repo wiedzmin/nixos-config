@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -165,8 +165,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.diredfl epkgs.doom-modeline epkgs.rainbow-mode epkgs.unicode-fonts ];
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/appearance.el; }));
+      ide.emacs.config = builtins.readFile (pkgs.substituteAll
+        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/appearance.el; }));
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [

@@ -2,7 +2,7 @@
 
 let configBasePath = "/etc/nixos";
 in rec {
-  addBuildInputs = pkg: inputs: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ inputs; });
+  addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
   withPatches = pkg: patches: lib.overrideDerivation pkg (_: { inherit patches; });
   mkPythonScriptWithDeps = pname: packages: text: buildPythonScriptWithDeps pname false packages text;
   mkPythonScriptWithDepsAndConflicts = pname: packages: text: buildPythonScriptWithDeps pname true packages text;

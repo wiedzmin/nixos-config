@@ -1,8 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-  nixpkgs-proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -71,6 +67,20 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       nix = {
+        package = inputs.nixpkgs.legacyPackages.x86_64-linux.nixUnstable;
+        useSandbox = true;
+        readOnlyStore = true;
+        requireSignedBinaryCaches = true;
+        binaryCachePublicKeys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
+        binaryCaches = [ "https://cache.nixos.org" ];
+        extraOptions = ''
+          auto-optimise-store = true
+          keep-outputs = true
+          keep-derivations = true
+          http-connections = 10
+          experimental-features = nix-command flakes
+        '';
+
         maxJobs = lib.mkDefault config.attributes.nix.jobs;
         buildCores = lib.mkDefault config.attributes.hardware.cores;
         optimise.automatic = false;
@@ -80,19 +90,23 @@ in {
           options = "--delete-older-than ${cfg.gc.howold}";
         };
       };
+
       nixpkgs.config = {
         allowUnfree = true;
         allowUnfreeRedistributable = true;
 
         oraclejdk.accept_license = true;
 
+        permittedInsecurePackages = [ "openssl-1.0.2u" ];
+
         packageOverrides = _: rec {
           get-pr-override = mkShellScriptWithDeps "get-pr-override" (with pkgs; [ coreutils curl gnugrep ])
             (builtins.readFile (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/get-pr-override.sh; })));
+              ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/get-pr-override.sh; })));
           make-package-diff = mkShellScriptWithDeps "make-package-diff" (with pkgs; [ coreutils diffutils nix ])
-            (builtins.readFile (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/make-package-diff.sh; })));
+            (builtins.readFile (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
+              src = ./scripts/make-package-diff.sh;
+            })));
           rollback = mkShellScriptWithDeps "rollback" (with pkgs; [ fzf ]) ''
             GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
             GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
@@ -103,7 +117,14 @@ in {
           '';
         };
       };
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ niv rollback ]; };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ rollback ]; };
+
+      systemd.services.nix-daemon = {
+        environment.TMPDIR = "/tmp/buildroot";
+        preStart = ''
+          mkdir -p /tmp/buildroot
+        '';
+      };
     })
     (mkIf (cfg.enable && cfg.homeManagerBackups.enable) {
       environment.variables.HOME_MANAGER_BACKUP_EXT = "hm_backup";
@@ -138,7 +159,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs;
           [
-            nixpkgs-pinned-16_04_20.cachix
+            inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.cachix
             # nix-zsh-completions # NOTE: collision emerged in last unstable
             nix-review # https://github.com/Mic92/nix-review
             make-package-diff
@@ -151,8 +172,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/packaging.el; }));
+      ide.emacs.config = builtins.readFile (pkgs.substituteAll
+        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/packaging.el; }));
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${config.attributes.mainUser.name}" = {

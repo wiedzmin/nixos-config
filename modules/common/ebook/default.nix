@@ -1,7 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -65,10 +62,10 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         bookshelf = mkPythonScriptWithDeps "bookshelf" (with pkgs; [ pystdlib python3Packages.redis zathura ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/bookshelf.py; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/bookshelf.py; })));
         update-bookshelf = mkPythonScriptWithDeps "update-bookshelf" (with pkgs; [ pystdlib python3Packages.redis ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/update-bookshelf.py; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/update-bookshelf.py; })));
       };
       systemd.user.services."update-ebooks" = {
         description = "Update bookshelf contents";
@@ -82,7 +79,7 @@ in {
       systemd.user.timers."update-ebooks" = renderTimer "Update ebooks entries" "1h" "1h" "";
       home-manager.users."${config.attributes.mainUser.name}" = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.ebook "org.pwmt.zathura.desktop";
-        home.packages = with pkgs; [ nixpkgs-pinned-16_04_20.calibre djview djvulibre ];
+        home.packages = with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.calibre djview djvulibre ];
         programs.zathura = {
           enable = true;
           options = {

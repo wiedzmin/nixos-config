@@ -1,8 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-  nixpkgs-pinned-09_07_20 = import deps.nixpkgs-pinned-09_07_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -82,16 +78,17 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         wifi-status = mkShellScriptWithDeps "wifi-status" (with pkgs; [ gawk wirelesstools ]) (builtins.readFile
           (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/wifi-status.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/wifi-status.sh; })));
         vpnctl = mkPythonScriptWithDeps "vpnctl" (with pkgs; [ pystdlib python3Packages.redis ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/vpnctl.py; })));
+          (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/vpnctl.py; })));
         ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools pystdlib xsel yad ]) (builtins.readFile
           (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/ifconfless.py; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/ifconfless.py; })));
         sshmenu = mkPythonScriptWithDeps "sshmenu"
           (with pkgs; [ openssh pystdlib python3Packages.libtmux python3Packages.redis vpnctl ]) (builtins.readFile
             (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/sshmenu.py; })));
+              ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/sshmenu.py; })));
       };
       services.openssh = {
         enable = true;
@@ -146,7 +143,7 @@ in {
     (mkIf (cfg.enable && cfg.clients.enable) {
       systemd.services.dhcpcd.serviceConfig.Type = lib.mkForce "simple"; # NOTE: forking is not acceptable for dhcpcd.
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ davfs2 nixpkgs-pinned-09_07_20.gcalcli ];
+        home.packages = with pkgs; [ davfs2 inputs.nixpkgs-09_07_20.legacyPackages.x86_64-linux.gcalcli ];
         programs.ssh = {
           enable = true;
           forwardAgent = true;
@@ -222,7 +219,7 @@ in {
     (mkIf (cfg.enable && cfg.messengers.enable) {
       services.quassel.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ skype nixpkgs-pinned-09_07_20.tdesktop quasselClient ];
+        home.packages = with pkgs; [ skype inputs.nixpkgs-09_07_20.legacyPackages.x86_64-linux.tdesktop quasselClient ];
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {

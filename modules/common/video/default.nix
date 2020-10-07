@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 
 with lib;
@@ -140,7 +140,8 @@ in {
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
         xctl = mkPythonScriptWithDeps "xctl" (with pkgs; [ autorandr pystdlib python3Packages.ewmh ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/xctl.py; })));
+          (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/xctl.py; })));
         rescreen = mkShellScriptWithDeps "rescreen" (with pkgs; [ autorandr ]) ''
           rescreen-$(autorandr --detected)-i3
         '';

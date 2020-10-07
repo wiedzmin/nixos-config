@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../../util.nix { inherit config lib pkgs; };
 with import ../wmutil.nix { inherit config lib pkgs; };
 with lib;
@@ -321,8 +321,8 @@ in {
           ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./ExtraCombinators.hs;
           ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./WindowTypes.hs;
           ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./XkbToggle.hs;
-          ".xmonad/lib/XMonad/Workspaces.hs".text = builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./Workspaces.hs; }));
+          ".xmonad/lib/XMonad/Workspaces.hs".text = builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./Workspaces.hs; }));
           ".xmonad/xmonad.hs" = {
             text = configText;
             onChange = "xmonad --recompile";

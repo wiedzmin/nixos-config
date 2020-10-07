@@ -1,8 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  proposed = import deps.nixpkgs-proposed { config.allowUnfree = true; };
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -70,7 +66,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         paste_to_ix = mkPythonScriptWithDeps "paste_to_ix" (with pkgs; [ ix xsel ]) (builtins.readFile
           (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/paste_to_ix.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/paste_to_ix.sh; })));
       };
       tools.ebooks.readers.roots = [ (homePrefix "bookshelf") ];
       services.clipmenu.enable = true;
@@ -102,7 +98,7 @@ in {
           android-file-transfer
           jmtpfs # consider providing some (shell) automation
           saldl # consider providing some (shell) automation
-          proposed.you-get
+          you-get
           # =======
           archiver
           # =======
@@ -144,23 +140,24 @@ in {
             # ytdl-format=(bestvideo[ext=webm]/bestvideo[height>720]/bestvideo[fps=60])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio)/best
           };
         };
-        programs.zsh.shellAliases = { yg = "${proposed.you-get}/bin/you-get"; };
+        programs.zsh.shellAliases = { yg = "${pkgs.you-get}/bin/you-get"; };
       };
     })
     (mkIf cfg.bookmarking.enable {
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
-        buku_add = mkPythonScriptWithDeps "buku_add" (with pkgs; [ nixpkgs-pinned-16_04_20.buku pystdlib xsel ])
+        buku_add = mkPythonScriptWithDeps "buku_add"
+          (with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku pystdlib xsel ]) (builtins.readFile
+            (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/buku_add.py; })));
+        buku_search_tag = mkShellScriptWithDeps "buku_search_tag"
+          (with pkgs; [ coreutils dmenu gawk inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/buku_add.py; })));
-        buku_search_tag =
-          mkShellScriptWithDeps "buku_search_tag" (with pkgs; [ coreutils dmenu gawk nixpkgs-pinned-16_04_20.buku ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/buku_search_tag.sh; })));
-        buku_search_url =
-          mkShellScriptWithDeps "buku_search_url" (with pkgs; [ coreutils dmenu nixpkgs-pinned-16_04_20.buku ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/buku_search_url.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/buku_search_tag.sh; })));
+        buku_search_url = mkShellScriptWithDeps "buku_search_url"
+          (with pkgs; [ coreutils dmenu inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku ]) (builtins.readFile
+            (pkgs.substituteAll
+              ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/buku_search_url.sh; })));
       };
     })
     (mkIf (cfg.enable && cfg.screenshots.enable) {
@@ -178,14 +175,15 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         screenshot_active_window =
           mkShellScriptWithDeps "screenshot_active_window" (with pkgs; [ coreutils maim xclip xdotool ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/screenshot_active_window.sh; })));
+          (builtins.readFile (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
+            src = ./scripts/screenshot_active_window.sh;
+          })));
         screenshot_full = mkShellScriptWithDeps "screenshot_full" (with pkgs; [ coreutils maim xclip ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/screenshot_full.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/screenshot_full.sh; })));
         screenshot_region = mkShellScriptWithDeps "screenshot_region" (with pkgs; [ coreutils maim xclip ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/screenshot_region.sh; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/screenshot_region.sh; })));
       };
     })
     (mkIf (cfg.warmup.enable && cfg.warmup.paths != [ ]) {

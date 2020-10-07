@@ -1,8 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-08_02_20 = import deps.nixpkgs-pinned-08_02_20 { config.allowUnfree = true; };
-  stable = import deps.nixpkgs-stable { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with lib;
 
 let
@@ -176,7 +172,8 @@ in {
         defaultShared = true;
         webInterface = true;
       };
-      environment.systemPackages = with pkgs; [ nixpkgs-pinned-08_02_20.system-config-printer ];
+      environment.systemPackages = with pkgs;
+        [ inputs.nixpkgs-08_02_20.legacyPackages.x86_64-linux.system-config-printer ];
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "lp" ];
     })
     (mkIf cfg.scanning.enable {
@@ -274,7 +271,7 @@ in {
     })
     (mkIf cfg.publishing.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = [ stable.libreoffice ]
+        home.packages = [ inputs.stable.legacyPackages.x86_64-linux.libreoffice ]
           ++ lib.optionals (cfg.publishing.staging.packages != [ ]) cfg.publishing.staging.packages;
       };
     })

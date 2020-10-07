@@ -1,19 +1,22 @@
-{ config, pkgs, lib, ... }:
+{ config, pkgs, lib, inputs, ... }:
 with import ../../modules/util.nix { inherit config lib pkgs; };
-let
-  deps = import ../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-in {
+
+{
   imports = [
-    ../../nix/setup.nix
-    "${deps.home-manager}/nixos"
     ./secrets
     ./assets
     ../../modules
-    "${deps.nixos-hardware}/common/cpu/intel/sandy-bridge"
-    "${deps.nixos-hardware}/common/pc/ssd"
-    "${deps.nixos-hardware}/lenovo/thinkpad/x230"
+    "${inputs.nixos-hardware}/common/cpu/intel/sandy-bridge"
+    "${inputs.nixos-hardware}/common/pc/ssd"
+    "${inputs.nixos-hardware}/lenovo/thinkpad/x230"
   ];
+
+  nixpkgs.config = {
+    allowUnfree = true;
+    allowUnfreeRedistributable = true;
+    oraclejdk.accept_license = true;
+    permittedInsecurePackages = [ "openssl-1.0.2u" ];
+  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos-root";
@@ -341,7 +344,7 @@ in {
   };
 
   custom.dev.golang = {
-    enable = true;
+    enable = false;
     goPath = homePrefix "workspace/go";
     packaging.enable = true;
     misc.enable = true;
@@ -441,16 +444,16 @@ in {
 
   custom.paperworks = {
     printing = {
-      enable = true;
-      drivers = [ nixpkgs-pinned-16_04_20.hplipWithPlugin ];
+      enable = false;
+      drivers = [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.hplipWithPlugin ];
     };
     scanning = {
-      enable = true;
+      enable = false;
       extraBackends = [ pkgs.hplipWithPlugin ];
       enableXsane = true;
       paperless = {
         enable = true;
-        package = nixpkgs-pinned-16_04_20.paperless;
+        package = inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.paperless;
         consumptionDir = homePrefix "docs/paperless/consume";
         dataDir = homePrefix "docs/paperless/data";
         user = config.attributes.mainUser.name;
@@ -527,7 +530,7 @@ in {
     };
     gestures.enable = true;
     keynav.enable = true;
-    xkeysnail.enable = true;
+    xkeysnail.enable = false;
     xmodmap = {
       enable = true;
       rc = ''

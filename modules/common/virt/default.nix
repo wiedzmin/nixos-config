@@ -1,7 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -112,7 +109,7 @@ in {
     (mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
         nfs-utils # for vagrant
-        nixpkgs-pinned-16_04_20.vagrant
+        inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.vagrant
       ];
 
       boot.kernel.sysctl = {
@@ -135,25 +132,27 @@ in {
         ${pkgs.redis}/bin/redis-cli expire virt/swarm_meta 604800
       '';
       nixpkgs.config.packageOverrides = _: rec {
-        dlint = mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/dlint.sh; })));
+        dlint = mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (builtins.readFile (pkgs.substituteAll
+          ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/dlint.sh; })));
         hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ]) (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/hadolintd.sh; })));
+          ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/hadolintd.sh; })));
         docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits"
           (with pkgs; [ docker pystdlib python3Packages.redis xsel yad ]) (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/docker_containers_traits.py; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
+              src = ./scripts/docker_containers_traits.py;
+            })));
         discover_containerized_services =
           mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker pystdlib ]) (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
               src = ./scripts/discover_containerized_services.py;
             })));
         docker_shell =
           mkPythonScriptWithDeps "docker_shell" (with pkgs; [ pystdlib python3Packages.libtmux python3Packages.redis ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/docker_shell.py; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/docker_shell.py; })));
         docker_swarm_services_info = mkPythonScriptWithDeps "docker_swarm_services_info"
           (with pkgs; [ docker pystdlib python3Packages.libtmux python3Packages.redis vpnctl yad ]) (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // {
+            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
               src = ./scripts/docker_swarm_services_info.py;
             })));
       };
@@ -176,7 +175,7 @@ in {
 
       environment.systemPackages = with pkgs;
         [
-          nixpkgs-pinned-16_04_20.arion
+          inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.arion
           ctop
           discover_containerized_services
           dive

@@ -1,8 +1,4 @@
-let
-  deps = import ../../../nix/sources.nix;
-  nixpkgs-pinned-16_04_20 = import deps.nixpkgs-pinned-16_04_20 { config.allowUnfree = true; };
-  nixpkgs-pinned-09_07_20 = import deps.nixpkgs-pinned-09_07_20 { config.allowUnfree = true; };
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -159,7 +155,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         open-project = mkPythonScriptWithDeps "open-project" (with pkgs; [ pystdlib python3Packages.redis ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/open-project.py; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/open-project.py; })));
       };
       custom.navigation.bookmarks.entries = cfg.bookmarks.entries;
     })
@@ -187,12 +183,12 @@ in {
     })
     (mkIf (cfg.enable && cfg.codesearch.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.codesearch epkgs.counsel-codesearch epkgs.projectile-codesearch ];
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/codesearch.el; }));
+      ide.emacs.config = builtins.readFile (pkgs.substituteAll
+        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/codesearch.el; }));
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ patchutils wiggle nixpkgs-pinned-16_04_20.diffoscope ];
+        home.packages = with pkgs; [ patchutils wiggle inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.diffoscope ];
       };
     })
     (mkIf (cfg.enable && cfg.statistics.enable) {
@@ -204,7 +200,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         reposearch = mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd python3Packages.libtmux xsel emacs pystdlib ])
           (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/reposearch.py; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/reposearch.py; })));
       };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
@@ -277,7 +273,7 @@ in {
                   - mc
           '';
         };
-        home.packages = with pkgs; [ comby nixpkgs-pinned-09_07_20.devdocs-desktop icdiff ];
+        home.packages = with pkgs; [ comby inputs.nixpkgs-09_07_20.legacyPackages.x86_64-linux.devdocs-desktop icdiff ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
@@ -309,7 +305,7 @@ in {
           toToml { language.python = { command = "python-language-server"; }; };
       };
       ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/dev.el; }));
+        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/dev.el; }));
     })
     (mkIf (cfg.enable && cfg.wm.enable && config.custom.virtualization.docker.enable) {
       wmCommon.keys = [

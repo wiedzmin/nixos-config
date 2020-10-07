@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -61,7 +61,7 @@ in {
         passctl = mkPythonScriptWithDeps "passctl"
           (with pkgs; [ pyfzf pystdlib python3Packages.pygit2 python3Packages.redis xdotool ]) (builtins.readFile
             (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/passctl.py; })));
+              ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/passctl.py; })));
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -99,8 +99,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.auth-source-pass epkgs.ivy-pass epkgs.pass ];
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/security.el; }));
+      ide.emacs.config = builtins.readFile (pkgs.substituteAll
+        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/security.el; }));
     })
     (mkIf (cfg.polkit.silentAuth) {
       security.polkit.extraConfig = ''

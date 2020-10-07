@@ -1,5 +1,4 @@
-let deps = import ../../../nix/sources.nix;
-in { config, lib, pkgs, ... }:
+{ config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
@@ -55,7 +54,7 @@ in {
       };
       package = mkOption {
         type = types.package;
-        default = pkgs.emacsGit.override {
+        default = pkgs.emacs.override {
           withGTK2 = false;
           withGTK3 = false;
         };
@@ -91,8 +90,8 @@ in {
           ${lib.optionalString (cfg.environment != { }) (builtins.concatStringsSep "\n"
             (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
 
-          ${builtins.readFile
-          (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./emacs/base.el; }))}
+          ${builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/base.el; }))}
           ${cfg.config}
 
           (notifications-notify :title "Emacs" :body "Started server")
@@ -121,7 +120,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         org-capture = mkPythonScriptWithDeps "org-capture" (with pkgs; [ emacs pystdlib tmux xsel ]) (builtins.readFile
           (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/org-capture.py; })));
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/org-capture.py; })));
       };
       custom.dev.git.gitignore = ''
         *.elc
@@ -201,7 +200,7 @@ in {
         home.file = {
           ".emacs.d/init.el".text = cfg.initElContent;
           ".emacs.d/resources/yasnippet" = {
-            source = deps.yasnippet-snippets;
+            source = inputs.yasnippet-snippets;
             recursive = true;
           };
         };
