@@ -220,8 +220,6 @@ in {
         "*bitbucket.org*" = { target = "dev/forges/bitbucket.org"; };
       };
       custom.dev.git.gitignore = ''
-        shell.nix
-        .envrc
         .direnv/
       '';
       home-manager.users."${config.attributes.mainUser.name}" = {

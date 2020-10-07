@@ -1,0 +1,13 @@
+repos:
+  - repo: "https://github.com/wiedzmin/git-hooks"
+    rev: "master"
+    hooks:
+      - id: "forbid-pushing-wip"
+      - id: "nixfmt"
+  - repo: "https://github.com/jumanjihouse/pre-commit-hooks"
+    rev: "master"
+    hooks:
+      - id: "shfmt"
+        args:
+          - "-i"
+          - "2"

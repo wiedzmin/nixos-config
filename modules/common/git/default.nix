@@ -286,43 +286,6 @@ in {
         };
       };
     })
-    (mkIf (cfg.enable && cfg.hooks.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ gitAndTools.pre-commit nixfmt ];
-      };
-      environment.etc = {
-        "nixos/.pre-commit-config.yaml".text = builtins.toJSON {
-          repos = [
-            {
-              repo = "https://github.com/wiedzmin/git-hooks";
-              rev = "master";
-              hooks = [ { id = "forbid-pushing-wip"; } { id = "nixfmt"; } ];
-            }
-            {
-              repo = "https://github.com/jumanjihouse/pre-commit-hooks";
-              rev = "master";
-              hooks = [{
-                id = "shfmt";
-                args = [ "-i" "2" ];
-              }];
-            }
-          ];
-        };
-        "nixos/.envrc".text = ''
-          use nix
-        '';
-        "nixos/shell.nix".text = ''
-          let
-            pkgs = import <nixpkgs> {};
-          in
-            pkgs.mkShell {
-              buildInputs = with pkgs; [
-                shfmt
-              ];
-            }
-        '';
-      };
-    })
     (mkIf (cfg.enable && cfg.fetchUpdates.enable) {
       assertions = [
         {
