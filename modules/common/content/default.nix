@@ -98,15 +98,6 @@ in {
           // (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop")
           // (mapMimesToApp config.attributes.mimetypes.office.spreadsheets "calc.desktop");
 
-        home.file = lib.optionalAttrs (config.custom.shell.enable) {
-          ".tmuxp/media.yml".text = ''
-            session_name: media
-            windows:
-              - window_name: mps-youtube
-                panes:
-                  - ${pkgs.mps-youtube}/bin/mpsyt
-          '';
-        };
         home.packages = with pkgs; [
           android-file-transfer
           jmtpfs # consider providing some (shell) automation
