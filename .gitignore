@@ -1,12 +1,6 @@
 *qcow2
-*zshrc
-.xsession
-/.gtm/
-/overlay/inactive
-common_settings*
 configuration.nix
 .gitattributes
-nix/private
 notice
 result
 todo.org
