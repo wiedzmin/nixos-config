@@ -93,10 +93,6 @@ in {
           make-package-diff = mkShellScriptWithDeps "make-package-diff" (with pkgs; [ coreutils diffutils nix ])
             (builtins.readFile (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/make-package-diff.sh; })));
-          confctl =
-            mkPythonScriptWithDepsAndConflicts "confctl" (with pkgs; [ pyfzf pystdlib python3Packages.python-gnupg ])
-            (builtins.readFile (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib; }) // { src = ./scripts/confctl.py; })));
           rollback = mkShellScriptWithDeps "rollback" (with pkgs; [ fzf ]) ''
             GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
             GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
@@ -151,9 +147,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ confctl get-pr-override ];
-      };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ get-pr-override ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
@@ -162,7 +156,7 @@ in {
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ confctl get-pr-override make-package-diff rollback ];
+        home.packages = with pkgs; [ get-pr-override make-package-diff rollback ];
       };
     })
   ];
