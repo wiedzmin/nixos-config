@@ -91,6 +91,8 @@
         };
       };
     in {
+      devShell."${system}" = import ./shell.nix { pkgs = nixpkgs.legacyPackages.${system}; };
+
       nixosConfigurations = {
         laptoptop = lib.nixosSystem {
           inherit system;
