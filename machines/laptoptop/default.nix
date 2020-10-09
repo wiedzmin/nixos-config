@@ -1,7 +1,12 @@
 { config, pkgs, lib, inputs, ... }:
 with import ../../modules/util.nix { inherit config lib pkgs; };
 
-{
+let
+  nixpkgs-hplip = import inputs.nixpkgs-16_04_20 ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
+in {
   imports = [
     ./secrets
     ./assets
@@ -10,13 +15,6 @@ with import ../../modules/util.nix { inherit config lib pkgs; };
     "${inputs.nixos-hardware}/common/pc/ssd"
     "${inputs.nixos-hardware}/lenovo/thinkpad/x230"
   ];
-
-  nixpkgs.config = {
-    allowUnfree = true;
-    allowUnfreeRedistributable = true;
-    oraclejdk.accept_license = true;
-    permittedInsecurePackages = [ "openssl-1.0.2u" ];
-  };
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos-root";
@@ -444,8 +442,8 @@ with import ../../modules/util.nix { inherit config lib pkgs; };
 
   custom.paperworks = {
     printing = {
-      enable = false;
-      drivers = [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.hplipWithPlugin ];
+      enable = true;
+      drivers = [ nixpkgs-hplip.hplipWithPlugin ];
     };
     scanning = {
       enable = false;

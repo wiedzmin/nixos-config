@@ -4,6 +4,11 @@ with lib;
 let
   cfg = config.custom.paperworks;
 
+  nixpkgs-hplip = import inputs.nixpkgs-16_04_20 ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
+
   paperlessDefaultUser = "paperless";
 
   paperlessManageScript = cfg.scanning.paperless.package.withConfig {
@@ -172,8 +177,7 @@ in {
         defaultShared = true;
         webInterface = true;
       };
-      environment.systemPackages = with pkgs;
-        [ inputs.nixpkgs-08_02_20.legacyPackages.x86_64-linux.system-config-printer ];
+      environment.systemPackages = with pkgs; [ nixpkgs-hplip.system-config-printer ];
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "lp" ];
     })
     (mkIf cfg.scanning.enable {
