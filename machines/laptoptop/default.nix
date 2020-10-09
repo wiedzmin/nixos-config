@@ -344,7 +344,7 @@ with import ../../modules/util.nix { inherit config lib pkgs; };
   };
 
   custom.dev.golang = {
-    enable = false;
+    enable = true;
     goPath = homePrefix "workspace/go";
     packaging.enable = true;
     misc.enable = true;

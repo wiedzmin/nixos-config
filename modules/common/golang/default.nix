@@ -51,10 +51,11 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      assertions = [{
-        assertion = (cfg.goPath != "" && builtins.pathExists cfg.goPath);
-        message = "dev/golang: cannot proceed without valid $GOPATH value.";
-      }];
+      # FIXME: debug assertion with flakes
+      # assertions = [{
+      #   assertion = (cfg.goPath != "" && builtins.pathExists cfg.goPath);
+      #   message = "dev/golang: cannot proceed without valid $GOPATH value.";
+      # }];
 
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [
