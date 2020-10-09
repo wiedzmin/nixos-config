@@ -5,7 +5,7 @@
     ./fonts/hack-fonts.nix
     ./fonts/iosevka-fonts.nix
     ./fonts/scp-fonts.nix
-    ./color/zenburn.nix
+    ./color/zenburn
     ./emacs/doom-modeline.nix
   ];
 }

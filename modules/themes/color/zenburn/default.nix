@@ -41,10 +41,10 @@ in {
         statusbar-bg = "#606060";
         statusbar-fg = "#808080";
       };
-      # gtk = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
-      #   gtk2.extraConfig = builtins.readFile "/etc/nixos/assets/styles/zenburn-gtk2.styles";
-      #   gtk3.extraCss = builtins.readFile "/etc/nixos/assets/styles/zenburn-gtk3.css";
-      # };
+      gtk = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
+        gtk2.extraConfig = builtins.readFile ./zenburn-gtk2.styles;
+        gtk3.extraCss = builtins.readFile ./zenburn-gtk3.css;
+      };
       services.dunst.settings = {
         urgency_low = {
           background = "#333333";
