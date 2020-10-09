@@ -570,7 +570,7 @@ with import ../../modules/util.nix { inherit config lib pkgs; };
 
   themes.fonts.iosevka.enable = true;
   themes.zenburn.enable = true;
-  themes.emacs.modeline.doom.enable = true;
+  themes.emacs.modeline.telephone.enable = true;
 
   tools = {
     dbms = {

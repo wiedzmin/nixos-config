@@ -164,7 +164,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.diredfl epkgs.doom-modeline epkgs.rainbow-mode epkgs.unicode-fonts ];
+      ide.emacs.extraPackages = epkgs: [ epkgs.diredfl epkgs.rainbow-mode epkgs.unicode-fonts ];
       ide.emacs.config = builtins.readFile (pkgs.substituteAll
         ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/appearance.el; }));
     })

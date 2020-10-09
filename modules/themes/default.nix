@@ -7,5 +7,6 @@
     ./fonts/scp-fonts.nix
     ./color/zenburn
     ./emacs/doom-modeline.nix
+    ./emacs/telephone-line.nix
   ];
 }
