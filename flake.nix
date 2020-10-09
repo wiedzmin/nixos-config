@@ -15,6 +15,10 @@
     };
     nixpkgs-09_07_20.url = "github:nixos/nixpkgs/8d05772134f17180fb2711d0660702dae2a67313";
     nixpkgs-16_04_20.url = "github:nixos/nixpkgs/b61999e4ad60c351b4da63ae3ff43aae3c0bbdfb";
+    nixpkgs-proposed = {
+      url = "github:wiedzmin/nixpkgs";
+      flake = false;
+    };
 
     home-manager.url = "github:rycee/home-manager"; # /bqv-flakes
     emacs.url = "github:nix-community/emacs-overlay";

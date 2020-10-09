@@ -2,7 +2,12 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.xinput;
+let
+  cfg = config.custom.xinput;
+  proposed = import inputs.nixpkgs-proposed ({
+    config = config.nixpkgs.config;
+    localSystem = { system = "x86_64-linux"; };
+  });
 in {
   options = {
     custom.xinput = {
@@ -240,36 +245,36 @@ in {
         };
       };
     })
-    # (mkIf cfg.xkeysnail.enable {
-    #   assertions = [{
-    #     assertion = cfg.xkeysnail.configFile != "";
-    #     message = "XKeysnail: must provide config file path.";
-    #   }];
+    (mkIf cfg.xkeysnail.enable {
+      assertions = [{
+        assertion = cfg.xkeysnail.configFile != "";
+        message = "XKeysnail: must provide config file path.";
+      }];
 
-    #   systemd.user.services."xkeysnail" = {
-    #     description = "Xkeysnail";
-    #     after = [ "graphical-session-pre.target" ];
-    #     partOf = [ "graphical-session.target" ];
-    #     wantedBy = [ "graphical-session.target" ];
-    #     serviceConfig = {
-    #       PIDFile = "/run/xkeysnail.pid";
-    #       Restart = "always";
-    #       RestartSec = 1;
-    #       ExecStart = "/run/wrappers/bin/sudo ${inputs.nixpkgs-proposed.legacyPackages.x86_64-linux.xkeysnail}/bin/xkeysnail ${
-    #           optionalString (cfg.xkeysnail.inputDevices != [ ])
-    #           "--devices ${lib.concatStringsSep " " cfg.xkeysnail.inputDevices}"
-    #         } ${cfg.xkeysnail.configFile}";
-    #       StandardOutput = "journal";
-    #       StandardError = "journal";
-    #     };
-    #   };
+      systemd.user.services."xkeysnail" = {
+        description = "Xkeysnail";
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        serviceConfig = {
+          PIDFile = "/run/xkeysnail.pid";
+          Restart = "always";
+          RestartSec = 1;
+          ExecStart = "/run/wrappers/bin/sudo ${proposed.xkeysnail}/bin/xkeysnail ${
+              optionalString (cfg.xkeysnail.inputDevices != [ ])
+              "--devices ${lib.concatStringsSep " " cfg.xkeysnail.inputDevices}"
+            } ${cfg.xkeysnail.configFile}";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+      };
 
-    #   users.users."${config.attributes.mainUser.name}".extraGroups = [ "input" ];
+      users.users."${config.attributes.mainUser.name}".extraGroups = [ "input" ];
 
-    #   home-manager.users."${config.attributes.mainUser.name}" = {
-    #     xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText;
-    #   };
-    # })
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText;
+      };
+    })
     (mkIf (cfg.constraintMouse.enable && !config.wm.i3.enable) {
       systemd.user.services."xpointerbarrier" = {
         description = "Create pointer barriers around each XRandR screen";

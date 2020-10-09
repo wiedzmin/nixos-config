@@ -530,7 +530,7 @@ with import ../../modules/util.nix { inherit config lib pkgs; };
     };
     gestures.enable = true;
     keynav.enable = true;
-    xkeysnail.enable = false;
+    xkeysnail.enable = true;
     xmodmap = {
       enable = true;
       rc = ''
