@@ -175,22 +175,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-mm": {
-      "locked": {
-        "lastModified": 1593736793,
-        "narHash": "sha256-eeyUHpVLS8ZCH/eQPEkli2TdEwIy0/1ZcsNe9pzY/yk=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "a2cdd1464b72082c45277c9d9f502c684668f510",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "a2cdd1464b7",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nixpkgs-proposed": {
       "flake": false,
       "locked": {
@@ -252,7 +236,6 @@
         "nixpkgs-08_02_20": "nixpkgs-08_02_20",
         "nixpkgs-09_07_20": "nixpkgs-09_07_20",
         "nixpkgs-16_04_20": "nixpkgs-16_04_20",
-        "nixpkgs-mm": "nixpkgs-mm",
         "nixpkgs-proposed": "nixpkgs-proposed",
         "pass-zsh-completion": "pass-zsh-completion",
         "stable": "stable",
