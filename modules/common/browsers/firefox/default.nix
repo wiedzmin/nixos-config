@@ -6,7 +6,6 @@ with lib;
 let
   cfg = config.custom.browsers.firefox;
   prefix = config.wmCommon.prefix;
-  firefox-addons = pkgs.recurseIntoAttrs (pkgs.callPackage ../../../../nix/firefox-addons { });
 in {
   options = {
     custom.browsers.firefox = {
@@ -83,13 +82,8 @@ in {
       };
       custom.programs.firefox = {
         enable = true;
-        extensions = with firefox-addons; [
-          display-anchors
-          ghosttext
-          passff
-          tridactyl # TODO: review and maybe redo manually csp/fixamo customizations
-          url-in-title
-          web_media_controller
+        extensions = [
+          # resurrect using NUR, if needed
         ];
         profiles = {
           default = {

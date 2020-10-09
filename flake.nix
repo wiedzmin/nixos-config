@@ -103,14 +103,14 @@
                   dunst = old.dunst.override { dunstify = true; };
 
                   i3lock-color = old.i3lock-color.overrideAttrs (_: rec {
-                    patches = [ ./nix/patches/i3lock-color/forcefully-reset-keyboard-layout-group-to-0.patch ];
+                    patches = [ ./patches/i3lock-color/forcefully-reset-keyboard-layout-group-to-0.patch ];
                   });
 
                   vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
                 })
-              ] ++ map (n: import (./nix/overlays + ("/" + n))) (builtins.filter
+              ] ++ map (n: import (./overlays + ("/" + n))) (builtins.filter
                 (n: builtins.match ".*\\.nix" n != null || builtins.pathExists ("/" + n + "/default.nix"))
-                (lib.attrNames (builtins.readDir ./nix/overlays)));
+                (lib.attrNames (builtins.readDir ./overlays)));
             }
             (import ./machines/laptoptop)
             inputs.home-manager.nixosModules.home-manager
