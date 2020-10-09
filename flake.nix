@@ -118,10 +118,18 @@
           ];
           specialArgs = { inherit inputs; };
         };
+        momcat = lib.nixosSystem {
+          inherit system;
+          modules = [
+            (import ./machines/momcat)
+            inputs.home-manager.nixosModules.home-manager
+            inputs.nixpkgs.nixosModules.notDetected
+          ];
+          specialArgs = { inherit inputs; };
+        };
       };
 
       laptoptop = inputs.self.nixosConfigurations.laptoptop.config.system.build.toplevel;
-
-      # legacyPackages.x86_64-linux = (builtins.head (builtins.attrValues self.nixosConfigurations)).pkgs;
+      momcat = inputs.self.nixosConfigurations.momcat.config.system.build.toplevel;
     };
 }

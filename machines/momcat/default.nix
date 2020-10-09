@@ -1,14 +1,12 @@
-{ config, pkgs, lib, ... }:
-let deps = import ../../nix/sources.nix;
-in {
+{ config, pkgs, lib, inputs, ... }:
+
+{
   imports = [
-    ../../nix/setup.nix
-    "${deps.home-manager}/nixos"
     ./secrets
     ../../modules
-    "${deps.nixos-hardware}/common/cpu/intel/sandy-bridge"
-    "${deps.nixos-hardware}/common/pc/ssd"
-    "${deps.nixos-hardware}/lenovo/thinkpad/x230"
+    "${inputs.nixos-hardware}/common/cpu/intel/sandy-bridge"
+    "${inputs.nixos-hardware}/common/pc/ssd"
+    "${inputs.nixos-hardware}/lenovo/thinkpad/x230"
     ./filesvars.nix
   ];
 
@@ -154,8 +152,6 @@ in {
     info.enable = true;
   };
 
-  system.stateVersion = "19.03";
-
   attributes.mainUser = {
     name = config.identity.secrets.userName;
     fullName = config.identity.secrets.fullName;
@@ -232,20 +228,27 @@ in {
 
   themes.zenburn.enable = true;
 
-  home-manager.users."${config.attributes.mainUser.name}" = {
-    services.unclutter.enable = true;
-    services.udiskie.enable = true;
-    programs.htop.enable = true;
-    programs.command-not-found.enable = true;
-    programs.lesspipe.enable = true;
-    programs.fzf = {
-      enable = true;
-      enableZshIntegration = true;
+  home-manager = {
+    useGlobalPkgs = true;
+    users."${config.attributes.mainUser.name}" = {
+      services.unclutter.enable = true;
+      services.udiskie.enable = true;
+      programs.htop.enable = true;
+      programs.command-not-found.enable = true;
+      programs.lesspipe.enable = true;
+      programs.fzf = {
+        enable = true;
+        enableZshIntegration = true;
+      };
+      programs.direnv = {
+        enable = true;
+        enableZshIntegration = true;
+      };
+      home.packages = with pkgs; [ anydesk ];
+
+      home.stateVersion = "19.09";
     };
-    programs.direnv = {
-      enable = true;
-      enableZshIntegration = true;
-    };
-    home.packages = with pkgs; [ anydesk ];
   };
+
+  system.stateVersion = "19.03";
 }
