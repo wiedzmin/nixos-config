@@ -54,7 +54,7 @@ in {
       };
       package = mkOption {
         type = types.package;
-        default = pkgs.emacs.override {
+        default = pkgs.unstable.emacsGit.override {
           withGTK2 = false;
           withGTK3 = false;
         };
