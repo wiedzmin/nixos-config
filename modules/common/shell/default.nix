@@ -236,6 +236,7 @@ in {
           } // lib.optionalAttrs (!cfg.liquidPrompt.enable) { ZSH_COMMAND_TIME_COLOR = "cyan"; };
           shellAliases = {
             cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
+            catb = "${pkgs.bat}/bin/bat -A";
 
             df = "${pkgs.duf}/bin/duf";
             du = "${pkgs.dua}/bin/dua";
