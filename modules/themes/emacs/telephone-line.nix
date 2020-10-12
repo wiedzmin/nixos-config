@@ -25,7 +25,24 @@ in {
         (use-package telephone-line
           :hook
           (after-init-hook . (lambda () (telephone-line-mode 1)))
-          )
+          :custom
+          (telephone-line-primary-left-separator 'telephone-line-cubed-left)
+          (telephone-line-secondary-left-separator 'telephone-line-cubed-hollow-left)
+          (telephone-line-primary-right-separator 'telephone-line-cubed-right)
+          (telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
+          (telephone-line-height ${builtins.toString cfg.height})
+          (telephone-line-lhs
+           '((evil   . (telephone-line-buffer-modified-segment))
+             (accent . (telephone-line-narrow-segment
+                        telephone-line-position-segment
+                        telephone-line-vc-segment))
+             (nil    . (telephone-line-projectile-buffer-segment))))
+          (telephone-line-rhs
+           '((nil    . (telephone-line-minor-mode-segment))
+             (accent . (telephone-line-major-mode-segment
+                        telephone-line-flycheck-segment
+                        telephone-line-filesize-segment))
+             (evil   . (telephone-line-misc-info-segment)))))
       '';
     })
   ];
