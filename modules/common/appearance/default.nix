@@ -102,7 +102,7 @@ in {
           antialias = cfg.fonts.antialias;
           dpi = cfg.fonts.dpi;
         };
-        enableFontDir = true;
+        fontDir.enable = true;
         enableGhostscriptFonts = true;
         enableDefaultFonts = true;
       };
