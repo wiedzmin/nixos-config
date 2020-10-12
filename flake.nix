@@ -19,6 +19,9 @@
       flake = false;
     };
 
+    # FIXME: decouple from user
+    NUR.url = "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR";
+
     home-manager.url = "github:rycee/home-manager"; # /bqv-flakes
     emacs.url = "github:nix-community/emacs-overlay";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
