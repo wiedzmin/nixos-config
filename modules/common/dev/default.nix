@@ -91,7 +91,7 @@ in {
           gourmet = "${wsRoot "github"}/wiedzmin/gourmet";
           home-manager = "${wsRoot "github"}/rycee/home-manager";
           nixos = "/etc/nixos";
-          nixpkgs-channels = "${wsRoot "github"}/NixOS/nixpkgs-channels";
+          nixpkgs = "${wsRoot "github"}/NixOS/nixpkgs";
           nixpkgs-proposed = "${wsRoot "github"}/wiedzmin/nixpkgs";
           postgres = "${wsRoot "github"}/postgres/postgres";
         };
