@@ -118,7 +118,7 @@ in {
     (mkIf (cfg.enable) {
       fonts = { fonts = with pkgs; [ emacs-all-the-icons-fonts ]; };
       nixpkgs.config.packageOverrides = _: rec {
-        org-capture = mkPythonScriptWithDeps "org-capture" (with pkgs; [ emacs pystdlib tmux xsel ]) (builtins.readFile
+        org-capture = mkPythonScriptWithDeps "org-capture" (with pkgs; [ emacs unstable.nur.repos.wiedzmin.pystdlib tmux xsel ]) (builtins.readFile
           (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/org-capture.py; })));
       };

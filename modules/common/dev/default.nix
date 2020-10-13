@@ -154,7 +154,7 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable && config.custom.navigation.bookmarks.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        open-project = mkPythonScriptWithDeps "open-project" (with pkgs; [ pystdlib python3Packages.redis ])
+        open-project = mkPythonScriptWithDeps "open-project" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.redis ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/open-project.py; })));
       };
@@ -199,7 +199,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.repoSearch.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        reposearch = mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd python3Packages.libtmux xsel emacs pystdlib ])
+        reposearch = mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd python3Packages.libtmux xsel emacs unstable.nur.repos.wiedzmin.pystdlib ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/reposearch.py; })));
       };

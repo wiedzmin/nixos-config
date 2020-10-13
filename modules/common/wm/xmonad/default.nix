@@ -305,7 +305,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         desktops = mkPythonScriptWithDeps "desktops" (with pkgs; [
-          pystdlib
+          unstable.nur.repos.wiedzmin.pystdlib
           python3Packages.ewmh
           python3Packages.fuzzywuzzy
           python3Packages.redis

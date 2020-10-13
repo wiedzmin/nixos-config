@@ -260,7 +260,7 @@ in {
           PIDFile = "/run/xkeysnail.pid";
           Restart = "always";
           RestartSec = 1;
-          ExecStart = "/run/wrappers/bin/sudo ${proposed.xkeysnail}/bin/xkeysnail ${
+          ExecStart = "/run/wrappers/bin/sudo ${pkgs.unstable.nur.repos.wiedzmin.xkeysnail}/bin/xkeysnail ${
               optionalString (cfg.xkeysnail.inputDevices != [ ])
               "--devices ${lib.concatStringsSep " " cfg.xkeysnail.inputDevices}"
             } ${cfg.xkeysnail.configFile}";

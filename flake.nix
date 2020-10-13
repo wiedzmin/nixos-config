@@ -20,7 +20,7 @@
     };
 
     # FIXME: decouple from user
-    NUR.url = "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR";
+    nur.url = "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR";
 
     home-manager.url = "github:rycee/home-manager"; # /bqv-flakes
     emacs.url = "github:nix-community/emacs-overlay";
@@ -87,7 +87,7 @@
       overlays = {
         unstable = final: prev: {
           unstable = (import inputs.nixpkgs {
-            overlays = [ inputs.emacs.overlay ];
+            overlays = with inputs; [ emacs.overlay nur.overlay ];
             inherit system;
           });
         };
@@ -104,16 +104,9 @@
                 overlays.unstable
                 (_: old: rec {
                   dunst = old.dunst.override { dunstify = true; };
-
-                  i3lock-color = old.i3lock-color.overrideAttrs (_: rec {
-                    patches = [ ./patches/i3lock-color/forcefully-reset-keyboard-layout-group-to-0.patch ];
-                  });
-
                   vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
                 })
-              ] ++ map (n: import (./overlays + ("/" + n))) (builtins.filter
-                (n: builtins.match ".*\\.nix" n != null || builtins.pathExists ("/" + n + "/default.nix"))
-                (lib.attrNames (builtins.readDir ./overlays)));
+              ];
             }
             (import ./machines/laptoptop)
             inputs.home-manager.nixosModules.home-manager

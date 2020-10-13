@@ -1,17 +1,5 @@
 {
   "nodes": {
-    "NUR": {
-      "flake": false,
-      "locked": {
-        "narHash": "sha256-+LBUJfZTkvXer1faCiqvHqm5lhKBtB+MwnCvJwQKOYM=",
-        "path": "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR",
-        "type": "path"
-      },
-      "original": {
-        "path": "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR",
-        "type": "path"
-      }
-    },
     "emacs": {
       "locked": {
         "lastModified": 1602505420,
@@ -219,6 +207,17 @@
         "type": "github"
       }
     },
+    "nur": {
+      "locked": {
+        "narHash": "sha256-i10kbQuczYS6jU0kM0RDJsx1Vs7rYr6lrKkAyj1TpOE=",
+        "path": "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR",
+        "type": "path"
+      },
+      "original": {
+        "path": "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR",
+        "type": "path"
+      }
+    },
     "pass-zsh-completion": {
       "flake": false,
       "locked": {
@@ -237,7 +236,6 @@
     },
     "root": {
       "inputs": {
-        "NUR": "NUR",
         "emacs": "emacs",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
@@ -250,6 +248,7 @@
         "nixpkgs-09_07_20": "nixpkgs-09_07_20",
         "nixpkgs-16_04_20": "nixpkgs-16_04_20",
         "nixpkgs-proposed": "nixpkgs-proposed",
+        "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",
         "stable": "stable",
         "yasnippet-snippets": "yasnippet-snippets",
