@@ -93,6 +93,7 @@ in {
           nixos = "/etc/nixos";
           nixpkgs = "${wsRoot "github"}/NixOS/nixpkgs";
           nixpkgs-proposed = "${wsRoot "github"}/wiedzmin/nixpkgs";
+          nur-packages = "${wsRoot "github"}/wiedzmin/nur-packages";
           postgres = "${wsRoot "github"}/postgres/postgres";
         };
         description = "Bookmarks data.";
