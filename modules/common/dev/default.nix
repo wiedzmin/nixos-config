@@ -301,6 +301,7 @@ in {
         ] ++ lib.optionals (cfg.direnv.granularity == "project") [ epkgs.direnv ]
         ++ lib.optionals (cfg.direnv.granularity == "file") [ epkgs.nix-buffer ]; # when envrc.el will arrive to nixpkgs
       home-manager.users."${config.attributes.mainUser.name}" = {
+        # TODO: fix tabnine build from nixpkgs (permission denied) and put to nur-packages
         xdg.configFile."TabNine/TabNine.toml".text =
           toToml { language.python = { command = "python-language-server"; }; };
       };
