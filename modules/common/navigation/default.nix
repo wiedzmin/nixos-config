@@ -1,11 +1,18 @@
 { config, lib, pkgs, inputs, ... }:
 with import ../../util.nix { inherit config lib pkgs; };
-with import ../wm/wmutil.nix { inherit config lib pkgs; };
 with lib;
 
 let
   cfg = config.custom.navigation;
   prefix = config.wmCommon.prefix;
+  dmenu_runapps =
+    mkShellScriptWithDeps "dmenu_runapps" (with pkgs; [ coreutils dmenu haskellPackages.yeganesh j4-dmenu-desktop ]) ''
+      j4-dmenu-desktop --display-binary --dmenu="(cat ; (stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
+        yeganesh -- -i -l 15 -fn '${config.wmCommon.fonts.dmenu}'"
+    '';
+  dmenu_select_windows = mkShellScriptWithDeps "dmenu_select_windows" (with pkgs; [ coreutils dmenu wmctrl ]) ''
+    wmctrl -a $(wmctrl -l | cut -d" " -f5- | dmenu -i -l 15 -fn '${config.wmCommon.fonts.dmenu}')
+  '';
 in {
   options = {
     custom.navigation = {
@@ -373,6 +380,9 @@ in {
         ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/browsers.el; }));
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ dmenu_runapps dmenu_select_windows ];
+      };
       wmCommon.keys = [
         {
           key = [ prefix "slash" ];

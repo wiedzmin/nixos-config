@@ -281,7 +281,7 @@ in {
             # i3 config file (v4)
 
             ${cfg.settings}
-            ${mkKeybindingsI3 (cfg.keys ++ config.wmCommon.keys) config.wmCommon.modeBindings cfg.modeExitBindings}
+            ${mkKeybindingsI3 config.wmCommon.workspaces (cfg.keys ++ config.wmCommon.keys) config.wmCommon.modeBindings cfg.modeExitBindings}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
             ${lib.concatStringsSep "\n"
             (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}

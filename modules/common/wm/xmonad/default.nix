@@ -328,7 +328,7 @@ in {
             onChange = "xmonad --recompile";
           };
         };
-        home.packages = with pkgs; [ dmenu_runapps desktops ];
+        home.packages = with pkgs; [ desktops ];
         xdg.configFile."xmobar/xmobarrc".text = builtins.readFile
           (pkgs.substituteAll ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./xmobarrc; }));
       };

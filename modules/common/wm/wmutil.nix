@@ -28,14 +28,6 @@ let
     "instance" = ''instance="^@$"'';
   };
 in rec {
-  dmenu_runapps =
-    mkShellScriptWithDeps "dmenu_runapps" (with pkgs; [ coreutils dmenu haskellPackages.yeganesh j4-dmenu-desktop ]) ''
-      j4-dmenu-desktop --display-binary --dmenu="(cat ; (stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
-        yeganesh -- -i -l 15 -fn '${config.wmCommon.fonts.dmenu}'"
-    '';
-  dmenu_select_windows = mkShellScriptWithDeps "dmenu_select_windows" (with pkgs; [ coreutils dmenu wmctrl ]) ''
-    wmctrl -a $(wmctrl -l | cut -d" " -f5- | dmenu -i -l 15 -fn '${config.wmCommon.fonts.dmenu}')
-  '';
   enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: v: i) wsdata) wsdata;
   getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
   toHaskellBool = v: builtins.replaceStrings [ "true" "false" ] [ "True" "False" ] (lib.trivial.boolToString v);
@@ -84,16 +76,16 @@ in rec {
       "workspace --no-auto-back-and-forth ${
         builtins.toString ws.fst
       }: ${ws.snd.name}; move workspace to output ${head}; "))}";
-  mkKeybindingI3 = meta:
+  mkKeybindingI3 = workspaces: meta:
     builtins.concatStringsSep " " ([ "bindsym" (mkKeyI3 meta.key) ]
       ++ lib.optionals (!maybeAttrIsBool "raw" meta) [ "exec" ]
       ++ lib.optionals (maybeAttrIsBool "transient" meta) [ "--no-startup-id" ] ++ [
         (builtins.concatStringsSep "; " (lib.optionals (builtins.hasAttr "cmd" meta) [ meta.cmd ]
           ++ lib.optionals (builtins.hasAttr "desktop" meta)
-          [ "workspace ${getWorkspaceByNameI3 config.wmCommon.workspaces meta.desktop}" ]
+          [ "workspace ${getWorkspaceByNameI3 workspaces meta.desktop}" ]
           ++ lib.optionals (!maybeAttrIsBool "sticky" meta && meta.mode != "root") [ ''mode "default"'' ]))
       ]);
-  mkKeybindingsI3 = keys: modeBindings: exitBindings:
+  mkKeybindingsI3 = workspaces: keys: modeBindings: exitBindings:
     let
       prefixedModesMeta = lib.filterAttrs (k: _: k != "root") (lib.groupBy (x: x.mode) keys);
       rootModeBindings = (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) keys)).root;
@@ -106,11 +98,11 @@ in rec {
                 key = b;
                 mode = "${mode}";
                 raw = true;
-              }) exitBindings)) (x: mkKeybindingI3 x))
+              }) exitBindings)) (x: mkKeybindingI3 workspaces x))
           }
         }
       '') prefixedModesMeta)}
-      ${lib.concatStringsSep "\n" (lib.forEach rootModeBindings (x: mkKeybindingI3 x))}
+      ${lib.concatStringsSep "\n" (lib.forEach rootModeBindings (x: mkKeybindingI3 workspaces x))}
 
       ${lib.concatStringsSep "\n"
       (lib.mapAttrsToList (mode: key: ''bindsym ${mkKeyI3 key} mode "${mode}"'') modeBindings)}
