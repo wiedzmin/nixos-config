@@ -193,7 +193,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.statistics.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ cloc gource sloccount tokei ];
+        home.packages = with pkgs; [ cloc gource sloccount tokei logtop ];
       };
     })
     (mkIf (cfg.enable && cfg.repoSearch.enable) {
