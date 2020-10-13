@@ -169,10 +169,16 @@ in {
             windows:
               - window_name: repl
                 panes:
-                  - nix repl '<nixpkgs/nixos>'
+                  - shell_command:
+                    - cd /etc/nixos
+                    - nix repl ./flake-repl.nix
               - window_name: files
                 panes:
                   - mc
+              - window_name: nixos
+                panes:
+                  - shell_command:
+                    - cd /etc/nixos
           '';
         } // lib.optionalAttrs (cfg.liquidPrompt.enable) {
           ".lp.ps1".text = builtins.readFile ./misc/.lp.ps1;
