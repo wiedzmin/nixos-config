@@ -7,6 +7,7 @@ import redis
 from pystdlib import shell_cmd
 from pystdlib.uishim import get_selection, notify
 from pystdlib.systemd import list_units, unit_perform, unit_show
+from pystdlib.xlib import switch_desktop
 
 services = []
 
