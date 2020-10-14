@@ -38,7 +38,7 @@ if not services:
     services = list_units()
     r.lpush("system/services", *services)
 
-service = get_selection(sorted(list(dict.fromkeys([service for service in services]))), 'service', lines=20, font="@wmFontDmenu@")
+service = get_selection(sorted(list(dict.fromkeys([service.decode() for service in services]))), 'service', lines=20, font="@wmFontDmenu@")
 if not service:
     sys.exit(1)
 operation = get_selection(operations, '> ', lines=5, font="@wmFontDmenu@")
