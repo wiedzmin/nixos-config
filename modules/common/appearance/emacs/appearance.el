@@ -15,8 +15,9 @@
 
 (use-package default-text-scale
   :bind
-  ("C-=" . default-text-scale-increase)
-  ("C--" . default-text-scale-decrease)
+  (:map mode-specific-map
+        ("=" . default-text-scale-increase)
+        ("-" . default-text-scale-decrease))
   :custom
   (default-text-scale-amount 10)
   :config
