@@ -54,18 +54,17 @@ in {
       };
       package = mkOption {
         type = types.package;
-        default = pkgs.emacs.override {
+        default = (pkgs.emacs.override {
           withGTK2 = false;
           withGTK3 = false;
-        };
+        }).overrideAttrs (old: rec {
+          configureFlags = (remove "--with-cairo" (remove "--with-harfbuzz" old.configureFlags)) ++ [
+            "--without-harfbuzz" "--without-cairo"
+          ];
+        });
         description = ''
           Emacs derivation to use.
         '';
-      };
-      fontSpec = mkOption {
-        type = types.str;
-        default = "";
-        description = "Emacs frame font specification.";
       };
       extraPackages = mkOption {
         default = self: [ ];
@@ -217,7 +216,7 @@ in {
         restartIfChanged = false;
         serviceConfig = {
           Type = "simple";
-          ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --no-x-resources --fg-daemon"'';
+          ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
           ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
           ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
           Restart = "on-failure";

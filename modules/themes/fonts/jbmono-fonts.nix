@@ -13,7 +13,6 @@ in {
     wmCommon.fonts.default = "pango:JetBrains Mono Bold 8";
     wmCommon.fonts.dmenu = "JetBrains Mono:bold:size=8";
     wmCommon.fonts.statusbar = "pango:JetBrains Mono Bold 8";
-    ide.emacs.fontSpec = "JetBrains Mono:size=12";
     home-manager.users."${config.attributes.mainUser.name}" = {
       programs.alacritty.settings.font = {
         normal = {
@@ -33,6 +32,8 @@ in {
       programs.zathura.options.font = "JetBrains Mono Bold 9";
       services.dunst.settings.global.font = "JetBrains Mono Bold 8";
       xresources.properties = {
+        "Emacs.Font" = "JetBrains Mono:weight=Bold:size=12";
+
         "Xmessage*faceName" = "JetBrains Mono";
         "Xmessage*faceSize" = "12";
         "Xmessage*faceWeight" = "Bold";

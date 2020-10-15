@@ -13,7 +13,6 @@ in {
     wmCommon.fonts.default = "pango:Iosevka Bold 9";
     wmCommon.fonts.dmenu = "Iosevka:bold:size=9";
     wmCommon.fonts.statusbar = "pango:Iosevka Bold 9";
-    ide.emacs.fontSpec = "Iosevka:size=14";
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.iosevka;
@@ -37,6 +36,8 @@ in {
       programs.zathura.options.font = "Iosevka Bold 10";
       services.dunst.settings.global.font = "Iosevka Bold 10";
       xresources.properties = {
+        "Emacs.Font" = "Iosevka:weight=Bold:size=14";
+
         "Xmessage*faceName" = "Iosevka";
         "Xmessage*faceSize" = "16";
         "Xmessage*faceWeight" = "Bold";

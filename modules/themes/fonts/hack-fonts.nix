@@ -13,7 +13,6 @@ in {
     wmCommon.fonts.default = "pango:Hack Bold 8";
     wmCommon.fonts.dmenu = "Hack:bold:size=8";
     wmCommon.fonts.statusbar = "pango:Hack Bold 8";
-    ide.emacs.fontSpec = "Hack:size=14";
     home-manager.users."${config.attributes.mainUser.name}" = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.hack-font;
@@ -37,6 +36,8 @@ in {
       programs.zathura.options.font = "Hack Bold 10";
       services.dunst.settings.global.font = "Hack Bold 10";
       xresources.properties = {
+        "Emacs.Font" = "Hack:weight=Bold:size=14";
+
         "Xmessage*faceName" = "Hack";
         "Xmessage*faceSize" = "16";
         "Xmessage*faceWeight" = "Bold";

@@ -18,7 +18,6 @@ in rec {
   emacsBrowserGenericProgram = "${pkgs.xdg_utils}/bin/xdg-open";
   emacsCustomFile = homePrefix ".emacs.d/customizations.el";
   emacsDatadir = config.ide.emacs.dataDir;
-  emacsFontSpec = config.ide.emacs.fontSpec;
   emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
   emacsYasnippetSnippets = inputs.yasnippet-snippets;
   fallbackPackageArchives = emacsBoolToString false;

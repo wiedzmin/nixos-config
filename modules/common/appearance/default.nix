@@ -168,6 +168,16 @@ in {
       ide.emacs.config = builtins.readFile (pkgs.substituteAll
         ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/appearance.el; }));
     })
+    (mkIf (cfg.enable && cfg.emacs.enable && cfg.xresources.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        xresources.properties = {
+          "Emacs.fontBackend" = "xft,x";
+          "Emacs.menuBar" = "0";
+          "Emacs.toolBar" = "0";
+          "Emacs.verticalScrollBars" = false;
+        };
+      };
+    })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
         {
