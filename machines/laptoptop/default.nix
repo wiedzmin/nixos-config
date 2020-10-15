@@ -568,7 +568,10 @@ in {
 
   themes.fonts.iosevka.enable = true;
   themes.zenburn.enable = true;
-  themes.emacs.modeline.telephone.enable = true;
+  themes.emacs.modeline.telephone = {
+    enable = true;
+    height = 24;
+  };
 
   tools = {
     dbms = {
