@@ -1,17 +1,17 @@
-build:
-	nixos-rebuild build --flake .
+build/laptoptop:
+	nixos-rebuild build --flake ".#laptoptop"
 
-build/no-net:
-	nixos-rebuild build  --flake . --option binary-caches ''
+build/momcat:
+	nixos-rebuild build --flake ".#momcat"
 
-switch:
-	sudo nixos-rebuild switch --flake .
+build/no-net/laptoptop:
+	nixos-rebuild build  --flake ".#laptoptop" --option binary-caches ''
 
-enable/laptoptop:
-	ln -svf /etc/nixos/machines/laptoptop/default.nix /etc/nixos/configuration.nix
+switch/laptoptop:
+	sudo nixos-rebuild switch --flake ".#laptoptop"
 
-enable/momcat:
-	ln -svf /etc/nixos/machines/momcat/default.nix /etc/nixos/configuration.nix
+switch/momcat:
+	sudo nixos-rebuild switch --flake ".#momcat"
 
 clean:
 	unlink ./result
