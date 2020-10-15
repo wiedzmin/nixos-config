@@ -446,7 +446,13 @@
   ((lisp-mode-hook emacs-lisp-mode-hook markdown-mode-hook) . smartparens-strict-mode)
   (eval-expression-minibuffer-setup-hook . smartparens-mode)
   :bind
+  ("M-s" . nil)
+  ("M-e" . sp-splice-sexp)
   (:map smartparens-mode-map
+        ("C-M-t" . sp-transpose-sexp)
+        ("M-s" . nil)
+        ("M-e" . sp-splice-sexp))
+  (:map sp-keymap
         ("C-M-t" . sp-transpose-sexp)
         ("M-s" . nil)
         ("M-e" . sp-splice-sexp))
