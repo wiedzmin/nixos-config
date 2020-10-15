@@ -170,6 +170,12 @@ in {
             urgency_critical = { timeout = 7; };
           };
         };
+        home.activation.srvctl = {
+          after = [ "linkGeneration" ];
+          before = [ ];
+          data = "DISPLAY=:0 ${pkgs.srvctl}/bin/srvctl --invalidate-cache";
+        };
+
       };
       environment.systemPackages = with pkgs; [ srvctl ];
     })

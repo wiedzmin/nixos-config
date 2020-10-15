@@ -33,12 +33,11 @@ if args.invalidate:
     r.delete("system/services")
     sys.exit(0)
 
-services = r.lrange("system/services", 0, -1)
-if not services:
-    services = list_units()
-    r.lpush("system/services", *services)
+if not r.exists("system/services"):
+    r.lpush("system/services", *list_units())
 
-service = get_selection(sorted(list(dict.fromkeys([service.decode() for service in services]))), 'service', lines=20, font="@wmFontDmenu@")
+service = get_selection(sorted(list(dict.fromkeys([service.decode() for service in r.lrange("system/services", 0, -1)]))),
+                        'service', lines=20, font="@wmFontDmenu@")
 if not service:
     sys.exit(1)
 operation = get_selection(operations, '> ', lines=5, font="@wmFontDmenu@")
