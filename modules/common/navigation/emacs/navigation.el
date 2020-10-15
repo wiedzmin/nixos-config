@@ -365,6 +365,18 @@
   (:map link-hint-keymap
         ("e" . avy-flycheck-goto-error)))
 
+(use-package block-nav
+  :quelpa
+  (block-nav :repo "nixin72/block-nav.el" :fetcher github)
+  :bind
+  ("C-=" . block-nav-next-indentation-level)
+  ("C--" . block-nav-previous-indentation-level)
+  ("C-<down>" . block-nav-next-block)
+  ("C-<up>" . block-nav-previous-block)
+  :custom
+  (block-nav-move-skip-shallower t)
+  (block-nav-center-after-scroll t))
+
 (define-hostmode poly-nix-hostmode :mode 'nix-mode)
 
 (define-innermode poly-emacs-innermode
