@@ -22,7 +22,7 @@
     # FIXME: decouple from user
     nur.url = "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR";
 
-    home-manager.url = "github:rycee/home-manager"; # /bqv-flakes
+    home-manager.url = "github:rycee/home-manager";
     emacs.url = "github:nix-community/emacs-overlay";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
 
