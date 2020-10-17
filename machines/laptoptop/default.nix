@@ -426,6 +426,7 @@ in {
       vpn.enable = true;
       wifi.enable = true;
     };
+    nmconn.enable = true;
   };
 
   custom.packaging = {

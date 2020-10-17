@@ -4,7 +4,7 @@ with lib;
 
 let cfg = config.custom.networking;
 in {
-  imports = [ ./l2vpn.nix ];
+  imports = [ ./nmconn.nix ];
 
   options = {
     custom.networking = {
