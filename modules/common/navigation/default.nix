@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.navigation;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
   dmenu_runapps =
     mkShellScriptWithDeps "dmenu_runapps" (with pkgs; [ coreutils dmenu haskellPackages.yeganesh j4-dmenu-desktop ]) ''
@@ -128,14 +129,14 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        search_prompt = mkPythonScriptWithDeps "search_prompt" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.redis ])
+        search_prompt = mkPythonScriptWithDeps "search_prompt" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/search_prompt.py; })));
         search_selection = mkPythonScriptWithDeps "search_selection"
-          (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.dmenu-python python3Packages.redis xsel ]) (builtins.readFile
+          (with pkgs; [ nurpkgs.pystdlib python3Packages.dmenu-python python3Packages.redis xsel ]) (builtins.readFile
             (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/search_selection.py; })));
-        webjumps = mkPythonScriptWithDeps "webjumps" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.redis vpnctl ])
+        webjumps = mkPythonScriptWithDeps "webjumps" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis vpnctl ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/webjumps.py; })));
       };
@@ -326,7 +327,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.snippets.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        snippets = mkPythonScriptWithDeps "snippets" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.redis xsel ])
+        snippets = mkPythonScriptWithDeps "snippets" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/snippets.py; })));
       };

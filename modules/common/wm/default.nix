@@ -3,7 +3,9 @@ with import ../../util.nix { inherit config lib pkgs; };
 with import ./wmutil.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.wmCommon;
+let
+  cfg = config.wmCommon;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     wmCommon = {
@@ -76,7 +78,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        keybindings = mkPythonScriptWithDeps "keybindings" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.redis yad ])
+        keybindings = mkPythonScriptWithDeps "keybindings" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis yad ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/keybindings.py; })));
       };

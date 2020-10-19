@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.custom.video;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   kill-compton = pkgs.writeScriptBin "kill-compton" ''
     ${pkgs.procps}/bin/pkill -f compton
   '';
@@ -139,7 +140,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        xctl = mkPythonScriptWithDeps "xctl" (with pkgs; [ autorandr unstable.nur.repos.wiedzmin.pystdlib python3Packages.ewmh ]) (builtins.readFile
+        xctl = mkPythonScriptWithDeps "xctl" (with pkgs; [ autorandr nurpkgs.pystdlib python3Packages.ewmh ]) (builtins.readFile
           (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/xctl.py; })));
         rescreen = mkShellScriptWithDeps "rescreen" (with pkgs; [ autorandr ]) ''

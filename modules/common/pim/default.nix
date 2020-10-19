@@ -2,7 +2,9 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.pim;
+let
+  cfg = config.custom.pim;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     custom.pim = {
@@ -98,7 +100,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         tt_capture = mkPythonScriptWithDeps "tt_capture"
-          (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.cbor2 python3Packages.pytz python3Packages.xlib xprintidle-ng ])
+          (with pkgs; [ nurpkgs.pystdlib python3Packages.cbor2 python3Packages.pytz python3Packages.xlib xprintidle-ng ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/tt_capture.py; })));
       };

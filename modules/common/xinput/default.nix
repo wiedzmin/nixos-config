@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.xinput;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   proposed = import inputs.nixpkgs-proposed ({
     config = config.nixpkgs.config;
     localSystem = { system = "x86_64-linux"; };
@@ -260,7 +261,7 @@ in {
           PIDFile = "/run/xkeysnail.pid";
           Restart = "always";
           RestartSec = 1;
-          ExecStart = "/run/wrappers/bin/sudo ${pkgs.unstable.nur.repos.wiedzmin.xkeysnail}/bin/xkeysnail ${
+          ExecStart = "/run/wrappers/bin/sudo ${nurpkgs.xkeysnail}/bin/xkeysnail ${
               optionalString (cfg.xkeysnail.inputDevices != [ ])
               "--devices ${lib.concatStringsSep " " cfg.xkeysnail.inputDevices}"
             } ${cfg.xkeysnail.configFile}";

@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.dev.git;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   dataHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.dataHome;
 in {
   options = {
@@ -155,7 +156,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         gitctl =
-          mkPythonScriptWithDeps "gitctl" (with pkgs; [ unstable.nur.repos.wiedzmin.pyfzf unstable.nur.repos.wiedzmin.pystdlib python3Packages.pygit2 python3Packages.redis ])
+          mkPythonScriptWithDeps "gitctl" (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/gitctl.py; })));
       };

@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.virtualization;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
   vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
@@ -137,21 +138,21 @@ in {
         hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ]) (builtins.readFile (pkgs.substituteAll
           ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/hadolintd.sh; })));
         docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits"
-          (with pkgs; [ docker unstable.nur.repos.wiedzmin.pystdlib python3Packages.redis xsel yad ]) (builtins.readFile (pkgs.substituteAll
+          (with pkgs; [ docker nurpkgs.pystdlib python3Packages.redis xsel yad ]) (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
               src = ./scripts/docker_containers_traits.py;
             })));
         discover_containerized_services =
-          mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker unstable.nur.repos.wiedzmin.pystdlib ]) (builtins.readFile
+          mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker nurpkgs.pystdlib ]) (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
               src = ./scripts/discover_containerized_services.py;
             })));
         docker_shell =
-          mkPythonScriptWithDeps "docker_shell" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.libtmux python3Packages.redis ])
+          mkPythonScriptWithDeps "docker_shell" (with pkgs; [ nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/docker_shell.py; })));
         docker_swarm_services_info = mkPythonScriptWithDeps "docker_swarm_services_info"
-          (with pkgs; [ docker unstable.nur.repos.wiedzmin.pystdlib python3Packages.libtmux python3Packages.redis vpnctl yad ]) (builtins.readFile
+          (with pkgs; [ docker nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis vpnctl yad ]) (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
               src = ./scripts/docker_swarm_services_info.py;
             })));

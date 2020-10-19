@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.custom.browsers.firefox;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -428,12 +429,12 @@ in {
               src = ./scripts/rotate_firefox_session_dumps.sh;
             })));
         collect_links_on_page =
-          mkPythonScriptWithDeps "collect_links_on_page" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.beautifulsoup4 xsel ])
+          mkPythonScriptWithDeps "collect_links_on_page" (with pkgs; [ nurpkgs.pystdlib python3Packages.beautifulsoup4 xsel ])
           (builtins.readFile (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
             src = ./scripts/collect_links_on_page.py;
           })));
         manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
-          (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped unstable.nur.repos.wiedzmin.pystdlib ]) (builtins.readFile
+          (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.pystdlib ]) (builtins.readFile
             (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
               src = ./scripts/manage_firefox_sessions.py;
             })));

@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.wm.xmonad;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   configText = ''
     module Main where
 
@@ -305,7 +306,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         desktops = mkPythonScriptWithDeps "desktops" (with pkgs; [
-          unstable.nur.repos.wiedzmin.pystdlib
+          nurpkgs.pystdlib
           python3Packages.ewmh
           python3Packages.fuzzywuzzy
           python3Packages.redis

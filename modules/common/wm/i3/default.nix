@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.wm.i3;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -247,7 +248,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         kbdctl =
-          mkPythonScriptWithDeps "kbdctl" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.i3ipc xdotool emacs xkb-switch ])
+          mkPythonScriptWithDeps "kbdctl" (with pkgs; [ nurpkgs.pystdlib python3Packages.i3ipc xdotool emacs xkb-switch ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../../subst.nix { inherit config pkgs lib inputs; }) // { src = ./kbdctl.py; })));
       };

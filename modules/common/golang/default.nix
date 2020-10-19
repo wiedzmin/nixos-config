@@ -2,7 +2,9 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.dev.golang;
+let
+  cfg = config.custom.dev.golang;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     custom.dev.golang = {
@@ -93,7 +95,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        modedit = mkPythonScriptWithDeps "modedit" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib ]) (builtins.readFile (pkgs.substituteAll
+        modedit = mkPythonScriptWithDeps "modedit" (with pkgs; [ nurpkgs.pystdlib ]) (builtins.readFile (pkgs.substituteAll
           ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/modedit.py; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ gore modedit ]; };

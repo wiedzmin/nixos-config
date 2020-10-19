@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.housekeeping;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -95,7 +96,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
         srvctl = mkPythonScriptWithDeps "srvctl"
-          (with pkgs; [ unstable.nur.repos.wiedzmin.pyfzf unstable.nur.repos.wiedzmin.pystdlib python3Packages.libtmux python3Packages.redis python3Packages.xlib ])
+          (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis python3Packages.xlib ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/srvctl.py; })));
         uptime_info = mkPythonScriptWithDeps "uptime_info" (with pkgs; [ dunst gnused procps ]) (builtins.readFile
@@ -103,7 +104,7 @@ in {
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/uptime_info.sh; })));
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ unstable.nur.repos.wiedzmin.redis-tui ];
+        home.packages = with pkgs; [ nurpkgs.redis-tui ];
         services.udiskie = {
           enable = true;
           automount = true;

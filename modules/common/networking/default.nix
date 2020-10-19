@@ -2,7 +2,9 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.networking;
+let
+  cfg = config.custom.networking;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   imports = [ ./nmconn.nix ];
 
@@ -79,14 +81,14 @@ in {
         wifi-status = mkShellScriptWithDeps "wifi-status" (with pkgs; [ gawk wirelesstools ]) (builtins.readFile
           (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/wifi-status.sh; })));
-        vpnctl = mkPythonScriptWithDeps "vpnctl" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.redis ]) (builtins.readFile
+        vpnctl = mkPythonScriptWithDeps "vpnctl" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ]) (builtins.readFile
           (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/vpnctl.py; })));
-        ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools unstable.nur.repos.wiedzmin.pystdlib xsel yad ]) (builtins.readFile
+        ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ]) (builtins.readFile
           (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/ifconfless.py; })));
         sshmenu = mkPythonScriptWithDeps "sshmenu"
-          (with pkgs; [ openssh unstable.nur.repos.wiedzmin.pystdlib python3Packages.libtmux python3Packages.redis vpnctl ]) (builtins.readFile
+          (with pkgs; [ openssh nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis vpnctl ]) (builtins.readFile
             (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/sshmenu.py; })));
       };

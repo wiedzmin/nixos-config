@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.shell;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   thumbs-bin = pkgs.rustPlatform.buildRustPackage rec {
     pname = "thumbs-bin";
     version = "unstable-2020-09-07";
@@ -154,7 +155,7 @@ in {
       fonts = { fonts = with pkgs; [ powerline-fonts ]; };
 
       nixpkgs.config.packageOverrides = _: rec {
-        tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib ]) (builtins.readFile
+        tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" (with pkgs; [ nurpkgs.pystdlib ]) (builtins.readFile
           (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/tmuxp_sessions.py; })));
       };

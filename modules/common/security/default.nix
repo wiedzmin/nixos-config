@@ -2,7 +2,9 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.custom.security;
+let
+  cfg = config.custom.security;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     custom.security = {
@@ -59,7 +61,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         passctl = mkPythonScriptWithDeps "passctl"
-          (with pkgs; [ unstable.nur.repos.wiedzmin.pyfzf unstable.nur.repos.wiedzmin.pystdlib python3Packages.pygit2 python3Packages.redis xdotool ]) (builtins.readFile
+          (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis xdotool ]) (builtins.readFile
             (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/passctl.py; })));
       };

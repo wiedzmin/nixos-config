@@ -2,7 +2,9 @@
 with import ../../util.nix { inherit config lib pkgs; };
 with lib;
 
-let cfg = config.tools.ebooks;
+let
+  cfg = config.tools.ebooks;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     tools.ebooks = {
@@ -60,10 +62,10 @@ in {
         }
       '';
       nixpkgs.config.packageOverrides = _: rec {
-        bookshelf = mkPythonScriptWithDeps "bookshelf" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.redis zathura ])
+        bookshelf = mkPythonScriptWithDeps "bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis zathura ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/bookshelf.py; })));
-        update-bookshelf = mkPythonScriptWithDeps "update-bookshelf" (with pkgs; [ unstable.nur.repos.wiedzmin.pystdlib python3Packages.redis ])
+        update-bookshelf = mkPythonScriptWithDeps "update-bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/update-bookshelf.py; })));
       };

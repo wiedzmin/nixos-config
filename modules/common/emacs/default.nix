@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.ide.emacs;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   uid = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
 in {
   options = {
@@ -117,7 +118,7 @@ in {
     (mkIf (cfg.enable) {
       fonts = { fonts = with pkgs; [ emacs-all-the-icons-fonts ]; };
       nixpkgs.config.packageOverrides = _: rec {
-        org-capture = mkPythonScriptWithDeps "org-capture" (with pkgs; [ emacs unstable.nur.repos.wiedzmin.pystdlib tmux xsel ]) (builtins.readFile
+        org-capture = mkPythonScriptWithDeps "org-capture" (with pkgs; [ emacs nurpkgs.pystdlib tmux xsel ]) (builtins.readFile
           (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/org-capture.py; })));
       };

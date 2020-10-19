@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.content;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -147,7 +148,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
         buku_add = mkPythonScriptWithDeps "buku_add"
-          (with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku unstable.nur.repos.wiedzmin.pystdlib xsel ]) (builtins.readFile
+          (with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku nurpkgs.pystdlib xsel ]) (builtins.readFile
             (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/buku_add.py; })));
         buku_search_tag = mkShellScriptWithDeps "buku_search_tag"
