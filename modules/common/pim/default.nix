@@ -126,6 +126,7 @@ in {
         description = "${name}";
         serviceConfig = {
           Type = "oneshot";
+          Environment = [ "DISPLAY=:0" ];
           ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
           ExecStart = "${meta.cmd}";
           StandardOutput = "journal";
