@@ -119,6 +119,25 @@ in {
         type = types.listOf types.str;
         default = [ "ctop" "jnettop" ];
       };
+      jira.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Jira automation.";
+      };
+      jira.identities = mkOption {
+        type = types.attrs;
+        default = { };
+        example = {
+          "username" = {
+            creds = [ "login" "password" ];
+            meta = {
+              project = "foo";
+              bar = "quux";
+            };
+          };
+        };
+        description = "Jira identities collection.";
+      };
       repoSearch.enable = mkOption {
         type = types.bool;
         default = false;
@@ -204,6 +223,16 @@ in {
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/reposearch.py; })));
       };
+    })
+    (mkIf (cfg.enable && cfg.jira.enable) {
+      nixpkgs.config.packageOverrides = _: rec {
+        jiractl = mkPythonScriptWithDeps "jiractl" (with pkgs; [ python3Packages.jira python3Packages.redis nurpkgs.pystdlib yad ])
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/jiractl.py; })));
+      };
+      custom.housekeeping.metadataCacheInstructions = ''
+        ${pkgs.redis}/bin/redis-cli set jira/identities ${lib.strings.escapeNixString (builtins.toJSON cfg.jira.identities)}
+      '';
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       wmCommon.wsMapping.rules = [{
@@ -330,6 +359,10 @@ in {
         key = [ "Shift" "p" ];
         cmd = "${pkgs.open-project}/bin/open-project";
         mode = "run";
+      }] ++ lib.optionals (cfg.jira.enable) [{
+        key = [ "j" ];
+        cmd = "${pkgs.jiractl}/bin/jiractl";
+        mode = "run";
       }];
     })
     (mkIf (cfg.staging.packages != [ ]) {
@@ -337,7 +370,7 @@ in {
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ open-project reposearch ];
+        home.packages = with pkgs; [ jiractl open-project reposearch ];
       };
     })
   ];

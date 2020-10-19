@@ -298,6 +298,7 @@ in {
     statistics.enable = true;
     codesearch.enable = true;
     patching.enable = true;
+    jira.enable = true;
     repoSearch.enable = true;
     misc.enable = true;
     direnv.granularity = "file";
