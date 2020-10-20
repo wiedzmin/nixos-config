@@ -5,6 +5,7 @@ import sys
 
 from jira import JIRA
 import redis
+import pytz
 
 from pystdlib.uishim import get_selection, notify, URGENCY_NORMAL, URGENCY_CRITICAL
 from pystdlib import shell_cmd
@@ -60,8 +61,7 @@ def issue_log_work(issue):
         notify("[jira]", f"Cancelled logging work for `{issue.key}`", urgency=URGENCY_CRITICAL)
         sys.exit(1)
 
-    started_field = datetime.combine(datetime.strptime(date_to_log, "%d/%m/%y"), datetime.now().time())
-    print(f"type(started_field): {type(started_field)}")
+    started = datetime.combine(datetime.strptime(date_to_log, "%d/%m/%y"), datetime.now().time())
     amount, comment = None, None
     while not comment:
         result = worklog_get_amount_and_comment()
@@ -72,8 +72,9 @@ def issue_log_work(issue):
         else:
             break
     if amount and comment:
-        # FIXME: timestamp/timezone relationship (TS near midnight tends to be interpreted as next day's)
-        wlog = client.add_worklog(issue, timeSpent=amount, started=started_field, comment=comment)
+        tz = pytz.timezone("@systemTimeZone@")
+        started_with_tz = tz.localize(started)
+        wlog = client.add_worklog(issue, timeSpent=amount, started=started_with_tz, comment=comment)
         notify("[jira]", f"Logged `{amount}` of work for `{issue.key}` at {date_to_log}'", urgency=URGENCY_NORMAL)
 
 

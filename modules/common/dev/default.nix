@@ -226,7 +226,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.jira.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        jiractl = mkPythonScriptWithDeps "jiractl" (with pkgs; [ python3Packages.jira python3Packages.redis nurpkgs.pystdlib yad ])
+        jiractl = mkPythonScriptWithDeps "jiractl" (with pkgs; [ python3Packages.jira python3Packages.pytz python3Packages.redis nurpkgs.pystdlib yad ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/jiractl.py; })));
       };
