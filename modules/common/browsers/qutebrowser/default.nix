@@ -167,7 +167,6 @@ in {
               };
             };
             hints = {
-              border = "1px solid; #E3BE23";
               hide_unmatched_rapid_hints = true;
               leave_on_load = true;
               min_chars = 1;
