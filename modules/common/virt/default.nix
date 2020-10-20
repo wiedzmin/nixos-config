@@ -223,6 +223,7 @@ in {
       virtualisation.kvmgt.enable = true;
 
       users.users."${config.attributes.mainUser.name}".extraGroups = [ "libvirtd" ];
+      environment.sessionVariables.LIBVIRT_DEFAULT_URI = [ "qemu:///system" ];
 
       networking.nat.internalInterfaces = [ "virbr0" ];
       services.dnsmasq.extraConfig = ''
