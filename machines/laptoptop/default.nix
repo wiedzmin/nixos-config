@@ -69,6 +69,7 @@ in {
   networking = {
     hostName = "laptoptop";
     hostId = "2ab69157";
+    enableIPv6 = false;
     firewall.enable = false;
     usePredictableInterfaceNames = lib.mkForce false;
     resolvconf = {
