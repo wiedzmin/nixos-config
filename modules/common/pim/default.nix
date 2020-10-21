@@ -116,12 +116,6 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.scheduling.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [
-          remind # + rem2ics (make overlay)
-          wyrd
-        ];
-      };
       systemd.user.services = lib.mapAttrs (name: meta: {
         description = "${name}";
         serviceConfig = {
