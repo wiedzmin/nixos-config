@@ -144,6 +144,11 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ j4-dmenu-desktop ]; };
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      nixpkgs.config.packageOverrides = _: rec {
+        mcpanes = mkPythonScriptWithDeps "mcpanes" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
+          (builtins.readFile (pkgs.substituteAll
+            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/mcpanes.py; })));
+      };
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/bookmarks ${
           lib.strings.escapeNixString (builtins.toJSON cfg.bookmarks.entries)
@@ -424,11 +429,15 @@ in {
         key = [ "Shift" "s" ];
         cmd = "${pkgs.snippets}/bin/snippets";
         mode = "run";
+      }] ++ lib.optionals (cfg.bookmarks.enable) [{
+        key = [ "Shift" "m" ];
+        cmd = "${pkgs.mcpanes}/bin/mcpanes";
+        mode = "run";
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${config.attributes.mainUser.name}" = {
-        home.packages = with pkgs; [ search_prompt search_selection snippets webjumps ];
+        home.packages = with pkgs; [ mcpanes search_prompt search_selection snippets webjumps ];
       };
     })
   ];

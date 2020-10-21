@@ -35,6 +35,7 @@ in rec {
     builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
   mainUserName = config.attributes.mainUser.name;
   mainUserID = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
+  mcCmd = "${pkgs.mc}/bin/mc";
   mycliCmd =
     "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.mycli}/bin/mycli --myclirc ${configHome}/.myclirc"; # because of deps versions conflict with pgcli
   nmcliBinary = "${pkgs.networkmanager}/bin/nmcli"; # because there is no `bin` output for some reason
