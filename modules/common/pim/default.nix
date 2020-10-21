@@ -116,6 +116,19 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.scheduling.enable) {
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.activation.ensureSchedulingTimers = {
+          after = [ ];
+          before = [ "checkLinkTargets" ];
+          # FIXME: parameterize DBUS_SESSION_BUS_ADDRESS value
+          data = ''
+            export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+            ${lib.concatStringsSep "\n"
+              (lib.mapAttrsToList (name: _: "${pkgs.systemd}/bin/systemctl --user restart ${name}.timer")
+                cfg.scheduling.entries)}
+          '';
+        };
+      };
       systemd.user.services = lib.mapAttrs (name: meta: {
         description = "${name}";
         serviceConfig = {
