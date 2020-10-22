@@ -13,6 +13,6 @@ searchengines = json.loads(r.get("nav/searchengines"))
 searchengine = get_selection(searchengines.keys(), "search with", case_insensitive=True, lines=15, font="@wmFontDmenu@")
 if searchengine:
     searchengine_url = searchengines[searchengine]
-    search_term = get_selection([], "term", font="@wmFontDmenu@").replace(" ", "+")
+    search_term = get_selection([], f"{searchengine} | term", font="@wmFontDmenu@").replace(" ", "+")
     if search_term:
         shell_cmd(f'@defaultBrowser@ {searchengine_url}{search_term}'.split(), shell=False)
