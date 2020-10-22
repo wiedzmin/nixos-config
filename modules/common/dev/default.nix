@@ -304,7 +304,12 @@ in {
                   - mc
           '';
         };
-        home.packages = with pkgs; [ comby inputs.nixpkgs-09_07_20.legacyPackages.x86_64-linux.devdocs-desktop icdiff ];
+        home.packages = with pkgs; [
+          comby
+          inputs.nixpkgs-09_07_20.legacyPackages.x86_64-linux.devdocs-desktop
+          icdiff
+          watchman
+        ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
