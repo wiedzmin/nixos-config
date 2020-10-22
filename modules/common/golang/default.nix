@@ -97,8 +97,11 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         modedit = mkPythonScriptWithDeps "modedit" (with pkgs; [ nurpkgs.pystdlib ]) (builtins.readFile (pkgs.substituteAll
           ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/modedit.py; })));
+        go-install-wrapper = mkShellScriptWithDeps "go-install-wrapper" (with pkgs; [ ]) ''
+          go install ./...
+        '';
       };
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ gore modedit ]; };
+      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ go-install-wrapper gore modedit ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
