@@ -294,15 +294,6 @@ in {
             [*.md]
             trim_trailing_whitespace = false
           '';
-        } // lib.optionalAttrs (config.custom.shell.enable) {
-          ".tmuxp/dev.yml".text = ''
-            session_name: dev
-            windows:
-              - window_name: mc
-                start_directory: ${wsRootAbs "github"}/wiedzmin
-                panes:
-                  - mc
-          '';
         };
         home.packages = with pkgs; [
           comby
