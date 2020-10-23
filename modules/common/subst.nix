@@ -9,6 +9,7 @@ in rec {
   combyExcludes = lib.concatStringsSep "," config.custom.dev.comby.excludes;
   configResultPath = config.custom.packaging.configResultPath;
   defaultBrowser = "${pkgs.xdg_utils}/bin/xdg-open";
+  fallbackBrowser = config.attributes.browser.fallback;
   defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;
   defaultTerminal = config.custom.shell.terminal;
   deftPath = homePrefix "docs/deft";

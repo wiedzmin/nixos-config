@@ -396,13 +396,28 @@ in {
           mode = "root";
         }
         {
+          key = [ prefix "Shift" "slash" ];
+          cmd = "${pkgs.search_selection}/bin/search_selection --fallback";
+          mode = "root";
+        }
+        {
           key = [ prefix "Control" "slash" ];
           cmd = "${pkgs.search_prompt}/bin/search_prompt";
           mode = "root";
         }
         {
+          key = [ prefix "Control" "Shift" "slash" ];
+          cmd = "${pkgs.search_prompt}/bin/search_prompt --fallback";
+          mode = "root";
+        }
+        {
           key = [ prefix "j" ];
           cmd = "${pkgs.webjumps}/bin/webjumps";
+          mode = "root";
+        }
+        {
+          key = [ prefix "Shift" "j" ];
+          cmd = "${pkgs.webjumps}/bin/webjumps --fallback";
           mode = "root";
         }
         {
