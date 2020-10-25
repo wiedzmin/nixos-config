@@ -228,8 +228,8 @@ in {
     };
     wallpaper = {
       enable = true;
-      root = homePrefix "blobs/wallpaper";
-      current = "mongolia_2.jpg";
+      root = homePrefix "blobs/wallpaper/mongol/autumn";
+      current = "forest_pano_2.jpg";
     };
     emacs.enable = true;
     wm.enable = true;
