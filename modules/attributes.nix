@@ -45,6 +45,11 @@ with lib;
         "x-scheme-handler/unknown"
       ];
     };
+    browser.default = mkOption {
+      description = "Default browser command";
+      type = types.str;
+      default = "";
+    };
     browser.fallback = mkOption {
       description = "Fallback browser command";
       type = types.str;

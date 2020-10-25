@@ -401,6 +401,7 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "firefox.desktop";
       };
+      attributes.browser.default = cfg.command;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [

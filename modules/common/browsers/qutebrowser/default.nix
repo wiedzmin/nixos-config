@@ -404,6 +404,7 @@ in {
         xdg.mimeApps.defaultApplications =
           mapMimesToApp config.attributes.mimetypes.browser "org.custom.qutebrowser.windowed.desktop";
       };
+      attributes.browser.default = cfg.command;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [

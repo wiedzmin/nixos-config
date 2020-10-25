@@ -72,7 +72,7 @@ in {
         example = {
           "read_mail" = {
             cal = "Mon,Tue *-*-01..04 12:00:00";
-            cmd = "${pkgs.xdg_utils}/bin/xdg-open https://mail.google.com";
+            cmd = "${config.attributes.browser.fallback} https://mail.google.com";
           };
         };
         default = { };
