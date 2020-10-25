@@ -179,11 +179,8 @@ in {
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${
           lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (url: meta:
             lib.nameValuePair
-            (if lib.hasAttrByPath [ "title" ] meta then (url + cfg.webjumps.sep + meta.title) else url)
-            (if lib.hasAttrByPath [ "browser" ] meta then
-              (meta.browser + " " + url)
-            else
-              ("${pkgs.xdg_utils}/bin/xdg-open " + url)))
+              (if lib.hasAttrByPath [ "title" ] meta then (url + cfg.webjumps.sep + meta.title) else url)
+              (meta // { url = "${url}"; }))
             (filterAttrs (_: v: (!builtins.hasAttr "enable" v) || ((builtins.hasAttr "enable" v) && v.enable == true))
               cfg.webjumps.entries)))
         }

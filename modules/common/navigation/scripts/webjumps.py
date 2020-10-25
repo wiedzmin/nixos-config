@@ -16,9 +16,6 @@ args = parser.parse_args()
 r = redis.Redis(host='localhost', port=6379, db=0)
 webjumps = json.loads(r.get("nav/webjumps"))
 
-browser_cmd = "@defaultBrowser@"
-if args.use_fallback:
-    browser_cmd = "@fallbackBrowser@"
 
 webjump = get_selection(webjumps.keys(), "jump to", case_insensitive=True, lines=15, font="@wmFontDmenu@")
 if webjump:
@@ -27,6 +24,8 @@ if webjump:
     if webjump_vpn:
         shell_cmd(f"vpnctl --start {webjump_vpn}")
 
-    # FIXME: normalize webjumps data
-    full_cmd = webjumps[webjump]
-    shell_cmd(f"{browser_cmd} {full_cmd.split(' ')[1]}", oneshot=True)
+    browser_cmd = webjumps[webjump].get("browser", "@defaultBrowser@")
+    if args.use_fallback:
+        browser_cmd = "@fallbackBrowser@"
+
+    shell_cmd(f"{browser_cmd} {webjumps[webjump]['url']}", oneshot=True)
