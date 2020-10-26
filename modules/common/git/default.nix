@@ -39,6 +39,11 @@ in {
         default = { };
         description = "Config' `insteadOf` entries mapping.";
       };
+      devEnvFiles = mkOption {
+        type = types.listOf types.str;
+        default = [ ".envrc" "shell.nix" "flake.nix" "flake.lock" ];
+        description = "Flakes-based dev environment constituents.";
+      };
       wip.idleTime = mkOption {
         type = types.int;
         default = 3600;
@@ -159,6 +164,13 @@ in {
           mkPythonScriptWithDeps "gitctl" (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/gitctl.py; })));
+        git-hideenv = mkShellScriptWithDeps "git-hideenv" (with pkgs; [ gitAndTools.git ]) ''
+          git add -- ${lib.concatStringsSep " " cfg.devEnvFiles}
+          git stash -m "dev-env" -- ${lib.concatStringsSep " " cfg.devEnvFiles}
+        '';
+        git-unhideenv = mkShellScriptWithDeps "git-unhideenv" (with pkgs; [ gitAndTools.git ]) ''
+          git stash pop $(git stash list --max-count=1 --grep="dev-env" | cut -f1 -d":")
+        '';
       };
 
       custom.housekeeping.metadataCacheInstructions = ''
@@ -222,6 +234,9 @@ in {
       };
       environment.systemPackages = with pkgs;
         [
+          git-hideenv
+          git-unhideenv
+
           file
           git-quick-stats
           git-sizer

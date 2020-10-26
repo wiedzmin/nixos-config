@@ -9,6 +9,17 @@
         ("h" . helm-ghq)))
 
 (use-package magit
+  :preface
+  (defun custom/magit-hide-devenv ()
+    (interactive)
+    (magit-with-toplevel
+      (magit-call-git "hideenv")
+      (magit-refresh)))
+  (defun custom/magit-unhide-devenv ()
+    (interactive)
+    (magit-with-toplevel
+      (magit-call-git "unhideenv")
+      (magit-refresh)))
   :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
          ("COMMIT" . git-commit-mode))
   :bind
@@ -39,6 +50,8 @@
         ("@" . magit-dired-log))
   :config
   (advice-add 'magit-whitespace-disallowed :around (lambda (orig-fun &rest args) (interactive) (insert "-")))
+  (transient-append-suffix 'magit-stash "z" '("h" "Hide dev environment" custom/magit-hide-devenv))
+  (transient-append-suffix 'magit-stash "h" '("u" "Unhide dev environment" custom/magit-unhide-devenv))
   :custom
   (magit-blame-heading-format "%H %-20a %C %s")
   (magit-completing-read-function 'ivy-completing-read)
