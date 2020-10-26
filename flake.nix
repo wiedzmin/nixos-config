@@ -93,6 +93,13 @@
         };
       };
     in {
+      templates = {
+        golang.generic = {
+          path = ./templates/golang/generic;
+          description = "Generic golang project.";
+        };
+      };
+
       devShell."${system}" = import ./shell.nix { pkgs = nixpkgs.legacyPackages.${system}; };
 
       nixosConfigurations = {

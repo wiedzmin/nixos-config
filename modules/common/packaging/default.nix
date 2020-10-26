@@ -80,6 +80,12 @@ in {
           http-connections = 10
           experimental-features = nix-command flakes
         '';
+        registry = {
+          config.flake = inputs.self;
+          emacs.flake = inputs.emacs;
+          nixpkgs.flake = inputs.nixpkgs;
+          stable.flake = inputs.stable;
+        };
 
         maxJobs = lib.mkDefault config.attributes.nix.jobs;
         buildCores = lib.mkDefault config.attributes.hardware.cores;
