@@ -92,6 +92,9 @@ in {
             (pkgs.substituteAll
               ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/sshmenu.py; })));
       };
+      home-manager.users."${config.attributes.mainUser.name}" = {
+        home.packages = with pkgs; [ vpnctl ]; # NOTE: for shell usage
+      };
       services.openssh = {
         enable = true;
         startWhenNeeded = true;
