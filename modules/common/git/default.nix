@@ -41,7 +41,7 @@ in {
       };
       devEnvFiles = mkOption {
         type = types.listOf types.str;
-        default = [ ".envrc" "shell.nix" "flake.nix" "flake.lock" ];
+        default = [ ".envrc" "shell.nix" "flake.nix" "flake.lock" "Makefile" ];
         description = "Flakes-based dev environment constituents.";
       };
       wip.idleTime = mkOption {

@@ -94,9 +94,9 @@
       };
     in {
       templates = {
-        golang.generic = {
-          path = ./templates/golang/generic;
-          description = "Generic golang project.";
+        golang = {
+          path = ./templates/golang;
+          description = "Golang project.";
         };
       };
 
