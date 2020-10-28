@@ -82,7 +82,7 @@ in {
         ];
         programs.qutebrowser = {
           enable = true;
-          package = inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.qutebrowser;
+          package = pkgs.qutebrowser;
           aliases = {
             jsd = "set content.javascript.enabled false";
             jse = "set content.javascript.enabled true";
