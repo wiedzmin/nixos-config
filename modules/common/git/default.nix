@@ -39,10 +39,10 @@ in {
         default = { };
         description = "Config' `insteadOf` entries mapping.";
       };
-      devEnvFiles = mkOption {
-        type = types.listOf types.str;
-        default = [ ".envrc" "shell.nix" "flake.nix" "flake.lock" "Makefile" ".pre-commit-config.yaml" ];
-        description = "Flakes-based dev environment constituents.";
+      devEnv.configName = mkOption {
+        type = types.str;
+        default = ".devenv";
+        description = "File name for dev-env files list.";
       };
       wip.idleTime = mkOption {
         type = types.int;
@@ -165,8 +165,13 @@ in {
           (builtins.readFile (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/gitctl.py; })));
         git-hideenv = mkShellScriptWithDeps "git-hideenv" (with pkgs; [ gitAndTools.git ]) ''
-          git add -- ${lib.concatStringsSep " " cfg.devEnvFiles}
-          git stash -m "dev-env" -- ${lib.concatStringsSep " " cfg.devEnvFiles}
+          set -e
+
+          devenv_data=$(<${cfg.devEnv.configName})
+          devenv_filelist=$(echo "$devenv_data" | tr '\n' ' ')
+
+          git add -- $devenv_filelist
+          git stash -m "dev-env" -- $devenv_filelist
         '';
         git-unhideenv = mkShellScriptWithDeps "git-unhideenv" (with pkgs; [ gitAndTools.git ]) ''
           git stash pop $(git stash list --max-count=1 --grep="dev-env" | cut -f1 -d":")
