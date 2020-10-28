@@ -148,7 +148,6 @@ in {
               cookies.store = true;
               geolocation = "ask";
               javascript.enabled = true;
-              media_capture = "ask";
               mute = true;
               notifications = true;
               pdfjs = true;
@@ -204,6 +203,7 @@ in {
               smooth = true;
             };
             search.ignore_case = "smart";
+            session.lazy_restore = false; # NOTE: see qute://warning/sessions for details
             statusbar = {
               # padding = "{'top': 4, 'bottom': 4, 'left': 4, 'right': 4}"; # FIXME: module fails to render dicts
               widgets = [ "keypress" "url" "history" "tabs" "progress" ];
