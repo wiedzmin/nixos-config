@@ -115,7 +115,6 @@ in {
     chrony.enable = true;
     dbus = {
       enable = true;
-      socketActivated = true;
     };
     earlyoom.enable = true;
     openssh = {
@@ -164,7 +163,6 @@ in {
 
   services.xserver = {
     enable = true;
-    startDbusSession = true;
     videoDrivers = [ "modesetting" ];
     useGlamor = true;
     exportConfiguration = true;
