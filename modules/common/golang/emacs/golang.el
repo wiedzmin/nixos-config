@@ -1,6 +1,5 @@
 (use-package go-mode
   :no-require t
-  :after (multi-compile)
   :mode ("\\.go$" . go-mode)
   :hook
   (before-save-hook . gofmt-before-save)
@@ -8,7 +7,6 @@
   (go-mode-hook . whitespace-turn-off)
   :bind
   (:map go-mode-map
-        ("C-c C-c" . multi-compile-run)
         ("C-k" . sp-kill-hybrid-sexp)
         ("C-<down>" . sp-push-hybrid-sexp)
         ("C-<right>" . sp-slurp-hybrid-sexp))
@@ -36,29 +34,7 @@
   (setq gofmt-command "goimports")
   (lsp-register-custom-settings
    '(("gopls.completeUnimported" t t)
-     ("gopls.usePlaceholders" t t)))
-  (add-to-list 'multi-compile-alist
-               '(go-mode . (("build/git" "go build -v ./..."
-                             (locate-dominating-file buffer-file-name ".git"))
-                            ("build/mod" "go build -v ./..."
-                             (locate-dominating-file buffer-file-name "go.mod"))
-                            ("lint/git" "golangci-lint run ./..."
-                             (locate-dominating-file buffer-file-name ".git"))
-                            ("lint/git/fix" "golangci-lint run --fix ./..."
-                             (locate-dominating-file buffer-file-name ".git"))
-                            ("mod/deps/download" "go mod download"
-                             (locate-dominating-file buffer-file-name "go.mod"))
-                            ("all/generate" "go generate -v ./..."
-                             (locate-dominating-file buffer-file-name "go.mod"))
-                            ("bin/install" "go install -v ./cmd/..."
-                             (locate-dominating-file buffer-file-name "go.mod"))
-                            ("docker/build" "docker-compose build"
-                             (locate-dominating-file buffer-file-name "go.mod"))
-                            ("mod/deps/update" "go get -u ./..."
-                             (locate-dominating-file buffer-file-name "go.mod"))
-                            ("mod/deps/gc" "go mod tidy"
-                             (locate-dominating-file buffer-file-name "go.mod"))
-                            ))))
+     ("gopls.usePlaceholders" t t))))
 
 (use-package flycheck-golangci-lint
   :after (flycheck go-mode)

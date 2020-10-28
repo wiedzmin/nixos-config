@@ -35,10 +35,6 @@
         ("C-m" . newline-and-indent)
         ("<return>" . newline-and-indent)))
 
-(use-package multi-compile
-  :custom
-  (multi-compile-completion-system 'default))
-
 (use-package company-restclient
   :after company restclient
   :config

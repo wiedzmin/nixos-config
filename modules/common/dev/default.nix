@@ -321,7 +321,6 @@ in {
           epkgs.fic-mode
           epkgs.jinja2-mode
           epkgs.lsp-ivy
-          epkgs.multi-compile
           epkgs.webpaste
           epkgs.yaml-mode
         ] ++ lib.optionals (cfg.direnv.granularity == "project") [ epkgs.direnv ]
