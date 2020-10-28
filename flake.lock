@@ -191,22 +191,6 @@
         "type": "github"
       }
     },
-    "nixpkgs_2": {
-      "locked": {
-        "lastModified": 1602425900,
-        "narHash": "sha256-Ixb5QOYXVq/vkkPdc7Yl7mk5bcYlfjTx3/vnkFr/has=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "24c9b05ac53e422f1af81a156f1fd58499eb27fb",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "ref": "nixos-unstable",
-        "repo": "nixpkgs",
-        "type": "github"
-      }
-    },
     "nur": {
       "locked": {
         "narHash": "sha256-DjV6MeUwpVS4/XXA+6s3PYSd3EBZa1JdHqVPUtjVvYo=",
@@ -242,7 +226,6 @@
         "liquidprompt": "liquidprompt",
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs": "nixpkgs_2",
         "nixpkgs-02_06_20": "nixpkgs-02_06_20",
         "nixpkgs-08_02_20": "nixpkgs-08_02_20",
         "nixpkgs-09_07_20": "nixpkgs-09_07_20",
@@ -251,6 +234,7 @@
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",
         "stable": "stable",
+        "unstable": "unstable",
         "yasnippet-snippets": "yasnippet-snippets",
         "zsh-async": "zsh-async",
         "zsh-command-time": "zsh-command-time",
@@ -274,6 +258,22 @@
       "original": {
         "owner": "NixOS",
         "ref": "nixos-20.03",
+        "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "unstable": {
+      "locked": {
+        "lastModified": 1603758576,
+        "narHash": "sha256-xKFmWVx+rFInBao3gtmvXcd0LjHD1+0c1Ef5PJDrbuM=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "1dc37370c489b610f8b91d7fdd40633163ffbafd",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "ref": "nixos-unstable",
         "repo": "nixpkgs",
         "type": "github"
       }
