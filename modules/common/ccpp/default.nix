@@ -27,9 +27,6 @@ in {
         * hard  nofile    32768
         * soft  nofile    32768
       '';
-      custom.dev.git.gitignore = ''
-        .ccls-root
-      '';
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.ccls ];

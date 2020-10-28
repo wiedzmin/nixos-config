@@ -98,6 +98,10 @@
           path = ./templates/golang;
           description = "Golang project.";
         };
+        ccpp = {
+          path = ./templates/ccpp;
+          description = "C/C++ project.";
+        };
       };
 
       devShell."${system}" = import ./shell.nix { pkgs = unstable.legacyPackages.${system}; };
