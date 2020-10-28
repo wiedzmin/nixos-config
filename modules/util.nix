@@ -68,49 +68,6 @@ in rec {
           "ip" = ip;
           "host" = host;
         }))) metadata))));
-  mkProjectShellNix = args: ''
-    let
-      deps = import /etc/nixos/nix/sources.nix;
-      pkgs = import deps.${
-        if builtins.hasAttr "nixpkgs" args then args.nixpkgs else "nixpkgs"
-      } { config.allowUnfree = true; };
-    in
-      pkgs.${
-        lib.optionalString ((builtins.hasAttr "useShell" args && args.useShell) || !builtins.hasAttr "useShell" args)
-        "mkShell"
-      }${lib.optionalString ((builtins.hasAttr "useShell" args) && !args.useShell) "stdenv.mkDerivation"} {
-        ${lib.optionalString ((builtins.hasAttr "useShell" args) && !args.useShell) ''name = "env";''}
-        ${
-          lib.optionalString ((builtins.hasAttr "simple" args) && args.simple != [ ]) ''
-            buildInputs = with pkgs; [
-            ${builtins.concatStringsSep "\n" (builtins.map (elt: (mkIndent 6) + elt) args.simple)}
-            ${mkIndent 4}];''
-        }
-        ${
-          lib.optionalString ((builtins.hasAttr "native" args) && args.native != [ ]) ''
-            nativeBuildInputs = with pkgs; [
-            ${builtins.concatStringsSep "\n" (builtins.map (elt: (mkIndent 6) + elt) args.native)}
-            ${mkIndent 4}];''
-        }
-        ${
-          lib.optionalString ((builtins.hasAttr "prop" args) && args.prop != [ ]) ''
-            propagatedBuildInputs = with pkgs; [
-            ${builtins.concatStringsSep "\n" (builtins.map (elt: (mkIndent 6) + elt) args.prop)}
-            ${mkIndent 4}];''
-        }
-        ${
-          lib.optionalString ((builtins.hasAttr "env" args) && args.env != { }) (builtins.concatStringsSep "\n"
-            (lib.mapAttrsToList (key: value: key + " = " + (lib.strings.escapeNixString value) + ";") args.env))
-        }
-        ${
-          lib.optionalString ((builtins.hasAttr "shell" args) && args.shell != "") ''
-            shellHook = '''
-            ${builtins.concatStringsSep "\n" (builtins.map (elt: (mkIndent 6) + elt) (lib.splitString "\n" args.shell))}
-            ${mkIndent 4}''';
-          ''
-        }
-      }
-  '';
   mkIndent = width: with lib; (concatStrings (genList (const " ") width));
   mkNewlineAndIndent = width: with lib; "\n" + (concatStrings (genList (const " ") width));
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
