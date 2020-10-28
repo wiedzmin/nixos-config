@@ -1,0 +1,15 @@
+repos:
+- repo: https://github.com/jorisroovers/gitlint
+  rev: v0.13.1
+  hooks:
+  - id: gitlint
+- repo: https://github.com/FelixSeptem/pre-commit-golang
+  rev: master
+  hooks:
+  - id: golangci-lint
+- repo: https://github.com/wiedzmin/git-hooks
+  rev: master
+  hooks:
+  - id: forbid-pushing-wip
+  - id: go-mod-prohibit-replace
+  # - id: tag-branch-commit

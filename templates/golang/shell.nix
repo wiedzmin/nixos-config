@@ -2,7 +2,7 @@
 
 with pkgs;
 mkShell {
-  buildInputs = [ docker_compose gnumake golangci-lint watchman gotools ];
+  buildInputs = [ docker_compose gitAndTools.pre-commit gnumake golangci-lint gotools watchman ];
   shellHook = ''
     echo
     echo -e "build - build project main module"
