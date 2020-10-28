@@ -67,7 +67,7 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       nix = {
-        package = inputs.nixpkgs.legacyPackages.x86_64-linux.nixUnstable;
+        package = inputs.unstable.legacyPackages.x86_64-linux.nixUnstable;
         useSandbox = true;
         readOnlyStore = true;
         requireSignedBinaryCaches = true;
@@ -83,7 +83,7 @@ in {
         registry = {
           config.flake = inputs.self;
           emacs.flake = inputs.emacs;
-          nixpkgs.flake = inputs.nixpkgs;
+          unstable.flake = inputs.unstable;
           stable.flake = inputs.stable;
         };
 

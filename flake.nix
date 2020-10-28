@@ -6,7 +6,7 @@
 
   inputs = rec {
     stable.url = "github:NixOS/nixpkgs/nixos-20.03";
-    nixpkgs.url = "github:nixos/nixpkgs/nixos-unstable";
+    unstable.url = "github:nixos/nixpkgs/nixos-unstable";
     nixpkgs-02_06_20.url = "github:nixos/nixpkgs/467ce5a9f45aaf96110b41eb863a56866e1c2c3c";
     nixpkgs-08_02_20 = {
       url = "github:nixos/nixpkgs/8130f3c1c2bb0e533b5e150c39911d6e61dcecc2";
@@ -80,13 +80,13 @@
     };
   };
 
-  outputs = { self, nixpkgs, ... }@inputs:
+  outputs = { self, unstable, ... }@inputs:
     let
-      lib = nixpkgs.lib;
+      lib = unstable.lib;
       system = "x86_64-linux";
       overlays = {
         unstable = final: prev: {
-          unstable = (import inputs.nixpkgs {
+          unstable = (import inputs.unstable {
             overlays = with inputs; [ emacs.overlay nur.overlay ];
             inherit system;
           });
@@ -100,7 +100,7 @@
         };
       };
 
-      devShell."${system}" = import ./shell.nix { pkgs = nixpkgs.legacyPackages.${system}; };
+      devShell."${system}" = import ./shell.nix { pkgs = unstable.legacyPackages.${system}; };
 
       nixosConfigurations = {
         laptoptop = lib.nixosSystem {
@@ -117,7 +117,7 @@
             }
             (import ./machines/laptoptop)
             inputs.home-manager.nixosModules.home-manager
-            inputs.nixpkgs.nixosModules.notDetected
+            inputs.unstable.nixosModules.notDetected
           ];
           specialArgs = { inherit inputs; };
         };
@@ -126,7 +126,7 @@
           modules = [
             (import ./machines/momcat)
             inputs.home-manager.nixosModules.home-manager
-            inputs.nixpkgs.nixosModules.notDetected
+            inputs.unstable.nixosModules.notDetected
           ];
           specialArgs = { inherit inputs; };
         };
