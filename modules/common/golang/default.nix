@@ -71,7 +71,6 @@ in {
           golint
           gomodifytags
           gopls
-          gotools
         ];
         programs.zsh.sessionVariables = {
           GOPATH = cfg.goPath;
