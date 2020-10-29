@@ -170,6 +170,7 @@ in {
           devenv_data=$(<${cfg.devEnv.configName})
           devenv_filelist=$(echo "$devenv_data" | tr '\n' ' ')
 
+          git reset # clean up index from unrelated staged changes
           git add -- $devenv_filelist
           git stash -m "dev-env" -- $devenv_filelist
         '';
