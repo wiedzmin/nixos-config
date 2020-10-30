@@ -161,6 +161,11 @@ in {
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
+        xdg.configFile."cod/config.toml".text = ''
+          [[rule]]
+          executable = "/run/current-system/sw/bin/dephell"
+          policy = 'ignore'
+        '';
         home.packages = with pkgs;
           [ checkbashism libnotify wmctrl xdotool seturgent shellcheck perl cod thumbs-bin ]
           ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;

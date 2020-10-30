@@ -15,6 +15,7 @@ let
       };
     };
   };
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     custom.dev.python = {
@@ -81,6 +82,8 @@ in {
             python3Packages.virtualenv
             python3Packages.virtualenvwrapper
             python3Packages.yapf
+
+            nurpkgs.dephell
 
             # inputs.nixpkgs-08_02_20.legacyPackages.x86_64-linux.prospector # TODO: review configuration https://github.com/PyCQA/prospector
           ] ++ lib.optionals (cfg.jupyter.enable) [ jupyterWithPackages ];
