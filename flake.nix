@@ -98,6 +98,10 @@
           path = ./templates/golang;
           description = "Golang project.";
         };
+        golang.nix = {
+          path = ./templates/golang.nix;
+          description = "Golang to Nix packaging.";
+        };
         ccpp = {
           path = ./templates/ccpp;
           description = "C/C++ project.";
