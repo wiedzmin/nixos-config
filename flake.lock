@@ -193,7 +193,7 @@
     },
     "nur": {
       "locked": {
-        "narHash": "sha256-X25lplscG+93txAQGNdhoBw2uCNBzT4PZwJuYEc5LmY=",
+        "narHash": "sha256-VkGSBTuiYOUmiZuetbMzJV4iakkAOvAUEtNrkOaTbHA=",
         "path": "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR",
         "type": "path"
       },
