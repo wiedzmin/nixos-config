@@ -103,7 +103,7 @@
           description = "Golang to Nix packaging.";
         };
         ccpp = {
-          path = ./templates/ccpp;
+          path = ./modules/common/ccpp/templates/project;
           description = "C/C++ project.";
         };
       };
