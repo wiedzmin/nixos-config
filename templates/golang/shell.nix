@@ -1,8 +1,25 @@
 { pkgs ? import <nixpkgs> { }, ... }:
 
 with pkgs;
+let
+  nurpkgs = pkgs.nur.repos.wiedzmin;
+in
 mkShell {
-  buildInputs = [ docker_compose gitAndTools.pre-commit gnumake golangci-lint gotools watchman ];
+  buildInputs = [
+    docker_compose
+    gitAndTools.pre-commit
+    gnumake
+    watchman
+
+    errcheck
+    go-bindata
+    goconvey
+    golangci-lint
+    gomodifytags
+    gopkgs
+    gotools
+    nurpkgs.gohack
+  ];
   shellHook = ''
     echo
     echo -e "build - build project main module"
