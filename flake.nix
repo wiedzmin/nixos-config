@@ -94,12 +94,12 @@
       };
     in {
       templates = {
-        golang = {
-          path = ./templates/golang;
+        golang.project = {
+          path = ./modules/common/golang/templates/project;
           description = "Golang project.";
         };
         golang.nix = {
-          path = ./templates/golang.nix;
+          path = ./modules/common/golang/templates/go2nix;
           description = "Golang to Nix packaging.";
         };
         ccpp = {
