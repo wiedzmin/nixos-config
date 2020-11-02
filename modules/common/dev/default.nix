@@ -114,11 +114,6 @@ in {
         default = [ ];
         description = "The collection of whitelisting prefixes for direnv to allow";
       };
-      remote.commands = mkOption {
-        description = "Predefined commands list to execute remotely. Note that those must be present on ssh target.";
-        type = types.listOf types.str;
-        default = [ "ctop" "jnettop" ];
-      };
       jira.enable = mkOption {
         type = types.bool;
         default = false;

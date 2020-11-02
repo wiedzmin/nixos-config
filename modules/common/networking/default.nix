@@ -70,11 +70,6 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set net/command_choices ${
-          lib.strings.escapeNixString (builtins.toJSON config.custom.dev.remote.commands)
-        }
-      '';
       programs.nm-applet.enable = config.wm.i3.enable;
 
       nixpkgs.config.packageOverrides = _: rec {
