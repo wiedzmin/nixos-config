@@ -46,7 +46,30 @@ in {
   };
 
   config = mkMerge [
-    (mkIf cfg.enable { users.users."${config.attributes.mainUser.name}".extraGroups = [ "audio" ]; })
+    (mkIf cfg.enable {
+      users.users."${config.attributes.mainUser.name}".extraGroups = [ "audio" "mopidy" ];
+      services.mopidy = {
+        enable = true;
+        extensionPackages = with pkgs; [ mopidy-local mopidy-mpd mopidy-mpris mopidy-youtube ];
+        configuration = ''
+          [mpd]
+          hostname = 0.0.0.0
+          port = 6600
+          [audio]
+          output = pulsesink server=127.0.0.1
+          [youtube]
+          enabled = true
+          api_enabled = true
+          autoplay_enabled = true
+          playlist_max_videos = 300
+          youtube_api_key = ${config.custom.networking.secrets.youtube.apiToken}
+        '';
+      };
+      systemd.services.mopidy = {
+        after = [ "network-online.target" ];
+      };
+      environment.systemPackages = with pkgs; [ ncmpcpp ];
+    })
     (mkIf cfg.pulse.enable {
       hardware.pulseaudio = {
         enable = true;
