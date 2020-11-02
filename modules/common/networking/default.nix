@@ -30,11 +30,6 @@ in {
         default = false;
         description = "Whether to enable various network clients, mostly for development";
       };
-      remoteControlling.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable clients to control remote machines.";
-      };
       messengers.enable = mkOption {
         type = types.bool;
         default = false;
@@ -212,9 +207,6 @@ in {
         };
         home.file = { ".ssh/id_rsa.pub".text = config.identity.secrets.ssh.publicKey; };
       };
-    })
-    (mkIf (cfg.enable && cfg.remoteControlling.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ anydesk teamviewer ]; };
     })
     (mkIf (cfg.enable && cfg.messengers.enable) {
       services.quassel.enable = true;
