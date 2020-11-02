@@ -38,6 +38,7 @@ def get_issues(client, project, active_only=True, mine_only=True):
                                 maxResults=100)
 
 
+# TODO: call infinitely, until user cancels
 def select_issue(issues):
     issues_map = {}
     for issue in issues:

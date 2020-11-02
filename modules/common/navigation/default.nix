@@ -54,6 +54,7 @@ in {
         description = "Whether to enable bookmarks.";
         default = false;
       };
+      # TODO: add `term` or similar field for whether terminal should also be opened
       bookmarks.entries = mkOption {
         type = types.attrs;
         default = { };
