@@ -125,5 +125,8 @@ in rec {
       }"));
   mkPlacementRulesI3 = wsdata: rules:
     lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "desktop" r) rules)
-      (r: "for_window ${mkWindowCriteriaI3 r} move to workspace ${getWorkspaceByNameI3 wsdata r.desktop}"));
+      (r: "for_window ${mkWindowCriteriaI3 r} move to workspace ${getWorkspaceByNameI3 wsdata r.desktop}${
+        if (builtins.hasAttr "activate" r && r.activate == true) then "; workspace ${
+          getWorkspaceByNameI3 wsdata r.desktop}" else ""
+      }"));
 }
