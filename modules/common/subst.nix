@@ -37,16 +37,13 @@ in rec {
   mainUserName = config.attributes.mainUser.name;
   mainUserID = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
   mcCmd = "${pkgs.mc}/bin/mc";
-  mycliCmd =
-    "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.mycli}/bin/mycli --myclirc ${configHome}/.myclirc"; # because of deps versions conflict with pgcli
   nmcliBinary = "${pkgs.networkmanager}/bin/nmcli"; # because there is no `bin` output for some reason
   orgDir = config.ide.emacs.orgDir;
   orgKbDir = homePrefix "docs/org-kb";
   orgWarningsFiledir = builtins.dirOf config.custom.pim.org.warningsFile;
   orgWarningsFilename = config.custom.pim.org.warningsFile;
   passwordStorePath = config.custom.security.passwordStorePath;
-  pgcliCmd =
-    "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.pgcli}/bin/pgcli --pgclirc ${configHome}/.pgclirc"; # because of deps versions conflict with mycli
+  passwordPlaceholder = config.attributes.secret;
   pimOrgAgendaElPatch = config.custom.pim.org.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   screenshotsBasedir = config.custom.content.screenshots.baseDir;

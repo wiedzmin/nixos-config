@@ -24,6 +24,11 @@ with lib;
       description = "Main user's GPG key ID";
       type = types.str;
     };
+    secret = mkOption {
+      description = "Secret data placeholder";
+      default = "0xDEADF00D";
+      type = types.str;
+    };
     localGroup = mkOption {
       description = "Default local group name";
       type = types.str;

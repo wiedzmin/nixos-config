@@ -10,7 +10,7 @@ from pystdlib import shell_cmd
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 dbms_meta = json.loads(r.get("misc/dbms_meta"))
-extra_hosts_data = json.loads(r.get("net/extra_hosts")) # TODO: deduplicate other metas further
+extra_hosts_data = json.loads(r.get("net/extra_hosts"))
 
 
 if not len(dbms_meta):
@@ -29,17 +29,11 @@ if dbms_entry:
                urgency=URGENCY_CRITICAL, timeout=5000)
         sys.exit(1)
 
-    dbms_vpn = dbms_meta[dbms_entry].get("vpn", None)
+    host = dbms_meta[dbms_entry]["host"]
+    dbms_vpn = extra_hosts_data[host].get("vpn", None)
     if dbms_vpn:
         shell_cmd(f"vpnctl --start {dbms_vpn}")
 
-    host = dbms_meta[dbms_entry]['host']
-
-    if dbms_meta[dbms_entry]["command"] == "mycli":
-        cmd = f"@mycliCmd@ --host {host} --user {dbms_meta[dbms_entry]['user']} --password {dbms_pass}"
-    elif dbms_meta[dbms_entry]["command"] == "pgcli":
-        # TODO: elaborate more sophisticated cmd construction logic
-        cmd = f"PGPASSWORD={dbms_pass} @pgcliCmd@ --host {dbms_meta[dbms_entry]['host']} --user {dbms_meta[dbms_entry]['user']} --no-password"
-
+    cmd = dbms_meta[dbms_entry]["command"].replace("@passwordPlaceholder@", dbms_pass)
     tmux_session_name = extra_hosts_data.get(host, dict()).get("tmux", "@tmuxDefaultSession@")
     tmux_create_window(cmd, tmux_session_name, window_title=dbms_entry, create_if_not=True, attach=True)
