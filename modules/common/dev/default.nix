@@ -89,13 +89,13 @@ in {
       bookmarks.entries = mkOption {
         type = types.attrs;
         default = {
-          gourmet = "${wsRoot "github"}/wiedzmin/gourmet";
-          home-manager = "${wsRoot "github"}/rycee/home-manager";
-          nixos = "/etc/nixos";
-          nixpkgs = "${wsRoot "github"}/NixOS/nixpkgs";
-          nixpkgs-proposed = "${wsRoot "github"}/wiedzmin/nixpkgs";
-          nur-packages = "${wsRoot "github"}/wiedzmin/nur-packages";
-          postgres = "${wsRoot "github"}/postgres/postgres";
+          gourmet = { path = "${wsRoot "github"}/wiedzmin/gourmet"; };
+          home-manager = { path = "${wsRoot "github"}/rycee/home-manager"; };
+          nixos = { path = "/etc/nixos"; };
+          nixpkgs = { path = "${wsRoot "github"}/NixOS/nixpkgs"; };
+          nixpkgs-proposed = { path = "${wsRoot "github"}/wiedzmin/nixpkgs"; };
+          nur-packages = { path = "${wsRoot "github"}/wiedzmin/nur-packages"; };
+          postgres = { path = "${wsRoot "github"}/postgres/postgres"; };
         };
         description = "Bookmarks data.";
       };

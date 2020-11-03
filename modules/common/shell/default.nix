@@ -484,7 +484,11 @@ in {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
           "${cfg.bookmarks.path}".text = lib.concatStringsSep "\n"
-            (lib.mapAttrsToList (name: path: name + " : " + path) config.custom.navigation.bookmarks.entries);
+            (lib.mapAttrsToList
+              (id: meta: id + " : " + (if builtins.hasAttr "path" meta
+                                       then meta.path
+                                       else builtins.trace "missing `path` field for ${id}"))
+              config.custom.navigation.bookmarks.entries);
         };
         programs.fzf.enable = true;
         programs.zsh = {

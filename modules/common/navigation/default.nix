@@ -152,8 +152,10 @@ in {
       };
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/bookmarks ${
-          lib.strings.escapeNixString (builtins.toJSON cfg.bookmarks.entries)
-        }
+          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs'
+            (id: meta: lib.nameValuePair id (if builtins.hasAttr "path" meta then meta.path
+                                             else builtins.trace "missing `path` field for ${id}"))
+            cfg.bookmarks.entries))}
       '';
       home-manager.users."${config.attributes.mainUser.name}" = lib.optionalAttrs (cfg.emacs.enable) {
         home.activation.emacsKnownProjects = {
@@ -164,9 +166,8 @@ in {
             emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
             # TODO: consider extracting to a function (for ensuring running emacs instance)
           in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.package}/bin/emacsclient -s /run/user/${mainUserID}/emacs/server -e '(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
-            builtins.concatStringsSep " "
-            (forEach (lib.attrValues cfg.bookmarks.entries) (entry: ''"'' + entry + ''"''))
-          }))' ";
+            builtins.concatStringsSep " " (forEach (lib.attrValues cfg.bookmarks.entries)
+              (meta: ''"'' + meta.path + ''"'')) }))' ";
         };
       };
     })

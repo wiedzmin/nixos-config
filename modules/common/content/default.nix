@@ -69,7 +69,6 @@ in {
           (pkgs.substituteAll
             ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/paste_to_ix.sh; })));
       };
-      tools.ebooks.readers.roots = [ (homePrefix "bookshelf") ];
       services.clipmenu.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.activation.ensureMimeappsList = {
