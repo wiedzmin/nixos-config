@@ -106,6 +106,10 @@
           path = ./modules/common/ccpp/templates/project;
           description = "C/C++ project.";
         };
+        media.convert = {
+          path = ./modules/common/content/templates/convert;
+          description = "Various multimedia conversions.";
+        };
       };
 
       devShell."${system}" = import ./shell.nix { pkgs = unstable.legacyPackages.${system}; };
