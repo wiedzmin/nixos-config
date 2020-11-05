@@ -1,10 +1,10 @@
 {
-  description = "Development environment";
+  description = "Golang development environment";
 
   inputs = {
     flake-utils.url = github:numtide/flake-utils;
-    unstable.url = github:NixOS/nixpkgs/8e56330ad9a6e254ed0c4a0113e93cc880f87df5;
     nur.url = "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR";
+    unstable.url = github:NixOS/nixpkgs/8e56330ad9a6e254ed0c4a0113e93cc880f87df5;
   };
 
   outputs = { self, flake-utils, unstable, nur }:

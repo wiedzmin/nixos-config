@@ -1,5 +1,5 @@
 {
-  description = "Development environment";
+  description = "Golang packaging environment";
 
   inputs.nixpkgs.url = github:NixOS/nixpkgs/8e56330ad9a6e254ed0c4a0113e93cc880f87df5;
 
