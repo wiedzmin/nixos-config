@@ -11,7 +11,6 @@ mkShell {
     gnumake
     watchman
 
-    errcheck
     go-bindata
     goconvey
     golangci-lint
