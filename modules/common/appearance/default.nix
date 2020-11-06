@@ -165,8 +165,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.diredfl epkgs.rainbow-mode epkgs.unicode-fonts ];
-      ide.emacs.config = builtins.readFile (pkgs.substituteAll
-        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/appearance.el; }));
+      ide.emacs.config = readSubstituted ../subst.nix ./emacs/appearance.el;
     })
     (mkIf (cfg.enable && cfg.emacs.enable && cfg.xresources.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {

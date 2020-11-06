@@ -68,19 +68,15 @@ in {
       programs.nm-applet.enable = config.wm.i3.enable;
 
       nixpkgs.config.packageOverrides = _: rec {
-        wifi-status = mkShellScriptWithDeps "wifi-status" (with pkgs; [ gawk wirelesstools ]) (builtins.readFile
-          (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/wifi-status.sh; })));
-        vpnctl = mkPythonScriptWithDeps "vpnctl" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ]) (builtins.readFile
-          (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/vpnctl.py; })));
-        ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ]) (builtins.readFile
-          (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/ifconfless.py; })));
+        wifi-status = mkShellScriptWithDeps "wifi-status" (with pkgs; [ gawk wirelesstools ])
+          (readSubstituted ../subst.nix ./scripts/wifi-status.sh);
+        vpnctl = mkPythonScriptWithDeps "vpnctl" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
+          (readSubstituted ../subst.nix ./scripts/vpnctl.py);
+        ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
+          (readSubstituted ../subst.nix ./scripts/ifconfless.py);
         sshmenu = mkPythonScriptWithDeps "sshmenu"
-          (with pkgs; [ openssh nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis vpnctl ]) (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/sshmenu.py; })));
+          (with pkgs; [ openssh nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis vpnctl ])
+          (readSubstituted ../subst.nix ./scripts/sshmenu.py);
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ vpnctl ]; # NOTE: for shell usage

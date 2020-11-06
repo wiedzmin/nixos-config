@@ -79,8 +79,7 @@ in {
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
         keybindings = mkPythonScriptWithDeps "keybindings" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis yad ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/keybindings.py; })));
+          (readSubstituted ../subst.nix ./scripts/keybindings.py);
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.activation.purgeKeybindingsCache = {

@@ -65,9 +65,8 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        paste_to_ix = mkPythonScriptWithDeps "paste_to_ix" (with pkgs; [ ix xsel ]) (builtins.readFile
-          (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/paste_to_ix.sh; })));
+        paste_to_ix = mkPythonScriptWithDeps "paste_to_ix" (with pkgs; [ ix xsel ])
+          (readSubstituted ../subst.nix ./scripts/paste_to_ix.sh);
       };
       services.clipmenu.enable = true;
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -147,17 +146,14 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
         buku_add = mkPythonScriptWithDeps "buku_add"
-          (with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku nurpkgs.pystdlib xsel ]) (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/buku_add.py; })));
+          (with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku nurpkgs.pystdlib xsel ])
+          (readSubstituted ../subst.nix ./scripts/buku_add.py);
         buku_search_tag = mkShellScriptWithDeps "buku_search_tag"
           (with pkgs; [ coreutils dmenu gawk inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/buku_search_tag.sh; })));
+          (readSubstituted ../subst.nix ./scripts/buku_search_tag.sh);
         buku_search_url = mkShellScriptWithDeps "buku_search_url"
-          (with pkgs; [ coreutils dmenu inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku ]) (builtins.readFile
-            (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/buku_search_url.sh; })));
+          (with pkgs; [ coreutils dmenu inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku ])
+          (readSubstituted ../subst.nix ./scripts/buku_search_url.sh);
       };
     })
     (mkIf (cfg.enable && cfg.screenshots.enable) {
@@ -175,15 +171,11 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         screenshot_active_window =
           mkShellScriptWithDeps "screenshot_active_window" (with pkgs; [ coreutils maim xclip xdotool ])
-          (builtins.readFile (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
-            src = ./scripts/screenshot_active_window.sh;
-          })));
+            (readSubstituted ../subst.nix ./scripts/screenshot_active_window.sh);
         screenshot_full = mkShellScriptWithDeps "screenshot_full" (with pkgs; [ coreutils maim xclip ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/screenshot_full.sh; })));
+          (readSubstituted ../subst.nix ./scripts/screenshot_full.sh);
         screenshot_region = mkShellScriptWithDeps "screenshot_region" (with pkgs; [ coreutils maim xclip ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/screenshot_region.sh; })));
+          (readSubstituted ../subst.nix ./scripts/screenshot_region.sh);
       };
     })
     (mkIf (cfg.warmup.enable && cfg.warmup.paths != [ ]) {

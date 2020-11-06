@@ -133,29 +133,21 @@ in {
         ${pkgs.redis}/bin/redis-cli expire virt/swarm_meta 604800
       '';
       nixpkgs.config.packageOverrides = _: rec {
-        dlint = mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/dlint.sh; })));
-        hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ]) (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/hadolintd.sh; })));
+        dlint = mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (readSubstituted ../subst.nix ./scripts/dlint.sh);
+        hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ])
+          (readSubstituted ../subst.nix ./scripts/hadolintd.sh);
         docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits"
-          (with pkgs; [ docker nurpkgs.pystdlib python3Packages.redis xsel yad ]) (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
-              src = ./scripts/docker_containers_traits.py;
-            })));
+          (with pkgs; [ docker nurpkgs.pystdlib python3Packages.redis xsel yad ])
+          (readSubstituted ../subst.nix ./scripts/docker_containers_traits.py);
         discover_containerized_services =
-          mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker nurpkgs.pystdlib ]) (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
-              src = ./scripts/discover_containerized_services.py;
-            })));
+          mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker nurpkgs.pystdlib ])
+            (readSubstituted ../subst.nix ./scripts/discover_containerized_services.py);
         docker_shell =
           mkPythonScriptWithDeps "docker_shell" (with pkgs; [ nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/docker_shell.py; })));
+            (readSubstituted ../subst.nix ./scripts/docker_shell.py);
         docker_swarm_services_info = mkPythonScriptWithDeps "docker_swarm_services_info"
-          (with pkgs; [ docker nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis vpnctl yad ]) (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
-              src = ./scripts/docker_swarm_services_info.py;
-            })));
+          (with pkgs; [ docker nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis vpnctl yad ])
+          (readSubstituted ../subst.nix ./scripts/docker_swarm_services_info.py);
       };
 
       virtualisation.docker = {

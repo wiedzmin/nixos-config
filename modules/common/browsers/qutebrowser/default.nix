@@ -44,12 +44,10 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ]) (builtins.readFile
-          (pkgs.substituteAll
-            ((import ../../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/yank-image.sh; })));
+        yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ])
+          (readSubstituted ../../subst.nix ./scripts/yank-image.sh);
         qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ python3Packages.pyyaml ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/qb-fix-session.py; })));
+          (readSubstituted ../../subst.nix ./scripts/qb-fix-session.py);
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {

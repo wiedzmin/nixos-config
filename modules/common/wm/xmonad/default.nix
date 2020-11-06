@@ -312,8 +312,7 @@ in {
           python3Packages.redis
           python3Packages.xlib
           wmctrl
-        ]) (builtins.readFile
-          (pkgs.substituteAll ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./desktops.py; })));
+        ]) (readSubstituted ../../subst.nix ./desktops.py);
       };
 
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
@@ -322,16 +321,14 @@ in {
           ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./ExtraCombinators.hs;
           ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./WindowTypes.hs;
           ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./XkbToggle.hs;
-          ".xmonad/lib/XMonad/Workspaces.hs".text = builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./Workspaces.hs; }));
+          ".xmonad/lib/XMonad/Workspaces.hs".text = readSubstituted ../subst.nix ./Workspaces.hs;
           ".xmonad/xmonad.hs" = {
             text = configText;
             onChange = "xmonad --recompile";
           };
         };
         home.packages = with pkgs; [ desktops ];
-        xdg.configFile."xmobar/xmobarrc".text = builtins.readFile
-          (pkgs.substituteAll ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./xmobarrc; }));
+        xdg.configFile."xmobar/xmobarrc".text = readSubstituted ../../subst.nix ./xmobarrc;
       };
     })
     (mkIf cfg.wsMapping.enable {

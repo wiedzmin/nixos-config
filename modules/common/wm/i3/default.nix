@@ -249,8 +249,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         kbdctl =
           mkPythonScriptWithDeps "kbdctl" (with pkgs; [ nurpkgs.pystdlib python3Packages.i3ipc xdotool emacs xkb-switch ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../../subst.nix { inherit config pkgs lib inputs; }) // { src = ./kbdctl.py; })));
+            (readSubstituted ../../subst.nix ./kbdctl.py);
       };
 
       wmCommon.modeBindings = {

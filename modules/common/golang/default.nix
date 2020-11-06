@@ -87,8 +87,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        modedit = mkPythonScriptWithDeps "modedit" (with pkgs; [ nurpkgs.pystdlib ]) (builtins.readFile (pkgs.substituteAll
-          ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/modedit.py; })));
+        modedit = mkPythonScriptWithDeps "modedit" (with pkgs; [ nurpkgs.pystdlib ])
+          (readSubstituted ../subst.nix ./scripts/modedit.py);
         go-install-wrapper = mkShellScriptWithDeps "go-install-wrapper" (with pkgs; [ ]) ''
           go install ./...
         '';
@@ -133,8 +133,7 @@ in {
         epkgs.go-tag
         epkgs.gotest
       ];
-      ide.emacs.config = builtins.readFile (pkgs.substituteAll
-        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/golang.el; }));
+      ide.emacs.config = readSubstituted ../subst.nix ./emacs/golang.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ modedit ]; };

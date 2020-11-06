@@ -162,8 +162,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         gitctl =
           mkPythonScriptWithDeps "gitctl" (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/gitctl.py; })));
+            (readSubstituted ../subst.nix ./scripts/gitctl.py);
         git-hideenv = mkShellScriptWithDeps "git-hideenv" (with pkgs; [ gitAndTools.git ]) ''
           set -e
 
@@ -396,9 +395,7 @@ in {
         epkgs.magit-popup # *
         epkgs.magit-todos
       ];
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/git.el; }))
-        + "\n" + cfg.emacs.extraConfig;
+      ide.emacs.config = readSubstituted ../subst.nix ./emacs/git.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ gitctl ]; };

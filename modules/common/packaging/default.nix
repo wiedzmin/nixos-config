@@ -107,12 +107,9 @@ in {
 
         packageOverrides = _: rec {
           get-pr-override = mkShellScriptWithDeps "get-pr-override" (with pkgs; [ coreutils curl gnugrep ])
-            (builtins.readFile (pkgs.substituteAll
-              ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/get-pr-override.sh; })));
+            (readSubstituted ../subst.nix ./scripts/get-pr-override.sh);
           make-package-diff = mkShellScriptWithDeps "make-package-diff" (with pkgs; [ coreutils diffutils nix ])
-            (builtins.readFile (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
-              src = ./scripts/make-package-diff.sh;
-            })));
+            (readSubstituted ../subst.nix ./scripts/make-package-diff.sh);
           rollback = mkShellScriptWithDeps "rollback" (with pkgs; [ fzf ]) ''
             GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
             GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
@@ -178,8 +175,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
-      ide.emacs.config = builtins.readFile (pkgs.substituteAll
-        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/packaging.el; }));
+      ide.emacs.config = readSubstituted ../subst.nix ./emacs/packaging.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${config.attributes.mainUser.name}" = {

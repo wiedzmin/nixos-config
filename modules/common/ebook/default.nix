@@ -65,11 +65,9 @@ in {
       '';
       nixpkgs.config.packageOverrides = _: rec {
         bookshelf = mkPythonScriptWithDeps "bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis zathura ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/bookshelf.py; })));
+          (readSubstituted ../subst.nix ./scripts/bookshelf.py);
         update-bookshelf = mkPythonScriptWithDeps "update-bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/update-bookshelf.py; })));
+          (readSubstituted ../subst.nix ./scripts/update-bookshelf.py);
       };
       systemd.user.services."update-ebooks" = {
         description = "Update bookshelf contents";

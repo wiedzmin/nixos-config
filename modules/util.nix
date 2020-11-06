@@ -153,4 +153,7 @@ in rec {
 
       dependencies = [ pkgs.bash ] ++ dependencies;
     }));
+  readSubstituted = subst: content:
+    builtins.readFile
+      (pkgs.substituteAll ((import subst { inherit config inputs lib pkgs; }) // { src = content; }));
 }

@@ -421,24 +421,16 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         dump_firefox_session =
           mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
-          (builtins.readFile (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
-            src = ./scripts/dump_firefox_session.sh;
-          })));
+            (readSubstituted ../subst.nix ./scripts/dump_firefox_session.sh);
         rotate_firefox_session_dumps =
-          mkShellScriptWithDeps "rotate_firefox_session_dumps" (with pkgs; [ coreutils gnugrep ]) (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
-              src = ./scripts/rotate_firefox_session_dumps.sh;
-            })));
+          mkShellScriptWithDeps "rotate_firefox_session_dumps" (with pkgs; [ coreutils gnugrep ])
+            (readSubstituted ../subst.nix ./scripts/rotate_firefox_session_dumps.sh);
         collect_links_on_page =
           mkPythonScriptWithDeps "collect_links_on_page" (with pkgs; [ nurpkgs.pystdlib python3Packages.beautifulsoup4 xsel ])
-          (builtins.readFile (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
-            src = ./scripts/collect_links_on_page.py;
-          })));
+            (readSubstituted ../subst.nix ./scripts/collect_links_on_page.py);
         manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
-          (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.pystdlib ]) (builtins.readFile
-            (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // {
-              src = ./scripts/manage_firefox_sessions.py;
-            })));
+          (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.pystdlib ])
+          (readSubstituted ../subst.nix ./scripts/manage_firefox_sessions.py);
       };
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.activation.ensureFirefoxSessionsPath = {

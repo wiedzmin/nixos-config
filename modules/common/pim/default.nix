@@ -101,8 +101,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         tt_capture = mkPythonScriptWithDeps "tt_capture"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.cbor2 python3Packages.pytz python3Packages.xlib xprintidle-ng ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/tt_capture.py; })));
+          (readSubstituted ../subst.nix ./scripts/tt_capture.py);
       };
       services.arbtt = {
         enable = true;
@@ -172,8 +171,7 @@ in {
         epkgs.plantuml-mode
         epkgs.russian-holidays
       ];
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/pim.el; }));
+      ide.emacs.config = readSubstituted ../subst.nix ./emacs/pim.el;
     })
   ];
 }

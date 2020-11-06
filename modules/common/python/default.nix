@@ -1,4 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
+with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
@@ -289,8 +290,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];
-      ide.emacs.config = builtins.readFile (pkgs.substituteAll
-        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/python.el; }));
+      ide.emacs.config = readSubstituted ../subst.nix ./emacs/python.el;
     })
   ];
 }

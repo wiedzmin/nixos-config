@@ -1,4 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
+with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let cfg = config.custom.dev.ccpp;
@@ -30,8 +31,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.ccls ];
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/ccpp.el; }));
+      ide.emacs.config = readSubstituted ../subst.nix ./emacs/ccpp.el;
     })
   ];
 }

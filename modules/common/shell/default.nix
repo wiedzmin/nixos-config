@@ -155,9 +155,8 @@ in {
       fonts = { fonts = with pkgs; [ powerline-fonts ]; };
 
       nixpkgs.config.packageOverrides = _: rec {
-        tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" (with pkgs; [ nurpkgs.pystdlib ]) (builtins.readFile
-          (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/tmuxp_sessions.py; })));
+        tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" (with pkgs; [ nurpkgs.pystdlib ])
+          (readSubstituted ../subst.nix ./scripts/tmuxp_sessions.py);
       };
 
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -514,9 +513,7 @@ in {
         home.packages = with pkgs; [ checkbashisms nodePackages.bash-language-server ];
       };
       ide.emacs.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms ];
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/shell.el; }));
-
+      ide.emacs.config = readSubstituted ../subst.nix ./emacs/shell.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{

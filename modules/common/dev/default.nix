@@ -170,8 +170,7 @@ in {
     (mkIf (cfg.enable && config.custom.navigation.bookmarks.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         open-project = mkPythonScriptWithDeps "open-project" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/open-project.py; })));
+          (readSubstituted ../subst.nix ./scripts/open-project.py);
       };
       custom.navigation.bookmarks.entries = cfg.bookmarks.entries;
     })
@@ -199,8 +198,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.codesearch.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.codesearch epkgs.counsel-codesearch epkgs.projectile-codesearch ];
-      ide.emacs.config = builtins.readFile (pkgs.substituteAll
-        ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/codesearch.el; }));
+      ide.emacs.config = readSubstituted ../subst.nix ./emacs/codesearch.el;
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
@@ -215,15 +213,13 @@ in {
     (mkIf (cfg.enable && cfg.repoSearch.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         reposearch = mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd python3Packages.libtmux xsel emacs nurpkgs.pystdlib ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/reposearch.py; })));
+          (readSubstituted ../subst.nix ./scripts/reposearch.py);
       };
     })
     (mkIf (cfg.enable && cfg.jira.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         jiractl = mkPythonScriptWithDeps "jiractl" (with pkgs; [ python3Packages.jira python3Packages.pytz python3Packages.redis nurpkgs.pystdlib yad ])
-          (builtins.readFile (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/jiractl.py; })));
+          (readSubstituted ../subst.nix ./scripts/jiractl.py);
       };
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set jira/identities ${lib.strings.escapeNixString (builtins.toJSON cfg.jira.identities)}
@@ -325,8 +321,7 @@ in {
         xdg.configFile."TabNine/TabNine.toml".text =
           toToml { language.python = { command = "python-language-server"; }; };
       };
-      ide.emacs.config = builtins.readFile
-        (pkgs.substituteAll ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./emacs/dev.el; }));
+      ide.emacs.config = readSubstituted ../subst.nix ./emacs/dev.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable && config.custom.virtualization.docker.enable) {
       wmCommon.keys = [

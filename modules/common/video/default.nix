@@ -140,9 +140,8 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        xctl = mkPythonScriptWithDeps "xctl" (with pkgs; [ autorandr nurpkgs.pystdlib python3Packages.ewmh ]) (builtins.readFile
-          (pkgs.substituteAll
-            ((import ../subst.nix { inherit config pkgs lib inputs; }) // { src = ./scripts/xctl.py; })));
+        xctl = mkPythonScriptWithDeps "xctl" (with pkgs; [ autorandr nurpkgs.pystdlib python3Packages.ewmh ])
+          (readSubstituted ../subst.nix ./scripts/xctl.py);
         rescreen = mkShellScriptWithDeps "rescreen" (with pkgs; [ autorandr ]) ''
           rescreen-$(autorandr --detected)-i3
         '';

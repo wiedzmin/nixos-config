@@ -53,8 +53,7 @@ in {
     (mkIf cfg.enable {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.packages = with pkgs; [ next ];
-        xdg.configFile."next/init.lisp".text = builtins.readFile (pkgs.substituteAll
-          ((import ../../subst.nix { inherit config pkgs lib; }) // { src = ./init.lisp; })); # NOTE: actually absent
+        xdg.configFile."next/init.lisp".text = readSubstituted ../../subst.nix ./init.lisp; # NOTE: actually absent
       };
     })
     (mkIf (cfg.enable && cfg.isDefault) {
