@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 let configBasePath = "/etc/nixos";
 in rec {

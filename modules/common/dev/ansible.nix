@@ -1,5 +1,5 @@
-{ config, lib, pkgs, ... }:
-with import ../../util.nix { inherit config lib pkgs; };
+{ config, inputs, lib, pkgs, ... }:
+with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 # TODO: implement profiles (refer to l2vpn module)

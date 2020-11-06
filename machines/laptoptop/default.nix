@@ -1,5 +1,5 @@
-{ config, pkgs, lib, inputs, ... }:
-with import ../../modules/util.nix { inherit config lib pkgs; };
+{ config, inputs, lib, pkgs, ... }:
+with import ../../modules/util.nix { inherit config inputs lib pkgs; };
 
 let
   nixpkgs-hplip = import inputs.nixpkgs-16_04_20 ({

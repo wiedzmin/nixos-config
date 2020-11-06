@@ -1,4 +1,4 @@
-{ config, lib, pkgs, inputs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with lib;
 
 let cfg = config.custom.dev.ccpp;

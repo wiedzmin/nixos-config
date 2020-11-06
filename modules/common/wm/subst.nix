@@ -1,5 +1,5 @@
 { config, lib, pkgs, ... }:
-with import ./wmutil.nix { inherit config lib pkgs; };
+with import ./wmutil.nix { inherit config inputs lib pkgs; };
 
 rec {
   xmonadPrimaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.primary 20;

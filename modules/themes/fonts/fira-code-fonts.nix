@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 with lib;
 let cfg = config.themes.fonts.fira-code;

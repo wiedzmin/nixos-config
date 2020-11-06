@@ -1,6 +1,6 @@
-{ config, pkgs, lib, ... }:
-with import ../../../../modules/common/wm/wmutil.nix { inherit config lib pkgs; };
-with import ../../../../modules/util.nix { inherit config lib pkgs; };
+{ config, inputs, lib, pkgs, ... }:
+with import ../../../../modules/common/wm/wmutil.nix { inherit config inputs lib pkgs; };
+with import ../../../../modules/util.nix { inherit config inputs lib pkgs; };
 
 let profileName = "docked-office";
 in {
