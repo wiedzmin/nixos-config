@@ -156,4 +156,13 @@ in rec {
   readSubstituted = subst: content:
     builtins.readFile
       (pkgs.substituteAll ((import subst { inherit config inputs lib pkgs; }) // { src = content; }));
+  renderBookmarksKVText = entries:
+    lib.concatStringsSep "\n"
+      (lib.mapAttrsToList
+        # FIXME: does builtins.trace really work in such context?
+        (id: meta: id + " : " + (if builtins.hasAttr "path" meta
+                                 then meta.path
+                                 else builtins.trace "missing `path` field for ${id}"))
+        entries);
+
 }

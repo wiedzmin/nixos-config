@@ -482,12 +482,7 @@ in {
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
-          "${cfg.bookmarks.path}".text = lib.concatStringsSep "\n"
-            (lib.mapAttrsToList
-              (id: meta: id + " : " + (if builtins.hasAttr "path" meta
-                                       then meta.path
-                                       else builtins.trace "missing `path` field for ${id}"))
-              config.custom.navigation.bookmarks.entries);
+          "${cfg.bookmarks.path}".text = renderBookmarksKVText config.custom.navigation.bookmarks.entries;
         };
         programs.fzf.enable = true;
         programs.zsh = {
