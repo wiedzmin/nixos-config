@@ -257,6 +257,7 @@ in {
 
           gitAndTools.git-trim
           gitAndTools.git-reparent
+          gitAndTools.git-filter-repo
         ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
