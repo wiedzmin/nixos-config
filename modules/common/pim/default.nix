@@ -160,6 +160,7 @@ in {
         epkgs.org-bullets
         epkgs.org-capture-pop-frame
         epkgs.org-clock-today
+        epkgs.org-drill
         epkgs.org-plus-contrib
         epkgs.org-pomodoro
         epkgs.org-ql
