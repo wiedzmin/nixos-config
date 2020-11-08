@@ -156,13 +156,59 @@ in rec {
   readSubstituted = subst: content:
     builtins.readFile
       (pkgs.substituteAll ((import subst { inherit config inputs lib pkgs; }) // { src = content; }));
-  renderBookmarksKVText = entries:
-    lib.concatStringsSep "\n"
-      (lib.mapAttrsToList
-        # FIXME: does builtins.trace really work in such context?
-        (id: meta: id + " : " + (if builtins.hasAttr "path" meta
-                                 then meta.path
-                                 else builtins.trace "missing `path` field for ${id}"))
-        entries);
-
+  enabledLocals = bookmarks:
+    lib.mapAttrs (_: meta: meta.local)
+      (lib.filterAttrs (_: meta: !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false) &&
+                             (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != ""))
+        bookmarks);
+  localEbooks = bookmarks:
+    lib.mapAttrsToList (_: meta: meta.local.path)
+      (lib.filterAttrs (_: meta: !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false) &&
+                                 (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "") &&
+                                 (lib.hasAttrByPath [ "local" "ebooks" ] meta && meta.local.ebooks == true))
+        bookmarks);
+  localEmacsBookmarks = bookmarks:
+    lib.mapAttrsToList (_: meta: meta.local.path)
+      (lib.filterAttrs (_: meta: !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false) &&
+                                 (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != ""))
+        bookmarks);
+  localBookmarksKVText = locals:
+    lib.concatStringsSep "\n" (lib.mapAttrsToList (id: meta: id + " : " + meta.path) locals);
+  enabledRemotes = bookmarks:
+    lib.forEach (builtins.filter
+      (meta: !(lib.hasAttrByPath [ "remote" "enable" ] meta && meta.remote.enable == false) &&
+             (lib.hasAttrByPath [ "remote" "url" ] meta && meta.remote.url != ""))
+      (lib.attrValues bookmarks)) (meta: meta.remote);
+  remoteWebjumps = remotes: sep:
+    builtins.listToAttrs
+      (lib.forEach
+        (builtins.filter (meta: (lib.hasAttrByPath [ "searchSuffix" ] meta && lib.hasSuffix "+" meta.searchSuffix) ||
+                                (lib.hasAttrByPath [ "jump" ] meta && meta.jump == true) ||
+                                !(lib.hasAttrByPath [ "searchSuffix" ] meta))
+          remotes)
+        (meta: {
+          name = "${if lib.hasAttrByPath [ "desc" ] meta then (meta.url + sep + meta.desc) else meta.url}";
+          value = {
+            url = meta.url + lib.optionalString (lib.hasAttrByPath [ "searchSuffix" ] meta &&
+                                                 lib.hasSuffix "+" meta.searchSuffix) meta.searchSuffix;
+          } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) {
+            vpn = meta.vpn;
+          } // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) {
+            browser = meta.browser;
+          };
+        } ));
+  remoteSearchEngines = remotes:
+    builtins.listToAttrs
+      (lib.forEach
+        (builtins.filter (meta: lib.hasAttrByPath [ "searchSuffix" ] meta && meta.searchSuffix != "") remotes)
+        (meta: {
+          name = meta.desc;
+          value = {
+            url = meta.url + meta.searchSuffix;
+          } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) {
+            vpn = meta.vpn;
+          } // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) {
+            browser = meta.browser;
+          };
+        } ));
 }

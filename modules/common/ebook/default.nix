@@ -58,9 +58,7 @@ in {
       };
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set content/ebook_roots ${
-          lib.strings.escapeNixString (builtins.toJSON
-            (forEach (builtins.filter (r: builtins.hasAttr "ebooks" r && r.ebooks == true)
-                (lib.attrValues config.custom.navigation.bookmarks.entries)) (meta: meta.path)))
+          lib.strings.escapeNixString (builtins.toJSON (localEbooks config.custom.navigation.bookmarks.entries))
         }
       '';
       nixpkgs.config.packageOverrides = _: rec {

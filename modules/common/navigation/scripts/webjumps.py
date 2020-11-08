@@ -19,10 +19,9 @@ webjumps = json.loads(r.get("nav/webjumps"))
 
 webjump = get_selection(webjumps.keys(), "jump to", case_insensitive=True, lines=15, font="@wmFontDmenu@")
 if webjump:
-    vpn_meta = json.loads(r.get("nav/webjumps_vpn"))
-    webjump_vpn = vpn_meta.get(webjump, None)
-    if webjump_vpn:
-        shell_cmd(f"vpnctl --start {webjump_vpn}")
+    vpn = webjumps[webjump].get("vpn", None)
+    if vpn:
+        shell_cmd(f"vpnctl --start {vpn}")
 
     browser_cmd = webjumps[webjump].get("browser", "@defaultBrowser@")
     if args.use_fallback:

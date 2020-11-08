@@ -24,37 +24,16 @@ in {
           Whether to enable navigation infra.
         '';
       };
-      webjumps.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable webjumps.";
-      };
-      webjumps.entries = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "Webjumps entries.";
-      };
-      webjumps.sep = mkOption {
-        type = types.str;
-        default = " | ";
-        description = "Webjumps field separator.";
-      };
-      searchengines.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable searchengines.";
-      };
-      searchengines.entries = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "Searchengines entries.";
-      };
       bookmarks.enable = mkOption {
         type = types.bool;
         description = "Whether to enable bookmarks.";
         default = false;
       };
-      # TODO: add `term` or similar field for whether terminal should also be opened
+      bookmarks.sep = mkOption {
+        type = types.str;
+        default = " | ";
+        description = "Bookmarks field separator.";
+      };
       bookmarks.entries = mkOption {
         type = types.attrs;
         default = { };
@@ -146,13 +125,6 @@ in {
         mcpanes = mkPythonScriptWithDeps "mcpanes" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../subst.nix ./scripts/mcpanes.py);
       };
-      custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set nav/bookmarks ${
-          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs'
-            (id: meta: lib.nameValuePair id (if builtins.hasAttr "path" meta then meta.path
-                                             else builtins.trace "missing `path` field for ${id}"))
-            cfg.bookmarks.entries))}
-      '';
       home-manager.users."${config.attributes.mainUser.name}" = lib.optionalAttrs (cfg.emacs.enable) {
         home.activation.emacsKnownProjects = {
           after = [ "linkGeneration" ];
@@ -162,43 +134,20 @@ in {
             emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
             # TODO: consider extracting to a function (for ensuring running emacs instance)
           in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.package}/bin/emacsclient -s /run/user/${mainUserID}/emacs/server -e '(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
-            builtins.concatStringsSep " " (forEach (lib.attrValues cfg.bookmarks.entries)
-              (meta: ''"'' + meta.path + ''"'')) }))' ";
+            builtins.concatStringsSep " " (localEmacsBookmarks cfg.bookmarks.entries)}))' ";
         };
       };
-    })
-    (mkIf (cfg.enable && cfg.webjumps.enable) {
-      assertions = [{
-        assertion = cfg.webjumps.enable && cfg.webjumps.entries != { };
-        message = "navigation: no webjumps to follow but they are enabled.";
-      }];
-
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${
-          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (url: meta:
-            lib.nameValuePair
-              (if lib.hasAttrByPath [ "title" ] meta then (url + cfg.webjumps.sep + meta.title) else url)
-              (meta // { url = "${url}"; }))
-            (filterAttrs (_: v: (!builtins.hasAttr "enable" v) || ((builtins.hasAttr "enable" v) && v.enable == true))
-              cfg.webjumps.entries)))
+          lib.strings.escapeNixString
+            (builtins.toJSON (remoteWebjumps (enabledRemotes cfg.bookmarks.entries) cfg.bookmarks.sep))
         }
-        ${pkgs.redis}/bin/redis-cli set nav/webjumps_vpn ${
-          lib.strings.escapeNixString (builtins.toJSON (lib.mapAttrs' (url: meta:
-            lib.nameValuePair
-            (if lib.hasAttrByPath [ "title" ] meta then (url + cfg.webjumps.sep + meta.title) else url)
-            (if lib.hasAttrByPath [ "vpn" ] meta then meta.vpn else "")) cfg.webjumps.entries))
-        }
-      '';
-    })
-    (mkIf (cfg.enable && cfg.searchengines.enable) {
-      assertions = [{
-        assertion = cfg.searchengines.enable && cfg.searchengines.entries != { };
-        message = "navigation: no searchengines to follow but they are enabled.";
-      }];
-
-      custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/searchengines ${
-          lib.strings.escapeNixString (builtins.toJSON cfg.searchengines.entries)
+          lib.strings.escapeNixString
+            (builtins.toJSON (remoteSearchEngines (enabledRemotes cfg.bookmarks.entries)))
+        }
+        ${pkgs.redis}/bin/redis-cli set nav/bookmarks ${
+          lib.strings.escapeNixString (builtins.toJSON (enabledLocals cfg.bookmarks.entries))
         }
       '';
     })

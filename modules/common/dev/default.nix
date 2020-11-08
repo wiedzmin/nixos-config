@@ -89,13 +89,28 @@ in {
       bookmarks.entries = mkOption {
         type = types.attrs;
         default = {
-          gourmet = { path = "${wsRoot "github"}/wiedzmin/gourmet"; };
-          home-manager = { path = "${wsRoot "github"}/rycee/home-manager"; };
-          nixos = { path = "/etc/nixos"; };
-          nixpkgs = { path = "${wsRoot "github"}/NixOS/nixpkgs"; };
-          nixpkgs-proposed = { path = "${wsRoot "github"}/wiedzmin/nixpkgs"; };
-          nur-packages = { path = "${wsRoot "github"}/wiedzmin/nur-packages"; };
-          postgres = { path = "${wsRoot "github"}/postgres/postgres"; };
+          gourmet = { local.path = "${wsRoot "github"}/wiedzmin/gourmet"; };
+          home-manager = {
+            local.path = "${wsRoot "github"}/rycee/home-manager";
+            remote = {
+              url = "https://github.com/rycee/home-manager/";
+              jump = true;
+              desc = "home-manager upstream repo";
+              searchSuffix = "search?q=";
+            };
+          };
+          nixos = { local.path = "/etc/nixos"; };
+          nixpkgs = {
+            local.path = "${wsRoot "github"}/NixOS/nixpkgs";
+            remote = {
+              url = "https://github.com/NixOS/nixpkgs/";
+              jump = true;
+              desc = "Nixpkgs upstream repo";
+              searchSuffix = "search?q=";
+            };
+          };
+          nur-packages = { local.path = "${wsRoot "github"}/wiedzmin/nur-packages"; };
+          postgres = { local.path = "${wsRoot "github"}/postgres/postgres"; };
         };
         description = "Bookmarks data.";
       };

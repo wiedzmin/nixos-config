@@ -77,10 +77,6 @@ in {
   };
   config = mkMerge [
     (mkIf (cfg.enable) {
-      custom.navigation.webjumps.entries = {
-        "about:config" = { title = "Firefox configuration options"; };
-        "about:memory" = { title = "Firefox addons reference"; };
-      };
       custom.programs.firefox = {
         enable = true;
         extensions = [

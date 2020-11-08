@@ -16,8 +16,6 @@ if not selected_repo:
     notify("[search repos]", "no repository selected", timeout=5000)
     sys.exit(0)
 
-tmux_create_window(None, "@tmuxDefaultSession@", window_title=selected_repo.split("/")[-1],
-                   start_directory=selected_repo)
 elisp_cmd = f'(dired "{selected_repo}")'
 emacs_cmd = f'emacsclient -c -s /run/user/1000/emacs/server -e \'{elisp_cmd}\'' # TODO: make SPOT for socket path
 shell_cmd(emacs_cmd)

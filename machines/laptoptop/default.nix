@@ -409,8 +409,6 @@ in {
     snippets.enable = true;
     emacs.enable = true;
     wm.enable = true;
-    webjumps.enable = true;
-    searchengines.enable = true;
     bookmarks.enable = true;
   };
 

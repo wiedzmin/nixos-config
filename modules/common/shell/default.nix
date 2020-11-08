@@ -482,7 +482,7 @@ in {
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       home-manager.users."${config.attributes.mainUser.name}" = {
         home.file = {
-          "${cfg.bookmarks.path}".text = renderBookmarksKVText config.custom.navigation.bookmarks.entries;
+          "${cfg.bookmarks.path}".text = localBookmarksKVText (enabledLocals config.custom.navigation.bookmarks.entries);
         };
         programs.fzf.enable = true;
         programs.zsh = {

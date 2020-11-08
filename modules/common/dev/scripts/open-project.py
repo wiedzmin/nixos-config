@@ -18,9 +18,14 @@ if not len(bookmarks):
     notify("[bookmarks]", "No entries", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
-selected_bookmark = get_selection(bookmarks.keys(), "", lines=15, font="@wmFontDmenu@")
-if selected_bookmark:
-    bookmark_path = bookmarks[selected_bookmark]
-    elisp_cmd = f'(dired "{bookmark_path}")'
+bookmark = get_selection(bookmarks.keys(), "", lines=15, font="@wmFontDmenu@")
+if bookmark:
+    meta = bookmarks[bookmark]
+    path = meta["path"]
+    shell = meta.get("shell", None)
+    if shell:
+        tmux_session = meta.get("tmux", "@tmuxDefaultSession@")
+        tmux_create_window(None, tmux_session, window_title=path.split("/")[-1], attach=True)
+    elisp_cmd = f'(dired "{path}")'
     emacs_cmd = f'emacsclient -c -s /run/user/1000/emacs/server -e \'{elisp_cmd}\' &' # TODO: make SPOT for socket path
     shell_cmd(emacs_cmd, oneshot=True)

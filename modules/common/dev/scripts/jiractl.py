@@ -48,7 +48,6 @@ def select_issue(issues):
     return issues_map.get(selected_issue, None)
 
 
-# TODO: (global) make and maintain known urls registry, make webjumps and searches its subsets
 def issue_view_in_browser(issue):
     # FIXME: access server value in more straightforward manner
     shell_cmd(f"qutebrowser {client.options['server']}/browse/{issue.key}", oneshot=True)
