@@ -70,7 +70,6 @@ in {
         paste_to_ix = mkPythonScriptWithDeps "paste_to_ix" (with pkgs; [ ix xsel ])
           (readSubstituted ../subst.nix ./scripts/paste_to_ix.sh);
       };
-      services.clipmenu.enable = true;
       home-manager.users.${user} = {
         home.activation.ensureMimeappsList = {
           after = [ ];
@@ -110,6 +109,8 @@ in {
 
           monolith
           tartube
+
+          clipcat
         ];
         services.syncthing.enable = true; # TODO: consider separate option(s)
         xdg.mimeApps.enable = true;
@@ -142,6 +143,40 @@ in {
           };
         };
         programs.zsh.shellAliases = { yg = "${pkgs.you-get}/bin/you-get"; };
+
+        xdg.configFile."clipcat/clipcatd.toml".text = toToml {
+          daemonize = true;
+          max_history = 50;
+          history_file_path = "${hm.xdg.cacheHome}/clipcat/clipcatd/db";
+          log_level = "INFO";
+          monitor = {
+            load_current = true;
+            enable_clipboard = true;
+            enable_primary = false;
+          };
+          grpc = {
+            host = "127.0.0.1";
+            port = 45045;
+          };
+        };
+        xdg.configFile."clipcat/clipcatctl.toml".text = toToml {
+          server_host = "127.0.0.1";
+          server_port = 45045;
+          log_level = "INFO";
+        };
+        xdg.configFile."clipcat/clipcat-menu.toml".text = toToml {
+          server_host = "127.0.0.1";
+          server_port = 45045;
+          finder = "dmenu";
+          dmenu = {
+            line_length = 150;
+            menu_length = 20;
+          };
+          custom_finder = {
+            program = "${pkgs.fzf}/bin/fzf";
+            args = [ ];
+          };
+        };
       };
     })
     (mkIf cfg.bookmarking.enable {
@@ -221,11 +256,23 @@ in {
       ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [{
-        key = [ "p" ];
-        cmd = "${pkgs.paste_to_ix}/bin/paste_to_ix";
-        mode = "window";
-      }];
+      wmCommon.keys = [
+        {
+          key = [ "p" ];
+          cmd = "${pkgs.paste_to_ix}/bin/paste_to_ix";
+          mode = "window";
+        }
+        {
+          key = [ "c" ];
+          cmd = ''PATH="$PATH:${pkgs.dmenu}/bin/" ${pkgs.clipcat}/bin/clipcat-menu insert''; # TODO: consider abstracting away
+          mode = "select";
+        }
+        {
+          key = [ "Shift" "c" ];
+          cmd = ''PATH="$PATH:${pkgs.dmenu}/bin/" ${pkgs.clipcat}/bin/clipcat-menu remove'';
+          mode = "select";
+        }
+      ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {
