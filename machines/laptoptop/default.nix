@@ -230,6 +230,7 @@ in {
       root = homePrefix "blobs/wallpaper/mongol/autumn";
       current = "highway.jpg";
     };
+    gtk.enable = false;
     emacs.enable = true;
     wm.enable = true;
   };
