@@ -292,6 +292,11 @@ in {
           cmd = "${pkgs.systemd}/bin/systemctl --user restart compton.service";
           mode = "run";
         }
+        {
+          key = [ "Mod4" "Return" ];
+          cmd = "${pkgs.find-cursor}/bin/find-cursor";
+          mode = "root";
+        }
       ];
     })
     (mkIf (cfg.enable && cfg.debug.enable) {
