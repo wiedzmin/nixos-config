@@ -2,7 +2,9 @@
 with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
-let cfg = config.custom.knowledgebase;
+let
+  cfg = config.custom.knowledgebase;
+  user = config.attributes.mainUser.name;
 in {
   options = {
     custom.knowledgebase = {
@@ -65,7 +67,7 @@ in {
           includeAllModules = false; # FIXME build error
         };
       };
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         programs = {
           info.enable = true;
           man.enable = true;
@@ -73,7 +75,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.secondBrain.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ heimer ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ heimer ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.helpful epkgs.which-key ];

@@ -1,6 +1,8 @@
 { config, inputs, lib, pkgs, ... }:
 
-{
+let
+  user = config.attributes.mainUser.name;
+in {
   imports = [
     ./secrets
     ../../modules
@@ -96,7 +98,7 @@
 
   environment.shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" ];
 
-  nix.trustedUsers = [ "root" config.attributes.mainUser.name ];
+  nix.trustedUsers = [ "root" config.user ];
 
   security = {
     sudo.wheelNeedsPassword = false;
@@ -157,7 +159,7 @@
     email = config.identity.secrets.email;
   };
 
-  users.extraUsers."${config.attributes.mainUser.name}" = {
+  users.extraUsers.${user} = {
     isNormalUser = true;
     uid = 1000;
     description = config.identity.secrets.fullName;
@@ -229,7 +231,7 @@
 
   home-manager = {
     useGlobalPkgs = true;
-    users."${config.attributes.mainUser.name}" = {
+    users.${user} = {
       services.unclutter.enable = true;
       services.udiskie.enable = true;
       programs.htop.enable = true;

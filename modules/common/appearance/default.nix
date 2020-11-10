@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.appearance;
+  user = config.attributes.mainUser.name;
   prefix = config.wmCommon.prefix;
   rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
     ${pkgs.feh}/bin/feh --bg-${cfg.wallpaper.transform} ${cfg.wallpaper.root}/${cfg.wallpaper.current}
@@ -128,7 +129,7 @@ in {
         message = "appearance: must provide wallpapers path and image to use.";
       }];
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         programs.autorandr.hooks = {
           postswitch = { "rescale-wallpaper" = "${rescale-wallpaper}/bin/rescale-wallpaper"; };
         };
@@ -138,10 +139,10 @@ in {
     (mkIf (cfg.enable && cfg.gtk.enable) {
       programs.dconf.enable = true;
       services.dbus.packages = with pkgs; [ gnome3.dconf ];
-      home-manager.users."${config.attributes.mainUser.name}" = { gtk.enable = true; };
+      home-manager.users.${user} = { gtk.enable = true; };
     })
     (mkIf (cfg.enable && cfg.xresources.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         xresources.properties = {
           "Xmessage*Buttons" = "Quit";
           "Xmessage*defaultButton" = "Quit";
@@ -168,7 +169,7 @@ in {
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/appearance.el;
     })
     (mkIf (cfg.enable && cfg.emacs.enable && cfg.xresources.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         xresources.properties = {
           "Emacs.fontBackend" = "xft,x";
           "Emacs.menuBar" = "0";
@@ -192,7 +193,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ rescale-wallpaper ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ rescale-wallpaper ]; };
     })
   ];
 }

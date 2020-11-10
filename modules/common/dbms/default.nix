@@ -4,8 +4,10 @@ with lib;
 
 let
   cfg = config.tools.dbms;
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  dataHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.dataHome;
+  dataHome = hm.xdg.dataHome;
 in {
   options = {
     tools.dbms = {
@@ -93,7 +95,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.postgresql.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ pgcenter inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.pgcli ];
         xdg.configFile.".pgclirc".text = lib.generators.toINI { } {
           main = {
@@ -164,7 +166,7 @@ in {
     })
     (mkIf cfg.mysql.enable {
       environment.variables.MYCLI_HISTFILE = cfg.mysql.historyPath;
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.mycli ];
         xdg.configFile.".myclirc".text = lib.generators.toINI { } {
           main = {
@@ -215,7 +217,7 @@ in {
       };
     })
     (mkIf cfg.sqlite.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [
           sqlitebrowser
           inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.litecli # TODO: shell automation: fzf for selecting db file, you get the idea
@@ -223,7 +225,7 @@ in {
       };
     })
     (mkIf cfg.misc.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.nodePackages.elasticdump ];
       };
     })
@@ -243,7 +245,7 @@ in {
       }];
     })
     (mkIf (config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ dbms ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ dbms ]; };
     })
   ];
 }

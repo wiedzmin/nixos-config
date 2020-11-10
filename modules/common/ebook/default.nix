@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.tools.ebooks;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
@@ -77,7 +78,7 @@ in {
         };
       };
       systemd.user.timers."update-ebooks" = renderTimer "Update ebooks entries" "1h" "1h" "";
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.ebook "org.pwmt.zathura.desktop";
         home.packages = with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.calibre djview djvulibre ];
         programs.zathura = {
@@ -90,7 +91,7 @@ in {
       };
     })
     (mkIf cfg.processors.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ enca pandoc pdfcpu pdftk ];
       };
     })
@@ -102,10 +103,10 @@ in {
       }];
     })
     (mkIf (cfg.staging.packages != [ ]) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = cfg.staging.packages; };
+      home-manager.users.${user} = { home.packages = cfg.staging.packages; };
     })
     (mkIf (config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ bookshelf update-bookshelf ];
       };
     })

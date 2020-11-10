@@ -1,7 +1,9 @@
 { config, inputs, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.themes.fonts.fira-code;
+let
+  cfg = config.themes.fonts.fira-code;
+  user = config.attributes.mainUser.name;
 in {
   options.themes.fonts.fira-code = { enable = mkEnableOption "fira-code"; };
 
@@ -13,7 +15,7 @@ in {
     wmCommon.fonts.default = "pango:Fira Code Bold 8";
     wmCommon.fonts.dmenu = "Fira Code:bold:pixelsize=12";
     wmCommon.fonts.statusbar = "pango:Fira Code Bold 8";
-    home-manager.users."${config.attributes.mainUser.name}" = {
+    home-manager.users.${user} = {
       programs.alacritty.settings.font = {
         normal = {
           family = "Fira Code";

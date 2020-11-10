@@ -4,6 +4,8 @@ with lib;
 
 let
   cfg = config.custom.navigation;
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
   dmenu_runapps =
@@ -118,14 +120,14 @@ in {
           (readSubstituted ../subst.nix ./scripts/webjumps.py);
       };
 
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ j4-dmenu-desktop ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ j4-dmenu-desktop ]; };
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         mcpanes = mkPythonScriptWithDeps "mcpanes" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../subst.nix ./scripts/mcpanes.py);
       };
-      home-manager.users."${config.attributes.mainUser.name}" = lib.optionalAttrs (cfg.emacs.enable) {
+      home-manager.users.${user} = lib.optionalAttrs (cfg.emacs.enable) {
         home.activation.emacsKnownProjects = {
           after = [ "linkGeneration" ];
           before = [ ];
@@ -152,7 +154,7 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.gmrun.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ gmrun ];
         home.file = {
           ".gmrunrc".text = readSubstituted ../subst.nix ./gmrunrc;
@@ -160,7 +162,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.mc.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ mc ];
         xdg.configFile."mc/mc.ext".text = ''
           regex/\.([pP][dD][fF])$
@@ -278,7 +280,7 @@ in {
         snippets = mkPythonScriptWithDeps "snippets" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
           (readSubstituted ../subst.nix ./scripts/snippets.py);
       };
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ snippets ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ snippets ]; };
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/snippets ${
           lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (forEach cfg.snippets.entries (s:
@@ -290,7 +292,7 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ ripgrep ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ ripgrep ]; };
       ide.emacs.extraPackages = epkgs: [
         epkgs.ace-link
         epkgs.ace-window
@@ -326,7 +328,7 @@ in {
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/browsers.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ dmenu_runapps dmenu_select_windows ];
       };
       wmCommon.keys = [
@@ -391,7 +393,7 @@ in {
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ mcpanes search_prompt search_selection snippets webjumps ];
       };
     })

@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.custom.browsers.chromium;
+  user = config.attributes.mainUser.name;
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -60,7 +61,7 @@ in {
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         # chrome-export
         programs.browserpass.enable = true;
         programs.chromium = {
@@ -92,7 +93,7 @@ in {
       ];
 
       environment.sessionVariables = { BROWSER = cfg.command; };
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "chromium.desktop";
       };
       attributes.browser.default = cfg.command;

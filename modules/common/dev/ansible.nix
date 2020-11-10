@@ -3,7 +3,9 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 # TODO: implement profiles (refer to l2vpn module)
-let cfg = config.custom.dev.ansible;
+let
+  cfg = config.custom.dev.ansible;
+  user = config.attributes.mainUser.name;
 in {
   options = {
     custom.dev.ansible = {
@@ -51,7 +53,7 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.file = {
           "ansible.cfg".text = lib.generators.toINI { } {
             defaults = {

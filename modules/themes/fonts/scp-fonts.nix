@@ -1,7 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.themes.fonts.source-code-pro;
+let
+  cfg = config.themes.fonts.source-code-pro;
+  user = config.attributes.mainUser.name;
 in {
   options.themes.fonts.source-code-pro = { enable = mkEnableOption "source-code-pro"; };
 
@@ -13,7 +15,7 @@ in {
     wmCommon.fonts.default = "pango:Source Code Pro Bold 9";
     wmCommon.fonts.dmenu = "Source Code Pro:bold:size=9";
     wmCommon.fonts.statusbar = "pango:Source Code Pro Bold 9";
-    home-manager.users."${config.attributes.mainUser.name}" = {
+    home-manager.users.${user} = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.source-code-pro;
         name = "Source Code Pro Bold 8";

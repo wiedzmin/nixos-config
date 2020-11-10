@@ -4,8 +4,10 @@ with lib;
 
 let
   cfg = config.custom.dev.git;
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  dataHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.dataHome;
+  dataHome = hm.xdg.dataHome;
 in {
   options = {
     custom.dev.git = {
@@ -184,7 +186,7 @@ in {
         }
       '';
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         programs.zsh.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
         xdg.dataFile."${cfg.assets.dirName}/.gitignore".text = cfg.gitignore;
         # https://github.com/languitar/pass-git-helper - review for more fine-grained control
@@ -262,7 +264,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
       environment.systemPackages = with pkgs; [ gitAndTools.ghq ];
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         programs.git.extraConfig = { "ghq" = { root = wsRootAbs "global"; }; };
       };
       custom.dev.workspaceRoots = {
@@ -273,7 +275,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.myrepos.enable) {
       custom.dev.git.myrepos.subconfigs = [ "${wsRootAbs "github"}/wiedzmin/.mrconfig" ];
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ mr gitctl ];
         home.file = {
           ".mrtrust".text = builtins.concatStringsSep "\n" (cfg.myrepos.subconfigs ++ [ (homePrefix ".mrconfig") ]);
@@ -399,7 +401,7 @@ in {
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/git.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ gitctl ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ gitctl ]; };
     })
   ];
 }

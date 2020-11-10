@@ -2,7 +2,9 @@
 with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
-let cfg = config.custom.power-management;
+let
+  cfg = config.custom.power-management;
+  user = config.attributes.mainUser.name;
 in {
   options = {
     custom.power-management = {
@@ -91,7 +93,7 @@ in {
       services.tuptime.enable = true;
     })
     (mkIf cfg.appsSuspension.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         services.xsuspender = {
           enable = true;
           defaults = {

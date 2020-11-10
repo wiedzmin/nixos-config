@@ -5,10 +5,12 @@ with lib;
 let
 
   cfg = config.custom.programs.mbsync;
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users.${user};
 
   # Accounts for which mbsync is enabled.
   mbsyncAccounts = filter (a: a.mbsync.enable)
-    (attrValues config.home-manager.users."${config.attributes.mainUser.name}".accounts.email.accounts);
+    (attrValues hm.accounts.email.accounts);
 
   genTlsConfig = tls:
     {
@@ -119,7 +121,7 @@ in {
       (checkAccounts (a: a.userName == null) "Missing username")
     ];
 
-    home-manager.users."${config.attributes.mainUser.name}" = {
+    home-manager.users."${user}" = {
       home.packages = [ cfg.package ];
 
       programs.notmuch.new.ignore = [ ".uidvalidity" ".mbsyncstate" ];

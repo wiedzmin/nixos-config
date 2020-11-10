@@ -2,7 +2,9 @@
 with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
-let cfg = config.custom.dev.ccpp;
+let
+  cfg = config.custom.dev.ccpp;
+  user = config.attributes.mainUser.name;
 in {
   options = {
     custom.dev.ccpp = {
@@ -21,7 +23,7 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ ccls clang clang-tools ];
       };
       environment.etc."security/limits.conf".text = ''

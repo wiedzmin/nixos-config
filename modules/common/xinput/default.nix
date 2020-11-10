@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.xinput;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   proposed = import inputs.nixpkgs-proposed ({
     config = config.nixpkgs.config;
@@ -270,9 +271,9 @@ in {
         };
       };
 
-      users.users."${config.attributes.mainUser.name}".extraGroups = [ "input" ];
+      users.users.${user}.extraGroups = [ "input" ];
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText;
       };
     })

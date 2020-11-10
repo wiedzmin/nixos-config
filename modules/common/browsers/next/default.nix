@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.custom.browsers.next;
+  user = config.attributes.mainUser.name;
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -51,7 +52,7 @@ in {
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ next ];
         xdg.configFile."next/init.lisp".text = readSubstituted ../../subst.nix ./init.lisp; # NOTE: actually absent
       };
@@ -70,7 +71,7 @@ in {
         }
       ];
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "next.desktop";
       };
       attributes.browser.default = cfg.command;

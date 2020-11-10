@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.pim;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
@@ -107,7 +108,7 @@ in {
         enable = true;
         package = inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.haskellPackages.arbtt;
       };
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs;
           [
             inputs.nixpkgs-16_04_20.haskellPackages.arbtt # for stats viewing
@@ -115,7 +116,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.scheduling.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users."${user}" = {
         home.activation.ensureSchedulingTimers = {
           after = [ ];
           before = [ "checkLinkTargets" ];
@@ -147,7 +148,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       custom.pim.org.agendaRoots = { "${config.ide.emacs.orgDir}" = 3000; };
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ plantuml ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ plantuml ]; };
       ide.emacs.extraPackages = epkgs: [
         epkgs.counsel-org-clock
         epkgs.deft

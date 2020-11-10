@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.dev.golang;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
@@ -59,7 +60,7 @@ in {
       #   message = "dev/golang: cannot proceed without valid $GOPATH value.";
       # }];
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [
           delve
           gopls
@@ -81,7 +82,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.packaging.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ dep2nix go2nix vgo2nix ];
       };
     })
@@ -93,10 +94,10 @@ in {
           go install ./...
         '';
       };
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ go-install-wrapper gore modedit ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ go-install-wrapper gore modedit ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.file = {
           "${cfg.packaging.path}/default.nix".text = ''
             with import <nixpkgs> {};
@@ -136,7 +137,7 @@ in {
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/golang.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ modedit ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ modedit ]; };
     })
   ];
 }

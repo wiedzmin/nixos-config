@@ -2,7 +2,9 @@ let deps = import ../../nix/sources.nix;
 in { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.wm.stumpwm;
+let
+  cfg = config.wm.stumpwm;
+  user = config.attributes.mainUser.name;
 in {
   options = {
     wm.stumpwm = {
@@ -29,7 +31,7 @@ in {
       stumpwm.enable = true;
     };
 
-    home-manager.users."${config.attributes.mainUser.name}" = {
+    home-manager.users.${user} = {
       home.file = { ".stumpwm.d".source = deps.stumpwm-config; };
     };
   };

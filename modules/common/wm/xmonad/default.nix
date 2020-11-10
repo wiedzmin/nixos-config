@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.wm.xmonad;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   configText = ''
     module Main where
@@ -316,7 +317,7 @@ in {
       };
 
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.file = {
           ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./ExtraCombinators.hs;
           ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./WindowTypes.hs;
@@ -343,7 +344,7 @@ in {
       '';
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ desktops ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ desktops ]; };
     })
   ];
 }

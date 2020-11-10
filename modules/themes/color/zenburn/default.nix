@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.themes.zenburn;
+  user = config.attributes.mainUser.name;
   zenburnEmacs = ''
     (use-package zenburn-theme
       :hook
@@ -15,7 +16,7 @@ in {
   config = mkIf cfg.enable {
     ide.emacs.config = "${zenburnEmacs}";
     ide.emacs.extraPackages = epkgs: [ epkgs.zenburn-theme ];
-    home-manager.users."${config.attributes.mainUser.name}" = {
+    home-manager.users."${user}" = {
       xdg.configFile."quassel-irc.org/settings.qss".source = ./zenburn.qss;
       programs.zathura.options = {
         completion-bg = "#404040";

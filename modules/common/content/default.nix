@@ -4,6 +4,8 @@ with lib;
 
 let
   cfg = config.custom.content;
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
@@ -69,7 +71,7 @@ in {
           (readSubstituted ../subst.nix ./scripts/paste_to_ix.sh);
       };
       services.clipmenu.enable = true;
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.activation.ensureMimeappsList = {
           after = [ ];
           before = [ "checkLinkTargets" ];
@@ -226,7 +228,7 @@ in {
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [
           buku_add
           buku_search_tag

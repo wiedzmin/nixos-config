@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.security;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
@@ -65,7 +66,7 @@ in {
           (readSubstituted ../subst.nix ./scripts/passctl.py);
       };
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ paperkey ];
         programs.password-store = {
           enable = true;
@@ -136,7 +137,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ passctl ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ passctl ]; };
     })
   ];
 }

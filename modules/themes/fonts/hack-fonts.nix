@@ -1,7 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.themes.fonts.hack;
+let
+  cfg = config.themes.fonts.hack;
+  user = config.attributes.mainUser.name;
 in {
   options.themes.fonts.hack = { enable = mkEnableOption "hack"; };
 
@@ -13,7 +15,7 @@ in {
     wmCommon.fonts.default = "pango:Hack Bold 8";
     wmCommon.fonts.dmenu = "Hack:bold:size=8";
     wmCommon.fonts.statusbar = "pango:Hack Bold 8";
-    home-manager.users."${config.attributes.mainUser.name}" = {
+    home-manager.users.${user} = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.hack-font;
         name = "Hack Bold 8";

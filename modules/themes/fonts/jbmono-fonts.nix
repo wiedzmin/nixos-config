@@ -1,7 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.themes.fonts.jetbrains-mono;
+let
+  cfg = config.themes.fonts.jetbrains-mono;
+  user = config.attributes.mainUser.name;
 in {
   options.themes.fonts.jetbrains-mono = { enable = mkEnableOption "jetbrains-mono"; };
 
@@ -13,7 +15,7 @@ in {
     wmCommon.fonts.default = "pango:JetBrains Mono Bold 8";
     wmCommon.fonts.dmenu = "JetBrains Mono:bold:size=8";
     wmCommon.fonts.statusbar = "pango:JetBrains Mono Bold 8";
-    home-manager.users."${config.attributes.mainUser.name}" = {
+    home-manager.users.${user} = {
       programs.alacritty.settings.font = {
         normal = {
           family = "JetBrains Mono";

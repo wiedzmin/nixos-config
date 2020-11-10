@@ -1,6 +1,8 @@
 { config, inputs, lib, pkgs, ... }:
 
-let configBasePath = "/etc/nixos";
+let
+  user = config.attributes.mainUser.name;
+  configBasePath = "/etc/nixos";
 in rec {
   addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
   withPatches = pkg: patches: lib.overrideDerivation pkg (_: { inherit patches; });
@@ -71,7 +73,7 @@ in rec {
   mkIndent = width: with lib; (concatStrings (genList (const " ") width));
   mkNewlineAndIndent = width: with lib; "\n" + (concatStrings (genList (const " ") width));
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
-  homePrefix = suffix: "/home/${config.attributes.mainUser.name}/" + suffix;
+  homePrefix = suffix: "/home/${user}/" + suffix;
   xdgConfig = suffix: (homePrefix ".config") + suffix;
   secretsPrefix = suffix: configBasePath + "/machines/" + config.attributes.machine.name + "/secrets/" + suffix;
   assetsPrefix = suffix: configBasePath + "/machines/" + config.attributes.machine.name + "/assets/" + suffix;

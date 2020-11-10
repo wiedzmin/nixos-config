@@ -4,6 +4,8 @@ with lib;
 
 let
   cfg = config.custom.shell;
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   thumbs-bin = pkgs.rustPlatform.buildRustPackage rec {
     pname = "thumbs-bin";
@@ -159,7 +161,7 @@ in {
           (readSubstituted ../subst.nix ./scripts/tmuxp_sessions.py);
       };
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users."${user}" = {
         xdg.configFile."cod/config.toml".text = ''
           [[rule]]
           executable = "/run/current-system/sw/bin/dephell"
@@ -238,7 +240,7 @@ in {
 
             bindkey '^P' fuzzy-search-and-edit
           '';
-          sessionVariables = let dataHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.dataHome;
+          sessionVariables = let dataHome = hm.xdg.dataHome;
           in {
             HISTFILE = "${dataHome}/.histfile";
             LESSHISTFILE = "${dataHome}/.lesshst";
@@ -316,7 +318,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.alacritty.enable) {
       environment.sessionVariables.TERMINAL = [ "${pkgs.alacritty}/bin/alacritty" ];
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users."${user}" = {
         programs.alacritty = {
           enable = true;
           settings = {
@@ -442,7 +444,7 @@ in {
       };
     })
     (mkIf cfg.toolsng.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [
           choose
           fd
@@ -480,7 +482,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users."${user}" = {
         home.file = {
           "${cfg.bookmarks.path}".text = localBookmarksKVText (enabledLocals config.custom.navigation.bookmarks.entries);
         };
@@ -504,7 +506,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ checkbashisms nodePackages.bash-language-server ];
       };
       ide.emacs.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms ];
@@ -518,7 +520,7 @@ in {
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ tmuxp_sessions ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ tmuxp_sessions ]; };
     })
   ];
 }

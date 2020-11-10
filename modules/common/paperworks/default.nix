@@ -3,6 +3,7 @@ with lib;
 
 let
   cfg = config.custom.paperworks;
+  user = config.attributes.mainUser.name;
 
   nixpkgs-hplip = import inputs.nixpkgs-16_04_20 ({
     config = config.nixpkgs.config // { allowUnfree = true; };
@@ -178,7 +179,7 @@ in {
         webInterface = true;
       };
       environment.systemPackages = with pkgs; [ nixpkgs-hplip.system-config-printer ];
-      users.users."${config.attributes.mainUser.name}".extraGroups = [ "lp" ];
+      users.users."${user}".extraGroups = [ "lp" ];
     })
     (mkIf cfg.scanning.enable {
       hardware.sane = {
@@ -190,7 +191,7 @@ in {
 
       environment.systemPackages = with pkgs;
         [ deskew scantailor-advanced ] ++ lib.optionals cfg.scanning.enableXsane [ xsane ];
-      users.users."${config.attributes.mainUser.name}".extraGroups = [ "scanner" ];
+      users.users."${user}".extraGroups = [ "scanner" ];
     })
     (mkIf (cfg.scanning.enable && cfg.scanning.snapscan.enable) {
       assertions = [
@@ -274,7 +275,7 @@ in {
       };
     })
     (mkIf cfg.publishing.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = [ inputs.stable.legacyPackages.x86_64-linux.libreoffice ]
           ++ lib.optionals (cfg.publishing.staging.packages != [ ]) cfg.publishing.staging.packages;
       };

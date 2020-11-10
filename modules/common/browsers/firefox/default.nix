@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.custom.browsers.firefox;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
@@ -208,7 +209,7 @@ in {
             },
         }, "Firefox")
       '';
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs;
           [
             xsel # for firefox native clients
@@ -394,7 +395,7 @@ in {
       ];
 
       environment.sessionVariables = { BROWSER = cfg.command; };
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "firefox.desktop";
       };
       attributes.browser.default = cfg.command;
@@ -428,7 +429,7 @@ in {
           (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.pystdlib ])
           (readSubstituted ../subst.nix ./scripts/manage_firefox_sessions.py);
       };
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.activation.ensureFirefoxSessionsPath = {
           after = [ ];
           before = [ "linkGeneration" ];
@@ -477,7 +478,7 @@ in {
         renderTimer "Backup current firefox session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [
           collect_links_on_page
           dump_firefox_session

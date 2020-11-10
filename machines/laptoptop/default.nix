@@ -2,6 +2,7 @@
 with import ../../modules/util.nix { inherit config inputs lib pkgs; };
 
 let
+  user = config.attributes.mainUser.name;
   nixpkgs-hplip = import inputs.nixpkgs-16_04_20 ({
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
@@ -92,11 +93,11 @@ in {
     dhcpcd.denyInterfaces = [ "docker*" "virbr*" "br*" ];
     nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
   };
-  users.users."${config.attributes.mainUser.name}".extraGroups = [ "networkmanager" ];
+  users.users.${user}.extraGroups = [ "networkmanager" ];
 
   environment.shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" "/run/current-system/sw/bin/zsh" ];
 
-  nix.trustedUsers = [ "root" config.attributes.mainUser.name ];
+  nix.trustedUsers = [ "root" user ];
 
   security = {
     sudo.wheelNeedsPassword = false;
@@ -176,7 +177,7 @@ in {
         background = "/etc/nixos/assets/blobs/nix-wallpaper-mosaic-blue.png";
         greeters.mini = {
           enable = true;
-          user = config.attributes.mainUser.name;
+          user = user;
         };
       };
       gdm.enable = false;
@@ -203,7 +204,7 @@ in {
     gpgKeyID = config.identity.secrets.gpgKeyID;
   };
 
-  users.extraUsers."${config.attributes.mainUser.name}" = {
+  users.extraUsers.${user} = {
     isNormalUser = true;
     uid = 1000;
     description = config.identity.secrets.fullName;
@@ -453,7 +454,7 @@ in {
         package = inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.paperless;
         consumptionDir = homePrefix "docs/paperless/consume";
         dataDir = homePrefix "docs/paperless/data";
-        user = config.attributes.mainUser.name;
+        user = user;
         extraConfig = { PAPERLESS_FORGIVING_OCR = true; };
         group = "users";
       };
@@ -657,7 +658,7 @@ in {
 
   home-manager = {
     useGlobalPkgs = true;
-    users."${config.attributes.mainUser.name}" = {
+    users."${user}" = {
       xdg.enable = true;
       home.stateVersion = "19.09";
     };

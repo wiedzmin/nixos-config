@@ -8,6 +8,9 @@ let
 
   cfg = config.custom.programs.firefox;
 
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users.${user};
+
   mozillaConfigPath = if isDarwin then "Library/Application Support/Mozilla" else ".mozilla";
 
   firefoxConfigPath = if isDarwin then "Library/Application Support/Firefox" else "${mozillaConfigPath}/firefox";
@@ -59,7 +62,7 @@ in {
 
       package = mkOption {
         type = types.package;
-        default = if versionAtLeast config.home-manager.users."${config.attributes.mainUser.name}".home.stateVersion
+        default = if versionAtLeast hm.home.stateVersion
         "19.09" then
           pkgs.firefox
         else
@@ -212,7 +215,7 @@ in {
       })
     ];
 
-    home-manager.users."${config.attributes.mainUser.name}" = {
+    home-manager.users."${user}" = {
       home.packages = let
         # The configuration expected by the Firefox wrapper.
         fcfg = { enableAdobeFlash = cfg.enableAdobeFlash; };
@@ -225,7 +228,7 @@ in {
 
         package = if isDarwin then
           cfg.package
-        else if versionAtLeast config.home-manager.users."${config.attributes.mainUser.name}".home.stateVersion
+        else if versionAtLeast hm.home.stateVersion
         "19.09" then
           cfg.package.override { cfg = fcfg; }
         else

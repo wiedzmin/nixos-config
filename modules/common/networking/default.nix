@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.networking;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   imports = [ ./nmconn.nix ];
@@ -78,7 +79,7 @@ in {
           (with pkgs; [ openssh nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis vpnctl ])
           (readSubstituted ../subst.nix ./scripts/sshmenu.py);
       };
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ vpnctl ]; # NOTE: for shell usage
       };
       services.openssh = {
@@ -93,7 +94,7 @@ in {
         ${renderHosts cfg.extraHosts.entries}
       '';
 
-      home-manager.users."${config.attributes.mainUser.name}".programs.ssh.matchBlocks = lib.mapAttrs' (hostname: meta:
+      home-manager.users.${user}.programs.ssh.matchBlocks = lib.mapAttrs' (hostname: meta:
         lib.nameValuePair hostname ({
           hostname = hostname;
           user = "${meta.user}";
@@ -127,13 +128,13 @@ in {
         wavemon.enable = true;
       };
 
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ jnettop ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ jnettop ]; };
 
-      users.extraUsers."${config.attributes.mainUser.name}".extraGroups = [ "wireshark" ];
+      users.extraUsers."${user}".extraGroups = [ "wireshark" ];
     })
     (mkIf (cfg.enable && cfg.clients.enable) {
       systemd.services.dhcpcd.serviceConfig.Type = lib.mkForce "simple"; # NOTE: forking is not acceptable for dhcpcd.
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ davfs2 inputs.nixpkgs-09_07_20.legacyPackages.x86_64-linux.gcalcli ];
         programs.ssh = {
           enable = true;
@@ -206,7 +207,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.messengers.enable) {
       services.quassel.enable = true;
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ skype inputs.nixpkgs-09_07_20.legacyPackages.x86_64-linux.tdesktop quasselClient ];
       };
       custom.xinput.xkeysnail.rc = ''
@@ -225,7 +226,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.scripts.enable) { environment.systemPackages = with pkgs; [ wifi-status ]; })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ wpa_supplicant_gui ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ wpa_supplicant_gui ]; };
       wmCommon.keys = [
         {
           key = [ "u" ];
@@ -271,7 +272,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ ifconfless sshmenu vpnctl wifi-status ];
       };
     })

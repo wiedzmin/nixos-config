@@ -1,7 +1,10 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../util.nix { inherit config inputs lib pkgs; };
 
-let configHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.configHome;
+let
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users."${user}";
+  configHome = hm.xdg.configHome;
 in rec {
   autorandrProfiles = homePrefix ".config/autorandr";
   bashExecutable = "/run/current-system/sw/bin/bash";

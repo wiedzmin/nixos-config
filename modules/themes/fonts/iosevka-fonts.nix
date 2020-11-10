@@ -1,7 +1,9 @@
 { config, lib, pkgs, ... }:
 
 with lib;
-let cfg = config.themes.fonts.iosevka;
+let
+  cfg = config.themes.fonts.iosevka;
+  user = config.attributes.mainUser.name;
 in {
   options.themes.fonts.iosevka = { enable = mkEnableOption "iosevka"; };
 
@@ -13,7 +15,7 @@ in {
     wmCommon.fonts.default = "pango:Iosevka Bold 9";
     wmCommon.fonts.dmenu = "Iosevka:bold:size=9";
     wmCommon.fonts.statusbar = "pango:Iosevka Bold 9";
-    home-manager.users."${config.attributes.mainUser.name}" = {
+    home-manager.users.${user} = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.iosevka;
         name = "Iosevka Bold 10";

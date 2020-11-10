@@ -5,6 +5,8 @@ with lib;
 let
 
   cfg = config.custom.programs.tmux;
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users.${user};
 
   pluginName = p: if types.package.check p then p.name else p.plugin.name;
 
@@ -163,7 +165,7 @@ let
   defaultResize = 5;
   defaultShell = "$SHELL";
   defaultShortcut =
-    if versionAtLeast config.home-manager.users."${config.attributes.mainUser.name}".home.stateVersion "19.09" then
+    if versionAtLeast hm.home.stateVersion "19.09" then
       "C-b"
     else
       "b";
@@ -202,7 +204,7 @@ let
       bind -r L resize-pane -R ${toString cfg.resizeAmount}
     ''}
 
-    ${if versionAtLeast config.home-manager.users."${config.attributes.mainUser.name}".home.stateVersion "19.09" then ''
+    ${if versionAtLeast hm.home.stateVersion "19.09" then ''
       # rebind main key: ${cfg.shortcut}
       unbind ${defaultShortcut}
       set -g prefix ${cfg.shortcut}
@@ -512,7 +514,7 @@ in {
 
   config = mkIf cfg.enable (mkMerge [
     {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users."${user}" = {
         home.packages = [ cfg.package ] ++ optional cfg.tmuxinator.enable pkgs.tmuxinator
           ++ optional cfg.tmuxp.enable pkgs.tmuxp;
         home.file.".tmux.conf".text = tmuxConf;
@@ -520,7 +522,7 @@ in {
     }
 
     (mkIf cfg.sensibleOnTop {
-      home-manager.users."${config.attributes.mainUser.name}".home.file.".tmux.conf".text = mkBefore ''
+      home-manager.users."${user}".home.file.".tmux.conf".text = mkBefore ''
         # ============================================= #
         # Start with defaults from the Sensible plugin  #
         # --------------------------------------------- #
@@ -530,7 +532,7 @@ in {
     })
 
     (mkIf cfg.secureSocket {
-      home-manager.users."${config.attributes.mainUser.name}".home.sessionVariables = {
+      home-manager.users."${user}".home.sessionVariables = {
         TMUX_TMPDIR = ''''${XDG_RUNTIME_DIR:-"/run/user/\$(id -u)"}'';
       };
     })
@@ -547,7 +549,7 @@ in {
         })
       ];
 
-      home-manager.users."${config.attributes.mainUser.name}".home.file.".tmux.conf".text = mkAfter ''
+      home-manager.users."${user}".home.file.".tmux.conf".text = mkAfter ''
         # ============================================= #
         # Load plugins with Home Manager                #
         # --------------------------------------------- #

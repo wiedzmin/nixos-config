@@ -4,12 +4,14 @@ with lib;
 
 let
   cfg = config.custom.virtualization;
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
   vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
   '';
-  configHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.configHome;
+  configHome = hm.xdg.configHome;
 in {
   options = {
     custom.virtualization = {
@@ -119,7 +121,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.virtualbox.enable) {
       virtualisation.virtualbox.host.enable = true;
-      users.users."${config.attributes.mainUser.name}".extraGroups = [ "vboxusers" ];
+      users.users.${user}.extraGroups = [ "vboxusers" ];
     })
     (mkIf (cfg.enable && cfg.docker.enable && cfg.docker.aux.enable) {
       environment.systemPackages = with pkgs; [ docker-slim nsjail skopeo ];
@@ -155,9 +157,9 @@ in {
         storageDriver = cfg.docker.storageDriver;
       };
 
-      users.users."${config.attributes.mainUser.name}".extraGroups = [ "docker" ];
+      users.users.${user}.extraGroups = [ "docker" ];
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         xdg.configFile."hadolint.yaml".text = builtins.toJSON {
           ignored = [ "DL3007" ];
           trustedRegistries = [ "docker.io" ];
@@ -214,7 +216,7 @@ in {
       virtualisation.libvirtd = { enable = true; };
       virtualisation.kvmgt.enable = true;
 
-      users.users."${config.attributes.mainUser.name}".extraGroups = [ "libvirtd" ];
+      users.users.${user}.extraGroups = [ "libvirtd" ];
       environment.sessionVariables.LIBVIRT_DEFAULT_URI = [ "qemu:///system" ];
 
       networking.nat.internalInterfaces = [ "virbr0" ];
@@ -271,7 +273,7 @@ in {
       wmCommon.modeBindings.virt = [ prefix "d" ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [
           discover_containerized_services
           dlint

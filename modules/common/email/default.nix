@@ -4,10 +4,12 @@ with lib;
 
 let
   cfg = config.custom.email;
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users.${user};
   pass_imap_helper = pkgs.writeShellScriptBin "pass_imap_helper" ''
     echo $(${pkgs.pass}/bin/pass $1 | ${pkgs.coreutils}/bin/head -n 1)
   '';
-  dataHome = config.home-manager.users."${config.attributes.mainUser.name}".xdg.dataHome;
+  dataHome = hm.xdg.dataHome;
 in {
   options = {
     custom.email = {
@@ -186,7 +188,7 @@ in {
         message = "email: Must provide signature and user real name if signature is enabled.";
       }];
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ gmvault gmailctl ]; # TODO: integrate gmailctl into build/activation
         accounts.email = {
           accounts."${cfg.defaultAccountName}" = {
@@ -309,13 +311,13 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.notmuch.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         accounts.email = { accounts."${cfg.defaultAccountName}" = { notmuch.enable = true; }; };
         programs.notmuch.enable = true;
       };
     })
     (mkIf (cfg.enable && cfg.msmtp.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         accounts.email = { accounts."${cfg.defaultAccountName}" = { msmtp.enable = true; }; };
         programs.msmtp.enable = true;
       };
@@ -325,9 +327,7 @@ in {
         enable = true;
         extraConfig = ''
           MaildirStore ${cfg.defaultAccountName}-archive
-          Path ${
-            config.home-manager.users."${config.attributes.mainUser.name}".accounts.email.maildirBasePath
-          }/archive-${cfg.defaultAccountName}/
+          Path ${hm.accounts.email.maildirBasePath}/archive-${cfg.defaultAccountName}/
 
           Channel ${cfg.defaultAccountName}-archive
           Master ":${cfg.defaultAccountName}-remote:[Gmail]/All Mail"
@@ -382,7 +382,7 @@ in {
           Channel ${cfg.emailAddress}-archive
         '';
       };
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         accounts.email = { accounts."${cfg.defaultAccountName}" = { mbsync.enable = true; }; };
         services.mbsync = {
           enable = true;

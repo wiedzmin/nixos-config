@@ -2,7 +2,9 @@
 with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
-let cfg = config.custom.packaging;
+let
+  cfg = config.custom.packaging;
+  user = config.attributes.mainUser.name;
 in {
   options = {
     custom.packaging = {
@@ -120,7 +122,7 @@ in {
           '';
         };
       };
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ rollback ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ rollback ]; };
 
       systemd.services.nix-daemon = {
         environment.TMPDIR = "/tmp/buildroot";
@@ -133,7 +135,7 @@ in {
       environment.variables.HOME_MANAGER_BACKUP_EXT = "hm_backup";
     })
     (mkIf (cfg.enable && cfg.nix.helpers.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [
           nix-prefetch
           nix-prefetch-github
@@ -144,7 +146,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.nix.search.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         programs.zsh.shellAliases = { nlo = "${pkgs.nix-index}/bin/nix-locate --"; };
       };
       systemd.user.services."nix-update-index" = {
@@ -159,7 +161,7 @@ in {
       systemd.user.timers."nix-update-index" = renderTimer "Update nix packages metadata index" "1h" "12h" "";
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs;
           [
             inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.cachix
@@ -171,14 +173,14 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ get-pr-override ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ get-pr-override ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/packaging.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ get-pr-override make-package-diff rollback ];
       };
     })

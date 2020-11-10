@@ -1,6 +1,9 @@
 { config, lib, ... }:
-with lib; {
-  home-manager.users."${config.attributes.mainUser.name}" = {
+with lib;
+let user = config.attributes.mainUser.name;
+in {
+  # FIXME: use module
+  home-manager.users.${user} = {
     home.file = {
       ".config/alacritty/alacritty.yml".text = ''
         # use https://github.com/jwilm/alacritty/blob/master/alacritty.yml for reference

@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.dev.python;
+  user = config.attributes.mainUser.name;
   jupyterWithPackages = pkgs.jupyter.override {
     definitions = {
       python3 = let env = (pkgs.python3.withPackages (ps: with ps; cfg.jupyter.packages));
@@ -75,7 +76,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs;
           [
             python3Packages.autopep8
@@ -286,7 +287,7 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.nix.importers.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ pypi2nix ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ pypi2nix ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];

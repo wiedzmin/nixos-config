@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.housekeeping;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
@@ -101,7 +102,7 @@ in {
         uptime_info = mkPythonScriptWithDeps "uptime_info" (with pkgs; [ dunst gnused procps ])
           (readSubstituted ../subst.nix ./scripts/uptime_info.sh);
       };
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ nurpkgs.redis-tui ];
         services.udiskie = {
           enable = true;
@@ -267,7 +268,7 @@ in {
         renderTimer "Screenshots ordering" "" "" cfg.orderScreenshots.calendarTimespec;
     })
     (mkIf cfg.fsDeduplication.enable {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ dupd jdupes rmlint fpart ];
       };
     })
@@ -286,7 +287,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ order_screenshots srvctl uptime_info ];
       };
     })

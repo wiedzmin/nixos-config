@@ -3,6 +3,7 @@ with lib;
 
 let
   cfg = config.custom.sound;
+  user = config.attributes.mainUser.name;
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -47,7 +48,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      users.users."${config.attributes.mainUser.name}".extraGroups = [ "audio" "mopidy" ];
+      users.users.${user}.extraGroups = [ "audio" "mopidy" ];
       services.mopidy = {
         enable = true;
         extensionPackages = with pkgs; [ mopidy-local mopidy-mpd mopidy-mpris mopidy-youtube ];

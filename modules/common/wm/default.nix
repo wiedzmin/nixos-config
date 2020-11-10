@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.wmCommon;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
@@ -81,7 +82,7 @@ in {
         keybindings = mkPythonScriptWithDeps "keybindings" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis yad ])
           (readSubstituted ../subst.nix ./scripts/keybindings.py);
       };
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.activation.purgeKeybindingsCache = {
           after = [ ];
           before = [ "linkGeneration" ];
@@ -96,7 +97,7 @@ in {
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ keybindings ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ keybindings ]; };
     })
   ];
 }

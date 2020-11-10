@@ -2,7 +2,9 @@
 with import ../../../../modules/common/wm/wmutil.nix { inherit config inputs lib pkgs; };
 with import ../../../../modules/util.nix { inherit config inputs lib pkgs; };
 
-let profileName = "docked-home";
+let
+  profileName = "docked-home";
+  user = config.attributes.mainUser.name;
 in {
   nixpkgs.config.packageOverrides = _: rec {
     "rescreen-${profileName}-i3" = mkShellScriptWithDeps "rescreen-${profileName}-i3" (with pkgs; [ i3 ]) ''
@@ -11,7 +13,7 @@ in {
       }${mvWorkspacesI3Cmd config.wmCommon.workspaces "tertiary" config.attributes.hardware.monitors.internalHead.name}"
     '';
   };
-  home-manager.users."${config.attributes.mainUser.name}" = {
+  home-manager.users.${user} = {
     home.packages = [ pkgs."rescreen-${profileName}-i3" ];
     programs.autorandr = {
       profiles = {

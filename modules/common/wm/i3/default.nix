@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.wm.i3;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
@@ -265,7 +266,7 @@ in {
         "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
       };
 
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         xdg.configFile = {
           # TODO: review and adopt https://github.com/guillaumecherel/i3-modal
           "i3/config".text = ''
@@ -348,7 +349,7 @@ in {
       };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ kbdctl ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ kbdctl ]; };
     })
   ];
 }

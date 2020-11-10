@@ -4,8 +4,9 @@ with lib;
 
 let
   cfg = config.ide.emacs;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  uid = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
+  uid = builtins.toString config.users.extraUsers.${user}.uid;
 in {
   options = {
     ide.emacs = {
@@ -186,7 +187,7 @@ in {
           epkgs.ws-butler
           epkgs.yasnippet
         ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         programs.zsh.sessionVariables = {
           EDITOR = "${config.ide.emacs.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
         };
@@ -240,7 +241,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ org-capture ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ org-capture ]; };
     })
   ];
 }

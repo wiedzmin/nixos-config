@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.custom.dev;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   comby = with pkgs;
     stdenv.mkDerivation rec {
@@ -190,7 +191,7 @@ in {
       custom.navigation.bookmarks.entries = cfg.bookmarks.entries;
     })
     (mkIf (cfg.enable && cfg.codesearch.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ codesearch ];
         programs = {
           zsh.sessionVariables = { CSEARCHINDEX = "${wsRootAbs "global"}/.csearchindex"; };
@@ -216,12 +217,12 @@ in {
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/codesearch.el;
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ patchutils wiggle inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.diffoscope ];
       };
     })
     (mkIf (cfg.enable && cfg.statistics.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ cloc gource sloccount tokei logtop ];
       };
     })
@@ -255,7 +256,7 @@ in {
       custom.dev.git.gitignore = ''
         .direnv/
       '';
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.file = {
           "workspace/.editorconfig".text = ''
             # top-most EditorConfig file
@@ -331,7 +332,7 @@ in {
           epkgs.yaml-mode
         ] ++ lib.optionals (cfg.direnv.granularity == "project") [ epkgs.direnv ]
         ++ lib.optionals (cfg.direnv.granularity == "file") [ epkgs.nix-buffer ]; # when envrc.el will arrive to nixpkgs
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         # TODO: fix tabnine build from nixpkgs (permission denied) and put to nur-packages
         xdg.configFile."TabNine/TabNine.toml".text =
           toToml { language.python = { command = "python-language-server"; }; };
@@ -365,10 +366,10 @@ in {
       }];
     })
     (mkIf (cfg.staging.packages != [ ]) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = cfg.staging.packages; };
+      home-manager.users.${user} = { home.packages = cfg.staging.packages; };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ jiractl open-project reposearch ];
       };
     })

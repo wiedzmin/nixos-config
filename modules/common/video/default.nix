@@ -5,6 +5,8 @@ with lib;
 
 let
   cfg = config.custom.video;
+  user = config.attributes.mainUser.name;
+  hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   kill-compton = pkgs.writeScriptBin "kill-compton" ''
     ${pkgs.procps}/bin/pkill -f compton
@@ -147,10 +149,10 @@ in {
         '';
       };
 
-      users.users."${config.attributes.mainUser.name}".extraGroups = [ "video" ];
+      users.users.${user}.extraGroups = [ "video" ];
       programs.light.enable = true;
       hardware.brillo.enable = true;
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
           ".XCompose".text = ''
@@ -211,11 +213,11 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.autorandr.enable) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         programs.autorandr = {
           enable = true;
           hooks =
-            lib.optionalAttrs (config.home-manager.users."${config.attributes.mainUser.name}".services.compton.enable) {
+            lib.optionalAttrs (hm.services.compton.enable) {
               predetect = { "kill-compton" = "${kill-compton}/bin/kill-compton"; };
             } // cfg.autorandr.hooks;
         };
@@ -296,7 +298,7 @@ in {
       environment.systemPackages = with pkgs; [ xlibs.xev xlibs.xprop xorg.xkbcomp drm_info xtruss ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = { home.packages = with pkgs; [ rescreen xctl ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ rescreen xctl ]; };
     })
   ];
 }

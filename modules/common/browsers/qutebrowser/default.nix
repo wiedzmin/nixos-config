@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.custom.browsers.qutebrowser;
+  user = config.attributes.mainUser.name;
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -64,7 +65,7 @@ in {
             },
         }, "qutebrowser")
       '';
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [
           yank-image
           qb-fix-session
@@ -94,7 +95,7 @@ in {
               "${config.ide.emacs.package}/bin/emacsclient"
               "-c"
               "-s /run/user/${
-                builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid
+                builtins.toString config.users.extraUsers."${user}".uid
               }/emacs/server"
               "+{line}:{column}"
               "{}"
@@ -398,7 +399,7 @@ in {
       ];
 
       environment.sessionVariables = { BROWSER = cfg.command; };
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications =
           mapMimesToApp config.attributes.mimetypes.browser "org.custom.qutebrowser.windowed.desktop";
       };
@@ -419,7 +420,7 @@ in {
       attributes.browser.fallback = cfg.command;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${config.attributes.mainUser.name}" = {
+      home-manager.users.${user} = {
         home.packages = with pkgs; [ yank-image qb-fix-session ];
       };
     })
