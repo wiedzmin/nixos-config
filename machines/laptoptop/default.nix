@@ -444,7 +444,7 @@ in {
   custom.paperworks = {
     printing = {
       enable = true;
-      drivers = [ nixpkgs-hplip.hplipWithPlugin ];
+      drivers = [ pkgs.hplipWithPlugin ];
     };
     scanning = {
       enable = false;
