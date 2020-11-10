@@ -122,6 +122,9 @@
               nixpkgs.overlays = [
                 overlays.unstable
                 (_: old: rec {
+                  i3lock-color = old.i3lock-color.overrideAttrs (_: rec {
+                    patches = [ ./modules/common/video/patches/i3lock-color-pass-layout-switching.patch ];
+                  });
                   dunst = old.dunst.override { dunstify = true; };
                   vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
                 })

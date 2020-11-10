@@ -1,0 +1,30 @@
+From 5ba116f62c46c194f48036d8f23bf8bfbaea2001 Mon Sep 17 00:00:00 2001
+From: Alex Ermolov <aaermolov@gmail.com>
+Date: Tue, 10 Nov 2020 21:10:20 +0300
+Subject: [PATCH] patch1
+
+---
+ i3lock.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
+
+diff --git a/i3lock.c b/i3lock.c
+index deecf7c..7d82f9d 100755
+--- a/i3lock.c
++++ b/i3lock.c
+@@ -662,6 +662,13 @@ static void handle_key_press(xcb_key_press_event_t *event) {
+ #else
+     n = xkb_keysym_to_utf8(ksym, buffer, sizeof(buffer));
+ #endif
++    switch(ksym) {
++    case XKB_KEY_backslash:
++        if (ctrl) {
++            xcb_send_event(conn, true, screen->root, XCB_EVENT_MASK_BUTTON_PRESS, (char *)event);
++            return;
++        }
++    }
+ 
+     // media keys
+     if (pass_media_keys) {
+-- 
+2.29.0
+
