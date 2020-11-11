@@ -181,12 +181,12 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
         {
-          key = [ prefix "Alt" "q" ];
+          key = [ "Shift" "r" ];
           cmd = "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources";
-          mode = "root";
+          mode = "xserver";
         }
         {
-          key = [ "s" ];
+          key = [ "w" ];
           cmd = "${rescale-wallpaper}/bin/rescale-wallpaper";
           mode = "xserver";
         }

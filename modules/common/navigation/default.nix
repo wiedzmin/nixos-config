@@ -380,7 +380,7 @@ in {
         {
           key = [ "w" ];
           cmd = "${dmenu_select_windows}/bin/dmenu_select_windows";
-          mode = "window";
+          mode = "select";
         }
       ] ++ lib.optionals (cfg.snippets.enable) [{
         key = [ "Shift" "s" ];

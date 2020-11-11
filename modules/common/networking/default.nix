@@ -229,12 +229,6 @@ in {
       home-manager.users."${user}" = { home.packages = with pkgs; [ wpa_supplicant_gui ]; };
       wmCommon.keys = [
         {
-          key = [ "u" ];
-          cmd = "tmux new-window ${pkgs.networkmanager}/bin/nmtui";
-          desktop = "shell";
-          mode = "network";
-        }
-        {
           key = [ "i" ];
           cmd = "${pkgs.ifconfless}/bin/ifconfless";
           mode = "network";
@@ -243,11 +237,6 @@ in {
           key = [ "v" ];
           cmd = "${pkgs.vpnctl}/bin/vpnctl --status";
           mode = "network";
-        }
-        {
-          key = [ "n" ];
-          cmd = "${pkgs.systemd}/bin/systemctl restart nscd.service";
-          mode = "service";
         }
         {
           key = [ "d" ];

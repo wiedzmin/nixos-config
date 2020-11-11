@@ -99,7 +99,7 @@ in {
       wmCommon.keys = [{
         key = [ "b" ];
         cmd = "${pkgs.bookshelf}/bin/bookshelf";
-        mode = "run";
+        mode = "select";
       }];
     })
     (mkIf (cfg.staging.packages != [ ]) {

@@ -342,27 +342,27 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable && config.custom.virtualization.docker.enable) {
       wmCommon.keys = [
         {
-          key = [ "d" ];
+          key = [ "Control" "d" ];
           cmd = "${pkgs.systemd}/bin/systemctl restart docker-devdns.service";
-          mode = "service";
+          mode = "dev";
         }
         {
-          key = [ "Shift" "d" ];
+          key = [ "Control" "Shift" "d" ];
           cmd = "${pkgs.systemd}/bin/systemctl stop docker-devdns.service";
-          mode = "service";
+          mode = "dev";
         }
       ] ++ lib.optionals (cfg.repoSearch.enable) [{
         key = [ "r" ];
         cmd = "${pkgs.reposearch}/bin/reposearch";
-        mode = "run";
+        mode = "dev";
       }] ++ lib.optionals (config.custom.navigation.bookmarks.enable) [{
-        key = [ "Shift" "p" ];
+        key = [ "p" ];
         cmd = "${pkgs.open-project}/bin/open-project";
-        mode = "run";
+        mode = "dev";
       }] ++ lib.optionals (cfg.jira.enable) [{
         key = [ "j" ];
         cmd = "${pkgs.jiractl}/bin/jiractl";
-        mode = "run";
+        mode = "dev";
       }];
     })
     (mkIf (cfg.staging.packages != [ ]) {

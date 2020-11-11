@@ -516,7 +516,7 @@ in {
       wmCommon.keys = [{
         key = [ "t" ];
         cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions";
-        mode = "run";
+        mode = "select";
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {

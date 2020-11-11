@@ -4,8 +4,9 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 let
   keySepI3 = "+";
   keysymsI3 = {
-    "`" = "grave";
+    "." = "period";
     "Esc" = "Escape";
+    "`" = "grave";
   };
   keysymsXmonad = {
     "F1" = "<F1>";

@@ -270,7 +270,6 @@ in {
           mode = "virt";
         }
       ];
-      wmCommon.modeBindings.virt = [ prefix "d" ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {

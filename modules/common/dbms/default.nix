@@ -240,7 +240,7 @@ in {
       wmCommon.keys = [{
         key = [ "d" ];
         cmd = "${pkgs.dbms}/bin/dbms";
-        mode = "run";
+        mode = "dev";
         desktop = "shell";
       }];
     })

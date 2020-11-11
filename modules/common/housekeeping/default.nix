@@ -275,9 +275,9 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
         {
-          key = [ prefix "Control" "j" ];
+          key = [ "j" ];
           cmd = "${pkgs.srvctl}/bin/srvctl";
-          mode = "root";
+          mode = "services";
         }
         {
           key = [ prefix "Shift" "u" ];

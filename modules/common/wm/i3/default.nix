@@ -254,16 +254,18 @@ in {
       };
 
       wmCommon.modeBindings = {
-        "layout" = [ prefix "less" ];
-        "resize" = [ prefix "z" ];
-        "run" = [ prefix "r" ];
-        "network" = [ prefix "n" ];
-        "virt" = [ prefix "d" ];
-        "services" = [ prefix "s" ];
-        "window" = [ prefix "w" ];
-        "vpn" = [ prefix "v" ];
-        "xserver" = [ prefix "x" ];
         "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
+        "browser" = [ prefix "b" ];
+        "dev" = [ prefix "d" ];
+        "layout" = [ prefix "less" ];
+        "network" = [ prefix "n" ];
+        "resize" = [ prefix "`" ];
+        "run" = [ prefix "r" ];
+        "select" = [ prefix "." ];
+        "services" = [ prefix "s" ];
+        "virt" = [ prefix "v" ];
+        "window" = [ prefix "w" ];
+        "xserver" = [ prefix "x" ];
       };
 
       home-manager.users.${user} = {
@@ -276,7 +278,7 @@ in {
             ${mkKeybindingsI3 config.wmCommon.workspaces (cfg.keys ++ config.wmCommon.keys) config.wmCommon.modeBindings cfg.modeExitBindings}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
             ${lib.concatStringsSep "\n"
-            (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}
+              (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
             ${with config.wmCommon; mkPlacementRulesI3 workspaces wsMapping.rules}
 

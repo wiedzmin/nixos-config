@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.custom.video;
+  prefix = config.wmCommon.prefix;
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
@@ -273,29 +274,24 @@ in {
           mode = "root";
         }
         {
-          key = [ "Mod4" "Alt" "x" ];
+          key = [ "m" ];
           cmd = "${pkgs.autorandr}/bin/autorandr --load mobile";
-          mode = "root";
+          mode = "xserver";
         }
         {
           key = [ "a" ];
           cmd = "${pkgs.xctl}/bin/xctl --switch";
-          mode = "run";
+          mode = "xserver";
         }
         {
-          key = [ "s" ];
+          key = [ "r" ];
           cmd = "${pkgs.rescreen}/bin/rescreen";
-          mode = "run";
+          mode = "xserver";
         }
         {
           key = [ "c" ];
-          cmd = "${pkgs.systemd}/bin/systemctl --user restart compton.service";
-          mode = "run";
-        }
-        {
-          key = [ "Mod4" "Return" ];
           cmd = "${pkgs.find-cursor}/bin/find-cursor";
-          mode = "root";
+          mode = "xserver";
         }
       ];
     })

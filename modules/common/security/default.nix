@@ -132,7 +132,7 @@ in {
         {
           key = [ "p" ];
           cmd = "${pkgs.passctl}/bin/passctl";
-          mode = "run";
+          mode = "select";
         }
       ];
     })

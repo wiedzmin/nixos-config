@@ -231,12 +231,7 @@ in {
         {
           key = [ "Shift" "e" ];
           cmd = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";
-          mode = "window";
-        }
-        {
-          key = [ "e" ];
-          cmd = "${cfg.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
-          mode = "window";
+          mode = "services";
         }
       ];
     })

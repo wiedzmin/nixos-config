@@ -463,7 +463,6 @@ in {
           mode = "browser";
         }
       ];
-      wmCommon.modeBindings.browser = "${prefix}-b";
       systemd.user.services."backup-current-session-firefox" = {
         description = "Backup current firefox session (tabs)";
         serviceConfig = {
