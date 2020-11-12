@@ -12,7 +12,7 @@ in {
       };
       height = mkOption {
         type = types.int;
-        default = 25;
+        default = 24;
         description = "Modeline height in pixels.";
       };
     };
