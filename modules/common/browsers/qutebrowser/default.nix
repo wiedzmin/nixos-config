@@ -333,12 +333,13 @@ in {
               "pw" = "open -w -- {primary}";
               "yy" = "yank";
               "yd" = "yank domain";
-              "ym" = "spawn mpv {url}";
+              "yM" = "spawn mpv {url}";
               "yo" = "yank inline [[{url}][{title}]]";
               "yp" = "yank pretty-url";
               "yt" = "yank title";
               "y;" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
               "y'" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
+              "ym" = ''spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}'';
               ";;" = "hint links download";
               ";I" = "hint images tab";
               ";O" = "hint links fill :open -t -r {hint-url}";

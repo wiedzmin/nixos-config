@@ -48,7 +48,8 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      users.users.${user}.extraGroups = [ "audio" "mopidy" ];
+      users.users.${user}.extraGroups = [ "audio" ];
+      services.ympd.enable = true;
       services.mopidy = {
         enable = true;
         extensionPackages = with pkgs; [ mopidy-local mopidy-mpd mopidy-mpris mopidy-youtube ];
@@ -58,16 +59,43 @@ in {
           port = 6600
           [audio]
           output = pulsesink server=127.0.0.1
+          [mpris]
+          enabled = true
+          [file]
+          enabled = true
+          media_dirs =
+              /home/alex3rd/blobs/music/mongol|Mongol
+          show_dotfiles = false
+          excluded_file_extensions =
+              .html
+              .jpeg
+              .jpg
+              .log
+              .nfo
+              .pdf
+              .png
+              .txt
+              .zip
+          follow_symlinks = false
+          metadata_timeout = 1000
           [youtube]
           enabled = true
           api_enabled = true
           autoplay_enabled = true
           playlist_max_videos = 300
+          threads_max = 16
+          search_results = 15
           youtube_api_key = ${config.custom.networking.secrets.youtube.apiToken}
         '';
       };
       systemd.services.mopidy = {
         after = [ "network-online.target" ];
+        path = [ pkgs.dbus ];
+        serviceConfig = {
+          User = lib.mkForce "alex3rd";
+          Group = "users";
+          Environment = [ "DISPLAY=:0" ];
+        };
       };
       environment.systemPackages = with pkgs; [ ncmpcpp ];
     })
@@ -78,6 +106,9 @@ in {
         package = pkgs.pulseaudioFull; # 'full' for e.g. bluetooth
         systemWide = cfg.pulse.systemwide;
         daemon.config = cfg.pulse.daemonConfig;
+        extraConfig = ''
+          load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
+        '';
       };
       environment.systemPackages = with pkgs; [ pasystray lxqt.pavucontrol-qt ];
     })
