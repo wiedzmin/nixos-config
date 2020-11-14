@@ -293,6 +293,16 @@ in {
           cmd = "${pkgs.find-cursor}/bin/find-cursor";
           mode = "xserver";
         }
+        {
+          key = [ prefix "F8" ];
+          cmd = "${pkgs.picom}/bin/picom-trans -c +10";
+          mode = "root";
+        }
+        {
+          key = [ prefix "F9" ];
+          cmd = "${pkgs.picom}/bin/picom-trans -c -10";
+          mode = "root";
+        }
       ];
     })
     (mkIf (cfg.enable && cfg.debug.enable) {

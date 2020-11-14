@@ -343,7 +343,6 @@ in {
               mouse = "Middle";
               action = "PasteSelection";
             }];
-            background_opacity = 0.5;
             selection = { semantic_escape_chars = '',│`|:"' ()[]{}<>''; };
             cursor = { style = "Beam"; };
             live_config_reload = true;
@@ -440,6 +439,11 @@ in {
             plugin = thumbs;
             extraConfig = "set -g @thumbs-key 't'";
           }
+        ];
+      };
+      home-manager.users."${user}" = {
+        services.picom.opacityRule = [
+          ''65:name *?= "${cfg.tmux.defaultSession}" && class_g = "Alacritty"''
         ];
       };
     })
