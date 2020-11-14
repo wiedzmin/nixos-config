@@ -291,7 +291,7 @@ in {
             exec_always --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
 
             bar {
-                tray_output LVDS-1
+                tray_output ${config.attributes.hardware.monitors.internalHead.name}
                 mode dock
                 modifier ${prefix}
                 workspace_buttons yes
