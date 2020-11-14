@@ -590,7 +590,11 @@ in {
     };
   };
 
-  wm.i3.enable = true;
+  wm.i3 = {
+    enable = true;
+    statusbarImpl = "i3-rs";
+  };
+
 
   wmCommon.workspaces = [
     {

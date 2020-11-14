@@ -34,6 +34,11 @@ in {
         '';
         description = "Custom settings for i3.";
       };
+      statusbarImpl = mkOption {
+        type = types.enum [ "py3" "i3-rs" ];
+        default = "py3";
+        description = "Statusbar implementation";
+      };
       keys = mkOption {
         type = types.listOf types.attrs;
         default = [
@@ -234,11 +239,14 @@ in {
 
       environment.pathsToLink = [ "/libexec" ]; # for i3blocks (later)
 
+      wmCommon.autostart.entries = lib.optionals (cfg.statusbarImpl == "i3-rs") [ "kbdd" ];
+
       services.xserver = {
         windowManager = {
           i3 = {
             enable = true;
-            extraPackages = with pkgs; [ i3status python3Packages.py3status ];
+            extraPackages = with pkgs; lib.optionals (cfg.statusbarImpl == "py3") [ i3status python3Packages.py3status ] ++
+                                       lib.optionals (cfg.statusbarImpl == "i3-rs") [ i3status-rust iw kbdd ];
           };
         };
         displayManager = { defaultSession = "none+i3"; };
@@ -271,7 +279,10 @@ in {
       home-manager.users.${user} = {
         xdg.configFile = {
           # TODO: review and adopt https://github.com/guillaumecherel/i3-modal
-          "i3/config".text = ''
+          "i3/config".text = let
+            statusCmd = if cfg.statusbarImpl == "py3"
+                        then "py3status" else "i3status-rs";
+            in ''
             # i3 config file (v4)
 
             ${cfg.settings}
@@ -297,9 +308,10 @@ in {
                 workspace_buttons yes
                 strip_workspace_numbers yes
                 font ${config.wmCommon.fonts.statusbar}
-                status_command py3status
+                status_command ${statusCmd}
             }
           '';
+        } // lib.optionalAttrs (cfg.statusbarImpl == "py3") {
           "i3status/config".text = ''
             general {
               colors = true
@@ -347,6 +359,56 @@ in {
               layouts = ['us', 'ru']
             }
           '';
+        } // lib.optionalAttrs (cfg.statusbarImpl == "i3-rs") {
+          "i3status-rust/config.toml".text = toToml {
+            theme = "solarized-dark";
+            icons = "awesome";
+            block = [
+              {
+                block = "cpu";
+                interval = 1;
+                format = " {utilization}%";
+              }
+              {
+                block = "load";
+                interval = 1;
+                format = " {1m}";
+              }
+              {
+                block = "disk_space";
+                path = "/";
+                alias = "/";
+                info_type = "available";
+                unit = "GB";
+                interval = 20;
+              }
+              {
+                block = "net";
+                device = "wlan0";
+                format = "{ssid} {signal_strength}";
+                interval = 5;
+                use_bits = false;
+              }
+              {
+                block = "battery";
+                driver = "upower";
+                format = " {percentage}% {time}";
+              }
+              { block = "sound"; }
+              {
+                block = "time";
+                interval = 60;
+                format = "%a %d-%m-%Y %R";
+                timezone = config.time.timeZone;
+                locale = "ru_RU";
+              }
+              {
+                block = "keyboard_layout";
+                driver = "kbddbus";
+              }
+              # TODO: block = "music"
+            ];
+          };
         };
       };
     })
