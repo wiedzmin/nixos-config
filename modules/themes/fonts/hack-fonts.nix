@@ -4,6 +4,7 @@ with lib;
 let
   cfg = config.themes.fonts.hack;
   user = config.attributes.mainUser.name;
+  beautify = config.custom.appearance.fonts.beautify;
 in {
   options.themes.fonts.hack = { enable = mkEnableOption "hack"; };
 
@@ -12,9 +13,9 @@ in {
       fonts = with pkgs; [ hack-font ];
       fontconfig = { defaultFonts = { monospace = [ "Hack" ]; }; };
     };
-    wmCommon.fonts.default = "pango:Hack Bold 8";
+    wmCommon.fonts.default = "pango:Hack ${if beautify then "Nerd Font " else ""}Bold 8";
     wmCommon.fonts.dmenu = "Hack:bold:size=8";
-    wmCommon.fonts.statusbar = "pango:Hack Bold 8";
+    wmCommon.fonts.statusbar = "pango:Hack ${if beautify then "Nerd Font " else ""}Bold 8";
     home-manager.users.${user} = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.hack-font;

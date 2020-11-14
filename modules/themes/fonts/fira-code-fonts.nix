@@ -4,6 +4,7 @@ with lib;
 let
   cfg = config.themes.fonts.fira-code;
   user = config.attributes.mainUser.name;
+  beautify = config.custom.appearance.fonts.beautify;
 in {
   options.themes.fonts.fira-code = { enable = mkEnableOption "fira-code"; };
 
@@ -12,9 +13,9 @@ in {
       fonts = with pkgs; [ fira-code ];
       fontconfig = { defaultFonts = { monospace = [ "Fira Code" ]; }; };
     };
-    wmCommon.fonts.default = "pango:Fira Code Bold 8";
+    wmCommon.fonts.default = "pango:${if beautify then "FiraCode Nerd Font " else "Fira Code "}Bold 8";
     wmCommon.fonts.dmenu = "Fira Code:bold:pixelsize=12";
-    wmCommon.fonts.statusbar = "pango:Fira Code Bold 8";
+    wmCommon.fonts.statusbar = "pango:${if beautify then "FiraCode Nerd Font " else "Fira Code "}Bold 8";
     home-manager.users.${user} = {
       programs.alacritty.settings.font = {
         normal = {

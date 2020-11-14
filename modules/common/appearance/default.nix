@@ -17,6 +17,11 @@ in {
         default = false;
         description = "Whether to enable appearance customizations.";
       };
+      fonts.beautify = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable iconified patched fonts.";
+      };
       fonts.antialias = mkOption {
         type = types.bool;
         default = false;
@@ -106,6 +111,8 @@ in {
         fontDir.enable = true;
         enableGhostscriptFonts = true;
         enableDefaultFonts = true;
+      } // lib.optionalAttrs (cfg.fonts.beautify) {
+        fonts = with pkgs; [ nerdfonts ];
       };
       console = {
         font = cfg.fonts.console;

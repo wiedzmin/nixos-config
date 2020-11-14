@@ -4,6 +4,7 @@ with lib;
 let
   cfg = config.themes.fonts.jetbrains-mono;
   user = config.attributes.mainUser.name;
+  beautify = config.custom.appearance.fonts.beautify;
 in {
   options.themes.fonts.jetbrains-mono = { enable = mkEnableOption "jetbrains-mono"; };
 
@@ -12,9 +13,9 @@ in {
       fonts = with pkgs; [ jetbrains-mono ];
       fontconfig = { defaultFonts = { monospace = [ "JetBrains Mono" ]; }; };
     };
-    wmCommon.fonts.default = "pango:JetBrains Mono Bold 8";
+    wmCommon.fonts.default = "pango:${if beautify then "JetBrainsMono Nerd Font " else "JetBrains Mono "}Bold 8";
     wmCommon.fonts.dmenu = "JetBrains Mono:bold:size=8";
-    wmCommon.fonts.statusbar = "pango:JetBrains Mono Bold 8";
+    wmCommon.fonts.statusbar = "pango:${if beautify then "JetBrainsMono Nerd Font " else "JetBrains Mono "}Bold 8";
     home-manager.users.${user} = {
       programs.alacritty.settings.font = {
         normal = {

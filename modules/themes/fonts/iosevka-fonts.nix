@@ -4,6 +4,7 @@ with lib;
 let
   cfg = config.themes.fonts.iosevka;
   user = config.attributes.mainUser.name;
+  beautify = config.custom.appearance.fonts.beautify;
 in {
   options.themes.fonts.iosevka = { enable = mkEnableOption "iosevka"; };
 
@@ -12,9 +13,9 @@ in {
       fonts = with pkgs; [ iosevka ];
       fontconfig = { defaultFonts = { monospace = [ "Iosevka" ]; }; };
     };
-    wmCommon.fonts.default = "pango:Iosevka Bold 9";
+    wmCommon.fonts.default = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
     wmCommon.fonts.dmenu = "Iosevka:bold:size=9";
-    wmCommon.fonts.statusbar = "pango:Iosevka Bold 9";
+    wmCommon.fonts.statusbar = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
     home-manager.users.${user} = {
       gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
         package = pkgs.iosevka;
