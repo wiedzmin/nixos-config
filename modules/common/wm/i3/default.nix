@@ -397,7 +397,7 @@ in {
               {
                 block = "time";
                 interval = 60;
-                format = "%a %d-%m-%Y %R";
+                format = " %a %d-%m-%Y %R";
                 timezone = config.time.timeZone;
                 locale = "ru_RU";
               }
