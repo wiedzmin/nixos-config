@@ -447,7 +447,7 @@ in {
       drivers = [ pkgs.hplip ];
     };
     scanning = {
-      enable = false;
+      enable = true;
       extraBackends = [ pkgs.hplipWithPlugin ];
       enableXsane = true;
       paperless = {
