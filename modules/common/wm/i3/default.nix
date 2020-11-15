@@ -278,7 +278,6 @@ in {
 
       home-manager.users.${user} = {
         xdg.configFile = {
-          # TODO: review and adopt https://github.com/guillaumecherel/i3-modal
           "i3/config".text = let
             statusCmd = if cfg.statusbarImpl == "py3"
                         then "py3status" else "i3status-rs";
