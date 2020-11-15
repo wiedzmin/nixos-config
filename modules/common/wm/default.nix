@@ -33,7 +33,12 @@ in {
       wsMapping.rules = mkOption {
         type = types.listOf types.attrs;
         default = [ ];
-        description = "Window-to-workspace mapping rules.";
+        description = ''
+          Window-to-workspace mapping rules.
+
+          Use example below for negative filtering (currently i3 only):
+          <title|class|instance>="^(?!<substring>).*$"
+        '';
       };
       modeBindings = mkOption {
         type = types.attrs;
