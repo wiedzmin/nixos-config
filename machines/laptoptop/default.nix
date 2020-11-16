@@ -386,6 +386,7 @@ in {
 
   ide.emacs = {
     enable = true;
+    socketActivation.enable = true;
     wm.enable = true;
   };
 
