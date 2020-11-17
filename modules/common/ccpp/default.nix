@@ -32,7 +32,7 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.ccls ];
+      ide.emacs.extraPackages = epkgs: [ epkgs.ccls epkgs.cmake-mode epkgs.cmake-font-lock ];
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/ccpp.el;
     })
   ];

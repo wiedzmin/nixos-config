@@ -52,6 +52,9 @@
   (lsp-enable-file-watchers t)
   (lsp-file-watch-threshold 32768))
 
+(use-package cmake-mode)
+(use-package cmake-font-lock)
+
 ;; Think of them as sp-{down,previous,next,down}-sexp for C/C++, roughly semantic movement among declarations.
 
 ;; (ccls-navigate "D") ;; roughly sp-down-sexp
