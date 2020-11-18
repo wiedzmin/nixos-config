@@ -1,3 +1,7 @@
+(use-package cc-mode
+  :config
+  (setq-default c-basic-offset 4))
+
 ;;TODO: play with https://github.com/MaskRay/ccls/wiki/lsp-mode#user-content-cross-reference-extensions later
 (use-package ccls
   :preface
