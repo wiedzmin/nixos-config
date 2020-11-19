@@ -52,7 +52,7 @@
   :custom
   (ccls-executable "@cclsExecutable@")
   (ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t)))
-  (ccls-sem-highlight-method 'font-lock)
+  (ccls-sem-highlight-method 'overlays)
   (lsp-enable-file-watchers t)
   (lsp-file-watch-threshold 32768))
 
