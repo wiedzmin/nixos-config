@@ -1,7 +1,9 @@
+.ccls
 .ccls-root
 .devenv
 .envrc
 .pre-commit-config.yaml
+CMakeLists.txt
 flake.lock
 flake.nix
 shell.nix

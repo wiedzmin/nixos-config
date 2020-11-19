@@ -102,9 +102,13 @@
           path = ./modules/common/golang/templates/go2nix;
           description = "Golang to Nix packaging.";
         };
-        ccpp = {
-          path = ./modules/common/ccpp/templates/project;
-          description = "C/C++ project.";
+        ccpp.generic = {
+          path = ./modules/common/ccpp/templates/generic;
+          description = "C/C++ autotools project.";
+        };
+        ccpp.cmake = {
+          path = ./modules/common/ccpp/templates/cmake;
+          description = "C/C++ CMake project.";
         };
         media.convert = {
           path = ./modules/common/content/templates/convert;

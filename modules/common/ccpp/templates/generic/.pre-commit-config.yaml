@@ -1,0 +1,9 @@
+repos:
+- repo: https://github.com/jorisroovers/gitlint
+  rev: v0.13.1
+  hooks:
+  - id: gitlint
+- repo: https://github.com/wiedzmin/git-hooks
+  rev: master
+  hooks:
+  - id: forbid-pushing-wip
