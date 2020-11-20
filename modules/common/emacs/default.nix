@@ -142,6 +142,7 @@ in {
           epkgs.blockdiag-mode
           epkgs.comment-dwim-2
           epkgs.company
+          epkgs.company-box
           epkgs.company-fuzzy
           epkgs.company-quickhelp
           epkgs.company-statistics
