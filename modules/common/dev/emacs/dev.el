@@ -130,6 +130,22 @@
   (lsp-ui-sideline-show-diagnostics nil)
   (lsp-ui-sideline-code-actions-prefix ""))
 
+;; TODO: enable after proper setup
+;; https://github.com/emacs-lsp/dap-mode#configuration
+;; TODO: install gdb (requirement)
+(use-package dap-mode
+  :after lsp-mode
+  :disabled
+  :bind
+  (:map dap-mode-map
+        ;; example bindings
+        (("<f12>" . dap-debug)
+         ("<f8>" . dap-continue)
+         ("<f9>" . dap-next)
+         ("<M-f11>" . dap-step-in)
+         ("C-M-<f11>" . dap-step-out)
+         ("<f7>" . dap-breakpoint-toggle))))
+
 (use-package lsp-ivy
   :after (lsp-mode ivy)
   :bind

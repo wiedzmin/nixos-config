@@ -128,7 +128,6 @@ in {
         };
       };
       ide.emacs.extraPackages = epkgs: [
-        epkgs.dap-mode
         epkgs.flycheck-golangci-lint
         epkgs.go-mode
         epkgs.go-tag

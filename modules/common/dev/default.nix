@@ -323,6 +323,7 @@ in {
         [
           epkgs.company-restclient
           epkgs.company-tabnine
+          epkgs.dap-mode
           epkgs.diff-hl
           epkgs.elmacro
           epkgs.fic-mode
