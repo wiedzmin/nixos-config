@@ -94,7 +94,7 @@ in {
           go install ./...
         '';
       };
-      home-manager.users.${user} = { home.packages = with pkgs; [ go-install-wrapper gore modedit ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ go-install-wrapper gore modedit goimports ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users.${user} = {
