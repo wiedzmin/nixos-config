@@ -46,7 +46,34 @@
   (defun tabnine/bury-company-lsp ()
     (when (memq 'company-lsp company-backends)
       (setq-local company-backends (-flatten (remove 'company-lsp company-backends)))))
+  (defun company/sort-by-tabnine (candidates) ;; Integrate company-tabnine with lsp-mode
+    (if (or (functionp company-backend)
+            (not (and (listp company-backend) (memq 'company-tabnine company-backends))))
+        candidates
+      (let ((candidates-table (make-hash-table :test #'equal))
+            candidates-lsp
+            candidates-tabnine)
+        (dolist (candidate candidates)
+          (if (eq (get-text-property 0 'company-backend candidate)
+                  'company-tabnine)
+              (unless (gethash candidate candidates-table)
+                (push candidate candidates-tabnine))
+            (push candidate candidates-lsp)
+            (puthash candidate t candidates-table)))
+        (setq candidates-lsp (nreverse candidates-lsp))
+        (setq candidates-tabnine (nreverse candidates-tabnine))
+        (nconc (seq-take candidates-tabnine 3)
+               (seq-take candidates-lsp 6)))))
+  :hook
+  (lsp-after-open . (lambda ()
+                      (setq company-tabnine-max-num-results 3)
+                      (add-to-list 'company-transformers 'company/sort-by-tabnine t)
+                      (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))))
+  ;TODO: bind 'company-other-backend
+  :custom
+  (company-tabnine-max-num-results 9)
   :config
+  (add-to-list 'company-backends #'company-tabnine)
   (advice-add 'lsp :after #'tabnine/bury-company-lsp))
 
 (use-package lsp-mode
