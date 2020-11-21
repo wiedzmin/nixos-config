@@ -246,10 +246,11 @@
         ("C-c h" . company-quickhelp-manual-begin))
   :custom
   (company-idle-delay 0)
-  (company-minimum-prefix-length 2)
+  (company-minimum-prefix-length 1)
   (company-show-numbers t)
   (company-tooltip-align-annotations t)
   (company-tooltip-flip-when-above t)
+  (company-require-match 'never)
   :config
   (when (string-equal "i3" (getenv "CURRENT_WM"))
     (global-company-mode 1)
