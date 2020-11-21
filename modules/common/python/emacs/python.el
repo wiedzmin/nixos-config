@@ -1,7 +1,7 @@
 (use-package lsp-python-ms
   :custom
   (lsp-python-ms-executable "@lspPythonMsExecutable@")
-  (lsp-python-ms-extra-paths '(@lspPythonMsExtraPaths@)))
+  (lsp-python-ms-extra-paths [@lspPythonMsExtraPaths@]))
 
 (use-package python
   :mode ("\\.py$" . python-mode)
