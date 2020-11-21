@@ -85,7 +85,6 @@
                 lsp-on-touch-time) 30) ;; 30 seconds
       (setq lsp-on-touch-time (float-time (current-time)))
       (funcall func args)))
-  :hook (lsp-mode . (lambda (x) (company-mode 1)))
   :bind
   (:map lsp-mode-map
         ("C-M-r" . lsp-rename)
