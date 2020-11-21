@@ -24,7 +24,14 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ ccls clang clang-tools ];
+        home.packages = with pkgs; [ ccls clang clang-tools rr-unstable gdb ];
+        programs.zsh.sessionVariables = {
+          # FIXME: coerce to global waorkspaces roots infra
+          _RR_TRACE_DIR = "/home/${user}/workspace/rr";
+        };
+      };
+      boot.kernel.sysctl = {
+        "kernel.perf_event_paranoid" = 1; # for rr
       };
       environment.etc."security/limits.conf".text = ''
         * hard  nofile    32768
