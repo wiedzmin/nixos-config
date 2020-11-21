@@ -1,10 +1,10 @@
-;; TODO: test for correctness
 (use-package webpaste
   :bind
-  (:prefix-map custom-webpaste-map
-               :prefix "M-p"
-               ("b" . webpaste-paste-buffer)
-               ("r" . webpaste-paste-region))
+  (:map mode-specific-map
+        :prefix-map custom-webpaste-map
+        :prefix "["
+        ("b" . webpaste-paste-buffer)
+        ("r" . webpaste-paste-region))
   :custom
   (webpaste-provider-priority '("ix.io" "gist.github.com")))
 
