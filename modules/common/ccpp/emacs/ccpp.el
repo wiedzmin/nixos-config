@@ -61,15 +61,3 @@
 (use-package cmake-mode)
 (use-package cmake-font-lock)
 
-;; Think of them as sp-{down,previous,next,down}-sexp for C/C++, roughly semantic movement among declarations.
-
-;; (ccls-navigate "D") ;; roughly sp-down-sexp
-;; (ccls-navigate "L")
-;; (ccls-navigate "R")
-;; (ccls-navigate "U")
-
-;; Misc
-
-;; For out-of-band changes to the files in the workspace that are not made in the LSP client (e.g. git pull), call (ccls-reload) to reload/rebuild indexes for every file.
-
-;;     Performance of lsp-ui-flycheck https://github.com/emacs-lsp/lsp-ui/issues/45
