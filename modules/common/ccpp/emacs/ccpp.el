@@ -59,3 +59,6 @@
 (use-package cmake-mode)
 (use-package cmake-font-lock)
 
+(use-package modern-cpp-font-lock
+  :delight
+  :init (modern-c++-font-lock-global-mode t))
