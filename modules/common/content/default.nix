@@ -186,10 +186,10 @@ in {
           (with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku nurpkgs.pystdlib xsel ])
           (readSubstituted ../subst.nix ./scripts/buku_add.py);
         buku_search_tag = mkShellScriptWithDeps "buku_search_tag"
-          (with pkgs; [ coreutils dmenu gawk inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku ])
+          (with pkgs; [ coreutils nurpkgs.dmenu-ng gawk inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku ])
           (readSubstituted ../subst.nix ./scripts/buku_search_tag.sh);
         buku_search_url = mkShellScriptWithDeps "buku_search_url"
-          (with pkgs; [ coreutils dmenu inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku ])
+          (with pkgs; [ coreutils nurpkgs.dmenu-ng inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku ])
           (readSubstituted ../subst.nix ./scripts/buku_search_url.sh);
       };
     })
@@ -264,12 +264,12 @@ in {
         }
         {
           key = [ "c" ];
-          cmd = ''PATH="$PATH:${pkgs.dmenu}/bin/" ${pkgs.clipcat}/bin/clipcat-menu insert''; # TODO: consider abstracting away
+          cmd = ''PATH="$PATH:${nurpkgs.dmenu-ng}/bin/" ${pkgs.clipcat}/bin/clipcat-menu insert''; # TODO: consider abstracting away
           mode = "select";
         }
         {
           key = [ "Shift" "c" ];
-          cmd = ''PATH="$PATH:${pkgs.dmenu}/bin/" ${pkgs.clipcat}/bin/clipcat-menu remove'';
+          cmd = ''PATH="$PATH:${nurpkgs.dmenu-ng}/bin/" ${pkgs.clipcat}/bin/clipcat-menu remove'';
           mode = "select";
         }
       ];

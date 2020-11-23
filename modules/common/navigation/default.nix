@@ -9,11 +9,11 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
   dmenu_runapps =
-    mkShellScriptWithDeps "dmenu_runapps" (with pkgs; [ coreutils dmenu haskellPackages.yeganesh j4-dmenu-desktop ]) ''
+    mkShellScriptWithDeps "dmenu_runapps" (with pkgs; [ coreutils nurpkgs.dmenu-ng haskellPackages.yeganesh j4-dmenu-desktop ]) ''
       j4-dmenu-desktop --display-binary --dmenu="(cat ; (stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
         yeganesh -- -i -l 15 -fn '${config.wmCommon.fonts.dmenu}'"
     '';
-  dmenu_select_windows = mkShellScriptWithDeps "dmenu_select_windows" (with pkgs; [ coreutils dmenu wmctrl ]) ''
+  dmenu_select_windows = mkShellScriptWithDeps "dmenu_select_windows" (with pkgs; [ coreutils nurpkgs.dmenu-ng wmctrl ]) ''
     wmctrl -a $(wmctrl -l | cut -d" " -f5- | dmenu -i -l 15 -fn '${config.wmCommon.fonts.dmenu}')
   '';
 in {
@@ -114,7 +114,7 @@ in {
         search_prompt = mkPythonScriptWithDeps "search_prompt" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../subst.nix ./scripts/search_prompt.py);
         search_selection = mkPythonScriptWithDeps "search_selection"
-          (with pkgs; [ nurpkgs.pystdlib python3Packages.dmenu-python python3Packages.redis xsel ])
+          (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
           (readSubstituted ../subst.nix ./scripts/search_selection.py);
         webjumps = mkPythonScriptWithDeps "webjumps" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis vpnctl ])
           (readSubstituted ../subst.nix ./scripts/webjumps.py);

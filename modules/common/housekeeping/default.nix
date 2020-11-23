@@ -125,7 +125,7 @@ in {
               always_run_script = "true";
               bounce_freq = 0;
               browser = "${pkgs.firefox-unwrapped}/bin/firefox -new-tab";
-              dmenu = "${pkgs.dmenu}/bin/dmenu -p dunst:";
+              dmenu = "${nurpkgs.dmenu-ng}/bin/dmenu -p dunst:";
               ellipsize = "middle";
               follow = "keyboard";
               force_xinerama = "false";
