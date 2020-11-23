@@ -111,6 +111,8 @@
   (lsp-enable-links nil)  ;?
   (lsp-restart 'auto-restart)
   (lsp-client-packages nil)
+  (lsp-enable-file-watchers t)
+  (lsp-file-watch-threshold 32768)
   :config
   (use-package lsp-clients)
   (advice-add 'lsp-on-change :around 'custom/lsp-on-change))

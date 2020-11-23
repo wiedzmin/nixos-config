@@ -54,9 +54,7 @@
   :custom
   (ccls-executable "@cclsExecutable@")
   (ccls-initialization-options '(:index (:comments 2) :completion (:detailedLabel t)))
-  (ccls-sem-highlight-method 'overlays)
-  (lsp-enable-file-watchers t)
-  (lsp-file-watch-threshold 32768))
+  (ccls-sem-highlight-method 'overlays))
 
 (use-package cmake-mode)
 (use-package cmake-font-lock)
