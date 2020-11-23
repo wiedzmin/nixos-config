@@ -162,6 +162,7 @@
 (use-package dap-mode
   :after lsp-mode
   :disabled
+  ;TODO: package "ptvsd" for python
   :bind
   (:map dap-mode-map
         ;; example bindings
@@ -170,7 +171,9 @@
          ("<f9>" . dap-next)
          ("<M-f11>" . dap-step-in)
          ("C-M-<f11>" . dap-step-out)
-         ("<f7>" . dap-breakpoint-toggle))))
+         ("<f7>" . dap-breakpoint-toggle)))
+  (dap-mode 1)
+  (dap-ui-mode 1))
 
 (use-package lsp-ivy
   :after (lsp-mode ivy)

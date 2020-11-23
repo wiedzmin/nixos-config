@@ -1,5 +1,7 @@
 (use-package cc-mode
   :config
+  ;; (require 'dap-cpptools) ;TODO: use-package
+  ;;TODO: https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/#creating-debug-configuration
   (setq-default c-basic-offset 4))
 
 ;;TODO: play with https://github.com/MaskRay/ccls/wiki/lsp-mode#user-content-cross-reference-extensions later
