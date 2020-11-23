@@ -85,10 +85,14 @@
                 lsp-on-touch-time) 30) ;; 30 seconds
       (setq lsp-on-touch-time (float-time (current-time)))
       (funcall func args)))
+  :hook
+  (lsp-mode-hook . lsp-enable-which-key-integration)
   :bind
   (:map lsp-mode-map
         ("C-M-r" . lsp-rename)
-        ("C-c h" . lsp-ui-doc-glance))
+        ("C-c h" . lsp-ui-doc-glance)
+        ("M-n" . forward-paragraph)
+        ("M-p" . backward-paragraph))
   :custom
   (read-process-output-max (* 1024 1024))
   (gc-cons-threshold 100000000)
@@ -96,7 +100,7 @@
   (lsp-enable-file-watchers nil)
   (lsp-enable-indentation nil)
   (lsp-enable-on-type-formatting nil)
-  (lsp-auto-guess-root t)
+  (lsp-auto-guess-root nil)
   (lsp-before-save-edits nil)
   (lsp-document-sync-method 'incremental)
   (lsp-eldoc-render-all nil)
@@ -111,6 +115,7 @@
   (lsp-enable-links nil)  ;?
   (lsp-restart 'auto-restart)
   (lsp-client-packages nil)
+  (lsp-idle-delay 0.1)
   (lsp-enable-file-watchers t)
   (lsp-file-watch-threshold 32768)
   :config
@@ -138,9 +143,15 @@
         ("R" . lsp-restart-workspace)
         ("D" . custom/toggle-lsp-ui-doc))
   (:map custom-goto-map
+        ("I" . lsp-ui-doc-focus-frame)
         ("i" . lsp-ui-imenu))
+  :custom-face
+  (lsp-ui-doc-background ((t (:background nil))))
+  (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
   :custom
   (lsp-ui-doc-enable nil)
+  (lsp-ui-doc-include-signature t)
+  (lsp-ui-doc-border (face-foreground 'default))
   (lsp-ui-doc-header t)
   (lsp-ui-doc-max-width 120)
   (lsp-ui-doc-max-height 30)
@@ -151,7 +162,8 @@
   (lsp-ui-peek-peek-height 20)
   (lsp-ui-peek-list-width 50)
   (lsp-ui-peek-fontify 'on-demand)
-  (lsp-ui-sideline-enable nil)
+  (lsp-ui-sideline-enable t)
+  (lsp-ui-sideline-show-code-actions t)
   (lsp-ui-sideline-ignore-duplicate t)
   (lsp-ui-sideline-show-symbol t)
   (lsp-ui-sideline-show-hover t)
