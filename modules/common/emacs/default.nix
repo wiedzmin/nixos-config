@@ -16,6 +16,11 @@ in {
         default = false;
         description = "Whether to enable emacs setup.";
       };
+      debug.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable emacs setup.";
+      };
       socketActivation.enable = mkOption {
         type = types.bool;
         default = false;
@@ -62,14 +67,17 @@ in {
       };
       package = mkOption {
         type = types.package;
-        default = (pkgs.emacs.override {
-          withGTK2 = false;
-          withGTK3 = false;
-        }).overrideAttrs (old: rec {
-          configureFlags = (remove "--with-cairo" (remove "--with-harfbuzz" old.configureFlags)) ++ [
-            "--without-harfbuzz" "--without-cairo"
-          ];
-        });
+        default = let
+          basepkg = ((pkgs.emacs.override {
+            withGTK2 = false;
+            withGTK3 = false;
+          }).overrideAttrs (old: rec {
+            configureFlags = (remove "--with-cairo" (remove "--with-harfbuzz" old.configureFlags)) ++ [
+              "--without-harfbuzz" "--without-cairo"
+            ];
+          }));
+          in
+            if cfg.debug.enable then (pkgs.enableDebugging basepkg) else basepkg;
         description = ''
           Emacs derivation to use.
         '';
