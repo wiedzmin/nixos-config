@@ -176,7 +176,6 @@
 
 ;; TODO: enable after proper setup
 ;; https://github.com/emacs-lsp/dap-mode#configuration
-;; TODO: install gdb (requirement)
 (use-package dap-mode
   :after lsp-mode
   :disabled
