@@ -47,8 +47,10 @@
   :no-require t
   :after (go-mode)
   :bind
-  (:map go-mode-map
-        ("C-c t" . go-tag-add)
-        ("C-c T" . go-tag-remove))
+  (:map mode-specific-map
+        :prefix-map custom-gotag-map
+        :prefix "`"
+        ("t" . go-tag-add)
+        ("T" . go-tag-remove))
   :custom
   (go-tag-args '("-transform" "camelcase")))

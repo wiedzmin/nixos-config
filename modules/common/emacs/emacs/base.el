@@ -543,7 +543,7 @@
   :bind
   (:map mode-specific-map
         :prefix-map custom-tabs-map
-        :prefix "t"
+        :prefix "b"
         ("SPC" . untabify)
         ("TAB" . tabify)))
 
