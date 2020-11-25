@@ -49,6 +49,7 @@ in rec {
   passwordPlaceholder = config.attributes.secret;
   pimOrgAgendaElPatch = config.custom.pim.org.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
+  python3Binary = "${pkgs.python3}/bin/python3";
   screenshotsBasedir = config.custom.content.screenshots.baseDir;
   screenshotsDateFormat = config.custom.content.screenshots.dateFormat;
   systemTimeZone = config.time.timeZone;

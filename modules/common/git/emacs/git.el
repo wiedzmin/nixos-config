@@ -66,6 +66,9 @@
                                         (magit-filenotify-mode)
                                       (error (magit-filenotify-mode -1))))))
 
+(use-package treemacs-magit
+  :after treemacs magit)
+
 (use-package git-walktree
   :after magit
   :bind

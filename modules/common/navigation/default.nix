@@ -322,6 +322,8 @@ in {
         epkgs.projectile
         epkgs.rg
         epkgs.swiper
+        epkgs.treemacs
+        epkgs.treemacs-projectile
       ];
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/navigation.el;
     } // lib.optionalAttrs (true) {

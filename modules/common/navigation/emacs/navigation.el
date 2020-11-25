@@ -377,6 +377,72 @@
   (block-nav-move-skip-shallower t)
   (block-nav-center-after-scroll t))
 
+(use-package treemacs
+  :bind
+  (:map ctl-x-map
+        :prefix-map custom-treemacs-map
+        :prefix "t"
+        ("1"   . treemacs-delete-other-windows)
+        ("t"   . treemacs)
+        ("B"   . treemacs-bookmark)
+        ("C-t" . treemacs-find-file)
+        ("M-t" . treemacs-find-tag))
+  :custom
+  (treemacs-collapse-dirs t)
+  (treemacs-deferred-git-apply-delay 0.5)
+  (treemacs-directory-name-transformer #'identity)
+  (treemacs-display-in-side-window t)
+  (treemacs-eldoc-display t)
+  (treemacs-file-event-delay 5000)
+  ;; (treemacs-file-extension-regex 'treemacs-last-period-regex-value)
+  (treemacs-file-follow-delay 0.2)
+  (treemacs-file-name-transformer #'identity)
+  (treemacs-follow-after-init t)
+  (treemacs-git-command-pipe "")
+  (treemacs-goto-tag-strategy 'refetch-index)
+  (treemacs-indentation 2)
+  (treemacs-indentation-string " ")
+  (treemacs-is-never-other-window nil)
+  (treemacs-max-git-entries 5000)
+  (treemacs-missing-project-action 'ask)
+  (treemacs-move-forward-on-expand nil)
+  (treemacs-no-png-images nil)
+  (treemacs-no-delete-other-windows t)
+  (treemacs-project-follow-cleanup nil)
+  (treemacs-persist-file (expand-file-name
+                          (format "%s/treemacs-persist" no-littering-var-directory) user-emacs-directory))
+  (treemacs-position 'left)
+  (treemacs-recenter-distance 0.1)
+  (treemacs-recenter-after-file-follow nil)
+  (treemacs-recenter-after-tag-follow nil)
+  (treemacs-recenter-after-project-jump 'always)
+  (treemacs-recenter-after-project-expand 'on-distance)
+  (treemacs-show-cursor nil)
+  (treemacs-show-hidden-files t)
+  (treemacs-silent-filewatch nil)
+  (treemacs-silent-refresh nil)
+  (treemacs-sorting 'alphabetic-asc)
+  (treemacs-space-between-root-nodes nil)
+  (treemacs-tag-follow-cleanup t)
+  (treemacs-tag-follow-delay 1.5)
+  (treemacs-user-mode-line-format nil)
+  (treemacs-user-header-line-format nil)
+  (treemacs-width 35)
+  (treemacs-workspace-switch-cleanup nil)
+  (treemacs-python-executable "@python3Binary@")
+  :config
+  (treemacs-follow-mode t)
+  (treemacs-filewatch-mode t)
+  (treemacs-fringe-indicator-mode t)
+  (treemacs-git-mode 'deferred))
+
+(use-package treemacs-projectile
+  :demand t
+  :after treemacs projectile
+  :bind
+  (:map custom-projectile-map
+        ("e" . treemacs-projectile)))
+
 (define-hostmode poly-nix-hostmode :mode 'nix-mode)
 
 (define-innermode poly-emacs-innermode

@@ -397,6 +397,7 @@ in {
         epkgs.magit-filenotify
         epkgs.magit-popup # *
         epkgs.magit-todos
+        epkgs.treemacs-magit
       ];
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/git.el;
     })

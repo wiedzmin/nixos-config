@@ -189,6 +189,17 @@
   (dap-mode 1)
   (dap-ui-mode 1))
 
+(use-package lsp-treemacs
+  :after treemacs lsp-mode
+  :bind
+  (:map mode-specific-map
+        :prefix-map custom-lsp-treemacs-map
+        :prefix "t"
+        ("e" . lsp-treemacs-errors-list)
+        ("s" . lsp-treemacs-symbols))
+  :config
+  (lsp-treemacs-sync-mode 1))
+
 (use-package lsp-ivy
   :after (lsp-mode ivy)
   :bind
