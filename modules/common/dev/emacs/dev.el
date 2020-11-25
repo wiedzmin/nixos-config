@@ -122,6 +122,7 @@
   (lsp-enable-file-watchers t)
   (lsp-file-watch-threshold 32768)
   :config
+  ;;TODO: play with lsp-keymap-prefix
   (advice-add 'lsp-on-change :around 'custom/lsp-on-change))
 
 (use-package lsp-ui
