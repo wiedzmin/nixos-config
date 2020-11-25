@@ -104,14 +104,17 @@
   (lsp-before-save-edits nil)
   (lsp-document-sync-method 'incremental)
   (lsp-eldoc-render-all nil)
+  (lsp-eldoc-enable-hover nil)
   (lsp-highlight-symbol-at-point nil)
   (lsp-inhibit-message t)
+  (lsp-diagnostics-provider :flycheck)
   (lsp-message-project-root-warning t)
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 20)
   (lsp-enable-folding nil)
-  (lsp-enable-completion-at-point nil)  ;?
-  (lsp-enable-symbol-highlighting nil)  ;?
+  (lsp-lens-enable t)
+  (lsp-enable-completion-at-point t)
+  (lsp-enable-symbol-highlighting nil)
   (lsp-enable-links nil)  ;?
   (lsp-restart 'auto-restart)
   (lsp-client-packages nil)
@@ -119,7 +122,6 @@
   (lsp-enable-file-watchers t)
   (lsp-file-watch-threshold 32768)
   :config
-  (use-package lsp-clients)
   (advice-add 'lsp-on-change :around 'custom/lsp-on-change))
 
 (use-package lsp-ui
@@ -153,6 +155,8 @@
   (lsp-ui-doc-include-signature t)
   (lsp-ui-doc-border (face-foreground 'default))
   (lsp-ui-doc-header t)
+  (lsp-ui-doc-show-with-cursor nil)
+  (lsp-ui-doc-show-with-mouse nil)
   (lsp-ui-doc-max-width 120)
   (lsp-ui-doc-max-height 30)
   (lsp-ui-flycheck-enable t)
@@ -166,8 +170,8 @@
   (lsp-ui-sideline-show-code-actions t)
   (lsp-ui-sideline-ignore-duplicate t)
   (lsp-ui-sideline-show-symbol t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-sideline-show-diagnostics nil)
+  (lsp-ui-sideline-show-hover nil)
+  (lsp-ui-sideline-show-diagnostics t)
   (lsp-ui-sideline-code-actions-prefix ""))
 
 ;; TODO: enable after proper setup
