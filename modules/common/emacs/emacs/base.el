@@ -244,6 +244,7 @@
         ("C-d" . company-show-doc-buffer)
         ("M-." . company-show-location)
         ("C-c h" . company-quickhelp-manual-begin))
+  :hook (prog-mode-hook . company-mode)
   :custom
   (company-idle-delay 0)
   (company-minimum-prefix-length 1)
