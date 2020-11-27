@@ -112,7 +112,7 @@ in {
     (mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
         nfs-utils # for vagrant
-        inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.vagrant
+        vagrant
       ];
 
       boot.kernel.sysctl = {
@@ -170,7 +170,7 @@ in {
 
       environment.systemPackages = with pkgs;
         [
-          inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.arion
+          arion
           ctop
           discover_containerized_services
           dive

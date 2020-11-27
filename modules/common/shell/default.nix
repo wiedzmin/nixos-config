@@ -453,7 +453,7 @@ in {
           choose
           fd
           gron
-          inputs.nixpkgs-02_06_20.legacyPackages.x86_64-linux.ripgrep-all
+          ripgrep-all
           sd
           uq
           vgrep

@@ -177,7 +177,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ patchutils wiggle inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.diffoscope ];
+        home.packages = with pkgs; [ patchutils wiggle diffoscope ];
       };
     })
     (mkIf (cfg.enable && cfg.statistics.enable) {
@@ -263,7 +263,7 @@ in {
         };
         home.packages = with pkgs; [
           nurpkgs.comby
-          inputs.nixpkgs-09_07_20.legacyPackages.x86_64-linux.devdocs-desktop
+          devdocs-desktop
           icdiff
         ];
         programs.direnv = {

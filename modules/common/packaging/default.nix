@@ -164,7 +164,7 @@ in {
       home-manager.users.${user} = {
         home.packages = with pkgs;
           [
-            inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.cachix
+            cachix
             # nix-zsh-completions # NOTE: collision emerged in last unstable
             nix-review # https://github.com/Mic92/nix-review
             make-package-diff

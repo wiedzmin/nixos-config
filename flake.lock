@@ -110,55 +110,6 @@
         "type": "indirect"
       }
     },
-    "nixpkgs-02_06_20": {
-      "locked": {
-        "lastModified": 1591120815,
-        "narHash": "sha256-kmG7D+k5L1VidMeit8Hmk7XGXUa1o2DLGKvdYOLj52M=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "467ce5a9f45aaf96110b41eb863a56866e1c2c3c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "467ce5a9f45aaf96110b41eb863a56866e1c2c3c",
-        "type": "github"
-      }
-    },
-    "nixpkgs-08_02_20": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1581232920,
-        "narHash": "sha256-a7521W57Uc7y+py8/ONu6UhDhTqucKFenWW2USvMlpQ=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "8130f3c1c2bb0e533b5e150c39911d6e61dcecc2",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "8130f3c1c2bb0e533b5e150c39911d6e61dcecc2",
-        "type": "github"
-      }
-    },
-    "nixpkgs-09_07_20": {
-      "locked": {
-        "lastModified": 1594369886,
-        "narHash": "sha256-qgj/Q11LIMZ9odF4XP0xBcjUbjiMvl/9uBb6wIx43l4=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "8d05772134f17180fb2711d0660702dae2a67313",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "8d05772134f17180fb2711d0660702dae2a67313",
-        "type": "github"
-      }
-    },
     "nixpkgs-16_04_20": {
       "locked": {
         "lastModified": 1587041016,
@@ -226,9 +177,6 @@
         "liquidprompt": "liquidprompt",
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs-02_06_20": "nixpkgs-02_06_20",
-        "nixpkgs-08_02_20": "nixpkgs-08_02_20",
-        "nixpkgs-09_07_20": "nixpkgs-09_07_20",
         "nixpkgs-16_04_20": "nixpkgs-16_04_20",
         "nixpkgs-proposed": "nixpkgs-proposed",
         "nur": "nur",

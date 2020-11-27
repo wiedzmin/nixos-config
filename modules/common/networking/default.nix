@@ -135,7 +135,7 @@ in {
     (mkIf (cfg.enable && cfg.clients.enable) {
       systemd.services.dhcpcd.serviceConfig.Type = lib.mkForce "simple"; # NOTE: forking is not acceptable for dhcpcd.
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ davfs2 inputs.nixpkgs-09_07_20.legacyPackages.x86_64-linux.gcalcli ];
+        home.packages = with pkgs; [ davfs2 gcalcli ];
         programs.ssh = {
           enable = true;
           forwardAgent = true;
@@ -208,7 +208,7 @@ in {
     (mkIf (cfg.enable && cfg.messengers.enable) {
       services.quassel.enable = true;
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ skype inputs.nixpkgs-09_07_20.legacyPackages.x86_64-linux.tdesktop quasselClient ];
+        home.packages = with pkgs; [ skype tdesktop quasselClient ];
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {

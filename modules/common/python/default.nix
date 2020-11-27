@@ -87,7 +87,7 @@ in {
 
             nurpkgs.dephell
 
-            # inputs.nixpkgs-08_02_20.legacyPackages.x86_64-linux.prospector # TODO: review configuration https://github.com/PyCQA/prospector
+            # prospector # TODO: review configuration https://github.com/PyCQA/prospector
           ] ++ lib.optionals (cfg.jupyter.enable) [ jupyterWithPackages ];
         home.file = {
           ".pylintrc".text =

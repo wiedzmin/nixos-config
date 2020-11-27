@@ -80,7 +80,7 @@ in {
       systemd.user.timers."update-ebooks" = renderTimer "Update ebooks entries" "1h" "1h" "";
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.ebook "org.pwmt.zathura.desktop";
-        home.packages = with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.calibre djview djvulibre ];
+        home.packages = with pkgs; [ calibre djview djvulibre ];
         programs.zathura = {
           enable = true;
           options = {

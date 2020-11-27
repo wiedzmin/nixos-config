@@ -253,8 +253,8 @@ in {
           gitAndTools.git-machete
           gitAndTools.git-octopus
           gitAndTools.pass-git-helper
+          gitAndTools.thicket
           gitstats
-          inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.gitAndTools.thicket
           gomp
 
           gitAndTools.git-trim

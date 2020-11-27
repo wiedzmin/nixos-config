@@ -32,7 +32,7 @@ in {
       };
       command = mkOption {
         type = types.str;
-        default = "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.qutebrowser}/bin/qutebrowser --target window";
+        default = "${pkgs.qutebrowser}/bin/qutebrowser --target window";
         description = "Default command line to invoke";
       };
       staging.enableSettings = mkOption {

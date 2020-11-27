@@ -183,13 +183,13 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
         buku_add = mkPythonScriptWithDeps "buku_add"
-          (with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku nurpkgs.pystdlib xsel ])
+          (with pkgs; [ buku nurpkgs.pystdlib xsel ])
           (readSubstituted ../subst.nix ./scripts/buku_add.py);
         buku_search_tag = mkShellScriptWithDeps "buku_search_tag"
-          (with pkgs; [ coreutils nurpkgs.dmenu-ng gawk inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku ])
+          (with pkgs; [ coreutils nurpkgs.dmenu-ng gawk buku ])
           (readSubstituted ../subst.nix ./scripts/buku_search_tag.sh);
         buku_search_url = mkShellScriptWithDeps "buku_search_url"
-          (with pkgs; [ coreutils nurpkgs.dmenu-ng inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.buku ])
+          (with pkgs; [ coreutils nurpkgs.dmenu-ng buku ])
           (readSubstituted ../subst.nix ./scripts/buku_search_url.sh);
       };
     })

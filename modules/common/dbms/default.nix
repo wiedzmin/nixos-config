@@ -96,7 +96,7 @@ in {
   config = mkMerge [
     (mkIf cfg.postgresql.enable {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ pgcenter inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.pgcli ];
+        home.packages = with pkgs; [ pgcenter pgcli ];
         xdg.configFile.".pgclirc".text = lib.generators.toINI { } {
           main = {
             asterisk_column_order = "table_order";
@@ -167,7 +167,7 @@ in {
     (mkIf cfg.mysql.enable {
       environment.variables.MYCLI_HISTFILE = cfg.mysql.historyPath;
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.mycli ];
+        home.packages = with pkgs; [ mycli ];
         xdg.configFile.".myclirc".text = lib.generators.toINI { } {
           main = {
             audit_log = cfg.mysql.auditLogPath;
@@ -220,13 +220,13 @@ in {
       home-manager.users.${user} = {
         home.packages = with pkgs; [
           sqlitebrowser
-          inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.litecli # TODO: shell automation: fzf for selecting db file, you get the idea
+          litecli # TODO: shell automation: fzf for selecting db file, you get the idea
         ];
       };
     })
     (mkIf cfg.misc.enable {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.nodePackages.elasticdump ];
+        home.packages = with pkgs; [ nodePackages.elasticdump ];
       };
     })
     (mkIf (cfg.cli.enable && cfg.wm.enable) {

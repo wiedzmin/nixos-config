@@ -7,12 +7,8 @@
   inputs = rec {
     stable.url = "github:NixOS/nixpkgs/nixos-20.03";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    nixpkgs-02_06_20.url = "github:nixos/nixpkgs/467ce5a9f45aaf96110b41eb863a56866e1c2c3c";
-    nixpkgs-08_02_20 = {
-      url = "github:nixos/nixpkgs/8130f3c1c2bb0e533b5e150c39911d6e61dcecc2";
       flake = false;
     };
-    nixpkgs-09_07_20.url = "github:nixos/nixpkgs/8d05772134f17180fb2711d0660702dae2a67313";
     nixpkgs-16_04_20.url = "github:nixos/nixpkgs/b61999e4ad60c351b4da63ae3ff43aae3c0bbdfb";
     nixpkgs-proposed = {
       url = "github:wiedzmin/nixpkgs";

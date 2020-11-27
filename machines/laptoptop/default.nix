@@ -453,7 +453,7 @@ in {
       enableXsane = true;
       paperless = {
         enable = true;
-        package = inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.paperless;
+        package = pkgs.paperless;
         consumptionDir = homePrefix "docs/paperless/consume";
         dataDir = homePrefix "docs/paperless/data";
         user = user;
