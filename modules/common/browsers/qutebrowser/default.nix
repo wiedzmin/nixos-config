@@ -50,6 +50,17 @@ in {
         qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ python3Packages.pyyaml ])
           (readSubstituted ../../subst.nix ./scripts/qb-fix-session.py);
       };
+      custom.pim.timeTracking.rules = ''
+        -- TODO: parameterize web resources
+        current window $program == "qutebrowser" ==> tag activity:web,
+        current window ($program == "qutebrowser" && $title =~ /Facebook/) ==> tag site:facebook,
+        current window ($program == "qutebrowser" && $title =~ /Gmail/) ==> tag web:Gmail,
+        current window ($program == "qutebrowser" && $title =~ /Google/) ==> tag web:Google,
+        current window ($program == "qutebrowser" && $title =~ /wikipedia/) ==> tag site:wikipedia,
+        current window ($program == "qutebrowser" && $title =~ /habr/) ==> tag site:habr,
+        current window ($program == "qutebrowser" && $title =~ /pypi/) ==> tag site:pypi,
+        current window ($program == "qutebrowser" && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
+      '';
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {
             K("C-g"): K("f5"),

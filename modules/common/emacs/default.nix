@@ -139,6 +139,19 @@ in {
         *.elc
         .dir-locals.el
       '';
+      custom.pim.timeTracking.rules = ''
+        -- projects
+        current window ($program == "emacs" && $title =~ m!(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/!)
+          ==> tag project:$1-$2-$3,
+        -- TODO: consider parameterizing filetypes
+        current window ($title =~ /^emacs - [^ ]+\.c .*$/) ==> tag edit:c,
+        current window ($title =~ /^emacs - [^ ]+\.py .*$/) ==> tag edit:python,
+        current window ($title =~ /^emacs - [^ ]+\.hs .*$/) ==> tag edit:haskell,
+        current window ($title =~ /^emacs - [^ ]+\.lisp .*$/) ==> tag edit:cl,
+        current window ($title =~ /^emacs - [^ ]+\.nix .*$/) ==> tag edit:nix,
+        current window ($title =~ /^emacs - [^ ]+\.el .*$/) ==> tag edit:elisp,
+        current window ($title =~ /^emacs - [^ ]+\.pdf .*$/) ==> tag activity:pdf,
+      '';
       ide.emacs.extraPackages = epkgs:
         [
           epkgs.aggressive-indent

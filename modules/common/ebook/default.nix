@@ -78,6 +78,10 @@ in {
         };
       };
       systemd.user.timers."update-ebooks" = renderTimer "Update ebooks entries" "1h" "1h" "";
+      custom.pim.timeTracking.rules = ''
+        -- TODO: update semantics
+        current window $program == ["Zathura"] ==> tag activity:pdf,
+      '';
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.ebook "org.pwmt.zathura.desktop";
         home.packages = with pkgs; [ calibre djview djvulibre ];

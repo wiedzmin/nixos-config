@@ -56,6 +56,18 @@ in {
         home.packages = with pkgs; [ next ];
         xdg.configFile."next/init.lisp".text = readSubstituted ../../subst.nix ./init.lisp; # NOTE: actually absent
       };
+      custom.pim.timeTracking.rules = ''
+        -- TODO: parameterize web resources
+        -- TODO: check window class
+        current window $program == "next" ==> tag activity:web,
+        current window ($program == "next" && $title =~ /Facebook/) ==> tag site:facebook,
+        current window ($program == "next" && $title =~ /Gmail/) ==> tag web:Gmail,
+        current window ($program == "next" && $title =~ /Google/) ==> tag web:Google,
+        current window ($program == "next" && $title =~ /wikipedia/) ==> tag site:wikipedia,
+        current window ($program == "next" && $title =~ /habr/) ==> tag site:habr,
+        current window ($program == "next" && $title =~ /pypi/) ==> tag site:pypi,
+        current window ($program == "next" && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
+      '';
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       environment.sessionVariables = { BROWSER = cfg.command; };

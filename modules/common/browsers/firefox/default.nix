@@ -78,6 +78,17 @@ in {
   };
   config = mkMerge [
     (mkIf (cfg.enable) {
+      custom.pim.timeTracking.rules = ''
+        current window $program == ["Navigator"] ==> tag activity:web,
+        -- TODO: parameterize web resources
+        current window ($program == "Navigator" && $title =~ /Facebook/) ==> tag site:facebook,
+        current window ($program == "Navigator" && $title =~ /Gmail/) ==> tag web:Gmail,
+        current window ($program == "Navigator" && $title =~ /Google/) ==> tag web:Google,
+        current window ($program == "Navigator" && $title =~ /wikipedia/) ==> tag site:wikipedia,
+        current window ($program == "Navigator" && $title =~ /habr/) ==> tag site:habr,
+        current window ($program == "Navigator" && $title =~ /pypi/) ==> tag site:pypi,
+        current window ($program == "Navigator" && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
+      '';
       custom.programs.firefox = {
         enable = true;
         extensions = [

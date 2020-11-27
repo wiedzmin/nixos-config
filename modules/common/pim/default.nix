@@ -6,6 +6,10 @@ let
   cfg = config.custom.pim;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  nixpkgs-arbtt = import inputs.nixpkgs-arbtt ({
+    config = config.nixpkgs.config;
+    system = "x86_64-linux";
+  });
 in {
   options = {
     custom.pim = {
@@ -17,6 +21,102 @@ in {
       timeTracking.enable = mkOption {
         type = types.bool;
         default = false;
+        description = "Whether to enable personal time-tracking infra/tools.";
+      };
+      timeTracking.inactiveSec = mkOption {
+        type = types.int;
+        default = 60;
+        description = "arbtt inactivity treshold.";
+      };
+      timeTracking.inactiveTag = mkOption {
+        type = types.str;
+        default = "inactive";
+        description = "arbtt tag for idle time. `inactive` is treated specially.";
+      };
+      timeTracking.rules = mkOption {
+        type = types.lines;
+        default = "";
+        description = "arbtt tagging rules.";
+      };
+      timeTracking.config = mkOption {
+        type = types.lines;
+        default = ''
+          $idle > ${builtins.toString cfg.timeTracking.inactiveSec} ==> tag ${cfg.timeTracking.inactiveTag},
+          -- tag apps:$current.program, -- just tags the current program (do we really need it?)
+
+          current window ($program == "emacs" && $title =~ m!(?:/etc)/nixos/!) ==> tag project:nixos-config,
+
+          ${cfg.timeTracking.rules}
+
+          -- dates/time nitpicking
+          year $date == 2014 ==> tag year:2014,
+          year $date == 2015 ==> tag year:2015,
+          year $date == 2016 ==> tag year:2016,
+          year $date == 2017 ==> tag year:2017,
+          year $date == 2018 ==> tag year:2018,
+          year $date == 2019 ==> tag year:2019,
+          year $date == 2020 ==> tag year:2020,
+
+          month $date == 1 ==> tag month:January,
+          month $date == 2 ==> tag month:February,
+          month $date == 3 ==> tag month:March,
+          month $date == 4 ==> tag month:April,
+          month $date == 5 ==> tag month:May,
+          month $date == 6 ==> tag month:June,
+          month $date == 7 ==> tag month:July,
+          month $date == 8 ==> tag month:August,
+          month $date == 9 ==> tag month:September,
+          month $date == 10 ==> tag month:October,
+          month $date == 11 ==> tag month:November,
+          month $date == 12 ==> tag month:December,
+
+          day of week $date == 1 ==> tag week:Monday,
+          day of week $date == 2 ==> tag week:Tuesday,
+          day of week $date == 3 ==> tag week:Wednesday,
+          day of week $date == 4 ==> tag week:Thursday,
+          day of week $date == 5 ==> tag week:Friday,
+          day of week $date == 6 ==> tag week:Saturday,
+          day of week $date == 7 ==> tag week:Sunday,
+
+          $sampleage <= 168:00 ==> tag current-week, -- last week
+          $sampleage <= 24:00 ==> tag current-day, -- last 24h
+          $sampleage <= 1:00 ==> tag last-hour, -- last hour
+
+          $time >=  2:00 && $time <  8:00 ==> tag time-of-day:night,
+          $time >=  8:00 && $time < 12:00 ==> tag time-of-day:morning,
+          $time >= 12:00 && $time < 14:00 ==> tag time-of-day:lunchtime,
+          $time >= 14:00 && $time < 18:00 ==> tag time-of-day:afternoon,
+          $time >= 18:00 && $time < 22:00 ==> tag time-of-day:evening,
+          $time >= 22:00 || $time <  2:00 ==> tag time-of-day:late-evening,
+
+          -- !!! $now fails, probably because of ancient arbtt non-broken version !!!
+          -- month $date == month $now ==> tag current-month,
+          -- year $now == year $date ==> tag current-year,
+
+          {-
+          Some "nontrivial" examples (mostly copypaste):
+          arbtt-stats -f 'month $date==3 && year $date==2018'
+          arbtt-stats  --filter='$date>='`date +"%Y-%m-%d"` --each-category
+
+          if current window ($desktop == "stuff") then current window ($program == "urxvt") ==> tag Program:mutt else tag Desktop:$desktop,
+
+          condition
+            isJava = current window $program == ["sun-awt-X11-XFramePeer", "sun-awt-X11-XDialogPeer", "sun-awt-X11-XWindowPeer"]
+          in $isJava && current window $title == "I3P" ==> tag Program:I3P,
+
+          format $date =~ ".*-03-19"  ==> tag period:on_a_special_day,
+          format $date =~ /.*-03-19/  ==> tag period:on_a_special_day,
+
+          current window $program == "Firefox" ==> {
+            (current window $title =~ m!(?:subreddit of | r/)(ranger)! || current window $title =~ m!ranger/(ranger)!) ==> tag Project:$1,
+            current window $title =~ m!· ([^/·]+) / ([^/·]+) · GitLab! ==> tag Project:$1__$2,
+            current window $title =~ m!([^/ ]+)/([^/@: ]+)(?:$|@|:)! ==> tag Project:$1__$2,
+          },
+          -}
+        '';
+        visible = false;
+        readOnly = true;
+        internal = true;
         description = "Whether to enable personal time-tracking infra/tools.";
       };
       org.warningsFile = mkOption {
@@ -94,11 +194,6 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable && cfg.timeTracking.enable) {
-      assertions = [{
-        assertion = cfg.timeTracking.enable && builtins.pathExists (homePrefix ".arbtt/categorize.cfg");
-        message = "pim: no arbtt configuration found.";
-      }];
-
       nixpkgs.config.packageOverrides = _: rec {
         tt_capture = mkPythonScriptWithDeps "tt_capture"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.cbor2 python3Packages.pytz python3Packages.xlib xprintidle-ng ])
@@ -106,12 +201,15 @@ in {
       };
       services.arbtt = {
         enable = true;
-        package = inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.haskellPackages.arbtt;
+        package = nixpkgs-arbtt.haskellPackages.arbtt;
       };
       home-manager.users."${user}" = {
+        home.file = {
+          ".arbtt/categorize.cfg".text = cfg.timeTracking.config;
+        };
         home.packages = with pkgs;
           [
-            inputs.nixpkgs-16_04_20.haskellPackages.arbtt # for stats viewing
+            nixpkgs-arbtt.haskellPackages.arbtt # for stats viewing
           ] ++ lib.optionals config.attributes.debug.scripts [ tt_capture ];
       };
     })

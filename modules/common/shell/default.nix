@@ -317,6 +317,11 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.alacritty.enable) {
+      custom.pim.timeTracking.rules = ''
+        -- projects
+        current window ($program == "Alacritty" && $title =~ m!(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/!)
+          ==> tag project:$1-$2-$3,
+      '';
       environment.sessionVariables.TERMINAL = [ "${pkgs.alacritty}/bin/alacritty" ];
       home-manager.users."${user}" = {
         programs.alacritty = {

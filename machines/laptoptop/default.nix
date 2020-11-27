@@ -467,8 +467,8 @@ in {
   custom.pim = {
     enable = true;
     emacs.enable = true;
-    secrets.enable = true;
     scheduling.enable = true;
+    timeTracking.enable = true;
   };
 
   custom.power-management = {
