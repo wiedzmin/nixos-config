@@ -124,6 +124,10 @@ in {
       };
       home-manager.users.${user} = { home.packages = with pkgs; [ rollback ]; };
 
+      custom.pim.timeTracking.rules = ''
+        current window $title =~ /nixos-rebuild/ ==> tag packaging:nixos-rebuild,
+      '';
+
       systemd.services.nix-daemon = {
         environment.TMPDIR = "/tmp/buildroot";
         preStart = ''

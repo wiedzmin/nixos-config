@@ -79,8 +79,13 @@ in {
       };
       systemd.user.timers."update-ebooks" = renderTimer "Update ebooks entries" "1h" "1h" "";
       custom.pim.timeTracking.rules = ''
-        -- TODO: update semantics
-        current window $program == ["Zathura"] ==> tag activity:pdf,
+        current window $title =~ /.*pdf.*/ ==> tag read:pdf,
+        current window $title =~ /.*djvu.*/ ==> tag read:djvu,
+        current window $title =~ /.*epub.*/ ==> tag read:epub,
+        current window $title =~ /.*mobi.*/ ==> tag read:mobi,
+        current window $title =~ /.*fb2.*/ ==> tag read:fb2,
+
+        current window $title =~ m!.*papers/.*! ==> tag ebooks:papers,
       '';
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.ebook "org.pwmt.zathura.desktop";

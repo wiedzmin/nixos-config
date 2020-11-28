@@ -42,11 +42,16 @@ in {
         type = types.lines;
         default = ''
           $idle > ${builtins.toString cfg.timeTracking.inactiveSec} ==> tag ${cfg.timeTracking.inactiveTag},
-          -- tag apps:$current.program, -- just tags the current program (do we really need it?)
 
-          current window ($program == "emacs" && $title =~ m!(?:/etc)/nixos/!) ==> tag project:nixos-config,
+          -- debug rules
+          -- tag apps:$current.program,
+          -- tag desktop:$desktop
+          -- tag Activity:other_$current.program___$current.title, -- catch-all for new patterns and uncatched apps
 
           ${cfg.timeTracking.rules}
+
+          (current window $program =~ /.*/) && ($idle <=60) ==> tag total-time:active,
+          $idle > 60 ==> tag total-time:inactive,
 
           -- dates/time nitpicking
           year $date == 2014 ==> tag year:2014,
@@ -78,9 +83,9 @@ in {
           day of week $date == 6 ==> tag week:Saturday,
           day of week $date == 7 ==> tag week:Sunday,
 
-          $sampleage <= 168:00 ==> tag current-week, -- last week
-          $sampleage <= 24:00 ==> tag current-day, -- last 24h
-          $sampleage <= 1:00 ==> tag last-hour, -- last hour
+          $sampleage <= 168:00 ==> tag current-week, -- current week
+          $sampleage <= 24:00 ==> tag current-day, -- current 24h
+          $sampleage <= 1:00 ==> tag current-hour, -- current hour
 
           $time >=  2:00 && $time <  8:00 ==> tag time-of-day:night,
           $time >=  8:00 && $time < 12:00 ==> tag time-of-day:morning,
@@ -88,6 +93,55 @@ in {
           $time >= 14:00 && $time < 18:00 ==> tag time-of-day:afternoon,
           $time >= 18:00 && $time < 22:00 ==> tag time-of-day:evening,
           $time >= 22:00 || $time <  2:00 ==> tag time-of-day:late-evening,
+
+          $time < 1:00 ==> tag hour:00,
+          $time >= 1:00 && $time < 2:00 ==> tag hour:01,
+          $time >= 2:00 && $time < 3:00 ==> tag hour:02,
+          $time >= 3:00 && $time < 4:00 ==> tag hour:03,
+          $time >= 4:00 && $time < 5:00 ==> tag hour:04,
+          $time >= 5:00 && $time < 6:00 ==> tag hour:05,
+          $time >= 6:00 && $time < 7:00 ==> tag hour:06,
+          $time >= 7:00 && $time < 8:00 ==> tag hour:07,
+          $time >= 8:00 && $time < 9:00 ==> tag hour:08,
+          $time >= 9:00 && $time < 10:00 ==> tag hour:09,
+          $time >= 10:00 && $time < 11:00 ==> tag hour:10,
+          $time >= 11:00 && $time < 12:00 ==> tag hour:11,
+          $time >= 12:00 && $time < 13:00 ==> tag hour:12,
+          $time >= 13:00 && $time < 14:00 ==> tag hour:13,
+          $time >= 14:00 && $time < 15:00 ==> tag hour:14,
+          $time >= 15:00 && $time < 16:00 ==> tag hour:15,
+          $time >= 16:00 && $time < 17:00 ==> tag hour:16,
+          $time >= 17:00 && $time < 18:00 ==> tag hour:17,
+          $time >= 18:00 && $time < 19:00 ==> tag hour:18,
+          $time >= 19:00 && $time < 20:00 ==> tag hour:19,
+          $time >= 20:00 && $time < 21:00 ==> tag hour:20,
+          $time >= 21:00 && $time < 22:00 ==> tag hour:21,
+          $time >= 22:00 && $time < 23:00 ==> tag hour:22,
+          $time >= 23:00 ==> tag hour:23,
+
+          $sampleage <= 1:00 ==> tag recent:1h,
+          $sampleage <= 2:00 ==> tag recent:2h,
+          $sampleage <= 3:00 ==> tag recent:3h,
+          $sampleage <= 4:00 ==> tag recent:4h,
+          $sampleage <= 5:00 ==> tag recent:5h,
+          $sampleage <= 6:00 ==> tag recent:6h,
+          $sampleage <= 7:00 ==> tag recent:7h,
+          $sampleage <= 8:00 ==> tag recent:8h,
+          $sampleage <= 9:00 ==> tag recent:9h,
+          $sampleage <= 10:00 ==> tag recent:10h,
+          $sampleage <= 11:00 ==> tag recent:11h,
+          $sampleage <= 12:00 ==> tag recent:12h,
+          $sampleage <= 13:00 ==> tag recent:13h,
+          $sampleage <= 14:00 ==> tag recent:14h,
+          $sampleage <= 15:00 ==> tag recent:15h,
+          $sampleage <= 16:00 ==> tag recent:16h,
+          $sampleage <= 17:00 ==> tag recent:17h,
+          $sampleage <= 18:00 ==> tag recent:18h,
+          $sampleage <= 19:00 ==> tag recent:19h,
+          $sampleage <= 20:00 ==> tag recent:20h,
+          $sampleage <= 21:00 ==> tag recent:21h,
+          $sampleage <= 22:00 ==> tag recent:22h,
+          $sampleage <= 23:00 ==> tag recent:23h,
 
           -- !!! $now fails, probably because of ancient arbtt non-broken version !!!
           -- month $date == month $now ==> tag current-month,

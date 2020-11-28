@@ -140,17 +140,18 @@ in {
         .dir-locals.el
       '';
       custom.pim.timeTracking.rules = ''
-        -- projects
-        current window ($program == "emacs" && $title =~ m!(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/!)
-          ==> tag project:$1-$2-$3,
         -- TODO: consider parameterizing filetypes
-        current window ($title =~ /^emacs - [^ ]+\.c .*$/) ==> tag edit:c,
-        current window ($title =~ /^emacs - [^ ]+\.py .*$/) ==> tag edit:python,
-        current window ($title =~ /^emacs - [^ ]+\.hs .*$/) ==> tag edit:haskell,
-        current window ($title =~ /^emacs - [^ ]+\.lisp .*$/) ==> tag edit:cl,
-        current window ($title =~ /^emacs - [^ ]+\.nix .*$/) ==> tag edit:nix,
-        current window ($title =~ /^emacs - [^ ]+\.el .*$/) ==> tag edit:elisp,
-        current window ($title =~ /^emacs - [^ ]+\.pdf .*$/) ==> tag activity:pdf,
+        -- TODO: consider adding: `current window $program == "emacs" &&`
+        current window ($title =~ /^emacs - [^ ]+\.c .*$/) ==> tag coding:c,
+        current window ($title =~ /^emacs - [^ ]+\.py .*$/) ==> tag coding:python,
+        current window ($title =~ /^emacs - [^ ]+\.hs .*$/) ==> tag coding:haskell,
+        current window ($title =~ /^emacs - [^ ]+\.lisp .*$/) ==> tag coding:cl,
+        current window ($title =~ /^emacs - [^ ]+\.nix .*$/) ==> tag coding:nix,
+        current window ($title =~ /^emacs - [^ ]+\.el .*$/) ==> tag coding:elisp,
+
+        current window ($title =~ /^emacs - [^ ]+\.org .*$/) ==> tag edit:orgmode,
+
+        current window ($program == "emacs" && $title =~ m!(?:/etc)/nixos/!) ==> tag project:nixos-config,
       '';
       ide.emacs.extraPackages = epkgs:
         [

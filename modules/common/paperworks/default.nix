@@ -279,6 +279,10 @@ in {
         home.packages = [ inputs.stable.legacyPackages.x86_64-linux.libreoffice ]
           ++ lib.optionals (cfg.publishing.staging.packages != [ ]) cfg.publishing.staging.packages;
       };
+      custom.pim.timeTracking.rules = ''
+        current window $program == "libreoffice" ==> tag activity:paperworks,
+        current window $program == "libreoffice" ==> tag program:libreoffice,
+      '';
     })
   ];
 }
