@@ -170,7 +170,6 @@ in {
 
       environment.systemPackages = with pkgs;
         [
-          arion
           ctop
           discover_containerized_services
           dive
