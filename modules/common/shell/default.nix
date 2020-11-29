@@ -168,7 +168,7 @@ in {
           policy = 'ignore'
         '';
         home.packages = with pkgs;
-          [ checkbashism libnotify wmctrl xdotool seturgent shellcheck perl cod thumbs-bin ]
+          [ checkbashism libnotify mmv wmctrl xdotool seturgent shellcheck perl cod thumbs-bin ]
           ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
           ".tmuxp/main.yml".text = ''
