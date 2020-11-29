@@ -236,3 +236,6 @@
   (comby-args '("-exclude" "@combyExcludes@")))
 
 (use-package nix-buffer)
+
+(use-package tuareg
+  :mode ("\\.ml[4ilpy]?$" . tuareg-mode))
