@@ -89,24 +89,28 @@ in {
         default = [ ];
         description = "The collection of whitelisting prefixes for direnv to allow";
       };
-      jira.enable = mkOption {
+      timeTracking.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable Jira automation.";
+        description = "Whether to enable dev timetracking infra.";
       };
-      jira.identities = mkOption {
+      timeTracking.identities = mkOption {
         type = types.attrs;
         default = { };
         example = {
-          "username" = {
-            creds = [ "login" "password" ];
-            meta = {
+          "id" = {
+            jira = {
+              creds = [ "login" "password" ];
+              server = "<server url>";
               project = "foo";
+            };
+            workspaceRoot = "/path/to/root";
+            meta = {
               bar = "quux";
             };
           };
         };
-        description = "Jira identities collection.";
+        description = "Timetracking identities collection.";
       };
       repoSearch.enable = mkOption {
         type = types.bool;
@@ -191,13 +195,13 @@ in {
           (readSubstituted ../subst.nix ./scripts/reposearch.py);
       };
     })
-    (mkIf (cfg.enable && cfg.jira.enable) {
+    (mkIf (cfg.enable && cfg.timeTracking.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        jiractl = mkPythonScriptWithDeps "jiractl" (with pkgs; [ python3Packages.jira python3Packages.pytz python3Packages.redis nurpkgs.pystdlib yad ])
-          (readSubstituted ../subst.nix ./scripts/jiractl.py);
+        ttctl = mkPythonScriptWithDeps "ttctl" (with pkgs; [ python3Packages.jira python3Packages.pytz python3Packages.redis nurpkgs.pystdlib yad ])
+          (readSubstituted ../subst.nix ./scripts/ttctl.py);
       };
       custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set jira/identities ${lib.strings.escapeNixString (builtins.toJSON cfg.jira.identities)}
+        ${pkgs.redis}/bin/redis-cli set timetracking/identities ${lib.strings.escapeNixString (builtins.toJSON cfg.timeTracking.identities)}
       '';
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
@@ -321,9 +325,9 @@ in {
         key = [ "p" ];
         cmd = "${pkgs.open-project}/bin/open-project";
         mode = "dev";
-      }] ++ lib.optionals (cfg.jira.enable) [{
-        key = [ "j" ];
-        cmd = "${pkgs.jiractl}/bin/jiractl";
+      }] ++ lib.optionals (cfg.timeTracking.enable) [{
+        key = [ "t" ];
+        cmd = "${pkgs.ttctl}/bin/ttctl";
         mode = "dev";
       }];
     })
@@ -332,7 +336,7 @@ in {
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ jiractl open-project reposearch ];
+        home.packages = with pkgs; [ ttctl open-project reposearch ];
       };
     })
   ];

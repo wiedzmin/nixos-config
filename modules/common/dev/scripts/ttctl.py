@@ -12,7 +12,7 @@ from pystdlib import shell_cmd
 
 
 r = redis.Redis(host='localhost', port=6379, db=0)
-identities = json.loads(r.get("jira/identities"))
+identities = json.loads(r.get("timetracking/identities"))
 
 
 client = None
@@ -131,8 +131,9 @@ if not identity:
     notify("[jira]", "invalid identity", urgency=URGENCY_CRITICAL)
     sys.exit(1)
 
-client = get_client(server=identity["meta"]["JIRA_SERVER"], auth=tuple(identity["creds"]))
-issues = get_issues(client, identity["meta"]["PROJECT"])
+client = get_client(server=identity["jira"]["server"],
+                    auth=tuple(identity["jira"]["creds"]))
+issues = get_issues(client, identity["jira"]["project"])
 
 issue = select_issue(issues)
 if not issue:
@@ -142,10 +143,10 @@ if not issue:
 op = get_selection(OPS.keys(), '>', case_insensitive=True,
                    lines=5, font="@wmFontDmenu@")
 if not op:
-    notify("[jira]", "No operation selected", urgency=URGENCY_NORMAL)
+    notify("[timetracking]", "No operation selected", urgency=URGENCY_NORMAL)
     sys.exit(0)
 if op not in OPS:
-    notify("[jira]", "Invalid operation `{op}`", urgency=URGENCY_NORMAL)
+    notify("[timetracking]", "Invalid operation `{op}`", urgency=URGENCY_NORMAL)
     sys.exit(0)
 
 OPS[op](issue)
