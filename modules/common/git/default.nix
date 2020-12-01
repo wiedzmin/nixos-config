@@ -16,11 +16,6 @@ in {
         default = false;
         description = "Whether to enable Git VCS infrastructure.";
       };
-      defaultMainBranchName = mkOption {
-        type = types.str;
-        default = "master";
-        description = "Name of main branch.";
-      };
       defaultUpstreamRemote = mkOption {
         type = types.str;
         default = "upstream";
@@ -45,11 +40,6 @@ in {
         type = types.str;
         default = ".devenv";
         description = "File name for dev-env files list.";
-      };
-      wip.idleTime = mkOption {
-        type = types.int;
-        default = 3600;
-        description = "Seconds of X idle time to start WIP-saving actions.";
       };
       wip.minChangedLines = mkOption {
         type = types.int;

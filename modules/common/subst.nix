@@ -26,9 +26,7 @@ in rec {
   emacsYasnippetSnippets = inputs.yasnippet-snippets;
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;
-  gitDefaultMainBranchName = config.custom.dev.git.defaultMainBranchName;
   gitWipChangedLinesTreshold = builtins.toString config.custom.dev.git.wip.minChangedLines;
-  gitWipIdletimeTreshold = builtins.toString config.custom.dev.git.wip.idleTime;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
   ivyCandidatesCount = builtins.toString config.custom.navigation.emacs.ivy.candidatesCount;

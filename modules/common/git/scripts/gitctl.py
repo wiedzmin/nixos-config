@@ -8,92 +8,13 @@ from pygit2 import GIT_BRANCH_REMOTE, GIT_DIFF_STATS_FULL, GIT_RESET_HARD, GIT_S
     GIT_STATUS_IGNORED, RemoteCallbacks, Repository, Signature, Tag, UserPass
 import redis
 
-from pystdlib.uishim import get_selection, log_info, log_error
+from pystdlib.uishim import is_interactive, get_selection, log_info, log_error
+from pystdlib.passutils import read_entry_raw, extract_specific_line, extract_by_regex
+from pystdlib.git import is_git_repo, get_active_branch, is_main_branch_active, \
+    is_main_branch_protected, resolve_remote, get_diff_size, collect_tags, \
+    build_auth_callbacks
+from pystdlib.xlib import is_idle_enough
 from pystdlib import shell_cmd
-
-
-def is_idle_enough():
-    idle_time = shell_cmd("@xprintidleBinary@", env={"DISPLAY": os.getenv("DISPLAY"),
-                                                     "XAUTHORITY": os.getenv("XAUTHORITY")})
-    return int(idle_time) >= int("@gitWipIdletimeTreshold@") * 1000
-
-
-def is_git_repo(path=None):
-    if not path:
-        return False
-    root = os.path.abspath(path) + "/.git"
-    return os.path.exists(root) and os.path.isdir(root)
-
-
-def get_active_branch(repo):
-    head = None
-    try:
-        head = repo.references['HEAD'].resolve()
-    except KeyError as e:
-        return head
-    return head.name
-
-
-def is_main_branch_active(repo):
-    return get_active_branch(repo).endswith("@gitDefaultMainBranchName@")
-
-
-def is_main_branch_protected():
-    allow_token = os.path.abspath(os.getcwd()) + "/.unseal_@gitDefaultMainBranchName@"
-    return os.path.exists(allow_token) and (os.path.isfile(allow_token) or os.path.islink(allow_token))
-
-
-def get_diff_size(repo):
-    active_branch = get_active_branch(repo)
-    if not active_branch:
-        log_info("probably empty repo")
-        return 0
-    diff = repo.diff()
-    return diff.stats.insertions + diff.stats.deletions
-
-
-def resolve_remote(repo, remote_name):
-    remote = None
-    try:
-        remote = repo.remotes[remote_name]
-    except KeyError:
-        pass
-    return remote
-
-
-def collect_tags(repo):
-    result = []
-    for refname in repo.listall_references():
-        ref = repo.revparse_single(refname)
-        if isinstance(ref, Tag):
-            result.append(refname)
-    return result
-
-
-def build_auth_callbacks(repo, credentials):
-    remote_url = repo.remotes[args.remote].url
-    pass_path = None
-    for glob in credentials.keys():
-        if fnmatch.fnmatch(remote_url, glob):
-            pass_path = credentials[glob]["target"]
-            break
-
-    if not pass_path:
-        log_error("pass entry not found")
-        sys.exit(1)
-
-    entry_data = read_entry_raw(pass_path)
-    password = extract_specific_line(entry_data, 0)
-    username = extract_by_regex(entry_data, field_regex_mappings["login"])
-
-    if not username:
-        log_error("username not found")
-        sys.exit(1)
-    if not password:
-        log_error("password not found")
-        sys.exit(1)
-
-    return RemoteCallbacks(credentials=UserPass(username, password))
 
 
 r = redis.Redis(host='localhost', port=6379, db=0)
@@ -145,12 +66,18 @@ if not is_git_repo(os.getcwd()):
 repo = Repository(os.getcwd() + "/.git")
 config = repo.config
 
+remote_url = repo.remotes[args.remote].url
+pass_path = None
+for glob in credentials_mapping.keys():
+    if fnmatch.fnmatch(remote_url, glob):
+        pass_path = credentials_mapping[glob]["target"]
+
 
 # FIXME: user identity (name + email) is not always set at repo level
 # that said, we need a SPOT for git identities as used/implemented
 # in git-identity emacs package
 if args.cmd == "wip":
-    if not args.wip_force and not is_idle_enough():
+    if not args.wip_force and not is_idle_enough("@xprintidleBinary@"):
         sys.exit(0)
     diff_size = get_diff_size(repo)
     if diff_size == 0:
@@ -172,11 +99,11 @@ if args.cmd == "wip":
         wip_commit = repo.create_commit("HEAD", author, committer, wip_message, tree, parents)
         if args.wip_push:
             if is_main_branch_active(repo) and is_main_branch_protected():
-                log_info("@gitDefaultMainBranchName@ is untouchable")
+                log_info("main branch is untouchable")
                 sys.exit(1)
             else:
                 remote = resolve_remote(repo, args.remote)
-                remote.push(specs=["HEAD"], callbacks=build_auth_callbacks(repo, credentials_mapping))
+                remote.push(specs=["HEAD"], callbacks=build_auth_callbacks(repo, pass_path))
 elif args.cmd == "tags":
     if args.tags_sync:
         remote = resolve_remote(repo, args.remote)
@@ -184,7 +111,7 @@ elif args.cmd == "tags":
             log_error(f"cannot find remote '{args.remote}'")
             sys.exit(1)
         remote.fetch(refspecs=["refs/tags/*:refs/tags/*"])
-        remote.push(specs=collect_tags(repo), callbacks=build_auth_callbacks(repo, credentials_mapping))
+        remote.push(specs=collect_tags(repo), callbacks=build_auth_callbacks(repo, pass_path))
     elif args.tags_checkout:
         tag_name = args.tags_name
         if is_interactive:
@@ -213,7 +140,7 @@ elif args.cmd == "update":
         repo.checkout(f"refs/heads/{dest_branch.name}")
         repo.reset(dest_branch.target, GIT_RESET_HARD)
     elif args.update_op == "push":
-        remote.push(specs=["HEAD"], callbacks=build_auth_callbacks(repo, credentials_mapping))
+        remote.push(specs=["HEAD"], callbacks=build_auth_callbacks(repo, pass_path))
 else:
     log_error("No command issued")
     sys.exit(0)
