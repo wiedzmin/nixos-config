@@ -60,7 +60,7 @@
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package magit-filenotify
-  :delight " FN"
+  :delight " ⛶"
   :hook (magit-status-mode-hook . (lambda ()
                                     (condition-case nil
                                         (magit-filenotify-mode)

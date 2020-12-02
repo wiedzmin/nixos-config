@@ -123,6 +123,7 @@
   (lsp-file-watch-threshold 32768)
   :config
   ;;TODO: play with lsp-keymap-prefix
+  (delight 'lsp-lens-mode " Ꙫ" 'lsp-lens)
   (advice-add 'lsp-on-change :around 'custom/lsp-on-change))
 
 (use-package lsp-ui
@@ -224,6 +225,7 @@
   (use-package envrc
     :quelpa
     (envrc :repo "purcell/envrc" :fetcher github)
+    :delight " ☀"
     :config
     (envrc-global-mode)))
 

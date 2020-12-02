@@ -170,6 +170,7 @@
   :custom
   (auto-revert-check-vc-info t)
   :config
+  (delight 'auto-revert-mode " ⟲" 'autorevert)
   (global-auto-revert-mode 1))
 
 (use-package backup-each-save
@@ -218,8 +219,11 @@
 
 (use-package beginend
   :if (string-equal "i3" (getenv "CURRENT_WM"))
-  :delight (beginend-global-mode beginend-prog-mode beginend-magit-status-mode)
   :config
+  (delight '((beginend-global-mode nil "beginend")
+             (beginend-prog-mode nil "beginend")
+             (beginend-dired-mode nil "beginend")
+             (beginend-magit-status-mode nil "beginend")))
   (beginend-global-mode))
 
 (use-package comment-dwim-2
@@ -356,10 +360,11 @@
   ([remap mark-sexp] . easy-mark))
 
 (use-package editorconfig
-  :delight " EC"
+  :delight " >_"
   :hook ((prog-mode-hook text-mode-hook) . editorconfig-mode))
 
 (use-package flycheck
+  :delight
   :custom-face (flycheck-warning ((t (:foreground "yellow" :background "red"))))
   :custom
   (flycheck-check-syntax-automatically '(mode-enabled save idle-change))
@@ -422,6 +427,7 @@
         ("D" . recursive-widen-dwim)))
 
 (use-package region-bindings-mode
+  :delight
   :custom
   (region-bindings-mode-disable-predicates '((lambda () buffer-read-only)))
   :config
@@ -457,6 +463,7 @@
         ("SPC" . custom/string-inflection-gnocchi)))
 
 (use-package simple
+  :delight auto-fill-function
   :hook (((prog-mode-hook text-mode-hook) . turn-on-auto-fill)
          (eval-expression-minibuffer-setup-hook . eldoc-mode))
   :bind
@@ -488,6 +495,7 @@
   (size-indication-mode 1)
   (toggle-truncate-lines 1)
   (transient-mark-mode -1)
+  (delight 'eldoc-mode nil "eldoc")
   (put 'transient-mark-mode 'permanent-local t)
   (put 'set-goal-column 'disabled nil))
 

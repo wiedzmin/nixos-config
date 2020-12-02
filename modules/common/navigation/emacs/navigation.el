@@ -256,7 +256,7 @@
     (phi-search-mc/setup-keys)))
 
 (use-package projectile
-  :delight " prj"
+  :delight
   :bind
   (:prefix-map custom-projectile-map
                :prefix "<f8>"
@@ -276,7 +276,9 @@
      projectile-root-top-down
      projectile-root-top-down-recurring))
   :hook
-  (after-init-hook . projectile-mode))
+  (after-init-hook . projectile-mode)
+  :config
+  :delight '(:eval (concat " ¶[" (projectile-project-name) "]")))
 
 (use-package counsel-projectile
   :after (counsel projectile)
