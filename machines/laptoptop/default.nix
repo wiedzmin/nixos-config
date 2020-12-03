@@ -227,8 +227,8 @@ in {
     };
     wallpaper = {
       enable = true;
-      root = homePrefix "blobs/wallpaper/mongol/autumn";
-      current = "highway.jpg";
+      root = homePrefix "blobs/wallpaper/mongol/winter";
+      current = "mongol-winter-govi.jpg";
     };
     gtk.enable = false;
     emacs.enable = true;
