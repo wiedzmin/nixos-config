@@ -174,7 +174,7 @@ in {
     displayManager = {
       lightdm = {
         enable = true;
-        background = "/etc/nixos/assets/blobs/nix-wallpaper-mosaic-blue.png";
+        background = "${inputs.nixos-artwork}/wallpapers/nix-wallpaper-mosaic-blue.png";
         greeters.mini = {
           enable = true;
           user = user;

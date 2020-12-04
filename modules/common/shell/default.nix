@@ -232,7 +232,7 @@ in {
         };
         programs.command-not-found = {
           enable = true;
-          dbPath = ../../../assets/blobs/programs.sqlite;
+          dbPath = ./assets/programs.sqlite;
         };
         programs.zsh = {
           enable = true;
