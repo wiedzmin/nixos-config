@@ -51,6 +51,39 @@ let
       } -J -p"
     '';
   };
+  tmux-fzf-fixed = mkDerivationTmux {
+    pluginName = "tmux-fzf";
+    rtpFilePath = "main.tmux";
+    version = "unstable-2020-11-23";
+    src = pkgs.fetchFromGitHub {
+      owner = "sainnhe";
+      repo = "tmux-fzf";
+      rev = "312685b2a7747b61f1f4a96bd807819f1450479d";
+      sha256 = "1z0zmsf8asxs9wbwvkiyd81h93wb2ikl8nxxc26sdpi6l333q5s9";
+    };
+    postInstall = ''
+      find $target -type f -print0 | xargs -0 sed -i -e 's|fzf |${pkgs.fzf}/bin/fzf |g'
+      find $target -type f -print0 | xargs -0 sed -i -e 's|sed |${pkgs.gnused}/bin/sed |g'
+      find $target -type f -print0 | xargs -0 sed -i -e 's|tput |${pkgs.ncurses}/bin/tput |g'
+    '';
+     meta = {
+      homepage = "https://github.com/sainnhe/tmux-fzf";
+      description = "Use fzf to manage your tmux work environment! ";
+      longDescription =
+        ''
+        Features:
+        * Manage sessions (attach, detach*, rename, kill*).
+        * Manage windows (switch, link, move, swap, rename, kill*).
+        * Manage panes (switch, break, join*, swap, layout, kill*, resize).
+        * Multiple selection (support for actions marked by *).
+        * Search commands and append to command prompt.
+        * Search key bindings and execute.
+        * User menu.
+        * Popup window support.
+      '';
+    };
+  };
+
 in {
   options = {
     custom.shell = {
@@ -443,6 +476,10 @@ in {
           {
             plugin = thumbs;
             extraConfig = "set -g @thumbs-key 't'";
+          }
+          {
+            plugin = tmux-fzf-fixed;
+            extraConfig = "set -g @tmux-fzf-launch-key 'w'";
           }
         ];
       };
