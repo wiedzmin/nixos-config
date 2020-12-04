@@ -40,8 +40,7 @@ in {
           (telephone-line-rhs
            '((nil    . (telephone-line-minor-mode-segment))
              (accent . (telephone-line-major-mode-segment
-                        telephone-line-flycheck-segment
-                        telephone-line-filesize-segment))
+                        telephone-line-flycheck-segment))
              (evil   . (telephone-line-misc-info-segment)))))
       '';
     })
