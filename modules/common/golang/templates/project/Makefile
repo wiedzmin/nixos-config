@@ -7,6 +7,12 @@ build/docker:
 generate:
 	go generate -v ./...
 
+test:
+	go test -v ./...
+
+test/func:
+	echo "add actual functional testing commands here"
+
 lint:
 	golangci-lint run ./...
 
