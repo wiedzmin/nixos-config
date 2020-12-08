@@ -35,6 +35,13 @@ in {
         default = "${pkgs.qutebrowser}/bin/qutebrowser --target window";
         description = "Default command line to invoke";
       };
+      windowClass = mkOption {
+        type = types.str;
+        default = "qutebrowser";
+        visible = false;
+        internal = true;
+        description = "Qutebrowser default window class.";
+      };
       staging.enableSettings = mkOption {
         type = types.bool;
         default = false;
@@ -415,7 +422,8 @@ in {
         xdg.mimeApps.defaultApplications =
           mapMimesToApp config.attributes.mimetypes.browser "org.custom.qutebrowser.windowed.desktop";
       };
-      attributes.browser.default = cfg.command;
+      attributes.browser.default.cmd = cfg.command;
+      attributes.browser.default.windowClass = cfg.windowClass;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -429,7 +437,8 @@ in {
           message = "browsers: qutebrowser: there should be exactly one fallback.";
         }
       ];
-      attributes.browser.fallback = cfg.command;
+      attributes.browser.fallback.cmd = cfg.command;
+      attributes.browser.fallback.windowClass = cfg.windowClass;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {

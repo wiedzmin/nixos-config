@@ -11,8 +11,8 @@ in rec {
   booksSearchCommand = config.tools.ebooks.readers.booksSearchCommand;
   combyExcludes = lib.concatStringsSep "," config.custom.dev.comby.excludes;
   configResultPath = config.custom.packaging.configResultPath;
-  defaultBrowser = config.attributes.browser.default;
-  fallbackBrowser = config.attributes.browser.fallback;
+  defaultBrowser = config.attributes.browser.default.cmd;
+  fallbackBrowser = config.attributes.browser.fallback.cmd;
   defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;
   defaultTerminal = config.custom.shell.terminal;
   deftPath = homePrefix "docs/deft";

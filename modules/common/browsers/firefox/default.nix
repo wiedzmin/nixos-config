@@ -36,6 +36,13 @@ in {
         default = "${pkgs.firefox-unwrapped}/bin/firefox --new-window";
         description = "Default command line to invoke";
       };
+      windowClass = mkOption {
+        type = types.str;
+        default = "Firefox";
+        visible = false;
+        internal = true;
+        description = "Firefox default window class.";
+      };
       sessions.backup.enable = mkOption {
         type = types.bool;
         default = false;
@@ -409,7 +416,8 @@ in {
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "firefox.desktop";
       };
-      attributes.browser.default = cfg.command;
+      attributes.browser.default.cmd = cfg.command;
+      attributes.browser.default.windowClass = cfg.windowClass;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -423,7 +431,8 @@ in {
           message = "browsers: firefox: there should be exactly one fallback.";
         }
       ];
-      attributes.browser.fallback = cfg.command;
+      attributes.browser.fallback.cmd = cfg.command;
+      attributes.browser.fallback.windowClass = cfg.windowClass;
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
       nixpkgs.config.packageOverrides = _: rec {

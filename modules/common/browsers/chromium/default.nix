@@ -43,6 +43,13 @@ in {
         default = "${pkgs.chromium}/bin/chromium --new-window";
         description = "Default command line to invoke";
       };
+      windowClass = mkOption {
+        type = types.str;
+        default = "Chromium";
+        visible = false;
+        internal = true;
+        description = "Chromium default window class.";
+      };
       extraOpts = mkOption { # FIXME: resurrect usage
         type = types.attrs;
         description = ''
@@ -107,7 +114,8 @@ in {
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "chromium.desktop";
       };
-      attributes.browser.default = cfg.command;
+      attributes.browser.default.cmd = cfg.command;
+      attributes.browser.default.windowClass = cfg.windowClass;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -121,7 +129,8 @@ in {
           message = "browsers: chromium: there should be exactly one fallback.";
         }
       ];
-      attributes.browser.fallback = cfg.command;
+      attributes.browser.fallback.cmd = cfg.command;
+      attributes.browser.fallback.windowClass = cfg.windowClass;
     })
   ];
 }

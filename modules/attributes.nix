@@ -50,13 +50,23 @@ with lib;
         "x-scheme-handler/unknown"
       ];
     };
-    browser.default = mkOption {
+    browser.default.cmd = mkOption {
       description = "Default browser command";
       type = types.str;
       default = "";
     };
-    browser.fallback = mkOption {
+    browser.default.windowClass = mkOption {
+      description = "Default browser window class";
+      type = types.str;
+      default = "";
+    };
+    browser.fallback.cmd = mkOption {
       description = "Fallback browser command";
+      type = types.str;
+      default = "";
+    };
+    browser.fallback.windowClass = mkOption {
+      description = "Fallback browser window class";
       type = types.str;
       default = "";
     };

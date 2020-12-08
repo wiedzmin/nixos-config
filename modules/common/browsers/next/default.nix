@@ -43,6 +43,13 @@ in {
         default = "${pkgs.next}/bin/next";
         description = "Default command line to invoke";
       };
+      windowClass = mkOption {
+        type = types.str;
+        default = "next";
+        visible = false;
+        internal = true;
+        description = "Next default window class.";
+      };
       staging.enableSettings = mkOption {
         type = types.bool;
         default = false;
@@ -86,7 +93,8 @@ in {
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "next.desktop";
       };
-      attributes.browser.default = cfg.command;
+      attributes.browser.default.cmd = cfg.command;
+      attributes.browser.default.windowClass = cfg.windowClass;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -100,7 +108,8 @@ in {
           message = "browsers: next: there should be exactly one fallback.";
         }
       ];
-      attributes.browser.fallback = cfg.command;
+      attributes.browser.fallback.cmd = cfg.command;
+      attributes.browser.fallback.windowClass = cfg.windowClass;
     })
   ];
 }
