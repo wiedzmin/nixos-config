@@ -203,6 +203,15 @@ in {
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set timetracking/identities ${lib.strings.escapeNixString (builtins.toJSON cfg.timeTracking.identities)}
       '';
+      custom.pim.timeTracking.rules = with config.attributes.browser; ''
+        -- TODO: parameterize web resources
+        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+                                      }] && $title =~ /habr/) ==> tag site:habr,
+        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+                                      }] && $title =~ /pypi/) ==> tag site:pypi,
+        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+                                      }] && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
+      '';
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       wmCommon.wsMapping.rules = [{

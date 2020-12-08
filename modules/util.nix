@@ -213,4 +213,6 @@ in rec {
             browser = meta.browser;
           };
         } ));
+  concatStringLists2Quoted = sep: l1: l2:
+    lib.concatStringsSep sep (lib.forEach (l1 ++ l2) (x: "\"" + x + "\""));
 }

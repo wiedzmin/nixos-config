@@ -85,17 +85,6 @@ in {
           ];
         };
       };
-      custom.pim.timeTracking.rules = ''
-        -- TODO: parameterize web resources
-        current window $program == ["Google-chrome", "Google-chrome-stable"] ==> tag activity:web,
-        current window ($program == ["Google-chrome", "Google-chrome-stable"] && $title =~ /Facebook/) ==> tag site:facebook,
-        current window ($program == ["Google-chrome", "Google-chrome-stable"] && $title =~ /Gmail/) ==> tag web:Gmail,
-        current window ($program == ["Google-chrome", "Google-chrome-stable"] && $title =~ /Google/) ==> tag web:Google,
-        current window ($program == ["Google-chrome", "Google-chrome-stable"] && $title =~ /wikipedia/) ==> tag site:wikipedia,
-        current window ($program == ["Google-chrome", "Google-chrome-stable"] && $title =~ /habr/) ==> tag site:habr,
-        current window ($program == ["Google-chrome", "Google-chrome-stable"] && $title =~ /pypi/) ==> tag site:pypi,
-        current window ($program == ["Google-chrome", "Google-chrome-stable"] && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
-      '';
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       assertions = [

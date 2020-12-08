@@ -63,18 +63,6 @@ in {
         home.packages = with pkgs; [ nyxt ];
         xdg.configFile."nyxt/init.lisp".text = readSubstituted ../../subst.nix ./init.lisp; # NOTE: actually absent
       };
-      custom.pim.timeTracking.rules = ''
-        -- TODO: parameterize web resources
-        -- TODO: check window class
-        current window $program == "nyxt" ==> tag activity:web,
-        current window ($program == "nyxt" && $title =~ /Facebook/) ==> tag site:facebook,
-        current window ($program == "nyxt" && $title =~ /Gmail/) ==> tag web:Gmail,
-        current window ($program == "nyxt" && $title =~ /Google/) ==> tag web:Google,
-        current window ($program == "nyxt" && $title =~ /wikipedia/) ==> tag site:wikipedia,
-        current window ($program == "nyxt" && $title =~ /habr/) ==> tag site:habr,
-        current window ($program == "nyxt" && $title =~ /pypi/) ==> tag site:pypi,
-        current window ($program == "nyxt" && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
-      '';
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       environment.sessionVariables = { BROWSER = cfg.command; };

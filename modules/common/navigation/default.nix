@@ -121,6 +121,18 @@ in {
       };
 
       home-manager.users.${user} = { home.packages = with pkgs; [ j4-dmenu-desktop ]; };
+
+      custom.pim.timeTracking.rules = with config.attributes.browser; ''
+        -- TODO: parameterize web resources
+        current window $program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+                                     }] ==> tag activity:web,
+        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+                                      }] && $title =~ /Gmail/) ==> tag web:Gmail,
+        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+                                      }] && $title =~ /Google/) ==> tag web:Google,
+        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+                                      }] && $title =~ /wikipedia/) ==> tag site:wikipedia,
+      '';
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       nixpkgs.config.packageOverrides = _: rec {
