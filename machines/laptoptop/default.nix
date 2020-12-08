@@ -224,7 +224,7 @@ in {
     enable = true;
     fonts = {
       antialias = true;
-      console = "Lat2-Terminus16";
+      # NOTE: use `nix-index consolefonts` to search values for `console.font`
     };
     wallpaper = {
       enable = true;

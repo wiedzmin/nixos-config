@@ -95,11 +95,6 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      assertions = [{
-        assertion = cfg.fonts.console != "";
-        message = "appearance: must provide console font name.";
-      }];
-
       environment.systemPackages = with pkgs; [ screenfetch ];
 
       fonts = {
