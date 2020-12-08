@@ -333,7 +333,7 @@ in {
               "gc" = "tab-clone";
               "gj" = "tab-move +";
               "gk" = "tab-move -";
-              "go" = "spawn ${pkgs.chromium}/bin/chromium {url}";
+              "go" = "spawn ${config.attributes.browser.fallback.cmd} {url}";
               "gs" = "view-source";
               "gw" = "set-cmd-text -s :tab-give";
               "pt" = "open -t -- {primary}";
