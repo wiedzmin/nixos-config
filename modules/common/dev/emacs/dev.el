@@ -13,6 +13,7 @@
 
 ;TODO: investigate fringe updates lifecycle
 (use-package diff-hl
+  :delight diff-hl-amend-mode
   :hook
   (dired-mode-hook . diff-hl-dired-mode)
   (magit-post-refresh-hook . diff-hl-magit-post-refresh)
