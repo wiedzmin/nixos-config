@@ -44,8 +44,8 @@ in {
         description = "Default command line to invoke";
       };
       windowClass = mkOption {
-        type = types.str;
-        default = "Chromium";
+        type = types.listOf types.str;
+        default = [ "Chromium" ];
         visible = false;
         internal = true;
         description = "Chromium default window class.";

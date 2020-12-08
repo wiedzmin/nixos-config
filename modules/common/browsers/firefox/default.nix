@@ -37,8 +37,8 @@ in {
         description = "Default command line to invoke";
       };
       windowClass = mkOption {
-        type = types.str;
-        default = "Firefox";
+        type = types.listOf types.str;
+        default = [ "Navigator" "Firefox" ];
         visible = false;
         internal = true;
         description = "Firefox default window class.";

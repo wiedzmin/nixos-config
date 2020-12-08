@@ -57,8 +57,8 @@ with lib;
     };
     browser.default.windowClass = mkOption {
       description = "Default browser window class";
-      type = types.str;
-      default = "";
+      type = types.listOf types.str;
+      default = [ ];
     };
     browser.fallback.cmd = mkOption {
       description = "Fallback browser command";
@@ -67,8 +67,8 @@ with lib;
     };
     browser.fallback.windowClass = mkOption {
       description = "Fallback browser window class";
-      type = types.str;
-      default = "";
+      type = types.listOf types.str;
+      default = [ ];
     };
     mimetypes.ebook = mkOption {
       description = "MIME types to handle as e-books";

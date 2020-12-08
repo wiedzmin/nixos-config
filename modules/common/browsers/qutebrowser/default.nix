@@ -36,8 +36,8 @@ in {
         description = "Default command line to invoke";
       };
       windowClass = mkOption {
-        type = types.str;
-        default = "qutebrowser";
+        type = types.listOf types.str;
+        default = [ "qutebrowser" ];
         visible = false;
         internal = true;
         description = "Qutebrowser default window class.";

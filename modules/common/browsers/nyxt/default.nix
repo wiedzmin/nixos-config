@@ -44,8 +44,8 @@ in {
         description = "Default command line to invoke";
       };
       windowClass = mkOption {
-        type = types.str;
-        default = "nyxt";
+        type = types.listOf types.str;
+        default = [ "nyxt" ];
         visible = false;
         internal = true;
         description = "Nyxt default window class.";
