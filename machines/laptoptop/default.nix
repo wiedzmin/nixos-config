@@ -572,7 +572,7 @@ in {
 
   themes.fonts.iosevka.enable = true;
   themes.zenburn.enable = true;
-  themes.emacs.modeline.doom = {
+  themes.emacs.modeline.telephone = {
     enable = true;
     height = 24;
   };
