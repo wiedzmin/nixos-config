@@ -4,12 +4,12 @@ with import ../../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.custom.browsers.next;
+  cfg = config.custom.browsers.nyxt;
   user = config.attributes.mainUser.name;
   prefix = config.wmCommon.prefix;
 in {
   options = {
-    custom.browsers.next = {
+    custom.browsers.nyxt = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -40,15 +40,15 @@ in {
       };
       command = mkOption {
         type = types.str;
-        default = "${pkgs.next}/bin/next";
+        default = "${pkgs.nyxt}/bin/nyxt";
         description = "Default command line to invoke";
       };
       windowClass = mkOption {
         type = types.str;
-        default = "next";
+        default = "nyxt";
         visible = false;
         internal = true;
-        description = "Next default window class.";
+        description = "Nyxt default window class.";
       };
       staging.enableSettings = mkOption {
         type = types.bool;
@@ -60,20 +60,20 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ next ];
-        xdg.configFile."next/init.lisp".text = readSubstituted ../../subst.nix ./init.lisp; # NOTE: actually absent
+        home.packages = with pkgs; [ nyxt ];
+        xdg.configFile."nyxt/init.lisp".text = readSubstituted ../../subst.nix ./init.lisp; # NOTE: actually absent
       };
       custom.pim.timeTracking.rules = ''
         -- TODO: parameterize web resources
         -- TODO: check window class
-        current window $program == "next" ==> tag activity:web,
-        current window ($program == "next" && $title =~ /Facebook/) ==> tag site:facebook,
-        current window ($program == "next" && $title =~ /Gmail/) ==> tag web:Gmail,
-        current window ($program == "next" && $title =~ /Google/) ==> tag web:Google,
-        current window ($program == "next" && $title =~ /wikipedia/) ==> tag site:wikipedia,
-        current window ($program == "next" && $title =~ /habr/) ==> tag site:habr,
-        current window ($program == "next" && $title =~ /pypi/) ==> tag site:pypi,
-        current window ($program == "next" && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
+        current window $program == "nyxt" ==> tag activity:web,
+        current window ($program == "nyxt" && $title =~ /Facebook/) ==> tag site:facebook,
+        current window ($program == "nyxt" && $title =~ /Gmail/) ==> tag web:Gmail,
+        current window ($program == "nyxt" && $title =~ /Google/) ==> tag web:Google,
+        current window ($program == "nyxt" && $title =~ /wikipedia/) ==> tag site:wikipedia,
+        current window ($program == "nyxt" && $title =~ /habr/) ==> tag site:habr,
+        current window ($program == "nyxt" && $title =~ /pypi/) ==> tag site:pypi,
+        current window ($program == "nyxt" && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
       '';
     })
     (mkIf (cfg.enable && cfg.isDefault) {
@@ -81,17 +81,17 @@ in {
       assertions = [
         {
           assertion = !cfg.isFallback;
-          message = "browsers: next: cannot be the default and fallback at the same time.";
+          message = "browsers: nyxt: cannot be the default and fallback at the same time.";
         }
         {
           assertion = !config.custom.browsers.chromium.isDefault && !config.custom.browsers.qutebrowser.isDefault
             && !config.custom.browsers.firefox.isDefault;
-          message = "browsers: next: there should be exactly one default.";
+          message = "browsers: nyxt: there should be exactly one default.";
         }
       ];
 
       home-manager.users.${user} = {
-        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "next.desktop";
+        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "nyxt.desktop";
       };
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
@@ -100,12 +100,12 @@ in {
       assertions = [
         {
           assertion = !cfg.isDefault;
-          message = "browsers: next: cannot be the default and fallback at the same time.";
+          message = "browsers: nyxt: cannot be the default and fallback at the same time.";
         }
         {
           assertion = !config.custom.browsers.chromium.isFallback && !config.custom.browsers.qutebrowser.isFallback
             && !config.custom.browsers.firefox.isFallback;
-          message = "browsers: next: there should be exactly one fallback.";
+          message = "browsers: nyxt: there should be exactly one fallback.";
         }
       ];
       attributes.browser.fallback.cmd = cfg.command;

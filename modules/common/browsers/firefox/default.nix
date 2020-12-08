@@ -406,7 +406,7 @@ in {
           message = "browsers: firefox: cannot be the default and fallback at the same time.";
         }
         {
-          assertion = !config.custom.browsers.chromium.isDefault && !config.custom.browsers.next.isDefault
+          assertion = !config.custom.browsers.chromium.isDefault && !config.custom.browsers.nyxt.isDefault
             && !config.custom.browsers.qutebrowser.isDefault;
           message = "browsers: firefox: there should be exactly one default.";
         }
@@ -426,7 +426,7 @@ in {
           message = "browsers: firefox: cannot be the default and fallback at the same time.";
         }
         {
-          assertion = !config.custom.browsers.chromium.isFallback && !config.custom.browsers.next.isFallback
+          assertion = !config.custom.browsers.chromium.isFallback && !config.custom.browsers.nyxt.isFallback
             && !config.custom.browsers.qutebrowser.isFallback;
           message = "browsers: firefox: there should be exactly one fallback.";
         }

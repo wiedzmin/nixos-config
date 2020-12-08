@@ -4,7 +4,7 @@
     ./browsers/chromium
     ./browsers/firefox
     ./browsers/firefox/impl.nix
-    ./browsers/next
+    ./browsers/nyxt
     ./browsers/qutebrowser
     ./ccpp
     ./content
