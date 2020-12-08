@@ -120,14 +120,6 @@ in {
       };
       i18n = {
         defaultLocale = cfg.fonts.locale;
-        inputMethod = {
-          enabled = "ibus";
-          ibus.engines = with pkgs.ibus-engines; [
-            table
-            table-others # for LaTeX input
-            m17n
-          ];
-        };
       };
     })
     (mkIf (cfg.enable && cfg.wallpaper.enable) { # TODO: review/try services.xserver.desktopManager.wallpaper.*
