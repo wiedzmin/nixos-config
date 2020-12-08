@@ -70,6 +70,7 @@ in {
     (mkIf (cfg.enable) {
       nix = {
         package = inputs.unstable.legacyPackages.x86_64-linux.nixUnstable;
+        nixPath = lib.mkForce [ "nixpkgs=/etc/nixpkgs" ];
         useSandbox = true;
         readOnlyStore = true;
         requireSignedBinaryCaches = true;
@@ -99,6 +100,7 @@ in {
         };
       };
 
+      environment.etc.nixpkgs.source = inputs.unstable;
       nixpkgs.config = {
         allowUnfree = true;
         allowUnfreeRedistributable = true;
