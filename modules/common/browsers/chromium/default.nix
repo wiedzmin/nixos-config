@@ -45,7 +45,7 @@ in {
       };
       windowClass = mkOption {
         type = types.listOf types.str;
-        default = [ "Chromium" ];
+        default = [ "Chromium-browser" ];
         visible = false;
         internal = true;
         description = "Chromium default window class.";
