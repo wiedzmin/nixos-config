@@ -124,13 +124,13 @@ in {
 
       custom.pim.timeTracking.rules = with config.attributes.browser; ''
         -- TODO: parameterize web resources
-        current window $program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+        current window $program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
                                      }] ==> tag activity:web,
-        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
                                       }] && $title =~ /Gmail/) ==> tag web:Gmail,
-        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
                                       }] && $title =~ /Google/) ==> tag web:Google,
-        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
                                       }] && $title =~ /wikipedia/) ==> tag site:wikipedia,
       '';
     })

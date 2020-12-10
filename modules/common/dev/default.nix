@@ -205,11 +205,11 @@ in {
       '';
       custom.pim.timeTracking.rules = with config.attributes.browser; ''
         -- TODO: parameterize web resources
-        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
                                       }] && $title =~ /habr/) ==> tag site:habr,
-        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
                                       }] && $title =~ /pypi/) ==> tag site:pypi,
-        current window ($program == [${concatStringLists2Quoted ", " default.windowClass fallback.windowClass
+        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
                                       }] && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
       '';
     })
