@@ -67,6 +67,9 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
+        collect_links_on_page =
+          mkPythonScriptWithDeps "collect_links_on_page" (with pkgs; [ nurpkgs.pystdlib python3Packages.beautifulsoup4 xsel ])
+            (readSubstituted ../subst.nix ./scripts/collect_links_on_page.py);
         paste_to_ix = mkPythonScriptWithDeps "paste_to_ix" (with pkgs; [ ix xsel ])
           (readSubstituted ../subst.nix ./scripts/paste_to_ix.sh);
       };
@@ -272,6 +275,11 @@ in {
           cmd = ''PATH="$PATH:${nurpkgs.dmenu-ng}/bin/" ${pkgs.clipcat}/bin/clipcat-menu remove'';
           mode = "select";
         }
+        {
+          key = [ "c" ];
+          cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page";
+          mode = "browser";
+        }
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
@@ -280,6 +288,7 @@ in {
           buku_add
           buku_search_tag
           buku_search_url
+          collect_links_on_page
           paste_to_ix
           screenshot_active_window
           screenshot_full

@@ -431,9 +431,6 @@ in {
         rotate_firefox_session_dumps =
           mkShellScriptWithDeps "rotate_firefox_session_dumps" (with pkgs; [ coreutils gnugrep ])
             (readSubstituted ../subst.nix ./scripts/rotate_firefox_session_dumps.sh);
-        collect_links_on_page =
-          mkPythonScriptWithDeps "collect_links_on_page" (with pkgs; [ nurpkgs.pystdlib python3Packages.beautifulsoup4 xsel ])
-            (readSubstituted ../subst.nix ./scripts/collect_links_on_page.py);
         manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
           (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.pystdlib ])
           (readSubstituted ../subst.nix ./scripts/manage_firefox_sessions.py);
@@ -466,11 +463,6 @@ in {
           cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --delete";
           mode = "browser";
         }
-        {
-          key = [ "c" ];
-          cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page";
-          mode = "browser";
-        }
       ];
       systemd.user.services."backup-current-session-firefox" = {
         description = "Backup current firefox session (tabs)";
@@ -488,7 +480,6 @@ in {
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {
         home.packages = with pkgs; [
-          collect_links_on_page
           dump_firefox_session
           manage_firefox_sessions
           rotate_firefox_session_dumps

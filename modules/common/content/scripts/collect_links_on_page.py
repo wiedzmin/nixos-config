@@ -32,3 +32,6 @@ if page_url is not None:
     else:
         print(page_url)
         notify("[scrape]", "Non-URL content in clipboard, skipping", timeout=5000)
+
+# TODO: add fallback/primary option of checking current window title for url regexp and treat any (first)
+# match as url to process
