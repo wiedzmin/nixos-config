@@ -74,6 +74,11 @@ in {
         };
         description = "Bookmarks data.";
       };
+      timeTracking.extensions = mkOption {
+        type = types.attrsOf types.str;
+        default = { };
+        description = "List of file extensions to be considered dev-related";
+      };
       misc.enable = mkOption {
         type = types.bool;
         default = false;
@@ -205,12 +210,15 @@ in {
       '';
       custom.pim.timeTracking.rules = with config.attributes.browser; ''
         -- TODO: parameterize web resources
+        -- TODO: parameterize IDE (probably, not only emacs)
         current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
                                       }] && $title =~ /habr/) ==> tag site:habr,
         current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
                                       }] && $title =~ /pypi/) ==> tag site:pypi,
         current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
                                       }] && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
+        ${concatStringsSep ",\n" (lib.mapAttrsToList (ext: tag: ''
+          current window ($title =~ /^emacs - [^ ]+\.${ext} .*$/) ==> tag ${tag}'') cfg.timeTracking.extensions)},
       '';
     })
     (mkIf (cfg.enable && cfg.misc.enable) {

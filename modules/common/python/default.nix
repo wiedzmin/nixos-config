@@ -280,6 +280,7 @@ in {
       custom.dev.git.gitignore = ''
         .mypy_cache/*
       '';
+      custom.dev.timeTracking.extensions = { "py" = "coding:python"; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];

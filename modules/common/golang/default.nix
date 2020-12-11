@@ -80,6 +80,7 @@ in {
       } // lib.optionalAttrs (cfg.privateModules != [ ]) {
         GOPRIVATE = builtins.concatStringsSep "," cfg.privateModules;
       };
+      custom.dev.timeTracking.extensions = { "go" = "coding:go"; };
     })
     (mkIf (cfg.enable && cfg.packaging.enable) {
       home-manager.users.${user} = {

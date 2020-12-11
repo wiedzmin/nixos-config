@@ -37,6 +37,12 @@ in {
         * hard  nofile    32768
         * soft  nofile    32768
       '';
+      custom.dev.timeTracking.extensions = {
+        "c" = "coding:c";
+        "cpp" = "coding:c++";
+        "h" = "coding:c";
+        "hpp" = "coding:c++";
+      };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [
