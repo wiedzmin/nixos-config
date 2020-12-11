@@ -119,6 +119,9 @@
   (setq-default indicate-empty-lines t)
   (setq-default truncate-lines t))
 
+(use-package view
+  :delight view-mode)
+
 (use-package executable
   :hook (after-save-hook . executable-make-buffer-file-executable-if-script-p))
 
