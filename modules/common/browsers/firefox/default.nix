@@ -427,19 +427,19 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         dump_firefox_session =
           mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
-            (readSubstituted ../subst.nix ./scripts/dump_firefox_session.sh);
+            (readSubstituted ../../subst.nix ./scripts/dump_firefox_session.sh);
         rotate_firefox_session_dumps =
           mkShellScriptWithDeps "rotate_firefox_session_dumps" (with pkgs; [ coreutils gnugrep ])
-            (readSubstituted ../subst.nix ./scripts/rotate_firefox_session_dumps.sh);
+            (readSubstituted ../../subst.nix ./scripts/rotate_firefox_session_dumps.sh);
         manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
           (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.pystdlib ])
-          (readSubstituted ../subst.nix ./scripts/manage_firefox_sessions.py);
+          (readSubstituted ../../subst.nix ./scripts/manage_firefox_sessions.py);
       };
       home-manager.users.${user} = {
         home.activation.ensureFirefoxSessionsPath = {
           after = [ ];
           before = [ "linkGeneration" ];
-          data = "mkdir -p ${cfg.sessions.firefox.path}";
+          data = "mkdir -p ${cfg.sessions.path}";
         };
       };
       wmCommon.keys = [ # FIXME: move under own mkIf
