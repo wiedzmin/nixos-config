@@ -59,7 +59,15 @@ in {
               searchSuffix = "search?q=";
             };
           };
-          nixos = { local.path = "/etc/nixos"; };
+          nixos = {
+            local.path = "/etc/nixos";
+            remote = {
+              url = "https://github.com/wiedzmin/nixos-config/";
+              jump = true;
+              desc = "My NixOS configurations";
+              searchSuffix = "search?q=";
+            };
+          };
           nixpkgs = {
             local.path = "${wsRoot "github"}/NixOS/nixpkgs";
             remote = {
@@ -69,6 +77,16 @@ in {
               searchSuffix = "search?q=";
             };
           };
+          emacs-overlay = {
+            local.path = "${wsRoot "github"}/nix-community/emacs-overlay";
+            remote = {
+              url = "https://github.com/nix-community/emacs-overlay/";
+              jump = true;
+              desc = "nix emacs overlay";
+              searchSuffix = "search?q=";
+            };
+          };
+          # https://github.com/nix-community/emacs-overlay
           nur-packages = { local.path = "${wsRoot "github"}/wiedzmin/nur-packages"; };
           postgres = { local.path = "${wsRoot "github"}/postgres/postgres"; };
         };
