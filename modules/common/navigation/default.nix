@@ -483,6 +483,7 @@ in {
         epkgs.avy-flycheck
         epkgs.avy-zap
         epkgs.counsel
+        epkgs.counsel-jq
         epkgs.counsel-projectile
         epkgs.counsel-tramp
         epkgs.dired-filetype-face

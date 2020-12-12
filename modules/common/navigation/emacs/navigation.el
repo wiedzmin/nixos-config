@@ -123,6 +123,8 @@
   (tramp-default-method "ssh")
   (counsel-tramp-docker-user "@mainUserName@"))
 
+(use-package counsel-jq)
+
 (use-package dired
   :commands dired
   :hook (dired-mode-hook . auto-revert-mode)
