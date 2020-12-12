@@ -64,6 +64,8 @@ in rec {
   firefoxSessionsPath = config.custom.browsers.firefox.sessions.path;
   firefoxSessionsSizeThreshold = builtins.toString config.custom.browsers.firefox.sessions.sizeThreshold;
   firefoxSessionstorePath = homePrefix ".mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
+} // lib.optionalAttrs (config.custom.browsers.qutebrowser.enable) rec {
+  qutebrowserSessionsNameTemplate = config.custom.browsers.qutebrowser.sessions.nameTemplate;
 } // lib.optionalAttrs (builtins.hasAttr "global" config.custom.dev.workspaceRoots) rec {
   globalWorkspaceRoot = wsRootAbs "global";
   searchReposRoot = config.custom.dev.repoSearch.root;

@@ -43,6 +43,39 @@ in {
         internal = true;
         description = "Qutebrowser default window class.";
       };
+      sessions.backup.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to backup browser session.";
+      };
+      sessions.saveFrequency = mkOption {
+        type = types.str;
+        default = "30min";
+        description = ''
+          How often browser sessions should be saved.
+          Systemd timer notation is used.
+        '';
+      };
+      sessions.sizeThreshold = mkOption {
+        type = types.int;
+        default = 10;
+        description = "Maximum session size (in URLs), in which case it would be loaded completely.";
+      };
+      sessions.path = mkOption {
+        type = types.str;
+        default = homePrefix "docs/org/firefox";
+        description = "Where to save plaintext Qutebrowser session contents.";
+      };
+      sessions.historyLength = mkOption {
+        type = types.int;
+        default = 10;
+        description = "How many recent sessions to keep.";
+      };
+      sessions.nameTemplate = mkOption {
+        type = types.str;
+        default = "qutebrowser-session-auto";
+        description = "Filename template for Qutebrowser session files.";
+      };
       staging.enableSettings = mkOption {
         type = types.bool;
         default = false;
@@ -57,6 +90,10 @@ in {
           (readSubstituted ../../subst.nix ./scripts/yank-image.sh);
         qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
           (readSubstituted ../../subst.nix ./scripts/qb-fix-session.py);
+        qb-dump-session = mkPythonScriptWithDeps "qb-dump-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
+          (readSubstituted ../../subst.nix ./scripts/qb-dump-session.py);
+        manage-qb-sessions = mkPythonScriptWithDeps "manage-qb-sessions" (with pkgs; [ nurpkgs.pystdlib ])
+          (readSubstituted ../../subst.nix ./scripts/manage-qb-sessions.py);
       };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {
@@ -430,9 +467,49 @@ in {
       attributes.browser.fallback.cmd = cfg.command;
       attributes.browser.fallback.windowClass = cfg.windowClass;
     })
+    (mkIf (cfg.enable && cfg.sessions.backup.enable) {
+      home-manager.users.${user} = {
+        home.activation.ensureQutebrowserSessionsPath = {
+          after = [ ];
+          before = [ "linkGeneration" ];
+          data = "mkdir -p ${cfg.sessions.path}";
+        };
+      };
+      systemd.user.services."backup-current-session-qutebrowser" = {
+        description = "Backup current qutebrowser session (tabs)";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.qb-dump-session}/bin/qb-dump-session";
+          ExecStopPost = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --rotate --path ${cfg.sessions.path} --history-length ${builtins.toString cfg.sessions.historyLength}";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+      };
+      systemd.user.timers."backup-current-session-qutebrowser" =
+        renderTimer "Backup current qutebrowser session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
+    })
+    (mkIf (cfg.enable && cfg.sessions.backup.enable && cfg.isDefault) {
+      wmCommon.keys = [
+        {
+          key = [ "s" ];
+          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --save";
+          mode = "browser";
+        }
+        {
+          key = [ "o" ];
+          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --open";
+          mode = "browser";
+        }
+        {
+          key = [ "d" ];
+          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --delete";
+          mode = "browser";
+        }
+      ];
+    })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ yank-image qb-fix-session ];
+        home.packages = with pkgs; [ yank-image qb-fix-session qb-dump-session manage-qb-sessions ];
       };
     })
   ];
