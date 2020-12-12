@@ -428,9 +428,6 @@ in {
         dump_firefox_session =
           mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
             (readSubstituted ../../subst.nix ./scripts/dump_firefox_session.sh);
-        rotate_firefox_session_dumps =
-          mkShellScriptWithDeps "rotate_firefox_session_dumps" (with pkgs; [ coreutils gnugrep ])
-            (readSubstituted ../../subst.nix ./scripts/rotate_firefox_session_dumps.sh);
         manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
           (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.pystdlib ])
           (readSubstituted ../../subst.nix ./scripts/manage_firefox_sessions.py);
@@ -469,7 +466,7 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.dump_firefox_session}/bin/dump_firefox_session";
-          ExecStopPost = "${pkgs.rotate_firefox_session_dumps}/bin/rotate_firefox_session_dumps";
+          ExecStopPost = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --rotate --path ${cfg.sessions.path} --history-length ${builtins.toString cfg.sessions.historyLength}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -482,7 +479,6 @@ in {
         home.packages = with pkgs; [
           dump_firefox_session
           manage_firefox_sessions
-          rotate_firefox_session_dumps
         ];
       };
     })

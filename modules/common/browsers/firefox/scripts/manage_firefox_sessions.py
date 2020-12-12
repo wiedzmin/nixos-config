@@ -1,52 +1,41 @@
 import argparse
-import glob
-import os
-import time
+import sys
 
-from pystdlib.uishim import get_selection, notify
+from pystdlib.uishim import get_selection, notify, URGENCY_CRITICAL
 from pystdlib import shell_cmd
+from pystdlib.browser import collect_sessions, collect_sessions_with_size, \
+    collect_session_urls, init_mgmt_argparser, open_urls_firefox, rotate_sessions
 
 
-def collect_sessions():
-    return [os.path.basename(session) for session in glob.glob("@firefoxSessionsPath@/*.org")]
-
-
-parser = argparse.ArgumentParser(description="Manage Firefox stored sessions.")
-parser.add_argument("--save", dest="save_session", action="store_true",
-                   default=False, help="Save current session")
-parser.add_argument("--open", dest="open_session", action="store_true",
-                   default=False, help="Open stored session")
-parser.add_argument("--edit", dest="edit_session", action="store_true",
-                   default=False, help="Edit stored session")
-parser.add_argument("--delete", dest="delete_session", action="store_true",
-                   default=False, help="Delete stored session")
-
+parser = init_mgmt_argparser("firefox-session-auto")
 args = parser.parse_args()
 
+if not args.sessions_path:
+    notify("[Firefox]", f"No sessions base path provided", urgency=URGENCY_CRITICAL, timeout=5000)
+    sys.exit(1)
 if args.save_session:
     session_name = get_selection([], "save as", case_insensitive=True, lines=1, font="@wmFontDmenu@")
     if session_name:
         shell_cmd(f"dump_firefox_session {session_name}")
 elif args.open_session:
-    session_name = get_selection(sorted(collect_sessions()), "open", case_insensitive=True, lines=15, font="@wmFontDmenu@")
+    session_name = get_selection(sorted(collect_sessions(args.sessions_path)), "open", case_insensitive=True,
+                                 lines=15, font="@wmFontDmenu@")
     if session_name:
-        urls = None
-        with open(f"@firefoxSessionsPath@/{session_name}", "r") as session:
-            urls = [url.strip()[2:] for url in session.readlines() if url.startswith("* http")]
-        if len(urls) <= @firefoxSessionsSizeThreshold@:
-            shell_cmd(f"firefox --new-window {urls[0]}")
-            time.sleep(0.5)
-            urls_remainder = " --new-tab ".join(urls[1:])
-            if len(urls_remainder):
-                shell_cmd(f"firefox --new-tab {urls_remainder}")
+        urls, _ = collect_session_urls(args.sessions_path, session_name)
+        if len(urls) <= args.session_size_threshold:
+            open_urls_firefox(urls)
         else:
-            shell_cmd(f"emacsclient -c @firefoxSessionsPath@/{session_name}")
+            shell_cmd(f"emacsclient -c {args.sessions_path}/{session_name}")
 elif args.edit_session:
-    session_name = get_selection(sorted(collect_sessions()), "edit", case_insensitive=True, lines=15, font="@wmFontDmenu@")
+    session_name = get_selection(sorted(collect_sessions(args.sessions_path)), "edit", case_insensitive=True,
+                                 lines=15, font="@wmFontDmenu@")
     if session_name:
-        shell_cmd(f"emacsclient -c @firefoxSessionsPath@/{session_name}")
+        shell_cmd(f"emacsclient -c {args.sessions_path}/{session_name}")
 elif args.delete_session:
-    session_name = get_selection(sorted(collect_sessions()), "delete", case_insensitive=True, lines=15, font="@wmFontDmenu@")
+    session_name = get_selection(sorted(collect_sessions(args.sessions_path)), "delete", case_insensitive=True,
+                                 lines=15, font="@wmFontDmenu@")
     if session_name:
-        shell_cmd(f"rm @firefoxSessionsPath@/{session_name}")
+        shell_cmd(f"rm {args.sessions_path}/{session_name}")
         notify("[Firefox]", f"Removed {session_name}", timeout=5000)
+elif args.rotate_sessions:
+    rotate_sessions(args.sessions_path, args.sessions_name_template, int(args.sessions_history_length))
