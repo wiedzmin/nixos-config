@@ -6,6 +6,7 @@ with lib;
 let
   cfg = config.custom.browsers.qutebrowser;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -54,7 +55,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ])
           (readSubstituted ../../subst.nix ./scripts/yank-image.sh);
-        qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ python3Packages.pyyaml ])
+        qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
           (readSubstituted ../../subst.nix ./scripts/qb-fix-session.py);
       };
       custom.xinput.xkeysnail.rc = ''

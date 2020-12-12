@@ -4,18 +4,11 @@ import shutil
 
 import yaml
 
+from pystdlib.browser import qutebrowser_fix_session
+
 SESSIONS_PATH = f'{os.environ["HOME"]}/.local/share/qutebrowser/sessions/'
 DEFAULT_SESSION = "default.yml"
 BACKUP_SUFFIX = ".backup"
-
-CURRENT_TAB_DICT_PATCH = {
-    "scroll-pos": {
-        "x": 0,
-        "y": 0
-    },
-    "active": True,
-    "zoom": 1.0
-}
 
 
 parser = argparse.ArgumentParser(description="Fix qutebrowser default session contents.")
@@ -29,26 +22,7 @@ shutil.copyfile(args.session_path, args.session_path + BACKUP_SUFFIX)
 
 session = None
 with open(SESSIONS_PATH + DEFAULT_SESSION, "r") as s:
-    session = yaml.load(s)
-    for window in session["windows"]:
-        window_tabs = window["tabs"]
-        for tab in window_tabs:
-            tab_history = tab["history"]
-            fixed_history = []
-            for item in tab_history:
-                fixed_item = item
-                if item["title"].startswith("Error loading"):
-                    continue
-                if item["url"].startswith("data:text/html"):
-                    continue
-                original_url = item.get("original-url")
-                if original_url and original_url.startswith("data:text/html"):
-                    del fixed_item["original-url"]
-
-                fixed_history.append(fixed_item)
-            if fixed_history:
-                fixed_history[-1].update(CURRENT_TAB_DICT_PATCH)
-            tab["history"] = fixed_history
+    session = qutebrowser_fix_session(yaml.load(s))
 
 if session:
     with open(SESSIONS_PATH + DEFAULT_SESSION + ".fixed", "w") as s:
