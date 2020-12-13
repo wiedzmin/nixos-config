@@ -116,7 +116,7 @@ in {
         search_selection = mkPythonScriptWithDeps "search_selection"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
           (readSubstituted ../subst.nix ./scripts/search_selection.py);
-        webjumps = mkPythonScriptWithDeps "webjumps" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis vpnctl ])
+        webjumps = mkPythonScriptWithDeps "webjumps" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis vpnctl xsel ])
           (readSubstituted ../subst.nix ./scripts/webjumps.py);
       };
 
@@ -546,6 +546,11 @@ in {
         {
           key = [ prefix "Shift" "j" ];
           cmd = "${pkgs.webjumps}/bin/webjumps --fallback";
+          mode = "root";
+        }
+        {
+          key = [ prefix "Control" "j" ];
+          cmd = "${pkgs.webjumps}/bin/webjumps --copy";
           mode = "root";
         }
         {

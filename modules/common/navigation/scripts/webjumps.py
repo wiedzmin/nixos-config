@@ -11,6 +11,8 @@ from pystdlib import shell_cmd
 parser = argparse.ArgumentParser(description="Webjumps")
 parser.add_argument("--fallback", dest="use_fallback", action="store_true",
                     default=False, help="Use fallback browser to open URL")
+parser.add_argument("--copy", dest="copy_url", action="store_true",
+                    default=False, help="Copy webjump's url to clipboard")
 args = parser.parse_args()
 
 r = redis.Redis(host='localhost', port=6379, db=0)
@@ -27,4 +29,7 @@ if webjump:
     if args.use_fallback:
         browser_cmd = "@fallbackBrowser@"
 
-    shell_cmd(f"{browser_cmd} {webjumps[webjump]['url']}", oneshot=True)
+    url = webjumps[webjump]['url']
+    if not args.copy_url:
+        shell_cmd(f"{browser_cmd} {url}", oneshot=True)
+    shell_cmd(["xsel", "-ib"], input=url.encode('utf-8'))
