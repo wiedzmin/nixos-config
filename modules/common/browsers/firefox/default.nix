@@ -439,7 +439,21 @@ in {
           data = "mkdir -p ${cfg.sessions.path}";
         };
       };
-      wmCommon.keys = [ # FIXME: move under own mkIf
+      systemd.user.services."backup-current-session-firefox" = {
+        description = "Backup current firefox session (tabs)";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.dump_firefox_session}/bin/dump_firefox_session";
+          ExecStopPost = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --rotate --path ${cfg.sessions.path} --history-length ${builtins.toString cfg.sessions.historyLength}";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+      };
+      systemd.user.timers."backup-current-session-firefox" =
+        renderTimer "Backup current firefox session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
+    })
+    (mkIf (cfg.enable && cfg.sessions.backup.enable && cfg.isDefault) {
+      wmCommon.keys = [
         {
           key = [ "s" ];
           cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --save";
@@ -461,18 +475,6 @@ in {
           mode = "browser";
         }
       ];
-      systemd.user.services."backup-current-session-firefox" = {
-        description = "Backup current firefox session (tabs)";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.dump_firefox_session}/bin/dump_firefox_session";
-          ExecStopPost = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --rotate --path ${cfg.sessions.path} --history-length ${builtins.toString cfg.sessions.historyLength}";
-          StandardOutput = "journal";
-          StandardError = "journal";
-        };
-      };
-      systemd.user.timers."backup-current-session-firefox" =
-        renderTimer "Backup current firefox session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {
