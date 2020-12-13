@@ -100,6 +100,10 @@
           path = ./modules/common/golang/templates/go2nix;
           description = "Golang to Nix packaging.";
         };
+        frontend.vue = {
+          path = ./modules/common/dev/templates/vue-frontend;
+          description = "Vuetified frontend.";
+        };
         ccpp.generic = {
           path = ./modules/common/ccpp/templates/generic;
           description = "C/C++ autotools project.";
