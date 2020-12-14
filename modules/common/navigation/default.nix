@@ -492,6 +492,7 @@ in {
         epkgs.dired-launch
         epkgs.dired-narrow
         epkgs.dired-quick-sort
+        epkgs.goggles
         epkgs.imenu-anywhere
         epkgs.ivy
         epkgs.ivy-avy

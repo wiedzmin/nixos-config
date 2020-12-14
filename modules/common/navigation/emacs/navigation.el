@@ -447,6 +447,12 @@
   (:map custom-projectile-map
         ("e" . treemacs-projectile)))
 
+(use-package goggles
+  :delight " 6d"
+  :config
+  (goggles-mode)
+  (setq-default goggles-pulse t))
+
 (define-hostmode poly-nix-hostmode :mode 'nix-mode)
 
 (define-innermode poly-emacs-innermode
