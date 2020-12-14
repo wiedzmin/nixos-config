@@ -63,7 +63,7 @@ in {
       };
       sessions.path = mkOption {
         type = types.str;
-        default = homePrefix "docs/org/firefox";
+        default = homePrefix "docs/org/qutebrowser";
         description = "Where to save plaintext Qutebrowser session contents.";
       };
       sessions.historyLength = mkOption {
