@@ -299,6 +299,12 @@ in {
       }) cfg.scheduling.entries;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
+      nixpkgs.config.packageOverrides = _: rec {
+        org-capture = mkPythonScriptWithDeps "org-capture" (with pkgs; [ emacs nurpkgs.pystdlib tmux xsel ])
+          (readSubstituted ../subst.nix ./scripts/org-capture.py);
+      };
+
+      custom.programs.tmux.bindings.copyMode = { "M-n" = ''run-shell "${pkgs.org-capture}/bin/org-capture ns"''; };
       custom.pim.org.agendaRoots = { "${config.ide.emacs.orgDir}" = 3000; };
       home-manager.users."${user}" = { home.packages = with pkgs; [ plantuml ]; };
       ide.emacs.extraPackages = epkgs: [
@@ -326,6 +332,9 @@ in {
         epkgs.russian-holidays
       ];
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/pim.el;
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users.${user} = { home.packages = with pkgs; [ org-capture ]; };
     })
   ];
 }

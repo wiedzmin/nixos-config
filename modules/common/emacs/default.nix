@@ -131,10 +131,6 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       fonts = { fonts = with pkgs; [ emacs-all-the-icons-fonts ]; };
-      nixpkgs.config.packageOverrides = _: rec {
-        org-capture = mkPythonScriptWithDeps "org-capture" (with pkgs; [ emacs nurpkgs.pystdlib tmux xsel ])
-          (readSubstituted ../subst.nix ./scripts/org-capture.py);
-      };
       custom.dev.git.gitignore = ''
         *.elc
         .dir-locals.el
@@ -269,9 +265,6 @@ in {
           mode = "services";
         }
       ];
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ org-capture ]; };
     })
   ];
 }

@@ -412,7 +412,6 @@ in {
           '';
         };
         bindings = {
-          copyMode = { "M-n" = ''run-shell "${pkgs.org-capture}/bin/org-capture ns"''; };
           root = {
             "C-left" = "prev";
             "C-right" = "next";
