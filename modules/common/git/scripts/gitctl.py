@@ -10,7 +10,7 @@ import redis
 
 from pystdlib.uishim import is_interactive, get_selection, log_info, log_error
 from pystdlib.passutils import read_entry_raw, extract_specific_line, extract_by_regex
-from pystdlib.git import is_git_repo, get_active_branch, is_main_branch_active, \
+from pystdlib.git import is_repo, get_active_branch, is_main_branch_active, \
     is_main_branch_protected, resolve_remote, get_diff_size, collect_tags, \
     build_auth_callbacks
 from pystdlib.xlib import is_idle_enough
@@ -59,7 +59,7 @@ parser_update.add_argument("--branch", dest="update_source_branch",
 
 args = parser.parse_args()
 
-if not is_git_repo(os.getcwd()):
+if not is_repo(os.getcwd()):
     log_error("Not a git repo")
     sys.exit(1)
 
