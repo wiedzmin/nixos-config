@@ -68,7 +68,7 @@ in {
       package = mkOption {
         type = types.package;
         default = let
-          basepkg = ((pkgs.emacs.override {
+          basepkg = ((pkgs.unstable.emacsGcc.override {
             withGTK2 = false;
             withGTK3 = false;
           }).overrideAttrs (old: rec {
