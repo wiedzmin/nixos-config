@@ -492,17 +492,17 @@ in {
       wmCommon.keys = [
         {
           key = [ "s" ];
-          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --save";
+          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --save --path ${cfg.sessions.path}";
           mode = "browser";
         }
         {
           key = [ "o" ];
-          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --open";
+          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --open --path ${cfg.sessions.path}";
           mode = "browser";
         }
         {
           key = [ "d" ];
-          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --delete";
+          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --delete --path ${cfg.sessions.path}";
           mode = "browser";
         }
       ];
