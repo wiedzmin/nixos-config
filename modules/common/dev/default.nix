@@ -86,7 +86,15 @@ in {
               searchSuffix = "search?q=";
             };
           };
-          # https://github.com/nix-community/emacs-overlay
+          git-hooks = {
+            local.path = "${wsRoot "github"}/wiedzmin/git-hooks";
+            remote = {
+              url = "https://github.com/wiedzmin/git-hooks";
+              jump = true;
+              desc = "my custom git hooks for `pre-commit`";
+              searchSuffix = "search?q=";
+            };
+          };
           nur-packages = { local.path = "${wsRoot "github"}/wiedzmin/nur-packages"; };
           postgres = { local.path = "${wsRoot "github"}/postgres/postgres"; };
         };
