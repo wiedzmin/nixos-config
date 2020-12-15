@@ -33,3 +33,9 @@ publish: generate build lint
 
 publish/force: generate build lint
 	git push --force-with-lease
+
+pre-commit/install:
+	pre-commit install
+
+pre-commit/update-hooks:
+	pre-commit autoupdate
