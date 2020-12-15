@@ -49,7 +49,7 @@ in rec {
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   python3Binary = "${pkgs.python3}/bin/python3";
   screenshotsBasedir = config.custom.content.screenshots.baseDir;
-  screenshotsDateFormat = config.custom.content.screenshots.dateFormat;
+  screenshotsDateFormat = config.custom.content.screenshots.dateFormat.maimShell;
   systemTimeZone = config.time.timeZone;
   tmuxDefaultSession = config.custom.shell.tmux.defaultSession;
   urlRegexPy = config.custom.content.urlRegex.py;

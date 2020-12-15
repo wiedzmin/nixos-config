@@ -290,7 +290,10 @@ in {
     screenshots = {
       enable = true;
       baseDir = homePrefix "blobs/screenshots";
-      dateFormat = "+%Y-%m-%d_%H:%M:%S";
+      dateFormat = { # TODO: consider making internal invisible attribute
+        maimShell = "+%Y-%m-%d_%H:%M:%S";
+        flameshot = "%Y-%m-%d_%H-%M-%S";
+      };
     };
     warmup = {
       enable = true;

@@ -37,9 +37,9 @@ in {
         description = "Screenshots base directory";
       };
       screenshots.dateFormat = mkOption {
-        type = types.nullOr types.str;
-        default = null;
-        description = "screenshot date suffix format";
+        type = types.attrsOf types.str;
+        default = { };
+        description = "screenshot date suffix formats";
       };
       urlRegex.py = mkOption {
         description = "Common URL regular expression";
@@ -203,7 +203,7 @@ in {
           message = "Must provide path to screenshots dir.";
         }
         {
-          assertion = cfg.screenshots.dateFormat != null;
+          assertion = cfg.screenshots.dateFormat != { };
           message = "Must provide date format.";
         }
       ];
@@ -214,9 +214,21 @@ in {
             (readSubstituted ../subst.nix ./scripts/screenshot_active_window.sh);
         screenshot_full = mkShellScriptWithDeps "screenshot_full" (with pkgs; [ coreutils maim xclip ])
           (readSubstituted ../subst.nix ./scripts/screenshot_full.sh);
-        screenshot_region = mkShellScriptWithDeps "screenshot_region" (with pkgs; [ coreutils maim xclip ])
-          (readSubstituted ../subst.nix ./scripts/screenshot_region.sh);
       };
+      home-manager.users.${user} = {
+        home.packages = with pkgs; [ flameshot ];
+        xdg.configFile."flameshot.ini".text = lib.generators.toINI { } {
+          General = {
+            disabledTrayIcon = true;
+            drawColor = "#ff0000";
+            drawThickness = 0;
+            filenamePattern = "screenshot-${cfg.screenshots.dateFormat.flameshot}";
+            saveAfterCopyPath = cfg.screenshots.baseDir;
+            savePath = cfg.screenshots.baseDir;
+          };
+        };
+      };
+      wmCommon.autostart.entries = [ "flameshot" ];
     })
     (mkIf (cfg.warmup.enable && cfg.warmup.paths != [ ]) {
       systemd.user.services."warmup" = {
@@ -253,7 +265,7 @@ in {
         }
         {
           key = [ prefix "Print" ];
-          cmd = "${pkgs.screenshot_region}/bin/screenshot_region";
+          cmd = "${pkgs.flameshot}/bin/flameshot gui";
           mode = "root";
         }
       ];
@@ -292,7 +304,6 @@ in {
           paste_to_ix
           screenshot_active_window
           screenshot_full
-          screenshot_region
         ];
       };
     })
