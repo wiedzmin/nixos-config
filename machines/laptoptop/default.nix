@@ -240,7 +240,11 @@ in {
     qutebrowser = {
       enable = true;
       isDefault = true;
-      sessions.backup.enable = true;
+      sessions = {
+        backup.enable = true;
+        saveFrequency = "10min";
+        historyLength = 30;
+      };
     };
     chromium = {
       enable = true;
