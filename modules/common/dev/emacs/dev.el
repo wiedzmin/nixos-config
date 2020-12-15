@@ -145,7 +145,7 @@
         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
         ([remap xref-find-references] . lsp-ui-peek-find-references))
   (:map mode-specific-map
-        ("R" . lsp-restart-workspace)
+        ("R" . lsp-workspace-restart)
         ("D" . custom/toggle-lsp-ui-doc))
   (:map custom-goto-map
         ("I" . lsp-ui-doc-focus-frame)
