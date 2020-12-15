@@ -47,7 +47,6 @@ in {
       splashImage = "${inputs.nixos-artwork}/common/grub2-background/grub-nixos-1.png";
     };
     initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
-    plymouth.enable = true;
     extraModprobeConfig = ''
       options iwlwifi 11n_disable=1 power_save=1 power_level=2
     '';
