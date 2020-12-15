@@ -93,7 +93,7 @@ in {
           enableExtraSocket = true;
           extraConfig = ''
             allow-emacs-pinentry
-            allow-loopback-pinentry
+            no-allow-loopback-pinentry
           '';
           pinentryFlavor = cfg.pinentryFlavor;
         };
