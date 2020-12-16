@@ -80,6 +80,17 @@ in {
         default = "";
         description = "Set of commands needed to initialize system-wide data cache.";
       };
+      dateFormats = mkOption {
+        type = types.attrsOf types.str;
+        default = {
+          maimShell = "+%Y-%m-%d_%H:%M:%S";
+          flameshot = "%Y-%m-%d_%H-%M-%S";
+        };
+        visible = false;
+        readOnly = true;
+        internal = true;
+        description = "Date suffix formats fo various needs";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;

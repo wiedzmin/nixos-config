@@ -36,11 +36,6 @@ in {
         default = null;
         description = "Screenshots base directory";
       };
-      screenshots.dateFormat = mkOption {
-        type = types.attrsOf types.str;
-        default = { };
-        description = "screenshot date suffix formats";
-      };
       urlRegex.py = mkOption {
         description = "Common URL regular expression";
         type = types.str;
@@ -202,10 +197,6 @@ in {
           assertion = cfg.screenshots.baseDir != null;
           message = "Must provide path to screenshots dir.";
         }
-        {
-          assertion = cfg.screenshots.dateFormat != { };
-          message = "Must provide date format.";
-        }
       ];
 
       home-manager.users.${user} = let
@@ -214,7 +205,7 @@ in {
             disabledTrayIcon = true;
             drawColor = "#ff0000";
             drawThickness = 0;
-            filenamePattern = "screenshot-${cfg.screenshots.dateFormat.flameshot}";
+            filenamePattern = "screenshot-${config.custom.housekeeping.dateFormats.flameshot}";
             saveAfterCopyPath = cfg.screenshots.baseDir;
             savePath = cfg.screenshots.baseDir;
           };
