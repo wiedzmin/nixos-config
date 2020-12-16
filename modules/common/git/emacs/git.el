@@ -30,6 +30,7 @@
   :bind
   (:prefix-map custom-magit-map
                :prefix "C-'"
+               ("." . magit-dispatch)
                ("B" . magit-branch)
                ("L" . magit-reflog-current)
                ("O" . magit-reflog-other)
