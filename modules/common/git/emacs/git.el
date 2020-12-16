@@ -20,6 +20,11 @@
     (magit-with-toplevel
       (magit-call-git "unhideenv")
       (magit-refresh)))
+  (defun custom/magit-dump-devenv ()
+    (interactive)
+    (magit-with-toplevel
+      (magit-call-git "dumpenv")
+      (magit-refresh)))
   :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
          ("COMMIT" . git-commit-mode))
   :bind
@@ -52,6 +57,7 @@
   (advice-add 'magit-whitespace-disallowed :around (lambda (orig-fun &rest args) (interactive) (insert "-")))
   (transient-append-suffix 'magit-stash "z" '("h" "Hide dev environment" custom/magit-hide-devenv))
   (transient-append-suffix 'magit-stash "h" '("u" "Unhide dev environment" custom/magit-unhide-devenv))
+  (transient-append-suffix 'magit-stash "u" '("d" "Dump/backup dev environment" custom/magit-dump-devenv))
   :custom
   (magit-blame-heading-format "%H %-20a %C %s")
   (magit-completing-read-function 'ivy-completing-read)

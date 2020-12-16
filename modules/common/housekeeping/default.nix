@@ -83,7 +83,8 @@ in {
       dateFormats = mkOption {
         type = types.attrsOf types.str;
         default = {
-          maimShell = "+%Y-%m-%d_%H:%M:%S";
+          commonShell = "+%Y-%m-%d_%H:%M:%S";
+          commonShellNoColons = "+%Y-%m-%d_%H-%M-%S";
           flameshot = "%Y-%m-%d_%H-%M-%S";
         };
         visible = false;

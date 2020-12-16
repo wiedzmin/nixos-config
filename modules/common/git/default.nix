@@ -41,6 +41,11 @@ in {
         default = ".devenv";
         description = "File name for dev-env files list.";
       };
+      devEnv.backupRoot = mkOption {
+        type = types.str;
+        default = "${wsRootAbs "global"}/.devenv-backup";
+        description = "File name for dev-env files list.";
+      };
       wip.minChangedLines = mkOption {
         type = types.int;
         default = 100;
@@ -168,6 +173,24 @@ in {
         git-unhideenv = mkShellScriptWithDeps "git-unhideenv" (with pkgs; [ gitAndTools.git ]) ''
           git stash pop $(git stash list --max-count=1 --grep="dev-env" | cut -f1 -d":")
         '';
+        git-dumpenv = mkShellScriptWithDeps "git-dumpenv" (with pkgs; [ gitAndTools.git coreutils ]) ''
+          set -e
+
+          devenv_data=$(<${cfg.devEnv.configName})
+          devenv_filelist=$(echo "$devenv_data" | tr '\n' ' ')
+          git_root=$(git rev-parse --show-toplevel)
+          ts_suffix=$(date ${config.custom.housekeeping.dateFormats.commonShellNoColons})
+          dump_dir=$(basename $(dirname "$git_root"))_$(basename "$git_root")_$ts_suffix
+
+          mkdir -p ${cfg.devEnv.backupRoot}/$dump_dir
+          cp -t ${cfg.devEnv.backupRoot}/$dump_dir $devenv_filelist
+        '';
+        git-slurpenv = mkShellScriptWithDeps "git-slurpenv" (with pkgs; [ coreutils ]) ''
+          # TODO: think off semantics
+          echo "Not implemented"
+
+          exit 1
+        '';
       };
 
       custom.housekeeping.metadataCacheInstructions = ''
@@ -233,6 +256,8 @@ in {
         [
           git-hideenv
           git-unhideenv
+          git-dumpenv
+          git-slurpenv
 
           file
           git-quick-stats
