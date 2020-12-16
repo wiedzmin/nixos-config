@@ -208,13 +208,6 @@ in {
         }
       ];
 
-      nixpkgs.config.packageOverrides = _: rec {
-        screenshot_active_window =
-          mkShellScriptWithDeps "screenshot_active_window" (with pkgs; [ coreutils maim xclip xdotool ])
-            (readSubstituted ../subst.nix ./scripts/screenshot_active_window.sh);
-        screenshot_full = mkShellScriptWithDeps "screenshot_full" (with pkgs; [ coreutils maim xclip ])
-          (readSubstituted ../subst.nix ./scripts/screenshot_full.sh);
-      };
       home-manager.users.${user} = {
         home.packages = with pkgs; [ flameshot ];
         xdg.configFile."flameshot.ini".text = lib.generators.toINI { } {
@@ -255,12 +248,12 @@ in {
       wmCommon.keys = [
         {
           key = [ "Print" ];
-          cmd = "${pkgs.screenshot_active_window}/bin/screenshot_active_window";
+          cmd = "${pkgs.flameshot}/bin/flameshot screen --path ${cfg.screenshots.baseDir}";
           mode = "root";
         }
         {
           key = [ "Control" "Print" ];
-          cmd = "${pkgs.screenshot_full}/bin/screenshot_full";
+          cmd = "${pkgs.flameshot}/bin/flameshot full --path ${cfg.screenshots.baseDir}";
           mode = "root";
         }
         {
@@ -302,8 +295,6 @@ in {
           buku_search_url
           collect_links_on_page
           paste_to_ix
-          screenshot_active_window
-          screenshot_full
         ];
       };
     })
