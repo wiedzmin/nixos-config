@@ -208,9 +208,8 @@ in {
         }
       ];
 
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ flameshot ];
-        xdg.configFile."flameshot.ini".text = lib.generators.toINI { } {
+      home-manager.users.${user} = let
+        flameshot_config_text = lib.generators.toINI { } {
           General = {
             disabledTrayIcon = true;
             drawColor = "#ff0000";
@@ -220,7 +219,11 @@ in {
             savePath = cfg.screenshots.baseDir;
           };
         };
-      };
+        in {
+          home.packages = with pkgs; [ flameshot ];
+          xdg.configFile."flameshot.ini".text = flameshot_config_text;
+          xdg.configFile."flameshot/flameshot.ini".text = flameshot_config_text;
+        };
       wmCommon.autostart.entries = [ "flameshot" ];
     })
     (mkIf (cfg.warmup.enable && cfg.warmup.paths != [ ]) {
