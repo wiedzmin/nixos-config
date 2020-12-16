@@ -49,7 +49,10 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       users.users.${user}.extraGroups = [ "audio" ];
-      services.ympd.enable = true;
+      services.ympd = {
+        enable = true;
+        webPort = "8090";
+      };
       services.mopidy = {
         enable = true;
         extensionPackages = with pkgs; [ mopidy-local mopidy-mpd mopidy-mpris mopidy-youtube ];
