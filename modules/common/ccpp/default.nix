@@ -39,9 +39,9 @@ in {
       '';
       custom.dev.timeTracking.extensions = {
         "c" = "coding:c";
-        "cpp" = "coding:c++";
+        "cpp" = "coding:cpp";
         "h" = "coding:c";
-        "hpp" = "coding:c++";
+        "hpp" = "coding:cpp";
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
