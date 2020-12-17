@@ -185,11 +185,25 @@ in {
           mkdir -p ${cfg.devEnv.backupRoot}/$dump_dir
           cp -t ${cfg.devEnv.backupRoot}/$dump_dir $devenv_filelist
         '';
-        git-slurpenv = mkShellScriptWithDeps "git-slurpenv" (with pkgs; [ coreutils ]) ''
-          # TODO: think off semantics
-          echo "Not implemented"
+        git-restoreenv = mkShellScriptWithDeps "git-restoreenv" (with pkgs; [ gitAndTools.git coreutils git-hideenv ]) ''
+          set -e
 
-          exit 1
+          git_root=$(git rev-parse --show-toplevel)
+          tip_env=$(ls -a ${cfg.devEnv.backupRoot} | grep $(basename $(dirname "$git_root"))_$(basename "$git_root") | sort -n -r | head -n 1)
+
+          if [ -z "$tip_env" ]; then
+            exit 1
+          fi
+
+          git-hideenv
+          git stash drop $(git stash list --max-count=1 --grep="dev-env" | cut -f1 -d":")
+          cp -a ${cfg.devEnv.backupRoot}/$tip_env/. .
+          rm -rf ${cfg.devEnv.backupRoot}/$tip_env
+
+          devenv_data=$(<${cfg.devEnv.configName})
+          devenv_filelist=$(echo "$devenv_data" | tr '\n' ' ')
+          git reset # clean up index from unrelated staged changes
+          git add -- $devenv_filelist
         '';
       };
 
@@ -257,7 +271,7 @@ in {
           git-hideenv
           git-unhideenv
           git-dumpenv
-          git-slurpenv
+          git-restoreenv
 
           file
           git-quick-stats
