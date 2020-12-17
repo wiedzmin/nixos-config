@@ -164,11 +164,7 @@ let
   defaultKeyMode = "emacs";
   defaultResize = 5;
   defaultShell = "$SHELL";
-  defaultShortcut =
-    if versionAtLeast hm.home.stateVersion "19.09" then
-      "C-b"
-    else
-      "b";
+  defaultShortcut = if versionAtLeast hm.home.stateVersion "19.09" then "C-b" else "b";
   defaultTerminal = "screen";
 
   boolToStr = value: if value then "on" else "off";

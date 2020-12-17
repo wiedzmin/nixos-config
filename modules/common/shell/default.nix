@@ -66,11 +66,10 @@ let
       find $target -type f -print0 | xargs -0 sed -i -e 's|sed |${pkgs.gnused}/bin/sed |g'
       find $target -type f -print0 | xargs -0 sed -i -e 's|tput |${pkgs.ncurses}/bin/tput |g'
     '';
-     meta = {
+    meta = {
       homepage = "https://github.com/sainnhe/tmux-fzf";
       description = "Use fzf to manage your tmux work environment! ";
-      longDescription =
-        ''
+      longDescription = ''
         Features:
         * Manage sessions (attach, detach*, rename, kill*).
         * Manage windows (switch, link, move, swap, rename, kill*).
@@ -483,22 +482,12 @@ in {
         ];
       };
       home-manager.users."${user}" = {
-        services.picom.opacityRule = [
-          ''65:name *?= "${cfg.tmux.defaultSession}" && class_g = "Alacritty"''
-        ];
+        services.picom.opacityRule = [ ''65:name *?= "${cfg.tmux.defaultSession}" && class_g = "Alacritty"'' ];
       };
     })
     (mkIf cfg.toolsng.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          choose
-          fd
-          gron
-          ripgrep-all
-          sd
-          uq
-          vgrep
-        ];
+        home.packages = with pkgs; [ choose fd gron ripgrep-all sd uq vgrep ];
         programs = {
           lsd = {
             enable = true;
@@ -529,7 +518,8 @@ in {
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       home-manager.users."${user}" = {
         home.file = {
-          "${cfg.bookmarks.path}".text = localBookmarksKVText (enabledLocals config.custom.navigation.bookmarks.entries);
+          "${cfg.bookmarks.path}".text =
+            localBookmarksKVText (enabledLocals config.custom.navigation.bookmarks.entries);
         };
         programs.fzf.enable = true;
         programs.zsh = {

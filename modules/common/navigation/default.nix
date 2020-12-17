@@ -8,14 +8,15 @@ let
   hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
-  dmenu_runapps =
-    mkShellScriptWithDeps "dmenu_runapps" (with pkgs; [ coreutils nurpkgs.dmenu-ng haskellPackages.yeganesh j4-dmenu-desktop ]) ''
+  dmenu_runapps = mkShellScriptWithDeps "dmenu_runapps"
+    (with pkgs; [ coreutils nurpkgs.dmenu-ng haskellPackages.yeganesh j4-dmenu-desktop ]) ''
       j4-dmenu-desktop --display-binary --dmenu="(cat ; (stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
         yeganesh -- -i -l 15 -fn '${config.wmCommon.fonts.dmenu}'"
     '';
-  dmenu_select_windows = mkShellScriptWithDeps "dmenu_select_windows" (with pkgs; [ coreutils nurpkgs.dmenu-ng wmctrl ]) ''
-    wmctrl -a $(wmctrl -l | cut -d" " -f5- | dmenu -i -l 15 -fn '${config.wmCommon.fonts.dmenu}')
-  '';
+  dmenu_select_windows =
+    mkShellScriptWithDeps "dmenu_select_windows" (with pkgs; [ coreutils nurpkgs.dmenu-ng wmctrl ]) ''
+      wmctrl -a $(wmctrl -l | cut -d" " -f5- | dmenu -i -l 15 -fn '${config.wmCommon.fonts.dmenu}')
+    '';
 in {
   options = {
     custom.navigation = {
@@ -113,8 +114,8 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         search_prompt = mkPythonScriptWithDeps "search_prompt" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../subst.nix ./scripts/search_prompt.py);
-        search_selection = mkPythonScriptWithDeps "search_selection"
-          (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
+        search_selection =
+          mkPythonScriptWithDeps "search_selection" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
           (readSubstituted ../subst.nix ./scripts/search_selection.py);
         webjumps = mkPythonScriptWithDeps "webjumps" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis vpnctl xsel ])
           (readSubstituted ../subst.nix ./scripts/webjumps.py);
@@ -124,14 +125,18 @@ in {
 
       custom.pim.timeTracking.rules = with config.attributes.browser; ''
         -- TODO: parameterize web resources
-        current window $program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
-                                     }] ==> tag activity:web,
-        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
-                                      }] && $title =~ /Gmail/) ==> tag web:Gmail,
-        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
-                                      }] && $title =~ /Google/) ==> tag web:Google,
-        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
-                                      }] && $title =~ /wikipedia/) ==> tag site:wikipedia,
+        current window $program == [${
+          concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
+        }] ==> tag activity:web,
+        current window ($program == [${
+          concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
+        }] && $title =~ /Gmail/) ==> tag web:Gmail,
+        current window ($program == [${
+          concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
+        }] && $title =~ /Google/) ==> tag web:Google,
+        current window ($program == [${
+          concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
+        }] && $title =~ /wikipedia/) ==> tag site:wikipedia,
       '';
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
@@ -148,17 +153,17 @@ in {
             emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
             # TODO: consider extracting to a function (for ensuring running emacs instance)
           in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.package}/bin/emacsclient -s /run/user/${mainUserID}/emacs/server -e '(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
-            builtins.concatStringsSep " " (localEmacsBookmarks cfg.bookmarks.entries)}))' ";
+            builtins.concatStringsSep " " (localEmacsBookmarks cfg.bookmarks.entries)
+          }))' ";
         };
       };
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${
           lib.strings.escapeNixString
-            (builtins.toJSON (remoteWebjumps (enabledRemotes cfg.bookmarks.entries) cfg.bookmarks.sep))
+          (builtins.toJSON (remoteWebjumps (enabledRemotes cfg.bookmarks.entries) cfg.bookmarks.sep))
         }
         ${pkgs.redis}/bin/redis-cli set nav/searchengines ${
-          lib.strings.escapeNixString
-            (builtins.toJSON (remoteSearchEngines (enabledRemotes cfg.bookmarks.entries)))
+          lib.strings.escapeNixString (builtins.toJSON (remoteSearchEngines (enabledRemotes cfg.bookmarks.entries)))
         }
         ${pkgs.redis}/bin/redis-cli set nav/bookmarks ${
           lib.strings.escapeNixString (builtins.toJSON (enabledLocals cfg.bookmarks.entries))
@@ -168,9 +173,7 @@ in {
     (mkIf (cfg.enable && cfg.gmrun.enable) {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ gmrun ];
-        home.file = {
-          ".gmrunrc".text = readSubstituted ../subst.nix ./gmrunrc;
-        };
+        home.file = { ".gmrunrc".text = readSubstituted ../subst.nix ./gmrunrc; };
       };
     })
     (mkIf (cfg.enable && cfg.mc.enable) {
@@ -511,13 +514,9 @@ in {
         epkgs.treemacs-projectile
       ];
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/navigation.el;
-    } // lib.optionalAttrs (true) {
-      ide.emacs.config = readSubstituted ../subst.nix ./emacs/browsers.el;
-    })
+    } // lib.optionalAttrs (true) { ide.emacs.config = readSubstituted ../subst.nix ./emacs/browsers.el; })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ dmenu_runapps dmenu_select_windows ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ dmenu_runapps dmenu_select_windows ]; };
       wmCommon.keys = [
         {
           key = [ prefix "slash" ];

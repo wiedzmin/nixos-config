@@ -157,9 +157,9 @@ in {
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        gitctl =
-          mkPythonScriptWithDeps "gitctl" (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
-            (readSubstituted ../subst.nix ./scripts/gitctl.py);
+        gitctl = mkPythonScriptWithDeps "gitctl"
+          (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
+          (readSubstituted ../subst.nix ./scripts/gitctl.py);
         git-hideenv = mkShellScriptWithDeps "git-hideenv" (with pkgs; [ gitAndTools.git ]) ''
           set -e
 
@@ -279,9 +279,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
       environment.systemPackages = with pkgs; [ gitAndTools.ghq ];
-      home-manager.users.${user} = {
-        programs.git.extraConfig = { "ghq" = { root = wsRootAbs "global"; }; };
-      };
+      home-manager.users.${user} = { programs.git.extraConfig = { "ghq" = { root = wsRootAbs "global"; }; }; };
       custom.dev.workspaceRoots = {
         github = "${wsRootAbs "global"}/github.com";
         gitlab = "${wsRootAbs "global"}/gitlab.com";

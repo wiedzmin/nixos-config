@@ -217,10 +217,9 @@ in {
       home-manager.users.${user} = {
         programs.autorandr = {
           enable = true;
-          hooks =
-            lib.optionalAttrs (hm.services.compton.enable) {
-              predetect = { "kill-compton" = "${kill-compton}/bin/kill-compton"; };
-            } // cfg.autorandr.hooks;
+          hooks = lib.optionalAttrs (hm.services.compton.enable) {
+            predetect = { "kill-compton" = "${kill-compton}/bin/kill-compton"; };
+          } // cfg.autorandr.hooks;
         };
       };
       services.udev.extraRules = ''

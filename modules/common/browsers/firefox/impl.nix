@@ -62,11 +62,7 @@ in {
 
       package = mkOption {
         type = types.package;
-        default = if versionAtLeast hm.home.stateVersion
-        "19.09" then
-          pkgs.firefox
-        else
-          pkgs.firefox-unwrapped;
+        default = if versionAtLeast hm.home.stateVersion "19.09" then pkgs.firefox else pkgs.firefox-unwrapped;
         defaultText = literalExample "pkgs.firefox";
         description = ''
           The Firefox package to use. If state version ≥ 19.09 then
@@ -228,8 +224,7 @@ in {
 
         package = if isDarwin then
           cfg.package
-        else if versionAtLeast hm.home.stateVersion
-        "19.09" then
+        else if versionAtLeast hm.home.stateVersion "19.09" then
           cfg.package.override { cfg = fcfg; }
         else
           (pkgs.wrapFirefox.override { config = bcfg; }) cfg.package { };

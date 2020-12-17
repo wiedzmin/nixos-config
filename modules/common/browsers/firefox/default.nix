@@ -427,7 +427,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         dump_firefox_session =
           mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
-            (readSubstituted ../../subst.nix ./scripts/dump_firefox_session.sh);
+          (readSubstituted ../../subst.nix ./scripts/dump_firefox_session.sh);
         manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
           (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.pystdlib ])
           (readSubstituted ../../subst.nix ./scripts/manage_firefox_sessions.py);
@@ -444,7 +444,10 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.dump_firefox_session}/bin/dump_firefox_session";
-          ExecStopPost = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --rotate --path ${cfg.sessions.path} --history-length ${builtins.toString cfg.sessions.historyLength}";
+          ExecStopPost =
+            "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --rotate --path ${cfg.sessions.path} --history-length ${
+              builtins.toString cfg.sessions.historyLength
+            }";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -477,12 +480,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [
-          dump_firefox_session
-          manage_firefox_sessions
-        ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ dump_firefox_session manage_firefox_sessions ]; };
     })
   ];
 }

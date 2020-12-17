@@ -62,9 +62,9 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        collect_links_on_page =
-          mkPythonScriptWithDeps "collect_links_on_page" (with pkgs; [ nurpkgs.pystdlib python3Packages.beautifulsoup4 xsel ])
-            (readSubstituted ../subst.nix ./scripts/collect_links_on_page.py);
+        collect_links_on_page = mkPythonScriptWithDeps "collect_links_on_page"
+          (with pkgs; [ nurpkgs.pystdlib python3Packages.beautifulsoup4 xsel ])
+          (readSubstituted ../subst.nix ./scripts/collect_links_on_page.py);
         paste_to_ix = mkPythonScriptWithDeps "paste_to_ix" (with pkgs; [ ix xsel ])
           (readSubstituted ../subst.nix ./scripts/paste_to_ix.sh);
       };
@@ -180,24 +180,19 @@ in {
     (mkIf cfg.bookmarking.enable {
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
-        buku_add = mkPythonScriptWithDeps "buku_add"
-          (with pkgs; [ buku nurpkgs.pystdlib xsel ])
+        buku_add = mkPythonScriptWithDeps "buku_add" (with pkgs; [ buku nurpkgs.pystdlib xsel ])
           (readSubstituted ../subst.nix ./scripts/buku_add.py);
-        buku_search_tag = mkShellScriptWithDeps "buku_search_tag"
-          (with pkgs; [ coreutils nurpkgs.dmenu-ng gawk buku ])
+        buku_search_tag = mkShellScriptWithDeps "buku_search_tag" (with pkgs; [ coreutils nurpkgs.dmenu-ng gawk buku ])
           (readSubstituted ../subst.nix ./scripts/buku_search_tag.sh);
-        buku_search_url = mkShellScriptWithDeps "buku_search_url"
-          (with pkgs; [ coreutils nurpkgs.dmenu-ng buku ])
+        buku_search_url = mkShellScriptWithDeps "buku_search_url" (with pkgs; [ coreutils nurpkgs.dmenu-ng buku ])
           (readSubstituted ../subst.nix ./scripts/buku_search_url.sh);
       };
     })
     (mkIf (cfg.enable && cfg.screenshots.enable) {
-      assertions = [
-        {
-          assertion = cfg.screenshots.baseDir != null;
-          message = "Must provide path to screenshots dir.";
-        }
-      ];
+      assertions = [{
+        assertion = cfg.screenshots.baseDir != null;
+        message = "Must provide path to screenshots dir.";
+      }];
 
       home-manager.users.${user} = let
         flameshot_config_text = lib.generators.toINI { } {
@@ -210,11 +205,11 @@ in {
             savePath = cfg.screenshots.baseDir;
           };
         };
-        in {
-          home.packages = with pkgs; [ flameshot ];
-          xdg.configFile."flameshot.ini".text = flameshot_config_text;
-          xdg.configFile."flameshot/flameshot.ini".text = flameshot_config_text;
-        };
+      in {
+        home.packages = with pkgs; [ flameshot ];
+        xdg.configFile."flameshot.ini".text = flameshot_config_text;
+        xdg.configFile."flameshot/flameshot.ini".text = flameshot_config_text;
+      };
       wmCommon.autostart.entries = [ "flameshot" ];
     })
     (mkIf (cfg.warmup.enable && cfg.warmup.paths != [ ]) {
@@ -266,7 +261,8 @@ in {
         }
         {
           key = [ "c" ];
-          cmd = ''PATH="$PATH:${nurpkgs.dmenu-ng}/bin/" ${pkgs.clipcat}/bin/clipcat-menu insert''; # TODO: consider abstracting away
+          cmd = ''
+            PATH="$PATH:${nurpkgs.dmenu-ng}/bin/" ${pkgs.clipcat}/bin/clipcat-menu insert''; # TODO: consider abstracting away
           mode = "select";
         }
         {
@@ -283,13 +279,7 @@ in {
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [
-          buku_add
-          buku_search_tag
-          buku_search_url
-          collect_links_on_page
-          paste_to_ix
-        ];
+        home.packages = with pkgs; [ buku_add buku_search_tag buku_search_url collect_links_on_page paste_to_ix ];
       };
     })
   ];

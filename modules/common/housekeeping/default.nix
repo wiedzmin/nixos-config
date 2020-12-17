@@ -108,9 +108,13 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
-        srvctl = mkPythonScriptWithDeps "srvctl"
-          (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis python3Packages.xlib ])
-          (readSubstituted ../subst.nix ./scripts/srvctl.py);
+        srvctl = mkPythonScriptWithDeps "srvctl" (with pkgs; [
+          nurpkgs.pyfzf
+          nurpkgs.pystdlib
+          python3Packages.libtmux
+          python3Packages.redis
+          python3Packages.xlib
+        ]) (readSubstituted ../subst.nix ./scripts/srvctl.py);
         uptime_info = mkPythonScriptWithDeps "uptime_info" (with pkgs; [ dunst gnused procps ])
           (readSubstituted ../subst.nix ./scripts/uptime_info.sh);
       };
@@ -280,9 +284,7 @@ in {
         renderTimer "Screenshots ordering" "" "" cfg.orderScreenshots.calendarTimespec;
     })
     (mkIf cfg.fsDeduplication.enable {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ dupd jdupes rmlint fpart ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ dupd jdupes rmlint fpart ]; };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
@@ -299,9 +301,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ order_screenshots srvctl uptime_info ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ order_screenshots srvctl uptime_info ]; };
     })
   ];
 }

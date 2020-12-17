@@ -61,11 +61,7 @@ in {
       # }];
 
       home-manager.users.${user} = {
-        home.packages = with pkgs; [
-          delve
-          gopls
-          go
-        ];
+        home.packages = with pkgs; [ delve gopls go ];
         programs.zsh.sessionVariables = {
           GOPATH = cfg.goPath;
         } // lib.optionalAttrs (cfg.privateModules != [ ]) {
@@ -83,9 +79,7 @@ in {
       custom.dev.timeTracking.extensions = { "go" = "coding:go"; };
     })
     (mkIf (cfg.enable && cfg.packaging.enable) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ dep2nix go2nix vgo2nix ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ dep2nix go2nix vgo2nix ]; };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {
@@ -128,12 +122,7 @@ in {
           '';
         };
       };
-      ide.emacs.extraPackages = epkgs: [
-        epkgs.flycheck-golangci-lint
-        epkgs.go-mode
-        epkgs.go-tag
-        epkgs.gotest
-      ];
+      ide.emacs.extraPackages = epkgs: [ epkgs.flycheck-golangci-lint epkgs.go-mode epkgs.go-tag epkgs.gotest ];
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/golang.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {

@@ -88,9 +88,11 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ])
           (readSubstituted ../../subst.nix ./scripts/yank-image.sh);
-        qb-fix-session = mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
+        qb-fix-session =
+          mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
           (readSubstituted ../../subst.nix ./scripts/qb-fix-session.py);
-        qb-dump-session = mkPythonScriptWithDeps "qb-dump-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
+        qb-dump-session =
+          mkPythonScriptWithDeps "qb-dump-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
           (readSubstituted ../../subst.nix ./scripts/qb-dump-session.py);
         manage-qb-sessions = mkPythonScriptWithDeps "manage-qb-sessions" (with pkgs; [ nurpkgs.pystdlib ])
           (readSubstituted ../../subst.nix ./scripts/manage-qb-sessions.py);
@@ -139,9 +141,7 @@ in {
             editor.command = [
               "${config.ide.emacs.package}/bin/emacsclient"
               "-c"
-              "-s /run/user/${
-                builtins.toString config.users.extraUsers."${user}".uid
-              }/emacs/server"
+              "-s /run/user/${builtins.toString config.users.extraUsers."${user}".uid}/emacs/server"
               "+{line}:{column}"
               "{}"
             ];
@@ -384,7 +384,7 @@ in {
               "yt" = "yank title";
               "y;" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
               "y'" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
-              "ym" = ''spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}'';
+              "ym" = "spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}";
               ";;" = "hint links download";
               ";I" = "hint images tab";
               ";O" = "hint links fill :open -t -r {hint-url}";
@@ -479,15 +479,20 @@ in {
         description = "Backup current qutebrowser session (tabs)";
         serviceConfig = {
           Type = "oneshot";
-          ExecStartPre = "-${config.home-manager.users.${user}.programs.qutebrowser.package}/bin/qutebrowser :session-save";
+          ExecStartPre =
+            "-${config.home-manager.users.${user}.programs.qutebrowser.package}/bin/qutebrowser :session-save";
           ExecStart = "${pkgs.qb-dump-session}/bin/qb-dump-session";
-          ExecStopPost = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --rotate --path ${cfg.sessions.path} --history-length ${builtins.toString cfg.sessions.historyLength}";
+          ExecStopPost =
+            "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --rotate --path ${cfg.sessions.path} --history-length ${
+              builtins.toString cfg.sessions.historyLength
+            }";
           StandardOutput = "journal";
           StandardError = "journal";
         };
       };
       systemd.user.timers."backup-current-session-qutebrowser" =
-        renderTimer "Backup current qutebrowser session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency "";
+        renderTimer "Backup current qutebrowser session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency
+        "";
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable && cfg.isDefault) {
       wmCommon.keys = [

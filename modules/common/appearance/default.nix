@@ -106,16 +106,12 @@ in {
         fontDir.enable = true;
         enableGhostscriptFonts = true;
         enableDefaultFonts = true;
-      } // lib.optionalAttrs (cfg.fonts.beautify) {
-        fonts = with pkgs; [ nerdfonts ];
-      };
+      } // lib.optionalAttrs (cfg.fonts.beautify) { fonts = with pkgs; [ nerdfonts ]; };
       console = {
         font = cfg.fonts.console;
         useXkbConfig = true;
       };
-      i18n = {
-        defaultLocale = cfg.fonts.locale;
-      };
+      i18n = { defaultLocale = cfg.fonts.locale; };
     })
     (mkIf (cfg.enable && cfg.wallpaper.enable) { # TODO: review/try services.xserver.desktopManager.wallpaper.*
       assertions = [{

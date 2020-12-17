@@ -65,7 +65,8 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         bookshelf = mkPythonScriptWithDeps "bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis zathura ])
           (readSubstituted ../subst.nix ./scripts/bookshelf.py);
-        update-bookshelf = mkPythonScriptWithDeps "update-bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
+        update-bookshelf =
+          mkPythonScriptWithDeps "update-bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../subst.nix ./scripts/update-bookshelf.py);
       };
       systemd.user.services."update-ebooks" = {
@@ -100,9 +101,7 @@ in {
       };
     })
     (mkIf cfg.processors.enable {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ enca pandoc pdfcpu pdftk ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ enca pandoc pdfcpu pdftk ]; };
     })
     (mkIf (cfg.wm.enable && cfg.readers.enable) {
       wmCommon.keys = [{
@@ -111,13 +110,9 @@ in {
         mode = "select";
       }];
     })
-    (mkIf (cfg.staging.packages != [ ]) {
-      home-manager.users.${user} = { home.packages = cfg.staging.packages; };
-    })
+    (mkIf (cfg.staging.packages != [ ]) { home-manager.users.${user} = { home.packages = cfg.staging.packages; }; })
     (mkIf (config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ bookshelf update-bookshelf ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ bookshelf update-bookshelf ]; };
     })
   ];
 }

@@ -140,24 +140,23 @@ let
       };
     };
   };
-  genWifiAttrs = attrs: eapAttrs: {
-    wifi = {
-      mac-address-blacklist = "";
-      mode = "infrastructure";
-      ssid = attrs.ssid;
+  genWifiAttrs = attrs: eapAttrs:
+    {
+      wifi = {
+        mac-address-blacklist = "";
+        mode = "infrastructure";
+        ssid = attrs.ssid;
+      };
+      wifi-security = {
+        auth-alg = "open";
+        key-mgmt = attrs.keyManagement;
+      } // lib.optionalAttrs (attrs.keyManagement == "wpa-psk") { psk = attrs.password; };
+    } // lib.optionalAttrs (attrs.keyManagement == "wpa-eap") {
+      eap = eapAttrs.eap;
+      identity = eapAttrs.identity;
+      password = eapAttrs.password;
+      phase2-auth = eapAttrs.phase2Auth;
     };
-    wifi-security = {
-      auth-alg = "open";
-      key-mgmt = attrs.keyManagement;
-    } // lib.optionalAttrs (attrs.keyManagement == "wpa-psk") {
-      psk = attrs.password;
-    };
-  } // lib.optionalAttrs (attrs.keyManagement == "wpa-eap") {
-    eap = eapAttrs.eap;
-    identity = eapAttrs.identity;
-    password = eapAttrs.password;
-    phase2-auth = eapAttrs.phase2Auth;
-  };
   genVPNAttrs = attrs: {
     vpn = {
       gateway = attrs.gateway;
@@ -171,9 +170,7 @@ let
       user = attrs.user;
       service-type = "org.freedesktop.NetworkManager.l2tp";
     };
-    vpn-secrets = {
-      password = attrs.password;
-    };
+    vpn-secrets = { password = attrs.password; };
   };
   genNMConn = conn: {
     text = lib.generators.toINI { } ({
@@ -181,12 +178,9 @@ let
         id = conn.id;
         uuid = conn.uuid;
         type = conn.type;
-        permissions = "";       # "user:alex3rd:;"
-      } // lib.optionalAttrs (conn.type == "vpn") {
-        autoconnect = builtins.toString conn.l2vpn.autoconnect;
-      } // lib.optionalAttrs (conn.type == "wifi") {
-        interface-name = conn.wifi.iface;
-      };
+        permissions = ""; # "user:alex3rd:;"
+      } // lib.optionalAttrs (conn.type == "vpn") { autoconnect = builtins.toString conn.l2vpn.autoconnect; }
+        // lib.optionalAttrs (conn.type == "wifi") { interface-name = conn.wifi.iface; };
       ipv4 = {
         dns = conn.dns;
         dns-search = "";
@@ -239,9 +233,8 @@ in {
       networking.networkmanager.enableStrongSwan = true;
       environment.etc = {
         "ipsec.secrets" = {
-          text =
-            lib.concatStringsSep "\n" (lib.forEach (builtins.filter (c: c.type == "vpn") cfg.connections)
-              (conn: "${conn.l2vpn.gateway} : PSK ${conn.l2vpn.ipsec.psk}"));
+          text = lib.concatStringsSep "\n" (lib.forEach (builtins.filter (c: c.type == "vpn") cfg.connections)
+            (conn: "${conn.l2vpn.gateway} : PSK ${conn.l2vpn.ipsec.psk}"));
           mode = "0600";
         };
       };

@@ -249,18 +249,20 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable && cfg.timeTracking.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        tt_capture = mkPythonScriptWithDeps "tt_capture"
-          (with pkgs; [ nurpkgs.pystdlib python3Packages.cbor2 python3Packages.pytz python3Packages.xlib xprintidle-ng ])
-          (readSubstituted ../subst.nix ./scripts/tt_capture.py);
+        tt_capture = mkPythonScriptWithDeps "tt_capture" (with pkgs; [
+          nurpkgs.pystdlib
+          python3Packages.cbor2
+          python3Packages.pytz
+          python3Packages.xlib
+          xprintidle-ng
+        ]) (readSubstituted ../subst.nix ./scripts/tt_capture.py);
       };
       services.arbtt = {
         enable = true;
         package = nixpkgs-arbtt.haskellPackages.arbtt;
       };
       home-manager.users."${user}" = {
-        home.file = {
-          ".arbtt/categorize.cfg".text = cfg.timeTracking.config;
-        };
+        home.file = { ".arbtt/categorize.cfg".text = cfg.timeTracking.config; };
         home.packages = with pkgs;
           [
             nixpkgs-arbtt.haskellPackages.arbtt # for stats viewing
@@ -276,8 +278,8 @@ in {
           data = ''
             export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
             ${lib.concatStringsSep "\n"
-              (lib.mapAttrsToList (name: _: "${pkgs.systemd}/bin/systemctl --user restart ${name}.timer")
-                cfg.scheduling.entries)}
+            (lib.mapAttrsToList (name: _: "${pkgs.systemd}/bin/systemctl --user restart ${name}.timer")
+              cfg.scheduling.entries)}
           '';
         };
       };

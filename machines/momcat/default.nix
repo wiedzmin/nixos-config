@@ -1,7 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 
-let
-  user = config.attributes.mainUser.name;
+let user = config.attributes.mainUser.name;
 in {
   imports = [
     ./secrets

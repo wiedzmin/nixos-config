@@ -273,9 +273,7 @@ in {
 
       users.users.${user}.extraGroups = [ "input" ];
 
-      home-manager.users.${user} = {
-        xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText;
-      };
+      home-manager.users.${user} = { xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText; };
     })
     (mkIf (cfg.constraintMouse.enable && !config.wm.i3.enable) {
       systemd.user.services."xpointerbarrier" = {

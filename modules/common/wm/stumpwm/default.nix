@@ -31,8 +31,6 @@ in {
       stumpwm.enable = true;
     };
 
-    home-manager.users.${user} = {
-      home.file = { ".stumpwm.d".source = deps.stumpwm-config; };
-    };
+    home-manager.users.${user} = { home.file = { ".stumpwm.d".source = deps.stumpwm-config; }; };
   };
 }

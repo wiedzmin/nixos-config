@@ -143,10 +143,10 @@ in {
           (readSubstituted ../subst.nix ./scripts/docker_containers_traits.py);
         discover_containerized_services =
           mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker nurpkgs.pystdlib ])
-            (readSubstituted ../subst.nix ./scripts/discover_containerized_services.py);
-        docker_shell =
-          mkPythonScriptWithDeps "docker_shell" (with pkgs; [ nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis ])
-            (readSubstituted ../subst.nix ./scripts/docker_shell.py);
+          (readSubstituted ../subst.nix ./scripts/discover_containerized_services.py);
+        docker_shell = mkPythonScriptWithDeps "docker_shell"
+          (with pkgs; [ nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis ])
+          (readSubstituted ../subst.nix ./scripts/docker_shell.py);
         docker_swarm_services_info = mkPythonScriptWithDeps "docker_swarm_services_info"
           (with pkgs; [ docker nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis vpnctl yad ])
           (readSubstituted ../subst.nix ./scripts/docker_swarm_services_info.py);

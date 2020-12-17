@@ -114,9 +114,7 @@ in {
   services = {
     irqbalance.enable = true;
     chrony.enable = true;
-    dbus = {
-      enable = true;
-    };
+    dbus = { enable = true; };
     earlyoom.enable = true;
     openssh = {
       enable = true;
@@ -600,7 +598,6 @@ in {
     statusbarImpl = "i3-rs";
   };
 
-
   wmCommon.workspaces = [
     {
       name = "web";
@@ -664,7 +661,8 @@ in {
     }
   ];
 
-  wmCommon.autostart.entries = [ "alacritty" "clipcatd" "qutebrowser -P default --class qb-default" "telegram-desktop" ];
+  wmCommon.autostart.entries =
+    [ "alacritty" "clipcatd" "qutebrowser -P default --class qb-default" "telegram-desktop" ];
 
   home-manager = {
     useGlobalPkgs = true;

@@ -72,12 +72,10 @@ in {
             withGTK2 = false;
             withGTK3 = false;
           }).overrideAttrs (old: rec {
-            configureFlags = (remove "--with-cairo" (remove "--with-harfbuzz" old.configureFlags)) ++ [
-              "--without-harfbuzz" "--without-cairo"
-            ];
+            configureFlags = (remove "--with-cairo" (remove "--with-harfbuzz" old.configureFlags))
+              ++ [ "--without-harfbuzz" "--without-cairo" ];
           }));
-          in
-            if cfg.debug.enable then (pkgs.enableDebugging basepkg) else basepkg;
+        in if cfg.debug.enable then (pkgs.enableDebugging basepkg) else basepkg;
         description = ''
           Emacs derivation to use.
         '';
@@ -231,18 +229,15 @@ in {
         restartIfChanged = false;
         serviceConfig = {
           Type = "simple";
-          ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'' +
-                      optionalString cfg.socketActivation.enable
-                        "=${escapeShellArg socketPath}";
+          ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"''
+            + optionalString cfg.socketActivation.enable "=${escapeShellArg socketPath}";
           ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
           ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
           Restart = "on-failure";
           StandardOutput = "journal";
           StandardError = "journal";
         };
-      } // optionalAttrs (!cfg.socketActivation.enable) {
-        wantedBy = [ "default.target" ];
-      };
+      } // optionalAttrs (!cfg.socketActivation.enable) { wantedBy = [ "default.target" ]; };
     })
     (mkIf (cfg.enable && cfg.socketActivation.enable) {
       systemd.user.sockets.emacs = {
@@ -258,13 +253,11 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [
-        {
-          key = [ "Shift" "e" ];
-          cmd = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";
-          mode = "services";
-        }
-      ];
+      wmCommon.keys = [{
+        key = [ "Shift" "e" ];
+        cmd = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";
+        mode = "services";
+      }];
     })
   ];
 }

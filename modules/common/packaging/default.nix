@@ -155,9 +155,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.nix.search.enable) {
-      home-manager.users.${user} = {
-        programs.zsh.shellAliases = { nlo = "${pkgs.nix-index}/bin/nix-locate --"; };
-      };
+      home-manager.users.${user} = { programs.zsh.shellAliases = { nlo = "${pkgs.nix-index}/bin/nix-locate --"; }; };
       systemd.user.services."nix-update-index" = {
         description = "Update nix packages metadata index";
         serviceConfig = {
@@ -189,9 +187,7 @@ in {
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/packaging.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ get-pr-override make-package-diff rollback ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ get-pr-override make-package-diff rollback ]; };
     })
   ];
 }

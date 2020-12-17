@@ -245,8 +245,9 @@ in {
         windowManager = {
           i3 = {
             enable = true;
-            extraPackages = with pkgs; lib.optionals (cfg.statusbarImpl == "py3") [ i3status python3Packages.py3status ] ++
-                                       lib.optionals (cfg.statusbarImpl == "i3-rs") [ i3status-rust iw kbdd ];
+            extraPackages = with pkgs;
+              lib.optionals (cfg.statusbarImpl == "py3") [ i3status python3Packages.py3status ]
+              ++ lib.optionals (cfg.statusbarImpl == "i3-rs") [ i3status-rust iw kbdd ];
           };
         };
         displayManager = { defaultSession = "none+i3"; };
@@ -256,9 +257,9 @@ in {
       environment.sessionVariables.CURRENT_WM = [ "i3" ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        kbdctl =
-          mkPythonScriptWithDeps "kbdctl" (with pkgs; [ nurpkgs.pystdlib python3Packages.i3ipc xdotool emacs xkb-switch ])
-            (readSubstituted ../../subst.nix ./kbdctl.py);
+        kbdctl = mkPythonScriptWithDeps "kbdctl"
+          (with pkgs; [ nurpkgs.pystdlib python3Packages.i3ipc xdotool emacs xkb-switch ])
+          (readSubstituted ../../subst.nix ./kbdctl.py);
       };
 
       wmCommon.modeBindings = {
@@ -278,17 +279,16 @@ in {
 
       home-manager.users.${user} = {
         xdg.configFile = {
-          "i3/config".text = let
-            statusCmd = if cfg.statusbarImpl == "py3"
-                        then "py3status" else "i3status-rs";
-            in ''
+          "i3/config".text = let statusCmd = if cfg.statusbarImpl == "py3" then "py3status" else "i3status-rs";
+          in ''
             # i3 config file (v4)
 
             ${cfg.settings}
-            ${mkKeybindingsI3 config.wmCommon.workspaces (cfg.keys ++ config.wmCommon.keys) config.wmCommon.modeBindings cfg.modeExitBindings}
+            ${mkKeybindingsI3 config.wmCommon.workspaces (cfg.keys ++ config.wmCommon.keys) config.wmCommon.modeBindings
+            cfg.modeExitBindings}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
             ${lib.concatStringsSep "\n"
-              (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}
+            (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
             ${with config.wmCommon; mkPlacementRulesI3 workspaces wsMapping.rules}
 

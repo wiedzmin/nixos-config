@@ -136,9 +136,7 @@ in {
               project = "foo";
             };
             workspaceRoot = "/path/to/root";
-            meta = {
-              bar = "quux";
-            };
+            meta = { bar = "quux"; };
           };
         };
         description = "Timetracking identities collection.";
@@ -211,40 +209,47 @@ in {
       ide.emacs.config = readSubstituted ../subst.nix ./emacs/codesearch.el;
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ patchutils wiggle diffoscope ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ patchutils wiggle diffoscope ]; };
     })
     (mkIf (cfg.enable && cfg.statistics.enable) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ cloc gource sloccount tokei logtop ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ cloc gource sloccount tokei logtop ]; };
     })
     (mkIf (cfg.enable && cfg.repoSearch.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        reposearch = mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd python3Packages.libtmux xsel emacs nurpkgs.pystdlib ])
+        reposearch =
+          mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd python3Packages.libtmux xsel emacs nurpkgs.pystdlib ])
           (readSubstituted ../subst.nix ./scripts/reposearch.py);
       };
     })
     (mkIf (cfg.enable && cfg.timeTracking.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        ttctl = mkPythonScriptWithDeps "ttctl" (with pkgs; [ python3Packages.jira python3Packages.pytz python3Packages.redis nurpkgs.pystdlib yad ])
+        ttctl = mkPythonScriptWithDeps "ttctl"
+          (with pkgs; [ python3Packages.jira python3Packages.pytz python3Packages.redis nurpkgs.pystdlib yad ])
           (readSubstituted ../subst.nix ./scripts/ttctl.py);
       };
       custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set timetracking/identities ${lib.strings.escapeNixString (builtins.toJSON cfg.timeTracking.identities)}
+        ${pkgs.redis}/bin/redis-cli set timetracking/identities ${
+          lib.strings.escapeNixString (builtins.toJSON cfg.timeTracking.identities)
+        }
       '';
       custom.pim.timeTracking.rules = with config.attributes.browser; ''
         -- TODO: parameterize web resources
         -- TODO: parameterize IDE (probably, not only emacs)
-        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
-                                      }] && $title =~ /habr/) ==> tag site:habr,
-        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
-                                      }] && $title =~ /pypi/) ==> tag site:pypi,
-        current window ($program == [${concatStringListsQuoted ", " [default.windowClass fallback.windowClass]
-                                      }] && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
-        ${concatStringsSep ",\n" (lib.mapAttrsToList (ext: tag: ''
-          current window ($title =~ /^emacs - [^ ]+\.${ext} .*$/) ==> tag ${tag}'') cfg.timeTracking.extensions)},
+        current window ($program == [${
+          concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
+        }] && $title =~ /habr/) ==> tag site:habr,
+        current window ($program == [${
+          concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
+        }] && $title =~ /pypi/) ==> tag site:pypi,
+        current window ($program == [${
+          concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
+        }] && $title =~ /stackoverflow/) ==> tag site:stackoverflow,
+        ${
+          concatStringsSep ''
+            ,
+          '' (lib.mapAttrsToList (ext: tag: "current window ($title =~ /^emacs - [^ ]+\\.${ext} .*$/) ==> tag ${tag}")
+            cfg.timeTracking.extensions)
+        },
       '';
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
@@ -308,11 +313,7 @@ in {
             trim_trailing_whitespace = false
           '';
         };
-        home.packages = with pkgs; [
-          nurpkgs.comby
-          devdocs-desktop
-          icdiff
-        ];
+        home.packages = with pkgs; [ nurpkgs.comby devdocs-desktop icdiff ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
@@ -374,13 +375,9 @@ in {
         mode = "dev";
       }];
     })
-    (mkIf (cfg.staging.packages != [ ]) {
-      home-manager.users.${user} = { home.packages = cfg.staging.packages; };
-    })
+    (mkIf (cfg.staging.packages != [ ]) { home-manager.users.${user} = { home.packages = cfg.staging.packages; }; })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ ttctl open-project reposearch ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ ttctl open-project reposearch ]; };
     })
   ];
 }

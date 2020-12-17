@@ -9,8 +9,7 @@ let
   hm = config.home-manager.users.${user};
 
   # Accounts for which mbsync is enabled.
-  mbsyncAccounts = filter (a: a.mbsync.enable)
-    (attrValues hm.accounts.email.accounts);
+  mbsyncAccounts = filter (a: a.mbsync.enable) (attrValues hm.accounts.email.accounts);
 
   genTlsConfig = tls:
     {

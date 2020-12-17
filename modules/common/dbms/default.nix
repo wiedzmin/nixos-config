@@ -225,9 +225,7 @@ in {
       };
     })
     (mkIf cfg.misc.enable {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ nodePackages.elasticdump ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ nodePackages.elasticdump ]; };
     })
     (mkIf (cfg.cli.enable && cfg.wm.enable) {
       nixpkgs.config.packageOverrides = _: rec {
@@ -244,8 +242,6 @@ in {
         desktop = "shell";
       }];
     })
-    (mkIf (config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ dbms ]; };
-    })
+    (mkIf (config.attributes.debug.scripts) { home-manager.users.${user} = { home.packages = with pkgs; [ dbms ]; }; })
   ];
 }

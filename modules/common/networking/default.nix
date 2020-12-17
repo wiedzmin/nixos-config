@@ -207,9 +207,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.messengers.enable) {
       services.quassel.enable = true;
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [ skype tdesktop quasselClient ];
-      };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ skype tdesktop quasselClient ]; };
       custom.xinput.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {
             K("C-x"): {
@@ -261,9 +259,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [ ifconfless sshmenu vpnctl wifi-status ];
-      };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ ifconfless sshmenu vpnctl wifi-status ]; };
     })
   ];
 }
