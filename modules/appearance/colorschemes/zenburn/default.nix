@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.themes.zenburn;
+  cfg = config.appearance.colors.zenburn;
   user = config.attributes.mainUser.name;
   zenburnEmacs = ''
     (use-package zenburn-theme
@@ -11,7 +11,7 @@ let
       (after-init-hook . (lambda () (load-theme 'zenburn t))))
   '';
 in {
-  options.themes.zenburn = { enable = mkEnableOption "zenburn"; };
+  options.appearance.colors.zenburn = { enable = mkEnableOption "zenburn"; };
 
   config = mkIf cfg.enable {
     ide.emacs.config = "${zenburnEmacs}";
@@ -41,10 +41,6 @@ in {
         recolor-lightcolor = "#383838";
         statusbar-bg = "#606060";
         statusbar-fg = "#808080";
-      };
-      gtk = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
-        gtk2.extraConfig = builtins.readFile ./zenburn-gtk2.styles;
-        gtk3.extraCss = builtins.readFile ./zenburn-gtk3.css;
       };
       services.dunst.settings = {
         urgency_low = {

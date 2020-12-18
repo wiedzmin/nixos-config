@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.themes.fonts.source-code-pro;
+  cfg = config.appearance.fonts.source-code-pro;
   user = config.attributes.mainUser.name;
-  beautify = config.custom.appearance.fonts.beautify;
+  beautify = config.appearance.fonts.beautify;
 in {
-  options.themes.fonts.source-code-pro = { enable = mkEnableOption "source-code-pro"; };
+  options.appearance.fonts.source-code-pro = { enable = mkEnableOption "source-code-pro"; };
 
   config = mkIf cfg.enable {
     fonts = {
@@ -17,7 +17,7 @@ in {
     wmCommon.fonts.dmenu = "Source Code Pro:bold:size=9";
     wmCommon.fonts.statusbar = "pango:${if beautify then "SauceCodePro Nerd Font " else "Source Code Pro "}Bold 9";
     home-manager.users.${user} = {
-      gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
+      gtk.font = lib.optionalAttrs (config.appearance.gtk.enable) {
         package = pkgs.source-code-pro;
         name = "Source Code Pro Bold 8";
       };

@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.themes.fonts.jetbrains-mono;
+  cfg = config.appearance.fonts.jetbrains-mono;
   user = config.attributes.mainUser.name;
-  beautify = config.custom.appearance.fonts.beautify;
+  beautify = config.appearance.fonts.beautify;
 in {
-  options.themes.fonts.jetbrains-mono = { enable = mkEnableOption "jetbrains-mono"; };
+  options.appearance.fonts.jetbrains-mono = { enable = mkEnableOption "jetbrains-mono"; };
 
   config = mkIf cfg.enable {
     fonts = {

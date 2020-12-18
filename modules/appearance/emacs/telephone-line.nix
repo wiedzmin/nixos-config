@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.themes.emacs.modeline.telephone;
+let cfg = config.appearance.emacs.modeline.telephone;
 in {
   options = {
-    themes.emacs.modeline.telephone = {
+    appearance.emacs.modeline.telephone = {
       enable = mkOption {
         type = types.bool;
         default = false;

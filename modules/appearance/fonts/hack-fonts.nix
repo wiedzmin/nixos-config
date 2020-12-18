@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.themes.fonts.hack;
+  cfg = config.appearance.fonts.hack;
   user = config.attributes.mainUser.name;
-  beautify = config.custom.appearance.fonts.beautify;
+  beautify = config.appearance.fonts.beautify;
 in {
-  options.themes.fonts.hack = { enable = mkEnableOption "hack"; };
+  options.appearance.fonts.hack = { enable = mkEnableOption "hack"; };
 
   config = mkIf cfg.enable {
     fonts = {
@@ -17,7 +17,7 @@ in {
     wmCommon.fonts.dmenu = "Hack:bold:size=8";
     wmCommon.fonts.statusbar = "pango:Hack ${if beautify then "Nerd Font " else ""}Bold 8";
     home-manager.users.${user} = {
-      gtk.font = lib.optionalAttrs (config.custom.appearance.gtk.enable) {
+      gtk.font = lib.optionalAttrs (config.appearance.gtk.enable) {
         package = pkgs.hack-font;
         name = "Hack Bold 8";
       };

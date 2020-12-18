@@ -217,20 +217,30 @@ in {
     "b354e944b3".secrets.enable = true;
   };
 
-  custom.appearance = {
-    enable = true;
+  appearance = {
+    colors.zenburn.enable = true;
+    emacs = {
+      enable = true;
+      modeline.telephone = {
+        enable = true;
+        height = 24;
+      };
+    };
     fonts = {
-      antialias = true;
-      # NOTE: use `nix-index consolefonts` to search values for `console.font`
+      enable = true;
+      antialias = true; # NOTE: use `nix-index consolefonts` to search values for `console.font`
+      iosevka.enable = true;
     };
     wallpaper = {
       enable = true;
-      root = homePrefix "blobs/wallpaper/mongol/winter";
+      rootDir = homePrefix "blobs/wallpaper/mongol/winter";
       current = "mongol-winter-govi.jpg";
+      wm.enable = true;
     };
-    gtk.enable = false;
-    emacs.enable = true;
-    wm.enable = true;
+    xresources = {
+      enable = true;
+      wm.enable = true;
+    };
   };
 
   custom.browsers = {
@@ -569,13 +579,6 @@ in {
     ddc.enable = true;
     wm.enable = true;
     staging.packages = with pkgs; [ ddcui ];
-  };
-
-  themes.fonts.iosevka.enable = true;
-  themes.zenburn.enable = true;
-  themes.emacs.modeline.telephone = {
-    enable = true;
-    height = 24;
   };
 
   tools = {

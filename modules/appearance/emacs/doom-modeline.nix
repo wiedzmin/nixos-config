@@ -1,10 +1,10 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-let cfg = config.themes.emacs.modeline.doom;
+let cfg = config.appearance.emacs.modeline.doom;
 in {
   options = {
-    themes.emacs.modeline.doom = {
+    appearance.emacs.modeline.doom = {
       enable = mkOption {
         type = types.bool;
         default = false;

@@ -2,11 +2,11 @@
 
 with lib;
 let
-  cfg = config.themes.fonts.fira-code;
+  cfg = config.appearance.fonts.fira-code;
   user = config.attributes.mainUser.name;
-  beautify = config.custom.appearance.fonts.beautify;
+  beautify = config.appearance.fonts.beautify;
 in {
-  options.themes.fonts.fira-code = { enable = mkEnableOption "fira-code"; };
+  options.appearance.fonts.fira-code = { enable = mkEnableOption "fira-code"; };
 
   config = mkIf cfg.enable {
     fonts = {

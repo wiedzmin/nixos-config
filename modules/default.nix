@@ -1,8 +1,12 @@
 { ... }: {
   imports = [
     ./attributes.nix
-    ./appearance
-    ./appearance/themes
+    ./appearance/colorschemes/zenburn
+    ./appearance/emacs
+    ./appearance/fonts
+    ./appearance/gtk
+    ./appearance/wallpaper
+    ./appearance/xresources
     ./browsers/chromium
     ./browsers/firefox
     ./browsers/firefox/impl.nix
