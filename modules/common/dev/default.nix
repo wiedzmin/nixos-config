@@ -313,7 +313,7 @@ in {
             trim_trailing_whitespace = false
           '';
         };
-        home.packages = with pkgs; [ nurpkgs.comby devdocs-desktop icdiff ];
+        home.packages = with pkgs; [ nurpkgs.comby devdocs-desktop icdiff tagref ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
