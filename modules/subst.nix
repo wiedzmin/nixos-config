@@ -9,7 +9,7 @@ let
 in rec {
   autorandrProfiles = homePrefix ".config/autorandr";
   bashExecutable = "/run/current-system/sw/bin/bash";
-  booksSearchCommand = config.tools.ebooks.readers.booksSearchCommand;
+  booksSearchCommand = config.content.ebooks.searchCommand;
   combyExcludes = lib.concatStringsSep "," config.custom.dev.comby.excludes;
   configResultPath = config.custom.packaging.configResultPath;
   defaultBrowser = config.attributes.browser.default.cmd;
@@ -50,9 +50,9 @@ in rec {
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   python3Binary = "${pkgs.python3}/bin/python3";
   systemTimeZone = config.time.timeZone;
-  screenshotsBasedir = config.custom.content.screenshots.baseDir;
+  screenshotsBasedir = config.content.screenshots.baseDir;
   tmuxDefaultSession = config.custom.shell.tmux.defaultSession;
-  urlRegexPy = config.custom.content.urlRegex.py;
+  urlRegexPy = config.custom.housekeeping.regex.url.py;
   xprintidleBinary = "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
   xmobarMaybeFont = lib.optionalString (config.wmCommon.fonts.statusbar != "")

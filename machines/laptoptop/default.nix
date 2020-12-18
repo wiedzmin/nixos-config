@@ -291,18 +291,34 @@ in {
     };
   };
 
-  custom.content = {
-    enable = true;
-    bookmarking.enable = true;
+  content = {
+    ebooks = {
+      enable = true;
+      wm.enable = true;
+    };
+    media = {
+      enable = true;
+      mopidy = {
+        youtube.apiKey = config.custom.networking.secrets.youtube.apiToken;
+        file.roots = {
+          "Mongol" = homePrefix "blobs/music/mongol";
+        };
+      };
+      wm.enable = true;
+    };
+    misc = {
+      enable = true;
+      wm.enable = true;
+    };
     screenshots = {
       enable = true;
       baseDir = homePrefix "blobs/screenshots";
+      ordering = {
+        enable = true;
+        timespec = "*-*-* 00:05:00";
+      };
+      wm.enable = true;
     };
-    warmup = {
-      enable = true;
-      paths = [ (homePrefix ".mozilla") ];
-    };
-    wm.enable = true;
   };
 
   custom.dev = {
@@ -389,10 +405,6 @@ in {
       enable = true;
       calendarTimespec = "*-*-* 23:00:00";
     };
-    orderScreenshots = {
-      enable = true;
-      calendarTimespec = "*-*-* 00:05:00";
-    };
     wm.enable = true;
   };
 
@@ -407,12 +419,9 @@ in {
     emacs.enable = true;
   };
 
-  custom.sound = {
+  custom.pulseaudio = {
     enable = true;
-    pulse = {
-      enable = true;
-      daemonConfig = { flat-volumes = "no"; };
-    };
+    daemonConfig = { flat-volumes = "no"; };
     wm.enable = true;
   };
 
@@ -483,7 +492,7 @@ in {
     timeTracking.enable = true;
   };
 
-  custom.power-management = {
+  localinfra.powermanagement = {
     enable = true;
     resumeCommands = lib.concatStringsSep "\n"
       (lib.mapAttrsToList (server: _: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
@@ -498,6 +507,7 @@ in {
     };
     appsSuspension.enable = true;
     wm.enable = true;
+    warmup.enable = true;
   };
 
   custom.security = {
@@ -588,10 +598,6 @@ in {
       sqlite.enable = true;
       cli.enable = true;
       misc.enable = true;
-      wm.enable = true;
-    };
-    ebooks = {
-      readers.enable = true;
       wm.enable = true;
     };
   };

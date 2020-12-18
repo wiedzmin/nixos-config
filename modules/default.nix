@@ -12,8 +12,10 @@
     ./browsers/firefox/impl.nix
     ./browsers/nyxt
     ./browsers/qutebrowser
-    ./content/common
-    ./content/ebook
+    ./content/ebooks
+    ./content/media
+    ./content/misc
+    ./content/screenshots
     ./dev/ansible
     ./dev/ccpp
     ./dev/common
@@ -29,7 +31,7 @@
     ./localnfra/networking
     ./localnfra/nmconn
     ./localnfra/powermanagement
-    ./localnfra/sound
+    ./localnfra/pulseaudio
     ./localnfra/video
     ./localnfra/xinput
     ./navigation

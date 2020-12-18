@@ -166,6 +166,11 @@ in {
         default = [ ];
         description = "List of staging packages.";
       };
+      processors.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable ebooks processors (mostly pdf-centric).";
+      };
     };
   };
 
@@ -287,6 +292,9 @@ in {
         current window $program == "libreoffice" ==> tag activity:paperworks,
         current window $program == "libreoffice" ==> tag program:libreoffice,
       '';
+    })
+    (mkIf cfg.processors.enable {
+      home-manager.users.${user} = { home.packages = with pkgs; [ enca pandoc pdfcpu pdftk ]; };
     })
   ];
 }

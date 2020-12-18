@@ -128,8 +128,8 @@
           path = ./modules/dev/ccpp/templates/cmake;
           description = "C/C++ CMake project.";
         };
-        media.convert = {
-          path = ./modules/content/common/templates/convert;
+        media.encode = {
+          path = ./modules/content/media/templates/encode;
           description = "Various multimedia conversions.";
         };
       };

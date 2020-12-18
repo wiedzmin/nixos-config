@@ -407,6 +407,8 @@ in {
       };
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
+
+      localinfra.powermanagement.warmup.paths = [ (homePrefix ".mozilla") ];
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [

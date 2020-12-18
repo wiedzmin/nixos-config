@@ -3,11 +3,11 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.custom.power-management;
+  cfg = config.localinfra.powermanagement;
   user = config.attributes.mainUser.name;
 in {
   options = {
-    custom.power-management = {
+    localinfra.powermanagement = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -73,6 +73,16 @@ in {
           };
         };
         description = "Apps suspending rules.";
+      };
+      warmup.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable pulling some highly used data into RAM.";
+      };
+      warmup.paths = mkOption {
+        type =  types.listOf types.str;
+        default = [ ];
+        description = "Paths to pull.";
       };
       wm.enable = mkOption {
         type = types.bool;
@@ -144,6 +154,20 @@ in {
               fi
           fi
         '';
+      };
+    })
+    (mkIf (cfg.warmup.enable && cfg.warmup.paths != [ ]) {
+      systemd.user.services."warmup" = {
+        description = "Warm up paths";
+        serviceConfig = {
+          Type = "oneshot";
+          ExecStart = "${pkgs.vmtouch}/bin/vmtouch -t ${lib.concatStringsSep " " cfg.warmup.paths}";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
       };
     })
   ];

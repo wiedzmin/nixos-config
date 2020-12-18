@@ -60,16 +60,6 @@ in {
         default = "";
         description = "Timestamp of service activation (in systemd format).";
       };
-      orderScreenshots.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable screenshots ordering.";
-      };
-      orderScreenshots.calendarTimespec = mkOption {
-        type = types.str;
-        default = "";
-        description = "Timestamp of service activation (in systemd format).";
-      };
       fsDeduplication.enable = mkOption {
         type = types.bool;
         default = false;
@@ -91,6 +81,11 @@ in {
         readOnly = true;
         internal = true;
         description = "Date suffix formats fo various needs";
+      };
+      regex.url.py = mkOption { # TODO: make something like dateFormats above
+        description = "Common URL regular expression, Python format";
+        type = types.str;
+        default = "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]";
       };
       wm.enable = mkOption {
         type = types.bool;
@@ -258,31 +253,6 @@ in {
       systemd.user.timers."purge-temp-files" =
         renderTimer "Purge temporary files" "" "" cfg.purgeExpired.calendarTimespec;
     })
-    (mkIf (cfg.enable && cfg.orderScreenshots.enable) {
-      assertions = [{
-        assertion = (cfg.orderScreenshots.enable && config.custom.content.screenshots.enable);
-        message = "housekeeping: it makes no sense to order screenshot without enabling making them first.";
-      }];
-
-      nixpkgs.config.packageOverrides = _: rec {
-        order_screenshots = mkShellScriptWithDeps "order_screenshots" (with pkgs; [ coreutils ])
-          (readSubstituted ../subst.nix ./scripts/order_screenshots.sh);
-      };
-
-      systemd.user.services."order-screenshots" = {
-        description = "Screenshots ordering";
-        wantedBy = [ "graphical.target" ];
-        partOf = [ "graphical.target" ];
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.order_screenshots}/bin/order_screenshots";
-          StandardOutput = "journal";
-          StandardError = "journal";
-        };
-      };
-      systemd.user.timers."order-screenshots" =
-        renderTimer "Screenshots ordering" "" "" cfg.orderScreenshots.calendarTimespec;
-    })
     (mkIf cfg.fsDeduplication.enable {
       home-manager.users.${user} = { home.packages = with pkgs; [ dupd jdupes rmlint fpart ]; };
     })
@@ -301,7 +271,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ order_screenshots srvctl uptime_info ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ srvctl uptime_info ]; };
     })
   ];
 }
