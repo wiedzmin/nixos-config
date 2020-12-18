@@ -86,6 +86,15 @@ in {
               searchSuffix = "search?q=";
             };
           };
+          yasnippet-snippets = {
+            local.path = "${wsRoot "github"}/wiedzmin/yasnippet-snippets";
+            remote = {
+              url = "https://github.com/wiedzmin/yasnippet-snippets/";
+              jump = true;
+              desc = "Yasnippet snippets collection";
+              searchSuffix = "search?q=";
+            };
+          };
           git-hooks = {
             local.path = "${wsRoot "github"}/wiedzmin/git-hooks";
             remote = {
