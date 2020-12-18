@@ -1,1 +1,44 @@
-{ ... }: { imports = [ ./attributes.nix ./common ./themes ]; }
+{ ... }: {
+  imports = [
+    ./attributes.nix
+    ./appearance
+    ./appearance/themes
+    ./browsers/chromium
+    ./browsers/firefox
+    ./browsers/firefox/impl.nix
+    ./browsers/nyxt
+    ./browsers/qutebrowser
+    ./content/common
+    ./content/ebook
+    ./dev/ansible
+    ./dev/ccpp
+    ./dev/common
+    ./dev/dbms
+    ./dev/git
+    ./dev/golang
+    ./dev/python
+    ./emacs
+    ./email
+    ./email/mbsync.nix
+    ./housekeeping
+    ./knowledgebase
+    ./localnfra/networking
+    ./localnfra/nmconn
+    ./localnfra/powermanagement
+    ./localnfra/sound
+    ./localnfra/video
+    ./localnfra/xinput
+    ./navigation
+    ./packaging
+    ./paperworks
+    ./pim
+    ./security
+    ./shell
+    ./shell/misc/tmux.nix
+    ./virt
+    ./wm
+    ./wm/i3
+    ./wm/stumpwm
+    ./wm/xmonad
+  ];
+}

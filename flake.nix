@@ -93,28 +93,29 @@
       };
     in {
       templates = {
+        # TODO: debug and add python
         golang.project = {
-          path = ./modules/common/golang/templates/project;
+          path = ./modules/dev/golang/templates/project;
           description = "Golang project.";
         };
         golang.nix = {
-          path = ./modules/common/golang/templates/go2nix;
+          path = ./modules/dev/golang/templates/go2nix;
           description = "Golang to Nix packaging.";
         };
         frontend.vue = {
-          path = ./modules/common/dev/templates/vue-frontend;
+          path = ./modules/dev/common/templates/vue-frontend;
           description = "Vuetified frontend.";
         };
         ccpp.generic = {
-          path = ./modules/common/ccpp/templates/generic;
+          path = ./modules/dev/ccpp/templates/generic;
           description = "C/C++ autotools project.";
         };
         ccpp.cmake = {
-          path = ./modules/common/ccpp/templates/cmake;
+          path = ./modules/dev/ccpp/templates/cmake;
           description = "C/C++ CMake project.";
         };
         media.convert = {
-          path = ./modules/common/content/templates/convert;
+          path = ./modules/content/common/templates/convert;
           description = "Various multimedia conversions.";
         };
       };
@@ -130,7 +131,7 @@
                 overlays.unstable
                 (_: old: rec {
                   i3lock-color = old.i3lock-color.overrideAttrs (_: rec {
-                    patches = [ ./modules/common/video/patches/i3lock-color-pass-layout-switching.patch ];
+                    patches = [ ./modules/localnfra/video/patches/i3lock-color-pass-layout-switching.patch ];
                   });
                   dunst = old.dunst.override { dunstify = true; };
                   vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
