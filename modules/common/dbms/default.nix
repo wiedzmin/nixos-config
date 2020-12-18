@@ -7,6 +7,11 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  nixpkgs-litecli = import inputs.nixpkgs-03_12_20 ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
+
   dataHome = hm.xdg.dataHome;
 in {
   options = {
@@ -220,7 +225,7 @@ in {
       home-manager.users.${user} = {
         home.packages = with pkgs; [
           sqlitebrowser
-          litecli # TODO: shell automation: fzf for selecting db file, you get the idea
+          nixpkgs-litecli.litecli # TODO: shell automation: fzf for selecting db file, you get the idea
         ];
       };
     })

@@ -7,6 +7,10 @@ let
   cfg = config.custom.browsers.qutebrowser;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  nixpkgs-qb = import inputs.nixpkgs-03_12_20 ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -33,7 +37,7 @@ in {
       };
       command = mkOption {
         type = types.str;
-        default = "${pkgs.qutebrowser}/bin/qutebrowser --target window";
+        default = "${nixpkgs-qb.qutebrowser}/bin/qutebrowser --target window";
         description = "Default command line to invoke";
       };
       windowClass = mkOption {
@@ -128,7 +132,7 @@ in {
         ];
         programs.qutebrowser = {
           enable = true;
-          package = pkgs.qutebrowser;
+          package = nixpkgs-qb.qutebrowser;
           aliases = {
             jsd = "set content.javascript.enabled false";
             jse = "set content.javascript.enabled true";
