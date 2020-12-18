@@ -49,6 +49,7 @@ in rec {
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   python3Binary = "${pkgs.python3}/bin/python3";
   systemTimeZone = config.time.timeZone;
+  screenshotsBasedir = config.custom.content.screenshots.baseDir;
   tmuxDefaultSession = config.custom.shell.tmux.defaultSession;
   urlRegexPy = config.custom.content.urlRegex.py;
   xprintidleBinary = "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.xprintidle-ng}/bin/xprintidle-ng";
