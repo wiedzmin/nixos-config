@@ -340,6 +340,7 @@ in {
           epkgs.tuareg
           epkgs.webpaste
           epkgs.yaml-mode
+          epkgs.vue-mode
         ] ++ lib.optionals (cfg.direnv.granularity == "project") [ epkgs.direnv ]
         ++ lib.optionals (cfg.direnv.granularity == "file") [ epkgs.nix-buffer ]; # when envrc.el will arrive to nixpkgs
       home-manager.users.${user} = {

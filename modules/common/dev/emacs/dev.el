@@ -242,3 +242,9 @@
 
 (use-package tuareg
   :mode ("\\.ml[4ilpy]?$" . tuareg-mode))
+
+(use-package vue-mode
+  :disabled
+  :mode "\\.vue\\'"
+  :config
+  (add-hook 'vue-mode-hook #'lsp-deferred))
