@@ -113,10 +113,10 @@
                                       (setq make-backup-files nil)
                                       (global-aggressive-indent-mode 0)
                                       (projectile-mode 0)
-                                      (editorconfig-mode 0)))
+                                      (editorconfig-mode 0))) ;TODO: check if EC is enabled
   (counsel-tramp-quit-hook . (lambda ()
                                (projectile-mode 1)
-                               (editorconfig-mode 1)))
+                               (editorconfig-mode 1))) ;TODO: check if EC is enabled
   :config
   (setenv "SHELL" "@bashExecutable@")
   :custom

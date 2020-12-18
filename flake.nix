@@ -117,7 +117,7 @@
           description = "Golang to Nix packaging.";
         };
         frontend.vue = {
-          path = ./modules/dev/common/templates/vue-frontend;
+          path = ./modules/dev/frontend/templates/vue;
           description = "Vuetified frontend.";
         };
         ccpp.generic = {
@@ -127,6 +127,10 @@
         ccpp.cmake = {
           path = ./modules/dev/ccpp/templates/cmake;
           description = "C/C++ CMake project.";
+        };
+        ansible = {
+          path = ./modules/dev/misc/templates/ansible;
+          description = "Ansible environment.";
         };
         media.encode = {
           path = ./modules/content/media/templates/encode;
@@ -146,6 +150,13 @@
                 (_: old: rec {
                   i3lock-color = old.i3lock-color.overrideAttrs (_: rec {
                     patches = [ ./modules/localnfra/video/patches/i3lock-color-pass-layout-switching.patch ];
+                  });
+                  tabnine = old.tabnine.overrideAttrs (_: rec {
+                    installPhase = ''
+                      mkdir -p $out/bin
+                      cp $src $out/bin/TabNine
+                      chmod a+x $out/bin/TabNine
+                    '';
                   });
                   dunst = old.dunst.override { dunstify = true; };
                   vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };

@@ -1,6 +1,7 @@
 { ... }: {
   imports = [
     ./attributes.nix
+
     ./appearance/colorschemes/zenburn
     ./appearance/emacs
     ./appearance/fonts
@@ -16,13 +17,31 @@
     ./content/media
     ./content/misc
     ./content/screenshots
-    ./dev/ansible
     ./dev/ccpp
-    ./dev/common
-    ./dev/dbms
-    ./dev/git
+    ./dev/completion
+    ./dev/dbms/misc
+    ./dev/dbms/mysql
+    ./dev/dbms/pgsql
+    ./dev/dbms/sqlite
+    ./dev/direnv
+    ./dev/editorconfig
+    ./dev/frontend
+    ./dev/git/autofetch
+    ./dev/git/autopush
+    ./dev/git/batch
+    ./dev/git/core
+    ./dev/git/devenv
+    ./dev/git/forges
+    ./dev/git/misc
+    ./dev/git/navigation
+    ./dev/git/savewip
     ./dev/golang
+    ./dev/misc
+    ./dev/ml
+    ./dev/navigation/codesearch
+    ./dev/navigation/projects
     ./dev/python
+    ./dev/timetracking
     ./emacs
     ./email
     ./email/mbsync.nix

@@ -3,11 +3,11 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.custom.dev.ccpp;
+  cfg = config.dev.ccpp;
   user = config.attributes.mainUser.name;
 in {
   options = {
-    custom.dev.ccpp = {
+    dev.ccpp = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -26,8 +26,7 @@ in {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ ccls clang clang-tools rr-unstable gdb ];
         programs.zsh.sessionVariables = {
-          # FIXME: coerce to global waorkspaces roots infra
-          _RR_TRACE_DIR = "/home/${user}/workspace/rr";
+          _RR_TRACE_DIR = "${homePrefix config.custom.navigation.workspaceRootGlobal}/rr";
         };
       };
       boot.kernel.sysctl = {
@@ -37,7 +36,7 @@ in {
         * hard  nofile    32768
         * soft  nofile    32768
       '';
-      custom.dev.timeTracking.extensions = {
+      dev.misc.timeTracking.extensions.dev = {
         "c" = "coding:c";
         "cpp" = "coding:cpp";
         "h" = "coding:c";

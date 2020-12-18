@@ -10,16 +10,19 @@ in rec {
   autorandrProfiles = homePrefix ".config/autorandr";
   bashExecutable = "/run/current-system/sw/bin/bash";
   booksSearchCommand = config.content.ebooks.searchCommand;
-  combyExcludes = lib.concatStringsSep "," config.custom.dev.comby.excludes;
+  combyExcludes = lib.concatStringsSep "," config.dev.misc.comby.excludes;
   configResultPath = config.custom.packaging.configResultPath;
   defaultBrowser = config.attributes.browser.default.cmd;
   fallbackBrowser = config.attributes.browser.fallback.cmd;
   defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;
   defaultTerminal = config.custom.shell.terminal;
   deftPath = homePrefix "docs/deft";
-  direnvGranularityProject = emacsBoolToString (config.custom.dev.direnv.granularity == "project");
-  direnvGranularityFile = emacsBoolToString (config.custom.dev.direnv.granularity == "file");
+  direnvGranularityProject = emacsBoolToString (config.dev.direnv.emacs.granularity == "project");
+  direnvGranularityFile = emacsBoolToString (config.dev.direnv.emacs.granularity == "file");
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
+  globalWorkspaceRoot = homePrefix config.custom.navigation.workspaceRootGlobal;
+  searchReposRoot = config.dev.navigation.projects.fuzzySearch.root;
+  searchDepth = config.dev.navigation.projects.fuzzySearch.depth;
   emacsBrowserGenericProgram = "${pkgs.xdg_utils}/bin/xdg-open";
   emacsCustomFile = homePrefix ".emacs.d/customizations.el";
   emacsDatadir = config.ide.emacs.dataDir;
@@ -27,7 +30,7 @@ in rec {
   emacsYasnippetSnippets = inputs.yasnippet-snippets;
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;
-  gitWipChangedLinesTreshold = builtins.toString config.custom.dev.git.wip.minChangedLines;
+  gitWipChangedLinesTreshold = builtins.toString config.dev.git.savewip.minChangedLines;
   gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
   ivyCandidatesCount = builtins.toString config.custom.navigation.emacs.ivy.candidatesCount;
@@ -35,7 +38,7 @@ in rec {
   lockScreenCommand = config.custom.security.lockScreenCommand;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";
   lspPythonMsExtraPaths =
-    builtins.concatStringsSep " " (lib.forEach config.custom.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
+    builtins.concatStringsSep " " (lib.forEach config.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
   mainUserName = config.attributes.mainUser.name;
   mainUserID = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
   mcCmd = "${pkgs.mc}/bin/mc";
@@ -66,9 +69,6 @@ in rec {
   firefoxSessionstorePath = homePrefix ".mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
 } // lib.optionalAttrs (config.custom.browsers.qutebrowser.enable) rec {
   qutebrowserSessionsNameTemplate = config.custom.browsers.qutebrowser.sessions.nameTemplate;
-} // lib.optionalAttrs (builtins.hasAttr "global" config.custom.dev.workspaceRoots) rec {
-  globalWorkspaceRoot = wsRootAbs "global";
-  searchReposRoot = config.custom.dev.repoSearch.root;
 } // lib.optionalAttrs (config.wm.xmonad.enable) rec {
   xmonadPrimaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.primary 20;
   xmonadSecondaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.secondary 22;

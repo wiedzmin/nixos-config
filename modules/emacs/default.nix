@@ -129,7 +129,7 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       fonts = { fonts = with pkgs; [ emacs-all-the-icons-fonts ]; };
-      custom.dev.git.gitignore = ''
+      dev.git.core.gitignore = ''
         *.elc
         .dir-locals.el
       '';
@@ -147,11 +147,6 @@ in {
           epkgs.beginend
           epkgs.blockdiag-mode
           epkgs.comment-dwim-2
-          epkgs.company
-          epkgs.company-box
-          epkgs.company-fuzzy
-          epkgs.company-quickhelp
-          epkgs.company-statistics
           epkgs.compdef
           epkgs.copy-as-format
           epkgs.default-text-scale
@@ -159,7 +154,6 @@ in {
           epkgs.delight
           epkgs.easy-kill
           epkgs.easy-kill-extras # add to .el
-          epkgs.editorconfig
           epkgs.f
           epkgs.fancy-dabbrev
           epkgs.flycheck
@@ -171,8 +165,6 @@ in {
           epkgs.ini-mode
           epkgs.iqa
           epkgs.keychain-environment
-          epkgs.lsp-mode
-          epkgs.lsp-ui
           epkgs.markdown-mode
           epkgs.multiple-cursors
           epkgs.mwim
@@ -198,7 +190,6 @@ in {
           epkgs.wgrep
           epkgs.whole-line-or-region
           epkgs.ws-butler
-          epkgs.yasnippet
         ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
       home-manager.users.${user} = {
         programs.zsh.sessionVariables = {
@@ -207,7 +198,7 @@ in {
         programs.bash.sessionVariables = {
           EDITOR = "${config.ide.emacs.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
         };
-        home.packages = (with pkgs; [ ispell editorconfig-checker ])
+        home.packages = (with pkgs; [ ispell ])
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
         home.file = {
           ".emacs.d/init.el".text = cfg.initElContent;

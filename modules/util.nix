@@ -105,18 +105,8 @@ in rec {
   maybeAttrString = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else ph;
   maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
   emacsBoolToString = v: if v == true then "t" else "nil";
-  wsRoot = key:
-    let roots = config.custom.dev.workspaceRoots;
-    in if builtins.hasAttr key roots then
-      lib.getAttrFromPath [ key ] roots
-    else
-      throw "no '${key}' workspace root found";
-  wsRootAbs = key:
-    let roots = config.custom.dev.workspaceRoots;
-    in if builtins.hasAttr key roots then
-      homePrefix (lib.getAttrFromPath [ key ] roots)
-    else
-      builtins.trace "no '${key}' workspace root found";
+  wsRoot = key: lib.getAttrFromPath [ key ] config.custom.navigation.workspaceRoots;
+  wsRootAbs = key: homePrefix (wsRoot key);
   selectorFunction = lib.mkOptionType {
     name = "selectorFunction";
     description = "Function that takes an attribute set and returns a list"

@@ -1,0 +1,9 @@
+foo:
+  bar: bla-bla
+
+##################
+#     comment    #
+##################
+quux:
+  bar:
+    - baz: "{{ j2_template_var }}"

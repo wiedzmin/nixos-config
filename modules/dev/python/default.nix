@@ -3,7 +3,7 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.custom.dev.python;
+  cfg = config.dev.python;
   user = config.attributes.mainUser.name;
   jupyterWithPackages = pkgs.jupyter.override {
     definitions = {
@@ -20,7 +20,7 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
-    custom.dev.python = {
+    dev.python = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -277,10 +277,17 @@ in {
           };
         };
       };
-      custom.dev.git.gitignore = ''
+      dev.editorconfig.rules = {
+        "*.py" = {
+          charset = "utf-8";
+          indent_style = "space";
+          indent_size = "4";
+        };
+      };
+      dev.git.core.gitignore = ''
         .mypy_cache/*
       '';
-      custom.dev.timeTracking.extensions = { "py" = "coding:python"; };
+      dev.misc.timeTracking.extensions.dev = { "py" = "coding:python"; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];

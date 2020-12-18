@@ -1,14 +1,23 @@
 { pkgs ? import <nixpkgs> { }, ... }:
 
 with pkgs;
-let nurpkgs = pkgs.nur.repos; # refer to packages as nurpkgs.<username>.<package>
+let
+  nurpkgs = pkgs.nur.repos; # refer to packages as nurpkgs.<username>.<package>
+  base = [ docker_compose gitAndTools.pre-commit gnumake watchman ];
+  stats = [ cloc gource logtop sloccount tokei ];
+  git = [
+    git-quick-stats
+    git-sizer
+    gitAndTools.git-filter-repo
+    gitAndTools.git-machete
+    gitAndTools.git-reparent
+    gitAndTools.git-subset
+    gitAndTools.git-trim
+    gitstats
+    gomp
+  ];
 in mkShell {
-  buildInputs = [
-    docker_compose
-    gitAndTools.pre-commit
-    gnumake
-    watchman
-
+  buildInputs = base ++ stats ++ git ++ [
     go-bindata
     goconvey
     golangci-lint
@@ -18,6 +27,7 @@ in mkShell {
     nurpkgs.wiedzmin.gohack
   ];
   shellHook = ''
+    [ -f "./identity" ] && source ./identity
     echo
     echo -e "build - build project main module"
     echo -e "build/docker - build Docker image"

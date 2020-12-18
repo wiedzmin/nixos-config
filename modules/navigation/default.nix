@@ -42,6 +42,16 @@ in {
         default = { };
         description = "Bookmarks data.";
       };
+      workspaceRoots = mkOption {
+         type = types.attrs;
+         default = { };
+         description = "Various workspace roots meta.";
+      };
+      workspaceRootGlobal = mkOption {
+         type = types.str;
+         default = "";
+         description = "Various workspace roots meta.";
+      };
       gmrun.enable = mkOption {
         type = types.bool;
         default = false;

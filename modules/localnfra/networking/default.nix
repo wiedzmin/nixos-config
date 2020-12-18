@@ -166,35 +166,6 @@ in {
                 ServerAliveCountMax = "10";
               };
             };
-            "github" = {
-              hostname = "github.com";
-              user = "git";
-              serverAliveInterval = 60;
-              identityFile = toString (pkgs.writeTextFile {
-                name = "ssh_private_key";
-                text = config.custom.dev.secrets.github.ssh.privateKey;
-              });
-              extraOptions = {
-                ControlMaster = "auto";
-                ControlPersist = "yes";
-                preferredAuthentications = "publickey";
-              };
-            };
-            "bitbucket" = {
-              hostname = "bitbucket.org";
-              user = "git";
-              serverAliveInterval = 60;
-              identityFile = toString (pkgs.writeTextFile {
-                name = "ssh_private_key";
-                text = config.custom.dev.secrets.bitbucket.ssh.privateKey;
-              });
-              identitiesOnly = true;
-              extraOptions = {
-                ControlMaster = "auto";
-                ControlPersist = "yes";
-                preferredAuthentications = "publickey";
-              };
-            };
           };
           extraConfig = ''
             AddKeysToAgent yes

@@ -126,7 +126,7 @@ in {
       };
       home-manager.users.${user} = { home.packages = with pkgs; [ rollback ]; };
 
-      custom.dev.timeTracking.extensions = { "nix" = "coding:nix"; };
+      dev.misc.timeTracking.extensions.dev = { "nix" = "coding:nix"; };
       custom.pim.timeTracking.rules = ''
         current window $title =~ /nixos-rebuild/ ==> tag packaging:nixos-rebuild,
 

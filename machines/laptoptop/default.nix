@@ -216,6 +216,7 @@ in {
     "8a1add5330".secrets.enable = true;
     "b354e944b3".secrets.enable = true;
   };
+  dev.secrets.enable = true;
 
   appearance = {
     colors.zenburn.enable = true;
@@ -321,62 +322,58 @@ in {
     };
   };
 
-  custom.dev = {
-    enable = true;
-    workspaceRoots = { global = "workspace/repos"; };
-    statistics.enable = true;
-    codesearch.enable = true;
-    patching.enable = true;
-    timeTracking.enable = true;
-    repoSearch.enable = true;
-    misc.enable = true;
-    direnv.granularity = "file";
-    emacs.enable = true;
-    secrets.snippets.enable = true;
-    wm.enable = true;
-    staging.packages = with pkgs; [ go-task ];
-    ansible.enable = true;
-  };
-
-  custom.dev.git = {
-    enable = true;
-    myrepos.enable = true;
-    ghq = { enable = true; };
-    github.user = "wiedzmin";
-    hooks.enable = true;
-    # TODO: think of what timespecs do we need for services below
-    fetchUpdates = {
-      enable = false;
-      when = "hourly";
+  dev = {
+    codesearch = {
+      enable = true;
+      emacs.enable = true;
     };
-    pushUpdates = {
-      enable = false;
-      when = "*-*-* 18:00:00";
+    completion.emacs.enable = true;
+    git = {
+      autofetch = {
+        enable = false;
+        when = "hourly";
+      };
+      autopush = {
+        enable = false;
+        when = "*-*-* 18:00:00";
+      };
+      savewip = {
+        enable = false;
+        when = "hourly";
+      };
+      batch.enable = true;
+      forges.enable = true;
+      core = {
+        enable = true;
+        emacs.enable = true;
+      };
+      devenv.enable = true;
     };
-    saveWip = {
-      enable = false;
-      when = "hourly";
+    navigation.projects = {
+      enable = true;
+      bookmarks.enable = true;
+      fuzzySearch.enable = true;
+      wm.enable = true;
     };
-    emacs.enable = true;
-    staging.packages = with pkgs; [ gitAndTools.git-subset ];
-  };
-
-  custom.dev.python = {
-    enable = true;
-    emacs.enable = true;
-  };
-
-  custom.dev.ccpp = {
-    enable = true;
-    emacs.enable = true;
-  };
-
-  custom.dev.golang = {
-    enable = true;
-    goPath = homePrefix "workspace/go";
-    packaging.enable = true;
-    misc.enable = true;
-    emacs.enable = true;
+    misc = {
+      enable = true;
+      patching.enable = true;
+      emacs.enable = true;
+    };
+    python = {
+      enable = true;
+      emacs.enable = true;
+    };
+    ccpp = {
+      enable = true;
+      emacs.enable = true;
+    };
+    golang = {
+      enable = true;
+      goPath = homePrefix "workspace/go";
+      misc.enable = true;
+      emacs.enable = true;
+    };
   };
 
   custom.email = {
@@ -434,6 +431,7 @@ in {
     emacs.enable = true;
     wm.enable = true;
     bookmarks.enable = true;
+    workspaceRootGlobal = "workspace/repos";
   };
 
   custom.networking = {
@@ -591,15 +589,26 @@ in {
     staging.packages = with pkgs; [ ddcui ];
   };
 
-  tools = {
-    dbms = {
-      mysql.enable = true;
-      postgresql.enable = true;
-      sqlite.enable = true;
-      cli.enable = true;
-      misc.enable = true;
+  dbms = {
+    misc = {
+      enable = true;
+      controlCenter.enable = true;
       wm.enable = true;
     };
+    mysql.enable = true;
+    pgsql.enable = true;
+    sqlite.enable = true;
+  };
+
+  dev.direnv = {
+    enable = true;
+    emacs.enable = true;
+    emacs.granularity = "file";
+  };
+
+  dev.editorconfig = {
+    enable = true;
+    emacs.enable = true;
   };
 
   wm.i3 = {
