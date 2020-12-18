@@ -454,7 +454,7 @@ in {
       extraBackends = [ pkgs.hplipWithPlugin ];
       enableXsane = true;
       paperless = {
-        enable = true;
+        enable = false;
         package = pkgs.paperless;
         consumptionDir = homePrefix "docs/paperless/consume";
         dataDir = homePrefix "docs/paperless/data";

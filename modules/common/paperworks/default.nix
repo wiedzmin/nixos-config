@@ -9,6 +9,10 @@ let
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
   });
+  nixpkgs-paperless = import inputs.nixpkgs-16_04_20 ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
 
   paperlessDefaultUser = "paperless";
 
@@ -138,7 +142,7 @@ in {
       };
       scanning.paperless.package = mkOption {
         type = types.package;
-        default = pkgs.paperless;
+        default = nixpkgs-paperless.paperless;
         defaultText = "pkgs.paperless";
         description = "The Paperless package to use.";
       };
