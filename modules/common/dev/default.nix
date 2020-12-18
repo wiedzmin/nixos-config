@@ -322,7 +322,7 @@ in {
             trim_trailing_whitespace = false
           '';
         };
-        home.packages = with pkgs; [ nurpkgs.comby devdocs-desktop icdiff tagref ];
+        home.packages = with pkgs; [ nurpkgs.comby devdocs-desktop icdiff tagref nodePackages.vue-language-server ];
         programs.direnv = {
           enable = true;
           enableZshIntegration = true;
