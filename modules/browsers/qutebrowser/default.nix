@@ -483,8 +483,10 @@ in {
         description = "Backup current qutebrowser session (tabs)";
         serviceConfig = {
           Type = "oneshot";
-          ExecStartPre =
-            "-${config.home-manager.users.${user}.programs.qutebrowser.package}/bin/qutebrowser :session-save";
+          ExecStartPre = [
+            "${pkgs.procps}/bin/pgrep qutebrowser"
+            "${config.home-manager.users.${user}.programs.qutebrowser.package}/bin/qutebrowser :session-save"
+          ];
           ExecStart = "${pkgs.qb-dump-session}/bin/qb-dump-session";
           ExecStopPost =
             "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --rotate --path ${cfg.sessions.path} --history-length ${
