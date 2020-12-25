@@ -63,7 +63,6 @@
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 20)
   (lsp-enable-folding nil)
-  (lsp-lens-enable t)
   (lsp-enable-completion-at-point t)
   (lsp-enable-symbol-highlighting nil)
   (lsp-enable-links nil)  ;?
@@ -74,6 +73,7 @@
   (lsp-file-watch-threshold 32768)
   :config
   ;;TODO: play with lsp-keymap-prefix
+  (lsp-lens-mode 1)
   (delight 'lsp-lens-mode " Ꙫ" 'lsp-lens)
   (advice-add 'lsp-on-change :around 'custom/lsp-on-change))
 
