@@ -370,8 +370,6 @@
         ("e" . avy-flycheck-goto-error)))
 
 (use-package block-nav
-  :quelpa
-  (block-nav :repo "nixin72/block-nav.el" :fetcher github)
   :bind
   ("C-=" . block-nav-next-indentation-level)
   ("C--" . block-nav-previous-indentation-level)

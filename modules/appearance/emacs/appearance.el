@@ -3,8 +3,6 @@
   (mouse-avoidance-mode 'jump))
 
 (use-package transwin
-  :quelpa
-  (transwin :repo "jcs-elpa/transwin" :fetcher github)
   :after frame
   :bind
   (:map frame-map

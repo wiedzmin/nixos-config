@@ -495,6 +495,7 @@ in {
         epkgs.avy
         epkgs.avy-flycheck
         epkgs.avy-zap
+        epkgs.block-nav
         epkgs.counsel
         epkgs.counsel-jq
         epkgs.counsel-projectile

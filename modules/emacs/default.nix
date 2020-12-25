@@ -157,6 +157,7 @@ in {
           epkgs.f
           epkgs.fancy-dabbrev
           epkgs.flycheck
+          epkgs.flycheck-projectile
           epkgs.format-all
           epkgs.gcmh
           epkgs.goto-char-preview

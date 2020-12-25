@@ -33,7 +33,7 @@ in {
         };
       };
 
-      ide.emacs.extraPackages = epkgs: [ epkgs.diredfl epkgs.rainbow-mode epkgs.unicode-fonts ];
+      ide.emacs.extraPackages = epkgs: [ epkgs.diredfl epkgs.rainbow-mode epkgs.transwin epkgs.unicode-fonts ];
       ide.emacs.config = readSubstituted ../../subst.nix ./appearance.el;
     })
   ];

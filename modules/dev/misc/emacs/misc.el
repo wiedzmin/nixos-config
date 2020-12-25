@@ -24,8 +24,6 @@
 (use-package elmacro)
 
 (use-package comby
-  :quelpa
-  (comby :repo "s-kostyaev/comby.el" :fetcher github)
   :custom
   (comby-args '("-exclude" "@combyExcludes@")))
 

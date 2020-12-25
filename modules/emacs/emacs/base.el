@@ -302,8 +302,6 @@
 
 (use-package flycheck-projectile
   :after (projectile flycheck)
-  :quelpa
-  (flycheck-projectile :repo "nbfalcon/flycheck-projectile" :fetcher github)
   :bind
   (:map mode-specific-map
         ("p" . flycheck-projectile-list-errors))
