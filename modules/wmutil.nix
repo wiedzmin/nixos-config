@@ -77,6 +77,11 @@ in rec {
       "workspace --no-auto-back-and-forth ${
         builtins.toString ws.fst
       }: ${ws.snd.name}; move workspace to output ${head}; "))}";
+  setWorkspacesLayoutI3 = wsdata: type: layout:
+    "${lib.concatStringsSep " " (lib.forEach (getWorkspacesByType (enumerateWorkspaces wsdata) type) (ws:
+      "workspace --no-auto-back-and-forth ${
+        builtins.toString ws.fst
+      }: ${ws.snd.name}; layout ${layout}; "))}";
   mkKeybindingI3 = workspaces: meta:
     builtins.concatStringsSep " " ([ "bindsym" (mkKeyI3 meta.key) ]
       ++ lib.optionals (!maybeAttrIsBool "raw" meta) [ "exec" ]

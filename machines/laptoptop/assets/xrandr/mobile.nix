@@ -14,9 +14,16 @@ in {
         mvWorkspacesI3Cmd config.wmCommon.workspaces "secondary" config.attributes.hardware.monitors.internalHead.name
       }${mvWorkspacesI3Cmd config.wmCommon.workspaces "tertiary" config.attributes.hardware.monitors.internalHead.name}"
     '';
+    set-all-tabbed-ws-i3 = mkShellScriptWithDeps "set-all-tabbed-ws-i3" (with pkgs; [ i3 ]) ''
+      i3-msg --quiet "${
+        setWorkspacesLayoutI3 config.wmCommon.workspaces "primary" "tabbed"
+      }${
+        setWorkspacesLayoutI3 config.wmCommon.workspaces "secondary" "tabbed"
+      }${setWorkspacesLayoutI3 config.wmCommon.workspaces "tertiary" "tabbed"}"
+    '';
   };
   home-manager.users.${user} = {
-    home.packages = [ pkgs."rescreen-${profileName}-i3" ];
+    home.packages = [ pkgs."rescreen-${profileName}-i3" pkgs.set-all-tabbed-ws-i3 ];
     programs.autorandr = {
       profiles = {
         "${profileName}" = {
@@ -34,7 +41,11 @@ in {
               rate = config.custom.video.rate;
             };
           };
-          hooks.postswitch = "rescreen-${profileName}-i3";
+          hooks.postswitch = ''
+            rescreen-${profileName}-i3
+            set-all-tabbed-ws-i3
+            ${pkgs.i3}/bin/i3-msg --quiet "workspace next_on_output"
+          '';
           # TODO: activate some non-empty workspace afterwards
         };
       };
