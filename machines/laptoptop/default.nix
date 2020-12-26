@@ -584,6 +584,7 @@ in {
       alertingTimerSec = 210;
       lockingTimerSec = 60;
     };
+    rotateSecondaryHead = true;
     ddc.enable = true;
     wm.enable = true;
     staging.packages = with pkgs; [ ddcui ];
