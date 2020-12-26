@@ -92,12 +92,12 @@ in {
         ${renderHosts cfg.extraHosts.entries}
       '';
 
-      home-manager.users.${user}.programs.ssh.matchBlocks = lib.mapAttrs' (hostname: meta:
+      home-manager.users.${user}.programs.ssh.matchBlocks = mapAttrs' (hostname: meta:
         lib.nameValuePair hostname ({
           hostname = hostname;
           user = "${meta.user}";
           port = if (builtins.hasAttr "port" meta) then meta.port else null;
-        })) cfg.extraHosts.entries;
+        })) (filterAttrs (_: meta: !((hasAttr "forge" meta) && meta.forge)) cfg.extraHosts.entries);
 
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${
