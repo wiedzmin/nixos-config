@@ -5,6 +5,10 @@ with lib;
 let
   cfg = config.custom.packaging;
   user = config.attributes.mainUser.name;
+  stable = import inputs.stable ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
 in {
   options = {
     custom.packaging = {
@@ -75,7 +79,7 @@ in {
         readOnlyStore = true;
         requireSignedBinaryCaches = true;
         binaryCachePublicKeys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
-        binaryCaches = [ "https://cache.nixos.org" ];
+        binaryCaches = [ "https://cache.nixos.org" "https://${user}.cachix.org" ];
         extraOptions = ''
           auto-optimise-store = true
           keep-outputs = true
@@ -171,7 +175,7 @@ in {
       home-manager.users.${user} = {
         home.packages = with pkgs;
           [
-            cachix
+            stable.cachix
             # nix-zsh-completions # NOTE: collision emerged in last unstable
             nix-review # https://github.com/Mic92/nix-review
             make-package-diff
