@@ -130,6 +130,10 @@ in {
       };
       home-manager.users.${user} = { home.packages = with pkgs; [ rollback ]; };
 
+      # TODO: add script + automate list of packages, that should be cached, examples: below
+      # cachix push ${user} $(dirname $(dirname $(readlink -f $(which i3lock-color))))
+      # cachix push ${user} $(dirname $(dirname $(readlink -f $(which emacs))))
+
       dev.misc.timeTracking.extensions.dev = { "nix" = "coding:nix"; };
       custom.pim.timeTracking.rules = ''
         current window $title =~ /nixos-rebuild/ ==> tag packaging:nixos-rebuild,
