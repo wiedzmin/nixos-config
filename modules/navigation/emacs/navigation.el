@@ -233,8 +233,8 @@
 
 (use-package ivy-yasnippet
   :after (ivy yasnippet)
-   :bind
-   (:map custom-yasnippet-map
+  :bind
+  (:map custom-yasnippet-map
         ("i" . ivy-yasnippet)))
 
 (use-package link-hint
