@@ -47,6 +47,11 @@ in {
         default = false;
         description = "Whether to enable misc packaging tools.";
       };
+      cachix.configuration = mkOption {
+        type = types.str;
+        default = "";
+        description = "Cachix configuration data.";
+      };
       scripts.enable = mkOption {
         type = types.bool;
         default = false;
@@ -185,6 +190,8 @@ in {
             make-package-diff
             nix-doc-lookup
           ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
+        xdg.configFile."cachix/cachix.dhall".text =
+          lib.optionalString (cfg.cachix.configuration != "") cfg.cachix.configuration;
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {

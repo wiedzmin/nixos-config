@@ -456,6 +456,7 @@ in {
       search.enable = true;
     };
     misc.enable = true;
+    cachix.configuration = builtins.readFile ./secrets/cachix.dhall;
     scripts.enable = true;
     homeManagerBackups.enable = false;
     emacs.enable = true;
