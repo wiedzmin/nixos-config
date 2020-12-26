@@ -1,3 +1,4 @@
+.aux
 .devenv
 .envrc
 .pre-commit-config.yaml

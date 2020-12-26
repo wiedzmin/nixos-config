@@ -27,7 +27,7 @@ in mkShell {
     nurpkgs.wiedzmin.gohack
   ];
   shellHook = ''
-    [ -f "./identity" ] && source ./identity
+    [ -f "./.aux" ] && source ./.aux
     echo
     echo -e "build - build project main module"
     echo -e "build/docker - build Docker image"
