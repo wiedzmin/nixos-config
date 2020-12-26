@@ -20,6 +20,6 @@ let
 in mkShell {
   buildInputs = env ++ base ++ stats ++ git ++ [ ];
   shellHook = ''
-    [ -f "./identity" ] && source ./identity
+    [ -f "./.aux" ] && source ./.aux
   '';
 }
