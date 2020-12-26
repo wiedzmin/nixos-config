@@ -45,6 +45,7 @@
   (transient-append-suffix 'magit-stash "d" '("r" "Restore dev environment" custom/magit-restore-devenv))
   :custom
   (magit-blame-heading-format "%H %-20a %C %s")
+  (magit-section-visibility-indicator '("..." . t))
   (magit-completing-read-function 'ivy-completing-read)
   (magit-section-initial-visibility-alist '((stashes . hide) (untracked . hide) (unpushed . hide)))
   (magit-diff-refine-hunk t)
