@@ -342,8 +342,15 @@ in {
         when = "hourly";
       };
       batch.enable = true;
-      forges.enable = true;
+      forges = {
+        enable = true;
+        emacs.enable = true;
+      };
       core = {
+        enable = true;
+        emacs.enable = true;
+      };
+      misc = {
         enable = true;
         emacs.enable = true;
       };

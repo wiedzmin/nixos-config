@@ -12,7 +12,17 @@ in {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable Git VCS infrastructure.";
+        description = "Whether to enable Git miscellaneous setup.";
+      };
+      defaultUpstreamRemote = mkOption {
+        type = types.str;
+        default = "upstream";
+        description = "Name of upstream repo remote.";
+      };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Emacs-related setup.";
       };
     };
   };
@@ -30,6 +40,14 @@ in {
         usynctags = [ "${pkgs.gittags}/bin/gittags --sync --remote ${cfg.defaultUpstreamRemote}" ];
         trim = [ "${pkgs.gitAndTools.git-trim}/bin/git-trim --delete=merged-local" ];
       };
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      ide.emacs.extraPackages = epkgs: [
+        epkgs.diff-hl
+        epkgs.git-commit
+        epkgs.git-msg-prefix
+      ];
+      ide.emacs.config = readSubstituted ../../../subst.nix ./emacs/misc.el;
     })
   ];
 }
