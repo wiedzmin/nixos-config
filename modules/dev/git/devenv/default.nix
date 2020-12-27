@@ -37,8 +37,9 @@ in {
         git-hideenv = mkShellScriptWithDeps "git-hideenv" (with pkgs; [ gitAndTools.git ]) ''
           set -e
 
-          devenv_data=$(<${cfg.devEnv.configName} | xargs -d '\n' find 2>/dev/null)
-          devenv_filelist=$(echo "$devenv_data" | tr '\n' ' ')
+          devenv_data=$(<${cfg.devEnv.configName})
+          devenv_data_filtered=$(echo "$devenv_data" | xargs -d '\n' find 2>/dev/null)
+          devenv_filelist=$(echo "$devenv_data_filtered" | tr '\n' ' ')
 
           git reset # clean up index from unrelated staged changes
           git add -- $devenv_filelist
