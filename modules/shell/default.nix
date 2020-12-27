@@ -200,7 +200,7 @@ in {
           policy = 'ignore'
         '';
         home.packages = with pkgs;
-          [ checkbashism libnotify mmv wmctrl xdotool seturgent shellcheck perl cod thumbs-bin ]
+          [ checkbashism libnotify mmv wmctrl xdotool seturgent shellcheck perl cod thumbs-bin mcfly ]
           ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
           ".tmuxp/main.yml".text = ''
@@ -271,6 +271,8 @@ in {
             '') [ "braceccl" "extendedglob" "menucomplete" ]}
 
             bindkey '^P' fuzzy-search-and-edit
+
+            source "${pkgs.mcfly}/share/mcfly/mcfly.zsh"
           '';
           sessionVariables = let dataHome = hm.xdg.dataHome;
           in {
@@ -278,6 +280,8 @@ in {
             LESSHISTFILE = "${dataHome}/.lesshst";
             YSU_IGNORED_ALIASES = [ "g" "ll" ];
             YSU_MODE = "ALL";
+            MCFLY_FUZZY = "true";
+            # MCFLY_LIGHT = "TRUE";
           } // lib.optionalAttrs (!cfg.liquidPrompt.enable) { ZSH_COMMAND_TIME_COLOR = "cyan"; };
           shellAliases = {
             cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
