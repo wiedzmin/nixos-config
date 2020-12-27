@@ -7,7 +7,6 @@ let
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   uid = builtins.toString config.users.extraUsers.${user}.uid;
-  socketPath = "%t/emacs/server";
 in {
   options = {
     ide.emacs = {
@@ -20,11 +19,6 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable emacs setup.";
-      };
-      socketActivation.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable socket activation.";
       };
       config = mkOption {
         type = types.lines;
@@ -221,27 +215,13 @@ in {
         restartIfChanged = false;
         serviceConfig = {
           Type = "simple";
-          ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"''
-            + optionalString cfg.socketActivation.enable "=${escapeShellArg socketPath}";
+          ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
           ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
           ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
           Restart = "on-failure";
           StandardOutput = "journal";
           StandardError = "journal";
         };
-      } // optionalAttrs (!cfg.socketActivation.enable) { wantedBy = [ "default.target" ]; };
-    })
-    (mkIf (cfg.enable && cfg.socketActivation.enable) {
-      systemd.user.sockets.emacs = {
-        description = "Emacs: the extensible, self-documenting text editor";
-        documentation = [ "info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/" ];
-        socketConfig = {
-          ListenStream = socketPath;
-          FileDescriptorName = "server";
-          SocketMode = "0600";
-          DirectoryMode = "0700";
-        };
-        wantedBy = [ "sockets.target" ];
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
