@@ -148,9 +148,10 @@ in rec {
   readSubstituted = subst: content:
     builtins.readFile (pkgs.substituteAll ((import subst { inherit config inputs lib pkgs; }) // { src = content; }));
   enabledLocals = bookmarks:
-    lib.mapAttrs (_: meta: meta.local) (lib.filterAttrs (_: meta:
-      !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
-      && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")) bookmarks);
+    lib.mapAttrs (_: meta: meta.local // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
+      (lib.filterAttrs (_: meta:
+        !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
+        && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")) bookmarks);
   localEbooks = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs (_: meta:
       !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
@@ -163,32 +164,29 @@ in rec {
   localBookmarksKVText = locals:
     lib.concatStringsSep "\n" (lib.mapAttrsToList (id: meta: id + " : " + meta.path) locals);
   enabledRemotes = bookmarks:
-    lib.forEach (builtins.filter (meta:
-      !(lib.hasAttrByPath [ "remote" "enable" ] meta && meta.remote.enable == false)
-      && (lib.hasAttrByPath [ "remote" "url" ] meta && meta.remote.url != "")) (lib.attrValues bookmarks))
-    (meta: meta.remote);
-  remoteWebjumps = remotes: sep:
-    builtins.listToAttrs (lib.forEach (builtins.filter (meta:
+    lib.mapAttrs (_: meta: meta.remote // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
+      (lib.filterAttrs (_: meta:
+        !(lib.hasAttrByPath [ "remote" "enable" ] meta && meta.remote.enable == false)
+        && (lib.hasAttrByPath [ "remote" "url" ] meta && meta.remote.url != "")) bookmarks);
+  mkBookmarkName = meta: sep: tagSep:
+    lib.concatStringsSep sep
+      (builtins.filter (e: e != "")
+        ([ meta.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ] ++
+         [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [] meta)) ]));
+  mkBookmarkDest = meta: {
+    url = meta.url + lib.optionalString
+      (lib.hasAttrByPath [ "searchSuffix" ] meta && lib.hasSuffix "+" meta.searchSuffix) meta.searchSuffix;
+  } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
+  // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
+  remoteWebjumps = remotes: sep: tagSep: lib.mapAttrs'
+    (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkDest meta))
+    (lib.filterAttrs (_: meta:
       (lib.hasAttrByPath [ "searchSuffix" ] meta && lib.hasSuffix "+" meta.searchSuffix)
       || (lib.hasAttrByPath [ "jump" ] meta && meta.jump == true) || !(lib.hasAttrByPath [ "searchSuffix" ] meta))
-      remotes) (meta: {
-        name = "${if lib.hasAttrByPath [ "desc" ] meta then (meta.url + sep + meta.desc) else meta.url}";
-        value = {
-          url = meta.url
-            + lib.optionalString (lib.hasAttrByPath [ "searchSuffix" ] meta && lib.hasSuffix "+" meta.searchSuffix)
-            meta.searchSuffix;
-        } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
-          // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
-      }));
-  remoteSearchEngines = remotes:
-    builtins.listToAttrs
-    (lib.forEach (builtins.filter (meta: lib.hasAttrByPath [ "searchSuffix" ] meta && meta.searchSuffix != "") remotes)
-      (meta: {
-        name = meta.desc;
-        value = {
-          url = meta.url + meta.searchSuffix;
-        } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
-          // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
-      }));
+      remotes);
+  remoteSearchEngines = remotes: sep: tagSep: lib.mapAttrs'
+    (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkDest meta))
+    (lib.filterAttrs (_: meta:
+      (lib.hasAttrByPath [ "searchSuffix" ] meta && lib.hasSuffix "+" meta.searchSuffix)) remotes);
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
 }

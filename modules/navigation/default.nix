@@ -37,6 +37,11 @@ in {
         default = " | ";
         description = "Bookmarks field separator.";
       };
+      bookmarks.tagSep = mkOption {
+        type = types.str;
+        default = ":";
+        description = "Bookmarks tags separator.";
+      };
       bookmarks.entries = mkOption {
         type = types.attrs;
         default = { };
@@ -170,10 +175,11 @@ in {
       custom.housekeeping.metadataCacheInstructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${
           lib.strings.escapeNixString
-          (builtins.toJSON (remoteWebjumps (enabledRemotes cfg.bookmarks.entries) cfg.bookmarks.sep))
+          (builtins.toJSON (remoteWebjumps (enabledRemotes cfg.bookmarks.entries) cfg.bookmarks.sep cfg.bookmarks.tagSep))
         }
         ${pkgs.redis}/bin/redis-cli set nav/searchengines ${
-          lib.strings.escapeNixString (builtins.toJSON (remoteSearchEngines (enabledRemotes cfg.bookmarks.entries)))
+          lib.strings.escapeNixString (builtins.toJSON (remoteSearchEngines (enabledRemotes cfg.bookmarks.entries)
+            cfg.bookmarks.sep cfg.bookmarks.tagSep))
         }
         ${pkgs.redis}/bin/redis-cli set nav/bookmarks ${
           lib.strings.escapeNixString (builtins.toJSON (enabledLocals cfg.bookmarks.entries))
