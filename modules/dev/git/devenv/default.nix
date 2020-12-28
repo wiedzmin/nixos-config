@@ -85,7 +85,7 @@ in {
 
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.config = readSubstituted ../../../subst.nix ./emacs/git.el;
+      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/git.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ git-dumpenv git-hideenv git-restoreenv git-unhideenv ]; };

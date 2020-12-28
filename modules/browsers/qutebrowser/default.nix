@@ -143,7 +143,7 @@ in {
               session = true;
             };
             editor.command = [
-              "${config.ide.emacs.package}/bin/emacsclient"
+              "${config.ide.emacs.core.package}/bin/emacsclient"
               "-c"
               "-s /run/user/${builtins.toString config.users.extraUsers."${user}".uid}/emacs/server"
               "+{line}:{column}"

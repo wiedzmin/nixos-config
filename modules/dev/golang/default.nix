@@ -56,7 +56,7 @@ in {
           path+=${cfg.goPath}/bin
         '';
       };
-      ide.emacs.environment = {
+      ide.emacs.core.environment = {
         GOPATH = cfg.goPath;
       } // lib.optionalAttrs (cfg.privateModules != [ ]) {
         GOPRIVATE = builtins.concatStringsSep "," cfg.privateModules;
@@ -79,8 +79,8 @@ in {
       home-manager.users.${user} = { home.packages = with pkgs; [ go-install-wrapper gore goimports ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.flycheck-golangci-lint epkgs.go-mode epkgs.go-tag epkgs.gotest ];
-      ide.emacs.config = readSubstituted ../../subst.nix ./emacs/golang.el;
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.flycheck-golangci-lint epkgs.go-mode epkgs.go-tag epkgs.gotest ];
+      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/golang.el;
     })
   ];
 }

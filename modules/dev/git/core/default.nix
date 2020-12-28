@@ -82,12 +82,12 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [
+      ide.emacs.core.extraPackages = epkgs: [
         epkgs.magit
         epkgs.magit-filenotify
         epkgs.magit-popup # *
       ];
-      ide.emacs.config = readSubstituted ../../../subst.nix ./emacs/core.el;
+      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/core.el;
     })
   ];
 }

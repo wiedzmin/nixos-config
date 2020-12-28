@@ -42,7 +42,7 @@
     ./dev/navigation/projects
     ./dev/python
     ./dev/timetracking
-    ./emacs
+    ./emacs/core
     ./email
     ./email/mbsync.nix
     ./housekeeping

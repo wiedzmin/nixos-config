@@ -278,7 +278,7 @@ in {
         message = "xmonad: exactly one WM could be enabled.";
       }];
 
-      ide.emacs.environment = { CURRENT_WM = "xmonad"; };
+      ide.emacs.core.environment = { CURRENT_WM = "xmonad"; };
 
       # TODO: ensure config dir exists (~/.xmonad or another if changeable)
       services.xserver = {

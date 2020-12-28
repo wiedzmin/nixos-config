@@ -412,7 +412,7 @@ in {
     wm.enable = true;
   };
 
-  ide.emacs = {
+  ide.emacs.core = {
     enable = true;
     wm.enable = true;
   };

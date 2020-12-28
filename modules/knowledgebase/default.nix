@@ -78,8 +78,8 @@ in {
       home-manager.users.${user} = { home.packages = with pkgs; [ devdocs-desktop heimer ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.helpful epkgs.which-key ];
-      ide.emacs.config = readSubstituted ../subst.nix ./emacs/knowledgebase.el;
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.helpful epkgs.which-key ];
+      ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/knowledgebase.el;
     })
   ];
 }

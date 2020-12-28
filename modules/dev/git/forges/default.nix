@@ -231,11 +231,11 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) (let
       mapping = getUrlsToTypesMapping cfg.forges;
     in {
-      ide.emacs.extraPackages = epkgs: [
+      ide.emacs.core.extraPackages = epkgs: [
         epkgs.browse-at-remote
         epkgs.git-link
       ];
-      ide.emacs.config =
+      ide.emacs.core.config =
         readSubstituted ../../../subst.nix ./emacs/forges.el +
         optionalString (length (attrValues mapping) > 0)
           ((genBrowseAtRemoteTypesPatch mapping) + (genGitlinkTypesPatch mapping));

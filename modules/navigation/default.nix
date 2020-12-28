@@ -167,7 +167,7 @@ in {
             mainUserID = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
             emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
             # TODO: consider extracting to a function (for ensuring running emacs instance)
-          in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.package}/bin/emacsclient -s /run/user/${mainUserID}/emacs/server -e '(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
+          in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.core.package}/bin/emacsclient -s /run/user/${mainUserID}/emacs/server -e '(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
             builtins.concatStringsSep " " (localEmacsBookmarks cfg.bookmarks.entries)
           }))' ";
         };
@@ -495,7 +495,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       home-manager.users.${user} = { home.packages = with pkgs; [ ripgrep ]; };
-      ide.emacs.extraPackages = epkgs: [
+      ide.emacs.core.extraPackages = epkgs: [
         epkgs.ace-link
         epkgs.ace-window
         epkgs.avy
@@ -530,8 +530,8 @@ in {
         epkgs.treemacs
         epkgs.treemacs-projectile
       ];
-      ide.emacs.config = readSubstituted ../subst.nix ./emacs/navigation.el;
-    } // lib.optionalAttrs (true) { ide.emacs.config = readSubstituted ../subst.nix ./emacs/browsers.el; })
+      ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/navigation.el;
+    } // lib.optionalAttrs (true) { ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/browsers.el; })
     (mkIf (cfg.enable && cfg.wm.enable) {
       home-manager.users.${user} = { home.packages = with pkgs; [ dmenu_runapps dmenu_select_windows ]; };
       wmCommon.keys = [

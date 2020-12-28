@@ -307,9 +307,9 @@ in {
       };
 
       custom.programs.tmux.bindings.copyMode = { "M-n" = ''run-shell "${pkgs.org-capture}/bin/org-capture ns"''; };
-      custom.pim.org.agendaRoots = { "${config.ide.emacs.orgDir}" = 3000; };
+      custom.pim.org.agendaRoots = { "${config.ide.emacs.core.orgDir}" = 3000; };
       home-manager.users."${user}" = { home.packages = with pkgs; [ plantuml ]; };
-      ide.emacs.extraPackages = epkgs: [
+      ide.emacs.core.extraPackages = epkgs: [
         epkgs.counsel-org-clock
         epkgs.deft
         epkgs.doct
@@ -333,7 +333,7 @@ in {
         epkgs.plantuml-mode
         epkgs.russian-holidays
       ];
-      ide.emacs.config = readSubstituted ../subst.nix ./emacs/pim.el;
+      ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/pim.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ org-capture ]; };

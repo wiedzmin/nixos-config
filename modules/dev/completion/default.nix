@@ -23,7 +23,7 @@ in {
         xdg.configFile."TabNine/TabNine.toml".text =
           toToml { language.python = { command = "python-language-server"; }; };
       };
-      ide.emacs.extraPackages = epkgs:
+      ide.emacs.core.extraPackages = epkgs:
         [
           epkgs.company
           epkgs.company-box
@@ -34,7 +34,7 @@ in {
           epkgs.company-tabnine
           epkgs.yasnippet
         ];
-      ide.emacs.config = readSubstituted ../../subst.nix ./emacs/completion.el;
+      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/completion.el;
     })
   ];
 }

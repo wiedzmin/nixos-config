@@ -20,8 +20,8 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable && config.wm.i3.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.doom-modeline ];
-      ide.emacs.config = ''
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.doom-modeline ];
+      ide.emacs.core.config = ''
         (use-package doom-modeline
           :hook
           (after-init-hook . doom-modeline-init)

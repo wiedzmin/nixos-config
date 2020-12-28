@@ -38,18 +38,18 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [
+      ide.emacs.core.extraPackages = epkgs: [
         epkgs.dired-git-info
         epkgs.git-timemachine
         epkgs.git-walktree
         epkgs.magit-todos
         epkgs.treemacs-magit
       ];
-      ide.emacs.config = readSubstituted ../../../subst.nix ./emacs/navigation.el;
+      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/navigation.el;
     })
     (mkIf (cfg.enable && cfg.ghq.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.helm-ghq ];
-      ide.emacs.config = readSubstituted ../../../subst.nix ./emacs/ghq.el;
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.helm-ghq ];
+      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/ghq.el;
     })
   ];
 }

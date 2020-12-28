@@ -25,7 +25,7 @@ in rec {
   searchDepth = config.dev.navigation.projects.fuzzySearch.depth;
   emacsBrowserGenericProgram = "${pkgs.xdg_utils}/bin/xdg-open";
   emacsCustomFile = homePrefix ".emacs.d/customizations.el";
-  emacsDatadir = config.ide.emacs.dataDir;
+  emacsDatadir = config.ide.emacs.core.dataDir;
   emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
   emacsYasnippetSnippets = inputs.yasnippet-snippets;
   fallbackPackageArchives = emacsBoolToString false;
@@ -43,7 +43,7 @@ in rec {
   mainUserID = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
   mcCmd = "${pkgs.mc}/bin/mc";
   nmcliBinary = "${pkgs.networkmanager}/bin/nmcli"; # because there is no `bin` output for some reason
-  orgDir = config.ide.emacs.orgDir;
+  orgDir = config.ide.emacs.core.orgDir;
   orgKbDir = homePrefix "docs/org-kb";
   orgWarningsFiledir = builtins.dirOf config.custom.pim.org.warningsFile;
   orgWarningsFilename = config.custom.pim.org.warningsFile;

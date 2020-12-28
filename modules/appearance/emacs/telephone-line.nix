@@ -20,8 +20,8 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable && config.wm.i3.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.telephone-line ];
-      ide.emacs.config = ''
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.telephone-line ];
+      ide.emacs.core.config = ''
         (use-package telephone-line
           :hook
           (after-init-hook . (lambda () (telephone-line-mode 1)))

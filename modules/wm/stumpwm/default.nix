@@ -23,7 +23,7 @@ in {
       message = "stumpwm: exactly one WM could be enabled.";
     }];
 
-    ide.emacs.environment = { CURRENT_WM = "stumpwm"; };
+    ide.emacs.core.environment = { CURRENT_WM = "stumpwm"; };
 
     services.xserver.windowManager = {
       default = "stumpwm";

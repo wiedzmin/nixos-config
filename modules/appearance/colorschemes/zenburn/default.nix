@@ -14,8 +14,8 @@ in {
   options.appearance.colors.zenburn = { enable = mkEnableOption "zenburn"; };
 
   config = mkIf cfg.enable {
-    ide.emacs.config = "${zenburnEmacs}";
-    ide.emacs.extraPackages = epkgs: [ epkgs.zenburn-theme ];
+    ide.emacs.core.config = "${zenburnEmacs}";
+    ide.emacs.core.extraPackages = epkgs: [ epkgs.zenburn-theme ];
     home-manager.users."${user}" = {
       xdg.configFile."quassel-irc.org/settings.qss".source = ./zenburn.qss;
       programs.zathura.options = {

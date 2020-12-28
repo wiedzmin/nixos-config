@@ -1,15 +1,15 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../util.nix { inherit config inputs lib pkgs; };
+with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.ide.emacs;
+  cfg = config.ide.emacs.core;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   uid = builtins.toString config.users.extraUsers.${user}.uid;
 in {
   options = {
-    ide.emacs = {
+    ide.emacs.core = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -97,7 +97,7 @@ in {
           ${lib.optionalString (cfg.environment != { }) (builtins.concatStringsSep "\n"
             (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
 
-          ${readSubstituted ../subst.nix ./emacs/base.el}
+          ${readSubstituted ../../subst.nix ./core.el}
           ${cfg.config}
 
           (notifications-notify :title "Emacs" :body "Started server")
@@ -131,7 +131,7 @@ in {
         current window ($title =~ /^emacs - [^ ]+\.el .*$/) ==> tag coding:elisp,
         current window ($title =~ /^emacs - [^ ]+\.org .*$/) ==> tag edit:orgmode,
       '';
-      ide.emacs.extraPackages = epkgs:
+      ide.emacs.core.extraPackages = epkgs:
         [
           epkgs.aggressive-indent
           epkgs.amx

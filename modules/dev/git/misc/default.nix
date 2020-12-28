@@ -42,12 +42,12 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [
+      ide.emacs.core.extraPackages = epkgs: [
         epkgs.diff-hl
         epkgs.git-commit
         epkgs.git-msg-prefix
       ];
-      ide.emacs.config = readSubstituted ../../../subst.nix ./emacs/misc.el;
+      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/misc.el;
     })
   ];
 }

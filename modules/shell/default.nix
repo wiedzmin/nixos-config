@@ -548,8 +548,8 @@ in {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ checkbashisms nodePackages.bash-language-server ];
       };
-      ide.emacs.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms ];
-      ide.emacs.config = readSubstituted ../subst.nix ./emacs/shell.el;
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms ];
+      ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/shell.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{

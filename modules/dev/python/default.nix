@@ -290,8 +290,8 @@ in {
       dev.misc.timeTracking.extensions.dev = { "py" = "coding:python"; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];
-      ide.emacs.config = readSubstituted ../../subst.nix ./emacs/python.el;
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];
+      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/python.el;
     })
   ];
 }

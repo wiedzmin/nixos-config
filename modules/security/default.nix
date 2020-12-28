@@ -100,8 +100,8 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.auth-source-pass epkgs.ivy-pass epkgs.pass ];
-      ide.emacs.config = readSubstituted ../subst.nix ./emacs/security.el;
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.auth-source-pass epkgs.ivy-pass epkgs.pass ];
+      ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/security.el;
     })
     (mkIf (cfg.polkit.silentAuth) {
       security.polkit.extraConfig = ''

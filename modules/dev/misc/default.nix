@@ -95,7 +95,7 @@ in {
       home-manager.users.${user} = { home.packages = with pkgs; [ diffoscope icdiff patchutils wiggle ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs:
+      ide.emacs.core.extraPackages = epkgs:
         [
           epkgs.comby
           epkgs.elmacro
@@ -106,7 +106,7 @@ in {
           epkgs.webpaste
           epkgs.yaml-mode
         ];
-      ide.emacs.config = readSubstituted ../../subst.nix ./emacs/misc.el;
+      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/misc.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable && config.custom.virtualization.docker.enable) {
       wmCommon.keys = [

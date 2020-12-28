@@ -198,8 +198,8 @@ in {
       home-manager.users.${user} = { home.packages = with pkgs; [ get-pr-override ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
-      ide.emacs.config = readSubstituted ../subst.nix ./emacs/packaging.el;
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
+      ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/packaging.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ get-pr-override make-package-diff rollback ]; };
