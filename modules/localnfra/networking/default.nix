@@ -64,8 +64,6 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      programs.nm-applet.enable = config.wm.i3.enable;
-
       nixpkgs.config.packageOverrides = _: rec {
         wifi-status = mkShellScriptWithDeps "wifi-status" (with pkgs; [ gawk wirelesstools ])
           (readSubstituted ../../subst.nix ./scripts/wifi-status.sh);

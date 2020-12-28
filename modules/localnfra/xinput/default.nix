@@ -76,7 +76,7 @@ in {
 
       constraintMouse.enable = mkOption {
         type = types.bool;
-        default = !config.wm.i3.enable;
+        default = false;
         description = "Whether to constraint mouse within xrandr screen(s).";
       };
       constraintMouse.top = mkOption {
@@ -275,7 +275,7 @@ in {
 
       home-manager.users.${user} = { xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText; };
     })
-    (mkIf (cfg.constraintMouse.enable && !config.wm.i3.enable) {
+    (mkIf cfg.constraintMouse.enable {
       systemd.user.services."xpointerbarrier" = {
         description = "Create pointer barriers around each XRandR screen";
         after = [ "graphical-session-pre.target" ];

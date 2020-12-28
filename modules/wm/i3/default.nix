@@ -239,7 +239,24 @@ in {
 
       environment.pathsToLink = [ "/libexec" ]; # for i3blocks (later)
 
-      wmCommon.autostart.entries = lib.optionals (cfg.statusbarImpl == "i3-rs") [ "kbdd" ];
+      wmCommon = {
+        enable = true;
+        autostart.entries = lib.optionals (cfg.statusbarImpl == "i3-rs") [ "kbdd" ];
+        modeBindings = {
+          "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
+          "browser" = [ prefix "b" ];
+          "dev" = [ prefix "d" ];
+          "layout" = [ prefix "less" ];
+          "network" = [ prefix "n" ];
+          "resize" = [ prefix "`" ];
+          "run" = [ prefix "r" ];
+          "select" = [ prefix "." ];
+          "services" = [ prefix "s" ];
+          "virt" = [ prefix "v" ];
+          "window" = [ prefix "w" ];
+          "xserver" = [ prefix "x" ];
+        };
+      };
 
       services.xserver = {
         windowManager = {
@@ -262,20 +279,7 @@ in {
           (readSubstituted ../../subst.nix ./kbdctl.py);
       };
 
-      wmCommon.modeBindings = {
-        "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
-        "browser" = [ prefix "b" ];
-        "dev" = [ prefix "d" ];
-        "layout" = [ prefix "less" ];
-        "network" = [ prefix "n" ];
-        "resize" = [ prefix "`" ];
-        "run" = [ prefix "r" ];
-        "select" = [ prefix "." ];
-        "services" = [ prefix "s" ];
-        "virt" = [ prefix "v" ];
-        "window" = [ prefix "w" ];
-        "xserver" = [ prefix "x" ];
-      };
+      programs.nm-applet.enable = true;
 
       home-manager.users.${user} = {
         xdg.configFile = {
