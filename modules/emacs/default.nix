@@ -188,10 +188,10 @@ in {
         ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
       home-manager.users.${user} = {
         programs.zsh.sessionVariables = {
-          EDITOR = "${config.ide.emacs.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
+          EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
         };
         programs.bash.sessionVariables = {
-          EDITOR = "${config.ide.emacs.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
+          EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server";
         };
         home.packages = (with pkgs; [ ispell ])
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
