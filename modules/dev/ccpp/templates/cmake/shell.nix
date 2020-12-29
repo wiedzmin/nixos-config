@@ -3,7 +3,7 @@
 with pkgs;
 let
   nurpkgs = pkgs.nur.repos; # refer to packages as nurpkgs.<username>.<package>
-  base = [ autoconf automake bear bison cmake flex gitAndTools.pre-commit gnumake libtool pkg-config ];
+  base = [ autoconf automake bear bison cmake codesearch flex gitAndTools.pre-commit gnumake libtool pkg-config ];
   stats = [ cloc gource logtop sloccount tokei ];
   git = [
     git-quick-stats
