@@ -62,5 +62,11 @@ rec {
     nur-packages = { local.path = "${wsRoot "github"}/wiedzmin/nur-packages"; };
     postgres = { local.path = "${wsRoot "github"}/postgres/postgres"; };
     "staging/sandbox" = { local.path = homePrefix "workspace/sandbox"; };
+    jwt-io = {
+      remote = {
+        url = "https://jwt.io/";
+        desc = "JWT online debugger and libraries reference";
+      };
+    };
   };
 }
