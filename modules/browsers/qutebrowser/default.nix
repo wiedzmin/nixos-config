@@ -485,7 +485,7 @@ in {
           Type = "oneshot";
           ExecStartPre = [
             "${pkgs.procps}/bin/pgrep qutebrowser"
-            "${config.home-manager.users.${user}.programs.qutebrowser.package}/bin/qutebrowser :session-save"
+            "${config.home-manager.users.${user}.programs.qutebrowser.package}/bin/qutebrowser --nowindow :session-save"
           ];
           ExecStart = "${pkgs.qb-dump-session}/bin/qb-dump-session";
           ExecStopPost =
