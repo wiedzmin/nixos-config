@@ -163,11 +163,6 @@ in {
         default = false;
         description = "Whether to enable WM keybindings.";
       };
-      staging.packages = mkOption {
-        type = types.listOf types.package;
-        default = [ ];
-        description = "List of staging settings.";
-      };
     };
   };
 
@@ -200,8 +195,7 @@ in {
           policy = 'ignore'
         '';
         home.packages = with pkgs;
-          [ checkbashism libnotify mmv wmctrl xdotool seturgent shellcheck perl cod thumbs-bin mcfly ]
-          ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
+          [ checkbashism libnotify mmv wmctrl xdotool seturgent shellcheck perl cod thumbs-bin mcfly ];
         home.file = {
           ".tmuxp/main.yml".text = ''
             session_name: main

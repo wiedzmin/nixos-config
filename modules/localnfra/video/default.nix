@@ -132,11 +132,6 @@ in {
         default = false;
         description = "Whether to enable debug tools.";
       };
-      staging.packages = mkOption {
-        type = types.listOf types.package;
-        default = [ ];
-        description = "list of staging packages.";
-      };
     };
   };
 
@@ -154,7 +149,6 @@ in {
       programs.light.enable = true;
       hardware.brillo.enable = true;
       home-manager.users.${user} = {
-        home.packages = with pkgs; lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
         home.file = {
           ".XCompose".text = ''
             include "${pkgs.xorg.libX11}/share/X11/locale/en_US.UTF-8/Compose"

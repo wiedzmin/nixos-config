@@ -532,7 +532,6 @@ in {
     liquidPrompt.enable = true;
     emacs.enable = true;
     wm.enable = true;
-    staging.packages = with pkgs; [ diskonaut k4dirstat ugrep godu rargs ];
   };
 
   custom.virtualization = {
@@ -594,7 +593,6 @@ in {
     rotateSecondaryHead = true;
     ddc.enable = true;
     wm.enable = true;
-    staging.packages = with pkgs; [ ddcui ];
   };
 
   dbms = {

@@ -67,11 +67,6 @@ in {
         default = false;
         description = "Whether to enable packaging-related Emacs setup.";
       };
-      staging.packages = mkOption {
-        type = types.listOf types.package;
-        default = [ ];
-        description = "List of staging packages.";
-      };
     };
   };
 
@@ -189,7 +184,7 @@ in {
             nix-review # https://github.com/Mic92/nix-review
             make-package-diff
             nix-doc-lookup
-          ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
+          ];
         xdg.configFile."cachix/cachix.dhall".text =
           lib.optionalString (cfg.cachix.configuration != "") cfg.cachix.configuration;
       };

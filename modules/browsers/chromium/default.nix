@@ -59,11 +59,6 @@ in {
         '';
         default = { };
       };
-      staging.enableSettings = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable staging settings.";
-      };
     };
   };
   config = mkMerge [

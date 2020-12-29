@@ -165,11 +165,6 @@ in {
         default = false;
         description = "Whether to enable publishing tooling.";
       };
-      publishing.staging.packages = mkOption {
-        type = types.listOf types.package;
-        default = [ ];
-        description = "List of staging packages.";
-      };
       processors.enable = mkOption {
         type = types.bool;
         default = false;
@@ -289,8 +284,7 @@ in {
     })
     (mkIf cfg.publishing.enable {
       home-manager.users.${user} = {
-        home.packages = [ stable.libreoffice ]
-          ++ lib.optionals (cfg.publishing.staging.packages != [ ]) cfg.publishing.staging.packages;
+        home.packages = [ stable.libreoffice ];
       };
       custom.pim.timeTracking.rules = ''
         current window $program == "libreoffice" ==> tag activity:paperworks,

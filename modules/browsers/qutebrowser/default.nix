@@ -80,11 +80,6 @@ in {
         default = "qutebrowser-session-auto";
         description = "Filename template for Qutebrowser session files.";
       };
-      staging.enableSettings = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Enable staging settings.";
-      };
     };
   };
   config = mkMerge [

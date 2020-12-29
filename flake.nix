@@ -136,6 +136,10 @@
           path = ./modules/content/media/templates/encode;
           description = "Various multimedia conversions.";
         };
+        staging = {
+          path = ./modules/packaging/templates/staging;
+          description = "Staging packages sandbox environment.";
+        };
       };
 
       devShell."${system}" = import ./shell.nix { pkgs = unstable.legacyPackages.${system}; };

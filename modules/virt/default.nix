@@ -100,11 +100,6 @@ in {
         default = false;
         description = "Whether to enable WM keybindings.";
       };
-      staging.packages = mkOption {
-        type = types.listOf types.package;
-        default = [ ];
-        description = "List of staging packages.";
-      };
     };
   };
 
@@ -242,7 +237,7 @@ in {
           spice-gtk
           virtmanager
           virtviewer
-        ] ++ lib.optionals (cfg.staging.packages != [ ]) cfg.staging.packages;
+        ];
       wmCommon.wsMapping.rules = [{
         class = "Virt-manager";
         desktop = "tools";
