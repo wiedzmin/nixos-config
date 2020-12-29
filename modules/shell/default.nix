@@ -288,7 +288,7 @@ in {
             catb = "${pkgs.bat}/bin/bat -A";
 
             df = "${pkgs.duf}/bin/duf";
-            du = "${pkgs.dua}/bin/dua";
+            du = "${pkgs.du-dust}/bin/dust";
 
             zr = ". ~/.zshrc";
 
