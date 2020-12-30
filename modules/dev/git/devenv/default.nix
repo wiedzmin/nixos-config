@@ -51,8 +51,9 @@ in {
         git-dumpenv = mkShellScriptWithDeps "git-dumpenv" (with pkgs; [ gitAndTools.git coreutils ]) ''
           set -e
 
-          devenv_data=$(<${cfg.devEnv.configName} | xargs -d '\n' find 2>/dev/null)
-          devenv_filelist=$(echo "$devenv_data" | tr '\n' ' ')
+          devenv_data=$(<${cfg.devEnv.configName})
+          devenv_data_filtered=$(echo "$devenv_data" | xargs -d '\n' find 2>/dev/null)
+          devenv_filelist=$(echo "$devenv_data_filtered" | tr '\n' ' ')
           git_root=$(git rev-parse --show-toplevel)
           ts_suffix=$(date ${config.custom.housekeeping.dateFormats.commonShellNoColons})
           dump_dir=$(basename $(dirname "$git_root"))_$(basename "$git_root")_$ts_suffix
@@ -75,8 +76,9 @@ in {
           cp -a ${cfg.devEnv.backupRoot}/$tip_env/. .
           rm -rf ${cfg.devEnv.backupRoot}/$tip_env
 
-          devenv_data=$(<${cfg.devEnv.configName} | xargs -d '\n' find 2>/dev/null)
-          devenv_filelist=$(echo "$devenv_data" | tr '\n' ' ')
+          devenv_data=$(<${cfg.devEnv.configName})
+          devenv_data_filtered=$(echo "$devenv_data" | xargs -d '\n' find 2>/dev/null)
+          devenv_filelist=$(echo "$devenv_data_filtered" | tr '\n' ' ')
           git reset # clean up index from unrelated staged changes
           git add -- $devenv_filelist
         '';
