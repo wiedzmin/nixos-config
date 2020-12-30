@@ -551,7 +551,7 @@ in {
   custom.xinput = {
     hardware.enable = true;
     constraintMouse = {
-      enable = true;
+      enable = false;
       bottom = 25;
       top = 0;
     };
