@@ -174,8 +174,7 @@ in rec {
         ([ meta.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ] ++
          [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [] meta)) ]));
   mkBookmarkDest = meta: {
-    url = meta.url + lib.optionalString
-      (lib.hasAttrByPath [ "searchSuffix" ] meta && lib.hasSuffix "+" meta.searchSuffix) meta.searchSuffix;
+    url = meta.url + lib.optionalString (lib.hasAttrByPath [ "searchSuffix" ] meta) meta.searchSuffix;
   } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
   // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
   remoteWebjumps = remotes: sep: tagSep: lib.mapAttrs'
@@ -187,6 +186,6 @@ in rec {
   remoteSearchEngines = remotes: sep: tagSep: lib.mapAttrs'
     (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkDest meta))
     (lib.filterAttrs (_: meta:
-      (lib.hasAttrByPath [ "searchSuffix" ] meta && lib.hasSuffix "+" meta.searchSuffix)) remotes);
+      (lib.hasAttrByPath [ "searchSuffix" ] meta)) remotes);
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
 }
