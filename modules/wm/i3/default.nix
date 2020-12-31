@@ -175,6 +175,16 @@ in {
             raw = true;
           }
           {
+            key = [ "b" ];
+            cmd = "${pkgs.i3-balance-workspace}/bin/i3_balance_workspace --scope workspace";
+            mode = "layout";
+          }
+          {
+            key = [ "Shift" "b" ];
+            cmd = "${pkgs.i3-balance-workspace}/bin/i3_balance_workspace --scope workspace";
+            mode = "layout";
+          }
+          {
             key = [ "w" ];
             cmd = "layout toggle split";
             mode = "layout";
