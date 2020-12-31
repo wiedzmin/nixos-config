@@ -8,6 +8,7 @@ in mkShell {
 
     youtube-dl
     ffmpeg
+    gospider # TODO: consider template renaming
   ];
   shellHook = ''
     echo
