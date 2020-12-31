@@ -416,6 +416,10 @@ in {
     enable = true;
     wm.enable = true;
   };
+  ide.emacs.edit.enable = true;
+  ide.emacs.navigation.enable = true;
+  ide.emacs.history.enable = true;
+  ide.emacs.misc.enable = true;
 
   custom.knowledgebase = {
     enable = true;

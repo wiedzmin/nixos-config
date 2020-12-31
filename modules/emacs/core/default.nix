@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.ide.emacs.core;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   uid = builtins.toString config.users.extraUsers.${user}.uid;
 in {
   options = {
@@ -13,12 +12,12 @@ in {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable emacs setup.";
+        description = "Whether to enable emacs core setup.";
       };
       debug.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable emacs setup.";
+        description = "Whether to build debuggable emacs package.";
       };
       config = mkOption {
         type = types.lines;
@@ -97,7 +96,8 @@ in {
           ${lib.optionalString (cfg.environment != { }) (builtins.concatStringsSep "\n"
             (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
 
-          ${readSubstituted ../../subst.nix ./core.el}
+          ${lib.concatStringsSep "\n" (lib.forEach [ ./core.el ] (el: readSubstituted ../../subst.nix el))}
+
           ${cfg.config}
 
           (notifications-notify :title "Emacs" :body "Started server")
@@ -129,62 +129,20 @@ in {
       '';
       custom.pim.timeTracking.rules = ''
         current window ($title =~ /^emacs - [^ ]+\.el .*$/) ==> tag coding:elisp,
-        current window ($title =~ /^emacs - [^ ]+\.org .*$/) ==> tag edit:orgmode,
       '';
       ide.emacs.core.extraPackages = epkgs:
-        [
-          epkgs.aggressive-indent
-          epkgs.amx
+        [ # core
           epkgs.anaphora
           epkgs.auto-compile
-          epkgs.backup-each-save
-          epkgs.beginend
-          epkgs.blockdiag-mode
-          epkgs.comment-dwim-2
           epkgs.compdef
-          epkgs.copy-as-format
-          epkgs.default-text-scale
           epkgs.deferred
           epkgs.delight
-          epkgs.easy-kill
-          epkgs.easy-kill-extras # add to .el
           epkgs.f
-          epkgs.fancy-dabbrev
-          epkgs.flycheck
-          epkgs.flycheck-projectile
-          epkgs.format-all
           epkgs.gcmh
-          epkgs.goto-char-preview
-          epkgs.haskell-mode
-          epkgs.hl-todo
-          epkgs.ini-mode
-          epkgs.iqa
-          epkgs.keychain-environment
-          epkgs.markdown-mode
-          epkgs.multiple-cursors
-          epkgs.mwim
-          epkgs.names
           epkgs.no-littering
-          epkgs.pos-tip
-          epkgs.posframe
           epkgs.quelpa
           epkgs.quelpa-use-package
-          epkgs.rainbow-delimiters
-          epkgs.recentf-ext
-          epkgs.recursive-narrow
-          epkgs.region-bindings-mode
-          epkgs.restart-emacs
-          epkgs.savekill
-          epkgs.shift-number
-          epkgs.smartparens
-          epkgs.string-inflection
-          epkgs.super-save
-          epkgs.undo-propose
-          epkgs.unicode-escape
           epkgs.use-package
-          epkgs.wgrep
-          epkgs.whole-line-or-region
-          epkgs.ws-butler
         ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
       home-manager.users.${user} = {
         programs.zsh.sessionVariables = {
@@ -197,15 +155,6 @@ in {
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
         home.file = {
           ".emacs.d/init.el".text = cfg.initElContent;
-          ".emacs.d/resources/yasnippet" = {
-            source = inputs.yasnippet-snippets;
-            recursive = true;
-          };
-        };
-        home.activation.ensureLspSessionDir = { # lsp-deferred fails otherwise
-          after = [ ];
-          before = [ "linkGeneration" ];
-          data = "mkdir -p ${cfg.dataDir}/lsp";
         };
       };
       systemd.user.services."emacs" = let icon = "${cfg.package}/share/icons/hicolor/scalable/apps/emacs.svg";

@@ -107,6 +107,13 @@ in {
           epkgs.yaml-mode
         ];
       ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/misc.el;
+      home-manager.users.${user} = {
+        home.activation.ensureLspSessionDir = { # lsp-deferred fails otherwise
+          after = [ ];
+          before = [ "linkGeneration" ];
+          data = "mkdir -p ${config.ide.emacs.core.dataDir}/lsp";
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.wm.enable && config.custom.virtualization.docker.enable) {
       wmCommon.keys = [

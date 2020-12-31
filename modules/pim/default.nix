@@ -308,8 +308,12 @@ in {
 
       custom.programs.tmux.bindings.copyMode = { "M-n" = ''run-shell "${pkgs.org-capture}/bin/org-capture ns"''; };
       custom.pim.org.agendaRoots = { "${config.ide.emacs.core.orgDir}" = 3000; };
+      custom.pim.timeTracking.rules = ''
+        current window ($title =~ /^emacs - [^ ]+\.org .*$/) ==> tag edit:orgmode,
+      '';
       home-manager.users."${user}" = { home.packages = with pkgs; [ plantuml ]; };
       ide.emacs.core.extraPackages = epkgs: [
+        epkgs.blockdiag-mode
         epkgs.counsel-org-clock
         epkgs.deft
         epkgs.doct

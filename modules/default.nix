@@ -43,6 +43,10 @@
     ./dev/python
     ./dev/timetracking
     ./emacs/core
+    ./emacs/edit
+    ./emacs/history
+    ./emacs/misc
+    ./emacs/navigation
     ./email
     ./email/mbsync.nix
     ./housekeeping
