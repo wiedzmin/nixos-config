@@ -173,7 +173,7 @@ in {
           StandardError = "journal";
         };
       };
-      systemd.user.timers."nix-update-index" = renderTimer "Update nix packages metadata index" "1h" "12h" "";
+      systemd.user.timers."nix-update-index" = renderTimer "Update nix packages metadata index" "" "" "*-*-* 6:00:00";
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       home-manager.users.${user} = {
