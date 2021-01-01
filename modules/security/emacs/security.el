@@ -8,10 +8,6 @@
   :config
   (auth-source-pass-enable))
 
-(use-package keychain-environment
-  :hook
-  (after-init-hook . keychain-refresh-environment))
-
 (use-package password-cache
   :custom
   (password-cache-expiry nil)
