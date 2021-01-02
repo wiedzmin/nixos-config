@@ -14,11 +14,6 @@ in {
         default = false;
         description = "Whether to enable ebooks infrastructure.";
       };
-      roots = mkOption {
-        type = types.listOf types.str;
-        default = [ ];
-        description = "Paths to search ebooks under.";
-      };
       extensions.primary = mkOption {
         type = types.listOf types.str;
         default = [ "pdf" "djvu" "epub" ];
@@ -52,11 +47,6 @@ in {
         device = homePrefix "bookshelf";
         options = [ "bind" ];
       };
-      custom.housekeeping.metadataCacheInstructions = ''
-        ${pkgs.redis}/bin/redis-cli set content/ebook_roots ${
-          lib.strings.escapeNixString (builtins.toJSON (localEbooks config.custom.navigation.bookmarks.entries))
-        }
-      '';
       nixpkgs.config.packageOverrides = _: rec {
         bookshelf = mkPythonScriptWithDeps "bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis zathura ])
           (readSubstituted ../../subst.nix ./scripts/bookshelf.py);
@@ -64,16 +54,26 @@ in {
           mkPythonScriptWithDeps "update-bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../../subst.nix ./scripts/update-bookshelf.py);
       };
-      systemd.user.services."update-ebooks" = {
-        description = "Update bookshelf contents";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.update-bookshelf}/bin/update-bookshelf";
-          StandardOutput = "journal";
-          StandardError = "journal";
-        };
-      };
-      systemd.user.timers."update-ebooks" = renderTimer "Update ebooks entries" "1h" "1h" "";
+      systemd.user.services = builtins.listToAttrs (forEach (localEbooks config.custom.navigation.bookmarks.entries)
+        (root: {
+          name = "update-ebooks-${concatStringsSep "-" (takeLast 2 (splitString "/" root))}";
+          value = {
+            description = "Update ${concatStringsSep "-" (takeLast 2 (splitString "/" root))} contents";
+            after = [ "graphical-session-pre.target" ];
+            partOf = [ "graphical-session.target" ];
+            wantedBy = [ "graphical-session.target" ];
+            path = [ pkgs.bash ];
+            serviceConfig = {
+              Type = "simple";
+              WorkingDirectory = root;
+              ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
+                concatStringsSep "," cfg.extensions.primary} -- ${
+                  pkgs.update-bookshelf}/bin/update-bookshelf --root ${root}";
+              StandardOutput = "journal";
+              StandardError = "journal";
+            };
+          };
+        }));
       custom.pim.timeTracking.rules = ''
         current window $title =~ m!.*papers/.*! ==> tag ebooks:papers,
         ${

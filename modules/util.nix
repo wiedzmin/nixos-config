@@ -188,4 +188,6 @@ in rec {
     (lib.filterAttrs (_: meta:
       (lib.hasAttrByPath [ "searchSuffix" ] meta)) remotes);
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
+  takeLast = n: l: with lib;
+    reverseList (take n (reverseList l));
 }
