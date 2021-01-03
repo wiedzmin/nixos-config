@@ -97,7 +97,7 @@ in {
       };
       wmCommon.keys = [{
         key = [ cfg.prefix "k" ];
-        cmd = "keybindings";
+        cmd = "${pkgs.keybindings}/bin/keybindings";
         mode = "root";
       }];
     })

@@ -5,6 +5,7 @@ let
   keySepI3 = "+";
   keysymsI3 = {
     "." = "period";
+    "," = "comma";
     "Esc" = "Escape";
     "`" = "grave";
   };
