@@ -85,6 +85,11 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.extraHosts.enable) {
+      assertions = [{
+        assertion = config.localinfra.systemtraits.enable;
+        message = "infra/networking: must enable systemtraits maintainence.";
+      }];
+
       networking.extraHosts = ''
         127.0.0.1   ${config.networking.hostName}
         ${renderHosts cfg.extraHosts.entries}
@@ -97,7 +102,7 @@ in {
           port = if (builtins.hasAttr "port" meta) then meta.port else null;
         })) (filterAttrs (_: meta: !((hasAttr "forge" meta) && meta.forge)) cfg.extraHosts.entries);
 
-      custom.housekeeping.metadataCacheInstructions = ''
+      localinfra.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${
           lib.strings.escapeNixString (builtins.toJSON
             (filterAttrs (_: v: (!builtins.hasAttr "ssh" v) || ((builtins.hasAttr "ssh" v) && v.ssh == true))

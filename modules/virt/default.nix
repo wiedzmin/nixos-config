@@ -123,7 +123,12 @@ in {
     })
 
     (mkIf (cfg.enable && cfg.docker.enable) {
-      custom.housekeeping.metadataCacheInstructions = ''
+      assertions = [{
+        assertion = config.localinfra.systemtraits.enable;
+        message = "virt: must enable systemtraits maintainence.";
+      }];
+
+      localinfra.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set virt/swarm_meta ${
           lib.strings.escapeNixString (builtins.toJSON cfg.docker.swarm.meta)
         }

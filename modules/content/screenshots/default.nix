@@ -50,7 +50,7 @@ in {
             disabledTrayIcon = true;
             drawColor = "#ff0000";
             drawThickness = 0;
-            filenamePattern = "screenshot-${config.custom.housekeeping.dateFormats.flameshot}";
+            filenamePattern = "screenshot-${config.attributes.dateFormats.flameshot}";
             saveAfterCopyPath = cfg.baseDir;
             savePath = cfg.baseDir;
           };

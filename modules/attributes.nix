@@ -148,5 +148,26 @@ with lib;
         };
       };
     };
+    dateFormats = mkOption {
+      type = types.attrsOf types.str;
+      default = {
+        commonShell = "+%Y-%m-%d_%H:%M:%S";
+        commonShellNoColons = "+%Y-%m-%d_%H-%M-%S";
+        flameshot = "%Y-%m-%d_%H-%M-%S";
+      };
+      visible = false;
+      readOnly = true;
+      internal = true;
+      description = "Date suffix formats fo various needs";
+    };
+    regexes = mkOption {
+      description = "Common regular expression";
+      type = types.attrs;
+      default = {
+        url = {
+          py = "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]";
+        };
+      };
+    };
   };
 }

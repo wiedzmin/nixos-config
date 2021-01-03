@@ -55,7 +55,7 @@ in rec {
   systemTimeZone = config.time.timeZone;
   screenshotsBasedir = config.content.screenshots.baseDir;
   tmuxDefaultSession = config.custom.shell.tmux.defaultSession;
-  urlRegexPy = config.custom.housekeeping.regex.url.py;
+  urlRegexPy = config.attributes.regexes."url"."py";
   xprintidleBinary = "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
   xmobarMaybeFont = lib.optionalString (config.wmCommon.fonts.statusbar != "")

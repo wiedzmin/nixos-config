@@ -210,6 +210,8 @@ in {
     extraGroups = [ "wheel" ];
   };
 
+  localinfra.systemtraits.enable = true;
+
   job = {
     "14f7646bef".secrets.enable = true;
     "2242184b2c".secrets.enable = true;
@@ -217,6 +219,11 @@ in {
     "b354e944b3".secrets.enable = true;
   };
   dev.secrets.enable = true;
+
+  controlcenter = {
+    enable = true;
+    wm.enable = true;
+  };
 
   appearance = {
     colors.zenburn.enable = true;
@@ -407,13 +414,17 @@ in {
     };
   };
 
-  custom.housekeeping = {
-    enable = true; # !!! essential for metadata caching !!!
-    cleanTrash = {
+  gc = {
+    enable = true;
+    trash = {
       enable = true;
       calendarTimespec = "*-*-* 23:00:00";
     };
-    wm.enable = true;
+    expired = {
+      enable = true;
+      calendarTimespec = "*-*-* 23:30:00";
+    };
+    fsDeduplication.enable = true;
   };
 
   ide.emacs.core = {

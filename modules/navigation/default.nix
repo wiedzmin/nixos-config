@@ -155,6 +155,11 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      assertions = [{
+        assertion = config.localinfra.systemtraits.enable;
+        message = "navigation/bookmarks: must enable systemtraits maintainence.";
+      }];
+
       nixpkgs.config.packageOverrides = _: rec {
         mcpanes = mkPythonScriptWithDeps "mcpanes" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../subst.nix ./scripts/mcpanes.py);
@@ -172,7 +177,7 @@ in {
           }))' ";
         };
       };
-      custom.housekeeping.metadataCacheInstructions = ''
+      localinfra.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${
           lib.strings.escapeNixString
           (builtins.toJSON (remoteWebjumps (enabledRemotes cfg.bookmarks.entries) cfg.bookmarks.sep cfg.bookmarks.tagSep))
@@ -478,12 +483,17 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.snippets.enable) {
+      assertions = [{
+        assertion = config.localinfra.systemtraits.enable;
+        message = "navigation/snippets: must enable systemtraits maintainence.";
+      }];
+
       nixpkgs.config.packageOverrides = _: rec {
         snippets = mkPythonScriptWithDeps "snippets" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
           (readSubstituted ../subst.nix ./scripts/snippets.py);
       };
       home-manager.users.${user} = { home.packages = with pkgs; [ snippets ]; };
-      custom.housekeeping.metadataCacheInstructions = ''
+      localinfra.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/snippets ${
           lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (forEach cfg.snippets.entries (s:
             nameValuePair

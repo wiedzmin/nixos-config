@@ -40,12 +40,17 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      assertions = [{
+        assertion = config.localinfra.systemtraits.enable;
+        message = "dev/timetracking: must enable systemtraits maintainence.";
+      }];
+
       nixpkgs.config.packageOverrides = _: rec {
         ttctl = mkPythonScriptWithDeps "ttctl"
           (with pkgs; [ python3Packages.jira python3Packages.pytz python3Packages.redis nurpkgs.pystdlib yad ])
           (readSubstituted ../../subst.nix ./scripts/ttctl.py);
       };
-      custom.housekeeping.metadataCacheInstructions = ''
+      localinfra.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set timetracking/identities ${
           lib.strings.escapeNixString (builtins.toJSON cfg.identities)
         }

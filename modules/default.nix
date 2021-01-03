@@ -17,6 +17,7 @@
     ./content/media
     ./content/misc
     ./content/screenshots
+    ./controlcenter
     ./dev/ccpp
     ./dev/completion
     ./dev/dbms/misc
@@ -49,12 +50,13 @@
     ./emacs/navigation
     ./email
     ./email/mbsync.nix
-    ./housekeeping
+    ./gc
     ./knowledgebase
     ./localnfra/networking
     ./localnfra/nmconn
     ./localnfra/powermanagement
     ./localnfra/pulseaudio
+    ./localnfra/systemtraits
     ./localnfra/video
     ./localnfra/xinput
     ./navigation

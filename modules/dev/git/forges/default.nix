@@ -211,6 +211,11 @@ in {
       extraConfig = collectExtraConfig cfg.forges;
       workspaceRoots = collectWorkspaceRoots cfg.forges;
     in {
+      assertions = [{
+        assertion = config.localinfra.systemtraits.enable;
+        message = "git/forges: must enable systemtraits maintainence.";
+      }];
+
       home-manager.users.${user} = {
         xdg.configFile."pass-git-helper/git-pass-mapping.ini".text =
           generators.toINI { } credentials;
@@ -221,7 +226,7 @@ in {
           optionalAttrs (extraConfig != { }) extraConfig;
       };
       custom.navigation.workspaceRoots = workspaceRoots;
-      custom.housekeeping.metadataCacheInstructions =
+      localinfra.systemtraits.instructions =
         optionalString (credentials != { }) ''
           ${pkgs.redis}/bin/redis-cli set git/credentials_mapping ${
             strings.escapeNixString (builtins.toJSON credentials)

@@ -273,10 +273,16 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      assertions = [{
-        assertion = (!config.wm.i3.enable && !config.wm.stumpwm.enable);
-        message = "xmonad: exactly one WM could be enabled.";
-      }];
+      assertions = [
+        {
+          assertion = config.localinfra.systemtraits.enable;
+          message = "xmonad: must enable systemtraits maintainence.";
+        }
+        {
+          assertion = (!config.wm.i3.enable && !config.wm.stumpwm.enable);
+          message = "xmonad: exactly one WM could be enabled.";
+        }
+      ];
 
       ide.emacs.core.environment = { CURRENT_WM = "xmonad"; };
       ide.emacs.core.extraPackages = epkgs: [ epkgs.haskell-mode ];
@@ -300,7 +306,7 @@ in {
         "M-C-w" = { cmd = "${pkgs.desktops}/bin/desktops"; };
       };
 
-      custom.housekeeping.metadataCacheInstructions = ''
+      localinfra.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
           lib.strings.escapeNixString (builtins.toJSON (cfg.internalKeys // config.wmCommon.keys))
         }
@@ -334,11 +340,16 @@ in {
       };
     })
     (mkIf cfg.wsMapping.enable {
+      assertions = [{
+        assertion = config.localinfra.systemtraits.enable;
+        message = "xmonad: must enable systemtraits maintainence.";
+      }];
+
       services.xserver.displayManager.sessionCommands = ''
         ${pkgs.desktops}/bin/desktops --init
       '';
       # FIXME: adopt new workspace mappings structure (presumably broken)
-      custom.housekeeping.metadataCacheInstructions = ''
+      localinfra.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set xserver/window_rules ${
           lib.strings.escapeNixString (builtins.toJSON cfg.workspaces.mappings)
         }

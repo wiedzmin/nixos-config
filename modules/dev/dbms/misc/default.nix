@@ -37,12 +37,17 @@ in {
       home-manager.users.${user} = { home.packages = with pkgs; [ nodePackages.elasticdump ]; };
     })
     (mkIf (cfg.enable && cfg.controlCenter.enable) {
+      assertions = [{
+          assertion = config.localinfra.systemtraits.enable;
+          message = "dbms: must enable systemtraits maintainence.";
+      }];
+
       nixpkgs.config.packageOverrides = _: rec {
         dbms = mkPythonScriptWithDeps "dbms" (with pkgs; [ pass nurpkgs.pystdlib python3Packages.redis tmux vpnctl ])
           (readSubstituted ../../../subst.nix ./scripts/dbms.py);
       };
 
-      custom.housekeeping.metadataCacheInstructions = ''
+      localinfra.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${lib.strings.escapeNixString
           (builtins.toJSON cfg.controlCenter.meta)}
       '';
