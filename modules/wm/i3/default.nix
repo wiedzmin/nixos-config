@@ -39,9 +39,41 @@ in {
         default = "py3";
         description = "Statusbar implementation";
       };
-      keys = mkOption {
-        type = types.listOf types.attrs;
-        default = [
+      modeExitBindings = mkOption {
+        type = types.listOf (types.listOf types.str);
+        default = [ [ "q" ] [ "Escape" ] [ "Control" "g" ] ];
+        description = "Unified collection of keybindings used to exit to default mode.";
+      };
+    };
+  };
+
+  config = mkMerge [
+    (mkIf cfg.enable {
+      assertions = [{
+        assertion = (!config.wm.xmonad.enable && !config.wm.stumpwm.enable);
+        message = "i3: exactly one WM could be enabled.";
+      }];
+
+      environment.pathsToLink = [ "/libexec" ]; # for i3blocks (later)
+
+      wmCommon = {
+        enable = true;
+        autostart.entries = lib.optionals (cfg.statusbarImpl == "i3-rs") [ "kbdd" ];
+        modeBindings = {
+          "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
+          "browser" = [ prefix "b" ];
+          "dev" = [ prefix "d" ];
+          "layout" = [ prefix "less" ];
+          "network" = [ prefix "n" ];
+          "resize" = [ prefix "," ];
+          "run" = [ prefix "r" ];
+          "select" = [ prefix "." ];
+          "services" = [ prefix "s" ];
+          "virt" = [ prefix "v" ];
+          "window" = [ prefix "w" ];
+          "xserver" = [ prefix "x" ];
+        };
+        keys = [
           {
             key = [ prefix "Shift" "q" ];
             cmd = ''exec "i3-msg reload"'';
@@ -225,47 +257,6 @@ in {
             raw = true;
           }
         ];
-        description = "i3-related keybindings.";
-      };
-      modeBindings = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "Modes keybindings.";
-      };
-      modeExitBindings = mkOption {
-        type = types.listOf (types.listOf types.str);
-        default = [ [ "q" ] [ "Escape" ] [ "Control" "g" ] ];
-        description = "Unified collection of keybindings used to exit to default mode.";
-      };
-    };
-  };
-
-  config = mkMerge [
-    (mkIf cfg.enable {
-      assertions = [{
-        assertion = (!config.wm.xmonad.enable && !config.wm.stumpwm.enable);
-        message = "i3: exactly one WM could be enabled.";
-      }];
-
-      environment.pathsToLink = [ "/libexec" ]; # for i3blocks (later)
-
-      wmCommon = {
-        enable = true;
-        autostart.entries = lib.optionals (cfg.statusbarImpl == "i3-rs") [ "kbdd" ];
-        modeBindings = {
-          "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
-          "browser" = [ prefix "b" ];
-          "dev" = [ prefix "d" ];
-          "layout" = [ prefix "less" ];
-          "network" = [ prefix "n" ];
-          "resize" = [ prefix "`" ];
-          "run" = [ prefix "r" ];
-          "select" = [ prefix "." ];
-          "services" = [ prefix "s" ];
-          "virt" = [ prefix "v" ];
-          "window" = [ prefix "w" ];
-          "xserver" = [ prefix "x" ];
-        };
       };
 
       services.xserver = {
@@ -289,6 +280,15 @@ in {
           (readSubstituted ../../subst.nix ./kbdctl.py);
       };
 
+      localinfra.systemtraits.instructions = ''
+        ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
+          lib.strings.escapeNixString (builtins.toJSON config.wmCommon.keys)
+        }
+        ${pkgs.redis}/bin/redis-cli set wm/modebindings ${
+          lib.strings.escapeNixString (builtins.toJSON config.wmCommon.modeBindings)
+        }
+      '';
+
       programs.nm-applet.enable = true;
 
       home-manager.users.${user} = {
@@ -298,8 +298,8 @@ in {
             # i3 config file (v4)
 
             ${cfg.settings}
-            ${mkKeybindingsI3 config.wmCommon.workspaces (cfg.keys ++ config.wmCommon.keys) config.wmCommon.modeBindings
-            cfg.modeExitBindings}
+            ${mkKeybindingsI3 config.wmCommon.workspaces config.wmCommon.keys config.wmCommon.modeBindings
+              cfg.modeExitBindings}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
             ${lib.concatStringsSep "\n"
             (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}
