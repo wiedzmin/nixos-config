@@ -355,6 +355,10 @@ in {
         emacs.enable = true;
       };
       devenv.enable = true;
+      navigation = {
+        enable = true;
+        ghq.enable = true;
+      };
     };
     navigation.projects = {
       enable = true;
