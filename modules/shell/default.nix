@@ -494,7 +494,7 @@ in {
           bat = {
             enable = true;
             config = {
-              theme = "TwoDark";
+              theme = "ansi-dark";
               pager = "less -FR";
             };
           };
