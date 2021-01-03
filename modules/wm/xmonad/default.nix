@@ -326,10 +326,10 @@ in {
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
       home-manager.users.${user} = {
         home.file = {
-          ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./ExtraCombinators.hs;
-          ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./WindowTypes.hs;
-          ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./XkbToggle.hs;
-          ".xmonad/lib/XMonad/Workspaces.hs".text = readSubstituted ../subst.nix ./Workspaces.hs;
+          ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./lib/ExtraCombinators.hs;
+          ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./lib/WindowTypes.hs;
+          ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./lib/XkbToggle.hs;
+          ".xmonad/lib/XMonad/Workspaces.hs".text = readSubstituted ../subst.nix ./lib/Workspaces.hs;
           ".xmonad/xmonad.hs" = {
             text = configText;
             onChange = "xmonad --recompile";
@@ -355,7 +355,7 @@ in {
         }
       '';
     })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+    (mkIf (config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ desktops ]; };
     })
   ];
