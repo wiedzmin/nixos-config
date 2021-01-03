@@ -52,13 +52,13 @@
     ./email/mbsync.nix
     ./gc
     ./knowledgebase
-    ./localnfra/networking
-    ./localnfra/nmconn
-    ./localnfra/powermanagement
-    ./localnfra/pulseaudio
-    ./localnfra/systemtraits
-    ./localnfra/video
-    ./localnfra/xinput
+    ./localinfra/networking
+    ./localinfra/nmconn
+    ./localinfra/powermanagement
+    ./localinfra/pulseaudio
+    ./localinfra/systemtraits
+    ./localinfra/video
+    ./localinfra/xinput
     ./navigation
     ./packaging
     ./paperworks
