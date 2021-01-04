@@ -32,24 +32,28 @@ in {
               crtc = 1;
               position = "0x0";
               mode = "1920x1080";
-              gamma = config.custom.video.gamma;
-              rate = config.custom.video.rate;
+              gamma = config.workstation.randr.defaults.gamma;
+              rate = config.workstation.randr.defaults.rate;
+            } // lib.optionalAttrs (config.workstation.randr.heads.orientation.primary != "normal") {
+              rotate = config.workstation.randr.heads.orientation.primary;
             };
             DP-3 = {
               enable = true;
               crtc = 2;
               position = "1366x1080";
               mode = "1920x1080";
-              gamma = config.custom.video.gamma;
-              rate = config.custom.video.rate;
-            } // lib.optionalAttrs (config.custom.video.rotateSecondaryHead) { rotate = config.custom.video.rotation; };
+              gamma = config.workstation.randr.defaults.gamma;
+              rate = config.workstation.randr.defaults.rate;
+            } // lib.optionalAttrs (config.workstation.randr.heads.orientation.secondary != "normal") {
+              rotate = config.workstation.randr.heads.orientation.secondary;
+            };
             "${config.attributes.hardware.monitors.internalHead.name}" = {
               enable = true;
               primary = true;
               position = "0x1080";
               mode = config.attributes.hardware.monitors.internalHead.resolution;
-              gamma = config.custom.video.gamma;
-              rate = config.custom.video.rate;
+              gamma = config.workstation.randr.defaults.gamma;
+              rate = config.workstation.randr.defaults.rate;
             };
           };
           hooks.postswitch = "rescreen-${profileName}-i3";

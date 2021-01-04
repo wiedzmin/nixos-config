@@ -80,7 +80,7 @@ in {
           ];
         };
       };
-      custom.xinput.xkeysnail.rc = ''
+      workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("Chromium-browser"), {
             K("C-g"): K("f5"),
         }, "chromium")

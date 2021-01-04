@@ -173,6 +173,11 @@ in {
         internal = true;
         description = "Whether to enable personal time-tracking infra/tools.";
       };
+      clients.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable various network clients";
+      };
       org.warningsFile = mkOption {
         type = types.str;
         default = "$HOME/warnings.org";
@@ -299,6 +304,9 @@ in {
         wantedBy = [ "timers.target" ];
         timerConfig = { OnCalendar = meta.cal; };
       }) cfg.scheduling.entries;
+    })
+    (mkIf (cfg.enable && cfg.clients.enable) {
+      home-manager.users.${user} = { home.packages = with pkgs; [ davfs2 gcalcli ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       nixpkgs.config.packageOverrides = _: rec {

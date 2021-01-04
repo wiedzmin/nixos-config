@@ -13,12 +13,17 @@ in {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable automated 'housekeeping'.";
+        description = "Whether to enable various tools for system maintainence/monitoring/etc.";
+      };
+      networking.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable networking toolset";
       };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable WM keybindings.";
+        description = "Whether to enable WM keybindings";
       };
     };
   };
@@ -113,6 +118,13 @@ in {
       };
       environment.systemPackages = with pkgs; [ srvctl ];
     })
+    (mkIf (cfg.enable && cfg.networking.enable) {
+      nixpkgs.config.packageOverrides = _: rec {
+        # FIXME: bugs
+        ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
+          (readSubstituted ../subst.nix ./scripts/ifconfless.py);
+      };
+    })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
         {
@@ -125,7 +137,11 @@ in {
           cmd = "${pkgs.uptime_info}/bin/uptime_info";
           mode = "root";
         }
-      ];
+      ] ++ optionals (cfg.networking.enable) [{
+        key = [ "i" ];
+        cmd = "${pkgs.ifconfless}/bin/ifconfless";
+        mode = "network";
+      }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ srvctl uptime_info ]; };

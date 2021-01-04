@@ -52,14 +52,13 @@
     ./email/mbsync.nix
     ./gc
     ./knowledgebase
-    ./localinfra/networking
-    ./localinfra/nmconn
-    ./localinfra/powermanagement
-    ./localinfra/pulseaudio
-    ./localinfra/systemtraits
-    ./localinfra/video
-    ./localinfra/xinput
     ./navigation
+    ./networking/hosts
+    ./networking/messengers
+    ./networking/nmconnections
+    ./networking/ssh
+    ./networking/vpn
+    ./networking/wireless
     ./packaging
     ./paperworks
     ./pim
@@ -71,5 +70,18 @@
     ./wm/i3
     ./wm/stumpwm
     ./wm/xmonad
+    ./workstation/input/core
+    ./workstation/input/mouse
+    ./workstation/input/xkeysnail
+    ./workstation/lockscreen
+    ./workstation/performance
+    ./workstation/power/battery
+    ./workstation/power/mgmt
+    ./workstation/randr
+    ./workstation/sound
+    ./workstation/systemtraits
+    ./workstation/video/backlight
+    ./workstation/video/opengl
+    ./workstation/video/transparency
   ];
 }

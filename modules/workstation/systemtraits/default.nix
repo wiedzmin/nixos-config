@@ -3,12 +3,12 @@ with import ../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.localinfra.systemtraits;
+  cfg = config.workstation.systemtraits;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
-    localinfra.systemtraits = {
+    workstation.systemtraits = {
       enable = mkOption {
         type = types.bool;
         default = false;

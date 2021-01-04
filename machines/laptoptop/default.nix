@@ -77,18 +77,10 @@ in {
       enable = true;
       dnsExtensionMechanism = false;
     };
-    wlanInterfaces = { "wlan0" = { device = "wlp3s0"; }; };
     # TODO: consider extracting dichotomy below to module
     networkmanager = {
       enable = true;
       unmanaged = [ "br0" "interface-name:vb-*" "interface-name:vbox*" "interface-name:ve-*" "lo" ];
-      wifi = { macAddress = "60:67:20:ec:34:14"; };
-    };
-    wireless = {
-      enable = false;
-      driver = "nl80211";
-      userControlled.enable = true;
-      interfaces = [ "wlan0" ];
     };
     dhcpcd.denyInterfaces = [ "docker*" "virbr*" "br*" ];
     nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
@@ -210,8 +202,6 @@ in {
     extraGroups = [ "wheel" ];
   };
 
-  localinfra.systemtraits.enable = true;
-
   job = {
     "14f7646bef".secrets.enable = true;
     "2242184b2c".secrets.enable = true;
@@ -307,7 +297,7 @@ in {
     media = {
       enable = true;
       mopidy = {
-        youtube.apiKey = config.custom.networking.secrets.youtube.apiToken;
+        youtube.apiKey = config.ext.networking.secrets.youtube.apiToken;
         file.roots = {
           "Mongol" = homePrefix "blobs/music/mongol";
         };
@@ -376,6 +366,7 @@ in {
     misc = {
       enable = true;
       patching.enable = true;
+      xtools.enable = true;
       emacs.enable = true;
     };
     python = {
@@ -441,12 +432,6 @@ in {
     emacs.enable = true;
   };
 
-  custom.pulseaudio = {
-    enable = true;
-    daemonConfig = { flat-volumes = "no"; };
-    wm.enable = true;
-  };
-
   custom.navigation = {
     enable = true;
     gmrun.enable = true;
@@ -459,19 +444,35 @@ in {
     workspaceRootGlobal = "workspace/repos";
   };
 
-  custom.networking = {
-    enable = true;
-    clients.enable = true;
+  ext.networking = {
     messengers.enable = true;
-    scripts.enable = true;
-    wm.enable = true;
-    extraHosts.enable = true;
+    hosts.enable = true;
     secrets = {
       enable = true;
       vpn.enable = true;
       wifi.enable = true;
     };
-    nmconn.enable = true;
+    nmconnections.enable = true;
+    wireless = {
+      enable = true;
+      ifacesMap = { "wlan0" = { device = "wlp3s0"; }; };
+      macAddress = "60:67:20:ec:34:14";
+      bluetooth.enable = true;
+      wm = {
+        enable = true;
+        dmenu.enable = true;
+      };
+    };
+    ssh = {
+      enable = true;
+      keypair = {
+        private = config.identity.secrets.ssh.privateKey;
+        public = config.identity.secrets.ssh.publicKey;
+      };
+      authorizedKeys = [ (secretsPrefix "identity/id_rsa.mobile.pub") ];
+      wm.enable = true;
+    };
+    vpn.enable = true;
   };
 
   custom.packaging = {
@@ -516,22 +517,93 @@ in {
     timeTracking.enable = true;
   };
 
-  localinfra.powermanagement = {
-    enable = true;
-    resumeCommands = lib.concatStringsSep "\n"
-      (lib.mapAttrsToList (server: _: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
-        config.services.openvpn.servers);
-    powerDownCommands = ''
-      redis-cli --scan --pattern "*is_up" | xargs redis-cli del
-    '';
-    batteryManagement = {
-      enable = true;
-      notificationThreshold = 20;
-      suspensionThreshold = 10;
+  workstation = {
+    systemtraits.enable = true;
+    power = {
+      mgmt = {
+        enable = true;
+        commands.resume = lib.concatStringsSep "\n"
+          (lib.mapAttrsToList (server: _: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
+            config.services.openvpn.servers);
+        commands.suspend = ''
+          redis-cli --scan --pattern "*is_up" | xargs redis-cli del
+        '';
+      };
+      battery = {
+        enable = true;
+        dischargeNotificationPercents = 20;
+        suspension.percents = 10;
+      };
     };
-    appsSuspension.enable = true;
-    wm.enable = true;
-    warmup.enable = true;
+    performance = {
+      enable = true;
+      appsSuspension.rules = {
+        Chromium = {
+          suspendDelay = 10;
+          matchWmClassContains = "Chromium-browser";
+          suspendSubtreePattern = "chromium";
+        };
+        # TODO: add qutebrowser
+      };
+      wm.enable = true;
+    };
+    lockscreen = {
+      enable = true;
+      notification.timeout = 5000;
+      timers.alert = 210;
+      timers.lock = 60;
+    };
+    sound = {
+      enable = true;
+      daemonConfig = { flat-volumes = "no"; };
+      wm.enable = true;
+    };
+    randr = {
+      enable = true;
+      heads.orientation.secondary = "left";
+    };
+    input = {
+      core = {
+        enable = true;
+        xmodmap = {
+          enable = true;
+          rc = ''
+            clear mod1
+            clear mod4
+            clear mod5
+            keycode 64 = Alt_L Meta_L
+            keycode 133 = Super_L
+            keycode 108 = Hyper_L
+            keycode 191 = Insert
+            add mod1 = Meta_L
+            add mod1 = Alt_L
+            add mod4 = Super_L
+            add mod5 = Hyper_L
+            keysym Alt_R = Multi_key
+          '';
+        };
+      };
+      xkeysnail.enable = true;
+      mouse = {
+        constraintMouse = {
+          enable = false;
+        };
+        gestures.enable = true;
+        keynav.enable = true;
+      };
+    };
+    video = {
+      backlight = {
+        enable = true;
+        redshift.latitude = config.identity.secrets.redshiftLatitude;
+        redshift.longitude = config.identity.secrets.redshiftLongitude;
+        wm.enable = true;
+      };
+      transparency = {
+        enable = true;
+        wm.enable = true;
+      };
+    };
   };
 
   custom.security = {
@@ -564,53 +636,6 @@ in {
     };
     libvirt.enable = true;
     virtualbox.enable = true;
-    wm.enable = true;
-  };
-
-  custom.xinput = {
-    hardware.enable = true;
-    constraintMouse = {
-      enable = false;
-      bottom = 25;
-      top = 0;
-    };
-    gestures.enable = true;
-    keynav.enable = true;
-    xkeysnail.enable = true;
-    xmodmap = {
-      enable = true;
-      rc = ''
-        clear mod1
-        clear mod4
-        clear mod5
-        keycode 64 = Alt_L Meta_L
-        keycode 133 = Super_L
-        keycode 108 = Hyper_L
-        keycode 191 = Insert
-        add mod1 = Meta_L
-        add mod1 = Alt_L
-        add mod4 = Super_L
-        add mod5 = Hyper_L
-        keysym Alt_R = Multi_key
-      '';
-    };
-  };
-
-  custom.video = {
-    enable = true;
-    opengl.enable = true;
-    autorandr = {
-      enable = true;
-      profiles = [ "docked_home" "docked_office" "mobile" "undocked_parents_dsub" ];
-    };
-    screenlocker = {
-      enable = true;
-      notificationTimeout = 5000;
-      alertingTimerSec = 210;
-      lockingTimerSec = 60;
-    };
-    rotateSecondaryHead = true;
-    ddc.enable = true;
     wm.enable = true;
   };
 

@@ -96,7 +96,7 @@ in {
         manage-qb-sessions = mkPythonScriptWithDeps "manage-qb-sessions" (with pkgs; [ nurpkgs.pystdlib ])
           (readSubstituted ../../subst.nix ./scripts/manage-qb-sessions.py);
       };
-      custom.xinput.xkeysnail.rc = ''
+      workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {
             K("C-g"): K("f5"),
             K("C-n"): K("C-g"),

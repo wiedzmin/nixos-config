@@ -199,7 +199,7 @@ in {
           };
         };
       };
-      custom.xinput.xkeysnail.rc = ''
+      workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("Firefox"), {
             K("C-j"): K("C-f6"), # Type C-j to focus to the content
             K("C-g"): K("f5"),
@@ -408,7 +408,7 @@ in {
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
 
-      localinfra.powermanagement.warmup.paths = [ (homePrefix ".mozilla") ];
+      workstation.performance.warmup.paths = [ (homePrefix ".mozilla") ];
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [

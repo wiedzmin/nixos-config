@@ -3,7 +3,7 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.custom.networking.nmconn;
+  cfg = config.ext.networking.nmconnections;
   wifiModule = types.submodule {
     options = {
       iface = mkOption {
@@ -199,7 +199,7 @@ let
   };
 in {
   options = {
-    custom.networking.nmconn = {
+    ext.networking.nmconnections = {
       enable = mkOption {
         type = types.bool;
         default = false;

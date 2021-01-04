@@ -153,7 +153,7 @@
                 overlays.unstable
                 (_: old: rec {
                   i3lock-color = old.i3lock-color.overrideAttrs (_: rec {
-                    patches = [ ./modules/localinfra/video/patches/i3lock-color-pass-layout-switching.patch ];
+                    patches = [ ./modules/workstation/lockscreen/patches/i3lock-color-pass-layout-switching.patch ];
                   });
                   tabnine = old.tabnine.overrideAttrs (_: rec {
                     installPhase = ''

@@ -275,7 +275,7 @@ in {
     (mkIf cfg.enable {
       assertions = [
         {
-          assertion = config.localinfra.systemtraits.enable;
+          assertion = config.workstation.systemtraits.enable;
           message = "xmonad: must enable systemtraits maintainence.";
         }
         {
@@ -306,7 +306,7 @@ in {
         "M-C-w" = { cmd = "${pkgs.desktops}/bin/desktops"; };
       };
 
-      localinfra.systemtraits.instructions = ''
+      workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
           lib.strings.escapeNixString (builtins.toJSON (cfg.internalKeys // config.wmCommon.keys))
         }
@@ -341,7 +341,7 @@ in {
     })
     (mkIf cfg.wsMapping.enable {
       assertions = [{
-        assertion = config.localinfra.systemtraits.enable;
+        assertion = config.workstation.systemtraits.enable;
         message = "xmonad: must enable systemtraits maintainence.";
       }];
 
@@ -349,7 +349,7 @@ in {
         ${pkgs.desktops}/bin/desktops --init
       '';
       # FIXME: adopt new workspace mappings structure (presumably broken)
-      localinfra.systemtraits.instructions = ''
+      workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set xserver/window_rules ${
           lib.strings.escapeNixString (builtins.toJSON cfg.workspaces.mappings)
         }

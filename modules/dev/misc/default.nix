@@ -42,6 +42,16 @@ in {
         default = false;
         description = "Whether to enable patching helper tools.";
       };
+      networking.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable network investigation tools.";
+      };
+      xtools.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable xserver info/debug tools.";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -93,6 +103,20 @@ in {
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
       home-manager.users.${user} = { home.packages = with pkgs; [ diffoscope icdiff patchutils wiggle ]; };
+    })
+    (mkIf (cfg.enable && cfg.networking.enable) {
+      programs = {
+        mtr.enable = true;
+        wireshark = {
+          enable = true;
+          package = pkgs.wireshark-qt;
+        };
+      };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ jnettop ]; };
+      users.extraUsers."${user}".extraGroups = [ "wireshark" ];
+    })
+    (mkIf (cfg.enable && cfg.xtools.enable) {
+      environment.systemPackages = with pkgs; [ xlibs.xev xlibs.xprop xorg.xkbcomp drm_info xtruss ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs:

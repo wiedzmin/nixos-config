@@ -29,16 +29,16 @@ in {
               enable = true;
               position = "0x0";
               mode = "1280x1024";
-              gamma = config.custom.video.gamma;
-              rate = config.custom.video.rate;
+              gamma = config.workstation.randr.defaults.gamma;
+              rate = config.workstation.randr.defaults.rate;
             };
             "${config.attributes.hardware.monitors.internalHead.name}" = {
               enable = true;
               primary = true;
               position = "0x1024";
               mode = config.attributes.hardware.monitors.internalHead.resolution;
-              gamma = config.custom.video.gamma;
-              rate = config.custom.video.rate;
+              gamma = config.workstation.randr.defaults.gamma;
+              rate = config.workstation.randr.defaults.rate;
             };
           };
           hooks.postswitch = "rescreen-${profileName}-i3";

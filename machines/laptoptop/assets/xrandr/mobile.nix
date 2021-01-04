@@ -37,8 +37,8 @@ in {
               primary = true;
               position = "0x0";
               mode = config.attributes.hardware.monitors.internalHead.resolution;
-              gamma = config.custom.video.gamma;
-              rate = config.custom.video.rate;
+              gamma = config.workstation.randr.defaults.gamma;
+              rate = config.workstation.randr.defaults.rate;
             };
           };
           hooks.postswitch = ''

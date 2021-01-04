@@ -385,7 +385,7 @@ in {
         };
       };
       custom.shell.terminal = "${pkgs.alacritty}/bin/alacritty";
-      custom.xinput.xkeysnail.rc = ''
+      workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("Alacritty"), {
             K("C-x"): {
                 K("k"): K("C-d"),

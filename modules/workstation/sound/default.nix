@@ -2,12 +2,13 @@
 with lib;
 
 let
-  cfg = config.custom.pulseaudio;
+  cfg = config.workstation.sound;
   user = config.attributes.mainUser.name;
   prefix = config.wmCommon.prefix;
 in {
   options = {
-    custom.pulseaudio = {
+    # TODO: rename options in implementation-agnostic way
+    workstation.sound = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -46,20 +47,19 @@ in {
         '';
       };
       environment.systemPackages = with pkgs; [ pasystray lxqt.pavucontrol-qt ];
-
-      home-manager.users."${user}" = {
-        # NOTE: temporary workaround
-        home.activation.ensureSystemwidePulseaudio = {
-          after = [ "checkLinkTargets" ];
-          before = [ ];
-          # FIXME: parameterize DBUS_SESSION_BUS_ADDRESS value
-          data = ''
-            export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
-            ${pkgs.systemd}/bin/systemctl --user stop pulseaudio.service
-            ${pkgs.systemd}/bin/systemctl restart pulseaudio.service
-          '';
-        };
-      };
+      # home-manager.users."${user}" = {
+      #   # NOTE: temporary workaround
+      #   home.activation.ensureSystemwidePulseaudio = {
+      #     after = [ "checkLinkTargets" ];
+      #     before = [ ];
+      #     # FIXME: parameterize DBUS_SESSION_BUS_ADDRESS value
+      #     data = ''
+      #       export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+      #       ${pkgs.systemd}/bin/systemctl --user stop pulseaudio.service
+      #       ${pkgs.systemd}/bin/systemctl restart pulseaudio.service
+      #     '';
+      #   };
+      # };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [

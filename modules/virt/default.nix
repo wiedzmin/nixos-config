@@ -123,12 +123,18 @@ in {
     })
 
     (mkIf (cfg.enable && cfg.docker.enable) {
-      assertions = [{
-        assertion = config.localinfra.systemtraits.enable;
-        message = "virt: must enable systemtraits maintainence.";
-      }];
+      assertions = [
+        {
+          assertion = config.workstation.systemtraits.enable;
+          message = "virt: must enable systemtraits maintainence.";
+        }
+        {
+          assertion = config.ext.networking.vpn.enable;
+          message = "virt: must enable vpn functionality.";
+        }
+      ];
 
-      localinfra.systemtraits.instructions = ''
+      workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set virt/swarm_meta ${
           lib.strings.escapeNixString (builtins.toJSON cfg.docker.swarm.meta)
         }

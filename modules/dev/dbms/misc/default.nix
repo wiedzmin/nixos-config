@@ -37,17 +37,23 @@ in {
       home-manager.users.${user} = { home.packages = with pkgs; [ nodePackages.elasticdump ]; };
     })
     (mkIf (cfg.enable && cfg.controlCenter.enable) {
-      assertions = [{
-          assertion = config.localinfra.systemtraits.enable;
-          message = "dbms: must enable systemtraits maintainence.";
-      }];
+      assertions = [
+        {
+          assertion = config.workstation.systemtraits.enable;
+          message = "dev/dbms/misc: must enable systemtraits maintainence.";
+        }
+        {
+          assertion = config.ext.networking.vpn.enable;
+          message = "dev/dbms/misc: must enable vpn functionality.";
+        }
+      ];
 
       nixpkgs.config.packageOverrides = _: rec {
         dbms = mkPythonScriptWithDeps "dbms" (with pkgs; [ pass nurpkgs.pystdlib python3Packages.redis tmux vpnctl ])
           (readSubstituted ../../../subst.nix ./scripts/dbms.py);
       };
 
-      localinfra.systemtraits.instructions = ''
+      workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${lib.strings.escapeNixString
           (builtins.toJSON cfg.controlCenter.meta)}
       '';

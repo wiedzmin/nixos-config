@@ -29,11 +29,6 @@ in {
         type = types.str;
         default = homePrefix ".password-store";
       };
-      lockScreenCommand = mkOption {
-        description = "Command to use for screen locking";
-        type = types.str;
-        default = "${pkgs.i3lock-color}/bin/i3lock-color --keylayout 2 -c 232729 --pass-media-keys && ${pkgs.xorg.xset}/bin/xset dpms force off";
-      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -124,11 +119,6 @@ in {
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
-        {
-          key = [ "XF86ScreenSaver" ];
-          cmd = "${cfg.lockScreenCommand}";
-          mode = "root";
-        }
         {
           key = [ "p" ];
           cmd = "${pkgs.passctl}/bin/passctl";

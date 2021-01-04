@@ -280,7 +280,7 @@ in {
           (readSubstituted ../../subst.nix ./kbdctl.py);
       };
 
-      localinfra.systemtraits.instructions = ''
+      workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
           lib.strings.escapeNixString (builtins.toJSON config.wmCommon.keys)
         }
@@ -288,8 +288,6 @@ in {
           lib.strings.escapeNixString (builtins.toJSON config.wmCommon.modeBindings)
         }
       '';
-
-      programs.nm-applet.enable = true;
 
       home-manager.users.${user} = {
         xdg.configFile = {

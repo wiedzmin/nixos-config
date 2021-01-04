@@ -126,6 +126,11 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      assertions = [{
+        assertion = config.ext.networking.vpn.enable;
+        message = "navigation/webjumps: must enable vpn functionality.";
+      }];
+
       nixpkgs.config.packageOverrides = _: rec {
         search_prompt = mkPythonScriptWithDeps "search_prompt" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../subst.nix ./scripts/search_prompt.py);
@@ -156,7 +161,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       assertions = [{
-        assertion = config.localinfra.systemtraits.enable;
+        assertion = config.workstation.systemtraits.enable;
         message = "navigation/bookmarks: must enable systemtraits maintainence.";
       }];
 
@@ -177,7 +182,7 @@ in {
           }))' ";
         };
       };
-      localinfra.systemtraits.instructions = ''
+      workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${
           lib.strings.escapeNixString
           (builtins.toJSON (remoteWebjumps (enabledRemotes cfg.bookmarks.entries) cfg.bookmarks.sep cfg.bookmarks.tagSep))
@@ -414,7 +419,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
-      custom.xinput.xkeysnail.rc = lib.mkAfter ''
+      workstation.input.xkeysnail.rc = lib.mkAfter ''
         # Emacs-like keybindings in non-Emacs applications
         define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Alacritty"), {
             # Cursor
@@ -484,7 +489,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.snippets.enable) {
       assertions = [{
-        assertion = config.localinfra.systemtraits.enable;
+        assertion = config.workstation.systemtraits.enable;
         message = "navigation/snippets: must enable systemtraits maintainence.";
       }];
 
@@ -493,7 +498,7 @@ in {
           (readSubstituted ../subst.nix ./scripts/snippets.py);
       };
       home-manager.users.${user} = { home.packages = with pkgs; [ snippets ]; };
-      localinfra.systemtraits.instructions = ''
+      workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/snippets ${
           lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (forEach cfg.snippets.entries (s:
             nameValuePair

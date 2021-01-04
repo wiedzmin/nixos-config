@@ -35,7 +35,7 @@ in rec {
   gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
   ivyCandidatesCount = builtins.toString config.custom.navigation.emacs.ivy.candidatesCount;
   keybindingsCachePath = config.wmCommon.keybindingsCachePath;
-  lockScreenCommand = config.custom.security.lockScreenCommand;
+  lockScreenCommand = config.workstation.lockscreen.command.lock;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";
   lspPythonMsExtraPaths =
     builtins.concatStringsSep " " (lib.forEach config.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));

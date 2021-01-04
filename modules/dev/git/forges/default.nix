@@ -212,7 +212,7 @@ in {
       workspaceRoots = collectWorkspaceRoots cfg.forges;
     in {
       assertions = [{
-        assertion = config.localinfra.systemtraits.enable;
+        assertion = config.workstation.systemtraits.enable;
         message = "git/forges: must enable systemtraits maintainence.";
       }];
 
@@ -226,7 +226,7 @@ in {
           optionalAttrs (extraConfig != { }) extraConfig;
       };
       custom.navigation.workspaceRoots = workspaceRoots;
-      localinfra.systemtraits.instructions =
+      workstation.systemtraits.instructions =
         optionalString (credentials != { }) ''
           ${pkgs.redis}/bin/redis-cli set git/credentials_mapping ${
             strings.escapeNixString (builtins.toJSON credentials)

@@ -62,14 +62,6 @@ in rec {
       // lib.optionalAttrs (active != "") { OnUnitActiveSec = "${active}"; }
       // lib.optionalAttrs (cal != "") { OnCalendar = "${cal}"; };
   };
-  renderHosts = metadata:
-    builtins.concatStringsSep "\n"
-    (lib.mapAttrsToList (ip: meta: ip + "   " + (builtins.concatStringsSep " " (lib.forEach meta (x: x.host))))
-      (lib.groupBy (x: x.ip) (lib.flatten (lib.mapAttrsToList (host: meta:
-        (lib.forEach meta.ips (ip: {
-          "ip" = ip;
-          "host" = host;
-        }))) metadata))));
   mkIndent = width: with lib; (concatStrings (genList (const " ") width));
   mkNewlineAndIndent = width: with lib; "\n" + (concatStrings (genList (const " ") width));
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
