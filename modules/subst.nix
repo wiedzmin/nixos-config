@@ -11,7 +11,6 @@ in rec {
   bashExecutable = "/run/current-system/sw/bin/bash";
   booksSearchCommand = config.content.ebooks.searchCommand;
   combyExcludes = lib.concatStringsSep "," config.dev.misc.comby.excludes;
-  configResultPath = config.custom.packaging.configResultPath;
   defaultBrowser = config.attributes.browser.default.cmd;
   fallbackBrowser = config.attributes.browser.fallback.cmd;
   defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;

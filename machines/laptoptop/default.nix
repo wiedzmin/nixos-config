@@ -477,17 +477,23 @@ in {
     vpn.enable = true;
   };
 
-  custom.packaging = {
-    enable = true;
-    nix = {
-      helpers.enable = true;
-      search.enable = true;
+  ext.nix = {
+    core = {
+      enable = true;
+      permittedInsecurePackages = [
+        "openssl-1.0.2u" # TODO: check if we need it yet
+      ];
+      emacs.enable = true;
     };
-    misc.enable = true;
-    cachix.configuration = builtins.readFile ./secrets/cachix.dhall;
-    scripts.enable = true;
-    homeManagerBackups.enable = false;
-    emacs.enable = true;
+    cachix = {
+      enable = true;
+      configuration = builtins.readFile ./secrets/cachix.dhall;
+    };
+    dev = {
+      enable = true;
+      scripts.enable = true;
+    };
+    navigation.enable = true;
   };
 
   custom.paperworks = {

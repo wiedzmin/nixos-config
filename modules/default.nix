@@ -61,7 +61,10 @@
     ./networking/ssh
     ./networking/vpn
     ./networking/wireless
-    ./packaging
+    ./nix/cachix
+    ./nix/core
+    ./nix/dev
+    ./nix/navigation
     ./paperworks
     ./pim
     ./security

@@ -137,7 +137,7 @@
           description = "Various multimedia conversions.";
         };
         staging = {
-          path = ./modules/packaging/templates/staging;
+          path = ./modules/nix/core/templates/staging;
           description = "Staging packages sandbox environment.";
         };
       };
