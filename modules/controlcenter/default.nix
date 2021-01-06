@@ -7,6 +7,11 @@ let
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
+  dmenu_runapps = mkShellScriptWithDeps "dmenu_runapps"
+    (with pkgs; [ coreutils nurpkgs.dmenu-ng haskellPackages.yeganesh j4-dmenu-desktop ]) ''
+      j4-dmenu-desktop --display-binary --dmenu="(cat ; (stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
+        yeganesh -- -i -l 15 -fn '${config.wmCommon.fonts.dmenu}'"
+    '';
 in {
   options = {
     controlcenter = {
@@ -19,6 +24,27 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable networking toolset";
+      };
+      gmrun.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          Whether to enable gmrun.
+        '';
+      };
+      gmrun.historySize = mkOption {
+        type = types.int;
+        default = 1024;
+        description = ''
+          History length.
+        '';
+      };
+      gmrun.terminalApps = mkOption {
+        type = types.listOf types.str;
+        default = [ "info" "lynx" "man" "mc" "ssh" "vi" "vim" ];
+        description = ''
+          List of apps to always run in terminal.
+        '';
       };
       wm.enable = mkOption {
         type = types.bool;
@@ -43,6 +69,7 @@ in {
           (readSubstituted ../subst.nix ./scripts/uptime_info.sh);
       };
       home-manager.users.${user} = {
+        home.packages = with pkgs; [ dmenu_runapps j4-dmenu-desktop ];
         services.udiskie = {
           enable = true;
           automount = true;
@@ -125,6 +152,12 @@ in {
           (readSubstituted ../subst.nix ./scripts/ifconfless.py);
       };
     })
+    (mkIf (cfg.enable && cfg.gmrun.enable) {
+      home-manager.users.${user} = {
+        home.packages = with pkgs; [ gmrun ];
+        home.file = { ".gmrunrc".text = readSubstituted ../subst.nix ./assets/gmrunrc; };
+      };
+    })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
         {
@@ -135,6 +168,16 @@ in {
         {
           key = [ prefix "Shift" "u" ];
           cmd = "${pkgs.uptime_info}/bin/uptime_info";
+          mode = "root";
+        }
+        {
+          key = [ "XF86Launch1" ];
+          cmd = "${dmenu_runapps}/bin/dmenu_runapps";
+          mode = "root";
+        }
+        {
+          key = [ prefix "Shift" "p" ];
+          cmd = "${dmenu_runapps}/bin/dmenu_runapps";
           mode = "root";
         }
       ] ++ optionals (cfg.networking.enable) [{

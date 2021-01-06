@@ -20,7 +20,7 @@ in rec {
   direnvGranularityProject = emacsBoolToString (config.dev.direnv.emacs.granularity == "project");
   direnvGranularityFile = emacsBoolToString (config.dev.direnv.emacs.granularity == "file");
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
-  globalWorkspaceRoot = homePrefix config.custom.navigation.workspaceRootGlobal;
+  globalWorkspaceRoot = homePrefix config.navigation.bookmarks.workspaces.globalRoot;
   searchReposRoot = config.dev.navigation.projects.fuzzySearch.root;
   searchDepth = config.dev.navigation.projects.fuzzySearch.depth;
   emacsBrowserGenericProgram = "${pkgs.xdg_utils}/bin/xdg-open";
@@ -31,9 +31,9 @@ in rec {
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;
   gitWipChangedLinesTreshold = builtins.toString config.dev.git.savewip.minChangedLines;
-  gmrunHistorySize = builtins.toString config.custom.navigation.gmrun.historySize;
-  gmrunTerminalApps = lib.concatStringsSep " " config.custom.navigation.gmrun.terminalApps;
-  ivyCandidatesCount = builtins.toString config.custom.navigation.emacs.ivy.candidatesCount;
+  gmrunHistorySize = builtins.toString config.controlcenter.gmrun.historySize;
+  gmrunTerminalApps = lib.concatStringsSep " " config.controlcenter.gmrun.terminalApps;
+  ivyCandidatesCount = builtins.toString config.ide.emacs.navigation.ivy.candidatesCount;
   keybindingsCachePath = config.wmCommon.keybindingsCachePath;
   lockScreenCommand = config.workstation.lockscreen.command.lock;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";
@@ -60,15 +60,15 @@ in rec {
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
   xmobarMaybeFont = lib.optionalString (config.wmCommon.fonts.statusbar != "")
     ''font = "${config.wmCommon.fonts.statusbar}"${mkNewlineAndIndent 7}, '';
-} // lib.optionalAttrs (config.custom.browsers.firefox.enable) rec {
+} // lib.optionalAttrs (config.browsers.firefox.enable) rec {
   firefoxProfilePath = config.custom.programs.firefox.profiles.default.path;
-  firefoxSessionsHistoryLength = builtins.toString config.custom.browsers.firefox.sessions.historyLength;
-  firefoxSessionsNameTemplate = config.custom.browsers.firefox.sessions.nameTemplate;
-  firefoxSessionsPath = config.custom.browsers.firefox.sessions.path;
-  firefoxSessionsSizeThreshold = builtins.toString config.custom.browsers.firefox.sessions.sizeThreshold;
+  firefoxSessionsHistoryLength = builtins.toString config.browsers.firefox.sessions.historyLength;
+  firefoxSessionsNameTemplate = config.browsers.firefox.sessions.nameTemplate;
+  firefoxSessionsPath = config.browsers.firefox.sessions.path;
+  firefoxSessionsSizeThreshold = builtins.toString config.browsers.firefox.sessions.sizeThreshold;
   firefoxSessionstorePath = homePrefix ".mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
-} // lib.optionalAttrs (config.custom.browsers.qutebrowser.enable) rec {
-  qutebrowserSessionsNameTemplate = config.custom.browsers.qutebrowser.sessions.nameTemplate;
+} // lib.optionalAttrs (config.browsers.qutebrowser.enable) rec {
+  qutebrowserSessionsNameTemplate = config.browsers.qutebrowser.sessions.nameTemplate;
 } // lib.optionalAttrs (config.wm.xmonad.enable) rec {
   xmonadPrimaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.primary 20;
   xmonadSecondaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.secondary 22;

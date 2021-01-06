@@ -42,7 +42,7 @@ in {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ editorconfig-checker ];
         home.file = {
-          "${config.custom.navigation.workspaceRootGlobal}/.editorconfig".text = ''
+          "${config.navigation.bookmarks.workspaces.globalRoot}/.editorconfig".text = ''
             root = true
 
           '' + generators.toINI { } ({

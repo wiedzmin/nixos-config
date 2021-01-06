@@ -26,7 +26,7 @@ in {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ ccls clang clang-tools rr-unstable gdb ];
         programs.zsh.sessionVariables = {
-          _RR_TRACE_DIR = "${homePrefix config.custom.navigation.workspaceRootGlobal}/rr";
+          _RR_TRACE_DIR = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/rr";
         };
       };
       boot.kernel.sysctl = {

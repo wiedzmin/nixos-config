@@ -33,7 +33,7 @@ in {
     (mkIf (cfg.enable && cfg.ghq.enable) {
       environment.systemPackages = with pkgs; [ gitAndTools.ghq ];
       home-manager.users.${user} = {
-        programs.git.extraConfig = { "ghq" = { root = homePrefix config.custom.navigation.workspaceRootGlobal; }; };
+        programs.git.extraConfig = { "ghq" = { root = homePrefix config.navigation.bookmarks.workspaces.globalRoot; }; };
         programs.zsh.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
       };
     })

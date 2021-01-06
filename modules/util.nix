@@ -97,7 +97,7 @@ in rec {
   maybeAttrString = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else ph;
   maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
   emacsBoolToString = v: if v == true then "t" else "nil";
-  wsRoot = key: lib.getAttrFromPath [ key ] config.custom.navigation.workspaceRoots;
+  wsRoot = key: lib.getAttrFromPath [ key ] config.navigation.bookmarks.workspaces.roots;
   wsRootAbs = key: homePrefix (wsRoot key);
   selectorFunction = lib.mkOptionType {
     name = "selectorFunction";

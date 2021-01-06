@@ -9,6 +9,7 @@
     ./appearance/wallpaper
     ./appearance/xresources
     ./browsers/chromium
+    ./browsers/core
     ./browsers/firefox
     ./browsers/firefox/impl.nix
     ./browsers/nyxt
@@ -52,7 +53,8 @@
     ./email/mbsync.nix
     ./gc
     ./knowledgebase
-    ./navigation
+    ./navigation/bookmarks
+    ./navigation/completion
     ./networking/hosts
     ./networking/messengers
     ./networking/nmconnections
@@ -64,6 +66,7 @@
     ./pim
     ./security
     ./shell
+    ./shell/twopanes
     ./shell/misc/tmux.nix
     ./virt
     ./wm

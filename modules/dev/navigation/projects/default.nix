@@ -26,7 +26,7 @@ in {
       };
       fuzzySearch.root = mkOption {
         type = types.str;
-        default = homePrefix config.custom.navigation.workspaceRootGlobal;
+        default = homePrefix config.navigation.bookmarks.workspaces.globalRoot;
         description = "Search root.";
       };
       fuzzySearch.depth = mkOption {
@@ -43,7 +43,7 @@ in {
   };
 
   config = mkMerge [
-    (mkIf (cfg.bookmarks.enable && config.custom.navigation.bookmarks.enable) {
+    (mkIf (cfg.bookmarks.enable && config.navigation.bookmarks.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         open-project = mkPythonScriptWithDeps "open-project" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../../../subst.nix ./scripts/open-project.py);
@@ -61,7 +61,7 @@ in {
         key = [ "r" ];
         cmd = "${pkgs.reposearch}/bin/reposearch";
         mode = "dev";
-      }] ++ lib.optionals (cfg.bookmarks.enable && config.custom.navigation.bookmarks.enable) [{
+      }] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable) [{
         key = [ "p" ];
         cmd = "${pkgs.open-project}/bin/open-project";
         mode = "dev";

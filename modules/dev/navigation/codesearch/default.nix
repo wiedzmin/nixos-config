@@ -26,8 +26,8 @@ in {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ codesearch ];
         programs = {
-          zsh.sessionVariables = { CSEARCHINDEX = "${homePrefix config.custom.navigation.workspaceRootGlobal}/.csearchindex"; };
-          bash.sessionVariables = { CSEARCHINDEX = "${homePrefix config.custom.navigation.workspaceRootGlobal}/.csearchindex"; };
+          zsh.sessionVariables = { CSEARCHINDEX = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex"; };
+          bash.sessionVariables = { CSEARCHINDEX = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex"; };
         };
       };
       systemd.user.services."codesearch-reindex" = {
@@ -36,8 +36,8 @@ in {
         partOf = [ "graphical.target" ];
         serviceConfig = {
           Type = "oneshot";
-          Environment = [ "CSEARCHINDEX=${homePrefix config.custom.navigation.workspaceRootGlobal}/.csearchindex" ];
-          ExecStart = "${pkgs.codesearch}/bin/cindex ${homePrefix config.custom.navigation.workspaceRootGlobal}";
+          Environment = [ "CSEARCHINDEX=${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex" ];
+          ExecStart = "${pkgs.codesearch}/bin/cindex ${homePrefix config.navigation.bookmarks.workspaces.globalRoot}";
           StandardOutput = "journal";
           StandardError = "journal";
         };

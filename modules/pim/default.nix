@@ -208,7 +208,7 @@ in {
               (lambda () (f-entries "${root}"
                                     (lambda (entry) (when (and (f-file? entry)
                                                                (s-suffix? ".org" entry)
-                                                               (not (s-prefix? "${config.custom.browsers.firefox.sessions.path}" entry))
+                                                               (not (s-prefix? "${config.browsers.firefox.sessions.path}" entry))
                                                                (not (s-contains? "journal" entry)) ;; maybe make option for such ignores
                                                                (file-exists-p entry))
                                                       (push entry org-agenda-files))) t)))

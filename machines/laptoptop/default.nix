@@ -212,6 +212,7 @@ in {
 
   controlcenter = {
     enable = true;
+    gmrun.enable = true;
     wm.enable = true;
   };
 
@@ -241,7 +242,8 @@ in {
     };
   };
 
-  custom.browsers = {
+  browsers = {
+    core.enable = true;
     qutebrowser = {
       enable = true;
       isDefault = true;
@@ -432,16 +434,16 @@ in {
     emacs.enable = true;
   };
 
-  custom.navigation = {
-    enable = true;
-    gmrun.enable = true;
-    mc.enable = true;
-    misc.enable = true;
-    snippets.enable = true;
-    emacs.enable = true;
-    wm.enable = true;
-    bookmarks.enable = true;
-    workspaceRootGlobal = "workspace/repos";
+  navigation = {
+    bookmarks = {
+      enable = true;
+      workspaces.globalRoot = "workspace/repos";
+      emacs.enable = true;
+    };
+    completion = {
+      enable = true;
+      wm.enable = true;
+    };
   };
 
   ext.networking = {
@@ -561,6 +563,7 @@ in {
     randr = {
       enable = true;
       heads.orientation.secondary = "left";
+      wm.enable = true;
     };
     input = {
       core = {
@@ -612,6 +615,13 @@ in {
     polkit.silentAuth = true;
     emacs.enable = true;
     wm.enable = true;
+  };
+
+  shell = {
+    twopanes = {
+      enable = true;
+      wm.enable = true;
+    };
   };
 
   custom.shell = {

@@ -225,7 +225,7 @@ in {
           optionalAttrs (urlSubstitutes != { }) urlSubstitutes //
           optionalAttrs (extraConfig != { }) extraConfig;
       };
-      custom.navigation.workspaceRoots = workspaceRoots;
+      navigation.bookmarks.workspaces.roots = workspaceRoots;
       workstation.systemtraits.instructions =
         optionalString (credentials != { }) ''
           ${pkgs.redis}/bin/redis-cli set git/credentials_mapping ${

@@ -4,7 +4,7 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.custom.browsers.qutebrowser;
+  cfg = config.browsers.qutebrowser;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   nixpkgs-qb = import inputs.nixpkgs-03_12_20 ({
@@ -14,7 +14,7 @@ let
   prefix = config.wmCommon.prefix;
 in {
   options = {
-    custom.browsers.qutebrowser = {
+    browsers.qutebrowser = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -202,7 +202,7 @@ in {
             };
             downloads = {
               location = {
-                directory = config.custom.browsers.qutebrowser.downloadPath;
+                directory = config.browsers.qutebrowser.downloadPath;
                 prompt = false;
                 remember = true;
                 suggestion = "both";
@@ -437,9 +437,13 @@ in {
           message = "browsers: qutebrowser: cannot be the default and fallback at the same time.";
         }
         {
-          assertion = !config.custom.browsers.chromium.isDefault && !config.custom.browsers.nyxt.isDefault
-            && !config.custom.browsers.firefox.isDefault;
+          assertion = !config.browsers.chromium.isDefault && !config.browsers.nyxt.isDefault
+            && !config.browsers.firefox.isDefault;
           message = "browsers: qutebrowser: there should be exactly one default.";
+        }
+        {
+          assertion = config.browsers.core.enable;
+          message = "browsers/qutebrowser: must enable browsers/core.";
         }
       ];
 
@@ -458,9 +462,13 @@ in {
           message = "browsers: qutebrowser: cannot be the default and fallback at the same time.";
         }
         {
-          assertion = !config.custom.browsers.chromium.isFallback && !config.custom.browsers.nyxt.isFallback
-            && !config.custom.browsers.firefox.isFallback;
+          assertion = !config.browsers.chromium.isFallback && !config.browsers.nyxt.isFallback
+            && !config.browsers.firefox.isFallback;
           message = "browsers: qutebrowser: there should be exactly one fallback.";
+        }
+        {
+          assertion = config.browsers.core.enable;
+          message = "browsers/qutebrowser: must enable browsers/core.";
         }
       ];
       attributes.browser.fallback.cmd = cfg.command;

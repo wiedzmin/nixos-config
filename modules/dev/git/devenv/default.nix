@@ -20,7 +20,7 @@ in {
       };
       devEnv.backupRoot = mkOption {
         type = types.str;
-        default = "${homePrefix config.custom.navigation.workspaceRootGlobal}/.devenv-backup";
+        default = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.devenv-backup";
         description = "File name for dev-env files list.";
       };
       emacs.enable = mkOption {

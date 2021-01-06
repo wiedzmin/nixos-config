@@ -82,7 +82,7 @@ let
       '';
     };
   };
-
+  prefix = config.wmCommon.prefix;
 in {
   options = {
     custom.shell = {
@@ -517,7 +517,7 @@ in {
       home-manager.users."${user}" = {
         home.file = {
           "${cfg.bookmarks.path}".text =
-            localBookmarksKVText (enabledLocals config.custom.navigation.bookmarks.entries);
+            localBookmarksKVText (enabledLocals config.navigation.bookmarks.entries);
         };
         programs.fzf.enable = true;
         programs.zsh = {
@@ -546,11 +546,18 @@ in {
       ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/shell.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [{
-        key = [ "t" ];
-        cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions";
-        mode = "select";
-      }];
+      wmCommon.keys = [
+        {
+          key = [ "t" ];
+          cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions";
+          mode = "select";
+        }
+        {
+          key = [ prefix "Shift" "Return" ];
+          cmd = "${cfg.terminal}";
+          mode = "root";
+        }
+      ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ tmuxp_sessions ]; };

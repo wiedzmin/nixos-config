@@ -54,7 +54,7 @@ in {
           mkPythonScriptWithDeps "update-bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../../subst.nix ./scripts/update-bookshelf.py);
       };
-      systemd.user.services = builtins.listToAttrs (forEach (localEbooks config.custom.navigation.bookmarks.entries)
+      systemd.user.services = builtins.listToAttrs (forEach (localEbooks config.navigation.bookmarks.entries)
         (root: {
           name = "update-ebooks-${concatStringsSep "-" (takeLast 2 (splitString "/" root))}";
           value = {

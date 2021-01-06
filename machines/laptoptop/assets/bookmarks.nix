@@ -3,7 +3,7 @@ with import ../../../modules/util.nix { inherit config inputs lib pkgs; };
 
 rec {
   # IDEA: make script for extracting from shell history based on substring
-  custom.navigation.bookmarks.entries = {
+  navigation.bookmarks.entries = {
     gourmet = { local.path = "${wsRoot "github"}/wiedzmin/gourmet"; };
     home-manager = {
       local.path = "${wsRoot "github"}/rycee/home-manager";

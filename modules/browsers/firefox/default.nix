@@ -4,13 +4,13 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.custom.browsers.firefox;
+  cfg = config.browsers.firefox;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
   options = {
-    custom.browsers.firefox = {
+    browsers.firefox = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -395,9 +395,13 @@ in {
           message = "browsers: firefox: cannot be the default and fallback at the same time.";
         }
         {
-          assertion = !config.custom.browsers.chromium.isDefault && !config.custom.browsers.nyxt.isDefault
-            && !config.custom.browsers.qutebrowser.isDefault;
+          assertion = !config.browsers.chromium.isDefault && !config.browsers.nyxt.isDefault
+            && !config.browsers.qutebrowser.isDefault;
           message = "browsers: firefox: there should be exactly one default.";
+        }
+        {
+          assertion = config.browsers.core.enable;
+          message = "browsers/firefox: must enable browsers/core.";
         }
       ];
 
@@ -417,9 +421,13 @@ in {
           message = "browsers: firefox: cannot be the default and fallback at the same time.";
         }
         {
-          assertion = !config.custom.browsers.chromium.isFallback && !config.custom.browsers.nyxt.isFallback
-            && !config.custom.browsers.qutebrowser.isFallback;
+          assertion = !config.browsers.chromium.isFallback && !config.browsers.nyxt.isFallback
+            && !config.browsers.qutebrowser.isFallback;
           message = "browsers: firefox: there should be exactly one fallback.";
+        }
+        {
+          assertion = config.browsers.core.enable;
+          message = "browsers/firefox: must enable browsers/core.";
         }
       ];
       attributes.browser.fallback.cmd = cfg.command;

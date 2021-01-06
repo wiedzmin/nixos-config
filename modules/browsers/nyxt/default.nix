@@ -4,12 +4,12 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.custom.browsers.nyxt;
+  cfg = config.browsers.nyxt;
   user = config.attributes.mainUser.name;
   prefix = config.wmCommon.prefix;
 in {
   options = {
-    custom.browsers.nyxt = {
+    browsers.nyxt = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -67,9 +67,13 @@ in {
           message = "browsers: nyxt: cannot be the default and fallback at the same time.";
         }
         {
-          assertion = !config.custom.browsers.chromium.isDefault && !config.custom.browsers.qutebrowser.isDefault
-            && !config.custom.browsers.firefox.isDefault;
+          assertion = !config.browsers.chromium.isDefault && !config.browsers.qutebrowser.isDefault
+            && !config.browsers.firefox.isDefault;
           message = "browsers: nyxt: there should be exactly one default.";
+        }
+        {
+          assertion = config.browsers.core.enable;
+          message = "browsers/nyxt: must enable browsers/core.";
         }
       ];
 
@@ -86,9 +90,13 @@ in {
           message = "browsers: nyxt: cannot be the default and fallback at the same time.";
         }
         {
-          assertion = !config.custom.browsers.chromium.isFallback && !config.custom.browsers.qutebrowser.isFallback
-            && !config.custom.browsers.firefox.isFallback;
+          assertion = !config.browsers.chromium.isFallback && !config.browsers.qutebrowser.isFallback
+            && !config.browsers.firefox.isFallback;
           message = "browsers: nyxt: there should be exactly one fallback.";
+        }
+        {
+          assertion = config.browsers.core.enable;
+          message = "browsers/nyxt: must enable browsers/core.";
         }
       ];
       attributes.browser.fallback.cmd = cfg.command;
