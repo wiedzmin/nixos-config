@@ -67,7 +67,7 @@ in {
         }
       '';
 
-      custom.pim.timeTracking.rules = with config.attributes.browser; ''
+      pim.timetracking.rules = with config.attributes.browser; ''
         -- TODO: parameterize web resources
         current window $program == [${
           concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]

@@ -286,7 +286,7 @@ in {
       home-manager.users.${user} = {
         home.packages = [ stable.libreoffice ];
       };
-      custom.pim.timeTracking.rules = ''
+      pim.timetracking.rules = ''
         current window $program == "libreoffice" ==> tag activity:paperworks,
         current window $program == "libreoffice" ==> tag program:libreoffice,
       '';

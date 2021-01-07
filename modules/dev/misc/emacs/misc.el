@@ -166,3 +166,15 @@
         ([remap xref-find-apropos] . lsp-ivy-global-workspace-symbol))
   (:map custom-nav-map
         ("s" . lsp-ivy-global-workspace-symbol)))
+
+(use-package plantuml-mode
+  :mode "\\.plantuml\\'"
+  :custom
+  (plantuml-jar-path "@plantumlJar@")
+  (org-plantuml-jar-path plantuml-jar-path)
+  :config
+  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
+  (org-babel-do-load-languages 'org-babel-load-languages
+                               '((plantuml . t))))
+
+(use-package blockdiag-mode)

@@ -44,11 +44,11 @@ in rec {
   nmcliBinary = "${pkgs.networkmanager}/bin/nmcli"; # because there is no `bin` output for some reason
   orgDir = config.ide.emacs.core.orgDir;
   orgKbDir = homePrefix "docs/org-kb";
-  orgWarningsFiledir = builtins.dirOf config.custom.pim.org.warningsFile;
-  orgWarningsFilename = config.custom.pim.org.warningsFile;
+  orgWarningsFiledir = builtins.dirOf config.pim.orgmode.warningsFile;
+  orgWarningsFilename = config.pim.orgmode.warningsFile;
   passwordStorePath = config.custom.security.passwordStorePath;
   passwordPlaceholder = config.attributes.secret;
-  pimOrgAgendaElPatch = config.custom.pim.org.agendaElPatch;
+  pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   python3Binary = "${pkgs.python3}/bin/python3";
   systemTimeZone = config.time.timeZone;

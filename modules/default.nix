@@ -66,7 +66,9 @@
     ./nix/dev
     ./nix/navigation
     ./paperworks
-    ./pim
+    ./pim/orgmode
+    ./pim/scheduling
+    ./pim/timetracking
     ./security
     ./shell
     ./shell/twopanes

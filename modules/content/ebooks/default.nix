@@ -74,7 +74,7 @@ in {
             };
           };
         }));
-      custom.pim.timeTracking.rules = ''
+      pim.timetracking.rules = ''
         current window $title =~ m!.*papers/.*! ==> tag ebooks:papers,
         ${
           concatStringsSep ''

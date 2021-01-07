@@ -1,54 +1,48 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../util.nix { inherit config inputs lib pkgs; };
+with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.custom.pim;
+  cfg = config.pim.timetracking;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   nixpkgs-arbtt = import inputs.nixpkgs-arbtt ({
     config = config.nixpkgs.config;
     system = "x86_64-linux";
   });
 in {
   options = {
-    custom.pim = {
+    pim.timetracking = {
       enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable personal information management infra/tools.";
-      };
-      timeTracking.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable personal time-tracking infra/tools.";
       };
-      timeTracking.inactiveSec = mkOption {
+      inactiveSec = mkOption {
         type = types.int;
         default = 60;
         description = "arbtt inactivity treshold.";
       };
-      timeTracking.inactiveTag = mkOption {
+      inactiveTag = mkOption {
         type = types.str;
         default = "inactive";
         description = "arbtt tag for idle time. `inactive` is treated specially.";
       };
-      timeTracking.rules = mkOption {
+      rules = mkOption {
         type = types.lines;
         default = "";
         description = "arbtt tagging rules.";
       };
-      timeTracking.config = mkOption {
+      config = mkOption {
         type = types.lines;
         default = ''
-          $idle > ${builtins.toString cfg.timeTracking.inactiveSec} ==> tag ${cfg.timeTracking.inactiveTag},
+          $idle > ${builtins.toString cfg.inactiveSec} ==> tag ${cfg.inactiveTag},
 
           -- debug rules
           -- tag apps:$current.program,
           -- tag desktop:$desktop
           -- tag Activity:other_$current.program___$current.title, -- catch-all for new patterns and uncatched apps
 
-          ${cfg.timeTracking.rules}
+          ${cfg.rules}
 
           (current window $program =~ /.*/) && ($idle <=60) ==> tag total-time:active,
           $idle > 60 ==> tag total-time:inactive,
@@ -173,86 +167,11 @@ in {
         internal = true;
         description = "Whether to enable personal time-tracking infra/tools.";
       };
-      clients.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable various network clients";
-      };
-      org.warningsFile = mkOption {
-        type = types.str;
-        default = "$HOME/warnings.org";
-        description = "Org-mode file to place accidental deletes diff.";
-      };
-      org.agendaUpdateDelay = mkOption {
-        type = types.int;
-        default = 15000;
-        description = "Msec amount of Emacs idle time to bass before updating Org agenda.";
-      };
-      org.agendaRoots = mkOption {
-        type = types.attrs;
-        default = { };
-        description = ''
-          Paths to search Org files for agenda.
-
-          Each entry associates with msec timedelta, which means
-          the amount of idle Emacs time to pass before performing
-          particular path crawling.
-        '';
-      };
-      org.agendaElPatch = mkOption {
-        type = types.lines;
-        default = ''
-          ${lib.concatStringsSep "\n" (lib.mapAttrsToList (root: delay: ''
-            (deferred:nextc
-              (deferred:wait-idle ${builtins.toString delay})
-              (lambda () (f-entries "${root}"
-                                    (lambda (entry) (when (and (f-file? entry)
-                                                               (s-suffix? ".org" entry)
-                                                               (not (s-prefix? "${config.browsers.firefox.sessions.path}" entry))
-                                                               (not (s-contains? "journal" entry)) ;; maybe make option for such ignores
-                                                               (file-exists-p entry))
-                                                      (push entry org-agenda-files))) t)))
-          '') cfg.org.agendaRoots)}
-        '';
-        visible = false;
-        readOnly = true;
-        internal = true;
-        description = "Elisp code to insert to orgmode configuration.";
-      };
-      scheduling.enable = mkOption {
-        type = types.bool;
-        description = ''
-          Whether to enable scheduled tasks, such as opening browser with links,
-          starting applications or so.
-        '';
-        default = false;
-      };
-      scheduling.entries = mkOption {
-        type = types.attrs;
-        example = {
-          "read_mail" = {
-            cal = "Mon,Tue *-*-01..04 12:00:00";
-            cmd = "${config.attributes.browser.fallback} https://mail.google.com";
-          };
-        };
-        default = { };
-        description = ''
-          Scheduled task entries.
-
-          Timestamp for task issuing should be presented in systemd timers' OnCalendar entries format.
-          Task definition is simple a shell command line to execute.
-        '';
-      };
-      emacs.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable Emacs pim-related setup.";
-      };
     };
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable && cfg.timeTracking.enable) {
+    (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
         tt_capture = mkPythonScriptWithDeps "tt_capture" (with pkgs; [
           nurpkgs.pystdlib
@@ -260,95 +179,19 @@ in {
           python3Packages.pytz
           python3Packages.xlib
           xprintidle-ng
-        ]) (readSubstituted ../subst.nix ./scripts/tt_capture.py);
+        ]) (readSubstituted ../../subst.nix ./scripts/tt_capture.py);
       };
       services.arbtt = {
         enable = true;
         package = nixpkgs-arbtt.haskellPackages.arbtt;
       };
       home-manager.users."${user}" = {
-        home.file = { ".arbtt/categorize.cfg".text = cfg.timeTracking.config; };
+        home.file = { ".arbtt/categorize.cfg".text = cfg.config; };
         home.packages = with pkgs;
           [
             nixpkgs-arbtt.haskellPackages.arbtt # for stats viewing
           ] ++ lib.optionals config.attributes.debug.scripts [ tt_capture ];
       };
-    })
-    (mkIf (cfg.enable && cfg.scheduling.enable) {
-      home-manager.users."${user}" = {
-        home.activation.ensureSchedulingTimers = {
-          after = [ ];
-          before = [ "checkLinkTargets" ];
-          # FIXME: parameterize DBUS_SESSION_BUS_ADDRESS value
-          data = ''
-            export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
-            ${lib.concatStringsSep "\n"
-            (lib.mapAttrsToList (name: _: "${pkgs.systemd}/bin/systemctl --user restart ${name}.timer")
-              cfg.scheduling.entries)}
-          '';
-        };
-      };
-      systemd.user.services = lib.mapAttrs (name: meta: {
-        description = "${name}";
-        serviceConfig = {
-          Type = "oneshot";
-          Environment = [ "DISPLAY=:0" ];
-          ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
-          ExecStart = "${meta.cmd}";
-          StandardOutput = "journal";
-          StandardError = "journal";
-        };
-      }) cfg.scheduling.entries;
-      systemd.user.timers = lib.mapAttrs (name: meta: {
-        description = "${name}";
-        wantedBy = [ "timers.target" ];
-        timerConfig = { OnCalendar = meta.cal; };
-      }) cfg.scheduling.entries;
-    })
-    (mkIf (cfg.enable && cfg.clients.enable) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ davfs2 gcalcli ]; };
-    })
-    (mkIf (cfg.enable && cfg.emacs.enable) {
-      nixpkgs.config.packageOverrides = _: rec {
-        org-capture = mkPythonScriptWithDeps "org-capture" (with pkgs; [ emacs nurpkgs.pystdlib tmux xsel ])
-          (readSubstituted ../subst.nix ./scripts/org-capture.py);
-      };
-
-      custom.programs.tmux.bindings.copyMode = { "M-n" = ''run-shell "${pkgs.org-capture}/bin/org-capture ns"''; };
-      custom.pim.org.agendaRoots = { "${config.ide.emacs.core.orgDir}" = 3000; };
-      custom.pim.timeTracking.rules = ''
-        current window ($title =~ /^emacs - [^ ]+\.org .*$/) ==> tag edit:orgmode,
-      '';
-      home-manager.users."${user}" = { home.packages = with pkgs; [ plantuml ]; };
-      ide.emacs.core.extraPackages = epkgs: [
-        epkgs.blockdiag-mode
-        epkgs.counsel-org-clock
-        epkgs.deft
-        epkgs.doct
-        epkgs.helm-org-rifle
-        epkgs.ivy-omni-org
-        epkgs.ob-async
-        epkgs.ob-blockdiag
-        epkgs.ob-restclient
-        epkgs.org-bullets
-        epkgs.org-capture-pop-frame
-        epkgs.org-clock-today
-        epkgs.org-drill
-        epkgs.org-plus-contrib
-        epkgs.org-pomodoro
-        epkgs.org-ql
-        epkgs.org-randomnote
-        epkgs.org-recent-headings
-        epkgs.org-rich-yank
-        epkgs.org-sticky-header
-        epkgs.orgit
-        epkgs.plantuml-mode
-        epkgs.russian-holidays
-      ];
-      ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/pim.el;
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ org-capture ]; };
     })
   ];
 }

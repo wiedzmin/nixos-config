@@ -68,9 +68,9 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ nurpkgs.comby tagref go-task ];
+        home.packages = with pkgs; [ go-task nurpkgs.comby plantuml tagref ];
       };
-      custom.pim.timeTracking.rules = with config.attributes.browser; ''
+      pim.timetracking.rules = with config.attributes.browser; ''
         -- TODO: parameterize IDE (probably, not only emacs)
         ${
           concatStringsSep ''
@@ -121,12 +121,14 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs:
         [
+          epkgs.blockdiag-mode
           epkgs.comby
           epkgs.elmacro
           epkgs.fic-mode
           epkgs.jinja2-mode
           epkgs.lsp-mode
           epkgs.lsp-ui
+          epkgs.plantuml-mode
           epkgs.webpaste
           epkgs.yaml-mode
         ];

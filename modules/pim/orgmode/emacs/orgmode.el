@@ -7,25 +7,10 @@
         ("l" . helm-org-rifle)
         ("o" . helm-org-rifle-occur)))
 
-(use-package plantuml-mode
-  :mode "\\.plantuml\\'"
-  :custom
-  (plantuml-jar-path "@plantumlJar@")
-  (org-plantuml-jar-path plantuml-jar-path)
-  :config
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '((plantuml . t))))
-
-(use-package blockdiag-mode)
-
 (use-package doct
   :commands (doct))
 
-(use-package calendar
-  :custom
-  (calendar-week-start-day 1))
-
+;;TODO: relocate ob-* appropriately (add orgmode.enable options respectively)
 (use-package ob-blockdiag
   :commands (org-babel-execute:blockdiag))
 

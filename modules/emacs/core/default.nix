@@ -127,7 +127,7 @@ in {
         *.elc
         .dir-locals.el
       '';
-      custom.pim.timeTracking.rules = ''
+      pim.timetracking.rules = ''
         current window ($title =~ /^emacs - [^ ]+\.el .*$/) ==> tag coding:elisp,
       '';
       ide.emacs.core.extraPackages = epkgs:

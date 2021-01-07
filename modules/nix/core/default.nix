@@ -109,7 +109,7 @@ in {
       };
 
       dev.misc.timeTracking.extensions.dev = { "nix" = "coding:nix"; };
-      custom.pim.timeTracking.rules = ''
+      pim.timetracking.rules = ''
         current window $title =~ /nixos-rebuild/ ==> tag packaging:nixos-rebuild,
 
         current window ($program == "emacs" && $title =~ m!(?:/etc)/nixos/!) ==> tag project:nixos-config,

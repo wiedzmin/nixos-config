@@ -518,11 +518,13 @@ in {
     publishing = { enable = true; };
   };
 
-  custom.pim = {
-    enable = true;
-    emacs.enable = true;
-    scheduling.enable = true;
-    timeTracking.enable = true;
+  pim = {
+    orgmode.enable = true;
+    scheduling = {
+      enable = true;
+      emacs.enable = true;
+    };
+    timetracking.enable = true;
   };
 
   workstation = {
