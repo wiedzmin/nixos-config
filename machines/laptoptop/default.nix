@@ -649,18 +649,23 @@ in {
     zsh.enable = true;
   };
 
-  custom.virtualization = {
-    enable = true;
+  ext.virtualization = {
     docker = {
-      enable = true;
+      core = {
+        enable = true;
+        wm.enable = true;
+      };
       devdns = {
         enable = true;
-        autoStart = false;
+        wm.enable = true;
+      };
+      swarm = {
+        enable = true;
+        wm.enable = true;
       };
     };
     libvirt.enable = true;
     virtualbox.enable = true;
-    wm.enable = true;
   };
 
   dbms = {

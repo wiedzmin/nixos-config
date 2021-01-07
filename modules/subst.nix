@@ -13,7 +13,7 @@ in rec {
   combyExcludes = lib.concatStringsSep "," config.dev.misc.comby.excludes;
   defaultBrowser = config.attributes.browser.default.cmd;
   fallbackBrowser = config.attributes.browser.fallback.cmd;
-  defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;
+  defaultContainerShell = config.ext.virtualization.docker.core.defaultContainerShell;
   defaultVTCmd = config.attributes.defaultVTCommand;
   deftPath = homePrefix "docs/deft";
   direnvGranularityProject = emacsBoolToString (config.dev.direnv.emacs.granularity == "project");

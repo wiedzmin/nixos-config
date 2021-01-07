@@ -57,11 +57,6 @@ in {
         default = false;
         description = "Whether to enable development infra for Emacs.";
       };
-      wm.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable WM keybindings.";
-      };
     };
   };
 
@@ -140,20 +135,6 @@ in {
           data = "mkdir -p ${config.ide.emacs.core.dataDir}/lsp";
         };
       };
-    })
-    (mkIf (cfg.enable && cfg.wm.enable && config.custom.virtualization.docker.enable) {
-      wmCommon.keys = [
-        {
-          key = [ "Control" "d" ];
-          cmd = "${pkgs.systemd}/bin/systemctl restart docker-devdns.service";
-          mode = "dev";
-        }
-        {
-          key = [ "Control" "Shift" "d" ];
-          cmd = "${pkgs.systemd}/bin/systemctl stop docker-devdns.service";
-          mode = "dev";
-        }
-      ];
     })
   ];
 }

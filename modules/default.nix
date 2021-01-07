@@ -81,7 +81,11 @@
     ./shell/tools
     ./shell/twopanes
     ./shell/zsh
-    ./virt
+    ./virt/docker/core
+    ./virt/docker/devdns
+    ./virt/docker/swarm
+    ./virt/libvirt
+    ./virt/virtualbox
     ./wm
     ./wm/i3
     ./wm/stumpwm
