@@ -51,7 +51,6 @@ in {
             YSU_MODE = "ALL";
           } // optionalAttrs (cfg.recent.backend == "mcfly") {
             MCFLY_FUZZY = "true";
-            MCFLY_LIGHT = "TRUE";
           };
         };
       };
