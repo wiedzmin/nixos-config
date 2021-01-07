@@ -626,21 +626,27 @@ in {
   };
 
   shell = {
+    bookmarks.enable = true;
+    core = {
+      enable = true;
+      dev.enable = true;
+    };
+    completion.enable = true;
+    prompts.liquid.enable = true;
+    tmux = {
+      enable = true;
+      wm.enable = true;
+    };
+    tools.enable = true;
+    vt.alacritty = {
+      enable = true;
+      wm.enable = true;
+    };
     twopanes = {
       enable = true;
       wm.enable = true;
     };
-  };
-
-  custom.shell = {
-    enable = true;
-    alacritty.enable = true;
-    bookmarks.enable = true;
-    tmux.enable = true;
-    toolsng.enable = true;
-    liquidPrompt.enable = true;
-    emacs.enable = true;
-    wm.enable = true;
+    zsh.enable = true;
   };
 
   custom.virtualization = {

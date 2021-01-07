@@ -14,7 +14,7 @@ in rec {
   defaultBrowser = config.attributes.browser.default.cmd;
   fallbackBrowser = config.attributes.browser.fallback.cmd;
   defaultContainerShell = config.custom.virtualization.docker.defaultContainerShell;
-  defaultTerminal = config.custom.shell.terminal;
+  defaultVTCmd = config.attributes.defaultVTCommand;
   deftPath = homePrefix "docs/deft";
   direnvGranularityProject = emacsBoolToString (config.dev.direnv.emacs.granularity == "project");
   direnvGranularityFile = emacsBoolToString (config.dev.direnv.emacs.granularity == "file");
@@ -53,7 +53,7 @@ in rec {
   python3Binary = "${pkgs.python3}/bin/python3";
   systemTimeZone = config.time.timeZone;
   screenshotsBasedir = config.content.screenshots.baseDir;
-  tmuxDefaultSession = config.custom.shell.tmux.defaultSession;
+  tmuxDefaultSession = config.shell.tmux.defaultSession;
   urlRegexPy = config.attributes.regexes."url"."py";
   xprintidleBinary = "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";

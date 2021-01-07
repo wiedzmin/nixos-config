@@ -46,7 +46,7 @@ if not operation:
 
 if operation in ["journal", "status"]:
     unit_show(service, operation, user=('user' in service),
-              shell=["@defaultTerminal@", "-e"], tmux_session="@tmuxDefaultSession@")
+              shell=["@defaultVTCmd@", "-e"], tmux_session="@tmuxDefaultSession@")
     switch_desktop(1)
 else:
     unit_perform(service, operation, user=('user' in service))

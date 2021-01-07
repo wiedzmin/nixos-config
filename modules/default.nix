@@ -70,9 +70,17 @@
     ./pim/scheduling
     ./pim/timetracking
     ./security
-    ./shell
+    ./shell/alacritty
+    ./shell/bookmarks
+    ./shell/completion
+    ./shell/core
+    ./shell/prompts/liquid
+    ./shell/prompts/ohmyzsh
+    ./shell/tmux
+    ./shell/tmux/impl.nix
+    ./shell/tools
     ./shell/twopanes
-    ./shell/misc/tmux.nix
+    ./shell/zsh
     ./virt
     ./wm
     ./wm/i3

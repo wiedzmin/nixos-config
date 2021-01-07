@@ -169,5 +169,10 @@ with lib;
         };
       };
     };
+    defaultVTCommand = mkOption {
+      type = types.str;
+      default = "";
+      description = "Default virtual terminal command";
+    };
   };
 }

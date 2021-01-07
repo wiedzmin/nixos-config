@@ -40,9 +40,9 @@ if host:
            sys.exit(1)
 
     if args.ignore_tmux:
-        term_create_window(cmd, term_cmd=["@defaultTerminal@", "-e"])
+        term_create_window(cmd, term_cmd=["@defaultVTCmd@", "-e"])
     else:
         result = tmux_create_window(cmd, session_name=host_meta.get("tmux", "@tmuxDefaultSession@"),
                                     window_title="ssh :: {host}")
         if not result:
-            term_create_window(cmd, term_cmd=["@defaultTerminal@", "-e"])
+            term_create_window(cmd, term_cmd=["@defaultVTCmd@", "-e"])
