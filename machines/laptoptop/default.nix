@@ -243,7 +243,10 @@ in {
   };
 
   browsers = {
-    core.enable = true;
+    core = {
+      enable = true;
+      wm.enable = true;
+    };
     qutebrowser = {
       enable = true;
       isDefault = true;

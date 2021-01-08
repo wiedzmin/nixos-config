@@ -47,12 +47,12 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         search_prompt = mkPythonScriptWithDeps "search_prompt" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
-          (readSubstituted ../subst.nix ./scripts/search_prompt.py);
+          (readSubstituted ../../subst.nix ./scripts/search_prompt.py);
         search_selection =
           mkPythonScriptWithDeps "search_selection" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
-          (readSubstituted ../subst.nix ./scripts/search_selection.py);
+          (readSubstituted ../../subst.nix ./scripts/search_selection.py);
         webjumps = mkPythonScriptWithDeps "webjumps" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis vpnctl xsel ])
-          (readSubstituted ../subst.nix ./scripts/webjumps.py);
+          (readSubstituted ../../subst.nix ./scripts/webjumps.py);
       };
 
       workstation.systemtraits.instructions = with config.navigation.bookmarks; ''
