@@ -145,7 +145,10 @@ in {
         };
       };
       environment.systemPackages = with pkgs; [ ncmpcpp ];
+      # TODO: try https://github.com/trizen/youtube-viewer
       home-manager.users.${user} = {
+        # NOTE: default quotas seems inappropriate to use them freely
+        home.packages = with pkgs; [ mps-youtube minitube smtube youtube-dl ];
         programs.mpv = { # TODO: consider extracting options
           enable = true;
           scripts = with pkgs.mpvScripts; ([ sponsorblock ] ++
