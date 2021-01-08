@@ -550,14 +550,6 @@ in {
     };
     performance = {
       enable = true;
-      appsSuspension.rules = {
-        Chromium = {
-          suspendDelay = 10;
-          matchWmClassContains = "Chromium-browser";
-          suspendSubtreePattern = "chromium";
-        };
-        # TODO: add qutebrowser
-      };
       wm.enable = true;
     };
     lockscreen = {

@@ -15,18 +15,7 @@ in {
       };
       appsSuspension.rules = mkOption {
         type = types.attrs;
-        default = {
-          Chromium = {
-            suspendDelay = 10;
-            matchWmClassContains = "Chromium-browser";
-            suspendSubtreePattern = "chromium";
-          };
-          Firefox = {
-            suspendDelay = 10;
-            matchWmClassContains = "Firefox";
-            suspendSubtreePattern = "firefox";
-          };
-        };
+        default = { };
         description = "Apps suspending rules.";
       };
       warmup.paths = mkOption {

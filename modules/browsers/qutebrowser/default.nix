@@ -11,6 +11,13 @@ let
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
   });
+  suspensionRule = {
+    qutebrowser = {
+      suspendDelay = 10;
+      matchWmClassContains = "qutebrowser";
+      suspendSubtreePattern = "qtwebengine";
+    };
+  };
 in {
   options = {
     browsers.qutebrowser = {
@@ -453,6 +460,8 @@ in {
       };
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
+
+      workstation.performance.appsSuspension.rules = suspensionRule;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -472,6 +481,8 @@ in {
       ];
       attributes.browser.fallback.cmd = cfg.command;
       attributes.browser.fallback.windowClass = cfg.windowClass;
+
+      workstation.performance.appsSuspension.rules = suspensionRule;
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
       home-manager.users.${user} = {

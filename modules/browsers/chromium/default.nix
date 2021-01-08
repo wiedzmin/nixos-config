@@ -6,6 +6,13 @@ with lib;
 let
   cfg = config.browsers.chromium;
   user = config.attributes.mainUser.name;
+  suspensionRule = {
+    Chromium = {
+      suspendDelay = 10;
+      matchWmClassContains = "Chromium-browser";
+      suspendSubtreePattern = "chromium";
+    };
+  };
 in {
   options = {
     browsers.chromium = {
@@ -109,6 +116,8 @@ in {
       };
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
+
+      workstation.performance.appsSuspension.rules = suspensionRule;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -128,6 +137,8 @@ in {
       ];
       attributes.browser.fallback.cmd = cfg.command;
       attributes.browser.fallback.windowClass = cfg.windowClass;
+
+      workstation.performance.appsSuspension.rules = suspensionRule;
     })
   ];
 }

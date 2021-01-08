@@ -7,6 +7,13 @@ let
   cfg = config.browsers.firefox;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  suspensionRule = {
+    Firefox = {
+      suspendDelay = 10;
+      matchWmClassContains = "Firefox";
+      suspendSubtreePattern = "firefox";
+    };
+  };
 in {
   options = {
     browsers.firefox = {
@@ -412,6 +419,8 @@ in {
       attributes.browser.default.windowClass = cfg.windowClass;
 
       workstation.performance.warmup.paths = [ (homePrefix ".mozilla") ];
+
+      workstation.performance.appsSuspension.rules = suspensionRule;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -431,6 +440,8 @@ in {
       ];
       attributes.browser.fallback.cmd = cfg.command;
       attributes.browser.fallback.windowClass = cfg.windowClass;
+
+      workstation.performance.appsSuspension.rules = suspensionRule;
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
       nixpkgs.config.packageOverrides = _: rec {
