@@ -131,7 +131,7 @@ in {
         current window ($title =~ /^emacs - [^ ]+\.el .*$/) ==> tag coding:elisp,
       '';
       ide.emacs.core.extraPackages = epkgs:
-        [ # core
+        [
           epkgs.anaphora
           epkgs.auto-compile
           epkgs.compdef
