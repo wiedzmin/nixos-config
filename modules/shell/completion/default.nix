@@ -6,7 +6,6 @@ let
   cfg = config.shell.completion;
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
-  prefix = config.wmCommon.prefix;
 in {
   options = {
     shell.completion = {

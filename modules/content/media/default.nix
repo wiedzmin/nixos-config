@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.content.media;
   user = config.attributes.mainUser.name;
-  prefix = config.wmCommon.prefix;
 in {
   options = {
     content.media = {

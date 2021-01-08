@@ -5,10 +5,6 @@ with lib;
 
 let
   cfg = config.workstation.lockscreen;
-  prefix = config.wmCommon.prefix;
-  user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     workstation.lockscreen = {

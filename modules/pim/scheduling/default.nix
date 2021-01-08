@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.pim.scheduling;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     pim.scheduling = {

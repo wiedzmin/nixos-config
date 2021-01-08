@@ -7,7 +7,6 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  prefix = config.wmCommon.prefix;
   configHome = hm.xdg.configHome;
 in {
   options = {

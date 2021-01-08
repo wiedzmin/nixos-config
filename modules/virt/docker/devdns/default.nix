@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.ext.virtualization.docker.devdns;
   user = config.attributes.mainUser.name;
-  prefix = config.wmCommon.prefix;
 in {
   options = {
     ext.virtualization.docker.devdns = {

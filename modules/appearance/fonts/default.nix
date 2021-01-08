@@ -3,8 +3,6 @@ with lib;
 
 let
   cfg = config.appearance.fonts;
-  user = config.attributes.mainUser.name;
-  prefix = config.wmCommon.prefix;
 in {
   imports = [
     ./fira-code-fonts.nix

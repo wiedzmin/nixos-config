@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.shell.tmux;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   thumbs-bin = pkgs.rustPlatform.buildRustPackage rec {
     pname = "thumbs-bin";
@@ -82,7 +81,6 @@ let
       '';
     };
   };
-  prefix = config.wmCommon.prefix;
 in {
   options = {
     shell.tmux = {

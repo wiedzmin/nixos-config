@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.workstation.power.mgmt;
-  user = config.attributes.mainUser.name;
 in {
   options = {
     workstation.power.mgmt = {

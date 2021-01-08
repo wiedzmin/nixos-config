@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.workstation.power.battery; # TODO: consider checking if it is a laptop, or any similar check
-  user = config.attributes.mainUser.name;
 in {
   options = {
     workstation.power.battery = {

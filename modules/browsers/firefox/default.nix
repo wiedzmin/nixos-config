@@ -7,7 +7,6 @@ let
   cfg = config.browsers.firefox;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  prefix = config.wmCommon.prefix;
 in {
   options = {
     browsers.firefox = {

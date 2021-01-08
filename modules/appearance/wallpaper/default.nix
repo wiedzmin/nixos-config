@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.appearance.wallpaper;
   user = config.attributes.mainUser.name;
-  prefix = config.wmCommon.prefix;
   rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
     ${pkgs.feh}/bin/feh --bg-${cfg.transform} ${cfg.rootDir}/${cfg.current}
   '';

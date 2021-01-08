@@ -6,7 +6,6 @@ with lib;
 let
   cfg = config.browsers.chromium;
   user = config.attributes.mainUser.name;
-  prefix = config.wmCommon.prefix;
 in {
   options = {
     browsers.chromium = {

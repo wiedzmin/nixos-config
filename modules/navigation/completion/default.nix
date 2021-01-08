@@ -5,9 +5,7 @@ with lib;
 let
   cfg = config.navigation.completion;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  prefix = config.wmCommon.prefix;
 in {
   options = {
     navigation.completion = {

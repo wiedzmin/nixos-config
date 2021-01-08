@@ -7,8 +7,6 @@ let
   cfg = config.workstation.video.transparency;
   prefix = config.wmCommon.prefix;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     workstation.video.transparency = {

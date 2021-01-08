@@ -5,9 +5,7 @@ with lib;
 let
   cfg = config.dev.git.savewip;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  dataHome = hm.xdg.dataHome;
 in {
   options = {
     dev.git.savewip = {

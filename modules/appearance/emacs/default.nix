@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.appearance.emacs;
   user = config.attributes.mainUser.name;
-  prefix = config.wmCommon.prefix;
 in {
   imports = [
     ./doom-modeline.nix

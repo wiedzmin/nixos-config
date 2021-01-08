@@ -4,7 +4,6 @@ with lib;
 let
   cfg = config.ext.networking.hosts;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   renderHosts = metadata:
     builtins.concatStringsSep "\n"
     (lib.mapAttrsToList (ip: meta: ip + "   " + (builtins.concatStringsSep " " (lib.forEach meta (x: x.host))))

@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.dev.direnv;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     dev.direnv = {

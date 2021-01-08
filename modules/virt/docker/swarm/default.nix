@@ -6,7 +6,6 @@ let
   cfg = config.ext.virtualization.docker.swarm;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  prefix = config.wmCommon.prefix;
 in {
   options = {
     ext.virtualization.docker.swarm = {

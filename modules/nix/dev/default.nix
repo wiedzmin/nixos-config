@@ -5,10 +5,6 @@ with lib;
 let
   cfg = config.ext.nix.dev;
   user = config.attributes.mainUser.name;
-  stable = import inputs.stable ({
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  });
 in {
   options = {
     ext.nix.dev = {

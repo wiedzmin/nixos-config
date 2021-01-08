@@ -5,11 +5,6 @@ with lib;
 let
   cfg = config.workstation.input.core;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  proposed = import inputs.nixpkgs-proposed ({
-    config = config.nixpkgs.config;
-    localSystem = { system = "x86_64-linux"; };
-  });
 in {
   options = {
     workstation.input.core = {

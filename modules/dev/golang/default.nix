@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.dev.golang;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     dev.golang = {

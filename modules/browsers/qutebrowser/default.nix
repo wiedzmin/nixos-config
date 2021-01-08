@@ -11,7 +11,6 @@ let
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
   });
-  prefix = config.wmCommon.prefix;
 in {
   options = {
     browsers.qutebrowser = {

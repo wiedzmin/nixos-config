@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.shell.prompts.liquid;
   user = config.attributes.mainUser.name;
-  prefix = config.wmCommon.prefix;
 in {
   options = {
     shell.prompts.liquid = {

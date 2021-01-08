@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.workstation.input.mouse;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     workstation.input.mouse = {
