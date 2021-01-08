@@ -1,0 +1,39 @@
+From 234bc691f43f6df88d831409b2887fda45270636 Mon Sep 17 00:00:00 2001
+From: Louis Abraham <louis.abraham@yahoo.fr>
+Date: Thu, 17 Dec 2020 19:30:36 +0100
+Subject: [PATCH] fix #1134
+
+---
+ mps_youtube/mpris.py       | 2 +-
+ mps_youtube/players/mpv.py | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mps_youtube/mpris.py b/mps_youtube/mpris.py
+index 98bc083..5ea29b8 100644
+--- a/mps_youtube/mpris.py
++++ b/mps_youtube/mpris.py
+@@ -224,7 +224,7 @@ class Mpris2MediaPlayer(dbus.service.Object):
+                     observe_full = True
+ 
+                 if resp.get('event') == 'property-change':
+-                    self.setproperty(resp['name'], resp['data'])
++                    self.setproperty(resp['name'], resp.get('data'))
+ 
+         except socket.error:
+             self.socket = None
+diff --git a/mps_youtube/players/mpv.py b/mps_youtube/players/mpv.py
+index a9d10be..d9f2e0f 100644
+--- a/mps_youtube/players/mpv.py
++++ b/mps_youtube/players/mpv.py
+@@ -185,7 +185,7 @@ class mpv(CmdPlayer):
+                         observe_full = True
+ 
+                     if resp.get('event') == 'property-change' and resp['id'] == 1:
+-                        if resp['data'] is not None:
++                        if resp.get('data') is not None:
+                             elapsed_s = int(resp['data'])
+ 
+                     elif resp.get('event') == 'property-change' and resp['id'] == 2:
+-- 
+2.29.2
+
