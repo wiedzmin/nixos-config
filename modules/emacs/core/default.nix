@@ -6,6 +6,14 @@ let
   cfg = config.ide.emacs.core;
   user = config.attributes.mainUser.name;
   uid = builtins.toString config.users.extraUsers.${user}.uid;
+  drop-corrupted = mkShellScriptWithDeps "drop-corrupted" (with pkgs; [ gitAndTools.git coreutils ]) ''
+    ${pkgs.systemd}/bin/systemctl --user stop emacs.service
+    sleep 2 # consider parameterizing
+    rm -f /home/${user}/.emacs.d/data/save-kill.el # TODO: consider using loop or other templating method
+    rm -f /home/${user}/.emacs.d/data/savehist.el
+    # TODO: add missing entries by fact later
+    ${pkgs.systemd}/bin/systemctl --user restart emacs.service
+  '';
 in {
   options = {
     ide.emacs.core = {
@@ -149,7 +157,7 @@ in {
           zsh.sessionVariables = { EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server"; };
           bash.sessionVariables = { EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server"; };
         };
-        home.packages = (with pkgs; [ ispell ])
+        home.packages = (with pkgs; [ drop-corrupted ispell ])
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
         home.file = {
           ".emacs.d/init.el".text = cfg.initElContent;
