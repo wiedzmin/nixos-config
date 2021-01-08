@@ -320,7 +320,7 @@ in {
           python3Packages.redis
           python3Packages.xlib
           wmctrl
-        ]) (readSubstituted ../subst.nix ./desktops.py);
+        ]) (readSubstituted ../subst.nix ./scripts/desktops.py);
       };
 
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
@@ -336,7 +336,7 @@ in {
           };
         };
         home.packages = with pkgs; [ desktops ];
-        xdg.configFile."xmobar/xmobarrc".text = readSubstituted ../subst.nix ./xmobarrc;
+        xdg.configFile."xmobar/xmobarrc".text = readSubstituted ../subst.nix ./assets/xmobarrc;
       };
     })
     (mkIf cfg.wsMapping.enable {
