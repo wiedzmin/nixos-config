@@ -565,6 +565,7 @@ in {
       notification.timeout = 5000;
       timers.alert = 210;
       timers.lock = 60;
+      wm.enable = true;
     };
     sound = {
       enable = true;

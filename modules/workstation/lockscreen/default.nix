@@ -47,9 +47,7 @@ in {
         type = types.str;
         default = ''
           ${pkgs.dunst}/bin/dunstify -t ${builtins.toString cfg.notification.timeout} \
-                                     -u ${cfg.notification.urgency} \
-                                     'Locking in ${builtins.toString cfg.timers.lock} seconds'
-        '';
+                                     -u ${cfg.notification.urgency} 'Locking in ${builtins.toString cfg.timers.lock} seconds' '';
         description = "Command to use for notification display";
       };
       command.lock = mkOption {
@@ -81,8 +79,7 @@ in {
                   ${optionalString cfg.respect.playback "--not-when-audio"} \
                   ${optionalString cfg.respect.fullscreen "--not-when-fullscreen"} \
                   --timer ${builtins.toString cfg.timers.alert} "${cfg.command.notify}" "" \
-                  --timer ${builtins.toString cfg.timers.lock} \
-                          "${cfg.command.lock}" ""
+                  --timer ${builtins.toString cfg.timers.lock} "${cfg.command.lock}" ""
           '';
         };
       };
