@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.pim.timetracking;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   nixpkgs-arbtt = import inputs.nixpkgs-arbtt ({
     config = config.nixpkgs.config;
     system = "x86_64-linux";
