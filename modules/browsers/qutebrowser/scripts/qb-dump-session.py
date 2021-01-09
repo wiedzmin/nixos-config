@@ -3,7 +3,7 @@ import datetime
 import os
 import sys
 
-import yaml
+from yaml import load, Loader
 
 from pystdlib.browser import qutebrowser_get_session_entries_org
 
@@ -25,7 +25,7 @@ else:
 
 session_data_org = None
 with open(SESSIONS_PATH + DEFAULT_SESSION, "r") as s:
-    session_data_org = qutebrowser_get_session_entries_org(yaml.load(s))
+    session_data_org = qutebrowser_get_session_entries_org(load(s, Loader=Loader))
 
 if session_data_org:
     org_lines = []

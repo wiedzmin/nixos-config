@@ -2,7 +2,7 @@ import argparse
 import os
 import shutil
 
-import yaml
+from yaml import load, Loader
 
 from pystdlib.browser import qutebrowser_fix_session
 
@@ -22,7 +22,7 @@ shutil.copyfile(args.session_path, args.session_path + BACKUP_SUFFIX)
 
 session = None
 with open(SESSIONS_PATH + DEFAULT_SESSION, "r") as s:
-    session = qutebrowser_fix_session(yaml.load(s))
+    session = qutebrowser_fix_session(load(s, Loader=Loader))
 
 if session:
     with open(SESSIONS_PATH + DEFAULT_SESSION + ".fixed", "w") as s:
