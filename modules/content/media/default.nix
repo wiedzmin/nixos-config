@@ -38,10 +38,15 @@ in {
         default = 6600;
         description = "Port number MPD listens on.";
       };
-      mpd.ympdPort = mkOption {
+      mpd.clients.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "whether to enable clients for MPD (and Mopidy as well)";
+      };
+      mpd.clients.ympd.port = mkOption {
         type = types.int;
         default = 8090;
-        description = "Port number MPD listens on.";
+        description = "Port number for YMPD interface";
       };
       mopidy.file.enable = mkOption {
         type = types.bool;
@@ -73,6 +78,11 @@ in {
         default = 300;
         description = "Maximum Youtube playlist entries count.";
       };
+      youtubeFrontends.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable non-web Youtube frontends";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -94,10 +104,6 @@ in {
         }
       ];
 
-      services.ympd = {
-        enable = true;
-        webPort = builtins.toString cfg.mpd.ympdPort;
-      };
       services.mopidy = {
         enable = true;
         extensionPackages = with pkgs; [ mopidy-local mopidy-mpd mopidy-youtube ] ++
@@ -145,10 +151,7 @@ in {
         };
       };
       environment.systemPackages = with pkgs; [ ncmpcpp ];
-      # TODO: try https://github.com/trizen/youtube-viewer
       home-manager.users.${user} = {
-        # NOTE: default quotas seems inappropriate to use them freely
-        home.packages = with pkgs; [ mps-youtube minitube smtube youtube-dl ];
         programs.mpv = { # TODO: consider extracting options
           enable = true;
           scripts = with pkgs.mpvScripts; ([ sponsorblock ] ++
@@ -178,6 +181,32 @@ in {
           };
         };
         programs.zsh.shellAliases = { yg = "${pkgs.you-get}/bin/you-get"; };
+      };
+    })
+    (mkIf (cfg.enable && cfg.mpd.clients.enable) {
+      services.ympd = {
+        enable = true;
+        webPort = builtins.toString cfg.mpd.clients.ympd.port;
+      };
+      home-manager.users.${user} = {
+        home.packages = with pkgs; [ ario sonata cantata ];
+      };
+      wmCommon.wsMapping.rules = [
+        {
+          class = "cantata";
+          desktop = "media";
+        }
+        {
+          class = "Sonata";
+          desktop = "media";
+        }
+      ];
+    })
+    (mkIf (cfg.enable && cfg.youtubeFrontends.enable) {
+      # TODO: try https://github.com/trizen/youtube-viewer
+      home-manager.users.${user} = {
+        # NOTE: default quotas seems inappropriate to use them freely
+        home.packages = with pkgs; [ mps-youtube minitube smtube youtube-dl ];
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {

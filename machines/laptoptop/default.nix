@@ -307,6 +307,7 @@ in {
           "Mongol" = homePrefix "blobs/music/mongol";
         };
       };
+      mpd.clients.enable = true;
       wm.enable = true;
     };
     misc = {
