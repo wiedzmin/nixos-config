@@ -28,12 +28,20 @@
 
 ;TODO: investigate fringe updates lifecycle
 (use-package diff-hl
+  :preface
+  (defun custom/toggle-diff-hl ()
+    (interactive)
+    (diff-hl-mode 0)
+    (diff-hl-mode 1))
   :delight diff-hl-amend-mode
   :hook
   (dired-mode-hook . diff-hl-dired-mode)
   (magit-post-refresh-hook . diff-hl-magit-post-refresh)
   (org-mode-hook . diff-hl-mode)
   (prog-mode . diff-hl-mode)
+  :bind
+  (:map mode-specific-map
+        ("d" . custom/toggle-diff-hl))
   :config
   (when (string-equal "i3" (getenv "CURRENT_WM"))
     (diff-hl-margin-mode 1)
