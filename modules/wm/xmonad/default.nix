@@ -355,7 +355,7 @@ in {
         }
       '';
     })
-    (mkIf (config.attributes.debug.scripts) {
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ desktops ]; };
     })
   ];
