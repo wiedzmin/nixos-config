@@ -372,7 +372,8 @@ in {
     misc = {
       enable = true;
       patching.enable = true;
-      xtools.enable = true;
+      tools.xserver.enable = true;
+      tools.misc.enable = true;
       emacs.enable = true;
     };
     python = {

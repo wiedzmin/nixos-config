@@ -47,7 +47,12 @@ in {
         default = false;
         description = "Whether to enable network investigation tools.";
       };
-      xtools.enable = mkOption {
+      tools.xserver.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable xserver info/debug tools.";
+      };
+      tools.misc.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable xserver info/debug tools.";
@@ -110,8 +115,13 @@ in {
       home-manager.users."${user}" = { home.packages = with pkgs; [ jnettop ]; };
       users.extraUsers."${user}".extraGroups = [ "wireshark" ];
     })
-    (mkIf (cfg.enable && cfg.xtools.enable) {
+    (mkIf (cfg.enable && cfg.tools.xserver.enable) {
       environment.systemPackages = with pkgs; [ xlibs.xev xlibs.xprop xorg.xkbcomp drm_info xtruss ];
+    })
+    (mkIf (cfg.enable && cfg.tools.misc.enable) {
+      environment.systemPackages = with pkgs; [ # D-Bus debug tools
+        dfeet bustle
+      ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs:
