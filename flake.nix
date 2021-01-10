@@ -21,6 +21,7 @@
   inputs = rec {
     stable.url = "github:NixOS/nixpkgs/nixos-20.03";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    future.url = "github:NixOS/nixpkgs/257cbbcd3ab7bd96f5d24d50adc807de7c82e06d"; # non-systemwide unstable
     nixpkgs-arbtt = {
       url = "github:nixos/nixpkgs/224804d0f68bd2bb083b8491c0c6cf3f34f2de10";
       flake = false;
