@@ -264,7 +264,7 @@ in {
           i3 = {
             enable = true;
             extraPackages = with pkgs;
-              lib.optionals (cfg.statusbarImpl == "py3") [ i3status python3Packages.py3status ]
+              lib.optionals (cfg.statusbarImpl == "py3") [ i3status python3Packages.py3status file ]
               ++ lib.optionals (cfg.statusbarImpl == "i3-rs") [ i3status-rust iw kbdd ];
           };
         };
