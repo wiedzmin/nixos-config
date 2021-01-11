@@ -58,7 +58,6 @@ in {
 
       wmCommon = {
         enable = true;
-        autostart.entries = lib.optionals (cfg.statusbarImpl == "i3-rs") [ "kbdd" ];
         modeBindings = {
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
           "browser" = [ prefix "b" ];
@@ -265,7 +264,7 @@ in {
             enable = true;
             extraPackages = with pkgs;
               lib.optionals (cfg.statusbarImpl == "py3") [ i3status python3Packages.py3status file ]
-              ++ lib.optionals (cfg.statusbarImpl == "i3-rs") [ i3status-rust iw kbdd ];
+              ++ lib.optionals (cfg.statusbarImpl == "i3-rs") [ i3status-rust iw ];
           };
         };
         displayManager = { defaultSession = "none+i3"; };

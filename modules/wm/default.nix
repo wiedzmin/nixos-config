@@ -60,6 +60,11 @@ in {
         default = "";
         description = "Current WM `internal` statusbar font' definition.";
       };
+      kbdd.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Autostart kbdd daemon.";
+      };
       autostart.enable = mkOption {
         type = types.bool;
         default = true;
@@ -95,6 +100,7 @@ in {
         };
         home.packages = with pkgs; [ keybindings ];
       };
+      wmCommon.autostart.entries = optionals (cfg.kbdd.enable) [ "${pkgs.kbdd}/bin/kbdd" ];
       wmCommon.keys = [{
         key = [ cfg.prefix "k" ];
         cmd = "${pkgs.keybindings}/bin/keybindings";
