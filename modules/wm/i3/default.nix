@@ -7,6 +7,10 @@ let
   cfg = config.wm.i3;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  statusBarImplToCmd = {
+    "py3" = "py3status";
+    "i3-rs" = "i3status-rs";
+  };
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -290,8 +294,7 @@ in {
 
       home-manager.users.${user} = {
         xdg.configFile = {
-          "i3/config".text = let statusCmd = if cfg.statusbarImpl == "py3" then "py3status" else "i3status-rs";
-          in ''
+          "i3/config".text = ''
             # i3 config file (v4)
 
             ${cfg.settings}
@@ -318,7 +321,7 @@ in {
                 workspace_buttons yes
                 strip_workspace_numbers yes
                 font ${config.wmCommon.fonts.statusbar}
-                status_command ${statusCmd}
+                status_command ${statusBarImplToCmd.${cfg.statusbarImpl}}
             }
           '';
         } // lib.optionalAttrs (cfg.statusbarImpl == "py3") {
