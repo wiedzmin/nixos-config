@@ -280,7 +280,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         kbdctl = mkPythonScriptWithDeps "kbdctl"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.i3ipc xdotool emacs xkb-switch ])
-          (readSubstituted ../../subst.nix ./kbdctl.py);
+          (readSubstituted ../../subst.nix ./scripts/kbdctl.py);
       };
 
       workstation.systemtraits.instructions = ''
