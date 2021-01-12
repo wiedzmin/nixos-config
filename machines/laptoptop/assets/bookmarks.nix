@@ -68,5 +68,10 @@ rec {
         desc = "JWT online debugger and libraries reference";
       };
     };
+    use-package = {
+      remote = {
+        url = "https://github.com/jwiegley/use-package";
+      };
+    };
   };
 }
