@@ -690,7 +690,7 @@ in {
 
   wm.i3 = {
     enable = true;
-    statusbarImpl = "i3-rs";
+    statusbar.impl = "i3-rs";
   };
 
   wmCommon.workspaces = [

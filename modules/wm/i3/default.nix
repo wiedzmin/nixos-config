@@ -38,10 +38,29 @@ in {
         '';
         description = "Custom settings for i3.";
       };
-      statusbarImpl = mkOption {
+      statusbar.impl = mkOption {
         type = types.enum [ "py3" "i3-rs" ];
         default = "py3";
         description = "Statusbar implementation";
+      };
+      statusbar.deps = mkOption {
+        type = types.listOf types.package;
+        default = with pkgs; [
+          dbus
+          dunst
+          gawk
+          iproute2
+          iw
+          kbdd
+          openvpn
+          perl
+          xdotool
+          yad
+        ];
+        visible = false;
+        readOnly = true;
+        internal = true;
+        description = "Extra dependencies, mostly for used statusbar implementations";
       };
       modeExitBindings = mkOption {
         type = types.listOf (types.listOf types.str);
@@ -267,8 +286,9 @@ in {
           i3 = {
             enable = true;
             extraPackages = with pkgs;
-              lib.optionals (cfg.statusbarImpl == "py3") [ i3status python3Packages.py3status file ]
-              ++ lib.optionals (cfg.statusbarImpl == "i3-rs") [ i3status-rust iw ];
+              lib.optionals (cfg.statusbar.impl == "py3") [ i3status python3Packages.py3status file ]
+              ++ lib.optionals (cfg.statusbar.impl == "i3-rs") [ i3status-rust ]
+              ++ cfg.statusbar.deps;
           };
         };
         displayManager = { defaultSession = "none+i3"; };
@@ -321,10 +341,10 @@ in {
                 workspace_buttons yes
                 strip_workspace_numbers yes
                 font ${config.wmCommon.fonts.statusbar}
-                status_command ${statusBarImplToCmd.${cfg.statusbarImpl}}
+                status_command ${statusBarImplToCmd.${cfg.statusbar.impl}}
             }
           '';
-        } // lib.optionalAttrs (cfg.statusbarImpl == "py3") {
+        } // optionalAttrs (cfg.statusbar.impl == "py3") {
           "i3status/config".text = ''
             general {
               colors = true
@@ -372,7 +392,7 @@ in {
               layouts = ['us', 'ru']
             }
           '';
-        } // lib.optionalAttrs (cfg.statusbarImpl == "i3-rs") {
+        } // lib.optionalAttrs (cfg.statusbar.impl == "i3-rs") {
           "i3status-rust/config.toml".text = toToml {
             theme = "solarized-dark";
             icons = "awesome";
