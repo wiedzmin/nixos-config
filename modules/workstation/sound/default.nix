@@ -14,11 +14,6 @@ in {
         default = false;
         description = "Whether to enable Pulseaudio";
       };
-      systemwide = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to run Pulseaudio system-wide";
-      };
       daemonConfig = mkOption {
         type = types.attrs;
         default = { };
@@ -40,7 +35,7 @@ in {
         enable = true;
         support32Bit = true;
         package = pkgs.pulseaudioFull; # 'full' for e.g. bluetooth
-        systemWide = cfg.systemwide;
+        systemWide = false;
         daemon.config = cfg.daemonConfig;
         extraConfig = ''
           load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
