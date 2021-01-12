@@ -10,6 +10,7 @@ let
   statusBarImplToCmd = {
     "py3" = "py3status";
     "i3-rs" = "i3status-rs";
+    "blocks" = "i3blocks";
   };
   prefix = config.wmCommon.prefix;
 in {
@@ -39,7 +40,7 @@ in {
         description = "Custom settings for i3.";
       };
       statusbar.impl = mkOption {
-        type = types.enum [ "py3" "i3-rs" ];
+        type = types.enum [ "py3" "i3-rs" "blocks" ];
         default = "py3";
         description = "Statusbar implementation";
       };
@@ -77,7 +78,8 @@ in {
         message = "i3: exactly one WM could be enabled.";
       }];
 
-      environment.pathsToLink = [ "/libexec" ]; # for i3blocks (later)
+      environment.pathsToLink = optionals (cfg.statusbar.impl == "blocks") [ "/libexec" ];
+      fonts.fonts = optionals (cfg.statusbar.impl == "blocks") (with pkgs; [ font-awesome ]);
 
       wmCommon = {
         enable = true;
@@ -288,6 +290,7 @@ in {
             extraPackages = with pkgs;
               lib.optionals (cfg.statusbar.impl == "py3") [ i3status python3Packages.py3status file ]
               ++ lib.optionals (cfg.statusbar.impl == "i3-rs") [ i3status-rust ]
+              ++ lib.optionals (cfg.statusbar.impl == "blocks") [ i3blocks ]
               ++ cfg.statusbar.deps;
           };
         };
@@ -343,6 +346,55 @@ in {
                 font ${config.wmCommon.fonts.statusbar}
                 status_command ${statusBarImplToCmd.${cfg.statusbar.impl}}
             }
+          '';
+        } // optionalAttrs (cfg.statusbar.impl == "blocks") { # FIXME: currently broken
+          # TODO: create derivation for accessing prebuilt C blocklets
+          # TODO: tune kbdd_layout output (either patch packages or extract script)
+          # TODO: ${inputs.i3blocks-contrib}/dunst/dunst - reimplement and unwire some meta (fonts, etc)
+          # TODO: make homebrew script for openvpn/nm-vpn, refer to vpnctl
+          # ======================
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/battery
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/battery-poly
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/battery2
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/cpu_usage
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/disk
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/essid
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/key_light
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/mediaplayer
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/memory
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/monitor_manager
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/nm-vpn
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/shutdown_menu
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/ssid
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/usb
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/volume
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/volume-pulseaudio
+          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/wifi
+          "i3blocks/config".text = ''
+            [disk]
+            command=${inputs.i3blocks-contrib}/disk/disk
+            LABEL=H:
+            DIR=$HOME/${user}
+            ALERT_LOW=10
+            interval=30
+
+            [bandwidth3]
+            command=${inputs.i3blocks-contrib}/bandwidth3/bandwidth3
+            unit=Kb
+            interval=persist
+            markup=pango
+            PRINTF_COMMAND=printf " %-3.1f/%3.1f %s/s\n", rx, wx, unit
+
+            [calendar]
+            command=${inputs.i3blocks-contrib}/calendar/calendar
+            interval=1
+            DATEFMT=+%a %H:%M:%S
+            HEIGHT=180
+            WIDTH=220
+
+            [kbdd_layout]
+            command=${inputs.i3blocks-contrib}/kbdd_layout/kbdd_layout
+            interval=persist
           '';
         } // optionalAttrs (cfg.statusbar.impl == "py3") {
           "i3status/config".text = ''

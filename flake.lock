@@ -65,6 +65,22 @@
         "type": "github"
       }
     },
+    "i3blocks-contrib": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1606511493,
+        "narHash": "sha256-3G+UFXea2KYkIF1qwT6yeZmvr6f1/gdWLMaBTTERrGc=",
+        "owner": "vivien",
+        "repo": "i3blocks-contrib",
+        "rev": "154001e5713c26c70063446022919225b6f916f0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "vivien",
+        "repo": "i3blocks-contrib",
+        "type": "github"
+      }
+    },
     "liquidprompt": {
       "flake": false,
       "locked": {
@@ -224,6 +240,7 @@
         "future": "future",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
+        "i3blocks-contrib": "i3blocks-contrib",
         "liquidprompt": "liquidprompt",
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",

@@ -39,6 +39,10 @@
     home-manager.url = "github:rycee/home-manager";
     emacs.url = "github:nix-community/emacs-overlay";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
+    i3blocks-contrib = {
+      url = "github:vivien/i3blocks-contrib";
+      flake = false;
+    };
 
     git-extra-commands = {
       url = "github:unixorn/git-extra-commands";
