@@ -5,7 +5,7 @@
 
 (when @direnvGranularityFile@
   (use-package envrc
-    :delight " ☀"
+    :delight " ⛶"
     :config
     (envrc-global-mode)))
 

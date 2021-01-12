@@ -50,10 +50,3 @@
   (magit-section-initial-visibility-alist '((stashes . hide) (untracked . hide) (unpushed . hide)))
   (magit-diff-refine-hunk t)
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
-
-(use-package magit-filenotify
-  :delight " ⛶"
-  :hook (magit-status-mode-hook . (lambda ()
-                                    (condition-case nil
-                                        (magit-filenotify-mode)
-                                      (error (magit-filenotify-mode -1))))))
