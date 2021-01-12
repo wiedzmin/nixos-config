@@ -126,19 +126,24 @@
    '((read-file-name-internal . ivy--regex-fuzzy)
      (t . ivy--regex-ignore-order))))
 
+(use-package ivy-avy
+  :after (ivy)
+  :bind
+  (:map ivy-minibuffer-map
+        ("C-'" . ivy-avy)))
+
 (use-package avy
   :bind
   ("C-:" . avy-goto-char)
   (:prefix-map custom-goto-map
                :prefix "M-s"
-               ("M-s" . avy-goto-word-0))
+               ("M-s" . avy-goto-word-0)) ;FIXME: fails to bind for some reason
   :custom
   (avy-timeout-seconds 0.5)
   (avy-keys '(?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
   :custom-face (avy-goto-char-timer-face ((nil (:foreground "green" :weight bold))))
   :config
-  (avy-setup-default)
-  (use-package ivy-avy))
+  (avy-setup-default))
 
 (use-package avy-zap
   :bind
@@ -308,10 +313,11 @@
   (xref-show-xrefs-function #'ivy-xref-show-xrefs "Use Ivy to show xrefs"))
 
 (use-package ivy-yasnippet
-  :after (ivy yasnippet)
+  :after (ivy)
   :bind
-  (:map custom-yasnippet-map
-        ("i" . ivy-yasnippet)))
+  (:prefix-map custom-yasnippet-map
+               :prefix "<f5>"
+               ("i" . ivy-yasnippet)))
 
 (use-package link-hint
   :bind
