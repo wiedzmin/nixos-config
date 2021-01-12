@@ -44,7 +44,7 @@ in {
         description = "XRandR default gamma settings";
       };
       heads.orientation = mkOption {
-        type = headsOrientationModule;
+        type = headsOrientationModule; # TODO: investigate how to keep defaults in module options
         description = "external head orientation";
       };
       hooks = mkOption {
