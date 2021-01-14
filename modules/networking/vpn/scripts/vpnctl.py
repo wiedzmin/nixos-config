@@ -43,6 +43,7 @@ def is_nm_vpn_up(name):
 
 def start_service(name, meta):
     result = False
+    notify("[VPN]", f"Starting `{name}`...")
     if meta["type"] == "ovpn":
         tun_path = IPV4_STATUS_PATH + meta["dev"]
         if os.path.exists(tun_path):
@@ -98,6 +99,7 @@ def start_service(name, meta):
 
 def stop_service(name, meta):
     result = False
+    notify("[VPN]", f"Stopping `{name}`...")
     if meta["type"] == "ovpn":
         tun_path = IPV4_STATUS_PATH + meta["dev"]
         if not os.path.exists(tun_path):
