@@ -7,6 +7,10 @@ let
   cfg = config.wmCommon;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  dmenu_select_windows =
+    mkShellScriptWithDeps "dmenu_select_windows" (with pkgs; [ coreutils nurpkgs.dmenu-ng wmctrl ]) ''
+      wmctrl -a $(wmctrl -l | cut -d" " -f5- | dmenu -i -l 15 -fn '${config.wmCommon.fonts.dmenu}')
+    '';
 in {
   options = {
     wmCommon = {
@@ -101,11 +105,18 @@ in {
         home.packages = with pkgs; [ keybindings ];
       };
       wmCommon.autostart.entries = optionals (cfg.kbdd.enable) [ "${pkgs.kbdd}/bin/kbdd" ];
-      wmCommon.keys = [{
-        key = [ cfg.prefix "k" ];
-        cmd = "${pkgs.keybindings}/bin/keybindings";
-        mode = "root";
-      }];
+      wmCommon.keys = [
+        {
+          key = [ cfg.prefix "k" ];
+          cmd = "${pkgs.keybindings}/bin/keybindings";
+          mode = "root";
+        }
+        {
+          key = [ "w" ];
+          cmd = "${dmenu_select_windows}/bin/dmenu_select_windows";
+          mode = "select";
+        }
+      ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ keybindings ]; };
