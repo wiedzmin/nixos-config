@@ -35,6 +35,9 @@ in {
           (readSubstituted ../../../subst.nix ./scripts/gittags.py);
       };
 
+      # TODO: make expansion for `git log --pretty=oneline --pickaxe-regex -Stoken` (commits contents)
+      # TODO: make expansion for `git log --pretty=oneline --pickaxe-regex -Gtoken` (commits differences)
+
       dev.git.batch.commands = {
         synctags = [ "${pkgs.gittags}/bin/gittags --sync" ];
         usynctags = [ "${pkgs.gittags}/bin/gittags --sync --remote ${cfg.defaultUpstreamRemote}" ];
