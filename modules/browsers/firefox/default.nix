@@ -91,6 +91,14 @@ in {
   };
   config = mkMerge [
     (mkIf (cfg.enable) {
+      nixpkgs.config.packageOverrides = _: rec {
+        dump_firefox_session =
+          mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
+          (readSubstituted ../../subst.nix ./scripts/dump_firefox_session.sh);
+        manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
+          (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.pystdlib ])
+          (readSubstituted ../../subst.nix ./scripts/manage_firefox_sessions.py);
+      };
       custom.programs.firefox = {
         enable = true;
         extensions = [
@@ -444,14 +452,6 @@ in {
       workstation.performance.appsSuspension.rules = suspensionRule;
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
-      nixpkgs.config.packageOverrides = _: rec {
-        dump_firefox_session =
-          mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
-          (readSubstituted ../../subst.nix ./scripts/dump_firefox_session.sh);
-        manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
-          (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.pystdlib ])
-          (readSubstituted ../../subst.nix ./scripts/manage_firefox_sessions.py);
-      };
       home-manager.users.${user} = {
         home.activation.ensureFirefoxSessionsPath = {
           after = [ ];
