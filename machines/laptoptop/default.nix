@@ -597,7 +597,6 @@ in {
         constraintMouse = {
           enable = false;
         };
-        gestures.enable = true;
         keynav.enable = true;
       };
     };
