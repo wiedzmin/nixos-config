@@ -756,7 +756,7 @@ in {
   ];
 
   wmCommon.autostart.entries =
-    [ "alacritty" "clipcatd" "qutebrowser -P default --class qb-default" "telegram-desktop" ];
+    [ "alacritty" "qutebrowser -P default --class qb-default" "telegram-desktop" ];
 
   home-manager = {
     useGlobalPkgs = true;
