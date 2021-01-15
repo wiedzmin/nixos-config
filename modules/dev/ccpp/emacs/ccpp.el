@@ -62,3 +62,6 @@
 (use-package modern-cpp-font-lock
   :delight
   :init (modern-c++-font-lock-global-mode t))
+
+(use-package ob-C
+  :commands (org-babel-expand-body:C org-babel-execute:C org-babel-expand-body:C++ org-babel-execute:C++))
