@@ -8,6 +8,11 @@ let
 in {
   options = {
     dev.completion = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable dev completion setup.";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -17,12 +22,15 @@ in {
   };
 
   config = mkMerge [
-    (mkIf cfg.emacs.enable {
+    (mkIf cfg.enable {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ tabnine ];
+        home.packages = with pkgs; [ tabnine ]; # FIXME: install it to be consumable by company-tabnine
         xdg.configFile."TabNine/TabNine.toml".text =
           toToml { language.python = { command = "python-language-server"; }; };
       };
+    })
+
+    (mkIf cfg.emacs.enable {
       ide.emacs.core.extraPackages = epkgs:
         [
           epkgs.company
