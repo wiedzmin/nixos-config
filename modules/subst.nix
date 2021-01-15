@@ -27,6 +27,7 @@ in rec {
   emacsDatadir = config.ide.emacs.core.dataDir;
   emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
   emacsYasnippetSnippets = inputs.yasnippet-snippets;
+  factoryCalendarKey = "scheduling/fcalendar";
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;
   gitWipChangedLinesTreshold = builtins.toString config.dev.git.savewip.minChangedLines;

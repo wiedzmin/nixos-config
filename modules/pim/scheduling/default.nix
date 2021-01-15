@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.pim.scheduling;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     pim.scheduling = {
@@ -42,6 +43,10 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      nixpkgs.config.packageOverrides = _: rec {
+        fcalendar = mkPythonScriptWithDeps "fcalendar" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.requests ])
+          (readSubstituted ../../subst.nix ./scripts/fcalendar.py);
+      };
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ davfs2 gcalcli ];
         home.activation.ensureSchedulingTimers = {
@@ -56,25 +61,49 @@ in {
           '';
         };
       };
-      systemd.user.services = lib.mapAttrs (name: meta: {
+      systemd.user.services = (lib.mapAttrs (name: meta: {
         description = "${name}";
-        serviceConfig = {
+        serviceConfig = let
+          forWork = builtins.hasAttr "forWork" meta && meta.forWork == true;
+        in {
           Type = "oneshot";
           Environment = [ "DISPLAY=:0" ];
           ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
-          ExecStart = "${meta.cmd}";
+          ExecStart = optionalString (forWork) ''${pkgs.fcalendar}/bin/fcalendar check --cmd "'' +
+                      ''${meta.cmd}'' + optionalString (forWork) ''"'';
           StandardOutput = "journal";
           StandardError = "journal";
         };
-      }) cfg.entries;
-      systemd.user.timers = lib.mapAttrs (name: meta: {
+      }) cfg.entries) // {
+        "fcalendar-update" = {
+          description = "Update factory calendar";
+          serviceConfig = {
+            Type = "oneshot";
+            Environment = [ "DISPLAY=:0" ];
+            ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
+            ExecStart = ''${pkgs.fcalendar}/bin/fcalendar update'';
+            StandardOutput = "journal";
+            StandardError = "journal";
+          };
+        };
+      };
+      systemd.user.timers = (lib.mapAttrs (name: meta: {
         description = "${name}";
         wantedBy = [ "timers.target" ];
         timerConfig = { OnCalendar = meta.cal; };
-      }) cfg.entries;
+      }) cfg.entries) // {
+        "fcalendar-update" = {
+          description = "Update factory calendar";
+          wantedBy = [ "timers.target" ];
+          timerConfig = { OnCalendar = "*-*-* 06:00:00"; }; # TODO: consider extracting option
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/scheduling.el;
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users.${user} = { home.packages = with pkgs; [ fcalendar ]; };
     })
   ];
 }
