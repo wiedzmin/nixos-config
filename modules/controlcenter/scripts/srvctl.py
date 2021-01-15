@@ -45,7 +45,7 @@ if not operation:
     sys.exit(1)
 
 if operation in ["journal", "status"]:
-    unit_show(service, operation, user=('user' in service),
+    unit_show(service, operation, user=('user' in service), follow=True,
               shell=["@defaultVTCmd@", "-e"], tmux_session="@tmuxDefaultSession@")
     switch_desktop(1)
 else:
