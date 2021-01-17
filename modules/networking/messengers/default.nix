@@ -19,7 +19,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       services.quassel.enable = true;
-      home-manager.users."${user}" = { home.packages = with pkgs; [ skype tdesktop quasselClient ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ tdesktop quasselClient ]; };
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {
             K("C-x"): {
