@@ -1,14 +1,15 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
+with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.workstation.sound;
+  cfg = config.workstation.sound.pa;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
   options = {
-    # TODO: rename options in implementation-agnostic way
-    workstation.sound = {
+    workstation.sound.pa = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -31,6 +32,12 @@ in {
     (mkIf cfg.enable {
       users.users.${user}.extraGroups = [ "audio" ];
 
+      nixpkgs.config.packageOverrides = _: rec {
+        pautil = mkPythonScriptWithDeps "pautil"
+          (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.more-itertools ])
+          (readSubstituted ../../subst.nix ./scripts/pautil.py);
+      };
+
       hardware.pulseaudio = {
         enable = true;
         support32Bit = true;
@@ -39,24 +46,14 @@ in {
         daemon.config = cfg.daemonConfig;
         extraConfig = ''
           load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
+          load-module module-udev-detect tsched=0
+          load-module module-cork-music-on-phone
         '';
       };
       environment.systemPackages = with pkgs; [ pasystray lxqt.pavucontrol-qt ];
-      # home-manager.users."${user}" = {
-      #   # NOTE: temporary workaround
-      #   home.activation.ensureSystemwidePulseaudio = {
-      #     after = [ "checkLinkTargets" ];
-      #     before = [ ];
-      #     # FIXME: parameterize DBUS_SESSION_BUS_ADDRESS value
-      #     data = ''
-      #       export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
-      #       ${pkgs.systemd}/bin/systemctl --user stop pulseaudio.service
-      #       ${pkgs.systemd}/bin/systemctl restart pulseaudio.service
-      #     '';
-      #   };
-      # };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
+      # TODO: find a handy balance between PA and mpris (taking respective keybindings into account)
       wmCommon.keys = [
         {
           key = [ "XF86AudioMute" ];
@@ -73,7 +70,35 @@ in {
           cmd = "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt";
           mode = "root";
         }
+        {
+          key = [ prefix "Control" "p" ];
+          cmd = "${pkgs.pautil}/bin/pautil status";
+          mode = "root";
+        }
+        {
+          key = [ "," ];
+          cmd = "${pkgs.pautil}/bin/pautil source --set-default";
+          mode = "sound";
+        }
+        {
+          key = [ "Shift" "," ];
+          cmd = "${pkgs.pautil}/bin/pautil source --suspend-toggle";
+          mode = "sound";
+        }
+        {
+          key = [ "." ];
+          cmd = "${pkgs.pautil}/bin/pautil sink --set-default";
+          mode = "sound";
+        }
+        {
+          key = [ "Shift" "." ];
+          cmd = "${pkgs.pautil}/bin/pautil sink --suspend-toggle";
+          mode = "sound";
+        }
       ];
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users.${user} = { home.packages = with pkgs; [ pautil ]; };
     })
   ];
 }

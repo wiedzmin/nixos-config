@@ -96,6 +96,7 @@ in {
           "virt" = [ prefix "v" ];
           "window" = [ prefix "w" ];
           "xserver" = [ prefix "x" ];
+          "sound" = [ prefix "Home" ];
         };
         keys = [
           {
