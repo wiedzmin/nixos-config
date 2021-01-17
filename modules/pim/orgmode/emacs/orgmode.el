@@ -76,6 +76,7 @@
 
 (use-package org
   :after f
+  :delight org-src-mode
   :preface
   ;; remove read-only props from yanked text (e.g. from jabber.el chat buffer)
   (defun custom/make-yank-writeable (func &rest args)
