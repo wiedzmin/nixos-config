@@ -2,6 +2,7 @@ import argparse
 import fnmatch
 import json
 import os
+import sys
 
 from pygit2 import Repository
 import redis
