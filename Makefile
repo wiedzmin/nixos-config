@@ -19,5 +19,11 @@ switch/laptoptop:
 switch/momcat:
 	sudo nixos-rebuild switch --flake ".#momcat"
 
+switch/laptoptop/no-net:
+	sudo nixos-rebuild switch --flake ".#laptoptop" --option binary-caches ''
+
+switch/momcat/no-net:
+	sudo nixos-rebuild switch --flake ".#momcat" --option binary-caches ''
+
 clean:
 	unlink ./result
