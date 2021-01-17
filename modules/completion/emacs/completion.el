@@ -1,5 +1,5 @@
 (use-package company
-  :delight " γ"
+  :delight
   :bind
   ("C-<tab>" . company-complete)
   (:map company-active-map
@@ -7,19 +7,33 @@
         ("C-p" . company-select-previous)
         ("C-d" . company-show-doc-buffer)
         ("M-." . company-show-location)
-        ("C-c h" . company-quickhelp-manual-begin))
+        ("C-c h" . company-quickhelp-manual-begin)
+        ("C-c ." . company-complete)
+        ("C-c C-." . company-complete)
+        ("C-c s s" . company-yasnippet))
   :hook (prog-mode-hook . company-mode)
   :custom
+  (company-echo-delay 0)
   (company-idle-delay 0)
   (company-minimum-prefix-length 1)
+  (company-require-match 'never)
   (company-show-numbers t)
   (company-tooltip-align-annotations t)
   (company-tooltip-flip-when-above t)
-  (company-require-match 'never)
+  (company-tooltip-limit 20)
+  (company-dabbrev-downcase nil)
+  (company-backends '(company-capf
+                      company-keywords
+                      company-files
+                      company-dabbrev
+                      company-dabbrev-code
+                      company-yasnippet))
   :config
   (when (string-equal "i3" (getenv "CURRENT_WM"))
     (global-company-mode 1)
     (use-package company-quickhelp
+      :custom
+      (company-quickhelp-idle-delay 0.1)
       :config
       (company-quickhelp-mode 1)
       (use-package pos-tip
@@ -88,25 +102,11 @@
   :config
   (add-to-list 'company-backends 'company-restclient))
 
-;;TODO: review recommended company setup below
-;; (use-package company
-;;   :init
-;;   (setq company-require-match nil)            ; Don't require match, so you can still move your cursor as expected.
-;;   (setq company-tooltip-align-annotations t)  ; Align annotation to the right side.
-;;   (setq company-eclim-auto-save nil)          ; Stop eclim auto save.
-;;   (setq company-dabbrev-downcase nil)         ; No downcase when completion.
-;;   :config
-;;   ;; Enable downcase only when completing the completion.
-;;   (defun jcs--company-complete-selection--advice-around (fn)
-;;     "Advice execute around `company-complete-selection' command."
-;;     (let ((company-dabbrev-downcase t))
-;;       (call-interactively fn)))
-;;   (advice-add 'company-complete-selection :around #'jcs--company-complete-selection--advice-around))
-;; (add-to-list 'company-fuzzy-history-backends 'company-yasnippet)
 (use-package company-fuzzy
   :custom
   (company-fuzzy-sorting-backend 'alphabetic)
   :config
+  (add-to-list 'company-backends 'company-fuzzy-all-other-backends)
   (delight 'company-fuzzy-mode " ~" 'company-fuzzy)
   (global-company-fuzzy-mode 1))
 

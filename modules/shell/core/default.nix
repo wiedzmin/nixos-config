@@ -40,6 +40,10 @@ in {
             set echo-control-characters off
           '';
         };
+        programs.zsh.sessionVariables = {
+          YSU_IGNORED_ALIASES = [ "g" "ll" ];
+          YSU_MODE = "ALL";
+        };
         programs.command-not-found = {
           enable = true;
           dbPath = ./assets/programs.sqlite;

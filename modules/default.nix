@@ -20,7 +20,7 @@
     ./content/screenshots
     ./controlcenter
     ./dev/ccpp
-    ./dev/completion
+    ./completion
     ./dev/dbms/misc
     ./dev/dbms/mysql
     ./dev/dbms/pgsql
@@ -54,7 +54,6 @@
     ./gc
     ./knowledgebase
     ./navigation/bookmarks
-    ./navigation/completion
     ./networking/hosts
     ./networking/messengers
     ./networking/nmconnections
@@ -72,7 +71,6 @@
     ./security
     ./shell/alacritty
     ./shell/bookmarks
-    ./shell/completion
     ./shell/core
     ./shell/prompts/liquid
     ./shell/prompts/ohmyzsh

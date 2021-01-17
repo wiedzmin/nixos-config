@@ -325,12 +325,18 @@ in {
     };
   };
 
+  completion = {
+    enable = true;
+    shell.enable = true;
+    emacs.enable = true;
+    wm.enable = true;
+  };
+
   dev = {
     codesearch = {
       enable = true;
       emacs.enable = true;
     };
-    completion.emacs.enable = true;
     git = {
       autofetch = {
         enable = false;
@@ -444,10 +450,6 @@ in {
       enable = true;
       workspaces.globalRoot = "workspace/repos";
       emacs.enable = true;
-    };
-    completion = {
-      enable = true;
-      wm.enable = true;
     };
   };
 
@@ -628,7 +630,6 @@ in {
       enable = true;
       dev.enable = true;
     };
-    completion.enable = true;
     prompts.liquid.enable = true;
     tmux = {
       enable = true;
