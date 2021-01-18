@@ -15,6 +15,7 @@ operations = [
     "stop",
     "restart",
     "journal",
+    "journal/follow",
     "status",
 ]
 
@@ -44,9 +45,13 @@ operation = get_selection(operations, '> ', lines=5, font="@wmFontDmenu@")
 if not operation:
     sys.exit(1)
 
-if operation in ["journal", "status"]:
-    unit_show(service, operation, user=('user' in service), follow=True,
-              shell=["@defaultVTCmd@", "-e"], tmux_session="@tmuxDefaultSession@")
+if operation in ["journal", "journal/follow", "status"]:
+    if "follow" in operation:
+        unit_show(service, "journal", user=('user' in service), follow=True,
+                  shell=["@defaultVTCmd@", "-e"], tmux_session="@tmuxDefaultSession@")
+    else:
+        unit_show(service, operation, user=('user' in service),
+                  shell=["@defaultVTCmd@", "-e"], tmux_session="@tmuxDefaultSession@")
     switch_desktop(1)
 else:
     unit_perform(service, operation, user=('user' in service))
