@@ -20,9 +20,9 @@
   :after treemacs magit)
 
 (use-package magit-todos
-  :after (magit projectile ivy)
+  :after (magit projectile)
   :bind
   (:map mode-specific-map
-        ("C-d" . ivy-magit-todos))
+        ("C-d" . magit-todos-list))
   (:map custom-projectile-map
-        ("t" . ivy-magit-todos)))
+        ("t" . magit-todos-list)))

@@ -144,14 +144,11 @@
                ("=" . org-show-todo-tree)
                ("D" . org-delete-property)
                ("G" . org-goto)
-               ("H" . org-recent-headings-ivy)
                ("S" . org-set-property)
-               ("\\" . counsel-org-tag)
                ("T" . org-table-create)
                ("a" . org-agenda)
                ("e" . org-capture)
                ("f" . ace-link-org)
-               ("l" . counsel-org-agenda-headlines)
                ("n" . org-narrow-to-subtree)
                ("r" . org-refile)
                ("s" . org-schedule)
@@ -409,21 +406,6 @@
   :commands (org-html-convert-region-to-html
              org-html-export-as-html
              org-html-export-to-html))
-
-(use-package ivy-omni-org
-  :after (org ivy)
-  :bind
-  (:map mode-specific-map
-        ("O" . ivy-omni-org))
-  :preface
-  (defun custom/org-kb-files ()
-    (f-files "@orgKbDir@" nil t))
-  :custom
-  (ivy-omni-org-file-sources '(org-agenda-files custom/org-kb-files)))
-
-;; TODO: bind to keys
-(use-package counsel-org-clock
-  :commands counsel-org-clock-history counsel-org-clock-goto counsel-org-clock-context)
 
 (use-package deft
   :bind

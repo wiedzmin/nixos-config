@@ -158,7 +158,8 @@
          ("\\.yasnippet$" . snippet-mode))
   :bind
   (:prefix-map custom-yasnippet-map
-               :prefix "<f5>")
+               :prefix "<f5>"
+               ("i" . yas-insert-snippet))
   :config
   (yas-global-mode)
   :custom

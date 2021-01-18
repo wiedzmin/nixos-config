@@ -72,11 +72,9 @@ in {
         current window ($title =~ /^emacs - [^ ]+\.org .*$/) ==> tag edit:orgmode,
       '';
       ide.emacs.core.extraPackages = epkgs: [
-        epkgs.counsel-org-clock
         epkgs.deft
         epkgs.doct
         epkgs.helm-org-rifle
-        epkgs.ivy-omni-org
         epkgs.ob-async
         epkgs.ob-blockdiag
         epkgs.ob-restclient

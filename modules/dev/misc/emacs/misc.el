@@ -156,17 +156,6 @@
   :config
   (lsp-treemacs-sync-mode 1))
 
-(use-package lsp-ivy
-  :after (lsp-mode ivy)
-  :bind
-  (:map mode-specific-map
-        ("o b" . lsp-ivy-workspace-symbol)
-        ("o g" . lsp-ivy-global-workspace-symbol))
-  (:map lsp-mode-map
-        ([remap xref-find-apropos] . lsp-ivy-global-workspace-symbol))
-  (:map custom-nav-map
-        ("s" . lsp-ivy-global-workspace-symbol)))
-
 (use-package plantuml-mode
   :mode "\\.plantuml\\'"
   :custom

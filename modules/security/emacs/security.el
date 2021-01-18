@@ -17,7 +17,4 @@
   :bind
   (:prefix-map custom-pass-map
                :prefix  "<f6>"
-               ("p" . pass)
-               ("!" . ivy-pass))
-  :config
-  (use-package ivy-pass))
+               ("p" . pass)))

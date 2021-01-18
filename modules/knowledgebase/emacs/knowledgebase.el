@@ -1,6 +1,6 @@
 (use-package apropos
   :bind
-  (:map custom-help-map
+  (:map help-map
         ("a" . apropos)
         ("d" . apropos-documentation)
         ("v" . apropos-variable)
@@ -13,14 +13,6 @@
 
 (use-package helpful
   :bind
-  (:map custom-help-map
-        ("f" . helpful-function)
-        ("v" . helpful-variable)
-        ("C" . helpful-callable)
-        ("M" . helpful-macro)
-        ("c" . helpful-command)
-        ("k" . helpful-key)
-        ("RET" . helpful-at-point))
   (:map help-map
         ("f" . helpful-function)
         ("v" . helpful-variable)

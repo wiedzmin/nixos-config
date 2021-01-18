@@ -12,7 +12,7 @@
    (rx bol (group (one-or-more
                    (group (zero-or-more alnum) ":" space)))))
   (git-msg-prefix-log-flags " --since='1 week ago' ")
-  (git-msg-prefix-input-method 'ivy-read))
+  (git-msg-prefix-input-method 'completing-read))
 
 (use-package smerge-mode
   :delight " ∓"

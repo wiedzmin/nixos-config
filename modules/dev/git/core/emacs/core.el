@@ -46,7 +46,7 @@
   :custom
   (magit-blame-heading-format "%H %-20a %C %s")
   (magit-section-visibility-indicator '("..." . t))
-  (magit-completing-read-function 'ivy-completing-read)
+  (magit-completing-read-function 'completing-read)
   (magit-section-initial-visibility-alist '((stashes . hide) (untracked . hide) (unpushed . hide)))
   (magit-diff-refine-hunk t)
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))

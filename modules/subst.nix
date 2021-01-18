@@ -33,7 +33,6 @@ in rec {
   gitWipChangedLinesTreshold = builtins.toString config.dev.git.savewip.minChangedLines;
   gmrunHistorySize = builtins.toString config.controlcenter.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.controlcenter.gmrun.terminalApps;
-  ivyCandidatesCount = builtins.toString config.ide.emacs.navigation.ivy.candidatesCount;
   keybindingsCachePath = config.wmCommon.keybindingsCachePath;
   lockScreenCommand = config.workstation.lockscreen.command.lock;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";

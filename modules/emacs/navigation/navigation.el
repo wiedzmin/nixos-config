@@ -1,9 +1,137 @@
-(use-package amx
-  :bind
-  ("M-x" . amx)
+;;TODO: review functionality / find substitute for / reimplement:
+;; - doom-todo-ivy
+;; - ivy-pass
+;; - ivy-omni-org
+;; - counsel-org-clock
+;; - avy[-goto-*]
+
+(use-package selectrum
   :custom
-  (amx-backend 'ivy)
-  (amx-save-file "@emacsDatadir@/amx-items"))
+  (selectrum-show-indices t)
+  (selectrum-num-candidates-displayed 20)
+  (selectrum-count-style 'current/matches)
+  :config
+  (selectrum-mode +1)
+  (add-to-list 'completion-styles 'substring)
+  (add-to-list 'completion-styles 'partial-completion))
+
+(use-package prescient
+  :config
+  (selectrum-prescient-mode 1)
+  (prescient-persist-mode 1))
+
+(use-package orderless
+  :init
+  (icomplete-mode)
+  :custom
+  (completion-styles '(orderless))
+  (completion-category-defaults nil)
+  (selectrum-refine-candidates-function #'orderless-filter)
+  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  :config
+  (add-to-list 'completion-category-overrides
+               '(buffer (orderless-matching-styles orderless-flex)))
+  (add-to-list 'completion-styles 'orderless))
+
+(use-package embark
+  :bind
+  ("C-S-a" . embark-act)
+  (:map iso-transl-ctl-x-8-map
+        ("RET" . embark-save-unicode-character))
+  :custom
+  (embark-allow-edit-default t)
+  (embark-action-indicator (lambda (map)
+                             (which-key--show-keymap "Embark" map nil nil 'no-paging)
+                             #'which-key--hide-popup-ignore-command)
+                           embark-become-indicator embark-action-indicator))
+
+(use-package embark-consult
+  :after (embark consult)
+  :demand t ; only necessary if you have the hook below
+  :hook
+  (embark-collect-mode . embark-consult-preview-minor-mode))
+
+(use-package marginalia
+  :after embark
+  :bind
+  (:map minibuffer-local-map
+        ("C-M-a" . marginalia-cycle))
+  (:map embark-general-map
+        ("A" . marginalia-cycle))
+  :init ; NOTE: eager
+  (marginalia-mode)
+  (advice-add #'marginalia-cycle :after
+              (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit))))
+  :custom
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
+
+(use-package consult
+  :bind
+  ("C-s" . consult-line)
+  ("C-S-s" . consult-line-symbol-at-point)
+  ("M-<f12>" . consult-buffer)
+  (:map ctl-x-map
+        ("b" . consult-buffer)
+        ("C-r" . consult-recentf-file)
+        ("m" . consult-minor-mode-menu))
+  ;; consult-bookmark
+  ;; (:map mode-specific-map
+  ;;       ("v" . ivy-push-view)
+  ;;       ("V" . ivy-pop-view))
+  ;; TODO: roughly reimplement as described below
+  ;; Optional configure a view library to be used by `consult-buffer'.
+  ;; The view library must provide two functions, one to open the view by name,
+  ;; and one function which must return a list of views as strings.
+  ;; Example: https://github.com/minad/bookmark-view/
+  ;; (setq consult-view-open-function #'bookmark-jump
+  ;;       consult-view-list-function #'bookmark-view-names)
+  :custom
+  (consult-project-root-function #'projectile-project-root))
+
+(use-package consult-flycheck
+  :after consult
+  :bind
+  (:map mode-specific-map
+        ("y" . ivy-flycheck))
+  (:map flycheck-mode-map
+        ("C-c ! o" . ivy-flycheck)))
+
+(use-package winum
+  :bind
+  ("M-o" . winum-select-window-by-number)
+  :custom
+  (winum-scope 'visible)
+  :config
+  (winum-mode))
+
+(use-package link-hint
+  :bind
+  (:map mode-specific-map
+        :prefix-map link-hint-keymap
+        :prefix "o"
+        ("f" . link-hint-open-link)
+        ("y" . link-hint-copy-link)
+        ("F" . link-hint-open-multiple-links)
+        ("Y" . link-hint-copy-multiple-links))
+  :custom
+  (link-hint-avy-style 'de-bruijn))
+
+(use-package find-func
+  :bind
+  (:prefix-map custom-help-map
+               :prefix "<f1>"
+               ("l" . find-library)))
+
+(use-package help
+  :bind
+  (:map custom-help-map
+        ("b" . describe-bindings)
+        ("i" . info-lookup-symbol)))
+
+(use-package info-look
+  :bind
+  (:map custom-help-map
+        ("i" . info-lookup-symbol)))
 
 (use-package beginend
   :if (string-equal "i3" (getenv "CURRENT_WM"))
@@ -23,16 +151,6 @@
         ("p" . flycheck-projectile-list-errors))
   (:map flycheck-mode-map
         ("C-c ! p" . flycheck-projectile-list-errors)))
-
-(use-package ivy-flycheck
-  :after (ivy flycheck)
-  :quelpa
-  (ivy-flycheck :repo "caisah/ivy-flycheck" :fetcher github)
-  :bind
-  (:map mode-specific-map
-        ("y" . ivy-flycheck))
-  (:map flycheck-mode-map
-        ("C-c ! o" . ivy-flycheck)))
 
 (use-package mwim
   :bind
@@ -74,138 +192,6 @@
                       face
                       tabs)))
 
-(use-package ace-link
-  :after link-hint
-  :bind
-  (:map link-hint-keymap
-        ;; This is fallback option for link-hint itself
-        ;; because link-hint is spuriously stops working
-        ;; between package upgrades.
-        ("l" . ace-link-org))
-  :config
-  (ace-link-setup-default))
-
-(use-package ace-window
-  :after avy
-  :bind
-  ("M-o" . ace-window)
-  :custom
-  (aw-background nil)
-  (aw-leading-char-style 'char)
-  (aw-scope 'visible)
-  :config
-  (ace-window-display-mode 1)
-  :custom-face (aw-leading-char-face
-                ((t (:inherit ace-jump-face-foreground
-                              :foreground "green"
-                              :height 0.1)))))
-
-(use-package ivy
-  :delight
-  :bind
-  ("M-<f12>" . counsel-switch-buffer)
-  ("<f10>" . ivy-resume)
-  (:map ctl-x-map
-        ("b" . counsel-switch-buffer))
-  (:map mode-specific-map
-        ("v" . ivy-push-view)
-        ("V" . ivy-pop-view))
-  (:map ivy-minibuffer-map
-        ("C-j" . ivy-immediate-done))
-  :config
-  (ivy-mode 1)
-  :custom-face
-  (ivy-current-match ((t (:background "gray1"))))
-  :custom
-  (ivy-display-style 'fancy)
-  (ivy-use-selectable-prompt t "Make the prompt line selectable")
-  (ivy-use-virtual-buffers t) ;; add 'recentf-mode’and bookmarks to 'ivy-switch-buffer'.
-  (ivy-height @ivyCandidatesCount@) ;; number of result lines to display
-  (ivy-initial-inputs-alist nil) ;; no regexp by default
-  (ivy-re-builders-alist
-   '((read-file-name-internal . ivy--regex-fuzzy)
-     (t . ivy--regex-ignore-order))))
-
-(use-package ivy-avy
-  :after (ivy)
-  :bind
-  (:map ivy-minibuffer-map
-        ("C-'" . ivy-avy)))
-
-(use-package avy
-  :bind
-  ("C-:" . avy-goto-char)
-  (:prefix-map custom-goto-map
-               :prefix "M-s"
-               ("M-s" . avy-goto-word-0)) ;FIXME: fails to bind for some reason
-  :custom
-  (avy-timeout-seconds 0.5)
-  (avy-keys '(?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
-  :custom-face (avy-goto-char-timer-face ((nil (:foreground "green" :weight bold))))
-  :config
-  (avy-setup-default))
-
-(use-package avy-zap
-  :bind
-  ([remap zap-to-char] . avy-zap-to-char-dwim))
-
-(use-package counsel
-  :delight
-  :init
-  (require 'iso-transl)
-  :bind
-  ([remap menu-bar-open] . counsel-tmm)
-  ([remap insert-char] . counsel-unicode-char)
-  ([remap isearch-forward] . counsel-grep-or-swiper)
-  (:prefix-map custom-nav-map
-               :prefix "C-q"
-               ("y" . counsel-yank-pop)
-               ("m" . counsel-mark-ring)
-               ("c" . counsel-command-history)
-               ("l" . counsel-git-log)
-               ("g" . counsel-rg)
-               ("G" . (lambda () (interactive) (counsel-rg (thing-at-point 'symbol))))
-               ("I" . ivy-imenu-anywhere))
-  (:prefix-map custom-help-map
-               :prefix "<f1>"
-               ("l" . counsel-find-library)
-               ("b" . counsel-descbinds)
-               ("i" . counsel-info-lookup-symbol))
-  (:map mode-specific-map
-        ("C-SPC" . counsel-mark-ring)
-        ("l" . counsel-locate))
-  (:map help-map
-        ("l" . counsel-find-library))
-  (:map ctl-x-map
-        ("C-r" . counsel-recentf)
-        ("m" . counsel-minor))
-  (:map iso-transl-ctl-x-8-map
-        ("RET" . counsel-unicode-char))
-  :custom
-  (counsel-git-cmd "rg --files")
-  (counsel-grep-base-command "rg -i -M 120 --no-heading --line-number --color never '%s' %s")
-  (counsel-rg-base-command "rg -i -M 120 --no-heading --line-number --color never %s .")
-  :config
-  (counsel-mode 1))
-
-(use-package counsel-tramp
-  :hook
-  (counsel-tramp-pre-command-hook . (lambda ()
-                                      (setq make-backup-files nil)
-                                      (global-aggressive-indent-mode 0)
-                                      (projectile-mode 0)
-                                      (editorconfig-mode 0))) ;TODO: check if EC is enabled
-  (counsel-tramp-quit-hook . (lambda ()
-                               (projectile-mode 1)
-                               (editorconfig-mode 1))) ;TODO: check if EC is enabled
-  :config
-  (setenv "SHELL" "@bashExecutable@")
-  :custom
-  (tramp-default-method "ssh")
-  (counsel-tramp-docker-user "@mainUserName@"))
-
-(use-package counsel-jq)
-
 (use-package dired
   :commands dired
   :hook (dired-mode-hook . auto-revert-mode)
@@ -237,18 +223,6 @@
   (wdired-allow-to-change-permissions 'advanced)
   :config
   (advice-add 'wdired-abort-changes :after #'custom/revert-dired-buffer))
-
-(use-package dired-hide-dotfiles
-  :bind
-  (:map dired-mode-map
-        ("." . dired-hide-dotfiles-mode))
-  :hook
-  (dired-mode . dired-hide-dotfiles-mode))
-
-(use-package doom-todo-ivy
-  :quelpa
-  (doom-todo-ivy :repo "jsmestad/doom-todo-ivy" :fetcher github)
-  :commands doom/ivy-tasks)
 
 (use-package frame
   :preface
@@ -288,49 +262,10 @@
   (setq truncate-partial-width-windows nil))
 
 (use-package imenu-anywhere
-  :commands ivy-imenu-anywhere
+  :commands imenu-anywhere
   :bind
   (:map custom-nav-map
-               ("I" . ivy-imenu-anywhere)))
-
-(use-package ivy-historian
-  :after ivy
-  :config
-  (ivy-historian-mode))
-
-(use-package ivy-rich
-  :after ivy
-  :defines ivy-rich-abbreviate-paths ivy-rich-switch-buffer-name-max-length
-  :custom
-  (ivy-rich-switch-buffer-name-max-length 60 "Increase max length of buffer name.")
-  :config
-  (ivy-rich-mode 1))
-
-;TODO: setup xref package itself
-(use-package ivy-xref
-  :after ivy
-  :custom
-  (xref-show-xrefs-function #'ivy-xref-show-xrefs "Use Ivy to show xrefs"))
-
-(use-package ivy-yasnippet
-  :after (ivy)
-  :bind
-  (:prefix-map custom-yasnippet-map
-               :prefix "<f5>"
-               ("i" . ivy-yasnippet)))
-
-(use-package link-hint
-  :bind
-  (:map mode-specific-map
-        :prefix-map link-hint-keymap
-        :prefix "o"
-        ; ("s" . custom/open-url-current-buffer)
-        ("f" . link-hint-open-link)
-        ("y" . link-hint-copy-link)
-        ("F" . link-hint-open-multiple-links)
-        ("Y" . link-hint-copy-multiple-links))
-  :custom
-  (link-hint-avy-style 'de-bruijn))
+               ("I" . imenu-anywhere)))
 
 (use-package phi-search
   :hook (isearch-mode-hook . phi-search-from-isearch-mc/setup-keys)
@@ -340,32 +275,8 @@
     (phi-search-mc/setup-keys)))
 
 (use-package projectile
+  :after selectrum
   :delight
-  :bind
-  (:prefix-map custom-projectile-map
-               :prefix "<f8>"
-               ("i" . projectile-invalidate-cache)
-               ("k" . projectile-kill-buffers)
-               ("C" . projectile-commander)
-               ("d" . projectile-dired)
-               ("f" . projectile-recentf))
-  :custom
-  (projectile-enable-caching t)
-  (projectile-require-project-root t)
-  (projectile-completion-system 'ivy)
-  (projectile-track-known-projects-automatically t)
-  (projectile-project-root-files-functions
-   '(projectile-root-local
-     projectile-root-bottom-up
-     projectile-root-top-down
-     projectile-root-top-down-recurring))
-  :hook
-  (after-init-hook . projectile-mode)
-  :config
-  :delight '(:eval (concat " ¶[" (projectile-project-name) "]")))
-
-(use-package counsel-projectile
-  :after (counsel projectile)
   :preface
   (defun custom/open-project-todos ()
     (interactive)
@@ -381,42 +292,51 @@
       (aif (get-buffer (concat "magit: " current-project-name))
           (switch-to-buffer it)
         (magit-status))))
-  (defun counsel-projectile-switch-project-action-codesearch-search (project)
+  (defun projectile-switch-project-action-codesearch-search (project)
     "Search project's files with Codesearch."
     (let ((projectile-switch-project-action #'projectile-codesearch-search))
-      (counsel-projectile-switch-project-by-name project)))
-  (defun counsel-projectile-switch-project-action-open-todos (project)
+      (projectile-switch-project-by-name project)))
+  (defun projectile-switch-project-action-open-todos (project)
     "Open project's TODOs."
     (let ((projectile-switch-project-action #'custom/open-project-todos))
-      (counsel-projectile-switch-project-by-name project)))
-  (defun counsel-projectile-switch-project-action-open-magit-status (project)
+      (projectile-switch-project-by-name project)))
+  (defun projectile-switch-project-action-open-magit-status (project)
     "Open project's Magit status buffer."
     (let ((projectile-switch-project-action #'custom/open-project-magit-status))
-      (counsel-projectile-switch-project-by-name project)))
+      (projectile-switch-project-by-name project)))
   :bind
-  ("C-<f1>" . counsel-projectile-switch-project)
-  (:map custom-projectile-map
-        ("t" . custom/open-project-todos)
-        ("m" . custom/open-project-magit-status)
-        ("T" . doom/ivy-tasks)
-        ("h" . counsel-projectile)
-        ("c" . projectile-codesearch-search))
+  ("C-<f1>" . projectile-switch-project)
+  (:prefix-map custom-projectile-map
+               :prefix "<f8>"
+               ("C" . projectile-commander)
+               ("d" . projectile-dired)
+               ("i" . projectile-invalidate-cache)
+               ("k" . projectile-kill-buffers)
+               ("t" . custom/open-project-todos)
+               ("m" . custom/open-project-magit-status)
+               ("f" . recentf-open-files)
+               ("h" . projectile-find-file))
+  :custom
+  (projectile-completion-system 'default)
+  (projectile-enable-caching t)
+  (projectile-require-project-root t)
+  (projectile-track-known-projects-automatically t)
+  (projectile-project-root-files-functions
+   '(projectile-root-local
+     projectile-root-bottom-up
+     projectile-root-top-down
+     projectile-root-top-down-recurring))
+  :hook
+  (after-init-hook . projectile-mode)
   :config
-  (counsel-projectile-mode 1)
-  (add-to-list 'counsel-projectile-switch-project-action
-               '("c" counsel-projectile-switch-project-action-codesearch-search "search project's files with Codesearch") t)
-  (add-to-list 'counsel-projectile-switch-project-action
-               '("t" counsel-projectile-switch-project-action-open-todos "open project's todos") t)
-  (add-to-list 'counsel-projectile-switch-project-action
-               '("m" counsel-projectile-switch-project-action-open-magit-status "open project's magit status buffer") t)
-  (setq projectile-switch-project-action 'counsel-projectile-switch-project))
+  :delight '(:eval (concat " ¶[" (projectile-project-name) "]")))
 
 (use-package rg
-  :after counsel
   :bind
-  (:map custom-nav-map
-        ("r" . rg)
-        ("d" . rg-project))
+  (:prefix-map custom-nav-map
+               :prefix "C-q"
+               ("r" . rg)
+               ("d" . rg-project))
   :custom
   (rg-group-result t)
   (rg-show-columns t)
@@ -428,28 +348,6 @@
   (rg-align-position-content-separator "|")
   :config
   (rg-define-toggle "--context 3" (kbd "C-c c")))
-
-(use-package swiper
-  :after avy                            ;check
-  :commands swiper swiper-multi
-  :bind
-  ("C-s" . swiper)
-  ("C-S-s" . swiper-thing-at-point)
-  (:map custom-nav-map
-        ("M-a" . swiper-avy)
-        ("m" . swiper-multi))
-  :custom
-  (swiper-include-line-number-in-search t)
-  :custom-face (swiper-match-face-1 ((t (:background "#dddddd"))))
-  :custom-face (swiper-match-face-2 ((t (:background "#bbbbbb" :weight bold))))
-  :custom-face (swiper-match-face-3 ((t (:background "#bbbbff" :weight bold))))
-  :custom-face (swiper-match-face-4 ((t (:background "#ffbbff" :weight bold)))))
-
-(use-package avy-flycheck
-  :after link-hint
-  :bind
-  (:map link-hint-keymap
-        ("e" . avy-flycheck-goto-error)))
 
 (use-package block-nav
   :bind
@@ -555,6 +453,6 @@
   :hostmode 'poly-nix-hostmode
   :innermodes '(poly-haskell-innermode))
 
-;; https://github.com/abo-abo/hydra
-;; https://github.com/jerrypnz/major-mode-hydra.el
-;; https://github.com/jeremyf/dotzshrc/blob/32be278ff00712e7061e36c105bd3b9bae23e933/emacs/jnf-org-roam.el#L106-L135
+;; selectrum + xref
+;; selectrum/consult-bound xref impl
+;;TODO: setup xref package itself
