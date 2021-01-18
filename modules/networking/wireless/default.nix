@@ -87,6 +87,11 @@ in {
         bluetooth = {
           enable = true;
           powerOnBoot = false;
+          config = {
+            General = {
+              Enable = "Source,Sink,Media,Socket";
+            };
+          };
         };
       };
     })
