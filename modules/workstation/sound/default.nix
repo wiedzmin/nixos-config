@@ -2,6 +2,7 @@
 with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
+# TODO: https://github.com/graysky2/pulseaudio-ctl
 let
   cfg = config.workstation.sound.pa;
   user = config.attributes.mainUser.name;
@@ -37,7 +38,6 @@ in {
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.more-itertools ])
           (readSubstituted ../../subst.nix ./scripts/pautil.py);
       };
-
       hardware.pulseaudio = {
         enable = true;
         support32Bit = true;
