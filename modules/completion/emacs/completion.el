@@ -7,10 +7,8 @@
         ("C-p" . company-select-previous)
         ("C-d" . company-show-doc-buffer)
         ("M-." . company-show-location)
-        ("C-c h" . company-quickhelp-manual-begin)
         ("C-c ." . company-complete)
-        ("C-c C-." . company-complete)
-        ("C-c s s" . company-yasnippet))
+        ("C-c C-." . company-complete))
   :hook (prog-mode-hook . company-mode)
   :custom
   (company-echo-delay 0)
@@ -102,16 +100,8 @@
   :config
   (add-to-list 'company-backends 'company-restclient))
 
-(use-package company-fuzzy
-  :custom
-  (company-fuzzy-sorting-backend 'alphabetic)
-  :config
-  (add-to-list 'company-backends 'company-fuzzy-all-other-backends)
-  (delight 'company-fuzzy-mode " ~" 'company-fuzzy)
-  (global-company-fuzzy-mode 1))
-
 (use-package company-tabnine
-  :after (company unicode-escape)
+  :after (company)
   :preface
   (defun tabnine/bury-company-lsp ()
     (when (memq 'company-lsp company-backends)
