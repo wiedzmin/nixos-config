@@ -24,7 +24,7 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ ccls clang clang-tools rr-unstable gdb ];
+        home.packages = with pkgs; [ ccls clang clang-tools gdb ]; # rr-unstable (broken)
         programs.zsh.sessionVariables = {
           _RR_TRACE_DIR = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/rr";
         };
