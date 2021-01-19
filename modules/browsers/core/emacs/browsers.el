@@ -18,8 +18,7 @@
   (browse-url-generic-program "@emacsBrowserGenericProgram@"))
 
 (use-package bruh
+  :load-path "@emacsBruhPath@"
   :after browse-url
-  :quelpa
-  (bruh :repo "a13/bruh" :fetcher github)
   :custom
   (browse-url-browser-function #'bruh-browse-url))

@@ -148,8 +148,6 @@ in {
           epkgs.f
           epkgs.gcmh
           epkgs.no-littering
-          epkgs.quelpa
-          epkgs.quelpa-use-package
           epkgs.use-package
         ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
       home-manager.users.${user} = {

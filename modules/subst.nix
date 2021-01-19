@@ -27,6 +27,8 @@ in rec {
   emacsDatadir = config.ide.emacs.core.dataDir;
   emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
   emacsYasnippetSnippets = inputs.yasnippet-snippets;
+  emacsObGoPath = inputs.emacs-ob-go;
+  emacsBruhPath = inputs.emacs-bruh;
   factoryCalendarKey = "scheduling/fcalendar";
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;

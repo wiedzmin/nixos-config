@@ -73,12 +73,6 @@
   :custom
   (no-littering-var-directory "@emacsDatadir@/"))
 
-(use-package quelpa)
-(use-package quelpa-use-package
-  :custom
-  (quelpa-use-package-inhibit-loading-quelpa
-   t "Improve startup performance"))
-
 (use-package emacs
   :preface
   (defun custom/kill-buffer ()

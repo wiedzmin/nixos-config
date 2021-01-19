@@ -245,6 +245,7 @@ in {
   browsers = {
     core = {
       enable = true;
+      emacs.enable = true;
       wm.enable = true;
     };
     qutebrowser = {

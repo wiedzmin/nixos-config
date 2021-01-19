@@ -55,10 +55,8 @@
   :custom
   (go-tag-args '("-transform" "camelcase")))
 
-;;TODO: play with explicit main function case (and :noweb includes alongside, as well)
 (use-package ob-go
-  :quelpa
-  (ob-go :repo "pope/ob-go" :fetcher github)
+  :load-path "@emacsObGoPath@"
   :commands (org-babel-execute:go
              org-babel-expand-body:go
              org-babel-prep-session:go))

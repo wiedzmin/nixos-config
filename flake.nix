@@ -44,6 +44,16 @@
       flake = false;
     };
 
+    # NOTE: using these instead of quelpa
+    emacs-ob-go = {
+      url = "github:pope/ob-go";
+      flake = false;
+    };
+    emacs-bruh = {
+      url = "github:a13/bruh";
+      flake = false;
+    };
+
     git-extra-commands = {
       url = "github:unixorn/git-extra-commands";
       flake = false;

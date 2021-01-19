@@ -15,6 +15,38 @@
         "type": "github"
       }
     },
+    "emacs-bruh": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1583761878,
+        "narHash": "sha256-th6PVVcDttxKoFsjRiPz50rQ7o+K5O90OBAR4QdpIfY=",
+        "owner": "a13",
+        "repo": "bruh",
+        "rev": "30eb2d966e66557e977d3cf943c71651c568771e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "a13",
+        "repo": "bruh",
+        "type": "github"
+      }
+    },
+    "emacs-ob-go": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1549053642,
+        "narHash": "sha256-fN3dFDUl9SF6CLJ8ikYmJ3BvRwpuqX/pZiftWH1LPBk=",
+        "owner": "pope",
+        "repo": "ob-go",
+        "rev": "2067ed55f4c1d33a43cb3f6948609d240a8915f5",
+        "type": "github"
+      },
+      "original": {
+        "owner": "pope",
+        "repo": "ob-go",
+        "type": "github"
+      }
+    },
     "future": {
       "locked": {
         "lastModified": 1610219734,
@@ -237,6 +269,8 @@
     "root": {
       "inputs": {
         "emacs": "emacs",
+        "emacs-bruh": "emacs-bruh",
+        "emacs-ob-go": "emacs-ob-go",
         "future": "future",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
