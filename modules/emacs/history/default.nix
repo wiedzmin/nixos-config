@@ -20,7 +20,7 @@ in {
     (mkIf (cfg.enable) {
       assertions = [{
         assertion = config.ide.emacs.core.enable;
-        message = "emacs: core configuration must be enabled.";
+        message = "emacs/history: core configuration must be enabled.";
       }];
 
       ide.emacs.core.extraPackages = epkgs: [
