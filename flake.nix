@@ -53,6 +53,10 @@
       url = "github:a13/bruh";
       flake = false;
     };
+    emacs-bookmark-view = {
+      url = "github:minad/bookmark-view";
+      flake = false;
+    };
 
     git-extra-commands = {
       url = "github:unixorn/git-extra-commands";

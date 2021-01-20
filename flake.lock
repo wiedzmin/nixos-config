@@ -15,6 +15,22 @@
         "type": "github"
       }
     },
+    "emacs-bookmark-view": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1609667538,
+        "narHash": "sha256-8pI1Uadr/siqC4sXEDpQQ0mOmJbJ1DMB4zEZcEDT3nA=",
+        "owner": "minad",
+        "repo": "bookmark-view",
+        "rev": "020b15193e1084dea8d1b3ec4fbb6e05d91f8b65",
+        "type": "github"
+      },
+      "original": {
+        "owner": "minad",
+        "repo": "bookmark-view",
+        "type": "github"
+      }
+    },
     "emacs-bruh": {
       "flake": false,
       "locked": {
@@ -269,6 +285,7 @@
     "root": {
       "inputs": {
         "emacs": "emacs",
+        "emacs-bookmark-view": "emacs-bookmark-view",
         "emacs-bruh": "emacs-bruh",
         "emacs-ob-go": "emacs-ob-go",
         "future": "future",

@@ -29,6 +29,7 @@ in rec {
   emacsYasnippetSnippets = inputs.yasnippet-snippets;
   emacsObGoPath = inputs.emacs-ob-go;
   emacsBruhPath = inputs.emacs-bruh;
+  emacsBookmarkViewPath = inputs.emacs-bookmark-view;
   factoryCalendarKey = "scheduling/fcalendar";
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;

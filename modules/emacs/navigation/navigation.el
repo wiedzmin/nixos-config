@@ -72,21 +72,17 @@
   ("M-<f12>" . consult-buffer)
   (:map ctl-x-map
         ("b" . consult-buffer)
+        ("C-b" . consult-bookmark)
         ("C-r" . consult-recentf-file)
         ("m" . consult-minor-mode-menu))
-  ;; consult-bookmark
-  ;; (:map mode-specific-map
-  ;;       ("v" . ivy-push-view)
-  ;;       ("V" . ivy-pop-view))
-  ;; TODO: roughly reimplement as described below
-  ;; Optional configure a view library to be used by `consult-buffer'.
-  ;; The view library must provide two functions, one to open the view by name,
-  ;; and one function which must return a list of views as strings.
-  ;; Example: https://github.com/minad/bookmark-view/
-  ;; (setq consult-view-open-function #'bookmark-jump
-  ;;       consult-view-list-function #'bookmark-view-names)
   :custom
   (consult-project-root-function #'projectile-project-root))
+
+(use-package bookmark-view
+  :load-path "@emacsBookmarkViewPath@"
+  :custom
+  (consult-view-open-function #'bookmark-jump)
+  (consult-view-list-function #'bookmark-view-names))
 
 (use-package consult-flycheck
   :after consult
