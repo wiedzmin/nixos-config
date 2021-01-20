@@ -180,6 +180,8 @@ in rec {
     (lib.filterAttrs (_: meta:
       (lib.hasAttrByPath [ "searchSuffix" ] meta)) remotes);
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
+  concatStringListsRaw = sep: ll: lib.concatStringsSep sep (lib.flatten ll);
   takeLast = n: l: with lib;
     reverseList (take n (reverseList l));
+  mkWSMappingBrowsersRegexp = concatStringListsRaw "|" (with config.attributes.browser; [default.windowClass fallback.windowClass]);
 }
