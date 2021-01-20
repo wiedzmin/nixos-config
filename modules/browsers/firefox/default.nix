@@ -6,7 +6,7 @@ with lib;
 let
   cfg = config.browsers.firefox;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  nurpkgs = pkgs.unstable.nur.repos;
   suspensionRule = {
     Firefox = {
       suspendDelay = 10;
@@ -96,13 +96,18 @@ in {
           mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
           (readSubstituted ../../subst.nix ./scripts/dump_firefox_session.sh);
         manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
-          (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.pystdlib ])
+          (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.wiedzmin.pystdlib ])
           (readSubstituted ../../subst.nix ./scripts/manage_firefox_sessions.py);
       };
       custom.programs.firefox = {
         enable = true;
-        extensions = [
-          # resurrect using NUR, if needed
+        extensions = with nurpkgs.rycee.firefox-addons; [
+          browserpass
+          clearurls
+          greasemonkey
+          tridactyl
+
+          nurpkgs.wiedzmin.firefox-addons.url-in-title
         ];
         profiles = {
           default = {

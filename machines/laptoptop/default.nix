@@ -248,14 +248,11 @@ in {
       emacs.enable = true;
       wm.enable = true;
     };
-    qutebrowser = {
+    firefox = {
       enable = true;
       isDefault = true;
-      sessions = {
-        backup.enable = true;
-        saveFrequency = "10min";
-        historyLength = 30;
-      };
+      suspendInactive = false;
+      sessions.backup.enable = true;
     };
     chromium = {
       enable = true;

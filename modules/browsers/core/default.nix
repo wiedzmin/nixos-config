@@ -81,6 +81,8 @@ in {
           concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
         }] && $title =~ /wikipedia/) ==> tag site:wikipedia,
       '';
+
+      programs.browserpass.enable = config.browsers.chromium.enable || config.browsers.chromium.enable;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.atomic-chrome ];
