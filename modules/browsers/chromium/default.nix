@@ -44,6 +44,11 @@ in {
           Chromium should be fallback browser.
         '';
       };
+      keyboardCentric = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Enable keyboard-centric controls (vimium, etc.)";
+      };
       suspendInactive = mkOption {
         type = types.bool;
         default = true;
@@ -80,14 +85,15 @@ in {
         programs.chromium = {
           enable = true;
           extensions = [
-            "gfbliohnnapiefjpjlpjnehglfpaknnc" # Surfingkeys
             "ignpacbgnbnkaiooknalneoeladjnfgb" # Url in title
+            "naepdomgkenhinolocfifgehidddafch" # Browserpass
             "poahndpaaanbpbeafbkploiobpiiieko" # Display anchors
             # "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
-            # "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
             # "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
-            # "naepdomgkenhinolocfifgehidddafch" # Browserpass
             # "ogfcmafjalglgifnmanfmnieipoejdcf" # uMatrix
+          ] ++ optionals (cfg.keyboardCentric) [
+            "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
+            # "gfbliohnnapiefjpjlpjnehglfpaknnc" # Surfingkeys
           ];
         };
       };

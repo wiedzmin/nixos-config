@@ -42,6 +42,11 @@ in {
         default = true;
         description = "Suspend when inacive (using xsuspender)";
       };
+      keyboardCentric = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Enable keyboard-centric controls (tridactyl, etc.)";
+      };
       command = mkOption {
         type = types.str;
         default = "${pkgs.firefox-unwrapped}/bin/firefox --new-window";
@@ -110,9 +115,10 @@ in {
           browserpass
           clearurls
           greasemonkey
-          tridactyl
 
           nurpkgs.wiedzmin.firefox-addons.url-in-title
+        ] ++ optionals (cfg.keyboardCentric) [
+          tridactyl
         ];
         profiles = {
           default = {
