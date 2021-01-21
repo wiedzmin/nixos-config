@@ -73,5 +73,9 @@ rec {
         url = "https://github.com/jwiegley/use-package";
       };
     };
+    "rycee/nur-expressions" = {
+      local.path = "${config.navigation.bookmarks.workspaces.globalRoot}/gitlab.com/rycee/nur-expressions";
+      remote.url = "https://gitlab.com/rycee/nur-expressions/";
+    };
   };
 }
