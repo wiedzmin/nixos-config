@@ -37,6 +37,11 @@ in {
         default = false;
         description = "Set firefox as fallback browser.";
       };
+      suspendInactive = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Suspend when inacive (using xsuspender)";
+      };
       command = mkOption {
         type = types.str;
         default = "${pkgs.firefox-unwrapped}/bin/firefox --new-window";
@@ -433,7 +438,7 @@ in {
 
       workstation.performance.warmup.paths = [ (homePrefix ".mozilla") ];
 
-      workstation.performance.appsSuspension.rules = suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -454,7 +459,7 @@ in {
       attributes.browser.fallback.cmd = cfg.command;
       attributes.browser.fallback.windowClass = cfg.windowClass;
 
-      workstation.performance.appsSuspension.rules = suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
       home-manager.users.${user} = {

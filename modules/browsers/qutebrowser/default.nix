@@ -41,6 +41,11 @@ in {
         default = false;
         description = "Set qutebrowser as fallback browser.";
       };
+      suspendInactive = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Suspend when inacive (using xsuspender)";
+      };
       command = mkOption {
         type = types.str;
         default = "${nixpkgs-qb.qutebrowser}/bin/qutebrowser --target window";
@@ -461,7 +466,7 @@ in {
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
 
-      workstation.performance.appsSuspension.rules = suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -482,7 +487,7 @@ in {
       attributes.browser.fallback.cmd = cfg.command;
       attributes.browser.fallback.windowClass = cfg.windowClass;
 
-      workstation.performance.appsSuspension.rules = suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
       home-manager.users.${user} = {
