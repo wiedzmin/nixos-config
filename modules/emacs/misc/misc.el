@@ -62,8 +62,6 @@
          (eval-expression-minibuffer-setup-hook . eldoc-mode))
   :bind
   ("M-SPC" . cycle-spacing)
-  (:map goto-map
-        ("M-g" . goto-line))
   (:map misc-editing-map
         ("b" . subword-mode)
         ("v" . view-mode))

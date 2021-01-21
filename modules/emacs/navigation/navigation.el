@@ -4,6 +4,10 @@
 ;; - ivy-omni-org
 ;; - counsel-org-clock
 ;; - avy[-goto-*]
+;; TODO: https://github.com/minad/consult/issues/6
+;; TODO: monitor/implement/suggest(to consult project wishlist) consult-goto-<not line, but char (as in avy-goto-*)
+;; TODO: setup xref package, then search for selectrum/consult-bound xref impl
+;; TODO: bind consult-error when compilation buffers will be used more extensively
 
 (use-package selectrum
   :custom
@@ -34,10 +38,25 @@
   (add-to-list 'completion-styles 'orderless))
 
 (use-package embark
+  :preface
+  (defun current-candidate+category ()
+    (when selectrum-active-p
+      (cons (selectrum--get-meta 'category)
+            (selectrum-get-current-candidate))))
+  (defun current-candidates+category ()
+    (when selectrum-active-p
+      (cons (selectrum--get-meta 'category)
+            (selectrum-get-current-candidates
+             ;; Pass relative file names for dired.
+             minibuffer-completing-file-name))))
   :bind
   ("C-S-a" . embark-act)
   (:map iso-transl-ctl-x-8-map
         ("RET" . embark-save-unicode-character))
+  :hook
+  (embark-setup-hook selectrum-set-selected-candidate)
+  (embark-target-finders . current-candidate+category)
+  (embark-candidate-collectors . current-candidates+category)
   :custom
   (embark-allow-edit-default t)
   (embark-action-indicator (lambda (map)
@@ -70,13 +89,36 @@
   ("C-s" . consult-line)
   ("C-S-s" . consult-line-symbol-at-point)
   ("M-<f12>" . consult-buffer)
+  ("M-y" . consult-yank)
+  (:map goto-map
+        ("M-g" . consult-goto-line))
+  (:map custom-nav-map
+        ("g" . consult-ripgrep)
+        ("i" . consult-imenu) ; consult-project-imenu
+        ("k" . consult-kmacro)
+        ("x" . consult-register)
+        ("j" . consult-global-mark)
+        ("o" . consult-outline)
+        ("c" . consult-complex-command)
+        ("m" . consult-multi-occur))
+  (:map dired-mode-map
+        ("`" . consult-file-externally))
   (:map ctl-x-map
         ("b" . consult-buffer)
         ("C-b" . consult-bookmark)
         ("C-r" . consult-recentf-file)
         ("m" . consult-minor-mode-menu))
+  (:map help-map
+        ("a" . consult-apropos)
+        ("C-m" . consult-man))
   :custom
-  (consult-project-root-function #'projectile-project-root))
+  (register-preview-delay 0)
+  (register-preview-function #'consult-register-preview)
+  (consult-project-root-function #'projectile-project-root)
+  :config
+  (consult-preview-mode)
+  (fset 'multi-occur #'consult-multi-occur)
+  (fset 'projectile-ripgrep 'consult-ripgrep))
 
 (use-package bookmark-view
   :load-path "@emacsBookmarkViewPath@"
@@ -88,9 +130,9 @@
   :after consult
   :bind
   (:map mode-specific-map
-        ("y" . ivy-flycheck))
+        ("y" . consult-flycheck))
   (:map flycheck-mode-map
-        ("C-c ! o" . ivy-flycheck)))
+        ("C-c ! o" . consult-flycheck)))
 
 (use-package winum
   :bind
@@ -439,7 +481,3 @@
 (define-polymode poly-nix-haskell-mode
   :hostmode 'poly-nix-hostmode
   :innermodes '(poly-haskell-innermode))
-
-;; selectrum + xref
-;; selectrum/consult-bound xref impl
-;;TODO: setup xref package itself

@@ -1,7 +1,6 @@
 (use-package apropos
   :bind
   (:map help-map
-        ("a" . apropos)
         ("d" . apropos-documentation)
         ("v" . apropos-variable)
         ("c" . apropos-command)
