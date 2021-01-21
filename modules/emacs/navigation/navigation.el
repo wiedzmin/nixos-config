@@ -114,9 +114,8 @@
 
 (use-package find-func
   :bind
-  (:prefix-map custom-help-map
-               :prefix "<f1>"
-               ("l" . find-library)))
+  (:map custom-help-map
+        ("l" . find-library)))
 
 (use-package help
   :bind
@@ -159,9 +158,7 @@
 
 (use-package recursive-narrow
   :bind
-  (:map mode-specific-map
-        :prefix-map custom-narrowing-map
-        :prefix "n"
+  (:map custom-narrowing-map
         ("r" . narrow-to-region)
         ("d" . narrow-to-defun)
         ("w" . widen)
@@ -172,9 +169,7 @@
   :hook
   ((prog-mode-hook text-mode-hook) . whitespace-turn-on)
   :bind
-  (:map mode-specific-map
-        :prefix-map custom-ws-map
-        :prefix "x"
+  (:map custom-ws-map
         ("w" . whitespace-mode)
         ("W" . global-whitespace-mode))
   :custom
@@ -302,16 +297,15 @@
       (projectile-switch-project-by-name project)))
   :bind
   ("C-<f1>" . projectile-switch-project)
-  (:prefix-map custom-projectile-map
-               :prefix "<f8>"
-               ("C" . projectile-commander)
-               ("d" . projectile-dired)
-               ("i" . projectile-invalidate-cache)
-               ("k" . projectile-kill-buffers)
-               ("t" . custom/open-project-todos)
-               ("m" . custom/open-project-magit-status)
-               ("f" . recentf-open-files)
-               ("h" . projectile-find-file))
+  (:map custom-projectile-map
+        ("C" . projectile-commander)
+        ("d" . projectile-dired)
+        ("i" . projectile-invalidate-cache)
+        ("k" . projectile-kill-buffers)
+        ("t" . custom/open-project-todos)
+        ("m" . custom/open-project-magit-status)
+        ("f" . recentf-open-files)
+        ("h" . projectile-find-file))
   :custom
   (projectile-completion-system 'default)
   (projectile-enable-caching t)
@@ -329,10 +323,9 @@
 
 (use-package rg
   :bind
-  (:prefix-map custom-nav-map
-               :prefix "C-q"
-               ("r" . rg)
-               ("d" . rg-project))
+  (:map custom-nav-map
+        ("r" . rg)
+        ("d" . rg-project))
   :custom
   (rg-group-result t)
   (rg-show-columns t)
@@ -357,9 +350,7 @@
 
 (use-package treemacs
   :bind
-  (:map ctl-x-map
-        :prefix-map custom-treemacs-map
-        :prefix "t"
+  (:map custom-treemacs-map
         ("1"   . treemacs-delete-other-windows)
         ("t"   . treemacs)
         ("B"   . treemacs-bookmark)

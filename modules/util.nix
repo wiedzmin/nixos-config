@@ -184,4 +184,12 @@ in rec {
   takeLast = n: l: with lib;
     reverseList (take n (reverseList l));
   mkWSMappingBrowsersRegexp = concatStringListsRaw "|" (with config.attributes.browser; [default.windowClass fallback.windowClass]);
+  # TODO: create function for ensuring non-prefix keys absence
+  mkEmacsCustomKeymap = name: binding: ''
+    (define-prefix-command '${name})
+    (define-key global-map (kbd "${binding}") '${name})
+  '';
+  # TODO: consider adding keymap prompts
+  genEmacsCustomKeymaps = meta:
+    lib.concatStringsSep "\n" (lib.mapAttrsToList (name: binding: mkEmacsCustomKeymap name binding) meta);
 }

@@ -47,9 +47,7 @@
   :no-require t
   :after (go-mode)
   :bind
-  (:map mode-specific-map
-        :prefix-map custom-gotag-map
-        :prefix "`"
+  (:map custom-gotag-map
         ("t" . go-tag-add)
         ("T" . go-tag-remove))
   :custom

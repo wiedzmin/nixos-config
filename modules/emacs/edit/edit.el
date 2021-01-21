@@ -120,17 +120,13 @@
 
 (use-package sort
   :bind
-  (:map mode-specific-map
-        :prefix-map custom-sorting-map
-        :prefix "s"
+  (:map custom-sorting-map
         ("s" . sort-lines)
         ("u" . delete-duplicate-lines)))
 
 (use-package tabify
   :bind
-  (:map mode-specific-map
-        :prefix-map custom-tabs-map
-        :prefix "b"
+  (:map custom-tabs-map
         ("SPC" . untabify)
         ("TAB" . tabify)))
 

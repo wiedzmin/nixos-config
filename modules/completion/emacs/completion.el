@@ -147,9 +147,8 @@
   :mode (("@emacsYasnippetSnippets@" . snippet-mode)
          ("\\.yasnippet$" . snippet-mode))
   :bind
-  (:prefix-map custom-yasnippet-map
-               :prefix "<f5>"
-               ("i" . yas-insert-snippet))
+  (:map custom-yasnippet-map
+        ("i" . yas-insert-snippet))
   :config
   (yas-global-mode)
   :custom

@@ -1,8 +1,6 @@
 (use-package webpaste
   :bind
-  (:map mode-specific-map
-        :prefix-map custom-webpaste-map
-        :prefix "["
+  (:map custom-webpaste-map
         ("b" . webpaste-paste-buffer)
         ("r" . webpaste-paste-region))
   :custom
@@ -97,7 +95,7 @@
   (:map mode-specific-map
         ("R" . lsp-workspace-restart)
         ("D" . custom/toggle-lsp-ui-doc))
-  (:map custom-goto-map
+  (:map goto-map
         ("I" . lsp-ui-doc-focus-frame)
         ("i" . lsp-ui-imenu))
   :custom-face
@@ -148,9 +146,7 @@
 (use-package lsp-treemacs
   :after treemacs lsp-mode
   :bind
-  (:map mode-specific-map
-        :prefix-map custom-lsp-treemacs-map
-        :prefix "t"
+  (:map custom-lsp-treemacs-map
         ("e" . lsp-treemacs-errors-list)
         ("s" . lsp-treemacs-symbols))
   :config

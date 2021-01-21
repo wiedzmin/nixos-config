@@ -93,6 +93,10 @@ in {
         epkgs.russian-holidays
       ];
       ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/orgmode.el;
+      ide.emacs.core.customKeymaps = {
+        "custom-org-map" = "<f7>";
+        "org-rifle-map" = "<f7> r";
+      };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ org-capture ]; };

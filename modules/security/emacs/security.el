@@ -15,6 +15,5 @@
 
 (use-package pass
   :bind
-  (:prefix-map custom-pass-map
-               :prefix  "<f6>"
-               ("p" . pass)))
+  (:map custom-pass-map
+        ("p" . pass)))

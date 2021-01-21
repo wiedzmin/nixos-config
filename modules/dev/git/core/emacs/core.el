@@ -23,15 +23,14 @@
   :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
          ("COMMIT" . git-commit-mode))
   :bind
-  (:prefix-map custom-magit-map
-               :prefix "C-'"
-               ("i" . magit-init)
-               ("s" . magit-status)
-               ("." . magit-dispatch)
-               ("," . magit-file-dispatch)
-               ("r" . magit-reflog-current)
-               ("R" . magit-reflog-other)
-               ("c" . magit-checkout))
+  (:map custom-magit-map
+        ("i" . magit-init)
+        ("s" . magit-status)
+        ("." . magit-dispatch)
+        ("," . magit-file-dispatch)
+        ("r" . magit-reflog-current)
+        ("R" . magit-reflog-other)
+        ("c" . magit-checkout))
   (:map magit-status-mode-map
         ("N" . magit-notes-edit)
         ("C-c k" . magit-process-kill))

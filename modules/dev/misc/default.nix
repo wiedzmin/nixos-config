@@ -138,6 +138,10 @@ in {
           epkgs.yaml-mode
         ];
       ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/misc.el;
+      ide.emacs.core.customKeymaps = {
+        "custom-lsp-treemacs-map" = "C-c t";
+        "custom-webpaste-map" = "C-c [";
+      };
       home-manager.users.${user} = {
         home.activation.ensureLspSessionDir = { # lsp-deferred fails otherwise
           after = [ ];

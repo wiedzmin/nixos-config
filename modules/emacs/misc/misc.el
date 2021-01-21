@@ -21,9 +21,7 @@
 
 (use-package copy-as-format
   :bind
-  (:map mode-specific-map
-        :prefix-map custom-formatting-map
-        :prefix "f"
+  (:map custom-formatting-map
         ("s" . copy-as-format-slack)
         ("g" . copy-as-format-github)
         ("o" . copy-as-format-org-mode)
@@ -63,17 +61,16 @@
   :hook (((prog-mode-hook text-mode-hook) . turn-on-auto-fill)
          (eval-expression-minibuffer-setup-hook . eldoc-mode))
   :bind
-  (("M-g" . goto-line)
-   ("M-SPC" . cycle-spacing)
-   :prefix-map misc-editing-map
-   :prefix "<f11>"
-   ("b" . subword-mode)
-   ("v" . view-mode)
-   :prefix-map common-editing-map
-   :prefix "C-z"
-   ("o" . cycle-spacing)
-   ("w" . delete-trailing-whitespace)
-   ("s" . transpose-sexps))
+  ("M-SPC" . cycle-spacing)
+  (:map goto-map
+        ("M-g" . goto-line))
+  (:map misc-editing-map
+        ("b" . subword-mode)
+        ("v" . view-mode))
+  (:map common-editing-map
+        ("o" . cycle-spacing)
+        ("w" . delete-trailing-whitespace)
+        ("s" . transpose-sexps))
   :custom
   (bidi-display-reordering nil)
   (kill-whole-line t)

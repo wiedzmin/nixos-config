@@ -92,6 +92,11 @@ in {
           <command>nix-env -f '&lt;nixpkgs&gt;' -qaP -A emacsPackages</command>.
         '';
       };
+      customKeymaps = mkOption {
+        type = types.attrsOf types.str;
+        default = { };
+        description = "Custom config-wide keymaps definitions";
+      };
       initElContent = mkOption {
         type = types.lines;
         default = ''
@@ -103,6 +108,8 @@ in {
 
           ${lib.optionalString (cfg.environment != { }) (builtins.concatStringsSep "\n"
             (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
+
+          ${genEmacsCustomKeymaps cfg.customKeymaps}
 
           ${lib.concatStringsSep "\n" (lib.forEach [ ./core.el ] (el: readSubstituted ../../subst.nix el))}
 

@@ -31,6 +31,11 @@ in {
         epkgs.ini-mode
         epkgs.markdown-mode
       ];
+      ide.emacs.core.customKeymaps = {
+        "common-editing-map" = "C-z";
+        "custom-formatting-map" = "C-c f";
+        "misc-editing-map" = "<f11>";
+      };
       ide.emacs.core.config = readSubstituted ../../subst.nix ./misc.el;
     })
   ];
