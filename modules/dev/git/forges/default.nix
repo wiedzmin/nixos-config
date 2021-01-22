@@ -38,10 +38,6 @@ let
     };
   collectMatchBlocks = forges:
     mapAttrs' (_: meta: nameValuePair meta.ssh.matchBlock.hostname (mkMatchBlock meta)) forges;
-  collectUrlSubstitutes = forges:
-    mapAttrs' (to: from: nameValuePair "url \"${to}\"" { insteadOf = from; } )
-      (foldAttrs (n: a: n // a ) { }
-        (collect (f: f ? urlSubstitutes) forges))."urlSubstitutes";
   collectExtraConfig = forges:
     (foldAttrs (n: a: n // a ) { } (collect (f: f ? extraConfig) forges))."extraConfig";
   getUrlsToTypesMapping = forges:
@@ -169,11 +165,6 @@ let
         default = { };
         description = "Pass credentials map.";
       };
-      urlSubstitutes = mkOption { #
-        type = types.attrsOf types.str;
-        default = { };
-        description = "Config' `insteadOf` entries mapping.";
-      };
       extraConfig = mkOption {
         type = types.attrsOf types.attrs;
         default = { };
@@ -207,7 +198,6 @@ in {
     (mkIf cfg.enable (let
       credentials = collectPassCredentials cfg.forges;
       matchBlocks = collectMatchBlocks cfg.forges;
-      urlSubstitutes = collectUrlSubstitutes cfg.forges;
       extraConfig = collectExtraConfig cfg.forges;
       workspaceRoots = collectWorkspaceRoots cfg.forges;
     in {
@@ -222,7 +212,6 @@ in {
         programs.ssh.matchBlocks =
           optionalAttrs (matchBlocks != { }) matchBlocks;
         programs.git.extraConfig =
-          optionalAttrs (urlSubstitutes != { }) urlSubstitutes //
           optionalAttrs (extraConfig != { }) extraConfig;
       };
       navigation.bookmarks.workspaces.roots = workspaceRoots;
