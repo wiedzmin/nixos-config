@@ -63,6 +63,7 @@ in {
         startWhenNeeded = true;
         authorizedKeysFiles = cfg.authorizedKeys;
       };
+      programs.ssh.askPassword = "${pkgs.lxqt.lxqt-openssh-askpass}/bin/lxqt-openssh-askpass";
       home-manager.users."${user}" = {
         programs.ssh = {
           enable = true;
