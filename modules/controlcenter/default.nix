@@ -34,6 +34,11 @@ in {
         default = false;
         description = "Whether to enable networking toolset";
       };
+      notifications.backend = mkOption {
+        type = types.enum [ "dunst" "lnc" ];
+        default = "dunst";
+        description = "System notifications backend to use";
+      };
       gmrun.enable = mkOption {
         type = types.bool;
         default = false;
@@ -92,6 +97,16 @@ in {
           colorScheme = 0;
           detailedCpuTime = true;
         };
+        home.activation.srvctl = {
+          after = [ "linkGeneration" ];
+          before = [ ];
+          data = "DISPLAY=:0 ${pkgs.srvctl}/bin/srvctl --invalidate-cache";
+        };
+      };
+      environment.systemPackages = with pkgs; [ srvctl ];
+    })
+    (mkIf (cfg.enable && cfg.notifications.backend == "dunst") {
+      home-manager.users.${user} = {
         services.dunst = { # TODO: consider extracting options
           enable = true;
           settings = {
@@ -145,14 +160,84 @@ in {
             urgency_critical = { timeout = 7; };
           };
         };
-        home.activation.srvctl = {
+        home.activation.stop_lnc = {
           after = [ "linkGeneration" ];
           before = [ ];
-          data = "DISPLAY=:0 ${pkgs.srvctl}/bin/srvctl --invalidate-cache";
+          data = "${config.systemd.package}/bin/systemctl --user stop linux_notification_center.service";
         };
-
       };
-      environment.systemPackages = with pkgs; [ srvctl ];
+    })
+    (mkIf (cfg.enable && cfg.notifications.backend == "lnc") {
+      # NOTE: see https://github.com/phuhl/linux_notification_center for client tricks
+      # TODO: https://github.com/Mesabloo/nix-config/blob/57d97b983803005778f265ac117ed7aacb03cd0d/modules/services/deadd.nix
+      home-manager.users.${user} = {
+        home.packages = with pkgs; [ deadd-notification-center ];
+        xdg.configFile."deadd/deadd.conf".text = generators.toINI { } {
+          notification-center = {
+            hideOnMouseLeave = true;
+            marginTop = 0;
+            marginBottom = 0;
+            marginRight = 0;
+            width = 500;
+            monitor = 0;
+            followMouse = true;
+            newFirst = true;
+            useActionIcons = true;
+            ignoreTransient = false;
+            useMarkup = true;
+            parseHtmlEntities = true;
+            configSendNotiClosedDbusMessage = false;
+            guessIconFromAppname = true;
+          };
+          notification-center-notification-popup = {
+            notiDefaultTimeout = 10000;
+            distanceTop = 50;
+            distanceRight = 50;
+            distanceBetween = 20;
+            width = 500;
+            monitor = 1;
+            followMouse = true;
+            iconSize = 20;
+            maxImageSize = 100;
+            imageMarginTop = 15;
+            imageMarginBottom = 15;
+            imageMarginLeft = 15;
+            imageMarginRight = 0;
+            shortenBody = 5;
+            dismissButton = "mouse1";
+            defaultActionButton = "mouse3";
+          };
+          buttons = {
+            buttonsPerRow = 5;
+            buttonHeight = 60;
+            buttonMargin = 2;
+          };
+        };
+        home.activation.stop_dunst = {
+          after = [ "linkGeneration" ];
+          before = [ ];
+          data = "${config.systemd.package}/bin/systemctl --user stop dunst.service";
+        };
+      };
+      systemd.user.services."linux_notification_center" = {
+        description = "Deadd Notification Center";
+        path = with pkgs; [ at-spi2-core glibc ];
+        serviceConfig = {
+          Environment = [
+            "DISPLAY=:0"
+            "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus"
+          ];
+          PIDFile = "/run/notification-center.pid";
+          Restart = "always";
+          RestartSec = 10;
+          ExecStart = "${pkgs.deadd-notification-center}/bin/deadd-notification-center";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+      };
     })
     (mkIf (cfg.enable && cfg.networking.enable) {
       nixpkgs.config.packageOverrides = _: rec {

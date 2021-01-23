@@ -212,6 +212,7 @@ in {
 
   controlcenter = {
     enable = true;
+    notifications.backend = "lnc";
     gmrun.enable = true;
     wm.enable = true;
   };
