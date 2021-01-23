@@ -55,6 +55,8 @@ in {
           (readSubstituted ../../subst.nix ./scripts/webjumps.py);
       };
 
+      home-manager.users.${user} = { home.packages = with pkgs; [ rdrview ]; };
+
       workstation.systemtraits.instructions = with config.navigation.bookmarks; ''
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${
           lib.strings.escapeNixString

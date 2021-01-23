@@ -20,7 +20,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ xdotool wmctrl ];
+        home.packages = with pkgs; [ gdu rtss wmctrl xdotool rargs ];
         programs.zsh = {
           enable = true;
           enableAutosuggestions = true;
