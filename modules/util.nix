@@ -22,7 +22,7 @@ in rec {
       format = "other";
       unpackPhase = "true";
       buildInputs = with pkgs; [ makeWrapper ];
-      propagatedBuildInputs = with pkgs; packages;
+      propagatedBuildInputs = with pkgs; (packages ++ [glibc]);
       dontUsePythonCatchConflicts = allowConflicts;
       buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${pname}";
       installPhase = "true";
