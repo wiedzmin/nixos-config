@@ -61,20 +61,23 @@ in {
           mkdir -p ${cfg.devEnv.backupRoot}/$dump_dir
           cp -t ${cfg.devEnv.backupRoot}/$dump_dir $devenv_filelist
         '';
+        # TODO: also add functionality/script for [
+        #   tidying (keep only most recent version)
+        # ]
         git-restoreenv = mkShellScriptWithDeps "git-restoreenv" (with pkgs; [ gitAndTools.git coreutils git-hideenv ]) ''
-          set -e
-
           git_root=$(git rev-parse --show-toplevel)
-          tip_env=$(ls -a ${cfg.devEnv.backupRoot} | grep $(basename $(dirname "$git_root"))_$(basename "$git_root") | sort -n -r | head -n 1)
-
-          if [ -z "$tip_env" ]; then
-            exit 1
-          fi
+          envs_list=$(ls -a ${cfg.devEnv.backupRoot} | grep $(basename $(dirname "$git_root"))_$(basename "$git_root"))
+          envs_count=$(echo "$envs_list" | sort -n -r | wc -l)
+          tip_env=$(echo "$envs_list" | sort -n -r | head -n 1)
 
           git-hideenv
           git stash drop $(git stash list --max-count=1 --grep="dev-env" | cut -f1 -d":")
           cp -a ${cfg.devEnv.backupRoot}/$tip_env/. .
-          rm -rf ${cfg.devEnv.backupRoot}/$tip_env
+          if [[ ! "$@" =~ "--keep-devenv" ]]; then
+            if [ "$envs_count" -gt 1 ]; then
+              rm -rf ${cfg.devEnv.backupRoot}/$tip_env
+            fi
+          fi
 
           devenv_data=$(<${cfg.devEnv.configName})
           devenv_data_filtered=$(echo "$devenv_data" | xargs -d '\n' find 2>/dev/null)
