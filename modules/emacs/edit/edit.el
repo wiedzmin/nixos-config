@@ -71,7 +71,6 @@
                  :foreground "#fcba03")))))
 
 (use-package string-inflection
-  :after simple
   :preface
   (defun custom/string-inflection-gnocchi ()
     "foo_bar => foo bar"
@@ -81,6 +80,7 @@
       (setq str (string-inflection-underscore-function str))
       (setq str (replace-regexp-in-string "_" " " str))
       (string-inflection-insert str)))
+  :commands (string-inflection-get-current-word)
   :bind
   (:map common-editing-map
         ("6" . string-inflection-lower-camelcase)
