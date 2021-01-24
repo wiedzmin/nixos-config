@@ -94,6 +94,7 @@ in {
           };
         };
       };
+      services.blueman.enable = true;
     })
     (mkIf (cfg.enable && cfg.tools.enable) {
       programs.wavemon.enable = true;
@@ -118,6 +119,11 @@ in {
         } // optionalAttrs (cfg.backend == "wireless") {
           cmd = "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli";
         })
+        {
+          key = [ "b" ];
+          mode = "network";
+          cmd = "${pkgs.blueman}/bin/blueman-manager";
+        }
       ] ++ optionals (cfg.backend == "networkmanager" && cfg.wm.dmenu.enable) [{
         key = [ "w" ];
         cmd = ''${pkgs.runtimeShell} -l -c "exec ${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu"'';
