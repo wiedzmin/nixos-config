@@ -86,12 +86,8 @@ in {
       hardware = {
         bluetooth = {
           enable = true;
-          powerOnBoot = false;
-          config = {
-            General = {
-              Enable = "Source,Sink,Media,Socket";
-            };
-          };
+          powerOnBoot = true;
+          package = pkgs.bluezFull;
         };
       };
       services.blueman.enable = true;
