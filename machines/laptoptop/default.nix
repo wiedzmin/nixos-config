@@ -212,7 +212,7 @@ in {
 
   controlcenter = {
     enable = true;
-    notifications.backend = "lnc";
+    notifications.backend = "dunst";
     gmrun.enable = true;
     wm.enable = true;
   };

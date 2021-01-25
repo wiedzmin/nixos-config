@@ -163,7 +163,7 @@ in {
         home.activation.stop_lnc = {
           after = [ "linkGeneration" ];
           before = [ ];
-          data = "${config.systemd.package}/bin/systemctl --user stop linux_notification_center.service";
+          data = "${config.systemd.package}/bin/systemctl --user stop linux_notification_center.service || exit 0";
         };
       };
     })
@@ -216,7 +216,7 @@ in {
         home.activation.stop_dunst = {
           after = [ "linkGeneration" ];
           before = [ ];
-          data = "${config.systemd.package}/bin/systemctl --user stop dunst.service";
+          data = "${config.systemd.package}/bin/systemctl --user stop dunst.service || exit 0";
         };
       };
       systemd.user.services."linux_notification_center" = {
