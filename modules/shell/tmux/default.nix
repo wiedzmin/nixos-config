@@ -99,6 +99,11 @@ in {
         default = 10000;
         description = "Tmux pane's lines count to search (for fzf-tmux-url at the moment)";
       };
+      theme.package = mkOption {
+        type = types.package;
+        default = pkgs.tmuxPlugins.gruvbox;
+        description = "Tmux theme package";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -206,7 +211,6 @@ in {
           }
           copycat
           fpp
-          gruvbox
           logging
           prefix-highlight
           sessionist
@@ -218,6 +222,7 @@ in {
             plugin = tmux-fzf-fixed;
             extraConfig = "set -g @tmux-fzf-launch-key 'w'";
           }
+          cfg.theme.package
         ];
       };
     })

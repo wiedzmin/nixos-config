@@ -632,6 +632,7 @@ in {
     prompts.liquid.enable = true;
     tmux = {
       enable = true;
+      theme.package = pkgs.tmuxPlugins.power-theme;
       wm.enable = true;
     };
     tools.enable = true;
