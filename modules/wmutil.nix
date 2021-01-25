@@ -4,10 +4,13 @@ with import ./util.nix { inherit config inputs lib pkgs; };
 let
   keySepI3 = "+";
   keysymsI3 = {
-    "." = "period";
     "," = "comma";
+    "." = "period";
     "Esc" = "Escape";
     "`" = "grave";
+    "<" = "less";
+    ">" = "more";
+    "=" = "equal";
   };
   keysymsXmonad = {
     "F1" = "<F1>";
