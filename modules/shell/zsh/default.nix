@@ -25,10 +25,6 @@ in {
           enable = true;
           enableAutosuggestions = true;
           enableCompletion = true;
-          oh-my-zsh = { # TODO: extract option(s)
-            enable = true;
-            plugins = [ "colored-man-pages" "urltools" ];
-          };
           history = {
             size = 10000;
             save = 10000;

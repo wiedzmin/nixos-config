@@ -13,6 +13,11 @@ in {
         default = false;
         description = "Whether to enable oh-my-zsh theming.";
       };
+      plugins = mkOption {
+        type = types.listOf types.str;
+        default = [ "colored-man-pages" "urltools" ];
+        description = "List of enabled Oh-my-zsh plugins";
+      };
       theme = mkOption {
         type = types.str;
         default = "";
@@ -40,7 +45,11 @@ in {
 
       home-manager.users."${user}" = {
         programs.zsh = {
-          oh-my-zsh.theme = cfg.theme;
+          oh-my-zsh = { # TODO: extract option(s)
+            enable = true;
+            plugins = cfg.plugins;
+            theme = cfg.theme;
+          };
           plugins = lib.optionals (!config.shell.prompts.liquid.enable) [{
             name = "zsh-command-time";
             file = "command-time.plugin.zsh";
