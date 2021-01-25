@@ -160,6 +160,8 @@ in {
             urgency_critical = { timeout = 7; };
           };
         };
+        # NOTE: looks like service restart should be added to autorandr hook
+        # (or something like this)
         home.activation.stop_lnc = {
           after = [ "linkGeneration" ];
           before = [ ];
@@ -172,6 +174,9 @@ in {
       # TODO: https://github.com/Mesabloo/nix-config/blob/57d97b983803005778f265ac117ed7aacb03cd0d/modules/services/deadd.nix
       home-manager.users.${user} = {
         home.packages = with pkgs; [ deadd-notification-center ];
+        # TODO: review https://github.com/phuhl/linux_notification_center/blob/62c8e42d3cd8e913320d20a5c18d17725d2ec72d/style.css
+        xdg.configFile."deadd/deadd.css".text = ''
+        '';
         xdg.configFile."deadd/deadd.conf".text = generators.toINI { } {
           notification-center = {
             hideOnMouseLeave = true;
@@ -218,6 +223,7 @@ in {
           before = [ ];
           data = "${config.systemd.package}/bin/systemctl --user stop dunst.service || exit 0";
         };
+        # TODO: add keybinding for programmatic removal of all currently visible notifications (like in dunst)
       };
       systemd.user.services."linux_notification_center" = {
         description = "Deadd Notification Center";
