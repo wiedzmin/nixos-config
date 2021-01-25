@@ -74,6 +74,7 @@
     ./shell/core
     ./shell/prompts/liquid
     ./shell/prompts/ohmyzsh
+    ./shell/prompts/starship
     ./shell/tmux
     ./shell/tmux/impl.nix
     ./shell/tools

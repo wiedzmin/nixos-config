@@ -29,8 +29,8 @@ in {
           message = "shell/prompts/ohmyzsh: enable Zsh first.";
         }
         {
-          assertion = (cfg.enable && !config.shell.prompts.liquid.enable);
-          message = "shell/prompts/ohmyzsh: exactly one or no theming should be used.";
+          assertion = (cfg.enable && !config.shell.prompts.starship.enable && !config.shell.prompts.liquid.enable);
+          message = "shell/prompts/ohmyzsh: exactly one no theming should be used.";
         }
         {
           assertion = (cfg.enable && cfg.theme != "");
