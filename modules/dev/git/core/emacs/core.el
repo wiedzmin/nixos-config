@@ -39,6 +39,7 @@
   :config
   (advice-add 'magit-whitespace-disallowed :around (lambda (orig-fun &rest args) (interactive) (insert "-")))
   (transient-append-suffix 'magit-stash "-a" '("-k" "Keep devenv backup after restore" ("-k" "--keep-devenv")))
+  (transient-append-suffix 'magit-stash "-k" '("-t" "Remove all but mostly recent devenv backup" ("-t" "--tidy")))
   (transient-append-suffix 'magit-stash "z" '("h" "Hide dev environment" custom/magit-hide-devenv))
   (transient-append-suffix 'magit-stash "h" '("u" "Unhide dev environment" custom/magit-unhide-devenv))
   (transient-append-suffix 'magit-stash "u" '("d" "Dump/backup dev environment" custom/magit-dump-devenv))
