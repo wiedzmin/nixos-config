@@ -61,23 +61,29 @@ in {
           mkdir -p ${cfg.devEnv.backupRoot}/$dump_dir
           cp -t ${cfg.devEnv.backupRoot}/$dump_dir $devenv_filelist
         '';
-        # TODO: also add functionality/script for [
-        #   tidying (keep only most recent version)
-        # ]
         git-restoreenv = mkShellScriptWithDeps "git-restoreenv" (with pkgs; [ gitAndTools.git coreutils git-hideenv ]) ''
           git_root=$(git rev-parse --show-toplevel)
-          envs_list=$(ls -a ${cfg.devEnv.backupRoot} | grep $(basename $(dirname "$git_root"))_$(basename "$git_root"))
-          envs_count=$(echo "$envs_list" | sort -n -r | wc -l)
-          tip_env=$(echo "$envs_list" | sort -n -r | head -n 1)
+          envs_list=$(ls -a ${cfg.devEnv.backupRoot} | grep $(basename $(dirname "$git_root"))_$(basename "$git_root") | sort -n -r)
+          envs_count=$(echo "$envs_list" | wc -l)
+          tip_env=$(echo "$envs_list" | head -n 1)
+          remainder_envs=$(echo "$envs_list" | tail -n +2)
 
-          git-hideenv
-          git stash drop $(git stash list --max-count=1 --grep="dev-env" | cut -f1 -d":")
-          cp -a ${cfg.devEnv.backupRoot}/$tip_env/. .
+          if [[ "$@" =~ "--tidy" ]]; then
+            for dev_env in $remainder_envs
+            do
+              rm -rf "${cfg.devEnv.backupRoot}/$dev_env"
+            done
+          fi
+
           if [[ ! "$@" =~ "--keep-devenv" ]]; then
             if [ "$envs_count" -gt 1 ]; then
               rm -rf ${cfg.devEnv.backupRoot}/$tip_env
             fi
           fi
+
+          git-hideenv
+          git stash drop $(git stash list --max-count=1 --grep="dev-env" | cut -f1 -d":")
+          cp -a ${cfg.devEnv.backupRoot}/$tip_env/. .
 
           devenv_data=$(<${cfg.devEnv.configName})
           devenv_data_filtered=$(echo "$devenv_data" | xargs -d '\n' find 2>/dev/null)
@@ -86,8 +92,14 @@ in {
           git add -- $devenv_filelist
         '';
       };
-      home-manager.users.${user} = { home.packages = with pkgs; [ git-dumpenv git-hideenv git-restoreenv git-unhideenv ]; };
-
+      home-manager.users.${user} = {
+        home.packages = with pkgs; [ git-dumpenv git-hideenv git-restoreenv git-unhideenv ];
+        home.activation.ensureDevEnvBackupRoot = {
+          after = [ ];
+          before = [ "linkGeneration" ];
+          data = "mkdir -p ${cfg.devEnv.backupRoot}";
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/git.el;
