@@ -87,9 +87,9 @@ in {
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
           "browser" = [ prefix "b" ];
           "dev" = [ prefix "d" ];
-          "layout" = [ prefix "less" ];
+          "layout" = [ prefix "<" ];
           "network" = [ prefix "n" ];
-          "resize" = [ prefix "," ];
+          "resize" = [ prefix "=" ];
           "run" = [ prefix "r" ];
           "select" = [ prefix "." ];
           "services" = [ prefix "s" ];
