@@ -663,7 +663,7 @@ in {
       };
     };
     libvirt.enable = true;
-    virtualbox.enable = true;
+    virtualbox.enable = false;
   };
 
   dbms = {
