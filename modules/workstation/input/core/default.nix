@@ -38,11 +38,13 @@ in {
       };
       services.xserver.libinput = { # TODO: move to specialized xserver module when exists
         enable = true;
-        naturalScrolling = true;
-        disableWhileTyping = true;
-        tapping = false;
-        tappingDragLock = false;
-        accelSpeed = "0.6";
+        touchpad = {
+          naturalScrolling = true;
+          disableWhileTyping = true;
+          tapping = false;
+          tappingDragLock = false;
+          accelSpeed = "0.6";
+        };
       };
     })
     (mkIf cfg.xmodmap.enable {
