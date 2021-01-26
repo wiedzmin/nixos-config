@@ -77,6 +77,8 @@ in {
           dates = cfg.gc.dates;
           options = "--delete-older-than ${cfg.gc.howold}";
         };
+
+        trustedUsers = [ "root" user ];
       };
 
       environment.etc.nixpkgs.source = inputs.unstable;

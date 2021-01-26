@@ -31,6 +31,13 @@ in {
         paste_to_ix = mkPythonScriptWithDeps "paste_to_ix" (with pkgs; [ ix xsel ])
           (readSubstituted ../../subst.nix ./scripts/paste_to_ix.sh);
       };
+
+      boot.kernel.sysctl = {
+        "fs.inotify.max_user_instances" = 1024;
+        "fs.inotify.max_user_watches" = 1048576;
+        "fs.inotify.max_queued_events" = 32768;
+      };
+
       home-manager.users.${user} = {
         home.activation.ensureMimeappsList = {
           after = [ ];

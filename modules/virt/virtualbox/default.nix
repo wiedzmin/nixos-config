@@ -20,6 +20,11 @@ in {
     (mkIf cfg.enable {
       virtualisation.virtualbox.host.enable = true;
       users.users.${user}.extraGroups = [ "vboxusers" ];
+
+      networking.networkmanager = {
+        unmanaged = [ "interface-name:vb-*" "interface-name:vbox*" "interface-name:ve-*" ];
+        wifi.macAddress = optionalString (cfg.macAddress != "") cfg.macAddress;
+      };
     })
   ];
 }

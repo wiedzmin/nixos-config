@@ -49,6 +49,13 @@ in {
         message = "security: Must select exactly one pinentry flavor.";
       }];
 
+      security = {
+        sudo.wheelNeedsPassword = false;
+        allowUserNamespaces = true;
+        allowSimultaneousMultithreading = true;
+        lockKernelModules = false;
+      };
+
       security.wrappers.sudo = {
         source = "${pkgs.sudo}/bin/sudo";
         owner = "root";

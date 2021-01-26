@@ -60,6 +60,8 @@ in {
       };
       services.openssh = {
         enable = true;
+        allowSFTP = true;
+        forwardX11 = false;
         startWhenNeeded = true;
         authorizedKeysFiles = cfg.authorizedKeys;
       };

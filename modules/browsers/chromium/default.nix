@@ -54,6 +54,11 @@ in {
         default = true;
         description = "Suspend when inacive (using xsuspender)";
       };
+      videoconferencing.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Enable videoconferencing-related options";
+      };
       command = mkOption {
         type = types.str;
         default = "${pkgs.chromium}/bin/chromium --new-window";
@@ -102,7 +107,33 @@ in {
             K("C-g"): K("f5"),
         }, "chromium")
       '';
-
+      browsers.chromium.extraOpts = {
+        AutofillAddressEnabled = false;
+        AutofillCreditCardEnabled = false;
+        AutoplayAllowed = false;
+        BrowserSignin = 0; # Disable browser sign-in
+        BuiltInDnsClientEnabled = false;
+        DefaultBrowserSettingEnabled = false;
+        DefaultGeolocationSetting = 2; # Do not allow any site to track the users' physical location
+        DefaultNotificationsSetting = 2; # Do not allow any site to show desktop notifications
+        DefaultPluginsSetting = 2; # Block the Flash plugin
+        DefaultSearchProviderEnabled = true;
+        DefaultSearchProviderSearchURL = "https://duckduckgo.com/"
+          + "?kae=d&k1=-1&kc=1&kav=1&kd=-1&kh=1&q={searchTerms}";
+        EnableMediaRouter = false;
+        MetricsReportingEnabled = false;
+        PasswordManagerEnabled = false;
+        PromotionalTabsEnabled = false;
+        SSLErrorOverrideAllowed = false;
+        SafeBrowsingEnabled = false;
+        SearchSuggestEnabled = false;
+        SigninAllowed = false;
+        SpellCheckServiceEnabled = false;
+        SpellcheckEnabled = false;
+        SyncDisabled = true;
+        TranslateEnabled = false;
+        ExternalProtocolDialogShowAlwaysOpenCheckbox = true;
+      };
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       assertions = [
@@ -150,6 +181,12 @@ in {
       attributes.browser.fallback.windowClass = cfg.windowClass;
 
       workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
+    })
+    (mkIf (cfg.enable && cfg.videoconferencing.enable) {
+      browsers.chromium.extraOpts = {
+        AudioCaptureAllowed = true;
+        VideoCaptureAllowed = true;
+      };
     })
   ];
 }

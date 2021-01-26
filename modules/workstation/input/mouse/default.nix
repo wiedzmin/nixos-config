@@ -99,6 +99,7 @@ in {
           ExecStart = ''${pkgs.keynav}/bin/keynav "loadconfig ${keynavConfig}"'';
         };
       };
+      services.xbanish.enable = true;
     })
     (mkIf cfg.constraintMouse.enable {
       systemd.user.services."xpointerbarrier" = {

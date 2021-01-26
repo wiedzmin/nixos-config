@@ -33,6 +33,26 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      boot = {
+        kernelParams = [
+          "l1tf=off"
+          "nospec_store_bypass_disable"
+          "nospectre_v1"
+          "nospectre_v2"
+          "pti=off"
+          "scsi_mod.use_blk_mq=1"
+        ];
+        kernelModules = [ "bfq" ];
+      };
+
+      services = {
+        udev.extraRules = ''
+          ACTION=="add|change", KERNEL=="sd[ab][!0-9]", ATTR{queue/scheduler}="kyber"
+        '';
+        irqbalance.enable = true;
+        earlyoom.enable = true;
+      };
+
       home-manager.users.${user} = {
         services.xsuspender = optionalAttrs (cfg.appsSuspension.rules != { }) {
           enable = true;

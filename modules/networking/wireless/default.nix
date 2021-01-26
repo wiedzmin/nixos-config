@@ -67,19 +67,24 @@ in {
         wifi-status = mkShellScriptWithDeps "wifi-status" (with pkgs; [ gawk wirelesstools ])
           (readSubstituted ../../subst.nix ./scripts/wifi-status.sh);
       };
-      networking = optionalAttrs (cfg.ifacesMap != { }) {
-        wlanInterfaces = cfg.ifacesMap;
-      } // optionalAttrs (cfg.backend == "networkmanager" && cfg.macAddress != "") {
-        networkmanager.wifi.macAddress = cfg.macAddress;
-      } // optionalAttrs (cfg.ifacesMap != { }) {
-        wlanInterfaces = cfg.ifacesMap;
-      } // optionalAttrs (cfg.backend == "wireless") {
-        wireless = {
-          enable = true;
-          driver = cfg.wireless.driver;
-          userControlled.enable = true;
-          interfaces = builtins.attrNames cfg.ifacesMap;
-        };
+
+      boot.extraModprobeConfig = ''
+        options iwlwifi 11n_disable=1 power_save=1 power_level=2
+      '';
+
+      networking.wlanInterfaces = optionalAttrs (cfg.ifacesMap != { }) cfg.ifacesMap;
+    })
+    (mkIf (cfg.enable && cfg.backend == "networkmanager") {
+      users.users.${user}.extraGroups = [ "networkmanager" ];
+
+      networking.networkmanager.wifi.macAddress = optionalString (cfg.macAddress != "") cfg.macAddress;
+    })
+    (mkIf (cfg.enable && cfg.backend == "wireless") {
+      networking.wireless = {
+        enable = true;
+        driver = cfg.wireless.driver;
+        userControlled.enable = true;
+        interfaces = builtins.attrNames cfg.ifacesMap;
       };
     })
     (mkIf (cfg.enable && cfg.bluetooth.enable) {

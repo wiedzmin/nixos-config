@@ -14,7 +14,12 @@ in {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable wallpaper customization.";
+        description = "Whether to enable wallpaper customization";
+      };
+      boot.splashImage = mkOption {
+        type = types.str;
+        default = "";
+        description = "Boot splash image";
       };
       rootDir = mkOption {
         type = types.str;
@@ -60,6 +65,8 @@ in {
         };
         programs.feh.enable = true;
       };
+
+      boot.loader.grub.splashImage = optionalString (cfg.boot.splashImage != "") cfg.boot.splashImage;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [

@@ -188,6 +188,10 @@ in {
       };
       environment.systemPackages = with pkgs; [ nixpkgs-hplip.system-config-printer ];
       users.users."${user}".extraGroups = [ "lp" ];
+
+      browsers.chromium.extraOpts = {
+        PrintingEnabled = true;
+      };
     })
     (mkIf cfg.scanning.enable {
       hardware.sane = {

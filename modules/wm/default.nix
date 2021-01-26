@@ -96,6 +96,18 @@ in {
         keybindings = mkPythonScriptWithDeps "keybindings" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis yad ])
           (readSubstituted ../subst.nix ./scripts/keybindings.py);
       };
+
+      services.xserver = {
+        desktopManager = {
+          xterm.enable = false;
+          gnome3.enable = false;
+        };
+        displayManager.sessionCommands = ''
+          export _JAVA_AWT_WM_NONREPARENTING=1
+          ${pkgs.wmname}/bin/wmname LG3D
+        '';
+      };
+
       home-manager.users.${user} = {
         home.activation.purgeKeybindingsCache = {
           after = [ ];

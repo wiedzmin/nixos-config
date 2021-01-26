@@ -9,12 +9,11 @@ let
   });
 in {
   imports = [
-    ./secrets
-    ./assets
-    ../../modules
-    "${inputs.nixos-hardware}/common/cpu/intel/sandy-bridge"
     "${inputs.nixos-hardware}/common/pc/ssd"
-    "${inputs.nixos-hardware}/lenovo/thinkpad/x230"
+    ../../modules
+    ../../profiles/thinkpad-x230.nix
+    ./assets
+    ./secrets
   ];
 
   fileSystems."/" = {
@@ -31,119 +30,21 @@ in {
 
   environment.etc.current-configuration.source = ../../.;
 
-  hardware = {
-    cpu.intel.updateMicrocode = true;
-    enableAllFirmware = true;
-    ksm.enable = true;
-    sensor.iio.enable = true;
+  attributes.machine.name = "laptoptop";
+  attributes.mainUser = {
+    name = config.identity.secrets.userName;
+    fullName = config.identity.secrets.fullName;
+    email = config.identity.secrets.email;
+    gpgKeyID = config.identity.secrets.gpgKeyID;
   };
 
-  boot = {
-    loader.grub = {
-      enable = true;
-      version = 2;
-      device = "/dev/sda";
-      configurationLimit = 30;
-      splashImage = "${inputs.nixos-artwork}/common/grub2-background/grub-nixos-1.png";
-    };
-    initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
-    extraModprobeConfig = ''
-      options iwlwifi 11n_disable=1 power_save=1 power_level=2
-    '';
-    tmpOnTmpfs = true;
-    kernelPackages = pkgs.linuxPackages_5_10;
-    kernelParams =
-      [ "scsi_mod.use_blk_mq=1" "pti=off" "nospectre_v1" "nospectre_v2" "l1tf=off" "nospec_store_bypass_disable" ];
-    kernelModules = [ "bfq" "thinkpad_acpi" "thinkpad_hwmon" ];
-    kernel.sysctl = {
-      "fs.inotify.max_user_instances" = 1024;
-      "fs.inotify.max_user_watches" = 1048576;
-      "fs.inotify.max_queued_events" = 32768;
-      "net.ipv4.ip_default_ttl" = 65;
-      "net.ipv4.tcp_sack" = 0;
-    };
-    supportedFilesystems = [ "ntfs" ];
+  users.extraUsers.${user} = {
+    isNormalUser = true;
+    uid = 1000;
+    description = config.attributes.mainUser.fullName;
+    shell = pkgs.zsh;
+    extraGroups = [ "wheel" ];
   };
-
-  console.useXkbConfig = true;
-
-  networking = {
-    hostName = "laptoptop";
-    hostId = "2ab69157";
-    enableIPv6 = false;
-    firewall.enable = false;
-    usePredictableInterfaceNames = lib.mkForce false;
-    resolvconf = {
-      enable = true;
-      dnsExtensionMechanism = false;
-    };
-    # TODO: consider extracting dichotomy below to module
-    networkmanager = {
-      enable = true;
-      unmanaged = [ "br0" "interface-name:vb-*" "interface-name:vbox*" "interface-name:ve-*" "lo" ];
-    };
-    dhcpcd.denyInterfaces = [ "docker*" "virbr*" "br*" ];
-    nameservers = [ "77.88.8.8" "77.88.8.1" "8.8.8.8" ];
-  };
-  users.users.${user}.extraGroups = [ "networkmanager" ];
-
-  environment.shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" "/run/current-system/sw/bin/zsh" ];
-
-  nix.trustedUsers = [ "root" user ];
-
-  security = {
-    sudo.wheelNeedsPassword = false;
-    allowUserNamespaces = true;
-    allowSimultaneousMultithreading = true;
-    lockKernelModules = false;
-  };
-
-  time = {
-    timeZone = "Europe/Moscow";
-    hardwareClockInLocalTime = true;
-  };
-
-  services = {
-    irqbalance.enable = true;
-    chrony.enable = true;
-    dbus = { enable = true; };
-    earlyoom.enable = true;
-    openssh = {
-      enable = true;
-      allowSFTP = true;
-      forwardX11 = false;
-    };
-    smartd = {
-      enable = true;
-      notifications = { x11.enable = true; };
-    };
-    logind.lidSwitchDocked = "suspend";
-    journald.extraConfig = ''
-      MaxRetentionSec=7day
-    '';
-    udev.extraRules = ''
-      ACTION=="add|change", KERNEL=="sd[ab][!0-9]", ATTR{queue/scheduler}="kyber"
-
-      SUBSYSTEM=="backlight", ACTION=="add", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
-      SUBSYSTEM=="leds", ACTION=="add", KERNEL=="*::kbd_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/leds/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/leds/%k/brightness"
-    '';
-    tlp = {
-      enable = true;
-      settings = {
-        START_CHARGE_THRESH_BAT0 = "80";
-        STOP_CHARGE_THRESH_BAT0 = "90";
-        DEVICES_TO_DISABLE_ON_WIFI_CONNECT = "wwan";
-        USB_BLACKLIST_PHONE = 1;
-      };
-    };
-    thermald.enable = true;
-    acpid.enable = true;
-    timesyncd.enable = true;
-
-    xbanish.enable = true;
-  };
-
-  systemd.services.acme-localhost.enable = false;
 
   attributes.hardware.monitors = {
     internalHead.name = "LVDS-1";
@@ -152,15 +53,49 @@ in {
     internalHead.resolution = "1366x768";
   };
 
+  boot = {
+    loader.grub = {
+      enable = true;
+      version = 2;
+      device = "/dev/sda";
+      configurationLimit = 30;
+    };
+    initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
+    tmpOnTmpfs = true;
+    kernelPackages = pkgs.linuxPackages_5_10;
+    supportedFilesystems = [ "ntfs" ];
+  };
+
+  environment.shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" "/run/current-system/sw/bin/zsh" ];
+
+  time = {
+    timeZone = "Europe/Moscow";
+    hardwareClockInLocalTime = true;
+  };
+
+  services = {
+    chrony.enable = true;
+    dbus = { enable = true; };
+    smartd = {
+      enable = true;
+      notifications = { x11.enable = true; };
+    };
+    logind.lidSwitchDocked = "suspend";
+    journald.extraConfig = ''
+      MaxRetentionSec=7day
+    '';
+    thermald.enable = true;
+    acpid.enable = true;
+    timesyncd.enable = true;
+  };
+
+  systemd.services.acme-localhost.enable = false;
+
   services.xserver = {
     enable = true;
     videoDrivers = [ "modesetting" ];
     useGlamor = true;
     exportConfiguration = true;
-    desktopManager = {
-      xterm.enable = false;
-      gnome3.enable = false;
-    };
     displayManager = {
       lightdm = {
         enable = true;
@@ -175,31 +110,11 @@ in {
         logToFile = true;
         logToJournal = true;
       };
-      sessionCommands = ''
-        export _JAVA_AWT_WM_NONREPARENTING=1
-        ${pkgs.wmname}/bin/wmname LG3D
-      '';
     };
     autoRepeatDelay = 200;
     autoRepeatInterval = 40;
     xkbOptions = "caps:none";
     layout = "us,ru";
-  };
-
-  attributes.machine.name = "laptoptop";
-  attributes.mainUser = {
-    name = config.identity.secrets.userName;
-    fullName = config.identity.secrets.fullName;
-    email = config.identity.secrets.email;
-    gpgKeyID = config.identity.secrets.gpgKeyID;
-  };
-
-  users.extraUsers.${user} = {
-    isNormalUser = true;
-    uid = 1000;
-    description = config.identity.secrets.fullName;
-    shell = pkgs.zsh;
-    extraGroups = [ "wheel" ];
   };
 
   job = {
@@ -233,6 +148,7 @@ in {
     };
     wallpaper = {
       enable = true;
+      boot.splashImage = "${inputs.nixos-artwork}/common/grub2-background/grub-nixos-1.png";
       rootDir = homePrefix "blobs/wallpaper/mongol/winter";
       current = "mongol-winter-govi.jpg";
       wm.enable = true;
@@ -258,38 +174,6 @@ in {
     chromium = {
       enable = true;
       isFallback = true;
-      extraOpts = {
-        # === Common workstation needs=======
-        AudioCaptureAllowed = true;
-        VideoCaptureAllowed = true;
-        PrintingEnabled = true;
-        # ===================================
-        AutofillAddressEnabled = false;
-        AutofillCreditCardEnabled = false;
-        AutoplayAllowed = false;
-        BrowserSignin = 0; # Disable browser sign-in
-        BuiltInDnsClientEnabled = false;
-        DefaultBrowserSettingEnabled = false;
-        DefaultGeolocationSetting = 2; # Do not allow any site to track the users' physical location
-        DefaultNotificationsSetting = 2; # Do not allow any site to show desktop notifications
-        DefaultPluginsSetting = 2; # Block the Flash plugin
-        DefaultSearchProviderEnabled = true;
-        DefaultSearchProviderSearchURL = "https://duckduckgo.com/"
-          + "?kae=d&k1=-1&kc=1&kav=1&kd=-1&kh=1&q={searchTerms}";
-        EnableMediaRouter = false;
-        MetricsReportingEnabled = false;
-        PasswordManagerEnabled = false;
-        PromotionalTabsEnabled = false;
-        SSLErrorOverrideAllowed = false;
-        SafeBrowsingEnabled = false;
-        SearchSuggestEnabled = false;
-        SigninAllowed = false;
-        SpellCheckServiceEnabled = false;
-        SpellcheckEnabled = false;
-        SyncDisabled = true;
-        TranslateEnabled = false;
-        ExternalProtocolDialogShowAlwaysOpenCheckbox = true;
-      };
     };
   };
 
@@ -397,13 +281,13 @@ in {
     };
   };
 
-  custom.email = {
+  email = {
     enable = true;
-    emailAddress = config.identity.secrets.email;
-    defaultAccountName = config.identity.secrets.email;
+    emailAddress = config.attributes.mainUser.email;
+    defaultAccountName = config.attributes.mainUser.email;
     gpg = {
       sign = true;
-      keyID = config.identity.secrets.gpgKeyID;
+      keyID = config.attributes.mainUser.gpgKeyID;
     };
     mbsync = {
       enable = true;
@@ -453,6 +337,10 @@ in {
   };
 
   ext.networking = {
+    core = {
+      enable = true;
+      hostId = "2ab69157";
+    };
     messengers.enable = true;
     hosts.enable = true;
     secrets = {

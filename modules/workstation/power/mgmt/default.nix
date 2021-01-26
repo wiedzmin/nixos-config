@@ -33,8 +33,19 @@ in {
         resumeCommands = cfg.commands.resume;
         powerDownCommands = cfg.commands.suspend;
       };
-      services.upower.enable = true;
-      services.tuptime.enable = true;
+      services = {
+        upower.enable = true;
+        tuptime.enable = true;
+        tlp = {
+          enable = true;
+          settings = {
+            START_CHARGE_THRESH_BAT0 = "80";
+            STOP_CHARGE_THRESH_BAT0 = "90";
+            DEVICES_TO_DISABLE_ON_WIFI_CONNECT = "wwan";
+            USB_BLACKLIST_PHONE = 1;
+          };
+        };
+      };
     })
   ];
 }

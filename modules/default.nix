@@ -54,6 +54,7 @@
     ./gc
     ./knowledgebase
     ./navigation/bookmarks
+    ./networking/core
     ./networking/hosts
     ./networking/messengers
     ./networking/nmconnections

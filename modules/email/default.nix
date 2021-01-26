@@ -3,7 +3,7 @@
 with lib;
 
 let
-  cfg = config.custom.email;
+  cfg = config.email;
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
   pass_imap_helper = pkgs.writeShellScriptBin "pass_imap_helper" ''
@@ -12,7 +12,7 @@ let
   dataHome = hm.xdg.dataHome;
 in {
   options = {
-    custom.email = {
+    email = {
       enable = mkOption {
         type = types.bool;
         default = false;

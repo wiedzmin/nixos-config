@@ -48,6 +48,8 @@ in {
       environment.variables.DOCKER_CONFIG = "${configHome}/docker";
       users.users.${user}.extraGroups = [ "docker" ];
 
+      networking.dhcpcd.denyInterfaces = [ "docker*" ];
+
       nixpkgs.config.packageOverrides = _: rec {
         dlint = mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (readSubstituted ../../../subst.nix ./scripts/dlint.sh);
         hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ])

@@ -33,6 +33,8 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      console.useXkbConfig = true;
+
       home-manager.users."${user}" = {
         programs.readline = {
           enable = true;
