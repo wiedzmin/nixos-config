@@ -135,6 +135,10 @@
           path = ./modules/dev/golang/templates/go2nix;
           description = "Golang to Nix packaging.";
         };
+        golang.lp-repl = {
+          path = ./modules/dev/golang/templates/lp-repl;
+          description = "Golang literate programming (reproducible research) REPL.";
+        };
         frontend.vue = {
           path = ./modules/dev/frontend/templates/vue;
           description = "Vuetified frontend.";

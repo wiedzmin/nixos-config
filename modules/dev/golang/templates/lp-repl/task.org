@@ -1,0 +1,21 @@
+* types/vars
+  #+NAME: types/vars
+  #+begin_src go
+  #+end_src
+* impl/util
+  #+NAME: impl/util
+  #+begin_src go
+  #+end_src
+* repl
+  #+begin_src go :imports '("fmt") :noweb yes
+    package main
+
+    <<types/vars>>
+    <<impl/util>>
+
+    func main() {
+        fmt.Printf("hello world!\n")
+    }
+  #+end_src
+* related links
+** empty
