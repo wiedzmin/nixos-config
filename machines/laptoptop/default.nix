@@ -204,7 +204,7 @@ in {
 
   job = {
     "14f7646bef".secrets.enable = true;
-    "2242184b2c".secrets.enable = true;
+    "2242184b2c".secrets.enable = false;
     "8a1add5330".secrets.enable = true;
     "b354e944b3".secrets.enable = true;
   };
