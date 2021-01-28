@@ -495,22 +495,22 @@ in {
       wmCommon.keys = [
         {
           key = [ "s" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --save";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${cfg.sessions.path} --save";
           mode = "browser";
         }
         {
           key = [ "o" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --open";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${cfg.sessions.path} --open";
           mode = "browser";
         }
         {
           key = [ "e" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --edit";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${cfg.sessions.path} --edit";
           mode = "browser";
         }
         {
           key = [ "d" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --delete";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${cfg.sessions.path} --delete";
           mode = "browser";
         }
       ];
