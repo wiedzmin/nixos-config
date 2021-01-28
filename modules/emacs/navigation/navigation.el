@@ -116,7 +116,6 @@
   (register-preview-function #'consult-register-preview)
   (consult-project-root-function #'projectile-project-root)
   :config
-  (consult-preview-mode)
   (fset 'multi-occur #'consult-multi-occur)
   (fset 'projectile-ripgrep 'consult-ripgrep))
 
