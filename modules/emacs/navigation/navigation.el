@@ -89,7 +89,7 @@
   ("C-s" . consult-line)
   ("C-S-s" . consult-line-symbol-at-point)
   ("M-<f12>" . consult-buffer)
-  ("C-y" . consult-yank)
+  ("M-y" . consult-yank-replace)
   (:map goto-map
         ("M-g" . consult-goto-line))
   (:map custom-nav-map
