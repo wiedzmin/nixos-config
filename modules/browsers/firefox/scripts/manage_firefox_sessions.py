@@ -22,9 +22,7 @@ elif args.open_session:
                                  lines=15, font="@wmFontDmenu@")
     if session_name:
         urls, _ = collect_session_urls(args.sessions_path, session_name)
-        if len(urls) <= args.session_size_threshold:
-            open_urls_firefox(urls)
-        else:
+        if len(urls) > 0:
             shell_cmd(f"emacsclient -c {args.sessions_path}/{session_name}")
 elif args.edit_session:
     session_name = get_selection(sorted(collect_sessions(args.sessions_path)), "edit", case_insensitive=True,
