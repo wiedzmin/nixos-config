@@ -21,6 +21,18 @@ in {
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ gdu rtss wmctrl xdotool rargs ];
+        xdg.configFile."espanso/user/zsh.yml".text = ''
+          name: zsh
+          parent: default
+          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
+
+          matches:
+            - trigger: ":ts"
+              replace: "$|$ | rtss"
+
+            - trigger: ":rlw"
+              replace: "readlink -f `which $|$`"
+        '';
         programs.zsh = {
           enable = true;
           enableAutosuggestions = true;

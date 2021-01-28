@@ -14,10 +14,48 @@ in {
         default = false;
         description = "Whether to enable completion setup";
       };
-      snippets = mkOption {
+      expansions.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable expansions";
+      };
+      snippets.entries = mkOption {
         type = types.listOf types.attrs;
         description = "Various text snippets, mostly for development automation.";
         default = [ ];
+      };
+      expansions.entries = mkOption {
+        type = types.listOf types.attrs;
+        description = "Various text snippets, mostly for development automation.";
+        default = [ ];
+      };
+      expansions.toggleKey = mkOption {
+        type = types.enum [
+          "ALT"
+          "CTRL"
+          "LEFT_ALT"
+          "LEFT_CTRL"
+          "LEFT_META"
+          "LEFT_SHIFT"
+          "META"
+          "OFF"
+          "RIGHT_ALT"
+          "RIGHT_CTRL"
+          "RIGHT_META"
+          "RIGHT_SHIFT"
+          "SHIFT"
+        ];
+        default = "RIGHT_SHIFT";
+      };
+      espansoConfig = mkOption {
+        type = types.lines;
+        default = ''
+          toggle_key: ${cfg.expansions.toggleKey}
+        '';
+        visible = false;
+        readOnly = true;
+        internal = true;
+        description = "Espanso main config";
       };
       dev.enable = mkOption {
         type = types.bool;
@@ -61,7 +99,7 @@ in {
       home-manager.users.${user} = { home.packages = with pkgs; [ snippets ]; };
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/snippets ${
-          lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (forEach cfg.snippets (s:
+          lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (forEach cfg.snippets.entries (s:
             nameValuePair
             "${lib.concatStringsSep ":" (maybeAttrList "tags" s "-")} | ${(maybeAttrString "description" s "-")} | ${
               (maybeAttrString "language" s "-")
@@ -74,6 +112,23 @@ in {
         home.packages = with pkgs; [ tabnine ]; # FIXME: install it to be consumable by company-tabnine
         xdg.configFile."TabNine/TabNine.toml".text =
           toToml { language.python = { command = "python-language-server"; }; };
+      };
+    })
+    (mkIf (cfg.enable && cfg.expansions.enable) {
+      services.espanso.enable = true;
+      home-manager.users."${user}" = {
+        home.activation = {
+          populateEspansoConfig = {
+            after = [ ];
+            before = [ "linkGeneration" ];
+            data = ''echo "${cfg.espansoConfig}" > /home/alex3rd/.config/espanso/default.yml'';
+          };
+          ensureSingleEspansoInstance = {
+            after = [ "linkGeneration"];
+            before = [ ];
+            data = "pkill -9 espanso";
+          };
+        };
       };
     })
     (mkIf (cfg.enable && cfg.shell.enable) {

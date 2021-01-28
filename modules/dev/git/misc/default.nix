@@ -35,10 +35,21 @@ in {
           (readSubstituted ../../../subst.nix ./scripts/gittags.py);
       };
 
-      # TODO: make expansion for `git log --pretty=oneline --pickaxe-regex -Stoken` (commits contents)
-      # TODO: make expansion for `git log --pretty=oneline --pickaxe-regex -Gtoken` (commits differences)
+      home-manager.users.${user} = {
+        home.packages = with pkgs; [ gitleaks ];
+        xdg.configFile."espanso/user/git.yml".text = ''
+          name: git
+          parent: default
+          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
 
-      home-manager.users.${user} = { home.packages = with pkgs; [ gitleaks ]; };
+          matches:
+            - trigger: ":glcont"
+              replace: "git log --pretty=oneline --pickaxe-regex -S$|$"
+
+            - trigger: ":gldiff"
+              replace: "git log --pretty=oneline --pickaxe-regex -G$|$"
+        '';
+      };
 
       dev.git.batch.commands = {
         synctags = [ "${pkgs.gittags}/bin/gittags --sync" ];

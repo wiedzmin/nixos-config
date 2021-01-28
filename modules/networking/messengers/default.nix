@@ -19,7 +19,21 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       services.quassel.enable = true;
-      home-manager.users."${user}" = { home.packages = with pkgs; [ tdesktop quasselClient ]; };
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [ tdesktop quasselClient ];
+        xdg.configFile."espanso/user/telegram.yml".text = ''
+          name: telegram
+          parent: default
+          filter_class: "TelegramDesktop"
+
+          matches:
+            - trigger: ":shr"
+              replace: "¯\\_(ツ)_/¯"
+
+            - trigger: ":sm"
+              replace: "ツ"
+        '';
+      };
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {
             K("C-x"): {

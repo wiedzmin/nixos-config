@@ -210,6 +210,7 @@ in {
 
   completion = {
     enable = true;
+    expansions.enable = true;
     shell.enable = true;
     emacs.enable = true;
     wm.enable = true;
