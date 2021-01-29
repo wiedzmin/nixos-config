@@ -2,7 +2,7 @@
 with lib;
 
 let
-  cfg = config.custom.paperworks;
+  cfg = config.paperworks;
   user = config.attributes.mainUser.name;
 
   nixpkgs-hplip = import inputs.nixpkgs-16_04_20 ({
@@ -31,7 +31,7 @@ let
   };
 in {
   options = {
-    custom.paperworks = {
+    paperworks = {
       printing.enable = mkOption {
         type = types.bool;
         default = false;
@@ -296,7 +296,7 @@ in {
       '';
     })
     (mkIf cfg.processors.enable {
-      home-manager.users.${user} = { home.packages = with pkgs; [ enca pandoc pdfcpu pdftk ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ enca pandoc pdfcpu pdftk ocamlPackages.cpdf]; };
     })
   ];
 }

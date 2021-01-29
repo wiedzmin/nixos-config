@@ -391,7 +391,7 @@ in {
     navigation.enable = true;
   };
 
-  custom.paperworks = {
+  paperworks = {
     printing = {
       enable = true;
       drivers = [ pkgs.hplip ];
@@ -411,6 +411,7 @@ in {
       };
     };
     publishing = { enable = true; };
+    processors.enable = true;
   };
 
   pim = {
