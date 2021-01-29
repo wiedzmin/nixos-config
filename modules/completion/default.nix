@@ -51,6 +51,7 @@ in {
         type = types.lines;
         default = ''
           toggle_key: ${cfg.expansions.toggleKey}
+          auto_restart: false
         '';
         visible = false;
         readOnly = true;
@@ -123,10 +124,10 @@ in {
             before = [ "linkGeneration" ];
             data = ''echo "${cfg.espansoConfig}" > /home/alex3rd/.config/espanso/default.yml'';
           };
-          ensureSingleEspansoInstance = {
+          restartEspanso = {
             after = [ "linkGeneration"];
             before = [ ];
-            data = "pkill -9 espanso";
+            data = "${pkgs.systemd}/bin/systemctl --user restart espanso.service";
           };
         };
       };
