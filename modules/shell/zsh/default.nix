@@ -14,6 +14,31 @@ in {
         default = false;
         description = "Whether to enable shell tooling.";
       };
+      setopt = mkOption {
+        type = types.listOf types.str;
+        description = "List of options to be set by `setopt`";
+        default = [
+          "APPEND_HISTORY"
+          "AUTO_CD"
+          "BRACE_CCL"
+          "EXTENDED_GLOB"
+          "HIST_FIND_NO_DUPS"
+          "HIST_IGNORE_ALL_DUPS"
+          "HIST_IGNORE_SPACE"
+          "HIST_NO_STORE"
+          "HIST_SAVE_NO_DUPS"
+          "INC_APPEND_HISTORY"
+          "MENU_COMPLETE"
+          "braceccl"
+          "extendedglob"
+          "menucomplete"
+        ];
+      };
+      initExtraPrimary = mkOption {
+        type = types.lines;
+        description = "initExtra entries to be processed before any others";
+        default = '''';
+      };
     };
   };
 
@@ -47,23 +72,16 @@ in {
             share = true;
           };
           initExtra = ''
-            setopt APPEND_HISTORY
-            setopt BRACE_CCL
-            setopt HIST_FIND_NO_DUPS
-            setopt HIST_IGNORE_ALL_DUPS
-            setopt HIST_IGNORE_SPACE
-            setopt HIST_NO_STORE
-            setopt HIST_SAVE_NO_DUPS
-            setopt AUTO_CD
-            setopt EXTENDED_GLOB
-            setopt INC_APPEND_HISTORY
-            setopt MENU_COMPLETE
+            ${lib.concatMapStrings (opt: ''
+              setopt ${opt}
+            '') cfg.setopt}
+
+            ${cfg.initExtraPrimary}
 
             ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
 
-            ${lib.concatMapStrings (opt: ''
-              setopt ${opt}
-            '') [ "braceccl" "extendedglob" "menucomplete" ]}
+            # review https://github.com/Aloxaf/fzf-tab/wiki/Configuration
+            source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
 
             bindkey '^P' fuzzy-search-and-edit
           '';
