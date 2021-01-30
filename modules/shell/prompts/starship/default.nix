@@ -29,7 +29,7 @@ in {
           message = "shell/prompts/starship: exactly one no theming should be used.";
         }
         {
-          assertion = (cfg.enable && !config.appearance.fonts.beautify);
+          assertion = (cfg.enable && config.appearance.fonts.beautify);
           message = "shell/prompts/starship: beautified (Nerd) fonts required.";
         }
       ];
