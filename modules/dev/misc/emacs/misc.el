@@ -34,6 +34,8 @@
         ("C-c h" . lsp-ui-doc-glance)
         ("M-n" . forward-paragraph)
         ("M-p" . backward-paragraph))
+  (:map mode-specific-map
+        ("R" . lsp-workspace-restart))
   ;; (gc-cons-threshold 100000000)
   ;; (lsp-completion-provider :capf)
   :custom
