@@ -76,6 +76,7 @@
   (advice-add 'lsp-on-change :around 'custom/lsp-on-change))
 
 (use-package lsp-ui
+  :disabled
   :after lsp-mode
   :preface
   (defun custom/toggle-lsp-ui-doc ()
