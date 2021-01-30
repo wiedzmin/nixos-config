@@ -26,14 +26,6 @@
   (comby-args '("-exclude" "@combyExcludes@")))
 
 (use-package lsp-mode
-  :preface
-  (defvar lsp-on-touch-time 0)
-  (defun custom/lsp-on-change (func &rest args)
-    ;; don't run `lsp-on-change' too frequently
-    (when (> (- (float-time (current-time))
-                lsp-on-touch-time) 30) ;; 30 seconds
-      (setq lsp-on-touch-time (float-time (current-time)))
-      (funcall func args)))
   :hook
   (lsp-mode-hook . lsp-enable-which-key-integration)
   :bind
@@ -42,38 +34,32 @@
         ("C-c h" . lsp-ui-doc-glance)
         ("M-n" . forward-paragraph)
         ("M-p" . backward-paragraph))
+  ;; (gc-cons-threshold 100000000)
+  ;; (lsp-completion-provider :capf)
   :custom
-  (read-process-output-max (* 1024 1024))
-  (gc-cons-threshold 100000000)
-  (lsp-completion-provider :capf)
-  (lsp-enable-file-watchers nil)
-  (lsp-enable-indentation nil)
-  (lsp-enable-on-type-formatting nil)
   (lsp-auto-guess-root nil)
   (lsp-before-save-edits nil)
-  (lsp-document-sync-method 'incremental)
-  (lsp-eldoc-render-all nil)
-  (lsp-eldoc-enable-hover nil)
-  (lsp-highlight-symbol-at-point nil)
-  (lsp-inhibit-message t)
-  (lsp-diagnostics-provider :flycheck)
-  (lsp-message-project-root-warning t)
-  (lsp-prefer-flymake nil)
-  (lsp-response-timeout 20)
-  (lsp-enable-folding nil)
-  (lsp-enable-completion-at-point t)
-  (lsp-enable-symbol-highlighting nil)
-  (lsp-enable-links nil)  ;?
-  (lsp-restart 'auto-restart)
   (lsp-client-packages nil)
-  (lsp-idle-delay 0.1)
-  (lsp-enable-file-watchers t)
-  (lsp-file-watch-threshold 32768)
+  (lsp-diagnostics-provider :flycheck)
+  (lsp-document-sync-method 'incremental)
+  (lsp-eldoc-enable-hover nil)
+  (lsp-eldoc-render-all nil)
+  (lsp-enable-completion-at-point t)
+  (lsp-enable-file-watchers nil)
+  (lsp-enable-folding t)
+  (lsp-enable-indentation t)
+  (lsp-enable-links t)
+  (lsp-enable-on-type-formatting t)
+  (lsp-enable-symbol-highlighting t)
+  (lsp-idle-delay 0.5)
+  (lsp-prefer-flymake nil)
+  (lsp-response-timeout 10)
+  (lsp-restart 'auto-restart)
+  (read-process-output-max (* 1024 1024))
   :config
   ;;TODO: play with lsp-keymap-prefix
   (lsp-lens-mode 1)
-  (delight 'lsp-lens-mode " Ꙫ" 'lsp-lens)
-  (advice-add 'lsp-on-change :around 'custom/lsp-on-change))
+  (delight 'lsp-lens-mode " Ꙫ" 'lsp-lens))
 
 (use-package lsp-ui
   :disabled
