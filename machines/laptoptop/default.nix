@@ -519,7 +519,7 @@ in {
       enable = true;
       dev.enable = true;
     };
-    prompts.liquid.enable = true;
+    prompts.starship.enable = true;
     tmux = {
       enable = true;
       theme.package = pkgs.tmuxPlugins.power-theme;
