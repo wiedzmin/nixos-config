@@ -115,6 +115,7 @@
   (register-preview-delay 0)
   (register-preview-function #'consult-register-preview)
   (consult-project-root-function #'projectile-project-root)
+  (consult-line-point-placement 'match-end)
   :config
   (fset 'multi-occur #'consult-multi-occur)
   (fset 'projectile-ripgrep 'consult-ripgrep))
