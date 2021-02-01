@@ -627,12 +627,6 @@ in {
       type = "secondary";
     }
     {
-      name = "media";
-      key = [ "5" ];
-      transient = false;
-      type = "secondary";
-    }
-    {
       name = "im";
       key = [ "c" ];
       transient = false;

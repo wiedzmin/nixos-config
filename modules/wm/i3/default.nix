@@ -281,6 +281,18 @@ in {
             mode = "Passthrough Mode - Press M+F11 to exit";
             raw = true;
           }
+          {
+            key = [ "h" ];
+            cmd = "move scratchpad";
+            mode = "window";
+            raw = true;
+          }
+          {
+            key = [ "s" ];
+            cmd = "scratchpad show";
+            mode = "window";
+            raw = true;
+          }
         ];
       };
 

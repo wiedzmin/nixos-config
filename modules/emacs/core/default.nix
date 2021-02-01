@@ -185,11 +185,19 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [{
-        key = [ "Shift" "e" ];
-        cmd = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";
-        mode = "services";
-      }];
+      wmCommon.keys = [
+        {
+          key = [ "Shift" "e" ];
+          cmd = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";
+          mode = "services";
+        }
+        {
+          key = [ "e" ];
+          cmd = ''[class="^Emacs$"] scratchpad show'';
+          mode = "window";
+          raw = true;
+        }
+      ];
     })
   ];
 }

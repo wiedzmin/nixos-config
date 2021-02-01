@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.content.media;
   user = config.attributes.mainUser.name;
+  prefix = config.wmCommon.prefix;
 in {
   options = {
     content.media = {
@@ -191,16 +192,6 @@ in {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ ario sonata cantata ];
       };
-      wmCommon.wsMapping.rules = [
-        {
-          class = "cantata";
-          desktop = "media";
-        }
-        {
-          class = "Sonata";
-          desktop = "media";
-        }
-      ];
     })
     (mkIf (cfg.enable && cfg.youtubeFrontends.enable) {
       # TODO: try https://github.com/trizen/youtube-viewer
@@ -249,6 +240,30 @@ in {
               builtins.toString cfg.playback.deltaSeconds
             }-";
           mode = "root";
+        }
+        {
+          key = [ "y" ];
+          cmd = ''[title=".*YouTube.*"] scratchpad show'';
+          mode = "window";
+          raw = true;
+        }
+        {
+          key = [ "Shift" "y" ];
+          cmd = ''[title=".*ympd.*"] scratchpad show'';
+          mode = "window";
+          raw = true;
+        }
+        {
+          key = [ "c" ];
+          cmd = ''[class="cantata"] scratchpad show'';
+          mode = "window";
+          raw = true;
+        }
+        {
+          key = [ "n" ];
+          cmd = ''[class="Sonata"] scratchpad show'';
+          mode = "window";
+          raw = true;
         }
       ];
     })
