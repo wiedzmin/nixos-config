@@ -43,28 +43,22 @@ in {
         xdg.configFile = {
           "starship.toml".text = toToml {
             add_newline = false;
+            scan_timeoout = 10;
             character = {
               success_symbol = "[➜](bold green) ";
               error_symbol = "[✗](bold red) ";
             };
             cmd_duration = {
               min_time = 500;
-              format = "underwent [$duration](bold yellow)";
+              format = "[$duration](bold yellow)";
+              show_notifications = true;
             };
             directory = {
               truncation_length = 8;
-              truncation_symbol = "…/ ";
             };
             nix_shell.disabled = true;
-            # time = {
-            #   disabled = false;
-            #   format = "🕙[\[ $time \]]($style) ";
-            #   time_format = "%T";
-            #   utc_time_offset = "local";
-            #   time_range = "08:00:00-02:00:00";
-            # };
             golang = { # TODO: make module-wise (as well as python and others among available)
-              format = "[🏎💨 $version](bold cyan) ";
+              format = "[🐹 $version](bold cyan) ";
             };
           };
         };
