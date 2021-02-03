@@ -80,6 +80,30 @@ in {
           };
         };
       };
+
+      shell.prompts.starship.modulesConfiguration = {
+        git_branch = {
+          only_attached = true;
+        };
+        git_commit = {
+          commit_hash_length = 10;
+          tag_disabled = false;
+          tag_symbol = "🔖 ";
+        };
+        git_status = {
+          diverged = "⇕⇡$ahead_count⇣$behind_count";
+          conflicted = "✗ \($count\) ";
+          ahead = "⇡ \($count\) ";
+          behind = "⇣ \($count\) ";
+          untracked = "♾ ‍\($count\) ";
+          stashed = "☂ \($count\) ";
+          modified = "♨ \($count\) ";
+          staged = "[++\($count\)](green) ";
+          renamed = "⥂ \($count\) ";
+          deleted = "♺ \($count\) ";
+          style = "bold green";
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [

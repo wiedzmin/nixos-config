@@ -68,6 +68,12 @@ in {
         };
       };
       dev.misc.timeTracking.extensions.dev = { "go" = "coding:go"; };
+
+      shell.prompts.starship.modulesConfiguration = {
+        golang = {
+          format = "[🐹 $version](bold cyan) ";
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {

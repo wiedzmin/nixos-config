@@ -83,6 +83,12 @@ in {
           trustedRegistries = [ "docker.io" ];
         };
       };
+
+      shell.prompts.starship.modulesConfiguration = {
+        docker_context = {
+          format = "via [🐋 $context](blue bold)";
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.aux.enable) {
       environment.systemPackages = with pkgs; [ docker-slim nsjail skopeo ];

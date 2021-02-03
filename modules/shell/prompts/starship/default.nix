@@ -14,6 +14,38 @@ in {
         default = false;
         description = "Whether to enable starship";
       };
+      modulesConfiguration = mkOption {
+        type = types.attrs;
+        default = {};
+        description = "Starship additional modules configuration";
+      };
+      configuration = mkOption {
+        type = types.attrs;
+        default = {
+          add_newline = false;
+          scan_timeoout = 10;
+          character = {
+            success_symbol = "[➜](bold green) ";
+            error_symbol = "[✗](bold red) ";
+          };
+          cmd_duration = {
+            min_time = 500;
+            format = "[$duration](bold yellow)";
+            show_notifications = true;
+          };
+          directory = {
+            truncation_length = 8;
+          };
+          line_break = {
+            disabled = true;
+          };
+          nix_shell.disabled = true;
+        } // optionalAttrs (cfg.modulesConfiguration != { }) cfg.modulesConfiguration;
+        description = "Starship prompt configuration";
+        visible = false;
+        internal = true;
+        readOnly = true;
+      };
     };
   };
 
@@ -41,26 +73,7 @@ in {
           eval "$(starship init zsh)"
         '';
         xdg.configFile = {
-          "starship.toml".text = toToml {
-            add_newline = false;
-            scan_timeoout = 10;
-            character = {
-              success_symbol = "[➜](bold green) ";
-              error_symbol = "[✗](bold red) ";
-            };
-            cmd_duration = {
-              min_time = 500;
-              format = "[$duration](bold yellow)";
-              show_notifications = true;
-            };
-            directory = {
-              truncation_length = 8;
-            };
-            nix_shell.disabled = true;
-            golang = { # TODO: make module-wise (as well as python and others among available)
-              format = "[🐹 $version](bold cyan) ";
-            };
-          };
+          "starship.toml".text = toToml cfg.configuration;
         };
       };
     })
