@@ -319,7 +319,13 @@
   (org-yank-adjusted-subtrees t)
   :config
   (advice-add 'org-yank :after #'custom/make-yank-writeable)
-  (use-package org-capture-pop-frame)
+  (use-package org-capture-pop-frame
+    :custom
+    (ocpf-frame-parameters '((name . "org-capture-pop-frame")
+                             (width . 80)
+                             (height . 20)
+                             (tool-bar-lines . 0)
+                             (menu-bar-lines . 0))))
   (require 'deferred)
   (deferred:$
     @pimOrgAgendaElPatch@
