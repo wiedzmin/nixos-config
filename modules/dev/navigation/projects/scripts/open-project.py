@@ -1,4 +1,5 @@
 import json
+import os
 import re
 import sys
 import time
@@ -32,5 +33,8 @@ if bookmark:
         sys.exit(1)
 
     elisp_cmd = f'(dired "{path}")'
+    if os.path.isfile(path):
+        elisp_cmd = f'(find-file "{path}")'
+
     emacs_cmd = f'emacsclient -c -s /run/user/1000/emacs/server -e \'{elisp_cmd}\' &' # TODO: make SPOT for socket path
     shell_cmd(emacs_cmd, oneshot=True)
