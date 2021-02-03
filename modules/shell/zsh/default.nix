@@ -45,7 +45,8 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ gdu rtss wmctrl xdotool rargs ];
+        # NOTE: play with ydotool client/server arch and respective permissions
+        home.packages = with pkgs; [ gdu rtss wmctrl xdotool rargs ydotool ];
         xdg.configFile."espanso/user/zsh.yml".text = ''
           name: zsh
           parent: default
