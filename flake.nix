@@ -26,6 +26,7 @@
       url = "github:nixos/nixpkgs/224804d0f68bd2bb083b8491c0c6cf3f34f2de10";
       flake = false;
     };
+    nixpkgs-25_01_21.url = "github:nixos/nixpkgs/891f607d5301d6730cb1f9dcf3618bcb1ab7f10e";
     nixpkgs-16_04_20.url = "github:nixos/nixpkgs/b61999e4ad60c351b4da63ae3ff43aae3c0bbdfb";
     nixpkgs-03_12_20.url = "github:nixos/nixpkgs/296793637b22bdb4d23b479879eba0a71c132a66";
     nixpkgs-proposed = {

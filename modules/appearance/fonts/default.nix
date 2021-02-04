@@ -3,6 +3,10 @@ with lib;
 
 let
   cfg = config.appearance.fonts;
+  nixpkgs-prev = import inputs.nixpkgs-25_01_21 ({
+    config = config.nixpkgs.config;
+    system = "x86_64-linux";
+  });
 in {
   imports = [
     ./fira-code-fonts.nix
@@ -58,7 +62,7 @@ in {
         fontDir.enable = true;
         enableGhostscriptFonts = true;
         enableDefaultFonts = true;
-      } // lib.optionalAttrs (cfg.beautify) { fonts = with pkgs; [ nerdfonts ]; };
+      } // lib.optionalAttrs (cfg.beautify) { fonts = with pkgs; [ nixpkgs-prev.nerdfonts ]; };
       console = {
         font = cfg.console;
         useXkbConfig = true;
