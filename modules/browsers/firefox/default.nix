@@ -79,7 +79,7 @@ in {
       };
       sessions.path = mkOption {
         type = types.str;
-        default = homePrefix "docs/org/firefox";
+        default = homePrefix "docs/org/browser-sessions/firefox";
         description = "Where to save plaintext Firefox session contents.";
       };
       sessions.historyLength = mkOption {
