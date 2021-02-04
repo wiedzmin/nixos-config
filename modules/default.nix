@@ -43,7 +43,6 @@
     ./dev/navigation/codesearch
     ./dev/navigation/projects
     ./dev/python
-    ./dev/timetracking
     ./emacs/core
     ./emacs/edit
     ./emacs/history
