@@ -339,13 +339,13 @@
   (org-add-link-type "tag" 'custom/follow-tag-link)
   (org-clock-persistence-insinuate)
   (setq org-capture-templates
-        (doct '(("NixOS" :keys "n" :file "/etc/nixos/todo.org" :children
+        (doct '(("NixOS" :keys "n" :file "/home/alex3rd/docs/org/projects/workstation/nixos.org" :children
                  (("Common" :keys "t" :template "* BACKLOG %?[[%:link][%:description]] %U\n  %:initial")
                  ("Code snippet"
                   :keys "c"
                   :template "* %^{title} :nix:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC nix\n %i%?\n#+END_SRC\n")
                  ("Shell excerpt" :keys "s" :template "* %? %U :%:description:\n  %:initial")))
-                ("Emacs" :keys "e" :file "/etc/nixos/modules/emacs/todo.org" :children
+                ("Emacs" :keys "e" :file "/home/alex3rd/docs/org/projects/workstation/emacs.org" :children
                  (("Common" :keys "t" :template "* BACKLOG %?[[%:link][%:description]] %U :emacs:\n  %:initial")
                  ("Code snippet"
                   :keys "s"
