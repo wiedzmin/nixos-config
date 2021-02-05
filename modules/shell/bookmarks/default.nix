@@ -34,9 +34,13 @@ in {
       }];
 
       home-manager.users."${user}" = {
-        home.file = {
-          "${cfg.path}".text =
-            localBookmarksKVText (enabledLocals config.navigation.bookmarks.entries);
+        home.activation = {
+          populateShellBookmarks = {
+            after = [ ];
+            before = [ "linkGeneration" ];
+            data = ''echo "${localBookmarksKVText
+              (enabledLocals config.navigation.bookmarks.entries)}" > ${homePrefix cfg.path}'';
+          };
         };
         programs.fzf.enable = true;
         programs.zsh = {
