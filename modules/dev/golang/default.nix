@@ -45,7 +45,7 @@ in {
       # }];
 
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ delve gopls go jetbrains.goland ];
+        home.packages = with pkgs; [ delve gopls go gomacro ];
         programs.zsh.sessionVariables = {
           GOPATH = cfg.goPath;
         } // lib.optionalAttrs (cfg.privateModules != [ ]) {
