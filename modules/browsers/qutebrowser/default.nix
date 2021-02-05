@@ -133,7 +133,7 @@ in {
             exec = "${cfg.command} %U";
             comment = "Qutebrowser that opens links preferably in new windows";
             desktopName = "QuteBrowser";
-            categories = stdenv.lib.concatStringsSep ";" [ "Network" "WebBrowser" ];
+            categories = pkgs.lib.concatStringsSep ";" [ "Network" "WebBrowser" ];
           })
         ];
         programs.qutebrowser = {
