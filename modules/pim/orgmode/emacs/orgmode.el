@@ -216,7 +216,7 @@
   (org-agenda-use-tag-inheritance t)
   (org-agenda-window-setup 'current-window)
   (org-align-all-tags t)
-  (org-archive-location "@orgDir@/journal.org::datetree/")
+  (org-archive-location "@orgDir@/journals/journal.org::datetree/")
   (org-attach-directory "@orgDir@/org-attach-data")
   (org-blank-before-new-entry '((heading) (plain-list-item . auto)))
   (org-catch-invisible-edits nil)

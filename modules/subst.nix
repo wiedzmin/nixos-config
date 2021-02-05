@@ -46,7 +46,6 @@ in rec {
   mcCmd = "${pkgs.mc}/bin/mc";
   nmcliBinary = "${pkgs.networkmanager}/bin/nmcli"; # because there is no `bin` output for some reason
   orgDir = config.ide.emacs.core.orgDir;
-  orgKbDir = homePrefix "docs/org-kb";
   orgWarningsFiledir = builtins.dirOf config.pim.orgmode.warningsFile;
   orgWarningsFilename = config.pim.orgmode.warningsFile;
   passwordStorePath = config.custom.security.passwordStorePath;
