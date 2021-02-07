@@ -16,10 +16,10 @@ in {
     '';
     set-all-tabbed-ws-i3 = mkShellScriptWithDeps "set-all-tabbed-ws-i3" (with pkgs; [ i3 ]) ''
       i3-msg --quiet "${
-        setWorkspacesLayoutI3 config.wmCommon.workspaces "primary" "tabbed"
+        setWorkspacesLayoutByTypeI3 config.wmCommon.workspaces "primary" "tabbed"
       }${
-        setWorkspacesLayoutI3 config.wmCommon.workspaces "secondary" "tabbed"
-      }${setWorkspacesLayoutI3 config.wmCommon.workspaces "tertiary" "tabbed"}"
+        setWorkspacesLayoutByTypeI3 config.wmCommon.workspaces "secondary" "tabbed"
+      }${setWorkspacesLayoutByTypeI3 config.wmCommon.workspaces "tertiary" "tabbed"}"
     '';
   };
   home-manager.users.${user} = {

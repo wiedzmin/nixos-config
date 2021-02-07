@@ -334,17 +334,17 @@ in {
             # i3 config file (v4)
 
             ${cfg.settings}
-            ${mkKeybindingsI3 config.wmCommon.workspaces config.wmCommon.keys config.wmCommon.modeBindings
-              cfg.modeExitBindings}
+            ${bindkeysI3 config.wmCommon.keys config.wmCommon.modeBindings
+              cfg.modeExitBindings config.wmCommon.workspaces}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
             ${lib.concatStringsSep "\n"
             (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
-            ${with config.wmCommon; mkPlacementRulesI3 workspaces wsMapping.rules}
+            ${with config.wmCommon; genPlacementRulesI3 wsMapping.rules workspaces}
 
-            ${mkWindowRulesFloatI3 config.wmCommon.wsMapping.rules}
+            ${genWindowRulesFloatI3 config.wmCommon.wsMapping.rules}
 
-            ${mkKeybindingsFocusI3 config.wmCommon.wsMapping.rules}
+            ${bindkeysFocusI3 config.wmCommon.wsMapping.rules}
 
             bindsym ${prefix}+Tab workspace back_and_forth
 
