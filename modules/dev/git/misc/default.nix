@@ -48,6 +48,10 @@ in {
 
             - trigger: ":gldiff"
               replace: "git log --pretty=oneline --pickaxe-regex -G$|$"
+
+            - trigger: ":bdiff"
+              replace: "git diff ${
+                config.dev.git.autofetch.mainBranchName} $|$ > ../master-${config.dev.git.autofetch.mainBranchName}.patch"
         '';
       };
 
