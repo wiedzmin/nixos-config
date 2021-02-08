@@ -194,7 +194,7 @@ in {
         {
           key = [ "e" ];
           cmd = ''[class="^Emacs$"] scratchpad show'';
-          mode = "window";
+          mode = "scratchpad";
           raw = true;
         }
       ];

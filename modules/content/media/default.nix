@@ -201,6 +201,24 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.wsMapping.rules = [
+        {
+          class = mkWSMappingBrowsersRegexp;
+          title = "http youtube";
+          scratchpad = true;
+          key = [ "y" ];
+        }
+        {
+          class = "cantata";
+          scratchpad = true;
+          key = [ "c" ];
+        }
+        {
+          class = "Sonata";
+          scratchpad = true;
+          key = [ "n" ];
+        }
+      ];
       wmCommon.keys = [
         {
           key = [ "XF86AudioRaiseVolume" ];
@@ -240,30 +258,6 @@ in {
               builtins.toString cfg.playback.deltaSeconds
             }-";
           mode = "root";
-        }
-        {
-          key = [ "y" ];
-          cmd = ''[title=".*YouTube.*"] scratchpad show'';
-          mode = "window";
-          raw = true;
-        }
-        {
-          key = [ "Shift" "y" ];
-          cmd = ''[title=".*ympd.*"] scratchpad show'';
-          mode = "window";
-          raw = true;
-        }
-        {
-          key = [ "c" ];
-          cmd = ''[class="cantata"] scratchpad show'';
-          mode = "window";
-          raw = true;
-        }
-        {
-          key = [ "n" ];
-          cmd = ''[class="Sonata"] scratchpad show'';
-          mode = "window";
-          raw = true;
         }
       ];
     })

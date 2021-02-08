@@ -32,6 +32,7 @@ let
     "role" = ''role="^@$"'';
     "instance" = ''instance="^@$"'';
   };
+  scratchpadModeToken = "scratchpad";
 in rec {
   # ================ common ================
   enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: v: i) wsdata) wsdata;
@@ -136,6 +137,37 @@ in rec {
         else
           "disable"
       }"));
+  mkScratchpadToggleI3 = x:
+    "";
+  genScratchpadSettingsI3 = rules: keys: exitBindings: desktops:
+    let
+      scratchpadBindings = (lib.filterAttrs (k: _: k == scratchpadModeToken)
+        (lib.groupBy (x: x.mode) keys)).${scratchpadModeToken};
+      scratchpadRules = builtins.filter (r: builtins.hasAttr "scratchpad" r && builtins.hasAttr "key" r) rules;
+    in
+      lib.concatStringsSep "\n" (lib.forEach scratchpadRules
+        (r: "for_window ${mkWindowCriteriaI3 r} move scratchpad")) +
+      ''
+
+
+        mode "${scratchpadModeToken}" {
+          ${lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach
+            (map (r: {
+              key = r.key;
+              mode = "${scratchpadModeToken}";
+              cmd = "${mkWindowCriteriaI3 r} scratchpad show";
+              raw = true;
+            }) scratchpadRules) (x: mkKeybindingI3 x desktops))
+          }
+          ${lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach
+            (scratchpadBindings ++ (map (b: {
+              key = b;
+              mode = "${scratchpadModeToken}";
+              raw = true;
+            }) exitBindings)) (x: mkKeybindingI3 x desktops))
+          }
+        }
+      '';
   genPlacementRulesI3 = rules: wsdata:
     lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "desktop" r) rules) (r:
       "for_window ${mkWindowCriteriaI3 r} move to workspace ${getWorkspaceByNameI3 wsdata r.desktop}${

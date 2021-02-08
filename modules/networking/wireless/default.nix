@@ -96,6 +96,13 @@ in {
         };
       };
       services.blueman.enable = true;
+      wmCommon.wsMapping.rules = [
+        {
+          class = ".*blueman-manager.*";
+          scratchpad = true;
+          key = [ "b" ];
+        }
+      ];
     })
     (mkIf (cfg.enable && cfg.tools.enable) {
       programs.wavemon.enable = true;

@@ -95,6 +95,7 @@ in {
           "services" = [ prefix "s" ];
           "virt" = [ prefix "v" ];
           "window" = [ prefix "w" ];
+          "scratchpad" = [ prefix "grave" ];
           "xserver" = [ prefix "x" ];
           "sound" = [ prefix "Home" ];
         };
@@ -284,13 +285,13 @@ in {
           {
             key = [ "h" ];
             cmd = "move scratchpad";
-            mode = "window";
+            mode = "scratchpad";
             raw = true;
           }
           {
             key = [ "s" ];
             cmd = "scratchpad show";
-            mode = "window";
+            mode = "scratchpad";
             raw = true;
           }
         ];
@@ -345,6 +346,8 @@ in {
             ${genWindowRulesFloatI3 config.wmCommon.wsMapping.rules}
 
             ${bindkeysFocusI3 config.wmCommon.wsMapping.rules}
+
+            ${with config.wmCommon; genScratchpadSettingsI3 wsMapping.rules keys cfg.modeExitBindings workspaces}
 
             bindsym ${prefix}+Tab workspace back_and_forth
 
