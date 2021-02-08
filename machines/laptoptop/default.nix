@@ -220,6 +220,7 @@ in {
       enable = true;
       emacs.enable = true;
     };
+    projectenv.enable = true;
     git = {
       autofetch = {
         enable = false;
@@ -246,7 +247,6 @@ in {
         enable = true;
         emacs.enable = true;
       };
-      devenv.enable = true;
       navigation = {
         enable = true;
         ghq.enable = true;

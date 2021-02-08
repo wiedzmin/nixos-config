@@ -1,17 +1,17 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../../util.nix { inherit config inputs lib pkgs; };
+with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.dev.git.devenv;
+  cfg = config.dev.projectenv;
   user = config.attributes.mainUser.name;
 in {
   options = {
-    dev.git.devenv = {
+    dev.projectenv = {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable Git VCS infrastructure.";
+        description = "Whether to enable automation for project development environments population";
       };
       devEnv.configName = mkOption {
         type = types.str;
@@ -22,11 +22,6 @@ in {
         type = types.str;
         default = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.devenv-backup";
         description = "File name for dev-env files list.";
-      };
-      emacs.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable Emacs git-related setup.";
       };
     };
   };
@@ -92,17 +87,16 @@ in {
           git add -- $devenv_filelist
         '';
       };
+
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ git-dumpenv git-hideenv git-restoreenv git-unhideenv ];
+        home.packages = with pkgs; [ git-dumpenv git-hideenv git-restoreenv git-unhideenv];
+
         home.activation.ensureDevEnvBackupRoot = {
           after = [ ];
           before = [ "linkGeneration" ];
           data = "mkdir -p ${cfg.devEnv.backupRoot}";
         };
       };
-    })
-    (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/git.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ git-dumpenv git-hideenv git-restoreenv git-unhideenv ]; };

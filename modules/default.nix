@@ -25,6 +25,7 @@
     ./dev/dbms/mysql
     ./dev/dbms/pgsql
     ./dev/dbms/sqlite
+    ./dev/projectenv
     ./dev/direnv
     ./dev/editorconfig
     ./dev/frontend
@@ -32,7 +33,6 @@
     ./dev/git/autopush
     ./dev/git/batch
     ./dev/git/core
-    ./dev/git/devenv
     ./dev/git/forges
     ./dev/git/misc
     ./dev/git/navigation
