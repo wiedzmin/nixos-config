@@ -93,11 +93,11 @@ in {
           "run" = [ prefix "r" ];
           "select" = [ prefix "." ];
           "services" = [ prefix "s" ];
+          "sound" = [ prefix "Home" ];
           "virt" = [ prefix "v" ];
           "window" = [ prefix "w" ];
           "scratchpad" = [ prefix "grave" ];
           "xserver" = [ prefix "x" ];
-          "sound" = [ prefix "Home" ];
         };
         keys = [
           {
