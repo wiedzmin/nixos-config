@@ -83,7 +83,7 @@ in {
 
       wmCommon = {
         enable = true;
-        modeBindings = {
+        modeBindings = { # TODO: check if we can unwire this from i3
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
           "browser" = [ prefix "b" ];
           "dev" = [ prefix "d" ];
