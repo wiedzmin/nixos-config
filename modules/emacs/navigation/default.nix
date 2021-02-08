@@ -25,6 +25,7 @@ in {
 
       home-manager.users.${user} = { home.packages = with pkgs; [ ripgrep ]; };
       ide.emacs.core.extraPackages = epkgs: [
+        epkgs.avy
         epkgs.beginend
         epkgs.block-nav
         epkgs.consult

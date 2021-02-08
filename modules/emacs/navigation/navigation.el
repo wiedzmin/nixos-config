@@ -3,11 +3,21 @@
 ;; - ivy-pass
 ;; - ivy-omni-org
 ;; - counsel-org-clock
-;; - avy[-goto-*]
 ;; TODO: https://github.com/minad/consult/issues/6
-;; TODO: monitor/implement/suggest(to consult project wishlist) consult-goto-<not line, but char (as in avy-goto-*)
 ;; TODO: setup xref package, then search for selectrum/consult-bound xref impl
 ;; TODO: bind consult-error when compilation buffers will be used more extensively
+
+(use-package avy
+  :bind
+  ("C-:" . avy-goto-char)
+  (:map goto-map
+        ("M-w" . avy-goto-word-0))
+  :custom
+  (avy-timeout-seconds 0.5)
+  (avy-keys '(?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
+  :custom-face (avy-goto-char-timer-face ((nil (:foreground "green" :weight bold))))
+  :config
+  (avy-setup-default))
 
 (use-package selectrum
   :custom
