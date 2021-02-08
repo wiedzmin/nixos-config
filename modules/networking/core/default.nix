@@ -58,6 +58,21 @@ in {
           unmanaged = [ "br0" "lo" ];
         };
       };
+      home-manager.users.${user} = {
+        xdg.configFile."espanso/user/networking.yml".text = ''
+          name: networking
+          parent: default
+
+          matches:
+            - trigger: ":ip"
+              replace: "{{output}}"
+              vars:
+                - name: output
+                  type: shell
+                  params:
+                    cmd: "curl 'https://api.ipify.org'"
+        '';
+      };
     })
   ];
 }
