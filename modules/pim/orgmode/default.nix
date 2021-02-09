@@ -72,6 +72,7 @@ in {
         current window ($title =~ /^emacs - [^ ]+\.org .*$/) ==> tag edit:orgmode,
       '';
       ide.emacs.core.extraPackages = epkgs: [
+        epkgs.org-cliplink
         epkgs.deft
         epkgs.doct
         epkgs.helm-org-rifle

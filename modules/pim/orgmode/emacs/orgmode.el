@@ -5,6 +5,12 @@
         ("l" . helm-org-rifle)
         ("o" . helm-org-rifle-occur)))
 
+(use-package org-cliplink
+  :after (org)
+  :bind
+  (:map custom-org-map
+        ("i" . org-cliplink)))
+
 (use-package doct
   :commands (doct))
 
@@ -340,17 +346,17 @@
   (org-clock-persistence-insinuate)
   (setq org-capture-templates
         (doct '(("NixOS" :keys "n" :file "/home/alex3rd/docs/org/projects/workstation/nixos.org" :children
-                 (("Common" :keys "t" :template "* BACKLOG %?[[%:link][%:description]] %U\n  %:initial")
+                 (("Common" :keys "t" :template "* BACKLOG %(org-cliplink-capture) %U\n  %:initial")
                  ("Code snippet"
                   :keys "c"
                   :template "* %^{title} :nix:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC nix\n %i%?\n#+END_SRC\n")
                  ("Shell excerpt" :keys "s" :template "* %? %U :%:description:\n  %:initial")))
                 ("Emacs" :keys "e" :file "/home/alex3rd/docs/org/projects/workstation/emacs.org" :children
-                 (("Common" :keys "t" :template "* BACKLOG %?[[%:link][%:description]] %U :emacs:\n  %:initial")
+                 (("Common" :keys "t" :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
                  ("Code snippet"
                   :keys "s"
                   :template "* %^{title} :emacs:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC emacs-lisp\n %i%?\n#+END_SRC\n")))
-                ("Bookmarks" :keys "b" :file "@orgDir@/bookmarks.org" :template "* %?%:link %U :bookmark:"))))
+                ("Bookmarks" :keys "b" :file "@orgDir@/bookmarks.org" :template "* %(org-cliplink-capture) %U :bookmark:"))))
   (run-with-idle-timer custom/idle-clockout-timeout t 'custom/clockout-when-idle)
   (turn-on-orgtbl))
 
