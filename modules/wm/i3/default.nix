@@ -476,6 +476,19 @@ in {
                 format = " {1m}";
               }
               {
+                block = "memory";
+                format_mem = "{Mum}MB/{MTm}MB({Mup}%)";
+                format_swap = "{SUm}MB/{STm}MB({SUp}%)";
+                display_type = "memory";
+                icons = true;
+                clickable = false;
+                interval = 5;
+                warning_mem = 80;
+                warning_swap = 80;
+                critical_mem = 95;
+                critical_swap = 95;
+              }
+              {
                 block = "disk_space";
                 path = "/";
                 alias = "/";
