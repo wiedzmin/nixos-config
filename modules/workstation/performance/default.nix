@@ -50,7 +50,6 @@ in {
           ACTION=="add|change", KERNEL=="sd[ab][!0-9]", ATTR{queue/scheduler}="kyber"
         '';
         irqbalance.enable = true;
-        earlyoom.enable = true;
       };
 
       home-manager.users.${user} = {
