@@ -20,7 +20,7 @@ in {
     (mkIf cfg.enable {
       services.quassel.enable = true;
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ tdesktop quasselClient ];
+        home.packages = with pkgs; [ tdesktop quasselClient zoom-us ];
         xdg.configFile."espanso/user/telegram.yml".text = ''
           name: telegram
           parent: default
