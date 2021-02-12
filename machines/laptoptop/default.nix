@@ -164,7 +164,7 @@ in {
       emacs.enable = true;
       wm.enable = true;
     };
-    firefox = {
+    qutebrowser = {
       enable = true;
       isDefault = true;
       suspendInactive = false;
