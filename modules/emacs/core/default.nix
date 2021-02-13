@@ -73,6 +73,7 @@ in {
             withGTK2 = false;
             withGTK3 = false;
           }).overrideAttrs (old: rec {
+            withCsrc = true;
             configureFlags = (remove "--with-cairo" (remove "--with-harfbuzz" old.configureFlags))
               ++ [ "--without-harfbuzz" "--without-cairo" ];
           }));
