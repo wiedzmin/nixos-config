@@ -23,6 +23,8 @@ in {
         description = "Update nix packages metadata index";
         serviceConfig = {
           Type = "oneshot";
+          CPUSchedulingPolicy = "idle";
+          IOSchedulingClass = "idle";
           ExecStart = "${pkgs.nix-index}/bin/nix-index";
           StandardOutput = "journal";
           StandardError = "journal";
