@@ -144,13 +144,19 @@
   (:map flycheck-mode-map
         ("C-c ! o" . consult-flycheck)))
 
-(use-package winum
+(use-package ace-window
   :bind
-  ("M-o" . winum-select-window-by-number)
+  ("M-o" . ace-window)
   :custom
-  (winum-scope 'visible)
+  (aw-background nil)
+  (aw-leading-char-style 'char)
+  (aw-scope 'visible)
   :config
-  (winum-mode))
+  (ace-window-display-mode 1)
+  :custom-face (aw-leading-char-face1
+                ((t (:inherit ace-jump-face-foreground
+                              :foreground "green"
+                              :height 0.1)))))
 
 (use-package link-hint
   :bind
