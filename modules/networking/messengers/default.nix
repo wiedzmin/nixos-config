@@ -18,9 +18,8 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      services.quassel.enable = true;
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ tdesktop quasselClient zoom-us ];
+        home.packages = with pkgs; [ tdesktop zoom-us ];
         xdg.configFile."espanso/user/telegram.yml".text = ''
           name: telegram
           parent: default
