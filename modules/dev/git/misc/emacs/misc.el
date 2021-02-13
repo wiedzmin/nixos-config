@@ -35,16 +35,10 @@
     (diff-hl-mode 1))
   :delight diff-hl-amend-mode
   :hook
-  (dired-mode-hook . diff-hl-dired-mode)
   (magit-post-refresh-hook . diff-hl-magit-post-refresh)
-  (org-mode-hook . diff-hl-mode)
   (prog-mode . diff-hl-mode)
   :bind
   (:map mode-specific-map
         ("d" . custom/toggle-diff-hl))
   :config
-  (when (string-equal "i3" (getenv "CURRENT_WM"))
-    (diff-hl-margin-mode 1)
-    (diff-hl-flydiff-mode 1)
-    (global-diff-hl-mode 1))
   (diff-hl-amend-mode 1))

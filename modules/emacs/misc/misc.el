@@ -16,8 +16,8 @@
 
 (use-package hl-todo
   :if (string-equal "i3" (getenv "CURRENT_WM"))
-  :config
-  (global-hl-todo-mode))
+  :hook
+  (prog-mode-hook . hl-todo-mode))
 
 (use-package copy-as-format
   :bind
@@ -42,13 +42,10 @@
   :delight
   :custom-face (flycheck-warning ((t (:foreground "yellow" :background "red"))))
   :custom
+  (flycheck-global-modes '(not emacs-lisp-mode org-mode))
   (flycheck-check-syntax-automatically '(mode-enabled save idle-change))
   (flycheck-display-errors-delay 0.4)
-  (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list)
-  (flycheck-global-modes '(not emacs-lisp-mode))
-  :config
-  (when (string-equal "i3" (getenv "CURRENT_WM"))
-    (global-flycheck-mode 1)))
+  (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list))
 
 (use-package format-all
   :after copy-as-format
@@ -89,3 +86,7 @@
   (delight 'eldoc-mode nil "eldoc")
   (put 'transient-mark-mode 'permanent-local t)
   (put 'set-goal-column 'disabled nil))
+
+(use-package eldoc
+  :config
+  (global-eldoc-mode -1))

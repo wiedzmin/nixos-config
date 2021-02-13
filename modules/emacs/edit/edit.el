@@ -3,8 +3,6 @@
   (:map mode-specific-map
         ("a" . aggressive-indent-mode))
   :config
-  (when (string-equal "i3" (getenv "CURRENT_WM"))
-    (global-aggressive-indent-mode 1))
   (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 
 (use-package comment-dwim-2
@@ -52,9 +50,6 @@
         ("M-s" . nil)
         ("M-e" . sp-splice-sexp))
   :config
-  (when (string-equal "i3" (getenv "CURRENT_WM"))
-    (smartparens-global-mode t)
-    (show-smartparens-global-mode t))
   (use-package smartparens-config)
   (sp-use-paredit-bindings)
   :custom

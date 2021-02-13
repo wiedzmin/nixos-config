@@ -226,10 +226,10 @@
 (use-package whitespace
   :hook
   ((prog-mode-hook text-mode-hook) . whitespace-turn-on)
+  (org-mode-hook . whitespace-turn-off)
   :bind
   (:map custom-ws-map
-        ("w" . whitespace-mode)
-        ("W" . global-whitespace-mode))
+        ("w" . whitespace-mode))
   :custom
   (whitespace-line-column 121)
   (whitespace-style '(indentation::space

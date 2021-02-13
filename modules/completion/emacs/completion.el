@@ -28,7 +28,6 @@
                       company-yasnippet))
   :config
   (when (string-equal "i3" (getenv "CURRENT_WM"))
-    (global-company-mode 1)
     (use-package company-quickhelp
       :custom
       (company-quickhelp-idle-delay 0.1)
