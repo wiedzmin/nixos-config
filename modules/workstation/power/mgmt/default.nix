@@ -34,6 +34,7 @@ in {
         powerDownCommands = cfg.commands.suspend;
       };
       services = {
+        auto-cpufreq.enable = true;
         upower.enable = true;
         tuptime.enable = true;
         tlp = {
