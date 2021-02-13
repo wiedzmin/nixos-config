@@ -19,6 +19,11 @@
   :config
   (avy-setup-default))
 
+(use-package manage-minor-mode-table
+  :bind
+  (:map mode-specific-map
+        ("m" . manage-minor-mode-table)))
+
 (use-package selectrum
   :custom
   (selectrum-show-indices t)
