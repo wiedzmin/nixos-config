@@ -96,26 +96,20 @@ in {
         };
       };
       services.blueman.enable = true;
-      wmCommon.wsMapping.rules = [
-        {
-          class = ".*blueman-manager.*";
-          scratchpad = true;
-          key = [ "b" ];
-        }
-      ];
+      wmCommon.wsMapping.rules = [{
+        class = ".*blueman-manager.*";
+        scratchpad = true;
+        key = [ "b" ];
+      }];
     })
-    (mkIf (cfg.enable && cfg.tools.enable) {
-      programs.wavemon.enable = true;
-    })
+    (mkIf (cfg.enable && cfg.tools.enable) { programs.wavemon.enable = true; })
     (mkIf (cfg.enable && cfg.wm.enable) {
       programs.nm-applet.enable = if config.wm.i3.enable then true else false;
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; optionals (cfg.backend == "wireless") [
-          wpa_supplicant_gui
-        ] ++ optionals (cfg.backend == "networkmanager" && cfg.wm.dmenu.enable) [
-          nurpkgs.dmenu-ng
-        ];
+        home.packages = with pkgs;
+          optionals (cfg.backend == "wireless") [ wpa_supplicant_gui ]
+          ++ optionals (cfg.backend == "networkmanager" && cfg.wm.dmenu.enable) [ nurpkgs.dmenu-ng ];
       };
       wmCommon.keys = optionals (cfg.backend == "networkmanager") [
         ({
@@ -124,9 +118,7 @@ in {
           mode = "network";
         } // optionalAttrs (cfg.backend == "networkmanager") {
           cmd = "tmux new-window ${pkgs.networkmanager}/bin/nmtui";
-        } // optionalAttrs (cfg.backend == "wireless") {
-          cmd = "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli";
-        })
+        } // optionalAttrs (cfg.backend == "wireless") { cmd = "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli"; })
         {
           key = [ "b" ];
           mode = "network";
