@@ -46,12 +46,23 @@ in {
             - trigger: ":glcont"
               replace: "git log --pretty=oneline --pickaxe-regex -S$|$"
 
+            - trigger: ":gpcont"
+              replace: "git log -p --all -S '$|$'"
+
             - trigger: ":gldiff"
               replace: "git log --pretty=oneline --pickaxe-regex -G$|$"
 
+            - trigger: ":gpdiff"
+              replace: "git log -p --all -G '$|$'"
+
             - trigger: ":bdiff"
-              replace: "git diff ${
-                config.dev.git.autofetch.mainBranchName} $|$ > ../master-${config.dev.git.autofetch.mainBranchName}.patch"
+              replace: "git diff ${config.dev.git.autofetch.mainBranchName} $|$ > ../master-${config.dev.git.autofetch.mainBranchName}.patch"
+
+            - trigger: ":tbcont"
+              replace: "git log --branches -S'$|$' --oneline | awk '{print $1}' | xargs git branch -a --contains"
+
+            - trigger: ":trec"
+              replace: "git log -S$|$ --since=HEAD~50 --until=HEAD"
         '';
       };
 
@@ -62,11 +73,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [
-        epkgs.diff-hl
-        epkgs.git-commit
-        epkgs.git-msg-prefix
-      ];
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.diff-hl epkgs.git-commit epkgs.git-msg-prefix ];
       ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/misc.el;
     })
   ];
