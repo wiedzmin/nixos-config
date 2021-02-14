@@ -19,12 +19,7 @@
   (company-tooltip-align-annotations t)
   (company-tooltip-limit 20)
   (company-dabbrev-downcase nil)
-  (company-backends '(company-capf
-                      company-keywords
-                      company-files
-                      company-dabbrev
-                      company-dabbrev-code
-                      company-yasnippet))
+  (company-selection-wrap-around t)
   :config
   (when (string-equal "i3" (getenv "CURRENT_WM"))
     (use-package company-quickhelp
@@ -122,15 +117,12 @@
         (setq candidates-tabnine (nreverse candidates-tabnine))
         (nconc (seq-take candidates-tabnine 3)
                (seq-take candidates-lsp 6)))))
-  :hook
-  (lsp-after-open . (lambda ()
-                      (add-to-list 'company-transformers 'company/sort-by-tabnine t)
-                      (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))))
   ;TODO: bind 'company-other-backend
   :custom
   (company-tabnine-max-num-results 10)
   :config
-  (add-to-list 'company-backends #'company-tabnine)
+  (add-to-list 'company-transformers 'company/sort-by-tabnine t)
+  (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))
   (advice-add 'lsp :after #'tabnine/bury-company-lsp))
 
 (use-package dabbrev

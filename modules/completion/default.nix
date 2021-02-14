@@ -97,7 +97,8 @@ in {
         snippets = mkPythonScriptWithDeps "snippets" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
           (readSubstituted ../subst.nix ./scripts/snippets.py);
       };
-      home-manager.users.${user} = { home.packages = with pkgs; [ snippets ]; };
+      # NOTE: unzip is for tabnine binaries installation
+      home-manager.users.${user} = { home.packages = with pkgs; [ snippets unzip ]; };
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/snippets ${
           lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (forEach cfg.snippets.entries (s:
