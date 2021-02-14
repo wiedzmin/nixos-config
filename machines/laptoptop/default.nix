@@ -56,7 +56,7 @@ in {
       configurationLimit = 30;
     };
     initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
-    tmpOnTmpfs = true;
+    tmpOnTmpfs = false;
     kernelPackages = pkgs.linuxPackages_5_10;
     supportedFilesystems = [ "ntfs" ];
   };

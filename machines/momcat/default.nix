@@ -45,7 +45,7 @@ in {
       options iwlwifi 11n_disable=1 power_save=1 power_level=2
     '';
     extraModulePackages = with config.boot.kernelPackages; [ exfat-nofuse ];
-    tmpOnTmpfs = true;
+    tmpOnTmpfs = false;
     kernelPackages = pkgs.linuxPackages_4_19;
     kernelParams =
       [ "scsi_mod.use_blk_mq=1" "pti=off" "nospectre_v1" "nospectre_v2" "l1tf=off" "nospec_store_bypass_disable" ];
