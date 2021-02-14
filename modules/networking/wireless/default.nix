@@ -106,6 +106,8 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       programs.nm-applet.enable = if config.wm.i3.enable then true else false;
 
+      wmCommon.autostart.entries = [ "blueman-manager" ];
+
       home-manager.users."${user}" = {
         home.packages = with pkgs;
           optionals (cfg.backend == "wireless") [ wpa_supplicant_gui ]
