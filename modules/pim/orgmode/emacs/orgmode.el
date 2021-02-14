@@ -351,11 +351,22 @@
                   :keys "c"
                   :template "* %^{title} :nix:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC nix\n %i%?\n#+END_SRC\n")
                  ("Shell excerpt" :keys "s" :template "* %? %U :%:description:\n  %:initial")))
-                ("Emacs" :keys "e" :file "/home/alex3rd/docs/org/projects/workstation/emacs.org" :children
-                 (("Common" :keys "t" :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
-                 ("Code snippet"
-                  :keys "s"
-                  :template "* %^{title} :emacs:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC emacs-lisp\n %i%?\n#+END_SRC\n")))
+                ("Emacs" :keys "e"
+                 :children
+                 (("Unsorted" :keys "u" :file "/home/alex3rd/docs/org/projects/workstation/emacs/unsorted.org"
+                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                  ("Completion" :keys "c" :file "/home/alex3rd/docs/org/projects/workstation/emacs/completion.org"
+                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                  ("Development" :keys "d" :file "/home/alex3rd/docs/org/projects/workstation/emacs/dev.org"
+                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                  ("Editing" :keys "e" :file "/home/alex3rd/docs/org/projects/workstation/emacs/editing.org"
+                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                  ("Email" :keys "l" :file "/home/alex3rd/docs/org/projects/workstation/emacs/email.org"
+                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                  ("Miscellaneous" :keys "m" :file "/home/alex3rd/docs/org/projects/workstation/emacs/misc.org"
+                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                  ("Navigation" :keys "n" :file "/home/alex3rd/docs/org/projects/workstation/emacs/navigation.org"
+                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")))
                 ("Bookmarks" :keys "b" :file "@orgDir@/bookmarks.org" :template "* %(org-cliplink-capture) %U :bookmark:"))))
   (run-with-idle-timer custom/idle-clockout-timeout t 'custom/clockout-when-idle)
   (turn-on-orgtbl))
