@@ -10,7 +10,8 @@
         ("C-k" . sp-kill-hybrid-sexp)
         ("C-<down>" . sp-push-hybrid-sexp)
         ("C-<right>" . sp-slurp-hybrid-sexp))
-  :company company-tabnine
+  :company (company-tabnine company-capf)
+  :capf #'pcomplete-completions-at-point
   :config
   (use-package lsp-go
     :custom
