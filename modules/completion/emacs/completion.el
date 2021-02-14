@@ -124,12 +124,11 @@
                (seq-take candidates-lsp 6)))))
   :hook
   (lsp-after-open . (lambda ()
-                      (setq company-tabnine-max-num-results 3)
                       (add-to-list 'company-transformers 'company/sort-by-tabnine t)
                       (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))))
   ;TODO: bind 'company-other-backend
   :custom
-  (company-tabnine-max-num-results 9)
+  (company-tabnine-max-num-results 10)
   :config
   (add-to-list 'company-backends #'company-tabnine)
   (advice-add 'lsp :after #'tabnine/bury-company-lsp))
