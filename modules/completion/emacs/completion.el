@@ -17,7 +17,6 @@
   (company-require-match 'never)
   (company-show-numbers t)
   (company-tooltip-align-annotations t)
-  (company-tooltip-flip-when-above t)
   (company-tooltip-limit 20)
   (company-dabbrev-downcase nil)
   (company-backends '(company-capf
