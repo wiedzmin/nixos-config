@@ -125,7 +125,7 @@ in {
             data = ''echo "${cfg.espansoConfig}" > /home/alex3rd/.config/espanso/default.yml'';
           };
           restartEspanso = {
-            after = [ "linkGeneration"];
+            after = [ "linkGeneration" ];
             before = [ ];
             data = "${pkgs.systemd}/bin/systemctl --user restart espanso.service";
           };
@@ -155,28 +155,23 @@ in {
           in {
             HISTFILE = "${dataHome}/.histfile";
             LESSHISTFILE = "${dataHome}/.lesshst";
-          } // optionalAttrs (cfg.shell.recent.backend == "mcfly") {
-            MCFLY_FUZZY = "true";
-          };
+          } // optionalAttrs (cfg.shell.recent.backend == "mcfly") { MCFLY_FUZZY = "true"; };
         };
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs:
-        [
-          epkgs.company
-          epkgs.company-box
-          epkgs.company-fuzzy
-          epkgs.company-quickhelp
-          epkgs.company-restclient
-          epkgs.company-statistics
-          epkgs.company-tabnine
-          epkgs.yasnippet
-        ];
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.company
+        epkgs.company-box
+        epkgs.company-fuzzy
+        epkgs.company-quickhelp
+        epkgs.company-restclient
+        epkgs.company-statistics
+        epkgs.company-tabnine
+        epkgs.yasnippet
+      ];
       ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/completion.el;
-      ide.emacs.core.customKeymaps = {
-        "custom-yasnippet-map" = "<f5>";
-      };
+      ide.emacs.core.customKeymaps = { "custom-yasnippet-map" = "<f5>"; };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
@@ -186,9 +181,7 @@ in {
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ snippets ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ snippets ]; };
     })
   ];
 }
