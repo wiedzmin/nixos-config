@@ -8,13 +8,8 @@ let
     localSystem = { system = "x86_64-linux"; };
   });
 in {
-  imports = [
-    "${inputs.nixos-hardware}/common/pc/ssd"
-    ../../modules
-    ../../profiles/thinkpad-x230.nix
-    ./assets
-    ./secrets
-  ];
+  imports =
+    [ "${inputs.nixos-hardware}/common/pc/ssd" ../../modules ../../profiles/thinkpad-x230.nix ./assets ./secrets ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos-root";
@@ -185,9 +180,7 @@ in {
       enable = true;
       mopidy = {
         youtube.apiKey = config.ext.networking.secrets.youtube.apiToken;
-        file.roots = {
-          "Mongol" = homePrefix "blobs/music/mongol";
-        };
+        file.roots = { "Mongol" = homePrefix "blobs/music/mongol"; };
       };
       mpd.clients.enable = true;
       wm.enable = true;
@@ -484,9 +477,7 @@ in {
       };
       xkeysnail.enable = true;
       mouse = {
-        constraintMouse = {
-          enable = false;
-        };
+        constraintMouse = { enable = false; };
         keynav.enable = true;
       };
     };
