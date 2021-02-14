@@ -405,11 +405,9 @@
   (:map org-mode-map
         ("C-M-y" . org-rich-yank)))
 
-;;TODO: automate insertion of links below (yasnippet/whatever)
-;;    orgit:/path/to/repo/            links to a `magit-status' buffer
-;;    orgit-rev:/path/to/repo/::REV   links to a `magit-revision' buffer
-;;    orgit-log:/path/to/repo/::ARGS  links to a `magit-log' buffer
-(use-package orgit)
+(use-package orgit
+  :custom
+  (orgit-store-reference t))
 
 (use-package ox-html
   :commands (org-html-convert-region-to-html
