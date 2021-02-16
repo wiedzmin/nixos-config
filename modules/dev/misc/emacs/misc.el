@@ -31,7 +31,6 @@
   :bind
   (:map lsp-mode-map
         ("C-M-r" . lsp-rename)
-        ("C-c h" . lsp-ui-doc-glance)
         ("M-n" . forward-paragraph)
         ("M-p" . backward-paragraph))
   (:map mode-specific-map
@@ -78,6 +77,8 @@
   (lsp-mode-hook . lsp-ui-mode)
   (lsp-after-open-hook . lsp-enable-imenu)
   :bind
+  (:map lsp-mode-map
+        ("C-c h" . lsp-ui-doc-glance))
   (:map lsp-ui-mode-map
         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
         ([remap xref-find-references] . lsp-ui-peek-find-references))
