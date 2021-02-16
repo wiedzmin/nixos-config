@@ -61,6 +61,11 @@ in {
         default = [ ];
         description = "Python packages to make available in Jupyter notebook.";
       };
+      rootMarkers.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to use additional project root' marker files";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -288,6 +293,10 @@ in {
         .mypy_cache/*
       '';
       dev.misc.timeTracking.extensions.dev = { "py" = "coding:python"; };
+    })
+    (mkIf (cfg.enable && cfg.rootMarkers.enable) {
+      dev.navigation.projects.rootMarkers =
+        [ "Pipfile" "manage.py" "poetry.lock" "requirements.txt" "requirements.pip" "setup.py" "tox.ini" ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];

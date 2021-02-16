@@ -383,12 +383,18 @@
   (projectile-completion-system 'default)
   (projectile-enable-caching t)
   (projectile-require-project-root t)
-  (projectile-track-known-projects-automatically t)
+  (projectile-track-known-projects-automatically nil)
+  (projectile-project-search-path
+   '("~/workspace/repos"
+     "~/workspace/repos.stale"))
   (projectile-project-root-functions
-   '(projectile-root-local
+   '(
+     projectile-root-local
      projectile-root-bottom-up
-     projectile-root-top-down
-     projectile-root-top-down-recurring))
+     ;; projectile-root-top-down
+     ;; projectile-root-top-down-recurring
+     ))
+  (projectile-project-root-files '(@projectsRootMarkers@))
   :hook
   (after-init-hook . projectile-mode)
   :config

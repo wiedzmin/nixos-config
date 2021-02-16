@@ -28,6 +28,11 @@ in {
         default = false;
         description = "Whether to enable miscelanneous tools.";
       };
+      rootMarkers.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to use additional project root' marker files";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -69,11 +74,7 @@ in {
       };
       dev.misc.timeTracking.extensions.dev = { "go" = "coding:go"; };
 
-      shell.prompts.starship.modulesConfiguration = {
-        golang = {
-          format = "[🐹 $version](bold cyan) ";
-        };
-      };
+      shell.prompts.starship.modulesConfiguration = { golang = { format = "[🐹 $version](bold cyan) "; }; };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {
@@ -83,6 +84,7 @@ in {
       };
       home-manager.users.${user} = { home.packages = with pkgs; [ go-install-wrapper gore goimports ]; };
     })
+    (mkIf (cfg.enable && cfg.rootMarkers.enable) { dev.navigation.projects.rootMarkers = [ "go.mod" ]; })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.flycheck-golangci-lint epkgs.go-mode epkgs.go-tag epkgs.gotest ];
       ide.emacs.core.customKeymaps = { "custom-gotag-map" = "C-c `"; };

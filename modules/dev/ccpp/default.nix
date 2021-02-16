@@ -13,6 +13,11 @@ in {
         default = false;
         description = "Whether to enable C/C++ dev infrastructure.";
       };
+      rootMarkers.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to use additional project root' marker files";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -43,8 +48,16 @@ in {
         "hpp" = "coding:cpp";
       };
     })
+    (mkIf (cfg.enable && cfg.rootMarkers.enable) {
+      dev.navigation.projects.rootMarkers = [ "CMakeLists.txt" "Makefile" ];
+    })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.ccls epkgs.cmake-font-lock epkgs.cmake-mode epkgs.modern-cpp-font-lock ];
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.ccls
+        epkgs.cmake-font-lock
+        epkgs.cmake-mode
+        epkgs.modern-cpp-font-lock
+      ];
       ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/ccpp.el;
     })
   ];

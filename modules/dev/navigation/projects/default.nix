@@ -34,6 +34,11 @@ in {
         default = 4;
         description = "Search depth.";
       };
+      rootMarkers = mkOption {
+        type = types.listOf types.str;
+        default = [ ".projectile" ];
+        description = "Filenames that could be used to denote project root";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
