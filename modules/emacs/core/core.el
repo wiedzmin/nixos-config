@@ -64,11 +64,6 @@
 
 (require 'f) ;TODO: use-package
 
-(use-package gcmh
-  :delight
-  :config
-  (gcmh-mode 1))
-
 (use-package no-littering
   :custom
   (no-littering-var-directory "@emacsDatadir@/"))

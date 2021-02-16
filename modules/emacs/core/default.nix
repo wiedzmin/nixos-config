@@ -154,7 +154,6 @@ in {
           epkgs.deferred
           epkgs.delight
           epkgs.f
-          epkgs.gcmh
           epkgs.no-littering
           epkgs.use-package
         ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
@@ -165,9 +164,7 @@ in {
         };
         home.packages = (with pkgs; [ drop-corrupted ispell ])
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
-        home.file = {
-          ".emacs.d/init.el".text = cfg.initElContent;
-        };
+        home.file = { ".emacs.d/init.el".text = cfg.initElContent; };
       };
       systemd.user.services."emacs" = let icon = "${cfg.package}/share/icons/hicolor/scalable/apps/emacs.svg";
       in {
