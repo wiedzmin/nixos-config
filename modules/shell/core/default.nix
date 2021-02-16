@@ -23,11 +23,6 @@ in {
         default = false;
         description = "Whether to enable shell-related Emacs infra";
       };
-      emacs.spellcheck.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable shell-related spellchecking for Emacs";
-      };
     };
   };
 
@@ -57,11 +52,10 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.dev.enable) {
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [ checkbashisms nodePackages.bash-language-server shellcheck ];
-      };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ checkbashisms shellcheck ]; };
     })
-    (mkIf (cfg.enable && cfg.emacs.enable && emacs.spellcheck.enable) {
+    (mkIf (cfg.enable && cfg.dev.enable && cfg.emacs.enable) {
+      home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.bash-language-server ]; };
       ide.emacs.core.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms ];
       ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/shell.el;
     })

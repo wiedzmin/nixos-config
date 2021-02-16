@@ -508,6 +508,7 @@ in {
     core = {
       enable = true;
       dev.enable = true;
+      emacs.enable = true;
     };
     prompts.starship.enable = true;
     tmux = {
