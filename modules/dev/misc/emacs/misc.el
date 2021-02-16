@@ -35,12 +35,13 @@
         ("M-p" . backward-paragraph))
   (:map mode-specific-map
         ("R" . lsp-workspace-restart))
-  ;; (gc-cons-threshold 100000000)
-  ;; (lsp-completion-provider :capf)
   :custom
+  (gc-cons-threshold 100000000)
+  (lsp-auto-configure nil)
   (lsp-auto-guess-root nil)
   (lsp-before-save-edits nil)
   (lsp-client-packages nil)
+  (lsp-completion-provider :capf)
   (lsp-diagnostics-provider :flycheck)
   (lsp-document-sync-method 'incremental)
   (lsp-eldoc-enable-hover nil)
@@ -51,19 +52,25 @@
   (lsp-enable-indentation t)
   (lsp-enable-links t)
   (lsp-enable-on-type-formatting t)
+  (lsp-enable-snippet t)
   (lsp-enable-symbol-highlighting t)
+  (lsp-headerline-breadcrumb-enable-symbol-numbers t)
+  (lsp-headerline-breadcrumb-segments '(project file symbols))
   (lsp-idle-delay 0.5)
+  (lsp-modeline-code-actions-segments '(count icon name))
+  (lsp-modeline-diagnostics-scope :workspace)
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 10)
-  (lsp-restart 'auto-restart)
+  (lsp-restart 'interactive)
   (read-process-output-max (* 1024 1024))
   :config
   ;;TODO: play with lsp-keymap-prefix
   (lsp-lens-mode 1)
+  (lsp-headerline-breadcrumb-mode)
+  (lsp-modeline-diagnostics-mode)
   (delight 'lsp-lens-mode " Ꙫ" 'lsp-lens))
 
 (use-package lsp-ui
-  :disabled
   :after lsp-mode
   :preface
   (defun custom/toggle-lsp-ui-doc ()
