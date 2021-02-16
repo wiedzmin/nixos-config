@@ -338,8 +338,6 @@
     (deferred:nextc
       (deferred:wait-idle 100)
       (lambda ()
-        (push "/etc/nixos/todo.org" org-agenda-files)
-        (push "/etc/nixos/modules/emacs/todo.org" org-agenda-files)
         (push "/home/alex3rd/docs/org/bookmarks.org" org-agenda-files))))
   ;; run some commands
   (org-add-link-type "tag" 'custom/follow-tag-link)
