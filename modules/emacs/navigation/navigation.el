@@ -384,7 +384,7 @@
   (projectile-enable-caching t)
   (projectile-require-project-root t)
   (projectile-track-known-projects-automatically t)
-  (projectile-project-root-files-functions
+  (projectile-project-root-functions
    '(projectile-root-local
      projectile-root-bottom-up
      projectile-root-top-down
