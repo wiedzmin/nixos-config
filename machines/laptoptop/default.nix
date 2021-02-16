@@ -531,6 +531,7 @@ in {
     docker = {
       core = {
         enable = true;
+        emacs.enable = true;
         wm.enable = true;
       };
       devdns = {

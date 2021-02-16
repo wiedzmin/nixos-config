@@ -31,6 +31,11 @@ in {
         default = "overlay2";
         description = "Docker storage driver";
       };
+      emacs.enable = mkOption { # TODO: check if it works correctly
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Emacs Docker setup.";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -51,7 +56,8 @@ in {
       networking.dhcpcd.denyInterfaces = [ "docker*" ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        dlint = mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (readSubstituted ../../../subst.nix ./scripts/dlint.sh);
+        dlint =
+          mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (readSubstituted ../../../subst.nix ./scripts/dlint.sh);
         hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ])
           (readSubstituted ../../../subst.nix ./scripts/hadolintd.sh);
         docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits"
@@ -84,14 +90,19 @@ in {
         };
       };
 
-      shell.prompts.starship.modulesConfiguration = {
-        docker_context = {
-          format = "via [🐋 $context](blue bold)";
-        };
-      };
+      shell.prompts.starship.modulesConfiguration = { docker_context = { format = "via [🐋 $context](blue bold)"; }; };
     })
     (mkIf (cfg.enable && cfg.aux.enable) {
-      environment.systemPackages = with pkgs; [ docker-slim nsjail skopeo ];
+      environment.systemPackages = with pkgs; [
+        docker-slim
+        nsjail
+        skopeo
+        nodePackages.dockerfile-language-server-nodejs
+      ];
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.dockerfile-mode ];
+      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/docker.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
