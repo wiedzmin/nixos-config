@@ -38,6 +38,7 @@
   :custom
   (gc-cons-threshold 100000000)
   (lsp-auto-configure nil)
+  (lsp-auto-execute-action nil)
   (lsp-auto-guess-root nil)
   (lsp-before-save-edits nil)
   (lsp-client-packages nil)
@@ -49,11 +50,13 @@
   (lsp-enable-completion-at-point t)
   (lsp-enable-file-watchers nil)
   (lsp-enable-folding t)
+  (lsp-enable-imenu t)
   (lsp-enable-indentation t)
   (lsp-enable-links t)
   (lsp-enable-on-type-formatting t)
   (lsp-enable-snippet t)
   (lsp-enable-symbol-highlighting t)
+  (lsp-enable-text-document-color t)
   (lsp-headerline-breadcrumb-enable-symbol-numbers t)
   (lsp-headerline-breadcrumb-segments '(project file symbols))
   (lsp-idle-delay 0.5)
@@ -62,6 +65,8 @@
   (lsp-prefer-flymake nil)
   (lsp-response-timeout 10)
   (lsp-restart 'interactive)
+  (lsp-semantic-tokens-enable t)
+  (lsp-signature-render-documentation t)
   (read-process-output-max (* 1024 1024))
   :config
   ;;TODO: play with lsp-keymap-prefix
