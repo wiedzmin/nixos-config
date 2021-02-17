@@ -128,30 +128,6 @@
     in {
       templates = {
         # TODO: debug and add python
-        golang.project = {
-          path = ./modules/dev/golang/templates/project;
-          description = "Golang project.";
-        };
-        golang.nix = {
-          path = ./modules/dev/golang/templates/go2nix;
-          description = "Golang to Nix packaging.";
-        };
-        golang.lp-repl = {
-          path = ./modules/dev/golang/templates/lp-repl;
-          description = "Golang literate programming (reproducible research) REPL.";
-        };
-        frontend.vue = {
-          path = ./modules/dev/frontend/templates/vue;
-          description = "Vuetified frontend.";
-        };
-        ccpp.generic = {
-          path = ./modules/dev/ccpp/templates/generic;
-          description = "C/C++ autotools project.";
-        };
-        ccpp.cmake = {
-          path = ./modules/dev/ccpp/templates/cmake;
-          description = "C/C++ CMake project.";
-        };
         ansible = {
           path = ./modules/dev/misc/templates/ansible;
           description = "Ansible environment.";
@@ -179,9 +155,8 @@
                   i3lock-color = old.i3lock-color.overrideAttrs (_: rec {
                     patches = [ ./modules/workstation/lockscreen/patches/i3lock-color-pass-layout-switching.patch ];
                   });
-                  mps-youtube = old.mps-youtube.overrideAttrs (_: rec {
-                    patches = [ ./modules/content/media/patches/0001-fix-1134.patch ];
-                  });
+                  mps-youtube = old.mps-youtube.overrideAttrs
+                    (_: rec { patches = [ ./modules/content/media/patches/0001-fix-1134.patch ]; });
                   tabnine = old.tabnine.overrideAttrs (_: rec {
                     installPhase = ''
                       mkdir -p $out/bin

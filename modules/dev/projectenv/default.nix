@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.dev.projectenv;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     dev.projectenv = {
@@ -23,6 +24,16 @@ in {
         default = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.devenv-backup";
         description = "File name for dev-env files list.";
       };
+      projectTemplates = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Collection of project templates paths";
+      };
+      templateSettings = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Collection of settings to be used in template instantiation";
+      };
     };
   };
 
@@ -38,10 +49,13 @@ in {
           (readSubstituted ../../subst.nix ./scripts/git-dumpenv.sh);
         git-restoreenv = mkShellScriptWithDeps "git-restoreenv" (with pkgs; [ gitAndTools.git coreutils git-hideenv ])
           (readSubstituted ../../subst.nix ./scripts/git-restoreenv.sh);
+        devenv = mkPythonScriptWithDeps "devenv"
+          (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.pyyaml renderizer stgit ])
+          (readSubstituted ../../subst.nix ./scripts/devenv.py);
       };
 
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ git-dumpenv git-hideenv git-restoreenv git-unhideenv renderizer stgit ];
+        home.packages = with pkgs; [ devenv git-dumpenv git-hideenv git-restoreenv git-unhideenv stgit ];
 
         home.activation.ensureDevEnvBackupRoot = {
           after = [ ];
@@ -49,10 +63,19 @@ in {
           data = "mkdir -p ${cfg.backupRoot}";
         };
       };
+
+      workstation.systemtraits.instructions = ''
+        ${pkgs.redis}/bin/redis-cli set projectenv/templates ${
+          strings.escapeNixString (builtins.toJSON cfg.projectTemplates)
+        }
+        ${pkgs.redis}/bin/redis-cli set projectenv/settings ${
+          strings.escapeNixString (builtins.toJSON cfg.templateSettings)
+        }
+      '';
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ git-dumpenv git-hideenv git-restoreenv git-unhideenv ];
+        home.packages = with pkgs; [ devenv git-dumpenv git-hideenv git-restoreenv git-unhideenv ];
       };
     })
   ];

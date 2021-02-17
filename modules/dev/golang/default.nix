@@ -75,6 +75,13 @@ in {
       dev.misc.timeTracking.extensions.dev = { "go" = "coding:go"; };
 
       shell.prompts.starship.modulesConfiguration = { golang = { format = "[🐹 $version](bold cyan) "; }; };
+
+      dev.projectenv.projectTemplates = {
+        # TODO: consider unbind lp-repl from golang since it is more of common functionality
+        "golang.lp-repl" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/golang/templates/lp-repl";
+        "golang.nix" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/golang/templates/go2nix";
+        "golang.project" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/golang/templates/project";
+      };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {

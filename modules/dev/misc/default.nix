@@ -71,18 +71,16 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ go-task nurpkgs.comby plantuml tagref ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ go-task nurpkgs.comby plantuml tagref ]; };
       pim.timetracking.rules = with config.attributes.browser; ''
         -- TODO: parameterize IDE (probably, not only emacs)
         ${
           concatStringsSep ''
             ,
-          '' (lib.mapAttrsToList (re: tag: ''current window ($program == [${
+          '' (lib.mapAttrsToList (re: tag:
+            "current window ($program == [${
               concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
-            }] && $title =~ /${re}/) ==> tag ${tag}'' )
-            cfg.timeTracking.extensions.dev)
+            }] && $title =~ /${re}/) ==> tag ${tag}") cfg.timeTracking.extensions.dev)
         },
         ${
           concatStringsSep ''
@@ -100,8 +98,13 @@ in {
           indent_style = "space";
           indent_size = "2";
         };
-        "*.md" = {
-          trim_trailing_whitespace = false;
+        "*.md" = { trim_trailing_whitespace = false; };
+      };
+      dev.projectenv.templateSettings = {
+        "common" = {
+          gitUsername = config.attributes.mainUser.fullName;
+          gitEmail = config.attributes.mainUser.email;
+          gpgSigningKey = config.attributes.mainUser.gpgKeyID;
         };
       };
     })
@@ -124,23 +127,23 @@ in {
     })
     (mkIf (cfg.enable && cfg.tools.misc.enable) {
       environment.systemPackages = with pkgs; [ # D-Bus debug tools
-        dfeet bustle
+        dfeet
+        bustle
       ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs:
-        [
-          epkgs.blockdiag-mode
-          epkgs.comby
-          epkgs.elmacro
-          epkgs.fic-mode
-          epkgs.jinja2-mode
-          epkgs.lsp-mode
-          epkgs.lsp-ui
-          epkgs.plantuml-mode
-          epkgs.webpaste
-          epkgs.yaml-mode
-        ];
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.blockdiag-mode
+        epkgs.comby
+        epkgs.elmacro
+        epkgs.fic-mode
+        epkgs.jinja2-mode
+        epkgs.lsp-mode
+        epkgs.lsp-ui
+        epkgs.plantuml-mode
+        epkgs.webpaste
+        epkgs.yaml-mode
+      ];
       ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/misc.el;
       ide.emacs.core.customKeymaps = {
         "custom-lsp-treemacs-map" = "C-c t";

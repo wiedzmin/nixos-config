@@ -47,6 +47,10 @@ in {
         "h" = "coding:c";
         "hpp" = "coding:cpp";
       };
+      dev.projectenv.projectTemplates = {
+        "ccpp.generic" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/ccpp/templates/generic";
+        "ccpp.cmake" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/ccpp/templates/cmake";
+      };
     })
     (mkIf (cfg.enable && cfg.rootMarkers.enable) {
       dev.navigation.projects.rootMarkers = [ "CMakeLists.txt" "Makefile" ];

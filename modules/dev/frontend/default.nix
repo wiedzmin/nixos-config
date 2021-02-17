@@ -32,17 +32,16 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ nodePackages.vue-language-server ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ nodePackages.vue-language-server ]; };
       dev.editorconfig.rules = {
-        "*.js" = {
-          charset = "utf-8";
-        };
+        "*.js" = { charset = "utf-8"; };
         "lib/**.js" = {
           indent_style = "space";
           indent_size = "2";
         };
+      };
+      dev.projectenv.projectTemplates = {
+        "frontend.vue" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/frontend/templates/vue";
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
