@@ -15,7 +15,7 @@ rec {
       };
     };
     nixos = {
-      local.path = "/etc/nixos";
+      local.path = "${wsRoot "github"}/wiedzmin/nixos-config";
       remote = {
         url = "https://github.com/wiedzmin/nixos-config/";
         jump = true;
@@ -68,11 +68,7 @@ rec {
         desc = "JWT online debugger and libraries reference";
       };
     };
-    use-package = {
-      remote = {
-        url = "https://github.com/jwiegley/use-package";
-      };
-    };
+    use-package = { remote = { url = "https://github.com/jwiegley/use-package"; }; };
     "rycee/nur-expressions" = {
       local.path = "${config.navigation.bookmarks.workspaces.globalRoot}/gitlab.com/rycee/nur-expressions";
       remote.url = "https://gitlab.com/rycee/nur-expressions/";

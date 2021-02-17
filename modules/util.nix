@@ -1,8 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 
-let
-  user = config.attributes.mainUser.name;
-  configBasePath = "/etc/nixos";
+let user = config.attributes.mainUser.name;
 in rec {
   addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
   withPatches = pkg: patches: lib.overrideDerivation pkg (_: { inherit patches; });
@@ -22,7 +20,7 @@ in rec {
       format = "other";
       unpackPhase = "true";
       buildInputs = with pkgs; [ makeWrapper ];
-      propagatedBuildInputs = with pkgs; (packages ++ [glibc]);
+      propagatedBuildInputs = with pkgs; (packages ++ [ glibc ]);
       dontUsePythonCatchConflicts = allowConflicts;
       buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${pname}";
       installPhase = "true";
@@ -67,8 +65,10 @@ in rec {
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
   homePrefix = suffix: "/home/${user}/" + suffix;
   xdgConfig = suffix: (homePrefix ".config") + suffix;
-  secretsPrefix = suffix: configBasePath + "/machines/" + config.attributes.machine.name + "/secrets/" + suffix;
-  assetsPrefix = suffix: configBasePath + "/machines/" + config.attributes.machine.name + "/assets/" + suffix;
+  secretsPrefix = suffix:
+    "${wsRoot "github"}/wiedzmin/nixos-config/machines/" + config.attributes.machine.name + "/secrets/" + suffix;
+  assetsPrefix = suffix:
+    "${wsRoot "github"}/wiedzmin/nixos-config/machines/" + config.attributes.machine.name + "/assets/" + suffix;
   fromYAML = yaml:
     builtins.fromJSON (builtins.readFile (pkgs.runCommand "from-yaml" {
       inherit yaml;
@@ -141,9 +141,9 @@ in rec {
     builtins.readFile (pkgs.substituteAll ((import subst { inherit config inputs lib pkgs; }) // { src = content; }));
   enabledLocals = bookmarks:
     lib.mapAttrs (_: meta: meta.local // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
-      (lib.filterAttrs (_: meta:
-        !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
-        && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")) bookmarks);
+    (lib.filterAttrs (_: meta:
+      !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
+      && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")) bookmarks);
   localEbooks = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs (_: meta:
       !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
@@ -157,33 +157,31 @@ in rec {
     lib.concatStringsSep "\n" (lib.mapAttrsToList (id: meta: id + " : " + meta.path) locals);
   enabledRemotes = bookmarks:
     lib.mapAttrs (_: meta: meta.remote // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
-      (lib.filterAttrs (_: meta:
-        !(lib.hasAttrByPath [ "remote" "enable" ] meta && meta.remote.enable == false)
-        && (lib.hasAttrByPath [ "remote" "url" ] meta && meta.remote.url != "")) bookmarks);
+    (lib.filterAttrs (_: meta:
+      !(lib.hasAttrByPath [ "remote" "enable" ] meta && meta.remote.enable == false)
+      && (lib.hasAttrByPath [ "remote" "url" ] meta && meta.remote.url != "")) bookmarks);
   mkBookmarkName = meta: sep: tagSep:
-    lib.concatStringsSep sep
-      (builtins.filter (e: e != "")
-        ([ meta.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ] ++
-         [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [] meta)) ]));
-  mkBookmarkDest = meta: {
-    url = meta.url + lib.optionalString (lib.hasAttrByPath [ "searchSuffix" ] meta) meta.searchSuffix;
-  } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
-  // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
-  remoteWebjumps = remotes: sep: tagSep: lib.mapAttrs'
-    (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkDest meta))
-    (lib.filterAttrs (_: meta:
-      (lib.hasAttrByPath [ "searchSuffix" ] meta && lib.hasSuffix "+" meta.searchSuffix)
-      || (lib.hasAttrByPath [ "jump" ] meta && meta.jump == true) || !(lib.hasAttrByPath [ "searchSuffix" ] meta))
+    lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
+      ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
+  mkBookmarkDest = meta:
+    {
+      url = meta.url + lib.optionalString (lib.hasAttrByPath [ "searchSuffix" ] meta) meta.searchSuffix;
+    } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
+  remoteWebjumps = remotes: sep: tagSep:
+    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkDest meta)) (lib.filterAttrs
+      (_: meta:
+        (lib.hasAttrByPath [ "searchSuffix" ] meta && lib.hasSuffix "+" meta.searchSuffix)
+        || (lib.hasAttrByPath [ "jump" ] meta && meta.jump == true) || !(lib.hasAttrByPath [ "searchSuffix" ] meta))
       remotes);
-  remoteSearchEngines = remotes: sep: tagSep: lib.mapAttrs'
-    (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkDest meta))
-    (lib.filterAttrs (_: meta:
-      (lib.hasAttrByPath [ "searchSuffix" ] meta)) remotes);
+  remoteSearchEngines = remotes: sep: tagSep:
+    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkDest meta))
+    (lib.filterAttrs (_: meta: (lib.hasAttrByPath [ "searchSuffix" ] meta)) remotes);
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
   concatStringListsRaw = sep: ll: lib.concatStringsSep sep (lib.flatten ll);
-  takeLast = n: l: with lib;
-    reverseList (take n (reverseList l));
-  mkWSMappingBrowsersRegexp = concatStringListsRaw "|" (with config.attributes.browser; [default.windowClass fallback.windowClass]);
+  takeLast = n: l: with lib; reverseList (take n (reverseList l));
+  mkWSMappingBrowsersRegexp =
+    concatStringListsRaw "|" (with config.attributes.browser; [ default.windowClass fallback.windowClass ]);
   # TODO: create function for ensuring non-prefix keys absence
   mkEmacsCustomKeymap = name: binding: ''
     (define-prefix-command '${name})

@@ -5,7 +5,7 @@ with lib;
 {
   options.attributes = {
     machine.name = mkOption {
-      description = "Name of configuration under /etc/nixos/machines";
+      description = "Name of configuration under <config root>/machines";
       type = types.str;
     };
     mainUser.name = mkOption {
@@ -163,11 +163,7 @@ with lib;
     regexes = mkOption {
       description = "Common regular expression";
       type = types.attrs;
-      default = {
-        url = {
-          py = "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]";
-        };
-      };
+      default = { url = { py = "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]"; }; };
     };
     defaultVTCommand = mkOption {
       type = types.str;
