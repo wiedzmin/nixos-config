@@ -138,8 +138,8 @@ in {
                     - cd /etc/nixos
           '';
         };
-        services.picom.opacityRule = [ ''65:name *?= "${cfg.defaultSession}" && class_g = "Alacritty"'' ];
       };
+      workstation.video.transparency.opacityRule = [ ''65:name *?= "${cfg.defaultSession}" && class_g = "Alacritty"'' ];
       custom.programs.tmux = {
         enable = true;
         baseIndex = 1;
@@ -227,13 +227,11 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [
-        {
-          key = [ "t" ];
-          cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions";
-          mode = "select";
-        }
-      ];
+      wmCommon.keys = [{
+        key = [ "t" ];
+        cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions";
+        mode = "select";
+      }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ tmuxp_sessions ]; };

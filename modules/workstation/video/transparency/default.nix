@@ -15,6 +15,16 @@ in {
         default = false;
         description = "Whether to enable transparency customizations.";
       };
+      extraOptions = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "Extra options for Picom X11 compositor";
+      };
+      opacityRule = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "View <home-manager.services.picom.description>";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -37,7 +47,10 @@ in {
               glx-no-rebind-pixmap = true;
               glx-no-stencil = true;
               xrender-sync-fence = true;
+
+              ${concatStringsSep "\n" cfg.extraOptions}
             '';
+            opacityRule = cfg.opacityRule;
           };
         };
       };
