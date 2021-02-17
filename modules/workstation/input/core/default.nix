@@ -46,6 +46,19 @@ in {
           accelSpeed = "0.6";
         };
       };
+      services.xserver.xkbOptions = "compose:ralt"; # rctrl
+      home-manager.users.${user} = {
+        home.file = {
+          ".XCompose".text = ''
+            include "${pkgs.xorg.libX11}/share/X11/locale/en_US.UTF-8/Compose"
+
+            <Multi_key> <m> <o> : "ө"
+            <Multi_key> <m> <O> : "Ө"
+            <Multi_key> <m> <u> : "ү"
+            <Multi_key> <m> <U> : "Ү"
+          '';
+        };
+      };
     })
     (mkIf cfg.xmodmap.enable {
       services.xserver.displayManager.sessionCommands = let xmodmaprc = pkgs.writeText "xmodmaprc" cfg.xmodmap.rc;
