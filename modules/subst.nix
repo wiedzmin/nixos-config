@@ -52,6 +52,9 @@ in rec {
   passwordPlaceholder = config.attributes.secret;
   pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
+  projectEnvConfigName = config.dev.projectenv.configName;
+  projectEnvBackupRoot = config.dev.projectenv.backupRoot;
+  projectEnvBackupDateFormat = config.attributes.dateFormats.commonShellNoColons;
   projectsRootMarkers =
     builtins.concatStringsSep " " (lib.forEach config.dev.navigation.projects.rootMarkers (marker: ''"${marker}"''));
   python3Binary = "${pkgs.python3}/bin/python3";
