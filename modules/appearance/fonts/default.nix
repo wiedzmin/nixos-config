@@ -3,18 +3,13 @@ with lib;
 
 let
   cfg = config.appearance.fonts;
+  user = config.attributes.mainUser.name;
   nixpkgs-prev = import inputs.nixpkgs-25_01_21 ({
     config = config.nixpkgs.config;
     system = "x86_64-linux";
   });
 in {
-  imports = [
-    ./fira-code-fonts.nix
-    ./hack-fonts.nix
-    ./iosevka-fonts.nix
-    ./jbmono-fonts.nix
-    ./scp-fonts.nix
-  ];
+  imports = [ ./fira-code-fonts.nix ./hack-fonts.nix ./iosevka-fonts.nix ./jbmono-fonts.nix ./scp-fonts.nix ];
 
   options = {
     appearance.fonts = {
@@ -68,6 +63,7 @@ in {
         useXkbConfig = true;
       };
       i18n = { defaultLocale = cfg.locale; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ cicero-tui fontfor ]; };
     })
   ];
 }
