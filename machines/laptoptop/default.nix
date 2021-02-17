@@ -634,6 +634,7 @@ in {
   ];
 
   wmCommon.autostart.entries = [ "alacritty" "telegram-desktop" ];
+  wmCommon.showfocus = true;
 
   home-manager = {
     useGlobalPkgs = true;

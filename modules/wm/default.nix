@@ -74,6 +74,11 @@ in {
         default = true;
         description = "Start some applications automatically.";
       };
+      showfocus = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Visually denote currently focused window";
+      };
       autostart.entries = mkOption {
         type = types.listOf types.str;
         default = [ ];
@@ -129,6 +134,19 @@ in {
           mode = "select";
         }
       ];
+    })
+    (mkIf (cfg.enable && cfg.showfocus) {
+      # TODO: review https://github.com/fennerm/flashfocus/wiki
+      wmCommon.autostart.entries = [ "${pkgs.flashfocus}/bin/flashfocus" ];
+      wmCommon.keys = [{
+        key = [ "f" ];
+        cmd = "${pkgs.flashfocus}/bin/focus_window";
+        mode = "xserver";
+      }];
+      workstation.video.transparency = {
+        extraOptions = [ "detect-client-opacity = true;" ];
+        opacityRule = [ "0:_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'" ];
+      };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ keybindings ]; };
