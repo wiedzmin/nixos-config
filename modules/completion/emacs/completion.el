@@ -96,9 +96,6 @@
 (use-package company-tabnine
   :after (company)
   :preface
-  (defun tabnine/bury-company-lsp ()
-    (when (memq 'company-lsp company-backends)
-      (setq-local company-backends (-flatten (remove 'company-lsp company-backends)))))
   (defun company/sort-by-tabnine (candidates) ;; Integrate company-tabnine with lsp-mode
     (if (or (functionp company-backend)
             (not (and (listp company-backend) (memq 'company-tabnine company-backends))))
@@ -122,8 +119,7 @@
   (company-tabnine-max-num-results 10)
   :config
   (add-to-list 'company-transformers 'company/sort-by-tabnine t)
-  (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))
-  (advice-add 'lsp :after #'tabnine/bury-company-lsp))
+  (add-to-list 'company-backends '(company-capf :with company-tabnine :separate)))
 
 (use-package dabbrev
   :custom
