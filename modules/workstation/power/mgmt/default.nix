@@ -2,8 +2,7 @@
 with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
-let
-  cfg = config.workstation.power.mgmt;
+let cfg = config.workstation.power.mgmt;
 in {
   options = {
     workstation.power.mgmt = {
@@ -11,6 +10,11 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable sleep management.";
+      };
+      laptop.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable laptops-related management.";
       };
       commands.resume = mkOption {
         type = types.lines;
@@ -34,9 +38,13 @@ in {
         powerDownCommands = cfg.commands.suspend;
       };
       services = {
-        auto-cpufreq.enable = true;
         upower.enable = true;
         tuptime.enable = true;
+      };
+    })
+    (mkIf (cfg.enable && cfg.laptop.enable) {
+      services = {
+        auto-cpufreq.enable = true;
         tlp = {
           enable = true;
           settings = {
