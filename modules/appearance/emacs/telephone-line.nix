@@ -41,7 +41,7 @@ in {
            '((nil    . (telephone-line-minor-mode-segment))
              (accent . (telephone-line-major-mode-segment
                         telephone-line-flycheck-segment))
-             (evil   . (telephone-line-misc-info-segment)))))
+             (evil   . ()))))
       '';
     })
   ];
