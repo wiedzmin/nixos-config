@@ -19,7 +19,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ choose fd gron ijq ripgrep-all sd ugrep uq vgrep xlsxgrep ];
+        home.packages = with pkgs; [ choose each fd gron ijq ripgrep-all sd ugrep uq vgrep xlsxgrep ];
         programs = {
           lsd = {
             enable = true;
