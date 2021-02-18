@@ -137,8 +137,10 @@ in rec {
 
       dependencies = [ pkgs.bash ] ++ dependencies;
     }));
-  readSubstituted = subst: content:
-    builtins.readFile (pkgs.substituteAll ((import subst { inherit config inputs lib pkgs; }) // { src = content; }));
+  readSubstitutedList = subst: entries:
+    lib.concatStringsSep "\n" (lib.forEach entries
+      (e: builtins.readFile (pkgs.substituteAll ((import subst { inherit config inputs lib pkgs; }) // { src = e; }))));
+  readSubstituted = subst: content: readSubstitutedList subst [ content ];
   enabledLocals = bookmarks:
     lib.mapAttrs (_: meta: meta.local // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
     (lib.filterAttrs (_: meta:
