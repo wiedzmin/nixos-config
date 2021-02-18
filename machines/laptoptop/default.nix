@@ -346,7 +346,10 @@ in {
       enable = true;
       ifacesMap = { "wlan0" = { device = "wlp3s0"; }; };
       macAddress = "60:67:20:ec:34:14";
-      bluetooth.enable = true;
+      bluetooth = {
+        enable = true;
+        headsetMacAddresses = config.ext.networking.secrets.headsetMacAddresses;
+      };
       wm = {
         enable = true;
         dmenu.enable = true;

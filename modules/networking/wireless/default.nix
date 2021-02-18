@@ -43,6 +43,11 @@ in {
         default = true;
         description = "Whether to enable Bluetooth support";
       };
+      bluetooth.headsetMacAddresses = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "MAC addresses of bluetooth headsets";
+      };
       tools.enable = mkOption {
         type = types.bool;
         default = false;
@@ -66,6 +71,9 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         wifi-status = mkShellScriptWithDeps "wifi-status" (with pkgs; [ gawk wirelesstools ])
           (readSubstituted ../../subst.nix ./scripts/wifi-status.sh);
+        headset_battery = mkPythonScriptWithDeps "headset_battery"
+          (with pkgs; [ nurpkgs.pystdlib python3Packages.redis bluetooth_battery ])
+          (readSubstituted ../../subst.nix ./scripts/headset_battery.py);
       };
 
       boot.extraModprobeConfig = ''
@@ -101,6 +109,17 @@ in {
         scratchpad = true;
         key = [ "b" ];
       }];
+      home-manager.users."${user}" = { home.packages = with pkgs; [ bluetooth_battery ]; };
+      workstation.systemtraits.instructions = ''
+        ${pkgs.redis}/bin/redis-cli set networking/wireless/headsets ${
+          lib.strings.escapeNixString (builtins.toJSON cfg.bluetooth.headsetMacAddresses)
+        }
+      '';
+      wmCommon.keys = [{
+        key = [ "h" ];
+        mode = "network";
+        cmd = "${pkgs.headset_battery}/bin/headset_battery";
+      }];
     })
     (mkIf (cfg.enable && cfg.tools.enable) { programs.wavemon.enable = true; })
     (mkIf (cfg.enable && cfg.wm.enable) {
@@ -133,7 +152,7 @@ in {
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ wifi-status ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ wifi-status headset_battery ]; };
     })
   ];
 }
