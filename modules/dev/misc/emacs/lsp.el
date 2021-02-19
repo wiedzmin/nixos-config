@@ -90,7 +90,7 @@
 (use-package lsp-ui-peek
   :ensure lsp-ui
   :bind
-  (:map lsp-ui-mode-map
+  (:map lsp-mode-map
         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
         ([remap xref-find-references] . lsp-ui-peek-find-references))
   :custom
