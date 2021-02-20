@@ -1,7 +1,6 @@
 .aux
 .devenv
 .envrc
-.pre-commit-config.yaml
 Makefile
 flake.lock
 flake.nix
