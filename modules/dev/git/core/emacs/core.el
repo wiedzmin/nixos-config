@@ -10,16 +10,6 @@
     (magit-with-toplevel
       (magit-call-git "unhideenv")
       (magit-refresh)))
-  (defun custom/magit-dump-devenv ()
-    (interactive)
-    (magit-with-toplevel
-      (magit-call-git "dumpenv")
-      (magit-refresh)))
-  (defun custom/magit-restore-devenv ()
-    (interactive)
-    (magit-with-toplevel
-      (magit-call-git "restoreenv" (transient-args 'magit-stash))
-      (magit-refresh)))
   :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
          ("COMMIT" . git-commit-mode))
   :bind
@@ -38,12 +28,8 @@
         ("@" . magit-dired-log))
   :config
   (advice-add 'magit-whitespace-disallowed :around (lambda (orig-fun &rest args) (interactive) (insert "-")))
-  (transient-append-suffix 'magit-stash "-a" '("-k" "Keep devenv backup after restore" ("-k" "--keep-devenv")))
-  (transient-append-suffix 'magit-stash "-k" '("-t" "Remove all but mostly recent devenv backup" ("-t" "--tidy")))
   (transient-append-suffix 'magit-stash "z" '("h" "Hide dev environment" custom/magit-hide-devenv))
   (transient-append-suffix 'magit-stash "h" '("u" "Unhide dev environment" custom/magit-unhide-devenv))
-  (transient-append-suffix 'magit-stash "u" '("d" "Dump/backup dev environment" custom/magit-dump-devenv))
-  (transient-append-suffix 'magit-stash "d" '("r" "Restore dev environment" custom/magit-restore-devenv))
   :custom
   (magit-blame-heading-format "%H %-20a %C %s")
   (magit-section-visibility-indicator '("..." . t))

@@ -40,22 +40,19 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        git-hideenv = mkShellScriptWithDeps "git-hideenv" (with pkgs; [ gitAndTools.git ])
-          (readSubstituted ../../subst.nix ./scripts/git-hideenv.sh);
-        git-unhideenv = mkShellScriptWithDeps "git-unhideenv" (with pkgs; [ gitAndTools.git ]) ''
-          git stash pop $(git stash list --max-count=1 --grep="dev-env" | cut -f1 -d":")
-        '';
-        git-dumpenv = mkShellScriptWithDeps "git-dumpenv" (with pkgs; [ gitAndTools.git coreutils ])
-          (readSubstituted ../../subst.nix ./scripts/git-dumpenv.sh);
-        git-restoreenv = mkShellScriptWithDeps "git-restoreenv" (with pkgs; [ gitAndTools.git coreutils git-hideenv ])
-          (readSubstituted ../../subst.nix ./scripts/git-restoreenv.sh);
         devenv = mkPythonScriptWithDeps "devenv"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.pyyaml renderizer stgit ])
           (readSubstituted ../../subst.nix ./scripts/devenv.py);
+        git-hideenv = mkShellScriptWithDeps "git-hideenv" (with pkgs; [ devenv ]) ''
+          devenv --hide
+        '';
+        git-unhideenv = mkShellScriptWithDeps "git-unhideenv" (with pkgs; [ devenv ]) ''
+          devenv --unhide
+        '';
       };
 
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ devenv git-dumpenv git-hideenv git-restoreenv git-unhideenv stgit ];
+        home.packages = with pkgs; [ devenv git-hideenv git-unhideenv stgit ];
 
         home.activation.ensureDevEnvBackupRoot = {
           after = [ ];
@@ -74,9 +71,7 @@ in {
       '';
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ devenv git-dumpenv git-hideenv git-restoreenv git-unhideenv ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ devenv git-hideenv git-unhideenv ]; };
     })
   ];
 }
