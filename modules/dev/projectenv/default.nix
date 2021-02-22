@@ -17,7 +17,12 @@ in {
       configName = mkOption {
         type = types.str;
         default = ".devenv";
-        description = "File name for dev-env files list.";
+        description = "File name for dev-env files list";
+      };
+      stashName = mkOption {
+        type = types.str;
+        default = "devenv";
+        description = "git stash name for hidden devenv";
       };
       backupRoot = mkOption {
         type = types.str;
@@ -49,10 +54,16 @@ in {
         git-unhideenv = mkShellScriptWithDeps "git-unhideenv" (with pkgs; [ devenv ]) ''
           devenv --unhide
         '';
+        git-exportenv = mkShellScriptWithDeps "git-exportenv" (with pkgs; [ devenv ]) ''
+          devenv --export
+        '';
+        git-removeenv = mkShellScriptWithDeps "git-removeenv" (with pkgs; [ devenv ]) ''
+          devenv --remove
+        '';
       };
 
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ devenv git-hideenv git-unhideenv stgit ];
+        home.packages = with pkgs; [ devenv git-exportenv git-hideenv git-removeenv git-unhideenv ];
 
         home.activation.ensureDevEnvBackupRoot = {
           after = [ ];
@@ -71,7 +82,9 @@ in {
       '';
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ devenv git-hideenv git-unhideenv ]; };
+      home-manager.users.${user} = {
+        home.packages = with pkgs; [ devenv git-exportenv git-hideenv git-removeenv git-unhideenv ];
+      };
     })
   ];
 }

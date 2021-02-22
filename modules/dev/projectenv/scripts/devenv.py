@@ -1,7 +1,10 @@
 import argparse
+import datetime
+import glob
 import json
 import os
 import sys
+from shutil import copyfile
 
 import redis
 from yaml import dump
@@ -11,7 +14,6 @@ from pystdlib import shell_cmd
 
 # TODO: consider moving to nix level
 markers = [
-    ".aux",
     ".devenv",
     ".envrc",
     "flake.nix",
@@ -34,26 +36,69 @@ def markers_exist(path, files):
     return result
 
 
-def execute_commands(commands):
+def get_devenv_files_spaced(path, locked_flake=False):
+    devenv_filelist = []
+    if markers_exist(path, [".devenv"]):
+        with open(path + "/.devenv", "r") as f:
+            devenv_filelist = f.read().strip().split("\n")
+        if not locked_flake:
+            devenv_filelist.remove("flake.lock")
+    return ' '.join(devenv_filelist)
+
+
+def get_devenv_stash_token(path):
+    os.chdir(path)
+    devenv_stash_output = shell_cmd('git stash list --max-count=1 --grep="@projectEnvStashName@"').strip()
+    if "@projectEnvStashName@" in devenv_stash_output:
+        return devenv_stash_output.split(": ")[0]
+    return ""
+
+
+def execute_commands(path, commands, fail=True):
+    os.chdir(path)
     for cmd in commands:
         try:
             shell_cmd(cmd)
         except:
             print(f"'{cmd}' failed")
-            sys.exit(1)
+            if fail:
+                sys.exit(1)
+
+
+def hide_devenv(path):
+    devenv_filelist = get_devenv_files_spaced(path, locked_flake=True)
+    execute_commands(path, [
+        "git reset",
+        f"git add -- {devenv_filelist}",
+        f"git stash -m '@projectEnvStashName@' -- {devenv_filelist}",
+    ], fail=False)
+
+
+def unhide_devenv(path, devenv_stash_token):
+    if devenv_stash_token:
+        execute_commands(path, [f'git stash pop {devenv_stash_token}'], fail=False)
+    else:
+        print("project not initialized")
+
+
+def project_prefix(path):
+    return "_".join(os.path.normpath(path).split(os.sep)[-2:])
+
+
+def construct_patch_name(path):
+    timestamp = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+    return f"{project_prefix(path)}-{timestamp}.patch"
 
 
 parser = argparse.ArgumentParser(description="Devenv automation")
-parser.add_argument("--seed", dest="populate_template", action="store_true",
-                    default=False, help="Add settings for template")
-parser.add_argument("--save", dest="save_devenv", action="store_true",
-                    default=False, help="Save devenv to StGit patch")
+parser.add_argument("--seed", dest="seed_devenv", action="store_true",
+                    default=False, help="Create devenv from selected template with selected settings")
+parser.add_argument("--remove", dest="remove_devenv", action="store_true",
+                    default=False, help="Remove all devenv-related state")
 parser.add_argument("--export", dest="export_devenv", action="store_true",
                     default=False, help="Export devenv as patch file")
-parser.add_argument("--reset", dest="reset_devenv", action="store_true",
-                    default=False, help="Remove all devenv-related state")
-parser.add_argument("--repair", dest="repair_devenv", action="store_true",
-                    default=False, help="repair devenv commit interconnection (mostly when something was commited above)")
+parser.add_argument("--import", dest="import_devenv", action="store_true",
+                    default=False, help="Import saved devenv as patch file (not auto-applied)")
 parser.add_argument("--hide", dest="hide_devenv", action="store_true",
                     default=False, help="Hide devenv (i.e. to not push upstream accidentally)")
 parser.add_argument("--unhide", dest="unhide_devenv", action="store_true",
@@ -62,7 +107,7 @@ parser.add_argument("--unhide", dest="unhide_devenv", action="store_true",
 args = parser.parse_args()
 
 current_dir = os.getcwd()
-if args.populate_template:
+if args.seed_devenv:
     if markers_exist(current_dir, markers):
         print("project already initialized")
         sys.exit(1)
@@ -77,65 +122,40 @@ if args.populate_template:
     if template:
         template_source_path = project_templates[template]
         devenv_template_files = os.listdir(template_source_path)
-        if markers_exist(current_dir, [".pre-commit-config.yaml"]):
-            devenv_template_files.remove(".pre-commit-config.yaml") # should not touch existing one
         for f in devenv_template_files:
             shell_cmd(f"renderizer --settings={settings_file} {template_source_path}/{f} > {current_dir}/{f}")
-    devenv_filelist = None
-    with open(current_dir + "/.devenv", "r") as f:
-        devenv_filelist = f.read().strip().split("\n")
-    devenv_filelist.remove("flake.lock") # does not yet exist
-    devenv_files = ' '.join(devenv_filelist)
-    populate_devenv_commands = [
-        "git branch -D master.stgit || exit 0",
-        "stg init &> /dev/null || exit 0",
-    ]
-    execute_commands(populate_devenv_commands)
-    shell_cmd(f"git add -- {devenv_files}",)
+    shell_cmd(f"git add -- {get_devenv_files_spaced(current_dir)}",)
     os.remove(current_dir + "/" + settings_file)
     sys.exit(0)
-elif args.save_devenv:
-    if not markers_exist(current_dir, markers):
-        print("project not initialized")
-        sys.exit(1)
-    devenv_output = shell_cmd('git log --pretty=format:%s -1').strip()
-    if devenv_output == "devenv":
-        print("devenv already saved")
-        sys.exit(1)
-    devenv_filelist = None
-    with open(current_dir + "/.devenv", "r") as f:
-        devenv_filelist = f.read().strip().split("\n")
-    devenv_files = ' '.join(devenv_filelist)
-    save_devenv_commands = [ # FIXME: exclude current changes from devenv patch
-        "stg new devenv -m 'devenv' --no-verify",
-        "git reset",
-        f"git add -- {devenv_files}",
-        "stg refresh --force",
-    ]
-    execute_commands(save_devenv_commands)
-    sys.exit(0)
-elif args.reset_devenv:
-    if not markers_exist(current_dir, markers):
-        print("project not initialized")
-        sys.exit(1)
-    execute_commands([
-        "stg repair &> /dev/null || exit 0",
-        "stg delete devenv",
-    ])
-elif args.repair_devenv:
-    if not markers_exist(current_dir, markers):
-        print("project not initialized")
-        sys.exit(1)
-    execute_commands([
-        "git reset --soft HEAD~1",
-        "git stash",
-        "devenv --hide",
-        "git stash pop --index",
-        "git commit -m 'repaired HEAD'",
-    ])
-elif args.export_devenv:
-    execute_commands(["stg export -p -n -- devenv"])
 elif args.hide_devenv:
-    execute_commands(["command -v stg &> /dev/null && stg pop devenv || exit 0"])
+    hide_devenv(current_dir)
 elif args.unhide_devenv:
-    execute_commands(["command -v stg &> /dev/null && stg push devenv || exit 0"])
+    devenv_stash_token = get_devenv_stash_token(current_dir)
+    unhide_devenv(current_dir, devenv_stash_token)
+elif args.remove_devenv:
+    if markers_exist(current_dir, markers):
+        hide_devenv(current_dir)
+    devenv_stash_token = get_devenv_stash_token(current_dir)
+    if devenv_stash_token:
+        execute_commands(current_dir, [f'git stash drop {devenv_stash_token}'])
+    else:
+        print("project not initialized")
+        sys.exit(1)
+elif args.export_devenv:
+    if markers_exist(current_dir, markers):
+        hide_devenv(current_dir)
+    devenv_stash_token = get_devenv_stash_token(current_dir)
+    if devenv_stash_token:
+        execute_commands(current_dir, [f'git stash show -p {devenv_stash_token} > @projectEnvBackupRoot@/{construct_patch_name(current_dir)}'])
+    else:
+        print("project not initialized")
+        sys.exit(1)
+    unhide_devenv(current_dir, devenv_stash_token)
+elif args.import_devenv:
+    prefix = project_prefix(current_dir)
+    envs = [os.path.basename(env) for env in glob.glob(f"@projectEnvBackupRoot@/{prefix}*")]
+    env = get_selection(envs, "envs: ", lines=5, font="@wmFontDmenu@")
+    if env:
+        copyfile(f"@projectEnvBackupRoot@/{env}", f"{current_dir}/{env}")
+    else:
+        print("nothing selected")

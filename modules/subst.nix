@@ -53,6 +53,7 @@ in rec {
   pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   projectEnvConfigName = config.dev.projectenv.configName;
+  projectEnvStashName = config.dev.projectenv.stashName;
   projectEnvBackupRoot = config.dev.projectenv.backupRoot;
   projectEnvBackupDateFormat = config.attributes.dateFormats.commonShellNoColons;
   projectsRootMarkers =
