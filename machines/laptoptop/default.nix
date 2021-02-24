@@ -274,26 +274,6 @@ in {
     };
   };
 
-  email = {
-    enable = true;
-    emailAddress = config.attributes.mainUser.email;
-    defaultAccountName = config.attributes.mainUser.email;
-    gpg = {
-      sign = true;
-      keyID = config.attributes.mainUser.gpgKeyID;
-    };
-    mbsync = {
-      enable = true;
-      postExec = "${pkgs.notmuch}/bin/notmuch new";
-    };
-    msmtp.enable = true;
-    notmuch.enable = true;
-    imapfilter = {
-      enable = true;
-      server = "imap.google.com";
-    };
-  };
-
   gc = {
     enable = true;
     trash = {
