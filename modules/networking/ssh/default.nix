@@ -112,19 +112,16 @@ in {
         {
           key = [ "d" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu --choices";
-          desktop = "shell";
           mode = "network";
         }
         {
           key = [ "s" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu";
-          desktop = "shell";
           mode = "network";
         }
         {
           key = [ "t" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux";
-          desktop = "shell";
           mode = "network";
         }
       ];

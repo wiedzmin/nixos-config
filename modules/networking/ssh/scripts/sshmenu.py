@@ -4,7 +4,7 @@ import sys
 
 import redis
 
-from pystdlib.uishim import get_selection
+from pystdlib.uishim import get_selection, notify, URGENCY_CRITICAL
 from pystdlib.shell import term_create_window, tmux_create_window
 from pystdlib import shell_cmd
 
@@ -42,7 +42,11 @@ if host:
     if args.ignore_tmux:
         term_create_window(cmd, term_cmd=["@defaultVTCmd@", "-e"])
     else:
-        result = tmux_create_window(cmd, session_name=host_meta.get("tmux", "@tmuxDefaultSession@"),
-                                    window_title="ssh :: {host}")
+        target_session = host_meta.get("tmux", "@tmuxDefaultSession@")
+        result = tmux_create_window(cmd, session_name=target_session, window_title=f"ssh :: {host}",
+                                    attach=False)
         if not result:
-            term_create_window(cmd, term_cmd=["@defaultVTCmd@", "-e"])
+            notify("[sshmenu]", "error creating tmux window", urgency=URGENCY_CRITICAL)
+            sys.exit(1)
+        else:
+            result = term_create_window(f"tmux attach -t {target_session}", term_cmd=["@defaultVTCmd@", "-e"])
