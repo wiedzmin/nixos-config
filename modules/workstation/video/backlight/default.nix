@@ -81,9 +81,17 @@ in {
             longitude = cfg.redshift.longitude;
             temperature.day = cfg.redshift.temperature.day;
             temperature.night = cfg.redshift.temperature.night;
-            brightness.day = cfg.redshift.brightness.day;
-            brightness.night = cfg.redshift.brightness.night;
-            extraOptions = [ "-v" "-m randr" ];
+            settings = {
+              general = {
+                adjustment-method = "randr";
+                # gamma = 0.8;
+              };
+              # randr = { screen = 0; };
+              redshift = {
+                brightness-day = cfg.redshift.brightness.day;
+                brightness-night = cfg.redshift.brightness.night;
+              };
+            };
           };
         };
       };
