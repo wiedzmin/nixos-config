@@ -100,11 +100,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1608969323,
-        "narHash": "sha256-qhRvX4Z2CB8Qp4EUFRh1KLiyIwsM3njpJG43CsbNAkY=",
+        "lastModified": 1614109058,
+        "narHash": "sha256-UMphcAfZ4nsDO6ai0cWZDunO6AvyQj+yvMWevZVnKvg=",
         "owner": "rycee",
         "repo": "home-manager",
-        "rev": "bcbf09a2021712a501681fa984f659fddad3c2e8",
+        "rev": "e7b1491fb8dfb1d2bdb90432312e88d03c8d803d",
         "type": "github"
       },
       "original": {
