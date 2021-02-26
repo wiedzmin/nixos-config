@@ -30,20 +30,20 @@ def markers_exist(path, files):
     result = False
     for f in files:
         mpath = path + "/" + f
-        if (os.path.exists(mpath) and os.path.isfile(mpath)):
+        if (os.path.exists(mpath) and (os.path.isfile(mpath) or os.path.isdir(mpath))):
             result = True
             break
     return result
 
 
-def get_devenv_files_spaced(path, locked_flake=False):
+def get_devenv_files(path, locked_flake=False):
     devenv_filelist = []
     if markers_exist(path, [".devenv"]):
         with open(path + "/.devenv", "r") as f:
             devenv_filelist = f.read().strip().split("\n")
         if not locked_flake:
             devenv_filelist.remove("flake.lock")
-    return ' '.join(devenv_filelist)
+    return devenv_filelist
 
 
 def get_devenv_stash_token(path):
@@ -66,7 +66,7 @@ def execute_commands(path, commands, fail=True):
 
 
 def hide_devenv(path):
-    devenv_filelist = get_devenv_files_spaced(path, locked_flake=True)
+    devenv_filelist = " ".join(get_devenv_files(path, locked_flake=True))
     execute_commands(path, [
         "git reset",
         f"git add -- {devenv_filelist}",
@@ -108,6 +108,9 @@ args = parser.parse_args()
 
 current_dir = os.getcwd()
 if args.seed_devenv:
+    if not markers_exist(current_dir, [".git"]):
+        print("initialize git repo first")
+        sys.exit(1)
     if markers_exist(current_dir, markers):
         print("project already initialized")
         sys.exit(1)
@@ -124,7 +127,7 @@ if args.seed_devenv:
         devenv_template_files = os.listdir(template_source_path)
         for f in devenv_template_files:
             shell_cmd(f"renderizer --settings={settings_file} {template_source_path}/{f} > {current_dir}/{f}")
-    shell_cmd(f"git add -- {get_devenv_files_spaced(current_dir)}",)
+    shell_cmd(f"git add -- {' '.join(get_devenv_files(current_dir))}",)
     os.remove(current_dir + "/" + settings_file)
     sys.exit(0)
 elif args.hide_devenv:
@@ -139,14 +142,22 @@ elif args.remove_devenv:
     if devenv_stash_token:
         execute_commands(current_dir, [f'git stash drop {devenv_stash_token}'])
     else:
-        print("project not initialized")
-        sys.exit(1)
+        devenv_files = get_devenv_files(current_dir, locked_flake=True)
+        if devenv_files:
+            devenv_files.append(settings_file)
+        else:
+            devenv_files = [settings_file]
+        for f in devenv_files:
+            if os.path.exists(f) and os.path.isfile(f):
+                os.remove(f)
 elif args.export_devenv:
     if markers_exist(current_dir, markers):
         hide_devenv(current_dir)
     devenv_stash_token = get_devenv_stash_token(current_dir)
     if devenv_stash_token:
-        execute_commands(current_dir, [f'git stash show -p {devenv_stash_token} > @projectEnvBackupRoot@/{construct_patch_name(current_dir)}'])
+        execute_commands(current_dir,
+                         [f'git stash show -p {devenv_stash_token} > @projectEnvBackupRoot@/{construct_patch_name(current_dir)}'],
+                         fail=False)
     else:
         print("project not initialized")
         sys.exit(1)

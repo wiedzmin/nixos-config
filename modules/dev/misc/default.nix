@@ -105,6 +105,7 @@ in {
           gitUsername = config.attributes.mainUser.fullName;
           gitEmail = config.attributes.mainUser.email;
           gpgSigningKey = config.attributes.mainUser.gpgKeyID;
+          bugReferenceBugRegexp = "\\\\#\\\\(?2:[0-9]+\\\\)\\\\>";
         };
       };
     })

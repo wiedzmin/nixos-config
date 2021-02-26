@@ -2,6 +2,7 @@
 .ccls
 .ccls-root
 .devenv
+.dir-locals.el
 .envrc
 .pre-commit-config.yaml
 flake.lock

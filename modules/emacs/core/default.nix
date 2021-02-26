@@ -141,7 +141,6 @@ in {
       fonts = { fonts = with pkgs; [ emacs-all-the-icons-fonts ]; };
       dev.git.core.gitignore = ''
         *.elc
-        .dir-locals.el
       '';
       pim.timetracking.rules = ''
         current window ($title =~ /^emacs - [^ ]+\.el .*$/) ==> tag coding:elisp,

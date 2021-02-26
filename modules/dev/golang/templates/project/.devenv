@@ -1,5 +1,6 @@
 .aux
 .devenv
+.dir-locals.el
 .envrc
 Makefile
 flake.lock

@@ -36,3 +36,5 @@
                                '((plantuml . t))))
 
 (use-package blockdiag-mode)
+
+(use-package bug-reference)
