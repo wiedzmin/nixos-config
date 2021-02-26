@@ -40,7 +40,7 @@ if host:
            sys.exit(1)
 
     if args.ignore_tmux:
-        term_create_window(cmd, term_cmd=["@defaultVTCmd@", "-e"])
+        term_create_window(cmd, term_cmd="@defaultVTCmd@")
     else:
         target_session = host_meta.get("tmux", "@tmuxDefaultSession@")
         result = tmux_create_window(cmd, session_name=target_session, window_title=f"ssh :: {host}",
@@ -49,4 +49,4 @@ if host:
             notify("[sshmenu]", "error creating tmux window", urgency=URGENCY_CRITICAL)
             sys.exit(1)
         else:
-            result = term_create_window(f"tmux attach -t {target_session}", term_cmd=["@defaultVTCmd@", "-e"])
+            result = term_create_window(f"tmux attach -t {target_session}", term_cmd="@defaultVTCmd@")

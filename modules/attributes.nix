@@ -166,9 +166,9 @@ with lib;
       default = { url = { py = "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]"; }; };
     };
     defaultVTCommand = mkOption {
-      type = types.str;
-      default = "";
-      description = "Default virtual terminal command";
+      type = types.listOf types.str;
+      default = [ ];
+      description = "Default virtual terminal command elements (including `command` flag, for executing something)";
     };
   };
 }

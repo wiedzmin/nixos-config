@@ -5,7 +5,7 @@ with lib;
 let
   cfg = config.shell.vt.alacritty;
   user = config.attributes.mainUser.name;
-  terminalCmd = "${pkgs.alacritty}/bin/alacritty";
+  terminalCmd = [ "${pkgs.alacritty}/bin/alacritty" "-e" ];
   prefix = config.wmCommon.prefix;
 in {
   options = {
@@ -32,7 +32,7 @@ in {
         current window ($program == "Alacritty" && $title =~ m!(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/!)
           ==> tag project:$1-$2-$3,
       '';
-      environment.sessionVariables.TERMINAL = [ terminalCmd ];
+      environment.sessionVariables.TERMINAL = [ (builtins.head terminalCmd) ];
       attributes.defaultVTCommand = terminalCmd;
       home-manager.users."${user}" = {
         programs.alacritty = {
@@ -74,13 +74,11 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [
-        {
-          key = [ prefix "Shift" "Return" ];
-          cmd = terminalCmd;
-          mode = "root";
-        }
-      ];
+      wmCommon.keys = [{
+        key = [ prefix "Shift" "Return" ];
+        cmd = lib.concatStringsSep " " terminalCmd;
+        mode = "root";
+      }];
     })
   ];
 }

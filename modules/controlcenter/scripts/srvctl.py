@@ -48,10 +48,10 @@ if not operation:
 if operation in ["journal", "journal/follow", "status"]:
     if "follow" in operation:
         unit_show(service, "journal", user=('user' in service), follow=True,
-                  shell=["@defaultVTCmd@", "-e"], tmux_session="@tmuxDefaultSession@")
+                  shell="@defaultVTCmd@", tmux_session="@tmuxDefaultSession@")
     else:
         unit_show(service, operation, user=('user' in service),
-                  shell=["@defaultVTCmd@", "-e"], tmux_session="@tmuxDefaultSession@")
+                  shell="@defaultVTCmd@", tmux_session="@tmuxDefaultSession@")
     switch_desktop(1)
 else:
     unit_perform(service, operation, user=('user' in service))

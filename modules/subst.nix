@@ -14,7 +14,7 @@ in rec {
   defaultBrowser = config.attributes.browser.default.cmd;
   fallbackBrowser = config.attributes.browser.fallback.cmd;
   defaultContainerShell = config.ext.virtualization.docker.core.defaultContainerShell;
-  defaultVTCmd = config.attributes.defaultVTCommand;
+  defaultVTCmd = lib.concatStringsSep " " config.attributes.defaultVTCommand;
   deftPath = homePrefix "docs/deft";
   direnvGranularityProject = emacsBoolToString (config.dev.direnv.emacs.granularity == "project");
   direnvGranularityFile = emacsBoolToString (config.dev.direnv.emacs.granularity == "file");
