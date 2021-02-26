@@ -16,4 +16,7 @@
 (use-package pass
   :bind
   (:map custom-pass-map
-        ("p" . pass)))
+        ("p" . pass))
+  :custom
+  (pass-show-keybindings t)
+  (pass-username-field "login"))
