@@ -74,6 +74,9 @@ in {
           mediainfo
           # =======
           paste_to_ix
+          # ======= parallel archivers
+          pbzip2
+          pigz
 
           monolith
           tartube
@@ -99,9 +102,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ collect_links_on_page paste_to_ix ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ collect_links_on_page paste_to_ix ]; };
     })
   ];
 }
