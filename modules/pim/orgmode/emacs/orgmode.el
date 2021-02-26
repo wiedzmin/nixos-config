@@ -365,6 +365,7 @@
                    :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
                   ("Navigation" :keys "n" :file "@orgDir@/projects/workstation/emacs/navigation.org"
                    :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")))
+                ("PIM" :keys "p" :file "@orgDir@/projects/workstation/pim.org" :template "* %(org-cliplink-capture) %U :pim:")
                 ("Bookmarks" :keys "b" :file "@orgDir@/bookmarks.org" :template "* %(org-cliplink-capture) %U :bookmark:"))))
   (run-with-idle-timer custom/idle-clockout-timeout t 'custom/clockout-when-idle)
   (turn-on-orgtbl))
