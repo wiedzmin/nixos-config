@@ -96,6 +96,7 @@ in {
             # "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
             # "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
             # "ogfcmafjalglgifnmanfmnieipoejdcf" # uMatrix
+            "lhaoghhllmiaaagaffababmkdllgfcmc" # Atomic Chrome
           ] ++ optionals (cfg.keyboardCentric) [
             "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
             # "gfbliohnnapiefjpjlpjnehglfpaknnc" # Surfingkeys
