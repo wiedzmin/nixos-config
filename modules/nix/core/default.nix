@@ -96,6 +96,7 @@ in {
             GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
             pkexec nix-env --profile /nix/var/nix/profiles/system --set $GENERATION_PATH && pkexec $GENERATION_PATH/bin/switch-to-configuration switch
           '';
+          # TODO: try https://github.com/lf-/nix-doc
           nix-doc-lookup = mkShellScriptWithDeps "nix-doc-lookup" (with pkgs; [ fzf gnused manix ]) ''
             manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
           '';
@@ -118,9 +119,7 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.shell.enable) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ stable.nix-zsh-completions ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ stable.nix-zsh-completions ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
