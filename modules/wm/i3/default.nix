@@ -46,18 +46,7 @@ in {
       };
       statusbar.deps = mkOption {
         type = types.listOf types.package;
-        default = with pkgs; [
-          dbus
-          dunst
-          gawk
-          iproute2
-          iw
-          kbdd
-          openvpn
-          perl
-          xdotool
-          yad
-        ];
+        default = with pkgs; [ dbus dunst gawk iproute2 iw kbdd openvpn perl xdotool yad ];
         visible = false;
         readOnly = true;
         internal = true;
@@ -243,6 +232,12 @@ in {
             mode = "layout";
           }
           {
+            key = [ prefix "F7" ];
+            # FIXME: parameterize font setting
+            cmd = ''${pkgs.wmfocus}/bin/wmfocus -f "Iosevka":50 --chars 123456789 --textcoloralt "#eeeeee"'';
+            mode = "root";
+          }
+          {
             key = [ "w" ];
             cmd = "layout toggle split";
             mode = "layout";
@@ -304,8 +299,7 @@ in {
             extraPackages = with pkgs;
               lib.optionals (cfg.statusbar.impl == "py3") [ i3status python3Packages.py3status file ]
               ++ lib.optionals (cfg.statusbar.impl == "i3-rs") [ i3status-rust ]
-              ++ lib.optionals (cfg.statusbar.impl == "blocks") [ i3blocks ]
-              ++ cfg.statusbar.deps;
+              ++ lib.optionals (cfg.statusbar.impl == "blocks") [ i3blocks ] ++ cfg.statusbar.deps;
           };
         };
         displayManager = { defaultSession = "none+i3"; };
@@ -335,8 +329,8 @@ in {
             # i3 config file (v4)
 
             ${cfg.settings}
-            ${bindkeysI3 config.wmCommon.keys config.wmCommon.modeBindings
-              cfg.modeExitBindings config.wmCommon.workspaces}
+            ${bindkeysI3 config.wmCommon.keys config.wmCommon.modeBindings cfg.modeExitBindings
+            config.wmCommon.workspaces}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
             ${lib.concatStringsSep "\n"
             (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}
