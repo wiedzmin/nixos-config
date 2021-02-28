@@ -78,6 +78,11 @@ in {
 
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "nyxt.desktop";
+        home.activation.ensureNyxtIsDefault = {
+          after = [ ];
+          before = [ "linkGeneration" ];
+          data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser nyxt.desktop";
+        };
       };
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;

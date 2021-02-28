@@ -153,9 +153,13 @@ in {
         }
       ];
 
-      environment.sessionVariables = { BROWSER = cfg.command; };
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "chromium.desktop";
+        home.activation.ensureChromiumIsDefault = {
+          after = [ ];
+          before = [ "linkGeneration" ];
+          data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser chromium.desktop";
+        };
       };
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;

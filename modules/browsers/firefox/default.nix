@@ -111,15 +111,14 @@ in {
       };
       custom.programs.firefox = {
         enable = true;
-        extensions = with nurpkgs.rycee.firefox-addons; [
-          browserpass
-          clearurls
-          greasemonkey
+        extensions = with nurpkgs.rycee.firefox-addons;
+          [
+            browserpass
+            clearurls
+            greasemonkey
 
-          nurpkgs.wiedzmin.firefox-addons.url-in-title
-        ] ++ optionals (cfg.keyboardCentric) [
-          tridactyl
-        ];
+            nurpkgs.wiedzmin.firefox-addons.url-in-title
+          ] ++ optionals (cfg.keyboardCentric) [ tridactyl ];
         profiles = {
           default = {
             name = "profile.default";
@@ -435,9 +434,13 @@ in {
         }
       ];
 
-      environment.sessionVariables = { BROWSER = cfg.command; };
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "firefox.desktop";
+        home.activation.ensureFirefoxIsDefault = {
+          after = [ ];
+          before = [ "linkGeneration" ];
+          data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser firefox.desktop";
+        };
       };
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
