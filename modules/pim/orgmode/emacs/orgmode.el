@@ -160,7 +160,8 @@
         ("v" . org-reveal)
         ("w" . org-store-link)
         ("y" . org-insert-link-global)
-        ("|" . org-deadline))
+        ("|" . org-deadline)
+        ("[" . org-agenda-file-to-front))
   (:map org-src-mode-map
         ("s-l" . org-edit-src-exit)
         ("C-c C-'" . org-edit-src-exit))
