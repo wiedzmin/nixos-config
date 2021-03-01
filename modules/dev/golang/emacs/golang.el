@@ -5,6 +5,7 @@
   (before-save-hook . gofmt-before-save)
   (go-mode-hook . lsp-deferred)
   (go-mode-hook . whitespace-turn-off)
+  (go-mode-hook . yas-minor-mode)
   :company (company-tabnine company-capf)
   :capf #'pcomplete-completions-at-point
   :config
