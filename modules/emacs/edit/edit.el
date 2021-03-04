@@ -148,3 +148,8 @@
   :config
   (delight 'auto-revert-mode " ⟲" 'autorevert)
   (global-auto-revert-mode 1))
+
+(use-package misc
+  :bind
+  (:map mode-specific-map
+        ("^" . copy-from-above-command)))
