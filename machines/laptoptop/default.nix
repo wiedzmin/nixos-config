@@ -128,6 +128,7 @@ in {
 
   appearance = {
     colors.zenburn.enable = true;
+    emacs.themes.zenburn.enable = true;
     emacs = {
       enable = true;
       modeline.telephone = {

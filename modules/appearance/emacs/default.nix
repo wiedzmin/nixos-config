@@ -6,10 +6,7 @@ let
   cfg = config.appearance.emacs;
   user = config.attributes.mainUser.name;
 in {
-  imports = [
-    ./doom-modeline.nix
-    ./telephone-line.nix
-  ];
+  imports = [ ./doom-modeline.nix ./telephone-line.nix ./zenburn-theme.nix ];
 
   options = {
     appearance.emacs = {
