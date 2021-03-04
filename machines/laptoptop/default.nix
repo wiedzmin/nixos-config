@@ -143,8 +143,8 @@ in {
     wallpaper = {
       enable = true;
       boot.splashImage = "${inputs.nixos-artwork}/common/grub2-background/grub-nixos-1.png";
-      rootDir = homePrefix "blobs/wallpaper/mongol/winter";
-      current = "mongol-winter-govi.jpg";
+      rootDir = homePrefix "blobs/wallpaper/mongol/spring";
+      current = "mongolia-spring-3.jpg";
       wm.enable = true;
     };
     xresources = {
