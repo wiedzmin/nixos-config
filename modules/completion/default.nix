@@ -140,16 +140,9 @@ in {
       }];
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ mmv-go cod ] ++ optionals (cfg.shell.recent.backend == "mcfly") [ mcfly ];
-        xdg.configFile."cod/config.toml".text = ''
-          [[rule]]
-          executable = "/run/current-system/sw/bin/dephell"
-          policy = 'ignore'
-        ''; # TODO: extract option
+        home.packages = with pkgs; [ mmv-go ] ++ optionals (cfg.shell.recent.backend == "mcfly") [ mcfly ];
         programs.zsh = {
-          initExtra = ''
-            source <(cod init $$ zsh)
-          '' + optionalString (cfg.shell.recent.backend == "mcfly") ''
+          initExtra = optionalString (cfg.shell.recent.backend == "mcfly") ''
             source "${pkgs.mcfly}/share/mcfly/mcfly.zsh"
           '';
           sessionVariables = let dataHome = hm.xdg.dataHome;
