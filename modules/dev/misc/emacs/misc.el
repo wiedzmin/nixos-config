@@ -38,3 +38,10 @@
 (use-package blockdiag-mode)
 
 (use-package bug-reference)
+
+(use-package leetcode
+  :custom
+  (leetcode-prefer-language "python3")
+  (leetcode-prefer-sql "mysql")
+  (leetcode-save-solutions t)
+  (leetcode-directory "~/workspace/leetcode"))

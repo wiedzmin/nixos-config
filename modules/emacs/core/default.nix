@@ -14,6 +14,7 @@ let
     # TODO: add missing entries by fact later
     ${pkgs.systemd}/bin/systemctl --user restart emacs.service
   '';
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
     ide.emacs.core = {
@@ -161,7 +162,7 @@ in {
           zsh.sessionVariables = { EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server"; };
           bash.sessionVariables = { EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server"; };
         };
-        home.packages = (with pkgs; [ drop-corrupted ispell ])
+        home.packages = (with pkgs; [ drop-corrupted ispell nurpkgs.my_cookies ])
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
         home.file = { ".emacs.d/init.el".text = cfg.initElContent; };
       };

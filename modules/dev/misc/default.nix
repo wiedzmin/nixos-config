@@ -140,6 +140,7 @@ in {
         epkgs.elmacro
         epkgs.fic-mode
         epkgs.jinja2-mode
+        epkgs.leetcode
         epkgs.lsp-mode
         epkgs.lsp-ui
         epkgs.plantuml-mode
