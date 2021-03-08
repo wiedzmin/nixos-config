@@ -20,10 +20,8 @@
   (avy-setup-default))
 
 (use-package goto-addr
- :hook ((compilation-mode . goto-address-mode)
-        (prog-mode . goto-address-prog-mode)
-        (eshell-mode . goto-address-mode)
-        (shell-mode . goto-address-mode))
+ :hook ((compilation-mode-hook . goto-address-mode)
+        (prog-mode-hook . goto-address-prog-mode))
  :bind (:map goto-address-highlight-keymap
              ("<RET>" . goto-address-at-point)
              ("M-<RET>" . newline))
