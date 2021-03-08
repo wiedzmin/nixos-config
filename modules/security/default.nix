@@ -69,7 +69,7 @@ in {
       };
 
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ paperkey ssh-to-pgp ];
+        home.packages = with pkgs; [ paperkey senv ssh-to-pgp ];
         programs.password-store = {
           enable = true;
           package = pkgs.pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
@@ -126,13 +126,11 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [
-        {
-          key = [ "p" ];
-          cmd = "${pkgs.passctl}/bin/passctl";
-          mode = "select";
-        }
-      ];
+      wmCommon.keys = [{
+        key = [ "p" ];
+        cmd = "${pkgs.passctl}/bin/passctl";
+        mode = "select";
+      }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ passctl ]; };
