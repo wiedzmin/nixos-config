@@ -76,6 +76,10 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      dev.projectenv.projectTemplates = {
+        "python.project" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/python/templates/project";
+      };
+
       home-manager.users.${user} = {
         home.packages = with pkgs;
           [
