@@ -121,7 +121,7 @@ if args.seed_devenv:
         sys.exit(1)
     with open(f"{current_dir}/{settings_file}", "w") as f:
         f.write(dump(settings[token]))
-    template = get_selection(project_templates.keys(), "template: ", lines=5, font="@wmFontDmenu@")
+    template = get_selection(project_templates.keys(), "template: ", lines=10, font="@wmFontDmenu@")
     if template:
         template_source_path = project_templates[template]
         devenv_template_files = os.listdir(template_source_path)
