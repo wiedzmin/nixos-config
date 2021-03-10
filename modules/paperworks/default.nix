@@ -67,10 +67,10 @@ in {
         default = "/homeless-shelter";
         description = "Path to snapscan firmware file.";
       };
-      scanning.enableXsane = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to add XSane to PATH.";
+      scanning.frontend = mkOption {
+        type = types.enum [ "skanlite" "gscan2pdf" "simple-scan" "xsane" ];
+        default = "skanlite";
+        description = "Scanner frontend tool";
       };
       scanning.paperless.enable = mkOption {
         type = types.bool;
@@ -197,11 +197,26 @@ in {
         extraBackends = cfg.scanning.extraBackends;
       };
 
-      services.saned.enable = true;
-
       environment.systemPackages = with pkgs;
-        [ deskew scantailor-advanced ] ++ lib.optionals cfg.scanning.enableXsane [ xsane ];
+        [ deskew scantailor-advanced ] ++ lib.optionals (cfg.scanning.frontend == "skanlite") [ skanlite ]
+        ++ lib.optionals (cfg.scanning.frontend == "gscan2pdf") [ gscan2pdf ]
+        ++ lib.optionals (cfg.scanning.frontend == "simple-scan") [ simple-scan ]
+        ++ lib.optionals (cfg.scanning.frontend == "xsane") [ xsane ];
       users.users."${user}".extraGroups = [ "scanner" ];
+
+      wmCommon.wsMapping.rules = lib.optionals (cfg.scanning.frontend == "skanlite") [{
+        class = "skanlite";
+        desktop = "tools";
+      }] ++ lib.optionals (cfg.scanning.frontend == "gscan2pdf") [{
+        class = "gscan2pdf-wrapped-wrapped";
+        desktop = "tools";
+      }] ++ lib.optionals (cfg.scanning.frontend == "simple-scan") [{
+        class = "Simple-scan";
+        desktop = "tools";
+      }] ++ lib.optionals (cfg.scanning.frontend == "xsane") [{
+        class = "Xsane";
+        desktop = "tools";
+      }];
     })
     (mkIf (cfg.scanning.enable && cfg.scanning.snapscan.enable) {
       assertions = [

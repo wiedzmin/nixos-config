@@ -375,7 +375,6 @@ in {
     scanning = {
       enable = true;
       extraBackends = [ pkgs.hplipWithPlugin ];
-      enableXsane = true;
       paperless = {
         enable = false;
         package = pkgs.paperless;
