@@ -189,9 +189,7 @@ in {
       environment.systemPackages = with pkgs; [ nixpkgs-hplip.system-config-printer ];
       users.users."${user}".extraGroups = [ "lp" ];
 
-      browsers.chromium.extraOpts = {
-        PrintingEnabled = true;
-      };
+      browsers.chromium.extraOpts = { PrintingEnabled = true; };
     })
     (mkIf cfg.scanning.enable {
       hardware.sane = {
@@ -287,16 +285,14 @@ in {
       };
     })
     (mkIf cfg.publishing.enable {
-      home-manager.users.${user} = {
-        home.packages = [ stable.libreoffice ];
-      };
+      home-manager.users.${user} = { home.packages = [ stable.libreoffice ]; };
       pim.timetracking.rules = ''
         current window $program == "libreoffice" ==> tag activity:paperworks,
         current window $program == "libreoffice" ==> tag program:libreoffice,
       '';
     })
     (mkIf cfg.processors.enable {
-      home-manager.users.${user} = { home.packages = with pkgs; [ enca pandoc pdfcpu pdftk ocamlPackages.cpdf]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ enca pandoc pdfcpu pdftk ocamlPackages.cpdf ]; };
     })
   ];
 }
