@@ -186,7 +186,7 @@ in {
         defaultShared = true;
         webInterface = true;
       };
-      environment.systemPackages = with pkgs; [ nixpkgs-hplip.system-config-printer ];
+      environment.systemPackages = with pkgs; [ nixpkgs-hplip.system-config-printer gtklp ];
       users.users."${user}".extraGroups = [ "lp" ];
 
       browsers.chromium.extraOpts = { PrintingEnabled = true; };

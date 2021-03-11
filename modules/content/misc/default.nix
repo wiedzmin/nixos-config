@@ -77,6 +77,8 @@ in {
           # ======= parallel archivers
           pbzip2
           pigz
+          # =======
+          ytfzf
 
           monolith
           tartube
