@@ -5,18 +5,6 @@ with lib;
 let
   cfg = config.dev.python;
   user = config.attributes.mainUser.name;
-  jupyterWithPackages = pkgs.jupyter.override {
-    definitions = {
-      python3 = let env = (pkgs.python3.withPackages (ps: with ps; cfg.jupyter.packages));
-      in {
-        displayName = "Python 3";
-        argv = [ "${env.interpreter}" "-m" "ipykernel_launcher" "-f" "{connection_file}" ];
-        language = "python";
-        logo32 = "${env.sitePackages}/ipykernel/resources/logo-32x32.png";
-        logo64 = "${env.sitePackages}/ipykernel/resources/logo-64x64.png";
-      };
-    };
-  };
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
@@ -81,18 +69,6 @@ in {
       };
 
       home-manager.users.${user} = {
-        home.packages = with pkgs;
-          [
-            python3Packages.autopep8
-            python3Packages.importmagic
-            python3Packages.virtualenv
-            python3Packages.virtualenvwrapper
-            python3Packages.yapf
-
-            nurpkgs.dephell
-
-            # prospector # TODO: review configuration https://github.com/PyCQA/prospector
-          ] ++ lib.optionals (cfg.jupyter.enable) [ jupyterWithPackages ];
         home.file = {
           ".pylintrc".text =
             lib.generators.toINI { } { # see https://github.com/PyCQA/pylint/blob/master/pylintrc for reference

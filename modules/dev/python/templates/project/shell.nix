@@ -10,6 +10,19 @@
 
 with pkgs;
 let
+  pythonLibs = with pkgs; [ ];
+  jupyterWithPackages = pkgs.jupyter.override {
+    definitions = {
+      python3 = let env = (pkgs.python3.withPackages (ps: with ps; [ ipykernel ] ++ pythonLibs));
+      in {
+        displayName = "Python 3 Notebook";
+        argv = [ "${env.interpreter}" "-m" "ipykernel_launcher" "-f" "{connection_file}" ];
+        language = "python";
+        logo32 = "${env.sitePackages}/ipykernel/resources/logo-32x32.png";
+        logo64 = "${env.sitePackages}/ipykernel/resources/logo-64x64.png";
+      };
+    };
+  };
   nurpkgs = pkgs.nur.repos; # refer to packages as nurpkgs.<username>.<package>
   base = [ codesearch docker_compose gitAndTools.pre-commit gnumake watchman ];
   stats = [ cloc gource logtop sloccount tokei ];
@@ -26,6 +39,7 @@ let
   ];
   python = [
     python3Packages.poetry
+    jupyterWithPackages
   ]; # nurpkgs.wiedzmin.dephell produces "error: stack overflow (possible infinite recursion)" when building environment
 in mkShell {
   buildInputs = base ++ stats ++ git ++ python ++ [ ];
