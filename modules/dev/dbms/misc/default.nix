@@ -33,9 +33,7 @@ in {
   };
 
   config = mkMerge [
-    (mkIf cfg.enable {
-      home-manager.users.${user} = { home.packages = with pkgs; [ nodePackages.elasticdump ]; };
-    })
+    (mkIf cfg.enable { home-manager.users.${user} = { home.packages = with pkgs; [ nodePackages.elasticdump ]; }; })
     (mkIf (cfg.enable && cfg.controlCenter.enable) {
       assertions = [
         {
@@ -54,8 +52,9 @@ in {
       };
 
       workstation.systemtraits.instructions = ''
-        ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${lib.strings.escapeNixString
-          (builtins.toJSON cfg.controlCenter.meta)}
+        ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${
+          lib.strings.escapeNixString (builtins.toJSON cfg.controlCenter.meta)
+        }
       '';
 
       home-manager.users.${user} = { home.packages = with pkgs; [ dbms ]; };
@@ -65,7 +64,6 @@ in {
         key = [ "d" ];
         cmd = "${pkgs.dbms}/bin/dbms";
         mode = "dev";
-        desktop = "shell";
       }];
     })
     (mkIf (config.attributes.debug.scripts) { home-manager.users.${user} = { home.packages = with pkgs; [ dbms ]; }; })
