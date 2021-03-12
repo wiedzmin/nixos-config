@@ -76,7 +76,7 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ prefix "Shift" "Return" ];
-        cmd = lib.concatStringsSep " " terminalCmd;
+        cmd = builtins.head terminalCmd;
         mode = "root";
       }];
     })
