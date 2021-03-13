@@ -112,7 +112,17 @@ in {
           cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page";
           mode = "browser";
         }
+        {
+          key = [ "i" ];
+          cmd = "${pkgs.index-fm}/bin/index";
+          mode = "run";
+        }
       ];
+      wmCommon.wsMapping.rules = [{
+        class = "index";
+        desktop = "tools";
+        activate = true;
+      }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ collect_links_on_page paste_to_ix ]; };
