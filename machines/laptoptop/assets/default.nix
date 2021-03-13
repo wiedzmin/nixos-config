@@ -1,1 +1,1 @@
-{ ... }: { imports = [ ./bookmarks.nix ./misc.nix ./xrandr ]; }
+{ ... }: { imports = [ ./bookmarks.nix ./xrandr ]; }
