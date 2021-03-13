@@ -173,8 +173,7 @@ in rec {
   remoteWebjumps = remotes: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkDest meta)) (lib.filterAttrs
       (_: meta:
-        (lib.hasAttrByPath [ "searchSuffix" ] meta && lib.hasSuffix "+" meta.searchSuffix)
-        || (lib.hasAttrByPath [ "jump" ] meta && meta.jump == true) || !(lib.hasAttrByPath [ "searchSuffix" ] meta))
+        (lib.hasAttrByPath [ "jump" ] meta && meta.jump == true) || !(lib.hasAttrByPath [ "searchSuffix" ] meta))
       remotes);
   remoteSearchEngines = remotes: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkDest meta))
