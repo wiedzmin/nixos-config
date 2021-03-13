@@ -164,7 +164,6 @@
                       chmod a+x $out/bin/TabNine
                     '';
                   });
-                  dunst = old.dunst.override { dunstify = true; };
                   vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
                 })
               ];
