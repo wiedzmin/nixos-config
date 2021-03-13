@@ -206,6 +206,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-09_03_21": {
+      "locked": {
+        "lastModified": 1615259932,
+        "narHash": "sha256-IXecmbqCr+XCtFwzBO3tHEd8PoJ4X4EyPZebKbV2ioE=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "29b0d4d0b600f8f5dd0b86e3362a33d4181938f9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "29b0d4d0b600f8f5dd0b86e3362a33d4181938f9",
+        "type": "github"
+      }
+    },
     "nixpkgs-16_04_20": {
       "locked": {
         "lastModified": 1587041016,
@@ -312,6 +328,7 @@
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs-03_12_20": "nixpkgs-03_12_20",
+        "nixpkgs-09_03_21": "nixpkgs-09_03_21",
         "nixpkgs-16_04_20": "nixpkgs-16_04_20",
         "nixpkgs-25_01_21": "nixpkgs-25_01_21",
         "nixpkgs-arbtt": "nixpkgs-arbtt",

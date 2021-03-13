@@ -29,6 +29,7 @@
     nixpkgs-25_01_21.url = "github:nixos/nixpkgs/891f607d5301d6730cb1f9dcf3618bcb1ab7f10e";
     nixpkgs-16_04_20.url = "github:nixos/nixpkgs/b61999e4ad60c351b4da63ae3ff43aae3c0bbdfb";
     nixpkgs-03_12_20.url = "github:nixos/nixpkgs/296793637b22bdb4d23b479879eba0a71c132a66";
+    nixpkgs-09_03_21.url = "github:nixos/nixpkgs/29b0d4d0b600f8f5dd0b86e3362a33d4181938f9";
     nixpkgs-proposed = {
       url = "github:wiedzmin/nixpkgs";
       flake = false;
