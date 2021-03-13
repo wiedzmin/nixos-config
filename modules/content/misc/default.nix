@@ -72,6 +72,7 @@ in {
           # =======
           exiv2
           mediainfo
+          # imagemagick
           # =======
           paste_to_ix
           # ======= parallel archivers
@@ -83,6 +84,16 @@ in {
           monolith
           tartube
         ];
+
+        xdg.configFile."espanso/user/content.yml".text = ''
+          name: content
+          parent: default
+
+          matches:
+            - trigger: ":idim"
+              replace: "identify -verbose $|$"
+        '';
+
         services.syncthing.enable = true; # TODO: consider separate option(s)
         xdg.mimeApps.enable = true;
         programs.aria2.enable = true;
