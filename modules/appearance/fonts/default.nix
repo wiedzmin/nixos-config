@@ -4,10 +4,6 @@ with lib;
 let
   cfg = config.appearance.fonts;
   user = config.attributes.mainUser.name;
-  nixpkgs-prev = import inputs.nixpkgs-25_01_21 ({
-    config = config.nixpkgs.config;
-    system = "x86_64-linux";
-  });
 in {
   imports = [ ./fira-code-fonts.nix ./hack-fonts.nix ./iosevka-fonts.nix ./jbmono-fonts.nix ./scp-fonts.nix ];
 
@@ -57,7 +53,7 @@ in {
         fontDir.enable = true;
         enableGhostscriptFonts = true;
         enableDefaultFonts = true;
-      } // lib.optionalAttrs (cfg.beautify) { fonts = with pkgs; [ nixpkgs-prev.nerdfonts ]; };
+      } // lib.optionalAttrs (cfg.beautify) { fonts = with pkgs; [ nerdfonts ]; };
       console = {
         font = cfg.console;
         useXkbConfig = true;

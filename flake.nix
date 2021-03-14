@@ -21,19 +21,12 @@
   inputs = rec {
     stable.url = "github:NixOS/nixpkgs/nixos-20.03";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    future.url = "github:NixOS/nixpkgs/257cbbcd3ab7bd96f5d24d50adc807de7c82e06d"; # non-systemwide unstable
     nixpkgs-arbtt = {
       url = "github:nixos/nixpkgs/224804d0f68bd2bb083b8491c0c6cf3f34f2de10";
       flake = false;
     };
     nixpkgs-25_01_21.url = "github:nixos/nixpkgs/891f607d5301d6730cb1f9dcf3618bcb1ab7f10e";
-    nixpkgs-16_04_20.url = "github:nixos/nixpkgs/b61999e4ad60c351b4da63ae3ff43aae3c0bbdfb";
-    nixpkgs-03_12_20.url = "github:nixos/nixpkgs/296793637b22bdb4d23b479879eba0a71c132a66";
     nixpkgs-09_03_21.url = "github:nixos/nixpkgs/29b0d4d0b600f8f5dd0b86e3362a33d4181938f9";
-    nixpkgs-proposed = {
-      url = "github:wiedzmin/nixpkgs";
-      flake = false;
-    };
 
     # FIXME: decouple from user
     nur.url = "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR";

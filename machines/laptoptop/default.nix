@@ -3,10 +3,6 @@ with import ../../modules/util.nix { inherit config inputs lib pkgs; };
 
 let
   user = config.attributes.mainUser.name;
-  nixpkgs-hplip = import inputs.nixpkgs-16_04_20 ({
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  });
 in {
   imports =
     [ "${inputs.nixos-hardware}/common/pc/ssd" ../../modules ../../profiles/thinkpad-x230.nix ./assets ./secrets ];
@@ -377,7 +373,6 @@ in {
       extraBackends = [ pkgs.hplipWithPlugin ];
       paperless = {
         enable = false;
-        package = pkgs.paperless;
         consumptionDir = homePrefix "docs/paperless/consume";
         dataDir = homePrefix "docs/paperless/data";
         user = user;

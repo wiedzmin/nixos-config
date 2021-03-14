@@ -4,15 +4,6 @@ with lib;
 let
   cfg = config.paperworks;
   user = config.attributes.mainUser.name;
-
-  nixpkgs-hplip = import inputs.nixpkgs-16_04_20 ({
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  });
-  nixpkgs-paperless = import inputs.nixpkgs-16_04_20 ({
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  });
   stable = import inputs.stable ({
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
@@ -146,7 +137,7 @@ in {
       };
       scanning.paperless.package = mkOption {
         type = types.package;
-        default = nixpkgs-paperless.paperless;
+        default = pkgs.paperless;
         defaultText = "pkgs.paperless";
         description = "The Paperless package to use.";
       };
@@ -186,7 +177,7 @@ in {
         defaultShared = true;
         webInterface = true;
       };
-      environment.systemPackages = with pkgs; [ nixpkgs-hplip.system-config-printer gtklp ];
+      environment.systemPackages = with pkgs; [ system-config-printer gtklp ];
       users.users."${user}".extraGroups = [ "lp" ];
 
       browsers.chromium.extraOpts = { PrintingEnabled = true; };

@@ -63,7 +63,7 @@ in rec {
   screenshotsBasedir = config.content.screenshots.baseDir;
   tmuxDefaultSession = config.shell.tmux.defaultSession;
   urlRegexPy = config.attributes.regexes."url"."py";
-  xprintidleBinary = "${inputs.nixpkgs-16_04_20.legacyPackages.x86_64-linux.xprintidle-ng}/bin/xprintidle-ng";
+  xprintidleBinary = "${pkgs.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
   xmobarMaybeFont = lib.optionalString (config.wmCommon.fonts.statusbar != "")
     ''font = "${config.wmCommon.fonts.statusbar}"${mkNewlineAndIndent 7}, '';

@@ -7,10 +7,6 @@ let
   cfg = config.browsers.qutebrowser;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  nixpkgs-qb = import inputs.nixpkgs-03_12_20 ({
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  });
   suspensionRule = {
     qutebrowser = {
       suspendDelay = 10;
@@ -48,7 +44,7 @@ in {
       };
       command = mkOption {
         type = types.str;
-        default = "${nixpkgs-qb.qutebrowser}/bin/qutebrowser --target window";
+        default = "${pkgs.qutebrowser}/bin/qutebrowser --target window";
         description = "Default command line to invoke";
       };
       windowClass = mkOption {
@@ -138,7 +134,8 @@ in {
         ];
         programs.qutebrowser = {
           enable = true;
-          package = nixpkgs-qb.qutebrowser;
+          package = pkgs.qutebrowser;
+          loadAutoconfig = false;
           aliases = {
             jsd = "set content.javascript.enabled false";
             jse = "set content.javascript.enabled true";
