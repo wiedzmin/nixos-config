@@ -92,6 +92,8 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
+        session-save = mkShellScriptWithDeps "session-save" (with pkgs; [ coreutils socat ])
+          (readSubstituted ../../subst.nix ./scripts/session-save.sh);
         yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ])
           (readSubstituted ../../subst.nix ./scripts/yank-image.sh);
         qb-fix-session =
@@ -502,10 +504,7 @@ in {
         description = "Backup current qutebrowser session (tabs)";
         serviceConfig = {
           Type = "oneshot";
-          ExecStartPre = [
-            "${pkgs.procps}/bin/pgrep qutebrowser"
-            "${config.home-manager.users.${user}.programs.qutebrowser.package}/bin/qutebrowser --nowindow :session-save"
-          ];
+          ExecStartPre = [ "${pkgs.procps}/bin/pgrep qutebrowser" "${pkgs.session-save}/bin/session-save" ];
           ExecStart = "${pkgs.qb-dump-session}/bin/qb-dump-session";
           ExecStopPost =
             "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --rotate --path ${cfg.sessions.path} --history-length ${
@@ -540,7 +539,7 @@ in {
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ yank-image qb-fix-session qb-dump-session manage-qb-sessions ];
+        home.packages = with pkgs; [ session-save yank-image qb-fix-session qb-dump-session manage-qb-sessions ];
       };
     })
   ];
