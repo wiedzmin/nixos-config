@@ -353,23 +353,23 @@ in {
           };
           keyBindings = {
             normal = {
-              # "e" = "open-editor"; # TODO: bind appropriately
+              # "e" = "edit-text"; # TODO: bind appropriately
               "xb" = "config-cycle statusbar.hide";
               "<Alt-,>" = "back";
               "<Alt-.>" = "forward";
               "<ctrl+shift+tab>" = "tab-prev";
               "<ctrl+tab>" = "tab-next";
-              "b" = "set-cmd-text -s :buffer";
+              "b" = "set-cmd-text -s :tab-select";
               "t" = "set-cmd-text -s :open -t";
               "<Ctrl-F5>" = "reload -f";
-              "<Ctrl-Return>" = "follow-selected -t";
+              "<Ctrl-Return>" = "selection-follow -t";
               "<Ctrl-Shift-T>" = "undo";
               "<Ctrl-W>" = "tab-close";
               "<Ctrl-g>" = "stop";
               "<Ctrl-p>" = "tab-pin";
               "<F12>" = "inspector";
               "<F5>" = "reload";
-              "<Return>" = "follow-selected";
+              "<Return>" = "selection-follow";
               "Ctrl-r" = "reload";
               "Sh" = "open qute://history";
               "ct" = "open -t -- {clipboard}";
@@ -419,13 +419,13 @@ in {
               "zl" = "spawn --userscript qute-pass";
               "zpl" = "spawn --userscript qute-pass --password-only";
               "zul" = "spawn --userscript qute-pass --username-only";
-              "@" = "run-macro";
+              "@" = "macro-run";
               "AD" = "adblock-update";
               "CH" = "history-clear";
               "cr" = "config-source";
               "sf" = "save";
               "ws" = "config-write-py --force --defaults config.current.py";
-              "i" = "enter-mode insert";
+              "i" = "mode-enter insert";
             };
             insert = {
               "<Ctrl-y>" = "insert-text -- {clipboard}";
