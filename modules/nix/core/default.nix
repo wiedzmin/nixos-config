@@ -9,6 +9,10 @@ let
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
   });
+  unstable = import inputs.unstable ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
 in {
   options = {
     ext.nix.core = {
@@ -48,7 +52,7 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       nix = {
-        package = inputs.unstable.legacyPackages.x86_64-linux.nixUnstable;
+        package = unstable.nixUnstable;
         nixPath = lib.mkForce [ "nixpkgs=/etc/nixpkgs" ];
         useSandbox = true;
         readOnlyStore = true;
