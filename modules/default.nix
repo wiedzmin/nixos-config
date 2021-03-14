@@ -24,7 +24,6 @@
     ./dev/dbms/misc
     ./dev/dbms/mysql
     ./dev/dbms/pgsql
-    ./dev/dbms/sqlite
     ./dev/projectenv
     ./dev/direnv
     ./dev/editorconfig

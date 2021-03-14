@@ -33,7 +33,11 @@ in {
   };
 
   config = mkMerge [
-    (mkIf cfg.enable { home-manager.users.${user} = { home.packages = with pkgs; [ nodePackages.elasticdump ]; }; })
+    (mkIf cfg.enable {
+      dev.projectenv.projectTemplates = {
+        "tools.dbms" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/dbms/misc/templates/dbms";
+      };
+    })
     (mkIf (cfg.enable && cfg.controlCenter.enable) {
       assertions = [
         {

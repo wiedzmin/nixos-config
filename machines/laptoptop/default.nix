@@ -535,7 +535,6 @@ in {
     };
     mysql.enable = true;
     pgsql.enable = true;
-    sqlite.enable = true;
   };
 
   dev.direnv = {
