@@ -44,6 +44,10 @@
       url = "github:pope/ob-go";
       flake = false;
     };
+    emacs-org-appear = {
+      url = "github:awth13/org-appear";
+      flake = false;
+    };
     emacs-bruh = {
       url = "github:a13/bruh";
       flake = false;

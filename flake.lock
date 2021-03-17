@@ -63,6 +63,22 @@
         "type": "github"
       }
     },
+    "emacs-org-appear": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1615878203,
+        "narHash": "sha256-koG/Z2OmalNUNiLEdH87/XnBSEOqeyIX5gmnCDIg34w=",
+        "owner": "awth13",
+        "repo": "org-appear",
+        "rev": "0b3b029d5851c77ee792727b280f062eaf2c22c7",
+        "type": "github"
+      },
+      "original": {
+        "owner": "awth13",
+        "repo": "org-appear",
+        "type": "github"
+      }
+    },
     "git-extra-commands": {
       "flake": false,
       "locked": {
@@ -256,6 +272,7 @@
         "emacs-bookmark-view": "emacs-bookmark-view",
         "emacs-bruh": "emacs-bruh",
         "emacs-ob-go": "emacs-ob-go",
+        "emacs-org-appear": "emacs-org-appear",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
         "i3blocks-contrib": "i3blocks-contrib",

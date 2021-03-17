@@ -434,3 +434,10 @@
   (deft-use-filter-string-for-filename t)
   (deft-recursive t)
   (deft-extensions '("org" "txt")))
+
+(use-package org-appear
+  :load-path "@emacsOrgAppearPath@"
+  :hook
+  (org-mode-hook . org-appear-mode)
+  :custom
+  (org-appear-autolinks t))

@@ -29,6 +29,7 @@ in rec {
   emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
   emacsYasnippetSnippets = inputs.yasnippet-snippets;
   emacsObGoPath = inputs.emacs-ob-go;
+  emacsOrgAppearPath = inputs.emacs-org-appear;
   emacsBruhPath = inputs.emacs-bruh;
   emacsBookmarkViewPath = inputs.emacs-bookmark-view;
   factoryCalendarKey = "scheduling/fcalendar";
