@@ -7,6 +7,7 @@ let
   cfg = config.browsers.qutebrowser;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  scriptsPathPrefix = "${pkgs.qutebrowser}/share/qutebrowser/scripts";
   suspensionRule = {
     qutebrowser = {
       suspendDelay = 10;
@@ -53,6 +54,16 @@ in {
         visible = false;
         internal = true;
         description = "Qutebrowser default window class.";
+      };
+      darkmode.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable darkmode";
+      };
+      darkmode.algorithm = mkOption {
+        type = types.enum [ "lightness-cielab" "lightness-hsl" "brightness-rgb" ];
+        default = "lightness-hsl";
+        description = "Darkmode algorithm to use";
       };
       sessions.backup.enable = mkOption {
         type = types.bool;
@@ -180,7 +191,36 @@ in {
                 odd.bg = "gainsboro";
                 odd.fg = even.fg;
               };
-              webpage.prefers_color_scheme_dark = true;
+              webpage = {
+                prefers_color_scheme_dark = true;
+                # TODO: play with toggling darkmode, example just below:
+                # if c.colors.webpage.darkmode.enabled:
+                #     config.bind('\\d', 'set colors.webpage.darkmode.enabled False ;; restart')
+                # else:
+                #     config.bind('\\d', 'set colors.webpage.darkmode.enabled True ;; restart')
+                # C-d: set colors.webpage.darkmode.enabled false
+                # ===============================================================================
+                # TODO: play with commented out values below
+                darkmode = {
+                  enabled = cfg.darkmode.enable;
+                  algorithm = cfg.darkmode.algorithm;
+                  policy.images = "smart"; # "never"
+                  policy.page = "smart"; # "always"
+                  threshold = {
+                    # With selective inversion of non-image elements:
+                    # Set `colors.webpage.darkmode.threshold.text` to 150 and
+                    #     `colors.webpage.darkmode.threshold.background` to 205.
+                    # Set `background` to 256 to never invert the color or to 0 to always invert it.
+                    background = 128; # 0 100 200 205 70
+                    text = 128; # 200 256
+                  };
+                  grayscale.images = 0; # 0.0 0.5
+                } // optionalAttrs
+                  (cfg.darkmode.algorithm == "lightness-hsl" || cfg.darkmode.algorithm == "brightness-rgb") {
+                    contrast = -2.5e-2; # 0.0 0.5 0.9 1.0
+                    grayscale.all = true; # false
+                  };
+              };
             };
             completion = {
               height = "20%";
@@ -213,7 +253,7 @@ in {
             downloads = {
               location = {
                 directory = config.browsers.qutebrowser.downloadPath;
-                prompt = false;
+                prompt = true;
                 remember = true;
                 suggestion = "both";
               };
@@ -247,6 +287,13 @@ in {
               partial_timeout = 2000;
               spatial_navigation = true;
             };
+            fileselect = {
+              handler = "external";
+              single_file.command = config.attributes.defaultVTCommand
+                ++ [ "${pkgs.ranger}/bin/ranger" "--choosefile={}" ];
+              multiple_files.command = config.attributes.defaultVTCommand
+                ++ [ "${pkgs.ranger}/bin/ranger" "--choosefiles={}" ];
+            };
             keyhint.delay = 20;
             new_instance_open_target = "tab";
             new_instance_open_target_window = "last-focused";
@@ -269,7 +316,7 @@ in {
                 unrelated = "last";
               };
               # padding = "{'top': 0, 'bottom': 1, 'left': 5, 'right': 5}"; # FIXME: module fails to render dicts
-              position = "top";
+              position = "right";
               select_on_remove = "next";
               show = "multiple";
               tabs_are_windows = false;
