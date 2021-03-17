@@ -151,6 +151,11 @@ in rec {
       !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
       && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")
       && (lib.hasAttrByPath [ "local" "ebooks" ] meta && meta.local.ebooks == true)) bookmarks);
+  localDocs = bookmarks:
+    lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs (_: meta:
+      !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
+      && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")
+      && (lib.hasAttrByPath [ "local" "docs" ] meta && meta.local.docs == true)) bookmarks);
   localEmacsBookmarks = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs (_: meta:
       !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)

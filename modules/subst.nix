@@ -12,6 +12,7 @@ in rec {
   booksSearchCommand = config.content.ebooks.searchCommand;
   combyExcludes = lib.concatStringsSep "," config.dev.misc.comby.excludes;
   defaultBrowser = config.attributes.browser.default.cmd;
+  docsSearchCommand = config.paperworks.docflow.searchCommand;
   fallbackBrowser = config.attributes.browser.fallback.cmd;
   defaultContainerShell = config.ext.virtualization.docker.core.defaultContainerShell;
   defaultVTCmd = lib.concatStringsSep " " config.attributes.defaultVTCommand;

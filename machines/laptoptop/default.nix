@@ -380,7 +380,7 @@ in {
         group = "users";
       };
     };
-    publishing = { enable = true; };
+    docflow.enable = true;
     processors.enable = true;
   };
 

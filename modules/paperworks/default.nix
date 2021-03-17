@@ -1,9 +1,11 @@
 { config, inputs, lib, pkgs, ... }:
+with import ../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
   cfg = config.paperworks;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   stable = import inputs.stable ({
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
@@ -151,10 +153,24 @@ in {
           <literal>$dataDir/manage-paperless</literal>
         '';
       };
-      publishing.enable = mkOption {
+      docflow.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable publishing tooling.";
+        description = "Whether to enable docflow tooling";
+      };
+      docflow.extensions = mkOption {
+        type = types.listOf types.str;
+        default = [ "doc" "docx" "xls" "xlsx" "odt" ];
+        description = "Documents file extensions to consider";
+      };
+      docflow.searchCommand = mkOption {
+        type = types.str;
+        default = "${pkgs.fd}/bin/fd --full-path --absolute-path ${
+            lib.concatStringsSep " " (lib.forEach cfg.docflow.extensions (ext: "-e ${ext}"))
+          }";
+        visible = false;
+        internal = true;
+        description = "Shell command to use for collecting documents paths.";
       };
       processors.enable = mkOption {
         type = types.bool;
@@ -290,10 +306,46 @@ in {
         }];
       };
     })
-    (mkIf cfg.publishing.enable {
-      home-manager.users.${user} = { home.packages = [ stable.libreoffice ]; };
+    (mkIf cfg.docflow.enable {
+      nixpkgs.config.packageOverrides = _: rec {
+        open-doc = mkPythonScriptWithDeps "open-doc" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis stable.libreoffice ])
+          (readSubstituted ../subst.nix ./scripts/open-doc.py);
+        update-docs =
+          mkPythonScriptWithDeps "update-docs" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
+          (readSubstituted ../subst.nix ./scripts/update-docs.py);
+      };
+
+      systemd.user.services = builtins.listToAttrs (forEach (localDocs config.navigation.bookmarks.entries)
+        (root: {
+          name = "update-docs-${concatStringsSep "-" (takeLast 2 (splitString "/" root))}";
+          value = {
+            description = "Update ${concatStringsSep "-" (takeLast 2 (splitString "/" root))} contents";
+            after = [ "graphical-session-pre.target" ];
+            partOf = [ "graphical-session.target" ];
+            wantedBy = [ "graphical-session.target" ];
+            path = [ pkgs.bash ];
+            serviceConfig = {
+              Type = "simple";
+              WorkingDirectory = root;
+              ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
+                concatStringsSep "," cfg.docflow.extensions} -- ${
+                  pkgs.update-docs}/bin/update-docs --root ${root}";
+              StandardOutput = "journal";
+              StandardError = "journal";
+            };
+          };
+        }));
+
+      wmCommon.keys = [{
+        key = [ "d" ];
+        cmd = "${pkgs.open-doc}/bin/open-doc";
+        mode = "select";
+      }];
+
+      home-manager.users.${user} = { home.packages = with pkgs; [ stable.libreoffice open-doc update-docs ]; };
+
       pim.timetracking.rules = ''
-        current window $program == "libreoffice" ==> tag activity:paperworks,
+        current window $program == "libreoffice" ==> tag activity:docflow,
         current window $program == "libreoffice" ==> tag program:libreoffice,
       '';
     })
