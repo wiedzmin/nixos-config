@@ -77,6 +77,7 @@ in rec {
   firefoxSessionstorePath = homePrefix ".mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
 } // lib.optionalAttrs (config.browsers.qutebrowser.enable) rec {
   qutebrowserSessionsNameTemplate = config.browsers.qutebrowser.sessions.nameTemplate;
+  qutebrowserSessionsPath = config.browsers.qutebrowser.sessions.path;
 } // lib.optionalAttrs (config.wm.xmonad.enable) rec {
   xmonadPrimaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.primary 20;
   xmonadSecondaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.secondary 22;

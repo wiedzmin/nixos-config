@@ -8,7 +8,7 @@ from yaml import load, Loader
 from pystdlib.browser import qutebrowser_get_session_entries_org
 
 SESSIONS_PATH = f'{os.environ["HOME"]}/.local/share/qutebrowser/sessions/'
-DUMPS_PATH = f'{os.environ["HOME"]}/docs/org/qutebrowser/'
+DUMPS_PATH = '@qutebrowserSessionsPath@'
 DEFAULT_SESSION = "default.yml"
 
 
@@ -36,5 +36,5 @@ if session_data_org:
         for entry in window:
             org_lines.append(f"** {entry}\n")
 
-    with open(DUMPS_PATH + dump_name + ".org", "w") as s:
+    with open(DUMPS_PATH + "/" + dump_name + ".org", "w") as s:
         s.writelines(org_lines)
