@@ -1,6 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../util.nix { inherit config inputs lib pkgs; };
-
 with lib;
 
 let
@@ -33,9 +32,17 @@ in {
       isFallback = mkOption {
         type = types.bool;
         default = false;
-        description = ''
-          Next should be the fallback browser.
-        '';
+        description = "Next should be the fallback browser";
+      };
+      customConfig.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable custom configuration settings";
+      };
+      customConfig.path = mkOption {
+        type = types.str;
+        default = "nyxt/init.lisp";
+        description = "Path to custom configuration file under XDG config dir";
       };
       command = mkOption {
         type = types.str;
@@ -55,7 +62,9 @@ in {
     (mkIf cfg.enable {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ nyxt ];
-        xdg.configFile."nyxt/init.lisp".text = readSubstituted ../../subst.nix ./init.lisp; # NOTE: actually absent
+      } // optionalAttrs (cfg.customConfig.enable) {
+        # TODO: consider using attributes
+        xdg.configFile."${cfg.customConfig.path}".text = readSubstituted ../../subst.nix ./init.lisp;
       };
     })
     (mkIf (cfg.enable && cfg.isDefault) {
