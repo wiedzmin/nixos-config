@@ -462,7 +462,7 @@ in {
               {
                 block = "cpu";
                 interval = 1;
-                format = " {utilization}%";
+                format = " {utilization}";
               }
               {
                 block = "load";
@@ -471,8 +471,8 @@ in {
               }
               {
                 block = "memory";
-                format_mem = "{Mum}MB/{MTm}MB({Mup}%)";
-                format_swap = "{SUm}MB/{STm}MB({SUp}%)";
+                format_mem = "{Mum}MB/{MTm}MB";
+                format_swap = "{SUm}MB/{STm}MB";
                 display_type = "memory";
                 icons = true;
                 clickable = false;
