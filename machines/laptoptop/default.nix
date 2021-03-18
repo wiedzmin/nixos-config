@@ -454,6 +454,16 @@ in {
             keysym Alt_R = Multi_key
           '';
         };
+        xcompose = {
+          enable = true;
+          mappings = ''
+            # Mongolian-specific
+            <Multi_key> <m> <o> : "ө"
+            <Multi_key> <m> <O> : "Ө"
+            <Multi_key> <m> <u> : "ү"
+            <Multi_key> <m> <U> : "Ү"
+          '';
+        };
       };
       xkeysnail.enable = true;
       mouse = {

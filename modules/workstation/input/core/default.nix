@@ -23,6 +23,21 @@ in {
         default = "";
         description = "Xmodmaprc contents";
       };
+      xcompose.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to use XCompose functionality";
+      };
+      xcompose.key = mkOption {
+        type = types.enum [ "ralt" "rctrl" ]; # TODO: add more options
+        default = "ralt";
+        description = "XCompose activation key";
+      };
+      xcompose.mappings = mkOption {
+        type = types.lines;
+        default = '''';
+        description = "Custom XCompose mappings";
+      };
     };
   };
 
@@ -46,26 +61,25 @@ in {
           accelSpeed = "0.6";
         };
       };
-      services.xserver.xkbOptions = "compose:ralt"; # rctrl
-      home-manager.users.${user} = {
-        home.file = {
-          ".XCompose".text = ''
-            include "${pkgs.xorg.libX11}/share/X11/locale/en_US.UTF-8/Compose"
-
-            <Multi_key> <m> <o> : "ө"
-            <Multi_key> <m> <O> : "Ө"
-            <Multi_key> <m> <u> : "ү"
-            <Multi_key> <m> <U> : "Ү"
-          '';
-        };
-      };
     })
-    (mkIf cfg.xmodmap.enable {
+    (mkIf (cfg.enable && cfg.xmodmap.enable) {
       services.xserver.displayManager.sessionCommands = let xmodmaprc = pkgs.writeText "xmodmaprc" cfg.xmodmap.rc;
       in ''
         ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
         ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
       '';
+    })
+    (mkIf (cfg.enable && cfg.xcompose.enable) {
+      services.xserver.xkbOptions = "compose:${cfg.xcompose.key}";
+      home-manager.users.${user} = {
+        home.file = {
+          ".XCompose".text = ''
+            include "${pkgs.xorg.libX11}/share/X11/locale/en_US.UTF-8/Compose"
+
+            ${cfg.xcompose.mappings}
+          '';
+        };
+      };
     })
   ];
 }
