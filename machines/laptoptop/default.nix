@@ -164,6 +164,7 @@ in {
       enable = true;
       isFallback = true;
     };
+    nyxt.enable = true;
   };
 
   content = {
