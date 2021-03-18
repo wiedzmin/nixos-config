@@ -170,5 +170,10 @@ with lib;
       default = [ ];
       description = "Default virtual terminal command elements (including `command` flag, for executing something)";
     };
+    wms.enabled = mkOption {
+      description = "Whether any window manager is enabled in current setup";
+      type = types.bool;
+      default = false;
+    };
   };
 }

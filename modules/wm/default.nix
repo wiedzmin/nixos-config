@@ -102,6 +102,8 @@ in {
           (readSubstituted ../subst.nix ./scripts/keybindings.py);
       };
 
+      attributes.wms.enabled = true;
+
       services.xserver = {
         desktopManager = {
           xterm.enable = false;
