@@ -57,8 +57,6 @@ in {
     supportedFilesystems = [ "ntfs" ];
   };
 
-  environment.shells = with pkgs; [ "${bash}/bin/bash" "${zsh}/bin/zsh" "/run/current-system/sw/bin/zsh" ];
-
   time = {
     timeZone = "Europe/Moscow";
     hardwareClockInLocalTime = true;

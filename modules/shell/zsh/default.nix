@@ -48,6 +48,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      environment.shells = with pkgs; [ "${zsh}/bin/zsh" "/run/current-system/sw/bin/zsh" ];
       home-manager.users."${user}" = {
         # NOTE: play with ydotool client/server arch and respective permissions
         home.packages = with pkgs; [ nixpkgs-gdu.gdu rtss wmctrl xdotool rargs ydotool ];
