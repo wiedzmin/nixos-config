@@ -40,7 +40,7 @@ in {
       };
       bluetooth.enable = mkOption {
         type = types.bool;
-        default = true;
+        default = false;
         description = "Whether to enable Bluetooth support";
       };
       bluetooth.headsetMacAddresses = mkOption {
@@ -123,9 +123,9 @@ in {
     })
     (mkIf (cfg.enable && cfg.tools.enable) { programs.wavemon.enable = true; })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      programs.nm-applet.enable = if config.wm.i3.enable then true else false;
+      programs.nm-applet.enable = if (config.wm.i3.enable || !attributes.wms.enabled) then true else false;
 
-      wmCommon.autostart.entries = [ "blueman-manager" ];
+      wmCommon.autostart.entries = optionals (cfg.bluetooth.enable) [ "blueman-manager" ];
 
       home-manager.users."${user}" = {
         home.packages = with pkgs;
@@ -140,15 +140,14 @@ in {
         } // optionalAttrs (cfg.backend == "networkmanager") {
           cmd = "tmux new-window ${pkgs.networkmanager}/bin/nmtui";
         } // optionalAttrs (cfg.backend == "wireless") { cmd = "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli"; })
-        {
-          key = [ "b" ];
-          mode = "network";
-          cmd = "${pkgs.blueman}/bin/blueman-manager";
-        }
       ] ++ optionals (cfg.backend == "networkmanager" && cfg.wm.dmenu.enable) [{
         key = [ "w" ];
         cmd = ''${pkgs.runtimeShell} -l -c "exec ${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu"'';
         mode = "network";
+      }] ++ optionals (cfg.bluetooth.enable) [{
+        key = [ "b" ];
+        mode = "network";
+        cmd = "${pkgs.blueman}/bin/blueman-manager";
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
