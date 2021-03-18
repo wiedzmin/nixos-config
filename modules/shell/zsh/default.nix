@@ -6,6 +6,7 @@ let
   cfg = config.shell.zsh;
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
+  dataHome = hm.xdg.dataHome;
   nixpkgs-gdu = import inputs.nixpkgs-09_03_21 ({
     config = config.nixpkgs.config;
     system = "x86_64-linux";
@@ -71,7 +72,7 @@ in {
           history = {
             size = 10000;
             save = 10000;
-            path = ".histfile";
+            path = "${dataHome}/.histfile";
             ignoreDups = true;
             expireDuplicatesFirst = true;
             extended = true;
@@ -120,8 +121,7 @@ in {
 
             bindkey '^P' fuzzy-search-and-edit
           '';
-          sessionVariables = let dataHome = hm.xdg.dataHome;
-          in {
+          sessionVariables = {
             HISTFILE = "${dataHome}/.histfile";
             LESSHISTFILE = "${dataHome}/.lesshst";
             YSU_IGNORED_ALIASES = [ "g" "ll" ];

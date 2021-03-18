@@ -145,11 +145,7 @@ in {
           initExtra = optionalString (cfg.shell.recent.backend == "mcfly") ''
             source "${pkgs.mcfly}/share/mcfly/mcfly.zsh"
           '';
-          sessionVariables = let dataHome = hm.xdg.dataHome;
-          in {
-            HISTFILE = "${dataHome}/.histfile";
-            LESSHISTFILE = "${dataHome}/.lesshst";
-          } // optionalAttrs (cfg.shell.recent.backend == "mcfly") { MCFLY_FUZZY = "true"; };
+          sessionVariables = optionalAttrs (cfg.shell.recent.backend == "mcfly") { MCFLY_FUZZY = "true"; };
         };
       };
     })
