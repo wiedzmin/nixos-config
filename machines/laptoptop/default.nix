@@ -149,7 +149,7 @@ in {
   };
 
   browsers = {
-    core = {
+    ext = {
       enable = true;
       emacs.enable = true;
       wm.enable = true;

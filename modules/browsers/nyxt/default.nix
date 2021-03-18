@@ -79,10 +79,6 @@ in {
             && !config.browsers.firefox.isDefault;
           message = "browsers: nyxt: there should be exactly one default.";
         }
-        {
-          assertion = config.browsers.core.enable;
-          message = "browsers/nyxt: must enable browsers/core.";
-        }
       ];
 
       home-manager.users.${user} = {
@@ -106,10 +102,6 @@ in {
           assertion = !config.browsers.chromium.isFallback && !config.browsers.qutebrowser.isFallback
             && !config.browsers.firefox.isFallback;
           message = "browsers: nyxt: there should be exactly one fallback.";
-        }
-        {
-          assertion = config.browsers.core.enable;
-          message = "browsers/nyxt: must enable browsers/core.";
         }
       ];
       attributes.browser.fallback.cmd = cfg.command;

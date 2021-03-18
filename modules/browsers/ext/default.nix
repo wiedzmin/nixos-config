@@ -3,13 +3,13 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.browsers.core;
+  cfg = config.browsers.ext;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
 in {
   options = {
-    browsers.core = {
+    browsers.ext = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -84,7 +84,7 @@ in {
         }] && $title =~ /wikipedia/) ==> tag site:wikipedia,
       '';
 
-      programs.browserpass.enable = config.browsers.chromium.enable || config.browsers.chromium.enable;
+      programs.browserpass.enable = config.browsers.firefox.enable || config.browsers.chromium.enable;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.atomic-chrome ];

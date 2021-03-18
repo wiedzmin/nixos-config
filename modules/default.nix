@@ -9,7 +9,7 @@
     ./appearance/wallpaper
     ./appearance/xresources
     ./browsers/chromium
-    ./browsers/core
+    ./browsers/ext
     ./browsers/firefox
     ./browsers/firefox/impl.nix
     ./browsers/nyxt
