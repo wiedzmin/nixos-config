@@ -38,11 +38,12 @@ in {
           populateShellBookmarks = {
             after = [ ];
             before = [ "linkGeneration" ];
-            data = ''echo "${localBookmarksKVText
-              (enabledLocals config.navigation.bookmarks.entries)}" > ${homePrefix cfg.path}'';
+            data = ''
+              echo "${localBookmarksKVText (enabledLocals config.navigation.bookmarks.entries)}" > ${
+                homePrefix cfg.path
+              }'';
           };
         };
-        programs.fzf.enable = true;
         programs.zsh = {
           plugins = [{
             name = "fzf-marks";

@@ -188,6 +188,8 @@ in {
             src = inputs.zsh-syntax-highlighting;
           }];
         };
+        programs.direnv.enableZshIntegration = true;
+        programs.fzf.enableZshIntegration = true;
       };
     })
   ];

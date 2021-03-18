@@ -39,7 +39,6 @@ in {
       home-manager.users.${user} = {
         programs.direnv = {
           enable = true;
-          enableZshIntegration = true;
           enableNixDirenvIntegration = true;
         };
         xdg.configFile."direnv/direnv.toml".text = toToml {
@@ -47,14 +46,12 @@ in {
           whitelist = { prefix = cfg.whitelist; };
         };
       };
-      dev.git.batch.commands = {
-        direnv = [ "[ -f .envrc ] && direnv allow || exit 0" ];
-      };
+      dev.git.batch.commands = { direnv = [ "[ -f .envrc ] && direnv allow || exit 0" ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs:
         lib.optionals (cfg.emacs.granularity == "project") [ epkgs.direnv ]
-        ++ lib.optionals (cfg.emacs.granularity == "file") [ epkgs.nix-buffer epkgs.envrc];
+        ++ lib.optionals (cfg.emacs.granularity == "file") [ epkgs.nix-buffer epkgs.envrc ];
       ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/direnv.el;
     })
   ];
