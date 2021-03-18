@@ -175,6 +175,7 @@
         momcat = lib.nixosSystem {
           inherit system;
           modules = [
+            { nixpkgs.overlays = [ overlays.unstable ]; }
             (import ./machines/momcat)
             inputs.home-manager.nixosModules.home-manager
             inputs.unstable.nixosModules.notDetected
