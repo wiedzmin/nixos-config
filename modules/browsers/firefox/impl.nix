@@ -180,12 +180,6 @@ in {
         default = { };
         description = "Attribute set of Firefox profiles.";
       };
-
-      enableAdobeFlash = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable the unfree Adobe Flash plugin.";
-      };
     };
   };
 
@@ -214,7 +208,7 @@ in {
     home-manager.users."${user}" = {
       home.packages = let
         # The configuration expected by the Firefox wrapper.
-        fcfg = { enableAdobeFlash = cfg.enableAdobeFlash; };
+        fcfg = { };
 
         # A bit of hackery to force a config into the wrapper.
         browserName = cfg.package.browserName or (builtins.parseDrvName cfg.package.name).name;
