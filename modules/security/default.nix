@@ -3,12 +3,12 @@ with import ../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.custom.security;
+  cfg = config.ext.security;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in {
   options = {
-    custom.security = {
+    ext.security = {
       enable = mkOption {
         type = types.bool;
         default = false;

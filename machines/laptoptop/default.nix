@@ -294,7 +294,7 @@ in {
     misc.enable = true;
   };
 
-  custom.knowledgebase = {
+  knowledgebase = {
     enable = true;
     emacs.enable = true;
   };
@@ -475,7 +475,7 @@ in {
     };
   };
 
-  custom.security = {
+  ext.security = {
     enable = true;
     pinentryFlavor = "qt";
     polkit.silentAuth = true;

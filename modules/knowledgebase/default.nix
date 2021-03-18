@@ -3,11 +3,11 @@ with import ../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.custom.knowledgebase;
+  cfg = config.knowledgebase;
   user = config.attributes.mainUser.name;
 in {
   options = {
-    custom.knowledgebase = {
+    knowledgebase = {
       enable = mkOption {
         type = types.bool;
         default = false;

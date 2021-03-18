@@ -50,7 +50,7 @@ in rec {
   orgDir = config.ide.emacs.core.orgDir;
   orgWarningsFiledir = builtins.dirOf config.pim.orgmode.warningsFile;
   orgWarningsFilename = config.pim.orgmode.warningsFile;
-  passwordStorePath = config.custom.security.passwordStorePath;
+  passwordStorePath = config.ext.security.passwordStorePath;
   passwordPlaceholder = config.attributes.secret;
   pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
