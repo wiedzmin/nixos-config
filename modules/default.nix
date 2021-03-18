@@ -88,6 +88,7 @@
     ./wm/i3
     ./wm/stumpwm
     ./wm/xmonad
+    ./workstation/backups
     ./workstation/input/core
     ./workstation/input/mouse
     ./workstation/input/xkeysnail
