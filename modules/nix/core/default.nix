@@ -53,7 +53,6 @@ in {
     (mkIf (cfg.enable) {
       nix = {
         package = unstable.nixUnstable;
-        nixPath = lib.mkForce [ "nixpkgs=/etc/nixpkgs" ];
         useSandbox = true;
         readOnlyStore = true;
         requireSignedBinaryCaches = true;
