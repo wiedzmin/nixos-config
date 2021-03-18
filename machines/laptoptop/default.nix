@@ -282,14 +282,16 @@ in {
     fsDeduplication.enable = true;
   };
 
-  ide.emacs.core = {
-    enable = true;
-    wm.enable = true;
+  ide.emacs = {
+    core = {
+      enable = true;
+      wm.enable = true;
+    };
+    edit.enable = true;
+    navigation.enable = true;
+    history.enable = true;
+    misc.enable = true;
   };
-  ide.emacs.edit.enable = true;
-  ide.emacs.navigation.enable = true;
-  ide.emacs.history.enable = true;
-  ide.emacs.misc.enable = true;
 
   custom.knowledgebase = {
     enable = true;
