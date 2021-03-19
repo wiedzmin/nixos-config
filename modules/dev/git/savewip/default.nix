@@ -46,9 +46,7 @@ in {
           (readSubstituted ../../../subst.nix ./scripts/gitwip.py);
       };
 
-      dev.git.batch.commands = {
-        savewip = [ "${pkgs.gitwip}/bin/gitwip" ];
-      };
+      dev.git.batch.commands = { savewip = [ "${pkgs.gitwip}/bin/gitwip" ]; };
 
       systemd.user.services."git-save-wip" = {
         description = "Save work-in-progress in registered git repo(s)";
@@ -61,7 +59,7 @@ in {
         };
       };
       systemd.user.timers."git-save-wip" =
-        renderTimer "Save work-in-progress in registered git repo(s)" "2m" "3m" cfg.saveWip.when;
+        renderTimer "Save work-in-progress in registered git repo(s)" "2m" "3m" cfg.saveWip.when false "";
     })
   ];
 }

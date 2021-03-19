@@ -556,8 +556,8 @@ in {
         };
       };
       systemd.user.timers."backup-current-session-qutebrowser" =
-        renderTimer "Backup current qutebrowser session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency
-        "";
+        renderTimer "Backup current qutebrowser session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency ""
+        false "";
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable && cfg.isDefault) {
       wmCommon.keys = [

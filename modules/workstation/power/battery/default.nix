@@ -2,8 +2,7 @@
 with import ../../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
-let
-  cfg = config.workstation.power.battery; # TODO: consider checking if it is a laptop, or any similar check
+let cfg = config.workstation.power.battery; # TODO: consider checking if it is a laptop, or any similar check
 in {
   options = {
     workstation.power.battery = {
@@ -42,7 +41,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      systemd.user.timers."lowbatt" = renderTimer "check battery level" "1m" "1m" "";
+      systemd.user.timers."lowbatt" = renderTimer "check battery level" "1m" "1m" "" false "";
       systemd.user.services."lowbatt" = {
         description = "battery level notifier";
         serviceConfig.PassEnvironment = "DISPLAY";

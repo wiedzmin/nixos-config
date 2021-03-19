@@ -26,8 +26,12 @@ in {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ codesearch ];
         programs = {
-          zsh.sessionVariables = { CSEARCHINDEX = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex"; };
-          bash.sessionVariables = { CSEARCHINDEX = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex"; };
+          zsh.sessionVariables = {
+            CSEARCHINDEX = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex";
+          };
+          bash.sessionVariables = {
+            CSEARCHINDEX = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex";
+          };
         };
       };
       systemd.user.services."codesearch-reindex" = {
@@ -36,13 +40,14 @@ in {
         partOf = [ "graphical.target" ];
         serviceConfig = {
           Type = "oneshot";
-          Environment = [ "CSEARCHINDEX=${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex" ];
+          Environment =
+            [ "CSEARCHINDEX=${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex" ];
           ExecStart = "${pkgs.codesearch}/bin/cindex ${homePrefix config.navigation.bookmarks.workspaces.globalRoot}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
       };
-      systemd.user.timers."codesearch-reindex" = renderTimer "Codesearch index updating" "" "" "*-*-* 4:00:00";
+      systemd.user.timers."codesearch-reindex" = renderTimer "Codesearch index updating" "" "" "*-*-* 4:00:00" false "";
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.codesearch epkgs.projectile-codesearch ];

@@ -63,12 +63,10 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable && cfg.trash.enable) {
-      assertions = [
-        {
-          assertion = (cfg.trash.enable && cfg.trash.calendarTimespec != "");
-          message = "gc: must schedule trash cleaning once it was enabled.";
-        }
-      ];
+      assertions = [{
+        assertion = (cfg.trash.enable && cfg.trash.calendarTimespec != "");
+        message = "gc: must schedule trash cleaning once it was enabled.";
+      }];
 
       systemd.user.services."clean-trash" = {
         description = "Clean trash";
@@ -79,7 +77,7 @@ in {
           StandardError = "journal";
         };
       };
-      systemd.user.timers."clean-trash" = renderTimer "Clean trash" "" "" cfg.trash.calendarTimespec;
+      systemd.user.timers."clean-trash" = renderTimer "Clean trash" "" "" cfg.trash.calendarTimespec false "";
     })
     (mkIf (cfg.enable && cfg.expired.enable) {
       assertions = [{
@@ -102,7 +100,7 @@ in {
         };
       };
       systemd.user.timers."purge-home-cache" =
-        renderTimer "Purge homedir cache" "" "" cfg.expired.calendarTimespec;
+        renderTimer "Purge homedir cache" "" "" cfg.expired.calendarTimespec false "";
       systemd.user.services."purge-temp-files" = {
         description = "Purge temporary files";
         serviceConfig = {
@@ -119,7 +117,7 @@ in {
         };
       };
       systemd.user.timers."purge-temp-files" =
-        renderTimer "Purge temporary files" "" "" cfg.expired.calendarTimespec;
+        renderTimer "Purge temporary files" "" "" cfg.expired.calendarTimespec false "";
     })
     (mkIf cfg.fsDeduplication.enable {
       home-manager.users.${user} = { home.packages = with pkgs; [ dupd jdupes rmlint fpart ]; };

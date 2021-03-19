@@ -41,9 +41,7 @@ in {
           (readSubstituted ../../../subst.nix ./scripts/gitpush.py);
       };
 
-      dev.git.batch.commands = {
-        push = [ "${pkgs.gitpush}/bin/gitpush" ];
-      };
+      dev.git.batch.commands = { push = [ "${pkgs.gitpush}/bin/gitpush" ]; };
 
       systemd.services."git-push-updates" = {
         description = "Push updates to registered git upstream(s)";
@@ -56,7 +54,7 @@ in {
         };
       };
       systemd.timers."git-push-updates" =
-        renderTimer "Push updates to registered git upstream(s)" "10m" "15m" cfg.pushUpdates.when;
+        renderTimer "Push updates to registered git upstream(s)" "10m" "15m" cfg.pushUpdates.when false "";
     })
   ];
 }

@@ -53,12 +53,14 @@ in rec {
         chmod a+x $out/bin/${name}
       '';
     };
-  renderTimer = desc: boot: active: cal: {
+  renderTimer = desc: boot: active: cal: persistent: unit: {
     description = "${desc}";
     wantedBy = [ "timers.target" ];
     timerConfig = lib.optionalAttrs (boot != "") { OnBootSec = "${boot}"; }
       // lib.optionalAttrs (active != "") { OnUnitActiveSec = "${active}"; }
-      // lib.optionalAttrs (cal != "") { OnCalendar = "${cal}"; };
+      // lib.optionalAttrs (cal != "") { OnCalendar = "${cal}"; }
+      // lib.optionalAttrs (persistent) { Persistent = "true"; }
+      // lib.optionalAttrs (unit != "") { Unit = "${unit}"; };
   };
   mkIndent = width: with lib; (concatStrings (genList (const " ") width));
   mkNewlineAndIndent = width: with lib; "\n" + (concatStrings (genList (const " ") width));

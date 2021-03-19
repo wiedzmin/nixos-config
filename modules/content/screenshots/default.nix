@@ -79,8 +79,7 @@ in {
           StandardError = "journal";
         };
       };
-      systemd.user.timers."order-screenshots" =
-        renderTimer "Screenshots ordering" "" "" cfg.ordering.timespec;
+      systemd.user.timers."order-screenshots" = renderTimer "Screenshots ordering" "" "" cfg.ordering.timespec false "";
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [

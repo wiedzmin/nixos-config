@@ -30,7 +30,8 @@ in {
           StandardError = "journal";
         };
       };
-      systemd.user.timers."nix-update-index" = renderTimer "Update nix packages metadata index" "" "" "*-*-* 6:00:00";
+      systemd.user.timers."nix-update-index" =
+        renderTimer "Update nix packages metadata index" "" "" "*-*-* 6:00:00" false "";
     })
   ];
 }
