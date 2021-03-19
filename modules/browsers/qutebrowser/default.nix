@@ -335,6 +335,7 @@ in {
           };
           keyBindings = {
             normal = { # TODO: create helper function(s) for cross layout bindings generation at Nix level
+              # TODO: play with "set completion.open_categories [<something>] ;; set-cmd-text -s :<cmd>" and "completion-item-focus next-category"
               # "e" = "edit-text"; # TODO: bind appropriately
               "xb" = "config-cycle statusbar.hide";
               "чи" = "config-cycle statusbar.hide";
