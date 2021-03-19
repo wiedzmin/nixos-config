@@ -352,6 +352,8 @@ in {
               "<Ctrl-Return>" = "selection-follow -t";
               "<Ctrl-Shift-T>" = "undo";
               "<Ctrl-Shift-Е>" = "undo";
+              "u" = "undo";
+              "г" = "undo";
               "<Ctrl-W>" = "tab-close";
               "<Ctrl-Ц>" = "tab-close";
               "<Ctrl-g>" = "stop";
