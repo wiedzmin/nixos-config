@@ -9,6 +9,37 @@ from pystdlib.shell import term_create_window, tmux_create_window
 from pystdlib import shell_cmd
 
 
+def format_host_meta(host, meta, terse=False):
+    ips = meta.get('ips')
+    if not ips:
+        notify("[sshmenu]", "missing '{ips}' attribute for '{host}'", urgency=URGENCY_CRITICAL)
+        sys.exit(1)
+    ip = ips[0]
+    user = meta.get("user")
+    port = meta.get("port")
+    result = f"{' -l ' + user if user else ''}{' -p ' + str(port) if port else ''} {ip}"
+    if terse:
+        result = f"{user + '@' if user else ''}{ip}{':' + str(port) if port else ''}"
+    return result
+
+
+def list_jump_hosts(host_meta, extra_hosts_data):
+    result = []
+    meta = host_meta
+    while True:
+        jump = meta.get("jump")
+        if not jump:
+            break
+        jump_meta = extra_hosts_data.get(jump)
+        if not jump_meta:
+            notify("[sshmenu]", "missing host definition for `{jump}`", urgency=URGENCY_CRITICAL)
+            sys.exit(1)
+        jump_meta.update({"host": jump})
+        result.insert(0, jump_meta)
+        meta = jump_meta
+    return result
+
+
 parser = argparse.ArgumentParser(description="Execute command over SSH.")
 parser.add_argument("--choices", dest="show_choices", action="store_true",
                    default=False, help="show predefined command choices")
@@ -25,12 +56,11 @@ host = get_selection(extra_hosts_data.keys(), "ssh to", case_insensitive=True, l
 
 if host:
     host_meta = extra_hosts_data[host]
-    host_vpn = host_meta.get("vpn", None)
+    host_vpn = host_meta.get("vpn")
     if host_vpn:
         shell_cmd(f"vpnctl --start {host_vpn}")
-    ssh_user = host_meta.get("user", None)
-    ssh_port = host_meta.get("port", None)
-    cmd = f"ssh{' -l ' + ssh_user if ssh_user else ''}{' -p ' + str(ssh_port) if ssh_port else ''} {host_meta['ips'][0]}"
+    jump_hosts = list_jump_hosts(host_meta, extra_hosts_data)
+    cmd = f"ssh {' '.join(['-J ' + format_host_meta(host_meta['host'], host_meta, terse=True) for host_meta in jump_hosts])} {format_host_meta(host, host_meta)}"
     if args.show_choices:
         command_choices = json.loads(r.get("net/command_choices"))
         choice = get_selection(command_choices, "execute", case_insensitive=True, lines=5, font="@wmFontDmenu@")
