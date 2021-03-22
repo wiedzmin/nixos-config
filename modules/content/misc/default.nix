@@ -80,6 +80,7 @@ in {
           pigz
           # =======
           ytfzf
+          dfmt
 
           monolith
           tartube

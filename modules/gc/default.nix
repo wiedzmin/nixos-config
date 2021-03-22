@@ -120,7 +120,7 @@ in {
         renderTimer "Purge temporary files" "" "" cfg.expired.calendarTimespec false "";
     })
     (mkIf cfg.fsDeduplication.enable {
-      home-manager.users.${user} = { home.packages = with pkgs; [ dupd jdupes rmlint fpart ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ dupd jdupes rmlint fpart czkawka ]; };
     })
   ];
 }

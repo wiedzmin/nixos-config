@@ -35,9 +35,7 @@ in {
       services.redis.enable = true;
       systemd.services.redis.postStart = cfg.instructions;
 
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ nurpkgs.redis-tui ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ nurpkgs.redis-tui usbview ]; };
     })
   ];
 }

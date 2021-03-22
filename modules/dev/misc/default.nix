@@ -111,7 +111,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ diffoscope icdiff patchutils wiggle ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ diffoscope icdiff patchutils wiggle xmldiff ]; };
     })
     (mkIf (cfg.enable && cfg.networking.enable) {
       programs = {
