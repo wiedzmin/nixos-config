@@ -174,7 +174,9 @@ in rec {
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
   mkBookmarkDest = meta:
     {
-      url = meta.url + lib.optionalString (lib.hasAttrByPath [ "searchSuffix" ] meta) meta.searchSuffix;
+      url = meta.url + lib.optionalString
+        (lib.hasAttrByPath [ "searchSuffix" ] meta && !(lib.hasAttrByPath [ "jump" ] meta && meta.jump == true))
+        meta.searchSuffix;
     } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
     // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
   remoteWebjumps = remotes: sep: tagSep:
