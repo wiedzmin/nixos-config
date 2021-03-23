@@ -73,7 +73,7 @@ with lib;
     mimetypes.ebook = mkOption {
       description = "MIME types to handle as e-books";
       type = types.listOf types.str;
-      default = [ "application/pdf" "image/vnd.djvu" ];
+      default = [ "application/pdf" "image/vnd.djvu" "application/epub+zip" ];
     };
     mimetypes.images = mkOption {
       description = "MIME types to handle as graphic images";
