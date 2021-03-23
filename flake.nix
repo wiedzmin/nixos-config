@@ -124,22 +124,6 @@
         };
       };
     in {
-      templates = {
-        # TODO: debug and add python
-        ansible = {
-          path = ./modules/dev/misc/templates/ansible;
-          description = "Ansible environment.";
-        };
-        media.encode = {
-          path = ./modules/content/media/templates/encode;
-          description = "Various multimedia conversions.";
-        };
-        staging = {
-          path = ./modules/nix/core/templates/staging;
-          description = "Staging packages sandbox environment.";
-        };
-      };
-
       devShell."${system}" = import ./shell.nix { pkgs = unstable.legacyPackages.${system}; };
 
       nixosConfigurations = {
