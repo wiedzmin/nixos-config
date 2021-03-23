@@ -56,6 +56,10 @@
       url = "github:minad/bookmark-view";
       flake = false;
     };
+    emacs-consult-projectile = {
+      url = "gitlab:OlMon/consult-projectile";
+      flake = false;
+    };
 
     git-extra-commands = {
       url = "github:unixorn/git-extra-commands";

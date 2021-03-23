@@ -149,6 +149,12 @@
   (consult-view-open-function #'bookmark-jump)
   (consult-view-list-function #'bookmark-view-names))
 
+(use-package consult-projectile
+  :load-path "@emacsConsultProjectilePath@"
+  :after projectile
+  :bind
+  ("C-<f1>" . consult-projectile))
+
 (use-package consult-flycheck
   :after consult
   :bind
@@ -367,7 +373,6 @@
     (let ((projectile-switch-project-action #'custom/open-project-magit-status))
       (projectile-switch-project-by-name project)))
   :bind
-  ("C-<f1>" . projectile-switch-project)
   (:map custom-projectile-map
         ("C" . projectile-commander)
         ("d" . projectile-dired)

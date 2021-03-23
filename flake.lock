@@ -47,6 +47,22 @@
         "type": "github"
       }
     },
+    "emacs-consult-projectile": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1616370012,
+        "narHash": "sha256-DCqq0O7HNTL20LvYmf5OTm7o6yls4RbT8yldjSO+ziQ=",
+        "owner": "OlMon",
+        "repo": "consult-projectile",
+        "rev": "a8c311ca21faaef5a53c4fc102870494870649d1",
+        "type": "gitlab"
+      },
+      "original": {
+        "owner": "OlMon",
+        "repo": "consult-projectile",
+        "type": "gitlab"
+      }
+    },
     "emacs-ob-go": {
       "flake": false,
       "locked": {
@@ -271,6 +287,7 @@
         "emacs": "emacs",
         "emacs-bookmark-view": "emacs-bookmark-view",
         "emacs-bruh": "emacs-bruh",
+        "emacs-consult-projectile": "emacs-consult-projectile",
         "emacs-ob-go": "emacs-ob-go",
         "emacs-org-appear": "emacs-org-appear",
         "git-extra-commands": "git-extra-commands",

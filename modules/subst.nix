@@ -32,6 +32,7 @@ in rec {
   emacsOrgAppearPath = inputs.emacs-org-appear;
   emacsBruhPath = inputs.emacs-bruh;
   emacsBookmarkViewPath = inputs.emacs-bookmark-view;
+  emacsConsultProjectilePath = inputs.emacs-consult-projectile;
   factoryCalendarKey = "scheduling/fcalendar";
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;
