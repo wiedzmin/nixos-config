@@ -1,0 +1,138 @@
+[tools.yapf]
+align_closing_bracket_with_visual_indent = true
+allow_split_before_default_or_named_assigns = true
+arithmetic_precedence_indication = true
+based_on_style = pep8
+blank_line_before_nested_class_or_def = true
+blank_lines_around_top_level_definition = 2
+coalesce_brackets = true
+column_limit = {{ .pythonColumnLimit }}
+each_dict_entry_on_separate_line = true
+indent_width = 4
+spaces_before_comment = 2
+split_before_first_argument = true
+split_before_logical_operator = true
+split_before_named_assigns = true
+split_complex_comprehension = true
+
+[tool.pylint.master]
+ignore = "CVS"
+persistent = "yes"
+jobs = 1
+unsafe-load-any-extension = "no"
+optimize-ast = "no"
+
+[tool.pylint.messages_control]
+disable = ["apply-builtin","backtick","basestring-builtin","buffer-builtin","cmp-builtin","cmp-method","coerce-builtin",
+           "coerce-method","delslice-method","dict-iter-method","dict-view-method","execfile-builtin","file-builtin",
+           "filter-builtin-not-iterating","getslice-method","hex-method","import-star-module-level","indexing-exception",
+           "input-builtin","intern-builtin","long-builtin","long-suffix","map-builtin-not-iterating","metaclass-assignment",
+           "next-method-called","no-absolute-import","nonzero-method","oct-method","old-division","old-ne-operator",
+           "old-octal-literal","old-raise-syntax","parameter-unpacking","print-statement","raising-string","range-builtin-not-iterating",
+           "raw_input-builtin","reduce-builtin","reload-builtin","round-builtin","setslice-method","standarderror-builtin",
+           "suppressed-message","unichr-builtin","unicode-builtin","unpacking-in-except","useless-suppression","using-cmp-argument",
+           "xrange-builtin","zip-builtin-not-iterating"]
+
+[tool.pylint.reports]
+output-format = "text"
+files-output = "no"
+reports = "yes"
+evaluation = "10.0 - ((float(5 * error + warning + refactor + convention) / statement) * 10)"
+
+[tool.pylint.variables]
+init-import = "no";
+dummy-variables-rgx = "_$|dummy";
+callbacks = "cb_,_cb";
+
+[tool.pylint.typecheck]
+ignore-mixin-members = "yes"
+
+[tool.pylint.spelling]
+spelling-store-unknown-words = "no"
+
+[tool.pylint.similarities]
+min-similarity-lines =  4
+ignore-comments = "yes"
+ignore-docstrings = "yes"
+ignore-imports = "no"
+
+[tool.pylint.miscellaneous]
+notes = ["fixme","xxx","todo"]
+
+[tool.pylint.format]
+max-line-length = {{ .pythonColumnLimit }};
+ignore-long-lines = "^s*(# )?<?https?://S+>?$";
+single-line-if-stmt = "no";
+no-space-check = ["trailing-comma","dict-separator"]
+max-module-lines = 1000
+indent-string = "'    '";
+indent-after-paren = 4
+
+[tool.pylint.logging]
+logging-modules = "logging"
+
+[tool.pylint.basic]
+bad-functions = ["map","filter","input"];
+good-names = ["map","filter","input","i","j","k","ex","Run","_"];
+bad-names = ["foo","bar","baz","toto","tutu","tata"];
+include-naming-hint = "no";
+function-rgx = "[a-z_][a-z0-9_]{2,30}$";
+function-name-hint = "[a-z_][a-z0-9_]{2,30}$";
+variable-rgx = "[a-z_][a-z0-9_]{2,30}$";
+variable-name-hint = "[a-z_][a-z0-9_]{2,30}$";
+const-rgx = "(([A-Z_][A-Z0-9_]*)|(__.*__))$";
+const-name-hint = "(([A-Z_][A-Z0-9_]*)|(__.*__))$";
+attr-rgx = "[a-z_][a-z0-9_]{2,30}$";
+attr-name-hint = "[a-z_][a-z0-9_]{2,30}$";
+argument-rgx = "[a-z_][a-z0-9_]{2,30}$";
+argument-name-hint = "[a-z_][a-z0-9_]{2,30}$";
+class-attribute-rgx = "([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$";
+class-attribute-name-hint = "([A-Za-z_][A-Za-z0-9_]{2,30}|(__.*__))$";
+inlinevar-rgx = "[A-Za-z_][A-Za-z0-9_]*$";
+inlinevar-name-hint = "[A-Za-z_][A-Za-z0-9_]*$";
+class-rgx = "[A-Z_][a-zA-Z0-9]+$";
+class-name-hint = "[A-Z_][a-zA-Z0-9]+$";
+module-rgx = "(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$";
+module-name-hint = "(([a-z_][a-z0-9_]*)|([A-Z][a-zA-Z0-9]+))$";
+method-rgx = "[a-z_][a-z0-9_]{2,30}$";
+method-name-hint = "[a-z_][a-z0-9_]{2,30}$";
+no-docstring-rgx = "^_";
+docstring-min-length = "-1";
+
+[tool.pylint.elif]
+max-nested-blocks = 5
+
+[tool.pylint.design]
+max-args = 5;
+ignored-argument-names = "_.*";
+max-locals = 15
+max-returns = 6
+max-branches = 12
+max-statements = 50
+max-parents = 7
+max-attributes = 7
+min-public-methods = 2
+max-public-methods = 20
+max-bool-expr = 5
+
+[tool.pylint.imports]
+deprecated-modules = ["regsub","TERMIOS","Bastion","rexec"]
+
+[tool.pylint.classes]
+defining-attr-methods = ["__init__","__new__","setUp"]
+valid-classmethod-first-arg = "cls"
+valid-metaclass-classmethod-first-arg = "mcs"
+exclude-protected = ["_asdict","_fields","_replace","_source","_make"]
+
+[tool.pylint.exceptions]
+overgeneral-exceptions = [ "Exception" ]
+
+[tool.isort]
+{{ if .pythonEnableBlack }}profile = "black"{{ end }}
+line_length = {{ .pythonColumnLimit }}
+indent = "'    '"
+multi_line_output = 2
+sections = ["FUTURE","STDLIB","FIRSTPARTY","THIRDPARTY","LOCALFOLDER"];
+length_sort = 0
+forced_separate = ["django.contrib","django.utils"]
+default_section = "FIRSTPARTY"

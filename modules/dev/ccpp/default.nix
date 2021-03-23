@@ -47,7 +47,7 @@ in {
         "h" = "coding:c";
         "hpp" = "coding:cpp";
       };
-      dev.projectenv.projectTemplates = {
+      dev.projectenv.templates.entries = {
         "ccpp.generic" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/ccpp/templates/generic";
         "ccpp.cmake" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/ccpp/templates/cmake";
       };

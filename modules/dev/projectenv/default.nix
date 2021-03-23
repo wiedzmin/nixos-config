@@ -29,12 +29,17 @@ in {
         default = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.devenv-backup";
         description = "File name for dev-env files list.";
       };
-      projectTemplates = mkOption {
+      templates.entries = mkOption {
         type = types.attrs;
         default = { };
         description = "Collection of project templates paths";
       };
-      templateSettings = mkOption {
+      templates.settings.common = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Common part of settings collection to be used in template instantiation";
+      };
+      templates.settings.full = mkOption {
         type = types.attrs;
         default = { };
         description = "Collection of settings to be used in template instantiation";
@@ -74,10 +79,11 @@ in {
 
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set projectenv/templates ${
-          strings.escapeNixString (builtins.toJSON cfg.projectTemplates)
+          strings.escapeNixString (builtins.toJSON cfg.templates.entries)
         }
         ${pkgs.redis}/bin/redis-cli set projectenv/settings ${
-          strings.escapeNixString (builtins.toJSON cfg.templateSettings)
+          strings.escapeNixString
+          (builtins.toJSON (cfg.templates.settings.full // { "common" = cfg.templates.settings.common; }))
         }
       '';
     })

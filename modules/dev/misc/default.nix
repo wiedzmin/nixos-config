@@ -100,14 +100,12 @@ in {
         };
         "*.md" = { trim_trailing_whitespace = false; };
       };
-      dev.projectenv.templateSettings = {
-        "common" = {
-          gitUsername = config.attributes.mainUser.fullName;
-          gitEmail = config.attributes.mainUser.email;
-          gpgSigningKey = config.attributes.mainUser.gpgKeyID;
-          bugReferenceBugRegexp = "\\\\#\\\\(?2:[0-9]+\\\\)\\\\>";
-          inputsUnstableRev = inputs.unstable.rev;
-        };
+      dev.projectenv.templates.settings.common = {
+        gitUsername = config.attributes.mainUser.fullName;
+        gitEmail = config.attributes.mainUser.email;
+        gpgSigningKey = config.attributes.mainUser.gpgKeyID;
+        bugReferenceBugRegexp = "\\\\#\\\\(?2:[0-9]+\\\\)\\\\>";
+        inputsUnstableRev = inputs.unstable.rev;
       };
     })
     (mkIf (cfg.enable && cfg.patching.enable) {

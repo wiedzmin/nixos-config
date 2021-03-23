@@ -40,7 +40,7 @@ in {
           indent_size = "2";
         };
       };
-      dev.projectenv.projectTemplates = {
+      dev.projectenv.templates.entries = {
         "frontend.vue" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/frontend/templates/vue";
       };
     })
