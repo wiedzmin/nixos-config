@@ -17,8 +17,16 @@ let
     gomp
   ];
 in mkShell {
-  buildInputs = base ++ stats ++ git
-    ++ [ go-bindata goconvey golangci-lint gomodifytags gopkgs gotools nurpkgs.wiedzmin.gohack ];
+  buildInputs = base ++ stats ++ git ++ [
+    go-bindata
+    goconvey
+    golangci-lint
+    gomodifytags
+    gopkgs
+    gotools
+    nurpkgs.wiedzmin.go-mod-outdated
+    nurpkgs.wiedzmin.gohack
+  ];
   shellHook = ''
     [ -f "./.aux" ] && source ./.aux
   '';
