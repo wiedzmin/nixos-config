@@ -82,6 +82,8 @@ in {
         "golang.nix" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/golang/templates/go2nix";
         "golang.project" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/golang/templates/project";
       };
+
+      dev.projectenv.templates.settings.common = { "golangEnableModules" = true; };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {
