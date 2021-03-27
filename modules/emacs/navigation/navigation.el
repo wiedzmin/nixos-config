@@ -500,6 +500,14 @@
   (goggles-mode)
   (setq-default goggles-pulse t))
 
+(use-package magit-todos
+   :after (magit projectile)
+   :bind
+   (:map mode-specific-map
+         ("C-d" . magit-todos-list))
+   (:map custom-projectile-map
+         ("T" . magit-todos-list)))
+
 (define-hostmode poly-nix-hostmode :mode 'nix-mode)
 
 (define-innermode poly-emacs-innermode

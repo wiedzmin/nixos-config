@@ -38,6 +38,7 @@ in {
         epkgs.goggles
         epkgs.imenu-anywhere
         epkgs.link-hint
+        epkgs.magit-todos
         epkgs.manage-minor-mode-table
         epkgs.marginalia
         epkgs.mwim
