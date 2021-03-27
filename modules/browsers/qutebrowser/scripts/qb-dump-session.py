@@ -15,6 +15,8 @@ DEFAULT_SESSION = "default.yml"
 parser = argparse.ArgumentParser(description="Dump QB session.")
 parser.add_argument("--name", "-n", dest="dump_name",
                     help="Session dump filename")
+parser.add_argument("--flat", dest="flat", action="store_true",
+                    help="Flatten session contents (drop windows mapping)")
 args = parser.parse_args()
 
 dump_name = None
@@ -31,10 +33,14 @@ if session_data_org:
     org_lines = []
     count = 1
     for window in session_data_org:
-        org_lines.append(f"* window {count}\n")
-        count += 1
+        if not args.flat:
+            org_lines.append(f"* window {count}\n")
+            count += 1
         for entry in window:
-            org_lines.append(f"** {entry}\n")
+            if args.flat:
+                org_lines.append(f"* {entry}\n")
+            else:
+                org_lines.append(f"** {entry}\n")
 
     with open(DUMPS_PATH + "/" + dump_name + ".org", "w") as s:
         s.writelines(org_lines)
