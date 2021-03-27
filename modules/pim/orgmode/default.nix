@@ -37,7 +37,6 @@ in {
       };
       agendaElPatch = mkOption {
         type = types.lines;
-        # FIXME: check not only for Firefox sessions path (below)
         default = ''
           ${lib.concatStringsSep "\n" (lib.mapAttrsToList (root: delay: ''
             (deferred:nextc
@@ -46,6 +45,7 @@ in {
                                     (lambda (entry) (when (and (f-file? entry)
                                                                (s-suffix? ".org" entry)
                                                                (not (s-prefix? "${config.browsers.firefox.sessions.path}" entry))
+                                                               (not (s-prefix? "${config.browsers.qutebrowser.sessions.path}" entry))
                                                                (not (s-contains? "journal" entry)) ;; maybe make option for such ignores
                                                                (file-exists-p entry))
                                                       (push entry org-agenda-files))) t)))
