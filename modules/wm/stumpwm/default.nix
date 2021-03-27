@@ -19,7 +19,7 @@ in {
 
   config = mkIf cfg.enable {
     assertions = [{
-      assertion = (!config.wm.xmonad.enable && !config.wm.i3.enable); # FIXME: update
+      assertion = (!config.wm.xmonad.enable && !config.wm.i3.enable);
       message = "stumpwm: exactly one WM could be enabled.";
     }];
 
@@ -30,7 +30,17 @@ in {
       stumpwm.enable = true;
     };
 
-    # FIXME: rework with regard to inputs, or slurp
-    # home-manager.users.${user} = { home.file = { ".stumpwm.d".source = inputs.stumpwm-config; }; };
+    home-manager.users.${user} = {
+      home.file = {
+        ".stumpwm.d/layouts" = {
+          source = ./layouts;
+          recursive = true;
+        };
+        ".stumpwm.d/custom.lisp".source = ./custom.lisp;
+        ".stumpwm.d/defs.lisp".source = ./defs.lisp;
+        ".stumpwm.d/init.lisp".source = ./init.lisp;
+        ".stumpwm.d/keydefs.lisp".source = ./keydefs.lisp;
+      };
+    };
   };
 }
