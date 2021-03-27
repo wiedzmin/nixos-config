@@ -105,6 +105,10 @@ in {
         }
       ];
 
+      dev.projectenv.templates.entries = {
+        "media.common" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/content/media/templates/common";
+      };
+
       services.mopidy = {
         enable = true;
         extensionPackages = with pkgs;
