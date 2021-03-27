@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.ide.emacs.core;
   user = config.attributes.mainUser.name;
-  uid = builtins.toString config.users.extraUsers.${user}.uid;
   drop-corrupted = mkShellScriptWithDeps "drop-corrupted" (with pkgs; [ gitAndTools.git coreutils ]) ''
     ${pkgs.systemd}/bin/systemctl --user stop emacs.service
     sleep 2 # consider parameterizing
@@ -159,8 +158,12 @@ in {
         ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
       home-manager.users.${user} = {
         programs = {
-          zsh.sessionVariables = { EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server"; };
-          bash.sessionVariables = { EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${uid}/emacs/server"; };
+          zsh.sessionVariables = {
+            EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
+          };
+          bash.sessionVariables = {
+            EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
+          };
         };
         home.packages = (with pkgs; [ drop-corrupted ispell nurpkgs.my_cookies ])
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];

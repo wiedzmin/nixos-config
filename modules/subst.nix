@@ -45,7 +45,7 @@ in rec {
   lspPythonMsExtraPaths =
     builtins.concatStringsSep " " (lib.forEach config.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
   mainUserName = config.attributes.mainUser.name;
-  mainUserID = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
+  mainUserID = config.attributes.mainUser.ID;
   mcCmd = "${pkgs.mc}/bin/mc";
   nmcliBinary = "${pkgs.networkmanager}/bin/nmcli"; # because there is no `bin` output for some reason
   orgDir = config.ide.emacs.core.orgDir;

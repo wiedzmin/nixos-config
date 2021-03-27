@@ -57,13 +57,9 @@ in {
         home.activation.emacsKnownProjects = {
           after = [ "linkGeneration" ];
           before = [ ];
-          data = let # FIXME: duplication
-            mainUserID = builtins.toString config.users.extraUsers."${config.attributes.mainUser.name}".uid;
-            emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
-            # TODO: consider extracting to a function (for ensuring running emacs instance)
-          in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.core.package}/bin/emacsclient -s /run/user/${mainUserID}/emacs/server -e '(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
-            builtins.concatStringsSep " " (localEmacsBookmarks cfg.entries)
-          }))' ";
+          data = emacsCmd "(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
+              builtins.concatStringsSep " " (localEmacsBookmarks cfg.entries)
+            }))";
         };
       };
       workstation.systemtraits.instructions = ''

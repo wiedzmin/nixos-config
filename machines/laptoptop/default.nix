@@ -24,6 +24,7 @@ in {
   attributes.machine.name = "laptoptop";
   attributes.mainUser = {
     name = config.identity.secrets.userName;
+    ID = builtins.toString config.users.extraUsers."${config.identity.secrets.userName}".uid;
     fullName = config.identity.secrets.fullName;
     email = config.identity.secrets.email;
     gpgKeyID = config.identity.secrets.gpgKeyID;

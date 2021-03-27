@@ -200,4 +200,8 @@ in rec {
   # TODO: consider adding keymap prompts
   genEmacsCustomKeymaps = meta:
     lib.concatStringsSep "\n" (lib.mapAttrsToList (name: binding: mkEmacsCustomKeymap name binding) meta);
+  emacsCmd = elisp:
+    let emacsServerSocketPath = "/run/user/${config.attributes.mainUser.ID}/emacs/server";
+    in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.core.package}/bin/emacsclient -s ${
+      emacsServerSocketPath} -e '${elisp}'";
 }

@@ -12,6 +12,10 @@ with lib;
       description = "Main user to be granted various service-related rights to";
       type = types.str;
     };
+    mainUser.ID = mkOption {
+      description = "Main user ID (see above)";
+      type = types.str;
+    };
     mainUser.fullName = mkOption {
       description = "Main user's full name";
       type = types.str;
