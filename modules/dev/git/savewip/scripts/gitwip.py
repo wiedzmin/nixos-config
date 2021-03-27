@@ -52,9 +52,6 @@ for glob in credentials_mapping.keys():
         pass_path = credentials_mapping[glob]["target"]
 
 
-# FIXME: user identity (name + email) is not always set at repo level
-# that said, we need a SPOT for git identities as used/implemented
-# in git-identity emacs package
 if not args.wip_force and not is_idle_enough("@xprintidleBinary@"):
     sys.exit(0)
 diff_size = get_diff_size(repo)

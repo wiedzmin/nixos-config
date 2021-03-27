@@ -60,6 +60,11 @@ in {
             };
           };
           extraConfig = {
+            "user" = {
+              name = config.attributes.mainUser.fullName;
+              email = config.attributes.mainUser.email;
+              signingKey = config.attributes.mainUser.gpgKeyID;
+            };
             "rebase" = {
               autoSquash = true;
               autoStash = true;
@@ -82,9 +87,7 @@ in {
       };
 
       shell.prompts.starship.modulesConfiguration = {
-        git_branch = {
-          only_attached = true;
-        };
+        git_branch = { only_attached = true; };
         git_commit = {
           commit_hash_length = 10;
           tag_disabled = false;
@@ -92,15 +95,15 @@ in {
         };
         git_status = {
           diverged = "⇕⇡$ahead_count⇣$behind_count";
-          conflicted = "✗ \($count\) ";
-          ahead = "⇡ \($count\) ";
-          behind = "⇣ \($count\) ";
-          untracked = "♾ ‍\($count\) ";
-          stashed = "☂ \($count\) ";
-          modified = "♨ \($count\) ";
-          staged = "[++\($count\)](green) ";
-          renamed = "⥂ \($count\) ";
-          deleted = "♺ \($count\) ";
+          conflicted = "✗ ($count) ";
+          ahead = "⇡ ($count) ";
+          behind = "⇣ ($count) ";
+          untracked = "♾ ‍($count) ";
+          stashed = "☂ ($count) ";
+          modified = "♨ ($count) ";
+          staged = "[++($count)](green) ";
+          renamed = "⥂ ($count) ";
+          deleted = "♺ ($count) ";
           style = "bold green";
         };
       };

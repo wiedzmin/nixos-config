@@ -44,9 +44,6 @@ for glob in credentials_mapping.keys():
         pass_path = credentials_mapping[glob]["target"]
 
 
-# FIXME: user identity (name + email) is not always set at repo level
-# that said, we need a SPOT for git identities as used/implemented
-# in git-identity emacs package
 source_branch_name = args.update_source_branch if args.update_source_branch != "" else get_active_branch(repo)
 remote = resolve_remote(repo, args.remote)
 if not remote:
