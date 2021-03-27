@@ -107,8 +107,8 @@ in {
 
       services.mopidy = {
         enable = true;
-        extensionPackages = with pkgs; [ mopidy-local mopidy-mpd mopidy-youtube ] ++
-                                       lib.optionals (cfg.mpris.enable) [ mopidy-mpris ];
+        extensionPackages = with pkgs;
+          [ mopidy-local mopidy-mpd mopidy-youtube ] ++ lib.optionals (cfg.mpris.enable) [ mopidy-mpris ];
         configuration = ''
           [mpd]
           hostname = 0.0.0.0
@@ -131,15 +131,18 @@ in {
           [file]
           enabled = true
           media_dirs =
-          ${mkIndent 4}${lib.concatStringsSep "${mkNewlineAndIndent 4}"
-            (lib.mapAttrsToList (tag: path: "${path}|${tag}") cfg.mopidy.file.roots)}
+          ${mkIndent 4}${
+            lib.concatStringsSep "${mkNewlineAndIndent 4}"
+            (lib.mapAttrsToList (tag: path: "${path}|${tag}") cfg.mopidy.file.roots)
+          }
           show_dotfiles = false
           follow_symlinks = false
           metadata_timeout = 1000
         '' + lib.optionalString (cfg.mopidy.file.excludes != [ ]) ''
           excluded_file_extensions =
-          ${mkIndent 4}${lib.concatStringsSep "${mkNewlineAndIndent 4}"
-            (lib.forEach cfg.mopidy.file.excludes (ext: ".${ext}"))}
+          ${mkIndent 4}${
+            lib.concatStringsSep "${mkNewlineAndIndent 4}" (lib.forEach cfg.mopidy.file.excludes (ext: ".${ext}"))
+          }
         '';
       };
       systemd.services.mopidy = {
@@ -155,8 +158,9 @@ in {
       home-manager.users.${user} = {
         programs.mpv = { # TODO: consider extracting options
           enable = true;
-          scripts = with pkgs.mpvScripts; ([ sponsorblock ] ++
-                                           lib.optionals (cfg.mpris.enable) [ mpris ]);
+          scripts = with pkgs.mpvScripts;
+            ([ sponsorblock thumbnail ] ++ # do we need custom [thumbnails] setup yet?
+              lib.optionals (cfg.mpris.enable) [ mpris ]);
           config = {
             save-position-on-quit = true;
             hdr-compute-peak = false; # prevents brightness changes
@@ -189,9 +193,7 @@ in {
         enable = true;
         webPort = builtins.toString cfg.mpd.clients.ympd.port;
       };
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ ario sonata cantata ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ ario sonata cantata ]; };
     })
     (mkIf (cfg.enable && cfg.youtubeFrontends.enable) {
       # TODO: try https://github.com/trizen/youtube-viewer
@@ -247,16 +249,14 @@ in {
         }
         {
           key = [ "Alt" "XF86AudioNext" ];
-          cmd = "${pkgs.playerctl}/bin/playerctl --all-players position ${
-              builtins.toString cfg.playback.deltaSeconds
-            }+";
+          cmd =
+            "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString cfg.playback.deltaSeconds}+";
           mode = "root";
         }
         {
           key = [ "Alt" "XF86AudioPrev" ];
-          cmd = "${pkgs.playerctl}/bin/playerctl --all-players position ${
-              builtins.toString cfg.playback.deltaSeconds
-            }-";
+          cmd =
+            "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString cfg.playback.deltaSeconds}-";
           mode = "root";
         }
       ];
