@@ -71,7 +71,7 @@ in {
         internal = true;
         description = "Chromium default window class.";
       };
-      extraOpts = mkOption { # FIXME: resurrect usage
+      extraOpts = mkOption {
         type = types.attrs;
         description = ''
           Extra chromium policy options, see

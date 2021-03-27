@@ -1,7 +1,6 @@
 {
   description = "Reproducible localhost configurations";
 
-  # TODO: elaborate and add templates
   # TODO: try cachix/pre-commit-hooks.nix
   # TODO: review flake organization reference links:
   # https://github.com/ysndr/blog/blob/e4588f821ce6aee9ec3688ee9af3d2e61e143530/flake.nix
