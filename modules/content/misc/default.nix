@@ -81,6 +81,8 @@ in {
           # =======
           ytfzf
           dfmt
+          # =======
+          past-time
 
           monolith
           tartube
