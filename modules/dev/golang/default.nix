@@ -43,11 +43,10 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      # FIXME: debug assertion with flakes
-      # assertions = [{
-      #   assertion = (cfg.goPath != "" && builtins.pathExists cfg.goPath);
-      #   message = "dev/golang: cannot proceed without valid $GOPATH value.";
-      # }];
+      assertions = [{
+        assertion = (cfg.enable && cfg.goPath != "");
+        message = "dev/golang: cannot proceed without valid $GOPATH value.";
+      }];
 
       home-manager.users.${user} = {
         home.packages = with pkgs; [ delve gopls go gomacro ];
