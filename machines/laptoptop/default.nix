@@ -350,9 +350,6 @@ in {
   ext.nix = {
     core = {
       enable = true;
-      permittedInsecurePackages = [
-        "openssl-1.0.2u" # TODO: check if we need it yet
-      ];
       emacs.enable = true;
     };
     cachix = {
