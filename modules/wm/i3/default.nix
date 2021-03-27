@@ -233,8 +233,7 @@ in {
           }
           {
             key = [ prefix "F7" ];
-            # FIXME: parameterize font setting
-            cmd = ''${pkgs.wmfocus}/bin/wmfocus -f "Iosevka":50 --chars 123456789 --textcoloralt "#eeeeee"'';
+            cmd = ''${pkgs.wmfocus}/bin/wmfocus --chars 123456789 --textcoloralt "#eeeeee"'';
             mode = "root";
           }
           {
