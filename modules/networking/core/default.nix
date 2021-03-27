@@ -22,13 +22,14 @@ in {
         default = "";
         description = "Host ID";
       };
+      predictableInterfaceNames = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to use predictable interface names";
+      };
       nameservers = mkOption {
         type = types.listOf types.str;
-        default = [
-          "77.88.8.1"
-          "77.88.8.8"
-          "8.8.8.8"
-        ];
+        default = [ "77.88.8.1" "77.88.8.8" "8.8.8.8" ];
         description = "DNS servers";
       };
     };
@@ -46,7 +47,7 @@ in {
         hostId = cfg.hostId;
         enableIPv6 = false;
         firewall.enable = false;
-        usePredictableInterfaceNames = lib.mkForce false; # TODO: consider extracting option
+        usePredictableInterfaceNames = lib.mkForce cfg.predictableInterfaceNames;
         resolvconf = {
           enable = true;
           dnsExtensionMechanism = false;
