@@ -109,7 +109,7 @@ in {
           (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.wiedzmin.pystdlib ])
           (readSubstituted ../../subst.nix ./scripts/manage_firefox_sessions.py);
       };
-      custom.programs.firefox = {
+      modified.programs.firefox = {
         enable = true;
         extensions = with nurpkgs.rycee.firefox-addons;
           [

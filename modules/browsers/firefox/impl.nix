@@ -6,7 +6,7 @@ let
 
   inherit (pkgs.stdenv.hostPlatform) isDarwin;
 
-  cfg = config.custom.programs.firefox;
+  cfg = config.modified.programs.firefox;
 
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
@@ -57,7 +57,7 @@ in {
   ];
 
   options = {
-    custom.programs.firefox = {
+    modified.programs.firefox = {
       enable = mkEnableOption "Firefox";
 
       package = mkOption {
