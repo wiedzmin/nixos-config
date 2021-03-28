@@ -37,7 +37,6 @@ in {
     };
   };
 
-  # FIXME: think off submodules interdependencies (ex: dev.git.batch <--> dev.git.autofetch)
   config = mkMerge [
     (mkIf cfg.enable {
       assertions = [

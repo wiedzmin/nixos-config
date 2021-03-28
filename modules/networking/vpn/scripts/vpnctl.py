@@ -156,7 +156,6 @@ def stop_service(name, meta):
 
 
 def stop_running(omit=None):
-    # FIXME: handle case with non-existent service unit
     devdns_stop_task = subprocess.Popen("systemctl stop docker-devdns.service",
                                         shell=True, stdout=subprocess.PIPE)
     assert devdns_stop_task.wait() == 0
