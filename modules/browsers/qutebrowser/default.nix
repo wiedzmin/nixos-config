@@ -304,10 +304,7 @@ in {
             };
             search.ignore_case = "smart";
             session.lazy_restore = false; # NOTE: see qute://warning/sessions for details
-            statusbar = {
-              # padding = "{'top': 4, 'bottom': 4, 'left': 4, 'right': 4}"; # FIXME: module fails to render dicts
-              widgets = [ "keypress" "url" "history" "tabs" "progress" ];
-            };
+            statusbar = { widgets = [ "keypress" "url" "history" "tabs" "progress" ]; };
             tabs = {
               background = true;
               last_close = "close";
@@ -315,7 +312,6 @@ in {
                 related = "next";
                 unrelated = "last";
               };
-              # padding = "{'top': 0, 'bottom': 1, 'left': 5, 'right': 5}"; # FIXME: module fails to render dicts
               position = "right";
               select_on_remove = "next";
               show = "multiple";
@@ -485,6 +481,15 @@ in {
             config.set('content.javascript.enabled', True, 'chrome://*/*')
             config.set('content.javascript.enabled', True, 'file://*')
             config.set('content.javascript.enabled', True, 'qute://*/*')
+
+            c.statusbar.padding['top'] = 4
+            c.statusbar.padding['bottom'] = 4
+            c.statusbar.padding['right'] = 4
+            c.statusbar.padding['left'] = 4
+            c.tabs.padding['top'] = 0
+            c.tabs.padding['bottom'] = 1
+            c.tabs.padding['right'] = 5
+            c.tabs.padding['left'] = 5
           '';
         };
       };
