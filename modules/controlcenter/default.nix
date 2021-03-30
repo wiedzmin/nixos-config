@@ -81,6 +81,9 @@ in {
         ]) (readSubstituted ../subst.nix ./scripts/srvctl.py);
         uptime_info = mkPythonScriptWithDeps "uptime_info" (with pkgs; [ dunst gnused procps ])
           (readSubstituted ../subst.nix ./scripts/uptime_info.sh);
+        # FIXME: bugs
+        ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
+          (readSubstituted ../subst.nix ./scripts/ifconfless.py);
       };
       home-manager.users.${user} = {
         home.packages = with pkgs; [ dmenu_runapps j4-dmenu-desktop ];
@@ -175,8 +178,7 @@ in {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ deadd-notification-center ];
         # TODO: review https://github.com/phuhl/linux_notification_center/blob/62c8e42d3cd8e913320d20a5c18d17725d2ec72d/style.css
-        xdg.configFile."deadd/deadd.css".text = ''
-        '';
+        xdg.configFile."deadd/deadd.css".text = "";
         xdg.configFile."deadd/deadd.conf".text = generators.toINI { } {
           notification-center = {
             hideOnMouseLeave = true;
@@ -229,10 +231,7 @@ in {
         description = "Deadd Notification Center";
         path = with pkgs; [ at-spi2-core glibc ];
         serviceConfig = {
-          Environment = [
-            "DISPLAY=:0"
-            "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus"
-          ];
+          Environment = [ "DISPLAY=:0" "DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus" ];
           PIDFile = "/run/notification-center.pid";
           Restart = "always";
           RestartSec = 10;
@@ -243,13 +242,6 @@ in {
         after = [ "graphical-session-pre.target" ];
         partOf = [ "graphical-session.target" ];
         wantedBy = [ "graphical-session.target" ];
-      };
-    })
-    (mkIf (cfg.enable && cfg.networking.enable) {
-      nixpkgs.config.packageOverrides = _: rec {
-        # FIXME: bugs
-        ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
-          (readSubstituted ../subst.nix ./scripts/ifconfless.py);
       };
     })
     (mkIf (cfg.enable && cfg.gmrun.enable) {
@@ -287,7 +279,7 @@ in {
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ srvctl uptime_info ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ srvctl uptime_info ifconfless ]; };
     })
   ];
 }
