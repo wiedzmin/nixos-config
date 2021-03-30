@@ -27,8 +27,7 @@
     nixpkgs-25_01_21.url = "github:nixos/nixpkgs/891f607d5301d6730cb1f9dcf3618bcb1ab7f10e";
     nixpkgs-09_03_21.url = "github:nixos/nixpkgs/29b0d4d0b600f8f5dd0b86e3362a33d4181938f9";
 
-    # FIXME: decouple from user
-    nur.url = "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR";
+    nur.url = "github:wiedzmin/NUR";
 
     home-manager.url = "github:rycee/home-manager";
     emacs.url = "github:nix-community/emacs-overlay";

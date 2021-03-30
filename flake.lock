@@ -257,13 +257,17 @@
     },
     "nur": {
       "locked": {
-        "narHash": "sha256-fOqsH5hoqB1YIFnmzil2FepFskkzc9M5CdpvyetOdHY=",
-        "path": "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR",
-        "type": "path"
+        "lastModified": 1617089579,
+        "narHash": "sha256-JpPmxk17Upm3heqYy4N/XOcSNycnvBunCGpXE/mC0b4=",
+        "owner": "wiedzmin",
+        "repo": "NUR",
+        "rev": "baaf0a4c47d115ca93ec00588d9c93eb2a2dfdeb",
+        "type": "github"
       },
       "original": {
-        "path": "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR",
-        "type": "path"
+        "owner": "wiedzmin",
+        "repo": "NUR",
+        "type": "github"
       }
     },
     "pass-zsh-completion": {
