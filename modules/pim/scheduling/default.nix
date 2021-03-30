@@ -44,7 +44,8 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        fcalendar = mkPythonScriptWithDeps "fcalendar" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.requests ])
+        fcalendar = mkPythonScriptWithDeps "fcalendar"
+          (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.requests ])
           (readSubstituted ../../subst.nix ./scripts/fcalendar.py);
       };
       home-manager.users."${user}" = {
@@ -52,25 +53,22 @@ in {
         home.activation.ensureSchedulingTimers = {
           after = [ ];
           before = [ "checkLinkTargets" ];
-          # FIXME: parameterize DBUS_SESSION_BUS_ADDRESS value
           data = ''
-            export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/1000/bus
+            export DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/${config.attributes.mainUser.ID}/bus
             ${lib.concatStringsSep "\n"
-            (lib.mapAttrsToList (name: _: "${pkgs.systemd}/bin/systemctl --user restart ${name}.timer")
-              cfg.entries)}
+            (lib.mapAttrsToList (name: _: "${pkgs.systemd}/bin/systemctl --user restart ${name}.timer") cfg.entries)}
           '';
         };
       };
       systemd.user.services = (lib.mapAttrs (name: meta: {
         description = "${name}";
-        serviceConfig = let
-          forWork = builtins.hasAttr "forWork" meta && meta.forWork == true;
+        serviceConfig = let forWork = builtins.hasAttr "forWork" meta && meta.forWork == true;
         in {
           Type = "oneshot";
           Environment = [ "DISPLAY=:0" ];
           ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
-          ExecStart = optionalString (forWork) ''${pkgs.fcalendar}/bin/fcalendar check --cmd "'' +
-                      ''${meta.cmd}'' + optionalString (forWork) ''"'';
+          ExecStart = optionalString (forWork) ''${pkgs.fcalendar}/bin/fcalendar check --cmd "'' + "${meta.cmd}"
+            + optionalString (forWork) ''"'';
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -81,7 +79,7 @@ in {
             Type = "oneshot";
             Environment = [ "DISPLAY=:0" ];
             ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
-            ExecStart = ''${pkgs.fcalendar}/bin/fcalendar update'';
+            ExecStart = "${pkgs.fcalendar}/bin/fcalendar update";
             StandardOutput = "journal";
             StandardError = "journal";
           };
