@@ -57,6 +57,11 @@ rec {
         desc = "my custom git hooks for `pre-commit`";
         searchSuffix = "search?q=";
       };
+      myrepos = {
+        "${wsRootAbs "github"}/wiedzmin/git-hooks" = {
+          checkout = [ "git clone 'https://github.com/wiedzmin/git-hooks.git' 'git-hooks'" ];
+        };
+      };
     };
     nur-packages = { local.path = "${wsRoot "github"}/wiedzmin/nur-packages"; };
     postgres = { local.path = "${wsRoot "github"}/postgres/postgres"; };

@@ -169,6 +169,11 @@ in rec {
     (lib.filterAttrs (_: meta:
       !(lib.hasAttrByPath [ "remote" "enable" ] meta && meta.remote.enable == false)
       && (lib.hasAttrByPath [ "remote" "url" ] meta && meta.remote.url != "")) bookmarks);
+  collectReposMetadata = bookmarks:
+    (lib.mapAttrs' (_: meta:
+      lib.nameValuePair (builtins.head (builtins.attrNames meta.myrepos))
+      (builtins.head (builtins.attrValues meta.myrepos)))
+      (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "myrepos" ] meta && meta.myrepos != { }) bookmarks));
   mkBookmarkName = meta: sep: tagSep:
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
@@ -202,6 +207,5 @@ in rec {
     lib.concatStringsSep "\n" (lib.mapAttrsToList (name: binding: mkEmacsCustomKeymap name binding) meta);
   emacsCmd = elisp:
     let emacsServerSocketPath = "/run/user/${config.attributes.mainUser.ID}/emacs/server";
-    in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.core.package}/bin/emacsclient -s ${
-      emacsServerSocketPath} -e '${elisp}'";
+    in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.core.package}/bin/emacsclient -s ${emacsServerSocketPath} -e '${elisp}'";
 }

@@ -27,19 +27,14 @@ in {
         default = { };
         description = "Myrepos custom commands attrset.";
       };
-      reposMetadata = mkOption {
-        type = types.attrsOf types.attrs;
-        default = { };
-        description = "Repositories metadata (e.g. commands, etc.) for Myrepos configs.";
-      };
       configContent = mkOption {
         type = types.lines;
         default = ''
           [DEFAULT]
           ${formatMyreposCommands cfg.commands 2}
 
-          ${lib.concatStringsSep "\n"
-            (lib.mapAttrsToList (path: meta: formatMyreposRepoMeta path meta 2) cfg.reposMetadata)}
+          ${lib.concatStringsSep "\n" (lib.mapAttrsToList (path: meta: formatMyreposRepoMeta path meta 2)
+            (collectReposMetadata config.navigation.bookmarks.entries))}
         '';
         visible = false;
         readOnly = true;
@@ -53,9 +48,7 @@ in {
     (mkIf cfg.enable {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ mr ];
-        home.file = {
-          ".mrconfig".text = cfg.configContent;
-        };
+        home.file = { ".mrconfig".text = cfg.configContent; };
       };
     })
   ];
