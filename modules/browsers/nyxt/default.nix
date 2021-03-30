@@ -34,15 +34,10 @@ in {
         default = false;
         description = "Next should be the fallback browser";
       };
-      customConfig.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable custom configuration settings";
-      };
-      customConfig.path = mkOption {
-        type = types.str;
-        default = "nyxt/init.lisp";
-        description = "Path to custom configuration file under XDG config dir";
+      extraConfig = mkOption {
+        type = types.lines;
+        default = "";
+        description = "Extra configuration";
       };
       command = mkOption {
         type = types.str;
@@ -62,10 +57,7 @@ in {
     (mkIf cfg.enable {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ nyxt ];
-      } // optionalAttrs (cfg.customConfig.enable) {
-        # TODO: consider using attributes
-        xdg.configFile."${cfg.customConfig.path}".text = readSubstituted ../../subst.nix ./init.lisp;
-      };
+      } // optionalAttrs (cfg.extraConfig != "") { xdg.configFile."nyxt/init.lisp".text = cfg.extraConfig; };
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       environment.sessionVariables = { BROWSER = cfg.command; };
