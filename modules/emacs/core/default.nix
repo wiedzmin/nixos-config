@@ -98,6 +98,7 @@ in {
         default = { };
         description = "Custom config-wide keymaps definitions";
       };
+      # TODO: consider adding option for `early-init`
       initElContent = mkOption {
         type = types.lines;
         default = ''
