@@ -17,18 +17,8 @@ let
     gomp
   ];
 in mkShell {
-  buildInputs = base ++ stats ++ git ++ [
-    nodejs-14_x
-    yarn
-  ];
-  # TODO: add automation for updating shellHook after merging Makefiles
+  buildInputs = base ++ stats ++ git ++ [ nodejs-14_x yarn ];
   shellHook = ''
-    [ -f "./identity" ] && source ./identity
-    chmod +x ./merge-makefiles.sh
-    echo
-    echo -e "build/docker - build Docker image"
-    echo -e "publish - push current results"
-    echo -e "publish/force - push current results (is needed occasionally)"
-    echo
+    [ -f "./.aux" ] && source ./.aux
   '';
 }
