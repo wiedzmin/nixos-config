@@ -192,7 +192,7 @@ in {
                 odd.fg = even.fg;
               };
               webpage = {
-                prefers_color_scheme_dark = true;
+                preferred_color_scheme = "dark";
                 # TODO: play with toggling darkmode, example just below:
                 # if c.colors.webpage.darkmode.enabled:
                 #     config.bind('\\d', 'set colors.webpage.darkmode.enabled False ;; restart')
