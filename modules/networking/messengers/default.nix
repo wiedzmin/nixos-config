@@ -13,13 +13,18 @@ in {
         default = false;
         description = "Whether to enable various messengers";
       };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Emacs-related setup (primarily telega.el)";
+      };
     };
   };
 
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ tdesktop zoom-us ];
+        home.packages = with pkgs; [ tdesktop zoom-us tdlib ];
         xdg.configFile."espanso/user/telegram.yml".text = ''
           name: telegram
           parent: default
@@ -45,6 +50,13 @@ in {
         define_keymap(re.compile("Slack"), {
             K("C-y"): K("C-v"),
         }, "Slack")
+      '';
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.telega ]; # review https://github.com/zevlg/telega.el as it goes
+      ide.emacs.core.config = ''
+        (use-package telega
+          :commands (telega))
       '';
     })
   ];

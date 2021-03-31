@@ -314,7 +314,10 @@ in {
       enable = true;
       hostId = "2ab69157";
     };
-    messengers.enable = true;
+    messengers = {
+      enable = true;
+      emacs.enable = true;
+    };
     hosts.enable = true;
     secrets = {
       enable = true;
