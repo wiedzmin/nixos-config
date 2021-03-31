@@ -14,7 +14,7 @@
   :if (and (eq system-type 'gnu/linux)
            (eq window-system 'x))
   :custom
-  (browse-url-browser-function 'browse-url-generic) ;; TODO: sync at module level
+  (browse-url-browser-function 'browse-url-generic)
   (browse-url-generic-program "@emacsBrowserGenericProgram@"))
 
 (use-package bruh
