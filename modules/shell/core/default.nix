@@ -49,6 +49,7 @@ in {
         home.packages = with pkgs; [
           libnotify # FWIW
           perl # for plugins
+          bashate # linter
         ];
       };
     })
