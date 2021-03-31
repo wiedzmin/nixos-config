@@ -6,36 +6,6 @@ let
   cfg = config.shell.tmux;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  thumbs-bin = pkgs.rustPlatform.buildRustPackage rec {
-    pname = "thumbs-bin";
-    version = "unstable-2020-09-07";
-
-    src = pkgs.fetchFromGitHub {
-      owner = "fcsonline";
-      repo = "tmux-thumbs";
-      rev = "fc6d5833a32e7a4d73c85be6712512a6b47cea69";
-      sha256 = "1n1qp9z574hrx2p3xx316vwfkjjg37kskpmsigfpz26sdnxldk7r";
-      fetchSubmodules = true;
-    };
-    cargoSha256 = "13z469xgz7478kfgw457fyc8lbf32wjvan1dxhf7kfzfjy15mlf4";
-  };
-  thumbs = mkDerivationTmux { # FIXME: broken at the moment, fixes pending
-    pluginName = "thumbs";
-    version = "unstable-2020-09-07";
-    rtpFilePath = "tmux-thumbs.tmux";
-    src = pkgs.fetchFromGitHub {
-      owner = "fcsonline";
-      repo = "tmux-thumbs";
-      rev = "fc6d5833a32e7a4d73c85be6712512a6b47cea69";
-      sha256 = "1n1qp9z574hrx2p3xx316vwfkjjg37kskpmsigfpz26sdnxldk7r";
-      fetchSubmodules = true;
-    };
-    postInstall = ''
-      sed -i -e '/BINARY/,$d' $target/tmux-thumbs.tmux
-      sed -i -e 's|''${CURRENT_DIR}/target/release/tmux-thumbs|${thumbs-bin}/bin/thumbs|g' $target/tmux-thumbs.sh
-      sed -i -e 's|PARAMS=(--dir "''${CURRENT_DIR}")|PARAMS=(-u -r)|g' $target/tmux-thumbs.sh
-    '';
-  };
   fzf-tmux-url-with-history = mkDerivationTmux {
     pluginName = "fzf-tmux-url";
     rtpFilePath = "fzf-url.tmux";
@@ -214,10 +184,6 @@ in {
           logging
           prefix-highlight
           sessionist
-          {
-            plugin = thumbs;
-            extraConfig = "set -g @thumbs-key 't'";
-          }
           {
             plugin = tmux-fzf-fixed;
             extraConfig = "set -g @tmux-fzf-launch-key 'w'";
