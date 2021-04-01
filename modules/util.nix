@@ -1,5 +1,7 @@
 { config, inputs, lib, pkgs, ... }:
 
+# TODO: review https://github.com/ysndr/blog/blob/e4588f821ce6aee9ec3688ee9af3d2e61e143530/blog.nix#L14
+
 let user = config.attributes.mainUser.name;
 in rec {
   addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
