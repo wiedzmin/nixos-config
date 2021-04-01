@@ -63,26 +63,16 @@ in {
           (builtins.toJSON (remoteWebjumps (enabledRemotes entries) separator.fields separator.tags))
         }
         ${pkgs.redis}/bin/redis-cli set nav/searchengines ${
-          lib.strings.escapeNixString (builtins.toJSON (remoteSearchEngines (enabledRemotes entries)
-            separator.fields separator.tags))
+          lib.strings.escapeNixString
+          (builtins.toJSON (remoteSearchEngines (enabledRemotes entries) separator.fields separator.tags))
         }
       '';
 
-      pim.timetracking.rules = with config.attributes.browser; ''
-        -- TODO: parameterize web resources
-        current window $program == [${
-          concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
-        }] ==> tag activity:web,
-        current window ($program == [${
-          concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
-        }] && $title =~ /Gmail/) ==> tag web:Gmail,
-        current window ($program == [${
-          concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
-        }] && $title =~ /Google/) ==> tag web:Google,
-        current window ($program == [${
-          concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
-        }] && $title =~ /wikipedia/) ==> tag site:wikipedia,
-      '';
+      pim.timetracking.rules =
+        mkArbttProgramRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ]) "activity:web"
+        + "\n" + mkArbttBrowserTitleRule [ "Gmail" ] "web:email" + "\n"
+        + mkArbttBrowserTitleRule [ "Google" "DuckDuckGo" ] "web:search" + "\n"
+        + mkArbttBrowserTitleRule [ "wikipedia" ] "site:wikipedia";
 
       programs.browserpass.enable = config.browsers.firefox.enable || config.browsers.chromium.enable;
     })
@@ -130,9 +120,7 @@ in {
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ search_prompt search_selection webjumps ];
-      };
+      home-manager.users.${user} = { home.packages = with pkgs; [ search_prompt search_selection webjumps ]; };
     })
   ];
 }

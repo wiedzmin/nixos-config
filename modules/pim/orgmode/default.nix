@@ -68,9 +68,7 @@ in {
 
       custom.programs.tmux.bindings.copyMode = { "M-n" = ''run-shell "${pkgs.org-capture}/bin/org-capture ns"''; };
       pim.orgmode.agendaRoots = { "${config.ide.emacs.core.orgDir}" = 3000; };
-      pim.timetracking.rules = ''
-        current window ($title =~ /^emacs - [^ ]+\.org .*$/) ==> tag edit:orgmode,
-      '';
+      pim.timetracking.rules = mkArbttTitleRule [ "^emacs - [^ ]+\\.org .*$" ] "edit:orgmode";
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.org-cliplink
         epkgs.deft

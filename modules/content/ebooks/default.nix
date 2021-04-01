@@ -54,35 +54,27 @@ in {
           mkPythonScriptWithDeps "update-bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../../subst.nix ./scripts/update-bookshelf.py);
       };
-      systemd.user.services = builtins.listToAttrs (forEach (localEbooks config.navigation.bookmarks.entries)
-        (root: {
-          name = "update-ebooks-${concatStringsSep "-" (takeLast 2 (splitString "/" root))}";
-          value = {
-            description = "Update ${concatStringsSep "-" (takeLast 2 (splitString "/" root))} contents";
-            after = [ "graphical-session-pre.target" ];
-            partOf = [ "graphical-session.target" ];
-            wantedBy = [ "graphical-session.target" ];
-            path = [ pkgs.bash ];
-            serviceConfig = {
-              Type = "simple";
-              WorkingDirectory = root;
-              ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
-                concatStringsSep "," cfg.extensions.primary} -- ${
-                  pkgs.update-bookshelf}/bin/update-bookshelf --root ${root}";
-              StandardOutput = "journal";
-              StandardError = "journal";
-            };
+      systemd.user.services = builtins.listToAttrs (forEach (localEbooks config.navigation.bookmarks.entries) (root: {
+        name = "update-ebooks-${concatStringsSep "-" (takeLast 2 (splitString "/" root))}";
+        value = {
+          description = "Update ${concatStringsSep "-" (takeLast 2 (splitString "/" root))} contents";
+          after = [ "graphical-session-pre.target" ];
+          partOf = [ "graphical-session.target" ];
+          wantedBy = [ "graphical-session.target" ];
+          path = [ pkgs.bash ];
+          serviceConfig = {
+            Type = "simple";
+            WorkingDirectory = root;
+            ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
+                concatStringsSep "," cfg.extensions.primary
+              } -- ${pkgs.update-bookshelf}/bin/update-bookshelf --root ${root}";
+            StandardOutput = "journal";
+            StandardError = "journal";
           };
-        }));
-      pim.timetracking.rules = ''
-        current window $title =~ m!.*papers/.*! ==> tag ebooks:papers,
-        ${
-          concatStringsSep ''
-            ,
-          '' (lib.forEach (with cfg.extensions; primary ++ secondary)
-            (ext: "current window $title =~ /.*${ext}.*/ ==> tag read:${ext}"))
-        },
-      '';
+        };
+      }));
+      pim.timetracking.rules = mkArbttTitleRule [ ".*papers/.*" ] "ebooks:papers" + "\n"
+        + mkArbttPrefixedTitlesRule (with cfg.extensions; primary ++ secondary) "read:";
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.ebook "org.pwmt.zathura.desktop";
         home.packages = with pkgs; [ calibre djview djvulibre ];

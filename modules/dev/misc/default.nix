@@ -68,23 +68,9 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users.${user} = { home.packages = with pkgs; [ go-task nurpkgs.comby plantuml tagref ]; };
-      pim.timetracking.rules = with config.attributes.browser; ''
-        -- TODO: parameterize IDE (probably, not only emacs)
-        ${
-          concatStringsSep ''
-            ,
-          '' (lib.mapAttrsToList (re: tag:
-            "current window ($program == [${
-              concatStringListsQuoted ", " [ default.windowClass fallback.windowClass ]
-            }] && $title =~ /${re}/) ==> tag ${tag}") cfg.timeTracking.extensions.dev)
-        },
-        ${
-          concatStringsSep ''
-            ,
-          '' (lib.mapAttrsToList (ext: tag: "current window ($title =~ /^emacs - [^ ]+\\.${ext} .*$/) ==> tag ${tag}")
-            cfg.timeTracking.extensions.dev)
-        },
-      '';
+      pim.timetracking.rules =
+        mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ])
+        cfg.timeTracking.extensions.dev + "\n" + mkArbttEmacsMapTitleRule cfg.timeTracking.extensions.dev;
       dev.editorconfig.rules = {
         "Makefile" = {
           indent_style = "tab";

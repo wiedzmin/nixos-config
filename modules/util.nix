@@ -208,4 +208,28 @@ in rec {
   emacsCmd = elisp:
     let emacsServerSocketPath = "/run/user/${config.attributes.mainUser.ID}/emacs/server";
     in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.core.package}/bin/emacsclient -s ${emacsServerSocketPath} -e '${elisp}'";
+  mkArbttProgramTitleRule = windowClasses: titles: tag:
+    lib.concatStringsSep "\n" (lib.forEach titles (t:
+      "current window ($program == [${
+        concatStringListsQuoted ", " windowClasses
+      }] && $title =~ m!${t}!) ==> tag ${tag},"));
+  mkArbttProgramRule = windowClasses: tag:
+    "current window ($program == [${concatStringListsQuoted ", " windowClasses}]) ==> tag ${tag},";
+  mkArbttTitleRule = titles: tag:
+    lib.concatStringsSep "\n" (lib.forEach titles (t: "current window ($title =~ m!${t}!) ==> tag ${tag},"));
+  mkArbttProgramMultipleTagsRule = program: tags:
+    lib.concatStringsSep "\n" (lib.forEach tags (tag: ''current window $program == "${program}" ==> tag ${tag},''));
+  mkArbttPrefixedTitlesRule = titles: prefix:
+    lib.concatStringsSep "\n" (lib.forEach titles (t: "current window ($title =~ m!${t}!) ==> tag ${prefix}${t},"));
+  mkArbttBrowserTitleRule = titles: tag:
+    mkArbttProgramTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ]) titles tag;
+  mkArbttProgramMapTitleRule = windowClasses: title2tag:
+    lib.concatStringsSep "\n" (lib.mapAttrsToList (re: tag:
+      "current window ($program == [${
+        concatStringListsQuoted ", " windowClasses
+      }] && $title =~ m!${re}!) ==> tag ${tag},") title2tag);
+  mkArbttEmacsMapTitleRule = title2tag: # we could use similar helper functions for other IDEs
+    lib.concatStringsSep "\n"
+    (lib.mapAttrsToList (re: tag: "current window ($title =~ m!^emacs - [^ ]+\\.${re} .*$!) ==> tag ${tag},")
+      title2tag);
 }

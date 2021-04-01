@@ -115,11 +115,7 @@ in {
       };
 
       dev.misc.timeTracking.extensions.dev = { "nix" = "coding:nix"; };
-      pim.timetracking.rules = ''
-        current window $title =~ /nixos-rebuild/ ==> tag packaging:nixos-rebuild,
-
-        current window ($program == "emacs" && $title =~ m!(?:/etc)/nixos/!) ==> tag project:nixos-config,
-      '';
+      pim.timetracking.rules = mkArbttProgramTitleRule [ "emacs" ] [ "/nixos-config/" ] "project:nixos-config";
     })
     (mkIf (cfg.enable && cfg.shell.enable) {
       home-manager.users.${user} = { home.packages = with pkgs; [ stable.nix-zsh-completions ]; };

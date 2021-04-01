@@ -143,9 +143,7 @@ in {
       dev.git.core.gitignore = ''
         *.elc
       '';
-      pim.timetracking.rules = ''
-        current window ($title =~ /^emacs - [^ ]+\.el .*$/) ==> tag coding:elisp,
-      '';
+      pim.timetracking.rules = mkArbttTitleRule [ "^emacs - [^ ]+\\.el .*$" ] "coding:elisp";
       ide.emacs.core.extraPackages = epkgs:
         [
           epkgs.anaphora

@@ -343,10 +343,8 @@ in {
 
       home-manager.users.${user} = { home.packages = with pkgs; [ stable.libreoffice open-doc update-docs ]; };
 
-      pim.timetracking.rules = ''
-        current window $program == "libreoffice" ==> tag activity:docflow,
-        current window $program == "libreoffice" ==> tag program:libreoffice,
-      '';
+      pim.timetracking.rules =
+        mkArbttProgramMultipleTagsRule "libreoffice" [ "activity:docflow" "program:libreoffice" ];
     })
     (mkIf cfg.processors.enable {
       home-manager.users.${user} = {

@@ -27,11 +27,9 @@ in {
     (mkIf cfg.enable {
       fonts = { fonts = with pkgs; [ powerline-fonts ]; };
 
-      pim.timetracking.rules = ''
-        -- projects
-        current window ($program == "Alacritty" && $title =~ m!(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/!)
-          ==> tag project:$1-$2-$3,
-      '';
+      pim.timetracking.rules = mkArbttProgramTitleRule [ "Alacritty" ]
+        [ "(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/" ] "project:$1-$2-$3";
+
       environment.sessionVariables.TERMINAL = [ (builtins.head terminalCmd) ];
       attributes.defaultVTCommand = terminalCmd;
       home-manager.users."${user}" = {
