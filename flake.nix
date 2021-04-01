@@ -2,21 +2,6 @@
   description = "Reproducible localhost configurations";
 
   # TODO: try cachix/pre-commit-hooks.nix
-  # TODO: review flake organization reference links:
-  # https://github.com/ysndr/blog/blob/e4588f821ce6aee9ec3688ee9af3d2e61e143530/flake.nix
-  # https://github.com/Stupremee/nix/blob/092725ceaa8f726ee2d91bf88583e60659031110/flake.nix
-  # https://github.com/ccao001/nixrc/blob/5b2e874c0987d01337e08539500fde7dad4ba2f6/flake.nix
-  # https://github.com/poscat0x04/nix-repo/blob/b0242f363981a3aad0b8779406cf1e53d6d761c6/flake.nix
-  # https://github.com/RaitoBezarius/machines/blob/a29744af496f45f7312418988e718e297e527a3d/flake.nix
-  # https://github.com/leo60228/dotfiles/blob/5d32894eec01aad2303b7eecb3ca6fc7813c3c56/flake.nix
-  # https://github.com/danderson/homelab/blob/25a7a5ee7252049313dc9968ed522c28ae9201c0/flake.nix
-  # https://github.com/lokegustafsson/nixfiles/blob/7e3ecc70c3ce7e29c857e0f8fc96cf002d3a1b4d/flake.nix
-  # https://github.com/balsoft/nixos-config/blob/58eee3651e0a1c57b5f654d28d6db2cdf44741fb/flake.nix !
-  # https://github.com/qjcg/nix/blob/71d6ae1b88fb7184ea46bb8ead2168378ea4ae70/flake.nix !!!!
-  # https://github.com/rissson/dotshabka/blob/f13a2f79ff9cb486d71a5dd46a3ce7ed1cafa6a0/flake.nix !!
-  # https://github.com/christoph00/nixcfg/blob/135bb5c91c60f6647b3f1e2e166af943e7c820f9/flake.nix !!
-  # https://github.com/berbiche/dotfiles/blob/873889a3316f679d79afc303c79754898794d832/flake.nix !!!!!!!
-
   inputs = rec {
     stable.url = "github:NixOS/nixpkgs/nixos-20.03";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
