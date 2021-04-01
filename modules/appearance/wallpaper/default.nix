@@ -53,7 +53,7 @@ in {
   };
 
   config = mkMerge [
-    (mkIf cfg.enable { # TODO: review/try services.xserver.desktopManager.wallpaper.*
+    (mkIf cfg.enable {
       assertions = [{
         assertion = cfg.rootDir != "" && cfg.current != "";
         message = "appearance: must provide wallpapers path and image to use.";
@@ -69,13 +69,11 @@ in {
       boot.loader.grub.splashImage = optionalString (cfg.boot.splashImage != "") cfg.boot.splashImage;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [
-        {
-          key = [ "w" ];
-          cmd = "${rescale-wallpaper}/bin/rescale-wallpaper";
-          mode = "xserver";
-        }
-      ];
+      wmCommon.keys = [{
+        key = [ "w" ];
+        cmd = "${rescale-wallpaper}/bin/rescale-wallpaper";
+        mode = "xserver";
+      }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ rescale-wallpaper ]; };
