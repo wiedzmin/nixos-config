@@ -206,38 +206,6 @@
         "type": "indirect"
       }
     },
-    "nixpkgs-09_03_21": {
-      "locked": {
-        "lastModified": 1615259932,
-        "narHash": "sha256-IXecmbqCr+XCtFwzBO3tHEd8PoJ4X4EyPZebKbV2ioE=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "29b0d4d0b600f8f5dd0b86e3362a33d4181938f9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "29b0d4d0b600f8f5dd0b86e3362a33d4181938f9",
-        "type": "github"
-      }
-    },
-    "nixpkgs-25_01_21": {
-      "locked": {
-        "lastModified": 1611575689,
-        "narHash": "sha256-z2rNP3zdVnGxp9iV2Rbn0/LLKhk47DZQKxDkpYFLI7M=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "891f607d5301d6730cb1f9dcf3618bcb1ab7f10e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "891f607d5301d6730cb1f9dcf3618bcb1ab7f10e",
-        "type": "github"
-      }
-    },
     "nixpkgs-arbtt": {
       "flake": false,
       "locked": {
@@ -300,8 +268,6 @@
         "liquidprompt": "liquidprompt",
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs-09_03_21": "nixpkgs-09_03_21",
-        "nixpkgs-25_01_21": "nixpkgs-25_01_21",
         "nixpkgs-arbtt": "nixpkgs-arbtt",
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",

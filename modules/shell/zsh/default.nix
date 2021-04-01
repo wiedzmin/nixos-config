@@ -7,10 +7,6 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
   dataHome = hm.xdg.dataHome;
-  nixpkgs-gdu = import inputs.nixpkgs-09_03_21 ({
-    config = config.nixpkgs.config;
-    system = "x86_64-linux";
-  });
 in {
   options = {
     shell.zsh = {
@@ -52,7 +48,7 @@ in {
       environment.shells = with pkgs; [ "${zsh}/bin/zsh" "/run/current-system/sw/bin/zsh" ];
       home-manager.users."${user}" = {
         # NOTE: play with ydotool client/server arch and respective permissions
-        home.packages = with pkgs; [ nixpkgs-gdu.gdu rtss wmctrl xdotool rargs ydotool ];
+        home.packages = with pkgs; [ gdu rtss wmctrl xdotool rargs ydotool ];
         xdg.configFile."espanso/user/zsh.yml".text = ''
           name: zsh
           parent: default

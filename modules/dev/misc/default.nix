@@ -6,10 +6,6 @@ let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  nixpkgs-prev = import inputs.nixpkgs-25_01_21 ({
-    config = config.nixpkgs.config;
-    system = "x86_64-linux";
-  });
 in {
   options = {
     dev.misc = {
@@ -123,7 +119,7 @@ in {
       users.extraUsers."${user}".extraGroups = [ "wireshark" ];
     })
     (mkIf (cfg.enable && cfg.tools.xserver.enable) {
-      environment.systemPackages = with pkgs; [ xlibs.xev xlibs.xprop xorg.xkbcomp nixpkgs-prev.drm_info xtruss ];
+      environment.systemPackages = with pkgs; [ xlibs.xev xlibs.xprop xorg.xkbcomp drm_info xtruss ];
     })
     (mkIf (cfg.enable && cfg.tools.misc.enable) {
       environment.systemPackages = with pkgs; [ # D-Bus debug tools
