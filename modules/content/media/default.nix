@@ -158,7 +158,7 @@ in {
           Environment = [ "DISPLAY=:0" ];
         };
       };
-      environment.systemPackages = with pkgs; [ ncmpcpp ];
+      environment.systemPackages = with pkgs; [ ncmpcpp freetube ];
       home-manager.users.${user} = {
         programs.mpv = { # TODO: consider extracting options
           enable = true;
