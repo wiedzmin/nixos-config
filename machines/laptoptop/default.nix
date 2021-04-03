@@ -1,8 +1,7 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../modules/util.nix { inherit config inputs lib pkgs; };
 
-let
-  user = config.attributes.mainUser.name;
+let user = config.attributes.mainUser.name;
 in {
   imports =
     [ "${inputs.nixos-hardware}/common/pc/ssd" ../../modules ../../profiles/thinkpad-x230.nix ./assets ./secrets ];
@@ -159,7 +158,6 @@ in {
     qutebrowser = {
       enable = true;
       isDefault = true;
-      suspendInactive = false;
       sessions.backup.enable = true;
     };
     chromium = {
