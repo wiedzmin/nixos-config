@@ -54,6 +54,10 @@ in {
             name = "zsh-command-time";
             file = "command-time.plugin.zsh";
             src = inputs.zsh-command-time;
+          }] ++ [{
+            name = "go-task-completions";
+            file = "_task";
+            src = inputs.zsh-go-task-completions;
           }];
         };
       };

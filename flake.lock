@@ -277,6 +277,7 @@
         "zsh-async": "zsh-async",
         "zsh-command-time": "zsh-command-time",
         "zsh-fuzzy-search-and-edit": "zsh-fuzzy-search-and-edit",
+        "zsh-go-task-completions": "zsh-go-task-completions",
         "zsh-nix-shell": "zsh-nix-shell",
         "zsh-notify": "zsh-notify",
         "zsh-reentry-hook": "zsh-reentry-hook",
@@ -377,6 +378,22 @@
       "original": {
         "owner": "seletskiy",
         "repo": "zsh-fuzzy-search-and-edit",
+        "type": "github"
+      }
+    },
+    "zsh-go-task-completions": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1602330432,
+        "narHash": "sha256-9qHaIkaa6tDzkTcbJQOkt6D5sPenb2qen151XxWkXtk=",
+        "owner": "sawadashota",
+        "repo": "go-task-completions",
+        "rev": "1316c50399011d22ca0f01de1ea9121fcf287309",
+        "type": "github"
+      },
+      "original": {
+        "owner": "sawadashota",
+        "repo": "go-task-completions",
         "type": "github"
       }
     },

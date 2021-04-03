@@ -94,6 +94,10 @@
       url = "github:MichaelAquilina/zsh-you-should-use";
       flake = false;
     };
+    zsh-go-task-completions = {
+      url = "github:sawadashota/go-task-completions";
+      flake = false;
+    };
   };
 
   outputs = { self, unstable, ... }@inputs:
