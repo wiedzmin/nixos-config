@@ -12,7 +12,7 @@
 
     nur.url = "github:wiedzmin/NUR";
 
-    home-manager.url = "github:rycee/home-manager";
+    home-manager.url = "github:nix-community/home-manager";
     emacs.url = "github:nix-community/emacs-overlay";
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     i3blocks-contrib = {
