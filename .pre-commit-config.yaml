@@ -1,9 +1,10 @@
 repos:
   - repo: "https://github.com/wiedzmin/git-hooks"
-    rev: "df6b135ad14508fbf76c3276869534c7f963e3a4"
+    rev: "4c9ad0bc560a23c0b7cbe41347743b84b22cb456"
     hooks:
       - id: "forbid-pushing-wip"
-      - id: "nixfmt"
+      # - id: "nixfmt"
+      - id: "nixpkgs-fmt"
   - repo: "https://github.com/jumanjihouse/pre-commit-hooks"
     rev: "2.1.5"
     hooks:
