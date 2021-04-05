@@ -8,12 +8,12 @@ tasks:
     cmds:
       - nixos-rebuild build --flake ".#laptoptop"
 
-  build/debug:
+  build:debug:
     desc: Build "laptoptop" flake with debug output
     cmds:
       - nixos-rebuild build --flake ".#laptoptop" --show-trace
 
-  build/no-net:
+  build:no-net:
     desc: Build "laptoptop" flake without network access
     cmds:
       - nixos-rebuild build --flake ".#laptoptop" --option binary-caches ''
@@ -24,7 +24,7 @@ tasks:
       - sudo nixos-rebuild switch --flake ".#laptoptop"
     silent: true
 
-  switch/no-net:
+  switch:no-net:
     desc: Build + switch "laptoptop" flake without network access
     cmds:
       - sudo nixos-rebuild switch --flake ".#laptoptop" --option binary-caches ''

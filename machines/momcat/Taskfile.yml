@@ -11,7 +11,7 @@ tasks:
     cmds:
       - nixos-rebuild build --flake ".#momcat"
 
-  build/debug:
+  build:debug:
     desc: Build "momcat" flake with debug output
     cmds:
       - nixos-rebuild build --flake ".#momcat" --show-trace
@@ -21,7 +21,7 @@ tasks:
     cmds:
       - sudo nixos-rebuild switch --flake ".#momcat"
 
-  switch/no-net:
+  switch:no-net:
     desc: Build + switch "momcat" flake without network access
     cmds:
       - sudo nixos-rebuild switch --flake ".#momcat" --option binary-caches ''
