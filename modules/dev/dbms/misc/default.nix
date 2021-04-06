@@ -6,7 +6,8 @@ let
   cfg = config.dbms.misc;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     dbms.misc = {
       enable = mkOption {
@@ -61,7 +62,7 @@ in {
         }
       '';
 
-      home-manager.users.${user} = { home.packages = with pkgs; [ dbms ]; };
+      home-manager.users.${user} = { home.packages = lib.optionals (cfg.controlCenter.meta != { }) (with pkgs; [ dbms ]); };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
