@@ -315,6 +315,7 @@ in
     };
     messengers = {
       enable = true;
+      telegram.autostart = true;
       emacs.enable = true;
     };
     hosts.enable = true;
@@ -510,6 +511,7 @@ in
     tools.enable = true;
     vt.alacritty = {
       enable = true;
+      autostart = true;
       wm.enable = true;
     };
     twopanes = {
@@ -622,7 +624,6 @@ in
     }
   ];
 
-  wmCommon.autostart.entries = [ "alacritty" "telegram-desktop" ];
   wmCommon.showfocus = false;
 
   home-manager = {

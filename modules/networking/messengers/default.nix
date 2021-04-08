@@ -5,13 +5,19 @@ with lib;
 let
   cfg = config.ext.networking.messengers;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     ext.networking.messengers = {
       enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable various messengers";
+      };
+      telegram.autostart = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to start telegram automatically wit X session";
       };
       emacs.enable = mkOption {
         type = types.bool;
@@ -51,6 +57,7 @@ in {
             K("C-y"): K("C-v"),
         }, "Slack")
       '';
+      wmCommon.autostart.entries = optionals (cfg.telegram.autostart) [ "${pkgs.tdesktop}/bin/telegram-desktop" ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.telega ]; # review https://github.com/zevlg/telega.el as it goes

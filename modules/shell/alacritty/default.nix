@@ -7,13 +7,19 @@ let
   user = config.attributes.mainUser.name;
   terminalCmd = [ "${pkgs.alacritty}/bin/alacritty" "-e" ];
   prefix = config.wmCommon.prefix;
-in {
+in
+{
   options = {
     shell.vt.alacritty = {
       enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable Alacritty.";
+      };
+      autostart = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to autostart Alacritty with X session start";
       };
       wm.enable = mkOption {
         type = types.bool;
@@ -70,6 +76,7 @@ in {
             },
         }, "Alacritty")
       '';
+      wmCommon.autostart.entries = optionals (cfg.autostart) [ (builtins.head terminalCmd) ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
