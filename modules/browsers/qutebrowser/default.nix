@@ -15,7 +15,8 @@ let
       suspendSubtreePattern = "qtwebengine";
     };
   };
-in {
+in
+{
   options = {
     browsers.qutebrowser = {
       enable = mkOption {
@@ -109,10 +110,10 @@ in {
           (readSubstituted ../../subst.nix ./scripts/yank-image.sh);
         qb-fix-session =
           mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
-          (readSubstituted ../../subst.nix ./scripts/qb-fix-session.py);
+            (readSubstituted ../../subst.nix ./scripts/qb-fix-session.py);
         qb-dump-session =
           mkPythonScriptWithDeps "qb-dump-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
-          (readSubstituted ../../subst.nix ./scripts/qb-dump-session.py);
+            (readSubstituted ../../subst.nix ./scripts/qb-dump-session.py);
         manage-qb-sessions = mkPythonScriptWithDeps "manage-qb-sessions" (with pkgs; [ nurpkgs.pystdlib ])
           (readSubstituted ../../subst.nix ./scripts/manage-qb-sessions.py);
       };
@@ -216,7 +217,8 @@ in {
                   };
                   grayscale.images = 0; # 0.0 0.5
                 } // optionalAttrs
-                  (cfg.darkmode.algorithm == "lightness-hsl" || cfg.darkmode.algorithm == "brightness-rgb") {
+                  (cfg.darkmode.algorithm == "lightness-hsl" || cfg.darkmode.algorithm == "brightness-rgb")
+                  {
                     contrast = -2.5e-2; # 0.0 0.5 0.9 1.0
                     grayscale.all = true; # false
                   };
@@ -329,154 +331,154 @@ in {
             };
             window.title_format = "{private}{perc}{current_title}{title_sep}qutebrowser | {current_url}";
           };
-          keyBindings = {
-            normal = { # TODO: create helper function(s) for cross layout bindings generation at Nix level
-              # TODO: play with "set completion.open_categories [<something>] ;; set-cmd-text -s :<cmd>" and "completion-item-focus next-category"
-              # "e" = "edit-text"; # TODO: bind appropriately
-              "xb" = "config-cycle statusbar.hide";
-              "чи" = "config-cycle statusbar.hide";
-              "<Alt-,>" = "back";
-              "<Alt-б>" = "back";
-              "<Alt-.>" = "forward";
-              "<Alt-ю>" = "forward";
-              "<ctrl+shift+tab>" = "tab-prev";
-              "<ctrl+tab>" = "tab-next";
-              "b" = "set-cmd-text -s :tab-select";
-              "и" = "set-cmd-text -s :tab-select";
-              "t" = "set-cmd-text -s :open -t";
-              "е" = "set-cmd-text -s :open -t";
-              "<Ctrl-F5>" = "reload -f";
-              "<Ctrl-Return>" = "selection-follow -t";
-              "<Ctrl-Shift-T>" = "undo";
-              "<Ctrl-Shift-Е>" = "undo";
-              "u" = "undo";
-              "г" = "undo";
-              "<Ctrl-W>" = "tab-close";
-              "<Ctrl-Ц>" = "tab-close";
-              "<Ctrl-g>" = "stop";
-              "<Ctrl-п>" = "stop";
-              "<Ctrl-p>" = "tab-pin";
-              "<Ctrl-з>" = "tab-pin";
-              "<F12>" = "inspector";
-              "<F5>" = "reload";
-              "<Return>" = "selection-follow";
-              "Ctrl-r" = "reload";
-              "Ctrl-к" = "reload";
-              "Sh" = "open qute://history";
-              "Ыр" = "open qute://history";
-              "ct" = "open -t -- {clipboard}";
-              "се" = "open -t -- {clipboard}";
-              "cw" = "open -w -- {clipboard}";
-              "сц" = "open -w -- {clipboard}";
-              "d" = "tab-close";
-              "в" = "tab-close";
-              "g$" = "tab-focus last";
-              "п;" = "tab-focus last";
-              "g0" = "tab-focus 1";
-              "п0" = "tab-focus 1";
-              "gc" = "tab-clone";
-              "пс" = "tab-clone";
-              "gj" = "tab-move +";
-              "по" = "tab-move +";
-              "gk" = "tab-move -";
-              "пл" = "tab-move -";
-              "go" = "spawn ${config.attributes.browser.fallback.cmd} {url}";
-              "пщ" = "spawn ${config.attributes.browser.fallback.cmd} {url}";
-              "gs" = "view-source";
-              "пы" = "view-source";
-              "gw" = "set-cmd-text -s :tab-give";
-              "пц" = "set-cmd-text -s :tab-give";
-              "pt" = "open -t -- {primary}";
-              "зе" = "open -t -- {primary}";
-              "pw" = "open -w -- {primary}";
-              "зц" = "open -w -- {primary}";
-              "yy" = "yank";
-              "нн" = "yank";
-              "yd" = "yank domain";
-              "нв" = "yank domain";
-              "yM" = "spawn mpv {url}";
-              "нЬ" = "spawn mpv {url}";
-              "yo" = "yank inline [[{url}][{title}]]";
-              "нщ" = "yank inline [[{url}][{title}]]";
-              "yp" = "yank pretty-url";
-              "нз" = "yank pretty-url";
-              "yt" = "yank title";
-              "не" = "yank title";
-              "y;" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
-              "нж" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
-              "y'" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
-              "нэ" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
-              "ym" = "spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}";
-              "нь" = "spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}";
-              ";;" = "hint links download";
-              "жж" = "hint links download";
-              ";I" = "hint images tab";
-              "жШ" = "hint images tab";
-              ";O" = "hint links fill :open -t -r {hint-url}";
-              "жЩ" = "hint links fill :open -t -r {hint-url}";
-              ";R" = "hint --rapid links window";
-              "жК" = "hint --rapid links window";
-              ";b" = "hint all tab-bg";
-              "жи" = "hint all tab-bg";
-              ";d" = "hint links download";
-              "жв" = "hint links download";
-              ";f" = "hint all tab-fg";
-              "жа" = "hint all tab-fg";
-              ";h" = "hint all hover";
-              "жр" = "hint all hover";
-              ";i" = "hint images";
-              "жш" = "hint images";
-              ";c" = "hint images spawn yank-image {hint-url}";
-              "жс" = "hint images spawn yank-image {hint-url}";
-              ";o" = "hint links fill :open {hint-url}";
-              "жщ" = "hint links fill :open {hint-url}";
-              ";r" = "hint --rapid links tab-bg";
-              "жк" = "hint --rapid links tab-bg";
-              ";t" = "hint inputs";
-              "же" = "hint inputs";
-              ";v" = ''
-                hint links spawn --detach mpv --ytdl-format="bestvideo[height<=1000][vcodec!=vp9]+bestaudio/best" --force-window yes {hint-url}'';
-              "жм" = ''
-                hint links spawn --detach mpv --ytdl-format="bestvideo[height<=1000][vcodec!=vp9]+bestaudio/best" --force-window yes {hint-url}'';
-              ";y" = "hint links yank";
-              "жн" = "hint links yank";
-              "ad" = "download-cancel";
-              "фв" = "download-cancel";
-              "cd" = "download-clear";
-              "св" = "download-clear";
-              "gd" = "download";
-              "пв" = "download";
-              # TODO: review and rework pass setup
-              ",P" = "spawn --userscript qute-pass --dmenu-invocation dmenu --password-only";
-              "бЗ" = "spawn --userscript qute-pass --dmenu-invocation dmenu --password-only";
-              ",p" = "spawn --userscript qute-pass --dmenu-invocation dmenu";
-              "бз" = "spawn --userscript qute-pass --dmenu-invocation dmenu";
-              "zl" = "spawn --userscript qute-pass";
-              "яд" = "spawn --userscript qute-pass";
-              "zpl" = "spawn --userscript qute-pass --password-only";
-              "язд" = "spawn --userscript qute-pass --password-only";
-              "zul" = "spawn --userscript qute-pass --username-only";
-              "ягд" = "spawn --userscript qute-pass --username-only";
-              "@" = "macro-run";
-              "\\\"" = "macro-run";
-              "AD" = "adblock-update";
-              "ФВ" = "adblock-update";
-              "CH" = "history-clear";
-              "СР" = "history-clear";
-              "cr" = "config-source";
-              "ск" = "config-source";
-              "sf" = "save";
-              "ыа" = "save";
-              "ws" = "config-write-py --force --defaults config.current.py";
-              "цы" = "config-write-py --force --defaults config.current.py";
-              "i" = "mode-enter insert";
-              "ш" = "mode-enter insert";
+          keyBindings =
+            let
+              qutePassCommonArgs = ''--no-insert-mode --dmenu-invocation dmenu --username-pattern "((?<=^user: ).*|(?<=login: ).*)" --username-target secret'';
+            in
+            {
+              normal = {
+                # TODO: create helper function(s) for cross layout bindings generation at Nix level
+                # TODO: play with "set completion.open_categories [<something>] ;; set-cmd-text -s :<cmd>" and "completion-item-focus next-category"
+                # "e" = "edit-text"; # TODO: bind appropriately
+                "xb" = "config-cycle statusbar.hide";
+                "чи" = "config-cycle statusbar.hide";
+                "<Alt-,>" = "back";
+                "<Alt-б>" = "back";
+                "<Alt-.>" = "forward";
+                "<Alt-ю>" = "forward";
+                "<ctrl+shift+tab>" = "tab-prev";
+                "<ctrl+tab>" = "tab-next";
+                "b" = "set-cmd-text -s :tab-select";
+                "и" = "set-cmd-text -s :tab-select";
+                "t" = "set-cmd-text -s :open -t";
+                "е" = "set-cmd-text -s :open -t";
+                "<Ctrl-F5>" = "reload -f";
+                "<Ctrl-Return>" = "selection-follow -t";
+                "<Ctrl-Shift-T>" = "undo";
+                "<Ctrl-Shift-Е>" = "undo";
+                "u" = "undo";
+                "г" = "undo";
+                "<Ctrl-W>" = "tab-close";
+                "<Ctrl-Ц>" = "tab-close";
+                "<Ctrl-g>" = "stop";
+                "<Ctrl-п>" = "stop";
+                "<Ctrl-p>" = "tab-pin";
+                "<Ctrl-з>" = "tab-pin";
+                "<F12>" = "inspector";
+                "<F5>" = "reload";
+                "<Return>" = "selection-follow";
+                "Ctrl-r" = "reload";
+                "Ctrl-к" = "reload";
+                "Sh" = "open qute://history";
+                "Ыр" = "open qute://history";
+                "ct" = "open -t -- {clipboard}";
+                "се" = "open -t -- {clipboard}";
+                "cw" = "open -w -- {clipboard}";
+                "сц" = "open -w -- {clipboard}";
+                "d" = "tab-close";
+                "в" = "tab-close";
+                "g$" = "tab-focus last";
+                "п;" = "tab-focus last";
+                "g0" = "tab-focus 1";
+                "п0" = "tab-focus 1";
+                "gc" = "tab-clone";
+                "пс" = "tab-clone";
+                "gj" = "tab-move +";
+                "по" = "tab-move +";
+                "gk" = "tab-move -";
+                "пл" = "tab-move -";
+                "go" = "spawn ${config.attributes.browser.fallback.cmd} {url}";
+                "пщ" = "spawn ${config.attributes.browser.fallback.cmd} {url}";
+                "gs" = "view-source";
+                "пы" = "view-source";
+                "gw" = "set-cmd-text -s :tab-give";
+                "пц" = "set-cmd-text -s :tab-give";
+                "pt" = "open -t -- {primary}";
+                "зе" = "open -t -- {primary}";
+                "pw" = "open -w -- {primary}";
+                "зц" = "open -w -- {primary}";
+                "yy" = "yank";
+                "нн" = "yank";
+                "yd" = "yank domain";
+                "нв" = "yank domain";
+                "yM" = "spawn mpv {url}";
+                "нЬ" = "spawn mpv {url}";
+                "yo" = "yank inline [[{url}][{title}]]";
+                "нщ" = "yank inline [[{url}][{title}]]";
+                "yp" = "yank pretty-url";
+                "нз" = "yank pretty-url";
+                "yt" = "yank title";
+                "не" = "yank title";
+                "y;" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
+                "нж" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
+                "y'" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
+                "нэ" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
+                "ym" = "spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}";
+                "нь" = "spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}";
+                ";;" = "hint links download";
+                "жж" = "hint links download";
+                ";I" = "hint images tab";
+                "жШ" = "hint images tab";
+                ";O" = "hint links fill :open -t -r {hint-url}";
+                "жЩ" = "hint links fill :open -t -r {hint-url}";
+                ";R" = "hint --rapid links window";
+                "жК" = "hint --rapid links window";
+                ";b" = "hint all tab-bg";
+                "жи" = "hint all tab-bg";
+                ";d" = "hint links download";
+                "жв" = "hint links download";
+                ";f" = "hint all tab-fg";
+                "жа" = "hint all tab-fg";
+                ";h" = "hint all hover";
+                "жр" = "hint all hover";
+                ";i" = "hint images";
+                "жш" = "hint images";
+                ";c" = "hint images spawn yank-image {hint-url}";
+                "жс" = "hint images spawn yank-image {hint-url}";
+                ";o" = "hint links fill :open {hint-url}";
+                "жщ" = "hint links fill :open {hint-url}";
+                ";r" = "hint --rapid links tab-bg";
+                "жк" = "hint --rapid links tab-bg";
+                ";t" = "hint inputs";
+                "же" = "hint inputs";
+                ";v" = ''
+                  hint links spawn --detach mpv --ytdl-format="bestvideo[height<=1000][vcodec!=vp9]+bestaudio/best" --force-window yes {hint-url}'';
+                "жм" = ''
+                  hint links spawn --detach mpv --ytdl-format="bestvideo[height<=1000][vcodec!=vp9]+bestaudio/best" --force-window yes {hint-url}'';
+                ";y" = "hint links yank";
+                "жн" = "hint links yank";
+                "ad" = "download-cancel";
+                "фв" = "download-cancel";
+                "cd" = "download-clear";
+                "св" = "download-clear";
+                "gd" = "download";
+                "пв" = "download";
+                "za" = "spawn --userscript qute-pass ${qutePassCommonArgs}";
+                "яф" = "spawn --userscript qute-pass ${qutePassCommonArgs}";
+                "zul" = "spawn --userscript qute-pass ${qutePassCommonArgs} --username-only";
+                "ягд" = "spawn --userscript qute-pass ${qutePassCommonArgs} --username-only";
+                "zup" = "spawn --userscript qute-pass ${qutePassCommonArgs} --password-only";
+                "ягз" = "spawn --userscript qute-pass ${qutePassCommonArgs} --password-only";
+                "@" = "macro-run";
+                "\\\"" = "macro-run";
+                "AD" = "adblock-update";
+                "ФВ" = "adblock-update";
+                "CH" = "history-clear";
+                "СР" = "history-clear";
+                "cr" = "config-source";
+                "ск" = "config-source";
+                "sf" = "save";
+                "ыа" = "save";
+                "ws" = "config-write-py --force --defaults config.current.py";
+                "цы" = "config-write-py --force --defaults config.current.py";
+                "i" = "mode-enter insert";
+                "ш" = "mode-enter insert";
+              };
+              insert = {
+                "<Ctrl-y>" = "insert-text -- {clipboard}";
+                "<Shift-y>" = "insert-text -- {primary}";
+              };
             };
-            insert = {
-              "<Ctrl-y>" = "insert-text -- {clipboard}";
-              "<Shift-y>" = "insert-text -- {primary}";
-            };
-          };
           extraConfig = ''
             config.set('content.javascript.enabled', True, 'chrome://*/*')
             config.set('content.javascript.enabled', True, 'file://*')
@@ -562,7 +564,7 @@ in {
       };
       systemd.user.timers."backup-current-session-qutebrowser" =
         renderTimer "Backup current qutebrowser session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency ""
-        false "";
+          false "";
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable && cfg.isDefault) {
       wmCommon.keys = [
