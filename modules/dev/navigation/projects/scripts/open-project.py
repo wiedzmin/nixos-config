@@ -36,5 +36,5 @@ if bookmark:
     if os.path.isfile(path):
         elisp_cmd = f'(find-file "{path}")'
 
-    emacs_cmd = f'emacsclient -c -s /run/user/1000/emacs/server -e \'{elisp_cmd}\' &' # TODO: make SPOT for socket path
+    emacs_cmd = f'emacsclient -c -s @emacsServerSocketPath@ -e \'{elisp_cmd}\' &'
     shell_cmd(emacs_cmd, oneshot=True)
