@@ -6,7 +6,8 @@ let
   cfg = config.content.misc;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     content.misc = {
       enable = mkOption {
@@ -62,7 +63,8 @@ in {
           // (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop")
           // (mapMimesToApp config.attributes.mimetypes.office.spreadsheets "calc.desktop");
 
-        home.packages = with pkgs; [ # TODO: rethink section
+        home.packages = with pkgs; [
+          # TODO: rethink section
           android-file-transfer
           jmtpfs # consider providing some (shell) automation
           saldl # consider providing some (shell) automation
@@ -83,6 +85,9 @@ in {
           dfmt
           # =======
           past-time
+          # =======
+          unipicker
+          frangipanni
 
           monolith
           tartube
