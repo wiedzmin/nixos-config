@@ -7,14 +7,13 @@ let
   user = config.attributes.mainUser.name;
   drop-corrupted = mkShellScriptWithDeps "drop-corrupted" (with pkgs; [ gitAndTools.git coreutils ]) ''
     ${pkgs.systemd}/bin/systemctl --user stop emacs.service
-    sleep 2 # consider parameterizing
-    rm -f /home/${user}/.emacs.d/data/save-kill.el # TODO: consider using loop or other templating method
-    rm -f /home/${user}/.emacs.d/data/savehist.el
-    # TODO: add missing entries by fact later
+    sleep 2
+    rm -f /home/${user}/.emacs.d/data/{save-kill.el,savehist.el}
     ${pkgs.systemd}/bin/systemctl --user restart emacs.service
   '';
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     ide.emacs.core = {
       enable = mkOption {
@@ -68,16 +67,18 @@ in {
       };
       package = mkOption {
         type = types.package;
-        default = let
-          basepkg = ((pkgs.unstable.emacs.override {
-            withGTK2 = false;
-            withGTK3 = false;
-          }).overrideAttrs (old: rec {
-            withCsrc = true;
-            configureFlags = (remove "--with-cairo" (remove "--with-harfbuzz" old.configureFlags))
-              ++ [ "--without-harfbuzz" "--without-cairo" ];
-          }));
-        in if cfg.debug.enable then (pkgs.enableDebugging basepkg) else basepkg;
+        default =
+          let
+            basepkg = ((pkgs.unstable.emacs.override {
+              withGTK2 = false;
+              withGTK3 = false;
+            }).overrideAttrs (old: rec {
+              withCsrc = true;
+              configureFlags = (remove "--with-cairo" (remove "--with-harfbuzz" old.configureFlags))
+                ++ [ "--without-harfbuzz" "--without-cairo" ];
+            }));
+          in
+          if cfg.debug.enable then (pkgs.enableDebugging basepkg) else basepkg;
         description = ''
           Emacs derivation to use.
         '';
@@ -168,21 +169,23 @@ in {
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
         home.file = { ".emacs.d/init.el".text = cfg.initElContent; };
       };
-      systemd.user.services."emacs" = let icon = "${cfg.package}/share/icons/hicolor/scalable/apps/emacs.svg";
-      in {
-        description = "Emacs: the extensible, self-documenting text editor";
-        documentation = [ "info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/" ];
-        restartIfChanged = false;
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
-          ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
-          ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
-          Restart = "on-failure";
-          StandardOutput = "journal";
-          StandardError = "journal";
+      systemd.user.services."emacs" =
+        let icon = "${cfg.package}/share/icons/hicolor/scalable/apps/emacs.svg";
+        in
+        {
+          description = "Emacs: the extensible, self-documenting text editor";
+          documentation = [ "info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/" ];
+          restartIfChanged = false;
+          serviceConfig = {
+            Type = "simple";
+            ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
+            ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
+            ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
+            Restart = "on-failure";
+            StandardOutput = "journal";
+            StandardError = "journal";
+          };
         };
-      };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
