@@ -17,6 +17,11 @@ in
     fsType = "ext2";
   };
 
+  fileSystems."/boot/efi" = {
+    device = "/dev/disk/by-partlabel/efi-system";
+    fsType = "vfat";
+  };
+
   swapDevices = [ ];
 
   environment.etc.current-configuration.source = ../../.;
@@ -46,11 +51,21 @@ in
   };
 
   boot = {
-    loader.grub = {
-      enable = true;
-      version = 2;
-      device = "/dev/sda";
-      configurationLimit = 30;
+    loader = {
+      systemd-boot.enable = true;
+      efi = {
+        # canTouchEfiVariables = true;
+        efiSysMountPoint = "/boot/efi";
+      };
+      grub = {
+        enable = true;
+        efiInstallAsRemovable = true;
+        # devices = [ "nodev" ];
+        efiSupport = true;
+        device = "/dev/sda";
+        configurationLimit = 30;
+        version = 2;
+      };
     };
     initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
     tmpOnTmpfs = false;
