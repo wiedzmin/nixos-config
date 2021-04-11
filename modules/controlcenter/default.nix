@@ -9,19 +9,20 @@ let
   prefix = config.wmCommon.prefix;
   dmenu_runapps = mkShellScriptWithDeps "dmenu_runapps"
     (with pkgs; [ coreutils nurpkgs.dmenu-ng haskellPackages.yeganesh j4-dmenu-desktop ]) ''
-      j4-dmenu-desktop --display-binary --dmenu="(cat ; (stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
-        yeganesh -- -i -l 15 -fn '${config.wmCommon.fonts.dmenu}'"
-    '';
+    j4-dmenu-desktop --display-binary --dmenu="(cat ; (stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
+      yeganesh -- -i -l 15 -fn '${config.wmCommon.fonts.dmenu}'"
+  '';
   notify-emacs-messages = mkShellScriptWithDeps "notify-emacs-messages" # TODO: integrate into notifications
     (with pkgs; [ emacs ]) ''
-      APPNAME="$1"
-      SUMMARY="$2"
-      BODY="$3"
-      ICON="$4"
-      URGENCY="$5"
-      emacsclient -n --eval "(message \"${APPNAME}/${SUMMARY}: $BODY\")"
-    '';
-in {
+    APPNAME="$1"
+    SUMMARY="$2"
+    BODY="$3"
+    ICON="$4"
+    URGENCY="$5"
+    emacsclient -n --eval "(message \"${APPNAME}/${SUMMARY}: $BODY\")"
+  '';
+in
+{
   options = {
     controlcenter = {
       enable = mkOption {
@@ -72,16 +73,17 @@ in {
     (mkIf (cfg.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
-        srvctl = mkPythonScriptWithDeps "srvctl" (with pkgs; [
-          nurpkgs.pyfzf
-          nurpkgs.pystdlib
-          python3Packages.libtmux
-          python3Packages.redis
-          python3Packages.xlib
-        ]) (readSubstituted ../subst.nix ./scripts/srvctl.py);
+        srvctl = mkPythonScriptWithDeps "srvctl"
+          (with pkgs; [
+            nurpkgs.pyfzf
+            nurpkgs.pystdlib
+            python3Packages.libtmux
+            python3Packages.redis
+            python3Packages.xlib
+          ])
+          (readSubstituted ../subst.nix ./scripts/srvctl.py);
         uptime_info = mkPythonScriptWithDeps "uptime_info" (with pkgs; [ dunst gnused procps ])
           (readSubstituted ../subst.nix ./scripts/uptime_info.sh);
-        # FIXME: bugs
         ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
           (readSubstituted ../subst.nix ./scripts/ifconfless.py);
       };
@@ -110,7 +112,8 @@ in {
     })
     (mkIf (cfg.enable && cfg.notifications.backend == "dunst") {
       home-manager.users.${user} = {
-        services.dunst = { # TODO: consider extracting options
+        services.dunst = {
+          # TODO: consider extracting options
           enable = true;
           settings = {
             global = {
