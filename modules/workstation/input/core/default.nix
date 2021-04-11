@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.workstation.input.core;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     workstation.input.core = {
       enable = mkOption {
@@ -51,23 +52,26 @@ in {
           emulateWheel = true;
         };
       };
-      services.xserver.libinput = { # TODO: move to specialized xserver module when exists
+      services.xserver.libinput = {
+        # TODO: move to specialized xserver module when exists
         enable = true;
         touchpad = {
           naturalScrolling = true;
           disableWhileTyping = true;
           tapping = false;
           tappingDragLock = false;
-          accelSpeed = "0.6";
+          accelSpeed = "0.1";
         };
       };
     })
     (mkIf (cfg.enable && cfg.xmodmap.enable) {
-      services.xserver.displayManager.sessionCommands = let xmodmaprc = pkgs.writeText "xmodmaprc" cfg.xmodmap.rc;
-      in ''
-        ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
-        ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
-      '';
+      services.xserver.displayManager.sessionCommands =
+        let xmodmaprc = pkgs.writeText "xmodmaprc" cfg.xmodmap.rc;
+        in
+        ''
+          ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
+          ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
+        '';
     })
     (mkIf (cfg.enable && cfg.xcompose.enable) {
       services.xserver.xkbOptions = "compose:${cfg.xcompose.key}";
