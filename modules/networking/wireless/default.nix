@@ -20,7 +20,7 @@ in {
         description = "Which system module to use";
       };
       macAddress = mkOption {
-        type = types.str; # TODO: search for specialized datatype
+        type = types.str;
         default = "";
         description = ''
           MAC address for wifi interface to use.

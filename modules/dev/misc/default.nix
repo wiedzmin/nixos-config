@@ -28,7 +28,7 @@ in {
         default = { };
         description = "File extensions to be considered dev-related";
       };
-      timeTracking.sites.regexps = mkOption { # TODO: consider splitting by respective submodules
+      timeTracking.sites.regexps = mkOption {
         type = types.attrsOf types.str;
         default = {
           "habr" = "site:habr";

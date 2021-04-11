@@ -65,7 +65,6 @@ let
 
   sshModule = types.submodule {
     options = {
-      # TODO: consider further automation
       private = mkOption {
         type = types.str;
         default = "";
@@ -118,7 +117,6 @@ let
   };
   userModule = types.submodule {
     options = {
-      # TODO: consider further automation
       login = mkOption {
         type = types.str;
         default = "";
@@ -194,7 +192,6 @@ in {
   };
 
   config = mkMerge [
-    # TODO: implement features as needed
     (mkIf cfg.enable (let
       credentials = collectPassCredentials cfg.forges;
       matchBlocks = collectMatchBlocks cfg.forges;
