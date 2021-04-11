@@ -553,7 +553,7 @@ in
         serviceConfig = {
           Type = "oneshot";
           ExecStartPre = [ "${pkgs.procps}/bin/pgrep qutebrowser" "${pkgs.session-save}/bin/session-save" ];
-          ExecStart = "${pkgs.qb-dump-session}/bin/qb-dump-session";
+          ExecStart = "${pkgs.qb-dump-session}/bin/qb-dump-session --flat";
           ExecStopPost =
             "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --rotate --path ${cfg.sessions.path} --history-length ${
               builtins.toString cfg.sessions.historyLength
