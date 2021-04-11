@@ -10,6 +10,10 @@
   :mode "\\.j2$")
 
 (use-package yaml-mode
+  :mode
+  ("\\.yaml\\'" . yaml-mode)
+  ("\\.yml\\'" . yaml-mode)
+  ("\\Taskfile\\'" . yaml-mode)
   :bind
   (:map yaml-mode-map
         ("C-m" . newline-and-indent)
