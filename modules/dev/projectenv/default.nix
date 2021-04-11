@@ -6,7 +6,8 @@ let
   cfg = config.dev.projectenv;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     dev.projectenv = {
       enable = mkOption {
@@ -28,6 +29,16 @@ in {
         type = types.str;
         default = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.devenv-backup";
         description = "File name for dev-env files list.";
+      };
+      markerFiles = mkOption {
+        type = types.listOf types.str;
+        default = [
+          ".devenv"
+          ".envrc"
+          "flake.nix"
+          "shell.nix"
+        ];
+        description = "Minimal list of files which presence at project root denotes existing devenv";
       };
       templates.entries = mkOption {
         type = types.attrs;

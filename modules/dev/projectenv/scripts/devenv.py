@@ -12,12 +12,8 @@ from yaml import dump
 from pystdlib.uishim import get_selection
 from pystdlib import shell_cmd
 
-# TODO: consider moving to nix level
 markers = [
-    ".devenv",
-    ".envrc",
-    "flake.nix",
-    "shell.nix"
+@projectsRootMarkersPython@
 ]
 settings_file = "settings.yaml"
 

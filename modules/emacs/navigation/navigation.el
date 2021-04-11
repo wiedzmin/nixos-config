@@ -397,7 +397,7 @@
      ;; projectile-root-top-down
      ;; projectile-root-top-down-recurring
      ))
-  (projectile-project-root-files '(@projectsRootMarkers@))
+  (projectile-project-root-files '(@projectsRootMarkersEmacs@))
   :hook
   (after-init-hook . projectile-mode)
   :config

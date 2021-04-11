@@ -6,7 +6,8 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
   configHome = hm.xdg.configHome;
-in rec {
+in
+rec {
   autorandrProfiles = homePrefix ".config/autorandr";
   bashExecutable = "/run/current-system/sw/bin/bash";
   booksSearchCommand = config.content.ebooks.searchCommand;
@@ -59,8 +60,11 @@ in rec {
   projectEnvStashName = config.dev.projectenv.stashName;
   projectEnvBackupRoot = config.dev.projectenv.backupRoot;
   projectEnvBackupDateFormat = config.attributes.dateFormats.commonShellNoColons;
-  projectsRootMarkers =
+  projectsRootMarkersEmacs =
     builtins.concatStringsSep " " (lib.forEach config.dev.navigation.projects.rootMarkers (marker: ''"${marker}"''));
+  projectsRootMarkersPython =
+    builtins.concatStringsSep "\n" (lib.forEach config.dev.navigation.projects.rootMarkers
+      (marker: ''${mkIndent 4}"${marker}",''));
   python3Binary = "${pkgs.python3}/bin/python3";
   systemTimeZone = config.time.timeZone;
   screenshotsBasedir = config.content.screenshots.baseDir;
