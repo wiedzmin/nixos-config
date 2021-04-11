@@ -1,13 +1,13 @@
 (use-package cc-mode
+  ;; :after dap
   :config
-  ;; (require 'dap-cpptools) ;TODO: use-package
-  ;;TODO: https://emacs-lsp.github.io/lsp-mode/tutorials/CPP-guide/#creating-debug-configuration
+  ;; (use-package dap-cpptools)
   (setq-default c-basic-offset 4))
 
-;;TODO: play with https://github.com/MaskRay/ccls/wiki/lsp-mode#user-content-cross-reference-extensions later
 (use-package ccls
   :preface
-  (when (featurep 'lsp-ui) ;; TODO: check if it works correctly
+  (when (featurep 'lsp-ui)
+    ;; NOTE: user content manipulation reference: https://github.com/MaskRay/ccls/wiki/lsp-mode#user-content-cross-reference-extensions
     (defun ccls/callee ()
       (interactive)
       (lsp-ui-peek-find-custom "$ccls/call" '(:callee t)))
