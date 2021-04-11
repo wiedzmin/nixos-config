@@ -331,6 +331,15 @@ in
 
       home-manager.users.${user} = {
         xdg.configFile = {
+          "i3/ratiosplit.ini".text = lib.generators.toINI { } {
+            main = {
+              # NOTE: log levels are: off, error, warn, info, debug, trace
+              ratio = 0.33;
+              log_file_level = "info";
+              log_file = "~/.local/share/i3/ratiosplit.log";
+              log_console_level = "off";
+            };
+          };
           "i3/config".text = ''
             # i3 config file (v4)
 
