@@ -51,7 +51,8 @@ let
       '';
     };
   };
-in {
+in
+{
   options = {
     shell.tmux = {
       enable = mkOption {
@@ -64,7 +65,8 @@ in {
         type = types.str;
         default = "main";
       };
-      historyDepth = mkOption { # we should have access not only to visible pane's content
+      historyDepth = mkOption {
+        # we should have access not only to visible pane's content
         type = types.int;
         default = 10000;
         description = "Tmux pane's lines count to search (for fzf-tmux-url at the moment)";
@@ -180,6 +182,7 @@ in {
             extraConfig = "set -g @fzf-url-bind 'o'";
           }
           copycat
+          extrakto
           fpp
           logging
           prefix-highlight
