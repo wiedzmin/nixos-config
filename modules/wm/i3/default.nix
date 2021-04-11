@@ -13,7 +13,8 @@ let
     "blocks" = "i3blocks";
   };
   prefix = config.wmCommon.prefix;
-in {
+in
+{
   options = {
     wm.i3 = {
       enable = mkOption {
@@ -25,6 +26,11 @@ in {
         type = types.enum [ "default" "stacking" "tabbed" ];
         default = "tabbed";
         description = "Default container layout.";
+      };
+      ipcClients = mkOption {
+        type = types.listOf types.str;
+        default = [ "${pkgs.kbdctl}/bin/kbdctl" "${pkgs.i3-ratiosplit}/bin/ratiosplit" "${pkgs.i3-auto-layout}/bin/i3-auto-layout" ];
+        description = "IPC clients to start along with i3";
       };
       settings = mkOption {
         type = types.lines;
@@ -72,7 +78,8 @@ in {
 
       wmCommon = {
         enable = true;
-        modeBindings = { # TODO: check if we can unwire this from i3
+        modeBindings = {
+          # TODO: check if we can unwire this from i3
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
           "browser" = [ prefix "b" ];
           "dev" = [ prefix "d" ];
@@ -331,8 +338,6 @@ in {
             ${bindkeysI3 config.wmCommon.keys config.wmCommon.modeBindings cfg.modeExitBindings
             config.wmCommon.workspaces}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
-            ${lib.concatStringsSep "\n"
-            (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
             ${with config.wmCommon; genPlacementRulesI3 wsMapping.rules workspaces}
 
@@ -344,7 +349,8 @@ in {
 
             bindsym ${prefix}+Tab workspace back_and_forth
 
-            exec_always --no-startup-id ${pkgs.kbdctl}/bin/kbdctl
+            ${lib.concatStringsSep "\n"
+              (lib.forEach (config.wmCommon.autostart.entries ++ cfg.ipcClients) (e: "exec --no-startup-id ${e}"))}
 
             bar {
                 tray_output ${config.attributes.hardware.monitors.internalHead.name}
@@ -356,7 +362,8 @@ in {
                 status_command ${statusBarImplToCmd.${cfg.statusbar.impl}}
             }
           '';
-        } // optionalAttrs (cfg.statusbar.impl == "blocks") { # FIXME: currently broken
+        } // optionalAttrs (cfg.statusbar.impl == "blocks") {
+          # FIXME: currently broken
           # TODO: create derivation for accessing prebuilt C blocklets
           # TODO: tune kbdd_layout output (either patch packages or extract script)
           # TODO: ${inputs.i3blocks-contrib}/dunst/dunst - reimplement and unwire some meta (fonts, etc)
@@ -503,7 +510,8 @@ in {
               }
               {
                 block = "sound";
-                mappings = { # TODO: adjust icons
+                mappings = {
+                  # TODO: adjust icons
                   "alsa_output.usb-Logitech_Logitech_USB_Headset_000000000000-00.analog-stereo" = "🔈";
                   "alsa_output.pci-0000_00_1b.0.analog-stereo" = "🎧";
                 };
