@@ -2,13 +2,16 @@
 
 with pkgs;
 let nurpkgs = pkgs.nur.repos; # refer to packages as nurpkgs.<username>.<package>
-in mkShell {
+in
+mkShell {
   buildInputs = [
     gitAndTools.git
 
     youtube-dl
     ffmpeg
     gospider
+
+    python3Packages.pytube
   ];
   shellHook = ''
     echo
