@@ -1,0 +1,39 @@
+# https://taskfile.dev
+
+version: '3'
+
+# TODO: https://www.tweag.io/blog/2020-08-12-poetry2nix/
+# TODO: https://github.com/nix-community/poetry2nix
+
+tasks:
+  build:docker:
+    desc: Build docker-compose infra
+    cmds:
+      - docker-compose build
+
+  test:
+    desc: Test project
+    cmds:
+      - echo "add actual testing command(s) here or add task(s) as needed"
+
+  publish:
+    desc: Publish source code updates
+    deps: [test]
+    cmds:
+      - git push
+
+  publish:force:
+    desc: Enforce publishing source code updates
+    deps: [test]
+    cmds:
+      - git push --force-with-lease
+
+  pre-commit:install:
+    desc: Install "pre-commit" hooks
+    cmds:
+      - pre-commit install
+
+  pre-commit:update-hooks:
+    desc: Update "pre-commit" hooks
+    cmds:
+      - pre-commit autoupdate

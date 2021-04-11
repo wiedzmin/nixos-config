@@ -1,0 +1,76 @@
+# https://taskfile.dev
+
+version: '3'
+
+tasks:
+  build:
+    desc: Build project
+    cmds:
+      - go build -v ./...
+
+  build:docker:
+    desc: Build project's docker infra
+    cmds:
+      - docker-compose build
+
+  generate:
+    desc: Run generation commands
+    cmds:
+      - go generate -v ./...
+
+  test:
+    desc: Run unit tests
+    cmds:
+      - go test -v ./...
+
+  test:func:
+    desc: Run functional tests
+    cmds:
+      - echo "add actual functional testing commands here"
+
+  lint:
+    desc: Lint cource code
+    cmds:
+      - golangci-lint run ./...
+
+  lint:fix:
+    desc: Fix linter complaints automatically
+    cmds:
+      - golangci-lint run --fix ./...
+
+  deps:download:
+    desc: Download dependencies
+    cmds:
+      - go mod download
+
+  deps:update:
+    desc: Update dependencies versions
+    cmds:
+      - go get -u ./...
+
+  deps:gc:
+    desc: Garbage-collect dependencies
+    cmds:
+      - go mod tidy
+
+  publish:
+    desc: Publish source code updates
+    deps: [generate, build, lint]
+    cmds:
+      - git push
+
+  publish:force:
+    desc: Enforce source code updates publishing
+    deps: [generate, build, lint]
+    cmds:
+      - git push --force-with-lease
+
+  pre-commit:install:
+    desc: Install "pre-commit" hooks
+    cmds:
+      - pre-commit install
+
+  pre-commit:update-hooks:
+    desc: Update "pre-commit" hooks
+    cmds:
+      - pre-commit autoupdate

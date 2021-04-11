@@ -20,7 +20,7 @@ with pkgs;
 let
   pythonLibs = with pkgs; [ ];
   nurpkgs = pkgs.nur.repos; # refer to packages as nurpkgs.<username>.<package>
-  base = [ codesearch docker_compose gitAndTools.pre-commit gnumake watchman ];
+  base = [ codesearch docker_compose gitAndTools.pre-commit go-task watchman ];
   stats = [ cloc gource logtop sloccount tokei ];
   git = [
     git-quick-stats
@@ -41,7 +41,8 @@ let
     python3Packages.pylint
     yapf
   ];
-in mkShell {
+in
+mkShell {
   buildInputs = base ++ stats ++ git ++ python ++ [ ];
   shellHook = ''
     [ -f "./.aux" ] && source ./.aux
