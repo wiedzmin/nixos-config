@@ -3,7 +3,8 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let cfg = config.workstation.power.mgmt;
-in {
+in
+{
   options = {
     workstation.power.mgmt = {
       enable = mkOption {
@@ -50,6 +51,8 @@ in {
           settings = {
             START_CHARGE_THRESH_BAT0 = "80";
             STOP_CHARGE_THRESH_BAT0 = "90";
+            START_CHARGE_THRESH_BAT1 = "80";
+            STOP_CHARGE_THRESH_BAT1 = "90";
             DEVICES_TO_DISABLE_ON_WIFI_CONNECT = "wwan";
             USB_BLACKLIST_PHONE = 1;
           };
