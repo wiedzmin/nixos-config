@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.dev.golang;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     dev.golang = {
       enable = mkOption {
@@ -90,7 +91,7 @@ in {
           go install ./...
         '';
       };
-      home-manager.users.${user} = { home.packages = with pkgs; [ go-install-wrapper gore goimports ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ go-install-wrapper gore goimports impl ]; };
     })
     (mkIf (cfg.enable && cfg.rootMarkers.enable) { dev.navigation.projects.rootMarkers = [ "go.mod" ]; })
     (mkIf (cfg.enable && cfg.emacs.enable) {
