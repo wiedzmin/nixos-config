@@ -5,7 +5,7 @@ let user = config.attributes.mainUser.name;
 in
 {
   imports =
-    [ "${inputs.nixos-hardware}/common/pc/ssd" ../../modules ../../profiles/thinkpad-x230.nix ./assets ./secrets ];
+    [ "${inputs.nixos-hardware}/common/pc/ssd" ../../modules ../../profiles/thinkpad-x270.nix ./assets ./secrets ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos-root";
