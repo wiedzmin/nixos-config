@@ -37,6 +37,7 @@
   (selectrum-show-indices t)
   (selectrum-num-candidates-displayed 20)
   (selectrum-count-style 'current/matches)
+  (selectrum-quick-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9 ?0))
   :config
   (selectrum-mode +1)
   (add-to-list 'completion-styles 'substring)
