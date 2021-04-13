@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.workstation.performance;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     workstation.performance = {
       enable = mkOption {
@@ -19,7 +20,7 @@ in {
         description = "Apps suspending rules.";
       };
       warmup.paths = mkOption {
-        type =  types.listOf types.str;
+        type = types.listOf types.str;
         default = [ ];
         description = "Paths to pull.";
       };
@@ -53,14 +54,17 @@ in {
       };
 
       home-manager.users.${user} = {
-        services.xsuspender = optionalAttrs (cfg.appsSuspension.rules != { }) {
-          enable = true;
-          defaults = {
-            suspendDelay = 10;
-            onlyOnBattery = false;
+        services.xsuspender = optionalAttrs
+          (config.attributes.hardware.dmiSystemVersion != "ThinkPad X270" &&
+            cfg.appsSuspension.rules != { })
+          {
+            enable = true;
+            defaults = {
+              suspendDelay = 10;
+              onlyOnBattery = false;
+            };
+            rules = cfg.appsSuspension.rules;
           };
-          rules = cfg.appsSuspension.rules;
-        };
       };
       systemd.user.services = optionalAttrs (cfg.warmup.paths != [ ]) {
         "warmup" = {
