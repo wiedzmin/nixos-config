@@ -17,4 +17,6 @@ with import ../../modules/util.nix { inherit config inputs lib pkgs; };
   boot = {
     kernelModules = [ "thinkpad_acpi" "thinkpad_hwmon" ];
   };
+
+  attributes.hardware.dmiSystemVersion = "ThinkPad X270";
 }

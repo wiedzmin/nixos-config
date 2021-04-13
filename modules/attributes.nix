@@ -123,6 +123,11 @@ with lib;
       type = types.int;
       default = 4;
     };
+    hardware.dmiSystemVersion = mkOption {
+      description = "Hardware system definition, as shown by `dmidecode -s system-version`";
+      type = types.str;
+      default = "";
+    };
     nix.jobs = mkOption {
       description = "Simultaneous build jobs count";
       type = types.int;
