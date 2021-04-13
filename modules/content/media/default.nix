@@ -183,6 +183,7 @@ in
             cache-on-disk = "yes";
             cache-pause-initial = "yes";
             cache-pause-wait = "10";
+            osc = "no";
             # # Always use 1080p+ or 60 fps where available. Prefer VP9
             # # over AVC and VP8 for high-resolution streams.
             # ytdl=yes
