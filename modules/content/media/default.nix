@@ -6,7 +6,8 @@ let
   cfg = config.content.media;
   user = config.attributes.mainUser.name;
   prefix = config.wmCommon.prefix;
-in {
+in
+{
   options = {
     content.media = {
       enable = mkOption {
@@ -160,11 +161,10 @@ in {
       };
       environment.systemPackages = with pkgs; [ ncmpcpp freetube ];
       home-manager.users.${user} = {
-        programs.mpv = { # TODO: consider extracting options
+        programs.mpv = {
+          # TODO: consider extracting options
           enable = true;
-          scripts = with pkgs.mpvScripts;
-            ([ sponsorblock thumbnail ] ++ # do we need custom [thumbnails] setup yet?
-              lib.optionals (cfg.mpris.enable) [ mpris ]);
+          scripts = with pkgs.mpvScripts; lib.optionals (cfg.mpris.enable) [ mpris ];
           config = {
             save-position-on-quit = true;
             hdr-compute-peak = false; # prevents brightness changes
