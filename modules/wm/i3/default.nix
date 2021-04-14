@@ -512,11 +512,13 @@ in
                 interval = 5;
                 use_bits = false;
               }
-              {
+              ({
                 block = "battery";
                 driver = "upower";
                 format = " {percentage}% {time}";
-              }
+              } // optionalAttrs (config.attributes.hardware.dmiSystemVersion == "ThinkPad X270") {
+                device = "DisplayDevice";
+              })
               {
                 block = "sound";
                 mappings = {
