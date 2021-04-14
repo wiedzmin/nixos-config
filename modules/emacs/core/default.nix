@@ -99,7 +99,6 @@ in
         default = { };
         description = "Custom config-wide keymaps definitions";
       };
-      # TODO: consider adding option for `early-init`
       initElContent = mkOption {
         type = types.lines;
         default = ''
@@ -108,11 +107,6 @@ in
           (setq debug-on-quit t)
 
           (require 'notifications)
-
-          ${lib.optionalString (cfg.environment != { }) (builtins.concatStringsSep "\n"
-            (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
-
-          ${genEmacsCustomKeymaps cfg.customKeymaps}
 
           ${lib.concatStringsSep "\n" (lib.forEach [ ./core.el ] (el: readSubstituted ../../subst.nix el))}
 
@@ -167,7 +161,15 @@ in
         };
         home.packages = (with pkgs; [ drop-corrupted ispell nurpkgs.my_cookies ])
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
-        home.file = { ".emacs.d/init.el".text = cfg.initElContent; };
+        home.file = {
+          ".emacs.d/early-init.el".text = ''
+            ${lib.optionalString (cfg.environment != { }) (builtins.concatStringsSep "\n"
+              (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
+
+            ${genEmacsCustomKeymaps cfg.customKeymaps}
+          '';
+          ".emacs.d/init.el".text = cfg.initElContent;
+        };
       };
       systemd.user.services."emacs" =
         let icon = "${cfg.package}/share/icons/hicolor/scalable/apps/emacs.svg";
