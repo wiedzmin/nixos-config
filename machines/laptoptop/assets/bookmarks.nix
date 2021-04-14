@@ -77,5 +77,17 @@ rec {
       local.path = "${config.navigation.bookmarks.workspaces.globalRoot}/gitlab.com/rycee/nur-expressions";
       remote.url = "https://gitlab.com/rycee/nur-expressions/";
     };
+    "mastering/vlan" = {
+      remote = {
+        url = "http://xgu.ru/wiki/VLAN";
+        desc = "VLAN article";
+      };
+    };
+    "mastering/networking" = {
+      remote = {
+        url = "https://linkmeup.gitbook.io/sdsm/0.-planirovanie";
+        desc = "Networking beginner book (online)";
+      };
+    };
   };
 }
