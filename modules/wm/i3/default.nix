@@ -377,24 +377,7 @@ in
           # TODO: tune kbdd_layout output (either patch packages or extract script)
           # TODO: ${inputs.i3blocks-contrib}/dunst/dunst - reimplement and unwire some meta (fonts, etc)
           # TODO: make homebrew script for openvpn/nm-vpn, refer to vpnctl
-          # ======================
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/battery
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/battery-poly
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/battery2
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/cpu_usage
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/disk
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/essid
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/key_light
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/mediaplayer
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/memory
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/monitor_manager
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/nm-vpn
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/shutdown_menu
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/ssid
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/usb
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/volume
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/volume-pulseaudio
-          # TODO: https://github.com/vivien/i3blocks-contrib/tree/master/wifi
+          # TODO: review https://github.com/vivien/i3blocks-contrib blocklets
           "i3blocks/config".text = ''
             [disk]
             command=${inputs.i3blocks-contrib}/disk/disk
