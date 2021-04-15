@@ -268,6 +268,7 @@
   (org-log-done t)
   (org-log-into-drawer t)
   (org-log-repeat 'time)
+  (org-log-state-notes-insert-after-drawers t)
   (org-loop-over-headlines-in-active-region t)
   (org-lowest-priority 70) ;; extend priorities set (given ascii code)
   (org-modules
