@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.appearance.gtk;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     appearance.gtk = {
       enable = mkOption {
@@ -16,7 +17,6 @@ in {
     };
   };
 
-  # TODO: add and try various themes present in nixpkgs
   config = mkMerge [
     (mkIf cfg.enable {
       programs.dconf.enable = true;

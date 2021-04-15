@@ -5,7 +5,8 @@ let
   cfg = config.appearance.fonts.source-code-pro;
   user = config.attributes.mainUser.name;
   beautify = config.appearance.fonts.beautify;
-in {
+in
+{
   options.appearance.fonts.source-code-pro = { enable = mkEnableOption "source-code-pro"; };
 
   config = mkIf cfg.enable {
@@ -17,10 +18,6 @@ in {
     wmCommon.fonts.dmenu = "Source Code Pro:bold:size=9";
     wmCommon.fonts.statusbar = "pango:${if beautify then "SauceCodePro Nerd Font " else "Source Code Pro "}Bold 9";
     home-manager.users.${user} = {
-      gtk.font = lib.optionalAttrs (config.appearance.gtk.enable) {
-        package = pkgs.source-code-pro;
-        name = "Source Code Pro Bold 8";
-      };
       programs.alacritty.settings.font = {
         normal = {
           family = "Source Code Pro";

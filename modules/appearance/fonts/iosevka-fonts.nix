@@ -5,7 +5,8 @@ let
   cfg = config.appearance.fonts.iosevka;
   user = config.attributes.mainUser.name;
   beautify = config.appearance.fonts.beautify;
-in {
+in
+{
   options.appearance.fonts.iosevka = { enable = mkEnableOption "iosevka"; };
 
   config = mkIf cfg.enable {
@@ -17,10 +18,6 @@ in {
     wmCommon.fonts.dmenu = "Iosevka:bold:size=9";
     wmCommon.fonts.statusbar = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
     home-manager.users.${user} = {
-      gtk.font = lib.optionalAttrs (config.appearance.gtk.enable) {
-        package = pkgs.iosevka;
-        name = "Iosevka Bold 10";
-      };
       programs.alacritty.settings.font = {
         normal = {
           family = "Iosevka";
