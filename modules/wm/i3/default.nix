@@ -359,7 +359,9 @@ in
             bindsym ${prefix}+Tab workspace back_and_forth
 
             ${lib.concatStringsSep "\n"
-              (lib.forEach (config.wmCommon.autostart.entries ++ cfg.ipcClients) (e: "exec --no-startup-id ${e}"))}
+              (lib.forEach (cfg.ipcClients) (e: "exec_always --no-startup-id ${e}"))}
+            ${lib.concatStringsSep "\n"
+              (lib.forEach (config.wmCommon.autostart.entries) (e: "exec --no-startup-id ${e}"))}
 
             bar {
                 tray_output ${config.attributes.hardware.monitors.internalHead.name}
