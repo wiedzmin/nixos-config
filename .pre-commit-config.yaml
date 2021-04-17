@@ -1,6 +1,6 @@
 repos:
   - repo: "https://github.com/wiedzmin/git-hooks"
-    rev: "4c9ad0bc560a23c0b7cbe41347743b84b22cb456"
+    rev: "2f2e47d946dcc31229b7a5add7edf107de189e7c"
     hooks:
       - id: "forbid-pushing-wip"
       # - id: "nixfmt"
