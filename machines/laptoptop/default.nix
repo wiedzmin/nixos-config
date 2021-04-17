@@ -125,7 +125,6 @@ in
   job = {
     "2242184b2c".secrets.enable = false;
     "8a1add5330".secrets.enable = true;
-    "b354e944b3".secrets.enable = true;
     "7880d0f26f".secrets.enable = true;
   };
   dev.secrets.enable = true;
