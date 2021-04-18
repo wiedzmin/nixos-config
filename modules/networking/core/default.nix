@@ -4,7 +4,8 @@ with lib;
 let
   cfg = config.ext.networking.core;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     ext.networking.core = {
       enable = mkOption {
@@ -60,6 +61,7 @@ in {
         };
       };
       home-manager.users.${user} = {
+        home.packages = with pkgs; [ anydesk ];
         xdg.configFile."espanso/user/networking.yml".text = ''
           name: networking
           parent: default
@@ -74,6 +76,11 @@ in {
                     cmd: "curl 'https://api.ipify.org'"
         '';
       };
+      wmCommon.wsMapping.rules = [{
+        class = "Anydesk";
+        desktop = "tools";
+        activate = true;
+      }];
     })
   ];
 }
