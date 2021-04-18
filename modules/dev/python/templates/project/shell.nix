@@ -14,7 +14,6 @@
 # };
 
 # nurpkgs.wiedzmin.dephell produces "error: stack overflow (possible infinite recursion)" when building environment
-# prospector - # FIXME: update version, is currently broken # TODO: review configuration https://github.com/PyCQA/prospector
 
 with pkgs;
 let
