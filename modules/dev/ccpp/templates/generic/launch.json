@@ -1,0 +1,18 @@
+// example of debug configuration for DAP mode (currently not taken into devenv)
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug Emacs",
+            "type": "cppdbg",
+            "request": "launch",
+            "program": "${workspaceFolder}/src/emacs",
+            "args": ["-q"],
+            "stopAtEntry": false,
+            "cwd": "${workspaceFolder}",
+            "environment": [],
+            "externalConsole": false,
+            "MIMode": "gdb"
+        }
+    ]
+}
