@@ -63,7 +63,6 @@ in {
         programs.autorandr.hooks = {
           postswitch = { "rescale-wallpaper" = "${rescale-wallpaper}/bin/rescale-wallpaper"; };
         };
-        programs.feh.enable = true;
       };
 
       boot.loader.grub.splashImage = optionalString (cfg.boot.splashImage != "") cfg.boot.splashImage;
