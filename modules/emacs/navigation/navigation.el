@@ -214,7 +214,9 @@
              (beginend-dired-mode nil "beginend")
              (beginend-compilation-mode nil "beginend")
              (beginend-rg-mode nil "beginend")
-             (beginend-magit-status-mode nil "beginend")))
+             (beginend-magit-status-mode nil "beginend")
+             (beginend-org-mode nil "beginend")
+             (beginend-outline-mode nil "beginend")))
   (beginend-global-mode))
 
 (use-package flycheck-projectile
