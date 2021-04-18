@@ -58,7 +58,8 @@
   (selectrum-highlight-candidates-function #'orderless-highlight-matches)
   :config
   (add-to-list 'completion-category-overrides
-               '(buffer (orderless-matching-styles orderless-flex)))
+               '((buffer (orderless-matching-styles orderless-flex))
+                 (file (styles . (partial-completion)))))
   (add-to-list 'completion-styles 'orderless))
 
 (use-package embark
