@@ -180,7 +180,7 @@ let
         type = conn.type;
         permissions = ""; # "user:alex3rd:;"
       } // lib.optionalAttrs (conn.type == "vpn") { autoconnect = builtins.toString conn.l2vpn.autoconnect; }
-        // lib.optionalAttrs (conn.type == "wifi") { interface-name = conn.wifi.iface; };
+      // lib.optionalAttrs (conn.type == "wifi") { interface-name = conn.wifi.iface; };
       ipv4 = {
         dns = conn.dns;
         dns-search = "";
@@ -194,10 +194,15 @@ let
       };
       proxy = { };
     } // lib.optionalAttrs (conn.type == "vpn") (genVPNAttrs conn.l2vpn)
-      // lib.optionalAttrs (conn.type == "wifi") (genWifiAttrs conn.wifi conn.wifiEap));
+    // lib.optionalAttrs (conn.type == "wifi") (genWifiAttrs conn.wifi conn.wifiEap));
     mode = "0600";
   };
-in {
+  isProperConn = conn: (conn.type == "wifi" && conn.id != "" &&
+    conn.uuid != "" && conn.wifi.ssid != "" && conn.wifi.password != "") ||
+  (conn.type == "vpn" && conn.l2vpn.ipsec.psk != "" &&
+    conn.l2vpn.user != "" && conn.l2vpn.password != "" && conn.l2vpn.gateway != "");
+in
+{
   options = {
     ext.networking.nmconnections = {
       enable = mkOption {
@@ -213,20 +218,9 @@ in {
     };
   };
 
-  # TODO: VPN gateway assertion
-  # TODO: VPN IPSec PSK assertion
-  # TODO: VPN user assertion
-  # TODO: VPN password assertion
-  # TODO: connection id assertion
-  # TODO: connection UUID assertion
-  # TODO: wifi ssid assertion
-  # TODO: wifi password assertion
-  # TODO: wifi eap identity assertion
-  # TODO: connection dns assertion
-  # TODO: matching connection type assertions
   config = mkMerge [
     (mkIf (cfg.enable) {
-      environment.etc = builtins.listToAttrs (lib.forEach cfg.connections
+      environment.etc = builtins.listToAttrs (lib.forEach (builtins.filter (c: isProperConn c) cfg.connections)
         (conn: lib.nameValuePair "NetworkManager/system-connections/${conn.id}.nmconnection" (genNMConn conn)));
     })
     (mkIf ((builtins.filter (c: c.type == "vpn") cfg.connections) != [ ]) {
