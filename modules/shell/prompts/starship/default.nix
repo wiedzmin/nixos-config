@@ -2,11 +2,11 @@
 with import ../../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
-# TODO: force fonts "beautify"-tion if module is enabled
 let
   cfg = config.shell.prompts.starship;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     shell.prompts.starship = {
       enable = mkOption {
@@ -16,7 +16,7 @@ in {
       };
       modulesConfiguration = mkOption {
         type = types.attrs;
-        default = {};
+        default = { };
         description = "Starship additional modules configuration";
       };
       configuration = mkOption {
@@ -65,6 +65,8 @@ in {
           message = "shell/prompts/starship: beautified (Nerd) fonts required.";
         }
       ];
+
+      appearance.fonts.beautify = true;
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ starship ];
