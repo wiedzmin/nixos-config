@@ -186,7 +186,7 @@ in
           fpp
           {
             plugin = fingers;
-            extraConfig = "set -g @@fingers-hint-format '#[fg=green,bold]%s'";
+            extraConfig = "set -g @fingers-hint-format '#[fg=green,bold]%s'";
           }
           logging
           prefix-highlight
