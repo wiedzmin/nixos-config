@@ -125,7 +125,7 @@ in {
             YSU_IGNORED_ALIASES = [ "g" "ll" ];
             YSU_MODE = "ALL";
           };
-          shellAliases = { # TODO: extract to option
+          shellAliases = {
             cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
             catb = "${pkgs.bat}/bin/bat -A";
 

@@ -18,7 +18,7 @@ in {
         default = { };
         description = "Editorconfig global rules";
       };
-      basicRules = mkOption { # TODO: consider extracting options
+      basicRules = mkOption {
         type = types.attrs;
         default = {
           "charset" = "utf-8";

@@ -15,7 +15,6 @@ for mac in sorted(macs):
     if "offline" in output:
         result.append(f"{mac}: offline")
     else:
-        # TODO: investigate text coloring ability (to colorize battery level)
         result.append(f"{mac}: {output.split(' ')[-1]}")
 
 if result:
