@@ -19,6 +19,8 @@
         ("C-m" . newline-and-indent)
         ("<return>" . newline-and-indent)))
 
+(use-package just-mode)
+
 (use-package fic-mode
   :hook
   (prog-mode . fic-mode))

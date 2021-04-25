@@ -6,7 +6,8 @@ let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     dev.misc = {
       enable = mkOption {
@@ -67,10 +68,15 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.${user} = { home.packages = with pkgs; [ go-task nurpkgs.comby plantuml tagref ]; };
+      home-manager.users.${user} = {
+        home.packages = with pkgs; [ dfmt go-task just nurpkgs.comby plantuml tagref ];
+        programs.zsh.sessionVariables = {
+          JUST_CHOOSER = "dmenu -i -l 15 -fn '${config.wmCommon.fonts.dmenu}'";
+        };
+      };
       pim.timetracking.rules =
         mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ])
-        cfg.timeTracking.extensions.dev + "\n" + mkArbttEmacsMapTitleRule cfg.timeTracking.extensions.dev;
+          cfg.timeTracking.extensions.dev + "\n" + mkArbttEmacsMapTitleRule cfg.timeTracking.extensions.dev;
       dev.editorconfig.rules = {
         "Makefile" = {
           indent_style = "tab";
@@ -108,7 +114,8 @@ in {
       environment.systemPackages = with pkgs; [ xlibs.xev xlibs.xprop xorg.xkbcomp drm_info xtruss ];
     })
     (mkIf (cfg.enable && cfg.tools.misc.enable) {
-      environment.systemPackages = with pkgs; [ # D-Bus debug tools
+      environment.systemPackages = with pkgs; [
+        # D-Bus debug tools
         dfeet
         bustle
       ];
@@ -120,6 +127,7 @@ in {
         epkgs.elmacro
         epkgs.fic-mode
         epkgs.jinja2-mode
+        epkgs.just-mode
         epkgs.leetcode
         epkgs.lsp-mode
         epkgs.lsp-ui
@@ -133,7 +141,8 @@ in {
         "custom-webpaste-map" = "C-c [";
       };
       home-manager.users.${user} = {
-        home.activation.ensureLspSessionDir = { # lsp-deferred fails otherwise
+        home.activation.ensureLspSessionDir = {
+          # lsp-deferred fails otherwise
           after = [ ];
           before = [ "linkGeneration" ];
           data = "mkdir -p ${config.ide.emacs.core.dataDir}/lsp";
