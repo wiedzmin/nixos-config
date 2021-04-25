@@ -28,7 +28,7 @@ parser_tags.add_argument("--sync", dest="tags_sync", action="store_true",
                         default=False, help="Sync tags with selected remote")
 parser_tags.add_argument("--checkout", dest="tags_checkout", action="store_true",
                         default=False, help="Interactively select and checkout tag locally")
-parser_tags.add_argument("--tag", dest="tags_name", # TODO: think of params restructuring
+parser_tags.add_argument("--tag", dest="tags_name",
                          default="", help="Tag to checkout in non-interactive mode")
 
 args = parser.parse_args()
