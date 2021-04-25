@@ -184,6 +184,8 @@ in
   };
 
   content = {
+    core.enable = true;
+    images.enable = true;
     ebooks = {
       enable = true;
       wm.enable = true;

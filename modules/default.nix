@@ -14,7 +14,9 @@
     ./browsers/firefox/impl.nix
     ./browsers/nyxt
     ./browsers/qutebrowser
+    ./content/core
     ./content/ebooks
+    ./content/images
     ./content/media
     ./content/misc
     ./content/screenshots

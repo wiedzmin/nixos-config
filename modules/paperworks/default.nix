@@ -341,7 +341,14 @@ in {
         mode = "select";
       }];
 
-      home-manager.users.${user} = { home.packages = with pkgs; [ stable.libreoffice open-doc update-docs ]; };
+      home-manager.users.${user} = {
+        home.packages = with pkgs; [
+          stable.libreoffice open-doc unipicker update-docs
+        ];
+        xdg.mimeApps.defaultApplications =
+          (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop")
+          // (mapMimesToApp config.attributes.mimetypes.office.spreadsheets "calc.desktop");
+      };
 
       pim.timetracking.rules =
         mkArbttProgramMultipleTagsRule "libreoffice" [ "activity:docflow" "program:libreoffice" ];

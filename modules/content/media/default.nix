@@ -159,7 +159,7 @@ in
           Environment = [ "DISPLAY=:0" ];
         };
       };
-      environment.systemPackages = with pkgs; [ ncmpcpp freetube ];
+      environment.systemPackages = with pkgs; [ ncmpcpp freetube ytfzf ];
       home-manager.users.${user} = {
         programs.mpv = {
           # TODO: consider extracting options
@@ -190,6 +190,7 @@ in
             # ytdl-format=(bestvideo[ext=webm]/bestvideo[height>720]/bestvideo[fps=60])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio)/best
           };
         };
+        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.video "mpv.desktop";
         programs.zsh.shellAliases = { yg = "${pkgs.you-get}/bin/you-get"; };
       };
     })

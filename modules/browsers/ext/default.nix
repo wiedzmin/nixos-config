@@ -46,6 +46,9 @@ in {
       ];
 
       nixpkgs.config.packageOverrides = _: rec {
+        collect_links_on_page = mkPythonScriptWithDeps "collect_links_on_page"
+          (with pkgs; [ nurpkgs.pystdlib python3Packages.beautifulsoup4 xsel ])
+          (readSubstituted ../../subst.nix ./scripts/collect_links_on_page.py);
         search_prompt = mkPythonScriptWithDeps "search_prompt" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
           (readSubstituted ../../subst.nix ./scripts/search_prompt.py);
         search_selection =
@@ -117,10 +120,15 @@ in {
           cmd = "${pkgs.webjumps}/bin/webjumps --copy";
           mode = "root";
         }
+        {
+          key = [ "c" ];
+          cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page";
+          mode = "browser";
+        }
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ search_prompt search_selection webjumps ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ collect_links_on_page search_prompt search_selection webjumps ]; };
     })
   ];
 }
