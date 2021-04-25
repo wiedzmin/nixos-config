@@ -244,12 +244,15 @@ in
               geolocation = "ask";
               javascript.enabled = true;
               mute = true;
-              notifications = true;
+              notifications = {
+                enabled = true;
+                presenter = "libnotify";
+              };
               pdfjs = true;
               plugins = true;
               proxy = "none";
               register_protocol_handler = true;
-              ssl_strict = true;
+              tls.certificate_errors = "ask-block-thirdparty";
               webgl = true;
             };
             downloads = {
