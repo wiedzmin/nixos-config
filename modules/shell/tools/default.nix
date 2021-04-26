@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.shell.tools;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     shell.tools = {
       enable = mkOption {
@@ -19,7 +20,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ broot choose dirdiff each fd gron ijq ripgrep-all sd ugrep uq vgrep xlsxgrep ];
+        home.packages = with pkgs; [ broot choose dirdiff each fd gron ijq jql ripgrep-all sd ugrep uq vgrep xlsxgrep ];
         programs = {
           lsd = {
             enable = true;
