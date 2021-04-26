@@ -9,7 +9,8 @@ let
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
   });
-in {
+in
+{
   options = {
     ext.nix.cachix = {
       enable = mkOption {
@@ -20,21 +21,43 @@ in {
       configuration = mkOption {
         type = types.str;
         default = "";
-        description = "Cachix configuration data.";
+        description = "Cachix configuration data";
+      };
+      username = mkOption {
+        type = types.str;
+        default = "";
+        description = "Cachix username to push under";
+      };
+      packageBinariesToCache = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = ''
+          List of binaries ,linked to userspace, that represent currently used derivations for respective packages.
+
+          Those derivations will be cached.
+        '';
       };
     };
   };
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      # TODO: add script + automate list of packages, that should be cached, examples: below
-      # cachix push ${user} $(dirname $(dirname $(readlink -f $(which i3lock-color))))
-      # cachix push ${user} $(dirname $(dirname $(readlink -f $(which emacs))))
+      assertions = [{
+        assertion = cfg.username != "";
+        message = "nix/cachix: missing username.";
+      }];
 
       home-manager.users.${user} = {
         home.packages = [ stable.cachix ];
         xdg.configFile."cachix/cachix.dhall".text =
-          lib.optionalString (cfg.configuration != "") cfg.configuration;
+          optionalString (cfg.configuration != "") cfg.configuration;
+        home.activation.pushToCachix = {
+          after = [ "checkLinkTargets" ];
+          before = [ ];
+          data = concatStringsSep "\n"
+            (forEach cfg.packageBinariesToCache
+              (binary: "cachix push ${cfg.username} $(dirname $(dirname $(readlink -f $(which ${binary}))))"));
+        };
       };
     })
   ];

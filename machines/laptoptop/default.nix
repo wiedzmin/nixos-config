@@ -373,6 +373,7 @@ in
     };
     cachix = {
       enable = true;
+      username = user;
       configuration = builtins.readFile ./secrets/cachix.dhall;
     };
     dev = {
