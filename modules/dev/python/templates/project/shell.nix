@@ -38,6 +38,7 @@ let
     python3Packages.poetry
     python3Packages.pycodestyle
     python3Packages.pylint
+    unify
     yapf
   ];
 in
