@@ -95,6 +95,9 @@ in
         bugReferenceBugRegexp = "\\\\#\\\\(?2:[0-9]+\\\\)\\\\>";
         inputsUnstableRev = inputs.unstable.rev;
       };
+      dev.projectenv.templates.entries = {
+        "reveng" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/dbms/misc/templates/reveng";
+      };
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
       home-manager.users.${user} = { home.packages = with pkgs; [ diffoscope icdiff patchutils wiggle xmldiff ]; };
