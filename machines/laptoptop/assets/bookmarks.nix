@@ -89,5 +89,14 @@ rec {
         desc = "Networking beginner book (online)";
       };
     };
+    "wiedzmin/toolbox" = {
+      local.path = "${wsRoot "github"}/wiedzmin/toolbox";
+      remote.url = "https://github.com/wiedzmin/toolbox/";
+      myrepos = {
+        "${wsRootAbs "github"}/wiedzmin/toolbox" = {
+          checkout = [ "git clone 'https://github.com/wiedzmin/toolbox.git' 'toolbox'" ];
+        };
+      };
+    };
   };
 }
