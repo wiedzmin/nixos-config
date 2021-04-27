@@ -283,7 +283,9 @@
   (dired-dwim-target t)
   (dired-listing-switches "-lah1v --group-directories-first") ;;TODO: think of using TIME_STYLE env var
   :config
-  (use-package dired-x)
+  (use-package dired-x
+    :custom
+    (dired-guess-shell-alist-user '(("" "xdg-open"))))
   (put 'dired-find-alternate-file 'disabled nil)
   (advice-add 'dired-do-rename :after #'custom/revert-dired-buffer)
   (advice-add 'dired-create-directory :after #'custom/revert-dired-buffer)
