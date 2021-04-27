@@ -23,7 +23,7 @@ in
         type = types.attrs;
         default = {
           add_newline = false;
-          scan_timeoout = 10;
+          scan_timeout = 10;
           character = {
             success_symbol = "[➜](bold green) ";
             error_symbol = "[✗](bold red) ";
