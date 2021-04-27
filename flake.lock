@@ -47,6 +47,22 @@
         "type": "github"
       }
     },
+    "emacs-consult-lsp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1619338601,
+        "narHash": "sha256-AKc3NA9ktW3lK6bjbSJ3her6EjdZt8VTwkdlyLKFLcg=",
+        "owner": "gagbo",
+        "repo": "consult-lsp",
+        "rev": "ed3cfd2e67fc5117819c0c739814780bb4c2d716",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gagbo",
+        "repo": "consult-lsp",
+        "type": "github"
+      }
+    },
     "emacs-consult-projectile": {
       "flake": false,
       "locked": {
@@ -259,6 +275,7 @@
         "emacs": "emacs",
         "emacs-bookmark-view": "emacs-bookmark-view",
         "emacs-bruh": "emacs-bruh",
+        "emacs-consult-lsp": "emacs-consult-lsp",
         "emacs-consult-projectile": "emacs-consult-projectile",
         "emacs-ob-go": "emacs-ob-go",
         "emacs-org-appear": "emacs-org-appear",

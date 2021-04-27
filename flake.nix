@@ -41,6 +41,10 @@
       url = "gitlab:OlMon/consult-projectile";
       flake = false;
     };
+    emacs-consult-lsp = {
+      url = "github:gagbo/consult-lsp";
+      flake = false;
+    };
 
     git-extra-commands = {
       url = "github:unixorn/git-extra-commands";

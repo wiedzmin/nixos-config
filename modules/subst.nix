@@ -33,6 +33,7 @@ rec {
   emacsOrgAppearPath = inputs.emacs-org-appear;
   emacsBruhPath = inputs.emacs-bruh;
   emacsBookmarkViewPath = inputs.emacs-bookmark-view;
+  emacsConsultLsp = inputs.emacs-consult-lsp;
   emacsConsultProjectilePath = inputs.emacs-consult-projectile;
   factoryCalendarKey = "scheduling/fcalendar";
   fallbackPackageArchives = emacsBoolToString false;
