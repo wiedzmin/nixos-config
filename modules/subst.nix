@@ -22,8 +22,6 @@ rec {
   direnvGranularityFile = emacsBoolToString (config.dev.direnv.emacs.granularity == "file");
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
   globalWorkspaceRoot = homePrefix config.navigation.bookmarks.workspaces.globalRoot;
-  searchReposRoot = config.dev.navigation.projects.fuzzySearch.root;
-  searchDepth = config.dev.navigation.projects.fuzzySearch.depth;
   emacsBrowserGenericProgram = "${pkgs.xdg_utils}/bin/xdg-open";
   emacsCustomFile = homePrefix ".emacs.d/customizations.el";
   emacsDatadir = config.ide.emacs.core.dataDir;
@@ -38,7 +36,6 @@ rec {
   factoryCalendarKey = "scheduling/fcalendar";
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;
-  gitWipChangedLinesTreshold = builtins.toString config.dev.git.savewip.minChangedLines;
   gmrunHistorySize = builtins.toString config.controlcenter.gmrun.historySize;
   gmrunTerminalApps = lib.concatStringsSep " " config.controlcenter.gmrun.terminalApps;
   keybindingsCachePath = config.wmCommon.keybindingsCachePath;
@@ -54,18 +51,10 @@ rec {
   orgWarningsFiledir = builtins.dirOf config.pim.orgmode.warningsFile;
   orgWarningsFilename = config.pim.orgmode.warningsFile;
   passwordStorePath = config.ext.security.passwordStorePath;
-  passwordPlaceholder = config.attributes.secret;
   pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
-  projectEnvConfigName = config.dev.projectenv.configName;
-  projectEnvStashName = config.dev.projectenv.stashName;
-  projectEnvBackupRoot = config.dev.projectenv.backupRoot;
-  projectEnvBackupDateFormat = config.attributes.dateFormats.commonShellNoColons;
   projectsRootMarkersEmacs =
     builtins.concatStringsSep " " (lib.forEach config.dev.navigation.projects.rootMarkers (marker: ''"${marker}"''));
-  projectsRootMarkersPython =
-    builtins.concatStringsSep "\n" (lib.forEach config.dev.navigation.projects.rootMarkers
-      (marker: ''${mkIndent 4}"${marker}",''));
   python3Binary = "${pkgs.python3}/bin/python3";
   systemTimeZone = config.time.timeZone;
   screenshotsBasedir = config.content.screenshots.baseDir;

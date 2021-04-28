@@ -53,7 +53,7 @@ in
 
       nixpkgs.config.packageOverrides = _: rec {
         dbms = mkPythonScriptWithDeps "dbms" (with pkgs; [ pass nurpkgs.pystdlib python3Packages.redis tmux vpnctl ])
-          (readSubstituted ../../../subst.nix ./scripts/dbms.py);
+          (builtins.readFile ./scripts/dbms.py);
       };
 
       workstation.systemtraits.instructions = ''
@@ -67,7 +67,8 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "d" ];
-        cmd = "${pkgs.dbms}/bin/dbms";
+        cmd = ''${pkgs.dbms}/bin/dbms --term-command "${
+          lib.concatStringsSep " " config.attributes.defaultVTCommand}" --dmenu-font ${config.wmCommon.fonts.dmenu}'';
         mode = "dev";
       }];
     })

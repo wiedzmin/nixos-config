@@ -6,7 +6,8 @@ let
   cfg = config.dev.git.misc;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     dev.git.misc = {
       enable = mkOption {
@@ -32,7 +33,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         gittags = mkPythonScriptWithDeps "gittags"
           (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
-          (readSubstituted ../../../subst.nix ./scripts/gittags.py);
+          (builtins.readFile ./scripts/gittags.py);
       };
 
       home-manager.users.${user} = {

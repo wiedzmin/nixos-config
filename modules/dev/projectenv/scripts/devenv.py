@@ -12,14 +12,12 @@ from yaml import dump
 from pystdlib.uishim import get_selection
 from pystdlib import shell_cmd
 
-markers = [
-@projectsRootMarkersPython@
-]
 settings_file = "settings.yaml"
 
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 project_templates = json.loads(r.get("projectenv/templates"))
+root_markers = json.loads(r.get("projectenv/root_markers"))
 
 
 def markers_exist(path, files):
@@ -44,8 +42,8 @@ def get_devenv_files(path, locked_flake=False):
 
 def get_devenv_stash_token(path):
     os.chdir(path)
-    devenv_stash_output = shell_cmd('git stash list --max-count=1 --grep="@projectEnvStashName@"').strip()
-    if "@projectEnvStashName@" in devenv_stash_output:
+    devenv_stash_output = shell_cmd(f'git stash list --max-count=1 --grep="{args.stash_name}"').strip()
+    if args.stash_name in devenv_stash_output:
         return devenv_stash_output.split(": ")[0]
     return ""
 
@@ -66,7 +64,7 @@ def hide_devenv(path):
     execute_commands(path, [
         "git reset",
         f"git add -- {devenv_filelist}",
-        f"git stash -m '@projectEnvStashName@' -- {devenv_filelist}",
+        f"git stash -m '{args.stash_name}' -- {devenv_filelist}",
     ], fail=False)
 
 
@@ -99,6 +97,10 @@ parser.add_argument("--hide", dest="hide_devenv", action="store_true",
                     default=False, help="Hide devenv (i.e. to not push upstream accidentally)")
 parser.add_argument("--unhide", dest="unhide_devenv", action="store_true",
                     default=False, help="Unhide devenv")
+parser.add_argument('--stash-name', dest="stash_name", default="devenv", type=str, help="Stash name to hide devenv under")
+parser.add_argument('--backup-root', dest="backup_root", default=f"{os.getenv('HOME')}/workspace/repos/.devenv-backup",
+                    type=str, help="Root directory for devenv backups")
+parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
 
 args = parser.parse_args()
 
@@ -107,17 +109,17 @@ if args.seed_devenv:
     if not markers_exist(current_dir, [".git"]):
         print("initialize git repo first")
         sys.exit(1)
-    if markers_exist(current_dir, markers):
+    if markers_exist(current_dir, root_markers):
         print("project already initialized")
         sys.exit(1)
     settings = json.loads(r.get("projectenv/settings"))
-    token = get_selection(settings.keys(), "settings: ", lines=5, font="@wmFontDmenu@")
+    token = get_selection(settings.keys(), "settings: ", lines=5, font=args.dmenu_font)
     if not token:
         print("no settings to instantiate")
         sys.exit(1)
     with open(f"{current_dir}/{settings_file}", "w") as f:
         f.write(dump(settings[token]))
-    template = get_selection(project_templates.keys(), "template: ", lines=10, font="@wmFontDmenu@")
+    template = get_selection(project_templates.keys(), "template: ", lines=10, font=args.dmenu_font)
     if template:
         template_source_path = project_templates[template]
         devenv_template_files = os.listdir(template_source_path)
@@ -132,7 +134,7 @@ elif args.unhide_devenv:
     devenv_stash_token = get_devenv_stash_token(current_dir)
     unhide_devenv(current_dir, devenv_stash_token)
 elif args.remove_devenv:
-    if markers_exist(current_dir, markers):
+    if markers_exist(current_dir, root_markers):
         hide_devenv(current_dir)
     devenv_stash_token = get_devenv_stash_token(current_dir)
     if devenv_stash_token:
@@ -147,12 +149,12 @@ elif args.remove_devenv:
             if os.path.exists(f) and os.path.isfile(f):
                 os.remove(f)
 elif args.export_devenv:
-    if markers_exist(current_dir, markers):
+    if markers_exist(current_dir, root_markers):
         hide_devenv(current_dir)
     devenv_stash_token = get_devenv_stash_token(current_dir)
     if devenv_stash_token:
         execute_commands(current_dir,
-                         [f'git stash show -p {devenv_stash_token} > @projectEnvBackupRoot@/{construct_patch_name(current_dir)}'],
+                         [f'git stash show -p {devenv_stash_token} > {args.backup_root}/{construct_patch_name(current_dir)}'],
                          fail=False)
     else:
         print("project not initialized")
@@ -160,9 +162,9 @@ elif args.export_devenv:
     unhide_devenv(current_dir, devenv_stash_token)
 elif args.import_devenv:
     prefix = project_prefix(current_dir)
-    envs = [os.path.basename(env) for env in glob.glob(f"@projectEnvBackupRoot@/{prefix}*")]
-    env = get_selection(envs, "envs: ", lines=5, font="@wmFontDmenu@")
+    envs = [os.path.basename(env) for env in glob.glob(f"{args.backup_root}/{prefix}*")]
+    env = get_selection(envs, "envs: ", lines=5, font=args.dmenu_font)
     if env:
-        copyfile(f"@projectEnvBackupRoot@/{env}", f"{current_dir}/{env}")
+        copyfile(f"{args.backup_root}/{env}", f"{current_dir}/{env}")
     else:
         print("nothing selected")

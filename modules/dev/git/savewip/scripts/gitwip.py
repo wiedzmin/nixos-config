@@ -25,6 +25,8 @@ parser.add_argument("--dry-run", dest="dry_run", action="store_true",
                     default=False, help="Dry run")
 parser.add_argument("--remote", dest="remote",
                     default="origin", help="Git remote to work with")
+parser.add_argument("--lines-changed", dest="lines_changed",
+                    default=100, help="Minimum changed lines count threshold")
 # TODO: consider providing per-repo configuration
 parser.add_argument("--all", dest="wip_all", action="store_true",
                         default=False, help="Stage and commit all dirty state")
@@ -52,13 +54,13 @@ for glob in credentials_mapping.keys():
         pass_path = credentials_mapping[glob]["target"]
 
 
-if not args.wip_force and not is_idle_enough("@xprintidleBinary@"):
+if not args.wip_force and not is_idle_enough("xprintidle-ng"):
     sys.exit(0)
 diff_size = get_diff_size(repo)
 if diff_size == 0:
     log_info("no changes to commit")
     sys.exit(0)
-if diff_size > @gitWipChangedLinesTreshold@ or args.wip_force:
+if diff_size > lines_changed or args.wip_force:
     branch = f"{repo.references['HEAD'].resolve().split('/')[-1]}: " if args.wip_add_branch_name else ""
     wip_message = f"{branch}WIP {datetime.now().strftime('%a %d/%m/%Y %H:%M:%S')}"
     index = repo.index

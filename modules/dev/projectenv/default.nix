@@ -96,6 +96,9 @@ in
           strings.escapeNixString
           (builtins.toJSON (cfg.templates.settings.full // { "common" = cfg.templates.settings.common; }))
         }
+        ${pkgs.redis}/bin/redis-cli set projectenv/root_markers ${
+          strings.escapeNixString (builtins.toJSON config.dev.navigation.projects.rootMarkers)
+        }
       '';
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {

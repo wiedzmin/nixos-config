@@ -1,3 +1,5 @@
+import argparse
+import os
 import sys
 
 from pystdlib import shell_cmd
@@ -6,13 +8,25 @@ from pystdlib.systemd import is_systemd_service_active
 from pystdlib.uishim import get_selection, notify, URGENCY_CRITICAL, log_error
 
 
-keyword_result = get_selection([], 'keyword', font="@wmFontDmenu@")
+parser = argparse.ArgumentParser(description="Repository overview search")
+parser.add_argument('--root', dest="search_root", type=str, help="Root directory to search repositories under")
+parser.add_argument('--depth', dest="search_depth", type=int, help="Search depth")
+parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+args = parser.parse_args()
+
+if not args.search_root:
+    notify("[search repos]", "no search root provided", urgency=URGENCY_CRITICAL, timeout=5000)
+    sys.exit(1)
+
+search_depth = args.search_depth or 4
+
+keyword_result = get_selection([], 'keyword', font=args.dmenu_font)
 if not keyword_result:
     notify("[search repos]", "no keyword provided", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
-matching_repos = shell_cmd(f"fd -t d -d @searchDepth@ {keyword_result} @searchReposRoot@", split_output="\n")
-selected_repo = get_selection(matching_repos, 'repo', case_insensitive=True, lines=10, font="@wmFontDmenu@")
+matching_repos = shell_cmd(f"fd -t d -d {search_depth} {keyword_result} {args.search_root}", split_output="\n")
+selected_repo = get_selection(matching_repos, 'repo', case_insensitive=True, lines=10, font=args.dmenu_font)
 if not selected_repo:
     notify("[search repos]", "no repository selected", timeout=5000)
     sys.exit(0)
@@ -22,5 +36,5 @@ if not is_systemd_service_active("emacs", user=True):
     sys.exit(1)
 
 elisp_cmd = f'(dired "{selected_repo}")'
-emacs_cmd = f'emacsclient -c -s @emacsServerSocketPath@ -e \'{elisp_cmd}\''
+emacs_cmd = f'emacsclient -c -s /run/user/{os.getuid()}/emacs/server -e \'{elisp_cmd}\''
 shell_cmd(emacs_cmd)

@@ -6,7 +6,8 @@ let
   cfg = config.dev.git.savewip;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     dev.git.savewip = {
       enable = mkOption {
@@ -42,8 +43,8 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         gitwip = mkPythonScriptWithDeps "gitwip"
-          (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
-          (readSubstituted ../../../subst.nix ./scripts/gitwip.py);
+          (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis xprintidle-ng ])
+          (builtins.readFile ./scripts/gitwip.py);
       };
 
       dev.git.batch.commands = { savewip = [ "${pkgs.gitwip}/bin/gitwip" ]; };

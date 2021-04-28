@@ -6,7 +6,8 @@ let
   cfg = config.dev.navigation.projects;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     dev.navigation.projects = {
       enable = mkOption {
@@ -51,24 +52,27 @@ in {
     (mkIf (cfg.bookmarks.enable && config.navigation.bookmarks.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         open-project = mkPythonScriptWithDeps "open-project" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
-          (readSubstituted ../../../subst.nix ./scripts/open-project.py);
+          (builtins.readFile ./scripts/open-project.py);
       };
     })
     (mkIf cfg.fuzzySearch.enable {
       nixpkgs.config.packageOverrides = _: rec {
         reposearch =
           mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd python3Packages.libtmux xsel emacs nurpkgs.pystdlib ])
-          (readSubstituted ../../../subst.nix ./scripts/reposearch.py);
+            (builtins.readFile ./scripts/reposearch.py);
       };
     })
     (mkIf (cfg.wm.enable) {
       wmCommon.keys = lib.optionals (cfg.fuzzySearch.enable) [{
         key = [ "r" ];
-        cmd = "${pkgs.reposearch}/bin/reposearch";
+        cmd = with config.dev.navigation.projects.fuzzySearch;
+          "${pkgs.reposearch}/bin/reposearch --root ${root} --depth ${builtins.toString depth} --dmenu-font '${
+            config.wmCommon.fonts.dmenu}'";
         mode = "dev";
       }] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable) [{
         key = [ "p" ];
-        cmd = "${pkgs.open-project}/bin/open-project";
+        cmd = "${pkgs.open-project}/bin/open-project --dmenu-font '${
+            config.wmCommon.fonts.dmenu}'";
         mode = "dev";
       }];
     })
