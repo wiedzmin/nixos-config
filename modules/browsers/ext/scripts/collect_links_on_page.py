@@ -11,7 +11,7 @@ from pystdlib import shell_cmd
 
 
 def extract_url(str):
-    result = re.search("@urlRegexPy@", str)
+    result = re.search("(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]", str)
     if result:
         return result.group()
     return None
@@ -41,12 +41,13 @@ def acquire_url():
 parser = argparse.ArgumentParser(description="Collect links under chosen URL.")
 parser.add_argument("--path", "-p", dest="collection_path",
                     help="Collected links save path")
+parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
 args = parser.parse_args()
 
 
 page_url = acquire_url()
 if page_url is not None:
-    session_name = get_selection([], "save as", lines=1, font="@wmFontDmenu@")
+    session_name = get_selection([], "save as", lines=1, font=args.dmenu_font)
     if not session_name:
         sys.exit(1)
 

@@ -110,12 +110,12 @@ in
           (readSubstituted ../../subst.nix ./scripts/yank-image.sh);
         qb-fix-session =
           mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
-            (readSubstituted ../../subst.nix ./scripts/qb-fix-session.py);
+            (builtins.readFile ./scripts/qb-fix-session.py);
         qb-dump-session =
           mkPythonScriptWithDeps "qb-dump-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
-            (readSubstituted ../../subst.nix ./scripts/qb-dump-session.py);
+            (builtins.readFile ./scripts/qb-dump-session.py);
         manage-qb-sessions = mkPythonScriptWithDeps "manage-qb-sessions" (with pkgs; [ nurpkgs.pystdlib ])
-          (readSubstituted ../../subst.nix ./scripts/manage-qb-sessions.py);
+          (builtins.readFile ./scripts/manage-qb-sessions.py);
       };
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {
@@ -556,11 +556,11 @@ in
         serviceConfig = {
           Type = "oneshot";
           ExecStartPre = [ "${pkgs.procps}/bin/pgrep qutebrowser" "${pkgs.session-save}/bin/session-save" ];
-          ExecStart = "${pkgs.qb-dump-session}/bin/qb-dump-session --flat";
+          ExecStart = "${pkgs.qb-dump-session}/bin/qb-dump-session --flat --dump-path ${cfg.sessions.path}";
           ExecStopPost =
             "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --rotate --path ${cfg.sessions.path} --history-length ${
               builtins.toString cfg.sessions.historyLength
-            }";
+            } --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -573,17 +573,20 @@ in
       wmCommon.keys = [
         {
           key = [ "s" ];
-          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --save --path ${cfg.sessions.path}";
+          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --save --path ${
+            cfg.sessions.path} --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "browser";
         }
         {
           key = [ "o" ];
-          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --open --path ${cfg.sessions.path}";
+          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --open --path ${
+            cfg.sessions.path} --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "browser";
         }
         {
           key = [ "d" ];
-          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --delete --path ${cfg.sessions.path}";
+          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --delete --path ${
+            cfg.sessions.path} --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "browser";
         }
       ];

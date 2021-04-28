@@ -55,19 +55,8 @@ rec {
   systemTimeZone = config.time.timeZone;
   screenshotsBasedir = config.content.screenshots.baseDir;
   tmuxDefaultSession = config.shell.tmux.defaultSession;
-  urlRegexPy = config.attributes.regexes."url"."py";
   xprintidleBinary = "${pkgs.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
-} // lib.optionalAttrs (config.browsers.firefox.enable) rec {
-  firefoxProfilePath = config.modified.programs.firefox.profiles.default.path;
-  firefoxSessionsHistoryLength = builtins.toString config.browsers.firefox.sessions.historyLength;
-  firefoxSessionsNameTemplate = config.browsers.firefox.sessions.nameTemplate;
-  firefoxSessionsPath = config.browsers.firefox.sessions.path;
-  firefoxSessionsSizeThreshold = builtins.toString config.browsers.firefox.sessions.sizeThreshold;
-  firefoxSessionstorePath = homePrefix ".mozilla/firefox/${firefoxProfilePath}/sessionstore-backups";
-} // lib.optionalAttrs (config.browsers.qutebrowser.enable) rec {
-  qutebrowserSessionsNameTemplate = config.browsers.qutebrowser.sessions.nameTemplate;
-  qutebrowserSessionsPath = config.browsers.qutebrowser.sessions.path;
 } // lib.optionalAttrs (config.wm.xmonad.enable) rec {
   xmonadPrimaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.primary 20;
   xmonadSecondaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.secondary 22;

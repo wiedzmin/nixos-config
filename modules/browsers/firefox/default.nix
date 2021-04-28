@@ -14,7 +14,8 @@ let
       suspendSubtreePattern = "firefox";
     };
   };
-in {
+in
+{
   options = {
     browsers.firefox = {
       enable = mkOption {
@@ -102,12 +103,12 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        dump_firefox_session =
-          mkShellScriptWithDeps "dump_firefox_session" (with pkgs; [ coreutils dejsonlz4 dunst gnused jq ])
-          (readSubstituted ../../subst.nix ./scripts/dump_firefox_session.sh);
+        dump_firefox_session = mkPythonScriptWithDeps "dump_firefox_session"
+          (with pkgs; [ coreutils nurpkgs.wiedzmin.pystdlib python3Packages.python-lz4 ])
+          (builtins.readFile ./scripts/dump_firefox_session.py);
         manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
           (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.wiedzmin.pystdlib ])
-          (readSubstituted ../../subst.nix ./scripts/manage_firefox_sessions.py);
+          (builtins.readFile ./scripts/manage_firefox_sessions.py);
       };
       modified.programs.firefox = {
         enable = true;
@@ -474,39 +475,43 @@ in {
         description = "Backup current firefox session (tabs)";
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${pkgs.dump_firefox_session}/bin/dump_firefox_session";
+          ExecStart = "${pkgs.dump_firefox_session}/bin/dump_firefox_session --dump-path ${cfg.sessions.path}";
           ExecStopPost =
             "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --rotate --path ${cfg.sessions.path} --history-length ${
               builtins.toString cfg.sessions.historyLength
-            }";
+            } --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           StandardOutput = "journal";
           StandardError = "journal";
         };
       };
       systemd.user.timers."backup-current-session-firefox" =
         renderTimer "Backup current firefox session (tabs)" cfg.sessions.saveFrequency cfg.sessions.saveFrequency ""
-        false "";
+          false "";
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable && cfg.isDefault) {
       wmCommon.keys = [
         {
           key = [ "s" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${cfg.sessions.path} --save";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
+            cfg.sessions.path} --save --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "browser";
         }
         {
           key = [ "o" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${cfg.sessions.path} --open";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
+            cfg.sessions.path} --open --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "browser";
         }
         {
           key = [ "e" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${cfg.sessions.path} --edit";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
+            cfg.sessions.path} --edit --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "browser";
         }
         {
           key = [ "d" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${cfg.sessions.path} --delete";
+          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
+            cfg.sessions.path} --delete --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "browser";
         }
       ];

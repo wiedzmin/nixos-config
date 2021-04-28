@@ -7,7 +7,8 @@ let
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
-in {
+in
+{
   options = {
     browsers.ext = {
       enable = mkOption {
@@ -48,14 +49,14 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         collect_links_on_page = mkPythonScriptWithDeps "collect_links_on_page"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.beautifulsoup4 xsel ])
-          (readSubstituted ../../subst.nix ./scripts/collect_links_on_page.py);
+          (builtins.readFile ./scripts/collect_links_on_page.py);
         search_prompt = mkPythonScriptWithDeps "search_prompt" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
-          (readSubstituted ../../subst.nix ./scripts/search_prompt.py);
+          (builtins.readFile ./scripts/search_prompt.py);
         search_selection =
           mkPythonScriptWithDeps "search_selection" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
-          (readSubstituted ../../subst.nix ./scripts/search_selection.py);
+            (builtins.readFile ./scripts/search_selection.py);
         webjumps = mkPythonScriptWithDeps "webjumps" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis vpnctl xsel ])
-          (readSubstituted ../../subst.nix ./scripts/webjumps.py);
+          (builtins.readFile ./scripts/webjumps.py);
       };
 
       home-manager.users.${user} = { home.packages = with pkgs; [ rdrview ]; };
@@ -85,44 +86,50 @@ in {
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
-        {
+        (with config.attributes.browser; {
           key = [ prefix "slash" ];
-          cmd = "${pkgs.search_selection}/bin/search_selection";
+          cmd = "${pkgs.search_selection}/bin/search_selection --browser '${default.cmd}' --fallback-browser '${
+            fallback.cmd}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "root";
-        }
-        {
+        })
+        (with config.attributes.browser; {
           key = [ prefix "Shift" "slash" ];
-          cmd = "${pkgs.search_selection}/bin/search_selection --fallback";
+          cmd = "${pkgs.search_selection}/bin/search_selection --browser '${default.cmd}' --fallback-browser '${
+            fallback.cmd}' --use-fallback --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "root";
-        }
-        {
+        })
+        (with config.attributes.browser; {
           key = [ prefix "Control" "slash" ];
-          cmd = "${pkgs.search_prompt}/bin/search_prompt";
+          cmd = "${pkgs.search_prompt}/bin/search_prompt --browser '${default.cmd}' --fallback-browser '${
+            fallback.cmd}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "root";
-        }
-        {
+        })
+        (with config.attributes.browser; {
           key = [ prefix "Control" "Shift" "slash" ];
-          cmd = "${pkgs.search_prompt}/bin/search_prompt --fallback";
+          cmd = "${pkgs.search_prompt}/bin/search_prompt --browser '${default.cmd}' --fallback-browser '${
+            fallback.cmd}' --use-fallback --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "root";
-        }
-        {
+        })
+        (with config.attributes.browser; {
           key = [ prefix "j" ];
-          cmd = "${pkgs.webjumps}/bin/webjumps";
+          cmd = "${pkgs.webjumps}/bin/webjumps --browser '${default.cmd}' --fallback-browser '${
+            fallback.cmd}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "root";
-        }
-        {
+        })
+        (with config.attributes.browser; {
           key = [ prefix "Shift" "j" ];
-          cmd = "${pkgs.webjumps}/bin/webjumps --fallback";
+          cmd = "${pkgs.webjumps}/bin/webjumps --browser '${default.cmd}' --fallback-browser '${
+            fallback.cmd}' --use-fallback --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "root";
-        }
+        })
         {
           key = [ prefix "Control" "j" ];
-          cmd = "${pkgs.webjumps}/bin/webjumps --copy";
+          cmd = "${pkgs.webjumps}/bin/webjumps --copy --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "root";
         }
         {
           key = [ "c" ];
-          cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page";
+          cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "browser";
         }
       ];
