@@ -36,8 +36,6 @@ rec {
   factoryCalendarKey = "scheduling/fcalendar";
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;
-  gmrunHistorySize = builtins.toString config.controlcenter.gmrun.historySize;
-  gmrunTerminalApps = lib.concatStringsSep " " config.controlcenter.gmrun.terminalApps;
   keybindingsCachePath = config.wmCommon.keybindingsCachePath;
   lockScreenCommand = config.workstation.lockscreen.command.lock;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";
@@ -48,8 +46,6 @@ rec {
   mcCmd = "${pkgs.mc}/bin/mc";
   nmcliBinary = "${pkgs.networkmanager}/bin/nmcli"; # because there is no `bin` output for some reason
   orgDir = config.ide.emacs.core.orgDir;
-  orgWarningsFiledir = builtins.dirOf config.pim.orgmode.warningsFile;
-  orgWarningsFilename = config.pim.orgmode.warningsFile;
   passwordStorePath = config.ext.security.passwordStorePath;
   pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
@@ -62,8 +58,6 @@ rec {
   urlRegexPy = config.attributes.regexes."url"."py";
   xprintidleBinary = "${pkgs.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
-  xmobarMaybeFont = lib.optionalString (config.wmCommon.fonts.statusbar != "")
-    ''font = "${config.wmCommon.fonts.statusbar}"${mkNewlineAndIndent 7}, '';
 } // lib.optionalAttrs (config.browsers.firefox.enable) rec {
   firefoxProfilePath = config.modified.programs.firefox.profiles.default.path;
   firefoxSessionsHistoryLength = builtins.toString config.browsers.firefox.sessions.historyLength;
