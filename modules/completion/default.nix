@@ -6,7 +6,8 @@ let
   cfg = config.completion;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     completion = {
       enable = mkOption {
@@ -95,7 +96,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         snippets = mkPythonScriptWithDeps "snippets" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
-          (readSubstituted ../subst.nix ./scripts/snippets.py);
+          (builtins.readFile ./scripts/snippets.py);
       };
       # NOTE: unzip is for tabnine binaries installation
       home-manager.users.${user} = { home.packages = with pkgs; [ snippets unzip ]; };
@@ -166,7 +167,7 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "Shift" "s" ];
-        cmd = "${pkgs.snippets}/bin/snippets";
+        cmd = "${pkgs.snippets}/bin/snippets --dmenu-font '${config.wmCommon.fonts.dmenu}'";
         mode = "run";
       }];
     })
