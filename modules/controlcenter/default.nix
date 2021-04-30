@@ -81,11 +81,11 @@ in
             python3Packages.redis
             python3Packages.xlib
           ])
-          (readSubstituted ../subst.nix ./scripts/srvctl.py);
+          (builtins.readFile ./scripts/srvctl.py);
         uptime_info = mkPythonScriptWithDeps "uptime_info" (with pkgs; [ dunst gnused procps ])
-          (readSubstituted ../subst.nix ./scripts/uptime_info.sh);
+          (builtins.readFile ./scripts/uptime_info.sh);
         ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
-          (readSubstituted ../subst.nix ./scripts/ifconfless.py);
+          (builtins.readFile ./scripts/ifconfless.py);
       };
       home-manager.users.${user} = {
         home.packages = with pkgs; [ dmenu_runapps j4-dmenu-desktop ];
@@ -257,7 +257,8 @@ in
       wmCommon.keys = [
         {
           key = [ "j" ];
-          cmd = "${pkgs.srvctl}/bin/srvctl";
+          cmd = ''${pkgs.srvctl}/bin/srvctl --term-command "${
+            lib.concatStringsSep " " config.attributes.defaultVTCommand}" --dmenu-font '${config.wmCommon.fonts.dmenu}' '';
           mode = "services";
         }
         {
@@ -277,7 +278,7 @@ in
         }
       ] ++ optionals (cfg.networking.enable) [{
         key = [ "i" ];
-        cmd = "${pkgs.ifconfless}/bin/ifconfless";
+        cmd = "${pkgs.ifconfless}/bin/ifconfless --dmenu-font '${config.wmCommon.fonts.dmenu}'";
         mode = "network";
       }];
     })
