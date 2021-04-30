@@ -5,8 +5,10 @@ with lib;
 let
   cfg = config.content.screenshots;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos;
   prefix = config.wmCommon.prefix;
-in {
+in
+{
   options = {
     content.screenshots = {
       enable = mkOption {
@@ -44,28 +46,30 @@ in {
         message = "Must provide path to screenshots dir.";
       }];
 
-      home-manager.users.${user} = let
-        flameshot_config_text = lib.generators.toINI { } {
-          General = {
-            disabledTrayIcon = true;
-            drawColor = "#ff0000";
-            drawThickness = 0;
-            filenamePattern = "screenshot-${config.attributes.dateFormats.flameshot}";
-            saveAfterCopyPath = cfg.baseDir;
-            savePath = cfg.baseDir;
+      home-manager.users.${user} =
+        let
+          flameshot_config_text = lib.generators.toINI { } {
+            General = {
+              disabledTrayIcon = true;
+              drawColor = "#ff0000";
+              drawThickness = 0;
+              filenamePattern = "screenshot-${config.attributes.dateFormats.flameshot}";
+              saveAfterCopyPath = cfg.baseDir;
+              savePath = cfg.baseDir;
+            };
           };
+        in
+        {
+          home.packages = with pkgs; [ flameshot ];
+          xdg.configFile."flameshot.ini".text = flameshot_config_text;
+          xdg.configFile."flameshot/flameshot.ini".text = flameshot_config_text;
         };
-      in {
-        home.packages = with pkgs; [ flameshot ];
-        xdg.configFile."flameshot.ini".text = flameshot_config_text;
-        xdg.configFile."flameshot/flameshot.ini".text = flameshot_config_text;
-      };
       wmCommon.autostart.entries = [ "flameshot" ];
     })
     (mkIf (cfg.enable && cfg.ordering.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        order_screenshots = mkShellScriptWithDeps "order_screenshots" (with pkgs; [ coreutils ])
-          (readSubstituted ../../subst.nix ./scripts/order_screenshots.sh);
+        order_screenshots = mkPythonScriptWithDeps "order_screenshots" (with pkgs; [ coreutils nurpkgs.wiedzmin.pystdlib ])
+          (builtins.readFile ./scripts/order_screenshots.py);
       };
 
       systemd.user.services."order-screenshots" = {
@@ -74,7 +78,7 @@ in {
         partOf = [ "graphical.target" ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${pkgs.order_screenshots}/bin/order_screenshots";
+          ExecStart = "${pkgs.order_screenshots}/bin/order_screenshots --base-dir ${cfg.baseDir}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -99,6 +103,9 @@ in {
           mode = "root";
         }
       ];
+    })
+    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+      home-manager.users.${user} = { home.packages = with pkgs; [ order_screenshots ]; };
     })
   ];
 }

@@ -10,7 +10,6 @@ in
 rec {
   autorandrProfiles = homePrefix ".config/autorandr";
   bashExecutable = "/run/current-system/sw/bin/bash";
-  booksSearchCommand = config.content.ebooks.searchCommand;
   combyExcludes = lib.concatStringsSep "," config.dev.misc.comby.excludes;
   defaultBrowser = config.attributes.browser.default.cmd;
   docsSearchCommand = config.paperworks.docflow.searchCommand;
@@ -53,7 +52,6 @@ rec {
     builtins.concatStringsSep " " (lib.forEach config.dev.navigation.projects.rootMarkers (marker: ''"${marker}"''));
   python3Binary = "${pkgs.python3}/bin/python3";
   systemTimeZone = config.time.timeZone;
-  screenshotsBasedir = config.content.screenshots.baseDir;
   tmuxDefaultSession = config.shell.tmux.defaultSession;
   xprintidleBinary = "${pkgs.xprintidle-ng}/bin/xprintidle-ng";
   cclsExecutable = "${pkgs.ccls}/bin/ccls";
