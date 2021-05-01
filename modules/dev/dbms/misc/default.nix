@@ -68,7 +68,7 @@ in
       wmCommon.keys = [{
         key = [ "d" ];
         cmd = ''${pkgs.dbms}/bin/dbms --term-command "${
-          lib.concatStringsSep " " config.attributes.defaultVTCommand}" --dmenu-font ${config.wmCommon.fonts.dmenu}'';
+          lib.concatStringsSep " " config.attributes.defaultVTCommand}" --dmenu-font '${config.wmCommon.fonts.dmenu}' '';
         mode = "dev";
       }];
     })
