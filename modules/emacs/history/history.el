@@ -40,7 +40,9 @@
   (kept-new-versions 6)
   (kept-old-versions 2)
   (version-control t)
-  (save-abbrevs 'silently))
+  (save-abbrevs 'silently)
+  :config
+  (setq safe-local-variable-values '((mode-require-final-newline))))
 
 (use-package savehist
   :config
