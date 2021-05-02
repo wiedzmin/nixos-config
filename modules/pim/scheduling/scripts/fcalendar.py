@@ -10,6 +10,21 @@ from pystdlib.uishim import notify, URGENCY_NORMAL, URGENCY_CRITICAL
 from pystdlib import shell_cmd
 
 
+parser = argparse.ArgumentParser(description="Factory calendar checks")
+parser_update.add_argument('--key', dest="cache_key_name", type=str, default='scheduling/fcalendar',
+                           help="Cache key name for calendar contents")
+subparsers = parser.add_subparsers(help="command", dest="cmd")
+parser_update = subparsers.add_parser("update", help="Updating factory calendar")
+parser_update.add_argument('--year', dest="update_year", type=str, default='current',
+                           choices=["current", "next"],
+                           help="Use either current on next year's calendar")
+parser_check = subparsers.add_parser("check", help="Check current date")
+parser_check.add_argument('--dry-run', dest="check_dry_run", action="store_true",
+                           default=False, help="Dry run")
+parser_check.add_argument('--cmd', dest="check_cmd", type=str, help="Wrap and check this command")
+args = parser.parse_args()
+
+
 def get_calendar_json(next_year=False):
     year = date.today().year
     if next_year:
@@ -40,17 +55,17 @@ def prepare_calendar_json(data, dump=False):
 
 def update_calendar_cache(next_year=False):
     r = redis.Redis(host='localhost', port=6379, db=0)
-    r.set("@factoryCalendarKey@",
+    r.set(args.cache_key_name,
           prepare_calendar_json(get_calendar_json(next_year=next_year),
                                 dump=True))
 
 def is_today_holiday():
     # TODO: assert calendar is for intended year
     r = redis.Redis(host='localhost', port=6379, db=0)
-    if not r.exists("@factoryCalendarKey@"):
+    if not r.exists(args.cache_key_name):
         notify(f"[scheduling]", "no holidays data, update calendar beforehand", urgency=URGENCY_CRITICAL, timeout=5000)
         sys.exit(1)
-    fcalendar = json.loads(r.get("@factoryCalendarKey@"))
+    fcalendar = json.loads(r.get(args.cache_key_name))
     today = date.today()
     if fcalendar["year"] != today.year:
         notify(f"[scheduling]", "wrong calendar year, update calendar correctly", urgency=URGENCY_CRITICAL, timeout=5000)
@@ -62,21 +77,6 @@ def is_today_holiday():
                 is_holiday = True
                 break
     return is_holiday
-
-
-parser = argparse.ArgumentParser(description="Factory calendar checks")
-subparsers = parser.add_subparsers(help="command", dest="cmd")
-
-parser_update = subparsers.add_parser("update", help="Updating factory calendar")
-parser_update.add_argument('--year', dest="update_year", type=str, default='current',
-                           choices=["current", "next"],
-                           help="Use either current on next year's calendar")
-parser_check = subparsers.add_parser("check", help="Check current date")
-parser_check.add_argument('--dry-run', dest="check_dry_run", action="store_true",
-                           default=False, help="Dry run")
-parser_check.add_argument('--cmd', dest="check_cmd", type=str, help="Wrap and check this command")
-
-args = parser.parse_args()
 
 
 if args.cmd == "update":

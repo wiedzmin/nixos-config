@@ -56,4 +56,4 @@ if args.debug:
     with open(DEBUG_FILE, "w") as debug:
         debug.write(capture_uri + "\n")
 
-shell_cmd(f'emacsclient -s @emacsServerSocketPath@ "{capture_uri}"')
+shell_cmd(f'emacsclient -s /run/user/{os.getuid()}/emacs/server "{capture_uri}"')

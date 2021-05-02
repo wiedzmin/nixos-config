@@ -31,7 +31,6 @@ rec {
   emacsBookmarkViewPath = inputs.emacs-bookmark-view;
   emacsConsultLsp = inputs.emacs-consult-lsp;
   emacsConsultProjectilePath = inputs.emacs-consult-projectile;
-  factoryCalendarKey = "scheduling/fcalendar";
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;
   keybindingsCachePath = config.wmCommon.keybindingsCachePath;

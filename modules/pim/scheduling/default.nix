@@ -46,7 +46,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         fcalendar = mkPythonScriptWithDeps "fcalendar"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.requests ])
-          (readSubstituted ../../subst.nix ./scripts/fcalendar.py);
+          (builtins.readFile ./scripts/fcalendar.py);
       };
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ davfs2 gcalcli ];

@@ -63,7 +63,7 @@ in {
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
         org-capture = mkPythonScriptWithDeps "org-capture" (with pkgs; [ emacs nurpkgs.pystdlib tmux xsel ])
-          (readSubstituted ../../subst.nix ./scripts/org-capture.py);
+          (builtins.readFile ./scripts/org-capture.py);
       };
 
       custom.programs.tmux.bindings.copyMode = { "M-n" = ''run-shell "${pkgs.org-capture}/bin/org-capture ns"''; };
