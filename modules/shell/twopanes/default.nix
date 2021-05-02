@@ -25,8 +25,8 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        mcpanes = mkPythonScriptWithDeps "mcpanes" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
-          (readSubstituted ../../subst.nix ./scripts/mcpanes.py);
+        mcpanes = mkPythonScriptWithDeps "mcpanes" (with pkgs; [ mc nurpkgs.pystdlib python3Packages.redis ])
+          (builtins.readFile ./scripts/mcpanes.py);
       };
 
       home-manager.users.${user} = {
@@ -247,7 +247,7 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "Shift" "m" ];
-        cmd = "${pkgs.mcpanes}/bin/mcpanes";
+        cmd = "${pkgs.mcpanes}/bin/mcpanes --dmenu-font '${config.wmCommon.fonts.dmenu}'";
         mode = "run";
       }];
     })

@@ -88,7 +88,7 @@ in
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
         tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" (with pkgs; [ nurpkgs.pystdlib ])
-          (readSubstituted ../../subst.nix ./scripts/tmuxp_sessions.py);
+          (builtins.readFile ./scripts/tmuxp_sessions.py);
       };
 
       home-manager.users."${user}" = {
@@ -202,7 +202,7 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "t" ];
-        cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions";
+        cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions --dmenu-font '${config.wmCommon.fonts.dmenu}'";
         mode = "select";
       }];
     })

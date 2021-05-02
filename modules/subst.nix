@@ -40,7 +40,6 @@ rec {
     builtins.concatStringsSep " " (lib.forEach config.dev.python.pylsExtraSourcePaths (path: ''"${path}"''));
   mainUserName = config.attributes.mainUser.name;
   mainUserID = config.attributes.mainUser.ID;
-  mcCmd = "${pkgs.mc}/bin/mc";
   nmcliBinary = "${pkgs.networkmanager}/bin/nmcli"; # because there is no `bin` output for some reason
   orgDir = config.ide.emacs.core.orgDir;
   passwordStorePath = config.ext.security.passwordStorePath;
