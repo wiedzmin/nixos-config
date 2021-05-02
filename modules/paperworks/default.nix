@@ -22,7 +22,8 @@ let
     inherit (cfg.scanning.paperless) dataDir ocrLanguages;
     paperlessPkg = cfg.scanning.paperless.package;
   };
-in {
+in
+{
   options = {
     paperworks = {
       printing.enable = mkOption {
@@ -310,9 +311,9 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         open-doc =
           mkPythonScriptWithDeps "open-doc" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis stable.libreoffice ])
-          (readSubstituted ../subst.nix ./scripts/open-doc.py);
+            (builtins.readFile ./scripts/open-doc.py);
         update-docs = mkPythonScriptWithDeps "update-docs" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
-          (readSubstituted ../subst.nix ./scripts/update-docs.py);
+          (builtins.readFile ./scripts/update-docs.py);
       };
 
       systemd.user.services = builtins.listToAttrs (forEach (localDocs config.navigation.bookmarks.entries) (root: {
@@ -328,7 +329,7 @@ in {
             WorkingDirectory = root;
             ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
                 concatStringsSep "," cfg.docflow.extensions
-              } -- ${pkgs.update-docs}/bin/update-docs --root ${root}";
+            } -- ${pkgs.update-docs}/bin/update-docs --root ${root} --search-command ${cfg.docflow.searchCommand}";
             StandardOutput = "journal";
             StandardError = "journal";
           };
@@ -337,13 +338,16 @@ in {
 
       wmCommon.keys = [{
         key = [ "d" ];
-        cmd = "${pkgs.open-doc}/bin/open-doc";
+        cmd = "${pkgs.open-doc}/bin/open-doc --dmenu-font '${config.wmCommon.fonts.dmenu}'";
         mode = "select";
       }];
 
       home-manager.users.${user} = {
         home.packages = with pkgs; [
-          stable.libreoffice open-doc unipicker update-docs
+          stable.libreoffice
+          open-doc
+          unipicker
+          update-docs
         ];
         xdg.mimeApps.defaultApplications =
           (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop")
