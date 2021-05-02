@@ -1,3 +1,4 @@
+import argparse
 import os
 import sys
 
@@ -5,12 +6,21 @@ from pystdlib.uishim import get_selection, notify
 from pystdlib import shell_cmd
 
 
+parser = argparse.ArgumentParser(description="DBMS connectivity")
+parser.add_argument('--browser', dest="default_browser", type=str, help="Default browser")
+parser.add_argument('--fallback-browser', dest="fallback_browser", type=str, help="Fallback browser")
+parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+args = parser.parse_args()
+
 port_cmd_mapping = {
-    "80": "@defaultBrowser@",
-    "8080": "@defaultBrowser@",
-    "8000": "@defaultBrowser@"
+    "80": args.default_browser,
+    "8080": args.default_browser,
+    "8000": args.default_browser
 }
 
+if not (args.default_browser and args.fallback_browser):
+    notify(f"[containers]", f"Browsers not set, exiting...", urgency=URGENCY_CRITICAL, timeout=5000)
+    sys.exit(1)
 
 ip_address_format = "{{range $network, $settings :=.NetworkSettings.Networks}}{{$settings.IPAddress}}{{end}}"
 ports_format = "{{range $port, $mappings :=.NetworkSettings.Ports}}{{$port}}{{end}}"
@@ -19,7 +29,7 @@ if "DOCKER_HOST" in os.environ:
     del os.environ["DOCKER_HOST"] # ensure we cosidering only local containers
 
 container_names = shell_cmd("docker ps --format '{{.Names}}'", split_output="\n")
-selected_container = get_selection(container_names, "container", case_insensitive=True, lines=10, font="@wmFontDmenu@")
+selected_container = get_selection(container_names, "container", case_insensitive=True, lines=10, font=args.dmenu_font)
 if not selected_container:
     sys.exit(1)
 

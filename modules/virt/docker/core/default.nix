@@ -62,13 +62,13 @@ in {
           (readSubstituted ../../../subst.nix ./scripts/hadolintd.sh);
         docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits"
           (with pkgs; [ docker nurpkgs.pystdlib python3Packages.redis xsel yad ])
-          (readSubstituted ../../../subst.nix ./scripts/docker_containers_traits.py);
+          (builtins.readFile ./scripts/docker_containers_traits.py);
         discover_containerized_services =
           mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker nurpkgs.pystdlib ])
-          (readSubstituted ../../../subst.nix ./scripts/discover_containerized_services.py);
+          (builtins.readFile ./scripts/discover_containerized_services.py);
         docker_shell = mkPythonScriptWithDeps "docker_shell"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis ])
-          (readSubstituted ../../../subst.nix ./scripts/docker_shell.py);
+          (builtins.readFile ./scripts/docker_shell.py);
       };
 
       environment.systemPackages = with pkgs; [
@@ -117,13 +117,14 @@ in {
       wmCommon.keys = [
         {
           key = [ "t" ];
-          cmd = "${pkgs.docker_containers_traits}/bin/docker_containers_traits";
+          cmd = "${pkgs.docker_containers_traits}/bin/docker_containers_traits --dmenu-font '${
+            config.wmCommon.fonts.dmenu}'";
           desktop = "shell";
           mode = "virt";
         }
         {
           key = [ "s" ];
-          cmd = "${pkgs.docker_shell}/bin/docker_shell";
+          cmd = "${pkgs.docker_shell}/bin/docker_shell --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           desktop = "shell";
           mode = "virt";
         }

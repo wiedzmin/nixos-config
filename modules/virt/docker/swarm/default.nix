@@ -54,7 +54,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         docker_swarm_services_info = mkPythonScriptWithDeps "docker_swarm_services_info"
           (with pkgs; [ docker nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis vpnctl yad ])
-          (readSubstituted ../../../subst.nix ./scripts/docker_swarm_services_info.py);
+          (builtins.readFile ./scripts/docker_swarm_services_info.py);
       };
 
       environment.systemPackages = with pkgs; [ docker_swarm_services_info ];
@@ -63,7 +63,8 @@ in {
       wmCommon.keys = [
         {
           key = [ "i" ];
-          cmd = "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info";
+          cmd = "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info --dmenu-font '${
+            config.wmCommon.fonts.dmenu}'";
           desktop = "shell";
           mode = "virt";
         }
