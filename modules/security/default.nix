@@ -6,7 +6,8 @@ let
   cfg = config.ext.security;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     ext.security = {
       enable = mkOption {
@@ -65,7 +66,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         passctl = mkPythonScriptWithDeps "passctl"
           (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis xdotool ])
-          (readSubstituted ../subst.nix ./scripts/passctl.py);
+          (builtins.readFile ./scripts/passctl.py);
       };
 
       home-manager.users.${user} = {
@@ -128,7 +129,7 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "p" ];
-        cmd = "${pkgs.passctl}/bin/passctl";
+        cmd = "${pkgs.passctl}/bin/passctl --dmenu-font '${config.wmCommon.fonts.dmenu}'";
         mode = "select";
       }];
     })
