@@ -70,10 +70,10 @@ in {
     (mkIf (cfg.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         wifi-status = mkShellScriptWithDeps "wifi-status" (with pkgs; [ gawk wirelesstools ])
-          (readSubstituted ../../subst.nix ./scripts/wifi-status.sh);
+          (builtins.readFile ./scripts/wifi-status.sh);
         headset_battery = mkPythonScriptWithDeps "headset_battery"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis bluetooth_battery ])
-          (readSubstituted ../../subst.nix ./scripts/headset_battery.py);
+          (builtins.readFile ./scripts/headset_battery.py);
       };
 
       boot.extraModprobeConfig = ''

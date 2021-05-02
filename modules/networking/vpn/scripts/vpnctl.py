@@ -31,7 +31,7 @@ r = redis.Redis(host='localhost', port=6379, db=0)
 vpn_meta = json.loads(r.get("net/vpn_meta"))
 
 def is_nm_vpn_up(name):
-    vpn_status_task = subprocess.Popen(f"@nmcliBinary@ con show id {name}", shell=True,
+    vpn_status_task = subprocess.Popen(f"nmcli con show id {name}", shell=True,
                                        env={'LANGUAGE':'en_US.en'}, stdout=subprocess.PIPE)
     grep_vpn_state_task = subprocess.Popen(f"grep VPN.VPN-STATE", shell=True,
                                            stdin=vpn_status_task.stdout, stdout=subprocess.PIPE)

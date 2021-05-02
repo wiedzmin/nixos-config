@@ -30,8 +30,8 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        vpnctl = mkPythonScriptWithDeps "vpnctl" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
-          (readSubstituted ../../subst.nix ./scripts/vpnctl.py);
+        vpnctl = mkPythonScriptWithDeps "vpnctl" (with pkgs; [ networkmanager nurpkgs.pystdlib python3Packages.redis ])
+          (builtins.readFile ./scripts/vpnctl.py);
       };
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set net/vpn_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.meta)}

@@ -43,15 +43,17 @@ def list_jump_hosts(host_meta, extra_hosts_data):
 parser = argparse.ArgumentParser(description="Execute command over SSH.")
 parser.add_argument("--choices", dest="show_choices", action="store_true",
                    default=False, help="show predefined command choices")
+parser.add_argument('--term-command', dest="term_command", type=str, help="Terminal command")
+parser.add_argument('--tmux-session', dest="tmux_session", default="main", type=str, help="Fallback tmux session name")
 parser.add_argument("--ignore-tmux", dest="ignore_tmux", action="store_true",
                    default=False, help="open connection in new terminal window rather than tmux pane")
-
+parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
 args = parser.parse_args()
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 extra_hosts_data = json.loads(r.get("net/extra_hosts"))
 
-host = get_selection(extra_hosts_data.keys(), "ssh to", case_insensitive=True, lines=10, font="@wmFontDmenu@")
+host = get_selection(extra_hosts_data.keys(), "ssh to", case_insensitive=True, lines=10, font=args.dmenu_font)
 
 
 if host:
@@ -63,20 +65,20 @@ if host:
     cmd = f"ssh {' '.join(['-J ' + format_host_meta(host_meta['host'], host_meta, terse=True) for host_meta in jump_hosts])} {format_host_meta(host, host_meta)}"
     if args.show_choices:
         command_choices = json.loads(r.get("net/command_choices"))
-        choice = get_selection(command_choices, "execute", case_insensitive=True, lines=5, font="@wmFontDmenu@")
+        choice = get_selection(command_choices, "execute", case_insensitive=True, lines=5, font=args.dmenu_font)
         if choice:
            cmd += f" -t '{choice}'"
         else:
            sys.exit(1)
 
     if args.ignore_tmux:
-        term_create_window(cmd, term_cmd="@defaultVTCmd@")
+        term_create_window(cmd, term_cmd=args.term_command)
     else:
-        target_session = host_meta.get("tmux", "@tmuxDefaultSession@")
+        target_session = host_meta.get("tmux", args.tmux_session)
         result = tmux_create_window(cmd, session_name=target_session, window_title=f"ssh :: {host}",
                                     attach=False)
         if not result:
             notify("[sshmenu]", "error creating tmux window", urgency=URGENCY_CRITICAL)
             sys.exit(1)
         else:
-            result = term_create_window(f"tmux attach -t {target_session}", term_cmd="@defaultVTCmd@")
+            result = term_create_window(f"tmux attach -t {target_session}", term_cmd=args.term_command)

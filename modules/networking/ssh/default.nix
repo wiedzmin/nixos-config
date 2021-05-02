@@ -56,7 +56,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         sshmenu = mkPythonScriptWithDeps "sshmenu"
           (with pkgs; [ openssh nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis vpnctl ])
-          (readSubstituted ../../subst.nix ./scripts/sshmenu.py);
+          (builtins.readFile ./scripts/sshmenu.py);
       };
       services.openssh = {
         enable = true;
@@ -111,17 +111,20 @@ in {
       wmCommon.keys = [
         {
           key = [ "d" ];
-          cmd = "${pkgs.sshmenu}/bin/sshmenu --choices";
+          cmd = "${pkgs.sshmenu}/bin/sshmenu --choices --term-command '${
+            lib.concatStringsSep " " config.attributes.defaultVTCommand}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "network";
         }
         {
           key = [ "s" ];
-          cmd = "${pkgs.sshmenu}/bin/sshmenu";
+          cmd = "${pkgs.sshmenu}/bin/sshmenu --term-command '${
+            lib.concatStringsSep " " config.attributes.defaultVTCommand}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "network";
         }
         {
           key = [ "t" ];
-          cmd = "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux";
+          cmd = "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux --term-command '${
+            lib.concatStringsSep " " config.attributes.defaultVTCommand}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "network";
         }
       ];
