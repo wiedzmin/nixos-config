@@ -1,69 +1,79 @@
+import argparse
 import json
 import os
 
 import redis
 
-from pystdlib.uishim import show_text_dialog
+from pystdlib.uishim import get_selection, show_text_dialog
 
 
-# TODO: add parameter for various search approaches
-# Either full list (as is) or dmenu noop choices should be displayed
-# dmenu approach is essential for fuzzy recalling
+parser = argparse.ArgumentParser(description="WM keybindings reference")
+parser.add_argument("--fuzzy", dest="fuzzy", action="store_true",
+                   default=False, help="Use fuzzy selector, like dmenu, over keybindings reference")
+parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+args = parser.parse_args()
+
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 legend = []
 
 
-def format_modebinding(name, binding=None):
+def format_modebinding(name, binding=None, fuzzy=False):
     mode_name = name.split("-")[0].strip()
     mode_binding = binding
-    if not mode_binding:
+    if not mode_binding and not fuzzy:
         mode_binding = "-"
     if type(mode_binding) == list:
         mode_binding = "+".join(binding)
+    if fuzzy:
+        return f"{mode_binding} " if mode_binding else ""
     return f'MODE: {mode_name} ({mode_binding}):'
 
 
-def format_keybinding(kb):
+def format_keybinding(kb, fuzzy=False, dangling=False):
     cmd_clean = kb["cmd"]
     if "/nix/store" in cmd_clean:
         cmd_clean = cmd_clean.split("/bin/")[-1]
+    if fuzzy:
+        return f'{"[DANGLING]" if dangling else ""}[{kb["mode"]}] [{format_modebinding(kb["mode"], kb["modebinding"], fuzzy=True)}{"+".join(kb["key"])}]: {cmd_clean}'
     return f'    [{"+".join(kb["key"])}]: {cmd_clean}'
 
 
-if not os.path.exists("@keybindingsCachePath@"):
-    keybindings = json.loads(r.get("wm/keybindings"))
-    modebindings = json.loads(r.get("wm/modebindings"))
+keybindings = json.loads(r.get("wm/keybindings"))
+modebindings = json.loads(r.get("wm/modebindings"))
 
-    keybindings_by_mode = {}
-    dangling_keybindings_by_mode = {}
+keybindings_by_mode = {}
+dangling_keybindings_by_mode = {}
 
-    for kb in keybindings:
-        mode = modebindings.get(kb["mode"], None)
-        if kb["mode"] == "root" or mode:
-            keybindings_by_mode.setdefault(kb["mode"], []).append(kb)
-        else:
-            dangling_keybindings_by_mode.setdefault(kb["mode"], []).append(kb)
+for kb in keybindings:
+    if kb["mode"] == "root" or kb["mode"] in modebindings:
+        kb["modebinding"] = modebindings.get(kb["mode"], "")
+        keybindings_by_mode.setdefault(kb["mode"], []).append(kb)
+    else:
+        kb["modebinding"] = ""
+        dangling_keybindings_by_mode.setdefault(kb["mode"], []).append(kb)
 
-    for mode_name in keybindings_by_mode:
+for mode_name in keybindings_by_mode:
+    if not args.fuzzy:
         legend.append(format_modebinding(mode_name,
                                          binding=modebindings[mode_name]
                                          if mode_name != "root" else "non-prefix"))
-        for kb in keybindings_by_mode[mode_name]:
-            legend.append(format_keybinding(kb))
+    for kb in keybindings_by_mode[mode_name]:
+        legend.append(format_keybinding(kb, fuzzy=args.fuzzy))
 
-    if len(dangling_keybindings_by_mode):
+if len(dangling_keybindings_by_mode):
+    if not args.fuzzy:
         legend.append("================== DANGLING KEYBINDINGS ==================")
-        for mode_name in dangling_keybindings_by_mode:
+    for mode_name in dangling_keybindings_by_mode:
+        if not args.fuzzy:
             legend.append(format_modebinding(mode_name))
-            for kb in dangling_keybindings_by_mode[mode_name]:
-                legend.append(format_keybinding(kb))
+        for kb in dangling_keybindings_by_mode[mode_name]:
+            legend.append(format_keybinding(kb, fuzzy=args.fuzzy, dangling=True))
 
+if args.fuzzy:
+    get_selection(legend, "", lines=30, font=args.dmenu_font)
 else:
-    with open("@keybindingsCachePath@", "r") as f:
-        legend = f.readlines()
-
-try:
-    show_text_dialog(text=legend, title="keybindings", keep=True, path="@keybindingsCachePath@")
-except ValueError:
-    print("Canceled")
+    try:
+        show_text_dialog(text=legend, title="keybindings")
+    except ValueError:
+        print("Canceled")

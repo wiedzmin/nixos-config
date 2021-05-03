@@ -84,14 +84,6 @@ in {
         default = [ ];
         description = "Applications to start automatically.";
       };
-      keybindingsCachePath = mkOption {
-        type = types.str;
-        default = homePrefix "keybindings.list";
-        description = "Path to file with cached keybindings.";
-        visible = false;
-        internal = true;
-        readOnly = true;
-      };
     };
   };
 
@@ -99,7 +91,7 @@ in {
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
         keybindings = mkPythonScriptWithDeps "keybindings" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis yad ])
-          (readSubstituted ../subst.nix ./scripts/keybindings.py);
+          (builtins.readFile ./scripts/keybindings.py);
       };
 
       attributes.wms.enabled = true;
@@ -116,18 +108,18 @@ in {
       };
 
       home-manager.users.${user} = {
-        home.activation.purgeKeybindingsCache = {
-          after = [ ];
-          before = [ "linkGeneration" ];
-          data = "rm -f ${cfg.keybindingsCachePath}";
-        };
         home.packages = with pkgs; [ keybindings ];
       };
       wmCommon.autostart.entries = optionals (cfg.kbdd.enable) [ "${pkgs.kbdd}/bin/kbdd" ];
       wmCommon.keys = [
         {
           key = [ cfg.prefix "k" ];
-          cmd = "${pkgs.keybindings}/bin/keybindings";
+          cmd = "${pkgs.keybindings}/bin/keybindings --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          mode = "root";
+        }
+        {
+          key = [ cfg.prefix "Shift" "k" ];
+          cmd = "${pkgs.keybindings}/bin/keybindings --fuzzy --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "root";
         }
         {
