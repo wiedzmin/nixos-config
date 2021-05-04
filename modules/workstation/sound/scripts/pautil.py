@@ -50,9 +50,9 @@ def get_default_endpoint_meta(type="sinks"):
     return result
 
 
-def set_default_sink():
+def set_default_sink(args):
     sinks_meta = get_endpoints_meta()
-    sink = get_selection(sorted(sinks_meta.keys()), 'sink', lines=5, font="@wmFontDmenu@")
+    sink = get_selection(sorted(sinks_meta.keys()), 'sink', lines=5, font=args.dmenu_font)
     if sink:
         meta = sinks_meta[sink]
         shell_cmd(f"pactl set-default-sink {meta['index']}", oneshot=True)
@@ -67,9 +67,9 @@ def toggle_suspend_default_sink():
     shell_cmd(f"pacmd suspend-sink @DEFAULT_SINK@ {code}", oneshot=True)
 
 
-def set_default_source():
+def set_default_source(args):
     sources_meta = get_endpoints_meta(type="sources")
-    source = get_selection(sorted(sources_meta.keys()), 'source', lines=5, font="@wmFontDmenu@")
+    source = get_selection(sorted(sources_meta.keys()), 'source', lines=5, font=args.dmenu_font)
     if source:
         meta = sources_meta[source]
         shell_cmd(f"pactl set-default-source {meta['index']}", oneshot=True)
@@ -98,6 +98,7 @@ def show_status():
 
 
 parser = argparse.ArgumentParser(description="Pulseaudio management")
+parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
 subparsers = parser.add_subparsers(help="command", dest="cmd")
 
 parser_sink = subparsers.add_parser("sink", help="Operations with sinks")
@@ -120,14 +121,14 @@ if args.cmd == "status":
     sys.exit(0)
 if args.cmd == "sink":
     if args.sink_set_default:
-        set_default_sink()
+        set_default_sink(args)
         sys.exit(0)
     if args.sink_suspend_toggle:
         toggle_suspend_default_sink()
         sys.exit(0)
 if args.cmd == "source":
     if args.source_set_default:
-        set_default_source()
+        set_default_source(args)
         sys.exit(0)
     if args.source_suspend_toggle:
         toggle_suspend_default_source

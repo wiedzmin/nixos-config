@@ -76,7 +76,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         xrandrutil = mkPythonScriptWithDeps "xrandrutil" (with pkgs; [ autorandr nurpkgs.pystdlib python3Packages.ewmh ])
-          (readSubstituted ../../subst.nix ./scripts/xrandrutil.py);
+          (builtins.readFile ./scripts/xrandrutil.py);
         rescreen = mkShellScriptWithDeps "rescreen" (with pkgs; [ autorandr ]) ''
           rescreen-$(autorandr --detected)-i3
         '';
@@ -91,7 +91,7 @@ in {
         }
         {
           key = [ "a" ];
-          cmd = "${pkgs.xrandrutil}/bin/xrandrutil --switch";
+          cmd = "${pkgs.xrandrutil}/bin/xrandrutil --switch --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "xserver";
         }
         {

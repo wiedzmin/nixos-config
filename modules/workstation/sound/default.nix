@@ -36,7 +36,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         pautil = mkPythonScriptWithDeps "pautil"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.more-itertools ])
-          (readSubstituted ../../subst.nix ./scripts/pautil.py);
+          (builtins.readFile ./scripts/pautil.py);
       };
       hardware.pulseaudio = {
         enable = true;
@@ -71,27 +71,27 @@ in {
         }
         {
           key = [ prefix "Control" "p" ];
-          cmd = "${pkgs.pautil}/bin/pautil status";
+          cmd = "${pkgs.pautil}/bin/pautil status --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "root";
         }
         {
           key = [ "," ];
-          cmd = "${pkgs.pautil}/bin/pautil source --set-default";
+          cmd = "${pkgs.pautil}/bin/pautil source --set-default --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "sound";
         }
         {
           key = [ "Shift" "," ];
-          cmd = "${pkgs.pautil}/bin/pautil source --suspend-toggle";
+          cmd = "${pkgs.pautil}/bin/pautil source --suspend-toggle --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "sound";
         }
         {
           key = [ "." ];
-          cmd = "${pkgs.pautil}/bin/pautil sink --set-default";
+          cmd = "${pkgs.pautil}/bin/pautil sink --set-default --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "sound";
         }
         {
           key = [ "Shift" "." ];
-          cmd = "${pkgs.pautil}/bin/pautil sink --suspend-toggle";
+          cmd = "${pkgs.pautil}/bin/pautil sink --suspend-toggle --dmenu-font '${config.wmCommon.fonts.dmenu}'";
           mode = "sound";
         }
       ];

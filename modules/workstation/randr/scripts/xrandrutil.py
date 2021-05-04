@@ -28,24 +28,28 @@ def get_fingerprint():
 
 
 parser = argparse.ArgumentParser(description="Manage XRandR-related activities.")
+parser.add_argument('--profiles-root', dest="profiles_root", type=str,
+                    default=f"{os.getenv('HOME')}/.config/autorandr",
+                    help="Workspace root to search packages under")
 parser.add_argument("--switch", dest="switch_profile", action="store_true",
                     default=False, help="Switch autorandr profile")
 parser.add_argument("--fingerprint", dest="get_fingerprint", action="store_true",
                     default=False, help="Get screens fingerprint (name + EDID)")
 parser.add_argument("--apptraits", dest="get_apptraits", action="store_true",
                     default=False, help="Get screens fingerprint (name + EDID)")
+parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
 # TODO: add orthogonal output format selection
 # TODO: consider adding option for dmenu + yad selection/output
 
 args = parser.parse_args()
 
 if args.switch_profile:
-    for root, dirs, files in os.walk("@autorandrProfiles@"):
+    for root, dirs, files in os.walk(args.profiles_root):
         for dir in dirs:
             if not dir.endswith(".d"):
                 profiles.append(dir)
 
-    result = get_selection(profiles, 'profile', lines=5, font="@wmFontDmenu@")
+    result = get_selection(profiles, 'profile', lines=5, font=args.dmenu_font)
     if result:
         shell_cmd(f"autorandr --load {result}", oneshot=True)
 elif args.get_fingerprint:
