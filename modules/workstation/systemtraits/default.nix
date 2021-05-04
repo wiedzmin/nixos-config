@@ -6,7 +6,8 @@ let
   cfg = config.workstation.systemtraits;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     workstation.systemtraits = {
       enable = mkOption {
@@ -35,7 +36,7 @@ in {
       services.redis.enable = true;
       systemd.services.redis.postStart = cfg.instructions;
 
-      home-manager.users.${user} = { home.packages = with pkgs; [ nurpkgs.redis-tui usbview ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release ]; };
     })
   ];
 }
