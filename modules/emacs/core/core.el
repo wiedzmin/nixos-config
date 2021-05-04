@@ -1,6 +1,11 @@
 (setq load-prefer-newer t)
 (setq message-log-max t) ;; we don't want to lose any startup log info
-(setq shell-file-name "@bashExecutable@")
+
+(when (eq system-type 'gnu/linux)
+  (let ((linux-release (shell-command-to-string "lsb_release -sd")))
+    (setq shell-file-name
+          (cond ((string-match-p "NixOS" linux-release) "/run/current-system/sw/bin/bash")
+                (t "/bin/bash")))))
 
 (setq gc-cons-percentage 0.5)
 (setq gc-cons-threshold most-positive-fixnum)

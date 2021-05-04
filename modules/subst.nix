@@ -9,7 +9,6 @@ let
 in
 rec {
   autorandrProfiles = homePrefix ".config/autorandr";
-  bashExecutable = "/run/current-system/sw/bin/bash";
   combyExcludes = lib.concatStringsSep "," config.dev.misc.comby.excludes;
   defaultBrowser = config.attributes.browser.default.cmd;
   fallbackBrowser = config.attributes.browser.fallback.cmd;
