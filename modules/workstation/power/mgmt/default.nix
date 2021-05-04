@@ -55,6 +55,8 @@ in
             STOP_CHARGE_THRESH_BAT1 = "90";
             DEVICES_TO_DISABLE_ON_WIFI_CONNECT = "wwan";
             USB_BLACKLIST_PHONE = 1;
+            CPU_SCALING_GOVERNOR_ON_AC = "performance";
+            CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
           };
         };
       };
