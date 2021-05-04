@@ -16,7 +16,7 @@ SIMILARITY_GROUP_TRESHOLD = 1
 SIMILARITY_DIRECT_TRESHOLD = 20
 
 
-parser = argparse.ArgumentParser(description="Org-capture proxy.")
+parser = argparse.ArgumentParser(description="X desktops")
 parser.add_argument("--init", "-i", dest="init", action="store_true",
                     help="Init desktops metadata")
 parser.add_argument("--verbose", "-v", dest="verbosity", action="count", default=0,
