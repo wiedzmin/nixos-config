@@ -7,11 +7,8 @@ let
   cfg = config.wmCommon;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  dmenu_select_windows =
-    mkShellScriptWithDeps "dmenu_select_windows" (with pkgs; [ coreutils nurpkgs.dmenu-ng wmctrl ]) ''
-      wmctrl -a $(wmctrl -l | cut -d" " -f5- | dmenu -i -l 15 -fn '${config.wmCommon.fonts.dmenu}')
-    '';
-in {
+in
+{
   options = {
     wmCommon = {
       enable = mkOption {
@@ -124,7 +121,7 @@ in {
         }
         {
           key = [ "w" ];
-          cmd = "${dmenu_select_windows}/bin/dmenu_select_windows";
+          cmd = "${pkgs.rofi}/bin/rofi -modi window -show";
           mode = "select";
         }
       ];
