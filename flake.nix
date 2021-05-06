@@ -19,6 +19,10 @@
       url = "github:vivien/i3blocks-contrib";
       flake = false;
     };
+    base16-rofi = {
+      url = "github:0xdec/base16-rofi";
+      flake = false;
+    };
 
     # NOTE: using these instead of quelpa
     emacs-ob-go = {

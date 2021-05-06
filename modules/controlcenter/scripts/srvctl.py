@@ -5,7 +5,7 @@ import sys
 import redis
 
 from pystdlib import shell_cmd
-from pystdlib.uishim import get_selection, notify
+from pystdlib.uishim import get_selection_rofi, notify
 from pystdlib.systemd import list_units, unit_perform, unit_show
 from pystdlib.xlib import switch_desktop
 
@@ -24,7 +24,7 @@ parser.add_argument("--invalidate-cache", "-i", dest="invalidate", action="store
                     help="drop units cache from Redis")
 parser.add_argument('--tmux-session', dest="tmux_session", default="main", type=str, help="Fallback tmux session name")
 parser.add_argument('--term-command', dest="term_command", type=str, help="Terminal command")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
 r = redis.Redis(host='localhost', port=6379, db=0)
@@ -42,11 +42,10 @@ if not args.term_command:
 if not r.exists("system/services"):
     r.lpush("system/services", *list_units())
 
-service = get_selection(sorted(list(dict.fromkeys([service.decode() for service in r.lrange("system/services", 0, -1)]))),
-                        'service', lines=20, font=args.dmenu_font)
+service = get_selection_rofi(sorted(list(dict.fromkeys([service.decode() for service in r.lrange("system/services", 0, -1)]))), 'service')
 if not service:
     sys.exit(1)
-operation = get_selection(operations, '> ', lines=5, font=args.dmenu_font)
+operation = get_selection_rofi(operations, '> ')
 if not operation:
     sys.exit(1)
 

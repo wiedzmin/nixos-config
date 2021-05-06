@@ -167,7 +167,7 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "Shift" "s" ];
-        cmd = "${pkgs.snippets}/bin/snippets --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+        cmd = "${pkgs.snippets}/bin/snippets";
         mode = "run";
       }];
     })

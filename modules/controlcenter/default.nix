@@ -7,11 +7,6 @@ let
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
-  dmenu_runapps = mkShellScriptWithDeps "dmenu_runapps"
-    (with pkgs; [ coreutils nurpkgs.dmenu-ng haskellPackages.yeganesh j4-dmenu-desktop ]) ''
-    j4-dmenu-desktop --display-binary --dmenu="(cat ; (stest -flx $(echo $PATH | tr : ' ') | sort -u)) | \
-      yeganesh -- -i -l 15 -fn '${config.wmCommon.fonts.dmenu}'"
-  '';
   notify-emacs-messages = mkShellScriptWithDeps "notify-emacs-messages" # TODO: integrate into notifications
     (with pkgs; [ emacs ]) ''
     APPNAME="$1"
@@ -88,7 +83,6 @@ in
           (builtins.readFile ./scripts/ifconfless.py);
       };
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ dmenu_runapps j4-dmenu-desktop ];
         services.udiskie = {
           enable = true;
           automount = true;
@@ -106,6 +100,31 @@ in
           after = [ "linkGeneration" ];
           before = [ ];
           data = "DISPLAY=:0 ${pkgs.srvctl}/bin/srvctl --invalidate-cache";
+        };
+        programs.rofi = {
+          enable = true;
+          width = 100;
+          lines = 15;
+          borderWidth = 1;
+          rowHeight = 1;
+          padding = 5;
+          scrollbar = false;
+          separator = "none";
+          cycle = true;
+          fullscreen = false;
+          location = "top";
+          xoffset = 0;
+          yoffset = 0;
+          theme = "${inputs.base16-rofi}/themes/base16-zenburn.rasi";
+          extraConfig = {
+            monitor = "-4";
+            line-margin = 3;
+            matching = "normal";
+            tokenize = true;
+            disable-history = false;
+            threads = 0;
+            window-format = "{w}   {c}   {t}";
+          };
         };
       };
       environment.systemPackages = with pkgs; [ srvctl ];
@@ -258,7 +277,7 @@ in
         {
           key = [ "j" ];
           cmd = ''${pkgs.srvctl}/bin/srvctl --term-command "${
-            lib.concatStringsSep " " config.attributes.defaultVTCommand}" --dmenu-font '${config.wmCommon.fonts.dmenu}' '';
+            lib.concatStringsSep " " config.attributes.defaultVTCommand}" '';
           mode = "services";
         }
         {
@@ -268,17 +287,17 @@ in
         }
         {
           key = [ "XF86Launch1" ];
-          cmd = "${dmenu_runapps}/bin/dmenu_runapps";
+          cmd = ''"${pkgs.rofi}/bin/rofi -modi combi -show combi -combi-modi run,drun"'';
           mode = "root";
         }
         {
           key = [ prefix "Shift" "p" ];
-          cmd = "${dmenu_runapps}/bin/dmenu_runapps";
+          cmd = ''"${pkgs.rofi}/bin/rofi -modi combi -show combi -combi-modi run,drun"'';
           mode = "root";
         }
       ] ++ optionals (cfg.networking.enable) [{
         key = [ "i" ];
-        cmd = "${pkgs.ifconfless}/bin/ifconfless --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+        cmd = "${pkgs.ifconfless}/bin/ifconfless";
         mode = "network";
       }];
     })

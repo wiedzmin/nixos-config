@@ -90,7 +90,7 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "b" ];
-        cmd = "${pkgs.bookshelf}/bin/bookshelf --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+        cmd = "${pkgs.bookshelf}/bin/bookshelf";
         mode = "select";
       }];
     })

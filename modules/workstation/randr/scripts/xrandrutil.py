@@ -4,7 +4,7 @@ import os
 import sys
 
 from ewmh import EWMH
-from pystdlib.uishim import get_selection
+from pystdlib.uishim import get_selection_rofi
 from pystdlib import shell_cmd
 
 profiles = []
@@ -37,7 +37,7 @@ parser.add_argument("--fingerprint", dest="get_fingerprint", action="store_true"
                     default=False, help="Get screens fingerprint (name + EDID)")
 parser.add_argument("--apptraits", dest="get_apptraits", action="store_true",
                     default=False, help="Get screens fingerprint (name + EDID)")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 # TODO: add orthogonal output format selection
 # TODO: consider adding option for dmenu + yad selection/output
 
@@ -49,7 +49,7 @@ if args.switch_profile:
             if not dir.endswith(".d"):
                 profiles.append(dir)
 
-    result = get_selection(profiles, 'profile', lines=5, font=args.dmenu_font)
+    result = get_selection_rofi(profiles, 'profile')
     if result:
         shell_cmd(f"autorandr --load {result}", oneshot=True)
 elif args.get_fingerprint:

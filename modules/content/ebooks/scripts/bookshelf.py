@@ -5,12 +5,12 @@ import re
 
 import redis
 
-from pystdlib.uishim import get_selection
+from pystdlib.uishim import get_selection_rofi
 from pystdlib import shell_cmd
 
 
 parser = argparse.ArgumentParser(description="Searchengines")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
 r = redis.Redis(host='localhost', port=6379, db=0)
@@ -19,6 +19,6 @@ ebooks = r.get("content/ebooks_list")
 if ebooks:
     ebooks = json.loads(ebooks)
 
-result = get_selection(ebooks, 'book', case_insensitive=True, lines=30, font=args.dmenu_font)
+result = get_selection_rofi(ebooks, 'book')
 if result:
     shell_cmd(f"zathura {re.escape(result)}")

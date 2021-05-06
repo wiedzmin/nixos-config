@@ -112,19 +112,19 @@ in {
         {
           key = [ "d" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu --choices --term-command '${
-            lib.concatStringsSep " " config.attributes.defaultVTCommand}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            lib.concatStringsSep " " config.attributes.defaultVTCommand}'";
           mode = "network";
         }
         {
           key = [ "s" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu --term-command '${
-            lib.concatStringsSep " " config.attributes.defaultVTCommand}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            lib.concatStringsSep " " config.attributes.defaultVTCommand}'";
           mode = "network";
         }
         {
           key = [ "t" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux --term-command '${
-            lib.concatStringsSep " " config.attributes.defaultVTCommand}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            lib.concatStringsSep " " config.attributes.defaultVTCommand}'";
           mode = "network";
         }
       ];

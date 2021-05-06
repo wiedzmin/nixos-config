@@ -71,27 +71,27 @@ in {
         }
         {
           key = [ prefix "Control" "p" ];
-          cmd = "${pkgs.pautil}/bin/pautil status --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.pautil}/bin/pautil status";
           mode = "root";
         }
         {
           key = [ "," ];
-          cmd = "${pkgs.pautil}/bin/pautil source --set-default --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.pautil}/bin/pautil source --set-default";
           mode = "sound";
         }
         {
           key = [ "Shift" "," ];
-          cmd = "${pkgs.pautil}/bin/pautil source --suspend-toggle --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.pautil}/bin/pautil source --suspend-toggle";
           mode = "sound";
         }
         {
           key = [ "." ];
-          cmd = "${pkgs.pautil}/bin/pautil sink --set-default --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.pautil}/bin/pautil sink --set-default";
           mode = "sound";
         }
         {
           key = [ "Shift" "." ];
-          cmd = "${pkgs.pautil}/bin/pautil sink --suspend-toggle --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.pautil}/bin/pautil sink --suspend-toggle";
           mode = "sound";
         }
       ];

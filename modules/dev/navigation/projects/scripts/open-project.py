@@ -10,7 +10,7 @@ import redis
 from pystdlib import shell_cmd
 from pystdlib.shell import tmux_create_window
 from pystdlib.systemd import is_systemd_service_active
-from pystdlib.uishim import get_selection, notify, URGENCY_CRITICAL
+from pystdlib.uishim import get_selection_rofi, notify, URGENCY_CRITICAL
 from pystdlib.xlib import switch_named_desktop
 
 
@@ -19,7 +19,7 @@ bookmarks = json.loads(r.get("nav/bookmarks"))
 
 parser = argparse.ArgumentParser(description="Repository overview search")
 parser.add_argument('--tmux-session', dest="tmux_session", default="main", type=str, help="Fallback tmux session name")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
 
@@ -27,7 +27,7 @@ if not len(bookmarks):
     notify("[bookmarks]", "No entries", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
-bookmark = get_selection(bookmarks.keys(), "", lines=15, font=args.dmenu_font)
+bookmark = get_selection_rofi(bookmarks.keys(), "")
 if bookmark:
     meta = bookmarks[bookmark]
     path = meta["path"]

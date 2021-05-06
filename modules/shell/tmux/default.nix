@@ -202,7 +202,7 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "t" ];
-        cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+        cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions";
         mode = "select";
       }];
     })

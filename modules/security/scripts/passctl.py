@@ -1,6 +1,7 @@
 import argparse
+import os
 
-from pystdlib.uishim import get_selection
+from pystdlib.uishim import get_selection_rofi
 from pystdlib.passutils import collect_entries, read_entry_raw, annotate_entry
 from pystdlib import shell_cmd
 
@@ -11,7 +12,7 @@ parser.add_argument('--store', dest="store_path",
                     type=str, help="Passwords store path")
 parser.add_argument("--add", dest="add_entry", action="store_true",
                     default=False, help="Add new pass entry")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
 # provide copying to clipboard
@@ -32,10 +33,10 @@ if args.add_entry:
     print("add entry")
 else:
     pass_files = collect_entries(args.store_path)
-    path = get_selection(pass_files, ">", lines=10, font=args.dmenu_font)
+    path = get_selection_rofi(pass_files, "entry")
 
     if path:
         annotated = annotate_entry(read_entry_raw(path))
-        field = get_selection(annotated.keys(), "type >", lines=3, font=args.dmenu_font)
+        field = get_selection_rofi(annotated.keys(), "field")
         if field:
             shell_cmd(f"xdotool type {annotated[field]}")

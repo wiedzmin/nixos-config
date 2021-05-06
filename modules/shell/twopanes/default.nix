@@ -6,7 +6,8 @@ let
   cfg = config.shell.twopanes;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     shell.twopanes = {
       enable = mkOption {
@@ -247,7 +248,7 @@ in {
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "Shift" "m" ];
-        cmd = "${pkgs.mcpanes}/bin/mcpanes --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+        cmd = "${pkgs.mcpanes}/bin/mcpanes";
         mode = "run";
       }];
     })

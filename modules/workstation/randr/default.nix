@@ -91,7 +91,7 @@ in {
         }
         {
           key = [ "a" ];
-          cmd = "${pkgs.xrandrutil}/bin/xrandrutil --switch --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.xrandrutil}/bin/xrandrutil --switch";
           mode = "xserver";
         }
         {

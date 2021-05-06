@@ -32,6 +32,7 @@ in {
         };
         size = 11.0;
       };
+      programs.rofi.font = "Fira Code Bold 11";
       programs.zathura.options.font = "Fira Code Bold 8";
       services.dunst.settings.global.font = "Fira Code Bold 8";
       xresources.properties = {

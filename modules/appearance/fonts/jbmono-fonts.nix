@@ -32,6 +32,7 @@ in {
         };
         size = 11.0;
       };
+      programs.rofi.font = "JetBrains Mono Bold 11";
       programs.zathura.options.font = "JetBrains Mono Bold 9";
       services.dunst.settings.global.font = "JetBrains Mono Bold 8";
       xresources.properties = {

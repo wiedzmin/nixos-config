@@ -111,12 +111,12 @@ in
       wmCommon.keys = [
         {
           key = [ cfg.prefix "k" ];
-          cmd = "${pkgs.keybindings}/bin/keybindings --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.keybindings}/bin/keybindings";
           mode = "root";
         }
         {
           key = [ cfg.prefix "Shift" "k" ];
-          cmd = "${pkgs.keybindings}/bin/keybindings --fuzzy --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.keybindings}/bin/keybindings --fuzzy";
           mode = "root";
         }
         {

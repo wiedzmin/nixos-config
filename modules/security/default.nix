@@ -129,7 +129,7 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "p" ];
-        cmd = "${pkgs.passctl}/bin/passctl --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+        cmd = "${pkgs.passctl}/bin/passctl";
         mode = "select";
       }];
     })

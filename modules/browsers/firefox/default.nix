@@ -479,7 +479,7 @@ in
           ExecStopPost =
             "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --rotate --path ${cfg.sessions.path} --history-length ${
               builtins.toString cfg.sessions.historyLength
-            } --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            }";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -493,25 +493,25 @@ in
         {
           key = [ "s" ];
           cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
-            cfg.sessions.path} --save --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            cfg.sessions.path} --save";
           mode = "browser";
         }
         {
           key = [ "o" ];
           cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
-            cfg.sessions.path} --open --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            cfg.sessions.path} --open";
           mode = "browser";
         }
         {
           key = [ "e" ];
           cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
-            cfg.sessions.path} --edit --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            cfg.sessions.path} --edit";
           mode = "browser";
         }
         {
           key = [ "d" ];
           cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
-            cfg.sessions.path} --delete --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            cfg.sessions.path} --delete";
           mode = "browser";
         }
       ];

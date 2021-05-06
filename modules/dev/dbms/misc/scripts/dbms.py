@@ -4,7 +4,7 @@ import sys
 
 import redis
 
-from pystdlib.uishim import get_selection, notify, URGENCY_CRITICAL
+from pystdlib.uishim import get_selection_rofi, notify, URGENCY_CRITICAL
 from pystdlib.shell import term_create_window, tmux_create_window
 from pystdlib import shell_cmd
 
@@ -14,7 +14,7 @@ parser.add_argument('--tmux-session', dest="tmux_session", default="main", type=
 parser.add_argument("--ignore-tmux", dest="ignore_tmux", action="store_true",
                    default=False, help="open connection in new terminal window rather than tmux pane")
 parser.add_argument('--term-command', dest="term_command", type=str, help="Terminal command")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 parser.add_argument('--secret-ph', dest="secret_placeholder", default="0xDEADF00D", type=str, help="Secret placeholder token")
 args = parser.parse_args()
 
@@ -30,7 +30,7 @@ if not args.term_command:
     notify("[dbms]", "No terminal command provided", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
-dbms_entry = get_selection(dbms_meta.keys(), "", lines=5, font=args.dmenu_font)
+dbms_entry = get_selection_rofi(dbms_meta.keys(), "")
 if dbms_entry:
     dbms_pass = None
 

@@ -7,7 +7,7 @@ import sys
 from pygit2 import Repository
 import redis
 
-from pystdlib.uishim import is_interactive, get_selection, log_error
+from pystdlib.uishim import is_interactive, get_selection_rofi, log_error
 from pystdlib.git import is_repo, resolve_remote, collect_tags, build_auth_callbacks
 
 
@@ -23,7 +23,7 @@ parser.add_argument("--dry-run", dest="dry_run", action="store_true",
                     default=False, help="Dry run")
 parser.add_argument("--remote", dest="remote",
                     default="origin", help="Git remote to work with")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 parser_tags = subparsers.add_parser("tags", help="Working with tags")
 parser_tags.add_argument("--sync", dest="tags_sync", action="store_true",
                         default=False, help="Sync tags with selected remote")
@@ -58,7 +58,7 @@ if args.tags_sync:
 elif args.tags_checkout:
     tag_name = args.tags_name
     if is_interactive:
-        tag_name = get_selection(collect_tags(repo), "", lines=10, font=args.dmenu_font)
+        tag_name = get_selection_rofi(collect_tags(repo), "")
     if not tag_name:
         log_error("No tag to checkout")
         sys.exit(1)

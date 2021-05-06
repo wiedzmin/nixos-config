@@ -4,7 +4,7 @@ import sys
 
 import redis
 
-from pystdlib.uishim import get_selection, notify, URGENCY_CRITICAL
+from pystdlib.uishim import get_selection_rofi, notify, URGENCY_CRITICAL
 from pystdlib.shell import term_create_window, tmux_create_window
 from pystdlib import shell_cmd
 
@@ -47,13 +47,13 @@ parser.add_argument('--term-command', dest="term_command", type=str, help="Termi
 parser.add_argument('--tmux-session', dest="tmux_session", default="main", type=str, help="Fallback tmux session name")
 parser.add_argument("--ignore-tmux", dest="ignore_tmux", action="store_true",
                    default=False, help="open connection in new terminal window rather than tmux pane")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 extra_hosts_data = json.loads(r.get("net/extra_hosts"))
 
-host = get_selection(extra_hosts_data.keys(), "ssh to", case_insensitive=True, lines=10, font=args.dmenu_font)
+host = get_selection_rofi(extra_hosts_data.keys(), "ssh to")
 
 
 if host:
@@ -65,7 +65,7 @@ if host:
     cmd = f"ssh {' '.join(['-J ' + format_host_meta(host_meta['host'], host_meta, terse=True) for host_meta in jump_hosts])} {format_host_meta(host, host_meta)}"
     if args.show_choices:
         command_choices = json.loads(r.get("net/command_choices"))
-        choice = get_selection(command_choices, "execute", case_insensitive=True, lines=5, font=args.dmenu_font)
+        choice = get_selection_rofi(command_choices, "execute")
         if choice:
            cmd += f" -t '{choice}'"
         else:

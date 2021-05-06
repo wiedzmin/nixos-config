@@ -3,7 +3,7 @@ import sys
 
 import redis
 
-from pystdlib.uishim import get_selection, show_text_dialog
+from pystdlib.uishim import get_selection_rofi, show_text_dialog
 from pystdlib import shell_cmd
 
 
@@ -35,7 +35,7 @@ CONTAINER_STATUSES = [
 
 
 parser = argparse.ArgumentParser(description="Containers traits")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
 hostnames = []
@@ -48,7 +48,7 @@ with open("/etc/hosts", "r") as hosts:
 
 hostnames = sorted(list(set(hostnames)))
 
-hostname = get_selection(hostnames, "host", case_insensitive=True, lines=10, font=args.dmenu_font)
+hostname = get_selection_rofi(hostnames, "host")
 
 host_meta = extra_hosts_data.get(hostname, None)
 if not host_meta:
@@ -63,7 +63,7 @@ else:
     if host_vpn:
         shell_cmd(f"vpnctl --start {host_vpn}")
 
-container_status = get_selection(CONTAINER_STATUSES, "status", case_insensitive=True, lines=3, font=args.dmenu_font)
+container_status = get_selection_rofi(CONTAINER_STATUSES, "status")
 if not container_status:
     sys.exit(1)
 
@@ -71,8 +71,8 @@ select_container_result = shell_cmd(
     f"docker ps {'-a ' if container_status == 'all' else ''}--format '{{.Names}}'",
     split_output="\n")
 
-selected_container = get_selection(select_container_result, "container", case_insensitive=True, lines=10, font=args.dmenu_font)
-selected_trait = get_selection(CONTAINER_TRAITS.keys(), "inspect", case_insensitive=True, lines=10, font=args.dmenu_font)
+selected_container = get_selection_rofi(select_container_result, "container")
+selected_trait = get_selection_rofi(CONTAINER_TRAITS.keys(), "inspect")
 
 docker_inspect_cmd = f'docker inspect {selected_container} --format "{CONTAINER_TRAITS[selected_trait]}"'
 inspect_result = shell_cmd(["xsel", "-ib"], universal_newlines=True, input=docker_inspect_cmd

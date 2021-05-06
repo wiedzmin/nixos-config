@@ -4,11 +4,11 @@ import sys
 
 import redis
 
-from pystdlib.uishim import get_selection
+from pystdlib.uishim import get_selection_rofi
 from pystdlib import shell_cmd
 
 parser = argparse.ArgumentParser(description="Snippets")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
 
@@ -19,7 +19,7 @@ if not len(snippets):
     notify("[snippets]", "No entries", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
-snippet = get_selection(snippets.keys(), "", lines=15, font=args.dmenu_font)
+snippet = get_selection_rofi(snippets.keys(), "")
 if snippet:
     snippet_data = snippets[snippet]
     shell_cmd(["xsel", "-ib"], universal_newlines=True,

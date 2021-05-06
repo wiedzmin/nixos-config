@@ -5,7 +5,7 @@ import sys
 from more_itertools import chunked
 
 from pystdlib import shell_cmd
-from pystdlib.uishim import get_selection, notify, URGENCY_NORMAL
+from pystdlib.uishim import get_selection_rofi, notify, URGENCY_NORMAL
 
 def construct_grep_re(tokens):
     return " ".join([f'-e "{token}"' for token in tokens])
@@ -52,7 +52,7 @@ def get_default_endpoint_meta(type="sinks"):
 
 def set_default_sink(args):
     sinks_meta = get_endpoints_meta()
-    sink = get_selection(sorted(sinks_meta.keys()), 'sink', lines=5, font=args.dmenu_font)
+    sink = get_selection_rofi(sorted(sinks_meta.keys()), 'sink')
     if sink:
         meta = sinks_meta[sink]
         shell_cmd(f"pactl set-default-sink {meta['index']}", oneshot=True)
@@ -69,7 +69,7 @@ def toggle_suspend_default_sink():
 
 def set_default_source(args):
     sources_meta = get_endpoints_meta(type="sources")
-    source = get_selection(sorted(sources_meta.keys()), 'source', lines=5, font=args.dmenu_font)
+    source = get_selection_rofi(sorted(sources_meta.keys()), 'source')
     if source:
         meta = sources_meta[source]
         shell_cmd(f"pactl set-default-source {meta['index']}", oneshot=True)
@@ -98,7 +98,7 @@ def show_status():
 
 
 parser = argparse.ArgumentParser(description="Pulseaudio management")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 subparsers = parser.add_subparsers(help="command", dest="cmd")
 
 parser_sink = subparsers.add_parser("sink", help="Operations with sinks")

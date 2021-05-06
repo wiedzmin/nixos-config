@@ -338,7 +338,7 @@ in
 
       wmCommon.keys = [{
         key = [ "d" ];
-        cmd = "${pkgs.open-doc}/bin/open-doc --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+        cmd = "${pkgs.open-doc}/bin/open-doc";
         mode = "select";
       }];
 

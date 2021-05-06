@@ -117,14 +117,13 @@ in {
       wmCommon.keys = [
         {
           key = [ "t" ];
-          cmd = "${pkgs.docker_containers_traits}/bin/docker_containers_traits --dmenu-font '${
-            config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.docker_containers_traits}/bin/docker_containers_traits";
           desktop = "shell";
           mode = "virt";
         }
         {
           key = [ "s" ];
-          cmd = "${pkgs.docker_shell}/bin/docker_shell --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.docker_shell}/bin/docker_shell";
           desktop = "shell";
           mode = "virt";
         }

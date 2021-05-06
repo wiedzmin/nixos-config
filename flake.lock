@@ -1,5 +1,21 @@
 {
   "nodes": {
+    "base16-rofi": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1573671723,
+        "narHash": "sha256-wqtfXfFdzgVTxYLEpUOmNRo7uAvvzemAbK+xSJibL7k=",
+        "owner": "0xdec",
+        "repo": "base16-rofi",
+        "rev": "afbc4b22d8f415dc89f36ee509ac35fb161c6df4",
+        "type": "github"
+      },
+      "original": {
+        "owner": "0xdec",
+        "repo": "base16-rofi",
+        "type": "github"
+      }
+    },
     "emacs": {
       "locked": {
         "lastModified": 1619146739,
@@ -241,11 +257,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1618175760,
-        "narHash": "sha256-ywkYUKlqUEAIYeRWFAOWY6DIxERHA0FTr/3kXPWCu0c=",
+        "lastModified": 1620291187,
+        "narHash": "sha256-Oj0sY6r94CUmxHNAkNucoYaS59ZfOfKsFh0JS8d/FKI=",
         "owner": "wiedzmin",
         "repo": "NUR",
-        "rev": "30ecfd460c7bc188ffe2a0dfce836e71a7d989b2",
+        "rev": "81bcf4f3ce4f6984c5507e4d26b2a3b697061cf2",
         "type": "github"
       },
       "original": {
@@ -272,6 +288,7 @@
     },
     "root": {
       "inputs": {
+        "base16-rofi": "base16-rofi",
         "emacs": "emacs",
         "emacs-bookmark-view": "emacs-bookmark-view",
         "emacs-bruh": "emacs-bruh",

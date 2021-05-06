@@ -9,7 +9,7 @@ from shutil import copyfile
 import redis
 from yaml import dump
 
-from pystdlib.uishim import get_selection
+from pystdlib.uishim import get_selection_rofi
 from pystdlib import shell_cmd
 
 settings_file = "settings.yaml"
@@ -100,7 +100,7 @@ parser.add_argument("--unhide", dest="unhide_devenv", action="store_true",
 parser.add_argument('--stash-name', dest="stash_name", default="devenv", type=str, help="Stash name to hide devenv under")
 parser.add_argument('--backup-root', dest="backup_root", default=f"{os.getenv('HOME')}/workspace/repos/.devenv-backup",
                     type=str, help="Root directory for devenv backups")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 
 args = parser.parse_args()
 
@@ -113,13 +113,13 @@ if args.seed_devenv:
         print("project already initialized")
         sys.exit(1)
     settings = json.loads(r.get("projectenv/settings"))
-    token = get_selection(settings.keys(), "settings: ", lines=5, font=args.dmenu_font)
+    token = get_selection_rofi(settings.keys(), "settings: ")
     if not token:
         print("no settings to instantiate")
         sys.exit(1)
     with open(f"{current_dir}/{settings_file}", "w") as f:
         f.write(dump(settings[token]))
-    template = get_selection(project_templates.keys(), "template: ", lines=10, font=args.dmenu_font)
+    template = get_selection_rofi(project_templates.keys(), "template: ")
     if template:
         template_source_path = project_templates[template]
         devenv_template_files = os.listdir(template_source_path)
@@ -163,7 +163,7 @@ elif args.export_devenv:
 elif args.import_devenv:
     prefix = project_prefix(current_dir)
     envs = [os.path.basename(env) for env in glob.glob(f"{args.backup_root}/{prefix}*")]
-    env = get_selection(envs, "envs: ", lines=5, font=args.dmenu_font)
+    env = get_selection_rofi(envs, "envs: ")
     if env:
         copyfile(f"{args.backup_root}/{env}", f"{current_dir}/{env}")
     else:

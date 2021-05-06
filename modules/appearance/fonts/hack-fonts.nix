@@ -33,6 +33,7 @@ in
         };
         size = 11.0;
       };
+      programs.rofi.font = "Hack Bold 11";
       programs.zathura.options.font = "Hack Bold 10";
       services.dunst.settings.global.font = "Hack Bold 10";
       xresources.properties = {

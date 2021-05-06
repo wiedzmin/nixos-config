@@ -66,13 +66,11 @@ in
       wmCommon.keys = lib.optionals (cfg.fuzzySearch.enable) [{
         key = [ "r" ];
         cmd = with config.dev.navigation.projects.fuzzySearch;
-          "${pkgs.reposearch}/bin/reposearch --root ${root} --depth ${builtins.toString depth} --dmenu-font '${
-            config.wmCommon.fonts.dmenu}'";
+          "${pkgs.reposearch}/bin/reposearch --root ${root} --depth ${builtins.toString depth}";
         mode = "dev";
       }] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable) [{
         key = [ "p" ];
-        cmd = "${pkgs.open-project}/bin/open-project --dmenu-font '${
-            config.wmCommon.fonts.dmenu}'";
+        cmd = "${pkgs.open-project}/bin/open-project";
         mode = "dev";
       }];
     })

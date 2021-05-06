@@ -63,8 +63,7 @@ in {
       wmCommon.keys = [
         {
           key = [ "i" ];
-          cmd = "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info --dmenu-font '${
-            config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.docker_swarm_services_info}/bin/docker_swarm_services_info";
           desktop = "shell";
           mode = "virt";
         }

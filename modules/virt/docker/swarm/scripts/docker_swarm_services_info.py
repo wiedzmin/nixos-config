@@ -5,7 +5,7 @@ import sys
 
 import redis
 
-from pystdlib.uishim import get_selection, notify, show_text_dialog, URGENCY_CRITICAL
+from pystdlib.uishim import get_selection_rofi, notify, show_text_dialog, URGENCY_CRITICAL
 from pystdlib.shell import tmux_create_window
 from pystdlib import shell_cmd
 
@@ -17,7 +17,7 @@ service_modes = [
 
 parser = argparse.ArgumentParser(description="Docker Swarm services info")
 parser.add_argument('--tmux-session', dest="tmux_session", default="main", type=str, help="Fallback tmux session name")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
 
@@ -25,7 +25,7 @@ r = redis.Redis(host='localhost', port=6379, db=0)
 extra_hosts_data = json.loads(r.get("net/extra_hosts"))
 
 swarm_meta = json.loads(r.get("virt/swarm_meta"))
-swarm = get_selection(swarm_meta.keys(), "swarm", case_insensitive=True, lines=5, font=args.dmenu_font)
+swarm = get_selection_rofi(swarm_meta.keys(), "swarm")
 if not swarm:
     notify("[virt]", "No swarm selected")
     sys.exit(0)
@@ -44,9 +44,9 @@ if host_vpn:
 services_meta = shell_cmd("docker service ls --format '{{.Name}} | {{.Mode}} | {{.Replicas}} | {{.Image}}'",
                           split_output="\n")
 
-selected_service_meta = get_selection(services_meta, "service", case_insensitive=True, lines=10, font=args.dmenu_font)
+selected_service_meta = get_selection_rofi(services_meta, "service")
 selected_service_name = selected_service_meta.split("|")[0].strip()
-selected_mode = get_selection(service_modes, "show", case_insensitive=True, lines=5, font=args.dmenu_font)
+selected_mode = get_selection_rofi(service_modes, "show")
 
 service_status = shell_cmd(f"docker service ps {selected_service_name}", split_output="\n")
 
@@ -55,8 +55,7 @@ if selected_mode == "status":
 elif selected_mode == "logs":
     service_running_tasks_items = [task.split() for task in service_status if "Running" in task]
     task_mappings = dict([(task_meta[1], task_meta[0]) for task_meta in service_running_tasks_items])
-    selected_task = get_selection(list(task_mappings.keys()) + [selected_service_name], "task",
-                                  case_insensitive=True, lines=10, font=args.dmenu_font)
+    selected_task = get_selection_rofi(list(task_mappings.keys()) + [selected_service_name], "task")
     if not selected_task:
         sys.exit(1)
 

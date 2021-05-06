@@ -2,14 +2,14 @@ import argparse
 import os
 import sys
 
-from pystdlib.uishim import get_selection, notify
+from pystdlib.uishim import get_selection_rofi, notify
 from pystdlib import shell_cmd
 
 
 parser = argparse.ArgumentParser(description="DBMS connectivity")
 parser.add_argument('--browser', dest="default_browser", type=str, help="Default browser")
 parser.add_argument('--fallback-browser', dest="fallback_browser", type=str, help="Fallback browser")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
 port_cmd_mapping = {
@@ -29,7 +29,7 @@ if "DOCKER_HOST" in os.environ:
     del os.environ["DOCKER_HOST"] # ensure we cosidering only local containers
 
 container_names = shell_cmd("docker ps --format '{{.Names}}'", split_output="\n")
-selected_container = get_selection(container_names, "container", case_insensitive=True, lines=10, font=args.dmenu_font)
+selected_container = get_selection_rofi(container_names, "container")
 if not selected_container:
     sys.exit(1)
 

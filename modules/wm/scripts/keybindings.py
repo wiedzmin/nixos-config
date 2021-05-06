@@ -4,13 +4,13 @@ import os
 
 import redis
 
-from pystdlib.uishim import get_selection, show_text_dialog
+from pystdlib.uishim import get_selection_rofi, show_text_dialog
 
 
 parser = argparse.ArgumentParser(description="WM keybindings reference")
 parser.add_argument("--fuzzy", dest="fuzzy", action="store_true",
                    default=False, help="Use fuzzy selector, like dmenu, over keybindings reference")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
 
@@ -71,7 +71,7 @@ if len(dangling_keybindings_by_mode):
             legend.append(format_keybinding(kb, fuzzy=args.fuzzy, dangling=True))
 
 if args.fuzzy:
-    get_selection(legend, "", lines=30, font=args.dmenu_font)
+    get_selection_rofi(legend, "")
 else:
     try:
         show_text_dialog(text=legend, title="keybindings")

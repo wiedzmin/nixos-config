@@ -71,7 +71,7 @@ in
       home-manager.users.${user} = {
         home.packages = with pkgs; [ dfmt go-task just nurpkgs.comby plantuml tagref ];
         programs.zsh.sessionVariables = {
-          JUST_CHOOSER = "dmenu -i -l 15 -fn '${config.wmCommon.fonts.dmenu}'";
+          JUST_CHOOSER = "rofi -dmenu";
         };
       };
       pim.timetracking.rules =

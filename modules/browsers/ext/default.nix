@@ -89,47 +89,47 @@ in
         (with config.attributes.browser; {
           key = [ prefix "slash" ];
           cmd = "${pkgs.search_selection}/bin/search_selection --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            fallback.cmd}'";
           mode = "root";
         })
         (with config.attributes.browser; {
           key = [ prefix "Shift" "slash" ];
           cmd = "${pkgs.search_selection}/bin/search_selection --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}' --use-fallback --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            fallback.cmd}' --use-fallback";
           mode = "root";
         })
         (with config.attributes.browser; {
           key = [ prefix "Control" "slash" ];
           cmd = "${pkgs.search_prompt}/bin/search_prompt --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            fallback.cmd}'";
           mode = "root";
         })
         (with config.attributes.browser; {
           key = [ prefix "Control" "Shift" "slash" ];
           cmd = "${pkgs.search_prompt}/bin/search_prompt --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}' --use-fallback --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            fallback.cmd}' --use-fallback";
           mode = "root";
         })
         (with config.attributes.browser; {
           key = [ prefix "j" ];
           cmd = "${pkgs.webjumps}/bin/webjumps --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}' --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            fallback.cmd}'";
           mode = "root";
         })
         (with config.attributes.browser; {
           key = [ prefix "Shift" "j" ];
           cmd = "${pkgs.webjumps}/bin/webjumps --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}' --use-fallback --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+            fallback.cmd}' --use-fallback";
           mode = "root";
         })
         {
           key = [ prefix "Control" "j" ];
-          cmd = "${pkgs.webjumps}/bin/webjumps --copy --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.webjumps}/bin/webjumps --copy";
           mode = "root";
         }
         {
           key = [ "c" ];
-          cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page --dmenu-font '${config.wmCommon.fonts.dmenu}'";
+          cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page";
           mode = "browser";
         }
       ];

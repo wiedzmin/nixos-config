@@ -5,7 +5,7 @@ from urllib.request import urlopen
 
 from bs4 import BeautifulSoup
 
-from pystdlib.uishim import get_selection, notify
+from pystdlib.uishim import get_selection_rofi, notify
 from pystdlib.xlib import get_active_window_traits
 from pystdlib import shell_cmd
 
@@ -41,13 +41,13 @@ def acquire_url():
 parser = argparse.ArgumentParser(description="Collect links under chosen URL.")
 parser.add_argument("--path", "-p", dest="collection_path",
                     help="Collected links save path")
-parser.add_argument('--dmenu-font', dest="dmenu_font", type=str, help="Dmenu font")
+parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
 
 page_url = acquire_url()
 if page_url is not None:
-    session_name = get_selection([], "save as", lines=1, font=args.dmenu_font)
+    session_name = get_selection_rofi([], "save as")
     if not session_name:
         sys.exit(1)
 
