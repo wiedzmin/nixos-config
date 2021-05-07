@@ -340,9 +340,7 @@ in
             in
             {
               normal = {
-                # TODO: create helper function(s) for cross layout bindings generation at Nix level
                 # TODO: play with "set completion.open_categories [<something>] ;; set-cmd-text -s :<cmd>" and "completion-item-focus next-category"
-                # "e" = "edit-text"; # TODO: bind appropriately
                 "xb" = "config-cycle statusbar.hide";
                 "чи" = "config-cycle statusbar.hide";
                 "<Alt-,>" = "back";
@@ -456,6 +454,7 @@ in
                 "св" = "download-clear";
                 "gd" = "download";
                 "пв" = "download";
+                # TODO: fork qute-pass userscript, namely for altering domain search logic, docs - https://qutebrowser.org/doc/help/commands.html#spawn
                 "za" = "spawn --userscript qute-pass ${qutePassCommonArgs}";
                 "яф" = "spawn --userscript qute-pass ${qutePassCommonArgs}";
                 "zul" = "spawn --userscript qute-pass ${qutePassCommonArgs} --username-only";
