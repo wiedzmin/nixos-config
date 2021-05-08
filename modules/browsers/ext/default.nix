@@ -55,8 +55,6 @@ in
         search_selection =
           mkPythonScriptWithDeps "search_selection" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
             (builtins.readFile ./scripts/search_selection.py);
-        webjumps = mkPythonScriptWithDeps "webjumps" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis vpnctl xsel ])
-          (builtins.readFile ./scripts/webjumps.py);
       };
 
       home-manager.users.${user} = { home.packages = with pkgs; [ rdrview ]; };
@@ -110,21 +108,19 @@ in
             fallback.cmd}' --use-fallback";
           mode = "root";
         })
-        (with config.attributes.browser; {
+        {
           key = [ prefix "j" ];
-          cmd = "${pkgs.webjumps}/bin/webjumps --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}'";
+          cmd = "/home/alex3rd/workspace/go/bin/webjumps";
           mode = "root";
-        })
-        (with config.attributes.browser; {
+        }
+        {
           key = [ prefix "Shift" "j" ];
-          cmd = "${pkgs.webjumps}/bin/webjumps --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}' --use-fallback";
+          cmd = "/home/alex3rd/workspace/go/bin/webjumps -use-fallback";
           mode = "root";
-        })
+        }
         {
           key = [ prefix "Control" "j" ];
-          cmd = "${pkgs.webjumps}/bin/webjumps --copy";
+          cmd = "/home/alex3rd/workspace/go/bin/webjumps -copy";
           mode = "root";
         }
         {
@@ -135,7 +131,7 @@ in
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ collect_links_on_page search_prompt search_selection webjumps ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ collect_links_on_page search_prompt search_selection ]; };
     })
   ];
 }
