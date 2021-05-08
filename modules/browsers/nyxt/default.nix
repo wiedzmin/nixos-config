@@ -83,6 +83,13 @@ in {
       };
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
+
+      home-manager.users.${user} = {
+        programs.zsh.sessionVariables = {
+          TB_DEFAULT_BROWSER = cfg.command;
+        };
+      };
+      environment.sessionVariables.TB_DEFAULT_BROWSER = [ cfg.command ];
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -98,6 +105,13 @@ in {
       ];
       attributes.browser.fallback.cmd = cfg.command;
       attributes.browser.fallback.windowClass = cfg.windowClass;
+
+      home-manager.users.${user} = {
+        programs.zsh.sessionVariables = {
+          TB_FALLBACK_BROWSER = cfg.command;
+        };
+      };
+      environment.sessionVariables.TB_FALLBACK_BROWSER = [ cfg.command ];
     })
   ];
 }

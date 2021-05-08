@@ -514,12 +514,16 @@ in
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications =
           mapMimesToApp config.attributes.mimetypes.browser "org.custom.qutebrowser.windowed.desktop";
+        programs.zsh.sessionVariables = {
+          TB_DEFAULT_BROWSER = cfg.command;
+        };
         home.activation.ensureQutebrowserIsDefault = {
           after = [ ];
           before = [ "linkGeneration" ];
           data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser org.custom.qutebrowser.windowed.desktop";
         };
       };
+      environment.sessionVariables.TB_DEFAULT_BROWSER = [ cfg.command ];
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
 
@@ -539,6 +543,14 @@ in
       ];
       attributes.browser.fallback.cmd = cfg.command;
       attributes.browser.fallback.windowClass = cfg.windowClass;
+
+      home-manager.users.${user} = {
+        programs.zsh.sessionVariables = {
+          TB_FALLBACK_BROWSER = cfg.command;
+        };
+      };
+      environment.sessionVariables.TB_FALLBACK_BROWSER = [ cfg.command ];
+
 
       workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
     })
