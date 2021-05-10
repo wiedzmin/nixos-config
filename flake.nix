@@ -9,6 +9,7 @@
       url = "github:nixos/nixpkgs/224804d0f68bd2bb083b8491c0c6cf3f34f2de10";
       flake = false;
     };
+    nixpkgs-pgcli.url = "github:nixos/nixpkgs/d235056d6d6dcbd2999bd55fd120d831d4df6304";
 
     nur.url = "github:wiedzmin/NUR";
 
