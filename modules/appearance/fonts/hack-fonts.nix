@@ -17,7 +17,11 @@ in
     wmCommon.fonts.default = "pango:Hack ${if beautify then "Nerd Font " else ""}Bold 8";
     wmCommon.fonts.dmenu = "Hack:bold:size=8";
     wmCommon.fonts.statusbar = "pango:Hack ${if beautify then "Nerd Font " else ""}Bold 8";
+    environment.sessionVariables.TB_SELECTOR_FONT = [ "Hack:bold:size=8" ];
     home-manager.users.${user} = {
+      programs.zsh.sessionVariables = {
+        TB_SELECTOR_FONT = "Hack:bold:size=8";
+      };
       programs.alacritty.settings.font = {
         normal = {
           family = "Hack";

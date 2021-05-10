@@ -17,7 +17,11 @@ in
     wmCommon.fonts.default = "pango:${if beautify then "SauceCodePro Nerd Font " else "Source Code Pro "}Bold 9";
     wmCommon.fonts.dmenu = "Source Code Pro:bold:size=9";
     wmCommon.fonts.statusbar = "pango:${if beautify then "SauceCodePro Nerd Font " else "Source Code Pro "}Bold 9";
+    environment.sessionVariables.TB_SELECTOR_FONT = [ "Source Code Pro:bold:size=9" ];
     home-manager.users.${user} = {
+      programs.zsh.sessionVariables = {
+        TB_SELECTOR_FONT = "Source Code Pro:bold:size=9";
+      };
       programs.alacritty.settings.font = {
         normal = {
           family = "Source Code Pro";
