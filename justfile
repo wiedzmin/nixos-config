@@ -1,6 +1,10 @@
 default:
     @just --choose
 
+# Update inputs versions
+update-inputs:
+    nix flake update
+
 # Build "laptoptop" flake
 laptoptop-build:
     nixos-rebuild build --flake ".#laptoptop"
