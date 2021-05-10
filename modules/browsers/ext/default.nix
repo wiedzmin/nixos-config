@@ -110,17 +110,17 @@ in
         })
         {
           key = [ prefix "j" ];
-          cmd = "/home/alex3rd/workspace/go/bin/webjumps";
+          cmd = "${nurpkgs.toolbox}/bin/webjumps";
           mode = "root";
         }
         {
           key = [ prefix "Shift" "j" ];
-          cmd = "/home/alex3rd/workspace/go/bin/webjumps -use-fallback";
+          cmd = "${nurpkgs.toolbox}/bin/webjumps -use-fallback";
           mode = "root";
         }
         {
           key = [ prefix "Control" "j" ];
-          cmd = "/home/alex3rd/workspace/go/bin/webjumps -copy";
+          cmd = "${nurpkgs.toolbox}/bin/webjumps -copy";
           mode = "root";
         }
         {

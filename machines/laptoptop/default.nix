@@ -363,7 +363,10 @@ in
       authorizedKeys = [ (secretsPrefix "identity/id_rsa.mobile.pub") ];
       wm.enable = true;
     };
-    vpn.enable = true;
+    vpn = {
+      enable = true;
+      wm.enable = true;
+    };
   };
 
   ext.nix = {

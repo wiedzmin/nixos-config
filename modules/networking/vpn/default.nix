@@ -41,7 +41,7 @@ in {
       wmCommon.keys = [
         {
           key = [ "v" ];
-          cmd = "${pkgs.vpnctl}/bin/vpnctl --status";
+          cmd = "${nurpkgs.toolbox}/bin/vpnstatus";
           mode = "network";
         }
       ];
