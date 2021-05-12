@@ -93,6 +93,7 @@
    '(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt))
   (undo-limit 1000000)
   (indent-tabs-mode nil)
+  (inhibit-eol-conversion t)
   (mark-even-if-inactive nil)
   (x-stretch-cursor t)
   (print-circle t)
