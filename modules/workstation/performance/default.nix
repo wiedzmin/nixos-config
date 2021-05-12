@@ -86,12 +86,12 @@ in
         {
           key = [ "x" ];
           cmd = "${pkgs.systemd}/bin/systemctl --user restart xsuspender.service";
-          mode = "service";
+          mode = "services";
         }
         {
           key = [ "Shift" "x" ];
           cmd = "${pkgs.systemd}/bin/systemctl --user stop xsuspender.service";
-          mode = "service";
+          mode = "services";
         }
       ];
     })
