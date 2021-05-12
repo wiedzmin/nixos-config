@@ -104,7 +104,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        session-save = mkShellScriptWithDeps "session-save" (with pkgs; [ coreutils socat ])
+        session-save = mkShellScriptWithDeps "session-save" (with pkgs; [ coreutils findutils socat ])
           (readSubstituted ../../subst.nix ./scripts/session-save.sh);
         yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ])
           (readSubstituted ../../subst.nix ./scripts/yank-image.sh);
