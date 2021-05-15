@@ -302,6 +302,7 @@ in
   ide.emacs = {
     core = {
       enable = true;
+      native.enable = true;
       wm.enable = true;
     };
     edit.enable = true;

@@ -26,6 +26,11 @@ in
         default = false;
         description = "Whether to build debuggable emacs package.";
       };
+      native.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to build emacs with nativecomp features enabled";
+      };
       config = mkOption {
         type = types.lines;
         default = "";
@@ -69,7 +74,8 @@ in
         type = types.package;
         default =
           let
-            basepkg = ((pkgs.unstable.emacs.override {
+            flavor = (with pkgs.unstable; if cfg.native.enable then emacsGcc else emacs);
+            configured = ((flavor.override {
               withGTK2 = false;
               withGTK3 = false;
             }).overrideAttrs (old: rec {
@@ -78,7 +84,7 @@ in
                 ++ [ "--without-harfbuzz" "--without-cairo" ];
             }));
           in
-          if cfg.debug.enable then (pkgs.enableDebugging basepkg) else basepkg;
+          if cfg.debug.enable then (pkgs.enableDebugging configured) else configured;
         description = ''
           Emacs derivation to use.
         '';
@@ -105,6 +111,12 @@ in
           ;; -*- lexical-binding: t -*-
           (setq debug-on-error t)
           (setq debug-on-quit t)
+
+          (when (fboundp 'native-comp-available-p)
+            (setq comp-async-query-on-exit t)
+            (setq comp-async-jobs-number 4)
+            (setq comp-async-report-warnings-errors nil)
+            (setq comp-deferred-compilation t))
 
           (require 'notifications)
 
