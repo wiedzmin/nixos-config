@@ -471,8 +471,7 @@ in
               }
               {
                 block = "memory";
-                format_mem = "{Mum}MB/{MTm}MB";
-                format_swap = "{SUm}MB/{STm}MB";
+                format_mem = "{mem_free;M}/{mem_total;M}";
                 display_type = "memory";
                 icons = true;
                 clickable = false;
@@ -495,12 +494,11 @@ in
                 device = "wlan0";
                 format = "{ssid} {signal_strength}";
                 interval = 5;
-                use_bits = false;
               }
               ({
                 block = "battery";
                 driver = "upower";
-                format = " {percentage}% {time}";
+                format = " {percentage} {time}";
               } // optionalAttrs (config.attributes.hardware.dmiSystemVersion == "ThinkPad X270") {
                 device = "DisplayDevice";
               })
