@@ -191,11 +191,10 @@ in
     };
     media = {
       enable = true;
-      mopidy = {
-        youtube.apiKey = config.ext.networking.secrets.youtube.apiToken;
-        file.roots = { "Mongol" = homePrefix "blobs/music/mongol"; };
+      mpd = {
+        enable = true;
+        collections = { "mongol" = homePrefix "blobs/music/mongol"; };
       };
-      mpd.clients.enable = true;
       wm.enable = true;
     };
     misc = {

@@ -46,6 +46,7 @@ in {
         daemon.config = cfg.daemonConfig;
         extraConfig = ''
           load-module module-bluetooth-policy auto_switch=2
+          load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
         '';
         extraModules = [ pkgs.pulseaudio-modules-bt ];
       };
