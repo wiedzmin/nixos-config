@@ -7,9 +7,9 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
   dataHome = hm.xdg.dataHome;
-  nixpkgs-pgcli = import inputs.nixpkgs-pgcli ({
-    config = config.nixpkgs.config;
-    system = "x86_64-linux";
+  stable = import inputs.stable ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
   });
 in {
   options = {
@@ -40,7 +40,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ pgcenter nixpkgs-pgcli.pgcli ];
+        home.packages = with pkgs; [ pgcenter stable.pgcli ];
         xdg.configFile.".pgclirc".text = generators.toINI { } {
           main = {
             asterisk_column_order = "table_order";

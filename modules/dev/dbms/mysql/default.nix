@@ -7,6 +7,10 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
   dataHome = hm.xdg.dataHome;
+  stable = import inputs.stable ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
 in {
   options = {
     dbms.mysql = {
@@ -61,7 +65,7 @@ in {
     (mkIf cfg.enable {
       environment.variables.MYCLI_HISTFILE = cfg.mycli.historyPath;
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ mycli ];
+        home.packages = with pkgs; [ stable.mycli ];
         xdg.configFile.".myclirc".text = lib.generators.toINI { } {
           main = {
             audit_log = cfg.mycli.auditLogPath;
