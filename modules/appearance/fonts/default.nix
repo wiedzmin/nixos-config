@@ -1,10 +1,13 @@
 { config, inputs, lib, pkgs, ... }:
 with lib;
 
+# TODO: review https://devfonts.gafi.dev/ and https://coding-fonts.css-tricks.com/ lists
+
 let
   cfg = config.appearance.fonts;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   imports = [ ./fira-code-fonts.nix ./hack-fonts.nix ./iosevka-fonts.nix ./jbmono-fonts.nix ./scp-fonts.nix ];
 
   options = {
