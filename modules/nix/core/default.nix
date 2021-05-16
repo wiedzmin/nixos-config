@@ -13,7 +13,8 @@ let
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
   });
-in {
+in
+{
   options = {
     ext.nix.core = {
       enable = mkOption {
@@ -96,8 +97,10 @@ in {
         packageOverrides = _: rec {
           rollback = mkShellScriptWithDeps "rollback" (with pkgs; [ fzf ]) ''
             GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
-            GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
-            pkexec nix-env --profile /nix/var/nix/profiles/system --set $GENERATION_PATH && pkexec $GENERATION_PATH/bin/switch-to-configuration switch
+            if [ -n "$GENERATION" ]; then
+              GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
+              pkexec nix-env --profile /nix/var/nix/profiles/system --set $GENERATION_PATH && pkexec $GENERATION_PATH/bin/switch-to-configuration switch
+            fi
           '';
           # TODO: try https://github.com/lf-/nix-doc
           nix-doc-lookup = mkShellScriptWithDeps "nix-doc-lookup" (with pkgs; [ fzf gnused manix ]) ''
