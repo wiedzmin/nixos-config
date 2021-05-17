@@ -20,7 +20,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ broot choose dirdiff each fd gron ijq jql ripgrep-all sd ugrep uq vgrep xlsxgrep ] ++ [
+        home.packages = with pkgs; [ broot choose dirdiff each fd gron ijq jiq jql ripgrep-all sd ugrep uq vgrep xlsxgrep ] ++ [
           cargo
         ]; # for unpackaged Rust tools
         programs.zsh.initExtra = ''
