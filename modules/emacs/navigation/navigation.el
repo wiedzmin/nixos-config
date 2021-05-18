@@ -10,8 +10,8 @@
 (use-package avy
   :bind
   ("C-:" . avy-goto-char)
-  (:map goto-map
-        ("M-w" . avy-goto-word-0))
+  (:map custom-goto-map
+        ("M-s" . avy-goto-word-0))
   :custom
   (avy-timeout-seconds 0.5)
   (avy-keys '(?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
@@ -115,8 +115,7 @@
   ("C-S-s" . consult-line-symbol-at-point)
   ("M-<f12>" . consult-buffer)
   ("M-y" . consult-yank-replace)
-  (:map goto-map
-        ("M-g" . consult-goto-line))
+  ("M-g" . consult-goto-line)
   (:map custom-nav-map
         ("g" . consult-ripgrep)
         ("i" . consult-imenu) ; consult-project-imenu

@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.ide.emacs.navigation;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     ide.emacs.navigation = {
       enable = mkOption {
@@ -65,6 +66,16 @@ in {
         "custom-projectile-map" = "<f8>";
         "custom-treemacs-map" = "C-x t";
         "custom-ws-map" = "C-c x";
+        "custom-goto-map" = "M-s";
+        # TODO: remap original goto-map back to global keys space, because of current accessibility reduce for:
+        # simple:
+        # ("n" . next-error)
+        # ("p" . previous-error)
+        # ("M-n" . next-error)
+        # ("M-p" . previous-error)
+        # emacs:
+        # ("TAB" . move-to-column)
+        # ("c" . goto-char)
       };
     })
   ];

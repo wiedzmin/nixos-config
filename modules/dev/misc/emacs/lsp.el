@@ -70,7 +70,7 @@
         ("C-c h" . lsp-ui-doc-glance))
   (:map mode-specific-map
         ("D" . custom/toggle-lsp-ui-doc))
-  (:map goto-map
+  (:map custom-goto-map
         ("I" . lsp-ui-doc-focus-frame))
   :custom-face
   (lsp-ui-doc-background ((t (:background nil))))
@@ -110,7 +110,7 @@
   :hook
   (lsp-after-open-hook . lsp-enable-imenu)
   :bind
-  (:map goto-map
+  (:map custom-goto-map
         ("i" . lsp-ui-imenu))
   :custom
   (lsp-ui-imenu-enable t)
@@ -173,6 +173,6 @@
 (use-package consult-lsp
   :load-path "@emacsConsultLsp@"
   :bind
-  (:map goto-map
+  (:map custom-goto-map
         ("s" . consult-lsp-symbols)
         ("d" . consult-lsp-diagnostics)))
