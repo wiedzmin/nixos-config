@@ -77,6 +77,8 @@ in
         # ("TAB" . move-to-column)
         # ("c" . goto-char)
       };
+      # TODO: consider enhance custom keymaps nix machinery in a way of automatically unbinding
+      # either global or some submapped confilcting keybindings
     })
   ];
 }
