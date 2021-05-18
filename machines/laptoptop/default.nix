@@ -324,6 +324,8 @@ in
     };
   };
 
+  systemd.services.NetworkManager-wait-online.enable = false;
+
   ext.networking = {
     core = {
       enable = true;
