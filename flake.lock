@@ -238,23 +238,6 @@
         "type": "indirect"
       }
     },
-    "nixpkgs-arbtt": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1471595016,
-        "narHash": "sha256-YkfjW1fNBfKNpkPQ7BWcFtlLZTlBX4FU/UJZnYsouAw=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "224804d0f68bd2bb083b8491c0c6cf3f34f2de10",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "224804d0f68bd2bb083b8491c0c6cf3f34f2de10",
-        "type": "github"
-      }
-    },
     "nur": {
       "locked": {
         "lastModified": 1621061439,
@@ -302,7 +285,6 @@
         "liquidprompt": "liquidprompt",
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
-        "nixpkgs-arbtt": "nixpkgs-arbtt",
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",
         "stable": "stable",
