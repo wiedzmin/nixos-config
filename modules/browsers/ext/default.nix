@@ -50,11 +50,6 @@ in
         collect_links_on_page = mkPythonScriptWithDeps "collect_links_on_page"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.beautifulsoup4 xsel ])
           (builtins.readFile ./scripts/collect_links_on_page.py);
-        search_prompt = mkPythonScriptWithDeps "search_prompt" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
-          (builtins.readFile ./scripts/search_prompt.py);
-        search_selection =
-          mkPythonScriptWithDeps "search_selection" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
-            (builtins.readFile ./scripts/search_selection.py);
       };
 
       home-manager.users.${user} = { home.packages = with pkgs; [ rdrview ]; };
@@ -84,30 +79,26 @@ in
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
-        (with config.attributes.browser; {
+        {
           key = [ prefix "slash" ];
-          cmd = "${pkgs.search_selection}/bin/search_selection --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}'";
+          cmd = "${nurpkgs.toolbox}/bin/websearch";
           mode = "root";
-        })
-        (with config.attributes.browser; {
+        }
+        {
           key = [ prefix "Shift" "slash" ];
-          cmd = "${pkgs.search_selection}/bin/search_selection --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}' --use-fallback";
+          cmd = "${nurpkgs.toolbox}/bin/websearch -use-fallback";
           mode = "root";
-        })
-        (with config.attributes.browser; {
+        }
+        {
           key = [ prefix "Control" "slash" ];
-          cmd = "${pkgs.search_prompt}/bin/search_prompt --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}'";
+          cmd = "${nurpkgs.toolbox}/bin/websearch -prompt";
           mode = "root";
-        })
-        (with config.attributes.browser; {
+        }
+        {
           key = [ prefix "Control" "Shift" "slash" ];
-          cmd = "${pkgs.search_prompt}/bin/search_prompt --browser '${default.cmd}' --fallback-browser '${
-            fallback.cmd}' --use-fallback";
+          cmd = "${nurpkgs.toolbox}/bin/websearch -prompt -use-fallback";
           mode = "root";
-        })
+        }
         {
           key = [ prefix "j" ];
           cmd = "${nurpkgs.toolbox}/bin/webjumps";
@@ -131,7 +122,7 @@ in
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ collect_links_on_page search_prompt search_selection ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ collect_links_on_page ]; };
     })
   ];
 }
