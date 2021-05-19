@@ -89,7 +89,7 @@ rec {
         desc = "Networking beginner book (online)";
       };
     };
-    "wiedzmin/toolbox" = {
+    "toolbox" = {
       local.path = "${wsRoot "github"}/wiedzmin/toolbox";
       remote.url = "https://github.com/wiedzmin/toolbox/";
       myrepos = {
