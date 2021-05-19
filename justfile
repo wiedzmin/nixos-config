@@ -48,3 +48,10 @@ clean:
 # Rollback to previous working configuration(s)
 rollback:
     rollback
+
+# Reinstall pre-commit hooks
+fix-pre-commit:
+    pre-commit install
+    pre-commit install --hook-type prepare-commit-msg
+    pre-commit install --hook-type pre-push
+
