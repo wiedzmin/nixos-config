@@ -471,7 +471,7 @@ in
               }
               {
                 block = "memory";
-                format_mem = "{mem_free;M}/{mem_total;M}";
+                format_mem = "{mem_free;M}";
                 display_type = "memory";
                 icons = true;
                 clickable = false;
