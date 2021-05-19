@@ -6,6 +6,7 @@ import redis
 
 from pystdlib.uishim import get_selection_rofi, show_text_dialog
 
+# TODO: add `fuzzy selector` mode functionality for executing looked-up command
 
 parser = argparse.ArgumentParser(description="WM keybindings reference")
 parser.add_argument("--fuzzy", dest="fuzzy", action="store_true",
