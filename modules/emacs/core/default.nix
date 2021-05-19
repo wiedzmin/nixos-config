@@ -9,6 +9,7 @@ let
     ${pkgs.systemd}/bin/systemctl --user stop emacs.service
     sleep 2
     rm -f /home/${user}/.emacs.d/data/{save-kill.el,savehist.el}
+    rm -f /home/${user}/.emacs.d/var/{save-kill.el,savehist.el}
     ${pkgs.systemd}/bin/systemctl --user restart emacs.service
   '';
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
