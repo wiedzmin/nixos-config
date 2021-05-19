@@ -68,6 +68,7 @@ in rec {
   mkNewlineAndIndent = width: with lib; "\n" + (concatStrings (genList (const " ") width));
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
   homePrefix = suffix: "/home/${user}/" + suffix;
+  goBinPrefix = suffix: "/home/${user}/workspace/go/bin/" + suffix;
   xdgConfig = suffix: (homePrefix ".config") + suffix;
   secretsPrefix = suffix:
     "${wsRoot "github"}/wiedzmin/nixos-config/machines/" + config.attributes.machine.name + "/secrets/" + suffix;
