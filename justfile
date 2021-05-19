@@ -1,8 +1,8 @@
 default:
     @just --choose
 
-# Update inputs versions
-update-inputs:
+# Update flake inputs versions
+flake-update-inputs:
     nix flake update
 
 # Build "laptoptop" flake
