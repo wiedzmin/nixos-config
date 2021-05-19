@@ -10,7 +10,8 @@ let
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
   });
-in {
+in
+{
   options = {
     pim.timetracking = {
       enable = mkOption {
@@ -138,9 +139,8 @@ in {
           $sampleage <= 22:00 ==> tag recent:22h,
           $sampleage <= 23:00 ==> tag recent:23h,
 
-          -- !!! $now fails, probably because of ancient arbtt non-broken version !!!
-          -- month $date == month $now ==> tag current-month,
-          -- year $now == year $date ==> tag current-year,
+          month $date == month $now ==> tag current-month,
+          year $now == year $date ==> tag current-year,
 
           {-
           Some "nontrivial" examples (mostly copypaste):
@@ -174,13 +174,15 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        tt_capture = mkPythonScriptWithDeps "tt_capture" (with pkgs; [
-          nurpkgs.pystdlib
-          python3Packages.cbor2
-          python3Packages.pytz
-          python3Packages.xlib
-          xprintidle-ng
-        ]) (readSubstituted ../../subst.nix ./scripts/tt_capture.py);
+        tt_capture = mkPythonScriptWithDeps "tt_capture"
+          (with pkgs; [
+            nurpkgs.pystdlib
+            python3Packages.cbor2
+            python3Packages.pytz
+            python3Packages.xlib
+            xprintidle-ng
+          ])
+          (readSubstituted ../../subst.nix ./scripts/tt_capture.py);
       };
       services.arbtt = {
         enable = true;
