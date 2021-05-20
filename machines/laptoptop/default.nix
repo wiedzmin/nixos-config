@@ -1,7 +1,12 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../modules/util.nix { inherit config inputs lib pkgs; };
 
-let user = config.attributes.mainUser.name;
+let
+  user = config.attributes.mainUser.name;
+  stable = import inputs.stable ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
 in
 {
   imports =
@@ -391,11 +396,11 @@ in
   paperworks = {
     printing = {
       enable = true;
-      drivers = [ pkgs.hplip ];
+      drivers = [ stable.hplip ];
     };
     scanning = {
       enable = true;
-      extraBackends = [ pkgs.hplipWithPlugin ];
+      extraBackends = [ stable.hplipWithPlugin ];
       paperless = {
         enable = false;
         consumptionDir = homePrefix "docs/paperless/consume";
