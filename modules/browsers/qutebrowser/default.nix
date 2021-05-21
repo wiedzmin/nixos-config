@@ -136,15 +136,6 @@ in
         home.packages = with pkgs; [
           yank-image
           qb-fix-session
-
-          (makeDesktopItem {
-            name = "org.custom.qutebrowser.windowed";
-            type = "Application";
-            exec = "${cfg.command} %U";
-            comment = "Qutebrowser that opens links preferably in new windows";
-            desktopName = "QuteBrowser";
-            categories = pkgs.lib.concatStringsSep ";" [ "Network" "WebBrowser" ];
-          })
         ];
         programs.qutebrowser = {
           enable = true;
@@ -520,7 +511,7 @@ in
         home.activation.ensureQutebrowserIsDefault = {
           after = [ ];
           before = [ "linkGeneration" ];
-          data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser org.custom.qutebrowser.windowed.desktop";
+          data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser org.qutebrowser.qutebrowser.desktop";
         };
       };
       environment.sessionVariables.TB_DEFAULT_BROWSER = [ cfg.command ];
