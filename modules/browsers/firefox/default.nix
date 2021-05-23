@@ -445,9 +445,13 @@ in
       home-manager.users.${user} = {
         programs.zsh.sessionVariables = {
           TB_DEFAULT_BROWSER = cfg.command;
+          TB_DEFAULT_BROWSER_SESSIONS_STORE = cfg.sessions.path;
         };
       };
-      environment.sessionVariables.TB_DEFAULT_BROWSER = [ cfg.command ];
+      environment.sessionVariables = {
+        TB_DEFAULT_BROWSER = [ cfg.command ];
+        TB_DEFAULT_BROWSER_SESSIONS_STORE = [ cfg.sessions.path ];
+      };
 
       workstation.performance.warmup.paths = [ (homePrefix ".mozilla") ];
 

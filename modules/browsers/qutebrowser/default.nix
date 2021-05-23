@@ -507,6 +507,7 @@ in
           mapMimesToApp config.attributes.mimetypes.browser "org.custom.qutebrowser.windowed.desktop";
         programs.zsh.sessionVariables = {
           TB_DEFAULT_BROWSER = cfg.command;
+          TB_DEFAULT_BROWSER_SESSIONS_STORE = cfg.sessions.path;
         };
         home.activation.ensureQutebrowserIsDefault = {
           after = [ ];
@@ -514,7 +515,10 @@ in
           data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser org.qutebrowser.qutebrowser.desktop";
         };
       };
-      environment.sessionVariables.TB_DEFAULT_BROWSER = [ cfg.command ];
+      environment.sessionVariables = {
+        TB_DEFAULT_BROWSER = [ cfg.command ];
+        TB_DEFAULT_BROWSER_SESSIONS_STORE = [ cfg.sessions.path ];
+      };
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
 
@@ -541,7 +545,6 @@ in
         };
       };
       environment.sessionVariables.TB_FALLBACK_BROWSER = [ cfg.command ];
-
 
       workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
     })

@@ -46,12 +46,6 @@ in
         }
       ];
 
-      nixpkgs.config.packageOverrides = _: rec {
-        collect_links_on_page = mkPythonScriptWithDeps "collect_links_on_page"
-          (with pkgs; [ nurpkgs.pystdlib python3Packages.beautifulsoup4 xsel ])
-          (builtins.readFile ./scripts/collect_links_on_page.py);
-      };
-
       home-manager.users.${user} = { home.packages = with pkgs; [ rdrview ]; };
 
       workstation.systemtraits.instructions = with config.navigation.bookmarks; ''
@@ -116,13 +110,10 @@ in
         }
         {
           key = [ "c" ];
-          cmd = "${pkgs.collect_links_on_page}/bin/collect_links_on_page";
+          cmd = "${goBinPrefix "links"}";
           mode = "browser";
         }
       ];
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ collect_links_on_page ]; };
     })
   ];
 }
