@@ -35,6 +35,11 @@ in
         default = "dunst";
         description = "System notifications backend to use";
       };
+      commandsDebugLogRoot = mkOption {
+        type = types.str;
+        default = homePrefix "wm-logs";
+        description = "Path to store WM commands debug logs under";
+      };
       gmrun.enable = mkOption {
         type = types.bool;
         default = false;
@@ -96,10 +101,17 @@ in
           colorScheme = 0;
           detailedCpuTime = true;
         };
-        home.activation.srvctl = {
-          after = [ "linkGeneration" ];
-          before = [ ];
-          data = "DISPLAY=:0 ${pkgs.srvctl}/bin/srvctl --invalidate-cache";
+        home.activation = {
+          srvctl = {
+            after = [ "linkGeneration" ];
+            before = [ ];
+            data = "DISPLAY=:0 ${pkgs.srvctl}/bin/srvctl --invalidate-cache";
+          };
+          ensureDebugLogsRoot = {
+            after = [ "linkGeneration" ];
+            before = [ ];
+            data = "mkdir -p ${cfg.commandsDebugLogRoot}";
+          };
         };
         programs.rofi = {
           enable = true;

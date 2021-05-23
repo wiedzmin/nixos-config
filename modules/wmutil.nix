@@ -90,11 +90,17 @@ in rec {
       "workspace --no-auto-back-and-forth ${
         builtins.toString ws.fst
       }: ${ws.snd.name}; layout ${layout}; "))}";
+  mkCmdDebugAbsFilename = root: cmd:
+    "${root}/${
+      lib.last (lib.splitString "/"
+        (builtins.head (lib.splitString " " cmd)))}-$(date +%Y-%m-%d-%H-%M-%S | tr -d '[:cntrl:]').log";
   mkKeybindingI3 = meta: desktops:
     builtins.concatStringsSep " " ([ "bindsym" (mkKeysymI3 meta.key) ]
       ++ lib.optionals (!maybeAttrIsBool "raw" meta) [ "exec" ]
       ++ lib.optionals (maybeAttrIsBool "transient" meta) [ "--no-startup-id" ] ++ [
-        (builtins.concatStringsSep "; " (lib.optionals (builtins.hasAttr "cmd" meta) [ meta.cmd ]
+        (builtins.concatStringsSep "; " (lib.optionals (builtins.hasAttr "cmd" meta)
+          [ (meta.cmd + lib.optionalString (maybeAttrIsBool "debug" meta && !maybeAttrIsBool "raw" meta)
+            " > ${mkCmdDebugAbsFilename config.controlcenter.commandsDebugLogRoot meta.cmd} 2>&1") ]
           ++ lib.optionals (builtins.hasAttr "desktop" meta)
           [ "workspace ${getWorkspaceByNameI3 desktops meta.desktop}" ]
           ++ lib.optionals (!maybeAttrIsBool "sticky" meta && meta.mode != "root") [ ''mode "default"'' ]))
