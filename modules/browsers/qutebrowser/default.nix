@@ -106,8 +106,9 @@ in
       nixpkgs.config.packageOverrides = _: rec {
         session-save = mkShellScriptWithDeps "session-save" (with pkgs; [ coreutils findutils socat ])
           (readSubstituted ../../subst.nix ./scripts/session-save.sh);
-        yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ])
-          (readSubstituted ../../subst.nix ./scripts/yank-image.sh);
+        yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ]) ''
+          wget $1 -q -O - | xclip -i -selection primary -t image/jpeg
+        '';
         qb-fix-session =
           mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
             (builtins.readFile ./scripts/qb-fix-session.py);
