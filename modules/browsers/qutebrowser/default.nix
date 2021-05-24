@@ -79,15 +79,15 @@ in
           Systemd timer notation is used.
         '';
       };
-      sessions.sizeThreshold = mkOption {
-        type = types.int;
-        default = 10;
-        description = "Maximum session size (in URLs), in which case it would be loaded completely.";
-      };
       sessions.path = mkOption {
         type = types.str;
         default = homePrefix "docs/org/browser-sessions/qutebrowser";
         description = "Where to save plaintext Qutebrowser session contents.";
+      };
+      sessions.keepMinutes = mkOption {
+        type = types.int;
+        default = 180;
+        description = "Keep sessions age under this amount";
       };
       sessions.historyLength = mkOption {
         type = types.int;
@@ -104,8 +104,6 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        session-save = mkShellScriptWithDeps "session-save" (with pkgs; [ coreutils findutils socat ])
-          (readSubstituted ../../subst.nix ./scripts/session-save.sh);
         yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ]) ''
           wget $1 -q -O - | xclip -i -selection primary -t image/jpeg
         '';
@@ -509,6 +507,7 @@ in
         programs.zsh.sessionVariables = {
           TB_DEFAULT_BROWSER = cfg.command;
           TB_DEFAULT_BROWSER_SESSIONS_STORE = cfg.sessions.path;
+          TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES = builtins.toString cfg.sessions.keepMinutes;
         };
         home.activation.ensureQutebrowserIsDefault = {
           after = [ ];
@@ -519,6 +518,7 @@ in
       environment.sessionVariables = {
         TB_DEFAULT_BROWSER = [ cfg.command ];
         TB_DEFAULT_BROWSER_SESSIONS_STORE = [ cfg.sessions.path ];
+        TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES = [ (builtins.toString cfg.sessions.keepMinutes) ];
       };
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
@@ -561,12 +561,9 @@ in
         description = "Backup current qutebrowser session (tabs)";
         serviceConfig = {
           Type = "oneshot";
-          ExecStartPre = [ "${pkgs.procps}/bin/pgrep qutebrowser" "${pkgs.session-save}/bin/session-save" ];
-          ExecStart = "${pkgs.qb-dump-session}/bin/qb-dump-session --flat --dump-path ${cfg.sessions.path}";
-          ExecStopPost =
-            "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --rotate --path ${cfg.sessions.path} --history-length ${
-              builtins.toString cfg.sessions.historyLength
-            }";
+          Environment = [ "TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES=${builtins.toString cfg.sessions.keepMinutes}" ];
+          ExecStart = "${goBinPrefix "qbsessions"} -save";
+          ExecStopPost = "${goBinPrefix "qbsessions"} -rotate";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -599,7 +596,7 @@ in
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ session-save yank-image qb-fix-session qb-dump-session manage-qb-sessions ];
+        home.packages = with pkgs; [ yank-image qb-fix-session qb-dump-session manage-qb-sessions ];
       };
     })
   ];
