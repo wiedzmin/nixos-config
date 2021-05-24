@@ -89,16 +89,6 @@ in
         default = 180;
         description = "Keep sessions age under this amount";
       };
-      sessions.historyLength = mkOption {
-        type = types.int;
-        default = 10;
-        description = "How many recent sessions to keep.";
-      };
-      sessions.nameTemplate = mkOption {
-        type = types.str;
-        default = "qutebrowser-session-auto";
-        description = "Filename template for Qutebrowser session files.";
-      };
     };
   };
   config = mkMerge [
@@ -107,14 +97,6 @@ in
         yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ]) ''
           wget $1 -q -O - | xclip -i -selection primary -t image/jpeg
         '';
-        qb-fix-session =
-          mkPythonScriptWithDeps "qb-fix-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
-            (builtins.readFile ./scripts/qb-fix-session.py);
-        qb-dump-session =
-          mkPythonScriptWithDeps "qb-dump-session" (with pkgs; [ nurpkgs.pystdlib python3Packages.pyyaml ])
-            (builtins.readFile ./scripts/qb-dump-session.py);
-        manage-qb-sessions = mkPythonScriptWithDeps "manage-qb-sessions" (with pkgs; [ nurpkgs.pystdlib ])
-          (builtins.readFile ./scripts/manage-qb-sessions.py);
       };
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {
@@ -134,7 +116,6 @@ in
       home-manager.users.${user} = {
         home.packages = with pkgs; [
           yank-image
-          qb-fix-session
         ];
         programs.qutebrowser = {
           enable = true;
@@ -576,27 +557,14 @@ in
       wmCommon.keys = [
         {
           key = [ "s" ];
-          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --save --path ${
-            cfg.sessions.path}";
-          mode = "browser";
-        }
-        {
-          key = [ "o" ];
-          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --open --path ${
-            cfg.sessions.path}";
-          mode = "browser";
-        }
-        {
-          key = [ "d" ];
-          cmd = "${pkgs.manage-qb-sessions}/bin/manage-qb-sessions --delete --path ${
-            cfg.sessions.path}";
+          cmd = "${goBinPrefix "qbsessions"} -export";
           mode = "browser";
         }
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ yank-image qb-fix-session qb-dump-session manage-qb-sessions ];
+        home.packages = with pkgs; [ yank-image ];
       };
     })
   ];
