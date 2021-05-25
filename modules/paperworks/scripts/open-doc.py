@@ -15,10 +15,10 @@ args = parser.parse_args()
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 
-ebooks = r.get("paperworks/docs")
-if ebooks:
-    ebooks = json.loads(ebooks)
+documents = r.get("paperworks/docs")
+if documents:
+    documents = json.loads(documents)
 
-result = get_selection_rofi(ebooks, 'document')
+result = get_selection_rofi(documents, 'document')
 if result:
     shell_cmd(f"libreoffice {re.escape(result)}")

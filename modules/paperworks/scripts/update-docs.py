@@ -18,7 +18,7 @@ if not args.root:
     print("No root path provided")
     sys.exit(1)
 
-books = []
-books.extend(shell_cmd(f"{args.search_command} {args.root}", split_output="\n"))
+documents = []
+documents.extend(shell_cmd(f"{args.search_command} {args.root}", split_output="\n"))
 
-r.set("paperworks/docs", json.dumps(books))
+r.set("paperworks/docs", json.dumps(documents))
