@@ -6,6 +6,10 @@ let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  stable = import inputs.stable ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
 in
 {
   options = {
@@ -101,7 +105,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ diffoscope icdiff patchutils wiggle xmldiff ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ stable.diffoscope icdiff patchutils wiggle xmldiff ]; };
     })
     (mkIf (cfg.enable && cfg.networking.enable) {
       programs = {
