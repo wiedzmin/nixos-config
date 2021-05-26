@@ -61,7 +61,7 @@ in
         };
       };
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ anydesk ];
+        home.packages = with pkgs; [ anydesk ipinfo ];
         xdg.configFile."espanso/user/networking.yml".text = ''
           name: networking
           parent: default

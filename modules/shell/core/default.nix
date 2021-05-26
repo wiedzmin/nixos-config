@@ -50,6 +50,7 @@ in {
           libnotify # FWIW
           perl # for plugins
           bashate # linter
+          fancy-motd
         ];
       };
     })
