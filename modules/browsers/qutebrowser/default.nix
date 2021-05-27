@@ -288,7 +288,7 @@ in
                 related = "next";
                 unrelated = "last";
               };
-              position = "right";
+              position = "top";
               select_on_remove = "next";
               show = "multiple";
               tabs_are_windows = false;
