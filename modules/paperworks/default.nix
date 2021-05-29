@@ -164,15 +164,6 @@ in
         default = [ "doc" "docx" "xls" "xlsx" "odt" ];
         description = "Documents file extensions to consider";
       };
-      docflow.searchCommand = mkOption {
-        type = types.str;
-        default = "${pkgs.fd}/bin/fd --full-path --absolute-path ${
-            lib.concatStringsSep " " (lib.forEach cfg.docflow.extensions (ext: "-e ${ext}"))
-          }";
-        visible = false;
-        internal = true;
-        description = "Shell command to use for collecting documents paths.";
-      };
       processors.enable = mkOption {
         type = types.bool;
         default = false;
@@ -312,8 +303,6 @@ in
         open-doc =
           mkPythonScriptWithDeps "open-doc" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis stable.libreoffice ])
             (builtins.readFile ./scripts/open-doc.py);
-        update-docs = mkPythonScriptWithDeps "update-docs" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
-          (builtins.readFile ./scripts/update-docs.py);
       };
 
       systemd.user.services = builtins.listToAttrs (forEach (localDocs config.navigation.bookmarks.entries) (root: {
@@ -329,7 +318,9 @@ in
             WorkingDirectory = root;
             ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
                 concatStringsSep "," cfg.docflow.extensions
-            } -- ${pkgs.update-docs}/bin/update-docs --root ${root} --search-command ${cfg.docflow.searchCommand}";
+            } -- ${goBinPrefix "collect"} --root ${root} --exts ${
+                concatStringsSep "," cfg.docflow.extensions
+            } --key paperworks/docs";
             StandardOutput = "journal";
             StandardError = "journal";
           };
@@ -347,7 +338,6 @@ in
           stable.libreoffice
           open-doc
           unipicker
-          update-docs
         ];
         xdg.mimeApps.defaultApplications =
           (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop")
