@@ -92,9 +92,12 @@ in
       };
 
       home-manager.users."${user}" = {
+        programs.zsh.sessionVariables = {
+          TB_TMUX_SESSION = cfg.defaultSession;
+        };
         home.file = {
           ".tmuxp/main.yml".text = ''
-            session_name: main
+            session_name: ${cfg.defaultSession}
             windows:
               - window_name: repl
                 panes:
@@ -111,6 +114,7 @@ in
           '';
         };
       };
+      environment.sessionVariables.TB_TMUX_SESSION = [ cfg.defaultSession ];
       workstation.video.transparency.opacityRule = [ ''65:name *?= "${cfg.defaultSession}" && class_g = "Alacritty"'' ];
       custom.programs.tmux = {
         enable = true;
