@@ -53,11 +53,11 @@ in
       wmCommon.keys = lib.optionals (cfg.fuzzySearch.enable) [{
         key = [ "r" ];
         cmd = with config.dev.navigation.projects.fuzzySearch;
-          "${goBinPrefix "projects"} search --root ${root} --depth ${builtins.toString depth}";
+          "${nurpkgs.toolbox}/bin/projects search --root ${root} --depth ${builtins.toString depth}";
         mode = "dev";
       }] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable) [{
         key = [ "p" ];
-        cmd = "${goBinPrefix "projects"} open";
+        cmd = "${nurpkgs.toolbox}/bin/projects open";
         mode = "dev";
       }];
     })

@@ -55,7 +55,7 @@ in {
             WorkingDirectory = root;
             ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
                 concatStringsSep "," cfg.extensions.primary
-            } -- ${goBinPrefix "collect"} --root ${root} --exts ${
+            } -- ${nurpkgs.toolbox}/bin/collect --root ${root} --exts ${
                 concatStringsSep "," cfg.extensions.primary
             } --key content/ebooks_list";
             StandardOutput = "journal";

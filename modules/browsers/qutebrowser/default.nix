@@ -543,8 +543,8 @@ in
         serviceConfig = {
           Type = "oneshot";
           Environment = [ "TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES=${builtins.toString cfg.sessions.keepMinutes}" ];
-          ExecStart = "${goBinPrefix "qbsessions"} -save";
-          ExecStopPost = "${goBinPrefix "qbsessions"} -rotate";
+          ExecStart = "${nurpkgs.toolbox}/bin/qbsessions -save";
+          ExecStopPost = "${nurpkgs.toolbox}/bin/qbsessions -rotate";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -557,7 +557,7 @@ in
       wmCommon.keys = [
         {
           key = [ "s" ];
-          cmd = "${goBinPrefix "qbsessions"} -export";
+          cmd = "${nurpkgs.toolbox}/bin/qbsessions -export";
           mode = "browser";
         }
       ];

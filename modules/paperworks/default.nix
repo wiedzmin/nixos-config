@@ -318,7 +318,7 @@ in
             WorkingDirectory = root;
             ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
                 concatStringsSep "," cfg.docflow.extensions
-            } -- ${goBinPrefix "collect"} --root ${root} --exts ${
+            } -- ${nurpkgs.toolbox}/bin/collect --root ${root} --exts ${
                 concatStringsSep "," cfg.docflow.extensions
             } --key paperworks/docs";
             StandardOutput = "journal";

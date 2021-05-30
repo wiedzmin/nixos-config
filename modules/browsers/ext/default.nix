@@ -110,7 +110,7 @@ in
         }
         {
           key = [ "c" ];
-          cmd = "${goBinPrefix "links"}";
+          cmd = "${nurpkgs.toolbox}/bin/links";
           mode = "browser";
         }
       ];
