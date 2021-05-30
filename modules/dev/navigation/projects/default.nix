@@ -49,33 +49,17 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.bookmarks.enable && config.navigation.bookmarks.enable) {
-      nixpkgs.config.packageOverrides = _: rec {
-        open-project = mkPythonScriptWithDeps "open-project" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis ])
-          (builtins.readFile ./scripts/open-project.py);
-      };
-    })
-    (mkIf cfg.fuzzySearch.enable {
-      nixpkgs.config.packageOverrides = _: rec {
-        reposearch =
-          mkPythonScriptWithDeps "reposearch" (with pkgs; [ fd python3Packages.libtmux xsel emacs nurpkgs.pystdlib ])
-            (builtins.readFile ./scripts/reposearch.py);
-      };
-    })
     (mkIf (cfg.wm.enable) {
       wmCommon.keys = lib.optionals (cfg.fuzzySearch.enable) [{
         key = [ "r" ];
         cmd = with config.dev.navigation.projects.fuzzySearch;
-          "${pkgs.reposearch}/bin/reposearch --root ${root} --depth ${builtins.toString depth}";
+          "${goBinPrefix "projects"} search --root ${root} --depth ${builtins.toString depth}";
         mode = "dev";
       }] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable) [{
         key = [ "p" ];
-        cmd = "${pkgs.open-project}/bin/open-project";
+        cmd = "${goBinPrefix "projects"} open";
         mode = "dev";
       }];
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ open-project reposearch ]; };
     })
   ];
 }
