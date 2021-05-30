@@ -1,0 +1,35 @@
+default:
+    @just --choose
+
+# Download youtube videos/playlist with youtube-dl, get data from clipboard
+download-yt:
+    youtube-dl -o "%(title)s.%(ext)s" `xsel -b -o`
+
+# Download youtube videos/playlist with pytube, get data from clipboard
+download-pytube:
+    pytube `xsel -b -o`
+
+# Download youtube videos/playlist with pytube, get data from clipboard
+encode-camcorder:
+    for i in *.MTS; do ffmpeg -i "$i" -c:v copy -c:a copy -b:a 192k "$i.mp4"; done
+
+# Make video files list
+encode-camcorder-mkfilelist:
+    rm -f files.list
+    touch files.list
+    for i in *.MTS; do echo "$i" >> files.list; done
+
+# Merge video chunks (not tested yet)
+encode-camcorder-merge:
+    ffmpeg -f concat -i files.list -c copy result.mp4
+
+# Make video files list
+encode-camcorder-mkfilelist:
+    mkdir -p result
+    for i in *.mp4; do ffmpeg -i "$$i" -codec:a libmp3lame "result/$${i%.*}.mp3"; done
+    for i in *.mkv; do ffmpeg -i "$$i" -codec:a libmp3lame "result/$${i%.*}.mp3"; done
+    for i in *.webm; do ffmpeg -i "$$i" -codec:a libmp3lame "result/$${i%.*}.mp3"; done
+
+# Remove generated data
+encode-cleanup:
+    rm -rf ./result

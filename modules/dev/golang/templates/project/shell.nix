@@ -3,7 +3,7 @@
 with pkgs;
 let
   nurpkgs = pkgs.nur.repos; # refer to packages as nurpkgs.<username>.<package>
-  base = [ codesearch docker_compose gitAndTools.pre-commit go-task watchman ];
+  base = [ codesearch docker_compose gitAndTools.pre-commit just watchman ];
   stats = [ cloc gource logtop sloccount tokei ];
   git = [
     git-quick-stats
