@@ -75,7 +75,13 @@ in {
             selection-clipboard = "clipboard";
           };
         };
+        programs.zsh.sessionVariables = {
+          TB_EBOOKS_READER_COMMAND = config.attributes.ebookreader.default.cmd;
+        };
       };
+      attributes.ebookreader.default.cmd = "${pkgs.zathura}/bin/zathura";
+      attributes.ebookreader.default.windowClass = [ "Zathura" ];
+      environment.sessionVariables.TB_EBOOKS_READER_COMMAND = [ config.attributes.ebookreader.default.cmd ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{

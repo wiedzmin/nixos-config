@@ -74,6 +74,26 @@ with lib;
       type = types.listOf types.str;
       default = [ ];
     };
+    ebookreader.default.cmd = mkOption {
+      description = "Default ebook reader command";
+      type = types.str;
+      default = "";
+    };
+    ebookreader.default.windowClass = mkOption {
+      description = "Default ebook reader window class";
+      type = types.listOf types.str;
+      default = [ ];
+    };
+    ebookreader.fallback.cmd = mkOption {
+      description = "Fallback ebook reader command";
+      type = types.str;
+      default = "";
+    };
+    ebookreader.fallback.windowClass = mkOption {
+      description = "Fallback ebook reader window class";
+      type = types.listOf types.str;
+      default = [ ];
+    };
     mimetypes.ebook = mkOption {
       description = "MIME types to handle as e-books";
       type = types.listOf types.str;

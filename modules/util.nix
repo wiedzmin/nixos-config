@@ -200,6 +200,9 @@ in rec {
   takeLast = n: l: with lib; reverseList (take n (reverseList l));
   mkWSMappingBrowsersRegexp =
     concatStringListsRaw "|" (with config.attributes.browser; [ default.windowClass fallback.windowClass ]);
+  mkWSMappingEbookReadersRegexp =
+    concatStringListsRaw "|" (with config.attributes.ebookreader; [ default.windowClass fallback.windowClass ]);
+  mkWSMappingEbookReadersExtsRegexp = concatStringListsRaw "|" config.content.ebooks.extensions.primary;
   # TODO: create function for ensuring non-prefix keys absence
   mkEmacsCustomKeymap = name: binding: ''
     (define-prefix-command '${name})
