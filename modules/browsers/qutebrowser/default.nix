@@ -505,6 +505,11 @@ in
       attributes.browser.default.windowClass = cfg.windowClass;
 
       workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
+
+      navigation.bookmarks.entries = {
+        "qutebrowser/sessions/raw" = { local.path = homePrefix ".local/share/qutebrowser/sessions"; };
+        "qutebrowser/sessions/exported" = { local.path = homePrefix "docs/org/browser-sessions/qutebrowser"; };
+      };
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [

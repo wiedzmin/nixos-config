@@ -456,6 +456,9 @@ in
       workstation.performance.warmup.paths = [ (homePrefix ".mozilla") ];
 
       workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
+      navigation.bookmarks.entries = {
+        "firefox/sessions/exported" = { local.path = homePrefix "docs/org/browser-sessions/firefox"; };
+      };
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -483,7 +486,7 @@ in
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
       home-manager.users.${user} = {
-        home.activation.ensureFirefoxSessionsPath = {
+        home.activation.ensureFirefoxExportedSessionsPath = {
           after = [ ];
           before = [ "linkGeneration" ];
           data = "mkdir -p ${cfg.sessions.path}";
