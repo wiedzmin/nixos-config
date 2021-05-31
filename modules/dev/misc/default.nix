@@ -73,7 +73,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ dfmt go-task just nurpkgs.comby plantuml tagref ];
+        home.packages = with pkgs; [ dfmt go-task just lnav nurpkgs.comby plantuml tagref ];
         programs.zsh.sessionVariables = {
           JUST_CHOOSER = "rofi -dmenu";
         };
