@@ -62,7 +62,7 @@ in
                 concatStringsSep "," cfg.extensions.primary
               } -- ${nurpkgs.toolbox}/bin/collect --root ${root} --exts ${
                 concatStringsSep "," cfg.extensions.primary
-              } --key content/ebooks_list";
+              } --key content/${token}/ebooks";
               StandardOutput = "journal";
               StandardError = "journal";
             };

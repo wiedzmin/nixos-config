@@ -15,9 +15,11 @@ args = parser.parse_args()
 
 r = redis.Redis(host='localhost', port=6379, db=0)
 
-ebooks = r.get("content/ebooks_list")
-if ebooks:
-    ebooks = json.loads(ebooks)
+ebooks = []
+for key in r.scan_iter("content/*/ebooks"):
+    value = r.get(key)
+    if value:
+        ebooks.extend(json.loads(value))
 
 result = get_selection_rofi(ebooks, 'book')
 if result:
