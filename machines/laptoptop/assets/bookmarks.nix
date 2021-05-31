@@ -98,5 +98,14 @@ rec {
         };
       };
     };
+    "libtmux-go" = {
+      local.path = "${wsRoot "github"}/wiedzmin/libtmux-go";
+      remote.url = "https://github.com/wiedzmin/libtmux-go/";
+      myrepos = {
+        "${wsRootAbs "github"}/wiedzmin/libtmux-go" = {
+          checkout = [ "git clone 'https://github.com/wiedzmin/libtmux-go.git' 'libtmux-go'" ];
+        };
+      };
+    };
   };
 }
