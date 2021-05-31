@@ -99,8 +99,6 @@ in
           settings = {
             color_scheme = 0;
             detailed_cpu_time = true;
-            fields = [ "USER" "PRIORITY" "NICE" "M_SIZE" "STATE" "PERCENT_CPU" "PERCENT_MEM" "TIME" "COMM" ];
-            left_meters = [ "AllCPUs" "Memory" ]; # or left_meter_modes
           };
         };
         home.activation = {
