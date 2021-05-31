@@ -6,7 +6,8 @@ let
   cfg = config.content.ebooks;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     content.ebooks = {
       enable = mkOption {
@@ -42,27 +43,31 @@ in {
         bookshelf = mkPythonScriptWithDeps "bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis zathura ])
           (builtins.readFile ./scripts/bookshelf.py);
       };
-      systemd.user.services = builtins.listToAttrs (forEach (localEbooks config.navigation.bookmarks.entries) (root: {
-        name = "update-ebooks-${concatStringsSep "-" (takeLast 2 (splitString "/" root))}";
-        value = {
-          description = "Update ${concatStringsSep "-" (takeLast 2 (splitString "/" root))} contents";
-          after = [ "graphical-session-pre.target" ];
-          partOf = [ "graphical-session.target" ];
-          wantedBy = [ "graphical-session.target" ];
-          path = [ pkgs.bash ];
-          serviceConfig = {
-            Type = "simple";
-            WorkingDirectory = root;
-            ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
+      systemd.user.services = builtins.listToAttrs (forEach (localEbooks config.navigation.bookmarks.entries) (root:
+        let
+          token = concatStringsSep "-" (takeLast 2 (splitString "/" root));
+        in
+        {
+          name = "update-ebooks-${token}";
+          value = {
+            description = "Update ${token} contents";
+            after = [ "graphical-session-pre.target" ];
+            partOf = [ "graphical-session.target" ];
+            wantedBy = [ "graphical-session.target" ];
+            path = [ pkgs.bash ];
+            serviceConfig = {
+              Type = "simple";
+              WorkingDirectory = root;
+              ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
                 concatStringsSep "," cfg.extensions.primary
-            } -- ${nurpkgs.toolbox}/bin/collect --root ${root} --exts ${
+              } -- ${nurpkgs.toolbox}/bin/collect --root ${root} --exts ${
                 concatStringsSep "," cfg.extensions.primary
-            } --key content/ebooks_list";
-            StandardOutput = "journal";
-            StandardError = "journal";
+              } --key content/ebooks_list";
+              StandardOutput = "journal";
+              StandardError = "journal";
+            };
           };
-        };
-      }));
+        }));
       pim.timetracking.rules = mkArbttTitleRule [ ".*papers/.*" ] "ebooks:papers" + "\n"
         + mkArbttPrefixedTitlesRule (with cfg.extensions; primary ++ secondary) "read:";
       home-manager.users.${user} = {
