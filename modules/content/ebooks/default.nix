@@ -39,10 +39,6 @@ in
         device = homePrefix "bookshelf";
         options = [ "bind" ];
       };
-      nixpkgs.config.packageOverrides = _: rec {
-        bookshelf = mkPythonScriptWithDeps "bookshelf" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis zathura ])
-          (builtins.readFile ./scripts/bookshelf.py);
-      };
       systemd.user.services = builtins.listToAttrs (forEach (localEbooks config.navigation.bookmarks.entries) (root:
         let
           token = concatStringsSep "-" (takeLast 2 (splitString "/" root));
@@ -91,12 +87,9 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "b" ];
-        cmd = "${pkgs.bookshelf}/bin/bookshelf";
+        cmd = "${goBinPrefix "bookshelf"}";
         mode = "select";
       }];
-    })
-    (mkIf (config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ bookshelf ]; };
     })
   ];
 }
