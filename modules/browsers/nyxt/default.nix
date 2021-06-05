@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.browsers.nyxt;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     browsers.nyxt = {
       enable = mkOption {
@@ -57,7 +58,15 @@ in {
     (mkIf cfg.enable {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ nyxt ];
-      } // optionalAttrs (cfg.extraConfig != "") { xdg.configFile."nyxt/init.lisp".text = cfg.extraConfig; };
+        xdg.configFile."nyxt/init.lisp" = {
+          source = ./config/init.lisp;
+          force = true;
+        };
+        xdg.configFile."nyxt/auto-config.lisp" = {
+          source = ./config/auto-config.lisp;
+          force = true;
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       environment.sessionVariables = { BROWSER = cfg.command; };
