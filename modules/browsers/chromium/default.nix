@@ -151,7 +151,7 @@ in
         home.activation.ensureChromiumIsDefault = {
           after = [ ];
           before = [ "linkGeneration" ];
-          data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser chromium.desktop";
+          data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser chromium-browser.desktop";
         };
         programs.zsh.sessionVariables = {
           TB_DEFAULT_BROWSER = cfg.command;
