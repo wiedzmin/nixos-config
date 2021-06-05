@@ -116,7 +116,7 @@ in
       };
       environment.sessionVariables.TB_TMUX_SESSION = [ cfg.defaultSession ];
       workstation.video.transparency.opacityRule = [ ''65:name *?= "${cfg.defaultSession}" && class_g = "Alacritty"'' ];
-      custom.programs.tmux = {
+      ext.programs.tmux = {
         enable = true;
         baseIndex = 1;
         clock24 = true;

@@ -4,7 +4,7 @@ with lib;
 
 let
 
-  cfg = config.custom.programs.tmux;
+  cfg = config.ext.programs.tmux;
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
 
@@ -275,7 +275,7 @@ let
 
 in {
   options = {
-    custom.programs.tmux = {
+    ext.programs.tmux = {
       aggressiveResize = mkOption {
         default = false;
         type = types.bool;

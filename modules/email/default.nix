@@ -323,7 +323,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.mbsync.enable) {
-      custom.programs.mbsync = {
+      ext.programs.mbsync = {
         enable = true;
         extraConfig = ''
           MaildirStore ${cfg.defaultAccountName}-archive

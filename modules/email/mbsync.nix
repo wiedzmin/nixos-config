@@ -4,7 +4,7 @@ with lib;
 
 let
 
-  cfg = config.custom.programs.mbsync;
+  cfg = config.ext.programs.mbsync;
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
 
@@ -68,7 +68,7 @@ let
 
 in {
   options = {
-    custom.programs.mbsync = {
+    ext.programs.mbsync = {
       enable = mkEnableOption "mbsync IMAP4 and Maildir mailbox synchronizer";
 
       package = mkOption {

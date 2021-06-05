@@ -110,7 +110,7 @@ in
           (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.wiedzmin.pystdlib ])
           (builtins.readFile ./scripts/manage_firefox_sessions.py);
       };
-      modified.programs.firefox = {
+      ext.programs.firefox = {
         enable = true;
         extensions = with nurpkgs.rycee.firefox-addons;
           [
