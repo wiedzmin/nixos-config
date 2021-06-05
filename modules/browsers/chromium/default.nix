@@ -13,7 +13,8 @@ let
       suspendSubtreePattern = "chromium";
     };
   };
-in {
+in
+{
   options = {
     browsers.chromium = {
       enable = mkOption {
@@ -152,16 +153,14 @@ in {
           before = [ "linkGeneration" ];
           data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser chromium.desktop";
         };
-      };
-      attributes.browser.default.cmd = cfg.command;
-      attributes.browser.default.windowClass = cfg.windowClass;
-
-      home-manager.users.${user} = {
         programs.zsh.sessionVariables = {
           TB_DEFAULT_BROWSER = cfg.command;
         };
       };
       environment.sessionVariables.TB_DEFAULT_BROWSER = [ cfg.command ];
+
+      attributes.browser.default.cmd = cfg.command;
+      attributes.browser.default.windowClass = cfg.windowClass;
 
       workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
     })
