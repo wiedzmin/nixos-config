@@ -139,10 +139,6 @@ in {
     (mkIf (cfg.enable && cfg.isDefault) {
       assertions = [
         {
-          assertion = !cfg.isFallback;
-          message = "browsers: chromium: cannot be the default and fallback at the same time.";
-        }
-        {
           assertion = !config.browsers.firefox.isDefault && !config.browsers.nyxt.isDefault
             && !config.browsers.qutebrowser.isDefault;
           message = "browsers: chromium: there should be exactly one default.";
@@ -171,10 +167,6 @@ in {
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
-        {
-          assertion = !cfg.isDefault;
-          message = "browsers: chromium: cannot be the default and fallback at the same time.";
-        }
         {
           assertion = !config.browsers.firefox.isFallback && !config.browsers.nyxt.isFallback
             && !config.browsers.qutebrowser.isFallback;

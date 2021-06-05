@@ -177,11 +177,11 @@ in
     };
     qutebrowser = {
       enable = true;
-      isDefault = true;
       sessions.backup.enable = true;
     };
     chromium = {
       enable = true;
+      isDefault = true;
       isFallback = true;
     };
     nyxt.enable = true;
