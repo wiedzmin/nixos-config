@@ -1,7 +1,12 @@
 (in-package #:nyxt-user)
 
 (define-configuration (buffer web-buffer)
-    ((override-map (define-key %slot-default%
+    ((default-modes (append '(emacs-mode) %slot-default%))
+     (default-modes (append '(custom-mode) %slot-default%))
+     (override-map (define-key %slot-default%
+                       "M-," 'nyxt/web-mode:history-backwards
+                       "M-." 'nyxt/web-mode:history-forwards
+                       "C-g" 'reload-current-buffer
                        "C-x n" 'set-url-new-buffer))))
 
 (define-configuration (buffer prompt-buffer)
