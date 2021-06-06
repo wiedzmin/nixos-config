@@ -89,16 +89,14 @@ in
           before = [ "linkGeneration" ];
           data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser nyxt.desktop";
         };
-      };
-      attributes.browser.default.cmd = cfg.command;
-      attributes.browser.default.windowClass = cfg.windowClass;
-
-      home-manager.users.${user} = {
         programs.zsh.sessionVariables = {
           TB_DEFAULT_BROWSER = cfg.command;
         };
       };
       environment.sessionVariables.TB_DEFAULT_BROWSER = [ cfg.command ];
+
+      attributes.browser.default.cmd = cfg.command;
+      attributes.browser.default.windowClass = cfg.windowClass;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
