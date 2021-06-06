@@ -6,7 +6,8 @@ let
   cfg = config.workstation.input.xkeysnail;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     workstation.input.xkeysnail = {
       enable = mkOption {
@@ -42,7 +43,7 @@ in {
         type = types.lines;
         default = ''
           # Emacs-like keybindings in non-Emacs applications
-          define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Alacritty"), {
+          define_keymap(lambda wm_class: wm_class not in ("Emacs", "URxvt", "Alacritty", "Nyxt"), {
               # Cursor
               K("C-b"): with_mark(K("left")),
               K("C-f"): with_mark(K("right")),
