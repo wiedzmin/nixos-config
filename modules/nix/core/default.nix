@@ -108,7 +108,18 @@ in
           '';
         };
       };
-      home-manager.users.${user} = { home.packages = with pkgs; [ nix-doc-lookup rollback ]; };
+      home-manager.users.${user} = {
+        home.packages = with pkgs; [ nix-doc-lookup rollback ];
+        xdg.configFile."espanso/user/nix.yml".text = ''
+          name: nix
+          parent: default
+          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
+
+          matches:
+            - trigger: ":nsp"
+              replace: "nix shell \"nixpkgs#$|$\""
+        '';
+      };
 
       systemd.services.nix-daemon = {
         environment.TMPDIR = "/tmp/buildroot";
