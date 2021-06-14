@@ -153,11 +153,8 @@ in
           before = [ "linkGeneration" ];
           data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser chromium-browser.desktop";
         };
-        programs.zsh.sessionVariables = {
-          TB_DEFAULT_BROWSER = cfg.command;
-        };
       };
-      environment.sessionVariables.TB_DEFAULT_BROWSER = [ cfg.command ];
+      shell.core.variables = [{ TB_DEFAULT_BROWSER = cfg.command; global = true; }];
 
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
@@ -174,13 +171,7 @@ in
       ];
       attributes.browser.fallback.cmd = cfg.command;
       attributes.browser.fallback.windowClass = cfg.windowClass;
-
-      home-manager.users.${user} = {
-        programs.zsh.sessionVariables = {
-          TB_FALLBACK_BROWSER = cfg.command;
-        };
-      };
-      environment.sessionVariables.TB_FALLBACK_BROWSER = [ cfg.command ];
+      shell.core.variables = [{ TB_FALLBACK_BROWSER = cfg.command; global = true; }];
 
       workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
     })

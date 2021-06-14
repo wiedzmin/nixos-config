@@ -284,7 +284,7 @@ in {
         }
       ];
 
-      ide.emacs.core.environment = { CURRENT_WM = "xmonad"; };
+      shell.core.variables = [{ CURRENT_WM = "xmonad"; global = true; emacs = true; }];
       ide.emacs.core.extraPackages = epkgs: [ epkgs.haskell-mode ];
 
       # TODO: ensure config dir exists (~/.xmonad or another if changeable)

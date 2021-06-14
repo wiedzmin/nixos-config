@@ -63,7 +63,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      environment.variables.MYCLI_HISTFILE = cfg.mycli.historyPath;
+      shell.core.variables = [{ MYCLI_HISTFILE = cfg.mycli.historyPath; global = true; }];
       home-manager.users.${user} = {
         home.packages = with pkgs; [ stable.mycli ];
         xdg.configFile.".myclirc".text = lib.generators.toINI { } {

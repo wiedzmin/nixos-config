@@ -16,11 +16,8 @@ in {
     wmCommon.fonts.default = "pango:${if beautify then "FiraCode Nerd Font " else "Fira Code "}Bold 8";
     wmCommon.fonts.dmenu = "Fira Code:bold:pixelsize=12";
     wmCommon.fonts.statusbar = "pango:${if beautify then "FiraCode Nerd Font " else "Fira Code "}Bold 8";
-    environment.sessionVariables.TB_SELECTOR_FONT = [ "Fira Code:bold:pixelsize=12" ];
+    shell.core.variables = [{ TB_SELECTOR_FONT = "Fira Code:bold:pixelsize=12"; global = true; }];
     home-manager.users.${user} = {
-      programs.zsh.sessionVariables = {
-        TB_SELECTOR_FONT = "Fira Code:bold:pixelsize=12";
-      };
       programs.alacritty.settings.font = {
         normal = {
           family = "Fira Code";

@@ -117,11 +117,9 @@ in
 
             fpath=(${inputs.zsh-go-task-completions} $fpath)
           '';
-          sessionVariables = {
+          sessionVariables = { # NOTE: zsh-specific, keep, do not bind to custom module(s)
             HISTFILE = "${dataHome}/.histfile";
             LESSHISTFILE = "${dataHome}/.lesshst";
-            YSU_IGNORED_ALIASES = [ "g" "ll" ];
-            YSU_MODE = "ALL";
           };
           shellAliases = {
             cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency

@@ -17,11 +17,8 @@ in
     wmCommon.fonts.default = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
     wmCommon.fonts.dmenu = "Iosevka:bold:size=9";
     wmCommon.fonts.statusbar = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
-    environment.sessionVariables.TB_SELECTOR_FONT = [ "Iosevka:bold:size=9" ];
+    shell.core.variables = [{ TB_SELECTOR_FONT = "Iosevka:bold:size=9"; global = true; }];
     home-manager.users.${user} = {
-      programs.zsh.sessionVariables = {
-        TB_SELECTOR_FONT = "Iosevka:bold:size=9";
-      };
       programs.alacritty.settings.font = {
         normal = {
           family = "Iosevka";

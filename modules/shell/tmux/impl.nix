@@ -528,7 +528,7 @@ in {
     })
 
     (mkIf cfg.secureSocket {
-      home-manager.users."${user}".home.sessionVariables = {
+      home-manager.users."${user}".home.sessionVariables = { # NOTE: keep, do not bind to custom module(s)
         TMUX_TMPDIR = ''''${XDG_RUNTIME_DIR:-"/run/user/\$(id -u)"}'';
       };
     })

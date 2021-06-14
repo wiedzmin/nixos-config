@@ -23,16 +23,11 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
+      shell.core.variables = [{
+        CSEARCHINDEX = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex";
+      }];
       home-manager.users.${user} = {
         home.packages = with pkgs; [ codesearch ];
-        programs = {
-          zsh.sessionVariables = {
-            CSEARCHINDEX = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex";
-          };
-          bash.sessionVariables = {
-            CSEARCHINDEX = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex";
-          };
-        };
       };
       systemd.user.services."codesearch-reindex" = {
         description = "Codesearch index updating";

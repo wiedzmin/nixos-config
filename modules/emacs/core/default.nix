@@ -163,17 +163,11 @@ in
           epkgs.no-littering
           epkgs.use-package
         ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
+      shell.core.variables = [{
+        EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
+        VISUAL = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
+      }];
       home-manager.users.${user} = {
-        programs = {
-          zsh.sessionVariables = {
-            EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
-            VISUAL = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
-          };
-          bash.sessionVariables = {
-            EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
-            VISUAL = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
-          };
-        };
         home.packages = (with pkgs; [ drop-corrupted ispell nurpkgs.my_cookies ])
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
         home.file = {

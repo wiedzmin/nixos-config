@@ -24,7 +24,7 @@ in {
         driSupport32Bit = true;
         extraPackages32 = with pkgs.pkgsi686Linux; [ libvdpau-va-gl vaapiIntel vaapiVdpau ];
       };
-      environment.sessionVariables.LIBVA_DRIVER_NAME = "iHD";
+      shell.core.variables = [{ LIBVA_DRIVER_NAME = "iHD"; global = true; }];
     })
   ];
 }

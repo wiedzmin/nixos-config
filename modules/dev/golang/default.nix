@@ -49,21 +49,15 @@ in
         message = "dev/golang: cannot proceed without valid $GOPATH value.";
       }];
 
-      home-manager.users.${user} = {
-        home.packages = with pkgs; [ delve gopls go gomacro ];
-        programs.zsh.sessionVariables = {
-          GOPATH = cfg.goPath;
-        } // lib.optionalAttrs (cfg.privateModules != [ ]) {
-          GOPRIVATE = builtins.concatStringsSep "," cfg.privateModules;
-        };
-        programs.zsh.initExtra = ''
-          path+=${cfg.goPath}/bin
-        '';
-      };
-      ide.emacs.core.environment = {
+      shell.core.variables = [({
+        emacs = true;
         GOPATH = cfg.goPath;
       } // lib.optionalAttrs (cfg.privateModules != [ ]) {
         GOPRIVATE = builtins.concatStringsSep "," cfg.privateModules;
+      })];
+      home-manager.users.${user} = {
+        home.packages = with pkgs; [ delve gopls go gomacro ];
+        home.sessionPath = [ "${cfg.goPath}/bin" ];
       };
       dev.editorconfig.rules = {
         "*.go" = {

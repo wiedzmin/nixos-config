@@ -140,13 +140,14 @@ in
         message = "shell/completion: enable Zsh first.";
       }];
 
+      shell.core.variables = [(optionalAttrs (cfg.shell.recent.backend == "mcfly") { MCFLY_FUZZY = "true"; })];
+
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ mmv-go ] ++ optionals (cfg.shell.recent.backend == "mcfly") [ mcfly ];
         programs.zsh = {
           initExtra = optionalString (cfg.shell.recent.backend == "mcfly") ''
             source "${pkgs.mcfly}/share/mcfly/mcfly.zsh"
           '';
-          sessionVariables = optionalAttrs (cfg.shell.recent.backend == "mcfly") { MCFLY_FUZZY = "true"; };
         };
       };
     })

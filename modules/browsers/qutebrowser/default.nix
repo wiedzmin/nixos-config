@@ -481,25 +481,20 @@ in
           message = "browsers: qutebrowser: there should be exactly one default.";
         }
       ];
-
+      shell.core.variables = [{
+        TB_DEFAULT_BROWSER = cfg.command;
+        TB_DEFAULT_BROWSER_SESSIONS_STORE = cfg.sessions.path;
+        TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES = builtins.toString cfg.sessions.keepMinutes;
+        global = true;
+      }];
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications =
           mapMimesToApp config.attributes.mimetypes.browser "org.custom.qutebrowser.windowed.desktop";
-        programs.zsh.sessionVariables = {
-          TB_DEFAULT_BROWSER = cfg.command;
-          TB_DEFAULT_BROWSER_SESSIONS_STORE = cfg.sessions.path;
-          TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES = builtins.toString cfg.sessions.keepMinutes;
-        };
         home.activation.ensureQutebrowserIsDefault = {
           after = [ ];
           before = [ "linkGeneration" ];
           data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser org.qutebrowser.qutebrowser.desktop";
         };
-      };
-      environment.sessionVariables = {
-        TB_DEFAULT_BROWSER = [ cfg.command ];
-        TB_DEFAULT_BROWSER_SESSIONS_STORE = [ cfg.sessions.path ];
-        TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES = [ (builtins.toString cfg.sessions.keepMinutes) ];
       };
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
@@ -526,12 +521,7 @@ in
       attributes.browser.fallback.cmd = cfg.command;
       attributes.browser.fallback.windowClass = cfg.windowClass;
 
-      home-manager.users.${user} = {
-        programs.zsh.sessionVariables = {
-          TB_FALLBACK_BROWSER = cfg.command;
-        };
-      };
-      environment.sessionVariables.TB_FALLBACK_BROWSER = [ cfg.command ];
+      shell.core.variables = [{ TB_FALLBACK_BROWSER = cfg.command; global = true; }];
 
       workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
     })

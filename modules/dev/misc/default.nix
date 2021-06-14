@@ -72,11 +72,9 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
+      shell.core.variables = [{ JUST_CHOOSER = "rofi -dmenu"; }];
       home-manager.users.${user} = {
         home.packages = with pkgs; [ dfmt go-task just lnav nurpkgs.comby plantuml tagref ];
-        programs.zsh.sessionVariables = {
-          JUST_CHOOSER = "rofi -dmenu";
-        };
       };
       pim.timetracking.rules =
         mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ])

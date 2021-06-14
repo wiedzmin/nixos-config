@@ -311,8 +311,7 @@ in
         displayManager = { defaultSession = "none+i3"; };
       };
 
-      ide.emacs.core.environment = { CURRENT_WM = "i3"; };
-      environment.sessionVariables.CURRENT_WM = [ "i3" ];
+      shell.core.variables = [{ CURRENT_WM = "i3"; global = true; emacs = true; }];
 
       nixpkgs.config.packageOverrides = _: rec {
         kbdctl = mkPythonScriptWithDeps "kbdctl"

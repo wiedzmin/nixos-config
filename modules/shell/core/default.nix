@@ -5,6 +5,10 @@ with lib;
 let
   cfg = config.shell.core;
   user = config.attributes.mainUser.name;
+  serviceAttrsNames = [ "global" "emacs" ];
+  envVars = filterAttrs (name: value: !builtins.elem name serviceAttrsNames);
+  isGlobalEnvVars = v: builtins.hasAttr "global" v && v.global == true;
+  isEmacsEnvVars = v: builtins.hasAttr "emacs" v && v.emacs == true;
 in {
   options = {
     shell.core = {
@@ -12,6 +16,11 @@ in {
         type = types.bool;
         default = false;
         description = "Whether to enable core shell setup";
+      };
+      variables = mkOption {
+        type = types.listOf types.attrs;
+        default = [ ];
+        description = "Metadata-augmented environment variables registry";
       };
       dev.enable = mkOption {
         type = types.bool;
@@ -30,6 +39,13 @@ in {
     (mkIf cfg.enable {
       console.useXkbConfig = true;
 
+      environment.variables = foldl (a: b: a // (envVars b)) { }
+        (builtins.filter (e: isGlobalEnvVars e) cfg.variables);
+      environment.sessionVariables = foldl (a: b: a // (envVars b)) { }
+        (builtins.filter (e: isGlobalEnvVars e) cfg.variables);
+      ide.emacs.core.environment = foldl (a: b: a // (envVars b)) { }
+        (builtins.filter (e: isEmacsEnvVars e) cfg.variables);
+
       home-manager.users."${user}" = {
         programs.readline = {
           enable = true;
@@ -37,10 +53,12 @@ in {
             set echo-control-characters off
           '';
         };
+        home.sessionVariables = foldl (a: b: a // (envVars b)) { } cfg.variables;
         programs.zsh.sessionVariables = {
           YSU_IGNORED_ALIASES = [ "g" "ll" ];
           YSU_MODE = "ALL";
-        };
+        } // (foldl (a: b: a // (envVars b)) { } cfg.variables);
+        programs.bash.sessionVariables = foldl (a: b: a // (envVars b)) { } cfg.variables;
         programs.fzf.enable = true;
         programs.command-not-found = {
           enable = true;

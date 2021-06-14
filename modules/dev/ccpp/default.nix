@@ -28,11 +28,9 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
+      shell.core.variables = [{ _RR_TRACE_DIR = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/rr"; }];
       home-manager.users.${user} = {
         home.packages = with pkgs; [ ccls clang clang-tools gdb ]; # rr-unstable (broken)
-        programs.zsh.sessionVariables = {
-          _RR_TRACE_DIR = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/rr";
-        };
       };
       boot.kernel.sysctl = {
         "kernel.perf_event_paranoid" = 1; # for rr
