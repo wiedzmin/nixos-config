@@ -506,14 +506,24 @@ in
                 driver = "sysfs";
                 device = "BAT0";
               })
-              {
-                block = "sound";
-                mappings = {
-                  # TODO: adjust icons
-                  "alsa_output.usb-Logitech_Logitech_USB_Headset_000000000000-00.analog-stereo" = "🔈";
-                  "alsa_output.pci-0000_00_1b.0.analog-stereo" = "🎧";
-                };
-              }
+            ] ++ lib.optionals (true)
+              (forEach config.ext.networking.wireless.bluetooth.devices
+                (dev: {
+                  block = "bluetooth";
+                  mac = dev.mac;
+                  format = "${dev.name} {percentage}";
+                  format_unavailable = "${dev.name} x";
+                  hide_disconnected = true;
+                })
+              ) ++
+            [{
+              block = "sound";
+              mappings = {
+                # TODO: adjust icons
+                "alsa_output.usb-Logitech_Logitech_USB_Headset_000000000000-00.analog-stereo" = "🔈";
+                "alsa_output.pci-0000_00_1b.0.analog-stereo" = "🎧";
+              };
+            }
               {
                 block = "time";
                 interval = 60;
