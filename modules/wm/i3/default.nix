@@ -497,10 +497,14 @@ in
               }
               ({
                 block = "battery";
-                driver = "upower";
                 format = " {percentage} {time}";
-              } // optionalAttrs (config.attributes.hardware.dmiSystemVersion == "ThinkPad X270") {
+              } // optionalAttrs (with config; services.upower.enable) {
+                driver = "upower";
+              } // optionalAttrs (with config; services.upower.enable && attributes.hardware.dmiSystemVersion == "ThinkPad X270") {
                 device = "DisplayDevice";
+              } // optionalAttrs (!config.services.upower.enable) {
+                driver = "sysfs";
+                device = "BAT0";
               })
               {
                 block = "sound";
