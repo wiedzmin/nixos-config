@@ -167,9 +167,11 @@ in
         programs = {
           zsh.sessionVariables = {
             EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
+            VISUAL = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
           };
           bash.sessionVariables = {
             EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
+            VISUAL = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
           };
         };
         home.packages = (with pkgs; [ drop-corrupted ispell nurpkgs.my_cookies ])
