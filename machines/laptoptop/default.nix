@@ -356,6 +356,9 @@ in
       macAddress = "60:67:20:ec:34:14";
       bluetooth = {
         enable = true;
+        devices = [
+          { name = "MiAir2"; mac = "6C:CE:44:AE:97:39"; }
+        ];
         headsetMacAddresses = config.ext.networking.secrets.headsetMacAddresses;
       };
       wm = {

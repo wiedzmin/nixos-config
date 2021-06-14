@@ -43,6 +43,11 @@ in {
         default = false;
         description = "Whether to enable Bluetooth support";
       };
+      bluetooth.devices = mkOption {
+        type = types.listOf types.attrs;
+        default = [ ];
+        description = "Bluetooth devices metadata";
+      };
       bluetooth.headsetMacAddresses = mkOption {
         type = types.listOf types.str;
         default = [ ];
