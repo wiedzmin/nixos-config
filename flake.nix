@@ -148,6 +148,19 @@
                     '';
                   });
                   vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
+                  nyxt =
+                    let
+                      nyxt' = old.lispPackages.nyxt.overrideAttrs (_: rec {
+                        patches = [
+                          (old.fetchpatch {
+                            url = "https://github.com/atlas-engineer/nyxt/commit/0786ee9fd80bf47827b6a9858895663db8498d12.patch";
+                            sha256 = "sha256-lF5Ue6XhjfcqfXKpelUlVWlvl2Dq8IMNmCYZGYTdA38=";
+                          })
+                        ];
+                      });
+                    in
+                    old.nyxt.overrideAttrs
+                      (_: rec { src = nyxt'; });
                 })
               ];
             }
