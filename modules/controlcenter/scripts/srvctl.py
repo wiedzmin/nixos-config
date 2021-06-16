@@ -56,7 +56,6 @@ if operation in ["journal", "journal/follow", "status"]:
     else:
         unit_show(service, operation, user=('user' in service),
                   shell=args.term_command, tmux_session=args.tmux_session)
-    switch_desktop(1)
 else:
     unit_perform(service, operation, user=('user' in service))
 notify(f"[srvctl :: {operation}]", f"{service}", timeout=5000)
