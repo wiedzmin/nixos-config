@@ -14,6 +14,7 @@
     ./browsers/firefox/impl.nix
     ./browsers/nyxt
     ./browsers/qutebrowser
+    ./completion
     ./content/core
     ./content/ebooks
     ./content/images
@@ -22,11 +23,9 @@
     ./content/screenshots
     ./controlcenter
     ./dev/ccpp
-    ./completion
     ./dev/dbms/misc
     ./dev/dbms/mysql
     ./dev/dbms/pgsql
-    ./dev/projectenv
     ./dev/direnv
     ./dev/editorconfig
     ./dev/frontend
@@ -43,6 +42,7 @@
     ./dev/ml
     ./dev/navigation/codesearch
     ./dev/navigation/projects
+    ./dev/projectenv
     ./dev/python
     ./emacs/core
     ./emacs/edit
