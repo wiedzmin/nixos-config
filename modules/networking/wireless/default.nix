@@ -6,7 +6,8 @@ let
   cfg = config.ext.networking.wireless;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     ext.networking.wireless = {
       enable = mkOption {
@@ -15,8 +16,8 @@ in {
         description = "Whether to enable networking wireless support";
       };
       backend = mkOption {
-        type = types.enum [ "networkmanager" "wireless" ];
-        default = "networkmanager";
+        type = types.enum [ "iwd" "wpa_supplicant" ];
+        default = "iwd";
         description = "Which system module to use";
       };
       macAddress = mkOption {
@@ -86,11 +87,11 @@ in {
       '';
 
       networking.wlanInterfaces = optionalAttrs (cfg.ifacesMap != { }) cfg.ifacesMap;
-    })
-    (mkIf (cfg.enable && cfg.backend == "networkmanager") {
-      users.users.${user}.extraGroups = [ "networkmanager" ];
-
       networking.networkmanager.wifi.macAddress = optionalString (cfg.macAddress != "") cfg.macAddress;
+    })
+    (mkIf (cfg.enable && cfg.backend == "iwd") {
+      networking.wireless.iwd.enable = true;
+      networking.networkmanager.wifi.backend = "iwd";
     })
     (mkIf (cfg.enable && cfg.backend == "wireless") {
       networking.wireless = {

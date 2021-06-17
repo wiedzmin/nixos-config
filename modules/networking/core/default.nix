@@ -60,6 +60,7 @@ in
           unmanaged = [ "br0" "lo" ];
         };
       };
+      users.users.${user}.extraGroups = [ "networkmanager" ];
       home-manager.users.${user} = {
         home.packages = with pkgs; [ anydesk ipinfo ];
         xdg.configFile."espanso/user/networking.yml".text = ''
