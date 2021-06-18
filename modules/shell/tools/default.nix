@@ -20,17 +20,16 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        # TODO: review/filter packages
-        home.packages = with pkgs; [ broot choose dirdiff each fd gron ijq jiq jql ripgrep-all sd ugrep uq vgrep xlsxgrep ] ++ [
-          cargo
-        ]; # for unpackaged Rust tools
-        programs.zsh.initExtra = ''
-          path+=/home/alex3rd/.cargo/bin
-        '';
-        # TODO: review/try archivemount
-        # TODO: review/try vifm - https://github.com/vifm/vifm
-        # TODO: review/try nnn - https://github.com/jarun/nnn/ (compare to ranger/hunter)
-        # TODO: compare broot to others
+        # TODO: play with automation around these tools
+        home.packages = with pkgs; [
+          broot
+          dasel
+          each
+          gron
+          ripgrep-all
+          up
+          uq
+        ];
         programs = {
           lsd = {
             enable = true;
@@ -41,18 +40,6 @@ in
             config = {
               theme = "ansi";
               pager = "less -FR";
-            };
-          };
-          jq = {
-            enable = true;
-            colors = {
-              null = "1;30";
-              false = "0;91";
-              true = "0;92";
-              numbers = "0;36";
-              strings = "1;96";
-              arrays = "1;94";
-              objects = "1;33";
             };
           };
         };

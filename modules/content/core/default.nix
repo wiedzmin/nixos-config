@@ -26,7 +26,7 @@ in
       };
 
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ archiver pbzip2 pigz ];
+        home.packages = with pkgs; [ archiver archivemount pbzip2 pigz ];
         home.activation.ensureMimeappsList = {
           after = [ ];
           before = [ "checkLinkTargets" ];

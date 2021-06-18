@@ -109,7 +109,8 @@ in
         };
       };
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ nix-doc-lookup rollback ];
+        home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback ];
+        home.sessionPath = [ (homePrefix ".cargo/bin") ];
         xdg.configFile."espanso/user/nix.yml".text = ''
           name: nix
           parent: default
