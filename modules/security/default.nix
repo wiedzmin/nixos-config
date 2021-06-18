@@ -70,7 +70,7 @@ in
       };
 
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ paperkey passphrase2pgp senv ssh-to-pgp ];
+        home.packages = with pkgs; [ gpg-tui paperkey passphrase2pgp senv ssh-to-pgp ];
         programs.password-store = {
           enable = true;
           package = pkgs.pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
