@@ -6,7 +6,8 @@ let
   cfg = config.ext.networking.vpn;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     ext.networking.vpn = {
       enable = mkOption {
@@ -42,6 +43,11 @@ in {
         {
           key = [ "v" ];
           cmd = "${nurpkgs.toolbox}/bin/vpnstatus";
+          mode = "network";
+        }
+        {
+          key = [ "Shift" "v" ];
+          cmd = "${nurpkgs.toolbox}/bin/vpnstatus --stop-all";
           mode = "network";
         }
       ];
