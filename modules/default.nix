@@ -38,6 +38,7 @@
     ./dev/git/navigation
     ./dev/git/savewip
     ./dev/golang
+    ./dev/lisp
     ./dev/misc
     ./dev/ml
     ./dev/navigation/codesearch

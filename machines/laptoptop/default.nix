@@ -291,6 +291,7 @@ in
       misc.enable = true;
       emacs.enable = true;
     };
+    lisp.enable = true;
   };
 
   gc = {
