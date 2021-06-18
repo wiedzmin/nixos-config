@@ -36,7 +36,7 @@ if args.invalidate:
     r.delete("system/services")
     sys.exit(0)
 if not args.term_command:
-    notify("[dbms]", "No terminal command provided", urgency=URGENCY_CRITICAL, timeout=5000)
+    notify("[srvctl]", "No terminal command provided", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 
 if not r.exists("system/services"):
