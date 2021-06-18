@@ -5,12 +5,15 @@ with lib;
 let
   cfg = config.dev.git.forges;
   user = config.attributes.mainUser.name;
-
-  knownForgesHostnames = [
-    "github.com"
-    "bitbucket.org"
-  ];
   typeToGitlinkSymbols = {
+    "github" = {
+      "git-link-remote-alist" = "git-link-github";
+      "git-link-commit-remote-alist" = "git-link-commit-github";
+    };
+    "bitbucket" = {
+      "git-link-remote-alist" = "git-link-bitbucket";
+      "git-link-commit-remote-alist" = "git-link-commit-bitbucket";
+    };
     "gitlab" = {
       "git-link-remote-alist" = "git-link-gitlab";
       "git-link-commit-remote-alist" = "git-link-commit-github";
@@ -41,26 +44,25 @@ let
   collectExtraConfig = forges:
     (foldAttrs (n: a: n // a ) { } (collect (f: f ? extraConfig) forges))."extraConfig";
   getUrlsToTypesMapping = forges:
-    filterAttrs (host: _: builtins.elem host knownForgesHostnames)
-      (mapAttrs (_: meta: { meta.ssh.matchBlock.hostname = meta.type; }) forges);
-  genBrowseAtRemoteTypesPatch = mappings: ''
+    mapAttrs' (_: meta: nameValuePair meta.ssh.matchBlock.hostname meta.type) forges;
+  genBrowseAtRemoteTypesPatch = mapping: ''
     (eval-after-load 'browse-at-remote
       '(progn
       ${mkIndent 4}${concatStringsSep "\n${mkIndent 4}"
-        mapAttrsToList (host: type: ''
-          (push '("${host}" . "${type}") browse-at-remote-remote-type-domains)
-        '')}))
+        (mapAttrsToList (host: type: ''
+          (push '("${host}" . "${type}") browse-at-remote-remote-type-regexps)
+        '') mapping)}))
   '';
-  genGitlinkTypesPatch = mappings: ''
+  genGitlinkTypesPatch = mapping: ''
     (eval-after-load 'git-link
       '(progn
         ${mkIndent 4}${concatStringsSep "\n${mkIndent 4}"
-          mapAttrsToList (host: type: ''
+          (mapAttrsToList (host: type: ''
             (add-to-list 'git-link-remote-alist '("${host}" ${
               typeToGitlinkSymbols.${type}."git-link-remote-alist"}))
-            (add-to-list 'git-link-commit-remote-alist'("${host}" ${
+            (add-to-list 'git-link-commit-remote-alist '("${host}" ${
               typeToGitlinkSymbols.${type}."git-link-commit-remote-alist"}))
-          '') mappings}))
+          '') mapping)}))
   '';
 
   sshModule = types.submodule {
@@ -131,7 +133,7 @@ let
   };
   forgeModule = types.submodule {
     options = {
-      forgeType = mkOption {
+      type = mkOption {
         type = types.enum [ "github" "gitlab" "bitbucket" ]; # and maybe something else
         default = "github";
         description = "Forge type.";
