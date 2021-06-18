@@ -79,7 +79,7 @@ in
         programs.mpv = {
           # TODO: consider extracting options
           enable = true;
-          scripts = with pkgs.mpvScripts; lib.optionals (cfg.mpris.enable) [ mpris ];
+          scripts = with pkgs.mpvScripts; lib.optionals (cfg.mpris.enable) [ mpris youtube-quality ];
           config = {
             save-position-on-quit = true;
             hdr-compute-peak = false; # prevents brightness changes
@@ -123,11 +123,13 @@ in
         '';
       };
 
-      fileSystems = (mapAttrs' (token: srcPath:
-        nameValuePair "${config.services.mpd.dataDir}/music/${token}" {
-          device = srcPath;
-          options = [ "bind" ];
-        }) cfg.mpd.collections);
+      fileSystems = (mapAttrs'
+        (token: srcPath:
+          nameValuePair "${config.services.mpd.dataDir}/music/${token}" {
+            device = srcPath;
+            options = [ "bind" ];
+          })
+        cfg.mpd.collections);
 
       services.ympd = {
         enable = true;
