@@ -96,10 +96,6 @@ in
           source = ./config/appearance.lisp;
           force = true;
         };
-        xdg.configFile."nyxt/statusbar.lisp" = {
-          source = ./config/statusbar.lisp;
-          force = true;
-        };
         xdg.configFile."nyxt/auto-config.lisp" = {
           source = ./config/auto-config.lisp;
           force = true;

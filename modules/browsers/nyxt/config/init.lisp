@@ -4,7 +4,6 @@
     ((session-restore-prompt :always-restore)))
 
 (load (nyxt-init-file "emacs.lisp"))
-(load (nyxt-init-file "statusbar.lisp"))
 
 (define-configuration (buffer internal-buffer editor-buffer prompt-buffer)
     ((default-modes `(emacs-mode ,@%slot-default%))
