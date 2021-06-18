@@ -36,7 +36,10 @@ in
       pim.timetracking.rules = mkArbttProgramTitleRule [ "Alacritty" ]
         [ "(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/" ] "project:$1-$2-$3";
 
-      shell.core.variables = [{ TERMINAL = builtins.head terminalCmd; global = true; }];
+      shell.core.variables = [
+        { TERMINAL = builtins.head terminalCmd; global = true; }
+        { TB_TERMINAL_CMD = terminalCmd; }
+      ];
       attributes.defaultVTCommand = terminalCmd;
       home-manager.users."${user}" = {
         programs.alacritty = {
