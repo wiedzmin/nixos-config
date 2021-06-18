@@ -2,7 +2,8 @@
 with import ../../../modules/util.nix { inherit config inputs lib pkgs; };
 
 let user = config.attributes.mainUser.name;
-in rec {
+in
+rec {
   completion.snippets.entries = [
     {
       description = "vdi --> qcow2";
@@ -147,6 +148,81 @@ in rec {
     {
       description = "remove Yeganesh cache";
       code = "rm /home/${user}/.local/share/yeganesh/default";
+    }
+    {
+      description = "jq yq alternative";
+      code = "dasel";
+      tags = [ "jq" "yq" ];
+    }
+    {
+      description = "jwt certificates";
+      code = "step-cli";
+      tags = [ "jwt" "certificates" "ssl" ];
+    }
+    {
+      description = "golint alternative";
+      code = "revive";
+      tags = [ "golang" "lint" ];
+    }
+    {
+      description = "step inspect jwt";
+      code = "step-cli crypto jwt inspect --insecure";
+    }
+    {
+      description = "pandoc md to pdf";
+      code = "pandoc --self-contained -t html -o bosse.pdf bosse.md";
+    }
+    {
+      description = "multiline replace";
+      code = "fd network-policies.yml.j2 deploymentsets -x perl -0777 -i -pe 's/(?<match>    - podSelector:\\n        matchLabels:\\n          deploymentSet: svhb-device-gateway\\n          podName: svhb-device-gateway)/$+{match}\\n    # TODO: This selector can be removed once the new, split-up svhb deploymentSets (SHCB-889) have found their way to prod\\n    - podSelector:\\n        matchLabels:\\n          deploymentSet: svhb\\n          podName: svhb-device-gateway/g' {}";
+    }
+    {
+      description = "ssl cert text";
+      code = "openssl s_client -showcerts -servername $server -connect $server:443 </dev/null  | openssl x509 -inform pem -noout -text";
+    }
+    {
+      description = "ssl cert dates";
+      code = "openssl s_client -connect example.com:443 2>/dev/null |openssl x509 -dates -noout\"";
+    }
+    {
+      description = "ssh forward";
+      code = "ssh -L localhost:9200:192.168.16.2:9200 root@10.1.10.70";
+    }
+    {
+      description = "ssh jump forward";
+      code = "ssh -v -L 8080:localhost:80 user@local.virtual -J user@jump:1077";
+    }
+    {
+      description = "gpg recipients";
+      code = "gpg --list-only --no-default-keyring --secret-keyring /dev/null";
+    }
+    {
+      description = "emacs unfreeze";
+      code = "pgrep -x emacs | xargs kill -SIGUSR2";
+    }
+    {
+      description = "interactive sed";
+      code = "fd <files> | sad <pattern> <replacement> | delta";
+    }
+    {
+      description = "restart gpg agent";
+      code = "gpgconf --kill gpg-agent; # echo \"UPDATESTARTUPTTY\" | gpg-connect-agent > /dev/null 2>&1";
+    }
+    {
+      description = "java view jar content";
+      code = "jar tf";
+    }
+    {
+      description = "shebang";
+      code = "#!/usr/bin/env bash";
+    }
+    {
+      description = "git prune branches";
+      code = "git prune-remote; git prune-local";
+    }
+    {
+      description = "colorpicker";
+      code = "grim -g \"$(slurp -p)\" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy";
     }
   ];
 }
