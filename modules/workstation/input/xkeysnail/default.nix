@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.workstation.input.xkeysnail;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -145,7 +144,7 @@ in
           PIDFile = "/run/xkeysnail.pid";
           Restart = "always";
           RestartSec = 1;
-          ExecStart = "/run/wrappers/bin/sudo ${nurpkgs.xkeysnail}/bin/xkeysnail ${
+          ExecStart = "/run/wrappers/bin/sudo ${pkgs.xkeysnail}/bin/xkeysnail ${
               optionalString (cfg.inputDevices != [ ])
               "--devices ${lib.concatStringsSep " " cfg.inputDevices}"
             } ${cfg.configPath}";
