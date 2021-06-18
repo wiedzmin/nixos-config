@@ -82,6 +82,7 @@ in
         programs.gpg = {
           enable = true;
           settings = {
+            auto-key-retrieve = true;
             keyserver = "hkp://keys.openpgp.org";
             require-cross-certification = true;
             use-agent = true;
