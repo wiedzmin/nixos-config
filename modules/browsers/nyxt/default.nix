@@ -83,7 +83,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ nyxt ];
+        home.packages = with pkgs; [ nyxt extract_url xurls ];
         xdg.configFile."nyxt/init.lisp" = {
           source = ./config/init.lisp;
           force = true;
