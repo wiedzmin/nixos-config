@@ -39,7 +39,10 @@ in {
       home-manager.users.${user} = {
         programs.direnv = {
           enable = true;
-          enableNixDirenvIntegration = true;
+          nix-direnv = {
+            enable = true;
+            enableFlakes = true;
+          };
         };
         xdg.configFile."direnv/direnv.toml".text = toToml {
           global = { disable_stdin = true; };
