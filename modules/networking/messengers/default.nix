@@ -49,7 +49,9 @@ in
             K("C-x"): {
                 K("C-c"): K("C-q"),
             },
-            K("C-s"): K("Esc"),
+            K("C-s"): [K("Esc"), K("Esc"), K("Esc")],
+            K("M-comma"): K("Esc"),
+            K("C-Shift-s"): K("C-f"),
             K("C-t"): [K("Shift-Left"), K("C-x"), K("Left"), K("C-v"), K("Right")],
         }, "Telegram")
 
