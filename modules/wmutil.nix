@@ -33,7 +33,8 @@ let
     "instance" = ''instance="^@$"'';
   };
   scratchpadModeToken = "scratchpad";
-in rec {
+in
+rec {
   # ================ common ================
   enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: v: i) wsdata) wsdata;
   getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
@@ -69,7 +70,7 @@ in rec {
     }]";
   mkKeysymI3 = keys:
     lib.concatStringsSep keySepI3
-    (lib.forEach keys (k: if builtins.hasAttr k keySymsI3 then builtins.getAttr k keySymsI3 else k));
+      (lib.forEach keys (k: if builtins.hasAttr k keySymsI3 then builtins.getAttr k keySymsI3 else k));
   getWorkspaceByNameI3 = wsdata: name:
     let ws = builtins.head (builtins.filter (ws: ws.snd.name == name) (enumerateWorkspaces wsdata));
     in "${builtins.toString ws.fst}: ${ws.snd.name}";
@@ -95,21 +96,27 @@ in rec {
       lib.last (lib.splitString "/"
         (builtins.head (lib.splitString " " cmd)))}-$(date +%Y-%m-%d-%H-%M-%S | tr -d '[:cntrl:]').log";
   mkKeybindingI3 = meta: desktops:
+    let
+      debugEnabled = maybeAttrIsBool "debug" meta && !maybeAttrIsBool "raw" meta;
+    in
     builtins.concatStringsSep " " ([ "bindsym" (mkKeysymI3 meta.key) ]
       ++ lib.optionals (!maybeAttrIsBool "raw" meta) [ "exec" ]
       ++ lib.optionals (maybeAttrIsBool "transient" meta) [ "--no-startup-id" ] ++ [
-        (builtins.concatStringsSep "; " (lib.optionals (builtins.hasAttr "cmd" meta)
-          [ (meta.cmd + lib.optionalString (maybeAttrIsBool "debug" meta && !maybeAttrIsBool "raw" meta)
-            " > ${mkCmdDebugAbsFilename config.controlcenter.commandsDebugLogRoot meta.cmd} 2>&1") ]
-          ++ lib.optionals (builtins.hasAttr "desktop" meta)
-          [ "workspace ${getWorkspaceByNameI3 desktops meta.desktop}" ]
-          ++ lib.optionals (!maybeAttrIsBool "sticky" meta && meta.mode != "root") [ ''mode "default"'' ]))
-      ]);
+      (builtins.concatStringsSep "; " (lib.optionals (builtins.hasAttr "cmd" meta)
+        [
+          ((lib.optionalString (debugEnabled) "DEBUG_MODE=1 ") + meta.cmd + lib.optionalString (debugEnabled)
+            " > ${mkCmdDebugAbsFilename config.controlcenter.commandsDebugLogRoot meta.cmd} 2>&1")
+        ]
+      ++ lib.optionals (builtins.hasAttr "desktop" meta)
+        [ "workspace ${getWorkspaceByNameI3 desktops meta.desktop}" ]
+      ++ lib.optionals (!maybeAttrIsBool "sticky" meta && meta.mode != "root") [ ''mode "default"'' ]))
+    ]);
   bindkeysI3 = keys: modeBindings: exitBindings: desktops:
     let
       prefixedModesMeta = lib.filterAttrs (k: _: k != "root" && k != scratchpadModeToken) (lib.groupBy (x: x.mode) keys);
       rootModeBindings = (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) keys)).root;
-    in ''
+    in
+    ''
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (mode: bindings: ''
         mode "${mode}" {
           ${
@@ -151,9 +158,10 @@ in rec {
         (lib.groupBy (x: x.mode) keys)).${scratchpadModeToken};
       scratchpadRules = builtins.filter (r: builtins.hasAttr "scratchpad" r && builtins.hasAttr "key" r) rules;
     in
-      lib.concatStringsSep "\n" (lib.forEach scratchpadRules
+    lib.concatStringsSep "\n"
+      (lib.forEach scratchpadRules
         (r: "for_window ${mkWindowCriteriaI3 r} move scratchpad")) +
-      ''
+    ''
 
 
         mode "${scratchpadModeToken}" {
