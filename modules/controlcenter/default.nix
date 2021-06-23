@@ -284,6 +284,7 @@ in
           cmd = ''${nurpkgs.toolbox}/bin/services --term-command "${
             lib.concatStringsSep " " config.attributes.defaultVTCommand}"'';
           mode = "services";
+          desktop = "shell";
         }
         {
           key = [ prefix "Shift" "u" ];
