@@ -1,9 +1,10 @@
 (in-package #:nyxt)
 
+(load (nyxt-init-file "external.lisp"))
+(load (nyxt-init-file "appearance.lisp"))
+
 (define-configuration browser
     ((session-restore-prompt :always-restore)))
-
-(load (nyxt-init-file "emacs.lisp"))
 
 (define-configuration (buffer internal-buffer editor-buffer prompt-buffer)
     ((default-modes `(emacs-mode ,@%slot-default%))
@@ -40,4 +41,3 @@
 (define-configuration nyxt/auto-mode:auto-mode
     ((nyxt/auto-mode:prompt-on-mode-toggle t)))
 
-(load (nyxt-init-file "appearance.lisp"))

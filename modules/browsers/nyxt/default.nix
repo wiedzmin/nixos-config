@@ -85,19 +85,19 @@ in
       home-manager.users.${user} = {
         home.packages = with pkgs; [ nyxt extract_url xurls ];
         xdg.configFile."nyxt/init.lisp" = {
-          source = ./config/init.lisp;
+          text = readSubstituted ../../subst.nix ./config/init.lisp;
           force = true;
         };
-        xdg.configFile."nyxt/emacs.lisp" = {
-          source = ./config/emacs.lisp;
+        xdg.configFile."nyxt/external.lisp" = {
+          text = readSubstituted ../../subst.nix ./config/external.lisp;
           force = true;
         };
         xdg.configFile."nyxt/appearance.lisp" = {
-          source = ./config/appearance.lisp;
+          text = readSubstituted ../../subst.nix ./config/appearance.lisp;
           force = true;
         };
         xdg.configFile."nyxt/auto-config.lisp" = {
-          source = ./config/auto-config.lisp;
+          text = readSubstituted ../../subst.nix ./config/auto-config.lisp;
           force = true;
         };
       };

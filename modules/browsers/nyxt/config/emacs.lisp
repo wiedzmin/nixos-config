@@ -9,13 +9,5 @@
 ;;     (uiop:run-program
 ;;      (list "emacsclient" "--eval" s-exps-string))))
 
-(define-command-global org-capture ()
-  "Run org-capture script."
-  (format *error-output* "Running org-capture script")
-  (let* ((buffer (current-buffer))
-         (url (url buffer))
-        (title (title buffer)))
-    (uiop:run-program
-     (list "org-capture" "-u" "'{url}'" "-t" "'{title}'" "-e" "title"))))
 
 
