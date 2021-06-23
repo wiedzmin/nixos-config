@@ -71,17 +71,8 @@ in
 
   config = mkMerge [
     (mkIf (cfg.enable) {
+      # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
       nixpkgs.config.packageOverrides = _: rec {
-        # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
-        srvctl = mkPythonScriptWithDeps "srvctl"
-          (with pkgs; [
-            nurpkgs.pyfzf
-            nurpkgs.pystdlib
-            python3Packages.libtmux
-            python3Packages.redis
-            python3Packages.xlib
-          ])
-          (builtins.readFile ./scripts/srvctl.py);
         uptime_info = mkPythonScriptWithDeps "uptime_info" (with pkgs; [ dunst gnused procps ])
           (builtins.readFile ./scripts/uptime_info.sh);
         ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
@@ -102,10 +93,12 @@ in
           };
         };
         home.activation = {
-          srvctl = {
+          uncacheServices = {
             after = [ "linkGeneration" ];
             before = [ ];
-            data = "DISPLAY=:0 ${pkgs.srvctl}/bin/srvctl --invalidate-cache";
+            # FIXME: TB_TERMINAL_CMD setting
+            data = ''DISPLAY=:0 ${nurpkgs.toolbox}/bin/services --invalidate-cache --term-command "${
+              lib.concatStringsSep " " config.attributes.defaultVTCommand}"'';
           };
           ensureDebugLogsRoot = {
             after = [ "linkGeneration" ];
@@ -139,7 +132,6 @@ in
           };
         };
       };
-      environment.systemPackages = with pkgs; [ srvctl ];
     })
     (mkIf (cfg.enable && cfg.notifications.backend == "dunst") {
       home-manager.users.${user} = {
@@ -288,8 +280,9 @@ in
       wmCommon.keys = [
         {
           key = [ "j" ];
-          cmd = ''${pkgs.srvctl}/bin/srvctl --term-command "${
-            lib.concatStringsSep " " config.attributes.defaultVTCommand}" '';
+          # FIXME: TB_TERMINAL_CMD setting
+          cmd = ''${nurpkgs.toolbox}/bin/services --term-command "${
+            lib.concatStringsSep " " config.attributes.defaultVTCommand}"'';
           mode = "services";
         }
         {
@@ -314,7 +307,7 @@ in
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ srvctl uptime_info ifconfless ]; };
+      home-manager.users.${user} = { home.packages = with pkgs; [ uptime_info ifconfless ]; };
     })
   ];
 }
