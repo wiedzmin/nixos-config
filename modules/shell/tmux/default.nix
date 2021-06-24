@@ -86,11 +86,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: rec {
-        tmuxp_sessions = mkPythonScriptWithDeps "tmuxp_sessions" (with pkgs; [ nurpkgs.pystdlib ])
-          (builtins.readFile ./scripts/tmuxp_sessions.py);
-      };
-
       home-manager.users."${user}" = {
         home.file = {
           ".tmuxp/main.yml".text = ''
@@ -201,14 +196,16 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
+      home-manager.users."${user}" = {
+        # NOTE: temp, until publishing upstream
+        home.packages = with pkgs; [ nurpkgs.dmenu-ng rofi ];
+      };
       wmCommon.keys = [{
         key = [ "t" ];
-        cmd = "${pkgs.tmuxp_sessions}/bin/tmuxp_sessions";
+        cmd = "${goBinPrefix "tmuxctl"}";
         mode = "select";
+        debug = true;
       }];
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ tmuxp_sessions ]; };
     })
   ];
 }
