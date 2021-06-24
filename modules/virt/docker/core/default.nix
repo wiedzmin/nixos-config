@@ -61,13 +61,13 @@ in {
         hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ])
           (readSubstituted ../../../subst.nix ./scripts/hadolintd.sh);
         docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits"
-          (with pkgs; [ docker nurpkgs.pystdlib python3Packages.redis xsel yad ])
+          (with pkgs; [ docker nurpkgs.pystdlib nurpkgs.toolbox python3Packages.redis xsel yad ])
           (builtins.readFile ./scripts/docker_containers_traits.py);
         discover_containerized_services =
           mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker nurpkgs.pystdlib ])
           (builtins.readFile ./scripts/discover_containerized_services.py);
         docker_shell = mkPythonScriptWithDeps "docker_shell"
-          (with pkgs; [ nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis ])
+          (with pkgs; [ nurpkgs.pystdlib nurpkgs.toolbox python3Packages.libtmux python3Packages.redis ])
           (builtins.readFile ./scripts/docker_shell.py);
       };
 

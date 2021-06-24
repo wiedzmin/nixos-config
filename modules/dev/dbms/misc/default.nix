@@ -52,7 +52,7 @@ in
       ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        dbms = mkPythonScriptWithDeps "dbms" (with pkgs; [ pass nurpkgs.pystdlib python3Packages.redis tmux vpnctl ])
+        dbms = mkPythonScriptWithDeps "dbms" (with pkgs; [ pass nurpkgs.pystdlib python3Packages.redis tmux nurpkgs.toolbox ])
           (builtins.readFile ./scripts/dbms.py);
       };
 

@@ -61,7 +61,7 @@ else:
     os.environ["DOCKER_HOST"] = f"ssh://{hostname}"
     host_vpn = host_meta.get("vpn", None)
     if host_vpn:
-        shell_cmd(f"vpnctl --start {host_vpn}")
+        shell_cmd(f"vpn --start {host_vpn}")
 
 container_status = get_selection_rofi(CONTAINER_STATUSES, "status")
 if not container_status:

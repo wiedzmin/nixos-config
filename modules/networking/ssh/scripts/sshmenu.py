@@ -60,7 +60,7 @@ if host:
     host_meta = extra_hosts_data[host]
     host_vpn = host_meta.get("vpn")
     if host_vpn:
-        shell_cmd(f"vpnctl --start {host_vpn}")
+        shell_cmd(f"vpn --start {host_vpn}")
     jump_hosts = list_jump_hosts(host_meta, extra_hosts_data)
     cmd = f"ssh {' '.join(['-J ' + format_host_meta(host_meta['host'], host_meta, terse=True) for host_meta in jump_hosts])} {format_host_meta(host, host_meta)}"
     if args.show_choices:

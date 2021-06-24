@@ -30,10 +30,6 @@ in
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      nixpkgs.config.packageOverrides = _: rec {
-        vpnctl = mkPythonScriptWithDeps "vpnctl" (with pkgs; [ networkmanager nurpkgs.pystdlib python3Packages.redis ])
-          (builtins.readFile ./scripts/vpnctl.py);
-      };
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set net/vpn_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.meta)}
       '';
@@ -42,18 +38,15 @@ in
       wmCommon.keys = [
         {
           key = [ "v" ];
-          cmd = "${nurpkgs.toolbox}/bin/vpnstatus";
+          cmd = "${nurpkgs.toolbox}/bin/vpn --status";
           mode = "network";
         }
         {
           key = [ "Shift" "v" ];
-          cmd = "${nurpkgs.toolbox}/bin/vpnstatus --stop-all";
+          cmd = "${nurpkgs.toolbox}/bin/vpn --stop-all";
           mode = "network";
         }
       ];
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ vpnctl ]; };
     })
   ];
 }

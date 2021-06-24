@@ -55,7 +55,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         sshmenu = mkPythonScriptWithDeps "sshmenu"
-          (with pkgs; [ openssh nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis vpnctl ])
+          (with pkgs; [ openssh nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis nurpkgs.toolbox ])
           (builtins.readFile ./scripts/sshmenu.py);
       };
       services.openssh = {

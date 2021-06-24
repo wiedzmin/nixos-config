@@ -38,7 +38,7 @@ if dbms_entry:
     host_meta = extra_hosts_data[dbms_entry_meta["host"]]
     dbms_vpn = host_meta.get("vpn", None)
     if dbms_vpn:
-        shell_cmd(f"vpnctl --start {dbms_vpn}")
+        shell_cmd(f"vpn --start {dbms_vpn}")
 
     if dbms_entry_meta.get("passwordPassPath"): # using pass
         dbms_pass = shell_cmd(f'pass {dbms_entry_meta["passwordPassPath"]}', split_output="\n")[0]

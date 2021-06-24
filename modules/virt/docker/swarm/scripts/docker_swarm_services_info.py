@@ -39,7 +39,7 @@ if not host_meta:
 
 host_vpn = host_meta.get("vpn", None)
 if host_vpn:
-    shell_cmd(f"vpnctl --start {host_vpn}")
+    shell_cmd(f"vpn --start {host_vpn}")
 
 services_meta = shell_cmd("docker service ls --format '{{.Name}} | {{.Mode}} | {{.Replicas}} | {{.Image}}'",
                           split_output="\n")

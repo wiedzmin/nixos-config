@@ -377,7 +377,7 @@ in
           # TODO: create derivation for accessing prebuilt C blocklets
           # TODO: tune kbdd_layout output (either patch packages or extract script)
           # TODO: ${inputs.i3blocks-contrib}/dunst/dunst - reimplement and unwire some meta (fonts, etc)
-          # TODO: make homebrew script for openvpn/nm-vpn, refer to vpnctl
+          # TODO: make homebrew script for openvpn/nm-vpn, refer to `toolbox/vpn`
           # TODO: review https://github.com/vivien/i3blocks-contrib blocklets
           "i3blocks/config".text = ''
             [disk]

@@ -40,7 +40,7 @@ else:
     os.environ["DOCKER_HOST"] = f"ssh://{hostname}"
     host_vpn = host_meta.get("vpn", None)
     if host_vpn:
-        shell_cmd(f"vpnctl --start {host_vpn}")
+        shell_cmd(f"vpn --start {host_vpn}")
 
 container_names = shell_cmd("docker ps --format '{{.Names}}'", split_output="\n")
 selected_container = get_selection_rofi(container_names, "container")
