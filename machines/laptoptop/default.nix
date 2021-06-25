@@ -48,6 +48,12 @@ in
     extraGroups = [ "wheel" ];
   };
 
+  users.mutableUsers = false;
+  users.users = {
+    alex3rd.hashedPassword = "$6$HLpUj6dqqC6w$k5k1Pwl9Iwj/vrDmETBFHJWc0pGIL4fkMn7R2PU/ao4ydByo0yBVcJw84J2fb9ha.P0Dk2ccN5MRnDjFDY1FG.";
+    root.hashedPassword = "$6$JdtKiDVrmuxSR$FYDY.JTLsNr73O0XSjBSs3YY/4FdtqizTig1RELdm1NQSwqwN7nYpLNNXmPaVcGL265uKVCrN71S/9gOIAA6C.";
+  };
+
   attributes.hardware.monitors = {
     internalHead.name = "eDP-1";
     internalHead.edid =
