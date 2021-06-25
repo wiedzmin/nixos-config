@@ -8,7 +8,8 @@ let
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   prefix = config.wmCommon.prefix;
-in {
+in
+{
   options = {
     workstation.sound.pa = {
       enable = mkOption {
@@ -33,11 +34,6 @@ in {
     (mkIf cfg.enable {
       users.users.${user}.extraGroups = [ "audio" ];
 
-      nixpkgs.config.packageOverrides = _: rec {
-        pautil = mkPythonScriptWithDeps "pautil"
-          (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.more-itertools ])
-          (builtins.readFile ./scripts/pautil.py);
-      };
       hardware.pulseaudio = {
         enable = true;
         support32Bit = true;
@@ -70,35 +66,7 @@ in {
           cmd = "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt";
           mode = "root";
         }
-        {
-          key = [ prefix "Control" "p" ];
-          cmd = "${pkgs.pautil}/bin/pautil status";
-          mode = "root";
-        }
-        {
-          key = [ "," ];
-          cmd = "${pkgs.pautil}/bin/pautil source --set-default";
-          mode = "sound";
-        }
-        {
-          key = [ "Shift" "," ];
-          cmd = "${pkgs.pautil}/bin/pautil source --suspend-toggle";
-          mode = "sound";
-        }
-        {
-          key = [ "." ];
-          cmd = "${pkgs.pautil}/bin/pautil sink --set-default";
-          mode = "sound";
-        }
-        {
-          key = [ "Shift" "." ];
-          cmd = "${pkgs.pautil}/bin/pautil sink --suspend-toggle";
-          mode = "sound";
-        }
       ];
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ pautil ]; };
     })
   ];
 }
