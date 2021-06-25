@@ -119,6 +119,12 @@ in
           matches:
             - trigger: ":nsp"
               replace: "nix shell \"nixpkgs#$|$\""
+
+            - trigger: ":pkgs"
+              replace: "inputs.unstable.legacyPackages.x86_64-linux.$|$"
+
+            - trigger: ":cfg"
+              replace: "nixosConfigurations.laptoptop.config.$|$"
         '';
       };
 
