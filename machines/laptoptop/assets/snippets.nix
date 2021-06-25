@@ -225,4 +225,14 @@ rec {
       code = "grim -g \"$(slurp -p)\" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy";
     }
   ];
+  home-manager.users."${user}" = {
+    xdg.configFile."espanso/user/personal.yml".text = ''
+      name: personal
+      parent: default
+
+      matches:
+          - trigger: ":emp"
+            replace: "${config.attributes.mainUser.email}"
+    '';
+  };
 }
