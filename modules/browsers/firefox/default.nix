@@ -41,7 +41,7 @@ in
       suspendInactive = mkOption {
         type = types.bool;
         default = true;
-        description = "Suspend when inacive (using xsuspender)";
+        description = "Suspend when inactive (using xsuspender)";
       };
       keyboardCentric = mkOption {
         type = types.bool;
