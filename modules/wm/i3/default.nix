@@ -27,11 +27,6 @@ in
         default = "tabbed";
         description = "Default container layout.";
       };
-      ipcClients = mkOption {
-        type = types.listOf types.str;
-        default = [ "${nurpkgs.i3tools}/bin/kbd" "${pkgs.i3-auto-layout}/bin/i3-auto-layout" ];
-        description = "IPC clients to start along with i3";
-      };
       settings = mkOption {
         type = types.lines;
         default = ''
@@ -78,6 +73,7 @@ in
 
       wmCommon = {
         enable = true;
+        autostart.entries = [ "${nurpkgs.i3tools}/bin/kbd" "${pkgs.i3-auto-layout}/bin/i3-auto-layout" ];
         modeBindings = {
           # TODO: check if we can unwire this from i3
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
@@ -342,8 +338,6 @@ in
 
             bindsym ${prefix}+Tab workspace back_and_forth
 
-            ${lib.concatStringsSep "\n"
-              (lib.forEach (cfg.ipcClients) (e: "exec_always --no-startup-id ${e}"))}
             ${lib.concatStringsSep "\n"
               (lib.forEach (config.wmCommon.autostart.entries) (e: "exec --no-startup-id ${e}"))}
 
