@@ -54,9 +54,7 @@ in
       };
 
       home-manager.users.${user} = {
-        services.xsuspender = optionalAttrs
-          (config.attributes.hardware.dmiSystemVersion != "ThinkPad X270" &&
-            cfg.appsSuspension.rules != { })
+        services.xsuspender = optionalAttrs (cfg.appsSuspension.rules != { })
           {
             enable = true;
             defaults = {
