@@ -98,6 +98,15 @@ rec {
         };
       };
     };
+    "i3tools" = {
+      local.path = "${wsRoot "github"}/wiedzmin/i3tools";
+      remote.url = "https://github.com/wiedzmin/i3tools/";
+      myrepos = {
+        "${wsRootAbs "github"}/wiedzmin/i3tools" = {
+          checkout = [ "git clone 'https://github.com/wiedzmin/i3tools.git' 'i3tools'" ];
+        };
+      };
+    };
     "libtmux-go" = {
       local.path = "${wsRoot "github"}/wiedzmin/libtmux-go";
       remote.url = "https://github.com/wiedzmin/libtmux-go/";
