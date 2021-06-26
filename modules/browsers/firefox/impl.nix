@@ -26,15 +26,16 @@ let
     paths = cfg.extensions;
   };
 
-  profiles = flip mapAttrs' cfg.profiles (_: profile:
-    nameValuePair "Profile${toString profile.id}" {
-      Name = profile.name;
-      Path = if isDarwin then "Profiles/${profile.path}" else profile.path;
-      IsRelative = 1;
-      Default = if profile.isDefault then 1 else 0;
-    }) // {
-      General = { StartWithLastProfile = 1; };
-    };
+  profiles = flip mapAttrs' cfg.profiles
+    (_: profile:
+      nameValuePair "Profile${toString profile.id}" {
+        Name = profile.name;
+        Path = if isDarwin then "Profiles/${profile.path}" else profile.path;
+        IsRelative = 1;
+        Default = if profile.isDefault then 1 else 0;
+      }) // {
+    General = { StartWithLastProfile = 1; };
+  };
 
   profilesIni = generators.toINI { } profiles;
 
@@ -48,7 +49,8 @@ let
     ${extraPrefs}
   '';
 
-in {
+in
+{
   meta.maintainers = [ maintainers.rycee ];
 
   imports = [
@@ -185,67 +187,76 @@ in {
 
   config = mkIf cfg.enable {
     assertions = [
-      (let defaults = catAttrs "name" (filter (a: a.isDefault) (attrValues cfg.profiles));
-      in {
-        assertion = cfg.profiles == { } || length defaults == 1;
-        message = "Must have exactly one default Firefox profile but found " + toString (length defaults)
-          + optionalString (length defaults > 1) (", namely " + concatStringsSep ", " defaults);
-      })
+      (
+        let defaults = catAttrs "name" (filter (a: a.isDefault) (attrValues cfg.profiles));
+        in
+        {
+          assertion = cfg.profiles == { } || length defaults == 1;
+          message = "Must have exactly one default Firefox profile but found " + toString (length defaults)
+            + optionalString (length defaults > 1) (", namely " + concatStringsSep ", " defaults);
+        }
+      )
 
-      (let
-        duplicates = filterAttrs (_: v: length v != 1)
-          (zipAttrs (mapAttrsToList (n: v: { "${toString v.id}" = n; }) (cfg.profiles)));
+      (
+        let
+          duplicates = filterAttrs (_: v: length v != 1)
+            (zipAttrs (mapAttrsToList (n: v: { "${toString v.id}" = n; }) (cfg.profiles)));
 
-        mkMsg = n: v: "  - ID ${n} is used by ${concatStringsSep ", " v}";
-      in {
-        assertion = duplicates == { };
-        message = ''
-          Must not have Firefox profiles with duplicate IDs but
-        '' + concatStringsSep "\n" (mapAttrsToList mkMsg duplicates);
-      })
+          mkMsg = n: v: "  - ID ${n} is used by ${concatStringsSep ", " v}";
+        in
+        {
+          assertion = duplicates == { };
+          message = ''
+            Must not have Firefox profiles with duplicate IDs but
+          '' + concatStringsSep "\n" (mapAttrsToList mkMsg duplicates);
+        }
+      )
     ];
 
     home-manager.users."${user}" = {
-      home.packages = let
-        # The configuration expected by the Firefox wrapper.
-        fcfg = { };
+      home.packages =
+        let
+          # The configuration expected by the Firefox wrapper.
+          fcfg = { };
 
-        # A bit of hackery to force a config into the wrapper.
-        browserName = cfg.package.browserName or (builtins.parseDrvName cfg.package.name).name;
+          # A bit of hackery to force a config into the wrapper.
+          browserName = cfg.package.browserName or (builtins.parseDrvName cfg.package.name).name;
 
-        # The configuration expected by the Firefox wrapper builder.
-        bcfg = setAttrByPath [ browserName ] fcfg;
+          # The configuration expected by the Firefox wrapper builder.
+          bcfg = setAttrByPath [ browserName ] fcfg;
 
-        package = if isDarwin then
-          cfg.package
-        else if versionAtLeast hm.home.stateVersion "19.09" then
-          cfg.package.override { cfg = fcfg; }
-        else
-          (pkgs.wrapFirefox.override { config = bcfg; }) cfg.package { };
-      in [ package ];
+          package =
+            if isDarwin then
+              cfg.package
+            else if versionAtLeast hm.home.stateVersion "19.09" then
+              cfg.package.override { cfg = fcfg; }
+            else
+              (pkgs.wrapFirefox.override { config = bcfg; }) cfg.package { };
+        in
+        [ package ];
 
       home.file = mkMerge
-        ([{ "${firefoxConfigPath}/profiles.ini" = mkIf (cfg.profiles != { }) { text = profilesIni; }; }]
+        ([{ "${firefoxConfigPath}/profiles.ini" = mkIf (cfg.profiles != { }) { text = profilesIni; force = true; }; }]
           ++ flip mapAttrsToList cfg.profiles (_: profile: {
-            "${profilesPath}/${profile.path}/chrome/userChrome.css" =
-              mkIf (profile.userChrome != "") { text = profile.userChrome; };
+          "${profilesPath}/${profile.path}/chrome/userChrome.css" =
+            mkIf (profile.userChrome != "") { text = profile.userChrome; };
 
-            "${profilesPath}/${profile.path}/chrome/userContent.css" =
-              mkIf (profile.userContent != "") { text = profile.userContent; };
+          "${profilesPath}/${profile.path}/chrome/userContent.css" =
+            mkIf (profile.userContent != "") { text = profile.userContent; };
 
-            "${profilesPath}/${profile.path}/user.js" = mkIf (profile.settings != { } || profile.extraConfig != "") {
-              text = mkUserJs profile.settings profile.extraConfig;
-            };
+          "${profilesPath}/${profile.path}/user.js" = mkIf (profile.settings != { } || profile.extraConfig != "") {
+            text = mkUserJs profile.settings profile.extraConfig;
+          };
 
-            "${profilesPath}/${profile.path}/extensions" = mkIf (cfg.extensions != [ ]) {
-              source = "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
-              recursive = true;
-              force = true;
-            };
+          "${profilesPath}/${profile.path}/extensions" = mkIf (cfg.extensions != [ ]) {
+            source = "${extensionsEnvPkg}/share/mozilla/${extensionPath}";
+            recursive = true;
+            force = true;
+          };
 
-            ".mozilla/firefox/${profile.path}/handlers.json" =
-              mkIf (profile.handlers != { }) { text = builtins.toJSON profile.handlers; };
-          }));
+          ".mozilla/firefox/${profile.path}/handlers.json" =
+            mkIf (profile.handlers != { }) { text = builtins.toJSON profile.handlers; };
+        }));
     };
   };
 }
