@@ -104,10 +104,24 @@ in
         '';
       };
 
+      systemd.user.services.kbdd = optionalAttrs (cfg.kbdd.enable) {
+        description = "KBDD";
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        # path = [ pkgs.kbdd ];
+        serviceConfig = {
+          Type = "dbus";
+          BusName = "ru.gentoo.KbddService";
+          ExecStart = "${pkgs.kbdd}/bin/kbdd -n";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+      };
+
       home-manager.users.${user} = {
         home.packages = with pkgs; [ keybindings ];
       };
-      wmCommon.autostart.entries = optionals (cfg.kbdd.enable) [ "${pkgs.kbdd}/bin/kbdd" ];
       wmCommon.keys = [
         {
           key = [ cfg.prefix "k" ];
