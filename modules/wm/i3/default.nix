@@ -29,7 +29,7 @@ in
       };
       ipcClients = mkOption {
         type = types.listOf types.str;
-        default = [ "${pkgs.kbdctl}/bin/kbdctl" "${pkgs.i3-ratiosplit}/bin/ratiosplit" "${pkgs.i3-auto-layout}/bin/i3-auto-layout" ];
+        default = [ "${nurpkgs.i3tools}/bin/kbd" "${pkgs.i3-ratiosplit}/bin/ratiosplit" "${pkgs.i3-auto-layout}/bin/i3-auto-layout" ];
         description = "IPC clients to start along with i3";
       };
       settings = mkOption {
@@ -313,12 +313,6 @@ in
 
       shell.core.variables = [{ CURRENT_WM = "i3"; global = true; emacs = true; }];
 
-      nixpkgs.config.packageOverrides = _: rec {
-        kbdctl = mkPythonScriptWithDeps "kbdctl"
-          (with pkgs; [ nurpkgs.pystdlib python3Packages.i3ipc xdotool emacs xkb-switch ])
-          (readSubstituted ../../subst.nix ./scripts/kbdctl.py);
-      };
-
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
           lib.strings.escapeNixString (builtins.toJSON config.wmCommon.keys)
@@ -539,9 +533,6 @@ in
           };
         };
       };
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ kbdctl ]; };
     })
   ];
 }
