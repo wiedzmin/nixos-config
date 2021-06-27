@@ -10,9 +10,10 @@ let
   scriptsPathPrefix = "${pkgs.qutebrowser}/share/qutebrowser/scripts";
   suspensionRule = {
     qutebrowser = {
-      suspendDelay = 10;
+      suspendDelay = 15;
       matchWmClassContains = "qutebrowser";
       suspendSubtreePattern = "qtwebengine";
+      downclockOnBattery = 3;
     };
   };
 in
