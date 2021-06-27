@@ -113,6 +113,9 @@ in
             },
         }, "qutebrowser")
       '';
+
+      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
+
       home-manager.users.${user} = {
         home.packages = with pkgs; [
           yank-image
