@@ -118,7 +118,7 @@ in
             clearurls
             greasemonkey
 
-            nurpkgs.wiedzmin.firefox-addons.url-in-title
+            # nurpkgs.wiedzmin.firefox-addons.url-in-title # NOTE: derivation is temporarily broken at nur-packages
           ] ++ optionals (cfg.keyboardCentric) [ tridactyl ];
         profiles = {
           default = {
