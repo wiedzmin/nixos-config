@@ -107,6 +107,8 @@ in
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("Chromium-browser"), {
             K("C-g"): K("f5"),
+            K("M-comma"): K("Shift-h"),
+            K("M-dot"): K("Shift-l"),
         }, "chromium")
       '';
       browsers.chromium.extraOpts = {
