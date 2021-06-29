@@ -76,6 +76,15 @@ in
 
       environment.systemPackages = with pkgs; [ ncmpcpp freetube ytfzf ];
       home-manager.users.${user} = {
+        xdg.configFile."espanso/user/content.yml".text = ''
+          name: content
+          parent: default
+          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
+
+          matches:
+            - trigger: ":yt"
+              replace: "nix shell \"nixpkgs#youtube-dl\" -c youtube-dl \"$|$\""
+        '';
         programs.mpv = {
           # TODO: consider extracting options
           enable = true;
