@@ -74,7 +74,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ JUST_CHOOSER = "rofi -dmenu"; }];
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ dfmt go-task just lnav nurpkgs.comby plantuml tagref ];
+        home.packages = with pkgs; [ dfmt go-task just lnav nurpkgs.comby plantuml tagref xh ];
       };
       pim.timetracking.rules =
         mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ])
