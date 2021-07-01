@@ -182,16 +182,15 @@ in
       wm.enable = true;
     };
     qutebrowser = {
-      enable = false;
+      enable = true;
+      isDefault = false;
       sessions.backup.enable = false;
     };
     chromium = {
       enable = true;
-      isFallback = true;
-    };
-    nyxt = {
-      enable = true;
+      suspendInactive = false;
       isDefault = true;
+      isFallback = true;
     };
   };
 
