@@ -50,11 +50,6 @@ in
         default = { };
         description = "Music collections mounts into MPD music directory";
       };
-      mpd.ympd.port = mkOption {
-        type = types.int;
-        default = 8090;
-        description = "Port number for YMPD interface";
-      };
       youtubeFrontends.enable = mkOption {
         type = types.bool;
         default = false;
@@ -140,10 +135,6 @@ in
           })
         cfg.mpd.collections);
 
-      services.ympd = {
-        enable = true;
-        webPort = builtins.toString cfg.mpd.ympd.port;
-      };
       home-manager.users.${user} = { home.packages = with pkgs; [ ario sonata cantata ]; };
     })
     (mkIf (cfg.enable && cfg.youtubeFrontends.enable) {
