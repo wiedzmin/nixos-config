@@ -1,8 +1,12 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 with lib;
 
 let
+  stable = import inputs.stable ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
 
   cfg = config.ext.programs.tmux;
   user = config.attributes.mainUser.name;
@@ -273,7 +277,8 @@ let
     ${cfg.extraConfig}
   '';
 
-in {
+in
+{
   options = {
     ext.programs.tmux = {
       aggressiveResize = mkOption {
@@ -512,7 +517,7 @@ in {
     {
       home-manager.users."${user}" = {
         home.packages = [ cfg.package ] ++ optional cfg.tmuxinator.enable pkgs.tmuxinator
-          ++ optional cfg.tmuxp.enable pkgs.tmuxp;
+          ++ optional cfg.tmuxp.enable stable.tmuxp;
         home.file.".tmux.conf".text = tmuxConf;
       };
     }
@@ -528,21 +533,25 @@ in {
     })
 
     (mkIf cfg.secureSocket {
-      home-manager.users."${user}".home.sessionVariables = { # NOTE: keep, do not bind to custom module(s)
+      home-manager.users."${user}".home.sessionVariables = {
+        # NOTE: keep, do not bind to custom module(s)
         TMUX_TMPDIR = ''''${XDG_RUNTIME_DIR:-"/run/user/\$(id -u)"}'';
       };
     })
 
     (mkIf (cfg.plugins != [ ]) {
       assertions = [
-        (let
-          hasBadPluginName = p: !(hasPrefix "tmuxplugin" (pluginName p));
-          badPlugins = filter hasBadPluginName cfg.plugins;
-        in {
-          assertion = badPlugins == [ ];
-          message = ''Invalid tmux plugin (not prefixed with "tmuxplugins"): ''
-            + concatMapStringsSep ", " pluginName badPlugins;
-        })
+        (
+          let
+            hasBadPluginName = p: !(hasPrefix "tmuxplugin" (pluginName p));
+            badPlugins = filter hasBadPluginName cfg.plugins;
+          in
+          {
+            assertion = badPlugins == [ ];
+            message = ''Invalid tmux plugin (not prefixed with "tmuxplugins"): ''
+              + concatMapStringsSep ", " pluginName badPlugins;
+          }
+        )
       ];
 
       home-manager.users."${user}".home.file.".tmux.conf".text = mkAfter ''
