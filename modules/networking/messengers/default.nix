@@ -5,6 +5,10 @@ with lib;
 let
   cfg = config.ext.networking.messengers;
   user = config.attributes.mainUser.name;
+  stable = import inputs.stable ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
 in
 {
   options = {
@@ -30,7 +34,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ tdesktop zoom-us tdlib ];
+        home.packages = with pkgs; [ stable.tdesktop zoom-us tdlib ];
         xdg.configFile."espanso/user/telegram.yml".text = ''
           name: telegram
           parent: default
