@@ -3,7 +3,8 @@
 # TODO: review https://github.com/ysndr/blog/blob/e4588f821ce6aee9ec3688ee9af3d2e61e143530/blog.nix#L14
 
 let user = config.attributes.mainUser.name;
-in rec {
+in
+rec {
   addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
   withPatches = pkg: patches: lib.overrideDerivation pkg (_: { inherit patches; });
   mkPythonScriptWithDeps = pname: packages: text: buildPythonScriptWithDeps pname false packages text;
@@ -75,11 +76,12 @@ in rec {
   assetsPrefix = suffix:
     "${wsRoot "github"}/wiedzmin/nixos-config/machines/" + config.attributes.machine.name + "/assets/" + suffix;
   fromYAML = yaml:
-    builtins.fromJSON (builtins.readFile (pkgs.runCommand "from-yaml" {
-      inherit yaml;
-      allowSubstitutes = false;
-      preferLocalBuild = true;
-    } ''
+    builtins.fromJSON (builtins.readFile (pkgs.runCommand "from-yaml"
+      {
+        inherit yaml;
+        allowSubstitutes = false;
+        preferLocalBuild = true;
+      } ''
       ${pkgs.remarshal}/bin/remarshal  \
         -if yaml \
         -i <(echo "$yaml") \
@@ -87,11 +89,12 @@ in rec {
         -o $out
     ''));
   toToml = attrs:
-    builtins.readFile (pkgs.runCommand "to-toml" {
-      # inherit attrs;
-      allowSubstitutes = false;
-      preferLocalBuild = true;
-    } ''
+    builtins.readFile (pkgs.runCommand "to-toml"
+      {
+        # inherit attrs;
+        allowSubstitutes = false;
+        preferLocalBuild = true;
+      } ''
       ${pkgs.remarshal}/bin/remarshal  \
         -if json \
         -of toml \
@@ -118,11 +121,25 @@ in rec {
     } // {
       overrideAttrs = f: mkDerivationTmux (attrs // f attrs);
     };
-  mkDerivationTmux = a@{ pluginName, rtpFilePath ? (builtins.replaceStrings [ "-" ] [ "_" ] pluginName) + ".tmux"
-    , namePrefix ? "tmuxplugin-", src, unpackPhase ? "", postPatch ? "", configurePhase ? ":", buildPhase ? ":"
-    , addonInfo ? null, preInstall ? "", postInstall ? "", path ? lib.getName pluginName, dependencies ? [ ], ... }:
+  mkDerivationTmux =
+    a@{ pluginName
+    , rtpFilePath ? (builtins.replaceStrings [ "-" ] [ "_" ] pluginName) + ".tmux"
+    , namePrefix ? "tmuxplugin-"
+    , src
+    , unpackPhase ? ""
+    , postPatch ? ""
+    , configurePhase ? ":"
+    , buildPhase ? ":"
+    , addonInfo ? null
+    , preInstall ? ""
+    , postInstall ? ""
+    , path ? lib.getName pluginName
+    , dependencies ? [ ]
+    , ...
+    }:
     let rtpPath = "share/tmux-plugins";
-    in addRtpTmux "${rtpPath}/${path}" rtpFilePath a (pkgs.stdenv.mkDerivation (a // {
+    in
+    addRtpTmux "${rtpPath}/${path}" rtpFilePath a (pkgs.stdenv.mkDerivation (a // {
       name = namePrefix + pluginName;
 
       inherit pluginName unpackPhase postPatch configurePhase buildPhase addonInfo preInstall postInstall;
@@ -148,53 +165,66 @@ in rec {
   readSubstituted = subst: content: readSubstitutedList subst [ content ];
   enabledLocals = bookmarks:
     lib.mapAttrs (_: meta: meta.local // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
-    (lib.filterAttrs (_: meta:
-      !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
-      && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")) bookmarks);
+      (lib.filterAttrs
+        (_: meta:
+          !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
+          && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != ""))
+        bookmarks);
   localEbooks = bookmarks:
-    lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs (_: meta:
-      !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
-      && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")
-      && (lib.hasAttrByPath [ "local" "ebooks" ] meta && meta.local.ebooks == true)) bookmarks);
+    lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
+      (_: meta:
+        !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
+        && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")
+        && (lib.hasAttrByPath [ "local" "ebooks" ] meta && meta.local.ebooks == true))
+      bookmarks);
   localDocs = bookmarks:
-    lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs (_: meta:
-      !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
-      && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")
-      && (lib.hasAttrByPath [ "local" "docs" ] meta && meta.local.docs == true)) bookmarks);
+    lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
+      (_: meta:
+        !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
+        && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")
+        && (lib.hasAttrByPath [ "local" "docs" ] meta && meta.local.docs == true))
+      bookmarks);
   localEmacsBookmarks = bookmarks:
-    lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs (_: meta:
-      !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
-      && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")) bookmarks);
+    lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
+      (_: meta:
+        !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
+        && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != ""))
+      bookmarks);
   localBookmarksKVText = locals:
     lib.concatStringsSep "\n" (lib.mapAttrsToList (id: meta: id + " : " + meta.path) locals);
   enabledRemotes = bookmarks:
     lib.mapAttrs (_: meta: meta.remote // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
-    (lib.filterAttrs (_: meta:
-      !(lib.hasAttrByPath [ "remote" "enable" ] meta && meta.remote.enable == false)
-      && (lib.hasAttrByPath [ "remote" "url" ] meta && meta.remote.url != "")) bookmarks);
+      (lib.filterAttrs
+        (_: meta:
+          !(lib.hasAttrByPath [ "remote" "enable" ] meta && meta.remote.enable == false)
+          && (lib.hasAttrByPath [ "remote" "url" ] meta && meta.remote.url != ""))
+        bookmarks);
   collectReposMetadata = bookmarks:
-    (lib.mapAttrs' (_: meta:
-      lib.nameValuePair (builtins.head (builtins.attrNames meta.myrepos))
-      (builtins.head (builtins.attrValues meta.myrepos)))
+    (lib.mapAttrs'
+      (_: meta:
+        lib.nameValuePair (builtins.head (builtins.attrNames meta.myrepos))
+          (builtins.head (builtins.attrValues meta.myrepos)))
       (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "myrepos" ] meta && meta.myrepos != { }) bookmarks));
   mkBookmarkName = meta: sep: tagSep:
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
-  mkBookmarkDest = meta:
+  mkBookmarkWebjumpDest = meta:
+    { url = meta.url; } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
+  mkBookmarkSearchengineDest = meta:
     {
-      url = meta.url + lib.optionalString
-        (lib.hasAttrByPath [ "searchSuffix" ] meta && !(lib.hasAttrByPath [ "jump" ] meta && meta.jump == true))
-        meta.searchSuffix;
+      url = meta.url + lib.optionalString (lib.hasAttrByPath [ "searchSuffix" ] meta) meta.searchSuffix;
     } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
     // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
   remoteWebjumps = remotes: sep: tagSep:
-    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkDest meta)) (lib.filterAttrs
-      (_: meta:
-        (lib.hasAttrByPath [ "jump" ] meta && meta.jump == true) || !(lib.hasAttrByPath [ "searchSuffix" ] meta))
-      remotes);
+    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkWebjumpDest meta))
+      (lib.filterAttrs
+        (_: meta:
+          (lib.hasAttrByPath [ "jump" ] meta && meta.jump == true) || !(lib.hasAttrByPath [ "searchSuffix" ] meta))
+        remotes);
   remoteSearchEngines = remotes: sep: tagSep:
-    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkDest meta))
-    (lib.filterAttrs (_: meta: (lib.hasAttrByPath [ "searchSuffix" ] meta)) remotes);
+    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkSearchengineDest meta))
+      (lib.filterAttrs (_: meta: (lib.hasAttrByPath [ "searchSuffix" ] meta)) remotes);
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
   concatStringListsRaw = sep: ll: lib.concatStringsSep sep (lib.flatten ll);
   takeLast = n: l: with lib; reverseList (take n (reverseList l));
@@ -230,12 +260,14 @@ in rec {
   mkArbttBrowserTitleRule = titles: tag:
     mkArbttProgramTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ]) titles tag;
   mkArbttProgramMapTitleRule = windowClasses: title2tag:
-    lib.concatStringsSep "\n" (lib.mapAttrsToList (re: tag:
-      "current window ($program == [${
+    lib.concatStringsSep "\n" (lib.mapAttrsToList
+      (re: tag:
+        "current window ($program == [${
         concatStringListsQuoted ", " windowClasses
-      }] && $title =~ m!${re}!) ==> tag ${tag},") title2tag);
+      }] && $title =~ m!${re}!) ==> tag ${tag},")
+      title2tag);
   mkArbttEmacsMapTitleRule = title2tag: # we could use similar helper functions for other IDEs
     lib.concatStringsSep "\n"
-    (lib.mapAttrsToList (re: tag: "current window ($title =~ m!^emacs - [^ ]+\\.${re} .*$!) ==> tag ${tag},")
-      title2tag);
+      (lib.mapAttrsToList (re: tag: "current window ($title =~ m!^emacs - [^ ]+\\.${re} .*$!) ==> tag ${tag},")
+        title2tag);
 }
