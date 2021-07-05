@@ -4,15 +4,18 @@ with lib;
 let
   cfg = config.ext.networking.hosts;
   user = config.attributes.mainUser.name;
-  renderHosts = metadata:
+  renderHosts = metadata: # FIXME: reconcile problem and add vpn handling
     builtins.concatStringsSep "\n"
-    (lib.mapAttrsToList (ip: meta: ip + "   " + (builtins.concatStringsSep " " (lib.forEach meta (x: x.host))))
-      (lib.groupBy (x: x.ip) (lib.flatten (lib.mapAttrsToList (host: meta:
-        (lib.forEach meta.ips (ip: {
-          "ip" = ip;
-          "host" = host;
-        }))) metadata))));
-in {
+      (lib.mapAttrsToList (ip: meta: ip + "   " + (builtins.concatStringsSep " " (lib.forEach meta (x: x.host))))
+        (lib.groupBy (x: x.ip) (lib.flatten (lib.mapAttrsToList
+          (host: meta:
+            (lib.forEach meta.ips (ip: {
+              "ip" = ip;
+              "host" = host;
+            })))
+          metadata))));
+in
+{
   options = {
     ext.networking.hosts = {
       enable = mkOption {
@@ -42,12 +45,14 @@ in {
         ${renderHosts cfg.entries}
       '';
 
-      home-manager.users.${user}.programs.ssh.matchBlocks = mapAttrs' (hostname: meta:
-        nameValuePair hostname ({
-          hostname = hostname;
-          user = "${meta.user}";
-          port = if (builtins.hasAttr "port" meta) then meta.port else null;
-        })) (filterAttrs (_: meta: !((hasAttr "forge" meta) && meta.forge)) cfg.entries);
+      home-manager.users.${user}.programs.ssh.matchBlocks = mapAttrs'
+        (hostname: meta:
+          nameValuePair hostname ({
+            hostname = hostname;
+            user = "${meta.user}";
+            port = if (builtins.hasAttr "port" meta) then meta.port else null;
+          }))
+        (filterAttrs (_: meta: !((hasAttr "forge" meta) && meta.forge)) cfg.entries);
 
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${
