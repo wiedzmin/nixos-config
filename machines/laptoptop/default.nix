@@ -365,7 +365,6 @@ in
         devices = [
           { name = "MiAir2"; mac = "6C:CE:44:AE:97:39"; }
         ];
-        headsetMacAddresses = config.ext.networking.secrets.headsetMacAddresses;
       };
       wm = {
         enable = true;

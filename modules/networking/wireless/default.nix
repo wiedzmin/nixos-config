@@ -49,11 +49,6 @@ in
         default = [ ];
         description = "Bluetooth devices metadata";
       };
-      bluetooth.headsetMacAddresses = mkOption {
-        type = types.listOf types.str;
-        default = [ ];
-        description = "MAC addresses of bluetooth headsets";
-      };
       tools.enable = mkOption {
         type = types.bool;
         default = false;
@@ -118,7 +113,7 @@ in
       home-manager.users."${user}" = { home.packages = with pkgs; [ bluetooth_battery ]; };
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set networking/wireless/headsets ${
-          lib.strings.escapeNixString (builtins.toJSON cfg.bluetooth.headsetMacAddresses)
+          lib.strings.escapeNixString (builtins.toJSON (lib.forEach cfg.bluetooth.devices (d: d.mac)))
         }
       '';
       wmCommon.keys = [{
