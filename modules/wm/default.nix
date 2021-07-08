@@ -139,6 +139,17 @@ in
           mode = "select";
         }
       ];
+      workstation.systemtraits.instructions = ''
+        ${pkgs.redis}/bin/redis-cli set wm/workspaces ${
+          lib.strings.escapeNixString (builtins.toJSON (lib.forEach cfg.workspaces (w: w.name)))
+        }
+
+        ${pkgs.redis}/bin/redis-cli set wm/window_rules ${
+          lib.strings.escapeNixString (builtins.toJSON (builtins.filter
+            (r: !builtins.hasAttr "scratchpad" r || (builtins.hasAttr "scratchpad" r && r.scratchpad == false))
+            (lib.forEach cfg.wsMapping.rules prepareWindowRule)))
+        }
+      '';
     })
     (mkIf (cfg.enable && cfg.showfocus) {
       # TODO: review https://github.com/fennerm/flashfocus/wiki
