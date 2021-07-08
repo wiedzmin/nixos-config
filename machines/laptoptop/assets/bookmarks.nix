@@ -98,12 +98,12 @@ rec {
         };
       };
     };
-    "i3tools" = {
-      local.path = "${wsRoot "github"}/wiedzmin/i3tools";
-      remote.url = "https://github.com/wiedzmin/i3tools/";
+    "wmtools" = {
+      local.path = "${wsRoot "github"}/wiedzmin/wmtools";
+      remote.url = "https://github.com/wiedzmin/wmtools/";
       myrepos = {
-        "${wsRootAbs "github"}/wiedzmin/i3tools" = {
-          checkout = [ "git clone 'https://github.com/wiedzmin/i3tools.git' 'i3tools'" ];
+        "${wsRootAbs "github"}/wiedzmin/wmtools" = {
+          checkout = [ "git clone 'https://github.com/wiedzmin/wmtools.git' 'wmtools'" ];
         };
       };
     };
