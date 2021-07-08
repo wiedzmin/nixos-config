@@ -26,11 +26,11 @@ let
     "F11" = "<F11>";
     "F12" = "<F12>";
   };
-  windowCriteriaPlaceholdersI3 = {
-    "class" = ''class="^@$"'';
-    "title" = ''title=".*@.*"'';
-    "role" = ''role="^@$"'';
-    "instance" = ''instance="^@$"'';
+  windowRulePlaceholdersI3 = {
+    "class" = ''^@$'';
+    "title" = ''.*@.*'';
+    "role" = ''^@$'';
+    "instance" = ''^@$'';
   };
   scratchpadModeToken = "scratchpad";
 in
@@ -38,6 +38,17 @@ rec {
   # ================ common ================
   enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: v: i) wsdata) wsdata;
   getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
+  reAddWildcards = s: builtins.replaceStrings [ " " ] [ ".*" ] s;
+  prepareWindowRule = rule:
+    rule // (lib.mapAttrs
+      (k: v:
+        builtins.replaceStrings [ "@" ] [
+          (if k == "title" then reAddWildcards rule.${k} else rule.${k})
+        ]
+          v)
+      (lib.filterAttrs (k: _: builtins.hasAttr k rule) windowRulePlaceholdersI3));
+  windowRuleClauses = rule:
+    lib.filterAttrs (k: _: !builtins.elem k [ "activate" "debug" "desktop" "float" "key" "scratchpad" ]) rule;
   # ================ XMonad ================
   toHaskellBool = v: builtins.replaceStrings [ "true" "false" ] [ "True" "False" ] (lib.trivial.boolToString v);
   mkKeysymXmonad = key: if builtins.hasAttr key keysymsXmonad then builtins.getAttr key keysymsXmonad else key;
@@ -59,15 +70,9 @@ rec {
         (ws: meta: ''("${ws}", Just "${convertKeyXmonad meta.key}", ${toHaskellBool meta.transient})'') wss)
     }${mkIndent indent}";
   # ================ I3WM ================
-  mkWindowCriteriaI3 = criteria:
-    "[${
-      lib.concatStringsSep " " (lib.remove "" (lib.mapAttrsToList (k: v:
-        if builtins.hasAttr k criteria then
-          builtins.replaceStrings [ "@" ]
-          [ (if k == "title" then builtins.replaceStrings [ " " ] [ ".*" ] criteria."${k}" else criteria."${k}") ] v
-        else
-          "") windowCriteriaPlaceholdersI3))
-    }]";
+  mkWindowRuleI3 = rule:
+    "[${lib.concatStringsSep " " (lib.mapAttrsToList (k: v: ''${k}="${v}"'')
+      (windowRuleClauses (prepareWindowRule rule)))}]";
   mkKeysymI3 = keys:
     lib.concatStringsSep keySepI3
       (lib.forEach keys (k: if builtins.hasAttr k keySymsI3 then builtins.getAttr k keySymsI3 else k));
@@ -136,10 +141,10 @@ rec {
     '';
   bindkeysFocusI3 = rules:
     lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "focus" r) rules)
-      (r: "bindsym ${mkKeysymI3 r.focus} ${mkWindowCriteriaI3 r} focus"));
+      (r: "bindsym ${mkKeysymI3 r.focus} ${mkWindowRuleI3 r} focus"));
   genWindowRulesFloatI3 = rules:
     lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "float" r) rules) (r:
-      "for_window ${mkWindowCriteriaI3 r} floating ${
+      "for_window ${mkWindowRuleI3 r} floating ${
         if r.float then
           "toggle${
             if builtins.hasAttr "resize" r then
@@ -160,7 +165,7 @@ rec {
     in
     lib.concatStringsSep "\n"
       (lib.forEach scratchpadRules
-        (r: "for_window ${mkWindowCriteriaI3 r} move scratchpad")) +
+        (r: "for_window ${mkWindowRuleI3 r} move scratchpad")) +
     ''
 
 
@@ -169,7 +174,7 @@ rec {
             (map (r: {
               key = r.key;
               mode = "${scratchpadModeToken}";
-              cmd = "${mkWindowCriteriaI3 r} scratchpad show";
+              cmd = "${mkWindowRuleI3 r} scratchpad show";
               raw = true;
             }) scratchpadRules) (x: mkKeybindingI3 x desktops))
           }
@@ -184,7 +189,7 @@ rec {
       '';
   genPlacementRulesI3 = rules: wsdata:
     lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "desktop" r) rules) (r:
-      "for_window ${mkWindowCriteriaI3 r} move to workspace ${getWorkspaceByNameI3 wsdata r.desktop}${
+      "for_window ${mkWindowRuleI3 r} move to workspace ${getWorkspaceByNameI3 wsdata r.desktop}${
         if (builtins.hasAttr "activate" r && r.activate == true) then
           "; workspace ${getWorkspaceByNameI3 wsdata r.desktop}"
         else
