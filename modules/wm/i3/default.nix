@@ -73,7 +73,7 @@ in
 
       wmCommon = {
         enable = true;
-        autostart.entries = [ "${nurpkgs.i3tools}/bin/kbd" "${pkgs.i3-auto-layout}/bin/i3-auto-layout" ];
+        autostart.entries = [ "${pkgs.i3-auto-layout}/bin/i3-auto-layout" ];
         modeBindings = {
           # TODO: check if we can unwire this from i3
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
@@ -305,6 +305,21 @@ in
           };
         };
         displayManager = { defaultSession = "none+i3"; };
+      };
+
+      systemd.user.services.i3-kbdswitcher = {
+        description = "i3 KBD switcher";
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        path = [ pkgs.xkb-switch pkgs.i3 pkgs.bash ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${nurpkgs.wmtools}/bin/kbd";
+          Restart = "on-failure";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
       };
 
       shell.core.variables = [{ CURRENT_WM = "i3"; global = true; emacs = true; }];
