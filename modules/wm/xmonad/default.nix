@@ -210,7 +210,8 @@ let
                              dynStatusBarStartup barCreatorXmobar barDestroyer
         }
   '';
-in {
+in
+{
   options = {
     wm.xmonad = {
       enable = mkOption {
@@ -303,7 +304,6 @@ in {
       wmCommon.keys = {
         "M-C-q" = { cmd = "xmonad --recompile; xmonad --restart"; };
         "M-q" = { cmd = "xmonad --restart"; };
-        "M-C-w" = { cmd = "${pkgs.desktops}/bin/desktops"; };
       };
 
       workstation.systemtraits.instructions = ''
@@ -311,17 +311,6 @@ in {
           lib.strings.escapeNixString (builtins.toJSON (cfg.internalKeys // config.wmCommon.keys))
         }
       '';
-
-      nixpkgs.config.packageOverrides = _: rec {
-        desktops = mkPythonScriptWithDeps "desktops" (with pkgs; [
-          nurpkgs.pystdlib
-          python3Packages.ewmh
-          python3Packages.fuzzywuzzy
-          python3Packages.redis
-          python3Packages.xlib
-          wmctrl
-        ]) (readSubstituted ../subst.nix ./scripts/desktops.py);
-      };
 
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
       home-manager.users.${user} = {
@@ -335,28 +324,8 @@ in {
             onChange = "xmonad --recompile";
           };
         };
-        home.packages = with pkgs; [ desktops ];
         xdg.configFile."xmobar/xmobarrc".text = readSubstituted ../subst.nix ./assets/xmobarrc;
       };
-    })
-    (mkIf cfg.wsMapping.enable {
-      assertions = [{
-        assertion = config.workstation.systemtraits.enable;
-        message = "xmonad: must enable systemtraits maintainence.";
-      }];
-
-      services.xserver.displayManager.sessionCommands = ''
-        ${pkgs.desktops}/bin/desktops --init
-      '';
-      # FIXME: adopt new workspace mappings structure (presumably broken)
-      workstation.systemtraits.instructions = ''
-        ${pkgs.redis}/bin/redis-cli set xserver/window_rules ${
-          lib.strings.escapeNixString (builtins.toJSON cfg.workspaces.mappings)
-        }
-      '';
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ desktops ]; };
     })
   ];
 }
