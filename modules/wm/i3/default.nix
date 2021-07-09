@@ -322,6 +322,21 @@ in
         };
       };
 
+      systemd.user.services.i3-desktops = {
+        description = "i3 windows mapper";
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        path = [ pkgs.i3 pkgs.bash ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${nurpkgs.wmtools}/bin/desktops";
+          Restart = "always";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+      };
+
       shell.core.variables = [{ CURRENT_WM = "i3"; global = true; emacs = true; }];
 
       workstation.systemtraits.instructions = ''
@@ -342,8 +357,6 @@ in
             ${bindkeysI3 config.wmCommon.keys config.wmCommon.modeBindings cfg.modeExitBindings
             config.wmCommon.workspaces}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
-
-            ${with config.wmCommon; genPlacementRulesI3 wsMapping.rules workspaces}
 
             ${genWindowRulesFloatI3 config.wmCommon.wsMapping.rules}
 
