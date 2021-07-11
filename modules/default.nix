@@ -2,6 +2,7 @@
   imports = [
     ./attributes.nix
 
+    ./appearance/colorschemes/dracula
     ./appearance/colorschemes/zenburn
     ./appearance/emacs
     ./appearance/fonts
