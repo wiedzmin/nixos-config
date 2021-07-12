@@ -23,6 +23,8 @@ DATE_REGEXPS = [
 
 parser = argparse.ArgumentParser(description="Screenshots ordering")
 parser.add_argument('--base-dir', dest="base_dir", type=str, help="Base directory to perform sorting under")
+parser.add_argument('--fallback-dir', dest="base_dir", default="named", type=str,
+                    help="Directory under base to place named screenshots to")
 args = parser.parse_args()
 
 if not args.base_dir:
@@ -48,5 +50,7 @@ else:
             else:
                 fail_count += 1
         if fail_count == len(DATE_REGEXPS):
-            notify("[screenshots]", f"`{f}` did not matched any regexps",
+            notify("[screenshots]", f"`{f}` did not matched any regexps, custom name encountered",
                    urgency=URGENCY_CRITICAL, timeout=5000)
+            pathlib.Path(f"{args.base_dir}/{args.fallback_dir}").mkdir(parents=True, exist_ok=True)
+            shutil.move(f"{args.base_dir}/{f}", f"{args.base_dir}/{args.fallback_dir}")
