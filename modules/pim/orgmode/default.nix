@@ -6,13 +6,19 @@ let
   cfg = config.pim.orgmode;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     pim.orgmode = {
       enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to enable Org mode setup";
+      };
+      cliplink.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to use `org-cliplink` for capturing";
       };
       warningsFile = mkOption {
         type = types.str;
@@ -34,6 +40,15 @@ in {
           the amount of idle Emacs time to pass before performing
           particular path crawling.
         '';
+      };
+      commonCaptureDataTemplate = mkOption {
+        type = types.str;
+        # default = (if cfg.cliplink.enable then "%(org-cliplink-capture)" else "%?[[%:link][%:description]]");
+        default = (if cfg.cliplink.enable then "%(org-cliplink-capture)" else "%?");
+        description = "Default data template for captured entry";
+        visible = false;
+        readOnly = true;
+        internal = true;
       };
       agendaElPatch = mkOption {
         type = types.lines;
@@ -70,7 +85,6 @@ in {
       pim.orgmode.agendaRoots = { "${config.ide.emacs.core.orgDir}" = 3000; };
       pim.timetracking.rules = mkArbttTitleRule [ "^emacs - [^ ]+\\.org .*$" ] "edit:orgmode";
       ide.emacs.core.extraPackages = epkgs: [
-        epkgs.org-cliplink
         epkgs.deft
         epkgs.doct
         epkgs.helm-org-rifle
@@ -90,8 +104,15 @@ in {
         epkgs.org-roam
         epkgs.orgit
         epkgs.russian-holidays
-      ];
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/orgmode.el;
+      ] ++ optionals (cfg.cliplink.enable) [ epkgs.org-cliplink ];
+      ide.emacs.core.config = (readSubstituted ../../subst.nix ./emacs/orgmode.el)
+        + lib.optionalString (cfg.cliplink.enable) ''
+        (use-package org-cliplink
+          :after (org)
+          :bind
+          (:map custom-org-map
+                ("i" . org-cliplink)))
+      '';
       ide.emacs.core.customKeymaps = {
         "custom-org-map" = "<f7>";
         "org-rifle-map" = "<f7> r";

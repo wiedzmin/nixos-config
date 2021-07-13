@@ -43,6 +43,7 @@ rec {
   orgDir = config.ide.emacs.core.orgDir;
   passwordStorePath = config.ext.security.passwordStorePath;
   pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;
+  pimCommonCaptureDataTemplate = config.pim.orgmode.commonCaptureDataTemplate;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   projectsRootMarkersEmacs =
     builtins.concatStringsSep " " (lib.forEach config.dev.navigation.projects.rootMarkers (marker: ''"${marker}"''));

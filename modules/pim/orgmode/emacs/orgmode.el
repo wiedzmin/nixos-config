@@ -5,12 +5,6 @@
         ("l" . helm-org-rifle)
         ("o" . helm-org-rifle-occur)))
 
-(use-package org-cliplink
-  :after (org)
-  :bind
-  (:map custom-org-map
-        ("i" . org-cliplink)))
-
 (use-package doct
   :commands (doct))
 
@@ -346,7 +340,7 @@
   (org-clock-persistence-insinuate)
   (setq org-capture-templates
         (doct '(("NixOS" :keys "n" :file "@orgDir@/projects/workstation/nixos.org" :children
-                 (("Common" :keys "t" :template "* BACKLOG %(org-cliplink-capture) %U\n  %:initial")
+                 (("Common" :keys "t" :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U\n  %:initial")
                   ("Code snippet"
                    :keys "c"
                    :template "* %^{title} :nix:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC nix\n %i%?\n#+END_SRC\n")
@@ -354,22 +348,22 @@
                 ("Emacs" :keys "e"
                  :children
                  (("Unsorted" :keys "u" :file "@orgDir@/projects/workstation/emacs/unsorted.org"
-                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
                   ("Completion" :keys "c" :file "@orgDir@/projects/workstation/emacs/completion.org"
-                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
                   ("Development" :keys "d" :file "@orgDir@/projects/workstation/emacs/dev.org"
-                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
                   ("Editing" :keys "e" :file "@orgDir@/projects/workstation/emacs/editing.org"
-                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
                   ("Email" :keys "l" :file "@orgDir@/projects/workstation/emacs/email.org"
-                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
                   ("Miscellaneous" :keys "m" :file "@orgDir@/projects/workstation/emacs/misc.org"
-                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")
+                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
                   ("Navigation" :keys "n" :file "@orgDir@/projects/workstation/emacs/navigation.org"
-                   :template "* BACKLOG %(org-cliplink-capture) %U :emacs:\n  %:initial")))
-                ("PIM" :keys "p" :file "@orgDir@/projects/workstation/pim.org" :template "* %(org-cliplink-capture) %U :pim:")
-                ("Soon" :keys "s" :file "@orgDir@/projects/workstation/soon.org" :template "* %(org-cliplink-capture) %U")
-                ("Bookmarks" :keys "b" :file "@orgDir@/bookmarks.org" :template "* %(org-cliplink-capture) %U :bookmark:"))))
+                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")))
+                ("PIM" :keys "p" :file "@orgDir@/projects/workstation/pim.org" :template "* @pimCommonCaptureDataTemplate@ %U :pim:")
+                ("Soon" :keys "s" :file "@orgDir@/soon.org" :template "* @pimCommonCaptureDataTemplate@ %U")
+                ("Bookmarks" :keys "b" :file "@orgDir@/bookmarks.org" :template "* @pimCommonCaptureDataTemplate@ %U :bookmark:"))))
   (run-with-idle-timer custom/idle-clockout-timeout t 'custom/clockout-when-idle)
   (turn-on-orgtbl))
 
