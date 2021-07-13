@@ -25,6 +25,8 @@ rec {
   emacsYasnippetSnippets = inputs.yasnippet-snippets;
   emacsObGoPath = inputs.emacs-ob-go;
   emacsOrgAppearPath = inputs.emacs-org-appear;
+  emacsOrgRoamPath = homePrefix "docs/org/roam";
+  emacsOrgRoamDotBinary = "${pkgs.graphviz}/bin/dot";
   emacsBruhPath = inputs.emacs-bruh;
   emacsBookmarkViewPath = inputs.emacs-bookmark-view;
   emacsConsultLsp = inputs.emacs-consult-lsp;

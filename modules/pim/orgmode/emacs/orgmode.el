@@ -153,7 +153,7 @@
         ("e" . org-capture)
         ("f" . ace-link-org)
         ("n" . org-narrow-to-subtree)
-        ("r" . org-refile)
+        ("R" . org-refile)
         ("s" . org-schedule)
         ("t" . org-toggle-timestamp-type)
         ("u" . outline-up-heading)
@@ -442,3 +442,19 @@
   (org-mode-hook . org-appear-mode)
   :custom
   (org-appear-autolinks t))
+
+(use-package org-roam
+  :hook
+  (after-init . org-roam-mode)
+  :custom
+  (org-roam-directory "@emacsOrgRoamPath@")
+  (org-roam-graph-executable "@emacsOrgRoamDotBinary@")
+  (org-roam-db-location "@emacsOrgRoamPath@/org-roam.db")
+  (org-roam-db-update-method 'immediate)
+  :bind
+  (:map custom-org-map
+        ("r l" . org-roam)
+        ("r f" . org-roam-find-file)
+        ("r g" . org-roam-graph)
+        ("r i" . org-roam-insert)
+        ("r I" . org-roam-insert-immediate)))

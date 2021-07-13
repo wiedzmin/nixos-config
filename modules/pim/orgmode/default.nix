@@ -87,6 +87,7 @@ in {
         epkgs.org-randomnote
         epkgs.org-recent-headings
         epkgs.org-rich-yank
+        epkgs.org-roam
         epkgs.orgit
         epkgs.russian-holidays
       ];
