@@ -347,10 +347,10 @@
   (setq org-capture-templates
         (doct '(("NixOS" :keys "n" :file "@orgDir@/projects/workstation/nixos.org" :children
                  (("Common" :keys "t" :template "* BACKLOG %(org-cliplink-capture) %U\n  %:initial")
-                 ("Code snippet"
-                  :keys "c"
-                  :template "* %^{title} :nix:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC nix\n %i%?\n#+END_SRC\n")
-                 ("Shell excerpt" :keys "s" :template "* %? %U :%:description:\n  %:initial")))
+                  ("Code snippet"
+                   :keys "c"
+                   :template "* %^{title} :nix:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC nix\n %i%?\n#+END_SRC\n")
+                  ("Shell excerpt" :keys "s" :template "* %? %U :%:description:\n  %:initial")))
                 ("Emacs" :keys "e"
                  :children
                  (("Unsorted" :keys "u" :file "@orgDir@/projects/workstation/emacs/unsorted.org"
