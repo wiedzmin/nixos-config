@@ -58,6 +58,16 @@ in
         default = [ [ "q" ] [ "Escape" ] [ "Control" "g" ] ];
         description = "Unified collection of keybindings used to exit to default mode.";
       };
+      theme.client = mkOption {
+        type = types.lines;
+        default = "";
+        description = "Clients theming";
+      };
+      theme.bar = mkOption {
+        type = types.lines;
+        default = "";
+        description = "Bar(s) theming";
+      };
     };
   };
 
@@ -369,6 +379,8 @@ in
             ${lib.concatStringsSep "\n"
               (lib.forEach (config.wmCommon.autostart.entries) (e: "exec --no-startup-id ${e}"))}
 
+            ${optionalString (cfg.theme.client != "") cfg.theme.client}
+
             bar {
                 tray_output ${config.attributes.hardware.monitors.internalHead.name}
                 mode dock
@@ -377,6 +389,11 @@ in
                 strip_workspace_numbers yes
                 font ${config.wmCommon.fonts.statusbar}
                 status_command ${statusBarImplToCmd.${cfg.statusbar.impl}}
+                ${optionalString (cfg.theme.bar != "") ''
+                colors {
+                ${cfg.theme.bar}
+                }
+                ''}
             }
           '';
         } // optionalAttrs (cfg.statusbar.impl == "blocks") {
