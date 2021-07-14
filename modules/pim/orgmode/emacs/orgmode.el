@@ -338,39 +338,14 @@
   ;; run some commands
   (org-add-link-type "tag" 'custom/follow-tag-link)
   (org-clock-persistence-insinuate)
-  (setq org-capture-templates
-        (doct '(("NixOS" :keys "n" :file "@orgDir@/projects/workstation/nixos.org" :children
-                 (("Common" :keys "t" :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U\n  %:initial")
-                  ("Code snippet"
-                   :keys "c"
-                   :template "* %^{title} :nix:code_snippet:\n :PROPERTIES:\n :CREATED: %U\n :END:\n\n#+BEGIN_SRC nix\n %i%?\n#+END_SRC\n")
-                  ("Shell excerpt" :keys "s" :template "* %? %U :%:description:\n  %:initial")))
-                ("feeds" :keys "f" :file "@orgDir@/rss/feeds.org"
+  (setq org-capture-templates ;TODO: elaborate capturing to roam
+        (doct '(("feeds" :keys "f" :file "@orgDir@/rss/feeds.org"
                  :children
                  (("blogs" :keys "b" :olp ("feeds" "blogs") :template "* @pimCommonCaptureDataTemplate@")
                   ("planets" :keys "p" :olp ("feeds" "planets") :template "* @pimCommonCaptureDataTemplate@")
                   ("LJ" :keys "l" :olp ("feeds" "LJ") :template "* @pimCommonCaptureDataTemplate@")
                   ("emacs" :keys "e" :olp ("feeds" "emacs") :template "* @pimCommonCaptureDataTemplate@")
-                  ("rest" :keys "r" :olp ("feeds" "rest") :template "* @pimCommonCaptureDataTemplate@")))
-                ("Emacs" :keys "e"
-                 :children
-                 (("Unsorted" :keys "u" :file "@orgDir@/projects/workstation/emacs/unsorted.org"
-                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
-                  ("Completion" :keys "c" :file "@orgDir@/projects/workstation/emacs/completion.org"
-                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
-                  ("Development" :keys "d" :file "@orgDir@/projects/workstation/emacs/dev.org"
-                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
-                  ("Editing" :keys "e" :file "@orgDir@/projects/workstation/emacs/editing.org"
-                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
-                  ("Email" :keys "l" :file "@orgDir@/projects/workstation/emacs/email.org"
-                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
-                  ("Miscellaneous" :keys "m" :file "@orgDir@/projects/workstation/emacs/misc.org"
-                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")
-                  ("Navigation" :keys "n" :file "@orgDir@/projects/workstation/emacs/navigation.org"
-                   :template "* BACKLOG @pimCommonCaptureDataTemplate@ %U :emacs:\n  %:initial")))
-                ("PIM" :keys "p" :file "@orgDir@/projects/workstation/pim.org" :template "* @pimCommonCaptureDataTemplate@ %U :pim:")
-                ("Soon" :keys "s" :file "@orgDir@/soon.org" :template "* @pimCommonCaptureDataTemplate@ %U")
-                ("Bookmarks" :keys "b" :file "@orgDir@/bookmarks.org" :template "* @pimCommonCaptureDataTemplate@ %U :bookmark:"))))
+                  ("rest" :keys "r" :olp ("feeds" "rest") :template "* @pimCommonCaptureDataTemplate@"))))))
   (run-with-idle-timer custom/idle-clockout-timeout t 'custom/clockout-when-idle)
   (turn-on-orgtbl))
 
