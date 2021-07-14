@@ -211,6 +211,7 @@ in
     };
     misc = {
       enable = true;
+      emacs.enable = true;
       wm.enable = true;
     };
     screenshots = {

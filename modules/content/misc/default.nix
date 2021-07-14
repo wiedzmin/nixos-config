@@ -14,6 +14,11 @@ in
         default = false;
         description = "Whether to enable miscellanuous content setup.";
       };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable content-related Emacs infra";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -39,6 +44,16 @@ in
           yg = "${pkgs.you-get}/bin/you-get";
         };
       };
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.elfeed
+        epkgs.elfeed-dashboard
+        epkgs.elfeed-goodies
+        epkgs.elfeed-org
+        epkgs.elfeed-score
+      ];
+      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/content.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
