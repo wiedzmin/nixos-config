@@ -54,6 +54,7 @@ in
     };
     wm.i3.theme = {
       client = ''
+        #                       border  bground text
         client.focused          #525252 #1E1E1E #F5DEB3
         client.focused_inactive #333333 #0F0F0F #E3CCA1
         client.unfocused        #333333 #010101 #85753A
@@ -68,6 +69,16 @@ in
         inactive_workspace #F5DEB3 #1E1E1E
         urgent_workspace   #ffffff #900000
       '';
+      i3status-rs = {
+        name = "gruvbox-dark";
+        overrides = {
+          alternating_tint_bg = "#0f0f0f";
+          alternating_tint_fg = "#282828";
+          critical_fg = "#282828";
+          good_fg = "#282828";
+          warning_fg = "#282828";
+        };
+      };
     };
   };
 }

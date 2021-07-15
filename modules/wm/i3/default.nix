@@ -68,6 +68,11 @@ in
         default = "";
         description = "Bar(s) theming";
       };
+      theme.i3status-rs = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "i3status-rust theming";
+      };
     };
   };
 
@@ -478,8 +483,7 @@ in
             }
           '';
         } // lib.optionalAttrs (cfg.statusbar.impl == "i3-rs") {
-          "i3status-rust/config.toml".text = toToml {
-            theme = "solarized-dark";
+          "i3status-rust/config.toml".text = toToml ({
             icons = "awesome";
             block = [
               {
@@ -560,7 +564,9 @@ in
               }
               # TODO: block = "music"
             ];
-          };
+          } // lib.optionalAttrs (cfg.theme.i3status-rs != "") {
+            theme = cfg.theme.i3status-rs;
+          });
         };
       };
     })
