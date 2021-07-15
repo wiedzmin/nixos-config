@@ -63,7 +63,7 @@ in
             K("C-y"): K("C-v"),
         }, "Slack")
       '';
-      wmCommon.autostart.entries = optionals (cfg.telegram.autostart) [ "${pkgs.tdesktop}/bin/telegram-desktop" ];
+      wmCommon.autostart.entries = optionals (cfg.telegram.autostart) [ "${stable.tdesktop}/bin/telegram-desktop" ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.telega ]; # review https://github.com/zevlg/telega.el as it goes
