@@ -25,6 +25,8 @@
   (super-save-mode 1))
 
 (use-package files
+  :hook
+  (before-save-hook . delete-trailing-whitespace)
   :bind
   (:map ctl-x-map
         ("f" . find-file))
@@ -39,7 +41,6 @@
   (kept-old-versions 2)
   (version-control t)
   (save-abbrevs 'silently)
-  (mode-require-final-newline 'ask)
   :config
   (setq safe-local-variable-values '((mode-require-final-newline))))
 

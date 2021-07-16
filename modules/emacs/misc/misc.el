@@ -77,7 +77,6 @@
   (eval-expression-print-length nil)
   (eval-expression-print-level nil)
   (kill-ring-max 1024)
-  (delete-trailing-lines nil)
   :config
   (column-number-mode 1)
   (line-number-mode 1)
