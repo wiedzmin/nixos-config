@@ -40,6 +40,16 @@ in
         '';
         description = "Custom settings for i3.";
       };
+      windowRules.method = mkOption {
+        type = types.enum [ "internal" "ipc" ];
+        default = "internal";
+        description = ''
+          How to enforce windows placement according to mapping rules
+
+          `internal` - use `for_window` clauses in configuration
+          `ipc` - rely on IPC service, listening for window titles changes
+        '';
+      };
       statusbar.impl = mkOption {
         type = types.enum [ "py3" "i3-rs" "blocks" ];
         default = "py3";
@@ -337,7 +347,7 @@ in
         };
       };
 
-      systemd.user.services.i3-desktops = {
+      systemd.user.services.i3-desktops = optionalAttrs (cfg.windowRules.method == "ipc") {
         description = "i3 windows mapper";
         after = [ "graphical-session-pre.target" ];
         partOf = [ "graphical-session.target" ];
@@ -372,6 +382,8 @@ in
             ${bindkeysI3 config.wmCommon.keys config.wmCommon.modeBindings cfg.modeExitBindings
             config.wmCommon.workspaces}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
+
+            ${optionalString (cfg.windowRules.method == "internal") (with config.wmCommon; genPlacementRulesI3 wsMapping.rules workspaces)}
 
             ${genWindowRulesFloatI3 config.wmCommon.wsMapping.rules}
 
