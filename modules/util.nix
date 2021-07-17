@@ -164,7 +164,8 @@ rec {
       (e: builtins.readFile (pkgs.substituteAll ((import subst { inherit config inputs lib pkgs; }) // { src = e; }))));
   readSubstituted = subst: content: readSubstitutedList subst [ content ];
   enabledLocals = bookmarks:
-    lib.mapAttrs (_: meta: meta.local // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
+    lib.mapAttrs (key: meta: meta.local // { key = key; } // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
+                           // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { desc = meta.desc; })
       (lib.filterAttrs
         (_: meta:
           !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
@@ -190,10 +191,13 @@ rec {
         !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
         && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != ""))
       bookmarks);
+  localBookmarksCommon = locals: sep: tagSep:
+    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameLocal meta sep tagSep) (mkBookmarkDestLocal meta)) locals;
   localBookmarksKVText = locals:
     lib.concatStringsSep "\n" (lib.mapAttrsToList (id: meta: id + " : " + meta.path) locals);
   enabledRemotes = bookmarks:
-    lib.mapAttrs (_: meta: meta.remote // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
+    lib.mapAttrs (_: meta: meta.remote // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
+                           // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { desc = meta.desc; })
       (lib.filterAttrs
         (_: meta:
           !(lib.hasAttrByPath [ "remote" "enable" ] meta && meta.remote.enable == false)
@@ -205,7 +209,13 @@ rec {
         lib.nameValuePair (builtins.head (builtins.attrNames meta.myrepos))
           (builtins.head (builtins.attrValues meta.myrepos)))
       (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "myrepos" ] meta && meta.myrepos != { }) bookmarks));
-  mkBookmarkName = meta: sep: tagSep:
+  mkBookmarkNameLocal = meta: sep: tagSep:
+    lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.key ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
+      ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
+  mkBookmarkDestLocal = meta:
+    { path = meta.path; } // lib.optionalAttrs (lib.hasAttrByPath [ "shell" ] meta) { shell = meta.shell; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "tmux" ] meta) { tmux = meta.tmux; };
+  mkBookmarkNameRemote = meta: sep: tagSep:
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
   mkBookmarkWebjumpDest = meta:
@@ -217,13 +227,13 @@ rec {
     } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
     // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
   remoteWebjumps = remotes: sep: tagSep:
-    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkWebjumpDest meta))
+    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkWebjumpDest meta))
       (lib.filterAttrs
         (_: meta:
           (lib.hasAttrByPath [ "jump" ] meta && meta.jump == true) || !(lib.hasAttrByPath [ "searchSuffix" ] meta))
         remotes);
   remoteSearchEngines = remotes: sep: tagSep:
-    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkName meta sep tagSep) (mkBookmarkSearchengineDest meta))
+    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkSearchengineDest meta))
       (lib.filterAttrs (_: meta: (lib.hasAttrByPath [ "searchSuffix" ] meta)) remotes);
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
   concatStringListsRaw = sep: ll: lib.concatStringsSep sep (lib.flatten ll);

@@ -62,9 +62,11 @@ in {
             }))";
         };
       };
-      workstation.systemtraits.instructions = ''
+
+      workstation.systemtraits.instructions = with config.navigation.bookmarks; ''
         ${pkgs.redis}/bin/redis-cli set nav/bookmarks ${
-          lib.strings.escapeNixString (builtins.toJSON (enabledLocals cfg.entries))
+          lib.strings.escapeNixString
+            (builtins.toJSON (localBookmarksCommon (enabledLocals cfg.entries) separator.fields separator.tags))
         }
       '';
     })
