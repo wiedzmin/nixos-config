@@ -427,10 +427,12 @@
   (org-roam-graph-executable "@emacsOrgRoamDotBinary@")
   (org-roam-db-location "@emacsOrgRoamPath@/org-roam.db")
   (org-roam-db-update-method 'immediate)
+  (org-roam-tag-sources '(prop vanilla all-directories))
   :bind
   (:map custom-org-map
         ("r l" . org-roam)
         ("r f" . org-roam-find-file)
+        ("r c" . org-roam-capture)
         ("r g" . org-roam-graph)
         ("r i" . org-roam-insert)
         ("r I" . org-roam-insert-immediate)))
