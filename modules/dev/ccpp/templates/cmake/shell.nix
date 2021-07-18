@@ -8,6 +8,7 @@ let
   git = [
     git-quick-stats
     git-sizer
+    gitAndTools.git-chglog
     gitAndTools.git-filter-repo
     gitAndTools.git-machete
     gitAndTools.git-reparent
@@ -17,7 +18,7 @@ let
     gomp
   ];
 in mkShell {
-  buildInputs = base ++ stats ++ git ++ [ ];
+  buildInputs = base ++ stats ++ git ++ [ uncrustify debugedit ];
   shellHook = ''
     [ -f "./.aux" ] && source ./.aux
   '';

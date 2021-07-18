@@ -20,6 +20,7 @@ let
     binwalk
     hachoir
     radare2
+    elf-dissector
   ];
 in mkShell {
   buildInputs = base ++ git ++ reveng ++ [ ];
