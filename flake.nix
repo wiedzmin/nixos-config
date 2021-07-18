@@ -29,10 +29,6 @@
       url = "github:awth13/org-appear";
       flake = false;
     };
-    emacs-bruh = {
-      url = "github:a13/bruh";
-      flake = false;
-    };
     emacs-bookmark-view = {
       url = "github:minad/bookmark-view";
       flake = false;

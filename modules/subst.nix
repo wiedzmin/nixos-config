@@ -19,6 +19,7 @@ rec {
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
   globalWorkspaceRoot = homePrefix config.navigation.bookmarks.workspaces.globalRoot;
   emacsBrowserGenericProgram = "${pkgs.xdg_utils}/bin/xdg-open";
+  emacsBrowseUrlSetup = config.browsers.ext.emacs.browseUrlSetup;
   emacsCustomFile = homePrefix ".emacs.d/customizations.el";
   emacsDatadir = config.ide.emacs.core.dataDir;
   emacsServerSocketPath = "/run/user/${mainUserID}/emacs/server";
@@ -27,7 +28,6 @@ rec {
   emacsOrgAppearPath = inputs.emacs-org-appear;
   emacsOrgRoamPath = homePrefix "docs/org/roam";
   emacsOrgRoamDotBinary = "${pkgs.graphviz}/bin/dot";
-  emacsBruhPath = inputs.emacs-bruh;
   emacsBookmarkViewPath = inputs.emacs-bookmark-view;
   emacsConsultLsp = inputs.emacs-consult-lsp;
   emacsConsultProjectilePath = inputs.emacs-consult-projectile;

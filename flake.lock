@@ -47,22 +47,6 @@
         "type": "github"
       }
     },
-    "emacs-bruh": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1583761878,
-        "narHash": "sha256-th6PVVcDttxKoFsjRiPz50rQ7o+K5O90OBAR4QdpIfY=",
-        "owner": "a13",
-        "repo": "bruh",
-        "rev": "30eb2d966e66557e977d3cf943c71651c568771e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "a13",
-        "repo": "bruh",
-        "type": "github"
-      }
-    },
     "emacs-consult-lsp": {
       "flake": false,
       "locked": {
@@ -274,7 +258,6 @@
         "base16-rofi": "base16-rofi",
         "emacs": "emacs",
         "emacs-bookmark-view": "emacs-bookmark-view",
-        "emacs-bruh": "emacs-bruh",
         "emacs-consult-lsp": "emacs-consult-lsp",
         "emacs-consult-projectile": "emacs-consult-projectile",
         "emacs-ob-go": "emacs-ob-go",

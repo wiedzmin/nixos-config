@@ -72,6 +72,21 @@ in
         internal = true;
         description = "Chromium default window class.";
       };
+      # TODO: idea: advice link hint opening function to use "--new-tab" or such as argument after first link
+      # FIXME: consider refactoring `cfg.command` representation above
+      emacs.browseUrlSetup = mkOption {
+        type = types.lines;
+        default = ''
+          (use-package browse-url
+            :config
+            (setq browse-url-browser-function 'browse-url-chromium)
+            (setq browse-url-chromium-program "${builtins.head (splitString " " cfg.command)}")
+            (setq browse-url-chromium-arguments '("${builtins.head (builtins.tail (splitString " " cfg.command))}")))
+        '';
+        visible = false;
+        internal = true;
+        description = "Specialized Chromium-aware `browse-url` package setup";
+      };
       extraOpts = mkOption {
         type = types.attrs;
         description = ''
@@ -160,6 +175,8 @@ in
 
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
+
+      browsers.ext.emacs.browseUrlSetup = cfg.emacs.browseUrlSetup;
 
       workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
     })

@@ -25,6 +25,13 @@ in
           Whether to enable customized navigation for Emacs.
         '';
       };
+      emacs.browseUrlSetup = mkOption {
+        type = types.lines;
+        default = '''';
+        visible = false;
+        internal = true;
+        description = "Specialized `browse-url` package setup";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
