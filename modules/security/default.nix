@@ -104,7 +104,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.auth-source-pass epkgs.pass ];
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.pass ];
       ide.emacs.core.customKeymaps = { "custom-pass-map" = "<f6>"; };
       ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/security.el;
     })
