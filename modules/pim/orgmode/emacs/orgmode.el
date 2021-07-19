@@ -420,6 +420,8 @@
   (org-appear-autolinks t))
 
 (use-package org-roam
+  :init
+  (setq org-roam-v2-ack t)
   :hook
   (after-init . org-roam-mode)
   :custom
@@ -428,11 +430,14 @@
   (org-roam-db-location "@emacsOrgRoamPath@/org-roam.db")
   (org-roam-db-update-method 'immediate)
   (org-roam-tag-sources '(prop vanilla all-directories))
+  :config
+  (org-roam-setup)
+  (use-package org-roam-protocol)
   :bind
   (:map custom-org-map
-        ("r l" . org-roam)
-        ("r f" . org-roam-find-file)
-        ("r c" . org-roam-capture)
+        ("r b" . org-roam-buffer-toggle)
+        ("r f" . org-roam-node-find)
         ("r g" . org-roam-graph)
-        ("r i" . org-roam-insert)
-        ("r I" . org-roam-insert-immediate)))
+        ("r i" . org-roam-node-insert)
+        ("r c" . org-roam-capture)
+        ("r j" . org-roam-dailies-capture-today)))
