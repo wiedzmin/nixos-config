@@ -2,6 +2,9 @@
 
 with lib;
 
+# TODO: https://draculatheme.com/kitty
+# TODO: https://draculatheme.com/midnight-commander
+
 let
   cfg = config.appearance.colors.dracula;
   user = config.attributes.mainUser.name;
