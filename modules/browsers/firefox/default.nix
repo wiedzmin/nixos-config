@@ -433,12 +433,10 @@ in
 
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "firefox.desktop";
-        home.activation.ensureFirefoxIsDefault = {
-          after = [ ];
-          before = [ "linkGeneration" ];
-          data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser firefox.desktop";
-        };
       };
+      services.xserver.displayManager.sessionCommands = ''
+        ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser firefox.desktop
+      '';
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
 

@@ -117,12 +117,10 @@ in
 
       home-manager.users.${user} = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "nyxt.desktop";
-        home.activation.ensureNyxtIsDefault = {
-          after = [ ];
-          before = [ "linkGeneration" ];
-          data = "${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser nyxt.desktop";
-        };
       };
+      services.xserver.displayManager.sessionCommands = ''
+        ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser nyxt.desktop
+      '';
       shell.core.variables = [{ TB_DEFAULT_BROWSER = cfg.command; global = true; }];
 
       attributes.browser.default.cmd = cfg.command;
