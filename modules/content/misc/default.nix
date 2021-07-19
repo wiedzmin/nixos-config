@@ -36,6 +36,7 @@ in
           # =======
           frangipanni
           monolith
+          sftpman
         ];
 
         services.syncthing.enable = true; # TODO: consider separate option(s)
