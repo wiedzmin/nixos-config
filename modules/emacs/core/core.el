@@ -89,6 +89,7 @@
   :custom
   (use-dialog-box nil)
   (create-lockfiles nil)
+  (enable-recursive-minibuffers t)
   (minibuffer-prompt-properties
    '(read-only t point-entered minibuffer-avoid-prompt face minibuffer-prompt))
   (undo-limit 1000000)
