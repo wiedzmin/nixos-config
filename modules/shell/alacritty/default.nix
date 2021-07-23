@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.shell.vt.alacritty;
   user = config.attributes.mainUser.name;
-  terminalCmd = [ "${pkgs.alacritty}/bin/alacritty" "-e" ];
   prefix = config.wmCommon.prefix;
 in
 {
@@ -20,6 +19,11 @@ in
         type = types.bool;
         default = false;
         description = "Whether to autostart Alacritty with X session start";
+      };
+      command = mkOption {
+        type = types.listOf types.str;
+        default = [ "${pkgs.alacritty}/bin/alacritty" "-e" ];
+        description = "Default command line to invoke";
       };
       wm.enable = mkOption {
         type = types.bool;
@@ -37,10 +41,10 @@ in
         [ "(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/" ] "project:$1-$2-$3";
 
       shell.core.variables = [
-        { TERMINAL = builtins.head terminalCmd; global = true; }
-        { TB_TERMINAL_CMD = terminalCmd; }
+        { TERMINAL = builtins.head cfg.command; global = true; }
+        { TB_TERMINAL_CMD = cfg.command; }
       ];
-      attributes.defaultVTCommand = terminalCmd;
+      attributes.defaultVTCommand = cfg.command;
       home-manager.users."${user}" = {
         programs.alacritty = {
           enable = true;
@@ -79,12 +83,12 @@ in
             },
         }, "Alacritty")
       '';
-      wmCommon.autostart.entries = optionals (cfg.autostart) [ (builtins.head terminalCmd) ];
+      wmCommon.autostart.entries = optionals (cfg.autostart) [ (builtins.head cfg.command) ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ prefix "Shift" "Return" ];
-        cmd = builtins.head terminalCmd;
+        cmd = builtins.head cfg.command;
         mode = "root";
       }];
     })
