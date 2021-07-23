@@ -19,7 +19,7 @@ let
     gomp
   ];
 in mkShell {
-  buildInputs = env ++ base ++ stats ++ git ++ [ uncrustify debugedit ];
+  buildInputs = env ++ base ++ stats ++ git ++ [ uncrustify debugedit-unstable ];
   shellHook = ''
     [ -f "./.aux" ] && source ./.aux
   '';
