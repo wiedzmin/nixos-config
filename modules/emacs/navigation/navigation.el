@@ -124,6 +124,8 @@
         ("j" . consult-global-mark)
         ("o" . consult-outline)
         ("c" . consult-complex-command)
+        ("r l" . consult-register)
+        ("r s" . consult-register-store)
         ("m" . consult-multi-occur))
   (:map dired-mode-map
         ("`" . consult-file-externally))
@@ -411,7 +413,7 @@
 (use-package rg
   :bind
   (:map custom-nav-map
-        ("r" . rg)
+        ("f" . rg)
         ("d" . rg-project))
   :custom
   (rg-group-result t)
