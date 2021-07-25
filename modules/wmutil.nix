@@ -28,7 +28,7 @@ let
   };
   windowRulePlaceholdersI3 = {
     "class" = ''^@$'';
-    "title" = ''.*@.*'';
+    "title" = ''(?i).*@.*'';
     "role" = ''^@$'';
     "instance" = ''^@$'';
   };
