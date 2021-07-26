@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   stable = import inputs.stable ({
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
@@ -74,7 +73,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ JUST_CHOOSER = "rofi -dmenu"; }];
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ dfmt go-task just lnav nurpkgs.comby plantuml tagref xh ];
+        home.packages = with pkgs; [ dfmt go-task just lnav comby plantuml tagref xh ];
       };
       pim.timetracking.rules =
         mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ])
