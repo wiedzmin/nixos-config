@@ -139,6 +139,7 @@ in
         epkgs.plantuml-mode
         epkgs.webpaste
         epkgs.yaml-mode
+        epkgs.groovy-mode
       ];
       ide.emacs.core.config = readSubstitutedList ../../subst.nix [ ./emacs/misc.el ./emacs/lsp.el ];
       ide.emacs.core.customKeymaps = {

@@ -51,3 +51,8 @@
   (leetcode-prefer-sql "mysql")
   (leetcode-save-solutions t)
   (leetcode-directory "~/workspace/leetcode"))
+
+(use-package groovy-mode
+  :custom
+  (groovy-indent-offset 4)
+  (groovy-highlight-assignments t))
