@@ -8,9 +8,9 @@ let
 in {
   nixpkgs.config.packageOverrides = _: rec {
     "rescreen-${profileName}-i3" = mkShellScriptWithDeps "rescreen-${profileName}-i3" (with pkgs; [ i3 ]) ''
-      i3-msg --quiet "${mvWorkspacesI3Cmd config.wmCommon.workspaces "primary" "VGA-1"}${
-        mvWorkspacesI3Cmd config.wmCommon.workspaces "secondary" "VGA-1"
-      }${mvWorkspacesI3Cmd config.wmCommon.workspaces "tertiary" config.attributes.hardware.monitors.internalHead.name}"
+      i3-msg --quiet "${mvWorkspacesCmdI3 config.wmCommon.workspaces "primary" "VGA-1"}${
+        mvWorkspacesCmdI3 config.wmCommon.workspaces "secondary" "VGA-1"
+      }${mvWorkspacesCmdI3 config.wmCommon.workspaces "tertiary" config.attributes.hardware.monitors.internalHead.name}"
     '';
   };
   home-manager.users.${user} = {
@@ -41,7 +41,7 @@ in {
               rate = config.workstation.randr.defaults.rate;
             };
           };
-          hooks.postswitch = "rescreen-${profileName}-i3";
+          hooks.postswitch = lib.optionalString (config.wm.i3.enable) "rescreen-${profileName}-i3";
         };
       };
     };

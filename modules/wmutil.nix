@@ -86,7 +86,7 @@ rec {
         builtins.toString elt.fst
       }: ${elt.snd.name}
     ''));
-  mvWorkspacesI3Cmd = wsdata: type: head:
+  mvWorkspacesCmdI3 = wsdata: type: head:
     "${lib.concatStringsSep " " (lib.forEach (getWorkspacesByType (enumerateWorkspaces wsdata) type) (ws:
       "workspace --no-auto-back-and-forth ${
         builtins.toString ws.fst
