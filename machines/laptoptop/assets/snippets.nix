@@ -224,6 +224,10 @@ rec {
       description = "colorpicker";
       code = "grim -g \"$(slurp -p)\" -t ppm - | convert - -format '%[pixel:p{0,0}]' txt:- | tail -n 1 | cut -d ' ' -f 4 | wl-copy";
     }
+    {
+      description = "collect tag attrs over html file";
+      code = ''xidel data.html --extract '//img[@class="imageclass"]/@src' --output-format json > links.txt'';
+    }
   ];
   home-manager.users."${user}" = {
     xdg.configFile."espanso/user/personal.yml".text = ''
