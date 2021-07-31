@@ -69,7 +69,7 @@ in
         "media.common" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/content/media/templates/common";
       };
 
-      environment.systemPackages = with pkgs; [ ncmpcpp freetube ytfzf ];
+      environment.systemPackages = with pkgs; [ ncmpcpp freetube ytfzf moc ];
       home-manager.users.${user} = {
         xdg.configFile."espanso/user/content.yml".text = ''
           name: content
