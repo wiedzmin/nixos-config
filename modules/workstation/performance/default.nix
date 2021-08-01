@@ -24,6 +24,11 @@ in
         default = [ ];
         description = "Paths to pull.";
       };
+      oom.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable userspace oom solution(s)";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -51,6 +56,7 @@ in
           ACTION=="add|change", KERNEL=="sd[ab][!0-9]", ATTR{queue/scheduler}="kyber"
         '';
         irqbalance.enable = true;
+        earlyoom.enable = cfg.oom.enable;
       };
 
       home-manager.users.${user} = {

@@ -455,6 +455,7 @@ in
     };
     performance = {
       enable = true;
+      oom.enable = true;
       wm.enable = true;
     };
     lockscreen = {
