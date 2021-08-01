@@ -288,7 +288,7 @@
     :custom
     (dired-guess-shell-alist-user '(("" "xdg-open"))))
   (when (version<= "28.0.50" emacs-version)
-    (setq dired-kill-when-opening-new-dired-buffer t))
+    (setq dired-kill-when-opening-new-dired-buffer nil))
   (put 'dired-find-alternate-file 'disabled nil)
   (advice-add 'dired-do-rename :after #'custom/revert-dired-buffer)
   (advice-add 'dired-create-directory :after #'custom/revert-dired-buffer)
