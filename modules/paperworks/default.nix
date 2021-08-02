@@ -349,7 +349,7 @@ in
     })
     (mkIf cfg.processors.enable {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ enca pandoc pdfcpu pdftk pdfslicer ocamlPackages.cpdf ];
+        home.packages = with pkgs; [ enca pandoc pdfcpu pdftk pdfchain pdfslicer ocamlPackages.cpdf ];
       };
     })
   ];
