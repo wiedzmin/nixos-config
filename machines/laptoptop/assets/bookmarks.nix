@@ -432,6 +432,11 @@ rec {
       tags = [ "media" "video" ];
       remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbtFoRo94tXdDBgjwsTh02r";
     };
+    "andrewtropin/playlists" = {
+      desc = "playlists of IT-related videos by Andrew Tropin";
+      tags = [ "it" "nix" "guix" "emacs" "video" ];
+      remote.url = "https://www.youtube.com/c/TROP1N/playlists";
+    };
     "ya" = {
       desc = "Yandex";
       remote = {
