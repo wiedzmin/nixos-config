@@ -75,7 +75,12 @@
              ;; Pass relative file names for dired.
              minibuffer-completing-file-name))))
   :bind
-  ("C-S-a" . embark-act)
+  ;FIXME: check deps and overall workflow, does no work well for now
+  ("C-S-a" . embark-act)                ; C-.
+  ("C-S-d" . embark-dwim)               ; M-.
+  (:map selectrum-minibuffer-map
+        ("M-e" . embark-export)
+        ("M-c" . embark-collect-snapshot))
   (:map iso-transl-ctl-x-8-map
         ("RET" . embark-save-unicode-character))
   :hook
