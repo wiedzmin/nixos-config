@@ -29,6 +29,12 @@ rec {
       desktop = "edit";
     }
     {
+      class = "Emacs";
+      title = "agenda.org";
+      desktop = "edit";
+      activate = true;
+    }
+    {
       class = "TelegramDesktop";
       desktop = "im";
     }

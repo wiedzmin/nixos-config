@@ -735,6 +735,7 @@ rec {
       browser = config.attributes.browser.fallback.cmd;
       remote = { url = "https://www.youtube.com/channel/UCtMZD_UHQxCowHltovfEnvQ"; };
     };
+    agenda = { local.path = homePrefix "docs/org/agenda.org"; };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook";
 }
