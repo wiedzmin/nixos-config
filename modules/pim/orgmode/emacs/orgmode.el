@@ -419,9 +419,15 @@
   :custom
   (org-appear-autolinks t))
 
+;; TODO: review/debug graph generation under v2
+;; TODO: review manual at https://www.orgroam.com/manual.html
+;; TODO: review https://github.com/search?q=org-roam-capture-templates&type=code
+;; TODO: review https://github.com/search?q=org-roam-capture-ref-templates&type=code
+;; TODO: review https://www.reddit.com/r/OrgRoam/comments/or31g0/a_few_qol_tricks_i_havent_seen_much_of_on_the/
 (use-package org-roam
   :init
   (setq org-roam-v2-ack t)
+  (setq org-roam-db-gc-threshold most-positive-fixnum)
   :hook
   (after-init . org-roam-mode)
   :custom
@@ -430,6 +436,7 @@
   (org-roam-db-location "@emacsOrgRoamPath@/org-roam.db")
   (org-roam-db-update-method 'immediate)
   (org-roam-tag-sources '(prop vanilla all-directories))
+  (org-roam-verbose t)
   :config
   (org-roam-setup)
   (use-package org-roam-protocol)
