@@ -77,6 +77,7 @@
     ./shell/core
     ./shell/prompts/liquid
     ./shell/prompts/ohmyzsh
+    ./shell/prompts/powerline-go
     ./shell/prompts/starship
     ./shell/tmux
     ./shell/tmux/impl.nix
