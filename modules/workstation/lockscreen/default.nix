@@ -5,7 +5,9 @@ with lib;
 
 let
   cfg = config.workstation.lockscreen;
-in {
+  user = config.attributes.mainUser.name;
+in
+{
   options = {
     workstation.lockscreen = {
       enable = mkOption {
@@ -65,22 +67,21 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      systemd.user.services."screenlocker" = {
-        description = "Lock the screen automatically after a timeout";
-        after = [ "graphical-session-pre.target" ];
-        partOf = [ "graphical-session.target" ];
-        wantedBy = [ "graphical-session.target" ];
-        path = [ pkgs.bash ];
-        serviceConfig = {
-          Type = "simple";
-          ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
-          ExecStart = ''
-            ${pkgs.xidlehook}/bin/xidlehook \
-                  ${optionalString cfg.respect.playback "--not-when-audio"} \
-                  ${optionalString cfg.respect.fullscreen "--not-when-fullscreen"} \
-                  --timer ${builtins.toString cfg.timers.alert} "${cfg.command.notify}" "" \
-                  --timer ${builtins.toString cfg.timers.lock} "${cfg.command.lock}" ""
-          '';
+      home-manager.users."${user}" = {
+        services.xidlehook = {
+          enable = true;
+          not-when-fullscreen = cfg.respect.fullscreen;
+          not-when-audio = cfg.respect.playback;
+          timers = [
+            {
+              delay = cfg.timers.alert;
+              command = cfg.command.notify;
+            }
+            {
+              delay = cfg.timers.lock;
+              command = cfg.command.lock;
+            }
+          ];
         };
       };
     })
