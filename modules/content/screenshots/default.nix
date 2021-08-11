@@ -7,10 +7,6 @@ let
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos;
   prefix = config.wmCommon.prefix;
-  stable = import inputs.stable ({
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  });
 in
 {
   options = {
@@ -64,7 +60,7 @@ in
           };
         in
         {
-          home.packages = with pkgs; [ stable.flameshot ];
+          services.flameshot.enable = true;
           xdg.configFile."flameshot.ini".text = flameshot_config_text;
           xdg.configFile."flameshot/flameshot.ini".text = flameshot_config_text;
         };
@@ -93,17 +89,17 @@ in
       wmCommon.keys = [
         {
           key = [ "Print" ];
-          cmd = "${stable.flameshot}/bin/flameshot screen --path ${cfg.baseDir}";
+          cmd = "${pkgs.flameshot}/bin/flameshot screen --path ${cfg.baseDir}";
           mode = "root";
         }
         {
           key = [ "Control" "Print" ];
-          cmd = "${stable.flameshot}/bin/flameshot full --path ${cfg.baseDir}";
+          cmd = "${pkgs.flameshot}/bin/flameshot full --path ${cfg.baseDir}";
           mode = "root";
         }
         {
           key = [ prefix "Print" ];
-          cmd = "${stable.flameshot}/bin/flameshot gui";
+          cmd = "${pkgs.flameshot}/bin/flameshot gui";
           mode = "root";
         }
       ];
