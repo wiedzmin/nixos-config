@@ -34,6 +34,37 @@ in
           lsd = {
             enable = true;
             enableAliases = true;
+            settings = {
+              classic = false;
+              blocks = [
+                "permission"
+                "user"
+                "group"
+                "size"
+                "date"
+                "name"
+              ];
+              color = {
+                when = "auto";
+              };
+              date = "+%a %Y %b %d %X";
+              dereference = true;
+              icons = {
+                when = "auto";
+                theme = "fancy";
+                separator = " ";
+              };
+              layout = "grid";
+              size = "default";
+              sorting = {
+                column = "name";
+                reverse = false;
+                dir-grouping = "first";
+              };
+              no-symlink = false;
+              total-size = true;
+              symlink-arrow = "⇒";
+            };
           };
           bat = {
             enable = true;
