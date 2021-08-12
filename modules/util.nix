@@ -109,6 +109,19 @@ rec {
   emacsBoolToString = v: if v == true then "t" else "nil";
   wsRoot = key: lib.getAttrFromPath [ key ] config.navigation.bookmarks.workspaces.roots;
   wsRootAtHomedir = key: lib.removePrefix (homePrefix "") key;
+  mkGithubBookmark = user: repo: {
+    local.path = "${wsRoot "github"}/${user}/${repo}";
+    remote.url = "https://github.com/${user}/${repo}";
+  };
+  mkGithubBookmarkWithMyrepos = user: repo: {
+    local.path = "${wsRoot "github"}/${user}/${repo}";
+    remote.url = "https://github.com/${user}/${repo}";
+    myrepos = {
+      "${wsRoot "github"}/${user}/${repo}" = {
+        checkout = [ "git clone 'https://github.com/${user}/${repo}.git' '${repo}'" ];
+      };
+    };
+  };
   selectorFunction = lib.mkOptionType {
     name = "selectorFunction";
     description = "Function that takes an attribute set and returns a list"

@@ -83,33 +83,9 @@ rec {
       desc = "Networking beginner book (online)";
       remote.url = "https://linkmeup.gitbook.io/sdsm/0.-planirovanie";
     };
-    "toolbox" = {
-      local.path = "${wsRoot "github"}/wiedzmin/toolbox";
-      remote.url = "https://github.com/wiedzmin/toolbox/";
-      myrepos = {
-        "${wsRoot "github"}/wiedzmin/toolbox" = {
-          checkout = [ "git clone 'https://github.com/wiedzmin/toolbox.git' 'toolbox'" ];
-        };
-      };
-    };
-    "wmtools" = {
-      local.path = "${wsRoot "github"}/wiedzmin/wmtools";
-      remote.url = "https://github.com/wiedzmin/wmtools/";
-      myrepos = {
-        "${wsRoot "github"}/wiedzmin/wmtools" = {
-          checkout = [ "git clone 'https://github.com/wiedzmin/wmtools.git' 'wmtools'" ];
-        };
-      };
-    };
-    "libtmux-go" = {
-      local.path = "${wsRoot "github"}/wiedzmin/libtmux-go";
-      remote.url = "https://github.com/wiedzmin/libtmux-go/";
-      myrepos = {
-        "${wsRoot "github"}/wiedzmin/libtmux-go" = {
-          checkout = [ "git clone 'https://github.com/wiedzmin/libtmux-go.git' 'libtmux-go'" ];
-        };
-      };
-    };
+    "toolbox" = mkGithubBookmarkWithMyrepos "wiedzmin" "toolbox";
+    "wmtools" = mkGithubBookmarkWithMyrepos "wiedzmin" "wmtools";
+    "libtmux-go" = mkGithubBookmarkWithMyrepos "wiedzmin" "libtmux-go";
     "lumosity" = {
       desc = "Lumosity";
       remote.url = "https://lumosity.com/";
@@ -651,70 +627,21 @@ rec {
       tags = [ "search" "libraries" "emacs" "elisp" ];
       remote.url = "https://www.libhunt.com/l/emacs-lisp";
     };
-    "projects/loggerhead" = { local.path = "${wsRoot "github"}/wiedzmin/loggerhead"; }; # arbtt analog
-    "projects/gourmet" = {
-      local.path = "${wsRoot "github"}/wiedzmin/gourmet";
-      myrepos = {
-        "${wsRoot "github"}/wiedzmin/gourmet" = {
-          checkout = [ "git clone 'https://github.com/wiedzmin/gourmet.git' 'gourmet'" ];
-        };
-      };
-    }; # bookmarks
-    "mastering/wiedzmin/cl-study" = {
-      local.path = "${wsRoot "github"}/wiedzmin/cl-study";
-      remote.url = "https://github.com/wiedzmin/cl-study";
-      myrepos = {
-        "${wsRoot "github"}/wiedzmin/cl-study" = {
-          checkout = [ "git clone 'https://github.com/wiedzmin/cl-study.git' 'cl-study'" ];
-        };
-      };
-    };
-    "mastering/wiedzmin/lisp-koans" = {
-      local.path = "${wsRoot "github"}/wiedzmin/lisp-koans";
-      remote.url = "https://github.com/wiedzmin/lisp-koans";
-      myrepos = {
-        "${wsRoot "github"}/wiedzmin/lisp-koans" = {
-          checkout = [ "git clone 'https://github.com/wiedzmin/lisp-koans.git' 'lisp-koans'" ];
-        };
-      };
-    };
-    "projects/reference/go-org" = {
-      local.path = "${wsRoot "github"}/niklasfasching/go-org";
-      remote.url = "https://github.com/niklasfasching/go-org";
-    };
-    "projects/reference/xgb" = {
-      local.path = "${wsRoot "github"}/BurntSushi/xgb";
-      remote.url = "https://github.com/BurntSushi/xgb";
-    };
-    "projects/reference/xgbutil" = {
-      local.path = "${wsRoot "github"}/BurntSushi/xgbutil";
-      remote.url = "https://github.com/BurntSushi/xgbutil";
-    };
-    "projects/reference/arbtt" = {
-      local.path = "${wsRoot "github"}/nomeata/arbtt";
-      remote.url = "https://github.com/nomeata/arbtt";
-    };
-    "projects/reference/code-maat" = {
+    "projects/loggerhead" = mkGithubBookmark "wiedzmin" "loggerhead"; # arbtt analog
+    "projects/gourmet" = mkGithubBookmarkWithMyrepos "wiedzmin" "gourmet";
+    "mastering/wiedzmin/cl-study" = mkGithubBookmarkWithMyrepos "wiedzmin" "cl-study";
+    "mastering/wiedzmin/lisp-koans" = mkGithubBookmarkWithMyrepos "wiedzmin" "lisp-koans";
+    "projects/reference/go-org" = mkGithubBookmark "niklasfasching" "go-org";
+    "projects/reference/xgb" = mkGithubBookmark "BurntSushi" "xgb";
+    "projects/reference/xgbutil" = mkGithubBookmark "BurntSushi" "xgbutil";
+    "projects/reference/arbtt" = mkGithubBookmark "nomeata" "arbtt";
+    "projects/reference/code-maat" = mkGithubBookmark "adamtornhill" "code-maat" // {
       # TODO: https://grahamenos.com/ft-clojure-nix.html - java/clojure packaging
       transient = true;
-      local.path = "${wsRoot "github"}/adamtornhill/code-maat";
-      remote.url = "https://github.com/adamtornhill/code-maat";
     };
-    "rofi" = {
-      transient = true;
-      local.path = "${wsRoot "github"}/davatorium/rofi";
-      remote.url = "https://github.com/davatorium/rofi";
-    };
-    "nyxt" = {
-      transient = true;
-      local.path = "${wsRoot "github"}/atlas-engineer/nyxt";
-      remote.url = "https://github.com/atlas-engineer/nyxt";
-    };
-    "libtmux" = {
-      transient = true;
-      local.path = "${wsRoot "github"}/tmux-python/libtmux";
-      remote.url = "https://github.com/tmux-python/libtmux";
-    };
+    "rofi" = mkGithubBookmark "davatorium" "rofi" // { transient = true; };
+    "nyxt" = mkGithubBookmark "atlas-engineer" "nyxt" // { transient = true; };
+    "libtmux" = mkGithubBookmark "tmux-python" "libtmux" // { transient = true; };
     "paintings" = {
       tags = [ "paint" "play" ];
       browser = config.attributes.browser.fallback.cmd;
