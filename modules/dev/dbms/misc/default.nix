@@ -36,7 +36,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       dev.projectenv.templates.entries = {
-        "tools.dbms" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/dbms/misc/templates/dbms";
+        "tools.dbms" = configPrefix "modules/dev/dbms/misc/templates/dbms";
       };
     })
     (mkIf (cfg.enable && cfg.controlCenter.enable) {

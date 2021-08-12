@@ -55,7 +55,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       dev.projectenv.templates.entries = {
-        "python.project" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/python/templates/project";
+        "python.project" = configPrefix "modules/dev/python/templates/project";
       };
       dev.projectenv.templates.settings.common = {
         "pythonColumnLimit" = cfg.lineLengthThreshold;

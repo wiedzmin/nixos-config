@@ -94,7 +94,7 @@ in
               - window_name: repl
                 panes:
                   - shell_command:
-                    - cd ${wsRoot "github"}/wiedzmin/nixos-config
+                    - cd ${configPrefix ""}
                     - nix repl ./flake-repl.nix
               - window_name: files
                 panes:
@@ -102,7 +102,7 @@ in
               - window_name: nixos
                 panes:
                   - shell_command:
-                    - cd ${wsRoot "github"}/wiedzmin/nixos-config
+                    - cd ${configPrefix ""}
           '';
         };
       };

@@ -46,8 +46,8 @@ in {
         "hpp" = "coding:cpp";
       };
       dev.projectenv.templates.entries = {
-        "ccpp.generic" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/ccpp/templates/generic";
-        "ccpp.cmake" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/ccpp/templates/cmake";
+        "ccpp.generic" = configPrefix "modules/dev/ccpp/templates/generic";
+        "ccpp.cmake" = configPrefix "modules/dev/ccpp/templates/cmake";
       };
     })
     (mkIf (cfg.enable && cfg.rootMarkers.enable) {

@@ -41,7 +41,7 @@ in {
         };
       };
       dev.projectenv.templates.entries = {
-        "frontend.vue" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/frontend/templates/vue";
+        "frontend.vue" = configPrefix "modules/dev/frontend/templates/vue";
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

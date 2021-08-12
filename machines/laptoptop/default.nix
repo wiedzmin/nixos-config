@@ -333,7 +333,7 @@ in
   navigation = {
     bookmarks = {
       enable = true;
-      workspaces.globalRoot = "workspace/repos";
+      workspaces.globalRoot = homePrefix "workspace/repos";
       emacs.enable = true;
     };
   };

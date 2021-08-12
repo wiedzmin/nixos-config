@@ -71,10 +71,12 @@ rec {
   homePrefix = suffix: "/home/${user}/" + suffix;
   goBinPrefix = suffix: "/home/${user}/workspace/go/bin/" + suffix;
   xdgConfig = suffix: (homePrefix ".config") + suffix;
+  configPrefix = suffix:
+    "${wsRoot "github"}/wiedzmin/nixos-config/" + suffix;
   secretsPrefix = suffix:
-    "${wsRoot "github"}/wiedzmin/nixos-config/machines/" + config.attributes.machine.name + "/secrets/" + suffix;
+    configPrefix ("machines/" + config.attributes.machine.name + "/secrets/" + suffix);
   assetsPrefix = suffix:
-    "${wsRoot "github"}/wiedzmin/nixos-config/machines/" + config.attributes.machine.name + "/assets/" + suffix;
+    configPrefix ("machines/" + config.attributes.machine.name + "/assets/" + suffix);
   fromYAML = yaml:
     builtins.fromJSON (builtins.readFile (pkgs.runCommand "from-yaml"
       {
@@ -106,7 +108,7 @@ rec {
   maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
   emacsBoolToString = v: if v == true then "t" else "nil";
   wsRoot = key: lib.getAttrFromPath [ key ] config.navigation.bookmarks.workspaces.roots;
-  wsRootAbs = key: homePrefix (wsRoot key);
+  wsRootAtHomedir = key: lib.removePrefix (homePrefix "") key;
   selectorFunction = lib.mkOptionType {
     name = "selectorFunction";
     description = "Function that takes an attribute set and returns a list"

@@ -72,9 +72,9 @@ in
 
       dev.projectenv.templates.entries = {
         # TODO: consider unbind lp-repl from golang since it is more of common functionality
-        "golang.lp-repl" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/golang/templates/lp-repl";
-        "golang.nix" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/golang/templates/go2nix";
-        "golang.project" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/golang/templates/project";
+        "golang.lp-repl" = configPrefix "modules/dev/golang/templates/lp-repl";
+        "golang.nix" = configPrefix "modules/dev/golang/templates/go2nix";
+        "golang.project" = configPrefix "modules/dev/golang/templates/project";
       };
 
       dev.projectenv.templates.settings.common = { "golangEnableModules" = true; };

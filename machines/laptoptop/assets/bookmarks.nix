@@ -58,7 +58,7 @@ rec {
         searchSuffix = "search?q=";
       };
       myrepos = {
-        "${wsRootAbs "github"}/wiedzmin/git-hooks" = {
+        "${wsRoot "github"}/wiedzmin/git-hooks" = {
           checkout = [ "git clone 'https://github.com/wiedzmin/git-hooks.git' 'git-hooks'" ];
         };
       };
@@ -87,7 +87,7 @@ rec {
       local.path = "${wsRoot "github"}/wiedzmin/toolbox";
       remote.url = "https://github.com/wiedzmin/toolbox/";
       myrepos = {
-        "${wsRootAbs "github"}/wiedzmin/toolbox" = {
+        "${wsRoot "github"}/wiedzmin/toolbox" = {
           checkout = [ "git clone 'https://github.com/wiedzmin/toolbox.git' 'toolbox'" ];
         };
       };
@@ -96,7 +96,7 @@ rec {
       local.path = "${wsRoot "github"}/wiedzmin/wmtools";
       remote.url = "https://github.com/wiedzmin/wmtools/";
       myrepos = {
-        "${wsRootAbs "github"}/wiedzmin/wmtools" = {
+        "${wsRoot "github"}/wiedzmin/wmtools" = {
           checkout = [ "git clone 'https://github.com/wiedzmin/wmtools.git' 'wmtools'" ];
         };
       };
@@ -105,7 +105,7 @@ rec {
       local.path = "${wsRoot "github"}/wiedzmin/libtmux-go";
       remote.url = "https://github.com/wiedzmin/libtmux-go/";
       myrepos = {
-        "${wsRootAbs "github"}/wiedzmin/libtmux-go" = {
+        "${wsRoot "github"}/wiedzmin/libtmux-go" = {
           checkout = [ "git clone 'https://github.com/wiedzmin/libtmux-go.git' 'libtmux-go'" ];
         };
       };
@@ -655,7 +655,7 @@ rec {
     "projects/gourmet" = {
       local.path = "${wsRoot "github"}/wiedzmin/gourmet";
       myrepos = {
-        "${wsRootAbs "github"}/wiedzmin/gourmet" = {
+        "${wsRoot "github"}/wiedzmin/gourmet" = {
           checkout = [ "git clone 'https://github.com/wiedzmin/gourmet.git' 'gourmet'" ];
         };
       };
@@ -664,7 +664,7 @@ rec {
       local.path = "${wsRoot "github"}/wiedzmin/cl-study";
       remote.url = "https://github.com/wiedzmin/cl-study";
       myrepos = {
-        "${wsRootAbs "github"}/wiedzmin/cl-study" = {
+        "${wsRoot "github"}/wiedzmin/cl-study" = {
           checkout = [ "git clone 'https://github.com/wiedzmin/cl-study.git' 'cl-study'" ];
         };
       };
@@ -673,7 +673,7 @@ rec {
       local.path = "${wsRoot "github"}/wiedzmin/lisp-koans";
       remote.url = "https://github.com/wiedzmin/lisp-koans";
       myrepos = {
-        "${wsRootAbs "github"}/wiedzmin/lisp-koans" = {
+        "${wsRoot "github"}/wiedzmin/lisp-koans" = {
           checkout = [ "git clone 'https://github.com/wiedzmin/lisp-koans.git' 'lisp-koans'" ];
         };
       };

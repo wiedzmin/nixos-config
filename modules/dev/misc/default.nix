@@ -97,8 +97,8 @@ in
         inputsUnstableRev = inputs.unstable.rev;
       };
       dev.projectenv.templates.entries = {
-        "ansible" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/dbms/misc/templates/ansible";
-        "reveng" = "${homePrefix (wsRoot "github")}/wiedzmin/nixos-config/modules/dev/dbms/misc/templates/reveng";
+        "ansible" = configPrefix "modules/dev/dbms/misc/templates/ansible" ;
+        "reveng" = configPrefix "modules/dev/dbms/misc/templates/reveng";
       };
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
