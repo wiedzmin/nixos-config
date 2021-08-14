@@ -2,7 +2,9 @@
 with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
-let cfg = config.workstation.power.mgmt;
+let
+  cfg = config.workstation.power.mgmt;
+  user = config.attributes.mainUser.name;
 in
 {
   options = {
@@ -41,6 +43,9 @@ in
       services = {
         upower.enable = true;
         tuptime.enable = true;
+      };
+      home-manager.users."${user}" = {
+        services.poweralertd.enable = true;
       };
     })
     (mkIf (cfg.enable && cfg.laptop.enable) {
