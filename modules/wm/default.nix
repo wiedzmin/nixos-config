@@ -146,7 +146,7 @@ in
         ${pkgs.redis}/bin/redis-cli set wm/window_rules ${
           lib.strings.escapeNixString (builtins.toJSON (builtins.filter
             (r: !builtins.hasAttr "scratchpad" r || (builtins.hasAttr "scratchpad" r && r.scratchpad == false))
-            (lib.forEach cfg.wsMapping.rules prepareWindowRule)))
+            (lib.forEach (windowRulesFromBookmarks config.navigation.bookmarks.entries ++ cfg.wsMapping.rules) prepareWindowRule)))
         }
       '';
     })

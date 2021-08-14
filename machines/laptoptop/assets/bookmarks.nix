@@ -21,6 +21,13 @@ rec {
         jump = true;
         searchSuffix = "search?q=";
       };
+      windowRules = [
+        {
+          class = "Emacs";
+          title = "nixos";
+          desktop = "edit";
+        }
+      ];
     };
     nixpkgs = {
       desc = "Nixpkgs upstream repo";
@@ -83,8 +90,24 @@ rec {
       desc = "Networking beginner book (online)";
       remote.url = "https://linkmeup.gitbook.io/sdsm/0.-planirovanie";
     };
-    "toolbox" = mkGithubBookmarkWithMyrepos "wiedzmin" "toolbox";
-    "wmtools" = mkGithubBookmarkWithMyrepos "wiedzmin" "wmtools";
+    "toolbox" = mkGithubBookmarkWithMyrepos "wiedzmin" "toolbox" // {
+      windowRules = [
+        {
+          class = "Emacs";
+          title = "toolbox";
+          desktop = "edit";
+        }
+      ];
+    };
+    "wmtools" = mkGithubBookmarkWithMyrepos "wiedzmin" "wmtools" // {
+      windowRules = [
+        {
+          class = "Emacs";
+          title = "wmtools";
+          desktop = "edit";
+        }
+      ];
+    };
     "libtmux-go" = mkGithubBookmarkWithMyrepos "wiedzmin" "libtmux-go";
     "lumosity" = {
       desc = "Lumosity";
@@ -103,6 +126,13 @@ rec {
     "emacs-news" = {
       desc = "Emacs news";
       remote.url = "https://sachachua.com/blog/category/emacs-news/";
+      windowRules = [
+        {
+          class = mkWSMappingBrowsersRegexp;
+          title = "sachachua emacs news";
+          desktop = "web";
+        }
+      ];
     };
     "chillout" = {
       desc = "Music streams"; # note /chillout
@@ -260,6 +290,13 @@ rec {
     "nixos-status" = {
       desc = "NixOS status page";
       remote.url = "https://status.nixos.org/";
+      windowRules = [
+        {
+          class = mkWSMappingBrowsersRegexp;
+          title = "status nixos";
+          desktop = "web";
+        }
+      ];
     };
     "torrefacto" = {
       desc = "Torrefacto shop";
@@ -281,6 +318,13 @@ rec {
     "fb" = {
       tags = [ "fb" ];
       remote.url = "https://www.facebook.com/";
+      windowRules = [
+        {
+          class = mkWSMappingBrowsersRegexp;
+          title = "http facebook";
+          desktop = "ent";
+        }
+      ];
     };
     "fbmess" = {
       desc = "Facebook Messenger";
@@ -294,6 +338,13 @@ rec {
         url = "https://www.multitran.com/m.exe?l1=1&l2=2";
         searchSuffix = "&s=";
       };
+      windowRules = [
+        {
+          class = mkWSMappingBrowsersRegexp;
+          title = "multitran";
+          desktop = "web";
+        }
+      ];
     };
     "ventusky" = {
       desc = "Weather map / temperature";
@@ -420,6 +471,13 @@ rec {
         jump = true;
         searchSuffix = "search/?text=";
       };
+      windowRules = [
+        {
+          class = mkWSMappingBrowsersRegexp;
+          title = "http yandex";
+          desktop = "web";
+        }
+      ];
     };
     "lol" = {
       desc = "LOL paintings";
@@ -662,7 +720,17 @@ rec {
       browser = config.attributes.browser.fallback.cmd;
       remote = { url = "https://www.youtube.com/channel/UCtMZD_UHQxCowHltovfEnvQ"; };
     };
-    agenda = { local.path = homePrefix "docs/org/agenda.org"; };
+    agenda = {
+      local.path = homePrefix "docs/org/agenda.org";
+      windowRules = [
+        {
+          class = "Emacs";
+          title = "agenda.org";
+          desktop = "edit";
+          activate = true;
+        }
+      ];
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook";
 }

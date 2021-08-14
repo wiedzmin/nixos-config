@@ -250,6 +250,10 @@ rec {
   remoteSearchEngines = remotes: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkSearchengineDest meta))
       (lib.filterAttrs (_: meta: (lib.hasAttrByPath [ "searchSuffix" ] meta)) remotes);
+  windowRulesFromBookmarks = bookmarks:
+    lib.foldl (a: b: a ++ b) []
+      (lib.mapAttrsToList (_: meta: meta.windowRules)
+        (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "windowRules" ] meta) bookmarks));
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
   concatStringListsRaw = sep: ll: lib.concatStringsSep sep (lib.flatten ll);
   takeLast = n: l: with lib; reverseList (take n (reverseList l));

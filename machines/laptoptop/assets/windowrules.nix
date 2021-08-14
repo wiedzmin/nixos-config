@@ -9,32 +9,6 @@ rec {
       desktop = "shell";
     }
     {
-      class = "Emacs";
-      title = "nixos";
-      desktop = "edit";
-    }
-    {
-      class = "Emacs";
-      title = "nixpkgs-channels";
-      desktop = "edit";
-    }
-    {
-      class = "Emacs";
-      title = "toolbox";
-      desktop = "edit";
-    }
-    {
-      class = "Emacs";
-      title = "wmtools";
-      desktop = "edit";
-    }
-    {
-      class = "Emacs";
-      title = "agenda.org";
-      desktop = "edit";
-      activate = true;
-    }
-    {
       class = "TelegramDesktop";
       desktop = "im";
     }
@@ -66,11 +40,6 @@ rec {
     }
     {
       class = mkWSMappingBrowsersRegexp;
-      title = "http facebook";
-      desktop = "ent";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp;
       title = "http fbclid";
       desktop = "ent";
     }
@@ -97,11 +66,6 @@ rec {
     {
       class = mkWSMappingBrowsersRegexp;
       title = "http nixos planet";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp;
-      title = "status nixos";
       desktop = "web";
     }
     {
@@ -136,11 +100,6 @@ rec {
     }
     {
       class = mkWSMappingBrowsersRegexp;
-      title = "http yandex";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp;
       title = "(Oo)rg http youtube";
       desktop = "web";
     }
@@ -162,11 +121,6 @@ rec {
     {
       class = mkWSMappingBrowsersRegexp;
       title = "nixos github";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp;
-      title = "sachachua emacs news";
       desktop = "web";
     }
     {
@@ -197,11 +151,6 @@ rec {
     {
       class = mkWSMappingBrowsersRegexp;
       title = "www.google.com";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp;
-      title = "multitran";
       desktop = "web";
     }
     {
