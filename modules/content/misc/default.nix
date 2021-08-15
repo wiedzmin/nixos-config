@@ -40,7 +40,12 @@ in
         ];
 
         services.syncthing.enable = true; # TODO: consider separate option(s)
-        programs.aria2.enable = true;
+        programs.aria2 = {
+          enable = true;
+          settings = {
+            seed-ratio = 1.0;
+          };
+        };
         programs.zsh.shellAliases = {
           yg = "${pkgs.you-get}/bin/you-get";
         };
