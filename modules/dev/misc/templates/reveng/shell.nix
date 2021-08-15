@@ -21,7 +21,9 @@ let
     hachoir
     radare2
     elf-dissector
+    xcd
   ];
-in mkShell {
+in
+mkShell {
   buildInputs = base ++ git ++ reveng ++ [ ];
 }
