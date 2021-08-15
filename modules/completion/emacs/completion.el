@@ -145,3 +145,9 @@
   (yas-wrap-around-region t)
   (yas-snippet-dirs '(yas-installed-snippets-dir
                       "@emacsYasnippetSnippets@")))
+
+(use-package all-the-icons-completion
+  :hook
+  (marginalia-mode-hook . all-the-icons-completion-marginalia-setup)
+  :config
+  (all-the-icons-completion-mode))
