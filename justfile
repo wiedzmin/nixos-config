@@ -55,3 +55,6 @@ fix-pre-commit:
     pre-commit install --hook-type prepare-commit-msg
     pre-commit install --hook-type pre-push
 
+# Collect garbage
+collect-garbage:
+    sudo nix-collect-garbage -d
