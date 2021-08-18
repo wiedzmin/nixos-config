@@ -386,8 +386,6 @@
 (use-package org-protocol
   :after org server)
 
-(use-package org-drill)
-
 (use-package org-rich-yank
   :after org
   :bind
