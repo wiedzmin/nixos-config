@@ -8,6 +8,7 @@ let
   hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   configHome = hm.xdg.configHome;
+  prefix = config.wmCommon.prefix;
 in {
   options = {
     ext.virtualization.docker.core = {
@@ -114,18 +115,21 @@ in {
       ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/docker.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.modeBindings = {
+        "docker" = [ prefix "Shift" "d" ];
+      };
       wmCommon.keys = [
         {
           key = [ "t" ];
           cmd = "${pkgs.docker_containers_traits}/bin/docker_containers_traits";
           desktop = "shell";
-          mode = "virt";
+          mode = "docker";
         }
         {
           key = [ "s" ];
           cmd = "${pkgs.docker_shell}/bin/docker_shell";
           desktop = "shell";
-          mode = "virt";
+          mode = "docker";
         }
       ];
     })

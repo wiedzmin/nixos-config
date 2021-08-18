@@ -4,6 +4,7 @@ with lib;
 let
   cfg = config.ext.networking.core;
   user = config.attributes.mainUser.name;
+  prefix = config.wmCommon.prefix;
 in
 {
   options = {
@@ -76,6 +77,9 @@ in
                   params:
                     cmd: "curl 'https://api.ipify.org'"
         '';
+      };
+      wmCommon.modeBindings = {
+        "network" = [ prefix "n" ];
       };
       wmCommon.wsMapping.rules = [{
         class = "Anydesk";

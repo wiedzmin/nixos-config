@@ -79,6 +79,9 @@ in
       ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/browsers.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.modeBindings = {
+        "browser" = [ prefix "b" ];
+      };
       wmCommon.keys = [
         {
           key = [ prefix "slash" ];

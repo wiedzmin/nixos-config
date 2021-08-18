@@ -100,21 +100,8 @@ in
         enable = true;
         autostart.entries = [ "${pkgs.i3-auto-layout}/bin/i3-auto-layout" ];
         modeBindings = {
-          # TODO: check if we can unwire this from i3
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
-          "browser" = [ prefix "b" ];
-          "dev" = [ prefix "d" ];
-          "layout" = [ prefix "<" ];
-          "network" = [ prefix "n" ];
-          "resize" = [ prefix "=" ];
-          "run" = [ prefix "r" ];
-          "select" = [ prefix "." ];
-          "services" = [ prefix "s" ];
-          "sound" = [ prefix "Home" ];
-          "virt" = [ prefix "v" ];
-          "window" = [ prefix "w" ];
           "scratchpad" = [ prefix "grave" ];
-          "xserver" = [ prefix "x" ];
         };
         keys = [
           {
@@ -226,7 +213,7 @@ in
             raw = true;
           }
           {
-            key = [ prefix "Shift" "d" ];
+            key = [ prefix "Shift" "e" ];
             cmd = "focus child";
             mode = "root";
             raw = true;
