@@ -8,9 +8,6 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  kill-compton = pkgs.writeScriptBin "kill-compton" ''
-    ${pkgs.procps}/bin/pkill -f compton
-  '';
   headsOrientationModule = types.submodule {
     options = {
       primary = mkOption {
@@ -25,7 +22,8 @@ let
       };
     };
   };
-in {
+in
+{
   options = {
     workstation.randr = {
       enable = mkOption {
@@ -65,9 +63,7 @@ in {
       home-manager.users.${user} = {
         programs.autorandr = {
           enable = true;
-          hooks = lib.optionalAttrs (hm.services.compton.enable) {
-            predetect = { "kill-compton" = "${kill-compton}/bin/kill-compton"; };
-          } // cfg.hooks;
+          hooks = cfg.hooks;
         };
       };
       services.udev.extraRules = ''
