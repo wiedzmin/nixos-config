@@ -1,10 +1,11 @@
 local awful = require("awful")
 local config_path = awful.util.getdir("config") -- config basedir
-package.path = config_path .. "/?.lua;" .. package.path
-package.path = config_path .. "/?/init.lua;" .. package.path
-package.path = config_path .. "/lib/?.lua;" .. package.path
-package.path = config_path .. "/lib/?/?.lua;" .. package.path
-package.path = config_path .. "/lib/?/init.lua;" .. package.path
+
+package.path = config_path .. "?.lua;" .. package.path
+package.path = config_path .. "?/init.lua;" .. package.path
+package.path = config_path .. "lib/?.lua;" .. package.path
+package.path = config_path .. "lib/?/?.lua;" .. package.path
+package.path = config_path .. "lib/?/init.lua;" .. package.path
 
 
 -- Standard awesome library
