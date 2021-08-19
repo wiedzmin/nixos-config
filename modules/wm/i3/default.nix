@@ -24,11 +24,13 @@ in
       };
       containerLayout = mkOption {
         type = types.enum [ "default" "stacking" "tabbed" ];
+        # default = "default";
         default = "tabbed";
         description = "Default container layout.";
       };
       settings = mkOption {
         type = types.lines;
+        # TODO: play with `default_orientation auto`
         default = ''
           font ${config.wmCommon.fonts.default}
           floating_modifier ${prefix}
