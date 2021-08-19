@@ -698,7 +698,14 @@ rec {
       transient = true;
     };
     "rofi" = mkGithubBookmark "davatorium" "rofi" // { transient = true; };
-    "nyxt" = mkGithubBookmark "atlas-engineer" "nyxt" // { transient = true; };
+    "nyxt" = mkGithubBookmark "atlas-engineer" "nyxt" // {
+      tags = [ "nyxt" "repo" ];
+      transient = true;
+    };
+    "nyxt/discourse" = {
+      tags = [ "nyxt" "forum" ];
+      remote = { url = "https://discourse.atlas.engineer/"; };
+    };
     "libtmux" = mkGithubBookmark "tmux-python" "libtmux" // { transient = true; };
     "paintings" = {
       tags = [ "paint" "play" ];
@@ -719,6 +726,14 @@ rec {
       tags = [ "mongol" "video" "youtube" ];
       browser = config.attributes.browser.fallback.cmd;
       remote = { url = "https://www.youtube.com/channel/UCtMZD_UHQxCowHltovfEnvQ"; };
+    };
+    "cider/discord" = {
+      tags = [ "emacs" "clojure" "cider" "discord" ];
+      remote = { url = "https://discord.com/channels/797747718385696768/797750325179973672"; };
+    };
+    "ddg/bangs" = {
+      tags = [ "duckduckgo" "bangs" ];
+      remote = { url = "https://duckduckgo.com/bang"; };
     };
     agenda = {
       local.path = homePrefix "docs/org/agenda.org";
