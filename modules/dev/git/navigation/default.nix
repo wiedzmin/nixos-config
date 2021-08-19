@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.dev.git.navigation;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     dev.git.navigation = {
       enable = mkOption {
@@ -30,7 +31,7 @@ in {
     (mkIf (cfg.enable && cfg.ghq.enable) {
       environment.systemPackages = with pkgs; [ gitAndTools.ghq ];
       home-manager.users.${user} = {
-        programs.git.extraConfig = { "ghq" = { root = homePrefix config.navigation.bookmarks.workspaces.globalRoot; }; };
+        programs.git.extraConfig = { "ghq" = { root = config.navigation.bookmarks.workspaces.globalRoot; }; };
         programs.zsh.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
       };
     })
