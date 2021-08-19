@@ -32,6 +32,15 @@ in {
           nix-template
           nix-review # https://github.com/Mic92/nix-review
         ];
+        xdg.configFile."espanso/user/nix-dev.yml".text = ''
+          name: nix-dev
+          parent: default
+          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
+
+          matches:
+            - trigger: ":nsd"
+              replace: "nix show-derivation 'nixpkgs/nixos-unstable#$|$'"
+        '';
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {

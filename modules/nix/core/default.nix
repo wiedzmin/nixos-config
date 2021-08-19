@@ -111,8 +111,8 @@ in
       home-manager.users.${user} = {
         home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback ];
         home.sessionPath = [ (homePrefix ".cargo/bin") ];
-        xdg.configFile."espanso/user/nix.yml".text = ''
-          name: nix
+        xdg.configFile."espanso/user/nix-core.yml".text = ''
+          name: nix-core
           parent: default
           filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
 
