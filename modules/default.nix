@@ -90,6 +90,7 @@
     ./virt/libvirt
     ./virt/virtualbox
     ./wm
+    ./wm/awesome
     ./wm/i3
     ./wm/stumpwm
     ./wm/xmonad

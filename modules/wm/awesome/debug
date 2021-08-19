@@ -1,8 +1,0 @@
-#!/bin/bash
-config_file=$1
-if [ config_file = "" ]; then
-  config_file="~/.config/awesome/rc.lua"
-fi
-Xephyr -ac -br -noreset -screen 1300x768 :1 &
-sleep 1
-DISPLAY=:1.0 awesome -c $config_file
