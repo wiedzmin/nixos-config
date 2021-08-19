@@ -124,7 +124,7 @@ in
     })
     (mkIf (cfg.enable && cfg.tools.enable) { programs.wavemon.enable = true; })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      programs.nm-applet.enable = if (config.wm.i3.enable || !attributes.wms.enabled) then true else false;
+      programs.nm-applet.enable = if (config.wm.i3.enable || !config.attributes.wms.enabled) then true else false;
 
       wmCommon.autostart.entries = optionals (cfg.bluetooth.enable) [ "blueman-manager" ];
 
