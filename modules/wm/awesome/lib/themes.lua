@@ -14,7 +14,7 @@ local user_themes =
    "smoked", "steamburn", "wombat",
    "zenburn-custom", "zenburn-red"
 }
-beautiful.init("/home/octocat/.config/awesome/themes/" .. user_themes[12] .. "/theme.lua")
+beautiful.init("/home/@mainUserName@/.config/awesome/themes/" .. user_themes[12] .. "/theme.lua")
 
 theme.font = defs.default_font
 
