@@ -21,45 +21,6 @@ controls.apps = {
     ["2"]={'Fbreader', 'fbreader'}
 }
 
--- TODO: add utility function for translating layouts as below, in background
-controls.webjumps = {
-    ["m"]='https://mail.google.com/mail/u/0/#inbox',
-    ["g"]='https://github.com/wiedzmin',
-    ["y"]='http://yandex.ru',
-    ["f"]={'https://facebook.com/', {'Google-chrome', 'google-chrome-stable'}}, -- TODO: abstract away low-level details
-    ["t"]='http://www.multitran.ru/',
-    ["b"]={'https://www.youtube.com/', {'Google-chrome', 'google-chrome-stable'}},
-    ["d"]='https://feedly.com/',
-    ["p"]='https://getpocket.com/a/queue/',
-    ["i"]='https://todoist.com/app',
-    ["r"]='http://relax-fm.ru',
-}
-
--- TODO: add utility function for translating layouts as below, in background
-controls.websearches = {
-    ["g"] = 'http://www.google.com/search?num=100&q=%s',
-    ["y"] = 'http://yandex.ru/yandsearch?text=%s',
-    ["t"] = 'http://www.multitran.ru/c/M.exe?CL=1&l1=1&s=%s',
-    ["z"] = 'http://gpo.zugaina.org/Search?search=%s',
-    ["c"] = 'https://searchcode.com/?q=%s',
-    ["l"] = 'https://luarocks.org/search?q=%s',
-}
-
-controls.xrandr_choices = {
-    ['Right'] = "xrandr --output VGA1 --auto --right-of LVDS1",
-    ['Left'] = "xrandr --output VGA1 --auto --left-of LVDS1",
-    ['Up'] = "xrandr --output VGA1 --auto --above LVDS1",
-    ['Down'] = "xrandr --output VGA1 --off",
-    ['u'] = function() utils.update_emacs_frames() end
-}
-
--- TODO: make command for vpn service restarting
-controls.vpn_service_commands = {
-    ['Up'] = "sudo /etc/init.d/job-vpn start",
-    ['Down'] = "sudo /etc/init.d/job-vpn stop",
-    ['s'] = "sudo /etc/init.d/job-vpn status"
-}
-
 -- ezconfig.modkey = @wmPrefix@
 -- ezconfig.altkey = @wmPrefixAlt@
 
@@ -103,8 +64,6 @@ controls.vpn_service_commands = {
 --     ['<XF86MonBrightnessUp>'] = function () awful.spawn("xbacklight -inc 10") end,
 --     ['<XF86MonBrightnessDown>'] = function () awful.spawn("xbacklight -dec 10") end,
 --     ['M-C-l'] = function () awful.spawn.with_shell("i3lock -c 232729 && sleep 1 && xset dpms force off") end,
---     ['M-`'] = function () utils:xrandr_map(controls.xrandr_choices) end,
---     ['M-v'] = function () utils:vpn_map(controls.vpn_service_commands) end,
 --     ['M-z'] = function () utils:run_or_raise_map(controls.apps) end,
 --     ['M-w'] = function () awful.util.spawn('@webjumpsCmd@') end,
 --     ['M-/'] = function () awful.util.spawn('@websearchCmd@') end,
