@@ -57,4 +57,6 @@ rec {
   xmonadPrimaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.primary 20;
   xmonadSecondaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.secondary 22;
   xmonadTertiaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces.tertiary 20;
+} // lib.optionalAttrs (config.wm.awesome.config.enable) rec {
+  sloppyFocus = lib.boolToString config.wmCommon.focus.followsMouse;
 }

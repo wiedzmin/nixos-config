@@ -77,6 +77,11 @@ in
         default = true;
         description = "Visually denote currently focused window";
       };
+      focus.followsMouse = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether focus should follow mouse";
+      };
       autostart.entries = mkOption {
         type = types.listOf types.str;
         default = [ ];
