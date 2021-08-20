@@ -27,6 +27,11 @@ in
         default = "Mod4";
         description = "WM prefix key";
       };
+      prefixAlt = mkOption {
+        type = types.str;
+        default = "Mod1";
+        description = "WM alternate prefix key";
+      };
       keys = mkOption {
         type = types.listOf types.attrs;
         default = [ ];

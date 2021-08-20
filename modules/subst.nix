@@ -35,6 +35,7 @@ rec {
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;
   wmFontSimple = config.wmCommon.fonts.simple;
+  wmPrefixAlt = config.wmCommon.prefixAlt;
   lockScreenCommand = config.workstation.lockscreen.command.lock;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";
   lspPythonMsExtraPaths =
