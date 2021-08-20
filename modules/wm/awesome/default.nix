@@ -25,22 +25,7 @@ in
       shell.core.variables = [{ CURRENT_WM = "awesome"; global = true; emacs = true; }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        debug-awesome = mkShellScriptWithDeps "debug-awesome"
-          (with pkgs; [
-            awesome
-            coreutils
-            gnugrep
-            xorg.xorgserver.out
-            xorg.xrandr
-          ]) ''
-          if [ "$(xrandr | grep connected | grep -v dis | wc -l)" = "1" ]; then
-            Xephyr -ac -br -noreset -screen ${config.attributes.hardware.monitors.internalHead.resolutionXephyr} :1 &
-          else
-            Xephyr -ac -br -noreset -screen ${config.attributes.hardware.monitors.internalHead.resolution} :1 &
-          fi
-          sleep 1
-          DISPLAY=:1.0 awesome -c ~/.config/awesome/rc.lua
-        '';
+        debug-awesome = mkWMDebugScript "debug-awesome" pkgs.awesome "awesome -c ~/.config/awesome/rc.lua";
       };
 
       home-manager.users.${user} = {

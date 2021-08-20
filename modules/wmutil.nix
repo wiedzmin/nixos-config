@@ -195,4 +195,21 @@ rec {
         else
           ""
       }"));
+  mkWMDebugScript = name: wmpkg: wmcmd:
+    mkShellScriptWithDeps name
+      (with pkgs; [
+        coreutils
+        gnugrep
+        xorg.xorgserver.out
+        xorg.xrandr
+      ] ++ [ wmpkg ])
+      ''
+        if [ "$(xrandr | grep connected | grep -v dis | wc -l)" = "1" ]; then
+          Xephyr -ac -br -noreset -screen ${config.attributes.hardware.monitors.internalHead.resolutionXephyr} :1 &
+        else
+          Xephyr -ac -br -noreset -screen ${config.attributes.hardware.monitors.internalHead.resolution} :1 &
+        fi
+        sleep 1
+        DISPLAY=:1.0 ${wmcmd}
+      '';
 }
