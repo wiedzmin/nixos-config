@@ -175,6 +175,11 @@ with lib;
           default = "";
           description = "Internal laptop head resolution";
         };
+        resolutionXephyr = mkOption {
+          type = types.str;
+          default = "";
+          description = "Internal laptop head resolution when running Xephyr with no external head attached";
+        };
       };
     };
     dateFormats = mkOption {
