@@ -1,7 +1,7 @@
 local utils = {}
 
 local awful = require("awful")
-local screen = require("screen")
+-- local screen = require("screen")
 
 local defs = require("defs")
 
@@ -186,9 +186,9 @@ function utils:with_emacs_noninteractive(forms)
    awful.spawn.with_shell("emacsclient --eval '" .. forms .. "'")
 end
 
-function utils.update_emacs_frames()
-   utils:with_emacs_noninteractive("(custom/update-frames " .. screen:count() .. ")")
-end
+-- function utils.update_emacs_frames()
+--    utils:with_emacs_noninteractive("(custom/update-frames " .. screen:count() .. ")")
+-- end
 
 function utils:hostname()
    local f = io.popen("hostname")

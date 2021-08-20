@@ -3,7 +3,7 @@ local controls = {}
 local awful = require("awful")
 local hints = require("hints")
 local menubar = require("menubar")
-local ezconfig = require("ezconfig")
+-- local ezconfig = require("ezconfig")
 
 local defs = require('defs')
 local menus = require('menus')
@@ -62,64 +62,64 @@ controls.vpn_service_commands = {
     ['s'] = "sudo /etc/init.d/job-vpn status"
 }
 
-ezconfig.modkey = defs.modkey
-ezconfig.altkey = defs.altkey
+-- ezconfig.modkey = defs.modkey
+-- ezconfig.altkey = defs.altkey
 
-controls.globalkeys = ezconfig.keytable.join({
-    ['M-<Escape>'] = awful.tag.history.restore,
-    ['M-<Left>'] = function () awful.client.focus.global_bydirection('left') end,
-    ['M-<Right>'] = function () awful.client.focus.global_bydirection('right') end,
-    ['M-<Up>'] = function () awful.client.focus.global_bydirection('up') end,
-    ['M-<Down>'] = function () awful.client.focus.global_bydirection('down') end,
-    ['M-C-<Left>'] = function () awful.client.swap.global_bydirection('left') end,
-    ['M-C-<Right>'] = function () awful.client.swap.global_bydirection('right') end,
-    ['M-C-<Up>'] = function () awful.client.swap.global_bydirection('up') end,
-    ['M-C-<Down>'] = function () awful.client.swap.global_bydirection('down') end,
-    ['M-,'] = function () awful.screen.focus_bydirection("left") end,
-    ['M-.'] = function () awful.screen.focus_bydirection("right") end,
-    ['M-u'] = awful.client.urgent.jumpto,
-    ['M-h'] = function () awful.tag.incmwfact(-0.05) end,
-    ['M-l'] = function () awful.tag.incmwfact(0.05) end,
-    ['M-S-h'] = function () awful.tag.incnmaster(1) end,
-    ['M-S-l'] = function () awful.tag.incnmaster(-1) end,
-    ['M-C-h'] = function () awful.tag.incncol(1) end,
-    ['M-C-l'] = function () awful.tag.incncol(-1) end,
-    -- ['M-<Space>'] = function () awful.layout.inc(layouts, 1) end, -- TODO: fix signature
-    -- ['M-S-<Space>'] = function () awful.layout.inc(layouts, -1) end, -- TODO: fix signature
-    ['M-x'] = function()
-       awful.prompt.run {
-          prompt       = "Run Lua code: ",
-          textbox      = awful.screen.focused().mypromptbox.widget,
-          exe_callback = awful.util.eval,
-          history_path = awful.util.get_cache_dir() .. "/history_eval"
-       }
-    end,
-    ['M-p'] = function() menubar.show() end,
-    ['M-<Escape>'] = function() menus.show_apps_menu() end,
-    ['<XF86AudioPrev>'] = function () awful.spawn("mpc prev") end,
-    ['<XF86AudioPlay>'] = function () awful.spawn("mpc toggle") end,
-    ['<XF86AudioNext>'] = function () awful.spawn("mpc next") end,
-    ['<XF86AudioRaiseVolume>'] = function () awful.spawn("amixer -c 0 set Master 10+") end,
-    ['<XF86AudioLowerVolume>'] = function () awful.spawn("amixer -c 0 set Master 10-") end,
-    ['<XF86AudioMute>'] = function () awful.spawn("amixer set Master toggle >> /dev/null") end,
-    ['<XF86MonBrightnessUp>'] = function () awful.spawn("xbacklight -inc 10") end,
-    ['<XF86MonBrightnessDown>'] = function () awful.spawn("xbacklight -dec 10") end,
-    ['M-C-l'] = function () awful.spawn.with_shell("i3lock -c 232729 && sleep 1 && xset dpms force off") end,
-    ['M-`'] = function () utils:xrandr_map(controls.xrandr_choices) end,
-    ['M-v'] = function () utils:vpn_map(controls.vpn_service_commands) end,
-    ['M-z'] = function () utils:run_or_raise_map(controls.apps) end,
-    ['M-w'] = function () utils:webjumps_map(controls.webjumps, defs.browser) end,
-    ['M-/'] = function () utils:websearches_map(controls.websearches, defs.browser, "selection") end,
-    ['M-C-/'] = function () utils:websearches_map(controls.websearches, defs.browser, "prompt") end,
-    ['C-\\'] = utils.toggle_keyboard_layout,
-    ['M-b'] = function() bookshelf:show_books_menu() end,
-    ['M-e'] = function () hints.focus() end,
-    ['M-S-p'] = function () awful.spawn("gmrun") end,
-    -- ['M-S-/'] = function() cheeky.util.switcher() end,
-    ['<Print>'] = function () awful.spawn("scrot -e 'mv $f ~/screenshots/ 2>/dev/null'") end,
-    ['M-C-r'] = awesome.restart,
-    ['M-S-q'] = function() awesome.quit() end,
-})
+-- controls.globalkeys = ezconfig.keytable.join({
+--     ['M-<Escape>'] = awful.tag.history.restore,
+--     ['M-<Left>'] = function () awful.client.focus.global_bydirection('left') end,
+--     ['M-<Right>'] = function () awful.client.focus.global_bydirection('right') end,
+--     ['M-<Up>'] = function () awful.client.focus.global_bydirection('up') end,
+--     ['M-<Down>'] = function () awful.client.focus.global_bydirection('down') end,
+--     ['M-C-<Left>'] = function () awful.client.swap.global_bydirection('left') end,
+--     ['M-C-<Right>'] = function () awful.client.swap.global_bydirection('right') end,
+--     ['M-C-<Up>'] = function () awful.client.swap.global_bydirection('up') end,
+--     ['M-C-<Down>'] = function () awful.client.swap.global_bydirection('down') end,
+--     ['M-,'] = function () awful.screen.focus_bydirection("left") end,
+--     ['M-.'] = function () awful.screen.focus_bydirection("right") end,
+--     ['M-u'] = awful.client.urgent.jumpto,
+--     ['M-h'] = function () awful.tag.incmwfact(-0.05) end,
+--     ['M-l'] = function () awful.tag.incmwfact(0.05) end,
+--     ['M-S-h'] = function () awful.tag.incnmaster(1) end,
+--     ['M-S-l'] = function () awful.tag.incnmaster(-1) end,
+--     ['M-C-h'] = function () awful.tag.incncol(1) end,
+--     ['M-C-l'] = function () awful.tag.incncol(-1) end,
+--     -- ['M-<Space>'] = function () awful.layout.inc(layouts, 1) end, -- TODO: fix signature
+--     -- ['M-S-<Space>'] = function () awful.layout.inc(layouts, -1) end, -- TODO: fix signature
+--     ['M-x'] = function()
+--        awful.prompt.run {
+--           prompt       = "Run Lua code: ",
+--           textbox      = awful.screen.focused().mypromptbox.widget,
+--           exe_callback = awful.util.eval,
+--           history_path = awful.util.get_cache_dir() .. "/history_eval"
+--        }
+--     end,
+--     ['M-p'] = function() menubar.show() end,
+--     ['M-<Escape>'] = function() menus.show_apps_menu() end,
+--     ['<XF86AudioPrev>'] = function () awful.spawn("mpc prev") end,
+--     ['<XF86AudioPlay>'] = function () awful.spawn("mpc toggle") end,
+--     ['<XF86AudioNext>'] = function () awful.spawn("mpc next") end,
+--     ['<XF86AudioRaiseVolume>'] = function () awful.spawn("amixer -c 0 set Master 10+") end,
+--     ['<XF86AudioLowerVolume>'] = function () awful.spawn("amixer -c 0 set Master 10-") end,
+--     ['<XF86AudioMute>'] = function () awful.spawn("amixer set Master toggle >> /dev/null") end,
+--     ['<XF86MonBrightnessUp>'] = function () awful.spawn("xbacklight -inc 10") end,
+--     ['<XF86MonBrightnessDown>'] = function () awful.spawn("xbacklight -dec 10") end,
+--     ['M-C-l'] = function () awful.spawn.with_shell("i3lock -c 232729 && sleep 1 && xset dpms force off") end,
+--     ['M-`'] = function () utils:xrandr_map(controls.xrandr_choices) end,
+--     ['M-v'] = function () utils:vpn_map(controls.vpn_service_commands) end,
+--     ['M-z'] = function () utils:run_or_raise_map(controls.apps) end,
+--     ['M-w'] = function () utils:webjumps_map(controls.webjumps, defs.browser) end,
+--     ['M-/'] = function () utils:websearches_map(controls.websearches, defs.browser, "selection") end,
+--     ['M-C-/'] = function () utils:websearches_map(controls.websearches, defs.browser, "prompt") end,
+--     ['C-\\'] = utils.toggle_keyboard_layout,
+--     ['M-b'] = function() bookshelf:show_books_menu() end,
+--     ['M-e'] = function () hints.focus() end,
+--     ['M-S-p'] = function () awful.spawn("gmrun") end,
+--     -- ['M-S-/'] = function() cheeky.util.switcher() end,
+--     ['<Print>'] = function () awful.spawn("scrot -e 'mv $f ~/screenshots/ 2>/dev/null'") end,
+--     ['M-C-r'] = awesome.restart,
+--     ['M-S-q'] = function() awesome.quit() end,
+-- })
 
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
