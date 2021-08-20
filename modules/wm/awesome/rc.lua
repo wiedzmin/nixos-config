@@ -7,15 +7,14 @@ package.path = config_path .. "lib/?.lua;" .. package.path
 package.path = config_path .. "lib/?/?.lua;" .. package.path
 package.path = config_path .. "lib/?/init.lua;" .. package.path
 
-
 -- Standard awesome library
 local wibox = require("wibox") -- Widget and layout library
 local beautiful = require("beautiful") -- Theme handling library
-local gears = require("gears")
+local gears = require("gears")         -- utils
 local naughty = require("naughty") -- Notification library
 
+-- extra libs
 local hints = require("hints")
-require("awful.autofocus")
 
 -- include custom modules
 local controls = require("controls")
@@ -43,9 +42,9 @@ do
     end)
 end
 
-hints.init()
-
+require("awful.autofocus")
 globalkeys = controls.globalkeys
 clientkeys = controls.clientkeys
 root.keys(globalkeys)
 root.buttons(controls.mouse_bindings)
+hints.init()
