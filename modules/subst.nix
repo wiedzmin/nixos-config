@@ -34,6 +34,7 @@ rec {
   emacsConsultProjectilePath = inputs.emacs-consult-projectile;
   fallbackPackageArchives = emacsBoolToString false;
   wmFontDmenu = config.wmCommon.fonts.dmenu;
+  wmFontSimple = config.wmCommon.fonts.simple;
   lockScreenCommand = config.workstation.lockscreen.command.lock;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";
   lspPythonMsExtraPaths =

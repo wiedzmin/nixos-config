@@ -15,6 +15,7 @@ in
       fontconfig = { defaultFonts = { monospace = [ "Source Code Pro" ]; }; };
     };
     wmCommon.fonts.default = "pango:${if beautify then "SauceCodePro Nerd Font " else "Source Code Pro "}Bold 9";
+    wmCommon.fonts.simple = "${if beautify then "SauceCodePro Nerd Font " else "Source Code Pro "}Bold 9";
     wmCommon.fonts.dmenu = "Source Code Pro:bold:size=9";
     wmCommon.fonts.statusbar = "pango:${if beautify then "SauceCodePro Nerd Font " else "Source Code Pro "}Bold 9";
     shell.core.variables = [{ TB_SELECTOR_FONT = "Source Code Pro:bold:size=9"; global = true; }];

@@ -14,6 +14,7 @@ in {
       fontconfig = { defaultFonts = { monospace = [ "Fira Code" ]; }; };
     };
     wmCommon.fonts.default = "pango:${if beautify then "FiraCode Nerd Font " else "Fira Code "}Bold 8";
+    wmCommon.fonts.simple = "${if beautify then "FiraCode Nerd Font " else "Fira Code "}Bold 8";
     wmCommon.fonts.dmenu = "Fira Code:bold:pixelsize=12";
     wmCommon.fonts.statusbar = "pango:${if beautify then "FiraCode Nerd Font " else "Fira Code "}Bold 8";
     shell.core.variables = [{ TB_SELECTOR_FONT = "Fira Code:bold:pixelsize=12"; global = true; }];

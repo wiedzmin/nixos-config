@@ -15,6 +15,7 @@ in
       fontconfig = { defaultFonts = { monospace = [ "Iosevka" ]; }; };
     };
     wmCommon.fonts.default = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
+    wmCommon.fonts.simple = "Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
     wmCommon.fonts.dmenu = "Iosevka:bold:size=9";
     wmCommon.fonts.statusbar = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
     shell.core.variables = [{ TB_SELECTOR_FONT = "Iosevka:bold:size=9"; global = true; }];

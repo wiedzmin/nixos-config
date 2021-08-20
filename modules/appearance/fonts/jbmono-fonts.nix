@@ -14,6 +14,7 @@ in {
       fontconfig = { defaultFonts = { monospace = [ "JetBrains Mono" ]; }; };
     };
     wmCommon.fonts.default = "pango:${if beautify then "JetBrainsMono Nerd Font " else "JetBrains Mono "}Bold 8";
+    wmCommon.fonts.simple = "${if beautify then "JetBrainsMono Nerd Font " else "JetBrains Mono "}Bold 8";
     wmCommon.fonts.dmenu = "JetBrains Mono:bold:size=8";
     wmCommon.fonts.statusbar = "pango:${if beautify then "JetBrainsMono Nerd Font " else "JetBrains Mono "}Bold 8";
     shell.core.variables = [{ TB_SELECTOR_FONT = "JetBrains Mono:bold:size=8"; global = true; }];

@@ -52,6 +52,12 @@ in
         default = "";
         description = "Current WM `internal` default font' definition.";
       };
+      fonts.simple = mkOption {
+        type = types.str;
+        default = "";
+        example = "Iosevka 14";
+        description = "Simplified default font' definition, as used, for example. by AwesomeWM";
+      };
       fonts.dmenu = mkOption {
         type = types.str;
         default = "";

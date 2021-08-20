@@ -15,6 +15,7 @@ in
       fontconfig = { defaultFonts = { monospace = [ "Hack" ]; }; };
     };
     wmCommon.fonts.default = "pango:Hack ${if beautify then "Nerd Font " else ""}Bold 8";
+    wmCommon.fonts.simple = "Hack ${if beautify then "Nerd Font " else ""}Bold 8";
     wmCommon.fonts.dmenu = "Hack:bold:size=8";
     wmCommon.fonts.statusbar = "pango:Hack ${if beautify then "Nerd Font " else ""}Bold 8";
     shell.core.variables = [{ TB_SELECTOR_FONT = "Hack:bold:size=8"; global = true; }];
