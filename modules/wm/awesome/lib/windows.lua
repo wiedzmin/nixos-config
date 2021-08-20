@@ -7,7 +7,6 @@ local wibox = require("wibox")
 local lain = require("lain")
 
 local controls = require("controls")
-local defs = require("defs")
 local themes = require("themes")
 local widgets = require("widgets")
 
@@ -100,7 +99,7 @@ client.connect_signal("manage", function (c, startup)
     -- Enable sloppy focus
     c:connect_signal("mouse::enter", function(c)
         if awful.layout.get(c.screen) ~= awful.layout.suit.magnifier
-            and awful.client.focus.filter(c) and defs.sloppy_focus then
+            and awful.client.focus.filter(c) and @sloppyFocus@ then
             client.focus = c
         end
     end)

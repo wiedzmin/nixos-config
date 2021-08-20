@@ -6,6 +6,7 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
   configHome = hm.xdg.configHome;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 rec {
   bookshelfCmd = goBinPrefix "bookshelf";
@@ -13,7 +14,8 @@ rec {
   defaultBrowser = config.attributes.browser.default.cmd;
   fallbackBrowser = config.attributes.browser.fallback.cmd;
   defaultContainerShell = config.ext.virtualization.docker.core.defaultContainerShell;
-  defaultVTCmd = lib.concatStringsSep " " config.attributes.defaultVTCommand;
+  defaultVTCmd = builtins.head config.attributes.defaultVTCommand;
+  defaultVTExecCmd = config.attributes.defaultVTCommand;
   deftPath = homePrefix "docs/deft";
   direnvGranularityProject = emacsBoolToString (config.dev.direnv.emacs.granularity == "project");
   direnvGranularityFile = emacsBoolToString (config.dev.direnv.emacs.granularity == "file");
@@ -33,8 +35,12 @@ rec {
   emacsConsultLsp = inputs.emacs-consult-lsp;
   emacsConsultProjectilePath = inputs.emacs-consult-projectile;
   fallbackPackageArchives = emacsBoolToString false;
+  webjumpsCmd = "${nurpkgs.toolbox}/bin/webjumps";
+  websearchCmd = "${nurpkgs.toolbox}/bin/websearch";
+  websearchPromptCmd = "${nurpkgs.toolbox}/bin/websearch -prompt";
   wmFontDmenu = config.wmCommon.fonts.dmenu;
   wmFontSimple = config.wmCommon.fonts.simple;
+  wmPrefix = config.wmCommon.prefix;
   wmPrefixAlt = config.wmCommon.prefixAlt;
   lockScreenCommand = config.workstation.lockscreen.command.lock;
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";

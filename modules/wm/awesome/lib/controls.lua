@@ -5,7 +5,6 @@ local hints = require("hints")
 local menubar = require("menubar")
 -- local ezconfig = require("ezconfig")
 
-local defs = require('defs')
 local menus = require('menus')
 local utils = require('utils')
 
@@ -61,8 +60,8 @@ controls.vpn_service_commands = {
     ['s'] = "sudo /etc/init.d/job-vpn status"
 }
 
--- ezconfig.modkey = defs.modkey
--- ezconfig.altkey = defs.altkey
+-- ezconfig.modkey = @wmPrefix@
+-- ezconfig.altkey = @wmPrefixAlt@
 
 -- controls.globalkeys = ezconfig.keytable.join({
 --     ['M-<Escape>'] = awful.tag.history.restore,
@@ -107,9 +106,9 @@ controls.vpn_service_commands = {
 --     ['M-`'] = function () utils:xrandr_map(controls.xrandr_choices) end,
 --     ['M-v'] = function () utils:vpn_map(controls.vpn_service_commands) end,
 --     ['M-z'] = function () utils:run_or_raise_map(controls.apps) end,
---     ['M-w'] = function () utils:webjumps_map(controls.webjumps, defs.browser) end,
---     ['M-/'] = function () utils:websearches_map(controls.websearches, defs.browser, "selection") end,
---     ['M-C-/'] = function () utils:websearches_map(controls.websearches, defs.browser, "prompt") end,
+--     ['M-w'] = function () awful.util.spawn('@webjumpsCmd@') end,
+--     ['M-/'] = function () awful.util.spawn('@websearchCmd@') end,
+--     ['M-C-/'] = function () awful.util.spawn('@websearchPromptCmd@') end,
 --     ['C-\\'] = utils.toggle_keyboard_layout,
 --     ['M-b'] = function() awful.util.spawn('@bookshelfCmd@') end
 --     ['M-e'] = function () hints.focus() end,
@@ -126,7 +125,7 @@ controls.vpn_service_commands = {
 for i = 1, 9 do
     controls.globalkeys = awful.util.table.join(controls.globalkeys,
         -- View tag only.
-        awful.key({ defs.modkey }, "#" .. i + 9,
+        awful.key({ @wmPrefix@ }, "#" .. i + 9,
             function ()
                 local screen = awful.screen.focused()
                 local tag = screen.tags[i]
@@ -135,7 +134,7 @@ for i = 1, 9 do
                 end
         end),
         -- View tag on left screen.
-        awful.key({ defs.modkey, "Shift" }, "#" .. i + 9,
+        awful.key({ @wmPrefix@, "Shift" }, "#" .. i + 9,
             function ()
                 awful.screen.focus_bydirection("left")
                 local screen = awful.screen.focused()
@@ -145,7 +144,7 @@ for i = 1, 9 do
                 end
         end),
         -- View tag on right screen.
-        awful.key({ defs.modkey, "Mod1" }, "#" .. i + 9,
+        awful.key({ @wmPrefix@, "Mod1" }, "#" .. i + 9,
             function ()
                 awful.screen.focus_bydirection("right")
                 local screen = awful.screen.focused()
@@ -155,7 +154,7 @@ for i = 1, 9 do
                 end
         end),
         -- Toggle tag display.
-        awful.key({ defs.modkey, "Control" }, "F" .. i,
+        awful.key({ @wmPrefix@, "Control" }, "F" .. i,
             function ()
                 local screen = awful.screen.focused()
                 local tag = screen.tags[i]
@@ -164,7 +163,7 @@ for i = 1, 9 do
                 end
         end),
         -- Move client to tag.
-        awful.key({ defs.modkey, "Shift" }, "F" .. i,
+        awful.key({ @wmPrefix@, "Shift" }, "F" .. i,
             function ()
                 if client.focus then
                     local tag = client.focus.screen.tags[i]
@@ -174,7 +173,7 @@ for i = 1, 9 do
                 end
         end),
         -- Toggle tag.
-        awful.key({ defs.modkey, "Control", "Shift" }, "F" .. i + 9,
+        awful.key({ @wmPrefix@, "Control", "Shift" }, "F" .. i + 9,
             function ()
                 if client.focus then
                     local tag = client.focus.screen.tags[i]
@@ -188,14 +187,14 @@ end
 -- Create a wibox for each screen and add it
 controls.taglist_buttons = awful.util.table.join(
     awful.button({ }, 1, function(t) t:view_only() end),
-    awful.button({ defs.modkey }, 1,
+    awful.button({ @wmPrefix@ }, 1,
         function(t)
             if client.focus then
                 client.focus:move_to_tag(t)
             end
     end),
     awful.button({ }, 3, awful.tag.viewtoggle),
-    awful.button({ defs.modkey }, 3,
+    awful.button({ @wmPrefix@ }, 3,
         function(t)
             if client.focus then
                 client.focus.toggle_tag(t)
@@ -248,14 +247,14 @@ controls.mouse_bindings = awful.util.table.join(
 )
 
 controls.clientkeys = awful.util.table.join(
-   awful.key({ defs.modkey,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
-   awful.key({ defs.modkey, "Shift"   }, "c",      function (c) c:kill()                         end),
-   awful.key({ defs.modkey, "Control" }, "space",  awful.client.floating.toggle                     ),
-   awful.key({ defs.modkey, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
-   awful.key({ defs.modkey, "Shift"   }, ",",      function (c) c:move_to_screen(1) end),
-   awful.key({ defs.modkey, "Shift"   }, ".",      function (c) c:move_to_screen(2) end),
-   awful.key({ defs.modkey,           }, "t",      function (c) c.ontop = not c.ontop            end),
-   awful.key({ defs.modkey,           }, "m",
+   awful.key({ @wmPrefix@,           }, "f",      function (c) c.fullscreen = not c.fullscreen  end),
+   awful.key({ @wmPrefix@, "Shift"   }, "c",      function (c) c:kill()                         end),
+   awful.key({ @wmPrefix@, "Control" }, "space",  awful.client.floating.toggle                     ),
+   awful.key({ @wmPrefix@, "Control" }, "Return", function (c) c:swap(awful.client.getmaster()) end),
+   awful.key({ @wmPrefix@, "Shift"   }, ",",      function (c) c:move_to_screen(1) end),
+   awful.key({ @wmPrefix@, "Shift"   }, ".",      function (c) c:move_to_screen(2) end),
+   awful.key({ @wmPrefix@,           }, "t",      function (c) c.ontop = not c.ontop            end),
+   awful.key({ @wmPrefix@,           }, "m",
        function (c)
            c.maximized_horizontal = not c.maximized_horizontal
            c.maximized_vertical   = not c.maximized_vertical
@@ -264,8 +263,8 @@ controls.clientkeys = awful.util.table.join(
 
 controls.clientbuttons = awful.util.table.join(
    awful.button({ }, 1, function (c) client.focus = c; c:raise() end),
-   awful.button({ defs.modkey }, 1, awful.mouse.client.move),
-   awful.button({ defs.modkey }, 3, awful.mouse.client.resize)
+   awful.button({ @wmPrefix@ }, 1, awful.mouse.client.move),
+   awful.button({ @wmPrefix@ }, 3, awful.mouse.client.resize)
 )
 
 return controls

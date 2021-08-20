@@ -3,9 +3,6 @@ local utils = {}
 local awful = require("awful")
 -- local screen = require("screen")
 
-local defs = require("defs")
-
-
 local qwerty_mapping = {
    ['й'] = 'q',
    ['ц'] = 'w',
@@ -170,7 +167,7 @@ do
         --     fake_input('key_press', 37)
         --     return
         -- end
-        os.execute(defs.kbdd_dbus_next_cmd)
+        os.execute("dbus-send --dest=ru.gentoo.KbddService /ru/gentoo/KbddService ru.gentoo.kbdd.next_layout")
     end
 end
 

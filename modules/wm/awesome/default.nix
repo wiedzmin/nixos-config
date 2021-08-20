@@ -33,7 +33,6 @@ in
         xdg.configFile = {
           "awesome/rc.lua".text = readSubstituted ../../subst.nix ./rc.lua;
           "awesome/lib/controls.lua".text = readSubstituted ../../subst.nix ./lib/controls.lua;
-          "awesome/lib/defs.lua".text = readSubstituted ../../subst.nix ./lib/defs.lua;
           "awesome/lib/menus.lua".text = readSubstituted ../../subst.nix ./lib/menus.lua;
           "awesome/lib/themes.lua".text = readSubstituted ../../subst.nix ./lib/themes.lua;
           "awesome/lib/utils.lua".text = readSubstituted ../../subst.nix ./lib/utils.lua;

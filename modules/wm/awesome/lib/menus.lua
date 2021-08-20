@@ -4,18 +4,15 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local menubar = require("menubar")
 
-local defs = require("defs")
-
 -- Create a laucher widget and a main menu
 myawesomemenu = {
-   { "manual", defs.terminal .. " -e man awesome" },
-   { "edit config", defs.editor_cmd .. " " .. awesome.conffile },
+   { "manual", "@defaultVTExecCmd@ -e man awesome" },
    { "restart", awesome.restart },
    { "quit", function() awesome.quit() end }
 }
 
 mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-                                    { "open terminal", defs.terminal },
+                                    { "open terminal", "@defaultVTCmd@" },
                                     { "open browser", "firefox" },
                                     { "open Emacs", "emacs" }
                                   }
@@ -25,7 +22,7 @@ mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
                                      menu = mymainmenu })
 
 -- Menubar configuration
-menubar.utils.terminal = defs.terminal -- Set the terminal for applications that require it
+menubar.utils.terminal = "@defaultVTCmd@" -- Set the terminal for applications that require it
 
 function menus:show_apps_menu()
    -- If you want to always position the menu on the same place set coordinates

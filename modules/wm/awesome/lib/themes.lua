@@ -4,8 +4,6 @@ local beautiful = require("beautiful") -- Theme handling library
 local gears = require("gears") -- Theme handling library
 local naughty = require("naughty")
 
-local defs = require("defs") -- Theme handling library
-
 local user_themes =
 {
    "blue", "crown", "dk-grey",
@@ -16,13 +14,13 @@ local user_themes =
 }
 beautiful.init("/home/@mainUserName@/.config/awesome/themes/" .. user_themes[12] .. "/theme.lua")
 
-theme.font = defs.default_font
+theme.font = "@wmFontSimple@"
 
-theme.taglist_font = defs.taglist_font
-theme.tasklist_font = defs.tasklist_font
+theme.taglist_font = "@wmFontSimple@"
+theme.tasklist_font = "@wmFontSimple@"
 theme.border_width = 2
 
-naughty.config.defaults.font = defs.notifications_font
+naughty.config.defaults.font = "@wmFontSimple@"
 
 theme.menu_height = "30"
 theme.menu_width  = "400"
