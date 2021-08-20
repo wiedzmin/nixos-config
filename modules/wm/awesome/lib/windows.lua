@@ -29,44 +29,70 @@ windows.layouts = {
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
     -- All clients will match this rule.
-    { rule = { },
-      properties = { border_width = beautiful.border_width,
-                     border_color = beautiful.border_normal,
-                     focus = awful.client.focus.filter,
-                     raise = true,
-                     keys = controls.clientkeys,
-                     buttons = controls.clientbuttons,
-                     screen = awful.screen.preferred,
-                     placement = awful.placement.no_overlap+awful.placement.no_offscreen
-    } },
-    { rule = { class = "MPlayer" },
-      properties = { floating = true } },
-    { rule = { class = "pinentry" },
-      properties = { floating = true } },
-    { rule = { class = "gimp" },
-      properties = { floating = true } },
-    { rule = { class = "Firefox", instance = "Navigator" },
-      properties = { tag = "ω", floating = false } },
-    { rule = { class = "Firefox", instance = "Dialog" },
+   {
+      rule = { },
+      properties = {
+         border_width = beautiful.border_width,
+         border_color = beautiful.border_normal,
+         focus = awful.client.focus.filter,
+         raise = true,
+         keys = controls.clientkeys,
+         buttons = controls.clientbuttons,
+         screen = awful.screen.preferred,
+         placement = awful.placement.no_overlap+awful.placement.no_offscreen
+      }
+   },
+   {
+      rule = { class = "MPlayer" },
+      properties = { floating = true }
+   },
+   {
+      rule = { class = "pinentry" },
+      properties = { floating = true }
+   },
+   {
+      rule = { class = "gimp" },
+      properties = { floating = true }
+   },
+   {
+      rule = { class = "Firefox", instance = "Navigator" },
+      properties = { tag = "ω", floating = false }
+   },
+   {
+      rule = { class = "Firefox", instance = "Dialog" },
       properties = { floating = true },
       callback = function(t)
          client.focus.move_to_screen(client.focus.screen)
          client.focus.move_to_tag(t)
-    end },
-    { rule = { class = "Google-chrome" },
-      properties = { tag = "∀" } },
-    { rule = { class = "Emacs" },
+      end
+   },
+   {
+      rule = { class = "Google-chrome" },
+      properties = { tag = "∀" }
+   },
+   {
+      rule = { class = "Emacs" },
       properties = { tag = "λ" } },
-    { rule = { class = "URxvt" },
-      properties = { tag = "λ" } },
-    { rule = { class = "Sakura" },
-      properties = { tag = "λ" } },
-    { rule = { class = "FBReader" },
-      properties = { tag = "⧉" } },
-    { rule = { class = "Zathura" },
-      properties = { tag = "⧉" } },
-    { rule = { class = "Vlc" },
-      properties = { tag = "∀" } },
+   {
+      rule = { class = "URxvt" },
+      properties = { tag = "λ" }
+   },
+   {
+      rule = { class = "Sakura" },
+      properties = { tag = "λ" }
+   },
+   {
+      rule = { class = "FBReader" },
+      properties = { tag = "⧉" }
+   },
+   {
+      rule = { class = "Zathura" },
+      properties = { tag = "⧉" }
+   },
+   {
+      rule = { class = "Vlc" },
+      properties = { tag = "∀" }
+   },
 }
 
 -- Signal function to execute when a new client appears.
