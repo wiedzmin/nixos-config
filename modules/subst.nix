@@ -8,6 +8,7 @@ let
   configHome = hm.xdg.configHome;
 in
 rec {
+  bookshelfCmd = goBinPrefix "bookshelf";
   combyExcludes = lib.concatStringsSep "," config.dev.misc.comby.excludes;
   defaultBrowser = config.attributes.browser.default.cmd;
   fallbackBrowser = config.attributes.browser.fallback.cmd;

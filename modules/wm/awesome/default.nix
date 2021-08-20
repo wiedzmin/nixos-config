@@ -32,7 +32,6 @@ in
         home.packages = with pkgs; [ debug-awesome ];
         xdg.configFile = {
           "awesome/rc.lua".text = readSubstituted ../../subst.nix ./rc.lua;
-          "awesome/lib/bookshelf.lua".text = readSubstituted ../../subst.nix ./lib/bookshelf.lua;
           "awesome/lib/controls.lua".text = readSubstituted ../../subst.nix ./lib/controls.lua;
           "awesome/lib/defs.lua".text = readSubstituted ../../subst.nix ./lib/defs.lua;
           "awesome/lib/menus.lua".text = readSubstituted ../../subst.nix ./lib/menus.lua;
