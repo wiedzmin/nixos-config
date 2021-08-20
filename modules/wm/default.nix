@@ -72,7 +72,7 @@ in
         default = true;
         description = "Start some applications automatically.";
       };
-      showfocus = mkOption {
+      focus.show = mkOption {
         type = types.bool;
         default = true;
         description = "Visually denote currently focused window";
@@ -160,7 +160,7 @@ in
         }
       '';
     })
-    (mkIf (cfg.enable && cfg.showfocus) {
+    (mkIf (cfg.enable && cfg.focus.show) {
       # TODO: review https://github.com/fennerm/flashfocus/wiki
       wmCommon.autostart.entries = [ "${pkgs.flashfocus}/bin/flashfocus" ];
       wmCommon.keys = [{

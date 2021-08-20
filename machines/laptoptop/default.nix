@@ -664,7 +664,7 @@ in
     }
   ];
 
-  wmCommon.showfocus = false;
+  wmCommon.focus.show = false;
 
   home-manager = {
     useGlobalPkgs = true;
