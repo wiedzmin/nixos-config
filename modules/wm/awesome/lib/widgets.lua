@@ -2,7 +2,6 @@ local awful = require("awful")
 local wibox = require("wibox")
 local vicious = require("vicious")
 local beautiful = require("beautiful")
-local obvious = require("obvious")
 local lain = require("lain")
 
 mytextclock = wibox.widget.textclock()
@@ -43,8 +42,24 @@ vicious.register(mpdwidget, vicious.widgets.mpd,
 separator = wibox.widget.textbox()
 separator:set_text(" | ")
 
-require("obvious.battery")
-batwidget = obvious.battery()
+
+batwidget = wibox.widget.progressbar()
+-- Create wibox with batwidget
+batbox = wibox.container.margin(
+    wibox.widget{ { max_value = 1, widget = batwidget,
+                    border_width = 0.5, border_color = "#000000",
+                    color = { type = "linear",
+                              from = { 0, 0 },
+                              to = { 0, 30 },
+                              stops = { { 0, "#AECF96" },
+                                        { 1, "#FF5656" } } } },
+                  forced_height = 10, forced_width = 8,
+                  direction = 'east', color = beautiful.fg_widget,
+                  layout = wibox.container.rotate },
+    1, 1, 3, 3)
+-- Register battery widget
+vicious.register(batwidget, vicious.widgets.bat, "$2", 61, "BAT0")
+
 
 -- TODO: maybe try DBus solution later
 -- see https://awesome.naquadah.org/wiki/Volume_control_and_display for details
@@ -75,7 +90,7 @@ end
 
 update_volume(volume_widget)
 
-wlan_widget = obvious.wlan().widget
+-- TODO: find widget for wlan somewhere
 
 mytimer = timer({ timeout = 0.2 })
 mytimer:connect_signal("timeout", function () update_volume(volume_widget) end)
