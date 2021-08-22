@@ -205,10 +205,13 @@ rec {
       ] ++ [ wmpkg ])
       ''
         if [ "$(xrandr | grep connected | grep -v dis | wc -l)" = "1" ]; then
-          Xephyr -ac -br -noreset -screen ${config.attributes.hardware.monitors.internalHead.resolutionXephyr} :1 &
+          resolution=${config.attributes.hardware.monitors.internalHead.resolutionXephyr}
+          echo "LVDS-only, using $resolution"
         else
-          Xephyr -ac -br -noreset -screen ${config.attributes.hardware.monitors.internalHead.resolution} :1 &
+          resolution=${config.attributes.hardware.monitors.internalHead.resolution}
+          echo "dock-station, using $resolution"
         fi
+        Xephyr -ac -br -noreset -screen $resolution :1 &
         sleep 1
         DISPLAY=:1.0 ${wmcmd}
       '';
