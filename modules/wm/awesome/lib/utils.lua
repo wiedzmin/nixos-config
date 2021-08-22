@@ -1,7 +1,6 @@
 local utils = {}
 
 local awful = require("awful")
--- local screen = require("screen")
 
 local qwerty_mapping = {
    ['й'] = 'q',
