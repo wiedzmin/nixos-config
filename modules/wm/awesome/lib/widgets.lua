@@ -2,18 +2,18 @@ local awful = require("awful")
 local wibox = require("wibox")
 local vicious = require("vicious")
 local beautiful = require("beautiful")
--- local obvious = require("obvious")
+local obvious = require("obvious")
 local lain = require("lain")
 
 mytextclock = wibox.widget.textclock()
 lain.widgets.calendar:attach(mytextclock, { font_size = 10, followmouse = true })
 
--- cpuwidget = awful.widget.graph()
--- cpuwidget:set_width(50)
--- cpuwidget:set_background_color("#494B4F")
--- cpuwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#FF5656"}, {0.5, "#88A175"},
---                     {1, "#AECF96" }}})
--- vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
+cpuwidget = wibox.widget.graph()
+cpuwidget:set_width(50)
+cpuwidget:set_background_color("#494B4F")
+cpuwidget:set_color({ type = "linear", from = { 0, 0 }, to = { 10,0 }, stops = { {0, "#FF5656"}, {0.5, "#88A175"},
+                    {1, "#AECF96" }}})
+vicious.register(cpuwidget, vicious.widgets.cpu, "$1")
 
 kbdwidget = wibox.widget.textbox(" Eng ")
 kbdwidget.border_width = 1
@@ -31,20 +31,20 @@ dbus.connect_signal("ru.gentoo.kbdd", function(...)
 )
 
 mpdwidget = wibox.widget.textbox()
--- vicious.register(mpdwidget, vicious.widgets.mpd,
---     function (mpdwidget, args)
---         if args["{state}"] == "Stop" then
---             return " - "
---         else
---             return args["{Artist}"]..' - '.. args["{Title}"]
---         end
---     end, 10)
+vicious.register(mpdwidget, vicious.widgets.mpd,
+    function (mpdwidget, args)
+        if args["{state}"] == "Stop" then
+            return " - "
+        else
+            return args["{Artist}"]..' - '.. args["{Title}"]
+        end
+    end, 10)
 
 separator = wibox.widget.textbox()
 separator:set_text(" | ")
 
--- require("obvious.battery")
--- batwidget = obvious.battery()
+require("obvious.battery")
+batwidget = obvious.battery()
 
 -- TODO: maybe try DBus solution later
 -- see https://awesome.naquadah.org/wiki/Volume_control_and_display for details
@@ -75,7 +75,7 @@ end
 
 update_volume(volume_widget)
 
--- wlan_widget = obvious.wlan().widget
+wlan_widget = obvious.wlan().widget
 
 mytimer = timer({ timeout = 0.2 })
 mytimer:connect_signal("timeout", function () update_volume(volume_widget) end)

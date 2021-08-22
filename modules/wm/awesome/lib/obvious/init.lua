@@ -11,7 +11,7 @@ return {
   cpu              = require 'obvious.cpu',
   fs_usage         = require 'obvious.fs_usage',
   io               = require 'obvious.io',
-  gps              = require 'obvious.gps',
+  -- gps              = require 'obvious.gps',
   lib              = require 'obvious.lib',
   loadavg          = require 'obvious.loadavg',
   mem              = require 'obvious.mem',
@@ -23,7 +23,7 @@ return {
   wlan             = require 'obvious.wlan',
   temp_info        = require 'obvious.temp_info',
   keymap_switch    = require 'obvious.keymap_switch',
-  weather          = require 'obvious.weather',
+  -- weather          = require 'obvious.weather',
   music            = require 'obvious.music',
 }
 
