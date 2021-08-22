@@ -136,6 +136,7 @@ in
         epkgs.leetcode
         epkgs.lsp-mode
         epkgs.lsp-ui
+        epkgs.lua-mode
         epkgs.plantuml-mode
         epkgs.webpaste
         epkgs.yaml-mode
