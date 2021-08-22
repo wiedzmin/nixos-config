@@ -8,6 +8,9 @@ package.path = config_path .. "?/init.lua;" .. package.path
 package.path = config_path .. "lib/?.lua;" .. package.path
 package.path = config_path .. "lib/?/?.lua;" .. package.path
 package.path = config_path .. "lib/?/init.lua;" .. package.path
+package.cpath = config_path .. "?.so;" .. package.cpath
+package.cpath = config_path .. "lib/?.so;" .. package.cpath
+package.cpath = config_path .. "lib/?/?.so;" .. package.cpath
 
 -- Standard awesome library
 local wibox = require("wibox") -- Widget and layout library
