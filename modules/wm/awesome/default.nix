@@ -53,7 +53,6 @@ in
           "awesome/lib/ezconfig" = { source = ./lib/ezconfig; recursive = true; };
           "awesome/lib/hints" = { source = ./lib/hints; recursive = true; };
           "awesome/lib/lain" = { source = ./lib/lain; recursive = true; };
-          "awesome/lib/vicious" = { source = ./lib/vicious; recursive = true; };
           "awesome/themes" = { source = ./themes; recursive = true; };
         };
       };
