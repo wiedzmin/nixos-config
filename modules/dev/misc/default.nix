@@ -97,7 +97,7 @@ in
         inputsUnstableRev = inputs.unstable.rev;
       };
       dev.projectenv.templates.entries = {
-        "ansible" = configPrefix "modules/dev/dbms/misc/templates/ansible" ;
+        "ansible" = configPrefix "modules/dev/dbms/misc/templates/ansible";
         "reveng" = configPrefix "modules/dev/dbms/misc/templates/reveng";
       };
     })
