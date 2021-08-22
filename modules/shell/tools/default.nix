@@ -62,7 +62,6 @@ in
                 dir-grouping = "first";
               };
               no-symlink = false;
-              total-size = true;
               symlink-arrow = "⇒";
             };
           };
