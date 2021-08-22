@@ -19,9 +19,7 @@ windows.layouts = {
     awful.layout.suit.spiral,
     awful.layout.suit.max,
     lain.layout.termfair,
-    lain.layout.centerfair,
     lain.layout.cascade,
-    lain.layout.cascadetile,
     lain.layout.centerwork,
 }
 

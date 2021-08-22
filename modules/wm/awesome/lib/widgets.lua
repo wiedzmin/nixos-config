@@ -5,7 +5,17 @@ local beautiful = require("beautiful")
 local lain = require("lain")
 
 mytextclock = wibox.widget.textclock()
-lain.widgets.calendar:attach(mytextclock, { font_size = 10, followmouse = true })
+theme.cal = lain.widget.cal({
+    attach_to = { mytextclock },
+    notification_preset = {
+        font = "@wmFontSimple@",
+        fg   = white,
+        bg   = theme.bg_normal,
+        followmouse = true
+    }
+})
+
+
 
 cpuwidget = wibox.widget.graph()
 cpuwidget:set_width(50)

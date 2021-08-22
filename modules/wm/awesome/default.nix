@@ -51,7 +51,6 @@ in
           "awesome/lib/windows.lua".text = readSubstituted ../../subst.nix ./lib/windows.lua;
           "awesome/lib/ezconfig" = { source = ./lib/ezconfig; recursive = true; };
           "awesome/lib/hints" = { source = ./lib/hints; recursive = true; };
-          "awesome/lib/lain" = { source = ./lib/lain; recursive = true; };
           "awesome/themes" = { source = ./themes; recursive = true; };
         };
       };
