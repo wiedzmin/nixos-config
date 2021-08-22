@@ -68,13 +68,11 @@ luaunicode_sub(lua_State *L) throw ()
     UText text = UTEXT_INITIALIZER;
     const char *utf8bytes = luaL_checkstring(L, 1);
     int start = luaL_checkinteger(L, 2);
-    int end = luaL_optint(L, 3, 0);
+    int end = lua_tointeger(L, 3);
     size_t start_byte;
     size_t end_byte;
 
-    if(end == 0) {
-        end_byte = strlen(utf8bytes);
-    }
+    end_byte = strlen(utf8bytes);
 
     if(start <= 0 || end < 0) {
         return luaL_error(L, "unicode.sub: start and end must be greater than zero");
@@ -133,8 +131,12 @@ static luaL_Reg luaunicode_functions[] = {
 extern "C" int
 luaopen_obvious_lib_unicode_native(lua_State *L)
 {
+#if LUA_VERSION_NUM >= 502
+    luaL_newlib(L, luaunicode_functions);
+#else
     lua_newtable(L);
     luaL_register(L, NULL, luaunicode_functions);
+#endif
 
     return 1;
 }

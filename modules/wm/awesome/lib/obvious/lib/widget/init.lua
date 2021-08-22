@@ -3,9 +3,11 @@
 -- Copyright 2009 Uli Schlachter --
 -----------------------------------
 
-require("obvious.lib.widget.graph")
-require("obvious.lib.widget.progressbar")
-require("obvious.lib.widget.textbox")
+local widgets_by_type = {
+  graph       = require 'obvious.lib.widget.graph',
+  progressbar = require 'obvious.lib.widget.progressbar',
+  textbox     = require 'obvious.lib.widget.textbox',
+}
 
 local setmetatable = setmetatable
 local getmetatable = getmetatable
@@ -15,16 +17,13 @@ local lib = {
   hooks = require("obvious.lib.hooks")
 }
 
-module("obvious.lib.widget")
-
-
 local defaults = { }
 
 -- The functions each object from from_data_source will get
 local funcs = { }
 
 funcs.set_type = function (obj, widget_type)
-  local widget_type = _M[widget_type]
+  local widget_type = widgets_by_type[widget_type]
   if not widget_type or not widget_type.create then
     return
   end
@@ -37,7 +36,7 @@ funcs.set_type = function (obj, widget_type)
   return obj
 end
 
-function from_data_source(data)
+local function from_data_source(data)
   local ret = { }
 
   for k, v in pairs(funcs) do
@@ -46,7 +45,7 @@ function from_data_source(data)
 
   -- We default to graph since progressbars can't handle sources without an
   -- upper bound on their value
-  ret[1] = _M.graph.create(data)
+  ret[1] = widgets_by_type.graph.create(data)
 
   ret.update = function()
     -- because this uses ret, if ret[1] is changed this automatically
@@ -79,5 +78,9 @@ function from_data_source(data)
   setmetatable(ret, meta)
   return ret
 end
+
+return {
+  from_data_source = from_data_source,
+}
 
 -- vim:ft=lua:ts=2:sw=2:sts=2:tw=80:et

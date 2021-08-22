@@ -38,7 +38,9 @@ for key, value in pairs(defaults) do
   settings[key] = value
 end
 
-module("obvious.keymap_switch")
+-- forward declaration of functions
+local update
+local set_layouts
 
 -- Updates once after a short delay and then unregisters its timer
 local function delayed_update_once(start)
@@ -51,7 +53,7 @@ local function delayed_update_once(start)
   end
 end
 
-setup_done = false
+local setup_done = false
 local function init_once()
   if setup_done then
     return
@@ -119,10 +121,10 @@ local function get_current_keymap()
   return "unknown layout"
 end
 
-function set_layouts(layouts_table)
+--[[local]] function set_layouts(layouts_table)
   settings.layouts = layouts_table or settings.layouts
 
-  newitems = {}
+  local newitems = {}
   for index, value in ipairs(settings.layouts) do
     newitems[index] = { value, function()
       current_index = index
@@ -136,10 +138,13 @@ function set_layouts(layouts_table)
   })
 end
 
-function update()
+--[[local]] function update()
   settings.widget:set_markup(get_current_keymap())
 end
 
-setmetatable(_M, { __call = function() return init(settings.widget) end }) -- TODO let the user specify widget here
+return setmetatable({
+  set_layouts = set_layouts,
+  update      = update,
+}, { __call = function() return init(settings.widget) end }) -- TODO let the user specify widget here
 
 -- vim:ft=lua:ts=2:sw=2:sts=2:tw=80:et

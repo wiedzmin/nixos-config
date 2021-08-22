@@ -17,7 +17,8 @@ local os = {
   getenv = os.getenv
 }
 local io = {
-  lines = io.lines
+  lines = io.lines,
+  popen = io.popen,
 }
 local string = {
   match = string.match
@@ -38,7 +39,7 @@ local lib = {
   markup = require("obvious.lib.markup")
 }
 
-module("obvious.clock")
+local clock = {}
 
 local initialized = false
 local defaults = {
@@ -64,9 +65,19 @@ local function edit(file)
   end
 end
 
+local function pread(cmd)
+  local pipe = io.popen(cmd)
+  if not pipe then
+    return ''
+  end
+  local results = pipe:read '*a'
+  pipe:close()
+  return results
+end
+
 -- non BSD-like `cal` for -h return help
 local function is_bsd()
-  return not awful.util.pread('cal -h'):find('help')
+  return not pread('cal -h'):find('help')
 end
 
 local show_calendar
@@ -82,7 +93,7 @@ do
 
     local notify_args = {
       text = lib.markup.font("monospace",
-      awful.util.pread(cmd):
+      pread(cmd):
       gsub("([^0-9])(" .. tonumber(os.date("%d")) .. ")([^0-9])",
       "%1<span foreground=\"#FF0000\">%2</span>%3"):gsub("\n+$", "")),
       screen = capi.mouse.screen
@@ -245,37 +256,37 @@ widget:connect_signal("mouse::leave", function ()
   update(false)
 end)
 
-function set_editor(e)
+function clock.set_editor(e)
   settings.editor = e or defaults.editor
 end
 
-function set_longformat(strOrFn)
+function clock.set_longformat(strOrFn)
   settings.longtimeformat = strOrFn or defaults.longtimeformat
   update(false)
 end
 
-function set_shortformat(strOrFn)
+function clock.set_shortformat(strOrFn)
   settings.shorttimeformat = strOrFn or defaults.shorttimeformat
   update(false)
 end
 
-function set_shorttimer(delay)
+function clock.set_shorttimer(delay)
   settings.shorttimer = delay or defaults.shorttimer
 end
 
-function set_longtimer(delay)
+function clock.set_longtimer(delay)
   settings.longtimer = delay or defaults.longtimer
 end
 
-function set_scrolling(active)
+function clock.set_scrolling(active)
   settings.scrolling = active
 end
 
-function set_scrolltimeout(timeout)
+function clock.set_scrolltimeout(timeout)
   settings.scrolltimeout = timeout
 end
 
-setmetatable(_M, { __call = function ()
+return setmetatable(clock, { __call = function ()
   update()
   if not initialized then
     lib.hooks.timer.register(settings.shorttimer, settings.longtimer, update)
