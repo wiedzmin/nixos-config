@@ -43,6 +43,7 @@ in
           "awesome/lib/hints" = { source = ./lib/hints; recursive = true; };
           "awesome/lib/lain" = { source = ./lib/lain; recursive = true; };
           "awesome/lib/obvious" = { source = ./lib/obvious; recursive = true; };
+          "awesome/lib/vicious" = { source = ./lib/vicious; recursive = true; };
           "awesome/themes" = { source = ./themes; recursive = true; };
         };
       };
