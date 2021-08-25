@@ -27,7 +27,7 @@ in
       };
       fuzzySearch.root = mkOption {
         type = types.str;
-        default = homePrefix config.navigation.bookmarks.workspaces.globalRoot;
+        default = config.navigation.bookmarks.workspaces.globalRoot;
         description = "Search root.";
       };
       fuzzySearch.depth = mkOption {
