@@ -123,6 +123,11 @@ rec {
       tags = [ "map" "weather" ];
       remote.url = "https://ru.blitzortung.org/live_dynamic_maps.php";
     };
+    "marinetraffic" = {
+      desc = "Marine vessels map";
+      tags = [ "map" "weather" ];
+      remote.url = "https://www.marinetraffic.com";
+    };
     "emacs-news" = {
       desc = "Emacs news";
       remote.url = "https://sachachua.com/blog/category/emacs-news/";
