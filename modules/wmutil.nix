@@ -215,4 +215,21 @@ rec {
         sleep 1
         DISPLAY=:1.0 ${wmcmd}
       '';
+  mkWindowRuleAwesome = rule: width: ''
+    ${mkIndent width}{
+       ${mkIndent width}rule = { ${lib.concatStringsSep ", " (lib.mapAttrsToList (k: v: ''${k}="${v}"'')
+         (windowRuleClauses (prepareWindowRule rule)))} },
+       ${mkIndent width}properties = { ${lib.concatStringsSep ", "
+         ([] ++ lib.optionals (builtins.hasAttr "desktop" rule) [ "tag = '${rule.desktop}'" ]
+          ++ lib.optionals (builtins.hasAttr "activate" rule) [ "switchtotag = true" ])} }
+    ${mkIndent width}}'';
+  genPlacementRulesAwesomePatch = rules: width: ''
+    awful.rules.rules = {
+    ${(lib.concatStringsSep ",\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "desktop" r) rules)
+      (r: mkWindowRuleAwesome r width)))}
+    }'';
+  genPlacementRulesAwesomeList = rules: width: ''
+    ${(lib.concatStringsSep ",\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "desktop" r) rules)
+      (r: mkWindowRuleAwesome r width)))}
+  '';
 }

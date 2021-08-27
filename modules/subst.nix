@@ -53,6 +53,7 @@ rec {
   passwordStorePath = config.ext.security.passwordStorePath;
   pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;
   pimCommonCaptureDataTemplate = config.pim.orgmode.commonCaptureDataTemplate;
+  placementRulesAwesomeList = genPlacementRulesAwesomeList config.wmCommon.wsMapping.rules 3;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
   projectsRootMarkersEmacs =
     builtins.concatStringsSep " " (lib.forEach config.dev.navigation.projects.rootMarkers (marker: ''"${marker}"''));
