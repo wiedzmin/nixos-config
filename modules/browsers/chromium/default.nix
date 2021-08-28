@@ -102,7 +102,6 @@ in
     (mkIf cfg.enable {
       home-manager.users.${user} = {
         # chrome-export
-        programs.browserpass.enable = true;
         programs.chromium = {
           enable = true;
           extensions = [
