@@ -7,6 +7,7 @@ let
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
   });
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   imports =
@@ -605,6 +606,16 @@ in
   wm.i3 = {
     enable = true;
     statusbar.impl = "i3-rs";
+  };
+  wm.awesome = {
+    config.enable = true;
+    luaModules = with pkgs; [
+      luaPackages.luafilesystem
+      luaPackages.vicious
+      nurpkgs.awesome-ezconfig
+      nurpkgs.awesome-hints
+      nurpkgs.awesome-lain
+    ];
   };
 
   wmCommon.workspaces = [
