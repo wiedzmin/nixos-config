@@ -372,7 +372,9 @@ in
             config.wmCommon.workspaces}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
 
-            ${optionalString (cfg.windowRules.method == "internal") (with config.wmCommon; genPlacementRulesI3 wsMapping.rules workspaces)}
+            ${optionalString (cfg.windowRules.method == "internal")
+              (with config.wmCommon; genPlacementRulesI3
+                (windowRulesFromBookmarks config.navigation.bookmarks.entries ++ wsMapping.rules) workspaces)}
 
             ${genWindowRulesFloatI3 config.wmCommon.wsMapping.rules}
 
