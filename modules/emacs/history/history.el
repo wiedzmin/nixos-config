@@ -21,7 +21,10 @@
   :delight super-save-mode
   :custom
   (super-save-remote-files nil)
+  (super-save-auto-save-when-idle t)
+  (super-save-exclude '(".gpg"))
   :config
+  (add-to-list 'super-save-triggers 'ace-window)
   (super-save-mode 1))
 
 (use-package files
