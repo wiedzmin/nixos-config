@@ -179,8 +179,9 @@ rec {
       (e: builtins.readFile (pkgs.substituteAll ((import subst { inherit config inputs lib pkgs; }) // { src = e; }))));
   readSubstituted = subst: content: readSubstitutedList subst [ content ];
   enabledLocals = bookmarks:
-    lib.mapAttrs (key: meta: meta.local // { key = key; } // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
-                           // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { desc = meta.desc; })
+    lib.mapAttrs
+      (key: meta: meta.local // { key = key; } // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
+        // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { desc = meta.desc; })
       (lib.filterAttrs
         (_: meta:
           !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
@@ -211,8 +212,9 @@ rec {
   localBookmarksKVText = locals:
     lib.concatStringsSep "\n" (lib.mapAttrsToList (id: meta: id + " : " + meta.path) locals);
   enabledRemotes = bookmarks:
-    lib.mapAttrs (_: meta: meta.remote // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
-                           // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { desc = meta.desc; })
+    lib.mapAttrs
+      (_: meta: meta.remote // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
+        // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { desc = meta.desc; })
       (lib.filterAttrs
         (_: meta:
           !(lib.hasAttrByPath [ "remote" "enable" ] meta && meta.remote.enable == false)
@@ -251,7 +253,7 @@ rec {
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkSearchengineDest meta))
       (lib.filterAttrs (_: meta: (lib.hasAttrByPath [ "searchSuffix" ] meta)) remotes);
   windowRulesFromBookmarks = bookmarks:
-    lib.foldl (a: b: a ++ b) []
+    lib.foldl (a: b: a ++ b) [ ]
       (lib.mapAttrsToList (_: meta: meta.windowRules)
         (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "windowRules" ] meta) bookmarks));
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
