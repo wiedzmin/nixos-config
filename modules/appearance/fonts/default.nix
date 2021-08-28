@@ -27,11 +27,6 @@ in
         default = false;
         description = "Whether to enable antialiasing.";
       };
-      dpi = mkOption {
-        type = types.int;
-        default = 115;
-        description = "Font DPI.";
-      };
       console = mkOption {
         type = types.str;
         default = "";
@@ -51,7 +46,6 @@ in
         fontconfig = {
           enable = true;
           antialias = cfg.antialias;
-          dpi = cfg.dpi;
         };
         fontDir.enable = true;
         enableGhostscriptFonts = true;
