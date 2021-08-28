@@ -232,4 +232,5 @@ rec {
     ${(lib.concatStringsSep ",\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "desktop" r) rules)
       (r: mkWindowRuleAwesome r width)))}
   '';
+  # TODO: review floating property for window rules, regardless of WM being used
 }
