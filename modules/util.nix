@@ -174,6 +174,7 @@ rec {
 
       dependencies = [ pkgs.bash ] ++ dependencies;
     }));
+  # TODO: idea: provide multiple substs using folding
   readSubstitutedList = subst: entries:
     lib.concatStringsSep "\n" (lib.forEach entries
       (e: builtins.readFile (pkgs.substituteAll ((import subst { inherit config inputs lib pkgs; }) // { src = e; }))));
