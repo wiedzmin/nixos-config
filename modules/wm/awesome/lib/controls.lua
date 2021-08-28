@@ -8,19 +8,6 @@ local ezconfig = require("ezconfig")
 local menus = require('menus')
 local utils = require('utils')
 
--- TODO: add utility function for translating layouts as below, in background
-controls.apps = {
-    ["f"]={'Firefox', 'firefox-bin'},
-    ["c"]={'Google-chrome', 'google-chrome-stable'},
-    ["e"]={'Emacs', 'emacs'},
-    ["t"]={'URxvt', 'urxvt'},
-    ["t"]={'Sakura', 'sakura'},
-    ["z"]={'Zathura', 'zathura'},
-    ["l"]={'Vlc', 'vlc'},
-    ["g"]={'Telegram', 'Telegram'},
-    ["2"]={'Fbreader', 'fbreader'}
-}
-
 ezconfig.modkey = "@wmPrefix@"
 ezconfig.altkey = "@wmPrefixAlt@"
 
@@ -64,7 +51,6 @@ controls.globalkeys = ezconfig.keytable.join({
     ['<XF86MonBrightnessUp>'] = function () awful.spawn("xbacklight -inc 10") end,
     ['<XF86MonBrightnessDown>'] = function () awful.spawn("xbacklight -dec 10") end,
     ['M-C-l'] = function () awful.spawn.with_shell("i3lock -c 232729 && sleep 1 && xset dpms force off") end,
-    ['M-z'] = function () utils:run_or_raise_map(controls.apps) end,
     ['M-w'] = function () awful.util.spawn('@webjumpsCmd@') end,
     ['M-/'] = function () awful.util.spawn('@websearchCmd@') end,
     ['M-C-/'] = function () awful.util.spawn('@websearchPromptCmd@') end,
