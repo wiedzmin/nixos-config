@@ -67,13 +67,11 @@ in
     loader = {
       systemd-boot.enable = true;
       efi = {
-        # canTouchEfiVariables = true;
         efiSysMountPoint = "/boot/efi";
       };
       grub = {
         enable = true;
         efiInstallAsRemovable = true;
-        # devices = [ "nodev" ];
         efiSupport = true;
         device = "/dev/sda";
         configurationLimit = 30;
