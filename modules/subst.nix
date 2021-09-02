@@ -9,7 +9,6 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 rec {
-  bookshelfCmd = goBinPrefix "bookshelf";
   combyExcludes = lib.concatStringsSep "," config.dev.misc.comby.excludes;
   defaultBrowser = config.attributes.browser.default.cmd;
   fallbackBrowser = config.attributes.browser.fallback.cmd;
@@ -35,9 +34,6 @@ rec {
   emacsConsultLsp = inputs.emacs-consult-lsp;
   emacsConsultProjectilePath = inputs.emacs-consult-projectile;
   fallbackPackageArchives = emacsBoolToString false;
-  webjumpsCmd = "${nurpkgs.toolbox}/bin/webjumps";
-  websearchCmd = "${nurpkgs.toolbox}/bin/websearch";
-  websearchPromptCmd = "${nurpkgs.toolbox}/bin/websearch -prompt";
   wmFontDmenu = config.wmCommon.fonts.dmenu;
   wmFontSimple = config.wmCommon.fonts.simple;
   wmPrefix = config.wmCommon.prefix;

@@ -12,24 +12,60 @@ ezconfig.modkey = "@wmPrefix@"
 ezconfig.altkey = "@wmPrefixAlt@"
 
 controls.globalkeys = ezconfig.keytable.join({
-    ['M-<Escape>'] = awful.tag.history.restore,
-    ['M-<Left>'] = function () awful.client.focus.global_bydirection('left') end,
-    ['M-<Right>'] = function () awful.client.focus.global_bydirection('right') end,
-    ['M-<Up>'] = function () awful.client.focus.global_bydirection('up') end,
-    ['M-<Down>'] = function () awful.client.focus.global_bydirection('down') end,
-    ['M-C-<Left>'] = function () awful.client.swap.global_bydirection('left') end,
-    ['M-C-<Right>'] = function () awful.client.swap.global_bydirection('right') end,
-    ['M-C-<Up>'] = function () awful.client.swap.global_bydirection('up') end,
-    ['M-C-<Down>'] = function () awful.client.swap.global_bydirection('down') end,
-    ['M-,'] = function () awful.screen.focus_bydirection("left") end,
-    ['M-.'] = function () awful.screen.focus_bydirection("right") end,
-    ['M-u'] = awful.client.urgent.jumpto,
-    ['M-h'] = function () awful.tag.incmwfact(-0.05) end,
-    ['M-l'] = function () awful.tag.incmwfact(0.05) end,
-    ['M-S-h'] = function () awful.tag.incnmaster(1) end,
-    ['M-S-l'] = function () awful.tag.incnmaster(-1) end,
-    ['M-C-h'] = function () awful.tag.incncol(1) end,
-    ['M-C-l'] = function () awful.tag.incncol(-1) end,
+    ['M-<Escape>'] = function()
+       awful.tag.history.restore()
+    end,
+    ['M-<Left>'] = function()
+       awful.client.focus.global_bydirection('left')
+    end,
+    ['M-<Right>'] = function()
+       awful.client.focus.global_bydirection('right')
+    end,
+    ['M-<Up>'] = function()
+       awful.client.focus.global_bydirection('up')
+    end,
+    ['M-<Down>'] = function()
+       awful.client.focus.global_bydirection('down')
+    end,
+    ['M-C-<Left>'] = function()
+       awful.client.swap.global_bydirection('left')
+    end,
+    ['M-C-<Right>'] = function()
+       awful.client.swap.global_bydirection('right')
+    end,
+    ['M-C-<Up>'] = function()
+       awful.client.swap.global_bydirection('up')
+    end,
+    ['M-C-<Down>'] = function()
+       awful.client.swap.global_bydirection('down')
+    end,
+    ['M-,'] = function()
+       awful.screen.focus_bydirection("left")
+    end,
+    ['M-.'] = function()
+       awful.screen.focus_bydirection("right")
+    end,
+    ['M-u'] = function()
+       awful.client.urgent.jumpto
+    end,
+    ['M-h'] = function()
+       awful.tag.incmwfact(-0.05)
+    end,
+    ['M-l'] = function()
+       awful.tag.incmwfact(0.05)
+    end,
+    ['M-S-h'] = function()
+       awful.tag.incnmaster(1)
+    end,
+    ['M-S-l'] = function()
+       awful.tag.incnmaster(-1)
+    end,
+    ['M-C-h'] = function()
+       awful.tag.incncol(1)
+    end,
+    ['M-C-l'] = function()
+       awful.tag.incncol(-1)
+    end,
     -- ['M-<Space>'] = function () awful.layout.inc(layouts, 1) end, -- TODO: fix signature
     -- ['M-S-<Space>'] = function () awful.layout.inc(layouts, -1) end, -- TODO: fix signature
     ['M-x'] = function()
@@ -40,28 +76,58 @@ controls.globalkeys = ezconfig.keytable.join({
           history_path = awful.util.get_cache_dir() .. "/history_eval"
        }
     end,
-    ['M-p'] = function() menubar.show() end,
-    ['M-<Escape>'] = function() menus.show_apps_menu() end,
-    ['<XF86AudioPrev>'] = function () awful.spawn("mpc prev") end,
-    ['<XF86AudioPlay>'] = function () awful.spawn("mpc toggle") end,
-    ['<XF86AudioNext>'] = function () awful.spawn("mpc next") end,
-    ['<XF86AudioRaiseVolume>'] = function () awful.spawn("amixer -c 0 set Master 10+") end,
-    ['<XF86AudioLowerVolume>'] = function () awful.spawn("amixer -c 0 set Master 10-") end,
-    ['<XF86AudioMute>'] = function () awful.spawn("amixer set Master toggle >> /dev/null") end,
-    ['<XF86MonBrightnessUp>'] = function () awful.spawn("xbacklight -inc 10") end,
-    ['<XF86MonBrightnessDown>'] = function () awful.spawn("xbacklight -dec 10") end,
-    ['M-C-l'] = function () awful.spawn.with_shell("i3lock -c 232729 && sleep 1 && xset dpms force off") end,
-    ['M-w'] = function () awful.util.spawn('@webjumpsCmd@') end,
-    ['M-/'] = function () awful.util.spawn('@websearchCmd@') end,
-    ['M-C-/'] = function () awful.util.spawn('@websearchPromptCmd@') end,
+    ['M-p'] = function()
+       menubar.show()
+    end,
+    ['M-<Escape>'] = function()
+       menus.show_apps_menu()
+    end,
+    ['<XF86AudioPrev>'] = function()
+       awful.spawn("mpc prev")
+    end,
+    ['<XF86AudioPlay>'] = function()
+       awful.spawn("mpc toggle")
+    end,
+    ['<XF86AudioNext>'] = function()
+       awful.spawn("mpc next")
+    end,
+    ['<XF86AudioRaiseVolume>'] = function()
+       awful.spawn("amixer -c 0 set Master 10+")
+    end,
+    ['<XF86AudioLowerVolume>'] = function()
+       awful.spawn("amixer -c 0 set Master 10-")
+    end,
+    ['<XF86AudioMute>'] = function()
+       awful.spawn("amixer set Master toggle >> /dev/null")
+    end,
+    ['<XF86MonBrightnessUp>'] = function()
+       awful.spawn("xbacklight -inc 10")
+    end,
+    ['<XF86MonBrightnessDown>'] = function()
+       awful.spawn("xbacklight -dec 10")
+    end,
+    ['M-C-l'] = function()
+       awful.spawn.with_shell("i3lock -c 232729 && sleep 1 && xset dpms force off")
+    end,
     ['C-\\'] = utils.toggle_keyboard_layout,
-    ['M-b'] = function() awful.util.spawn('@bookshelfCmd@') end,
-    ['M-e'] = function () hints.focus() end,
-    ['M-S-p'] = function () awful.spawn("gmrun") end,
-    -- ['M-S-/'] = function() cheeky.util.switcher() end,
-    ['<Print>'] = function () awful.spawn("scrot -e 'mv $f ~/screenshots/ 2>/dev/null'") end,
-    ['M-C-r'] = awesome.restart,
-    ['M-S-q'] = function() awesome.quit() end,
+    ['M-e'] = function()
+       hints.focus()
+    end,
+    ['M-S-p'] = function()
+       awful.spawn("gmrun")
+    end,
+    -- ['M-S-/'] = function()
+    --    cheeky.util.switcher()
+    -- end,
+    ['<Print>'] = function()
+      awful.spawn("scrot -e 'mv $f ~/screenshots/ 2>/dev/null'")
+    end,
+    ['M-C-r'] = function()
+       awesome.restart()
+    end,
+    ['M-S-q'] = function()
+       awesome.quit()
+    end,
 })
 
 -- Bind all key numbers to tags.
