@@ -143,7 +143,6 @@ in
   controlcenter = {
     enable = true;
     notifications.backend = "dunst";
-    gmrun.enable = true;
     wm.enable = true;
   };
 

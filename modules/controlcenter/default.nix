@@ -35,17 +35,15 @@ in
         default = "dunst";
         description = "System notifications backend to use";
       };
+      launcher = mkOption {
+        type = types.enum [ "rofi" "gmrun" ];
+        default = "rofi";
+        description = "Launcher program to use";
+      };
       commandsDebugLogRoot = mkOption {
         type = types.str;
         default = homePrefix "wm-logs";
         description = "Path to store WM commands debug logs under";
-      };
-      gmrun.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = ''
-          Whether to enable gmrun.
-        '';
       };
       gmrun.historySize = mkOption {
         type = types.int;
@@ -270,7 +268,7 @@ in
         wantedBy = [ "graphical-session.target" ];
       };
     })
-    (mkIf (cfg.enable && cfg.gmrun.enable) {
+    (mkIf (cfg.enable && cfg.launcher == "gmrun") {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ gmrun ];
         home.file = { ".gmrunrc".text = readSubstituted ../subst.nix ./assets/gmrunrc; };
@@ -291,6 +289,7 @@ in
           cmd = "${pkgs.uptime_info}/bin/uptime_info";
           mode = "root";
         }
+      ] ++ optionals (cfg.launcher == "rofi") [
         {
           key = [ "XF86Launch1" ];
           cmd = ''"${pkgs.rofi}/bin/rofi -modi combi -show combi -combi-modi run,drun"'';
@@ -305,6 +304,10 @@ in
         key = [ "i" ];
         cmd = "${pkgs.ifconfless}/bin/ifconfless";
         mode = "network";
+      }] ++ optionals (cfg.launcher == "gmrun") [{
+        key = [ prefix "Shift" "p" ];
+        cmd = "${pkgs.gmrun}/bin/gmrun";
+        mode = "root";
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
