@@ -11,6 +11,7 @@ let
     " --search " + (getLuaPath path "share") +
     " --search " + (getLuaPath path "lib")
   );
+  prefix = config.wmCommon.prefix;
 in
 {
   options = {
@@ -38,6 +39,232 @@ in
       nixpkgs.config.packageOverrides = _: rec {
         debug-awesome = mkWMDebugScript "debug-awesome" pkgs.awesome "awesome -c ~/.config/awesome/rc.lua ${makeSearchPath cfg.luaModules}";
       };
+
+      wmCommon.debugKeys = [
+        {
+          key = [ prefix "Escape" ];
+          cmd = ''
+            awful.tag.history.restore()
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Left" ];
+          cmd = ''
+            awful.client.focus.global_bydirection('left')
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Right" ];
+          cmd = ''
+            awful.client.focus.global_bydirection('right')
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Up" ];
+          cmd = ''
+            awful.client.focus.global_bydirection('up')
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Down" ];
+          cmd = ''
+            awful.client.focus.global_bydirection('down')
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Control" "Left" ];
+          cmd = ''
+            awful.client.swap.global_bydirection('left')
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Control" "Right" ];
+          cmd = ''
+            awful.client.swap.global_bydirection('right')
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Control" "Up" ];
+          cmd = ''
+            awful.client.swap.global_bydirection('up')
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Control" "Down" ];
+          cmd = ''
+            awful.client.swap.global_bydirection('down')
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "," ];
+          cmd = ''
+            awful.screen.focus_bydirection("left")
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "," ];
+          cmd = ''
+            awful.screen.focus_bydirection("left")
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "." ];
+          cmd = ''
+            awful.screen.focus_bydirection("right")
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "u" ];
+          cmd = ''
+            awful.client.urgent.jumpto()
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "h" ];
+          cmd = ''
+            awful.tag.incmwfact(-0.05)
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "l" ];
+          cmd = ''
+            awful.tag.incmwfact(0.05)
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Shift" "h" ];
+          cmd = ''
+            awful.tag.incnmaster(1)
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Shift" "l" ];
+          cmd = ''
+            awful.tag.incnmaster(-1)
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Control" "h" ];
+          cmd = ''
+            awful.tag.incncol(1)
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Control" "l" ];
+          cmd = ''
+            awful.tag.incncol(-1)
+          '';
+          mode = "root";
+          raw = true;
+        }
+        # -- ['M-<Space>'] = function () awful.layout.inc(layouts, 1) end, -- TODO: fix signature
+        # -- ['M-S-<Space>'] = function () awful.layout.inc(layouts, -1) end, -- TODO: fix signature
+        {
+          key = [ prefix "x" ];
+          cmd = ''
+            awful.prompt.run {
+                prompt       = "Run Lua code: ",
+                textbox      = awful.screen.focused().mypromptbox.widget,
+                exe_callback = awful.util.eval,
+                history_path = awful.util.get_cache_dir() .. "/history_eval"
+            }
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "p" ];
+          cmd = ''
+            menubar.show()
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Escape" ];
+          cmd = ''
+            menus.show_apps_menu()
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ "Control" "\\" ];
+          cmd = ''
+            utils.toggle_keyboard_layout()
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "e" ];
+          cmd = ''
+            hints.focus()
+          '';
+          mode = "root";
+          raw = true;
+        }
+        # { # TODO: package and add `cheeky` beforehand
+        #   key = [ prefix "Shift" "/" ];
+        #   cmd = ''
+        #     cheeky.util.switcher()
+        #   '';
+        #   mode = "root";
+        #   raw = true;
+        # }
+        {
+          key = [ prefix "Control" "r" ];
+          cmd = ''
+            awesome.restart()
+          '';
+          mode = "root";
+          raw = true;
+        }
+        {
+          key = [ prefix "Shift" "q" ];
+          cmd = ''
+            awesome.quit()
+          '';
+          mode = "root";
+          raw = true;
+        }
+      ];
 
       home-manager.users.${user} = {
         home.packages = with pkgs; [ debug-awesome ];
