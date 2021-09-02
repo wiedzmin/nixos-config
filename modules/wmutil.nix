@@ -3,6 +3,7 @@ with import ./util.nix { inherit config inputs lib pkgs; };
 
 let
   keySepI3 = "+";
+  keySepAwesome = "-";
   keySymsI3 = {
     "," = "comma";
     "." = "period";
@@ -25,6 +26,25 @@ let
     "F10" = "<F10>";
     "F11" = "<F11>";
     "F12" = "<F12>";
+  };
+  keySymsAwesomeEZ = {
+    "Control" = "C";
+    "Shift" = "S";
+    "Alt" = "A";
+    "Mod4" = "M";
+    "Left" = "<Left>";
+    "Right" = "<Right>";
+    "Up" = "<Up>";
+    "Down" = "<Down>";
+    "XF86AudioPrev" = "<XF86AudioPrev>";
+    "XF86AudioPlay" = "<XF86AudioPlay>";
+    "XF86AudioNext" = "<XF86AudioNext>";
+    "XF86AudioRaiseVolume" = "<XF86AudioRaiseVolume>";
+    "XF86AudioLowerVolume" = "<XF86AudioLowerVolume>";
+    "XF86AudioMute" = "<XF86AudioMute>";
+    "XF86MonBrightnessUp" = "<XF86MonBrightnessUp>";
+    "XF86MonBrightnessDown" = "<XF86MonBrightnessDown>";
+    "Print" = "<Print>";
   };
   windowRulePlaceholdersI3 = {
     "class" = ''^@$'';
