@@ -277,6 +277,7 @@ in
           "awesome/lib/widgets.lua".text = readSubstituted ../../subst.nix ./lib/widgets.lua;
           "awesome/lib/windows.lua".text = readSubstituted ../../subst.nix ./lib/windows.lua;
           "awesome/themes" = { source = ./themes; recursive = true; };
+          "awesome/lib/debug.lua".text = readSubstituted ../../subst.nix ./lib/debug.lua;
         };
       };
     })

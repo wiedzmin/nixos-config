@@ -9,6 +9,7 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 rec {
+  awesomeDebugPrint = "";
   combyExcludes = lib.concatStringsSep "," config.dev.misc.comby.excludes;
   defaultBrowser = config.attributes.browser.default.cmd;
   fallbackBrowser = config.attributes.browser.fallback.cmd;
