@@ -49,6 +49,26 @@ rec {
       (lib.filterAttrs (k: _: builtins.hasAttr k rule) windowRulePlaceholdersI3));
   windowRuleClauses = rule:
     lib.filterAttrs (k: _: !builtins.elem k [ "activate" "debug" "desktop" "float" "key" "scratchpad" ]) rule;
+  mkWMDebugScript = name: wmpkg: wmcmd:
+    mkShellScriptWithDeps name
+      (with pkgs; [
+        coreutils
+        gnugrep
+        xorg.xorgserver.out
+        xorg.xrandr
+      ] ++ [ wmpkg ])
+      ''
+        if [ "$(xrandr | grep connected | grep -v dis | wc -l)" = "1" ]; then
+          resolution=${config.attributes.hardware.monitors.internalHead.resolutionXephyr}
+          echo "LVDS-only, using $resolution"
+        else
+          resolution=${config.attributes.hardware.monitors.internalHead.resolution}
+          echo "dock-station, using $resolution"
+        fi
+        Xephyr -ac -br -noreset -screen $resolution :1 &
+        sleep 1
+        DISPLAY=:1.0 ${wmcmd}
+      '';
   # ================ XMonad ================
   toHaskellBool = v: builtins.replaceStrings [ "true" "false" ] [ "True" "False" ] (lib.trivial.boolToString v);
   mkKeysymXmonad = key: if builtins.hasAttr key keysymsXmonad then builtins.getAttr key keysymsXmonad else key;
@@ -195,26 +215,6 @@ rec {
         else
           ""
       }"));
-  mkWMDebugScript = name: wmpkg: wmcmd:
-    mkShellScriptWithDeps name
-      (with pkgs; [
-        coreutils
-        gnugrep
-        xorg.xorgserver.out
-        xorg.xrandr
-      ] ++ [ wmpkg ])
-      ''
-        if [ "$(xrandr | grep connected | grep -v dis | wc -l)" = "1" ]; then
-          resolution=${config.attributes.hardware.monitors.internalHead.resolutionXephyr}
-          echo "LVDS-only, using $resolution"
-        else
-          resolution=${config.attributes.hardware.monitors.internalHead.resolution}
-          echo "dock-station, using $resolution"
-        fi
-        Xephyr -ac -br -noreset -screen $resolution :1 &
-        sleep 1
-        DISPLAY=:1.0 ${wmcmd}
-      '';
   mkWindowRuleAwesome = rule: width: ''
     ${mkIndent width}{
        ${mkIndent width}rule = { ${lib.concatStringsSep ", " (lib.mapAttrsToList (k: v: ''${k}="${v}"'')
