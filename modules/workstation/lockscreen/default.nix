@@ -54,7 +54,7 @@ in
       };
       command.lock = mkOption {
         type = types.str;
-        default = "${pkgs.i3lock-color}/bin/i3lock-color --keylayout 2 -c 232729 --pass-media-keys && ${pkgs.xorg.xset}/bin/xset dpms force off";
+        default = "${pkgs.i3lock-color}/bin/i3lock-color --keylayout 2 -c 232729 --pass-media-keys && sleep 1 && ${pkgs.xorg.xset}/bin/xset dpms force off";
         description = "Command to use for screen locking";
       };
       wm.enable = mkOption {
