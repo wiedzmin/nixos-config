@@ -37,6 +37,11 @@ in
         default = [ ];
         description = "Common keybindings.";
       };
+      debugKeys = mkOption {
+        type = types.listOf types.attrs;
+        default = [ ];
+        description = "Common keybindings, debug version.";
+      };
       wsMapping.rules = mkOption {
         type = types.listOf types.attrs;
         default = [ ];
