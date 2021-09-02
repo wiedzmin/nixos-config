@@ -215,6 +215,7 @@ rec {
         else
           ""
       }"));
+  # ================ AwesomeWM ================
   mkWindowRuleAwesome = rule: width: ''
     ${mkIndent width}{
        ${mkIndent width}rule = { ${lib.concatStringsSep ", " (lib.mapAttrsToList (k: v: ''${k}="${v}"'')
