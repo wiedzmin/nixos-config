@@ -26,6 +26,7 @@ in
           dasel
           each
           gron
+          jc
           ripgrep-all
           up
           uq
