@@ -16,6 +16,11 @@ in
 {
   options = {
     wm.awesome = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable AwesomeWM";
+      };
       config.enable = mkOption {
         type = types.bool;
         default = false;
@@ -31,10 +36,11 @@ in
   };
 
   config = mkMerge [
+    (mkIf cfg.enable {
+      shell.core.variables = [{ CURRENT_WM = "awesome"; global = true; emacs = true; }];
+    })
     (mkIf cfg.config.enable {
       fonts.fonts = with pkgs; [ font-awesome ];
-
-      shell.core.variables = [{ CURRENT_WM = "awesome"; global = true; emacs = true; }];
 
       nixpkgs.config.packageOverrides = _: rec {
         debug-awesome = mkWMDebugScript "debug-awesome" pkgs.awesome "awesome -c ~/.config/awesome/rc.lua ${makeSearchPath cfg.luaModules}";
