@@ -92,6 +92,7 @@
     ./wm
     ./wm/awesome
     ./wm/i3
+    ./wm/qtile
     ./wm/stumpwm
     ./wm/xmonad
     ./workstation/backups
