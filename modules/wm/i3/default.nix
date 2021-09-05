@@ -88,6 +88,8 @@ in
     };
   };
 
+  # TODO: make `default` and enabled semantics for WMs, assertions for `single WM` should only apply to former
+  # TODO: split `enable` and `[custom]config.enable` settings for all WMs, see `awesome` and `qtile` for example
   config = mkMerge [
     (mkIf cfg.enable {
       assertions = [{
