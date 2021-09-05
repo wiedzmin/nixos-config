@@ -38,6 +38,13 @@ rec {
         searchSuffix = "search?q=";
       };
     };
+    nixos-hardware = {
+      desc = "NixOS hardware presets";
+      local.path = "${wsRoot "github"}/NixOS/nixos-hardware";
+      remote = {
+        url = "https://github.com/NixOS/nixos-hardware";
+      };
+    };
     emacs-overlay = {
       desc = "nix emacs overlay";
       local.path = "${wsRoot "github"}/nix-community/emacs-overlay";
@@ -653,6 +660,7 @@ rec {
         searchSuffix = "?channel=nixpkgs-unstable&query=";
       };
     };
+    "nix/pm/repo" = mkGithubBookmark "NixOS" "nix" // { desc = "nix package manager repo"; };
     "ghnix" = {
       desc = "github/lang:nix";
       tags = [ "forge" ];
@@ -712,6 +720,10 @@ rec {
       remote = { url = "https://discourse.atlas.engineer/"; };
     };
     "libtmux" = mkGithubBookmark "tmux-python" "libtmux" // { transient = true; };
+    "qtile" = mkGithubBookmark "qtile" "qtile";
+    "qtile-examples" = mkGithubBookmark "qtile" "qtile-examples";
+    "qtile-dotfiles" = mkGithubBookmark "justinesmithies" "qtile-dotfiles";
+    "qtile-config" = mkGithubBookmark "zordsdavini" "qtile-config";
     "paintings" = {
       tags = [ "paint" "play" ];
       browser = config.attributes.browser.fallback.cmd;
