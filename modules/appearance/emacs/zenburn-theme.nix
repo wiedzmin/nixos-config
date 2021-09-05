@@ -2,7 +2,8 @@
 with lib;
 
 let cfg = config.appearance.emacs.themes.zenburn;
-in {
+in
+{
   options = {
     appearance.emacs.themes.zenburn = {
       enable = mkOption {
@@ -14,7 +15,7 @@ in {
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable && config.wm.i3.enable) {
+    (mkIf (cfg.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.zenburn-theme ];
       ide.emacs.core.config = ''
         (use-package zenburn-theme
