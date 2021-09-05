@@ -25,7 +25,17 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      shell.core.variables = [{ CURRENT_WM = "qtile"; global = true; emacs = true; }];
+      # FIXME: review all `CURRENT_WM` usages, then correct
+      shell.core.variables = [{ CURRENT_WM = "i3"; global = true; emacs = true; }];
+
+      services.xserver = {
+        windowManager = {
+          qtile = {
+            enable = true;
+          };
+        };
+        displayManager = { defaultSession = "none+qtile"; };
+      };
     })
     (mkIf cfg.config.enable {
       fonts.fonts = with pkgs; [ font-awesome ];
@@ -36,6 +46,9 @@ in
 
       home-manager.users.${user} = {
         home.packages = with pkgs; [ debug-qtile ];
+        xdg.configFile = {
+          "qtile/config.py".text = readSubstituted ../../subst.nix ./config.py;
+        };
       };
     })
   ];

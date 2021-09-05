@@ -52,6 +52,7 @@ rec {
   pimCommonCaptureDataTemplate = config.pim.orgmode.commonCaptureDataTemplate;
   placementRulesAwesomeList = genPlacementRulesAwesomeList config.wmCommon.wsMapping.rules 3;
   plantumlJar = "${pkgs.plantuml}/lib/plantuml.jar";
+  projectsBinary = "${nurpkgs.toolbox}/bin/projects";
   projectsRootMarkersEmacs =
     builtins.concatStringsSep " " (lib.forEach config.dev.navigation.projects.rootMarkers (marker: ''"${marker}"''));
   python3Binary = "${pkgs.python3}/bin/python3";
