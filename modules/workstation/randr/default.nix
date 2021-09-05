@@ -100,6 +100,11 @@ in
           cmd = "${pkgs.find-cursor}/bin/find-cursor";
           mode = "xserver";
         }
+        {
+          key = [ "f" ];
+          cmd = "${pkgs.autorandr}/bin/autorandr --force $(${pkgs.autorandr}/bin/autorandr --detected)";
+          mode = "xserver";
+        }
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
