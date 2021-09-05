@@ -266,6 +266,7 @@ in
       };
       navigation = {
         enable = true;
+        emacs.enable = true;
         ghq.enable = true;
       };
     };
