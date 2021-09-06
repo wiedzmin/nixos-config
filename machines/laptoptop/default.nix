@@ -615,6 +615,9 @@ in
       nurpkgs.awesome-lain
     ];
   };
+  wm.qtile = {
+    config.enable = true;
+  };
 
   wmCommon.workspaces = [
     {
