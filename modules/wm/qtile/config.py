@@ -114,6 +114,15 @@ screens = [
                     frequency=5,
                     fill_color="EEE8AA"
                 ),
+                widget.Battery(
+                    font="Iosevka Bold",
+                    fontsize=14,
+                    discharge_char='↓',
+                    charge_char='↑',
+                    format='{char} {hour:d}:{min:02d}',
+                    # foreground=YELLOW,
+                    # low_foreground=RED
+                ),
                 widget.Volume(
                     font="Iosevka Bold",
                     fontsize=14,
@@ -127,6 +136,16 @@ screens = [
                 widget.Systray(
                     font="Iosevka Bold",
                     fontsize=14,
+                ),
+
+                widget.KeyboardLayout(
+                    configured_keyboards=['us', 'ru'],
+                    display_map={
+                        'us': 'us ',
+                        'ru': 'ru ',
+                    },
+                    # options='compose:rctrl',
+                    # foreground=GREEN
                 ),
             ],
             30,
