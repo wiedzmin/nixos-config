@@ -1,4 +1,5 @@
-(use-package helm-ghq
+(use-package consult-ghq
   :bind
   (:map custom-nav-map
-        ("h" . helm-ghq)))
+        ("C-f" . consult-ghq-find)
+        ("C-g" . consult-ghq-grep)))

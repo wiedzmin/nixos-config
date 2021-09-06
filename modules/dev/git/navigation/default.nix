@@ -46,7 +46,7 @@ in
       ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/navigation.el;
     })
     (mkIf (cfg.enable && cfg.ghq.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.helm-ghq ];
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.consult-ghq ];
       ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/ghq.el;
     })
   ];
