@@ -403,6 +403,8 @@ in
                 ${cfg.theme.bar}
                 }
                 ''}
+                wheel_up_cmd nop
+                wheel_down_cmd nop
             }
           '';
         } // optionalAttrs (cfg.statusbar.impl == "blocks") {
