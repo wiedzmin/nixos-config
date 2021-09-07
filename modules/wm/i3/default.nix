@@ -210,13 +210,13 @@ in
             raw = true;
           }
           {
-            key = [ prefix "Shift" "a" ];
+            key = [ prefix "Shift" "<" ];
             cmd = "focus parent";
             mode = "root";
             raw = true;
           }
           {
-            key = [ prefix "Shift" "e" ];
+            key = [ prefix "Shift" ">" ];
             cmd = "focus child";
             mode = "root";
             raw = true;
