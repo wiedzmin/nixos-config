@@ -18,5 +18,14 @@ with import ../../modules/util.nix { inherit config inputs lib pkgs; };
     kernelModules = [ "thinkpad_acpi" "thinkpad_hwmon" ];
   };
 
-  attributes.hardware.dmiSystemVersion = "ThinkPad X230";
+  attributes.hardware = {
+    dmiSystemVersion = "ThinkPad X230";
+    monitors = {
+      internalHead.name = "LVDS-1";
+      internalHead.resolution = "1366x768";
+      internalHead.resolutionXephyr = "1200x600";
+      externalPrimaryHead.name = "HDMI-2";
+      externalSecondaryHead.name = "HDMI-3";
+    };
+  };
 }

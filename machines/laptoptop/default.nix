@@ -11,7 +11,7 @@ let
 in
 {
   imports =
-    [ "${inputs.nixos-hardware}/common/pc/ssd" ../../modules ../../profiles/thinkpad-x270.nix ./assets ./secrets ];
+    [ "${inputs.nixos-hardware}/common/pc/ssd" ../../modules ../../profiles/chassis/thinkpad-x270.nix ./assets ./secrets ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos-root";
