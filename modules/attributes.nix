@@ -181,6 +181,20 @@ with lib;
           description = "Internal laptop head resolution when running Xephyr with no external head attached";
         };
       };
+      externalPrimaryHead = {
+        name = mkOption {
+          type = types.str;
+          default = "";
+          description = "External primary head name";
+        };
+      };
+      externalSecondaryHead = {
+        name = mkOption {
+          type = types.str;
+          default = "";
+          description = "External secondary head name";
+        };
+      };
     };
     dateFormats = mkOption {
       type = types.attrsOf types.str;
