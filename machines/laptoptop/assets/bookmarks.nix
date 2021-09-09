@@ -719,6 +719,10 @@ rec {
       tags = [ "nyxt" "forum" ];
       remote = { url = "https://discourse.atlas.engineer/"; };
     };
+    "cppreference" = {
+      tags = [ "c++" "cpp" "reference" ];
+      remote = { url = "https://en.cppreference.com/w/"; };
+    };
     "libtmux" = mkGithubBookmark "tmux-python" "libtmux" // { transient = true; };
     "paintings" = {
       tags = [ "paint" "play" ];
