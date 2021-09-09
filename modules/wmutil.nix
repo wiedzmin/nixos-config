@@ -253,5 +253,21 @@ rec {
     ${(lib.concatStringsSep ",\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "desktop" r) rules)
       (r: mkWindowRuleAwesome r width)))}
   '';
+  mkKeysymAwesome = keys:
+    lib.concatStringsSep keySepI3
+      (lib.forEach keys (k: if builtins.hasAttr k keySymsAwesomeEZ then builtins.getAttr k keySymsAwesomeEZ else k));
+  # TODO: investigate if we need to handle "desktop" attribute here (or elsewhere), and other misc attributes as well
+  mkKeybindingAwesome = meta: desktops:
+    let
+      debugEnabled = maybeAttrIsBool "debug" meta && !maybeAttrIsBool "raw" meta;
+    in
+    ''
+      ["${mkKeysymAwesome meta.key}"] = function()
+        ${if maybeAttrIsBool "raw" meta then "${mkIndent 2}${meta.cmd}"
+          else ''${mkIndent 2}awful.spawn("${lib.optionalString (debugEnabled) "DEBUG_MODE=1 "}${meta.cmd}")${
+            lib.optionalString (debugEnabled) " > ${
+              mkCmdDebugAbsFilename config.controlcenter.commandsDebugLogRoot meta.cmd} 2>&1"}''}
+      end
+    '';
   # TODO: review floating property for window rules, regardless of WM being used
 }
