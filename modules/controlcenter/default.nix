@@ -106,22 +106,14 @@ in
         };
         programs.rofi = {
           enable = true;
-          width = 100;
-          lines = 15;
-          borderWidth = 1;
           rowHeight = 1;
-          padding = 5;
-          scrollbar = false;
-          separator = "none";
           cycle = true;
-          fullscreen = false;
           location = "top";
           xoffset = 0;
           yoffset = 0;
           theme = "${inputs.base16-rofi}/themes/base16-zenburn.rasi"; # FIXME: move under `appearance` and review [[file:~/workspace/repos/github.com/rycee/home-manager/modules/programs/rofi.nix::colorsSubmodule = types.submodule {]]
           extraConfig = {
             monitor = "-4";
-            line-margin = 3;
             matching = "normal";
             tokenize = true;
             disable-history = false;
