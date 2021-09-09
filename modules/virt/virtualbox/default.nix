@@ -1,11 +1,17 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../util.nix { inherit config inputs lib pkgs; };
+with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
   cfg = config.ext.virtualization.virtualbox;
   user = config.attributes.mainUser.name;
-in {
+  kernelVersionCap = "5.4";
+  stable = import inputs.stable ({
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  });
+in
+{
   options = {
     ext.virtualization.virtualbox = {
       enable = mkOption {
@@ -18,13 +24,27 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      virtualisation.virtualbox.host.enable = true;
+      assertions = [{
+        assertion = builtins.compareVersions config.boot.kernelPackages.kernel.version kernelVersionCap >= 0;
+        message = ''
+          ext/virtualization/virtualbox: currently VB fails to build or work with kernels > ${kernelVersionCap}
+          See https://www.virtualbox.org/ticket/19845 for some details.
+        '';
+      }];
+
+      virtualisation.virtualbox.host = {
+        enable = true;
+        enableExtensionPack = true;
+        package = stable.virtualbox;
+      };
       users.users.${user}.extraGroups = [ "vboxusers" ];
 
-      networking.networkmanager = {
-        unmanaged = [ "interface-name:vb-*" "interface-name:vbox*" "interface-name:ve-*" ];
-        wifi.macAddress = optionalString (cfg.macAddress != "") cfg.macAddress;
-      };
+      networking.networkmanager.unmanaged = [ "interface-name:vb-*" "interface-name:vbox*" "interface-name:ve-*" ];
+
+      wmCommon.wsMapping.rules = [{
+        class = "VirtualBox Manager";
+        desktop = "tools";
+      }];
     })
   ];
 }
