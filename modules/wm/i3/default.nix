@@ -377,6 +377,8 @@ in
               (with config.wmCommon; genPlacementRulesI3
                 (windowRulesFromBookmarks config.navigation.bookmarks.entries ++ wsMapping.rules) workspaces)}
 
+            for_window [class="Rofi"] floating enable
+
             ${genWindowRulesFloatI3 config.wmCommon.wsMapping.rules}
 
             ${bindkeysFocusI3 config.wmCommon.wsMapping.rules}
