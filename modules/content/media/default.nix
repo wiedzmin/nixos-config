@@ -147,12 +147,6 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.wsMapping.rules = [
         {
-          class = mkWSMappingBrowsersRegexp;
-          title = "http youtube";
-          scratchpad = true;
-          key = [ "y" ];
-        }
-        {
           class = "cantata";
           scratchpad = true;
           key = [ "c" ];

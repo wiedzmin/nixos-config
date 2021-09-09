@@ -40,11 +40,6 @@ rec {
     }
     {
       class = mkWSMappingBrowsersRegexp;
-      title = "http fbclid";
-      desktop = "ent";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp;
       title = "http feedly";
       desktop = "web";
     }
@@ -130,27 +125,12 @@ rec {
     }
     {
       class = mkWSMappingBrowsersRegexp;
-      title = "http stackoverflow";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp;
-      title = "http python";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp;
       title = "documentation";
       desktop = "web";
     }
     {
       class = mkWSMappingBrowsersRegexp;
       title = "gitlab";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp;
-      title = "www.google.com";
       desktop = "web";
     }
     {
