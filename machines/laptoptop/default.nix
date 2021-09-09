@@ -75,7 +75,7 @@ in
     };
     initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
     tmpOnTmpfs = false;
-    kernelPackages = pkgs.linuxPackages_5_13;
+    kernelPackages = pkgs.linuxPackages_5_4;
     supportedFilesystems = [ "ntfs" ];
   };
 
@@ -572,7 +572,7 @@ in
       };
     };
     libvirt.enable = true;
-    virtualbox.enable = false;
+    virtualbox.enable = true;
   };
 
   dbms = {
