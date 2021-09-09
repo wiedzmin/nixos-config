@@ -720,10 +720,6 @@ rec {
       remote = { url = "https://discourse.atlas.engineer/"; };
     };
     "libtmux" = mkGithubBookmark "tmux-python" "libtmux" // { transient = true; };
-    "qtile" = mkGithubBookmark "qtile" "qtile";
-    "qtile-examples" = mkGithubBookmark "qtile" "qtile-examples";
-    "qtile-dotfiles" = mkGithubBookmark "justinesmithies" "qtile-dotfiles";
-    "qtile-config" = mkGithubBookmark "zordsdavini" "qtile-config";
     "paintings" = {
       tags = [ "paint" "play" ];
       browser = config.attributes.browser.fallback.cmd;
