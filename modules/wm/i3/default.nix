@@ -24,7 +24,7 @@ in
       };
       containerLayout = mkOption {
         type = types.enum [ "default" "stacking" "tabbed" ];
-        default = "tabbed";
+        default = "default";
         description = "Default container layout.";
       };
       settings = mkOption {
