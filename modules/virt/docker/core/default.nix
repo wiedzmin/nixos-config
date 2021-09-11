@@ -9,7 +9,8 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   configHome = hm.xdg.configHome;
   prefix = config.wmCommon.prefix;
-in {
+in
+{
   options = {
     ext.virtualization.docker.core = {
       enable = mkOption {
@@ -32,7 +33,8 @@ in {
         default = "overlay2";
         description = "Docker storage driver";
       };
-      emacs.enable = mkOption { # TODO: check if it works correctly
+      emacs.enable = mkOption {
+        # TODO: check if it works correctly
         type = types.bool;
         default = false;
         description = "Whether to enable Emacs Docker setup.";
@@ -66,7 +68,7 @@ in {
           (builtins.readFile ./scripts/docker_containers_traits.py);
         discover_containerized_services =
           mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker nurpkgs.pystdlib ])
-          (builtins.readFile ./scripts/discover_containerized_services.py);
+            (builtins.readFile ./scripts/discover_containerized_services.py);
         docker_shell = mkPythonScriptWithDeps "docker_shell"
           (with pkgs; [ nurpkgs.pystdlib nurpkgs.toolbox python3Packages.libtmux python3Packages.redis ])
           (builtins.readFile ./scripts/docker_shell.py);
@@ -105,6 +107,7 @@ in {
     (mkIf (cfg.enable && cfg.aux.enable) {
       environment.systemPackages = with pkgs; [
         docker-slim
+        dockfmt
         nsjail
         skopeo
         nodePackages.dockerfile-language-server-nodejs

@@ -559,6 +559,7 @@ in
     docker = {
       core = {
         enable = true;
+        aux.enable = true;
         emacs.enable = true;
         wm.enable = true;
       };
