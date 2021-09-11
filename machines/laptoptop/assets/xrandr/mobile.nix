@@ -5,7 +5,8 @@ with import ../../../../modules/util.nix { inherit config inputs lib pkgs; };
 let
   profileName = "mobile";
   user = config.attributes.mainUser.name;
-in {
+in
+{
   nixpkgs.config.packageOverrides = _: rec {
     "rescreen-${profileName}-i3" = mkShellScriptWithDeps "rescreen-${profileName}-i3" (with pkgs; [ i3 ]) ''
       i3-msg --quiet "${
@@ -14,14 +15,9 @@ in {
         mvWorkspacesCmdI3 config.wmCommon.workspaces "secondary" config.attributes.hardware.monitors.internalHead.name
       }${mvWorkspacesCmdI3 config.wmCommon.workspaces "tertiary" config.attributes.hardware.monitors.internalHead.name}"
     '';
-    set-all-tabbed-ws-i3 = mkShellScriptWithDeps "set-all-tabbed-ws-i3" (with pkgs; [ i3 ]) ''
-      i3-msg --quiet "${setWorkspacesLayoutByTypeI3 config.wmCommon.workspaces "primary" "tabbed"}${
-        setWorkspacesLayoutByTypeI3 config.wmCommon.workspaces "secondary" "tabbed"
-      }${setWorkspacesLayoutByTypeI3 config.wmCommon.workspaces "tertiary" "tabbed"}"
-    '';
   };
   home-manager.users.${user} = {
-    home.packages = [ pkgs."rescreen-${profileName}-i3" pkgs.set-all-tabbed-ws-i3 ];
+    home.packages = [ pkgs."rescreen-${profileName}-i3" ];
     programs.autorandr = {
       profiles = {
         "${profileName}" = {
@@ -41,7 +37,6 @@ in {
           };
           hooks.postswitch = lib.optionalString (config.wm.i3.enable) ''
             rescreen-${profileName}-i3
-            set-all-tabbed-ws-i3
             ${pkgs.i3}/bin/i3-msg --quiet "workspace back_and_forth"
           '';
         };
