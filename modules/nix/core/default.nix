@@ -109,7 +109,7 @@ in
         };
       };
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback ];
+        home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback rnix-lsp ];
         home.sessionPath = [ (homePrefix ".cargo/bin") ];
         xdg.configFile."espanso/user/nix-core.yml".text = ''
           name: nix-core

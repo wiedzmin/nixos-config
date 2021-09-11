@@ -43,9 +43,11 @@
   (lsp-semantic-tokens-enable t)
   (lsp-signature-render-documentation t)
   (read-process-output-max (* 1024 1024))
+  (lsp-lens-place-po1sition 'above-line)
   :config
   ;;TODO: play with lsp-keymap-prefix
   (lsp-lens-mode 1)
+  (lsp-dired-mode 1)
   (lsp-headerline-breadcrumb-mode)
   (lsp-modeline-diagnostics-mode)
   (delight 'lsp-lens-mode " Ꙫ" 'lsp-lens))

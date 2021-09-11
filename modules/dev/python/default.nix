@@ -6,7 +6,8 @@ let
   cfg = config.dev.python;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     dev.python = {
       enable = mkOption {
@@ -80,6 +81,7 @@ in {
         [ "Pipfile" "manage.py" "poetry.lock" "requirements.txt" "requirements.pip" "setup.py" "tox.ini" ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
+      # TODO: also play with the `pylsp` (https://github.com/python-lsp/python-lsp-server)
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];
       ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/python.el;
     })
