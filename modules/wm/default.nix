@@ -7,7 +7,6 @@ let
   cfg = config.wmCommon;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  prefix = config.wmCommon.prefix;
 in
 {
   options = {
@@ -144,13 +143,13 @@ in
         home.packages = with pkgs; [ keybindings ];
       };
       wmCommon.modeBindings = {
-        "dev" = [ prefix "d" ];
-        "layout" = [ prefix "<" ];
-        "resize" = [ prefix "=" ];
-        "run" = [ prefix "r" ];
-        "select" = [ prefix "." ];
-        "services" = [ prefix "s" ];
-        "xserver" = [ prefix "x" ];
+        "dev" = [ cfg.prefix "d" ];
+        "layout" = [ cfg.prefix "<" ];
+        "resize" = [ cfg.prefix "=" ];
+        "run" = [ cfg.prefix "r" ];
+        "select" = [ cfg.prefix "." ];
+        "services" = [ cfg.prefix "s" ];
+        "xserver" = [ cfg.prefix "x" ];
       };
       wmCommon.keys = [
         {
