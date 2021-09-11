@@ -29,7 +29,8 @@ in
           htmlq
           jc
           ripgrep-all
-          sad                   # TODO: consider creating shell aliases
+          sad # TODO: consider creating shell aliases
+          sd # TODO: play with it in streaming use-cases
           up
           uq
         ];
