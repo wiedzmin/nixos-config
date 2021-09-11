@@ -405,8 +405,8 @@ in
                 ${cfg.theme.bar}
                 }
                 ''}
-                wheel_up_cmd nop
-                wheel_down_cmd nop
+                bindsym button4 nop
+                bindsym button5 nop
             }
           '';
         } // optionalAttrs (cfg.statusbar.impl == "blocks") {
