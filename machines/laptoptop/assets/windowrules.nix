@@ -3,7 +3,8 @@ with import ../../../modules/util.nix { inherit config inputs lib pkgs; };
 
 rec {
   wmCommon.wsMapping.rules = [
-    { # TODO: parameterize rule
+    {
+      # TODO: parameterize rule
       class = "Alacritty";
       title = "main laptoptop";
       desktop = "shell";
@@ -126,11 +127,6 @@ rec {
     {
       class = mkWSMappingBrowsersRegexp;
       title = "documentation";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp;
-      title = "gitlab";
       desktop = "web";
     }
     {
