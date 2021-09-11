@@ -125,6 +125,9 @@ in
 
             - trigger: ":cfg"
               replace: "nixosConfigurations.laptoptop.config.$|$"
+
+            - trigger: ":elt"
+              replace: "builtins.head (inputs.unstable.lib.sublist 1$|$ 1 nixosConfigurations.laptoptop.config.wmCommon.wsMapping.rules)"
         '';
       };
 
