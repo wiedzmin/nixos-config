@@ -26,8 +26,10 @@ in
           dasel
           each
           gron
+          htmlq
           jc
           ripgrep-all
+          sad                   # TODO: consider creating shell aliases
           up
           uq
         ];
@@ -75,6 +77,7 @@ in
           };
         };
       };
+      shell.core.variables = [{ GIT_PAGER = "${pkgs.delta}/bin/delta"; }];
     })
   ];
 }
