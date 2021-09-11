@@ -202,7 +202,7 @@ in
       };
       wmCommon.keys = [{
         key = [ "t" ];
-        cmd = "${goBinPrefix "tmuxctl"}";
+        cmd = "${nurpkgs.toolbox}/bin/tmuxctl";
         mode = "select";
         debug = true;
       }];

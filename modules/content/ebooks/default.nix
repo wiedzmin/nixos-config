@@ -88,7 +88,7 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "b" ];
-        cmd = "${goBinPrefix "bookshelf"}";
+        cmd = "${nurpkgs.toolbox}/bin/bookshelf";
         mode = "select";
       }];
     })
