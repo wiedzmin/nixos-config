@@ -250,8 +250,8 @@ in
             mode = "layout";
           }
           {
-            key = [ prefix "F7" ];
-            cmd = ''${pkgs.wmfocus}/bin/wmfocus --chars 123456789 --textcoloralt "#eeeeee"'';
+            key = [ prefix "Return" ];
+            cmd = ''${pkgs.wmfocus}/bin/wmfocus --chars qweasdzxc --textcoloralt "#eeeeee"'';
             mode = "root";
           }
           {

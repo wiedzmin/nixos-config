@@ -630,19 +630,19 @@ in
     }
     {
       name = "tools";
-      key = [ "F4" ];
+      key = [ "1" ];
       transient = false;
       type = "primary";
     }
     {
       name = "scan";
-      key = [ "F5" ];
+      key = [ "2" ];
       transient = false;
       type = "primary";
     }
     {
       name = "ent";
-      key = [ "F6" ];
+      key = [ "Escape" ];
       transient = false;
       type = "primary";
     }
@@ -654,7 +654,7 @@ in
     }
     {
       name = "read";
-      key = [ "4" ];
+      key = [ "3" ];
       transient = false;
       type = "secondary";
     }
@@ -666,7 +666,7 @@ in
     }
     {
       name = "scratch";
-      key = [ "Esc" ];
+      key = [ "h" ];
       transient = false;
       type = "tertiary";
     }
