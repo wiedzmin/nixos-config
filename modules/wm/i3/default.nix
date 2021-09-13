@@ -332,7 +332,7 @@ in
         path = [ pkgs.xkb-switch pkgs.i3 pkgs.bash ];
         serviceConfig = {
           Type = "simple";
-          ExecStart = "${nurpkgs.wmtools}/bin/kbd";
+          ExecStart = "${nurpkgs.wmtools}/bin/i3-kbd";
           Restart = "on-failure";
           StandardOutput = "journal";
           StandardError = "journal";
@@ -347,7 +347,7 @@ in
         path = [ pkgs.i3 pkgs.bash ];
         serviceConfig = {
           Type = "simple";
-          ExecStart = "${nurpkgs.wmtools}/bin/desktops";
+          ExecStart = "${nurpkgs.wmtools}/bin/i3-desktops";
           Restart = "always";
           StandardOutput = "journal";
           StandardError = "journal";
