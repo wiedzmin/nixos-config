@@ -53,6 +53,11 @@ in
           `ipc` - rely on IPC service, listening for window titles changes
         '';
       };
+      mouseFollowsFocus = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Does mouse cursor follow window focus?";
+      };
       statusbar.impl = mkOption {
         type = types.enum [ "py3" "i3-rs" "blocks" ];
         default = "py3";
@@ -348,6 +353,21 @@ in
         serviceConfig = {
           Type = "simple";
           ExecStart = "${nurpkgs.wmtools}/bin/i3-desktops";
+          Restart = "always";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+      };
+
+      systemd.user.services.i3-mousewarp = optionalAttrs (cfg.mouseFollowsFocus) {
+        description = "mouse warp for i3";
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        path = [ pkgs.i3 pkgs.bash ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${nurpkgs.wmtools}/bin/i3-mousewarp";
           Restart = "always";
           StandardOutput = "journal";
           StandardError = "journal";
