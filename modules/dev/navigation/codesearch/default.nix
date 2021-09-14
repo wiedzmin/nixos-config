@@ -24,7 +24,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       shell.core.variables = [{
-        CSEARCHINDEX = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex";
+        CSEARCHINDEX = "${homePrefix user config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex";
       }];
       home-manager.users.${user} = {
         home.packages = with pkgs; [ codesearch ];
@@ -36,8 +36,8 @@ in {
         serviceConfig = {
           Type = "oneshot";
           Environment =
-            [ "CSEARCHINDEX=${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex" ];
-          ExecStart = "${pkgs.codesearch}/bin/cindex ${homePrefix config.navigation.bookmarks.workspaces.globalRoot}";
+            [ "CSEARCHINDEX=${homePrefix user config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex" ];
+          ExecStart = "${pkgs.codesearch}/bin/cindex ${homePrefix user config.navigation.bookmarks.workspaces.globalRoot}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -46,7 +46,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.codesearch epkgs.projectile-codesearch ];
-      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/codesearch.el;
+      ide.emacs.core.config = readSubstituted [ ../../subst.nix ] [ ./emacs/codesearch.el ];
     })
   ];
 }

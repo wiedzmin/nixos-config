@@ -28,7 +28,7 @@ in
       passwordStorePath = mkOption {
         description = "Default path to Pass password store";
         type = types.str;
-        default = homePrefix ".password-store";
+        default = homePrefix user ".password-store";
       };
       emacs.enable = mkOption {
         type = types.bool;
@@ -106,7 +106,7 @@ in
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pass ];
       ide.emacs.core.customKeymaps = { "custom-pass-map" = "<f6>"; };
-      ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/security.el;
+      ide.emacs.core.config = builtins.readFile ./emacs/security.el;
     })
     (mkIf (cfg.polkit.silentAuth) {
       security.polkit.extraConfig = ''

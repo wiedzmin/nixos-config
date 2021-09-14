@@ -1,6 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../util.nix { inherit config inputs lib pkgs; };
-with import ../../wmutil.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
@@ -275,15 +274,15 @@ in
       home-manager.users.${user} = {
         home.packages = with pkgs; [ debug-awesome ];
         xdg.configFile = {
-          "awesome/rc.lua".text = readSubstituted ../../subst.nix ./rc.lua;
-          "awesome/lib/controls.lua".text = readSubstituted ../../subst.nix ./lib/controls.lua;
-          "awesome/lib/menus.lua".text = readSubstituted ../../subst.nix ./lib/menus.lua;
-          "awesome/lib/themes.lua".text = readSubstituted ../../subst.nix ./lib/themes.lua;
-          "awesome/lib/utils.lua".text = readSubstituted ../../subst.nix ./lib/utils.lua;
-          "awesome/lib/widgets.lua".text = readSubstituted ../../subst.nix ./lib/widgets.lua;
-          "awesome/lib/windows.lua".text = readSubstituted ../../subst.nix ./lib/windows.lua;
+          "awesome/rc.lua".text = readSubstituted [ ./subst.nix ] [ ./rc.lua ];
+          "awesome/lib/controls.lua".text = readSubstituted [ ./subst.nix ] [ ./lib/controls.lua ];
+          "awesome/lib/menus.lua".text = readSubstituted [ ./subst.nix ] [ ./lib/menus.lua ];
+          "awesome/lib/themes.lua".text = readSubstituted [ ./subst.nix ] [ ./lib/themes.lua ];
+          "awesome/lib/utils.lua".text = readSubstituted [ ./subst.nix ] [ ./lib/utils.lua ];
+          "awesome/lib/widgets.lua".text = readSubstituted [ ./subst.nix ] [ ./lib/widgets.lua ];
+          "awesome/lib/windows.lua".text = readSubstituted [ ./subst.nix ] [ ./lib/windows.lua ];
           "awesome/themes" = { source = ./themes; recursive = true; };
-          "awesome/lib/debug.lua".text = readSubstituted ../../subst.nix ./lib/debug.lua;
+          "awesome/lib/debug.lua".text = readSubstituted [ ./subst.nix ] [ ./lib/debug.lua ];
         };
       };
     })

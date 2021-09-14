@@ -25,7 +25,7 @@ in
       };
       downloadPath = mkOption {
         type = types.str;
-        default = homePrefix "Downloads";
+        default = homePrefix user "Downloads";
         description = "Downloads path";
       };
       isDefault = mkOption {
@@ -80,7 +80,7 @@ in
       };
       sessions.path = mkOption {
         type = types.str;
-        default = homePrefix "docs/org/browser-sessions/firefox";
+        default = homePrefix user "docs/org/browser-sessions/firefox";
         description = "Where to save plaintext Firefox session contents.";
       };
       sessions.historyLength = mkOption {
@@ -254,7 +254,7 @@ in
         home.activation.ensureFirefoxHandlers = {
           after = [ ];
           before = [ "checkLinkTargets" ];
-          data = "rm -f ${homePrefix "/.mozilla/firefox/profile.default/handlers.json"} ";
+          data = "rm -f ${homePrefix user "/.mozilla/firefox/profile.default/handlers.json"} ";
         };
         xdg.configFile."tridactyl/tridactylrc".text = ''
           set storageloc local
@@ -446,11 +446,11 @@ in
         global = true;
       }];
 
-      workstation.performance.warmup.paths = [ (homePrefix ".mozilla") ];
+      workstation.performance.warmup.paths = [ (homePrefix user ".mozilla") ];
 
       workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
       navigation.bookmarks.entries = {
-        "firefox/sessions/exported" = { local.path = homePrefix "docs/org/browser-sessions/firefox"; };
+        "firefox/sessions/exported" = { local.path = homePrefix user "docs/org/browser-sessions/firefox"; };
       };
     })
     (mkIf (cfg.enable && cfg.isFallback) {

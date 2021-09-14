@@ -20,8 +20,7 @@ in {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.melpaStablePackages.slime
       ];
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/lisp.el;
+      ide.emacs.core.config = builtins.readFile ./emacs/lisp.el;
     })
   ];
 }
-

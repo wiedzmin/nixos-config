@@ -182,7 +182,7 @@ in
             python3Packages.xlib
             xprintidle-ng
           ])
-          (readSubstituted ../../subst.nix ./scripts/tt_capture.py);
+          (builtins.readFile ./scripts/tt_capture.py);
       };
       services.arbtt = {
         enable = true;

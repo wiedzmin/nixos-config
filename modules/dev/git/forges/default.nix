@@ -229,7 +229,7 @@ in {
         epkgs.git-link
       ];
       ide.emacs.core.config =
-        readSubstituted ../../../subst.nix ./emacs/forges.el +
+        builtins.readFile ./emacs/forges.el +
         optionalString (length (attrValues mapping) > 0)
           ((genBrowseAtRemoteTypesPatch mapping) + (genGitlinkTypesPatch mapping));
     }))

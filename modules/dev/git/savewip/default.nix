@@ -54,7 +54,7 @@ in
         serviceConfig = {
           Type = "oneshot";
           ExecStart = ''${pkgs.bash}/bin/bash -c "${pkgs.mr}/bin/mr savewip"'';
-          WorkingDirectory = homePrefix "";
+          WorkingDirectory = homePrefix user "";
           StandardOutput = "journal";
           StandardError = "journal";
         };

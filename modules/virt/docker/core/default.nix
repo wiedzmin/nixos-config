@@ -23,11 +23,6 @@ in
         default = false;
         description = "Whether to enable Docker auxillary packages";
       };
-      defaultContainerShell = mkOption {
-        type = types.str;
-        default = "/bin/bash";
-        description = "Default shell to execute within container with `exec -it`";
-      };
       storageDriver = mkOption {
         type = types.str;
         default = "overlay2";
@@ -60,9 +55,9 @@ in
 
       nixpkgs.config.packageOverrides = _: rec {
         dlint =
-          mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (readSubstituted ../../../subst.nix ./scripts/dlint.sh);
+          mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (builtins.readFile ./scripts/dlint.sh);
         hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ])
-          (readSubstituted ../../../subst.nix ./scripts/hadolintd.sh);
+          (builtins.readFile ./scripts/hadolintd.sh);
         docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits"
           (with pkgs; [ docker nurpkgs.pystdlib nurpkgs.toolbox python3Packages.redis xsel yad ])
           (builtins.readFile ./scripts/docker_containers_traits.py);
@@ -115,7 +110,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.dockerfile-mode ];
-      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/docker.el;
+      ide.emacs.core.config = builtins.readFile ./emacs/docker.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.modeBindings = {

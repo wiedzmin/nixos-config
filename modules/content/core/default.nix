@@ -30,19 +30,19 @@ in
         home.activation.ensureMimeappsList = {
           after = [ ];
           before = [ "checkLinkTargets" ];
-          data = "rm -f ${homePrefix ".config/mimeapps.list"} ";
+          data = "rm -f ${homePrefix user ".config/mimeapps.list"} ";
         };
 
         xdg = {
-          dataHome = homePrefix ".local/share";
+          dataHome = homePrefix user ".local/share";
           userDirs = {
             enable = true;
-            desktop = homePrefix "Desktop";
-            documents = homePrefix "docs/inbox";
-            download = homePrefix "Downloads";
-            music = homePrefix "blobs/music";
-            pictures = homePrefix "blobs/pics";
-            videos = homePrefix "blobs/video";
+            desktop = homePrefix user "Desktop";
+            documents = homePrefix user "docs/inbox";
+            download = homePrefix user "Downloads";
+            music = homePrefix user "blobs/music";
+            pictures = homePrefix user "blobs/pics";
+            videos = homePrefix user "blobs/video";
           };
           mimeApps.enable = true;
         };

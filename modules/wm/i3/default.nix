@@ -1,6 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../util.nix { inherit config inputs lib pkgs; };
-with import ../../wmutil.nix { inherit config inputs lib pkgs; };
+with import ./util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let

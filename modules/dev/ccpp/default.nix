@@ -28,7 +28,7 @@ in {
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      shell.core.variables = [{ _RR_TRACE_DIR = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/rr"; }];
+      shell.core.variables = [{ _RR_TRACE_DIR = "${homePrefix user config.navigation.bookmarks.workspaces.globalRoot}/rr"; }];
       home-manager.users.${user} = {
         home.packages = with pkgs; [ ccls clang clang-tools gdb ]; # rr-unstable (broken)
       };
@@ -60,7 +60,7 @@ in {
         epkgs.cmake-mode
         epkgs.modern-cpp-font-lock
       ];
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/ccpp.el;
+      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./emacs/ccpp.el ];
     })
   ];
 }

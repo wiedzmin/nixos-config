@@ -1,8 +1,10 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../../modules/util.nix { inherit config inputs lib pkgs; };
-
+let
+  user = config.attributes.mainUser.name;
+in
 rec {
-  navigation.bookmarks.workspaces.roots = { "stale" = homePrefix "workspace/repos.stale"; };
+  navigation.bookmarks.workspaces.roots = { "stale" = homePrefix user "workspace/repos.stale"; };
   navigation.bookmarks.entries = {
     home-manager = {
       desc = "home-manager upstream repo";
@@ -79,7 +81,7 @@ rec {
     };
     nur-packages = { local.path = "${wsRoot "github"}/wiedzmin/nur-packages"; };
     postgres = { local.path = "${wsRoot "github"}/postgres/postgres"; };
-    "staging/sandbox" = { local.path = homePrefix "workspace/sandbox/newpkgs"; };
+    "staging/sandbox" = { local.path = homePrefix user "workspace/sandbox/newpkgs"; };
     jwt-io = {
       desc = "JWT online debugger and libraries reference";
       remote.url = "https://jwt.io/";
@@ -753,7 +755,7 @@ rec {
       remote = { url = "https://duckduckgo.com/bang"; };
     };
     agenda = {
-      local.path = homePrefix "docs/org/agenda.org";
+      local.path = homePrefix user "docs/org/agenda.org";
       windowRules = [
         {
           class = "Emacs";

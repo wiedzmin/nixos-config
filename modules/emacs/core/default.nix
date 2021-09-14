@@ -41,7 +41,7 @@ in
       };
       dataDir = mkOption {
         type = types.str;
-        default = homePrefix ".emacs.d/data";
+        default = homePrefix user ".emacs.d/data";
         visible = false;
         readOnly = true;
         internal = true;
@@ -114,7 +114,7 @@ in
 
           (require 'notifications)
 
-          ${lib.concatStringsSep "\n" (lib.forEach [ ./core.el ] (el: readSubstituted ../../subst.nix el))}
+          ${readSubstituted [ ./subst.nix ] [ ./core.el ]}
 
           ${cfg.config}
 

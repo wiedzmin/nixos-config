@@ -53,7 +53,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.editorconfig ];
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/ec.el;
+      ide.emacs.core.config = builtins.readFile ./emacs/ec.el;
     })
   ];
 }

@@ -59,7 +59,7 @@ in
         epkgs.elfeed-org
         epkgs.elfeed-score
       ];
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/content.el;
+      ide.emacs.core.config = readSubstituted [ ../../pim/orgmode/subst.nix ] [ ./emacs/content.el ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [

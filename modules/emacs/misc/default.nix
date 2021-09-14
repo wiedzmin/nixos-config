@@ -36,7 +36,7 @@ in {
         "custom-formatting-map" = "C-c f";
         "misc-editing-map" = "<f11>";
       };
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./misc.el;
+      ide.emacs.core.config = builtins.readFile ./misc.el;
     })
   ];
 }

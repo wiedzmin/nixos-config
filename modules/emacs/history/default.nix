@@ -29,7 +29,7 @@ in {
         epkgs.savekill
         epkgs.super-save
       ];
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./history.el;
+      ide.emacs.core.config = builtins.readFile ./history.el;
     })
   ];
 }

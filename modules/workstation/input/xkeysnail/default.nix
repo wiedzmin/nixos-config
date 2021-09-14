@@ -16,7 +16,7 @@ in
       };
       configPath = mkOption {
         type = types.str;
-        default = homePrefix ".config/xkeysnail/config.py";
+        default = homePrefix user ".config/xkeysnail/config.py";
         description = "Config file absolute path";
       };
       inputDevices = mkOption {

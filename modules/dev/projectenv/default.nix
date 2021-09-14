@@ -27,7 +27,7 @@ in
       };
       backupRoot = mkOption {
         type = types.str;
-        default = "${homePrefix config.navigation.bookmarks.workspaces.globalRoot}/.devenv-backup";
+        default = "${homePrefix user config.navigation.bookmarks.workspaces.globalRoot}/.devenv-backup";
         description = "File name for dev-env files list.";
       };
       markerFiles = mkOption {
@@ -63,7 +63,7 @@ in
       nixpkgs.config.packageOverrides = _: rec {
         devenv = mkPythonScriptWithDeps "devenv"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.pyyaml renderizer stgit ])
-          (readSubstituted ../../subst.nix ./scripts/devenv.py);
+          (builtins.readFile ./scripts/devenv.py);
         git-hideenv = mkShellScriptWithDeps "git-hideenv" (with pkgs; [ devenv ]) ''
           devenv --hide
         '';

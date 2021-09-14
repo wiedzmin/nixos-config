@@ -50,7 +50,7 @@ in {
         "custom-sorting-map" = "C-c s";
         "custom-tabs-map" = "C-c b";
       };
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./edit.el;
+      ide.emacs.core.config = builtins.readFile ./edit.el;
     })
   ];
 }

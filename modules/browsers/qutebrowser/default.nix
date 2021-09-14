@@ -27,7 +27,7 @@ in
       };
       downloadPath = mkOption {
         type = types.str;
-        default = homePrefix "Downloads";
+        default = homePrefix user "Downloads";
         description = "Downloads path.";
       };
       isDefault = mkOption {
@@ -82,7 +82,7 @@ in
       };
       sessions.path = mkOption {
         type = types.str;
-        default = homePrefix "docs/org/browser-sessions/qutebrowser";
+        default = homePrefix user "docs/org/browser-sessions/qutebrowser";
         description = "Where to save plaintext Qutebrowser session contents.";
       };
       sessions.keepMinutes = mkOption {
@@ -504,8 +504,8 @@ in
       workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
 
       navigation.bookmarks.entries = {
-        "qutebrowser/sessions/raw" = { local.path = homePrefix ".local/share/qutebrowser/sessions"; };
-        "qutebrowser/sessions/exported" = { local.path = homePrefix "docs/org/browser-sessions/qutebrowser"; };
+        "qutebrowser/sessions/raw" = { local.path = homePrefix user ".local/share/qutebrowser/sessions"; };
+        "qutebrowser/sessions/exported" = { local.path = homePrefix user "docs/org/browser-sessions/qutebrowser"; };
       };
     })
     (mkIf (cfg.enable && cfg.isFallback) {

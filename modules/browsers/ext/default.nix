@@ -76,7 +76,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.atomic-chrome ];
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/browsers.el;
+      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./emacs/browsers.el ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.modeBindings = {

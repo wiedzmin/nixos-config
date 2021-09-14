@@ -46,9 +46,9 @@ in {
     (mkIf (cfg.enable && cfg.scripts.enable) {
       nixpkgs.config.packageOverrides = _: rec {
         get-pr-override = mkShellScriptWithDeps "get-pr-override" (with pkgs; [ coreutils curl gnugrep ])
-          (readSubstituted ../../subst.nix ./scripts/get-pr-override.sh);
+          (builtins.readFile ./scripts/get-pr-override.sh);
         make-package-diff = mkShellScriptWithDeps "make-package-diff" (with pkgs; [ coreutils diffutils nix ])
-          (readSubstituted ../../subst.nix ./scripts/make-package-diff.sh);
+          (builtins.readFile ./scripts/make-package-diff.sh);
       };
 
       home-manager.users.${user} = { home.packages = with pkgs; [ get-pr-override make-package-diff ]; };

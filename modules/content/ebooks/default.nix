@@ -40,7 +40,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       fileSystems."${config.services.syncthing.dataDir}/bookshelf" = {
-        device = homePrefix "bookshelf";
+        device = homePrefix user "bookshelf";
         options = [ "bind" ];
       };
       systemd.user.services = builtins.listToAttrs (forEach (localEbooks config.navigation.bookmarks.entries) (root:

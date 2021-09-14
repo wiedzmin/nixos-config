@@ -98,7 +98,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/scheduling.el;
+      ide.emacs.core.config = builtins.readFile ./emacs/scheduling.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ fcalendar ]; };

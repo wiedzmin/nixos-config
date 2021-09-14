@@ -111,7 +111,7 @@ in
         epkgs.orgit
         epkgs.russian-holidays
       ] ++ optionals (cfg.cliplink.enable) [ epkgs.org-cliplink ];
-      ide.emacs.core.config = (readSubstituted ../../subst.nix ./emacs/orgmode.el)
+      ide.emacs.core.config = (readSubstituted [ ./subst.nix ] [ ./emacs/orgmode.el ])
         + lib.optionalString (cfg.cliplink.enable) ''
         (use-package org-cliplink
           :after (org)

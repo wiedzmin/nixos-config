@@ -53,7 +53,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         gitfetch = mkPythonScriptWithDeps "gitfetch"
           (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
-          (readSubstituted ../../../subst.nix ./scripts/gitfetch.py);
+          (builtins.readFile ./scripts/gitfetch.py);
       };
 
       # IDEA: place empty ".noauto" or like file in repo root to prevent any further breakage if something went wrong
@@ -73,7 +73,7 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.mr}/bin/mr mu";
-          WorkingDirectory = homePrefix "";
+          WorkingDirectory = homePrefix user "";
           StandardOutput = "journal";
           StandardError = "journal";
         };

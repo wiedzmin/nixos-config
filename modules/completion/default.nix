@@ -161,7 +161,7 @@ in
         epkgs.company-tabnine
         epkgs.yasnippet
       ];
-      ide.emacs.core.config = readSubstituted ../subst.nix ./emacs/completion.el;
+      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./emacs/completion.el ];
       ide.emacs.core.customKeymaps = { "custom-yasnippet-map" = "<f5>"; };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {

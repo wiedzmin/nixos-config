@@ -1,8 +1,15 @@
 { config, inputs, lib, pkgs, ... }:
 
 # TODO: review https://github.com/ysndr/blog/blob/e4588f821ce6aee9ec3688ee9af3d2e61e143530/blog.nix#L14
+# TODO: implement utils collection like nixpkgs/lib + flake handle
 
-let user = config.attributes.mainUser.name;
+let
+  windowRulePlaceholders = {
+    "class" = ''^@$'';
+    "title" = ''(?i).*@.*'';
+    "role" = ''^@$'';
+    "instance" = ''^@$'';
+  };
 in
 rec {
   addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
@@ -68,9 +75,9 @@ rec {
   mkIndent = width: with lib; (concatStrings (genList (const " ") width));
   mkNewlineAndIndent = width: with lib; "\n" + (concatStrings (genList (const " ") width));
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
-  homePrefix = suffix: "/home/${user}/" + suffix;
-  goBinPrefix = suffix: "/home/${user}/workspace/go/bin/" + suffix;
-  xdgConfig = suffix: (homePrefix ".config") + suffix;
+  homePrefix = user: suffix: "/home/${user}/" + suffix;
+  goBinPrefix = user: suffix: "/home/${user}/workspace/go/bin/" + suffix;
+  xdgConfig = user: suffix: (homePrefix user ".config") + suffix;
   configPrefix = suffix:
     "${wsRoot "github"}/wiedzmin/nixos-config/" + suffix;
   secretsPrefix = suffix:
@@ -108,7 +115,7 @@ rec {
   maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
   emacsBoolToString = v: if v == true then "t" else "nil";
   wsRoot = key: lib.getAttrFromPath [ key ] config.navigation.bookmarks.workspaces.roots;
-  wsRootAtHomedir = key: lib.removePrefix (homePrefix "") key;
+  wsRootAtHomedir = user: key: lib.removePrefix (homePrefix user "") key;
   mkGithubBookmark = user: repo: {
     local.path = "${wsRoot "github"}/${user}/${repo}";
     remote.url = "https://github.com/${user}/${repo}";
@@ -174,11 +181,11 @@ rec {
 
       dependencies = [ pkgs.bash ] ++ dependencies;
     }));
-  # TODO: idea: provide multiple substs using folding
-  readSubstitutedList = subst: entries:
+  readSubstituted = substs: entries:
     lib.concatStringsSep "\n" (lib.forEach entries
-      (e: builtins.readFile (pkgs.substituteAll ((import subst { inherit config inputs lib pkgs; }) // { src = e; }))));
-  readSubstituted = subst: content: readSubstitutedList subst [ content ];
+      (e: builtins.readFile (pkgs.substituteAll
+        (lib.foldl (collector: subst: collector // ((import subst { inherit config inputs lib pkgs; }) // { src = e; }))
+          {} substs))));
   enabledLocals = bookmarks:
     lib.mapAttrs
       (key: meta: meta.local // { key = key; } // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
@@ -302,4 +309,33 @@ rec {
     lib.concatStringsSep "\n"
       (lib.mapAttrsToList (re: tag: "current window ($title =~ m!^emacs - [^ ]+\\.${re} .*$!) ==> tag ${tag},")
         title2tag);
+  reAddWildcards = s: builtins.replaceStrings [ " " ] [ ".*" ] s;
+  prepareWindowRule = rule:
+    rule // (lib.mapAttrs (k: v: builtins.replaceStrings [ "@" ]
+      [ (if k == "title" then reAddWildcards rule.${k} else rule.${k}) ] v)
+        (lib.filterAttrs (k: _: builtins.hasAttr k rule) windowRulePlaceholders));
+  getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
+  enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: v: i) wsdata) wsdata;
+  windowRuleClauses = rule:
+    lib.filterAttrs (k: _: !builtins.elem k [ "activate" "debug" "desktop" "float" "key" "scratchpad" ]) rule;
+  mkWMDebugScript = name: wmpkg: wmcmd:
+    mkShellScriptWithDeps name
+      (with pkgs; [
+        coreutils
+        gnugrep
+        xorg.xorgserver.out
+        xorg.xrandr
+      ] ++ [ wmpkg ])
+      ''
+        if [ "$(xrandr | grep connected | grep -v dis | wc -l)" = "1" ]; then
+          resolution=${config.attributes.hardware.monitors.internalHead.resolutionXephyr}
+          echo "LVDS-only, using $resolution"
+        else
+          resolution=${config.attributes.hardware.monitors.internalHead.resolution}
+          echo "dock-station, using $resolution"
+        fi
+        Xephyr -ac -br -noreset -screen $resolution :1 &
+        sleep 1
+        DISPLAY=:1.0 ${wmcmd}
+      '';
 }

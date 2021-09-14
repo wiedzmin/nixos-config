@@ -19,7 +19,7 @@ in {
   config = mkMerge [
     (mkIf cfg.emacs.enable {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.tuareg ];
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/ml.el;
+      ide.emacs.core.config = builtins.readFile ./emacs/ml.el;
     })
   ];
 }

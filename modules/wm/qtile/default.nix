@@ -1,6 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../util.nix { inherit config inputs lib pkgs; };
-with import ../../wmutil.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
@@ -47,7 +46,7 @@ in
       home-manager.users.${user} = {
         home.packages = with pkgs; [ debug-qtile ];
         xdg.configFile = {
-          "qtile/config.py".text = readSubstituted ../../subst.nix ./config.py;
+          "qtile/config.py".text = readSubstituted [ ./subst.nix ] [ ./config.py ];
         };
       };
     })

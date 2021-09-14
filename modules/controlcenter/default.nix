@@ -42,7 +42,7 @@ in
       };
       commandsDebugLogRoot = mkOption {
         type = types.str;
-        default = homePrefix "wm-logs";
+        default = homePrefix user "wm-logs";
         description = "Path to store WM commands debug logs under";
       };
       gmrun.historySize = mkOption {
@@ -263,7 +263,7 @@ in
     (mkIf (cfg.enable && cfg.launcher == "gmrun") {
       home-manager.users.${user} = {
         home.packages = with pkgs; [ gmrun ];
-        home.file = { ".gmrunrc".text = readSubstituted ../subst.nix ./assets/gmrunrc; };
+        home.file = { ".gmrunrc".text = readSubstituted [ ./subst.nix ] [ ./assets/gmrunrc ]; };
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {

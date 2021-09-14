@@ -5,7 +5,7 @@
   :custom
   (rmh-elfeed-org-tree-id "elfeed")
   (rmh-elfeed-org-ignore-tag "ignore")
-  (rmh-elfeed-org-files '("@orgDir@/rss/feeds.org"))
+  (rmh-elfeed-org-files '("@orgRoot@/rss/feeds.org"))
   :config
   (elfeed-org))
 
@@ -17,7 +17,7 @@
 (use-package elfeed-dashboard
   :after elfeed
   :config
-  (setq elfeed-dashboard-file "@orgDir@/rss/elfeed-dashboard.org")
+  (setq elfeed-dashboard-file "@orgRoot@/rss/elfeed-dashboard.org")
   (advice-add 'elfeed-search-quit-window :after #'elfeed-dashboard-update-links))
 
 (use-package elfeed-score

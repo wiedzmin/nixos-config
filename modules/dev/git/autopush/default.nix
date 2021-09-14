@@ -38,7 +38,7 @@ in {
       nixpkgs.config.packageOverrides = _: rec {
         gitpush = mkPythonScriptWithDeps "gitpush"
           (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
-          (readSubstituted ../../../subst.nix ./scripts/gitpush.py);
+          (builtins.readFile ./scripts/gitpush.py);
       };
 
       dev.git.batch.commands = { push = [ "${pkgs.gitpush}/bin/gitpush" ]; };
@@ -48,7 +48,7 @@ in {
         serviceConfig = {
           Type = "oneshot";
           ExecStart = "${pkgs.mr}/bin/mr push";
-          WorkingDirectory = homePrefix "";
+          WorkingDirectory = homePrefix user "";
           StandardOutput = "journal";
           StandardError = "journal";
         };

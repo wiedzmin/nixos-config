@@ -26,7 +26,7 @@ in
       };
       downloadPath = mkOption {
         type = types.str;
-        default = homePrefix "Downloads";
+        default = homePrefix user "Downloads";
         description = ''
           Downloads path'.
         '';

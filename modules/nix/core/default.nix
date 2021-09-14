@@ -110,7 +110,7 @@ in
       };
       home-manager.users.${user} = {
         home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback rnix-lsp ];
-        home.sessionPath = [ (homePrefix ".cargo/bin") ];
+        home.sessionPath = [ (homePrefix user ".cargo/bin") ];
         xdg.configFile."espanso/user/nix-core.yml".text = ''
           name: nix-core
           parent: default
@@ -146,7 +146,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/nix.el;
+      ide.emacs.core.config = builtins.readFile ./emacs/nix.el;
     })
   ];
 }

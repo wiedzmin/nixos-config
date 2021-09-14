@@ -43,11 +43,11 @@ in
         epkgs.magit-todos
         epkgs.treemacs-magit
       ];
-      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/navigation.el;
+      ide.emacs.core.config = builtins.readFile ./emacs/navigation.el;
     })
     (mkIf (cfg.enable && cfg.ghq.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.consult-ghq ];
-      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/ghq.el;
+      ide.emacs.core.config = builtins.readFile ./emacs/ghq.el;
     })
   ];
 }

@@ -83,7 +83,7 @@ in
     (mkIf (cfg.enable && cfg.emacs.enable) {
       # TODO: also play with the `pylsp` (https://github.com/python-lsp/python-lsp-server)
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./emacs/python.el;
+      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./emacs/python.el ];
     })
   ];
 }

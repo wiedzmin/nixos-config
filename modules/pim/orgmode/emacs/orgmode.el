@@ -217,8 +217,8 @@
   (org-agenda-use-tag-inheritance t)
   (org-agenda-window-setup 'current-window)
   (org-align-all-tags t)
-  (org-archive-location "@orgDir@/journals/journal.org::datetree/")
-  (org-attach-directory "@orgDir@/org-attach-data")
+  (org-archive-location "@orgRoot@/journals/journal.org::datetree/")
+  (org-attach-directory "@orgRoot@/org-attach-data")
   (org-blank-before-new-entry '((heading) (plain-list-item . auto)))
   (org-catch-invisible-edits nil)
                                         ;TODO: extend minimal clocking setup below
@@ -241,7 +241,7 @@
   (org-cycle-include-plain-lists 'integrate)
   (org-cycle-separator-lines 0)
   (org-deadline-warning-days 30)
-  (org-default-notes-file "@orgDir@/refile.org")
+  (org-default-notes-file "@orgRoot@/refile.org")
   (org-ditaa-jar-path "@ditaaJar@")
   (org-done-keywords-for-agenda '("DONE(d)" "CANCELLED(c)" "OUTDATED(o)"))
   (org-ellipsis (if (featurep 'unicode-fonts) "⤵" "…"))
@@ -339,7 +339,7 @@
   (org-add-link-type "tag" 'custom/follow-tag-link)
   (org-clock-persistence-insinuate)
   (setq org-capture-templates ;TODO: elaborate capturing to roam
-        (doct '(("feeds" :keys "f" :file "@orgDir@/rss/feeds.org"
+        (doct '(("feeds" :keys "f" :file "@orgRoot@/rss/feeds.org"
                  :children
                  (("blogs" :keys "b" :olp ("feeds" "blogs") :template "* @pimCommonCaptureDataTemplate@")
                   ("planets" :keys "p" :olp ("feeds" "planets") :template "* @pimCommonCaptureDataTemplate@")

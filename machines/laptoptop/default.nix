@@ -159,7 +159,7 @@ in
     wallpaper = {
       enable = true;
       boot.splashImage = "${inputs.nixos-artwork}/wallpapers/nix-wallpaper-mosaic-blue.png";
-      rootDir = homePrefix "blobs/wallpaper/mongol/summer";
+      rootDir = homePrefix user "blobs/wallpaper/mongol/summer";
       current = "mongolia_2.jpg";
       wm.enable = true;
     };
@@ -199,7 +199,7 @@ in
       enable = true;
       mpd = {
         enable = true;
-        collections = { "mongol" = homePrefix "blobs/music/mongol"; };
+        collections = { "mongol" = homePrefix user "blobs/music/mongol"; };
       };
       wm.enable = true;
     };
@@ -210,7 +210,7 @@ in
     };
     screenshots = {
       enable = true;
-      baseDir = homePrefix "blobs/screenshots";
+      baseDir = homePrefix user "blobs/screenshots";
       ordering = {
         enable = true;
         timespec = "*-*-* 00:05:00";
@@ -288,7 +288,7 @@ in
     };
     golang = {
       enable = true;
-      goPath = homePrefix "workspace/go";
+      goPath = homePrefix user "workspace/go";
       misc.enable = true;
       emacs.enable = true;
     };
@@ -328,7 +328,7 @@ in
   navigation = {
     bookmarks = {
       enable = true;
-      workspaces.globalRoot = homePrefix "workspace/repos";
+      workspaces.globalRoot = homePrefix user "workspace/repos";
       emacs.enable = true;
     };
   };
@@ -409,8 +409,8 @@ in
       extraBackends = [ stable.hplipWithPlugin ];
       paperless = {
         enable = false;
-        consumptionDir = homePrefix "docs/paperless/consume";
-        dataDir = homePrefix "docs/paperless/data";
+        consumptionDir = homePrefix user "docs/paperless/consume";
+        dataDir = homePrefix user "docs/paperless/data";
         user = user;
         extraConfig = { PAPERLESS_FORGIVING_OCR = true; };
         group = "users";

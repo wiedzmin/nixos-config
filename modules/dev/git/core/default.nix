@@ -116,7 +116,7 @@ in
         epkgs.magit-filenotify
         epkgs.magit-popup # *
       ];
-      ide.emacs.core.config = readSubstituted ../../../subst.nix ./emacs/core.el;
+      ide.emacs.core.config = builtins.readFile ./emacs/core.el;
       ide.emacs.core.customKeymaps = { "custom-magit-map" = "C-'"; };
     })
   ];

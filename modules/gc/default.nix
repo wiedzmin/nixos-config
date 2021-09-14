@@ -92,7 +92,7 @@ in {
           ExecStart = ''
             ${pkgs.fd}/bin/fd --no-ignore \
                               --changed-before ${cfg.expired.cacheDepth} \
-                              . ${homePrefix ".cache"} \
+                              . ${homePrefix user ".cache"} \
                               --exec rm -f {}
           '';
           StandardOutput = "journal";
@@ -109,7 +109,7 @@ in {
             ${pkgs.fd}/bin/fd --no-ignore \
                               --changed-before ${cfg.expired.tempDepth} \
                               --type f --type e \
-                              . ${homePrefix ".config"} \
+                              . ${homePrefix user ".config"} \
                               --exec ${pkgs.trash-cli}/bin/trash-put {}
           '';
           StandardOutput = "journal";

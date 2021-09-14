@@ -58,7 +58,7 @@ in
         epkgs.treemacs-projectile
         epkgs.winum
       ];
-      ide.emacs.core.config = readSubstituted ../../subst.nix ./navigation.el;
+      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./navigation.el ];
       ide.emacs.core.customKeymaps = {
         "custom-help-map" = "<f1>";
         "custom-narrowing-map" = "C-c n";
