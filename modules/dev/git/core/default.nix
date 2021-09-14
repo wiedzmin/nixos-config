@@ -7,7 +7,8 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users.${user};
   dataHome = hm.xdg.dataHome;
-in {
+in
+{
   options = {
     dev.git.core = {
       enable = mkOption {
@@ -111,6 +112,7 @@ in {
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.magit
+        epkgs.magit-delta
         epkgs.magit-filenotify
         epkgs.magit-popup # *
       ];
