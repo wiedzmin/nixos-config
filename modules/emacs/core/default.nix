@@ -49,13 +49,6 @@ in
           Path to store user data under.
         '';
       };
-      orgDir = mkOption {
-        type = types.str;
-        default = homePrefix "docs/org";
-        description = ''
-          Path to store org-mode docs under.
-        '';
-      };
       environment = mkOption {
         type = types.attrs;
         default = { };
