@@ -6,6 +6,7 @@ let
   cfg = config.content.media;
   user = config.attributes.mainUser.name;
   prefix = config.wmCommon.prefix;
+  prefixAlt = config.wmCommon.prefixAlt;
 in
 {
   options = {
@@ -184,13 +185,13 @@ in
           mode = "root";
         }
         {
-          key = [ "Alt" "XF86AudioNext" ];
+          key = [ prefixAlt "XF86AudioNext" ];
           cmd =
             "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString cfg.playback.deltaSeconds}+";
           mode = "root";
         }
         {
-          key = [ "Alt" "XF86AudioPrev" ];
+          key = [ prefixAlt "XF86AudioPrev" ];
           cmd =
             "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString cfg.playback.deltaSeconds}-";
           mode = "root";
