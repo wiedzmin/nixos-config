@@ -5,6 +5,7 @@
   inputs = rec {
     stable.url = "github:NixOS/nixpkgs/nixos-20.03";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    nix24working.url = "github:nixos/nixpkgs/09cd65b33c5653d7d2954fef4b9f0e718c899743";
 
     nur.url = "github:wiedzmin/NUR";
 
@@ -121,7 +122,7 @@
       };
     in
     {
-      devShell."${system}" = import ./shell.nix { pkgs = unstable.legacyPackages.${system}; };
+      devShell."${system}" = import ./shell.nix { pkgs = inputs.nix24working.legacyPackages.${system}; };
 
       nixosConfigurations = {
         laptoptop = lib.nixosSystem {
