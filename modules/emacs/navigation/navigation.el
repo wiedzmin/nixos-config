@@ -173,7 +173,7 @@
 
 (use-package ace-window
   :bind
-  ("M-o" . ace-window)
+  ("M-RET" . ace-window)
   :custom
   (aw-background nil)
   (aw-leading-char-style 'char)
