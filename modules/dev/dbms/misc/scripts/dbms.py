@@ -35,7 +35,7 @@ if dbms_entry:
     dbms_pass = None
 
     dbms_entry_meta = dbms_meta[dbms_entry]
-    host_meta = extra_hosts_data[dbms_entry_meta["host"]]
+    host_meta = extra_hosts_data[dbms_entry_meta["host"]] # TODO: notify on errors
     dbms_vpn = host_meta.get("vpn", None)
     if dbms_vpn:
         shell_cmd(f"vpn --start {dbms_vpn}")
