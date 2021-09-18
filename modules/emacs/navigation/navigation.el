@@ -522,6 +522,10 @@
    (:map custom-projectile-map
          ("T" . magit-todos-list)))
 
+(use-package xref
+  :custom
+  (xref-search-program 'ripgrep))
+
 (define-hostmode poly-nix-hostmode :mode 'nix-mode)
 
 (define-innermode poly-emacs-innermode
