@@ -26,6 +26,10 @@
   :config
   (global-hl-line-mode 1))
 
+(use-package fringe
+  :hook
+  (server-after-make-frame-hook . (lambda () (set-fringe-style '(3 . 0)))))
+
 (use-package time
   :config
   (display-time)
