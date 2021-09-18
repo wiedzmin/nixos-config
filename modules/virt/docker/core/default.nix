@@ -5,9 +5,7 @@ with lib;
 let
   cfg = config.ext.virtualization.docker.core;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  configHome = hm.xdg.configHome;
   prefix = config.wmCommon.prefix;
 in
 {
@@ -48,7 +46,7 @@ in
         enable = true;
         storageDriver = cfg.storageDriver;
       };
-      environment.variables.DOCKER_CONFIG = "${configHome}/docker";
+      environment.variables.DOCKER_CONFIG = xdgConfig user "docker";
       users.users.${user}.extraGroups = [ "docker" ];
 
       networking.dhcpcd.denyInterfaces = [ "docker*" ];
