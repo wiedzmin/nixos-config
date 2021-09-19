@@ -151,3 +151,8 @@
   (marginalia-mode-hook . all-the-icons-completion-marginalia-setup)
   :config
   (all-the-icons-completion-mode))
+
+(use-package text-mode
+  :after company-dabbrev
+  :hook (text-mode-hook . company-mode)
+  :company (company-tabnine company-capf company-dabbrev))

@@ -1,8 +1,3 @@
-(use-package git-commit
-  :after company-dabbrev
-  :hook (text-mode-hook . company-mode)
-  :company company-dabbrev)
-
 (use-package git-msg-prefix
   :bind
   (:map git-commit-mode-map
