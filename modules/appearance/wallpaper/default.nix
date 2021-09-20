@@ -8,7 +8,8 @@ let
   rescale-wallpaper = pkgs.writeShellScriptBin "rescale-wallpaper" ''
     ${pkgs.feh}/bin/feh --bg-${cfg.transform} ${cfg.rootDir}/${cfg.current}
   '';
-in {
+in
+{
   options = {
     appearance.wallpaper = {
       enable = mkOption {
@@ -62,6 +63,13 @@ in {
       home-manager.users.${user} = {
         programs.autorandr.hooks = {
           postswitch = { "rescale-wallpaper" = "${rescale-wallpaper}/bin/rescale-wallpaper"; };
+        };
+        home.activation.checkWallpaperExist = {
+          after = [ ];
+          before = [ "checkLinkTargets" ];
+          data = ''
+            test -f "${cfg.rootDir}/${cfg.current}" || (echo "'${cfg.rootDir}/${cfg.current}' does not exist!" && exit 1)
+          '';
         };
       };
 
