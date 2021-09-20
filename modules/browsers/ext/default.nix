@@ -87,21 +87,25 @@ in
           key = [ prefix "slash" ];
           cmd = "${nurpkgs.toolbox}/bin/websearch";
           mode = "root";
+          leaveFullscreen = true;
         }
         {
           key = [ prefix "Shift" "slash" ];
           cmd = "${nurpkgs.toolbox}/bin/websearch -use-fallback";
           mode = "root";
+          leaveFullscreen = true;
         }
         {
           key = [ prefix "Control" "slash" ];
           cmd = "${nurpkgs.toolbox}/bin/websearch -prompt";
           mode = "root";
+          leaveFullscreen = true;
         }
         {
           key = [ prefix "Control" "Shift" "slash" ];
           cmd = "${nurpkgs.toolbox}/bin/websearch -prompt -use-fallback";
           mode = "root";
+          leaveFullscreen = true;
         }
         {
           key = [ prefix "j" ];

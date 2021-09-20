@@ -50,6 +50,7 @@ rec {
       debugEnabled = maybeAttrIsBool "debug" meta && !maybeAttrIsBool "raw" meta;
     in
     builtins.concatStringsSep " " ([ "bindsym" (mkKeysymI3 meta.key) ]
+      ++ lib.optionals (maybeAttrIsBool "leaveFullscreen" meta) [ "fullscreen disable;" ]
       ++ lib.optionals (!maybeAttrIsBool "raw" meta) [ "exec" ]
       ++ lib.optionals (maybeAttrIsBool "transient" meta) [ "--no-startup-id" ] ++ [
       (builtins.concatStringsSep "; " (lib.optionals (builtins.hasAttr "cmd" meta)
