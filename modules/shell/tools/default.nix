@@ -28,6 +28,7 @@ in
           gron
           htmlq
           jc
+          miller
           ripgrep-all
           sad # TODO: consider creating shell aliases
           sd # TODO: play with it in streaming use-cases
