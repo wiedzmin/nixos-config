@@ -77,6 +77,7 @@ in
           (builtins.readFile ./scripts/ifconfless.py);
       };
       home-manager.users.${user} = {
+        home.packages = with pkgs; [ btop sysz ];
         services.udiskie = {
           enable = true;
           automount = true;
