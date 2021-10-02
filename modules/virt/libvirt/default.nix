@@ -8,7 +8,8 @@ let
   vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
   '';
-in {
+in
+{
   options = {
     ext.virtualization.libvirt = {
       enable = mkOption {
@@ -57,9 +58,7 @@ in {
         options kvm-intel nested=1
       '';
 
-      # required for usb redirection to work
-      security.wrappers.spice-client-glib-usb-acl-helper.source =
-        "${pkgs.spice_gtk}/bin/spice-client-glib-usb-acl-helper";
+      virtualisation.spiceUSBRedirection.enable = true;
 
       wmCommon.wsMapping.rules = [{
         class = "Virt-manager";
