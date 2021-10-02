@@ -33,6 +33,11 @@ in
         default = false;
         description = "Whether to enable Emacs git-related setup.";
       };
+      emacs.delta.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable `delta` within magit status buffer";
+      };
     };
   };
 
@@ -112,11 +117,16 @@ in
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.magit
-        epkgs.magit-delta
         epkgs.magit-filenotify
         epkgs.magit-popup # *
+      ] ++ optionals (cfg.emacs.delta.enable) [
+        epkgs.magit-delta
       ];
-      ide.emacs.core.config = builtins.readFile ./emacs/core.el;
+      ide.emacs.core.config = builtins.readFile ./emacs/core.el + optionalString (cfg.emacs.delta.enable) ''
+        (use-package magit-delta
+          :disabled
+          :hook (magit-mode-hook . magit-delta-mode))
+      '';
       ide.emacs.core.customKeymaps = { "custom-magit-map" = "C-'"; };
     })
   ];
