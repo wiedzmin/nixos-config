@@ -28,4 +28,17 @@ with import ../../modules/util.nix { inherit config inputs lib pkgs; };
       externalSecondaryHead.name = "DP-1";
     };
   };
+
+  attributes.hardware.inputDevices = {
+    keyboard = [
+      "/dev/input/by-path/platform-i8042-serio-0-event-kbd"
+      "/dev/input/event19"
+      "/dev/input/event3"
+    ];
+    mouse = [
+      "/dev/input/by-path/platform-i8042-serio-0-event-mouse"
+      "/dev/input/event16"
+      "/dev/input/event18"
+    ];
+  };
 }

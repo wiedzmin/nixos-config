@@ -223,5 +223,25 @@ with lib;
       type = types.bool;
       default = false;
     };
+    hardware.inputDevices.keyboard = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      example = literalExample ''
+        [
+          "/dev/input/event3"
+        ]
+      '';
+      description = "Input devices to listen for keyboard events";
+    };
+    hardware.inputDevices.mouse = mkOption {
+      type = types.listOf types.str;
+      default = [ ];
+      example = literalExample ''
+        [
+          "/dev/input/event16"
+        ]
+      '';
+      description = "Input devices to listen for mouse events";
+    };
   };
 }
