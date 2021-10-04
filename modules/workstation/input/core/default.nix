@@ -63,6 +63,18 @@ in
           accelSpeed = "0.1";
         };
       };
+      services.tp-auto-kbbl = {
+        # TODO: consider moving to `video/backlight`
+        enable = true;
+        device = optionalString (config.attributes.hardware.inputDevices.keyboard != [ ])
+          (builtins.head config.attributes.hardware.inputDevices.keyboard);
+        # TODO: use full list + mouse devices after multiple devices support addition
+        arguments = [
+          # TODO: consider adding options
+          "--brightness 2"
+          "--no-dim"
+        ];
+      };
     })
     (mkIf (cfg.enable && cfg.xmodmap.enable) {
       services.xserver.displayManager.sessionCommands =
