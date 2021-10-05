@@ -90,6 +90,7 @@ in
         key = [ "b" ];
         cmd = "${nurpkgs.toolbox}/bin/bookshelf";
         mode = "select";
+        leaveFullscreen = true;
       }];
     })
   ];
