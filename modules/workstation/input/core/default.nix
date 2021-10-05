@@ -65,7 +65,8 @@ in
       };
       services.tp-auto-kbbl = {
         # TODO: consider moving to `video/backlight`
-        enable = true;
+        enable = false; # because of input device names periodical skew, maybe because of dockstation usage
+        # maybe could be re-enabled after multiple devices support addition
         device = optionalString (config.attributes.hardware.inputDevices.keyboard != [ ])
           (builtins.head config.attributes.hardware.inputDevices.keyboard);
         # TODO: use full list + mouse devices after multiple devices support addition
