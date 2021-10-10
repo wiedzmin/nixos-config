@@ -122,7 +122,7 @@ in
           To define secret options without storing them in /nix/store, use the following pattern:
           <literal>PAPERLESS_PASSPHRASE = "$(&lt; /etc/my_passphrase_file)"</literal>
         '';
-        example = literalExample ''
+        example = literalExpression ''
           {
             PAPERLESS_OCR_LANGUAGE = "deu";
           }

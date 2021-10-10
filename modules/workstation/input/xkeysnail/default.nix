@@ -22,7 +22,7 @@ in
       inputDevices = mkOption {
         type = types.listOf types.str;
         default = [ ];
-        example = literalExample ''
+        example = literalExpression ''
           [
               "/dev/input/event3"
           ]

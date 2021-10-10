@@ -87,7 +87,7 @@ in
         default = self: [ ];
         type = selectorFunction;
         defaultText = "epkgs: []";
-        example = literalExample "epkgs: [ epkgs.emms epkgs.magit ]";
+        example = literalExpression "epkgs: [ epkgs.emms epkgs.magit ]";
         description = ''
           Extra packages available to Emacs. To get a list of
           available packages run:

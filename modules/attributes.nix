@@ -226,7 +226,7 @@ with lib;
     hardware.inputDevices.keyboard = mkOption {
       type = types.listOf types.str;
       default = [ ];
-      example = literalExample ''
+      example = literalExpression ''
         [
           "/dev/input/event3"
         ]
@@ -236,7 +236,7 @@ with lib;
     hardware.inputDevices.mouse = mkOption {
       type = types.listOf types.str;
       default = [ ];
-      example = literalExample ''
+      example = literalExpression ''
         [
           "/dev/input/event16"
         ]

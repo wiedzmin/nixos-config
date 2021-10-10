@@ -65,7 +65,7 @@ in
       package = mkOption {
         type = types.package;
         default = if versionAtLeast hm.home.stateVersion "19.09" then pkgs.firefox else pkgs.firefox-unwrapped;
-        defaultText = literalExample "pkgs.firefox";
+        defaultText = literalExpression "pkgs.firefox";
         description = ''
           The Firefox package to use. If state version ≥ 19.09 then
           this should be a wrapped Firefox package. For earlier state
@@ -76,7 +76,7 @@ in
       extensions = mkOption {
         type = types.listOf types.package;
         default = [ ];
-        example = literalExample ''
+        example = literalExpression ''
           with pkgs.nur.repos.rycee.firefox-addons; [
             https-everywhere
             privacy-badger
@@ -109,7 +109,7 @@ in
             settings = mkOption {
               type = with types; attrsOf (either bool (either int str));
               default = { };
-              example = literalExample ''
+              example = literalExpression ''
                 {
                   "browser.startup.homepage" = "https://nixos.org";
                   "browser.search.region" = "GB";
