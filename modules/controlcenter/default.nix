@@ -107,7 +107,6 @@ in
         };
         programs.rofi = {
           enable = true;
-          rowHeight = 1;
           cycle = true;
           location = "top";
           xoffset = 0;
