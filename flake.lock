@@ -18,11 +18,11 @@
     },
     "emacs": {
       "locked": {
-        "lastModified": 1633362790,
-        "narHash": "sha256-p0GpcAgaS4DpBbyafz5tUrGKeuJDnLuDExu9cIJDbjc=",
+        "lastModified": 1633856828,
+        "narHash": "sha256-MPZBMFiuRcJmz+YMw3CkdMNvunwhaXbmROTT0/lp7uo=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "448fd2e006decbb1f56822f199f0580204aedaea",
+        "rev": "de51ad003df13d41a1107a1ed766eb226ef9382c",
         "type": "github"
       },
       "original": {
@@ -132,11 +132,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1633364404,
-        "narHash": "sha256-XoCtlQreWVCpBGFwRylpkDkIfuEEgkZGUCxDAda1LBE=",
+        "lastModified": 1633733120,
+        "narHash": "sha256-IdUgCn7eud2he4LWZpzFPf1D2u+mjZC09mvo3oSNoss=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "81ec2aed8a2438553c6689061eeb45a40883ec24",
+        "rev": "32285d8fe64138a41f1caed23d94f28529ea4eb4",
         "type": "github"
       },
       "original": {
@@ -148,11 +148,11 @@
     "i3blocks-contrib": {
       "flake": false,
       "locked": {
-        "lastModified": 1633257233,
-        "narHash": "sha256-C1HKmCI0r5Ryjt14qsXtQAJw8ug4KzjX527J594AieE=",
+        "lastModified": 1633470557,
+        "narHash": "sha256-V/qVSctgJOrg5MpGlRvSHDGnSnSjpZ9//XekJmCJa4k=",
         "owner": "vivien",
         "repo": "i3blocks-contrib",
-        "rev": "cb89074984e459507e4f228eb1229e1eba6aeb57",
+        "rev": "0139a44e08eb4d3a46d79ee90c8963f30b551cff",
         "type": "github"
       },
       "original": {
@@ -164,11 +164,11 @@
     "liquidprompt": {
       "flake": false,
       "locked": {
-        "lastModified": 1630105800,
-        "narHash": "sha256-9CpjdHaZbsgBWe8DztWYcEQLRndEkjIaU1VrW87trXU=",
+        "lastModified": 1633569153,
+        "narHash": "sha256-vJm7UeKatjaRKKHi423C7Vd81GOCxK7be8xL+FOaT8M=",
         "owner": "nojhan",
         "repo": "liquidprompt",
-        "rev": "97f6bfadcf0048fc7b5bbdbeabec238756df2c71",
+        "rev": "f89a42742d2ea89f76216e82717575c055bf97b9",
         "type": "github"
       },
       "original": {
@@ -211,11 +211,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1632990363,
-        "narHash": "sha256-SNqz+9Vt4yDHqw8u/CMFdzMQTulKoMlVGJdshfcb5O0=",
+        "lastModified": 1633793047,
+        "narHash": "sha256-XSMlHMVPKwcEqyHGdFj/ZeGMeZeKNwVExOfLlxcg4oE=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "0a8b8054c9920368a3c15e6d766188fdf04b736f",
+        "rev": "3aabf78bfcae62f5f99474f2ebbbe418f1c6e54f",
         "type": "github"
       },
       "original": {
@@ -226,11 +226,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1633376452,
-        "narHash": "sha256-qBCOzQqwwbPIVGBanmaJXlRwUdXH6faBk+1Feh2PLBI=",
+        "lastModified": 1633867062,
+        "narHash": "sha256-Pp62zi7t2cgqEcJjsJ+HgBSIdZE6mN7m7Ud073IFC8o=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "25da0b3bbbeb703285a493c0773dcccf3d46009b",
+        "rev": "28b259bbb4d464bd5378fc21116ecdf71b50435e",
         "type": "github"
       },
       "original": {
@@ -319,11 +319,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1633351077,
-        "narHash": "sha256-z38JG4Bb0GtM1aF1pANVdp1dniMP23Yb3HnRoJRy2uU=",
+        "lastModified": 1633791597,
+        "narHash": "sha256-HzpxqTEnqsjkKWfW87kSI3WVizYjUMQeUjSIm3b5I0Y=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "14aef06d9b3ad1d07626bdbb16083b83f92dc6c1",
+        "rev": "9bf75dd50b7b6d3ce6aaf6563db95f41438b9bdb",
         "type": "github"
       },
       "original": {
@@ -352,11 +352,11 @@
     "zsh-async": {
       "flake": false,
       "locked": {
-        "lastModified": 1614790055,
-        "narHash": "sha256-7DFAu0Ts3tFb2LRipvT7JcBtjyIC/+Rd1FGokID5284=",
+        "lastModified": 1633428906,
+        "narHash": "sha256-3hhZXL8/Ml7UlkkHBPpS5NfUGB5BqgO95UvtpptXf8E=",
         "owner": "mafredri",
         "repo": "zsh-async",
-        "rev": "a61239dd55028eec173374883809f439c93d292b",
+        "rev": "3ba6e2d1ea874bfb6badb8522ab86c1ae272923d",
         "type": "github"
       },
       "original": {
