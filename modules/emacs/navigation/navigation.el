@@ -37,6 +37,7 @@
   (:map selectrum-minibuffer-map
         ("C-'" . selectrum-quick-select))
   :custom
+  (selectrum-files-select-input-dirs t)
   (selectrum-num-candidates-displayed 20)
   (selectrum-count-style 'current/matches)
   (selectrum-quick-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9 ?0))
