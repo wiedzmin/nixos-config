@@ -111,7 +111,6 @@ in
           location = "top";
           xoffset = 0;
           yoffset = 0;
-          theme = "${inputs.base16-rofi}/themes/base16-zenburn.rasi"; # FIXME: move under `appearance` and review [[file:~/workspace/repos/github.com/rycee/home-manager/modules/programs/rofi.nix::colorsSubmodule = types.submodule {]]
           extraConfig = {
             monitor = "-4";
             matching = "normal";

@@ -1,4 +1,4 @@
-{ config, lib, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 with lib;
 
@@ -36,6 +36,7 @@ in
         statusbar-bg = "#606060";
         statusbar-fg = "#808080";
       };
+      programs.rofi.theme = ./base16-zenburn.rasi; # ${inputs.base16-rofi}/themes/base16-zenburn.rasi
       services.dunst.settings = {
         urgency_low = {
           background = "#333333";
