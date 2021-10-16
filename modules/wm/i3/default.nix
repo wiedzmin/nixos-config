@@ -415,6 +415,7 @@ in
             ${optionalString (cfg.theme.client != "") cfg.theme.client}
 
             bar {
+                position top
                 tray_output ${config.attributes.hardware.monitors.internalHead.name}
                 mode dock
                 modifier ${prefix}
