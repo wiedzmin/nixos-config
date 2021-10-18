@@ -179,6 +179,7 @@ in
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
         home.file = {
           ".emacs.d/early-init.el".text = ''
+            (setenv "EDITOR" "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server")
             ${lib.optionalString (cfg.environment != { }) (builtins.concatStringsSep "\n"
               (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
 
