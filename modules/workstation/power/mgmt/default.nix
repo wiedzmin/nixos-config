@@ -51,6 +51,10 @@ in
     (mkIf (cfg.enable && cfg.laptop.enable) {
       services = {
         auto-cpufreq.enable = true;
+      };
+    })
+    (mkIf (cfg.enable && cfg.laptop.enable && hasInfix "ThinkPad" config.attributes.hardware.dmiSystemVersion) {
+      services = {
         tlp = {
           enable = true;
           settings = {
