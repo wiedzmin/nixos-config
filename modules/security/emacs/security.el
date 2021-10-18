@@ -20,3 +20,8 @@
   :custom
   (pass-show-keybindings t)
   (pass-username-field "login"))
+
+(use-package selectrum-pass
+  :bind
+  (:map custom-pass-map
+        ("!" . selectrum-pass)))

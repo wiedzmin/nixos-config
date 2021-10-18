@@ -104,6 +104,9 @@ in
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pass ];
       ide.emacs.core.customKeymaps = { "custom-pass-map" = "<f6>"; };
+      ide.emacs.core.customPackages = {
+        "selectrum-pass" = builtins.readFile ./emacs/selectrum-pass.el;
+      };
       ide.emacs.core.config = builtins.readFile ./emacs/security.el;
     })
     (mkIf (cfg.polkit.silentAuth) {
