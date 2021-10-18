@@ -1,5 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../util.nix { inherit config inputs lib pkgs; };
+with import ./util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
@@ -31,6 +32,11 @@ in
         type = types.bool;
         default = false;
         description = "Whether to build emacs with nativecomp features enabled";
+      };
+      customPackages = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Custom elisp definitions in form `feature name` --> `implementation`";
       };
       config = mkOption {
         type = types.lines;
@@ -177,6 +183,7 @@ in
               (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
 
             ${genEmacsCustomKeymaps cfg.customKeymaps}
+            ${genCustomPackages cfg.customPackages}
           '';
           ".emacs.d/init.el".text = cfg.initElContent;
         };
