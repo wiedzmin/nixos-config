@@ -54,10 +54,10 @@ in
         tlp = {
           enable = true;
           settings = {
-            START_CHARGE_THRESH_BAT0 = "80";
-            STOP_CHARGE_THRESH_BAT0 = "90";
-            START_CHARGE_THRESH_BAT1 = "80";
-            STOP_CHARGE_THRESH_BAT1 = "90";
+            START_CHARGE_THRESH_BAT0 = "70";
+            STOP_CHARGE_THRESH_BAT0 = "95";
+            START_CHARGE_THRESH_BAT1 = "70";
+            STOP_CHARGE_THRESH_BAT1 = "95";
             DEVICES_TO_DISABLE_ON_WIFI_CONNECT = "wwan";
             USB_BLACKLIST_PHONE = 1;
             CPU_SCALING_GOVERNOR_ON_AC = "performance";
