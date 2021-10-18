@@ -23,13 +23,13 @@ in
         type = types.attrs;
         default = {
           add_newline = false;
-          scan_timeout = 10;
+          scan_timeout = 50;
           character = {
             success_symbol = "[➜](bold green) ";
             error_symbol = "[✗](bold red) ";
           };
           cmd_duration = {
-            min_time = 500;
+            min_time = 100;
             format = "[$duration](bold yellow)";
             show_notifications = true;
           };
