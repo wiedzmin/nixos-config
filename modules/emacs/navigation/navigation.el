@@ -34,10 +34,14 @@
 
 (use-package selectrum
   :demand t
+  :init
+  (use-package minibuffer-edit)
   :bind
   (:map selectrum-minibuffer-map
         ("C-'" . selectrum-quick-select)
         ("C-r" . selectrum-select-from-history)
+        ("<S-backspace>" . minibuffer-edit-smart-delete-backwards)
+        ("<C-S-backspace>" . selectrum-backward-kill-sexp)
         ("<escape>" . abort-minibuffers))
   (:map minibuffer-local-map
         ("M-h" . backward-kill-word))

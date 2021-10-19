@@ -58,6 +58,9 @@ in
         epkgs.treemacs-projectile
         epkgs.winum
       ];
+      ide.emacs.core.customPackages = {
+        "minibuffer-edit" = builtins.readFile ./minibuffer-edit.el;
+      };
       ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./navigation.el ];
       ide.emacs.core.customKeymaps = {
         "custom-help-map" = "<f1>";
