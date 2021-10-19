@@ -52,8 +52,6 @@
   (prescient-persist-mode 1))
 
 (use-package orderless
-  :init
-  (icomplete-mode)
   :custom
   (completion-styles '(orderless))
   (completion-category-defaults nil)
