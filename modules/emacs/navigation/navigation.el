@@ -44,9 +44,7 @@
   (selectrum-count-style 'current/matches)
   (selectrum-quick-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9 ?0))
   :config
-  (selectrum-mode +1)
-  (add-to-list 'completion-styles 'substring)
-  (add-to-list 'completion-styles 'partial-completion))
+  (selectrum-mode +1))
 
 (use-package prescient
   :config
@@ -55,15 +53,14 @@
 
 (use-package orderless
   :custom
-  (completion-styles '(orderless))
+  (completion-styles '(partial-completion substring orderless))
   (completion-category-defaults nil)
   (selectrum-refine-candidates-function #'orderless-filter)
   (selectrum-highlight-candidates-function #'orderless-highlight-matches)
   :config
   (add-to-list 'completion-category-overrides
                '((buffer (orderless-matching-styles orderless-flex))
-                 (file (styles . (partial-completion)))))
-  (add-to-list 'completion-styles 'orderless))
+                 (file (styles . (partial-completion))))))
 
 (use-package embark
   :preface
