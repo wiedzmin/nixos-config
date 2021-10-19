@@ -37,12 +37,24 @@
   :bind
   (:map selectrum-minibuffer-map
         ("C-'" . selectrum-quick-select)
-        ("C-r" . selectrum-select-from-history))
+        ("C-r" . selectrum-select-from-history)
+        ("<escape>" . abort-minibuffers))
+  (:map minibuffer-local-map
+        ("M-h" . backward-kill-word))
+  (:map mode-specific-map
+        ("u" . selectrum-repeat)) ; "z"
   :custom
-  (selectrum-files-select-input-dirs t)
-  (selectrum-num-candidates-displayed 20)
+  (completion-ignore-case t)
+  (read-buffer-completion-ignore-case t)
+  (read-file-name-completion-ignore-case t)
   (selectrum-count-style 'current/matches)
-  (selectrum-quick-keys '(?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9 ?0))
+  (selectrum-files-select-input-dirs t)
+  (selectrum-fix-vertical-window-height t)
+  (selectrum-max-window-height .2) ; 20
+  (selectrum-num-candidates-displayed 20)
+  (selectrum-quick-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
+  :custom-face
+  (selectrum-current-candidate ((t (:background "#3a3f5a"))))
   :config
   (selectrum-mode +1))
 
