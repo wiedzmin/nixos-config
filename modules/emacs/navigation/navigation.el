@@ -36,7 +36,8 @@
   :demand t
   :bind
   (:map selectrum-minibuffer-map
-        ("C-'" . selectrum-quick-select))
+        ("C-'" . selectrum-quick-select)
+        ("C-r" . selectrum-select-from-history))
   :custom
   (selectrum-files-select-input-dirs t)
   (selectrum-num-candidates-displayed 20)
