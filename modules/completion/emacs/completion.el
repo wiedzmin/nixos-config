@@ -93,6 +93,13 @@
   :config
   (add-to-list 'company-backends 'company-restclient))
 
+(use-package company-prescient
+  :after (company prescient)
+  :custom
+  (company-prescient-sort-length-enable nil)
+  :config
+  (company-prescient-mode +1))
+
 (use-package company-tabnine
   :after (company)
   :preface

@@ -59,9 +59,20 @@
   (selectrum-mode +1))
 
 (use-package prescient
+  :commands prescient-persist-mode
+  :custom
+  (prescient-filter-method '(fuzzy initialism regexp literal))
+  (prescient-history-length 1000)
   :config
-  (selectrum-prescient-mode 1)
-  (prescient-persist-mode 1))
+  (prescient-persist-mode +1))
+
+(use-package selectrum-prescient
+  :after (selectrum prescient)
+  :config
+  ;; use Prescient on top of Orderless, see selectrum docs for details
+  ;; https://github.com/raxod502/selectrum#user-content-alternative-2-orderless
+  (setq selectrum-prescient-enable-filtering nil)
+  (selectrum-prescient-mode +1))
 
 (use-package orderless
   :custom

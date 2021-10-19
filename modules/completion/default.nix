@@ -155,6 +155,7 @@ in
         epkgs.company
         epkgs.company-box
         epkgs.company-fuzzy
+        epkgs.company-prescient
         epkgs.company-quickhelp
         epkgs.company-restclient
         epkgs.company-statistics
