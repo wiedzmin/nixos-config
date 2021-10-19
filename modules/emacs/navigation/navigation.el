@@ -33,6 +33,7 @@
         ("m" . manage-minor-mode-table)))
 
 (use-package selectrum
+  :demand t
   :bind
   (:map selectrum-minibuffer-map
         ("C-'" . selectrum-quick-select))
