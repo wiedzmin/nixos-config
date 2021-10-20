@@ -128,16 +128,42 @@
   (embark-collect-mode . embark-consult-preview-minor-mode))
 
 (use-package marginalia
-  :after embark
+  :demand t
+  :preface
+  (defun custom/annotate-project-buffer-file (buffer)
+    "Return the file or process name of BUFFER relative to project root, if it is within project root."
+    (let ((root (marginalia--project-root))
+          (file (marginalia--buffer-file buffer)))
+        (if (string-equal root file) file
+          (string-remove-prefix root file))))
+  (defun custom/annotate-project-buffer (cand)
+    "Annotate project buffer CAND with modification status, file name and major mode."
+    (when-let (buffer (get-buffer cand))
+      (marginalia--fields
+       ((marginalia--buffer-status buffer))
+       ((custom/annotate-project-buffer-file buffer)
+        :truncate (/ marginalia-truncate-width 2)
+        :face 'marginalia-file-name))))
   :bind
   (:map minibuffer-local-map
         ("C-M-a" . marginalia-cycle))
+  (:map minibuffer-local-completion-map
+        ("C-M-a" . marginalia-cycle))
   (:map embark-general-map
         ("A" . marginalia-cycle))
-  :init ; NOTE: eager
-  (marginalia-mode)
+  :config
+  ;; Default command category to 'marginalia-annotate-binding instead of
+  ;; 'marginalia-annotate-command which has a slight performance impact when
+  ;; filtering M-x candidates.
+  (mapc
+   (lambda (x)
+     (pcase (car x) ('command (setcdr x (cons 'marginalia-annotate-binding
+                                              (remq 'marginalia-annotate-binding (cdr x)))))))
+   marginalia-annotator-registry)
+  (add-to-list 'marginalia-annotator-registry '(project-buffer custom/annotate-project-buffer))
   (advice-add #'marginalia-cycle :after
-              (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit))))
+              (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit 'keep-selected))))
+  (marginalia-mode +1)
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 
