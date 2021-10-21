@@ -59,7 +59,7 @@ in
         epkgs.winum
       ];
       ide.emacs.core.customPackages = {
-        "minibuffer-edit" = builtins.readFile ./minibuffer-edit.el;
+        "minibuffer-edit" = builtins.readFile ./custom/minibuffer-edit.el;
       };
       ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./navigation.el ];
       ide.emacs.core.customKeymaps = {
