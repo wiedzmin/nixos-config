@@ -79,15 +79,46 @@
   (selectrum-prescient-mode +1))
 
 (use-package orderless
+  :preface
+  (defun just-one-face (fn &rest args)
+    (let ((orderless-match-faces [completions-common-part]))
+      (apply fn args)))
+  :init
+  (use-package orderless-dispatchers)
+  :bind
+  (:map minibuffer-local-completion-map
+        ("SPC" . nil)
+        ;; SPC should never complete: use it for `orderless' groups.
+        ("?" . nil))
   :custom
+  ;;TODO: investigate if `completion-styles' setting is really _alternative_ against using `prescient'
   (completion-styles '(partial-completion substring orderless))
+  (orderless-style-dispatchers '(dispatchers/selectrum-without-if-bang
+                                 dispatchers/selectrum-with-if-equals
+                                 dispatchers/flex
+                                 dispatchers/initialism
+                                 dispatchers/literal))
+  (orderless-matching-styles '(orderless-regexp
+                               orderless-initialism
+                               orderless-flex))
   (completion-category-defaults nil)
   (selectrum-refine-candidates-function #'orderless-filter)
   (selectrum-highlight-candidates-function #'orderless-highlight-matches)
+  (completion-category-overrides
+   '((buffer (orderless-matching-styles orderless-flex))
+     (command (styles . (orderless)))
+     (file (styles . (partial-completion initials orderless)))
+     (function (styles . (orderless)))
+     (info-menu (styles . (orderless)))
+     (minibuffer (initials))
+     (project-file (styles . (orderless)))
+     (unicode-name (styles . (substring orderless)))
+     (variable (styles . (orderless)))
+     (xref-location (styles . (orderless)))))
+  (orderless-component-separator "[ &]") ; TODO: try "[ -]"
   :config
-  (add-to-list 'completion-category-overrides
-               '((buffer (orderless-matching-styles orderless-flex))
-                 (file (styles . (partial-completion))))))
+  (setq orderless-skip-highlighting (lambda () selectrum-is-active)) ;perf tip: highlight only visible candidates
+  (advice-add 'company-capf--candidates :around #'just-one-face))
 
 (use-package embark
   :preface
