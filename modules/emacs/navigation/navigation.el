@@ -121,40 +121,69 @@
   (advice-add 'company-capf--candidates :around #'just-one-face))
 
 (use-package embark
+  :demand t
   :preface
   (defun current-candidate+category ()
-    (when selectrum-active-p
+    (when selectrum-is-active
       (cons (selectrum--get-meta 'category)
             (selectrum-get-current-candidate))))
   (defun current-candidates+category ()
-    (when selectrum-active-p
+    (when selectrum-is-active
       (cons (selectrum--get-meta 'category)
             (selectrum-get-current-candidates
              ;; Pass relative file names for dired.
              minibuffer-completing-file-name))))
   :bind
-  ;FIXME: check deps and overall workflow, does no work well for now
-  ("C-S-a" . embark-act)                ; C-.
-  ("C-S-d" . embark-dwim)               ; M-.
+  ("C-S-a" . embark-act)
+  ("C-S-d" . embark-dwim)
+  (:map mode-specific-map
+        ("C-." . embark-act)
+        ("C-," . embark-dwim))
+  (:map help-map
+        ("B" . embark-bindings))
+  (:map minibuffer-local-map
+        ("C-c x" . embark-export)
+        (">" . embark-become)
+        ("M-q" . embark-collect-toggle-view))
+  (:map minibuffer-local-completion-map
+        ("C-:" . embark-act))
+  (:map completion-list-mode-map
+        (";" . embark-act))
   (:map selectrum-minibuffer-map
-        ("M-e" . embark-export)
+        ("C-c x" . embark-export)
         ("M-c" . embark-collect-snapshot))
   (:map iso-transl-ctl-x-8-map
         ("RET" . embark-save-unicode-character))
+  ([remap kill-buffer] . embark-kill-buffer-and-window)
   :hook
   (embark-setup-hook selectrum-set-selected-candidate)
   (embark-target-finders . current-candidate+category)
   (embark-candidate-collectors . current-candidates+category)
+  (embark-pre-action-hook . (lambda () (setq selectrum--previous-input-string nil)))
   :custom
   (embark-allow-edit-default t)
-  (embark-action-indicator (lambda (map)
+  (embark-indicators '(embark-mixed-indicator embark-highlight-indicator))
+  (embark-prompter 'embark-completing-read-prompter)
+  (embark-action-indicator (lambda (map) ;; integration with which-key
                              (which-key--show-keymap "Embark" map nil nil 'no-paging)
                              #'which-key--hide-popup-ignore-command)
-                           embark-become-indicator embark-action-indicator))
+                           embark-become-indicator embark-action-indicator)
+  :config
+  (add-to-list 'display-buffer-alist ;; Hide the mode line of the Embark live/completions buffers
+               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
+                 nil
+                 (window-parameters (mode-line-format . none))))
+  (add-to-list 'embark-allow-edit-actions 'consult-imenu))
 
 (use-package embark-consult
   :after (embark consult)
   :demand t ; only necessary if you have the hook below
+  :bind
+  (:map embark-file-map
+        ("x" . consult-file-externally)
+        ("j" . find-file-other-window))
+  (:map embark-buffer-map
+        ("j" . consult-buffer-other-window))
   :hook
   (embark-collect-mode . embark-consult-preview-minor-mode))
 
