@@ -227,40 +227,78 @@
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 
+
+;; TODO: consider trying `fd' finder tool, see https://github.com/minad/consult/wiki#find-files-using-fd for reference
+;; Note: this requires lexical binding
+;; TODO: consider adding flexible project root function (projectile/vc/whatever),
+;; probably this should be done at `projectile' config
 (use-package consult
+  :preface
+  (defun consult-line-symbol-at-point ()
+    (interactive)
+    (consult-line (thing-at-point 'symbol)))
+  (defun consult-ripgrep-symbol-at-point ()
+    (interactive)
+    (consult-ripgrep (projectile-project-root) (thing-at-point 'symbol)))
+  ;;TODO: add #'consult-focus-lines-symbol-at-point for occasssional reference write-ups
+  :init
+  (use-package consult-selectrum)
   :bind
-  ("C-s" . consult-line)
   ("C-S-s" . consult-line-symbol-at-point)
-  ("M-<f12>" . consult-buffer)
-  ("M-y" . consult-yank-replace)
+  ("C-s" . consult-line)
+  ("M-*" . consult-line-symbol-at-point)
   ("M-g" . consult-goto-line)
+  ([remap apropos] . consult-apropos)
+  ([remap bookmark-jump] . consult-bookmark)
+  ([remap imenu] . consult-imenu)
+  ([remap man] . consult-man)
+  ([remap recentf-open-files] . consult-recent-file)
+  ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
+  ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
+  ([remap switch-to-buffer] . consult-buffer)
+  ([remap yank-pop] . consult-yank-replace)
+  ;;TODO: bind `consult-org-agenda' here or under `org-mode' config
   (:map custom-nav-map
-        ("g" . consult-ripgrep)
-        ("i" . consult-imenu) ; consult-project-imenu
-        ("k" . consult-kmacro)
-        ("x" . consult-register)
-        ("j" . consult-global-mark)
-        ("o" . consult-outline)
+        ("G" . consult-ripgrep-symbol-at-point)
+        ("I" . consult-imenu-multi)
+        ("M" . consult-minor-mode-menu)
+        ("O" . consult-file-externally)
+        ("SPC" . consult-mark)
+        ("`" . consult-compile-error)
         ("c" . consult-complex-command)
-        ("r l" . consult-register)
+        ("g" . consult-ripgrep)
+        ("h" . consult-find)
+        ("j" . consult-global-mark)
+        ("k" . consult-kmacro)
+        ("m" . consult-multi-occur)
+        ("o" . consult-outline)
+        ("r b" . consult-bookmark)
+        ("r l" . consult-register-load)
         ("r s" . consult-register-store)
-        ("m" . consult-multi-occur))
+        ("r x" . consult-register))
+  (:map custom-goto-map
+        ("C-s" . consult-line-multi))
   (:map dired-mode-map
         ("`" . consult-file-externally))
-  (:map ctl-x-map
-        ("b" . consult-buffer)
-        ("C-b" . consult-bookmark)
-        ("C-r" . consult-recentf-file)
-        ("m" . consult-minor-mode-menu))
-  (:map help-map
-        ("a" . consult-apropos)
-        ("C-m" . consult-man))
   :custom
-  (register-preview-delay 0)
-  (register-preview-function #'consult-register-preview)
+  (completion-in-region-function #'consult-completion-in-region)
+  (consult-async-input-debounce 0.1)
+  (consult-async-input-throttle 0.2)
+  (consult-async-min-input 2)
+  (consult-async-refresh-delay 0.15)
+  (consult-line-point-placement 'match-beginning)
+  (consult-line-start-from-top t)
+  (consult-narrow-key "<")
   (consult-project-root-function #'projectile-project-root)
-  (consult-line-point-placement 'match-end)
+  (register-preview-delay 0.1)
+  (register-preview-function #'consult-register-format)
+  (xref-show-definitions-function #'consult-xref)
+  (xref-show-xrefs-function #'consult-xref)
   :config
+  (consult-customize
+   consult-theme :preview-key '(:debounce 0.2 any))
+  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
+  (advice-add #'register-preview :override #'consult-register-window)
   (fset 'multi-occur #'consult-multi-occur)
   (fset 'projectile-ripgrep 'consult-ripgrep))
 
@@ -277,12 +315,13 @@
   ("C-<f1>" . consult-projectile))
 
 (use-package consult-flycheck
-  :after consult
+  :after (consult flycheck)
   :bind
   (:map mode-specific-map
         ("y" . consult-flycheck))
   (:map flycheck-mode-map
-        ("C-c ! o" . consult-flycheck)))
+        ("C-c ! o" . consult-flycheck)
+        ("!" . consult-flycheck)))
 
 (use-package ace-window
   :bind
