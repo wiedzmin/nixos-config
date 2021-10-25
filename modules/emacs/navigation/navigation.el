@@ -279,6 +279,12 @@
         ("C-s" . consult-line-multi))
   (:map dired-mode-map
         ("`" . consult-file-externally))
+  (:map minibuffer-local-map
+        ("<next>" . scroll-up-command)
+        ("<prior>" . scroll-down-command))
+  (:map selectrum-minibuffer-map
+        ("<next>" . scroll-up-command)
+        ("<prior>" . scroll-down-command))
   :custom
   (completion-in-region-function #'consult-completion-in-region)
   (consult-async-input-debounce 0.1)
