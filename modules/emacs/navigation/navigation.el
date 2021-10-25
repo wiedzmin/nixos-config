@@ -98,9 +98,8 @@
                                  dispatchers/flex
                                  dispatchers/initialism
                                  dispatchers/literal))
-  (orderless-matching-styles '(orderless-regexp
-                               orderless-initialism
-                               orderless-flex))
+  (orderless-matching-styles '(orderless-literal
+                               orderless-regexp))
   (completion-category-defaults nil)
   (selectrum-refine-candidates-function #'orderless-filter)
   (selectrum-highlight-candidates-function #'orderless-highlight-matches)
