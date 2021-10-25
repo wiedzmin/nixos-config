@@ -22,6 +22,7 @@
   (pass-username-field "login"))
 
 (use-package selectrum-pass
+  :after selectrum
   :bind
   (:map custom-pass-map
         ("!" . selectrum-pass)))
