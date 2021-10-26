@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.ide.emacs.edit;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     ide.emacs.edit = {
       enable = mkOption {
@@ -28,6 +29,7 @@ in {
         epkgs.comment-dwim-2
         epkgs.easy-kill
         epkgs.easy-kill-extras # add to .el
+        epkgs.expand-region
         epkgs.multiple-cursors
         epkgs.region-bindings-mode
         epkgs.shift-number

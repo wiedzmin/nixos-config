@@ -1,3 +1,7 @@
+(use-package expand-region
+  :bind
+  ("C-," . er/expand-region))
+
 (use-package aggressive-indent
   :bind
   (:map mode-specific-map
