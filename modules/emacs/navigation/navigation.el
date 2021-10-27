@@ -8,15 +8,53 @@
 ;; TODO: bind consult-error when compilation buffers will be used more extensively
 
 (use-package avy
+  :preface
+  (defun avy-action-copy-whole-line (pt)
+    (save-excursion
+      (goto-char pt)
+      (cl-destructuring-bind (start . end)
+          (bounds-of-thing-at-point 'line)
+        (copy-region-as-kill start end)))
+    (select-window
+     (cdr
+      (ring-ref avy-ring 0)))
+    t)
+  (defun avy-action-yank-whole-line (pt)
+    (avy-action-copy-whole-line pt)
+    (save-excursion (yank))
+    t)
+  (defun avy-action-embark (pt)
+    (unwind-protect
+        (save-excursion
+          (goto-char pt)
+          (embark-act))
+      (select-window
+       (cdr (ring-ref avy-ring 0))))
+    t)
   :bind
   ("C-:" . avy-goto-char)
   (:map custom-goto-map
-        ("M-s" . avy-goto-word-0))
+        ("M-w" . avy-goto-word-0)
+        ("M-s" . avy-goto-char-timer)
+        ("," . pop-global-mark))
   :custom
   (avy-timeout-seconds 0.5)
-  (avy-keys '(?0 ?1 ?2 ?3 ?4 ?5 ?6 ?7 ?8 ?9))
+  (avy-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
+  (avy-linum-mode t)
+  (avy-background t)
+  (avy-all-windows 'all-frames)
   :custom-face (avy-goto-char-timer-face ((nil (:foreground "green" :weight bold))))
   :config
+  ;NOTE: removed 'avy-dispatch-alist vs 'avy-keys conflicts
+  (setf avy-dispatch-alist (assq-delete-all ?z avy-dispatch-alist))
+  (setf avy-dispatch-alist (assq-delete-all ?x avy-dispatch-alist))
+  (setf avy-dispatch-alist (assq-delete-all ?c avy-dispatch-alist))
+  (setf avy-dispatch-alist (assq-delete-all ?n avy-dispatch-alist))
+  (setf (alist-get ?Z avy-dispatch-alist) 'avy-action-zap-to-char)
+  (setf (alist-get ?. avy-dispatch-alist) 'avy-action-embark)
+  (setf (alist-get ?w avy-dispatch-alist) 'avy-action-copy)
+  (setf (alist-get ?W avy-dispatch-alist) 'avy-action-copy-whole-line)
+  (setf (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line)
   (avy-setup-default))
 
 (use-package goto-addr
