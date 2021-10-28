@@ -167,12 +167,6 @@ in
               verbosity = "mesg";
               word_wrap = "yes";
             };
-            shortcuts = {
-              close = "ctrl+space";
-              close_all = "ctrl+shift+space";
-              history = "ctrl+grave";
-              context = "ctrl+shift+period";
-            };
             urgency_low = { timeout = 3; };
             urgency_normal = { timeout = 5; };
             urgency_critical = { timeout = 7; };
@@ -299,7 +293,28 @@ in
         key = [ prefix "Shift" "p" ];
         cmd = "${pkgs.gmrun}/bin/gmrun";
         mode = "root";
-      }];
+      }] ++ optionals (cfg.notifications.backend == "dunst") [
+        {
+          key = [ "Control" "space" ];
+          cmd = "${pkgs.dunst}/bin/dunstctl close";
+          mode = "root";
+        }
+        {
+          key = [ "Control" "Shift" "space" ];
+          cmd = "${pkgs.dunst}/bin/dunstctl close-all";
+          mode = "root";
+        }
+        {
+          key = [ "Control" "grave" ];
+          cmd = "${pkgs.dunst}/bin/dunstctl history-pop";
+          mode = "root";
+        }
+        {
+          key = [ "Control" "Shift" "equal" ];
+          cmd = "${pkgs.dunst}/bin/dunstctl context";
+          mode = "root";
+        }
+      ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users.${user} = { home.packages = with pkgs; [ uptime_info ifconfless ]; };
