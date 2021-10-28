@@ -52,6 +52,7 @@ in
         epkgs.rainbow-delimiters
         epkgs.recursive-narrow
         epkgs.rg
+        epkgs.consult-projectile
         epkgs.selectrum
         epkgs.selectrum-prescient
         epkgs.treemacs

@@ -345,13 +345,11 @@
   (fset 'projectile-ripgrep 'consult-ripgrep))
 
 (use-package bookmark-view
-  :load-path "@emacsBookmarkViewPath@"
   :custom
   (consult-view-open-function #'bookmark-jump)
   (consult-view-list-function #'bookmark-view-names))
 
 (use-package consult-projectile
-  :load-path "@emacsConsultProjectilePath@"
   :after projectile
   :bind
   ("C-<f1>" . consult-projectile))

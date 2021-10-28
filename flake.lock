@@ -31,86 +31,6 @@
         "type": "github"
       }
     },
-    "emacs-bookmark-view": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1634620261,
-        "narHash": "sha256-h2oT1nVlBtTlv6RGgCIR5tUIRd4O/KhescIttMZd2x4=",
-        "owner": "minad",
-        "repo": "bookmark-view",
-        "rev": "06e41de8ed7050e70627203c93b6132fec7e88d8",
-        "type": "github"
-      },
-      "original": {
-        "owner": "minad",
-        "repo": "bookmark-view",
-        "type": "github"
-      }
-    },
-    "emacs-consult-lsp": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1633004706,
-        "narHash": "sha256-/5AyeNgnoo3s+f0u30OZ9lDrgnSu1cEJPKt0FPdKoF8=",
-        "owner": "gagbo",
-        "repo": "consult-lsp",
-        "rev": "b9aa9617f174a304040ae75d35483fa8d4ade5d7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "gagbo",
-        "repo": "consult-lsp",
-        "type": "github"
-      }
-    },
-    "emacs-consult-projectile": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1628107288,
-        "narHash": "sha256-lCA/DvIt4kQQtua4usUqclO3GGa8s1kpqve9Kf7m2Uo=",
-        "owner": "OlMon",
-        "repo": "consult-projectile",
-        "rev": "0428e428b30418be838bbec484eca2cb85a1de75",
-        "type": "gitlab"
-      },
-      "original": {
-        "owner": "OlMon",
-        "repo": "consult-projectile",
-        "type": "gitlab"
-      }
-    },
-    "emacs-ob-go": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1549053642,
-        "narHash": "sha256-fN3dFDUl9SF6CLJ8ikYmJ3BvRwpuqX/pZiftWH1LPBk=",
-        "owner": "pope",
-        "repo": "ob-go",
-        "rev": "2067ed55f4c1d33a43cb3f6948609d240a8915f5",
-        "type": "github"
-      },
-      "original": {
-        "owner": "pope",
-        "repo": "ob-go",
-        "type": "github"
-      }
-    },
-    "emacs-org-appear": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1629592793,
-        "narHash": "sha256-969rj9nwliC+uNbtp3UFKcYTNyKM8oCkbBEmtm9G32k=",
-        "owner": "awth13",
-        "repo": "org-appear",
-        "rev": "a1aa8496f2fd61305e43e03e6eeee2ff92aa9e24",
-        "type": "github"
-      },
-      "original": {
-        "owner": "awth13",
-        "repo": "org-appear",
-        "type": "github"
-      }
-    },
     "git-extra-commands": {
       "flake": false,
       "locked": {
@@ -273,11 +193,6 @@
       "inputs": {
         "base16-rofi": "base16-rofi",
         "emacs": "emacs",
-        "emacs-bookmark-view": "emacs-bookmark-view",
-        "emacs-consult-lsp": "emacs-consult-lsp",
-        "emacs-consult-projectile": "emacs-consult-projectile",
-        "emacs-ob-go": "emacs-ob-go",
-        "emacs-org-appear": "emacs-org-appear",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
         "i3blocks-contrib": "i3blocks-contrib",

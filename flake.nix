@@ -21,28 +21,6 @@
       flake = false;
     };
 
-    # NOTE: using these instead of quelpa
-    emacs-ob-go = {
-      url = "github:pope/ob-go";
-      flake = false;
-    };
-    emacs-org-appear = {
-      url = "github:awth13/org-appear";
-      flake = false;
-    };
-    emacs-bookmark-view = {
-      url = "github:minad/bookmark-view";
-      flake = false;
-    };
-    emacs-consult-projectile = {
-      url = "gitlab:OlMon/consult-projectile";
-      flake = false;
-    };
-    emacs-consult-lsp = {
-      url = "github:gagbo/consult-lsp";
-      flake = false;
-    };
-
     git-extra-commands = {
       url = "github:unixorn/git-extra-commands";
       flake = false;

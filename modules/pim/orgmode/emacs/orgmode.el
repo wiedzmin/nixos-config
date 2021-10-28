@@ -411,7 +411,6 @@
   (deft-extensions '("org" "txt")))
 
 (use-package org-appear
-  :load-path "@emacsOrgAppearPath@"
   :hook
   (org-mode-hook . org-appear-mode)
   :custom

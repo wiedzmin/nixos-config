@@ -173,7 +173,6 @@
   (lsp-treemacs-sync-mode 1))
 
 (use-package consult-lsp
-  :load-path "@emacsConsultLsp@"
   :bind
   (:map custom-goto-map
         ("s" . consult-lsp-symbols)

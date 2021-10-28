@@ -98,6 +98,7 @@ in
         epkgs.ob-async
         epkgs.ob-blockdiag
         epkgs.ob-restclient
+        epkgs.org-appear
         epkgs.org-bullets
         epkgs.org-capture-pop-frame
         epkgs.org-clock-today

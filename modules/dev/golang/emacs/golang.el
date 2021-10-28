@@ -43,7 +43,6 @@
   (go-tag-args '("-transform" "camelcase")))
 
 (use-package ob-go
-  :load-path "@emacsObGoPath@"
   :commands (org-babel-execute:go
              org-babel-expand-body:go
              org-babel-prep-session:go))

@@ -89,9 +89,15 @@ in
     })
     (mkIf (cfg.enable && cfg.rootMarkers.enable) { dev.navigation.projects.rootMarkers = [ "go.mod" ]; })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.flycheck-golangci-lint epkgs.go-mode epkgs.go-tag epkgs.gotest ];
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.flycheck-golangci-lint
+        epkgs.go-mode
+        epkgs.go-tag
+        epkgs.gotest
+        epkgs.ob-go
+      ];
       ide.emacs.core.customKeymaps = { "custom-gotag-map" = "C-c `"; };
-      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./emacs/golang.el ];
+      ide.emacs.core.config = builtins.readFile ./emacs/golang.el;
     })
   ];
 }
