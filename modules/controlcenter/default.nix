@@ -142,7 +142,7 @@ in
               frame_width = 3;
               geometry = "0x5-15+15";
               hide_duplicates_count = "false";
-              history_length = 20;
+              history_length = 50;
               horizontal_padding = 10;
               icon_position = "left";
               idle_threshold = 120;
