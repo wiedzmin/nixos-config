@@ -132,7 +132,6 @@
   ;;TODO: investigate if `completion-styles' setting is really _alternative_ against using `prescient'
   (completion-styles '(partial-completion substring orderless))
   (orderless-style-dispatchers '(dispatchers/selectrum-without-if-bang
-                                 dispatchers/selectrum-with-if-equals
                                  dispatchers/flex
                                  dispatchers/initialism
                                  dispatchers/literal))
