@@ -44,6 +44,7 @@
   (kept-old-versions 2)
   (version-control t)
   (save-abbrevs 'silently)
+  (view-read-only t)
   :config
   (setq safe-local-variable-values '((mode-require-final-newline))))
 
