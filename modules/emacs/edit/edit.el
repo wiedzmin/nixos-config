@@ -2,6 +2,10 @@
   :bind
   ("C-," . er/expand-region))
 
+(use-package highlight-numbers
+  :hook
+  (foo-mode-hook . highlight-numbers-mode))
+
 (use-package aggressive-indent
   :bind
   (:map mode-specific-map

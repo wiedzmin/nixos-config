@@ -30,6 +30,7 @@ in
         epkgs.easy-kill
         epkgs.easy-kill-extras # add to .el
         epkgs.expand-region
+        epkgs.highlight-numbers
         epkgs.multiple-cursors
         epkgs.region-bindings-mode
         epkgs.shift-number
