@@ -11,7 +11,7 @@ in {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable xresources customization.";
+        description = "Whether to enable Xresources customization.";
       };
       wm.enable = mkOption {
         type = types.bool;

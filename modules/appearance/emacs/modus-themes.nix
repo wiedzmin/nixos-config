@@ -8,12 +8,7 @@ in {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable doom-modeline.";
-      };
-      height = mkOption {
-        type = types.int;
-        default = 25;
-        description = "Modeline height in pixels.";
+        description = "Whether to enable Modus themes.";
       };
     };
   };

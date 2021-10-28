@@ -9,7 +9,7 @@ in
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable zenburn theme.";
+        description = "Whether to enable Zenburn theme.";
       };
     };
   };
