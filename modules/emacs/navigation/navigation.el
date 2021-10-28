@@ -549,8 +549,7 @@
     (phi-search-mc/setup-keys)))
 
 (use-package projectile
-  :after selectrum
-  :delight
+  :delight '(:eval (concat " ¶[" (projectile-project-name) "]"))
   :preface
   (defun custom/open-project-todos ()
     (interactive)
@@ -588,6 +587,8 @@
         ("m" . custom/open-project-magit-status)
         ("f" . recentf-open-files)
         ("h" . projectile-find-file))
+  :hook
+  (after-init-hook . projectile-mode)
   :custom
   (projectile-completion-system 'default)
   (projectile-enable-caching t)
@@ -596,18 +597,10 @@
   (projectile-project-search-path
    '("~/workspace/repos"
      "~/workspace/repos.stale"))
-  (projectile-project-root-functions
-   '(
+  (projectile-project-root-functions '(
      projectile-root-local
-     projectile-root-bottom-up
-     ;; projectile-root-top-down
-     ;; projectile-root-top-down-recurring
-     ))
-  (projectile-project-root-files '(@projectsRootMarkersEmacs@))
-  :hook
-  (after-init-hook . projectile-mode)
-  :config
-  :delight '(:eval (concat " ¶[" (projectile-project-name) "]")))
+     projectile-root-bottom-up))
+  (projectile-project-root-files '(@projectsRootMarkersEmacs@)))
 
 (use-package rg
   :bind
