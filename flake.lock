@@ -31,6 +31,22 @@
         "type": "github"
       }
     },
+    "emacs-blamer": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1635591086,
+        "narHash": "sha256-OkzJa2Aub2SwFO1dfpoDHaGOaF46HNTMpevDIya7h+Q=",
+        "owner": "Artawower",
+        "repo": "blamer.el",
+        "rev": "b914843d73c0a17a31a1d1fc6c7ad7ab2337a9da",
+        "type": "github"
+      },
+      "original": {
+        "owner": "Artawower",
+        "repo": "blamer.el",
+        "type": "github"
+      }
+    },
     "git-extra-commands": {
       "flake": false,
       "locked": {
@@ -193,6 +209,7 @@
       "inputs": {
         "base16-rofi": "base16-rofi",
         "emacs": "emacs",
+        "emacs-blamer": "emacs-blamer",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
         "i3blocks-contrib": "i3blocks-contrib",

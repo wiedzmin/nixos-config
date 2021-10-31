@@ -21,6 +21,11 @@
       flake = false;
     };
 
+    # NOTE: using these instead of quelpa
+    emacs-blamer = {
+      url = "github:Artawower/blamer.el";
+      flake = false;
+    };
     git-extra-commands = {
       url = "github:unixorn/git-extra-commands";
       flake = false;
