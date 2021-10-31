@@ -344,6 +344,16 @@
   (fset 'multi-occur #'consult-multi-occur)
   (fset 'projectile-ripgrep 'consult-ripgrep))
 
+(use-package consult-dir
+  :ensure t
+  :bind
+  ("C-x C-d" . consult-dir)
+  (:map selectrum-minibuffer-map
+        ("C-x C-d" . consult-dir)
+        ("C-x C-j" . consult-dir-jump-file))
+  :custom
+  (consult-dir-project-list-function #'consult-dir-projectile-dirs))
+
 (use-package bookmark-view
   :custom
   (consult-view-open-function #'bookmark-jump)

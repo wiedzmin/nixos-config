@@ -30,6 +30,7 @@ in
         epkgs.beginend
         epkgs.block-nav
         epkgs.consult
+        epkgs.consult-dir
         epkgs.consult-flycheck
         epkgs.dired-filetype-face
         epkgs.dired-narrow
