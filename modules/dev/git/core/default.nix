@@ -127,7 +127,7 @@ in
           :disabled
           :hook (magit-mode-hook . magit-delta-mode))
       '';
-      ide.emacs.core.customKeymaps = { "custom-magit-map" = "C-'"; };
+      ide.emacs.core.customKeymaps = { "custom-git-map" = "C-'"; };
     })
   ];
 }

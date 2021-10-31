@@ -6,7 +6,7 @@
 (use-package git-walktree
   :after magit
   :bind
-  (:map custom-magit-map
+  (:map custom-git-map
         ("o" . git-walktree)))
 
 (use-package dired-git-info

@@ -23,7 +23,7 @@
   :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
          ("COMMIT" . git-commit-mode))
   :bind
-  (:map custom-magit-map
+  (:map custom-git-map
         ("i" . magit-init)
         ("s" . magit-status)
         ("." . magit-dispatch)
