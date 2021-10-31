@@ -185,7 +185,8 @@ rec {
     lib.concatStringsSep "\n" (lib.forEach entries
       (e: builtins.readFile (pkgs.substituteAll
         (lib.foldl (collector: subst: collector // ((import subst { inherit config inputs lib pkgs; }) // { src = e; }))
-          {} substs))));
+          { }
+          substs))));
   enabledLocals = bookmarks:
     lib.mapAttrs
       (key: meta: meta.local // { key = key; } // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
@@ -245,12 +246,14 @@ rec {
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
   mkBookmarkWebjumpDest = meta:
     { url = meta.url; } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
+    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; };
   mkBookmarkSearchengineDest = meta:
     {
       url = meta.url + lib.optionalString (lib.hasAttrByPath [ "searchSuffix" ] meta) meta.searchSuffix;
     } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; };
+    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; };
   remoteWebjumps = remotes: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkWebjumpDest meta))
       (lib.filterAttrs
@@ -311,9 +314,11 @@ rec {
         title2tag);
   reAddWildcards = s: builtins.replaceStrings [ " " ] [ ".*" ] s;
   prepareWindowRule = rule:
-    rule // (lib.mapAttrs (k: v: builtins.replaceStrings [ "@" ]
-      [ (if k == "title" then reAddWildcards rule.${k} else rule.${k}) ] v)
-        (lib.filterAttrs (k: _: builtins.hasAttr k rule) windowRulePlaceholders));
+    rule // (lib.mapAttrs
+      (k: v: builtins.replaceStrings [ "@" ]
+        [ (if k == "title" then reAddWildcards rule.${k} else rule.${k}) ]
+        v)
+      (lib.filterAttrs (k: _: builtins.hasAttr k rule) windowRulePlaceholders));
   getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
   enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: v: i) wsdata) wsdata;
   windowRuleClauses = rule:
