@@ -21,7 +21,8 @@ let
     };
   };
 
-in {
+in
+{
   options = {
     ext.networking.ssh = {
       enable = mkOption {
@@ -105,6 +106,9 @@ in {
           '';
         };
         home.file = { ".ssh/id_rsa.pub".text = cfg.keypair.public; };
+        home.packages = with pkgs; [ ssh-key-confirmer ];
+        # TODO: automate, refer to https://github.com/benjojo/ssh-key-confirmer
+        # TODO: also add nix/redis-level registry of used keypairs and marry them to extraHosts infrastructure
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
