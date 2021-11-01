@@ -60,3 +60,8 @@
 (defun open-project (path)
   (cond ((f-directory? (format "%s/%s" path ".git")) (magit-status path))
         (t (dired path))))
+
+(use-package 0x0
+  :bind
+  (:map custom-webpaste-map
+        ("0" . 0x0-upload-text)))

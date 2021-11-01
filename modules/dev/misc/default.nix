@@ -127,6 +127,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
+        epkgs."0x0"
         epkgs.blockdiag-mode
         epkgs.comby
         epkgs.elmacro
