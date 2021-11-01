@@ -257,7 +257,7 @@ in
             mode = "layout";
           }
           {
-            key = [ prefix "Return" ];
+            key = [ prefix "Tab" ];
             cmd = ''${pkgs.wmfocus}/bin/wmfocus --chars qweasdzxc --textcoloralt "#eeeeee"'';
             mode = "root";
           }
@@ -407,7 +407,7 @@ in
 
             ${with config.wmCommon; genScratchpadSettingsI3 wsMapping.rules keys cfg.modeExitBindings workspaces}
 
-            bindsym ${prefix}+Tab workspace back_and_forth
+            bindsym ${prefix}+Return workspace back_and_forth
 
             ${lib.concatStringsSep "\n"
               (lib.forEach (config.wmCommon.autostart.entries) (e: "exec --no-startup-id ${e}"))}
