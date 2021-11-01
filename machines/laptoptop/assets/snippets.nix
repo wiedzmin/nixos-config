@@ -150,11 +150,6 @@ rec {
       code = "rm /home/${user}/.local/share/yeganesh/default";
     }
     {
-      description = "jq yq alternative";
-      code = "dasel";
-      tags = [ "jq" "yq" ];
-    }
-    {
       description = "jwt certificates";
       code = "step-cli";
       tags = [ "jwt" "certificates" "ssl" ];
