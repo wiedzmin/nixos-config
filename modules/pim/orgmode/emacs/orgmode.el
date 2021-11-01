@@ -416,6 +416,12 @@
   :custom
   (org-appear-autolinks t))
 
+(use-package org-bars
+  :if (display-graphic-p)
+  :load-path "@emacsOrgBarsPath@"
+  :hook
+  (org-mode-hook . org-bars-mode))
+
 ;; TODO: review/debug graph generation under v2
 ;; TODO: review manual at https://www.orgroam.com/manual.html
 ;; TODO: review https://github.com/search?q=org-roam-capture-templates&type=code

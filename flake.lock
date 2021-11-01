@@ -47,6 +47,22 @@
         "type": "github"
       }
     },
+    "emacs-org-bars": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1635264609,
+        "narHash": "sha256-QLxPasg96/l/OfNIr6QYjz0Ja9OLbPUyuItq907ltcs=",
+        "owner": "tonyaldon",
+        "repo": "org-bars",
+        "rev": "7537dfab524ab5ca771737d9096198c2d6f80d36",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tonyaldon",
+        "repo": "org-bars",
+        "type": "github"
+      }
+    },
     "git-extra-commands": {
       "flake": false,
       "locked": {
@@ -210,6 +226,7 @@
         "base16-rofi": "base16-rofi",
         "emacs": "emacs",
         "emacs-blamer": "emacs-blamer",
+        "emacs-org-bars": "emacs-org-bars",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
         "i3blocks-contrib": "i3blocks-contrib",

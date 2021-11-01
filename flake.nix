@@ -26,6 +26,11 @@
       url = "github:Artawower/blamer.el";
       flake = false;
     };
+    emacs-org-bars = {
+      url = "github:tonyaldon/org-bars";
+      flake = false;
+    };
+
     git-extra-commands = {
       url = "github:unixorn/git-extra-commands";
       flake = false;
