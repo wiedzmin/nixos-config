@@ -316,6 +316,12 @@ in
             mode = "scratchpad";
             raw = true;
           }
+          {
+            key = [ prefix "y" ];
+            cmd = "fullscreen disable; floating enable; resize set 40 ppt 40 ppt; sticky enable; move position 60 ppt 4 ppt";
+            mode = "root";
+            raw = true;
+          }
         ];
       };
 
