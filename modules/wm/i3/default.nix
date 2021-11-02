@@ -40,6 +40,9 @@ in
           focus_follows_mouse no
           bindsym Button4 nop
           bindsym button5 nop
+
+          force_display_urgency_hint 1500 ms
+          focus_on_window_activation urgent
         '';
         description = "Custom settings for i3.";
       };
