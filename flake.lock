@@ -190,6 +190,22 @@
         "type": "indirect"
       }
     },
+    "nixpkgs-index-fm": {
+      "locked": {
+        "lastModified": 1635314702,
+        "narHash": "sha256-/CEuEaXFVl2vQ+o3lYzDPz4lfbHbMebyJqQ4jZ1PT30=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "a4bf44345706231f9dd56f85757499af1e940847",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "a4bf44345706231f9dd56f85757499af1e940847",
+        "type": "github"
+      }
+    },
     "nur": {
       "locked": {
         "lastModified": 1631700621,
@@ -234,6 +250,7 @@
         "nix24working": "nix24working",
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
+        "nixpkgs-index-fm": "nixpkgs-index-fm",
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",
         "stable": "stable",
