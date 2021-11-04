@@ -14,9 +14,7 @@ in
 rec {
   addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
   withPatches = pkg: patches: lib.overrideDerivation pkg (_: { inherit patches; });
-  mkPythonScriptWithDeps = pname: packages: text: buildPythonScriptWithDeps pname false packages text;
-  mkPythonScriptWithDepsAndConflicts = pname: packages: text: buildPythonScriptWithDeps pname true packages text;
-  buildPythonScriptWithDeps = pname: allowConflicts: packages: text:
+  mkPythonScriptWithDeps = pname: packages: text:
     pkgs.python3Packages.buildPythonPackage rec {
       inherit pname;
       version = "unstable";
@@ -31,7 +29,6 @@ rec {
       unpackPhase = "true";
       buildInputs = with pkgs; [ makeWrapper ];
       propagatedBuildInputs = with pkgs; (packages ++ [ glibc ]);
-      dontUsePythonCatchConflicts = allowConflicts;
       buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${pname}";
       installPhase = "true";
       postInstall = ''
@@ -69,7 +66,7 @@ rec {
     timerConfig = lib.optionalAttrs (boot != "") { OnBootSec = "${boot}"; }
       // lib.optionalAttrs (active != "") { OnUnitActiveSec = "${active}"; }
       // lib.optionalAttrs (cal != "") { OnCalendar = "${cal}"; }
-      // lib.optionalAttrs (persistent) { Persistent = "true"; }
+      // lib.optionalAttrs persistent { Persistent = "true"; }
       // lib.optionalAttrs (unit != "") { Unit = "${unit}"; };
   };
   mkIndent = width: with lib; (concatStrings (genList (const " ") width));
@@ -110,10 +107,10 @@ rec {
         < ${pkgs.writeText "attrs.json" (builtins.toJSON attrs)} \
         > $out
     '');
-  maybeAttrIsBool = name: set: (builtins.hasAttr name set) && (set."${name}" == true);
+  maybeAttrIsBool = name: set: (builtins.hasAttr name set) && set."${name}";
   maybeAttrString = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else ph;
   maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
-  emacsBoolToString = v: if v == true then "t" else "nil";
+  emacsBoolToString = v: if v then "t" else "nil";
   wsRoot = key: lib.getAttrFromPath [ key ] config.navigation.bookmarks.workspaces.roots;
   wsRootAtHomedir = user: key: lib.removePrefix (homePrefix user "") key;
   mkGithubBookmark = user: repo: {
@@ -189,31 +186,31 @@ rec {
           substs))));
   enabledLocals = bookmarks:
     lib.mapAttrs
-      (key: meta: meta.local // { key = key; } // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
-        // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { desc = meta.desc; })
+      (key: meta: meta.local // { inherit key; } // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; })
+        // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { inherit (meta) desc; })
       (lib.filterAttrs
         (_: meta:
-          !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
+          !(lib.hasAttrByPath [ "local" "enable" ] meta && !meta.local.enable)
           && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != ""))
         bookmarks);
   localEbooks = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
       (_: meta:
-        !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
+        !(lib.hasAttrByPath [ "local" "enable" ] meta && !meta.local.enable)
         && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")
-        && (lib.hasAttrByPath [ "local" "ebooks" ] meta && meta.local.ebooks == true))
+        && (lib.hasAttrByPath [ "local" "ebooks" ] meta && meta.local.ebooks))
       bookmarks);
   localDocs = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
       (_: meta:
-        !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
+        !(lib.hasAttrByPath [ "local" "enable" ] meta && !meta.local.enable)
         && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")
-        && (lib.hasAttrByPath [ "local" "docs" ] meta && meta.local.docs == true))
+        && (lib.hasAttrByPath [ "local" "docs" ] meta && meta.local.docs))
       bookmarks);
   localEmacsBookmarks = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
       (_: meta:
-        !(lib.hasAttrByPath [ "local" "enable" ] meta && meta.local.enable == false)
+        !(lib.hasAttrByPath [ "local" "enable" ] meta && !meta.local.enable)
         && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != ""))
       bookmarks);
   localBookmarksCommon = locals: sep: tagSep:
@@ -222,11 +219,11 @@ rec {
     lib.concatStringsSep "\n" (lib.mapAttrsToList (id: meta: id + " : " + meta.path) locals);
   enabledRemotes = bookmarks:
     lib.mapAttrs
-      (_: meta: meta.remote // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; })
-        // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { desc = meta.desc; })
+      (_: meta: meta.remote // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; })
+        // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { inherit (meta) desc; })
       (lib.filterAttrs
         (_: meta:
-          !(lib.hasAttrByPath [ "remote" "enable" ] meta && meta.remote.enable == false)
+          !(lib.hasAttrByPath [ "remote" "enable" ] meta && !meta.remote.enable)
           && (lib.hasAttrByPath [ "remote" "url" ] meta && meta.remote.url != ""))
         bookmarks);
   collectReposMetadata = bookmarks:
@@ -239,26 +236,26 @@ rec {
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.key ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
   mkBookmarkDestLocal = meta:
-    { path = meta.path; } // lib.optionalAttrs (lib.hasAttrByPath [ "shell" ] meta) { shell = meta.shell; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "tmux" ] meta) { tmux = meta.tmux; };
+    { inherit (meta) path; } // lib.optionalAttrs (lib.hasAttrByPath [ "shell" ] meta) { inherit (meta) shell; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "tmux" ] meta) { inherit (meta) tmux; };
   mkBookmarkNameRemote = meta: sep: tagSep:
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
   mkBookmarkWebjumpDest = meta:
-    { url = meta.url; } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; };
+    { inherit (meta) url; } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { inherit (meta) vpn; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { inherit (meta) browser; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; };
   mkBookmarkSearchengineDest = meta:
     {
       url = meta.url + lib.optionalString (lib.hasAttrByPath [ "searchSuffix" ] meta) meta.searchSuffix;
-    } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { vpn = meta.vpn; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { browser = meta.browser; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { tags = meta.tags; };
+    } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { inherit (meta) vpn; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { inherit (meta) browser; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; };
   remoteWebjumps = remotes: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkWebjumpDest meta))
       (lib.filterAttrs
         (_: meta:
-          (lib.hasAttrByPath [ "jump" ] meta && meta.jump == true) || !(lib.hasAttrByPath [ "searchSuffix" ] meta))
+          (lib.hasAttrByPath [ "jump" ] meta && meta.jump) || !(lib.hasAttrByPath [ "searchSuffix" ] meta))
         remotes);
   remoteSearchEngines = remotes: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkSearchengineDest meta))
@@ -316,7 +313,7 @@ rec {
   prepareWindowRule = rule:
     rule // (lib.mapAttrs
       (k: v: builtins.replaceStrings [ "@" ]
-        [ (if k == "title" then reAddWildcards rule.${k} else rule.${k}) ]
+        [ (if k == "title" then reAddWildcards rule."${k}" else rule."${k}") ]
         v)
       (lib.filterAttrs (k: _: builtins.hasAttr k rule) windowRulePlaceholders));
   getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";

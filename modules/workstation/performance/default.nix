@@ -59,7 +59,7 @@ in
         earlyoom.enable = cfg.oom.enable;
       };
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         services.xsuspender = optionalAttrs (cfg.appsSuspension.rules != { })
           {
             enable = true;
@@ -67,7 +67,7 @@ in
               suspendDelay = 10;
               onlyOnBattery = false;
             };
-            rules = cfg.appsSuspension.rules;
+            inherit (cfg.appsSuspension) rules;
           };
       };
       systemd.user.services = optionalAttrs (cfg.warmup.paths != [ ]) {

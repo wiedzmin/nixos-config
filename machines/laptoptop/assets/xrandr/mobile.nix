@@ -16,7 +16,7 @@ in
       }${mvWorkspacesCmdI3 config.wmCommon.workspaces "tertiary" config.attributes.hardware.monitors.internalHead.name}"
     '';
   };
-  home-manager.users.${user} = {
+  home-manager.users."${user}" = {
     home.packages = [ pkgs."rescreen-${profileName}-i3" ];
     programs.autorandr = {
       profiles = {

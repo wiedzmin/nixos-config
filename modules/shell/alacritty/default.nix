@@ -5,7 +5,7 @@ with lib;
 let
   cfg = config.shell.vt.alacritty;
   user = config.attributes.mainUser.name;
-  prefix = config.wmCommon.prefix;
+  inherit (config.wmCommon) prefix;
 in
 {
   options = {
@@ -83,7 +83,7 @@ in
             },
         }, "Alacritty")
       '';
-      wmCommon.autostart.entries = optionals (cfg.autostart) [ (builtins.head cfg.command) ];
+      wmCommon.autostart.entries = optionals cfg.autostart [ (builtins.head cfg.command) ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{

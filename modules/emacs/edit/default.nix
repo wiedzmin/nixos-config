@@ -18,7 +18,7 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       assertions = [{
         assertion = config.ide.emacs.core.enable;
         message = "emacs/edit: core configuration must be enabled.";
@@ -41,7 +41,7 @@ in
         epkgs.whole-line-or-region
         epkgs.ws-butler
       ];
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.file = {
           ".emacs.d/resources/yasnippet" = {
             source = inputs.yasnippet-snippets;

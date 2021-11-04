@@ -5,12 +5,12 @@ with lib;
 let
   cfg = config.dbms.mysql;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
-  dataHome = hm.xdg.dataHome;
-  stable = import inputs.stable ({
+  hm = config.home-manager.users."${user}";
+  stable = import inputs.stable {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
+  inherit (hm.xdg) dataHome;
 in {
   options = {
     dbms.mysql = {
@@ -64,7 +64,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       shell.core.variables = [{ MYCLI_HISTFILE = cfg.mycli.historyPath; global = true; }];
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ stable.mycli ];
         xdg.configFile.".myclirc".text = lib.generators.toINI { } {
           main = {
@@ -80,13 +80,13 @@ in {
             login_path_as_host = "False";
             multi_line = "True";
             null_string = "'<null>'";
-            prompt = cfg.mycli.prompt;
             prompt_continuation = "-> ";
             smart_completion = "True";
             syntax_style = "emacs";
             table_format = "fancy_grid";
             timing = "True";
             wider_completion_menu = "False";
+            inherit (cfg.mycli) prompt;
           };
           colors = {
             "Token.Menu.Completions.Completion.Current" = "bg:#00aaaa #000000";

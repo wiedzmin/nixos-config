@@ -124,7 +124,7 @@ in
         '';
       };
 
-      systemd.user.services.kbdd = optionalAttrs (cfg.kbdd.enable) {
+      systemd.user.services.kbdd = optionalAttrs cfg.kbdd.enable {
         description = "KBDD";
         after = [ "graphical-session-pre.target" ];
         partOf = [ "graphical-session.target" ];
@@ -138,7 +138,7 @@ in
         };
       };
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ keybindings ];
       };
       wmCommon.modeBindings = {
@@ -174,7 +174,7 @@ in
 
         ${pkgs.redis}/bin/redis-cli set wm/window_rules ${
           lib.strings.escapeNixString (builtins.toJSON (builtins.filter
-            (r: !builtins.hasAttr "scratchpad" r || (builtins.hasAttr "scratchpad" r && r.scratchpad == false))
+            (r: !builtins.hasAttr "scratchpad" r || (builtins.hasAttr "scratchpad" r && !r.scratchpad))
             (lib.forEach (windowRulesFromBookmarks config.navigation.bookmarks.entries ++ cfg.wsMapping.rules) prepareWindowRule)))
         }
       '';
@@ -193,7 +193,7 @@ in
       };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ keybindings ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ keybindings ]; };
     })
   ];
 }

@@ -6,10 +6,10 @@ let
   cfg = config.pim.timetracking;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  stable = import inputs.stable ({
+  stable = import inputs.stable {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
 in
 {
   options = {

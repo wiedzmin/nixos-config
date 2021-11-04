@@ -5,8 +5,8 @@ with lib;
 let
   cfg = config.dev.git.core;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
-  dataHome = hm.xdg.dataHome;
+  hm = config.home-manager.users."${user}";
+  inherit (hm.xdg) dataHome;
 in
 {
   options = {
@@ -43,7 +43,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xdg.dataFile."${cfg.assets.dirName}/.gitignore".text = cfg.gitignore;
         programs.git = {
           enable = true;
@@ -67,8 +67,8 @@ in
           };
           extraConfig = {
             "user" = {
+              inherit (config.attributes.mainUser) email;
               name = config.attributes.mainUser.fullName;
-              email = config.attributes.mainUser.email;
               signingKey = config.attributes.mainUser.gpgKeyID;
             };
             "rebase" = {
@@ -120,10 +120,8 @@ in
         epkgs.magit
         epkgs.magit-filenotify
         epkgs.magit-popup # *
-      ] ++ optionals (cfg.emacs.delta.enable) [
-        epkgs.magit-delta
-      ];
-      ide.emacs.core.config = builtins.readFile ./emacs/core.el + optionalString (cfg.emacs.delta.enable) ''
+      ] ++ optionals cfg.emacs.delta.enable epkgs.magit-delta;
+      ide.emacs.core.config = builtins.readFile ./emacs/core.el + optionalString cfg.emacs.delta.enable ''
         (use-package magit-delta
           :disabled
           :hook (magit-mode-hook . magit-delta-mode))

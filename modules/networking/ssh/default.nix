@@ -48,7 +48,7 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       assertions = [{
         assertion = config.ext.networking.vpn.enable;
         message = "networking/ssh: must enable vpn functionality.";

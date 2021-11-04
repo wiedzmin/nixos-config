@@ -6,10 +6,10 @@ let
   cfg = config.ext.security;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  stable = import inputs.stable ({
+  stable = import inputs.stable {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
 in
 {
   options = {
@@ -48,7 +48,7 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       assertions = [{
         assertion = cfg.pinentryFlavor != null;
         message = "security: Must select exactly one pinentry flavor.";
@@ -67,7 +67,7 @@ in
           (builtins.readFile ./scripts/passctl.py);
       };
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ gpg-tui paperkey passphrase2pgp senv ssh-to-pgp ];
         programs.password-store = {
           enable = true;
@@ -97,7 +97,7 @@ in
             allow-emacs-pinentry
             no-allow-loopback-pinentry
           '';
-          pinentryFlavor = cfg.pinentryFlavor;
+          inherit (cfg) pinentryFlavor;
         };
       };
     })
@@ -109,7 +109,7 @@ in
       };
       ide.emacs.core.config = builtins.readFile ./emacs/security.el;
     })
-    (mkIf (cfg.polkit.silentAuth) {
+    (mkIf cfg.polkit.silentAuth {
       security.polkit.extraConfig = ''
         /* Allow users in wheel group to manage systemd units without authentication */
         polkit.addRule(function(action, subject) {
@@ -136,7 +136,7 @@ in
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ passctl ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ passctl ]; };
     })
   ];
 }

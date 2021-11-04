@@ -5,10 +5,10 @@ with lib;
 let
   cfg = config.ext.nix.cachix;
   user = config.attributes.mainUser.name;
-  stable = import inputs.stable ({
+  stable = import inputs.stable {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
 in
 {
   options = {
@@ -41,13 +41,13 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       assertions = [{
         assertion = cfg.username != "";
         message = "nix/cachix: missing username.";
       }];
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = [ stable.cachix ];
         xdg.configFile."cachix/cachix.dhall".text =
           optionalString (cfg.configuration != "") cfg.configuration;

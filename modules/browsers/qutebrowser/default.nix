@@ -115,9 +115,9 @@ in
         }, "qutebrowser")
       '';
 
-      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [
           yank-image
         ];
@@ -178,8 +178,8 @@ in
                 # ===============================================================================
                 # TODO: play with commented out values below
                 darkmode = {
+                  inherit (cfg.darkmode) algorithm;
                   enabled = cfg.darkmode.enable;
-                  algorithm = cfg.darkmode.algorithm;
                   policy.images = "smart"; # "never"
                   policy.page = "smart"; # "always"
                   threshold = {
@@ -491,7 +491,7 @@ in
         TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES = builtins.toString cfg.sessions.keepMinutes;
         global = true;
       }];
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xdg.mimeApps.defaultApplications =
           mapMimesToApp config.attributes.mimetypes.browser "org.custom.qutebrowser.windowed.desktop";
       };
@@ -501,7 +501,7 @@ in
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
 
-      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
 
       navigation.bookmarks.entries = {
         "qutebrowser/sessions/raw" = { local.path = homePrefix user ".local/share/qutebrowser/sessions"; };
@@ -525,10 +525,10 @@ in
 
       shell.core.variables = [{ TB_FALLBACK_BROWSER = cfg.command; global = true; }];
 
-      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.activation.ensureQutebrowserSessionsPath = {
           after = [ ];
           before = [ "linkGeneration" ];
@@ -560,7 +560,7 @@ in
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ yank-image ];
       };
     })

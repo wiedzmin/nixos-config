@@ -23,7 +23,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xresources.properties = {
           "Xmessage*Buttons" = "Quit";
           "Xmessage*defaultButton" = "Quit";

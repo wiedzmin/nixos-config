@@ -6,7 +6,6 @@ let
   cfg = config.controlcenter;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  prefix = config.wmCommon.prefix;
   notify-emacs-messages = mkShellScriptWithDeps "notify-emacs-messages" # TODO: integrate into notifications
     (with pkgs; [ emacs ]) ''
     APPNAME="$1"
@@ -16,6 +15,7 @@ let
     URGENCY="$5"
     emacsclient -n --eval "(message \"${APPNAME}/${SUMMARY}: $BODY\")"
   '';
+  inherit (config.wmCommon) prefix;
 in
 {
   options = {
@@ -68,7 +68,7 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
       nixpkgs.config.packageOverrides = _: rec {
         uptime_info = mkPythonScriptWithDeps "uptime_info" (with pkgs; [ dunst gnused procps ])
@@ -76,7 +76,7 @@ in
         ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
           (builtins.readFile ./scripts/ifconfless.py);
       };
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ btop sysz ];
         services.udiskie = {
           enable = true;
@@ -123,7 +123,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.notifications.backend == "dunst") {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         services.dunst = {
           # TODO: consider extracting options
           enable = true;
@@ -184,7 +184,7 @@ in
     (mkIf (cfg.enable && cfg.notifications.backend == "lnc") {
       # NOTE: see https://github.com/phuhl/linux_notification_center for client tricks
       # TODO: https://github.com/Mesabloo/nix-config/blob/57d97b983803005778f265ac117ed7aacb03cd0d/modules/services/deadd.nix
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ deadd-notification-center ];
         # TODO: review https://github.com/phuhl/linux_notification_center/blob/62c8e42d3cd8e913320d20a5c18d17725d2ec72d/style.css
         xdg.configFile."deadd/deadd.css".text = "";
@@ -254,7 +254,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.launcher == "gmrun") {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ gmrun ];
         home.file = { ".gmrunrc".text = readSubstituted [ ./subst.nix ] [ ./assets/gmrunrc ]; };
       };
@@ -285,7 +285,7 @@ in
           cmd = ''"${pkgs.rofi}/bin/rofi -modi combi -show combi -combi-modi run,drun"'';
           mode = "root";
         }
-      ] ++ optionals (cfg.networking.enable) [{
+      ] ++ optionals cfg.networking.enable [{
         key = [ "i" ];
         cmd = "${pkgs.ifconfless}/bin/ifconfless";
         mode = "network";
@@ -317,7 +317,7 @@ in
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ uptime_info ifconfless ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ uptime_info ifconfless ]; };
     })
   ];
 }

@@ -17,8 +17,8 @@ in {
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
-      home-manager.users.${user} = { programs.zsh.shellAliases = { nlo = "${pkgs.nix-index}/bin/nix-locate --"; }; };
+    (mkIf cfg.enable {
+      home-manager.users."${user}" = { programs.zsh.shellAliases = { nlo = "${pkgs.nix-index}/bin/nix-locate --"; }; };
       systemd.user.services."nix-update-index" = {
         description = "Update nix packages metadata index";
         serviceConfig = {

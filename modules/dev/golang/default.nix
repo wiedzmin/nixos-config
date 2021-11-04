@@ -43,9 +43,9 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       assertions = [{
-        assertion = (cfg.enable && cfg.goPath != "");
+        assertion = cfg.enable && cfg.goPath != "";
         message = "dev/golang: cannot proceed without valid $GOPATH value.";
       }];
 
@@ -55,7 +55,7 @@ in
       } // lib.optionalAttrs (cfg.privateModules != [ ]) {
         GOPRIVATE = builtins.concatStringsSep "," cfg.privateModules;
       })];
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ delve gopls go gomacro ];
         home.sessionPath = [ "${cfg.goPath}/bin" ];
       };
@@ -85,7 +85,7 @@ in
           go install ./...
         '';
       };
-      home-manager.users.${user} = { home.packages = with pkgs; [ go-install-wrapper gore goimports impl ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ go-install-wrapper gore goimports impl ]; };
     })
     (mkIf (cfg.enable && cfg.rootMarkers.enable) { dev.navigation.projects.rootMarkers = [ "go.mod" ]; })
     (mkIf (cfg.enable && cfg.emacs.enable) {

@@ -145,21 +145,18 @@ let
       wifi = {
         mac-address-blacklist = "";
         mode = "infrastructure";
-        ssid = attrs.ssid;
+        inherit (attrs) ssid;
       };
       wifi-security = {
         auth-alg = "open";
         key-mgmt = attrs.keyManagement;
       } // lib.optionalAttrs (attrs.keyManagement == "wpa-psk") { psk = attrs.password; };
     } // lib.optionalAttrs (attrs.keyManagement == "wpa-eap") {
-      eap = eapAttrs.eap;
-      identity = eapAttrs.identity;
-      password = eapAttrs.password;
-      phase2-auth = eapAttrs.phase2Auth;
+      inherit (eapAttrs) eap identity password phase2Auth;
     };
   genVPNAttrs = attrs: {
     vpn = {
-      gateway = attrs.gateway;
+      inherit (attrs) gateway user;
       ipsec-enabled = "yes";
       ipsec-esp = lib.concatStringsSep "," attrs.ipsec.esp;
       ipsec-ike = lib.concatStringsSep "," attrs.ipsec.ike;
@@ -167,22 +164,19 @@ let
       mru = builtins.toString attrs.mru;
       mtu = builtins.toString attrs.mtu;
       password-flags = "0";
-      user = attrs.user;
       service-type = "org.freedesktop.NetworkManager.l2tp";
     };
-    vpn-secrets = { password = attrs.password; };
+    vpn-secrets = { inherit (attrs) password; };
   };
   genNMConn = conn: {
     text = lib.generators.toINI { } ({
       connection = {
-        id = conn.id;
-        uuid = conn.uuid;
-        type = conn.type;
+        inherit (conn) id uuid type;
         permissions = ""; # "user:alex3rd:;"
       } // lib.optionalAttrs (conn.type == "vpn") { autoconnect = builtins.toString conn.l2vpn.autoconnect; }
       // lib.optionalAttrs (conn.type == "wifi") { interface-name = conn.wifi.iface; };
       ipv4 = {
-        dns = conn.dns;
+        inherit (conn) dns;
         dns-search = "";
         method = "auto";
       };
@@ -197,10 +191,6 @@ let
     // lib.optionalAttrs (conn.type == "wifi") (genWifiAttrs conn.wifi conn.wifiEap));
     mode = "0600";
   };
-  isProperConn = conn: (conn.type == "wifi" && conn.id != "" &&
-    conn.uuid != "" && conn.wifi.ssid != "" && conn.wifi.password != "") ||
-  (conn.type == "vpn" && conn.l2vpn.ipsec.psk != "" &&
-    conn.l2vpn.user != "" && conn.l2vpn.password != "" && conn.l2vpn.gateway != "");
 in
 {
   options = {
@@ -219,9 +209,13 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
-      environment.etc = builtins.listToAttrs (lib.forEach (builtins.filter (c: isProperConn c) cfg.connections)
-        (conn: lib.nameValuePair "NetworkManager/system-connections/${conn.id}.nmconnection" (genNMConn conn)));
+    (mkIf cfg.enable {
+      environment.etc = builtins.listToAttrs (lib.forEach
+        (builtins.filter
+          (conn: (conn.type == "wifi" && conn.id != "" && conn.uuid != "" && conn.wifi.ssid != "" && conn.wifi.password != "") ||
+                 (conn.type == "vpn" && conn.l2vpn.ipsec.psk != "" &&
+                  conn.l2vpn.user != "" && conn.l2vpn.password != "" && conn.l2vpn.gateway != "")) cfg.connections)
+          (conn: lib.nameValuePair "NetworkManager/system-connections/${conn.id}.nmconnection" (genNMConn conn)));
     })
     (mkIf ((builtins.filter (c: c.type == "vpn") cfg.connections) != [ ]) {
       networking.networkmanager.enableStrongSwan = true;

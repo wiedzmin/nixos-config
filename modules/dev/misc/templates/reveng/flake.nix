@@ -11,10 +11,10 @@
       outputs = { self, flake-utils, unstable, nur }:
         flake-utils.lib.eachDefaultSystem (system:
           let
-            pkgs = (import unstable {
+            pkgs = import unstable {
               inherit system;
               overlays = [ nur.overlay ];
-            });
+            };
           in
           { devShell = import ./shell.nix { inherit pkgs; }; });
     }

@@ -25,7 +25,7 @@ in
           message = "shell/prompts/powerline-go: enable Zsh first.";
         }
         {
-          assertion = (cfg.enable && !config.shell.prompts.ohmyzsh.enable && !config.shell.prompts.liquid.enable && !config.shell.prompts.starship.enable);
+          assertion = cfg.enable && !config.shell.prompts.ohmyzsh.enable && !config.shell.prompts.liquid.enable && !config.shell.prompts.starship.enable;
           message = "shell/prompts/powerline-go: exactly one or no theming should be used.";
         }
       ];

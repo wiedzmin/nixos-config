@@ -17,7 +17,7 @@ in {
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       assertions = [{
         assertion = config.ide.emacs.core.enable;
         message = "emacs/history: core configuration must be enabled.";

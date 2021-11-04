@@ -36,7 +36,7 @@ in
           (builtins.readFile ./scripts/gittags.py);
       };
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ gitleaks ];
         xdg.configFile."espanso/user/git.yml".text = ''
           name: git

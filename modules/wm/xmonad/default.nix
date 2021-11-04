@@ -280,7 +280,7 @@ in
           message = "xmonad: must enable systemtraits maintainence.";
         }
         {
-          assertion = (!config.wm.i3.enable && !config.wm.stumpwm.enable);
+          assertion = !config.wm.i3.enable && !config.wm.stumpwm.enable;
           message = "xmonad: exactly one WM could be enabled.";
         }
       ];
@@ -313,7 +313,7 @@ in
       '';
 
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.file = {
           ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./lib/ExtraCombinators.hs;
           ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./lib/WindowTypes.hs;

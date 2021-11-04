@@ -15,7 +15,7 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.zenburn-theme ];
       ide.emacs.core.config = ''
         (use-package zenburn-theme

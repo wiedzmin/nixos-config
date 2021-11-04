@@ -5,8 +5,8 @@ with lib;
 
 let
   cfg = config.workstation.video.transparency;
-  prefix = config.wmCommon.prefix;
   user = config.attributes.mainUser.name;
+  inherit (config.wmCommon) prefix;
 in {
   options = {
     workstation.video.transparency = {
@@ -35,8 +35,8 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      users.users.${user}.extraGroups = [ "video" ];
-      home-manager.users.${user} = {
+      users.users."${user}".extraGroups = [ "video" ];
+      home-manager.users."${user}" = {
         services = {
           picom = {
             enable = true;
@@ -50,7 +50,7 @@ in {
 
               ${concatStringsSep "\n" cfg.extraOptions}
             '';
-            opacityRule = cfg.opacityRule;
+            inherit (cfg) opacityRule;
           };
         };
       };

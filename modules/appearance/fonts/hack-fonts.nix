@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.appearance.fonts.hack;
   user = config.attributes.mainUser.name;
-  beautify = config.appearance.fonts.beautify;
+  inherit (config.appearance.fonts) beautify;
 in
 {
   options.appearance.fonts.hack = { enable = mkEnableOption "hack"; };
@@ -19,7 +19,7 @@ in
     wmCommon.fonts.dmenu = "Hack:bold:size=8";
     wmCommon.fonts.statusbar = "pango:Hack ${if beautify then "Nerd Font " else ""}Bold 8";
     shell.core.variables = [{ TB_SELECTOR_FONT = "Hack:bold:size=8"; global = true; }];
-    home-manager.users.${user} = {
+    home-manager.users."${user}" = {
       programs.alacritty.settings.font = {
         normal = {
           family = "Hack";

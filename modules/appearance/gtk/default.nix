@@ -21,7 +21,7 @@ in
     (mkIf cfg.enable {
       programs.dconf.enable = true;
       services.dbus.packages = with pkgs; [ gnome3.dconf ];
-      home-manager.users.${user} = { gtk.enable = true; };
+      home-manager.users."${user}" = { gtk.enable = true; };
     })
   ];
 }

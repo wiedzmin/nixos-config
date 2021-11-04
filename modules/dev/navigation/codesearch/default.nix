@@ -26,7 +26,7 @@ in {
       shell.core.variables = [{
         CSEARCHINDEX = "${homePrefix user config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex";
       }];
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ codesearch ];
       };
       systemd.user.services."codesearch-reindex" = {

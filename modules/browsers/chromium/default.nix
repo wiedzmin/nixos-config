@@ -100,7 +100,7 @@ in
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         # chrome-export
         programs.chromium = {
           enable = true;
@@ -112,7 +112,7 @@ in
             # "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
             # "ogfcmafjalglgifnmanfmnieipoejdcf" # uMatrix
             "lhaoghhllmiaaagaffababmkdllgfcmc" # Atomic Chrome
-          ] ++ optionals (cfg.keyboardCentric) [
+          ] ++ optionals cfg.keyboardCentric [
             "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
             # "gfbliohnnapiefjpjlpjnehglfpaknnc" # Surfingkeys
           ];
@@ -171,7 +171,7 @@ in
           message = "browsers: chromium: there should be exactly one default.";
         }
       ];
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "chromium.desktop";
       };
       services.xserver.displayManager.sessionCommands = ''
@@ -184,7 +184,7 @@ in
 
       browsers.ext.emacs.browseUrlSetup = cfg.emacs.browseUrlSetup;
 
-      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -198,7 +198,7 @@ in
       attributes.browser.fallback.windowClass = cfg.windowClass;
       shell.core.variables = [{ TB_FALLBACK_BROWSER = cfg.command; global = true; }];
 
-      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
     })
     (mkIf (cfg.enable && cfg.videoconferencing.enable) {
       browsers.chromium.extraOpts = {

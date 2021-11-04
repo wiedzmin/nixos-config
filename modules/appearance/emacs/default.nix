@@ -20,7 +20,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xresources.properties = {
           "Emacs.fontBackend" = "xft,x";
           "Emacs.menuBar" = "0";

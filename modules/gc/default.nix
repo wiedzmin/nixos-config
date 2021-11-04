@@ -64,7 +64,7 @@ in {
   config = mkMerge [
     (mkIf (cfg.enable && cfg.trash.enable) {
       assertions = [{
-        assertion = (cfg.trash.enable && cfg.trash.calendarTimespec != "");
+        assertion = cfg.trash.enable && cfg.trash.calendarTimespec != "";
         message = "gc: must schedule trash cleaning once it was enabled.";
       }];
 
@@ -81,7 +81,7 @@ in {
     })
     (mkIf (cfg.enable && cfg.expired.enable) {
       assertions = [{
-        assertion = (cfg.expired.enable && cfg.trash.calendarTimespec != "");
+        assertion = cfg.expired.enable && cfg.trash.calendarTimespec != "";
         message = "gc: must schedule trash cleaning once it was enabled.";
       }];
 
@@ -120,7 +120,7 @@ in {
         renderTimer "Purge temporary files" "" "" cfg.expired.calendarTimespec false "";
     })
     (mkIf cfg.fsDeduplication.enable {
-      home-manager.users.${user} = { home.packages = with pkgs; [ dupd jdupes rmlint fpart czkawka ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ dupd jdupes rmlint fpart czkawka ]; };
     })
   ];
 }

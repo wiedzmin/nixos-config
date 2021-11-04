@@ -74,15 +74,15 @@ in
         type = types.package;
         default =
           let
-            flavor = (with pkgs.unstable; if cfg.native.enable then emacsGcc else emacs);
-            configured = ((flavor.override {
+            flavor = with pkgs.unstable; if cfg.native.enable then emacsGcc else emacs;
+            configured = (flavor.override {
               withGTK2 = false;
               withGTK3 = false;
             }).overrideAttrs (old: rec {
               withCsrc = true;
               configureFlags = (remove "--with-cairo" (remove "--with-harfbuzz" old.configureFlags))
                 ++ [ "--without-harfbuzz" "--without-cairo" ];
-            }));
+            });
           in
           if cfg.debug.enable then (pkgs.enableDebugging configured) else configured;
         description = ''
@@ -145,7 +145,7 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       fonts = { fonts = with pkgs; [ emacs-all-the-icons-fonts ]; };
       dev.git.core.gitignore = ''
         *.elc
@@ -161,8 +161,8 @@ in
           epkgs.f
           epkgs.no-littering
           epkgs.use-package
-        ] ++ lib.optionals (config.wm.i3.enable) [ epkgs.reverse-im ];
-      ide.emacs.core.config = lib.optionalString (config.wm.i3.enable) ''
+        ] ++ lib.optionals config.wm.i3.enable [ epkgs.reverse-im ];
+      ide.emacs.core.config = lib.optionalString config.wm.i3.enable ''
         (use-package reverse-im
           :ensure t
           :custom
@@ -174,7 +174,7 @@ in
         EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
         VISUAL = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
       }];
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = (with pkgs; [ drop-corrupted ispell nurpkgs.my_cookies ])
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
         home.file = {

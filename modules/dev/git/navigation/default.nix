@@ -30,7 +30,7 @@ in
   config = mkMerge [
     (mkIf (cfg.enable && cfg.ghq.enable) {
       environment.systemPackages = with pkgs; [ gitAndTools.ghq ];
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         programs.git.extraConfig = { "ghq" = { root = config.navigation.bookmarks.workspaces.globalRoot; }; };
         programs.zsh.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
       };

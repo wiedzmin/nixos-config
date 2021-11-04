@@ -5,10 +5,10 @@ with lib;
 let
   cfg = config.content.misc;
   user = config.attributes.mainUser.name;
-  nixpkgs-index-fm = import inputs.nixpkgs-index-fm ({
+  nixpkgs-index-fm = import inputs.nixpkgs-index-fm {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
 in
 {
   options = {
@@ -33,7 +33,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [
           android-file-transfer
           saldl # consider providing some (shell) automation

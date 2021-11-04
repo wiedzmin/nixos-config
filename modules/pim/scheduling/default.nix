@@ -62,13 +62,13 @@ in {
       };
       systemd.user.services = (lib.mapAttrs (name: meta: {
         description = "${name}";
-        serviceConfig = let forWork = builtins.hasAttr "forWork" meta && meta.forWork == true;
+        serviceConfig = let forWork = builtins.hasAttr "forWork" meta && meta.forWork;
         in {
           Type = "oneshot";
           Environment = [ "DISPLAY=:0" ];
           ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
-          ExecStart = optionalString (forWork) ''${pkgs.fcalendar}/bin/fcalendar check --cmd "'' + "${meta.cmd}"
-            + optionalString (forWork) ''"'';
+          ExecStart = optionalString forWork ''${pkgs.fcalendar}/bin/fcalendar check --cmd "'' + "${meta.cmd}"
+            + optionalString forWork ''"'';
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -101,7 +101,7 @@ in {
       ide.emacs.core.config = builtins.readFile ./emacs/scheduling.el;
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ fcalendar ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ fcalendar ]; };
     })
   ];
 }

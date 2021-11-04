@@ -6,7 +6,7 @@ let
 
   cfg = config.ext.programs.mbsync;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
+  hm = config.home-manager.users."${user}";
 
   # Accounts for which mbsync is enabled.
   mbsyncAccounts = filter (a: a.mbsync.enable) (attrValues hm.accounts.email.accounts);

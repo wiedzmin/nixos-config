@@ -31,8 +31,8 @@ in {
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ nodePackages.vue-language-server ]; };
+    (mkIf cfg.enable {
+      home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.vue-language-server ]; };
       dev.editorconfig.rules = {
         "*.js" = { charset = "utf-8"; };
         "lib/**.js" = {

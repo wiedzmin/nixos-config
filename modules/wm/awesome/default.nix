@@ -10,7 +10,7 @@ let
     " --search " + (getLuaPath path "share") +
     " --search " + (getLuaPath path "lib")
   );
-  prefix = config.wmCommon.prefix;
+  inherit (config.wmCommon) prefix;
 in
 {
   options = {
@@ -271,7 +271,7 @@ in
         }
       ];
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ debug-awesome ];
         xdg.configFile = {
           "awesome/rc.lua".text = readSubstituted [ ./subst.nix ] [ ./rc.lua ];

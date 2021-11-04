@@ -6,10 +6,10 @@ let
   cfg = config.paperworks;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  stable = import inputs.stable ({
+  stable = import inputs.stable {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
 
   paperlessDefaultUser = "paperless";
 
@@ -180,10 +180,10 @@ in
       }];
       services.printing = {
         enable = true;
-        drivers = cfg.printing.drivers;
         browsing = true;
         defaultShared = true;
         webInterface = true;
+        inherit (cfg.printing) drivers;
       };
       environment.systemPackages = with pkgs; [ system-config-printer gtklp ];
       users.users."${user}".extraGroups = [ "lp" ];
@@ -193,7 +193,7 @@ in
     (mkIf cfg.scanning.enable {
       hardware.sane = {
         enable = true;
-        extraBackends = cfg.scanning.extraBackends;
+        inherit (cfg.scanning) extraBackends;
       };
 
       environment.systemPackages = with pkgs;
@@ -333,7 +333,7 @@ in
         mode = "select";
       }];
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [
           stable.libreoffice
           open-doc
@@ -348,7 +348,7 @@ in
         mkArbttProgramMultipleTagsRule "libreoffice" [ "activity:docflow" "program:libreoffice" ];
     })
     (mkIf cfg.processors.enable {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ enca pandoc pdfcpu pdftk pdfchain pdfslicer ocamlPackages.cpdf ];
       };
     })

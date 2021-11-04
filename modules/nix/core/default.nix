@@ -5,10 +5,10 @@ with lib;
 let
   cfg = config.ext.nix.core;
   user = config.attributes.mainUser.name;
-  nix24working = import inputs.nix24working ({
+  nix24working = import inputs.nix24working {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
 in
 {
   options = {
@@ -47,7 +47,7 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       nix = {
         package = nix24working.nixUnstable;
         useSandbox = true;
@@ -74,7 +74,7 @@ in
         optimise.automatic = false;
         gc = {
           automatic = true;
-          dates = cfg.gc.dates;
+          inherit (cfg.gc) dates;
           options = "--delete-older-than ${cfg.gc.howold}";
         };
 
@@ -88,7 +88,7 @@ in
 
         oraclejdk.accept_license = true;
 
-        permittedInsecurePackages = cfg.permittedInsecurePackages;
+        inherit (cfg) permittedInsecurePackages;
 
         packageOverrides = _: rec {
           rollback = mkShellScriptWithDeps "rollback" (with pkgs; [ fzf ]) ''
@@ -104,7 +104,7 @@ in
           '';
         };
       };
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback rnix-lsp statix ];
         home.sessionPath = [ (homePrefix user ".cargo/bin") ];
         xdg.configFile."espanso/user/nix-core.yml".text = ''
@@ -138,7 +138,7 @@ in
       pim.timetracking.rules = mkArbttProgramTitleRule [ "emacs" ] [ "/nixos-config/" ] "project:nixos-config";
     })
     (mkIf (cfg.enable && cfg.shell.enable) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ stable.nix-zsh-completions ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ stable.nix-zsh-completions ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];

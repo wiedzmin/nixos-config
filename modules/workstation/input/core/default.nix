@@ -88,7 +88,7 @@ in
     })
     (mkIf (cfg.enable && cfg.xcompose.enable) {
       services.xserver.xkbOptions = "compose:${cfg.xcompose.key}";
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.file = {
           ".XCompose".text = ''
             include "${pkgs.xorg.libX11}/share/X11/locale/en_US.UTF-8/Compose"

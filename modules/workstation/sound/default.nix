@@ -7,7 +7,7 @@ let
   cfg = config.workstation.sound.pa;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  prefix = config.wmCommon.prefix;
+  inherit (config.wmCommon) prefix;
 in
 {
   options = {
@@ -32,7 +32,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      users.users.${user}.extraGroups = [ "audio" ];
+      users.users."${user}".extraGroups = [ "audio" ];
 
       hardware.pulseaudio = {
         enable = true;

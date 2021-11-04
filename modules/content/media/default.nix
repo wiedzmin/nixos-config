@@ -5,8 +5,7 @@ with lib;
 let
   cfg = config.content.media;
   user = config.attributes.mainUser.name;
-  prefix = config.wmCommon.prefix;
-  prefixAlt = config.wmCommon.prefixAlt;
+  inherit (config.wmCommon) prefix prefixAlt;
 in
 {
   options = {
@@ -71,7 +70,7 @@ in
       };
 
       environment.systemPackages = with pkgs; [ ncmpcpp freetube ytfzf moc ];
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xdg.configFile."espanso/user/content.yml".text = ''
           name: content
           parent: default
@@ -84,7 +83,7 @@ in
         programs.mpv = {
           # TODO: consider extracting options
           enable = true;
-          scripts = with pkgs.mpvScripts; [ youtube-quality ] ++ lib.optionals (cfg.mpris.enable) [ mpris ];
+          scripts = with pkgs.mpvScripts; [ youtube-quality ] ++ lib.optionals cfg.mpris.enable [ mpris ];
           config = {
             save-position-on-quit = true;
             hdr-compute-peak = false; # prevents brightness changes
@@ -128,19 +127,19 @@ in
         '';
       };
 
-      fileSystems = (mapAttrs'
+      fileSystems = mapAttrs'
         (token: srcPath:
           nameValuePair "${config.services.mpd.dataDir}/music/${token}" {
             device = srcPath;
             options = [ "bind" ];
           })
-        cfg.mpd.collections);
+        cfg.mpd.collections;
 
-      home-manager.users.${user} = { home.packages = with pkgs; [ ario sonata cantata ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ ario sonata cantata ]; };
     })
     (mkIf (cfg.enable && cfg.youtubeFrontends.enable) {
       # TODO: try https://github.com/trizen/youtube-viewer
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         # NOTE: default quotas seems inappropriate to use them freely
         home.packages = with pkgs; [ mps-youtube minitube smtube youtube-dl ];
       };

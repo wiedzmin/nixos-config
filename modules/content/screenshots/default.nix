@@ -6,7 +6,7 @@ let
   cfg = config.content.screenshots;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos;
-  prefix = config.wmCommon.prefix;
+  inherit (config.wmCommon) prefix;
 in
 {
   options = {
@@ -46,7 +46,7 @@ in
         message = "Must provide path to screenshots dir.";
       }];
 
-      home-manager.users.${user} =
+      home-manager.users."${user}" =
         let
           flameshot_config_text = lib.generators.toINI { } {
             General = {
@@ -105,7 +105,7 @@ in
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ order_screenshots ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ order_screenshots ]; };
     })
   ];
 }

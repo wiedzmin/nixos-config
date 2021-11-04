@@ -3,14 +3,14 @@
 with lib;
 
 let
-  stable = import inputs.stable ({
+  stable = import inputs.stable {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
 
   cfg = config.ext.programs.tmux;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
+  hm = config.home-manager.users."${user}";
 
   pluginName = p: if types.package.check p then p.name else p.plugin.name;
 

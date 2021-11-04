@@ -152,8 +152,8 @@ in
           StandardError = "journal";
         };
       };
-      users.users.${user}.extraGroups = [ "input" ];
-      home-manager.users.${user} = { xdg.configFile."xkeysnail/config.py".text = cfg.setupText; };
+      users.users."${user}".extraGroups = [ "input" ];
+      home-manager.users."${user}" = { xdg.configFile."xkeysnail/config.py".text = cfg.setupText; };
     })
   ];
 }

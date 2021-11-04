@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.appearance.fonts.iosevka;
   user = config.attributes.mainUser.name;
-  beautify = config.appearance.fonts.beautify;
+  inherit (config.appearance.fonts) beautify;
 in
 {
   options.appearance.fonts.iosevka = { enable = mkEnableOption "iosevka"; };
@@ -19,7 +19,7 @@ in
     wmCommon.fonts.dmenu = "Iosevka:bold:size=9";
     wmCommon.fonts.statusbar = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
     shell.core.variables = [{ TB_SELECTOR_FONT = "Iosevka:bold:size=9"; global = true; }];
-    home-manager.users.${user} = {
+    home-manager.users."${user}" = {
       programs.alacritty.settings.font = {
         normal = {
           family = "Iosevka";

@@ -6,7 +6,7 @@ with lib;
 let
   cfg = config.workstation.randr;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
+  hm = config.home-manager.users."${user}";
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   headsOrientationModule = types.submodule {
     options = {
@@ -60,10 +60,10 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         programs.autorandr = {
           enable = true;
-          hooks = cfg.hooks;
+          inherit (cfg) hooks;
         };
       };
       services.udev.extraRules = ''
@@ -108,7 +108,7 @@ in
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ rescreen xrandrutil ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ rescreen xrandrutil ]; };
     })
   ];
 }

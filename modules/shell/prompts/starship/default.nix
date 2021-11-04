@@ -58,11 +58,11 @@ in
           message = "shell/prompts/starship: enable Zsh first.";
         }
         {
-          assertion = (cfg.enable && !config.shell.prompts.ohmyzsh.enable && !config.shell.prompts.liquid.enable);
+          assertion = cfg.enable && !config.shell.prompts.ohmyzsh.enable && !config.shell.prompts.liquid.enable;
           message = "shell/prompts/starship: exactly one no theming should be used.";
         }
         {
-          assertion = (cfg.enable && config.appearance.fonts.beautify);
+          assertion = cfg.enable && config.appearance.fonts.beautify;
           message = "shell/prompts/starship: beautified (Nerd) fonts required.";
         }
       ];

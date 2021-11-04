@@ -52,8 +52,8 @@ rec {
     ''
       ["${mkKeysymAwesome meta.key}"] = function()
         ${if maybeAttrIsBool "raw" meta then "${mkIndent 2}${meta.cmd}"
-          else ''${mkIndent 2}awful.spawn("${lib.optionalString (debugEnabled) "DEBUG_MODE=1 "}${meta.cmd}")${
-            lib.optionalString (debugEnabled) " > ${
+          else ''${mkIndent 2}awful.spawn("${lib.optionalString debugEnabled "DEBUG_MODE=1 "}${meta.cmd}")${
+            lib.optionalString debugEnabled " > ${
               mkCmdDebugAbsFilename config.controlcenter.commandsDebugLogRoot meta.cmd} 2>&1"}''}
       end
     '';

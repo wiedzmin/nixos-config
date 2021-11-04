@@ -60,11 +60,11 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       assertions = [{
-        assertion = (cfg.redshift.latitude != "" && cfg.redshift.longitude != "");
+        assertion = cfg.redshift.latitude != "" && cfg.redshift.longitude != "";
         message = "backlight/redshift: no location provided.";
       }];
 
-      users.users.${user}.extraGroups = [ "video" ];
+      users.users."${user}".extraGroups = [ "video" ];
       programs.light.enable = true;
       hardware.brillo.enable = true;
 
@@ -73,12 +73,11 @@ in {
         SUBSYSTEM=="leds", ACTION=="add", KERNEL=="*::kbd_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/leds/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/leds/%k/brightness"
       '';
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         services = {
           redshift = {
             enable = true;
-            latitude = cfg.redshift.latitude;
-            longitude = cfg.redshift.longitude;
+            inherit (cfg.redshift) latitude longitude;
             temperature.day = cfg.redshift.temperature.day;
             temperature.night = cfg.redshift.temperature.night;
             settings = {

@@ -22,8 +22,8 @@ in {
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
-      home-manager.users.${user} = {
+    (mkIf cfg.enable {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [
           nix-prefetch
           nix-prefetch-github
@@ -51,7 +51,7 @@ in {
           (builtins.readFile ./scripts/make-package-diff.sh);
       };
 
-      home-manager.users.${user} = { home.packages = with pkgs; [ get-pr-override make-package-diff ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ get-pr-override make-package-diff ]; };
     })
   ];
 }

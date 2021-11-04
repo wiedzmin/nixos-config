@@ -9,7 +9,7 @@ let
   cfg = config.ext.programs.firefox;
 
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
+  hm = config.home-manager.users."${user}";
 
   mozillaConfigPath = if isDarwin then "Library/Application Support/Mozilla" else ".mozilla";
 
@@ -200,7 +200,7 @@ in
       (
         let
           duplicates = filterAttrs (_: v: length v != 1)
-            (zipAttrs (mapAttrsToList (n: v: { "${toString v.id}" = n; }) (cfg.profiles)));
+            (zipAttrs (mapAttrsToList (n: v: { "${toString v.id}" = n; }) cfg.profiles));
 
           mkMsg = n: v: "  - ID ${n} is used by ${concatStringsSep ", " v}";
         in

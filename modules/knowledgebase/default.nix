@@ -63,11 +63,11 @@ in {
         doc.enable = cfg.doc.enable;
         dev.enable = cfg.dev.enable;
         nixos = {
-          enable = cfg.nixos.enable;
+          inherit (cfg.nixos) enable;
           includeAllModules = false; # FIXME build error
         };
       };
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         programs = {
           info.enable = true;
           man.enable = true;
@@ -75,7 +75,7 @@ in {
       };
     })
     (mkIf (cfg.enable && cfg.secondBrain.enable) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ devdocs-desktop heimer freeplane logseq ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ devdocs-desktop heimer freeplane logseq ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.helpful epkgs.which-key ];

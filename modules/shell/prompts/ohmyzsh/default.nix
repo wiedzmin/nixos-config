@@ -34,11 +34,11 @@ in {
           message = "shell/prompts/ohmyzsh: enable Zsh first.";
         }
         {
-          assertion = (cfg.enable && !config.shell.prompts.starship.enable && !config.shell.prompts.liquid.enable);
+          assertion = cfg.enable && !config.shell.prompts.starship.enable && !config.shell.prompts.liquid.enable;
           message = "shell/prompts/ohmyzsh: exactly one no theming should be used.";
         }
         {
-          assertion = (cfg.enable && cfg.theme != "");
+          assertion = cfg.enable && cfg.theme != "";
           message = "shell/prompts/ohmyzsh: prompt theming enabled but no theme name provided.";
         }
       ];
@@ -47,8 +47,7 @@ in {
         programs.zsh = {
           oh-my-zsh = { # TODO: extract option(s)
             enable = true;
-            plugins = cfg.plugins;
-            theme = cfg.theme;
+            inherit (cfg) plugins theme;
           };
           plugins = lib.optionals (!config.shell.prompts.liquid.enable) [{
             name = "zsh-command-time";

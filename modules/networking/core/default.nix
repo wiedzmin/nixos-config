@@ -4,7 +4,7 @@ with lib;
 let
   cfg = config.ext.networking.core;
   user = config.attributes.mainUser.name;
-  prefix = config.wmCommon.prefix;
+  inherit (config.wmCommon) prefix;
 in
 {
   options = {
@@ -46,7 +46,6 @@ in
 
       networking = {
         hostName = cfg.hostname;
-        hostId = cfg.hostId;
         enableIPv6 = false;
         firewall.enable = false;
         usePredictableInterfaceNames = lib.mkForce cfg.predictableInterfaceNames;
@@ -55,14 +54,14 @@ in
           dnsExtensionMechanism = false;
         };
         dhcpcd.denyInterfaces = [ "br*" ];
-        nameservers = cfg.nameservers;
         networkmanager = {
           enable = true;
           unmanaged = [ "br0" "lo" ];
         };
+        inherit (cfg) hostId nameservers;
       };
-      users.users.${user}.extraGroups = [ "networkmanager" ];
-      home-manager.users.${user} = {
+      users.users."${user}".extraGroups = [ "networkmanager" ];
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ anydesk ipinfo ];
         xdg.configFile."espanso/user/networking.yml".text = ''
           name: networking

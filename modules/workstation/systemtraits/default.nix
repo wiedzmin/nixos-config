@@ -32,11 +32,11 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       services.redis.enable = true;
       systemd.services.redis.postStart = cfg.instructions;
 
-      home-manager.users.${user} = { home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release ]; };
     })
   ];
 }

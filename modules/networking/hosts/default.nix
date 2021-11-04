@@ -45,19 +45,19 @@ in
         ${renderHosts cfg.entries}
       '';
 
-      home-manager.users.${user}.programs.ssh.matchBlocks = mapAttrs'
+      home-manager.users."${user}".programs.ssh.matchBlocks = mapAttrs'
         (hostname: meta:
-          nameValuePair hostname ({
-            hostname = hostname;
-            user = "${meta.user}";
+          nameValuePair hostname {
+            inherit hostname;
+            inherit (meta) user;
             port = if (builtins.hasAttr "port" meta) then meta.port else null;
-          }))
+          })
         (filterAttrs (_: meta: !((hasAttr "forge" meta) && meta.forge)) cfg.entries);
 
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${
           strings.escapeNixString (builtins.toJSON
-            (filterAttrs (_: v: (!builtins.hasAttr "ssh" v) || ((builtins.hasAttr "ssh" v) && v.ssh == true))
+            (filterAttrs (_: v: (!builtins.hasAttr "ssh" v) || ((builtins.hasAttr "ssh" v) && v.ssh))
               cfg.entries))
         }
       '';

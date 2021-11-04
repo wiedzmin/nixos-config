@@ -22,17 +22,13 @@ let
 
   collectWorkspaceRoots = forges:
     mapAttrs' (key: meta: nameValuePair "${key}" meta.workspaceRoot)
-      (filterAttrs (key: meta: hasAttr "workspaceRoot" meta) forges);
+      (filterAttrs (key: meta: lib.hasAttr "workspaceRoot" meta) forges);
   collectPassCredentials = forges:
     (foldAttrs (n: a: n // a ) { } (collect (f: f ? passCredentialsMap) forges))."passCredentialsMap";
   mkMatchBlock = meta: {
-      hostname = meta.ssh.matchBlock.hostname;
-      user = meta.ssh.matchBlock.user;
-      serverAliveInterval = meta.ssh.matchBlock.serverAliveInterval;
-      identitiesOnly = meta.ssh.matchBlock.identitiesOnly;
-      extraOptions = meta.ssh.matchBlock.extraOptions;
+      inherit (meta.ssh.matchBlock) hostname user serverAliveInterval identitiesOnly extraOptions;
     } // optionalAttrs (meta.ssh.matchBlock.identityFile != null) {
-      identityFile = meta.ssh.matchBlock.identityFile;
+      inherit (meta.ssh.matchBlock) identityFile;
     } // optionalAttrs (meta.ssh.matchBlock.identityFile == null) {
       identityFile = builtins.toString (pkgs.writeTextFile {
         name = "${builtins.replaceStrings ["."] ["_"] meta.ssh.matchBlock.hostname}_ssh_private_key";
@@ -59,9 +55,9 @@ let
         ${mkIndent 4}${concatStringsSep "\n${mkIndent 4}"
           (mapAttrsToList (host: type: ''
             (add-to-list 'git-link-remote-alist '("${host}" ${
-              typeToGitlinkSymbols.${type}."git-link-remote-alist"}))
+              typeToGitlinkSymbols."${type}"."git-link-remote-alist"}))
             (add-to-list 'git-link-commit-remote-alist '("${host}" ${
-              typeToGitlinkSymbols.${type}."git-link-commit-remote-alist"}))
+              typeToGitlinkSymbols."${type}"."git-link-commit-remote-alist"}))
           '') mapping)}))
   '';
 
@@ -205,7 +201,7 @@ in {
         message = "git/forges: must enable systemtraits maintainence.";
       }];
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xdg.configFile."pass-git-helper/git-pass-mapping.ini".text =
           generators.toINI { } credentials;
         programs.ssh.matchBlocks =

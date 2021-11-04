@@ -99,7 +99,7 @@ in
           (builtins.readFile ./scripts/snippets.py);
       };
       # NOTE: unzip is for tabnine binaries installation
-      home-manager.users.${user} = { home.packages = with pkgs; [ snippets unzip ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ snippets unzip ]; };
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set nav/snippets ${
           lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (forEach cfg.snippets.entries (s:
@@ -111,7 +111,7 @@ in
       '';
     })
     (mkIf (cfg.enable && cfg.dev.enable) {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ tabnine ]; # FIXME: install it to be consumable by company-tabnine
         xdg.configFile."TabNine/TabNine.toml".text =
           toToml { language.python = { command = "python-language-server"; }; };
@@ -173,7 +173,7 @@ in
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ snippets ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ snippets ]; };
     })
   ];
 }

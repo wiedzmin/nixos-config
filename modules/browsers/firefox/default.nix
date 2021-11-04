@@ -101,7 +101,7 @@ in
     };
   };
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
         dump_firefox_session = mkPythonScriptWithDeps "dump_firefox_session"
           (with pkgs; [ coreutils nurpkgs.wiedzmin.pystdlib python3Packages.python-lz4 ])
@@ -119,7 +119,7 @@ in
             greasemonkey
 
             # nurpkgs.wiedzmin.firefox-addons.url-in-title # NOTE: derivation is temporarily broken at nur-packages
-          ] ++ optionals (cfg.keyboardCentric) [ tridactyl ];
+          ] ++ optionals cfg.keyboardCentric [ tridactyl ];
         profiles = {
           default = {
             name = "profile.default";
@@ -141,7 +141,7 @@ in
               "extensions.update.url" = "";
               "lightweightThemes.selectedThemeID" = "firefox-compact-dark@mozilla.org";
               "toolkit.legacyUserProfileCustomizations.stylesheets" = true;
-            } // lib.optionalAttrs (cfg.staging.enableSettings) {
+            } // lib.optionalAttrs cfg.staging.enableSettings {
               # entries picked from https://github.com/ilya-fedin/user-js/blob/master/user.js
               "browser.cache.disk.enable" = false;
               "browser.cache.memory.enable" = false;
@@ -246,7 +246,7 @@ in
             },
         }, "Firefox")
       '';
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs;
           [
             xsel # for firefox native clients
@@ -431,7 +431,7 @@ in
         }
       ];
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "firefox.desktop";
       };
       services.xserver.displayManager.sessionCommands = ''
@@ -448,7 +448,7 @@ in
 
       workstation.performance.warmup.paths = [ (homePrefix user ".mozilla") ];
 
-      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
       navigation.bookmarks.entries = {
         "firefox/sessions/exported" = { local.path = homePrefix user "docs/org/browser-sessions/firefox"; };
       };
@@ -470,10 +470,10 @@ in
 
       shell.core.variables = [{ TB_FALLBACK_BROWSER = cfg.command; global = true; }];
 
-      workstation.performance.appsSuspension.rules = optionalAttrs (cfg.suspendInactive) suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.activation.ensureFirefoxExportedSessionsPath = {
           after = [ ];
           before = [ "linkGeneration" ];
@@ -526,7 +526,7 @@ in
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ dump_firefox_session manage_firefox_sessions ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ dump_firefox_session manage_firefox_sessions ]; };
     })
   ];
 }

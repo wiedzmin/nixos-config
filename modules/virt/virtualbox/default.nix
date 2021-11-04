@@ -6,10 +6,10 @@ let
   cfg = config.ext.virtualization.virtualbox;
   user = config.attributes.mainUser.name;
   kernelVersionCap = "5.4";
-  stable = import inputs.stable ({
+  stable = import inputs.stable {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
 in
 {
   options = {
@@ -37,7 +37,7 @@ in
         enableExtensionPack = true;
         package = stable.virtualbox;
       };
-      users.users.${user}.extraGroups = [ "vboxusers" ];
+      users.users."${user}".extraGroups = [ "vboxusers" ];
 
       networking.networkmanager.unmanaged = [ "interface-name:vb-*" "interface-name:vbox*" "interface-name:ve-*" ];
 

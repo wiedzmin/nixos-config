@@ -3,10 +3,10 @@ with import ../../modules/util.nix { inherit config inputs lib pkgs; };
 
 let
   user = config.attributes.mainUser.name;
-  stable = import inputs.stable ({
+  stable = import inputs.stable {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
@@ -41,7 +41,7 @@ in
     gpgKeyID = config.identity.secrets.gpgKeyID;
   };
 
-  users.extraUsers.${user} = {
+  users.extraUsers."${user}" = {
     isNormalUser = true;
     uid = 1000;
     description = config.attributes.mainUser.fullName;

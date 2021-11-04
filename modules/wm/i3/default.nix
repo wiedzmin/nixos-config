@@ -12,7 +12,7 @@ let
     "i3-rs" = "i3status-rs";
     "blocks" = "i3blocks";
   };
-  prefix = config.wmCommon.prefix;
+  inherit (config.wmCommon) prefix;
 in
 {
   options = {
@@ -102,7 +102,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       assertions = [{
-        assertion = (!config.wm.xmonad.enable && !config.wm.stumpwm.enable);
+        assertion = !config.wm.xmonad.enable && !config.wm.stumpwm.enable;
         message = "i3: exactly one WM could be enabled.";
       }];
 
@@ -374,7 +374,7 @@ in
         };
       };
 
-      systemd.user.services.i3-mousewarp = optionalAttrs (cfg.mouseFollowsFocus) {
+      systemd.user.services.i3-mousewarp = optionalAttrs cfg.mouseFollowsFocus {
         description = "mouse warp for i3";
         after = [ "graphical-session-pre.target" ];
         partOf = [ "graphical-session.target" ];
@@ -400,7 +400,7 @@ in
         }
       '';
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xdg.configFile = {
           "i3/config".text = ''
             # i3 config file (v4)
@@ -425,7 +425,7 @@ in
             bindsym ${prefix}+Return workspace back_and_forth
 
             ${lib.concatStringsSep "\n"
-              (lib.forEach (config.wmCommon.autostart.entries) (e: "exec --no-startup-id ${e}"))}
+              (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}
 
             ${optionalString (cfg.theme.client != "") cfg.theme.client}
 
@@ -437,7 +437,7 @@ in
                 workspace_buttons yes
                 strip_workspace_numbers yes
                 font ${config.wmCommon.fonts.statusbar}
-                status_command ${statusBarImplToCmd.${cfg.statusbar.impl}}
+                status_command ${statusBarImplToCmd."${cfg.statusbar.impl}"}
                 ${optionalString (cfg.theme.bar != "") ''
                 colors {
                 ${cfg.theme.bar}
@@ -571,7 +571,7 @@ in
               ({
                 block = "battery";
                 format = " {percentage} {time}";
-              } // optionalAttrs (with config; services.upower.enable) {
+              } // optionalAttrs config.services.upower.enable {
                 driver = "upower";
               } // optionalAttrs (with config; services.upower.enable && attributes.hardware.dmiSystemVersion == "ThinkPad X270") {
                 device = "DisplayDevice";
@@ -579,16 +579,14 @@ in
                 driver = "sysfs";
                 device = "BAT0";
               })
-            ] ++ lib.optionals (true)
-              (forEach config.ext.networking.wireless.bluetooth.devices
-                (dev: {
-                  block = "bluetooth";
-                  mac = dev.mac;
-                  format = "${dev.name} {percentage}";
-                  format_unavailable = "${dev.name} x";
-                  hide_disconnected = true;
-                })
-              ) ++
+            ] ++ lib.optionals true forEach config.ext.networking.wireless.bluetooth.devices
+              (dev: {
+                block = "bluetooth";
+                mac = dev.mac;
+                format = "${dev.name} {percentage}";
+                format_unavailable = "${dev.name} x";
+                hide_disconnected = true;
+              }) ++
             [{
               block = "sound";
               mappings = {

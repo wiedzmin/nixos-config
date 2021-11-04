@@ -32,11 +32,11 @@ in {
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       dev.git.core.gitignore = ''
         .direnv/
       '';
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         programs.direnv = {
           enable = true;
           nix-direnv = {

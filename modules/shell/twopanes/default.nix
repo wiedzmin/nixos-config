@@ -30,7 +30,7 @@ in
           (builtins.readFile ./scripts/mcpanes.py);
       };
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ mc ];
         xdg.configFile."mc/ini".text = ''
           [Midnight-Commander]
@@ -253,7 +253,7 @@ in
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ mcpanes ];
       };
     })

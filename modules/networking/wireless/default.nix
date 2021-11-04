@@ -68,7 +68,7 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
         wifi-status = mkShellScriptWithDeps "wifi-status" (with pkgs; [ gawk wirelesstools ])
           (builtins.readFile ./scripts/wifi-status.sh);
@@ -91,7 +91,7 @@ in
     (mkIf (cfg.enable && cfg.backend == "wireless") {
       networking.wireless = {
         enable = true;
-        driver = cfg.wireless.driver;
+        inherit (cfg.wireless) driver;
         userControlled.enable = true;
         interfaces = builtins.attrNames cfg.ifacesMap;
       };
@@ -126,7 +126,7 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       programs.nm-applet.enable = if (config.wm.i3.enable || !config.attributes.wms.enabled) then true else false;
 
-      wmCommon.autostart.entries = optionals (cfg.bluetooth.enable) [ "blueman-manager" ];
+      wmCommon.autostart.entries = optionals cfg.bluetooth.enable [ "blueman-manager" ];
 
       home-manager.users."${user}" = {
         home.packages = with pkgs;
@@ -145,7 +145,7 @@ in
         key = [ "w" ];
         cmd = ''${pkgs.runtimeShell} -l -c "exec ${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu"'';
         mode = "network";
-      }] ++ optionals (cfg.bluetooth.enable) [{
+      }] ++ optionals cfg.bluetooth.enable [{
         key = [ "b" ];
         mode = "network";
         cmd = "${pkgs.blueman}/bin/blueman-manager";

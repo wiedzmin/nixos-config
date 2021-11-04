@@ -53,7 +53,7 @@ in {
         message = "navigation/bookmarks: must enable systemtraits maintainence.";
       }];
 
-      home-manager.users.${user} = lib.optionalAttrs (cfg.emacs.enable) {
+      home-manager.users."${user}" = lib.optionalAttrs cfg.emacs.enable {
         home.activation.emacsKnownProjects = {
           after = [ "linkGeneration" ];
           before = [ ];

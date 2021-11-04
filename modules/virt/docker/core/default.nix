@@ -6,7 +6,7 @@ let
   cfg = config.ext.virtualization.docker.core;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  prefix = config.wmCommon.prefix;
+  inherit (config.wmCommon) prefix;
 in
 {
   options = {
@@ -44,10 +44,10 @@ in
     (mkIf cfg.enable {
       virtualisation.docker = {
         enable = true;
-        storageDriver = cfg.storageDriver;
+        inherit (cfg) storageDriver;
       };
       environment.variables.DOCKER_CONFIG = xdgConfig user "docker";
-      users.users.${user}.extraGroups = [ "docker" ];
+      users.users."${user}".extraGroups = [ "docker" ];
 
       networking.dhcpcd.denyInterfaces = [ "docker*" ];
 
@@ -79,7 +79,7 @@ in
         libcgroup
       ];
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xdg.configFile."hadolint.yaml".text = builtins.toJSON {
           ignored = [ "DL3007" ];
           trustedRegistries = [ "docker.io" ];
@@ -130,7 +130,7 @@ in
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [
           discover_containerized_services
           dlint

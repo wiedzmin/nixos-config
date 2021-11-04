@@ -82,7 +82,7 @@ in
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ nyxt extract_url xurls ];
         xdg.configFile."nyxt/init.lisp" = {
           text = readSubstituted [ ./subst.nix ] [ ./config/init.lisp ];
@@ -115,7 +115,7 @@ in
         }
       ];
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "nyxt.desktop";
       };
       services.xserver.displayManager.sessionCommands = ''

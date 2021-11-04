@@ -7,8 +7,6 @@ let
   user = config.attributes.mainUser.name;
   serviceAttrsNames = [ "global" "emacs" ];
   envVars = filterAttrs (name: value: !builtins.elem name serviceAttrsNames);
-  isGlobalEnvVars = v: builtins.hasAttr "global" v && v.global == true;
-  isEmacsEnvVars = v: builtins.hasAttr "emacs" v && v.emacs == true;
 in {
   options = {
     shell.core = {
@@ -40,11 +38,11 @@ in {
       console.useXkbConfig = true;
 
       environment.variables = foldl (a: b: a // (envVars b)) { }
-        (builtins.filter (e: isGlobalEnvVars e) cfg.variables);
+        (builtins.filter (e: builtins.hasAttr "global" e && e.global) cfg.variables);
       environment.sessionVariables = foldl (a: b: a // (envVars b)) { }
-        (builtins.filter (e: isGlobalEnvVars e) cfg.variables);
+        (builtins.filter (e: builtins.hasAttr "global" e && e.global) cfg.variables);
       ide.emacs.core.environment = foldl (a: b: a // (envVars b)) { }
-        (builtins.filter (e: isEmacsEnvVars e) cfg.variables);
+        (builtins.filter (e: builtins.hasAttr "emacs" e && e.emacs) cfg.variables);
 
       home-manager.users."${user}" = {
         programs.readline = {

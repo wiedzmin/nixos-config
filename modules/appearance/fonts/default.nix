@@ -45,12 +45,12 @@ in
       fonts = {
         fontconfig = {
           enable = true;
-          antialias = cfg.antialias;
+          inherit (cfg) antialias;
         };
         fontDir.enable = true;
         enableGhostscriptFonts = true;
         enableDefaultFonts = true;
-      } // lib.optionalAttrs (cfg.beautify) { fonts = with pkgs; [ nerdfonts ]; };
+      } // lib.optionalAttrs cfg.beautify { fonts = with pkgs; [ nerdfonts ]; };
       console = {
         font = cfg.console;
         useXkbConfig = true;

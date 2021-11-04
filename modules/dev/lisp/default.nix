@@ -16,7 +16,7 @@ in {
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.melpaStablePackages.slime
       ];

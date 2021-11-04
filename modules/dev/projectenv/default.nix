@@ -78,7 +78,7 @@ in
         '';
       };
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ devenv git-exportenv git-hideenv git-removeenv git-unhideenv ];
 
         home.activation.ensureDevEnvBackupRoot = {
@@ -102,7 +102,7 @@ in
       '';
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ devenv git-exportenv git-hideenv git-removeenv git-unhideenv ];
       };
     })

@@ -55,7 +55,7 @@ rec {
       ++ lib.optionals (maybeAttrIsBool "transient" meta) [ "--no-startup-id" ] ++ [
       (builtins.concatStringsSep "; " (lib.optionals (builtins.hasAttr "cmd" meta)
         [
-          ((lib.optionalString (debugEnabled) "DEBUG_MODE=1 ") + meta.cmd + lib.optionalString (debugEnabled)
+          ((lib.optionalString debugEnabled "DEBUG_MODE=1 ") + meta.cmd + lib.optionalString debugEnabled
             " > ${mkCmdDebugAbsFilename config.controlcenter.commandsDebugLogRoot meta.cmd} 2>&1")
         ]
       ++ lib.optionals (builtins.hasAttr "desktop" meta)
@@ -106,7 +106,7 @@ rec {
   genScratchpadSettingsI3 = rules: keys: exitBindings: desktops:
     let
       scratchpadBindings = (lib.filterAttrs (k: _: k == scratchpadModeToken)
-        (lib.groupBy (x: x.mode) keys)).${scratchpadModeToken};
+        (lib.groupBy (x: x.mode) keys))."${scratchpadModeToken}";
       scratchpadRules = builtins.filter (r: builtins.hasAttr "scratchpad" r && builtins.hasAttr "key" r) rules;
     in
     lib.concatStringsSep "\n"
@@ -118,7 +118,7 @@ rec {
         mode "${scratchpadModeToken}" {
           ${lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach
             (map (r: {
-              key = r.key;
+              inherit (r) key;
               mode = "${scratchpadModeToken}";
               cmd = "${mkWindowRuleI3 r} scratchpad show";
               raw = true;
@@ -136,7 +136,7 @@ rec {
   genPlacementRulesI3 = rules: wsdata:
     lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "desktop" r) rules) (r:
       "for_window ${mkWindowRuleI3 r} move to workspace ${getWorkspaceByNameI3 wsdata r.desktop}${
-        if (builtins.hasAttr "activate" r && r.activate == true) then
+        if (builtins.hasAttr "activate" r && r.activate) then
           "; workspace ${getWorkspaceByNameI3 wsdata r.desktop}"
         else
           ""

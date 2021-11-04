@@ -25,7 +25,7 @@ in
         "fs.inotify.max_queued_events" = 32768;
       };
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ archiver archivemount pbzip2 pigz ];
         home.activation.ensureMimeappsList = {
           after = [ ];

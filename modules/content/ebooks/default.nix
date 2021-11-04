@@ -6,10 +6,10 @@ let
   cfg = config.content.ebooks;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  stable = import inputs.stable ({
+  stable = import inputs.stable {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
 in
 {
   options = {
@@ -70,7 +70,7 @@ in
         }));
       pim.timetracking.rules = mkArbttTitleRule [ ".*papers/.*" ] "ebooks:papers" + "\n"
         + mkArbttPrefixedTitlesRule (with cfg.extensions; primary ++ secondary) "read:";
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.ebook "org.pwmt.zathura.desktop";
         home.packages = with pkgs; [ stable.calibre djview djvulibre ];
         programs.zathura = {

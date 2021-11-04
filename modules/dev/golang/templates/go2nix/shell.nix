@@ -4,7 +4,7 @@ with pkgs;
 stdenv.mkDerivation rec {
   name = "generic-shell-go";
   env = buildEnv {
-    name = name;
+    inherit name;
     paths = buildInputs;
   };
 

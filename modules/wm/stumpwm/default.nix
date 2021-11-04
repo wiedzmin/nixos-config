@@ -19,7 +19,7 @@ in {
 
   config = mkIf cfg.enable {
     assertions = [{
-      assertion = (!config.wm.xmonad.enable && !config.wm.i3.enable);
+      assertion = !config.wm.xmonad.enable && !config.wm.i3.enable;
       message = "stumpwm: exactly one WM could be enabled.";
     }];
 
@@ -30,7 +30,7 @@ in {
       stumpwm.enable = true;
     };
 
-    home-manager.users.${user} = {
+    home-manager.users."${user}" = {
       home.file = {
         ".stumpwm.d/layouts" = {
           source = ./layouts;

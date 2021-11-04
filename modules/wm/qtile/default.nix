@@ -43,7 +43,7 @@ in
         debug-qtile = mkWMDebugScript "debug-qtile" pkgs.qtile "qtile start -c $XDG_CONFIG_HOME/qtile/config.py";
       };
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ debug-qtile ];
         xdg.configFile = {
           "qtile/config.py".text = readSubstituted [ ./subst.nix ] [ ./config.py ];

@@ -51,7 +51,7 @@ in
       commonCaptureDataTemplate = mkOption {
         type = types.str;
         # default = (if cfg.cliplink.enable then "%(org-cliplink-capture)" else "%?[[%:link][%:description]]");
-        default = (if cfg.cliplink.enable then "%(org-cliplink-capture)" else "%?");
+        default = if cfg.cliplink.enable then "%(org-cliplink-capture)" else "%?";
         description = "Default data template for captured entry";
         visible = false;
         readOnly = true;
@@ -111,9 +111,9 @@ in
         epkgs.org-roam
         epkgs.orgit
         epkgs.russian-holidays
-      ] ++ optionals (cfg.cliplink.enable) [ epkgs.org-cliplink ];
+      ] ++ optionals cfg.cliplink.enable [ epkgs.org-cliplink ];
       ide.emacs.core.config = (readSubstituted [ ./subst.nix ] [ ./emacs/orgmode.el ])
-        + lib.optionalString (cfg.cliplink.enable) ''
+        + lib.optionalString cfg.cliplink.enable ''
         (use-package org-cliplink
           :after (org)
           :bind
@@ -126,7 +126,7 @@ in
       };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ org-capture ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ org-capture ]; };
     })
   ];
 }

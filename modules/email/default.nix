@@ -5,11 +5,11 @@ with lib;
 let
   cfg = config.email;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
+  hm = config.home-manager.users."${user}";
   pass_imap_helper = pkgs.writeShellScriptBin "pass_imap_helper" ''
     echo $(${pkgs.pass}/bin/pass $1 | ${pkgs.coreutils}/bin/head -n 1)
   '';
-  dataHome = hm.xdg.dataHome;
+  inherit (hm.xdg) dataHome;
 in {
   options = {
     email = {
@@ -180,7 +180,7 @@ in {
           assertion = cfg.passwordPath != "";
           message = "email: Must provide Pass path to password.";
         }
-      ] ++ lib.optionals (cfg.gpg.sign) [{
+      ] ++ lib.optionals cfg.gpg.sign [{
         assertion = cfg.gpg.keyID != "";
         message = "email: Must provide GPG key ID since signing is enabled.";
       }] ++ lib.optionals (cfg.signature.show != "none") [{
@@ -188,19 +188,19 @@ in {
         message = "email: Must provide signature and user real name if signature is enabled.";
       }];
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ gmvault gmailctl ]; # TODO: integrate gmailctl into build/activation
         accounts.email = {
           accounts."${cfg.defaultAccountName}" = {
+            inherit (cfg) realName;
             address = cfg.emailAddress;
             flavor = cfg.defaultAccountFlavor;
             primary = true;
-            realName = cfg.realName;
             userName = cfg.emailAddress;
             passwordCommand = "${pass_imap_helper}/bin/pass_imap_helper ${cfg.passwordPath}";
             signature = {
               showSignature = cfg.signature.show;
-              text = cfg.signature.text;
+              inherit (cfg.signature) text;
             };
             gpg = {
               key = cfg.gpgKeyID;
@@ -311,13 +311,13 @@ in {
       '';
     })
     (mkIf (cfg.enable && cfg.notmuch.enable) {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         accounts.email = { accounts."${cfg.defaultAccountName}" = { notmuch.enable = true; }; };
         programs.notmuch.enable = true;
       };
     })
     (mkIf (cfg.enable && cfg.msmtp.enable) {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         accounts.email = { accounts."${cfg.defaultAccountName}" = { msmtp.enable = true; }; };
         programs.msmtp.enable = true;
       };
@@ -382,12 +382,11 @@ in {
           Channel ${cfg.emailAddress}-archive
         '';
       };
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         accounts.email = { accounts."${cfg.defaultAccountName}" = { mbsync.enable = true; }; };
         services.mbsync = {
           enable = true;
-          postExec = cfg.mbsync.postExec;
-          frequency = cfg.mbsync.frequency;
+          inherit (cfg.mbsync) postExec frequency;
         };
       };
     })

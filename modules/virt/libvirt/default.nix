@@ -42,7 +42,7 @@ in
       virtualisation.libvirtd = { enable = true; };
       virtualisation.kvmgt.enable = true;
 
-      users.users.${user}.extraGroups = [ "libvirtd" ];
+      users.users."${user}".extraGroups = [ "libvirtd" ];
       shell.core.variables = [{ LIBVIRT_DEFAULT_URI = "qemu:///system"; global = true; }];
 
       networking.nat.internalInterfaces = [ "virbr0" ];
@@ -66,7 +66,7 @@ in
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [
           vdi2qcow2
         ];

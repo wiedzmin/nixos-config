@@ -5,10 +5,10 @@ with lib;
 let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
-  stable = import inputs.stable ({
+  stable = import inputs.stable {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
 in
 {
   options = {
@@ -72,7 +72,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       shell.core.variables = [{ JUST_CHOOSER = "rofi -dmenu"; }];
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ dfmt go-task just lnav comby plantuml tagref xh ];
       };
       pim.timetracking.rules =
@@ -102,7 +102,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ stable.diffoscope icdiff patchutils wiggle xmldiff ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ stable.diffoscope icdiff patchutils wiggle xmldiff ]; };
     })
     (mkIf (cfg.enable && cfg.networking.enable) {
       programs = {
@@ -148,7 +148,7 @@ in
         "custom-lsp-treemacs-map" = "C-c t";
         "custom-webpaste-map" = "C-c [";
       };
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.activation.ensureLspSessionDir = {
           # lsp-deferred fails otherwise
           after = [ ];

@@ -18,13 +18,13 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable) {
+    (mkIf cfg.enable {
       assertions = [{
         assertion = config.ide.emacs.core.enable;
         message = "emacs/navigation: core configuration must be enabled.";
       }];
 
-      home-manager.users.${user} = { home.packages = with pkgs; [ ripgrep ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ ripgrep ]; };
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.avy
         epkgs.beginend

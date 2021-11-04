@@ -46,7 +46,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ mr ];
         home.file = { ".mrconfig".text = cfg.configContent; };
       };

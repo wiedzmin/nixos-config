@@ -156,7 +156,7 @@ in {
     info.enable = true;
   };
 
-  users.extraUsers.${user} = {
+  users.extraUsers."${user}" = {
     isNormalUser = true;
     uid = 1000;
     description = config.attributes.mainUser.fullName;
@@ -181,7 +181,7 @@ in {
 
   home-manager = {
     useGlobalPkgs = true;
-    users.${user} = {
+    users."${user}" = {
       services.unclutter.enable = true;
       home.packages = with pkgs; [ anydesk ];
       home.stateVersion = "19.09";

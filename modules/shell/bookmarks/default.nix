@@ -36,7 +36,7 @@ in {
       shell.core.variables = [({
         FZF_MARKS_FILE = "$HOME/${cfg.path}";
         FZF_MARKS_JUMP = "^[[1;5P";
-      } // lib.optionalAttrs (cfg.order) { FZF_MARKS_KEEP_ORDER = "1"; })];
+      } // lib.optionalAttrs cfg.order { FZF_MARKS_KEEP_ORDER = "1"; })];
 
       home-manager.users."${user}" = {
         home.activation = {

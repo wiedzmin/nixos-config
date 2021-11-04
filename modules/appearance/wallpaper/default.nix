@@ -60,7 +60,7 @@ in
         message = "appearance: must provide wallpapers path and image to use.";
       }];
 
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         programs.autorandr.hooks = {
           postswitch = { "rescale-wallpaper" = "${rescale-wallpaper}/bin/rescale-wallpaper"; };
         };
@@ -83,7 +83,7 @@ in
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users.${user} = { home.packages = with pkgs; [ rescale-wallpaper ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ rescale-wallpaper ]; };
     })
   ];
 }

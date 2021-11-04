@@ -5,8 +5,8 @@ with lib;
 let
   cfg = config.shell.zsh;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
-  dataHome = hm.xdg.dataHome;
+  hm = config.home-manager.users."${user}";
+  inherit (hm.xdg) dataHome;
 in
 {
   options = {

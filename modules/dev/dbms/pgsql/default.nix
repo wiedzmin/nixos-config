@@ -5,12 +5,12 @@ with lib;
 let
   cfg = config.dbms.pgsql;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users.${user};
-  dataHome = hm.xdg.dataHome;
-  stable = import inputs.stable ({
+  hm = config.home-manager.users."${user}";
+  inherit (hm.xdg) dataHome;
+  stable = import inputs.stable {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
-  });
+  };
 in {
   options = {
     dbms.pgsql = {
@@ -44,7 +44,7 @@ in {
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users.${user} = {
+      home-manager.users."${user}" = {
         home.packages = with pkgs; [ pgcenter cfg.pgcli.package ];
         xdg.configFile.".pgclirc".text = generators.toINI { } {
           main = {
