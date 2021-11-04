@@ -220,6 +220,12 @@ in
             raw = true;
           }
           {
+            key = [ prefix "Shift" "t" ];
+            cmd = "split toggle";
+            mode = "root";
+            raw = true;
+          }
+          {
             key = [ prefix "Shift" "<" ];
             cmd = "focus parent";
             mode = "root";
