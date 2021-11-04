@@ -19,6 +19,11 @@ in {
         default = false;
         description = "Whether to enable PostgreSQL helper tools.";
       };
+      pgcli.package = mkOption {
+        type = types.package;
+        default = stable.pgcli;
+        description = "PgCLI log file location.";
+      };
       pgcli.logPath = mkOption {
         type = types.str;
         default = "${dataHome}/pgcli/log";
@@ -40,7 +45,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users.${user} = {
-        home.packages = with pkgs; [ pgcenter stable.pgcli ];
+        home.packages = with pkgs; [ pgcenter cfg.pgcli.package ];
         xdg.configFile.".pgclirc".text = generators.toINI { } {
           main = {
             asterisk_column_order = "table_order";
