@@ -251,12 +251,12 @@ in
           }
           {
             key = [ "b" ];
-            cmd = "${pkgs.i3-balance-workspace}/bin/i3_balance_workspace --scope workspace";
+            cmd = "${pkgs.i3-balance-workspace}/bin/i3_balance_workspace";
             mode = "layout";
           }
           {
             key = [ "Shift" "b" ];
-            cmd = "${pkgs.i3-balance-workspace}/bin/i3_balance_workspace --scope workspace";
+            cmd = "${pkgs.i3-balance-workspace}/bin/i3_balance_workspace --scope focus";
             mode = "layout";
           }
           {
