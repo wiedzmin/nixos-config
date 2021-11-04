@@ -54,7 +54,6 @@
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package blamer
-  :load-path "@emacsBlamerPath@"
   :bind
   (:map custom-git-map
         ("b" . blamer-mode)))

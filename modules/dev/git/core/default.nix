@@ -116,13 +116,14 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
+        epkgs.blamer
         epkgs.magit
         epkgs.magit-filenotify
         epkgs.magit-popup # *
       ] ++ optionals (cfg.emacs.delta.enable) [
         epkgs.magit-delta
       ];
-      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./emacs/core.el ] + optionalString (cfg.emacs.delta.enable) ''
+      ide.emacs.core.config = builtins.readFile ./emacs/core.el + optionalString (cfg.emacs.delta.enable) ''
         (use-package magit-delta
           :disabled
           :hook (magit-mode-hook . magit-delta-mode))

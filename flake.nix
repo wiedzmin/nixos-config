@@ -23,10 +23,6 @@
     nixpkgs-index-fm.url = "github:nixos/nixpkgs/a4bf44345706231f9dd56f85757499af1e940847";
 
     # NOTE: using these instead of quelpa
-    emacs-blamer = {
-      url = "github:Artawower/blamer.el";
-      flake = false;
-    };
     emacs-org-bars = {
       url = "github:tonyaldon/org-bars";
       flake = false;
