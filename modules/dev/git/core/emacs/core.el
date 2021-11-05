@@ -56,4 +56,19 @@
 (use-package blamer
   :bind
   (:map custom-git-map
-        ("b" . blamer-mode)))
+        ("b" . blamer-mode))
+  :custom
+  (blamer-idle-time 0.2)
+  (blamer-min-offset 70)
+  (blamer-view 'overlay)
+  (blamer-author-formatter " ✎ %s ")
+  (blamer-datetime-formatter "[%s]")
+  (blamer-commit-formatter "● %s")
+  (blamer-prettify-time-p nil)
+  (blamer-type 'both)
+  (blamer-max-commit-message-length 100)
+  (blamer-uncommitted-changes-message "Uncommitted")
+  :custom-face
+  (blamer-face ((t :foreground "#7a88cf"
+                   :background nil
+                   :italic t))))
