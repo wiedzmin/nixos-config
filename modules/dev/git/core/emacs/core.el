@@ -1,3 +1,8 @@
+(use-package git-modes ;TODO: consider adding more customizations
+  :config
+  (add-to-list 'auto-mode-alist
+               (cons "/.dockerignore\\'" 'gitignore-mode)))
+
 (use-package magit
   :preface
   (defun custom/magit-hide-devenv ()

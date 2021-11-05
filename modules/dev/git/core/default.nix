@@ -117,6 +117,7 @@ in
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.blamer
+        epkgs.git-modes
         epkgs.magit
         epkgs.magit-filenotify
         epkgs.magit-popup # *
