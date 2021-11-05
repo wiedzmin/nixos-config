@@ -27,12 +27,15 @@ in
           gron
           htmlq
           jc
+          lfs
           miller
+          pipe-rename
           ripgrep-all
           sad # TODO: consider creating shell aliases
           sd # TODO: play with it in streaming use-cases
           up
           uq
+          pup
         ];
         programs = {
           lsd = {
