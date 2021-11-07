@@ -444,10 +444,10 @@
   (org-roam-setup)
   (use-package org-roam-protocol)
   :bind
-  (:map custom-org-map
-        ("r b" . org-roam-buffer-toggle)
-        ("r f" . org-roam-node-find)
-        ("r g" . org-roam-graph)
-        ("r i" . org-roam-node-insert)
-        ("r c" . org-roam-capture)
-        ("r j" . org-roam-dailies-capture-today)))
+  (:map org-roam-map
+        ("b" . org-roam-buffer-toggle)
+        ("f" . org-roam-node-find)
+        ("g" . org-roam-graph)
+        ("i" . org-roam-node-insert)
+        ("c" . org-roam-capture)
+        ("j" . org-roam-dailies-capture-today)))
