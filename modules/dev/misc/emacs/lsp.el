@@ -176,4 +176,9 @@
   :bind
   (:map custom-goto-map
         ("s" . consult-lsp-symbols)
-        ("d" . consult-lsp-diagnostics)))
+        ("f" . consult-lsp-file-symbols)
+        ("d" . consult-lsp-diagnostics))
+  (:map lsp-mode-map
+        ([remap xref-find-apropos] . consult-lsp-symbols))
+  :config
+  (consult-lsp-marginalia-mode +1))

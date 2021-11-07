@@ -158,6 +158,7 @@ in
         epkgs."0x0"
         epkgs.blockdiag-mode
         epkgs.comby
+        epkgs.consult-lsp
         epkgs.elmacro
         epkgs.fic-mode
         epkgs.jinja2-mode
