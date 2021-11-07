@@ -428,6 +428,10 @@
 ;; TODO: review https://github.com/search?q=org-roam-capture-ref-templates&type=code
 ;; TODO: review https://www.reddit.com/r/OrgRoam/comments/or31g0/a_few_qol_tricks_i_havent_seen_much_of_on_the/
 (use-package org-roam
+  :preface
+  (defun custom/consult-ripgrep-roam ()
+    (interactive)
+    (consult-ripgrep "@emacsOrgRoamPath@"))
   :init
   (setq org-roam-v2-ack t)
   (setq org-roam-db-gc-threshold most-positive-fixnum)
@@ -447,7 +451,8 @@
   (:map org-roam-map
         ("b" . org-roam-buffer-toggle)
         ("f" . org-roam-node-find)
-        ("g" . org-roam-graph)
+        ("g" . custom/consult-ripgrep-roam)
+        ("G" . org-roam-graph)
         ("i" . org-roam-node-insert)
         ("c" . org-roam-capture)
         ("j" . org-roam-dailies-capture-today)))
