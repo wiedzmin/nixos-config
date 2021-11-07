@@ -119,6 +119,9 @@
                (time-add (current-idle-time) custom/idle-clockout-recheck-interval)
                nil
                'custom/clockout-when-idle)))))
+  (defun custom/consult-ripgrep-org ()
+    (interactive)
+    (consult-ripgrep "@orgRoot@"))
   :mode (("\\.org$" . org-mode)
          ("\\.org_archive$" . org-mode))
   :company '(company-dabbrev company-capf)
@@ -140,6 +143,7 @@
         ("<up>" . org-backward-heading-same-level)
         ("=" . org-show-todo-tree)
         ("D" . org-delete-property)
+        ("g" . custom/consult-ripgrep-org)
         ("G" . org-goto)
         ("S" . org-set-property)
         ("T" . org-table-create)
