@@ -349,8 +349,7 @@
   :bind
   ("C-x C-d" . consult-dir)
   (:map selectrum-minibuffer-map
-        ("C-x C-d" . consult-dir)
-        ("C-x C-j" . consult-dir-jump-file))
+        ("C-x C-d" . consult-dir))
   :custom
   (consult-dir-project-list-function #'consult-dir-projectile-dirs))
 
