@@ -347,11 +347,17 @@
 (use-package consult-dir
   :ensure t
   :bind
-  ("C-x C-d" . consult-dir)
+  ("C-x d" . consult-dir)
   (:map selectrum-minibuffer-map
-        ("C-x C-d" . consult-dir))
+        ("C-x d" . consult-dir)
+        ("J" . consult-dir-jump-file))
   :custom
-  (consult-dir-project-list-function #'consult-dir-projectile-dirs))
+  (consult-dir-project-list-function #'consult-dir-projectile-dirs)
+  (consult-dir-default-command
+   #'(lambda (&optional dirname switches)
+       (interactive)
+       (pop-to-buffer-same-window (dired-noselect dirname)))))
+
 
 (use-package bookmark-view
   :custom
