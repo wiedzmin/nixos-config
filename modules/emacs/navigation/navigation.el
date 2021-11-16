@@ -198,12 +198,8 @@
   (embark-pre-action-hook . (lambda () (setq selectrum--previous-input-string nil)))
   :custom
   (embark-allow-edit-default t)
-  (embark-indicators '(embark-mixed-indicator embark-highlight-indicator))
+  (embark-indicators '(embark-minimal-indicator embark-highlight-indicator))
   (embark-prompter 'embark-completing-read-prompter)
-  (embark-action-indicator (lambda (map) ;; integration with which-key
-                             (which-key--show-keymap "Embark" map nil nil 'no-paging)
-                             #'which-key--hide-popup-ignore-command)
-                           embark-become-indicator embark-action-indicator)
   :config
   (add-to-list 'display-buffer-alist ;; Hide the mode line of the Embark live/completions buffers
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
