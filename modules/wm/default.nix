@@ -35,6 +35,16 @@ in
         default = [ ];
         description = "Common keybindings.";
       };
+      autorepeat.delay = mkOption {
+        type = types.int;
+        default = 280;
+        description = "Autorepeat delay for xset";
+      };
+      autorepeat.rate = mkOption {
+        type = types.int;
+        default = 30;
+        description = "Autorepeat rate for xset";
+      };
       debugKeys = mkOption {
         type = types.listOf types.attrs;
         default = [ ];
@@ -123,6 +133,7 @@ in
         displayManager.sessionCommands = ''
           export _JAVA_AWT_WM_NONREPARENTING=1
           ${pkgs.wmname}/bin/wmname LG3D
+          ${pkgs.xlibs.xset}/bin/xset r rate ${builtins.toString cfg.autorepeat.delay} ${builtins.toString cfg.autorepeat.rate}
         '';
       };
 
