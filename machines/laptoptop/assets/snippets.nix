@@ -108,9 +108,9 @@ rec {
       tags = [ "grub" "system" ];
     }
     {
-      description = "show global git config";
+      description = "show scoped git config";
       language = "shell";
-      code = "git config --global --list";
+      code = "git config --list --show-origin --show-scope";
       tags = [ "git" ];
     }
     {
