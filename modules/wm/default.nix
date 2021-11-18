@@ -114,6 +114,8 @@ in
       attributes.wms.enabled = true;
 
       services.xserver = {
+        enable = true;
+        autorun = true;
         desktopManager = {
           xterm.enable = false;
           gnome.enable = false;
