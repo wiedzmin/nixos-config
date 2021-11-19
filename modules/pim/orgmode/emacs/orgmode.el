@@ -434,6 +434,8 @@
 ;; TODO: review https://github.com/search?q=org-roam-capture-templates&type=code
 ;; TODO: review https://github.com/search?q=org-roam-capture-ref-templates&type=code
 ;; TODO: review https://www.reddit.com/r/OrgRoam/comments/or31g0/a_few_qol_tricks_i_havent_seen_much_of_on_the/
+;; TODO: review https://melpa.org/#/org-roam-ui
+;; TODO: review https://melpa.org/#/org-roam-timestamps / https://github.com/ThomasFKJorna/org-roam-timestamps
 (use-package org-roam
   :preface
   (defun custom/consult-ripgrep-roam ()
