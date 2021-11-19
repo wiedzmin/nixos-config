@@ -451,6 +451,9 @@
   (org-roam-db-update-method 'immediate)
   (org-roam-tag-sources '(prop vanilla all-directories))
   (org-roam-verbose t)
+  (org-roam-capture-templates
+   '(("d" "default" plain "%?" :target
+      (file+head "${slug}.org" "#+title: ${title}\n") :unnarrowed t)))
   :config
   (org-roam-setup)
   (use-package org-roam-protocol)
