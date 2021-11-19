@@ -172,6 +172,8 @@
   :bind
   ("C-S-a" . embark-act)
   ("C-S-d" . embark-dwim)
+  (:map embark-general-map
+        ("C-." . embark-cycle))
   (:map mode-specific-map
         ("C-." . embark-act)
         ("C-," . embark-dwim))
