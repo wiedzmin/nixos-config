@@ -356,6 +356,11 @@
        (interactive)
        (pop-to-buffer-same-window (dired-noselect dirname)))))
 
+(use-package consult-xref
+  :custom
+  (xref-search-program 'ripgrep)
+  (xref-show-xrefs-function #'consult-xref)
+  (xref-show-definitions-function #'consult-xref))
 
 (use-package bookmark-view
   :custom
