@@ -46,20 +46,25 @@ in
         default = false;
         description = "Whether to enable patching helper tools.";
       };
-      plantuml.enable = mkOption {
+      diagrams.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable PlantUML infra";
+        description = "Whether to enable diagrams scheming tools";
       };
-      plantuml.server.enable = mkOption {
+      diagrams.plantuml.server.enable = mkOption {
         type = types.bool;
         default = true;
         description = "Whether to enable PlantUML server";
       };
-      plantuml.server.port = mkOption {
+      diagrams.plantuml.server.port = mkOption {
         type = types.int;
         default = 5678;
         description = "Default port for PlantUML server to listen";
+      };
+      diagrams.pikchr.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable Pikchr";
       };
       networking.enable = mkOption {
         type = types.bool;
@@ -119,18 +124,29 @@ in
     (mkIf (cfg.enable && cfg.patching.enable) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ stable.diffoscope icdiff patchutils wiggle xmldiff ]; };
     })
-    (mkIf (cfg.enable && cfg.plantuml.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ plantuml ]; };
+    (mkIf (cfg.enable && cfg.diagrams.enable) {
+      home-manager.users."${user}" = { home.packages = with pkgs; [ pikchr plantuml ]; };
       services.plantuml-server = {
-        inherit (cfg.plantuml.server) enable;
-        listenPort = cfg.plantuml.server.port;
+        inherit (cfg.diagrams.plantuml.server) enable;
+        listenPort = cfg.diagrams.plantuml.server.port;
       };
       navigation.bookmarks.entries = {
         plantuml-server = {
           desc = "PlantUML server instance";
-          remote.url = "http://localhost:${cfg.plantuml.server.port}/";
+          remote.url = "http://localhost:${cfg.diagrams.plantuml.server.port}/";
         };
       };
+    })
+    (mkIf (cfg.enable && cfg.diagrams.enable && cfg.emacs.enable) {
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.pikchr-mode
+      ];
+      ide.emacs.core.config = ''
+        (use-package pikchr-mode
+          :commands (org-babel-default-header-args:pikchr
+                     org-babel-execute:pikchr
+                     org-babel-prep-session:pikchr))
+      '';
     })
     (mkIf (cfg.enable && cfg.networking.enable) {
       programs = {
