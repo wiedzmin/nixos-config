@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.dev.direnv;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     dev.direnv = {
       enable = mkOption {
@@ -39,10 +40,7 @@ in {
       home-manager.users."${user}" = {
         programs.direnv = {
           enable = true;
-          nix-direnv = {
-            enable = true;
-            enableFlakes = true;
-          };
+          nix-direnv.enable = true;
         };
         xdg.configFile."direnv/direnv.toml".text = toToml {
           global = { disable_stdin = true; };
