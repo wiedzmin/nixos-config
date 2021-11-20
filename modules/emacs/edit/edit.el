@@ -92,10 +92,13 @@
         ("SPC" . custom/string-inflection-gnocchi)))
 
 (use-package wgrep
+  :commands wgrep-change-to-wgrep-mode
   :bind
   (:map grep-mode-map
         ("C-x C-q" . wgrep-change-to-wgrep-mode)
-        ("C-c C-c" . wgrep-finish-edit)))
+        ("C-c C-c" . wgrep-finish-edit))
+  :custom
+  (wgrep-auto-save-buffer t))
 
 (use-package ws-butler
   :after whitespace
