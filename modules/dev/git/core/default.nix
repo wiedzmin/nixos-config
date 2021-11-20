@@ -119,6 +119,7 @@ in
         epkgs.blamer
         epkgs.git-modes
         epkgs.magit
+        epkgs.magit-commit-mark
         epkgs.magit-filenotify
         epkgs.magit-popup # *
       ] ++ optionals cfg.emacs.delta.enable epkgs.magit-delta;

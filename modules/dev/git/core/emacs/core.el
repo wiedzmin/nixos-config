@@ -77,3 +77,20 @@
   (blamer-face ((t :foreground "#7a88cf"
                    :background nil
                    :italic t))))
+
+(use-package magit-commit-mark
+  :after magit
+  :commands (magit-commit-mark-mode)
+  :bind
+  (:map magit-log-mode-map
+        (";" . magit-commit-mark-toggle-read)
+        ("M-;" . magit-commit-mark-toggle-star)
+        ("C-." . magit-commit-mark-toggle-urgent))
+  :hook
+  (magit-mode-hook . magit-commit-mark-mode)
+  :custom
+  (magit-commit-mark-on-show-commit nil)
+  :custom-face
+  (magit-commit-mark-read-face ((t :foreground "#7a88cf"
+                                   :background nil
+                                   :italic t))))
