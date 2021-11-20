@@ -52,10 +52,10 @@ in
       networking.dhcpcd.denyInterfaces = [ "docker*" ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        dlint =
-          mkShellScriptWithDeps "dlint" (with pkgs; [ docker ]) (builtins.readFile ./scripts/dlint.sh);
-        hadolintd = mkShellScriptWithDeps "hadolintd" (with pkgs; [ docker ])
-          (builtins.readFile ./scripts/hadolintd.sh);
+        dlint = pkgs.writeShellApplication { name = "dlint"; runtimeInputs = with pkgs; [ docker ];
+                                             text = builtins.readFile ./scripts/dlint.sh; };
+        hadolintd = pkgs.writeShellApplication { name = "hadolintd"; runtimeInputs = with pkgs; [ docker ];
+                                                 text = builtins.readFile ./scripts/hadolintd.sh; };
         docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits"
           (with pkgs; [ docker nurpkgs.pystdlib nurpkgs.toolbox python3Packages.redis xsel yad ])
           (builtins.readFile ./scripts/docker_containers_traits.py);

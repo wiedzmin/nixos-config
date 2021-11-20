@@ -1,6 +1,7 @@
-if [ -z $1 ]; then
+if [ -z "$1" ]; then
   echo "Dockerfile missing"
   exit 1
 fi
 
-docker run --rm -i -v $(realpath $1):/tmp/Dockerfile hadolint/hadolint hadolint /tmp/Dockerfile
+real_path=$(realpath "$1")
+docker run --rm -i -v "$real_path:/tmp/Dockerfile" hadolint/hadolint hadolint /tmp/Dockerfile

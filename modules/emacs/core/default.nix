@@ -6,13 +6,17 @@ with lib;
 let
   cfg = config.ide.emacs.core;
   user = config.attributes.mainUser.name;
-  drop-corrupted = mkShellScriptWithDeps "drop-corrupted" (with pkgs; [ gitAndTools.git coreutils ]) ''
-    ${pkgs.systemd}/bin/systemctl --user stop emacs.service
-    sleep 2
-    rm -f /home/${user}/.emacs.d/data/{save-kill.el,savehist.el}
-    rm -f /home/${user}/.emacs.d/var/{save-kill.el,savehist.el}
-    ${pkgs.systemd}/bin/systemctl --user restart emacs.service
-  '';
+  drop-corrupted = pkgs.writeShellApplication {
+    name = "drop-corrupted";
+    runtimeInputs = with pkgs; [ gitAndTools.git coreutils ];
+    text = ''
+      ${pkgs.systemd}/bin/systemctl --user stop emacs.service
+      sleep 2
+      rm -f /home/${user}/.emacs.d/data/{save-kill.el,savehist.el}
+      rm -f /home/${user}/.emacs.d/var/{save-kill.el,savehist.el}
+      ${pkgs.systemd}/bin/systemctl --user restart emacs.service
+    '';
+  };
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {

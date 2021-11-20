@@ -95,9 +95,8 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        yank-image = mkShellScriptWithDeps "yank-image" (with pkgs; [ wget xclip ]) ''
-          wget $1 -q -O - | xclip -i -selection primary -t image/jpeg
-        '';
+        yank-image = pkgs.writeShellApplication { name = "yank-image"; runtimeInputs = with pkgs; [ wget xclip ];
+                                                  text = ''wget "$1" -q -O - | xclip -i -selection primary -t image/jpeg''; };
       };
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {

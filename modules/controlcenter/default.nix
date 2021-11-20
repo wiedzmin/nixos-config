@@ -6,15 +6,17 @@ let
   cfg = config.controlcenter;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  notify-emacs-messages = mkShellScriptWithDeps "notify-emacs-messages" # TODO: integrate into notifications
-    (with pkgs; [ emacs ]) ''
-    APPNAME="$1"
-    SUMMARY="$2"
-    BODY="$3"
-    ICON="$4"
-    URGENCY="$5"
-    emacsclient -n --eval "(message \"${APPNAME}/${SUMMARY}: $BODY\")"
-  '';
+  notify-emacs-messages = pkgs.writeShellApplication { # TODO: integrate into notifications
+    name = "notify-emacs-messages"; runtimeInputs = with pkgs; [ emacs ];
+    text = ''
+      APPNAME="$1"
+      SUMMARY="$2"
+      BODY="$3"
+      ICON="$4"
+      URGENCY="$5"
+      emacsclient -n --eval "(message \"${APPNAME}/${SUMMARY}: $BODY\")"
+    '';
+  };
   inherit (config.wmCommon) prefix;
 in
 {

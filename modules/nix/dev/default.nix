@@ -45,10 +45,12 @@ in {
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        get-pr-override = mkShellScriptWithDeps "get-pr-override" (with pkgs; [ coreutils curl gnugrep ])
-          (builtins.readFile ./scripts/get-pr-override.sh);
-        make-package-diff = mkShellScriptWithDeps "make-package-diff" (with pkgs; [ coreutils diffutils nix ])
-          (builtins.readFile ./scripts/make-package-diff.sh);
+        get-pr-override = pkgs.writeShellApplication { name = "get-pr-override";
+                                                       runtimeInputs = with pkgs; [ coreutils curl gnugrep ];
+                                                       text = builtins.readFile ./scripts/get-pr-override.sh; };
+        make-package-diff = pkgs.writeShellApplication { name = "make-package-diff";
+                                                         runtimeInputs = with pkgs; [ coreutils diffutils nix ];
+                                                         text = builtins.readFile ./scripts/make-package-diff.sh; };
       };
 
       home-manager.users."${user}" = { home.packages = with pkgs; [ get-pr-override make-package-diff ]; };

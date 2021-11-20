@@ -64,18 +64,14 @@ in
         devenv = mkPythonScriptWithDeps "devenv"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.pyyaml renderizer stgit ])
           (builtins.readFile ./scripts/devenv.py);
-        git-hideenv = mkShellScriptWithDeps "git-hideenv" (with pkgs; [ devenv ]) ''
-          devenv --hide
-        '';
-        git-unhideenv = mkShellScriptWithDeps "git-unhideenv" (with pkgs; [ devenv ]) ''
-          devenv --unhide
-        '';
-        git-exportenv = mkShellScriptWithDeps "git-exportenv" (with pkgs; [ devenv ]) ''
-          devenv --export
-        '';
-        git-removeenv = mkShellScriptWithDeps "git-removeenv" (with pkgs; [ devenv ]) ''
-          devenv --remove
-        '';
+        git-hideenv = pkgs.writeShellApplication { name = "git-hideenv"; runtimeInputs = with pkgs; [ devenv ];
+                                                   text = "devenv --hide"; };
+        git-unhideenv = pkgs.writeShellApplication { name = "git-unhideenv"; runtimeInputs = with pkgs; [ devenv ];
+                                                   text = "devenv --unhide"; };
+        git-exportenv = pkgs.writeShellApplication { name = "git-exportenv"; runtimeInputs = with pkgs; [ devenv ];
+                                                   text = "devenv --export"; };
+        git-removeenv = pkgs.writeShellApplication { name = "git-removeenv"; runtimeInputs = with pkgs; [ devenv ];
+                                                   text = "devenv --remove"; };
       };
 
       home-manager.users."${user}" = {

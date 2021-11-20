@@ -91,17 +91,23 @@ in
         inherit (cfg) permittedInsecurePackages;
 
         packageOverrides = _: rec {
-          rollback = mkShellScriptWithDeps "rollback" (with pkgs; [ fzf ]) ''
-            GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
-            if [ -n "$GENERATION" ]; then
-              GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
-              pkexec nix-env --profile /nix/var/nix/profiles/system --set $GENERATION_PATH && pkexec $GENERATION_PATH/bin/switch-to-configuration switch
-            fi
-          '';
           # TODO: try https://github.com/lf-/nix-doc
-          nix-doc-lookup = mkShellScriptWithDeps "nix-doc-lookup" (with pkgs; [ fzf gnused manix ]) ''
-            manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
-          '';
+          rollback = pkgs.writeShellApplication {
+            name = "rollback"; runtimeInputs = with pkgs; [ fzf ];
+            text = ''
+              GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
+              if [ -n "$GENERATION" ]; then
+                GENERATION_PATH=/nix/var/nix/profiles/system-$(echo "$GENERATION" | cut -d\  -f1)-link
+                pkexec nix-env --profile /nix/var/nix/profiles/system --set "$GENERATION_PATH" && pkexec "$GENERATION_PATH/bin/switch-to-configuration switch"
+              fi
+            '';
+          };
+          nix-doc-lookup = pkgs.writeShellApplication {
+            name = "nix-doc-lookup"; runtimeInputs = with pkgs; [ fzf gnused manix ];
+            text = ''
+              manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
+            '';
+          };
         };
       };
       home-manager.users."${user}" = {

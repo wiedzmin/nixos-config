@@ -1,10 +1,10 @@
 PACKAGE=$1
 TMP=$(mktemp -d)
-cd $TMP
+cd "$TMP"
 {
-  nix-shell "<nixpkgs>" -A $PACKAGE --run "unpackPhase"
-  mv * a
+  nix-shell "<nixpkgs>" -A "$PACKAGE" --run "unpackPhase"
+  mv ./* a
   cp -r a b
   $EDITOR b
-} 2>&1 >/dev/null
+} >/dev/null 2>&1
 diff -u --suppress-common-lines a b

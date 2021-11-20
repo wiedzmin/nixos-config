@@ -8,13 +8,17 @@ let
 in
 {
   nixpkgs.config.packageOverrides = _: rec {
-    "rescreen-${profileName}-i3" = mkShellScriptWithDeps "rescreen-${profileName}-i3" (with pkgs; [ i3 ]) ''
-      i3-msg --quiet "${
-        mvWorkspacesCmdI3 config.wmCommon.workspaces "primary" config.attributes.hardware.monitors.internalHead.name
-      }${
-        mvWorkspacesCmdI3 config.wmCommon.workspaces "secondary" config.attributes.hardware.monitors.internalHead.name
-      }${mvWorkspacesCmdI3 config.wmCommon.workspaces "tertiary" config.attributes.hardware.monitors.internalHead.name}"
-    '';
+    "rescreen-${profileName}-i3" = pkgs.writeShellApplication {
+      name = "rescreen-${profileName}-i3";
+      runtimeInputs = with pkgs; [ i3 ];
+      text = ''
+        i3-msg --quiet "${
+          mvWorkspacesCmdI3 config.wmCommon.workspaces "primary" config.attributes.hardware.monitors.internalHead.name
+        }${
+          mvWorkspacesCmdI3 config.wmCommon.workspaces "secondary" config.attributes.hardware.monitors.internalHead.name
+        }${mvWorkspacesCmdI3 config.wmCommon.workspaces "tertiary" config.attributes.hardware.monitors.internalHead.name}"
+      '';
+    };
   };
   home-manager.users."${user}" = {
     home.packages = [ pkgs."rescreen-${profileName}-i3" ];

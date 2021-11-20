@@ -42,7 +42,7 @@ in
       fonts.fonts = with pkgs; [ font-awesome ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        debug-awesome = mkWMDebugScript "debug-awesome" pkgs.awesome "awesome -c $XDG_CONFIG_HOME/awesome/rc.lua ${makeSearchPath cfg.luaModules}";
+        debug-awesome = mkWMDebugScript "debug-awesome" pkgs.awesome ''awesome -c "$XDG_CONFIG_HOME/awesome/rc.lua" ${makeSearchPath cfg.luaModules}'';
       };
 
       wmCommon.debugKeys = [

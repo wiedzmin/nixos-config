@@ -81,9 +81,8 @@ in
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        go-install-wrapper = mkShellScriptWithDeps "go-install-wrapper" (with pkgs; [ ]) ''
-          go install ./...
-        '';
+        go-install-wrapper = pkgs.writeShellApplication { name = "go-install-wrapper"; runtimeInputs = [ ];
+                                                          text = "go install ./..."; };
       };
       home-manager.users."${user}" = { home.packages = with pkgs; [ go-install-wrapper gore goimports impl ]; };
     })

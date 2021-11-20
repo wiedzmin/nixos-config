@@ -40,7 +40,7 @@ in
       fonts.fonts = with pkgs; [ font-awesome ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        debug-qtile = mkWMDebugScript "debug-qtile" pkgs.qtile "qtile start -c $XDG_CONFIG_HOME/qtile/config.py";
+        debug-qtile = mkWMDebugScript "debug-qtile" pkgs.qtile ''qtile start -c "$XDG_CONFIG_HOME/qtile/config.py"'';
       };
 
       home-manager.users."${user}" = {

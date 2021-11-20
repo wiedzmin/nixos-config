@@ -35,31 +35,6 @@ rec {
         chmod a+x $out/bin/${pname}
       '';
     };
-  mkShellScriptWithDeps = name: packages: contents:
-    pkgs.stdenv.mkDerivation rec {
-      inherit name;
-      version = "unstable";
-      src = pkgs.writeTextFile {
-        name = "${name}.sh";
-        text = ''
-          #!${pkgs.stdenv.shell}
-          ${contents}
-        '';
-        executable = true;
-      };
-      unpackPhase = "true";
-      buildInputs = with pkgs; [ makeWrapper ];
-      propagatedBuildInputs = with pkgs; packages;
-      buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${name}";
-      installPhase = ''
-        mkdir -p $out/bin
-        wrapProgram $out/bin/${name} \
-          --prefix PATH : ${pkgs.lib.makeBinPath packages}
-      '';
-      postInstall = ''
-        chmod a+x $out/bin/${name}
-      '';
-    };
   renderTimer = desc: boot: active: cal: persistent: unit: {
     description = "${desc}";
     wantedBy = [ "timers.target" ];
@@ -321,15 +296,16 @@ rec {
   windowRuleClauses = rule:
     lib.filterAttrs (k: _: !builtins.elem k [ "activate" "debug" "desktop" "float" "key" "scratchpad" ]) rule;
   mkWMDebugScript = name: wmpkg: wmcmd:
-    mkShellScriptWithDeps name
-      (with pkgs; [
+    pkgs.writeShellApplication {
+      inherit name;
+      runtimeInputs = with pkgs; [
         coreutils
         gnugrep
         xorg.xorgserver.out
         xorg.xrandr
-      ] ++ [ wmpkg ])
-      ''
-        if [ "$(xrandr | grep connected | grep -v dis | wc -l)" = "1" ]; then
+      ] ++ [ wmpkg ];
+      text = ''
+        if [ "$(xrandr | grep connected | grep -c dis)" = "1" ]; then
           resolution=${config.attributes.hardware.monitors.internalHead.resolutionXephyr}
           echo "LVDS-only, using $resolution"
         else
@@ -340,4 +316,5 @@ rec {
         sleep 1
         DISPLAY=:1.0 ${wmcmd}
       '';
+    };
 }
