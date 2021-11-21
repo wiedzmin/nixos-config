@@ -363,9 +363,20 @@
   (xref-show-definitions-function #'consult-xref))
 
 (use-package bookmark-view
+  :after consult
   :custom
   (consult-view-open-function #'bookmark-jump)
-  (consult-view-list-function #'bookmark-view-names))
+  (consult-view-list-function #'bookmark-view-names)
+  :config
+  (add-to-list 'consult-buffer-sources
+               (list :name     "View"
+                     :narrow   ?v
+                     :category 'bookmark
+                     :face     'font-lock-keyword-face
+                     :history  'bookmark-view-history
+                     :action   #'consult--bookmark-jump
+                     :items    #'bookmark-view-names)
+               'append))
 
 (use-package consult-projectile
   :after projectile
