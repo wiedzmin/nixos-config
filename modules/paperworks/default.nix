@@ -301,7 +301,7 @@ in
     (mkIf cfg.docflow.enable {
       nixpkgs.config.packageOverrides = _: rec {
         open-doc =
-          mkPythonScriptWithDeps "open-doc" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis stable.libreoffice ])
+          mkPythonScriptWithDeps "open-doc" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis stable.libreoffice onlyoffice-bin ])
             (builtins.readFile ./scripts/open-doc.py);
       };
 
