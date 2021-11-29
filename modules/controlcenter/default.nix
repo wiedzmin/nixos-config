@@ -6,8 +6,10 @@ let
   cfg = config.controlcenter;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  notify-emacs-messages = pkgs.writeShellApplication { # TODO: integrate into notifications
-    name = "notify-emacs-messages"; runtimeInputs = with pkgs; [ emacs ];
+  notify-emacs-messages = pkgs.writeShellApplication {
+    # TODO: integrate into notifications
+    name = "notify-emacs-messages";
+    runtimeInputs = with pkgs; [ emacs ];
     text = ''
       APPNAME="$1"
       SUMMARY="$2"
@@ -88,6 +90,7 @@ in
         };
         programs.htop = {
           enable = true;
+          package = pkgs.htop-vim;
           settings = {
             color_scheme = 0;
             detailed_cpu_time = true;
