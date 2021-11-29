@@ -754,6 +754,21 @@ rec {
       tags = [ "duckduckgo" "bangs" ];
       remote = { url = "https://duckduckgo.com/bang"; };
     };
+    nixos-util-lib-1 = {
+      desc = "nixpkgs-like util lib example 1";
+      local.path = "${wsRoot "github"}/neXromancers/nixromancers/default.nix";
+      transient = true;
+    };
+    nixos-util-lib-2 = {
+      desc = "nixpkgs-like util lib example 2";
+      local.path = "${wsRoot "github"}/bb010g/nur-packages/lib/default.nix";
+      transient = true;
+    };
+    nixos-util-lib-3 = {
+      desc = "nixpkgs-like util lib example 3";
+      local.path = "${wsRoot "github"}/jwiegley/notes/gists/fef31cdaae1d00c39fce075e9a0ac1e4/loop.nix";
+      transient = true;
+    };
     agenda = {
       local.path = homePrefix user "docs/org/agenda.org";
       windowRules = [
