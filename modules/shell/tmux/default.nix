@@ -87,6 +87,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
+        home.packages = with pkgs; [ xsel ]; # for `fingers` plugin
         home.file = {
           ".tmuxp/main.yml".text = ''
             session_name: ${cfg.defaultSession}
