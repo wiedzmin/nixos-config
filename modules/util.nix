@@ -49,7 +49,7 @@ rec {
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
   homePrefix = user: suffix: "/home/${user}/" + suffix;
   goBinPrefix = user: suffix: "/home/${user}/workspace/go/bin/" + suffix;
-  xdgConfig = user: suffix: (homePrefix user ".config") + suffix;
+  xdgConfig = user: suffix: (homePrefix user ".config") + suffix; # FIXME: deal with slashes seamlessly
   configPrefix = suffix:
     "${wsRoot "github"}/wiedzmin/nixos-config/" + suffix;
   secretsPrefix = suffix:
