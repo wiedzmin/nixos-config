@@ -95,8 +95,11 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        yank-image = pkgs.writeShellApplication { name = "yank-image"; runtimeInputs = with pkgs; [ wget xclip ];
-                                                  text = ''wget "$1" -q -O - | xclip -i -selection primary -t image/jpeg''; };
+        yank-image = pkgs.writeShellApplication {
+          name = "yank-image";
+          runtimeInputs = with pkgs; [ wget xclip ];
+          text = ''wget "$1" -q -O - | xclip -i -selection primary -t image/jpeg'';
+        };
       };
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("qutebrowser"), {
@@ -120,6 +123,7 @@ in
         home.packages = with pkgs; [
           yank-image
         ];
+        xdg.configFile."qutebrowser/hint-words".text = builtins.readFile ./assets/hint-words;
         programs.qutebrowser = {
           enable = true;
           package = pkgs.qutebrowser;
@@ -241,7 +245,8 @@ in
               hide_unmatched_rapid_hints = true;
               leave_on_load = true;
               min_chars = 1;
-              mode = "number";
+              mode = "word";
+              dictionary = xdgConfig "${user}" "/qutebrowser/hint-words";
               next_regexes = [
                 "\\\\bnext\\\\b"
                 "\\\\bmore\\\\b"
