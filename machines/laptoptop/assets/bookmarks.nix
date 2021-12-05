@@ -173,6 +173,7 @@ rec {
         url = "https://www.youtube.com/";
         jump = true;
         searchSuffix = "results?search_query=";
+        browser = config.attributes.browser.fallback.cmd;
       };
     };
     "addons/firefox" = {
@@ -371,6 +372,7 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGYqjEYqkSP-BkNJVTjI8f9y";
         music = true;
+        browser = config.attributes.browser.fallback.cmd;
       };
     };
     "halimag" = {
@@ -379,6 +381,7 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGb41d6Ekp-BYGFvWvXrNXMo";
         music = true;
+        browser = config.attributes.browser.fallback.cmd;
       };
     };
     "buriad" = {
@@ -387,6 +390,7 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbLyP4AsXHMThm8JPCqTyP6";
         music = true;
+        browser = config.attributes.browser.fallback.cmd;
       };
     };
     "tuva" = {
@@ -395,6 +399,7 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZiyYBHyXOh_XxlTii4nLUW";
         music = true;
+        browser = config.attributes.browser.fallback.cmd;
       };
     };
     "turk/tatar" = {
@@ -403,42 +408,64 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGYtwSjkeToMJ17FVXgRWmTW";
         music = true;
+        browser = config.attributes.browser.fallback.cmd;
       };
     };
     "rust" = {
       desc = "it/rust";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZGJn6Q7c6G7NAaiWD5J__z";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZGJn6Q7c6G7NAaiWD5J__z";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "orgmode" = {
       desc = "emacs/orgmode";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZJBJT4i3KvMbAuIicqwSau";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZJBJT4i3KvMbAuIicqwSau";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "emacs" = {
       desc = "emacs";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZM2QXMb8eZ8_I6JhfZctWi";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZM2QXMb8eZ8_I6JhfZctWi";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "it/pm" = {
       desc = "it/management";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZT0PdGw9dp_Ic9jYODxqxB";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZT0PdGw9dp_Ic9jYODxqxB";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "nix" = {
       desc = "it/nix";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZiPdYVvHZY8Day5RC934CE";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZiPdYVvHZY8Day5RC934CE";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "lisp" = {
       desc = "lisp";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZioLb2SeloXWPkP2PmxM3t";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZioLb2SeloXWPkP2PmxM3t";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "var/it" = {
       desc = "it/var";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGa0RDozpS3WxmUcoYSsOmTU";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGa0RDozpS3WxmUcoYSsOmTU";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "altai" = {
       desc = "Altai";
@@ -446,37 +473,56 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGaJrdeFwJN7Q5Id700ofPdd";
         music = true;
+        browser = config.attributes.browser.fallback.cmd;
       };
     };
     "technics" = {
       desc = "ethnic/music/technics";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGaKdF1Ewgg9IWW96UPpxTFi";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGaKdF1Ewgg9IWW96UPpxTFi";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "var" = {
       desc = "var";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGajeWFlOnp19tSDu7XhWFo2";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGajeWFlOnp19tSDu7XhWFo2";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "python" = {
       desc = "it/python";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbTK2Y7VPHoc01tbQrZww5h";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbTK2Y7VPHoc01tbQrZww5h";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "hl" = {
       desc = "it/conf/highload";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbiXj0rSMDJEuogTY4y8SQL";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbiXj0rSMDJEuogTY4y8SQL";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "golang" = {
       desc = "it/golang";
       tags = [ "media" "video" ];
-      remote.url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbtFoRo94tXdDBgjwsTh02r";
+      remote = {
+        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbtFoRo94tXdDBgjwsTh02r";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "andrewtropin/playlists" = {
       desc = "playlists of IT-related videos by Andrew Tropin";
       tags = [ "it" "nix" "guix" "emacs" "video" ];
-      remote.url = "https://www.youtube.com/c/TROP1N/playlists";
+      remote = {
+        url = "https://www.youtube.com/c/TROP1N/playlists";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "ya" = {
       desc = "Yandex";
@@ -743,8 +789,10 @@ rec {
     };
     "real mongolia" = {
       tags = [ "mongol" "video" "youtube" ];
-      browser = config.attributes.browser.fallback.cmd;
-      remote = { url = "https://www.youtube.com/channel/UCtMZD_UHQxCowHltovfEnvQ"; };
+      remote = {
+        url = "https://www.youtube.com/channel/UCtMZD_UHQxCowHltovfEnvQ";
+        browser = config.attributes.browser.fallback.cmd;
+      };
     };
     "cider/discord" = {
       tags = [ "emacs" "clojure" "cider" "discord" ];
