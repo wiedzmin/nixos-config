@@ -332,7 +332,10 @@ rec {
     };
     "fb" = {
       tags = [ "fb" ];
-      remote.url = "https://www.facebook.com/";
+      remote = {
+        url = "https://www.facebook.com/";
+        browser = config.attributes.browser.fallback.cmd;
+      };
       windowRules = [
         {
           class = mkWSMappingBrowsersRegexp;
@@ -344,7 +347,10 @@ rec {
     "fbmess" = {
       desc = "Facebook Messenger";
       tags = [ "fb" ];
-      remote.url = "https://www.facebook.com/messages/t/";
+      remote = {
+        browser = config.attributes.browser.fallback.cmd;
+        url = "https://www.facebook.com/messages/t/";
+      };
     };
     "mt" = {
       desc = "Multitran";
