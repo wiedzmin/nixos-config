@@ -11,7 +11,7 @@ in
 
   config = mkIf cfg.enable {
     home-manager.users."${user}" = {
-      xdg.configFile."quassel-irc.org/settings.qss".source = ./zenburn.qss;
+      xdg.configFile."quassel-irc.org/settings.qss".source = ./assets/zenburn.qss;
       programs.zathura.options = {
         completion-bg = "#404040";
         completion-fg = "#7cb8bb";
@@ -36,7 +36,7 @@ in
         statusbar-bg = "#606060";
         statusbar-fg = "#808080";
       };
-      programs.rofi.theme = ./base16-zenburn.rasi; # ${inputs.base16-rofi}/themes/base16-zenburn.rasi
+      # programs.rofi.theme = ./assets/base16-zenburn.rasi; # ${inputs.base16-rofi}/themes/base16-zenburn.rasi
       services.dunst.settings = {
         urgency_low = {
           background = "#333333";
