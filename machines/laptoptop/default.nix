@@ -175,16 +175,16 @@ in
       emacs.enable = true;
       wm.enable = true;
     };
-    qutebrowser = {
-      enable = true;
-      isDefault = false;
-      sessions.backup.enable = false;
-    };
     chromium = {
       enable = true;
       suspendInactive = false;
-      isDefault = true;
+      isDefault = false;
       isFallback = true;
+    };
+    firefox = {
+      enable = true;
+      isDefault = true;
+      sessions.backup.enable = true;
     };
   };
 
