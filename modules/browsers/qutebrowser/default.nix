@@ -14,6 +14,9 @@ let
       matchWmClassContains = "qutebrowser";
       suspendSubtreePattern = "qtwebengine";
       downclockOnBattery = 3;
+      resumeEvery = 60;
+      resumeFor = 3;
+      sendSignals = true;
     };
   };
 in
