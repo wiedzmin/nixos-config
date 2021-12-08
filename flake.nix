@@ -16,10 +16,6 @@
       url = "github:vivien/i3blocks-contrib";
       flake = false;
     };
-    base16-rofi = {
-      url = "github:0xdec/base16-rofi";
-      flake = false;
-    };
     nixpkgs-index-fm.url = "github:nixos/nixpkgs/a4bf44345706231f9dd56f85757499af1e940847";
 
     # NOTE: using these instead of quelpa

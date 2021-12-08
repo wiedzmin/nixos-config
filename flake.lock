@@ -1,21 +1,5 @@
 {
   "nodes": {
-    "base16-rofi": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1637261198,
-        "narHash": "sha256-W5UBUIeKfHG6oGgoh4YP4wFq4OPleVV5HQ4C3Ak42Yc=",
-        "owner": "0xdec",
-        "repo": "base16-rofi",
-        "rev": "a7e7be0cb5812243f23cd4607eab11ce4cca7774",
-        "type": "github"
-      },
-      "original": {
-        "owner": "0xdec",
-        "repo": "base16-rofi",
-        "type": "github"
-      }
-    },
     "emacs": {
       "locked": {
         "lastModified": 1638497718,
@@ -223,7 +207,6 @@
     },
     "root": {
       "inputs": {
-        "base16-rofi": "base16-rofi",
         "emacs": "emacs",
         "emacs-org-bars": "emacs-org-bars",
         "git-extra-commands": "git-extra-commands",
