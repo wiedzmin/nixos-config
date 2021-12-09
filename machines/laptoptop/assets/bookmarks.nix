@@ -73,7 +73,7 @@ rec {
         jump = true;
         searchSuffix = "search?q=";
       };
-      myrepos = {
+      batchvcs = {
         "${wsRoot "github"}/wiedzmin/git-hooks" = {
           checkout = [ "git clone 'https://github.com/wiedzmin/git-hooks.git' 'git-hooks'" ];
         };

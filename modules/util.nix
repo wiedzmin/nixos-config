@@ -95,7 +95,7 @@ rec {
   mkGithubBookmarkWithMyrepos = user: repo: {
     local.path = "${wsRoot "github"}/${user}/${repo}";
     remote.url = "https://github.com/${user}/${repo}";
-    myrepos = {
+    batchvcs = {
       "${wsRoot "github"}/${user}/${repo}" = {
         checkout = [ "git clone 'https://github.com/${user}/${repo}.git' '${repo}'" ];
       };

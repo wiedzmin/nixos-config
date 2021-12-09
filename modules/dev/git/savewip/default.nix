@@ -32,8 +32,8 @@ in
     (mkIf cfg.enable {
       assertions = [
         {
-          assertion = config.dev.git.batch.enable;
-          message = "git: automatic WIP saving requires batch setup to be enabled.";
+          assertion = config.dev.batchvcs.enable;
+          message = "git: automatic WIP saving requires batch VCS setup to be enabled.";
         }
         {
           assertion = cfg.enable && cfg.when != "";
@@ -47,7 +47,7 @@ in
           (builtins.readFile ./scripts/gitwip.py);
       };
 
-      dev.git.batch.commands = { savewip = [ "${pkgs.gitwip}/bin/gitwip" ]; };
+      dev.batchvcs.commands = { savewip = [ "${pkgs.gitwip}/bin/gitwip" ]; };
 
       systemd.user.services."git-save-wip" = {
         description = "Save work-in-progress in registered git repo(s)";

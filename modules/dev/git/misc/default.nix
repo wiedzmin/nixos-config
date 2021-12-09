@@ -67,7 +67,7 @@ in
         '';
       };
 
-      dev.git.batch.commands = {
+      dev.batchvcs.commands = {
         synctags = [ "${pkgs.gittags}/bin/gittags --sync" ];
         usynctags = [ "${pkgs.gittags}/bin/gittags --sync --remote ${cfg.defaultUpstreamRemote}" ];
         trim = [ "${pkgs.gitAndTools.git-trim}/bin/git-trim --delete=merged-local" ];

@@ -1,32 +1,35 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../../util.nix { inherit config inputs lib pkgs; };
+with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
-  cfg = config.dev.git.batch;
+  cfg = config.dev.batchvcs;
   user = config.attributes.mainUser.name;
   collectReposMetadata = bookmarks:
     (lib.mapAttrs'
       (_: meta:
-        lib.nameValuePair (builtins.head (builtins.attrNames meta.myrepos))
-          (builtins.head (builtins.attrValues meta.myrepos)))
-      (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "myrepos" ] meta && meta.myrepos != { }) bookmarks));
+        lib.nameValuePair (builtins.head (builtins.attrNames meta.batchvcs))
+          (builtins.head (builtins.attrValues meta.batchvcs)))
+      (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "batchvcs" ] meta && meta.batchvcs != { }) bookmarks));
   formatMyreposCommands = entries: indent:
-    lib.concatStringsSep "\n" (lib.mapAttrsToList (cmd: impl: ''
-      ${cmd} =
-      ${lib.concatStringsSep "\n" (lib.forEach impl (l: "${mkIndent indent}${l}"))}
-    '') entries);
+    lib.concatStringsSep "\n" (lib.mapAttrsToList
+      (cmd: impl: ''
+        ${cmd} =
+        ${lib.concatStringsSep "\n" (lib.forEach impl (l: "${mkIndent indent}${l}"))}
+      '')
+      entries);
   formatMyreposRepoMeta = path: meta: indent: ''
     [${path}]
     ${formatMyreposCommands meta 2}
   '';
-in {
+in
+{
   options = {
-    dev.git.batch = {
+    dev.batchvcs = {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable operations batching for Git repos, currently using `myrepos`.";
+        description = "Whether to enable operations batching for various repos, currently using `myrepos`.";
       };
       commands = mkOption {
         type = types.attrsOf (types.listOf types.str);

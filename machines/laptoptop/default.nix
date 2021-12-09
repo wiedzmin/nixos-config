@@ -233,6 +233,7 @@ in
       emacs.enable = true;
     };
     projectenv.enable = true;
+    batchvcs.enable = true;
     git = {
       autofetch = {
         enable = false;
@@ -246,7 +247,6 @@ in
         enable = false;
         when = "hourly";
       };
-      batch.enable = true;
       forges = {
         enable = true;
         emacs.enable = true;
