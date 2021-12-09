@@ -5,6 +5,12 @@ with lib;
 let
   cfg = config.dev.git.batch;
   user = config.attributes.mainUser.name;
+  collectReposMetadata = bookmarks:
+    (lib.mapAttrs'
+      (_: meta:
+        lib.nameValuePair (builtins.head (builtins.attrNames meta.myrepos))
+          (builtins.head (builtins.attrValues meta.myrepos)))
+      (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "myrepos" ] meta && meta.myrepos != { }) bookmarks));
   formatMyreposCommands = entries: indent:
     lib.concatStringsSep "\n" (lib.mapAttrsToList (cmd: impl: ''
       ${cmd} =

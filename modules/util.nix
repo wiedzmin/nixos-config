@@ -201,12 +201,6 @@ rec {
           !(lib.hasAttrByPath [ "remote" "enable" ] meta && !meta.remote.enable)
           && (lib.hasAttrByPath [ "remote" "url" ] meta && meta.remote.url != ""))
         bookmarks);
-  collectReposMetadata = bookmarks:
-    (lib.mapAttrs'
-      (_: meta:
-        lib.nameValuePair (builtins.head (builtins.attrNames meta.myrepos))
-          (builtins.head (builtins.attrValues meta.myrepos)))
-      (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "myrepos" ] meta && meta.myrepos != { }) bookmarks));
   mkBookmarkNameLocal = meta: sep: tagSep:
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.key ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
