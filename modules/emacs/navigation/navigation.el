@@ -31,6 +31,10 @@
       (select-window
        (cdr (ring-ref avy-ring 0))))
     t)
+  (defun avy-action-exchange (pt)
+    "Exchange sexp at PT with the one at point."
+    (set-mark pt)
+    (transpose-sexps 0))
   :bind
   ("C-:" . avy-goto-char)
   (:map custom-goto-map
@@ -55,6 +59,7 @@
   (setf (alist-get ?w avy-dispatch-alist) 'avy-action-copy)
   (setf (alist-get ?W avy-dispatch-alist) 'avy-action-copy-whole-line)
   (setf (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line)
+  (setf (alist-get ?e avy-dispatch-alist) 'avy-action-exchange)
   (avy-setup-default))
 
 (use-package goto-addr
