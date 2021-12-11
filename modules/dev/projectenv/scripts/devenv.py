@@ -16,8 +16,6 @@ settings_file = "settings.yaml"
 
 
 r = redis.Redis(host='localhost', port=6379, db=0)
-project_templates = json.loads(r.get("projectenv/templates"))
-root_markers = json.loads(r.get("projectenv/root_markers"))
 
 
 def markers_exist(path, files):
@@ -59,6 +57,41 @@ def execute_commands(path, commands, fail=True):
                 sys.exit(1)
 
 
+def project_prefix(path):
+    return "_".join(os.path.normpath(path).split(os.sep)[-2:])
+
+
+def construct_patch_name(path):
+    timestamp = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
+    return f"{project_prefix(path)}-{timestamp}.patch"
+
+
+def seed_devenv(current_dir):
+    if not markers_exist(current_dir, [".git"]):
+        print("initialize git repo first")
+        sys.exit(1)
+    if markers_exist(current_dir, json.loads(r.get("projectenv/root_markers"))):
+        print("project already initialized")
+        sys.exit(1)
+    settings = json.loads(r.get("projectenv/settings"))
+    token = get_selection_rofi(settings.keys(), "settings: ")
+    if not token:
+        print("no settings to instantiate")
+        sys.exit(1)
+    with open(f"{current_dir}/{settings_file}", "w") as f:
+        f.write(dump(settings[token]))
+    project_templates = json.loads(r.get("projectenv/templates"))
+    template = get_selection_rofi(project_templates.keys(), "template: ")
+    if template:
+        template_source_path = project_templates[template]
+        devenv_template_files = os.listdir(template_source_path)
+        for f in devenv_template_files:
+            shell_cmd(f"renderizer --settings={settings_file} {template_source_path}/{f} > {current_dir}/{f}")
+    shell_cmd(f"git add -- {' '.join(get_devenv_files(current_dir))}",)
+    os.remove(current_dir + "/" + settings_file)
+    sys.exit(0)
+
+
 def hide_devenv(path):
     devenv_filelist = " ".join(get_devenv_files(path, locked_flake=True))
     execute_commands(path, [
@@ -75,13 +108,45 @@ def unhide_devenv(path, devenv_stash_token):
         print("project not initialized")
 
 
-def project_prefix(path):
-    return "_".join(os.path.normpath(path).split(os.sep)[-2:])
+def remove_devenv(current_dir):
+    if markers_exist(current_dir, json.loads(r.get("projectenv/root_markers"))):
+        hide_devenv(current_dir)
+    devenv_stash_token = get_devenv_stash_token(current_dir)
+    if devenv_stash_token:
+        execute_commands(current_dir, [f'git stash drop {devenv_stash_token}'])
+    else:
+        devenv_files = get_devenv_files(current_dir, locked_flake=True)
+        if devenv_files:
+            devenv_files.append(settings_file)
+        else:
+            devenv_files = [settings_file]
+        for f in devenv_files:
+            if os.path.exists(f) and os.path.isfile(f):
+                os.remove(f)
 
 
-def construct_patch_name(path):
-    timestamp = datetime.datetime.now().strftime("%d-%m-%Y-%H-%M-%S")
-    return f"{project_prefix(path)}-{timestamp}.patch"
+def export_devenv(current_dir, backup_root):
+    if markers_exist(current_dir, json.loads(r.get("projectenv/root_markers"))):
+        hide_devenv(current_dir)
+    devenv_stash_token = get_devenv_stash_token(current_dir)
+    if devenv_stash_token:
+        execute_commands(current_dir,
+                         [f'git stash show -p {devenv_stash_token} > {backup_root}/{construct_patch_name(current_dir)}'],
+                         fail=False)
+    else:
+        print("project not initialized")
+        sys.exit(1)
+    unhide_devenv(current_dir, devenv_stash_token)
+
+
+def import_devenv(current_dir, backup_root):
+    prefix = project_prefix(current_dir)
+    envs = [os.path.basename(env) for env in glob.glob(f"{backup_root}/{prefix}*")]
+    env = get_selection_rofi(envs, "envs: ")
+    if env:
+        copyfile(f"{backup_root}/{env}", f"{current_dir}/{env}")
+    else:
+        print("nothing selected")
 
 
 parser = argparse.ArgumentParser(description="Devenv automation")
@@ -106,65 +171,14 @@ args = parser.parse_args()
 
 current_dir = os.getcwd()
 if args.seed_devenv:
-    if not markers_exist(current_dir, [".git"]):
-        print("initialize git repo first")
-        sys.exit(1)
-    if markers_exist(current_dir, root_markers):
-        print("project already initialized")
-        sys.exit(1)
-    settings = json.loads(r.get("projectenv/settings"))
-    token = get_selection_rofi(settings.keys(), "settings: ")
-    if not token:
-        print("no settings to instantiate")
-        sys.exit(1)
-    with open(f"{current_dir}/{settings_file}", "w") as f:
-        f.write(dump(settings[token]))
-    template = get_selection_rofi(project_templates.keys(), "template: ")
-    if template:
-        template_source_path = project_templates[template]
-        devenv_template_files = os.listdir(template_source_path)
-        for f in devenv_template_files:
-            shell_cmd(f"renderizer --settings={settings_file} {template_source_path}/{f} > {current_dir}/{f}")
-    shell_cmd(f"git add -- {' '.join(get_devenv_files(current_dir))}",)
-    os.remove(current_dir + "/" + settings_file)
-    sys.exit(0)
+    seed_devenv(current_dir)
 elif args.hide_devenv:
     hide_devenv(current_dir)
 elif args.unhide_devenv:
-    devenv_stash_token = get_devenv_stash_token(current_dir)
-    unhide_devenv(current_dir, devenv_stash_token)
+    unhide_devenv(current_dir, get_devenv_stash_token(current_dir))
 elif args.remove_devenv:
-    if markers_exist(current_dir, root_markers):
-        hide_devenv(current_dir)
-    devenv_stash_token = get_devenv_stash_token(current_dir)
-    if devenv_stash_token:
-        execute_commands(current_dir, [f'git stash drop {devenv_stash_token}'])
-    else:
-        devenv_files = get_devenv_files(current_dir, locked_flake=True)
-        if devenv_files:
-            devenv_files.append(settings_file)
-        else:
-            devenv_files = [settings_file]
-        for f in devenv_files:
-            if os.path.exists(f) and os.path.isfile(f):
-                os.remove(f)
+    remove_devenv(current_dir)
 elif args.export_devenv:
-    if markers_exist(current_dir, root_markers):
-        hide_devenv(current_dir)
-    devenv_stash_token = get_devenv_stash_token(current_dir)
-    if devenv_stash_token:
-        execute_commands(current_dir,
-                         [f'git stash show -p {devenv_stash_token} > {args.backup_root}/{construct_patch_name(current_dir)}'],
-                         fail=False)
-    else:
-        print("project not initialized")
-        sys.exit(1)
-    unhide_devenv(current_dir, devenv_stash_token)
+    export_devenv(current_dir, args.backup_root)
 elif args.import_devenv:
-    prefix = project_prefix(current_dir)
-    envs = [os.path.basename(env) for env in glob.glob(f"{args.backup_root}/{prefix}*")]
-    env = get_selection_rofi(envs, "envs: ")
-    if env:
-        copyfile(f"{args.backup_root}/{env}", f"{current_dir}/{env}")
-    else:
-        print("nothing selected")
+    import_devenv(current_dir, args.backup_root)
