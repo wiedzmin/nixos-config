@@ -223,6 +223,7 @@
         "unstable": "unstable",
         "yasnippet-snippets": "yasnippet-snippets",
         "zsh-async": "zsh-async",
+        "zsh-autocomplete": "zsh-autocomplete",
         "zsh-command-time": "zsh-command-time",
         "zsh-fuzzy-search-and-edit": "zsh-fuzzy-search-and-edit",
         "zsh-go-task-completions": "zsh-go-task-completions",
@@ -294,6 +295,22 @@
       "original": {
         "owner": "mafredri",
         "repo": "zsh-async",
+        "type": "github"
+      }
+    },
+    "zsh-autocomplete": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1639083372,
+        "narHash": "sha256-I0zPlCNK1rHnIRsjECvTrsqKoQLonpRG0HOugHUFEeQ=",
+        "owner": "marlonrichert",
+        "repo": "zsh-autocomplete",
+        "rev": "6f744266c899636c7ab61bbffabfda83cd852bef",
+        "type": "github"
+      },
+      "original": {
+        "owner": "marlonrichert",
+        "repo": "zsh-autocomplete",
         "type": "github"
       }
     },

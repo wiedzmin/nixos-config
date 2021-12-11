@@ -80,6 +80,11 @@
       url = "github:sawadashota/go-task-completions";
       flake = false;
     };
+    zsh-autocomplete = {
+      # TODO: keep for future reevaluation (not completely usasble yet)
+      url = "github:marlonrichert/zsh-autocomplete";
+      flake = false;
+    };
   };
 
   # TODO: consider thinking of https://github.com/lokegustafsson/nixfiles/blob/7e3ecc70c3ce7e29c857e0f8fc96cf002d3a1b4d/flake.nix
