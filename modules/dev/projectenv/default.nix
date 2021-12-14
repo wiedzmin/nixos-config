@@ -108,6 +108,8 @@ in
           strings.escapeNixString (builtins.toJSON config.dev.navigation.projects.rootMarkers)
         }
       '';
+
+      dev.batchvcs.commands = { exportenv = [ "${pkgs.git-exportenv}/bin/git-exportenv" ]; };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${user}" = {
