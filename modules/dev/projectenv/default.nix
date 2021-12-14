@@ -64,14 +64,26 @@ in
         devenv = mkPythonScriptWithDeps "devenv"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.pyyaml renderizer stgit ])
           (builtins.readFile ./scripts/devenv.py);
-        git-hideenv = pkgs.writeShellApplication { name = "git-hideenv"; runtimeInputs = with pkgs; [ devenv ];
-                                                   text = "devenv --hide"; };
-        git-unhideenv = pkgs.writeShellApplication { name = "git-unhideenv"; runtimeInputs = with pkgs; [ devenv ];
-                                                   text = "devenv --unhide"; };
-        git-exportenv = pkgs.writeShellApplication { name = "git-exportenv"; runtimeInputs = with pkgs; [ devenv ];
-                                                   text = "devenv --export"; };
-        git-removeenv = pkgs.writeShellApplication { name = "git-removeenv"; runtimeInputs = with pkgs; [ devenv ];
-                                                   text = "devenv --remove"; };
+        git-hideenv = pkgs.writeShellApplication {
+          name = "git-hideenv";
+          runtimeInputs = with pkgs; [ devenv ];
+          text = "devenv --hide";
+        };
+        git-unhideenv = pkgs.writeShellApplication {
+          name = "git-unhideenv";
+          runtimeInputs = with pkgs; [ devenv ];
+          text = "devenv --unhide";
+        };
+        git-exportenv = pkgs.writeShellApplication {
+          name = "git-exportenv";
+          runtimeInputs = with pkgs; [ devenv ];
+          text = "devenv --export";
+        };
+        git-removeenv = pkgs.writeShellApplication {
+          name = "git-removeenv";
+          runtimeInputs = with pkgs; [ devenv ];
+          text = "devenv --remove";
+        };
       };
 
       home-manager.users."${user}" = {
