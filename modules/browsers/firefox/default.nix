@@ -289,9 +289,9 @@ in
 
           " Sane hinting mode
           set hintfiltermode vimperator-reflow
-          set hintchars 4327895610
+          set hintchars qweasdzxc
           set hintuppercase false
-          set hintnames numeric
+          set hintnames uniform
 
           set tabopenpos last
 
