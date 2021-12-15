@@ -496,6 +496,11 @@
                       face
                       tabs)))
 
+(use-package dired-subtree
+  :after dired
+  :bind (:map dired-mode-map
+              ("TAB" . dired-subtree-toggle)))
+
 (use-package dired
   :commands dired
   :hook (dired-mode-hook . auto-revert-mode)

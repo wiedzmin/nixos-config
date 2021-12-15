@@ -35,6 +35,7 @@ in
         epkgs.consult-flycheck
         epkgs.dired-filetype-face
         epkgs.dired-narrow
+        epkgs.dired-subtree
         epkgs.embark
         epkgs.embark-consult
         epkgs.flycheck-projectile
