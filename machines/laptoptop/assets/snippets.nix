@@ -223,6 +223,10 @@ rec {
       description = "collect tag attrs over html file";
       code = ''xidel data.html --extract '//img[@class="imageclass"]/@src' --output-format json > links.txt'';
     }
+    {
+      description = "show hidden nix GC roots";
+      code = ''nix-store --gc --print-roots | cut -d' ' -f1 | uniq |grep -v /proc | grep -v { | grep -v /run | grep alex3rd | grep direnv'';
+    }
   ];
   home-manager.users."${user}" = {
     xdg.configFile."espanso/user/personal.yml".text = ''
