@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.appearance.emacs;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   imports = [ ./doom-modeline.nix ./dracula-theme.nix ./telephone-line.nix ./zenburn-theme.nix ];
 
   options = {
@@ -29,7 +30,13 @@ in {
         };
       };
 
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.diredfl epkgs.rainbow-mode epkgs.transwin epkgs.unicode-fonts ];
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.diredfl
+        epkgs.default-text-scale
+        epkgs.rainbow-mode
+        epkgs.transwin
+        epkgs.unicode-fonts
+      ];
       ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./appearance.el ];
     })
   ];
