@@ -73,7 +73,7 @@
   :commands (org-babel-execute:restclient))
 
 (use-package org
-  :after f
+  :after (f consult)
   :delight org-src-mode
   :preface
   ;; remove read-only props from yanked text (e.g. from jabber.el chat buffer)
@@ -122,6 +122,13 @@
   (defun custom/consult-ripgrep-org ()
     (interactive)
     (consult-ripgrep "@orgRoot@"))
+  (defvar consult--source-org-buffer
+    (list :name "Org"
+          :narrow ?o
+          :category 'buffer
+          :state #'consult--buffer-state
+          :items (lambda () (mapcar #'buffer-name (org-buffer-list)))))
+  ;; https://github.com/chuntaro/emacs-keypression
   :mode (("\\.org$" . org-mode)
          ("\\.org_archive$" . org-mode))
   :company '(company-dabbrev company-capf)
@@ -354,7 +361,8 @@
                   ("emacs" :keys "e" :olp ("feeds" "emacs") :template "* @pimCommonCaptureDataTemplate@")
                   ("rest" :keys "r" :olp ("feeds" "rest") :template "* @pimCommonCaptureDataTemplate@"))))))
   (run-with-idle-timer custom/idle-clockout-timeout t 'custom/clockout-when-idle)
-  (turn-on-orgtbl))
+  (turn-on-orgtbl)
+  (add-to-list 'consult-buffer-sources consult--source-org-buffer 'append))
 
 (use-package org-ql
   :after org
