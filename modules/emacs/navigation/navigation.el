@@ -266,7 +266,6 @@
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
 
-
 ;; TODO: consider trying `fd' finder tool, see https://github.com/minad/consult/wiki#find-files-using-fd for reference
 ;; Note: this requires lexical binding
 ;; TODO: consider adding flexible project root function (projectile/vc/whatever),
@@ -324,7 +323,9 @@
         ("<prior>" . scroll-down-command))
   (:map selectrum-minibuffer-map
         ("<next>" . scroll-up-command)
-        ("<prior>" . scroll-down-command))
+        ("<prior>" . scroll-down-command)
+        ("S-<up>" . selectrum-previous-candidate)
+        ("S-<down>" . selectrum-next-candidate))
   :custom
   (completion-in-region-function #'consult-completion-in-region)
   (consult-async-input-debounce 0.1)
@@ -341,7 +342,8 @@
   (xref-show-xrefs-function #'consult-xref)
   :config
   (consult-customize
-   consult-theme :preview-key '(:debounce 0.2 any))
+   consult-theme :preview-key '(:debounce 0.2 any)
+   consult-recent-file :preview-key '((kbd "S-<up>") (kbd "S-<down>")))
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
   (advice-add #'register-preview :override #'consult-register-window)
   (fset 'multi-occur #'consult-multi-occur)
