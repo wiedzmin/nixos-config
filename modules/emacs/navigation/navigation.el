@@ -749,6 +749,17 @@
   :custom
   (xref-search-program 'ripgrep))
 
+(use-package burly
+  ;;TODO: also lift frames bookmark opening up to `open-project' script
+  ;;      level, otherwise be prepared for frames doubling in some cases
+  :bind
+  (:map frame-map
+        ("b" . burly-bookmark-windows)
+        ("B" . burly-bookmark-frames))
+  (:map custom-goto-map
+        ("b" . burly-open-bookmark)
+        ("M-b" . burly-open-last-bookmark)))
+
 (define-hostmode poly-nix-hostmode :mode 'nix-mode)
 
 (define-innermode poly-emacs-innermode
