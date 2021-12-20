@@ -30,6 +30,7 @@ in
         epkgs.beginend
         epkgs.block-nav
         epkgs.bookmark-view
+        epkgs.bufler
         epkgs.burly
         epkgs.consult
         epkgs.consult-dir

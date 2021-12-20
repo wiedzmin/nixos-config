@@ -749,6 +749,56 @@
   :custom
   (xref-search-program 'ripgrep))
 
+;;TODO: https://www.emacswiki.org/emacs/BookmarkPlus#AutomaticIdle-PeriodBookmarking
+;;TODO: https://github.com/Overdr0ne/gumshoe
+(use-package dogears
+  :demand t
+  :after consult
+  :preface
+  (defvar consult--source-dogears
+    (list :name     "Dogears"
+          :narrow   ?d
+          :category 'dogears
+          :items    (lambda ()
+                      (mapcar
+                       (lambda (place)
+                         (propertize (dogears--format-record place)
+                                     'consult--candidate place))
+                       dogears-list))
+          :action   (lambda (cand)
+                      (dogears-go (get-text-property 0 'consult--candidate cand)))))
+  (defun consult-dogears ()
+    (interactive)
+    (consult--multi '(consult--source-dogears)))
+  :config
+  (add-to-list 'consult-buffer-sources consult--source-dogears 'append)
+  (dogears-mode +1))
+
+;TODO: play with groups/workspaces (https://github.com/alphapapa/bufler.el#default-groups-example)
+(use-package bufler
+  :demand t
+  :preface
+  (defvar consult--bufler-workspace+
+    (list :name "Workspace"
+          :narrow ?w
+          :category 'buffer
+          :face 'consult-buffer
+          :history 'buffer-name-history
+          :state #'consult--buffer-state
+          ;; :enabled (lambda () (frame-parameter nil 'bufler-workspace-path))
+          :items (lambda ()
+                   (let ((bufler-vc-state nil))
+                     (mapcar #'buffer-name
+                             (mapcar #'cdr
+                                     (bufler-buffer-alist-at
+                                      (frame-parameter nil 'bufler-workspace-path)
+                                      :filter-fns bufler-filter-buffer-fns))))))
+    "Bufler workspace buffers source for `consult-buffer'.")
+  :bind
+  ([remap list-buffers] . bufler-switch-buffer)
+  :config
+  (add-to-list 'consult-buffer-sources consult--bufler-workspace+ 'append))
+
 (use-package burly
   ;;TODO: also lift frames bookmark opening up to `open-project' script
   ;;      level, otherwise be prepared for frames doubling in some cases
