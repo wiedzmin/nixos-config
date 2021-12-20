@@ -75,6 +75,7 @@ in
         "custom-treemacs-map" = "C-x t";
         "custom-ws-map" = "C-c x";
         "custom-goto-map" = "M-s";
+        "frame-map" = "<f2>";
         # TODO: remap original goto-map back to global keys space, because of current accessibility reduce for:
         # simple:
         # ("n" . next-error)

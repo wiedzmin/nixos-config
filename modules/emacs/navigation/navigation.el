@@ -560,11 +560,10 @@
     (server-edit)
     (delete-frame))
   :bind
-  (:prefix-map frame-map
-               :prefix "<f2>"
-               ("n" . make-frame-command)
-               ("k" . mark-done-kill-frame)
-               ("s" . delete-other-frames))
+  (:map frame-map
+        ("n" . make-frame-command)
+        ("k" . mark-done-kill-frame)
+        ("s" . delete-other-frames))
   (:map ctl-x-map
         ("C-c" . delete-frame)) ;; for keeping daemon running
   :config
