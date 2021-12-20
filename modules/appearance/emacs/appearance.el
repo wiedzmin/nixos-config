@@ -6,10 +6,10 @@
   :after frame
   :bind
   (:map frame-map
-       ("v" . transwin-toggle-transparent-frame)
-       ("V" . transwin-ask-set-transparency)
-       ("<up>" . transwin-increment-frame-transparent)
-       ("<down>" . transwin-decrement-frame-transparent)))
+        ("v" . transwin-toggle-transparent-frame)
+        ("V" . transwin-ask-set-transparency)
+        ("<up>" . transwin-increment-frame-transparent)
+        ("<down>" . transwin-decrement-frame-transparent)))
 
 (use-package default-text-scale
   :bind
