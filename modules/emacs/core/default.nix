@@ -37,6 +37,11 @@ in
         default = false;
         description = "Whether to build emacs with nativecomp features enabled";
       };
+      pgtk.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to build PGTK emacs flavor";
+      };
       customPackages = mkOption {
         type = types.attrs;
         default = { };
@@ -78,10 +83,12 @@ in
         type = types.package;
         default =
           let
-            flavor = with pkgs.unstable; if cfg.native.enable then emacsGcc else emacs;
+            flavor = with pkgs.unstable; if cfg.native.enable then
+              if cfg.pgtk.enable then emacsPgtkGcc else emacsGcc else
+              if cfg.pgtk.enable then emacsPgtk else emacs;
             configured = (flavor.override {
               withGTK2 = false;
-              withGTK3 = false;
+              withGTK3 = if cfg.pgtk.enable then true else false;
             }).overrideAttrs (old: rec {
               withCsrc = true;
               configureFlags = (remove "--with-cairo" (remove "--with-harfbuzz" old.configureFlags))
