@@ -312,6 +312,7 @@ in
     core = {
       enable = true;
       native.enable = true;
+      pgtk.enable = true;
       wm.enable = true;
     };
     edit.enable = true;
