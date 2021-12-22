@@ -279,6 +279,12 @@
     (interactive)
     (consult-ripgrep (projectile-project-root) (thing-at-point 'symbol)))
   ;;TODO: add #'consult-focus-lines-symbol-at-point for occasssional reference write-ups
+  (defun custom/embark-preview ()
+    (interactive)
+    (unless (bound-and-true-p consult--preview-function)
+      (save-selected-window
+        (let ((embark-quit-after-action))
+          (embark-default-action)))))
   :init
   (use-package consult-selectrum)
   :bind
@@ -319,6 +325,7 @@
   (:map dired-mode-map
         ("`" . consult-file-externally))
   (:map minibuffer-local-map
+        ("M-." . custom/embark-preview)
         ("<next>" . scroll-up-command)
         ("<prior>" . scroll-down-command))
   (:map selectrum-minibuffer-map
