@@ -313,6 +313,7 @@ in
       enable = true;
       native.enable = true;
       pgtk.enable = true;
+      useModernDrawingLibs = true;
       wm.enable = true;
     };
     edit.enable = true;
