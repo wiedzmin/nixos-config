@@ -78,8 +78,9 @@ in
 
           matches:
             - trigger: ":yt"
-              replace: "nix shell \"nixpkgs#youtube-dl\" -c youtube-dl \"$|$\""
+              replace: "nix shell \"nixpkgs#yt-dlp\" -c yt-dlp \"$|$\""
         '';
+        # TODO: deal with converting from `webm` ^^^ (use ffmpeg btw)
         programs.mpv = {
           # TODO: consider extracting options
           enable = true;
