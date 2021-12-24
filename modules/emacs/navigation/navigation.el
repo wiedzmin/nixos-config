@@ -271,22 +271,9 @@
 ;; TODO: consider adding flexible project root function (projectile/vc/whatever),
 ;; probably this should be done at `projectile' config
 (use-package consult
-  :preface
-  (defun consult-line-symbol-at-point ()
-    (interactive)
-    (consult-line (thing-at-point 'symbol)))
-  (defun consult-ripgrep-symbol-at-point ()
-    (interactive)
-    (consult-ripgrep (projectile-project-root) (thing-at-point 'symbol)))
-  ;;TODO: add #'consult-focus-lines-symbol-at-point for occasssional reference write-ups
-  (defun custom/embark-preview ()
-    (interactive)
-    (unless (bound-and-true-p consult--preview-function)
-      (save-selected-window
-        (let ((embark-quit-after-action))
-          (embark-default-action)))))
   :init
   (use-package consult-selectrum)
+  (use-package consult-utils)
   :bind
   ("C-S-s" . consult-line-symbol-at-point)
   ("C-s" . consult-line)
@@ -353,6 +340,10 @@
    consult-recent-file :preview-key '((kbd "S-<up>") (kbd "S-<down>")))
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
   (advice-add #'register-preview :override #'consult-register-window)
+  (consult-customize consult-line :keymap my-consult-line-map)
+  (define-minibuffer-key "\C-s"
+                         'consult-location #'previous-history-element
+                         'file #'consult-find-for-minibuffer)
   (fset 'multi-occur #'consult-multi-occur)
   (fset 'projectile-ripgrep 'consult-ripgrep))
 
