@@ -72,7 +72,7 @@ in
       ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./navigation.el ];
       ide.emacs.core.customKeymaps = {
         "custom-help-map" = "<f1>";
-        "custom-narrowing-map" = "C-c n";
+        "custom-narrowing-map" = "<f9>";
         "custom-nav-map" = "C-q";
         "custom-projectile-map" = "<f8>";
         "custom-treemacs-map" = "C-x t";
