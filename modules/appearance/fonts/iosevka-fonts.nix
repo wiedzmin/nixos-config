@@ -39,14 +39,22 @@ in
       programs.zathura.options.font = "Iosevka Bold 10";
       services.dunst.settings.global.font = "Iosevka Bold 10";
       xresources.properties = {
-        "Emacs.Font" = "Iosevka:weight=Bold:size=14";
-
         "Xmessage*faceName" = "Iosevka";
         "Xmessage*faceSize" = "16";
         "Xmessage*faceWeight" = "Bold";
 
         "dzen2.font" = "Iosevka:weight=Bold:size=16";
+      } // lib.optionalAttrs (!config.ide.emacs.core.useModernDrawingLibs) {
+        "Emacs.Font" = "Iosevka:weight=Bold:size=12";
       };
     };
+    ide.emacs.core.config = lib.optionalString config.ide.emacs.core.useModernDrawingLibs ''
+      (defun custom/set-font (frame)
+        "Configure faces on frame creation"
+        (select-frame frame)
+        (if (display-graphic-p)
+            (set-frame-font "Iosevka ExtraBold 8" nil t)))
+      (add-hook 'after-make-frame-functions #'custom/set-font)
+    '';
   };
 }

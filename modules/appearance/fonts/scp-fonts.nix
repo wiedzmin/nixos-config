@@ -38,14 +38,22 @@ in
       programs.zathura.options.font = "Source Code Pro Bold 10";
       services.dunst.settings.global.font = "Source Code Pro Bold 10";
       xresources.properties = {
-        "Emacs.Font" = "Source Code Pro:weight=Bold:size=12";
-
         "Xmessage*faceName" = "Source Code Pro";
         "Xmessage*faceSize" = "12";
         "Xmessage*faceWeight" = "Bold";
 
         "dzen2.font" = "Source Code Pro:weight=Bold:size=12";
+      } // lib.optionalAttrs (!config.ide.emacs.core.useModernDrawingLibs) {
+        "Emacs.Font" = "Source Code Pro:weight=Bold:size=12";
       };
     };
+    ide.emacs.core.config = lib.optionalString config.ide.emacs.core.useModernDrawingLibs ''
+      (defun custom/set-font (frame)
+        "Configure faces on frame creation"
+        (select-frame frame)
+        (if (display-graphic-p)
+            (set-frame-font "Source Code Pro ExtraBold 8" nil t)))
+      (add-hook 'after-make-frame-functions #'custom/set-font)
+    '';
   };
 }

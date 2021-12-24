@@ -38,14 +38,22 @@ in {
       programs.zathura.options.font = "JetBrains Mono Bold 9";
       services.dunst.settings.global.font = "JetBrains Mono Bold 8";
       xresources.properties = {
-        "Emacs.Font" = "JetBrains Mono:weight=Bold:size=12";
-
         "Xmessage*faceName" = "JetBrains Mono";
         "Xmessage*faceSize" = "12";
         "Xmessage*faceWeight" = "Bold";
 
         "dzen2.font" = "JetBrains Mono:weight=Bold:size=12";
+      } // lib.optionalAttrs (!config.ide.emacs.core.useModernDrawingLibs) {
+        "Emacs.Font" = "JetBrains Mono:weight=Bold:size=12";
       };
     };
+    ide.emacs.core.config = lib.optionalString config.ide.emacs.core.useModernDrawingLibs ''
+      (defun custom/set-font (frame)
+        "Configure faces on frame creation"
+        (select-frame frame)
+        (if (display-graphic-p)
+            (set-frame-font "JetBrains Mono ExtraBold 8" nil t)))
+      (add-hook 'after-make-frame-functions #'custom/set-font)
+    '';
   };
 }

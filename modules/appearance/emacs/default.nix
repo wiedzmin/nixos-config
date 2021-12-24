@@ -21,7 +21,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users."${user}" = {
+      home-manager.users."${user}" = lib.optionalAttrs (!config.ide.emacs.core.useModernDrawingLibs) {
         xresources.properties = {
           "Emacs.fontBackend" = "xft,x";
           "Emacs.menuBar" = "0";
@@ -37,7 +37,8 @@ in
         epkgs.transwin
         epkgs.unicode-fonts
       ];
-      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./appearance.el ];
+      ide.emacs.core.config = readSubstituted [ ./subst.nix ]
+        ([ ./appearance.el ] ++ lib.optionals config.ide.emacs.core.useModernDrawingLibs [ ./appearance-clean.el ]);
     })
   ];
 }

@@ -38,14 +38,22 @@ in {
       programs.zathura.options.font = "Fira Code Bold 8";
       services.dunst.settings.global.font = "Fira Code Bold 8";
       xresources.properties = {
-        "Emacs.Font" = "Fira Code:weight=Bold:size=12";
-
         "Xmessage*faceName" = "Fira Code";
         "Xmessage*faceSize" = "12";
         "Xmessage*faceWeight" = "Bold";
 
         "dzen2.font" = "Fira Code:weight=Bold:size=12";
+      } // lib.optionalAttrs (!config.ide.emacs.core.useModernDrawingLibs) {
+        "Emacs.Font" = "Fira Code:weight=Bold:size=12";
       };
     };
+    ide.emacs.core.config = lib.optionalString config.ide.emacs.core.useModernDrawingLibs ''
+      (defun custom/set-font (frame)
+        "Configure faces on frame creation"
+        (select-frame frame)
+        (if (display-graphic-p)
+            (set-frame-font "Fira Code ExtraBold 8" nil t)))
+      (add-hook 'after-make-frame-functions #'custom/set-font)
+    '';
   };
 }
