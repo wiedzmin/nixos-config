@@ -163,3 +163,10 @@
   :bind
   (:map mode-specific-map
         ("^" . copy-from-above-command)))
+
+(use-package simple
+  :bind
+  (:map misc-editing-map
+        ("c" . clone-buffer)
+        ("C" . clone-indirect-buffer)
+        ("i" . clone-indirect-buffer-other-window)))
