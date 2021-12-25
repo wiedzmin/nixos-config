@@ -100,7 +100,6 @@ in
         epkgs.ob-restclient
         epkgs.org-appear
         epkgs.org-bullets
-        epkgs.org-capture-pop-frame
         epkgs.org-clock-today
         epkgs.org-contrib
         epkgs.org-pomodoro
