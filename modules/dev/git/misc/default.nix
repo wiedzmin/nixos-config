@@ -51,7 +51,7 @@ in
               replace: "git log -p --all -S '$|$'"
 
             - trigger: ":gldiff"
-              replace: "git log --pretty=oneline --pickaxe-regex -G$|$"
+              replace: "git log --pretty=oneline --pickaxe-all -G$|$"
 
             - trigger: ":gpdiff"
               replace: "git log -p --all -G '$|$'"
