@@ -469,3 +469,5 @@
         ("i" . org-roam-node-insert)
         ("c" . org-roam-capture)
         ("j" . org-roam-dailies-capture-today)))
+
+;; TODO: https://github.com/nobiot/org-transclusion
