@@ -211,8 +211,7 @@
   (add-to-list 'display-buffer-alist ;; Hide the mode line of the Embark live/completions buffers
                '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
                  nil
-                 (window-parameters (mode-line-format . none))))
-  (add-to-list 'embark-allow-edit-actions 'consult-imenu))
+                 (window-parameters (mode-line-format . none)))))
 
 (use-package embark-consult
   :after (embark consult)
