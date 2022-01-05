@@ -3,6 +3,7 @@ with import ../../util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 # TODO: https://github.com/graysky2/pulseaudio-ctl
+# TODO: https://gitlab.com/DamienCassou/rofi-pulse-select
 let
   cfg = config.workstation.sound.pa;
   user = config.attributes.mainUser.name;
