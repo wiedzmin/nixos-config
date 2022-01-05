@@ -397,8 +397,6 @@
         ("!" . consult-flycheck)))
 
 (use-package ace-window
-  :bind
-  ("M-RET" . ace-window)
   :custom
   (aw-background nil)
   (aw-leading-char-style 'char)
