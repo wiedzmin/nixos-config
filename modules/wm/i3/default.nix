@@ -42,7 +42,7 @@ in
           bindsym button5 nop
 
           force_display_urgency_hint 1500 ms
-          focus_on_window_activation urgent
+          focus_on_window_activation ${if config.ide.emacs.core.pgtk.enable then "smart" else "urgent"}
         '';
         description = "Custom settings for i3.";
       };
