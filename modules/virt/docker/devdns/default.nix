@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.ext.virtualization.docker.devdns;
-  user = config.attributes.mainUser.name;
 in {
   options = {
     ext.virtualization.docker.devdns = {

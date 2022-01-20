@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.ide.emacs.history;
-  user = config.attributes.mainUser.name;
 in {
   options = {
     ide.emacs.history = {

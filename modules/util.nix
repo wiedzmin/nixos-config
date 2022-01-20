@@ -286,7 +286,7 @@ rec {
         v)
       (lib.filterAttrs (k: _: builtins.hasAttr k rule) windowRulePlaceholders));
   getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
-  enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: v: i) wsdata) wsdata;
+  enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: _: i) wsdata) wsdata;
   windowRuleClauses = rule:
     lib.filterAttrs (k: _: !builtins.elem k [ "activate" "debug" "desktop" "float" "key" "scratchpad" ]) rule;
   mkWMDebugScript = name: wmpkg: wmcmd:

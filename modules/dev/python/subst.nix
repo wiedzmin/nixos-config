@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 rec {
   lspPythonMsExecutable = "${pkgs.python-language-server}/bin/python-language-server";

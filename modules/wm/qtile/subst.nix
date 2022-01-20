@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ pkgs, ... }:
 
 let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;

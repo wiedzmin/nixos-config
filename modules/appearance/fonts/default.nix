@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 
 # TODO: review https://devfonts.gafi.dev/ and https://coding-fonts.css-tricks.com/ lists

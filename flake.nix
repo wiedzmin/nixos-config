@@ -99,7 +99,7 @@
       lib = unstable.lib;
       system = "x86_64-linux";
       overlays = {
-        unstable = final: prev: {
+        unstable = _: _: {
           unstable = import inputs.unstable {
             overlays = with inputs; [ emacs.overlay nur.overlay ];
             inherit system;

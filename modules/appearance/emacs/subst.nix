@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, ... }:
 
 rec {
   systemTimeZone = config.time.timeZone;

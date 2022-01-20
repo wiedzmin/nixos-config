@@ -6,7 +6,6 @@ with lib;
 let
   cfg = config.wm.xmonad;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   configText = ''
     module Main where
 

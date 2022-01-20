@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, ... }:
 
 rec {
   emacsBrowseUrlSetup = config.browsers.ext.emacs.browseUrlSetup;

@@ -6,7 +6,6 @@ with lib;
 let
   cfg = config.workstation.randr;
   user = config.attributes.mainUser.name;
-  hm = config.home-manager.users."${user}";
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   headsOrientationModule = types.submodule {
     options = {

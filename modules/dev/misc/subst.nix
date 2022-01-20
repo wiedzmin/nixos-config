@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 rec {
   combyExcludes = lib.concatStringsSep "," config.dev.misc.comby.excludes;

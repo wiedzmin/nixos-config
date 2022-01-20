@@ -1,8 +1,8 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 
 let user = config.attributes.mainUser.name;
 in {
-  imports = [ ./secrets ../../modules ../../profiles/thinkpad-x230.nix "${inputs.nixos-hardware}/common/pc/ssd" ];
+  imports = [ ./secrets ../../modules ../../profiles/chassis/thinkpad-x230.nix "${inputs.nixos-hardware}/common/pc/ssd" ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos-root";

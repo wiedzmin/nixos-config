@@ -45,7 +45,7 @@ rec {
     lib.concatStringsSep keySepI3
       (lib.forEach keys (k: if builtins.hasAttr k keySymsAwesomeEZ then builtins.getAttr k keySymsAwesomeEZ else k));
   # TODO: investigate if we need to handle "desktop" attribute here (or elsewhere), and other misc attributes as well
-  mkKeybindingAwesome = meta: desktops:
+  mkKeybindingAwesome = meta: _:
     let
       debugEnabled = maybeAttrIsBool "debug" meta && !maybeAttrIsBool "raw" meta;
     in

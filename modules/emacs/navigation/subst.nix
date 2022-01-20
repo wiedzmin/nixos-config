@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 rec {
   python3Binary = "${pkgs.python3}/bin/python3";

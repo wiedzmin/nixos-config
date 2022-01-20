@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, ... }:
 
 rec {
   fallbackBrowser = config.attributes.browser.fallback.cmd;

@@ -7,7 +7,6 @@ with lib;
 let
   cfg = config.workstation.sound.pa;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   inherit (config.wmCommon) prefix;
 in
 {

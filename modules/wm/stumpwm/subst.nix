@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, ... }:
 
 rec {
   lockScreenCommand = config.workstation.lockscreen.command.lock;

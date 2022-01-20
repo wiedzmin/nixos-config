@@ -18,7 +18,7 @@ let
         ${lib.concatStringsSep "\n" (lib.forEach impl (l: "${mkIndent indent}${l}"))}
       '')
       entries);
-  formatMyreposRepoMeta = path: meta: indent: ''
+  formatMyreposRepoMeta = path: meta: ''
     [${path}]
     ${formatMyreposCommands meta 2}
   '';
@@ -42,7 +42,7 @@ in
           [DEFAULT]
           ${formatMyreposCommands cfg.commands 2}
 
-          ${lib.concatStringsSep "\n" (lib.mapAttrsToList (path: meta: formatMyreposRepoMeta path meta 2)
+          ${lib.concatStringsSep "\n" (lib.mapAttrsToList (path: meta: formatMyreposRepoMeta path meta)
             (collectReposMetadata config.navigation.bookmarks.entries))}
         '';
         visible = false;

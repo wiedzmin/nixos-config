@@ -107,7 +107,7 @@ in
         '';
       };
       extraPackages = mkOption {
-        default = self: [ ];
+        default = _: [ ];
         type = selectorFunction;
         defaultText = "epkgs: []";
         example = literalExpression "epkgs: [ epkgs.emms epkgs.magit ]";

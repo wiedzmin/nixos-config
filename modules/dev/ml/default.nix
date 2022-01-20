@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.dev.ml;
-  user = config.attributes.mainUser.name;
 in {
   options = {
     dev.ml = {

@@ -22,7 +22,7 @@ let
 
   collectWorkspaceRoots = forges:
     mapAttrs' (key: meta: nameValuePair "${key}" meta.workspaceRoot)
-      (filterAttrs (key: meta: lib.hasAttr "workspaceRoot" meta) forges);
+      (filterAttrs (_: meta: lib.hasAttr "workspaceRoot" meta) forges);
   collectPassCredentials = forges:
     (foldAttrs (n: a: n // a ) { } (collect (f: f ? passCredentialsMap) forges))."passCredentialsMap";
   mkMatchBlock = meta: {

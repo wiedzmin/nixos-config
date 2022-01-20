@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.workstation.backups;
-  user = config.attributes.mainUser.name;
 in {
   options = {
     workstation.backups = {

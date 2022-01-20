@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ lib, pkgs, ... }:
 
 rec {
   genCustomPackages = customPackages:

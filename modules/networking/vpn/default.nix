@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.ext.networking.vpn;
-  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {

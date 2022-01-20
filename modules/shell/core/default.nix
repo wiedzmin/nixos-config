@@ -6,7 +6,7 @@ let
   cfg = config.shell.core;
   user = config.attributes.mainUser.name;
   serviceAttrsNames = [ "global" "emacs" ];
-  envVars = filterAttrs (name: value: !builtins.elem name serviceAttrsNames);
+  envVars = filterAttrs (name: _: !builtins.elem name serviceAttrsNames);
 in {
   options = {
     shell.core = {

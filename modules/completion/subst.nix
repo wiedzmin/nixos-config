@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ inputs, ... }:
 
 rec {
   emacsYasnippetSnippets = inputs.yasnippet-snippets;
