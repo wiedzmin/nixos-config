@@ -39,6 +39,12 @@ in
         default = false;
         description = "Whether to enable Nix-related Emacs setup";
       };
+      # TODO: consider adding system-wide option for enabling heavy resources consumers and AND it here and there
+      lsp.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable LSP functionality";
+      };
     };
   };
 
@@ -89,7 +95,8 @@ in
         packageOverrides = _: rec {
           # TODO: try https://github.com/lf-/nix-doc
           rollback = pkgs.writeShellApplication {
-            name = "rollback"; runtimeInputs = with pkgs; [ fzf ];
+            name = "rollback";
+            runtimeInputs = with pkgs; [ fzf ];
             text = ''
               GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
               if [ -n "$GENERATION" ]; then
@@ -99,7 +106,8 @@ in
             '';
           };
           nix-doc-lookup = pkgs.writeShellApplication {
-            name = "nix-doc-lookup"; runtimeInputs = with pkgs; [ fzf gnused manix ];
+            name = "nix-doc-lookup";
+            runtimeInputs = with pkgs; [ fzf gnused manix ];
             text = ''
               manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
             '';
@@ -107,7 +115,8 @@ in
         };
       };
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback rnix-lsp statix ];
+        home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback statix ] ++
+          lib.optionals cfg.lsp.enable [ rnix-lsp ];
         home.sessionPath = [ (homePrefix user ".cargo/bin") ];
         xdg.configFile."espanso/user/nix-core.yml".text = ''
           name: nix-core
@@ -144,7 +153,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
-      ide.emacs.core.config = builtins.readFile ./emacs/nix.el;
+      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./emacs/nix.el ];
     })
   ];
 }
