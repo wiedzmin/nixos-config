@@ -5,10 +5,6 @@ with lib;
 let
   cfg = config.ext.nix.core;
   user = config.attributes.mainUser.name;
-  nix24working = import inputs.nix24working {
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {
@@ -49,7 +45,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nix = {
-        package = nix24working.nixUnstable;
+        package = pkgs.nixUnstable;
         useSandbox = true;
         readOnlyStore = true;
         requireSignedBinaryCaches = true;
