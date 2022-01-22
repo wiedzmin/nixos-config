@@ -58,3 +58,7 @@ fix-pre-commit:
 # Collect garbage
 collect-garbage:
     sudo nix-collect-garbage -d
+
+# remove dead nix
+remove-dead-nix:
+    deadnix .
