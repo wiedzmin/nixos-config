@@ -4,16 +4,14 @@ if [ $? == 255 ]; then
 else
   STRENGTH=$(($(awk 'NR==3 {print substr($3, 1, length($3)-1)}' /proc/net/wireless) * 100 / 70))
   QUALITY_COLOR=
-  case 1 in
-  $((STRENGTH < 30)))
+  if ((STRENGTH < 30)); then
     QUALITY_COLOR=red
-    ;;
-  $((STRENGTH >= 30 && STRENGTH < 70)))
+  fi
+  if ((STRENGTH >= 30 && STRENGTH < 70)); then
     QUALITY_COLOR=yellow
-    ;;
-  $((STRENGTH >= 70 && STRENGTH <= 100)))
+  fi
+  if ((STRENGTH >= 70 && STRENGTH <= 100)); then
     QUALITY_COLOR=green
-    ;;
-  esac
-  echo $ESSID: "<fc=$QUALITY_COLOR>$STRENGTH</fc>%"
+  fi
+  echo "$ESSID: <fc=$QUALITY_COLOR>$STRENGTH</fc>%"
 fi
