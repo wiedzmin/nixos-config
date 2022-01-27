@@ -52,9 +52,8 @@ in
             General = {
               disabledTrayIcon = true;
               drawColor = "#ff0000";
-              drawThickness = 0;
+              drawThickness = 2;
               filenamePattern = "screenshot-${config.attributes.dateFormats.flameshot}";
-              saveAfterCopyPath = cfg.baseDir;
               savePath = cfg.baseDir;
             };
           };
