@@ -23,8 +23,8 @@ DATE_REGEXPS = [
 
 parser = argparse.ArgumentParser(description="Screenshots ordering")
 parser.add_argument('--base-dir', dest="base_dir", type=str, help="Base directory to perform sorting under")
-parser.add_argument('--fallback-dir', dest="base_dir", default="named", type=str,
-                    help="Directory under base to place named screenshots to")
+parser.add_argument('--fallback-dir', dest="fallback_dir", default="named", type=str,
+                    help="Directory under base to place named/non-matched screenshots to")
 args = parser.parse_args()
 
 if not args.base_dir:
