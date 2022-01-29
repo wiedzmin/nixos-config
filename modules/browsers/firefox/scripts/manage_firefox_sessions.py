@@ -7,7 +7,7 @@ from pystdlib.browser import collect_sessions, collect_sessions_with_size, \
     collect_session_urls, init_mgmt_argparser, open_urls_firefox, rotate_sessions
 
 
-parser = init_mgmt_argparser("firefox-session-auto")
+parser = init_mgmt_argparser()
 parser.add_argument('--selector-font', dest="selector_font", type=str, help="Selector font")
 args = parser.parse_args()
 
