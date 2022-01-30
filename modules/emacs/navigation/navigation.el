@@ -638,22 +638,11 @@
      projectile-root-bottom-up))
   (projectile-project-root-files '(@projectsRootMarkersEmacs@)))
 
-(use-package rg
+(use-package ripgrep
   :bind
   (:map custom-nav-map
-        ("f" . rg)
-        ("d" . rg-project))
-  :custom
-  (rg-group-result t)
-  (rg-show-columns t)
-  (rg-hide-command t)
-  (rg-align-position-numbers t)
-  (rg-align-line-number-field-length 3)
-  (rg-align-column-number-field-length 3)
-  (rg-align-line-column-separator "|")
-  (rg-align-position-content-separator "|")
-  :config
-  (rg-define-toggle "--context 3" (kbd "C-c c")))
+        ("f" . ripgrep-regexp)
+        ("d" . projectile-ripgrep)))
 
 (use-package block-nav
   :bind
