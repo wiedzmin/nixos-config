@@ -1,6 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../util.nix { inherit config inputs lib pkgs; };
-with import ./util.nix { inherit config inputs lib pkgs; };
 with lib;
 
 let
@@ -18,6 +17,25 @@ let
     '';
   };
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  genCustomPackages = customPackages:
+    ''
+    ${builtins.concatStringsSep "\n"
+      (lib.mapAttrsToList (feature: impl:
+        let
+          def = pkgs.writeTextFile {
+            name = "${feature}";
+            text = ''
+              ${impl}
+              (provide '${feature})
+            '';
+            destination = "/${feature}.el";
+          };
+        in
+          ''
+            (add-to-list 'load-path "${def}")
+          ''
+      ) customPackages)}
+    '';
 in
 {
   options = {
