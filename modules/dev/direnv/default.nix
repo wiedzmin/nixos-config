@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.dev.direnv;
   user = config.attributes.mainUser.name;
+  toml = pkgs.formats.toml { };
 in
 {
   options = {
@@ -42,7 +43,7 @@ in
           enable = true;
           nix-direnv.enable = true;
         };
-        xdg.configFile."direnv/direnv.toml".text = toToml {
+        xdg.configFile."direnv/direnv.toml".source = toml.generate "direnv.toml" {
           global = { disable_stdin = true; };
           whitelist = { prefix = cfg.whitelist; };
         };

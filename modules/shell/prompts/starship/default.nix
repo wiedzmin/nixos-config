@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.shell.prompts.starship;
   user = config.attributes.mainUser.name;
+  toml = pkgs.formats.toml { };
 in
 {
   options = {
@@ -76,7 +77,7 @@ in
           eval "$(starship init zsh)"
         '';
         xdg.configFile = {
-          "starship.toml".text = toToml cfg.configuration;
+          "starship.toml".source = toml.generate "starship.toml" cfg.configuration;
         };
       };
     })

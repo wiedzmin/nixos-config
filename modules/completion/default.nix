@@ -6,6 +6,7 @@ let
   cfg = config.completion;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  toml = pkgs.formats.toml { };
 in
 {
   options = {
@@ -113,8 +114,8 @@ in
     (mkIf (cfg.enable && cfg.dev.enable) {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ tabnine ]; # FIXME: install it to be consumable by company-tabnine
-        xdg.configFile."TabNine/TabNine.toml".text =
-          toToml { language.python = { command = "python-language-server"; }; };
+        xdg.configFile."TabNine/TabNine.toml".source =
+          toml.generate "TabNine.toml" { language.python = { command = "python-language-server"; }; };
       };
     })
     (mkIf (cfg.enable && cfg.expansions.enable) {

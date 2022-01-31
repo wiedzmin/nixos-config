@@ -12,6 +12,7 @@ let
     "i3-rs" = "i3status-rs";
     "blocks" = "i3blocks";
   };
+  toml = pkgs.formats.toml { };
   inherit (config.wmCommon) prefix;
 in
 {
@@ -529,7 +530,7 @@ in
             }
           '';
         } // lib.optionalAttrs (cfg.statusbar.impl == "i3-rs") {
-          "i3status-rust/config.toml".text = toToml ({
+          "i3status-rust/config.toml".source = toml.generate "config.toml" ({
             icons = "awesome";
             block = [
               {

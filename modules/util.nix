@@ -56,32 +56,6 @@ rec {
     configPrefix ("machines/" + config.attributes.machine.name + "/secrets/" + suffix);
   assetsPrefix = suffix:
     configPrefix ("machines/" + config.attributes.machine.name + "/assets/" + suffix);
-  fromYAML = yaml:
-    builtins.fromJSON (builtins.readFile (pkgs.runCommand "from-yaml"
-      {
-        inherit yaml;
-        allowSubstitutes = false;
-        preferLocalBuild = true;
-      } ''
-      ${pkgs.remarshal}/bin/remarshal  \
-        -if yaml \
-        -i <(echo "$yaml") \
-        -of json \
-        -o $out
-    ''));
-  toToml = attrs:
-    builtins.readFile (pkgs.runCommand "to-toml"
-      {
-        # inherit attrs;
-        allowSubstitutes = false;
-        preferLocalBuild = true;
-      } ''
-      ${pkgs.remarshal}/bin/remarshal  \
-        -if json \
-        -of toml \
-        < ${pkgs.writeText "attrs.json" (builtins.toJSON attrs)} \
-        > $out
-    '');
   maybeAttrIsBool = name: set: (builtins.hasAttr name set) && set."${name}";
   maybeAttrString = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else ph;
   maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
