@@ -6,51 +6,6 @@ let
   cfg = config.shell.tmux;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  fzf-tmux-url-with-history = mkDerivationTmux {
-    pluginName = "fzf-tmux-url";
-    rtpFilePath = "fzf-url.tmux";
-    src = pkgs.fetchgit {
-      url = "https://github.com/wfxr/tmux-fzf-url";
-      rev = "ecd518eec1067234598c01e655b048ff9d06ef2f";
-      sha256 = "0png8hdv91y2nivq5vdii2192mb2qcrkwwn69lzxrdnbfa27qrgv";
-    };
-    postPatch = ''
-      substituteInPlace fzf-url.sh --replace "capture-pane -J -p" "capture-pane -S -${
-        builtins.toString cfg.historyDepth
-      } -J -p"
-    '';
-  };
-  tmux-fzf-fixed = mkDerivationTmux {
-    pluginName = "tmux-fzf";
-    rtpFilePath = "main.tmux";
-    version = "unstable-2020-11-23";
-    src = pkgs.fetchFromGitHub {
-      owner = "sainnhe";
-      repo = "tmux-fzf";
-      rev = "312685b2a7747b61f1f4a96bd807819f1450479d";
-      sha256 = "1z0zmsf8asxs9wbwvkiyd81h93wb2ikl8nxxc26sdpi6l333q5s9";
-    };
-    postInstall = ''
-      find $target -type f -print0 | xargs -0 sed -i -e 's|fzf |${pkgs.fzf}/bin/fzf |g'
-      find $target -type f -print0 | xargs -0 sed -i -e 's|sed |${pkgs.gnused}/bin/sed |g'
-      find $target -type f -print0 | xargs -0 sed -i -e 's|tput |${pkgs.ncurses}/bin/tput |g'
-    '';
-    meta = {
-      homepage = "https://github.com/sainnhe/tmux-fzf";
-      description = "Use fzf to manage your tmux work environment! ";
-      longDescription = ''
-        Features:
-        * Manage sessions (attach, detach*, rename, kill*).
-        * Manage windows (switch, link, move, swap, rename, kill*).
-        * Manage panes (switch, break, join*, swap, layout, kill*, resize).
-        * Multiple selection (support for actions marked by *).
-        * Search commands and append to command prompt.
-        * Search key bindings and execute.
-        * User menu.
-        * Popup window support.
-      '';
-    };
-  };
 in
 {
   options = {
@@ -66,7 +21,6 @@ in
         default = "main";
       };
       historyDepth = mkOption {
-        # we should have access not only to visible pane's content
         type = types.int;
         default = 10000;
         description = "Tmux pane's lines count to search (for fzf-tmux-url at the moment)";
@@ -175,8 +129,11 @@ in
         tmuxp.enable = true;
         plugins = with pkgs.tmuxPlugins; [
           {
-            plugin = fzf-tmux-url-with-history;
-            extraConfig = "set -g @fzf-url-bind 'o'";
+            plugin = fzf-tmux-url;
+            extraConfig = ''
+              set -g @fzf-url-history-limit '${builtins.toString cfg.historyDepth}'
+              set -g @fzf-url-bind 'o'
+            '';
           }
           copycat
           extrakto
@@ -189,8 +146,8 @@ in
           prefix-highlight
           sessionist
           {
-            plugin = tmux-fzf-fixed;
-            extraConfig = "set -g @tmux-fzf-launch-key 'w'";
+            plugin = tmux-fzf;
+            extraConfig = "set -g @tmux-fzf-launch-key 'f'"; # FIXME: does not work
           }
           cfg.theme.package
         ];
