@@ -1,5 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../../modules/util.nix { inherit config inputs lib pkgs; };
+with import ../../../modules/wm/util.nix { inherit config inputs lib pkgs; };
 
 rec {
   wmCommon.wsMapping.rules = [

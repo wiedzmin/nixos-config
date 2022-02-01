@@ -47,8 +47,55 @@ let
     "F11" = "<F11>";
     "F12" = "<F12>";
   };
+  windowRulePlaceholders = {
+    "class" = ''^@$'';
+    "title" = ''(?i).*@.*'';
+    "role" = ''^@$'';
+    "instance" = ''^@$'';
+  };
 in
 rec {
+  windowRulesFromBookmarks = bookmarks:
+    lib.foldl (a: b: a ++ b) [ ]
+      (lib.mapAttrsToList (_: meta: meta.windowRules)
+        (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "windowRules" ] meta) bookmarks));
+  mkWSMappingBrowsersRegexp =
+    concatStringListsRaw "|" (with config.attributes.browser; [ default.windowClass fallback.windowClass ]);
+  mkWSMappingEbookReadersRegexp =
+    concatStringListsRaw "|" (with config.attributes.ebookreader; [ default.windowClass fallback.windowClass ]);
+  mkWSMappingEbookReadersExtsRegexp = "(" + (concatStringListsRaw "|" config.content.ebooks.extensions.primary) + ")";
+  prepareWindowRule = rule:
+    rule // (lib.mapAttrs
+      (k: v: builtins.replaceStrings [ "@" ]
+        [ (if k == "title" then reAddWildcards rule."${k}" else rule."${k}") ]
+        v)
+      (lib.filterAttrs (k: _: builtins.hasAttr k rule) windowRulePlaceholders));
+  getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
+  enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: _: i) wsdata) wsdata;
+  windowRuleClauses = rule:
+    lib.filterAttrs (k: _: !builtins.elem k [ "activate" "debug" "desktop" "float" "key" "scratchpad" ]) rule;
+  mkWMDebugScript = name: wmpkg: wmcmd:
+    pkgs.writeShellApplication {
+      inherit name;
+      runtimeInputs = with pkgs; [
+        coreutils
+        gnugrep
+        xorg.xorgserver.out
+        xorg.xrandr
+      ] ++ [ wmpkg ];
+      text = ''
+        if [ "$(xrandr | grep connected | grep -c dis)" = "1" ]; then
+          resolution=${config.attributes.hardware.monitors.internalHead.resolutionXephyr}
+          echo "LVDS-only, using $resolution"
+        else
+          resolution=${config.attributes.hardware.monitors.internalHead.resolution}
+          echo "dock-station, using $resolution"
+        fi
+        Xephyr -ac -br -noreset -screen $resolution :1 &
+        sleep 1
+        DISPLAY=:1.0 ${wmcmd}
+      '';
+    };
   mkWindowRuleI3 = rule:
     "[${lib.concatStringsSep " " (lib.mapAttrsToList (k: v: ''${k}="${v}"'')
       (windowRuleClauses (prepareWindowRule rule)))}]";
