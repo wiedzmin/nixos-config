@@ -80,34 +80,35 @@ rec {
         (lib.foldl (collector: subst: collector // ((import subst { inherit config inputs lib pkgs; }) // { src = e; }))
           { }
           substs))));
+  emptyValueByPath = meta: path: (lib.attrByPath path "" meta) == "";
+  nonEmptyValueByPath = meta: path: !(emptyValueByPath meta path);
+  trueValueByPath = meta: path: (lib.attrByPath path true meta) == true;
+  trueValueByPathStrict = meta: path: (lib.attrByPath path false meta) == true;
+  falseValueByPath = meta: path: !(trueValueByPath meta path);
   enabledLocals = bookmarks:
     lib.mapAttrs
       (key: meta: meta.local // { inherit key; } // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; })
         // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { inherit (meta) desc; })
       (lib.filterAttrs
-        (_: meta:
-          !(lib.hasAttrByPath [ "local" "enable" ] meta && !meta.local.enable)
-          && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != ""))
+        (_: meta: trueValueByPath meta [ "local" "enable" ] && nonEmptyValueByPath meta [ "local" "path" ])
         bookmarks);
   localEbooks = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
       (_: meta:
-        !(lib.hasAttrByPath [ "local" "enable" ] meta && !meta.local.enable)
-        && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")
-        && (lib.hasAttrByPath [ "local" "ebooks" ] meta && meta.local.ebooks))
+        trueValueByPath meta [ "enable" ] &&
+        nonEmptyValueByPath meta [ "local" "path" ] &&
+        trueValueByPathStrict meta [ "local" "ebooks" ])
       bookmarks);
   localDocs = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
       (_: meta:
-        !(lib.hasAttrByPath [ "local" "enable" ] meta && !meta.local.enable)
-        && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != "")
-        && (lib.hasAttrByPath [ "local" "docs" ] meta && meta.local.docs))
+        trueValueByPath meta [ "enable" ] &&
+        nonEmptyValueByPath meta [ "local" "path" ] &&
+        trueValueByPathStrict meta [ "local" "docs" ])
       bookmarks);
   localEmacsBookmarks = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
-      (_: meta:
-        !(lib.hasAttrByPath [ "local" "enable" ] meta && !meta.local.enable)
-        && (lib.hasAttrByPath [ "local" "path" ] meta && meta.local.path != ""))
+      (_: meta: trueValueByPath meta [ "local" "enable" ] && nonEmptyValueByPath meta [ "local" "path" ])
       bookmarks);
   localBookmarksCommon = locals: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameLocal meta sep tagSep) (mkBookmarkDestLocal meta)) locals;
@@ -118,9 +119,7 @@ rec {
       (_: meta: meta.remote // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; })
         // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { inherit (meta) desc; })
       (lib.filterAttrs
-        (_: meta:
-          !(lib.hasAttrByPath [ "remote" "enable" ] meta && !meta.remote.enable)
-          && (lib.hasAttrByPath [ "remote" "url" ] meta && meta.remote.url != ""))
+        (_: meta: trueValueByPath meta [ "remote" "enable" ] && nonEmptyValueByPath meta [ "remote" "url" ])
         bookmarks);
   mkBookmarkNameLocal = meta: sep: tagSep:
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.key ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
