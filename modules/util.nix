@@ -90,7 +90,7 @@ rec {
       (key: meta: meta.local // { inherit key; } // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; })
         // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { inherit (meta) desc; })
       (lib.filterAttrs
-        (_: meta: trueValueByPath meta [ "local" "enable" ] && nonEmptyValueByPath meta [ "local" "path" ])
+        (_: meta: trueValueByPath meta [ "enable" ] && nonEmptyValueByPath meta [ "local" "path" ])
         bookmarks);
   localEbooks = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
@@ -108,7 +108,7 @@ rec {
       bookmarks);
   localEmacsBookmarks = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
-      (_: meta: trueValueByPath meta [ "local" "enable" ] && nonEmptyValueByPath meta [ "local" "path" ])
+      (_: meta: trueValueByPath meta [ "enable" ] && nonEmptyValueByPath meta [ "local" "path" ])
       bookmarks);
   localBookmarksCommon = locals: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameLocal meta sep tagSep) (mkBookmarkDestLocal meta)) locals;
@@ -119,7 +119,7 @@ rec {
       (_: meta: meta.remote // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; })
         // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { inherit (meta) desc; })
       (lib.filterAttrs
-        (_: meta: trueValueByPath meta [ "remote" "enable" ] && nonEmptyValueByPath meta [ "remote" "url" ])
+        (_: meta: trueValueByPath meta [ "enable" ] && nonEmptyValueByPath meta [ "remote" "url" ])
         bookmarks);
   mkBookmarkNameLocal = meta: sep: tagSep:
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.key ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]

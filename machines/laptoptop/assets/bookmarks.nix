@@ -180,25 +180,21 @@ rec {
     };
     "addons/firefox" = {
       desc = "Firefox addons";
+      enable = config.browsers.firefox.enable;
       remote = {
         url = "https://addons.mozilla.org/en-US/firefox/";
         searchSuffix = "search/?cat=all&x=0&y=0&q=";
-        enable = config.browsers.firefox.enable;
       };
     };
     "about/config" = {
       desc = "Firefox configuration options";
-      remote = {
-        url = "about:config";
-        enable = with config.browsers.firefox; (enable && isDefault);
-      };
+      enable = with config.browsers.firefox; (enable && isDefault);
+      remote.url = "about:config";
     };
     "about/memory" = {
       desc = "Firefox addons reference";
-      remote = {
-        url = "about:memory";
-        enable = with config.browsers.firefox; (enable && isDefault);
-      };
+      enable = with config.browsers.firefox; (enable && isDefault);
+      remote.url = "about:memory";
     };
     "bitbucket" = {
       desc = "Bitbucket code hosting";
@@ -563,11 +559,9 @@ rec {
       remote.url = "https://shutniki.club/wp-content/uploads/2020/04/Raskraska_s_porosenkom_4_15120840.jpg";
     };
     "ml24" = {
+      enable = false;
       tags = [ "shop" ];
-      remote = {
-        url = "https://market-land24.ru/";
-        enable = false;
-      };
+      remote.url = "https://market-land24.ru/";
     };
     "mealty" = {
       tags = [ "shop" ];
