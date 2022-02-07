@@ -1,5 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../modules/util.nix { inherit config inputs lib pkgs; };
+with pkgs.unstable.commonutils;
 
 let
   user = config.attributes.mainUser.name;
@@ -377,7 +377,8 @@ in
       };
       authorizedKeys = [
         (secretsPrefix
-          config.attributes.machine.name "identity/id_rsa.mobile.pub" config.navigation.bookmarks.workspaces.roots)
+          config.attributes.machine.name "identity/id_rsa.mobile.pub"
+          config.navigation.bookmarks.workspaces.roots)
       ];
       wm.enable = true;
     };

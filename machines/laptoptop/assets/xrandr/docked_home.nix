@@ -1,6 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../../../modules/util.nix { inherit config inputs lib pkgs; };
-with import ../../../../modules/wm/util.nix { inherit config inputs lib pkgs; };
+with pkgs.unstable.commonutils;
 
 let
   profileName = "docked-home-x270-temp";

@@ -100,13 +100,15 @@
       overlays = {
         unstable = _: _: {
           unstable = import inputs.unstable {
-            overlays = with inputs; [ emacs.overlay nur.overlay ];
+            overlays = with inputs; [ emacs.overlay nur.overlay self.overlay ];
             inherit system;
           };
         };
       };
     in
     {
+      overlay = import ./overlay.nix inputs;
+
       devShell."${system}" = import ./shell.nix { pkgs = inputs.unstable.legacyPackages.${system}; };
 
       nixosConfigurations = {

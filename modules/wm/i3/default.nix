@@ -1,6 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../util.nix { inherit config inputs lib pkgs; };
-with import ../util.nix { inherit config inputs lib pkgs; };
+with pkgs.unstable.commonutils;
 with lib;
 
 let
@@ -408,7 +407,7 @@ in
 
             ${cfg.settings}
             ${bindkeysI3 config.wmCommon.keys config.wmCommon.modeBindings cfg.modeExitBindings
-            config.wmCommon.workspaces}
+            config.wmCommon.workspaces config.controlcenter.commandsDebugLogRoot}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
 
             ${optionalString (cfg.windowRules.method == "internal")
@@ -421,7 +420,7 @@ in
 
             ${bindkeysFocusI3 config.wmCommon.wsMapping.rules}
 
-            ${with config.wmCommon; genScratchpadSettingsI3 wsMapping.rules keys cfg.modeExitBindings workspaces}
+            ${with config.wmCommon; genScratchpadSettingsI3 wsMapping.rules keys cfg.modeExitBindings workspaces config.controlcenter.commandsDebugLogRoot}
 
             bindsym ${prefix}+Return workspace back_and_forth
 

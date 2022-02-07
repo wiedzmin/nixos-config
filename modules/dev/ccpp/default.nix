@@ -1,5 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../util.nix { inherit config inputs lib pkgs; };
+with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
 

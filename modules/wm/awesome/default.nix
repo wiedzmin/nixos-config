@@ -1,6 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../util.nix { inherit config inputs lib pkgs; };
-with import ../util.nix { inherit config inputs lib pkgs; };
+with pkgs.unstable.commonutils;
 with lib;
 
 let
@@ -43,7 +42,9 @@ in
       fonts.fonts = with pkgs; [ font-awesome ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        debug-awesome = mkWMDebugScript "debug-awesome" pkgs.awesome ''awesome -c "$XDG_CONFIG_HOME/awesome/rc.lua" ${makeSearchPath cfg.luaModules}'';
+        debug-awesome = mkWMDebugScript
+          pkgs "debug-awesome" pkgs.awesome config.attributes.hardware.monitors.internalHead
+            ''awesome -c "$XDG_CONFIG_HOME/awesome/rc.lua" ${makeSearchPath cfg.luaModules}'';
       };
 
       wmCommon.debugKeys = [

@@ -1,5 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../../util.nix { inherit config inputs lib pkgs; };
+with pkgs.unstable.commonutils;
 with lib;
 
 let cfg = config.workstation.power.battery; # TODO: consider checking if it is a laptop, or any similar check

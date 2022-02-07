@@ -1,5 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../modules/util.nix { inherit config inputs lib pkgs; };
+with pkgs.unstable.commonutils;
 
 {
   imports = [

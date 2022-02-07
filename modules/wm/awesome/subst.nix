@@ -1,6 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../util.nix { inherit config inputs lib pkgs; };
-with import ../util.nix { inherit config inputs lib pkgs; };
+with pkgs.unstable.commonutils;
 
 rec {
   awesomeDebugPrint = "";

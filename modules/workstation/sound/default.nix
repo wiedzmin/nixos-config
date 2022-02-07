@@ -1,5 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../util.nix { inherit config inputs lib pkgs; };
+with pkgs.unstable.commonutils;
 with lib;
 
 # TODO: https://github.com/graysky2/pulseaudio-ctl

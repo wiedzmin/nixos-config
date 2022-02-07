@@ -1,6 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../../modules/util.nix { inherit config inputs lib pkgs; };
-with import ../../../modules/wm/util.nix { inherit config inputs lib pkgs; };
+with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 
 let
@@ -145,7 +144,7 @@ rec {
       remote.url = "https://sachachua.com/blog/category/emacs-news/";
       windowRules = [
         {
-          class = mkWSMappingBrowsersRegexp;
+          class = mkWSMappingBrowsersRegexp config.attributes.browser;
           title = "sachachua emacs news";
           desktop = "web";
         }
@@ -306,7 +305,7 @@ rec {
       remote.url = "https://status.nixos.org/";
       windowRules = [
         {
-          class = mkWSMappingBrowsersRegexp;
+          class = mkWSMappingBrowsersRegexp config.attributes.browser;
           title = "status nixos";
           desktop = "web";
         }
@@ -337,7 +336,7 @@ rec {
       };
       windowRules = [
         {
-          class = mkWSMappingBrowsersRegexp;
+          class = mkWSMappingBrowsersRegexp config.attributes.browser;
           title = "http facebook";
           desktop = "ent";
         }
@@ -360,7 +359,7 @@ rec {
       };
       windowRules = [
         {
-          class = mkWSMappingBrowsersRegexp;
+          class = mkWSMappingBrowsersRegexp config.attributes.browser;
           title = "multitran";
           desktop = "web";
         }
@@ -538,7 +537,7 @@ rec {
       };
       windowRules = [
         {
-          class = mkWSMappingBrowsersRegexp;
+          class = mkWSMappingBrowsersRegexp config.attributes.browser;
           title = "http yandex";
           desktop = "web";
         }

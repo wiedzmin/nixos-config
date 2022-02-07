@@ -1,6 +1,5 @@
 { config, inputs, lib, pkgs, ... }:
-with import ../../util.nix { inherit config inputs lib pkgs; };
-with import ../util.nix { inherit config inputs lib pkgs; };
+with pkgs.unstable.commonutils;
 with lib;
 
 let
@@ -41,7 +40,9 @@ in
       fonts.fonts = with pkgs; [ font-awesome ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        debug-qtile = mkWMDebugScript "debug-qtile" pkgs.qtile ''qtile start -c "$XDG_CONFIG_HOME/qtile/config.py"'';
+        debug-qtile = mkWMDebugScript
+          pkgs "debug-qtile" pkgs.qtile config.attributes.hardware.monitors.internalHead
+            ''qtile start -c "$XDG_CONFIG_HOME/qtile/config.py"'';
       };
 
       home-manager.users."${user}" = {
