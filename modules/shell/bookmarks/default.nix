@@ -44,7 +44,7 @@ in {
             after = [ ];
             before = [ "linkGeneration" ];
             data = ''
-              echo "${localBookmarksKVText (enabledLocals config.navigation.bookmarks.entries)}" > ${
+              echo "${localBookmarksKVText config.navigation.bookmarks.entries}" > ${
                 homePrefix user cfg.path
               }'';
           };

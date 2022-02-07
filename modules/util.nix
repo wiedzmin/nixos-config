@@ -85,42 +85,25 @@ rec {
   trueValueByPath = meta: path: (lib.attrByPath path true meta) == true;
   trueValueByPathStrict = meta: path: (lib.attrByPath path false meta) == true;
   falseValueByPath = meta: path: !(trueValueByPath meta path);
-  enabledLocals = bookmarks:
-    lib.mapAttrs
-      (key: meta: meta.local // { inherit key; } // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; })
-        // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { inherit (meta) desc; })
-      (lib.filterAttrs
-        (_: meta: trueValueByPath meta [ "enable" ] && nonEmptyValueByPath meta [ "local" "path" ])
-        bookmarks);
-  localEbooks = bookmarks:
-    lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
+  checkedBookmarks = bookmarks: checkPath:
+    (lib.filterAttrs
       (_: meta:
         trueValueByPath meta [ "enable" ] &&
-        nonEmptyValueByPath meta [ "local" "path" ] &&
-        trueValueByPathStrict meta [ "local" "ebooks" ])
+        nonEmptyValueByPath meta checkPath)
       bookmarks);
-  localDocs = bookmarks:
+  localFiles = type: bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
-      (_: meta:
-        trueValueByPath meta [ "enable" ] &&
-        nonEmptyValueByPath meta [ "local" "path" ] &&
-        trueValueByPathStrict meta [ "local" "docs" ])
-      bookmarks);
+      (_: meta: trueValueByPathStrict meta [ "local" type ])
+      (checkedBookmarks bookmarks [ "local" "path" ]));
   localEmacsBookmarks = bookmarks:
-    lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
-      (_: meta: trueValueByPath meta [ "enable" ] && nonEmptyValueByPath meta [ "local" "path" ])
-      bookmarks);
-  localBookmarksCommon = locals: sep: tagSep:
-    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameLocal meta sep tagSep) (mkBookmarkDestLocal meta)) locals;
-  localBookmarksKVText = locals:
-    lib.concatStringsSep "\n" (lib.mapAttrsToList (id: meta: id + " : " + meta.path) locals);
-  enabledRemotes = bookmarks:
-    lib.mapAttrs
-      (_: meta: meta.remote // (lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; })
-        // lib.optionalAttrs (lib.hasAttrByPath [ "desc" ] meta) { inherit (meta) desc; })
-      (lib.filterAttrs
-        (_: meta: trueValueByPath meta [ "enable" ] && nonEmptyValueByPath meta [ "remote" "url" ])
-        bookmarks);
+    lib.mapAttrsToList (_: meta: meta.local.path) (checkedBookmarks bookmarks [ "local" "path" ]);
+  localBookmarksKeyMeta = bookmarks: sep: tagSep:
+    lib.mapAttrs'
+      (key: meta: lib.nameValuePair (mkBookmarkNameLocal (meta // { inherit key; }) sep tagSep)
+        (mkBookmarkDestLocal meta.local))
+      (checkedBookmarks bookmarks [ "local" "path" ]);
+  localBookmarksKVText = bookmarks:
+    lib.concatStringsSep "\n" (lib.mapAttrsToList (id: meta: id + " : " + meta.local.path) (checkedBookmarks bookmarks [ "local" "path" ]));
   mkBookmarkNameLocal = meta: sep: tagSep:
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.key ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
@@ -128,27 +111,28 @@ rec {
     { inherit (meta) path; } // lib.optionalAttrs (lib.hasAttrByPath [ "shell" ] meta) { inherit (meta) shell; }
     // lib.optionalAttrs (lib.hasAttrByPath [ "tmux" ] meta) { inherit (meta) tmux; };
   mkBookmarkNameRemote = meta: sep: tagSep:
-    lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
+    lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.remote.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
   mkBookmarkWebjumpDest = meta:
-    { inherit (meta) url; } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { inherit (meta) vpn; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { inherit (meta) browser; }
+    { inherit (meta.remote) url; } // lib.optionalAttrs (lib.hasAttrByPath [ "remote" "vpn" ] meta) { inherit (meta.remote) vpn; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "remote" "browser" ] meta) { inherit (meta.remote) browser; }
     // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; };
   mkBookmarkSearchengineDest = meta:
     {
-      url = meta.url + lib.optionalString (lib.hasAttrByPath [ "searchSuffix" ] meta) meta.searchSuffix;
-    } // lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { inherit (meta) vpn; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "browser" ] meta) { inherit (meta) browser; }
+      url = meta.remote.url + lib.optionalString (lib.hasAttrByPath [ "remote" "searchSuffix" ] meta) meta.remote.searchSuffix;
+    } // lib.optionalAttrs (lib.hasAttrByPath [ "remote" "vpn" ] meta) { inherit (meta.remote) vpn; }
+    // lib.optionalAttrs (lib.hasAttrByPath [ "remote" "browser" ] meta) { inherit (meta.remote) browser; }
     // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; };
   remoteWebjumps = remotes: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkWebjumpDest meta))
       (lib.filterAttrs
-        (_: meta:
-          (lib.hasAttrByPath [ "jump" ] meta && meta.jump) || !(lib.hasAttrByPath [ "searchSuffix" ] meta))
-        remotes);
+        (_: meta: (trueValueByPathStrict meta [ "remote" "jump" ] || falseValueByPath meta [ "remote" "searchSuffix" ]))
+        (checkedBookmarks remotes [ "remote" "url" ]));
   remoteSearchEngines = remotes: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkSearchengineDest meta))
-      (lib.filterAttrs (_: meta: (lib.hasAttrByPath [ "searchSuffix" ] meta)) remotes);
+      (lib.filterAttrs
+        (_: meta: lib.hasAttrByPath [ "remote" "searchSuffix" ] meta)
+        (checkedBookmarks remotes [ "remote" "url" ]));
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
   concatStringListsRaw = sep: ll: lib.concatStringsSep sep (lib.flatten ll);
   takeLast = n: l: with lib; reverseList (take n (reverseList l));

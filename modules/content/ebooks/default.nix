@@ -43,7 +43,7 @@ in
         device = homePrefix user "bookshelf";
         options = [ "bind" ];
       };
-      systemd.user.services = builtins.listToAttrs (forEach (localEbooks config.navigation.bookmarks.entries) (root:
+      systemd.user.services = builtins.listToAttrs (forEach (localFiles "ebooks" config.navigation.bookmarks.entries) (root:
         let
           token = concatStringsSep "-" (takeLast 2 (splitString "/" root));
         in

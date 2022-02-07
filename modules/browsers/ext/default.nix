@@ -58,11 +58,11 @@ in
       workstation.systemtraits.instructions = with config.navigation.bookmarks; ''
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${
           lib.strings.escapeNixString
-          (builtins.toJSON (remoteWebjumps (enabledRemotes entries) separator.fields separator.tags))
+          (builtins.toJSON (remoteWebjumps entries separator.fields separator.tags))
         }
         ${pkgs.redis}/bin/redis-cli set nav/searchengines ${
           lib.strings.escapeNixString
-          (builtins.toJSON (remoteSearchEngines (enabledRemotes entries) separator.fields separator.tags))
+          (builtins.toJSON (remoteSearchEngines entries separator.fields separator.tags))
         }
       '';
 

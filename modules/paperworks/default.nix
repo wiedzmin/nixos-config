@@ -305,7 +305,7 @@ in
             (builtins.readFile ./scripts/open-doc.py);
       };
 
-      systemd.user.services = builtins.listToAttrs (forEach (localDocs config.navigation.bookmarks.entries) (root: {
+      systemd.user.services = builtins.listToAttrs (forEach (localFiles "docs" config.navigation.bookmarks.entries) (root: {
         name = "update-docs-${concatStringsSep "-" (takeLast 2 (splitString "/" root))}";
         value = {
           description = "Update ${concatStringsSep "-" (takeLast 2 (splitString "/" root))} contents";
