@@ -1,5 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../util.nix { inherit config inputs lib pkgs; };
+with config.navigation.bookmarks.workspaces;
 with lib;
 
 let
@@ -49,7 +50,7 @@ in
               - window_name: repl
                 panes:
                   - shell_command:
-                    - cd ${configPrefix ""}
+                    - cd ${configPrefix roots ""}
                     - nix repl ./flake-repl.nix
               - window_name: files
                 panes:
@@ -57,7 +58,7 @@ in
               - window_name: nixos
                 panes:
                   - shell_command:
-                    - cd ${configPrefix ""}
+                    - cd ${configPrefix roots ""}
           '';
         };
       };

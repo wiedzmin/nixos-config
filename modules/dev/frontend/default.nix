@@ -41,7 +41,7 @@ in {
         };
       };
       dev.projectenv.templates.entries = {
-        "frontend.vue" = configPrefix "modules/dev/frontend/templates/vue";
+        "frontend.vue" = configPrefix config.navigation.bookmarks.workspaces.roots "modules/dev/frontend/templates/vue";
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

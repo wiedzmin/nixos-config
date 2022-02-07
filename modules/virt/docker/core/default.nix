@@ -56,13 +56,13 @@ in
                                              text = builtins.readFile ./scripts/dlint.sh; };
         hadolintd = pkgs.writeShellApplication { name = "hadolintd"; runtimeInputs = with pkgs; [ docker ];
                                                  text = builtins.readFile ./scripts/hadolintd.sh; };
-        docker_containers_traits = mkPythonScriptWithDeps "docker_containers_traits"
+        docker_containers_traits = mkPythonScriptWithDeps pkgs "docker_containers_traits"
           (with pkgs; [ docker nurpkgs.pystdlib nurpkgs.toolbox python3Packages.redis xsel yad ])
           (builtins.readFile ./scripts/docker_containers_traits.py);
         discover_containerized_services =
-          mkPythonScriptWithDeps "discover_containerized_services" (with pkgs; [ docker nurpkgs.pystdlib ])
+          mkPythonScriptWithDeps pkgs "discover_containerized_services" (with pkgs; [ docker nurpkgs.pystdlib ])
             (builtins.readFile ./scripts/discover_containerized_services.py);
-        docker_shell = mkPythonScriptWithDeps "docker_shell"
+        docker_shell = mkPythonScriptWithDeps pkgs "docker_shell"
           (with pkgs; [ nurpkgs.pystdlib nurpkgs.toolbox python3Packages.libtmux python3Packages.redis ])
           (builtins.readFile ./scripts/docker_shell.py);
       };

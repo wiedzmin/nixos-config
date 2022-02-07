@@ -96,7 +96,7 @@ in
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        snippets = mkPythonScriptWithDeps "snippets" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
+        snippets = mkPythonScriptWithDeps pkgs "snippets" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
           (builtins.readFile ./scripts/snippets.py);
       };
       # NOTE: unzip is for tabnine binaries installation
@@ -163,7 +163,7 @@ in
         epkgs.company-tabnine
         epkgs.yasnippet
       ];
-      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./emacs/completion.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/completion.el ];
       ide.emacs.core.customKeymaps = { "custom-yasnippet-map" = "<f5>"; };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {

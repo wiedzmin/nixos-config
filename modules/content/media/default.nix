@@ -66,7 +66,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       dev.projectenv.templates.entries = {
-        "media.common" = configPrefix "modules/content/media/templates/common";
+        "media.common" = configPrefix config.navigation.bookmarks.workspaces.roots  "modules/content/media/templates/common";
       };
 
       environment.systemPackages = with pkgs; [ ncmpcpp freetube ytfzf moc ];

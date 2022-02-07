@@ -1,5 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../util.nix { inherit config inputs lib pkgs; };
+with config.navigation.bookmarks.workspaces;
 with lib;
 
 let
@@ -72,9 +73,9 @@ in
 
       dev.projectenv.templates.entries = {
         # TODO: consider unbind lp-repl from golang since it is more of common functionality
-        "golang.lp-repl" = configPrefix "modules/dev/golang/templates/lp-repl";
-        "golang.nix" = configPrefix "modules/dev/golang/templates/go2nix";
-        "golang.project" = configPrefix "modules/dev/golang/templates/project";
+        "golang.lp-repl" = configPrefix roots "modules/dev/golang/templates/lp-repl";
+        "golang.nix" = configPrefix roots "modules/dev/golang/templates/go2nix";
+        "golang.project" = configPrefix roots "modules/dev/golang/templates/project";
       };
 
       dev.projectenv.templates.settings.common = { "golangEnableModules" = true; };

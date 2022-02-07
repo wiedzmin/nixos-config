@@ -1,5 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../util.nix { inherit config inputs lib pkgs; };
+with config.navigation.bookmarks.workspaces;
 with lib;
 
 let
@@ -46,8 +47,8 @@ in {
         "hpp" = "coding:cpp";
       };
       dev.projectenv.templates.entries = {
-        "ccpp.generic" = configPrefix "modules/dev/ccpp/templates/generic";
-        "ccpp.cmake" = configPrefix "modules/dev/ccpp/templates/cmake";
+        "ccpp.generic" = configPrefix roots "modules/dev/ccpp/templates/generic";
+        "ccpp.cmake" = configPrefix roots "modules/dev/ccpp/templates/cmake";
       };
     })
     (mkIf (cfg.enable && cfg.rootMarkers.enable) {
@@ -60,7 +61,7 @@ in {
         epkgs.cmake-mode
         epkgs.modern-cpp-font-lock
       ];
-      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./emacs/ccpp.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/ccpp.el ];
     })
   ];
 }

@@ -36,7 +36,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       dev.projectenv.templates.entries = {
-        "tools.dbms" = configPrefix "modules/dev/dbms/misc/templates/dbms";
+        "tools.dbms" = configPrefix config.navigation.bookmarks.workspaces.roots "modules/dev/dbms/misc/templates/dbms";
       };
     })
     (mkIf (cfg.enable && cfg.controlCenter.enable) {
@@ -52,7 +52,7 @@ in
       ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        dbms = mkPythonScriptWithDeps "dbms" (with pkgs; [ pass nurpkgs.pystdlib python3Packages.redis tmux nurpkgs.toolbox ])
+        dbms = mkPythonScriptWithDeps pkgs "dbms" (with pkgs; [ pass nurpkgs.pystdlib python3Packages.redis tmux nurpkgs.toolbox ])
           (builtins.readFile ./scripts/dbms.py);
       };
 

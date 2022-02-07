@@ -317,13 +317,13 @@ in
           ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./lib/ExtraCombinators.hs;
           ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./lib/WindowTypes.hs;
           ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./lib/XkbToggle.hs;
-          ".xmonad/lib/XMonad/Workspaces.hs".text = readSubstituted [ ./subst.nix ] [ ./lib/Workspaces.hs ];
+          ".xmonad/lib/XMonad/Workspaces.hs".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./lib/Workspaces.hs ];
           ".xmonad/xmonad.hs" = {
             text = configText;
             onChange = "xmonad --recompile";
           };
         };
-        xdg.configFile."xmobar/xmobarrc".text = readSubstituted [ ./subst.nix ] [ ./assets/xmobarrc ];
+        xdg.configFile."xmobar/xmobarrc".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/xmobarrc ];
       };
     })
   ];

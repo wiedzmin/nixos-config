@@ -70,7 +70,7 @@ in
         "orderless-dispatchers" = builtins.readFile ./custom/orderless-dispatchers.el;
         "consult-utils" = builtins.readFile ./custom/consult-utils.el;
       };
-      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./navigation.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./navigation.el ];
       ide.emacs.core.customKeymaps = {
         "custom-help-map" = "<f1>";
         "custom-narrowing-map" = "<f9>";

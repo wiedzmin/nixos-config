@@ -42,7 +42,7 @@ in
       ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        gitwip = mkPythonScriptWithDeps "gitwip"
+        gitwip = mkPythonScriptWithDeps pkgs "gitwip"
           (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis xprintidle-ng ])
           (builtins.readFile ./scripts/gitwip.py);
       };

@@ -61,7 +61,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        devenv = mkPythonScriptWithDeps "devenv"
+        devenv = mkPythonScriptWithDeps pkgs "devenv"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.pyyaml renderizer stgit ])
           (builtins.readFile ./scripts/devenv.py);
         git-hideenv = pkgs.writeShellApplication {

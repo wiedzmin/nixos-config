@@ -103,10 +103,10 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        dump_firefox_session = mkPythonScriptWithDeps "dump_firefox_session"
+        dump_firefox_session = mkPythonScriptWithDeps pkgs "dump_firefox_session"
           (with pkgs; [ coreutils nurpkgs.wiedzmin.pystdlib python3Packages.python-lz4 ])
           (builtins.readFile ./scripts/dump_firefox_session.py);
-        manage_firefox_sessions = mkPythonScriptWithDeps "manage_firefox_sessions"
+        manage_firefox_sessions = mkPythonScriptWithDeps pkgs "manage_firefox_sessions"
           (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.wiedzmin.pystdlib ])
           (builtins.readFile ./scripts/manage_firefox_sessions.py);
       };

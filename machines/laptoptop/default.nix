@@ -375,7 +375,10 @@ in
         private = config.identity.secrets.ssh.privateKey;
         public = config.identity.secrets.ssh.publicKey;
       };
-      authorizedKeys = [ (secretsPrefix "identity/id_rsa.mobile.pub") ];
+      authorizedKeys = [
+        (secretsPrefix
+          config.attributes.machine.name "identity/id_rsa.mobile.pub" config.navigation.bookmarks.workspaces.roots)
+      ];
       wm.enable = true;
     };
     vpn = {

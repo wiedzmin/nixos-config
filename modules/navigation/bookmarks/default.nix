@@ -57,7 +57,11 @@ in {
         home.activation.emacsKnownProjects = {
           after = [ "linkGeneration" ];
           before = [ ];
-          data = emacsCmd "(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
+          data = let
+            uid = config.attributes.mainUser.ID;
+            emacsPkg = config.ide.emacs.core.package;
+          in emacsCmd uid emacsPkg
+            "(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
               builtins.concatStringsSep " " (localEmacsBookmarks cfg.entries)
             }))";
         };

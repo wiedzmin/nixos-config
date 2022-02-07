@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ lib, ... }:
 
 # TODO: review https://github.com/ysndr/blog/blob/e4588f821ce6aee9ec3688ee9af3d2e61e143530/blog.nix#L14
 # TODO: implement utils collection like nixpkgs/lib + flake handle
@@ -6,21 +6,21 @@
 rec {
   addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
   withPatches = pkg: patches: lib.overrideDerivation pkg (_: { inherit patches; });
-  mkPythonScriptWithDeps = pname: packages: text:
-    pkgs.python3Packages.buildPythonPackage rec {
+  mkPythonScriptWithDeps = nixpkgs: pname: packages: text:
+    nixpkgs.python3Packages.buildPythonPackage rec {
       inherit pname;
       version = "unstable";
-      src = pkgs.writeTextFile {
+      src = nixpkgs.writeTextFile {
         name = "${pname}.py";
         text = ''
-          #!${pkgs.python3}/bin/python3
+          #!${nixpkgs.python3}/bin/python3
           ${text}'';
         executable = true;
       };
       format = "other";
       unpackPhase = "true";
-      buildInputs = with pkgs; [ makeWrapper ];
-      propagatedBuildInputs = with pkgs; (packages ++ [ glibc ]);
+      buildInputs = with nixpkgs; [ makeWrapper ];
+      propagatedBuildInputs = with nixpkgs; (packages ++ [ glibc ]);
       buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${pname}";
       installPhase = "true";
       postInstall = ''
@@ -42,27 +42,24 @@ rec {
   homePrefix = user: suffix: "/home/${user}/" + suffix;
   goBinPrefix = user: suffix: "/home/${user}/workspace/go/bin/" + suffix;
   xdgConfig = user: suffix: (homePrefix user ".config") + suffix; # FIXME: deal with slashes seamlessly
-  configPrefix = suffix:
-    "${wsRoot "github"}/wiedzmin/nixos-config/" + suffix;
-  secretsPrefix = suffix:
-    configPrefix ("machines/" + config.attributes.machine.name + "/secrets/" + suffix);
-  assetsPrefix = suffix:
-    configPrefix ("machines/" + config.attributes.machine.name + "/assets/" + suffix);
+  wsRoot = roots: key: lib.getAttrFromPath [ key ] roots;
+  configPrefix = roots: suffix: "${wsRoot roots "github"}/wiedzmin/nixos-config/" + suffix;
+  secretsPrefix = machine: suffix: roots: configPrefix roots ("machines/" + machine + "/secrets/" + suffix);
+  assetsPrefix = machine: suffix: roots: configPrefix roots ("machines/" + machine + "/assets/" + suffix);
   maybeAttrIsBool = name: set: (builtins.hasAttr name set) && set."${name}";
   maybeAttrString = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else ph;
   maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
   emacsBoolToString = v: if v then "t" else "nil";
-  wsRoot = key: lib.getAttrFromPath [ key ] config.navigation.bookmarks.workspaces.roots;
   wsRootAtHomedir = user: key: lib.removePrefix (homePrefix user "") key;
-  mkGithubBookmark = user: repo: {
-    local.path = "${wsRoot "github"}/${user}/${repo}";
+  mkGithubBookmark = user: repo: roots: {
+    local.path = "${wsRoot roots "github"}/${user}/${repo}";
     remote.url = "https://github.com/${user}/${repo}";
   };
-  mkGithubBookmarkWithMyrepos = user: repo: {
-    local.path = "${wsRoot "github"}/${user}/${repo}";
+  mkGithubBookmarkWithMyrepos = user: repo: roots: {
+    local.path = "${wsRoot roots "github"}/${user}/${repo}";
     remote.url = "https://github.com/${user}/${repo}";
     batchvcs = {
-      "${wsRoot "github"}/${user}/${repo}" = {
+      "${wsRoot roots "github"}/${user}/${repo}" = {
         checkout = [ "git clone 'https://github.com/${user}/${repo}.git' '${repo}'" ];
       };
     };
@@ -74,7 +71,7 @@ rec {
     check = lib.isFunction;
     merge = _loc: defs: as: lib.concatMap (select: select as) (lib.getValues defs);
   };
-  readSubstituted = substs: entries:
+  readSubstituted = config: inputs: pkgs: substs: entries:
     lib.concatStringsSep "\n" (lib.forEach entries
       (e: builtins.readFile (pkgs.substituteAll
         (lib.foldl (collector: subst: collector // ((import subst { inherit config inputs lib pkgs; }) // { src = e; }))
@@ -126,7 +123,7 @@ rec {
   remoteWebjumps = remotes: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkWebjumpDest meta))
       (lib.filterAttrs
-        (_: meta: (trueValueByPathStrict meta [ "remote" "jump" ] || falseValueByPath meta [ "remote" "searchSuffix" ]))
+        (_: meta: (trueValueByPath meta [ "remote" "jump" ] || falseValueByPath meta [ "remote" "searchSuffix" ]))
         (checkedBookmarks remotes [ "remote" "url" ]));
   remoteSearchEngines = remotes: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkSearchengineDest meta))
@@ -144,9 +141,9 @@ rec {
   # TODO: consider adding keymap prompts
   genEmacsCustomKeymaps = meta:
     lib.concatStringsSep "\n" (lib.mapAttrsToList (name: binding: mkEmacsCustomKeymap name binding) meta);
-  emacsCmd = elisp:
-    let emacsServerSocketPath = "/run/user/${config.attributes.mainUser.ID}/emacs/server";
-    in "[ -f ${emacsServerSocketPath} ] && ${config.ide.emacs.core.package}/bin/emacsclient -s ${emacsServerSocketPath} -e '${elisp}'";
+  emacsCmd = uid: emacspkg: elisp:
+    let emacsServerSocket = "/run/user/${uid}/emacs/server";
+    in "[ -f ${emacsServerSocket} ] && ${emacspkg}/bin/emacsclient -s ${emacsServerSocket} -e '${elisp}'";
   mkArbttProgramTitleRule = windowClasses: titles: tag:
     lib.concatStringsSep "\n" (lib.forEach titles (t:
       "current window ($program == [${
@@ -160,8 +157,8 @@ rec {
     lib.concatStringsSep "\n" (lib.forEach tags (tag: ''current window $program == "${program}" ==> tag ${tag},''));
   mkArbttPrefixedTitlesRule = titles: prefix:
     lib.concatStringsSep "\n" (lib.forEach titles (t: "current window ($title =~ m!${t}!) ==> tag ${prefix}${t},"));
-  mkArbttBrowserTitleRule = titles: tag:
-    mkArbttProgramTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ]) titles tag;
+  mkArbttBrowserTitleRule = titles: tag: browser:
+    mkArbttProgramTitleRule (with browser; [ default.windowClass fallback.windowClass ]) titles tag;
   mkArbttProgramMapTitleRule = windowClasses: title2tag:
     lib.concatStringsSep "\n" (lib.mapAttrsToList
       (re: tag:

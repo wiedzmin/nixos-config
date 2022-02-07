@@ -67,7 +67,7 @@ in
     })
     (mkIf (cfg.enable && cfg.ordering.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        order_screenshots = mkPythonScriptWithDeps "order_screenshots" (with pkgs; [ coreutils nurpkgs.wiedzmin.pystdlib ])
+        order_screenshots = mkPythonScriptWithDeps pkgs "order_screenshots" (with pkgs; [ coreutils nurpkgs.wiedzmin.pystdlib ])
           (builtins.readFile ./scripts/order_screenshots.py);
       };
 

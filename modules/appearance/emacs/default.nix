@@ -37,7 +37,7 @@ in
         epkgs.transwin
         epkgs.unicode-fonts
       ];
-      ide.emacs.core.config = readSubstituted [ ./subst.nix ]
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
         ([ ./appearance.el ] ++ lib.optionals config.ide.emacs.core.useModernDrawingLibs [ ./appearance-clean.el ]);
     })
   ];

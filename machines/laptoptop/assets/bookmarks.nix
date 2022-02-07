@@ -1,6 +1,7 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../../modules/util.nix { inherit config inputs lib pkgs; };
 with import ../../../modules/wm/util.nix { inherit config inputs lib pkgs; };
+with config.navigation.bookmarks.workspaces;
 
 let
   user = config.attributes.mainUser.name;
@@ -10,7 +11,7 @@ rec {
   navigation.bookmarks.entries = {
     home-manager = {
       desc = "home-manager upstream repo";
-      local.path = "${wsRoot "github"}/rycee/home-manager";
+      local.path = "${wsRoot roots "github"}/rycee/home-manager";
       remote = {
         url = "https://github.com/rycee/home-manager/";
         jump = true;
@@ -19,7 +20,7 @@ rec {
     };
     nixos = {
       desc = "My NixOS configurations";
-      local.path = "${wsRoot "github"}/wiedzmin/nixos-config";
+      local.path = "${wsRoot roots "github"}/wiedzmin/nixos-config";
       remote = {
         url = "https://github.com/wiedzmin/nixos-config/";
         jump = true;
@@ -35,7 +36,7 @@ rec {
     };
     nixpkgs = {
       desc = "Nixpkgs upstream repo";
-      local.path = "${wsRoot "github"}/NixOS/nixpkgs";
+      local.path = "${wsRoot roots "github"}/NixOS/nixpkgs";
       remote = {
         url = "https://github.com/NixOS/nixpkgs/";
         jump = true;
@@ -44,14 +45,14 @@ rec {
     };
     nixos-hardware = {
       desc = "NixOS hardware presets";
-      local.path = "${wsRoot "github"}/NixOS/nixos-hardware";
+      local.path = "${wsRoot roots "github"}/NixOS/nixos-hardware";
       remote = {
         url = "https://github.com/NixOS/nixos-hardware";
       };
     };
     emacs-overlay = {
       desc = "nix emacs overlay";
-      local.path = "${wsRoot "github"}/nix-community/emacs-overlay";
+      local.path = "${wsRoot roots "github"}/nix-community/emacs-overlay";
       remote = {
         url = "https://github.com/nix-community/emacs-overlay/";
         jump = true;
@@ -60,7 +61,7 @@ rec {
     };
     yasnippet-snippets = {
       desc = "Yasnippet snippets collection";
-      local.path = "${wsRoot "github"}/wiedzmin/yasnippet-snippets";
+      local.path = "${wsRoot roots "github"}/wiedzmin/yasnippet-snippets";
       remote = {
         url = "https://github.com/wiedzmin/yasnippet-snippets/";
         jump = true;
@@ -69,20 +70,20 @@ rec {
     };
     git-hooks = {
       desc = "my custom git hooks for `pre-commit`";
-      local.path = "${wsRoot "github"}/wiedzmin/git-hooks";
+      local.path = "${wsRoot roots "github"}/wiedzmin/git-hooks";
       remote = {
         url = "https://github.com/wiedzmin/git-hooks";
         jump = true;
         searchSuffix = "search?q=";
       };
       batchvcs = {
-        "${wsRoot "github"}/wiedzmin/git-hooks" = {
+        "${wsRoot roots "github"}/wiedzmin/git-hooks" = {
           checkout = [ "git clone 'https://github.com/wiedzmin/git-hooks.git' 'git-hooks'" ];
         };
       };
     };
-    nur-packages = { local.path = "${wsRoot "github"}/wiedzmin/nur-packages"; };
-    postgres = { local.path = "${wsRoot "github"}/postgres/postgres"; };
+    nur-packages = { local.path = "${wsRoot roots "github"}/wiedzmin/nur-packages"; };
+    postgres = { local.path = "${wsRoot roots "github"}/postgres/postgres"; };
     "staging/sandbox" = { local.path = homePrefix user "workspace/sandbox/newpkgs"; };
     jwt-io = {
       desc = "JWT online debugger and libraries reference";
@@ -101,7 +102,7 @@ rec {
       desc = "Networking beginner book (online)";
       remote.url = "https://linkmeup.gitbook.io/sdsm/0.-planirovanie";
     };
-    "toolbox" = mkGithubBookmarkWithMyrepos "wiedzmin" "toolbox" // {
+    "toolbox" = mkGithubBookmarkWithMyrepos "wiedzmin" "toolbox" roots // {
       windowRules = [
         {
           class = "Emacs";
@@ -110,7 +111,7 @@ rec {
         }
       ];
     };
-    "wmtools" = mkGithubBookmarkWithMyrepos "wiedzmin" "wmtools" // {
+    "wmtools" = mkGithubBookmarkWithMyrepos "wiedzmin" "wmtools" roots // {
       windowRules = [
         {
           class = "Emacs";
@@ -119,7 +120,7 @@ rec {
         }
       ];
     };
-    "libtmux-go" = mkGithubBookmarkWithMyrepos "wiedzmin" "libtmux-go";
+    "libtmux-go" = mkGithubBookmarkWithMyrepos "wiedzmin" "libtmux-go" roots;
     "lumosity" = {
       desc = "Lumosity";
       remote.url = "https://lumosity.com/";
@@ -710,7 +711,7 @@ rec {
         searchSuffix = "?channel=nixpkgs-unstable&query=";
       };
     };
-    "nix/pm/repo" = mkGithubBookmark "NixOS" "nix" // { desc = "nix package manager repo"; };
+    "nix/pm/repo" = mkGithubBookmark "NixOS" "nix" roots // { desc = "nix package manager repo"; };
     "ghnix" = {
       desc = "github/lang:nix";
       tags = [ "forge" ];
@@ -748,20 +749,20 @@ rec {
       tags = [ "search" "libraries" "emacs" "elisp" ];
       remote.url = "https://www.libhunt.com/l/emacs-lisp";
     };
-    "projects/loggerhead" = mkGithubBookmark "wiedzmin" "loggerhead"; # arbtt analog
-    "projects/gourmet" = mkGithubBookmarkWithMyrepos "wiedzmin" "gourmet";
-    "mastering/wiedzmin/cl-study" = mkGithubBookmarkWithMyrepos "wiedzmin" "cl-study";
-    "mastering/wiedzmin/lisp-koans" = mkGithubBookmarkWithMyrepos "wiedzmin" "lisp-koans";
-    "projects/reference/go-org" = mkGithubBookmark "niklasfasching" "go-org";
-    "projects/reference/xgb" = mkGithubBookmark "BurntSushi" "xgb";
-    "projects/reference/xgbutil" = mkGithubBookmark "BurntSushi" "xgbutil";
-    "projects/reference/arbtt" = mkGithubBookmark "nomeata" "arbtt";
-    "projects/reference/code-maat" = mkGithubBookmark "adamtornhill" "code-maat" // {
+    "projects/loggerhead" = mkGithubBookmark "wiedzmin" "loggerhead" roots; # arbtt analog
+    "projects/gourmet" = mkGithubBookmarkWithMyrepos "wiedzmin" "gourmet" roots;
+    "mastering/wiedzmin/cl-study" = mkGithubBookmarkWithMyrepos "wiedzmin" "cl-study" roots;
+    "mastering/wiedzmin/lisp-koans" = mkGithubBookmarkWithMyrepos "wiedzmin" "lisp-koans" roots;
+    "projects/reference/go-org" = mkGithubBookmark "niklasfasching" "go-org" roots;
+    "projects/reference/xgb" = mkGithubBookmark "BurntSushi" "xgb" roots;
+    "projects/reference/xgbutil" = mkGithubBookmark "BurntSushi" "xgbutil" roots;
+    "projects/reference/arbtt" = mkGithubBookmark "nomeata" "arbtt" roots;
+    "projects/reference/code-maat" = mkGithubBookmark "adamtornhill" "code-maat" roots // {
       # TODO: https://grahamenos.com/ft-clojure-nix.html - java/clojure packaging
       transient = true;
     };
-    "rofi" = mkGithubBookmark "davatorium" "rofi" // { transient = true; };
-    "nyxt" = mkGithubBookmark "atlas-engineer" "nyxt" // {
+    "rofi" = mkGithubBookmark "davatorium" "rofi" roots // { transient = true; };
+    "nyxt" = mkGithubBookmark "atlas-engineer" "nyxt" roots // {
       tags = [ "nyxt" "repo" ];
       transient = true;
     };
@@ -773,7 +774,7 @@ rec {
       tags = [ "c++" "cpp" "reference" ];
       remote = { url = "https://en.cppreference.com/w/"; };
     };
-    "libtmux" = mkGithubBookmark "tmux-python" "libtmux" // { transient = true; };
+    "libtmux" = mkGithubBookmark "tmux-python" "libtmux" roots // { transient = true; };
     "paintings" = {
       tags = [ "paint" "play" ];
       browser = config.attributes.browser.fallback.cmd;
@@ -806,17 +807,17 @@ rec {
     };
     nixos-util-lib-1 = {
       desc = "nixpkgs-like util lib example 1";
-      local.path = "${wsRoot "github"}/neXromancers/nixromancers/default.nix";
+      local.path = "${wsRoot roots "github"}/neXromancers/nixromancers/default.nix";
       transient = true;
     };
     nixos-util-lib-2 = {
       desc = "nixpkgs-like util lib example 2";
-      local.path = "${wsRoot "github"}/bb010g/nur-packages/lib/default.nix";
+      local.path = "${wsRoot roots "github"}/bb010g/nur-packages/lib/default.nix";
       transient = true;
     };
     nixos-util-lib-3 = {
       desc = "nixpkgs-like util lib example 3";
-      local.path = "${wsRoot "github"}/jwiegley/notes/gists/fef31cdaae1d00c39fce075e9a0ac1e4/loop.nix";
+      local.path = "${wsRoot roots "github"}/jwiegley/notes/gists/fef31cdaae1d00c39fce075e9a0ac1e4/loop.nix";
       transient = true;
     };
     agenda = {
@@ -831,5 +832,5 @@ rec {
       ];
     };
   };
-  pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook";
+  pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }

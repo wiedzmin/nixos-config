@@ -47,7 +47,7 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ debug-qtile ];
         xdg.configFile = {
-          "qtile/config.py".text = readSubstituted [ ./subst.nix ] [ ./config.py ];
+          "qtile/config.py".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./config.py ];
         };
       };
     })

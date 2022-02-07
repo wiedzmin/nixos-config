@@ -55,7 +55,7 @@ in
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
-        sshmenu = mkPythonScriptWithDeps "sshmenu"
+        sshmenu = mkPythonScriptWithDeps pkgs "sshmenu"
           (with pkgs; [ openssh nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis nurpkgs.toolbox ])
           (builtins.readFile ./scripts/sshmenu.py);
       };

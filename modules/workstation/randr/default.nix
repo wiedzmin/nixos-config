@@ -70,7 +70,7 @@ in
       '';
 
       nixpkgs.config.packageOverrides = _: rec {
-        xrandrutil = mkPythonScriptWithDeps "xrandrutil" (with pkgs; [ autorandr nurpkgs.pystdlib python3Packages.ewmh ])
+        xrandrutil = mkPythonScriptWithDeps pkgs "xrandrutil" (with pkgs; [ autorandr nurpkgs.pystdlib python3Packages.ewmh ])
           (builtins.readFile ./scripts/xrandrutil.py);
         rescreen = pkgs.writeShellApplication { name = "rescreen"; runtimeInputs = with pkgs; [ autorandr ];
                                                 text = ''rescreen-"$(autorandr --detected)"-i3''; };

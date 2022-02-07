@@ -174,7 +174,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        tt_capture = mkPythonScriptWithDeps "tt_capture"
+        tt_capture = mkPythonScriptWithDeps pkgs "tt_capture"
           (with pkgs; [
             nurpkgs.pystdlib
             python3Packages.cbor2

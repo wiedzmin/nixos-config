@@ -52,7 +52,7 @@ in {
       '';
 
       nixpkgs.config.packageOverrides = _: rec {
-        docker_swarm_services_info = mkPythonScriptWithDeps "docker_swarm_services_info"
+        docker_swarm_services_info = mkPythonScriptWithDeps pkgs "docker_swarm_services_info"
           (with pkgs; [ docker nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis nurpkgs.toolbox yad ])
           (builtins.readFile ./scripts/docker_swarm_services_info.py);
       };

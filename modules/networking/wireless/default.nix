@@ -72,7 +72,7 @@ in
       nixpkgs.config.packageOverrides = _: rec {
         wifi-status = pkgs.writeShellApplication { name = "wifi-status"; runtimeInputs = with pkgs; [ gawk wirelesstools ];
                                                    text = builtins.readFile ./scripts/wifi-status.sh; };
-        headset_battery = mkPythonScriptWithDeps "headset_battery"
+        headset_battery = mkPythonScriptWithDeps pkgs "headset_battery"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis bluetooth_battery ])
           (builtins.readFile ./scripts/headset_battery.py);
       };

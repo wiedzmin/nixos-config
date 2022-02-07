@@ -75,9 +75,9 @@ in
     (mkIf cfg.enable {
       # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
       nixpkgs.config.packageOverrides = _: rec {
-        uptime_info = mkPythonScriptWithDeps "uptime_info" (with pkgs; [ dunst gnused procps ])
+        uptime_info = mkPythonScriptWithDeps pkgs "uptime_info" (with pkgs; [ dunst gnused procps ])
           (builtins.readFile ./scripts/uptime_info.sh);
-        ifconfless = mkPythonScriptWithDeps "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
+        ifconfless = mkPythonScriptWithDeps pkgs "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
           (builtins.readFile ./scripts/ifconfless.py);
       };
       home-manager.users."${user}" = {
@@ -261,7 +261,7 @@ in
     (mkIf (cfg.enable && cfg.launcher == "gmrun") {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ gmrun ];
-        home.file = { ".gmrunrc".text = readSubstituted [ ./subst.nix ] [ ./assets/gmrunrc ]; };
+        home.file = { ".gmrunrc".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/gmrunrc ]; };
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {

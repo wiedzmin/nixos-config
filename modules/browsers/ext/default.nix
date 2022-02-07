@@ -68,15 +68,15 @@ in
 
       pim.timetracking.rules =
         mkArbttProgramRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ]) "activity:web"
-        + "\n" + mkArbttBrowserTitleRule [ "Gmail" ] "web:email" + "\n"
-        + mkArbttBrowserTitleRule [ "Google" "DuckDuckGo" ] "web:search" + "\n"
-        + mkArbttBrowserTitleRule [ "wikipedia" ] "site:wikipedia";
+        + "\n" + mkArbttBrowserTitleRule [ "Gmail" ] "web:email" config.attributes.browser + "\n"
+        + mkArbttBrowserTitleRule [ "Google" "DuckDuckGo" ] "web:search" config.attributes.browser + "\n"
+        + mkArbttBrowserTitleRule [ "wikipedia" ] "site:wikipedia" config.attributes.browser;
 
       programs.browserpass.enable = config.browsers.firefox.enable || config.browsers.chromium.enable;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.atomic-chrome ];
-      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./emacs/browsers.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/browsers.el ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.modeBindings = {

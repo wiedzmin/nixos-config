@@ -1,5 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 with import ../../util.nix { inherit config inputs lib pkgs; };
+with config.navigation.bookmarks.workspaces;
 with lib;
 
 let
@@ -117,8 +118,8 @@ in
         inputsUnstableRev = inputs.unstable.rev;
       };
       dev.projectenv.templates.entries = {
-        "ansible" = configPrefix "modules/dev/dbms/misc/templates/ansible";
-        "reveng" = configPrefix "modules/dev/dbms/misc/templates/reveng";
+        "ansible" = configPrefix roots "modules/dev/dbms/misc/templates/ansible";
+        "reveng" = configPrefix roots "modules/dev/dbms/misc/templates/reveng";
       };
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
@@ -188,7 +189,7 @@ in
         epkgs.yaml-mode
         epkgs.groovy-mode
       ];
-      ide.emacs.core.config = readSubstituted [ ./subst.nix ] [ ./emacs/misc.el ./emacs/lsp.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/misc.el ./emacs/lsp.el ];
       ide.emacs.core.customKeymaps = {
         "custom-lsp-treemacs-map" = "C-c t";
         "custom-webpaste-map" = "C-c [";
