@@ -10,8 +10,14 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
-  imports =
-    [ "${inputs.nixos-hardware}/common/pc/ssd" ../../modules ../../profiles/chassis/thinkpad-x270.nix ./assets ./secrets ];
+  imports = [
+    "${inputs.nixos-hardware}/common/pc/ssd"
+    ../../modules
+    ../../profiles/chassis/thinkpad-x270.nix
+    ../../profiles/chassis/40A10090EU.nix
+    ./assets
+    ./secrets
+  ];
 
   fileSystems."/" = {
     device = "/dev/disk/by-label/nixos-root";
