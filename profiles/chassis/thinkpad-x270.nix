@@ -24,8 +24,6 @@ with pkgs.unstable.commonutils;
       internalHead.name = "eDP-1";
       internalHead.resolution = "1366x768";
       internalHead.resolutionXephyr = "1200x600";
-      externalPrimaryHead.name = "DP-2";
-      externalSecondaryHead.name = "DP-1";
     };
   };
 

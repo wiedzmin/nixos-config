@@ -24,8 +24,6 @@ with pkgs.unstable.commonutils;
       internalHead.name = "LVDS-1";
       internalHead.resolution = "1366x768";
       internalHead.resolutionXephyr = "1200x600";
-      externalPrimaryHead.name = "HDMI-2";
-      externalSecondaryHead.name = "HDMI-3";
     };
   };
 }
