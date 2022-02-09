@@ -195,6 +195,15 @@ with lib;
           description = "External secondary head name";
         };
       };
+      count = mkOption {
+        type = types.int;
+        default = 1;
+        description = ''
+          Overall available monitors count, including internal one.
+
+          Dock stations should update this according to their video outputs.
+        '';
+      };
     };
     dateFormats = mkOption {
       type = types.attrsOf types.str;
