@@ -4,7 +4,8 @@ with lib;
 
 let
   cfg = config.ext.virtualization.docker.devdns;
-in {
+in
+{
   options = {
     ext.virtualization.docker.devdns = {
       enable = mkOption {
@@ -49,7 +50,6 @@ in {
 
       systemd.services."docker-devdns" = {
         description = "Dev DNS for docker containers";
-        wantedBy = [ (optionalString cfg.autoStart "multi-user.target") ];
         after = [ "docker.service" "docker.socket" ];
         requires = [ "docker.service" "docker.socket" ];
         script = ''
@@ -70,6 +70,8 @@ in {
           TimeoutStopSec = 120;
           Restart = "always";
         };
+      } // optionalAttrs (cfg.autoStart) {
+        wantedBy = [ "multi-user.target" ];
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
