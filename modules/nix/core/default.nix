@@ -51,12 +51,17 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nix = {
+        settings = {
+          cores = lib.mkDefault config.attributes.hardware.cores;
+          max-jobs = lib.mkDefault config.attributes.nix.jobs;
+          require-sigs = true;
+          sandbox = true;
+          substituters = [ "https://cache.nixos.org" ];
+          trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
+          trusted-users = [ "root" user ];
+        };
         package = pkgs.nixUnstable;
-        useSandbox = true;
         readOnlyStore = true;
-        requireSignedBinaryCaches = true;
-        binaryCachePublicKeys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
-        binaryCaches = [ "https://cache.nixos.org" ];
         extraOptions = ''
           auto-optimise-store = true
           keep-outputs = true
@@ -71,16 +76,12 @@ in
           stable.flake = inputs.stable;
         };
 
-        maxJobs = lib.mkDefault config.attributes.nix.jobs;
-        buildCores = lib.mkDefault config.attributes.hardware.cores;
         optimise.automatic = false;
         gc = {
           automatic = true;
           inherit (cfg.gc) dates;
           options = "--delete-older-than ${cfg.gc.howold}";
         };
-
-        trustedUsers = [ "root" user ];
       };
 
       environment.etc.nixpkgs.source = inputs.unstable;
