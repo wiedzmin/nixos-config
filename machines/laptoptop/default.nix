@@ -66,7 +66,7 @@ in
 
   boot = {
     loader = {
-      systemd-boot.enable = true;
+      systemd-boot.enable = false;
       efi = {
         efiSysMountPoint = "/boot/efi";
       };
