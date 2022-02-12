@@ -38,6 +38,8 @@ in
           android-file-transfer
           saldl # consider providing some (shell) automation
           # =======
+          findimagedupes
+          # =======
           frangipanni
           monolith
           sftpman
