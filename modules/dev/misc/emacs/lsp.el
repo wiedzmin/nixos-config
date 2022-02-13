@@ -126,7 +126,7 @@
 (use-package lsp-ui-sideline
   :ensure lsp-ui
   :custom
-  (lsp-ui-sideline-code-actions-prefix "")
+  (lsp-ui-sideline-code-actions-prefix "💡 ")
   (lsp-ui-sideline-enable t)
   (lsp-ui-sideline-ignore-duplicate t)
   (lsp-ui-sideline-show-code-actions t)
