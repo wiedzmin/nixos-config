@@ -656,7 +656,7 @@ in
       name = "ent";
       key = [ "Escape" ];
       transient = false;
-      type = "primary";
+      type = dockableWS config.attributes.hardware.monitors.count;
     }
     {
       name = "shell";
