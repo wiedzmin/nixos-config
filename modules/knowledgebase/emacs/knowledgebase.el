@@ -10,6 +10,7 @@
         ("e" . apropos-value)))
 
 (use-package helpful
+  :disabled
   :bind
   (:map help-map
         ("f" . helpful-function)
