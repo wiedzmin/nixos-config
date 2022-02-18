@@ -2,7 +2,6 @@
   :bind
   (:map help-map
         ("d" . apropos-documentation)
-        ("v" . apropos-variable)
         ("c" . apropos-command)
         ("l" . apropos-library)
         ("u" . apropos-user-option)
