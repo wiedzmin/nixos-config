@@ -585,7 +585,10 @@
     (phi-search-mc/setup-keys)))
 
 (use-package projectile
-  :delight '(:eval (concat " ¶[" (projectile-project-name) "]"))
+  :delight '(:eval
+             (if (file-remote-p default-directory)
+                 " ¶[*remote*]"
+               (format " ¶[%s]" (projectile-project-name))))
   :preface
   (defun custom/open-project-todos ()
     (interactive)
@@ -630,6 +633,7 @@
   (projectile-enable-caching t)
   (projectile-require-project-root t)
   (projectile-track-known-projects-automatically nil)
+  (projectile-file-exists-remote-cache-expire nil)
   (projectile-project-search-path
    '("~/workspace/repos"
      "~/workspace/repos.stale"))
