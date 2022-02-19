@@ -8,7 +8,8 @@
         ("C-d" . company-show-doc-buffer)
         ("M-." . company-show-location)
         ("C-c ." . company-complete)
-        ("C-c C-." . company-complete))
+        ("C-c C-." . company-complete)
+        ("M-q" . company-other-backend))
   :hook (prog-mode-hook . company-mode)
   :custom
   (company-echo-delay 0)
@@ -121,7 +122,6 @@
         (setq candidates-tabnine (nreverse candidates-tabnine))
         (nconc (seq-take candidates-tabnine 3)
                (seq-take candidates-lsp 6)))))
-  ;TODO: bind 'company-other-backend
   :custom
   (company-tabnine-max-num-results 10)
   :config
