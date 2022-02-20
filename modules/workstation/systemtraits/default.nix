@@ -33,8 +33,13 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      services.redis.enable = true;
-      systemd.services.redis.postStart = cfg.instructions;
+      services.redis.servers.default = {
+        # NOTE: either explicitly set bind/port or use -s argument in redis-cli invocations
+        enable = true;
+        bind = "127.0.0.1";
+        port = 6379;
+      };
+      systemd.services.redis-default.postStart = cfg.instructions;
 
       home-manager.users."${user}" = { home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release ]; };
     })
