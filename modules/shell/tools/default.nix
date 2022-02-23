@@ -27,6 +27,7 @@ in
           gron
           htmlq
           jc
+          jless
           lfs
           miller
           pipe-rename
