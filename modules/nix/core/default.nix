@@ -119,24 +119,24 @@ in
         home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback statix ] ++
           lib.optionals cfg.lsp.enable [ rnix-lsp ];
         home.sessionPath = [ (homePrefix user ".cargo/bin") ];
-        xdg.configFile."espanso/user/nix-core.yml".text = ''
-          name: nix-core
-          parent: default
-          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
-
-          matches:
-            - trigger: ":nsp"
-              replace: "nix shell \"nixpkgs#$|$\""
-
-            - trigger: ":pkgs"
-              replace: "inputs.unstable.legacyPackages.x86_64-linux.$|$"
-
-            - trigger: ":cfg"
-              replace: "nixosConfigurations.laptoptop.config.$|$"
-
-            - trigger: ":elt"
-              replace: "builtins.head (inputs.unstable.lib.sublist 1$|$ 1 nixosConfigurations.laptoptop.config.wmCommon.wsMapping.rules)"
-        '';
+        services.espanso.settings.matches = [
+          {
+            trigger = ":nsp";
+            replace = "nix shell \"nixpkgs#$|$\"";
+          }
+          {
+            trigger = ":pkgs";
+            replace = "inputs.unstable.legacyPackages.x86_64-linux.$|$";
+          }
+          { # TODO: script and reference to it, to collect machines names and select among it (try if it is even possible)
+            trigger = ":cfg";
+            replace = "nixosConfigurations.laptoptop.config.$|$";
+          }
+          {
+            trigger = ":elt";
+            replace = "builtins.head (inputs.unstable.lib.sublist 1$|$ 1 nixosConfigurations.laptoptop.config.wmCommon.wsMapping.rules)";
+          }
+        ];
       };
 
       systemd.services.nix-daemon = {

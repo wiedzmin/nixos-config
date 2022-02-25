@@ -229,13 +229,11 @@ rec {
     }
   ];
   home-manager.users."${user}" = {
-    xdg.configFile."espanso/user/personal.yml".text = ''
-      name: personal
-      parent: default
-
-      matches:
-          - trigger: ":emp"
-            replace: "${config.attributes.mainUser.email}"
-    '';
+    services.espanso.settings.matches = [
+      {
+        trigger = ":emp";
+        replace = config.attributes.mainUser.email;
+      }
+    ];
   };
 }
