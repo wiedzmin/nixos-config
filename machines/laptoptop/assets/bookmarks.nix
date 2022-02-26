@@ -178,6 +178,11 @@ rec {
         browser = config.attributes.browser.fallback.cmd;
       };
     };
+    "google-photos" = {
+      desc = "Google Photos";
+      tags = [ "media" "photo" ];
+      remote.url = "https://photos.google.com/";
+    };
     "addons/firefox" = {
       desc = "Firefox addons";
       enable = config.browsers.firefox.enable;
