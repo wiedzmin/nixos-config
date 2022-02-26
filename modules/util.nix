@@ -54,6 +54,10 @@ let
     "role" = ''^@$'';
     "instance" = ''^@$'';
   };
+  approvedDefaultBrowsersWC = [ # NOTE: is this the best location for this metadata?
+    "Chromium-browser"
+    "Firefox"
+  ];
 in
 rec {
   addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
@@ -182,6 +186,11 @@ rec {
       (lib.filterAttrs
         (_: meta: lib.hasAttrByPath [ "remote" "searchSuffix" ] meta)
         (checkedBookmarks remotes [ "remote" "url" ]));
+  maybeDefaultBrowserCmd = browserDefault: browserFallback:
+    if builtins.elem (lib.last browserDefault.windowClass) approvedDefaultBrowsersWC then
+      browserDefault.cmd
+    else
+      browserFallback.cmd;
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
   concatStringListsRaw = sep: ll: lib.concatStringsSep sep (lib.flatten ll);
   takeLast = n: l: with lib; reverseList (take n (reverseList l));

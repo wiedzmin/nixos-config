@@ -175,7 +175,7 @@ rec {
         url = "https://www.youtube.com/";
         jump = true;
         searchSuffix = "results?search_query=";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "google-photos" = {
@@ -337,7 +337,7 @@ rec {
       tags = [ "fb" ];
       remote = {
         url = "https://www.facebook.com/";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
       windowRules = [
         {
@@ -381,7 +381,7 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGYqjEYqkSP-BkNJVTjI8f9y";
         music = true;
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "halimag" = {
@@ -390,7 +390,7 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGb41d6Ekp-BYGFvWvXrNXMo";
         music = true;
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "buriad" = {
@@ -399,7 +399,7 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbLyP4AsXHMThm8JPCqTyP6";
         music = true;
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "tuva" = {
@@ -408,7 +408,7 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZiyYBHyXOh_XxlTii4nLUW";
         music = true;
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "turk/tatar" = {
@@ -417,7 +417,7 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGYtwSjkeToMJ17FVXgRWmTW";
         music = true;
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "rust" = {
@@ -425,7 +425,7 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZGJn6Q7c6G7NAaiWD5J__z";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "orgmode" = {
@@ -433,7 +433,7 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZJBJT4i3KvMbAuIicqwSau";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "emacs" = {
@@ -441,7 +441,7 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZM2QXMb8eZ8_I6JhfZctWi";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "it/pm" = {
@@ -449,7 +449,7 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZT0PdGw9dp_Ic9jYODxqxB";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "nix" = {
@@ -457,7 +457,7 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZiPdYVvHZY8Day5RC934CE";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "lisp" = {
@@ -465,7 +465,7 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZioLb2SeloXWPkP2PmxM3t";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "var/it" = {
@@ -473,7 +473,7 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGa0RDozpS3WxmUcoYSsOmTU";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "altai" = {
@@ -482,7 +482,7 @@ rec {
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGaJrdeFwJN7Q5Id700ofPdd";
         music = true;
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "technics" = {
@@ -498,7 +498,7 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGajeWFlOnp19tSDu7XhWFo2";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "python" = {
@@ -506,7 +506,7 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbTK2Y7VPHoc01tbQrZww5h";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "hl" = {
@@ -514,7 +514,7 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbiXj0rSMDJEuogTY4y8SQL";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "golang" = {
@@ -522,7 +522,7 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbtFoRo94tXdDBgjwsTh02r";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "andrewtropin/playlists" = {
@@ -530,7 +530,7 @@ rec {
       tags = [ "it" "nix" "guix" "emacs" "video" ];
       remote = {
         url = "https://www.youtube.com/c/TROP1N/playlists";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "ya" = {
@@ -798,7 +798,7 @@ rec {
       tags = [ "mongol" "video" "youtube" ];
       remote = {
         url = "https://www.youtube.com/channel/UCtMZD_UHQxCowHltovfEnvQ";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
     "cider/discord" = {
