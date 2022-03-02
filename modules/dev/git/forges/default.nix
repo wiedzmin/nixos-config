@@ -24,21 +24,21 @@ let
     mapAttrs' (key: meta: nameValuePair "${key}" meta.workspaceRoot)
       (filterAttrs (_: meta: lib.hasAttr "workspaceRoot" meta) forges);
   collectPassCredentials = forges:
-    (foldAttrs (n: a: n // a ) { } (collect (f: f ? passCredentialsMap) forges))."passCredentialsMap";
+    (foldAttrs (n: a: n // a) { } (collect (f: f ? passCredentialsMap) forges))."passCredentialsMap";
   mkMatchBlock = meta: {
-      inherit (meta.ssh.matchBlock) hostname user serverAliveInterval identitiesOnly extraOptions;
-    } // optionalAttrs (meta.ssh.matchBlock.identityFile != null) {
-      inherit (meta.ssh.matchBlock) identityFile;
-    } // optionalAttrs (meta.ssh.matchBlock.identityFile == null) {
-      identityFile = builtins.toString (pkgs.writeTextFile {
-        name = "${builtins.replaceStrings ["."] ["_"] meta.ssh.matchBlock.hostname}_ssh_private_key";
-        text = meta.ssh.keypair.private;
-      });
-    };
+    inherit (meta.ssh.matchBlock) hostname user serverAliveInterval identitiesOnly extraOptions;
+  } // optionalAttrs (meta.ssh.matchBlock.identityFile != null) {
+    inherit (meta.ssh.matchBlock) identityFile;
+  } // optionalAttrs (meta.ssh.matchBlock.identityFile == null) {
+    identityFile = builtins.toString (pkgs.writeTextFile {
+      name = "${builtins.replaceStrings ["."] ["_"] meta.ssh.matchBlock.hostname}_ssh_private_key";
+      text = meta.ssh.keypair.private;
+    });
+  };
   collectMatchBlocks = forges:
     mapAttrs' (_: meta: nameValuePair meta.ssh.matchBlock.hostname (mkMatchBlock meta)) forges;
   collectExtraConfig = forges:
-    (foldAttrs (n: a: n // a ) { } (collect (f: f ? extraConfig) forges))."extraConfig";
+    (foldAttrs (n: a: n // a) { } (collect (f: f ? extraConfig) forges))."extraConfig";
   getUrlsToTypesMapping = forges:
     mapAttrs' (_: meta: nameValuePair meta.ssh.matchBlock.hostname meta.type) forges;
   genBrowseAtRemoteTypesPatch = mapping: ''
@@ -152,11 +152,11 @@ let
         type = sshModule;
         description = "SSH keypair.";
       };
-      ssh.matchBlock = mkOption { #
+      ssh.matchBlock = mkOption {
         type = matchBlockModule;
         description = "SSH match block.";
       };
-      passCredentialsMap = mkOption { #
+      passCredentialsMap = mkOption {
         type = types.attrsOf types.attrs;
         default = { };
         description = "Pass credentials map.";
@@ -168,7 +168,8 @@ let
       };
     };
   };
-in {
+in
+{
   options = {
     dev.git.forges = {
       enable = mkOption {
@@ -190,44 +191,50 @@ in {
   };
 
   config = mkMerge [
-    (mkIf cfg.enable (let
-      credentials = collectPassCredentials cfg.forges;
-      matchBlocks = collectMatchBlocks cfg.forges;
-      extraConfig = collectExtraConfig cfg.forges;
-      workspaceRoots = collectWorkspaceRoots cfg.forges;
-    in {
-      assertions = [{
-        assertion = config.workstation.systemtraits.enable;
-        message = "git/forges: must enable systemtraits maintainence.";
-      }];
+    (mkIf cfg.enable (
+      let
+        credentials = collectPassCredentials cfg.forges;
+        matchBlocks = collectMatchBlocks cfg.forges;
+        extraConfig = collectExtraConfig cfg.forges;
+        workspaceRoots = collectWorkspaceRoots cfg.forges;
+      in
+      {
+        assertions = [{
+          assertion = config.workstation.systemtraits.enable;
+          message = "git/forges: must enable systemtraits maintainence.";
+        }];
 
-      home-manager.users."${user}" = {
-        xdg.configFile."pass-git-helper/git-pass-mapping.ini".text =
-          generators.toINI { } credentials;
-        programs.ssh.matchBlocks =
-          optionalAttrs (matchBlocks != { }) matchBlocks;
-        programs.git.extraConfig =
-          optionalAttrs (extraConfig != { }) extraConfig;
-      };
-      navigation.bookmarks.workspaces.roots = workspaceRoots;
-      workstation.systemtraits.instructions =
-        optionalString (credentials != { }) ''
-          ${pkgs.redis}/bin/redis-cli set git/credentials_mapping ${
-            strings.escapeNixString (builtins.toJSON credentials)
-          }
-        '';
-    }))
-    (mkIf (cfg.enable && cfg.emacs.enable) (let
-      mapping = getUrlsToTypesMapping cfg.forges;
-    in {
-      ide.emacs.core.extraPackages = epkgs: [
-        epkgs.browse-at-remote
-        epkgs.git-link
-      ];
-      ide.emacs.core.config =
-        builtins.readFile ./emacs/forges.el +
-        optionalString (length (attrValues mapping) > 0)
-          ((genBrowseAtRemoteTypesPatch mapping) + (genGitlinkTypesPatch mapping));
-    }))
+        home-manager.users."${user}" = {
+          xdg.configFile."pass-git-helper/git-pass-mapping.ini".text =
+            generators.toINI { } credentials;
+          programs.ssh.matchBlocks =
+            optionalAttrs (matchBlocks != { }) matchBlocks;
+          programs.git.extraConfig =
+            optionalAttrs (extraConfig != { }) extraConfig;
+        };
+        navigation.bookmarks.workspaces.roots = workspaceRoots;
+        workstation.systemtraits.instructions =
+          optionalString (credentials != { }) ''
+            ${pkgs.redis}/bin/redis-cli set git/credentials_mapping ${
+              strings.escapeNixString (builtins.toJSON credentials)
+            }
+          '';
+      }
+    ))
+    (mkIf (cfg.enable && cfg.emacs.enable) (
+      let
+        mapping = getUrlsToTypesMapping cfg.forges;
+      in
+      {
+        ide.emacs.core.extraPackages = epkgs: [
+          epkgs.browse-at-remote
+          epkgs.git-link
+        ];
+        ide.emacs.core.config =
+          builtins.readFile ./emacs/forges.el +
+          optionalString (length (attrValues mapping) > 0)
+            ((genBrowseAtRemoteTypesPatch mapping) + (genGitlinkTypesPatch mapping));
+      }
+    ))
   ];
 }
