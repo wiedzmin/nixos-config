@@ -318,8 +318,8 @@ in
     core = {
       enable = true;
       native.enable = true;
-      pgtk.enable = true;
-      useModernDrawingLibs = true;
+      pgtk.enable = false;
+      useModernDrawingLibs = false;
       wm.enable = true;
     };
     edit.enable = true;
