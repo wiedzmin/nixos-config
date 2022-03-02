@@ -228,6 +228,7 @@ in
       {
         ide.emacs.core.extraPackages = epkgs: [
           epkgs.browse-at-remote
+          epkgs.forge
           epkgs.git-link
         ];
         ide.emacs.core.config =

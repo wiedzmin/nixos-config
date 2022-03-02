@@ -1,3 +1,5 @@
+(use-package forge)
+
 (use-package browse-at-remote
   :after link-hint
   :bind

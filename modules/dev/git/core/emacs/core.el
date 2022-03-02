@@ -59,20 +59,50 @@
   (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
 
 (use-package blamer
+  :after magit
+  :preface
+  (defun blamer-callback-show-commit-diff (commit-info)
+    (interactive)
+    (let ((commit-hash (plist-get commit-info :commit-hash)))
+      (when commit-hash
+        (magit-show-commit commit-hash))))
+  (defun blamer-callback-open-remote (commit-info)
+    (interactive)
+    (let ((commit-hash (plist-get commit-info :commit-hash)))
+      (when commit-hash
+        (message commit-hash)
+        (forge-browse-commit commit-hash))))
+  (defun blamer-callback-magit-log-file (commit-info)
+    (interactive)
+    (magit-log-buffer-file)
+    (let ((commit-hash (plist-get commit-info :commit-hash)))
+      (when commit-hash
+        (run-with-idle-timer 1 nil (lambda (commit-hash)
+                                     (goto-char (point-min))
+                                     (search-forward (substring commit-hash 0 7))
+                                     (set-mark (point-at-bol))
+                                     (goto-char (point-at-eol)))
+                             commit-hash))))
   :bind
   (:map custom-git-map
-        ("b" . blamer-mode))
+        ("b" . blamer-mode)
+        (">" . blamer-show-commit-info))
   :custom
   (blamer-idle-time 0.2)
   (blamer-min-offset 70)
   (blamer-view 'overlay)
   (blamer-author-formatter " ✎ %s ")
-  (blamer-datetime-formatter "[%s]")
+  (blamer-datetime-formatter " [%s] ")
   (blamer-commit-formatter "● %s")
   (blamer-prettify-time-p nil)
   (blamer-type 'both)
   (blamer-max-commit-message-length 100)
   (blamer-uncommitted-changes-message "Uncommitted")
+  (blamer-smart-background-p nil)
+  (blamer-bindings '(
+                     ("<mouse-3>" . blamer-callback-open-remote)
+                     ("<mouse-2>" . blamer-callback-magit-log-file)
+                     ("<mouse-1>" . blamer-callback-show-commit-diff)))
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
                    :background nil
