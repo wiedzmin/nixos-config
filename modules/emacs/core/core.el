@@ -118,6 +118,12 @@
   (setq-default indicate-empty-lines t)
   (setq-default truncate-lines t))
 
+(use-package cus-edit
+  :custom
+  (custom-file (locate-user-emacs-file "custom-vars.el"))
+  :config
+  (load custom-file 'noerror 'nomessage))
+
 (use-package select
   :custom
   (select-enable-clipboard t)
