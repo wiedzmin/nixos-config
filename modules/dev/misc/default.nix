@@ -161,7 +161,7 @@ in
       users.extraUsers."${user}".extraGroups = [ "wireshark" ];
     })
     (mkIf (cfg.enable && cfg.tools.xserver.enable) {
-      environment.systemPackages = with pkgs; [ xlibs.xev xlibs.xprop xorg.xkbcomp drm_info xtruss ];
+      environment.systemPackages = with pkgs; [ xorg.xev xorg.xprop xorg.xkbcomp drm_info xtruss ];
     })
     (mkIf (cfg.enable && cfg.tools.misc.enable) {
       environment.systemPackages = with pkgs; [

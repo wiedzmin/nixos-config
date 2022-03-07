@@ -72,7 +72,7 @@ in
         discover_containerized_services
         dive
         dlint
-        docker_compose
+        docker-compose
         docker_containers_traits
         docker_shell
         hadolintd

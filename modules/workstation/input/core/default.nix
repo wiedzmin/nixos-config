@@ -82,8 +82,8 @@ in
         let xmodmaprc = pkgs.writeText "xmodmaprc" cfg.xmodmap.rc;
         in
         ''
-          ${pkgs.xlibs.xmodmap}/bin/xmodmap ${xmodmaprc}
-          ${pkgs.xlibs.xmodmap}/bin/xmodmap -e "clear Lock"
+          ${pkgs.xorg.xmodmap}/bin/xmodmap ${xmodmaprc}
+          ${pkgs.xorg.xmodmap}/bin/xmodmap -e "clear Lock"
         '';
     })
     (mkIf (cfg.enable && cfg.xcompose.enable) {

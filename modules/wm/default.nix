@@ -133,7 +133,7 @@ in
         displayManager.sessionCommands = ''
           export _JAVA_AWT_WM_NONREPARENTING=1
           ${pkgs.wmname}/bin/wmname LG3D
-          ${pkgs.xlibs.xset}/bin/xset r rate ${builtins.toString cfg.autorepeat.delay} ${builtins.toString cfg.autorepeat.rate}
+          ${pkgs.xorg.xset}/bin/xset r rate ${builtins.toString cfg.autorepeat.delay} ${builtins.toString cfg.autorepeat.rate}
         '';
       };
 

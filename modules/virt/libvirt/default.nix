@@ -23,7 +23,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
-        kvm
+        qemu_kvm
         libvirt # for `vagrant plugin install vagrant-libvirt`
         nfs-utils # for vagrant
         qemu-utils
@@ -32,7 +32,7 @@ in
         vagrant
         vdi2qcow2
         virtmanager
-        virtviewer
+        virt-viewer
       ];
 
       boot.kernel.sysctl = {
