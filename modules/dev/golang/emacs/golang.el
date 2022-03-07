@@ -14,7 +14,7 @@
   (use-package dap-go
     :after lsp-mode dap-mode
     :disabled)
-  (setq gofmt-command "goimports"))
+  (setq gofmt-command "gotools"))
 
 (use-package flycheck-golangci-lint
   :after (flycheck go-mode)

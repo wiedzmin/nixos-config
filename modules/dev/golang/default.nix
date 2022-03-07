@@ -50,12 +50,14 @@ in
         message = "dev/golang: cannot proceed without valid $GOPATH value.";
       }];
 
-      shell.core.variables = [({
-        emacs = true;
-        GOPATH = cfg.goPath;
-      } // lib.optionalAttrs (cfg.privateModules != [ ]) {
-        GOPRIVATE = builtins.concatStringsSep "," cfg.privateModules;
-      })];
+      shell.core.variables = [
+        ({
+          emacs = true;
+          GOPATH = cfg.goPath;
+        } // lib.optionalAttrs (cfg.privateModules != [ ]) {
+          GOPRIVATE = builtins.concatStringsSep "," cfg.privateModules;
+        })
+      ];
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ delve gopls go gomacro ];
         home.sessionPath = [ "${cfg.goPath}/bin" ];
@@ -82,10 +84,13 @@ in
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {
-        go-install-wrapper = pkgs.writeShellApplication { name = "go-install-wrapper"; runtimeInputs = [ ];
-                                                          text = "go install ./..."; };
+        go-install-wrapper = pkgs.writeShellApplication {
+          name = "go-install-wrapper";
+          runtimeInputs = [ ];
+          text = "go install ./...";
+        };
       };
-      home-manager.users."${user}" = { home.packages = with pkgs; [ go-install-wrapper gore goimports impl ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ go-install-wrapper gore gotools impl ]; };
     })
     (mkIf (cfg.enable && cfg.rootMarkers.enable) { dev.navigation.projects.rootMarkers = [ "go.mod" ]; })
     (mkIf (cfg.enable && cfg.emacs.enable) {
