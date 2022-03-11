@@ -4,7 +4,8 @@ with lib;
 
 let
   cfg = config.ide.emacs.history;
-in {
+in
+{
   options = {
     ide.emacs.history = {
       enable = mkOption {
@@ -26,7 +27,6 @@ in {
         epkgs.backup-each-save
         epkgs.recentf-ext
         epkgs.savekill
-        epkgs.super-save
       ];
       ide.emacs.core.config = builtins.readFile ./history.el;
     })
