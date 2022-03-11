@@ -73,6 +73,10 @@ in
               params = { cmd = "curl 'https://api.ipify.org'"; };
             }];
           }
+          {
+            trigger = ":ifd";
+            replace = "sudo ifconfig $|$ down";
+          }
         ];
       };
       wmCommon.modeBindings = {
