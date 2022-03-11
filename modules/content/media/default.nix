@@ -66,7 +66,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       dev.projectenv.templates.entries = {
-        "media.common" = configPrefix config.navigation.bookmarks.workspaces.roots  "modules/content/media/templates/common";
+        "media.common" = configPrefix config.navigation.bookmarks.workspaces.roots "modules/content/media/templates/common";
       };
 
       environment.systemPackages = with pkgs; [ ncmpcpp freetube ytfzf moc ];
@@ -108,6 +108,10 @@ in
           {
             trigger = ":yt";
             replace = "nix shell \"nixpkgs#yt-dlp\" -c yt-dlp \"$|$\"";
+          }
+          {
+            trigger = ":4yt";
+            replace = "nix shell \"nixpkgs#yt-dlp\" -c yt-dlp \"$|$\" --merge-output-format mp4";
           }
         ];
       };
