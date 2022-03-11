@@ -194,7 +194,8 @@ in
               "network.prefetch-next" = false;
               "network.proxy.type" = 0;
               "network.tcp.tcp_fastopen_enable" = true;
-              "network.trr.mode" = 2; # "network.security.esni.enabled" = true; (RKN hates ESNI)
+              "network.trr.mode" = 5; # NOTE: see https://wiki.mozilla.org/Trusted_Recursive_Resolver for reference
+              # "network.security.esni.enabled" = true; (RKN hates ESNI)
               "privacy.donottrackheader.enabled" = true;
               "privacy.resistFingerprinting" = true;
               "privacy.trackingprotection.cryptomining.enabled" = true;
