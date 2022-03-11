@@ -13,12 +13,14 @@
   :config
   (add-to-list 'aggressive-indent-excluded-modes 'html-mode))
 
-(use-package comment-dwim-2
+(use-package evil-nerd-commenter
   :bind
+  ;TODO: bind #'evilnc-toggle-invert-comment-line-by-line
   (:map mode-specific-map
-        ("]" . comment-dwim-2))
-  :custom
-  (cd2/region-command 'cd2/comment-or-uncomment-region))
+        ("]" . evilnc-comment-or-uncomment-lines)
+        ("}" . evilnc-copy-and-comment-lines)
+        ("\\" . evilnc-comment-and-kill-ring-save)
+        ("|" . evilnc-comment-or-uncomment-paragraphs)))
 
 (use-package easy-kill
   :bind

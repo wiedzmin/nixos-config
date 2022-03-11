@@ -26,9 +26,9 @@ in
 
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.aggressive-indent
-        epkgs.comment-dwim-2
         epkgs.easy-kill
         epkgs.easy-kill-extras # add to .el
+        epkgs.evil-nerd-commenter
         epkgs.expand-region
         epkgs.highlight-numbers
         epkgs.multiple-cursors
