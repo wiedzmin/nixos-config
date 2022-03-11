@@ -402,15 +402,6 @@ rec {
         browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
-    "tuva" = {
-      desc = "Tuva music";
-      tags = [ "media" "video" ];
-      remote = {
-        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZiyYBHyXOh_XxlTii4nLUW";
-        music = true;
-        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
-      };
-    };
     "turk/tatar" = {
       desc = "Turk/Tatar music";
       tags = [ "media" "video" ];
