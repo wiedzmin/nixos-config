@@ -16,11 +16,11 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.zenburn-theme ];
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.hc-zenburn-theme ];
       ide.emacs.core.config = ''
-        (use-package zenburn-theme
+        (use-package hc-zenburn-theme
           :hook
-          (after-init-hook . (lambda () (load-theme 'zenburn t))))
+          (after-init-hook . (lambda () (load-theme 'hc-zenburn t))))
       '';
     })
   ];
