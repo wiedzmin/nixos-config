@@ -123,7 +123,7 @@ in
             exec = "${cfg.command} %U";
             comment = "Chromium that opens links preferably in new windows";
             desktopName = "Chromium";
-            categories = pkgs.lib.concatStringsSep ";" [ "Network" "WebBrowser" ];
+            categories = [ "Network" "WebBrowser" ];
           })
         ];
       };
