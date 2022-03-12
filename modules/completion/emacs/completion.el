@@ -34,6 +34,11 @@
       :config
       (company-statistics-mode))))
 
+(use-package company-try-hard
+  :after company
+  :bind
+  ("C-~" . company-try-hard))
+
 (use-package company-box
   :after company
   :if (display-graphic-p)
