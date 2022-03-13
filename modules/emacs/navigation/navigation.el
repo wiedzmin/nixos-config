@@ -263,7 +263,8 @@
               (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit 'keep-selected))))
   (marginalia-mode +1)
   :custom
-  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil)))
+  (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
+  (marginalia-align 'right))
 
 ;; TODO: consider trying `fd' finder tool, see https://github.com/minad/consult/wiki#find-files-using-fd for reference
 ;; Note: this requires lexical binding
