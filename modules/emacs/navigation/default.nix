@@ -64,6 +64,7 @@ in
         epkgs.treemacs
         epkgs.treemacs-projectile
         epkgs.winum
+        epkgs.zygospore
       ];
       ide.emacs.core.customPackages = {
         "minibuffer-edit" = builtins.readFile ./custom/minibuffer-edit.el;
