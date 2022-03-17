@@ -273,6 +273,7 @@
                       "@emacsYasnippetSnippets@")))
 
 (use-package all-the-icons-completion
+  :after (marginalia all-the-icons)
   :hook
   (marginalia-mode-hook . all-the-icons-completion-marginalia-setup)
   :config
