@@ -45,7 +45,7 @@ in
 
         "dzen2.font" = "Iosevka:weight=Bold:size=16";
       } // lib.optionalAttrs (!config.ide.emacs.core.useModernDrawingLibs) {
-        "Emacs.Font" = "Iosevka:weight=Bold:size=12";
+        "Emacs.Font" = "Iosevka:weight=Bold:size=14";
       };
     };
     ide.emacs.core.config = lib.optionalString config.ide.emacs.core.useModernDrawingLibs ''
