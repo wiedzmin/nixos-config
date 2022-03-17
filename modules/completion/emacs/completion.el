@@ -1,31 +1,116 @@
+;;TODO: investigate major mode completions handling by examplke below:
+;; (defun company-c-setup ()
+;;   ;; make `company-backends' local is critical
+;;   ;; or else, you will have completion in every major mode, that's very annoying!
+;;   (make-local-variable 'company-backends)
+;;   (setq company-backends (copy-tree company-backends)))
 (use-package company
   :delight
+  :preface
+  (defun add-pcomplete-to-capf () ;; Enable company in Org mode
+    (add-hook 'completion-at-point-functions #'pcomplete-completions-at-point nil t))
+  (defun custom/company-complete-selection ()
+    "Insert the selected candidate or the first if none are selected."
+    (interactive)
+    (if company-selection
+        (company-complete-selection)
+      (company-complete-number 1)))
   :bind
   ("C-<tab>" . company-complete)
+  ("C-M-<tab>" . company-complete-common)
   (:map company-active-map
-        ("C-n" . company-select-next)
-        ("C-p" . company-select-previous)
-        ("C-d" . company-show-doc-buffer)
-        ("M-." . company-show-location)
+        ("<escape>" . company-abort)
+        ("<tab>" . company-complete-selection)
+        ("C-M-d" . company-quickhelp-manual-begin)
+        ("C-M-s" . company-search-candidates)
         ("C-c ." . company-complete)
         ("C-c C-." . company-complete)
-        ("M-q" . company-other-backend))
-  :hook (prog-mode-hook . company-mode)
+        ("C-d" . company-show-doc-buffer)
+        ("C-n" . company-select-next)
+        ("C-p" . company-select-previous)
+        ("C-s" . company-filter-candidates)
+        ("M-." . company-show-location)
+        ("M-<tab>" . custom/company-complete-selection)
+        ("M-h" . company-show-doc-buffer)
+        ("M-q" . company-other-backend)
+        ("RET" . company-complete-selection))
+  (:map company-search-map
+        ("C-g" . company-search-abort)
+        ("C-n" . company-select-next)
+        ("C-p" . company-select-previous)
+        ("M-g" . company-search-toggle-filtering)
+        ("M-j" . company-complete-selection)
+        ("M-n" . company-search-repeat-forward)
+        ("M-o" . company-search-kill-others)
+        ("M-p" . company-search-repeat-backward)
+        ("M-r" . company-search-repeat-backward)
+        ("M-s" . company-search-repeat-forward))
+  :hook
+  (org-mode-hook . add-pcomplete-to-capf)
+  (prog-mode-hook . company-mode)
+  :custom-face
+  (company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
+  (company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
   :custom
+  (company-auto-commit t)
+  (company-auto-commit-chars '(?\  ?\) ?.))
+  (company-backends '(company-capf company-keywords company-elisp))
+  (company-begin-commands '(self-insert-command
+                            self-insert-command
+                            org-self-insert-command
+                            orgtbl-self-insert-command
+                            c-scope-operator
+                            c-electric-colon
+                            c-electric-lt-gt
+                            c-electric-slash ))
+  (company-dabbrev-downcase nil)
   (company-echo-delay 0)
   (company-idle-delay 0)
+  (company-lighter-base "")
   (company-minimum-prefix-length 1)
   (company-require-match 'never)
+  (company-search-regexp-function #'company-search-flex-regexp) ;; originally #'regexp-quote
+  (company-selection-wrap-around t)
+  (company-selection-wrap-around t)
   (company-show-numbers t)
   (company-tooltip-align-annotations t)
+  (company-tooltip-idle-delay 0.2)
   (company-tooltip-limit 20)
-  (company-dabbrev-downcase nil)
-  (company-selection-wrap-around t)
+  (company-tooltip-minimum-width 80)
+  (company-transformers '(company-sort-by-backend-importance
+                          company-sort-prefer-same-case-prefix
+                          company-sort-by-statistics
+                          company-sort-by-occurrence))
+  (completion-ignore-case t)
   :config
+  (defadvice company-capf (around bar activate) ;; Ignore errors
+    (ignore-errors add-do-it))
+  (add-to-list 'company-frontends 'company-preview-frontend)
+  (use-package company-dabbrev-code
+    :custom
+    (company-dabbrev-code-everywhere t)
+    (company-dabbrev-code-other-buffers t)
+    :config
+    (add-to-list 'company-backends 'company-dabbrev-code))
+  (use-package company-dabbrev
+    :custom
+    (company-dabbrev-char-regexp "[-_A-Za-z0-9]")
+    (company-dabbrev-downcase nil)
+    (company-dabbrev-ignore-case 'keep-prefix)
+    (company-dabbrev-ignore-case nil)
+    (company-dabbrev-other-buffers t)
+    :config
+    (add-to-list 'company-backends 'company-dabbrev))
+  (use-package company-files
+    :custom
+    (company-files-chop-trailing-slash nil)
+    :config
+    (add-to-list 'company-backends 'company-files))
   (when (string-equal "i3" (getenv "CURRENT_WM"))
     (use-package company-quickhelp
       :custom
       (company-quickhelp-idle-delay 0.1)
+      (company-quickhelp-delay nil)
       :config
       (company-quickhelp-mode 1)
       (use-package pos-tip
