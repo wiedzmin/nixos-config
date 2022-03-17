@@ -227,6 +227,10 @@ rec {
       description = "show hidden nix GC roots";
       code = ''nix-store --gc --print-roots | cut -d' ' -f1 | uniq |grep -v /proc | grep -v { | grep -v /run | grep alex3rd | grep direnv'';
     }
+    {
+      description = "distinct count of files containing the given search token(s)";
+      code = ''rg -l "" | cut -f1,2 -d/ | sort | uniq | wc -l'';
+    }
   ];
   home-manager.users."${user}" = {
     services.espanso.settings.matches = [
