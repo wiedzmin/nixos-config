@@ -180,6 +180,7 @@ in
         epkgs.fic-mode
         epkgs.jinja2-mode
         epkgs.just-mode
+        epkgs.justl
         epkgs.leetcode
         epkgs.lsp-mode
         epkgs.lsp-ui

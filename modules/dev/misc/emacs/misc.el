@@ -21,6 +21,11 @@
 
 (use-package just-mode)
 
+(use-package justl
+  :custom
+  (justl-executable "@justBinary@")
+  (justl-recipe-width 25))
+
 (use-package fic-mode
   :hook
   (prog-mode . fic-mode))
