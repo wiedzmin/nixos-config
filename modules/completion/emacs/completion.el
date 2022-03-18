@@ -52,8 +52,6 @@
   (company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
   (company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
   :custom
-  (company-auto-commit t)
-  (company-auto-commit-chars '(?\  ?\) ?.))
   (company-backends '(company-capf company-keywords company-elisp))
   (company-begin-commands '(self-insert-command
                             self-insert-command
