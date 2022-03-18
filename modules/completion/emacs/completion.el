@@ -266,8 +266,7 @@
                           yas-x-prompt
                           yas-no-prompt))
   (yas-wrap-around-region t)
-  (yas-snippet-dirs '(yas-installed-snippets-dir
-                      "@emacsYasnippetSnippets@")))
+  (yas-snippet-dirs '("@emacsYasnippetSnippets@")))
 
 (use-package all-the-icons-completion
   :after (marginalia all-the-icons)
