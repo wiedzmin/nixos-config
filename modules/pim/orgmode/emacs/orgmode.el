@@ -465,6 +465,7 @@
   (:map org-roam-map
         ("b" . org-roam-buffer-toggle)
         ("f" . org-roam-node-find)
+        ("F" . org-roam-dailies-find-directory)
         ("g" . custom/consult-ripgrep-roam)
         ("G" . org-roam-graph)
         ("i" . org-roam-node-insert)
