@@ -479,7 +479,7 @@ in
     };
     randr = {
       enable = true;
-      heads.orientation.secondary = "left";
+      heads.orientation.secondary = "normal";
       wm.enable = true;
     };
     input = {
