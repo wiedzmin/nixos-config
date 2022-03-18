@@ -173,3 +173,11 @@
         ("c" . clone-buffer)
         ("C" . clone-indirect-buffer)
         ("i" . clone-indirect-buffer-other-window)))
+
+(use-package drag-stuff
+  :bind
+  (:map mode-specific-map
+        ("<up>" . drag-stuff-up)
+        ("<down>" . drag-stuff-down)
+        ("<left>" . drag-stuff-left)
+        ("<right>" . drag-stuff-right)))

@@ -26,6 +26,7 @@ in
 
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.aggressive-indent
+        epkgs.drag-stuff
         epkgs.easy-kill
         epkgs.easy-kill-extras # add to .el
         epkgs.evil-nerd-commenter
