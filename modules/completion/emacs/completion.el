@@ -71,7 +71,6 @@
   (company-require-match 'never)
   (company-search-regexp-function #'company-search-flex-regexp) ;; originally #'regexp-quote
   (company-selection-wrap-around t)
-  (company-selection-wrap-around t)
   (company-show-numbers t)
   (company-tooltip-align-annotations t)
   (company-tooltip-idle-delay 0.2)
