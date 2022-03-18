@@ -441,7 +441,8 @@
   :preface
   (defun custom/consult-ripgrep-roam ()
     (interactive)
-    (consult-ripgrep "@emacsOrgRoamPath@"))
+    (let ((consult-ripgrep-command "rg --null --ignore-case --type org --line-buffered --color=always --max-columns=500 --no-heading --line-number . -e ARG OPTS"))
+      (consult-ripgrep "@emacsOrgRoamPath@")))
   :init
   (setq org-roam-v2-ack t)
   (setq org-roam-db-gc-threshold most-positive-fixnum)
