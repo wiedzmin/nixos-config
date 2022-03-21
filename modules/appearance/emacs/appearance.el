@@ -62,3 +62,24 @@
 (use-package rainbow-mode
   :hook
   (css-mode-hook . rainbow-mode))
+
+(use-package lin
+  :load-path "@emacsLinPath@"
+  :custom
+  (lin-mode-hooks
+   '(dired-mode-hook
+     elfeed-search-mode-hook
+     git-rebase-mode-hook
+     ibuffer-mode-hook
+     ilist-mode-hook
+     ledger-report-mode-hook
+     log-view-mode-hook
+     magit-log-mode-hook
+     magit-status-mode-hook
+     mu4e-headers-mode
+     notmuch-search-mode-hook
+     notmuch-tree-mode-hook
+     occur-mode-hook
+     org-agenda-mode-hook
+     tabulated-list-mode-hook))
+  (lin-face 'lin-green-override-fg))

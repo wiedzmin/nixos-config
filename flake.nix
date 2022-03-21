@@ -22,6 +22,10 @@
       url = "github:tonyaldon/org-bars";
       flake = false;
     };
+    emacs-lin = {
+      url = "gitlab:protesilaos/lin";
+      flake = false;
+    };
 
     git-extra-commands = {
       url = "github:unixorn/git-extra-commands";
