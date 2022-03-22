@@ -21,13 +21,15 @@
                                (when (re-search-forward "^<<<<<<< " nil t)
                                  (smerge-mode 1))))))
 
-;TODO: investigate fringe updates lifecycle
 (use-package diff-hl
   :preface
   (defun custom/toggle-diff-hl ()
     (interactive)
-    (diff-hl-mode 0)
-    (diff-hl-mode 1))
+    (if diff-hl-mode
+        (diff-hl-mode 0)
+      (progn
+        (diff-hl-mode 1)
+        (diff-hl-update))))
   :delight diff-hl-amend-mode
   :hook
   (magit-post-refresh-hook . diff-hl-magit-post-refresh)
