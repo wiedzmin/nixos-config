@@ -338,6 +338,7 @@ rec {
       remote = {
         url = "https://www.facebook.com/";
         browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
+        vpn = "proton";
       };
       windowRules = [
         {
