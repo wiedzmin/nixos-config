@@ -376,42 +376,6 @@ rec {
       tags = [ "map" "weather" ];
       remote.url = "https://www.ventusky.com/?l=temperature";
     };
-    "mongol" = {
-      desc = "Mongolian music";
-      tags = [ "media" "video" ];
-      remote = {
-        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGYqjEYqkSP-BkNJVTjI8f9y";
-        music = true;
-        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
-      };
-    };
-    "halimag" = {
-      desc = "Halimag/Kalmyk music";
-      tags = [ "media" "video" ];
-      remote = {
-        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGb41d6Ekp-BYGFvWvXrNXMo";
-        music = true;
-        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
-      };
-    };
-    "buriad" = {
-      desc = "Buriad music";
-      tags = [ "media" "video" ];
-      remote = {
-        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGbLyP4AsXHMThm8JPCqTyP6";
-        music = true;
-        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
-      };
-    };
-    "turk/tatar" = {
-      desc = "Turk/Tatar music";
-      tags = [ "media" "video" ];
-      remote = {
-        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGYtwSjkeToMJ17FVXgRWmTW";
-        music = true;
-        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
-      };
-    };
     "rust" = {
       desc = "it/rust";
       tags = [ "media" "video" ];
@@ -465,15 +429,6 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGa0RDozpS3WxmUcoYSsOmTU";
-        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
-      };
-    };
-    "altai" = {
-      desc = "Altai";
-      tags = [ "media" "video" ];
-      remote = {
-        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGaJrdeFwJN7Q5Id700ofPdd";
-        music = true;
         browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
