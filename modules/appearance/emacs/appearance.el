@@ -82,4 +82,5 @@
      occur-mode-hook
      org-agenda-mode-hook
      tabulated-list-mode-hook))
-  (lin-face 'lin-green-override-fg))
+  (lin-face 'lin-green-override-fg)
+  (lin-global-mode 1))
