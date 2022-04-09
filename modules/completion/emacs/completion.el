@@ -49,8 +49,9 @@
   (org-mode-hook . add-pcomplete-to-capf)
   (prog-mode-hook . company-mode)
   :custom-face
-  (company-tooltip-common ((t (:inherit company-tooltip :weight bold :underline nil))))
-  (company-tooltip-common-selection ((t (:inherit company-tooltip-selection :weight bold :underline nil))))
+  (company-preview ((t (:inherit company-tooltip :foreground "steelblue" :background "#B0D6C0" :weight bold :underline nil))))
+  (company-tooltip-common ((t (:inherit company-tooltip :foreground "white" :background "steelblue" :weight bold :underline nil))))
+  (company-tooltip-common-selection ((t (:inherit company-tooltip-selection :foreground "white" :background "steelblue" :weight bold :underline nil))))
   :custom
   (company-backends '(company-capf company-keywords company-elisp))
   (company-begin-commands '(self-insert-command
