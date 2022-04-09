@@ -60,7 +60,7 @@
                             c-scope-operator
                             c-electric-colon
                             c-electric-lt-gt
-                            c-electric-slash ))
+                            c-electric-slash))
   (company-dabbrev-downcase nil)
   (company-echo-delay 0)
   (company-idle-delay 0)
