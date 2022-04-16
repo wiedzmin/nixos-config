@@ -33,6 +33,7 @@ in
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.diredfl
         epkgs.default-text-scale
+        epkgs.lin
         epkgs.rainbow-mode
         epkgs.transwin
         epkgs.unicode-fonts

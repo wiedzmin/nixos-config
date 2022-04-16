@@ -15,22 +15,6 @@
         "type": "github"
       }
     },
-    "emacs-lin": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1649868859,
-        "narHash": "sha256-UazAPgqjRqX+YqfbhUZPBWIrDOkWykymZY5FKrIvpk8=",
-        "owner": "protesilaos",
-        "repo": "lin",
-        "rev": "c62ae864e3e260f68f4b52d0c68fce1f6de6289c",
-        "type": "gitlab"
-      },
-      "original": {
-        "owner": "protesilaos",
-        "repo": "lin",
-        "type": "gitlab"
-      }
-    },
     "emacs-org-bars": {
       "flake": false,
       "locked": {
@@ -208,7 +192,6 @@
     "root": {
       "inputs": {
         "emacs": "emacs",
-        "emacs-lin": "emacs-lin",
         "emacs-org-bars": "emacs-org-bars",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",

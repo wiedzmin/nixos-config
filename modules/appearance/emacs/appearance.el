@@ -64,7 +64,6 @@
   (css-mode-hook . rainbow-mode))
 
 (use-package lin
-  :load-path "@emacsLinPath@"
   :custom
   (lin-mode-hooks
    '(dired-mode-hook
