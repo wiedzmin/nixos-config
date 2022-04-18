@@ -368,6 +368,7 @@ in
         enable = true;
         devices = [
           { name = "MiAir2"; mac = "6C:CE:44:AE:97:39"; }
+          { name = "BO9"; mac = "1A:2B:F5:5E:BE:63"; }
         ];
       };
       wm = {
