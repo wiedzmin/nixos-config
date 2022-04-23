@@ -650,6 +650,40 @@
         ("f" . ripgrep-regexp)
         ("d" . projectile-ripgrep)))
 
+(use-package pulsar
+  :after (consult imenu)
+  :bind
+  (:map mode-specific-map
+        ("h p" . pulsar-pulse-line)
+        ("h h" . pulsar-highlight-line))
+  :hook
+  (consult-after-jump-hook . (pulsar-recenter-top pulsar-reveal-entry))
+  (imenu-after-jump-hook . (pulsar-recenter-top pulsar-reveal-entry))
+  :custom
+  (pulsar-pulse-functions '(recenter-top-bottom
+                            move-to-window-line-top-bottom
+                            reposition-window
+                            forward-page
+                            backward-page
+                            scroll-up-command
+                            scroll-down-command
+                            org-next-visible-heading
+                            org-previous-visible-heading
+                            org-forward-heading-same-level
+                            org-backward-heading-same-level
+                            outline-backward-same-level
+                            outline-forward-same-level
+                            outline-next-visible-heading
+                            outline-previous-visible-heading
+                            outline-up-heading))
+  (pulsar-pulse-on-window-change t)
+  (pulsar-pulse t)
+  (pulsar-delay 0.055)
+  (pulsar-iterations 20)
+  (pulsar-face 'pulsar-magenta)
+  (pulsar-highlight-face 'pulsar-yellow)
+  :config
+  (pulsar-global-mode 1))
 (use-package block-nav
   :bind
   ("C-=" . block-nav-next-indentation-level)

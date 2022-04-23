@@ -55,6 +55,7 @@ in
         epkgs.polymode
         epkgs.prescient
         epkgs.projectile
+        epkgs.pulsar
         epkgs.rainbow-delimiters
         epkgs.recursive-narrow
         epkgs.ripgrep
