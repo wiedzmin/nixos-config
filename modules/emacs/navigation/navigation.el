@@ -654,7 +654,11 @@
   (:map custom-nav-map
         ("d" . rg-project)
         ("t" . rg-menu))
+  :custom
+  (rg-group-result nil)
   :config
+  (defadvice rg-run (before rg-run-before activate)
+    (rg-save-search))
   (rg-enable-default-bindings))
 
 (use-package pulsar
