@@ -647,8 +647,15 @@
 (use-package ripgrep
   :bind
   (:map custom-nav-map
-        ("f" . ripgrep-regexp)
-        ("d" . projectile-ripgrep)))
+        ("f" . ripgrep-regexp)))
+
+(use-package rg
+  :bind
+  (:map custom-nav-map
+        ("d" . rg-project)
+        ("t" . rg-menu))
+  :config
+  (rg-enable-default-bindings))
 
 (use-package pulsar
   :after (consult imenu)

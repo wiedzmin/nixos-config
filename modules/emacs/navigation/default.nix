@@ -58,6 +58,7 @@ in
         epkgs.pulsar
         epkgs.rainbow-delimiters
         epkgs.recursive-narrow
+        epkgs.rg
         epkgs.ripgrep
         epkgs.consult-projectile
         epkgs.selectrum
