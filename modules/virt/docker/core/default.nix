@@ -44,6 +44,7 @@ in
     (mkIf cfg.enable {
       virtualisation.docker = {
         enable = true;
+        enableOnBoot = false;
         inherit (cfg) storageDriver;
       };
       environment.variables.DOCKER_CONFIG = xdgConfig user "docker";
@@ -52,10 +53,16 @@ in
       networking.dhcpcd.denyInterfaces = [ "docker*" ];
 
       nixpkgs.config.packageOverrides = _: rec {
-        dlint = pkgs.writeShellApplication { name = "dlint"; runtimeInputs = with pkgs; [ docker ];
-                                             text = builtins.readFile ./scripts/dlint.sh; };
-        hadolintd = pkgs.writeShellApplication { name = "hadolintd"; runtimeInputs = with pkgs; [ docker ];
-                                                 text = builtins.readFile ./scripts/hadolintd.sh; };
+        dlint = pkgs.writeShellApplication {
+          name = "dlint";
+          runtimeInputs = with pkgs; [ docker ];
+          text = builtins.readFile ./scripts/dlint.sh;
+        };
+        hadolintd = pkgs.writeShellApplication {
+          name = "hadolintd";
+          runtimeInputs = with pkgs; [ docker ];
+          text = builtins.readFile ./scripts/hadolintd.sh;
+        };
         docker_containers_traits = mkPythonScriptWithDeps pkgs "docker_containers_traits"
           (with pkgs; [ docker nurpkgs.pystdlib nurpkgs.toolbox python3Packages.redis xsel yad ])
           (builtins.readFile ./scripts/docker_containers_traits.py);
