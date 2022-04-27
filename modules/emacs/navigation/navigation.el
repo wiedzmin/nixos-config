@@ -668,8 +668,8 @@
         ("h p" . pulsar-pulse-line)
         ("h h" . pulsar-highlight-line))
   :hook
-  (consult-after-jump-hook . (pulsar-recenter-top pulsar-reveal-entry))
-  (imenu-after-jump-hook . (pulsar-recenter-top pulsar-reveal-entry))
+  ((consult-after-jump-hook imenu-after-jump-hook) . pulsar-recenter-top)
+  ((consult-after-jump-hook imenu-after-jump-hook) . pulsar-reveal-entry)
   :custom
   (pulsar-pulse-functions '(recenter-top-bottom
                             move-to-window-line-top-bottom
@@ -695,6 +695,7 @@
   (pulsar-highlight-face 'pulsar-yellow)
   :config
   (pulsar-global-mode 1))
+
 (use-package block-nav
   :bind
   ("C-=" . block-nav-next-indentation-level)
