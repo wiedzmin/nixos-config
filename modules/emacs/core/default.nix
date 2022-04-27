@@ -19,22 +19,22 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   genCustomPackages = customPackages:
     ''
-    ${builtins.concatStringsSep "\n"
-      (lib.mapAttrsToList (feature: impl:
-        let
-          def = pkgs.writeTextFile {
-            name = "${feature}";
-            text = ''
-              ${impl}
-              (provide '${feature})
-            '';
-            destination = "/${feature}.el";
-          };
-        in
-          ''
-            (add-to-list 'load-path "${def}")
-          ''
-      ) customPackages)}
+      ${builtins.concatStringsSep "\n"
+        (lib.mapAttrsToList (feature: impl:
+          let
+            def = pkgs.writeTextFile {
+              name = "${feature}";
+              text = ''
+                ${impl}
+                (provide '${feature})
+              '';
+              destination = "/${feature}.el";
+            };
+          in
+            ''
+              (add-to-list 'load-path "${def}")
+            ''
+        ) customPackages)}
     '';
 in
 {
@@ -107,7 +107,7 @@ in
         default =
           let
             flavor = with pkgs.unstable; if cfg.native.enable then
-              if cfg.pgtk.enable then emacsPgtkGcc else emacsGcc else
+              if cfg.pgtk.enable then emacsPgtkNativeComp else emacsNativeComp else
               if cfg.pgtk.enable then emacsPgtk else emacs;
             configured = (flavor.override {
               withGTK2 = false;
