@@ -34,11 +34,11 @@
     "git-extra-commands": {
       "flake": false,
       "locked": {
-        "lastModified": 1649425043,
-        "narHash": "sha256-qBTIpKVNX0cbJpCq2V9SWeKCQ8O33thVxeKw3dAWTlg=",
+        "lastModified": 1650724971,
+        "narHash": "sha256-WY2tO03na4ceefuklTLVJDsP7b2+/bbG7+jqtVfwnOY=",
         "owner": "unixorn",
         "repo": "git-extra-commands",
-        "rev": "270a2c6bf5744981e4a041cb2086c0f30678feda",
+        "rev": "acd39d410c49522e3f55eba0ae1effac181f54c8",
         "type": "github"
       },
       "original": {
@@ -115,11 +115,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1649849514,
-        "narHash": "sha256-zQyTr2UebTKUh1KLyLtevhHsM8umPK1LfQLGUGjRjiQ=",
+        "lastModified": 1650522846,
+        "narHash": "sha256-SxWHXRI3qJwswyXAtzsi6PKVY3KLNNnb072KaJthII8=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "1a0ccdbf4583ed0fce37eea7955e8ef90f840a9f",
+        "rev": "6b4ebea9093c997c5f275c820e679108de4871ab",
         "type": "github"
       },
       "original": {
@@ -364,11 +364,11 @@
     "zsh-notify": {
       "flake": false,
       "locked": {
-        "lastModified": 1619162097,
-        "narHash": "sha256-rgn+XqAKL9B0gmuqqYnMunx/2fXEXvAZE/JPYuRr4Nw=",
+        "lastModified": 1650711876,
+        "narHash": "sha256-qbo3z4Jtm3Ar+uFcjqYIz04LU8rd+kJSKGBHmT1PsP0=",
         "owner": "marzocchi",
         "repo": "zsh-notify",
-        "rev": "eb389765cb1bd3358e88ac31939ef2edfd539825",
+        "rev": "0e801f61d763579f406b87c56a74de50b62dae14",
         "type": "github"
       },
       "original": {
