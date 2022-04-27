@@ -115,6 +115,9 @@ in
           };
         };
       };
+
+      programs.nix-ld.enable = false; # enable on-demand, see https://github.com/Mic92/nix-ld for reference
+
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback statix ] ++
           lib.optionals cfg.lsp.enable [ rnix-lsp ];
@@ -128,7 +131,8 @@ in
             trigger = ":pkgs";
             replace = "inputs.unstable.legacyPackages.x86_64-linux.$|$";
           }
-          { # TODO: script and reference to it, to collect machines names and select among it (try if it is even possible)
+          {
+            # TODO: script and reference to it, to collect machines names and select among it (try if it is even possible)
             trigger = ":cfg";
             replace = "nixosConfigurations.laptoptop.config.$|$";
           }
