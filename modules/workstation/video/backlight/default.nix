@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.workstation.video.backlight;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     workstation.video.backlight = {
       enable = mkOption {
@@ -66,11 +67,6 @@ in {
       users.users."${user}".extraGroups = [ "video" ];
       programs.light.enable = true;
       hardware.brillo.enable = true;
-
-      services.udev.extraRules = ''
-        SUBSYSTEM=="backlight", ACTION=="add", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/backlight/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/backlight/%k/brightness"
-        SUBSYSTEM=="leds", ACTION=="add", KERNEL=="*::kbd_backlight", RUN+="${pkgs.coreutils}/bin/chgrp video /sys/class/leds/%k/brightness", RUN+="${pkgs.coreutils}/bin/chmod g+w /sys/class/leds/%k/brightness"
-      '';
 
       home-manager.users."${user}" = {
         services = {
