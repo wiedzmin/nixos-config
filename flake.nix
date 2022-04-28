@@ -15,6 +15,7 @@
       url = "github:vivien/i3blocks-contrib";
       flake = false;
     };
+    i3status-rust-stable.url = "github:nixos/nixpkgs/8dcbc6dff3e095743552a79912ae13698e8396e0";
     nixpkgs-index-fm.url = "github:nixos/nixpkgs/a4bf44345706231f9dd56f85757499af1e940847";
 
     # NOTE: using these instead of quelpa

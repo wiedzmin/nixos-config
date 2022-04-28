@@ -81,6 +81,22 @@
         "type": "github"
       }
     },
+    "i3status-rust-stable": {
+      "locked": {
+        "lastModified": 1647506045,
+        "narHash": "sha256-6V6/cX4xqw7dBIv7eu+l1/0e2INia8htXJQXGDlXNYM=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "8dcbc6dff3e095743552a79912ae13698e8396e0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "8dcbc6dff3e095743552a79912ae13698e8396e0",
+        "type": "github"
+      }
+    },
     "liquidprompt": {
       "flake": false,
       "locked": {
@@ -196,6 +212,7 @@
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
         "i3blocks-contrib": "i3blocks-contrib",
+        "i3status-rust-stable": "i3status-rust-stable",
         "liquidprompt": "liquidprompt",
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
