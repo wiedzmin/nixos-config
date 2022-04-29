@@ -107,7 +107,7 @@ in
         default =
           let
             flavor = with pkgs.unstable; if cfg.native.enable then
-              if cfg.pgtk.enable then emacsPgtkNativeComp else emacsNativeComp else
+              if cfg.pgtk.enable then emacsPgtkNativeComp else emacsGitNativeComp else
               if cfg.pgtk.enable then emacsPgtk else emacs;
             configured = (flavor.override {
               withGTK2 = false;
