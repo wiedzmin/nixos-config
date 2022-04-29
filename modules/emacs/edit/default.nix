@@ -37,7 +37,7 @@ in
         epkgs.shift-number
         epkgs.smartparens
         epkgs.string-inflection
-        epkgs.undo-propose
+        epkgs.undo-tree
         epkgs.wgrep
         epkgs.whole-line-or-region
         epkgs.ws-butler

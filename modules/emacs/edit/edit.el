@@ -144,10 +144,13 @@
   :config
   (delete-selection-mode 1))
 
-(use-package undo-propose
+;;TODO: opt for `vundo' in case of any errors
+(use-package undo-tree
   :bind
   (:map ctl-x-map
-        ("u" . undo-propose)))
+        ("u" . undo-tree-visualize))
+  :config
+  (global-undo-tree-mode 1))
 
 (use-package kmacro
   :custom
