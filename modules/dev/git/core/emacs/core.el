@@ -25,6 +25,9 @@
     (magit-with-toplevel
       (magit-call-git "removeenv")
       (magit-refresh)))
+  (defun custom/magit-show-commit-by-rev (commit)
+    (interactive "MCommit id: ")
+    (magit-show-commit commit))
   :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
          ("COMMIT" . git-commit-mode))
   :bind
@@ -35,7 +38,8 @@
         ("," . magit-file-dispatch)
         ("r" . magit-reflog-current)
         ("R" . magit-reflog-other)
-        ("c" . magit-checkout))
+        ("c" . magit-checkout)
+        ("w" . custom/magit-show-commit-by-rev))
   (:map magit-status-mode-map
         ("N" . magit-notes-edit)
         ("C-c k" . magit-process-kill))
