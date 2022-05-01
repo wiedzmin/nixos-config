@@ -34,11 +34,11 @@
     "git-extra-commands": {
       "flake": false,
       "locked": {
-        "lastModified": 1650724971,
-        "narHash": "sha256-WY2tO03na4ceefuklTLVJDsP7b2+/bbG7+jqtVfwnOY=",
+        "lastModified": 1651173745,
+        "narHash": "sha256-WxLlE4PrPGsoQtc8tC9nTl6YS0Q6+U+dnnGLxSjZWws=",
         "owner": "unixorn",
         "repo": "git-extra-commands",
-        "rev": "acd39d410c49522e3f55eba0ae1effac181f54c8",
+        "rev": "5d83722aba16db3598e6d49e1d5a07d0a147a26e",
         "type": "github"
       },
       "original": {
@@ -100,11 +100,11 @@
     "liquidprompt": {
       "flake": false,
       "locked": {
-        "lastModified": 1647372199,
-        "narHash": "sha256-pMwd3J2HYwlE9bbs8bPM2WR+VsP0s0UfrMcjvcQUyUI=",
+        "lastModified": 1651260864,
+        "narHash": "sha256-u9XNvuUpjEr0A64EKXjKOqzFSvz6+y8WYoIsTwK+688=",
         "owner": "nojhan",
         "repo": "liquidprompt",
-        "rev": "f6a841c2e13e235ce24f5e7c7cfcf8ee283fc491",
+        "rev": "b1205e1cd72339fac9b6bb22018f090c719eb84b",
         "type": "github"
       },
       "original": {
