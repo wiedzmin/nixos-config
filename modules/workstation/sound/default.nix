@@ -44,7 +44,6 @@ in
           load-module module-bluetooth-policy auto_switch=2
           load-module module-native-protocol-tcp auth-ip-acl=127.0.0.1
         '';
-        extraModules = [ pkgs.pulseaudio-modules-bt ];
       };
       environment.systemPackages = with pkgs; [ pasystray lxqt.pavucontrol-qt ];
     })
