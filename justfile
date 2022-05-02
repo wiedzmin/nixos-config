@@ -19,7 +19,7 @@ laptoptop-build-no-net:
 
 # Build + switch "laptoptop" flake
 laptoptop-switch:
-    sudo nixos-rebuild switch --flake ".#laptoptop"
+    nixos-rebuild switch --use-remote-sudo --flake ".#laptoptop"
 
 # Build + switch "laptoptop" flake without network access
 laptoptop-switch-no-net:
@@ -35,7 +35,7 @@ momcat-build-debug:
 
 # Build + switch "momcat" flake
 momcat-switch:
-    sudo nixos-rebuild switch --flake ".#momcat"
+    nixos-rebuild switch --use-remote-sudo --flake ".#momcat"
 
 # Build + switch "momcat" flake without network access
 momcat-switch-no-net:
