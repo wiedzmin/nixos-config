@@ -54,7 +54,7 @@ for glob in credentials_mapping.keys():
         pass_path = credentials_mapping[glob]["target"]
 
 
-if not args.wip_force and not is_idle_enough("xprintidle-ng"):
+if not args.wip_force and not is_idle_enough("xprintidle"):
     sys.exit(0)
 diff_size = get_diff_size(repo)
 if diff_size == 0:

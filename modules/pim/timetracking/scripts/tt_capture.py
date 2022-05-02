@@ -36,8 +36,8 @@ try:
 except XError:
     pass
 
-idle_time = shell_cmd("xprintidle-ng", env={"DISPLAY": os.getenv("DISPLAY"),
-                                            "XAUTHORITY": os.getenv("XAUTHORITY")})
+idle_time = shell_cmd("xprintidle", env={"DISPLAY": os.getenv("DISPLAY"),
+                                         "XAUTHORITY": os.getenv("XAUTHORITY")})
 
 data = dumps([current_time, tz_offset_sec, current_desktop, active_window_name, active_window_class, idle_time])
 

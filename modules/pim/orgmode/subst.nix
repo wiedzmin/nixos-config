@@ -13,5 +13,5 @@ rec {
   orgRoot = config.pim.orgmode.rootDir;
   pimCommonCaptureDataTemplate = config.pim.orgmode.commonCaptureDataTemplate;
   pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;
-  xprintidleBinary = "${pkgs.xprintidle-ng}/bin/xprintidle-ng";
+  xprintidleBinary = "${pkgs.xprintidle}/bin/xprintidle";
 }

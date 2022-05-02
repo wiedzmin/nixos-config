@@ -180,7 +180,7 @@ in
             python3Packages.cbor2
             python3Packages.pytz
             python3Packages.xlib
-            xprintidle-ng
+            xprintidle
           ])
           (builtins.readFile ./scripts/tt_capture.py);
       };
