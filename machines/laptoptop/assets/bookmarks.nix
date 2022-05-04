@@ -772,7 +772,7 @@ rec {
       transient = true;
     };
     agenda = {
-      local.path = homePrefix user "docs/org/agenda.org";
+      local.path = homePrefix user "docs/org/roam/agenda.org";
       windowRules = [
         {
           class = "Emacs";
