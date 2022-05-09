@@ -356,6 +356,14 @@ rec {
         url = "https://www.facebook.com/messages/t/";
       };
     };
+    "vkontakte" = {
+      desc = "VK";
+      tags = [ "vk" ];
+      remote = {
+        # browser = config.attributes.browser.fallback.cmd;
+        url = "https://vk.com/";
+      };
+    };
     "mt" = {
       desc = "Multitran";
       tags = [ "dictionary" ];
