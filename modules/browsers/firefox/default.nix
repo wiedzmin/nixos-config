@@ -54,7 +54,7 @@ in
       };
       windowClass = mkOption {
         type = types.listOf types.str;
-        default = [ "Navigator" "Firefox" ];
+        default = [ "Navigator" "firefox" ];
         visible = false;
         internal = true;
         description = "Firefox default window class.";
