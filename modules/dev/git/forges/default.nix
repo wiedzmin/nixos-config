@@ -2,6 +2,8 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# TODO: check for possible conflicts between `config.ext.networking.hosts` and `config.dev.git.forges` definitions
+
 let
   cfg = config.dev.git.forges;
   user = config.attributes.mainUser.name;
