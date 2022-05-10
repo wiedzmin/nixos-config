@@ -54,7 +54,7 @@ in
       };
       windowClass = mkOption {
         type = types.listOf types.str;
-        default = [ "qutebrowser" ];
+        default = [ "qutebrowser" "qutebrowser" ];
         visible = false;
         internal = true;
         description = "Qutebrowser default window class.";

@@ -73,7 +73,7 @@ in
       };
       windowClass = mkOption {
         type = types.listOf types.str;
-        default = [ "nyxt" ];
+        default = [ "nyxt" "Nyxt" ];
         visible = false;
         internal = true;
         description = "Nyxt default window class.";
