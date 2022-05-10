@@ -230,7 +230,7 @@ in
         };
       };
       workstation.input.xkeysnail.rc = ''
-        define_keymap(re.compile("Firefox"), {
+        define_keymap(re.compile("${lib.last cfg.windowClass}"), {
             K("C-j"): K("C-f6"), # Type C-j to focus to the content
             K("C-g"): K("f5"),
             K("C-n"): K("C-g"),

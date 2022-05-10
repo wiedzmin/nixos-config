@@ -104,7 +104,7 @@ in
         };
       };
       workstation.input.xkeysnail.rc = ''
-        define_keymap(re.compile("qutebrowser"), {
+        define_keymap(re.compile("${lib.last cfg.windowClass}"), {
             K("C-g"): K("f5"),
             K("C-n"): K("C-g"),
             K("M-comma"): K("Shift-h"),
