@@ -227,6 +227,11 @@ with lib;
       default = [ ];
       description = "Default virtual terminal command elements (including `command` flag, for executing something)";
     };
+    vt.default.windowClass = mkOption {
+      description = "Default virtual terminal window class";
+      type = types.listOf types.str;
+      default = [ ];
+    };
     wms.enabled = mkOption {
       description = "Whether any window manager is enabled in current setup";
       type = types.bool;

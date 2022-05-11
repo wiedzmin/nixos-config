@@ -25,6 +25,13 @@ in
         default = [ "${pkgs.alacritty}/bin/alacritty" "-e" ];
         description = "Default command line to invoke";
       };
+      windowClass = mkOption {
+        type = types.listOf types.str;
+        default = [ "Alacritty" "Alacritty" ];
+        visible = false;
+        internal = true;
+        description = "Alacritty default window class.";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -45,6 +52,7 @@ in
         { TB_TERMINAL_CMD = cfg.command; }
       ];
       attributes.vt.default.cmd = cfg.command;
+      attributes.vt.default.windowClass = cfg.windowClass;
       home-manager.users."${user}" = {
         programs.alacritty = {
           enable = true;
