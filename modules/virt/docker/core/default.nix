@@ -91,12 +91,15 @@ in
           ignored = [ "DL3007" ];
           trustedRegistries = [ "docker.io" ];
         };
-        services.espanso.settings.matches = [
-          {
-            trigger = ":dcr";
-            replace = "docker-compose up --detach --build && docker-compose restart $|$";
-          }
-        ];
+        xdg.configFile."espanso/user/docker.yml".text = ''
+          name: docker
+          parent: default
+          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
+
+          matches:
+            - trigger: ":dcr"
+              replace: "docker-compose up --detach --build && docker-compose restart $|$"
+        '';
       };
 
       shell.prompts.starship.modulesConfiguration = { docker_context = { format = "via [🐋 $context](blue bold)"; }; };

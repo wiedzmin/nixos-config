@@ -49,6 +49,17 @@ in
         ];
         default = "RIGHT_SHIFT";
       };
+      espansoConfig = mkOption {
+        type = types.lines;
+        default = ''
+          toggle_key: ${cfg.expansions.toggleKey}
+          auto_restart: false
+        '';
+        visible = false;
+        readOnly = true;
+        internal = true;
+        description = "Espanso main config";
+      };
       dev.enable = mkOption {
         type = types.bool;
         default = false;
@@ -108,16 +119,16 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.expansions.enable) {
+      services.espanso.enable = true;
+      # FIXME: package auxillary `modulo` binary in `nur-packages`
       # TODO: script(s) to store expansions in redis and show on demand (in case some useful expansions were forgotten)
       home-manager.users."${user}" = {
-        services.espanso = {
-          enable = true;
-          settings = {
-            toggle_key = cfg.expansions.toggleKey;
-            auto_restart = false;
-          };
-        };
         home.activation = {
+          populateEspansoConfig = {
+            after = [ ];
+            before = [ "linkGeneration" ];
+            data = ''echo "${cfg.espansoConfig}" > /home/alex3rd/.config/espanso/default.yml'';
+          };
           restartEspanso = {
             after = [ "linkGeneration" ];
             before = [ ];

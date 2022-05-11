@@ -31,20 +31,21 @@ in
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ tdesktop zoom-us tdlib ];
-        services.espanso.settings.matches = [
-          {
-            trigger = ":shr";
-            replace = "¯\\_(ツ)_/¯";
-          }
-          {
-            trigger = ":sm";
-            replace = "ツ";
-          }
-          {
-            trigger = ":cr";
-            replace = "©";
-          }
-        ];
+        xdg.configFile."espanso/user/telegram.yml".text = ''
+          name: telegram
+          parent: default
+          filter_class: "TelegramDesktop"
+
+          matches:
+            - trigger: ":shr"
+              replace: "¯\\_(ツ)_/¯"
+
+            - trigger: ":sm"
+              replace: "ツ"
+
+            - trigger: ":cr"
+              replace: "©"
+        '';
       };
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {

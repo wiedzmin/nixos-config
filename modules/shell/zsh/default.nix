@@ -50,16 +50,18 @@ in
       home-manager.users."${user}" = {
         # NOTE: play with ydotool client/server arch and respective permissions
         home.packages = with pkgs; [ gdu rtss wmctrl xdotool rargs ydotool ];
-        services.espanso.settings.matches = [
-          {
-            trigger = ":ts";
-            replace = "$|$ | rtss";
-          }
-          {
-            trigger = ":rlw";
-            replace = "readlink -f `which $|$`";
-          }
-        ];
+        xdg.configFile."espanso/user/zsh.yml".text = ''
+          name: zsh
+          parent: default
+          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
+
+          matches:
+            - trigger: ":ts"
+              replace: "$|$ | rtss"
+
+            - trigger: ":rlw"
+              replace: "readlink -f `which $|$`"
+        '';
         programs.zsh = {
           enable = true;
           enableAutosuggestions = true;

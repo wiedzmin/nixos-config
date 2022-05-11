@@ -35,12 +35,14 @@ in
           imagemagick
           vimiv-qt
         ];
-        services.espanso.settings.matches = [
-          {
-            trigger = ":idim";
-            replace = "identify -verbose $|$";
-          }
-        ];
+        xdg.configFile."espanso/user/images.yml".text = ''
+          name: images
+          parent: default
+
+          matches:
+            - trigger: ":idim"
+              replace: "identify -verbose $|$"
+        '';
 
         xdg.configFile."vimiv/keys.conf".text = toINIColon {
           GLOBAL = {

@@ -72,6 +72,20 @@ in
       environment.systemPackages = with pkgs; [ ncmpcpp freetube ytfzf moc ];
 
       home-manager.users."${user}" = {
+        xdg.configFile."espanso/user/content.yml".text = ''
+          name: content
+          parent: default
+          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
+
+          matches:
+            - trigger: ":yt"
+              replace: "nix shell \"nixpkgs#yt-dlp\" -c yt-dlp \"$|$\""
+
+            - trigger: ":4yt"
+              replace: "nix shell \"nixpkgs#yt-dlp\" -c yt-dlp \"$|$\" --merge-output-format mp4"
+
+
+        '';
         # TODO: deal with converting from `webm` ^^^ (use ffmpeg btw)
         programs.mpv = {
           # TODO: consider extracting options
@@ -104,16 +118,6 @@ in
         };
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.video "mpv.desktop";
         programs.zsh.shellAliases = { yg = "${pkgs.you-get}/bin/you-get"; };
-        services.espanso.settings.matches = [
-          {
-            trigger = ":yt";
-            replace = "nix shell \"nixpkgs#yt-dlp\" -c yt-dlp \"$|$\"";
-          }
-          {
-            trigger = ":4yt";
-            replace = "nix shell \"nixpkgs#yt-dlp\" -c yt-dlp \"$|$\" --merge-output-format mp4";
-          }
-        ];
       };
     })
     (mkIf (cfg.enable && cfg.mpd.enable) {

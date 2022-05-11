@@ -63,21 +63,22 @@ in
       users.users."${user}".extraGroups = [ "networkmanager" ];
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ anydesk ipinfo ];
-        services.espanso.settings.matches = [
-          {
-            trigger = ":ip";
-            replace = "{{output}}";
-            vars = [{
-              name = "output";
-              type = "shell";
-              params = { cmd = "curl 'https://api.ipify.org'"; };
-            }];
-          }
-          {
-            trigger = ":ifd";
-            replace = "sudo ifconfig $|$ down";
-          }
-        ];
+        xdg.configFile."espanso/user/networking.yml".text = ''
+          name: networking
+          parent: default
+
+          matches:
+            - trigger: ":ip"
+              replace: "{{output}}"
+              vars:
+                - name: output
+                  type: shell
+                  params:
+                    cmd: "curl https://api.ipify.org"
+
+            - trigger: ":ifd"
+              replace: "sudo ifconfig $|$ down"
+        '';
       };
       wmCommon.modeBindings = {
         "network" = [ prefix "n" ];
