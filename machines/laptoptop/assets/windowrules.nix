@@ -4,9 +4,8 @@ with pkgs.unstable.commonutils;
 rec {
   wmCommon.wsMapping.rules = [
     {
-      # TODO: parameterize rule
-      class = "Alacritty";
-      title = "main laptoptop";
+      class = lib.last config.attributes.vt.default.windowClass;
+      title = "main ${config.attributes.machine.name}";
       desktop = "shell";
     }
     {
