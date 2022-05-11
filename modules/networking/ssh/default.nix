@@ -116,19 +116,19 @@ in
         {
           key = [ "d" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu --choices --term-command '${
-            lib.concatStringsSep " " config.attributes.defaultVTCommand}'";
+            lib.concatStringsSep " " config.attributes.vt.default.cmd}'";
           mode = "network";
         }
         {
           key = [ "s" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu --term-command '${
-            lib.concatStringsSep " " config.attributes.defaultVTCommand}'";
+            lib.concatStringsSep " " config.attributes.vt.default.cmd}'";
           mode = "network";
         }
         {
           key = [ "t" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux --term-command '${
-            lib.concatStringsSep " " config.attributes.defaultVTCommand}'";
+            lib.concatStringsSep " " config.attributes.vt.default.cmd}'";
           mode = "network";
         }
       ];

@@ -102,7 +102,7 @@ in
             before = [ ];
             # FIXME: TB_TERMINAL_CMD setting
             data = ''DISPLAY=:0 ${nurpkgs.toolbox}/bin/services --invalidate-cache --term-command "${
-              lib.concatStringsSep " " config.attributes.defaultVTCommand}"'';
+              lib.concatStringsSep " " config.attributes.vt.default.cmd}"'';
           };
           ensureDebugLogsRoot = {
             after = [ "linkGeneration" ];
@@ -270,7 +270,7 @@ in
           key = [ "j" ];
           # FIXME: TB_TERMINAL_CMD setting
           cmd = ''${nurpkgs.toolbox}/bin/services --flat --term-command "${
-            lib.concatStringsSep " " config.attributes.defaultVTCommand}"'';
+            lib.concatStringsSep " " config.attributes.vt.default.cmd}"'';
           mode = "services";
           desktop = "shell";
         }

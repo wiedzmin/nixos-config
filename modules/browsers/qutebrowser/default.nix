@@ -275,9 +275,9 @@ in
             };
             fileselect = {
               handler = "external";
-              single_file.command = config.attributes.defaultVTCommand
+              single_file.command = config.attributes.vt.default.cmd
                 ++ [ "${pkgs.ranger}/bin/ranger" "--choosefile={}" ];
-              multiple_files.command = config.attributes.defaultVTCommand
+              multiple_files.command = config.attributes.vt.default.cmd
                 ++ [ "${pkgs.ranger}/bin/ranger" "--choosefiles={}" ];
             };
             keyhint.delay = 20;

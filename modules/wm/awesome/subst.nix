@@ -3,8 +3,8 @@ with pkgs.unstable.commonutils;
 
 rec {
   awesomeDebugPrint = "";
-  defaultVTCmd = builtins.head config.attributes.defaultVTCommand;
-  defaultVTExecCmd = config.attributes.defaultVTCommand;
+  defaultVTCmd = builtins.head config.attributes.vt.default.cmd;
+  defaultVTExecCmd = config.attributes.vt.default.cmd;
   mainUserName = config.attributes.mainUser.name;
   placementRulesAwesomeList = genPlacementRulesAwesomeList config.wmCommon.wsMapping.rules 3;
   sloppyFocus = lib.boolToString config.wmCommon.focus.followsMouse;

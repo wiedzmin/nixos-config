@@ -44,7 +44,7 @@ in
         { TERMINAL = builtins.head cfg.command; global = true; }
         { TB_TERMINAL_CMD = cfg.command; }
       ];
-      attributes.defaultVTCommand = cfg.command;
+      attributes.vt.default.cmd = cfg.command;
       home-manager.users."${user}" = {
         programs.alacritty = {
           enable = true;

@@ -222,7 +222,7 @@ with lib;
       type = types.attrs;
       default = { url = { py = "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]"; }; };
     };
-    defaultVTCommand = mkOption {
+    vt.default.cmd = mkOption {
       type = types.listOf types.str;
       default = [ ];
       description = "Default virtual terminal command elements (including `command` flag, for executing something)";

@@ -68,7 +68,7 @@ in
       wmCommon.keys = lib.optionals (cfg.controlCenter.meta != { }) [{
         key = [ "d" ];
         cmd = ''${pkgs.dbms}/bin/dbms --term-command "${
-          lib.concatStringsSep " " config.attributes.defaultVTCommand}" '';
+          lib.concatStringsSep " " config.attributes.vt.default.cmd}" '';
         mode = "dev";
       }];
     })
