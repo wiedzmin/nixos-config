@@ -51,6 +51,7 @@
 (use-package bug-reference)
 
 (use-package leetcode
+  :disabled
   :custom
   (leetcode-prefer-language "python3")
   (leetcode-prefer-sql "mysql")
