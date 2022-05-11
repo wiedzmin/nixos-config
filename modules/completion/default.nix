@@ -121,6 +121,7 @@ in
     (mkIf (cfg.enable && cfg.expansions.enable) {
       services.espanso.enable = true;
       # FIXME: package auxillary `modulo` binary in `nur-packages`
+      systemd.user.services.espanso.path = [ pkgs.bash ];
       # TODO: script(s) to store expansions in redis and show on demand (in case some useful expansions were forgotten)
       home-manager.users."${user}" = {
         home.activation = {
