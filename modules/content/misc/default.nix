@@ -35,13 +35,7 @@ in
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
-          android-file-transfer
-          saldl # consider providing some (shell) automation
-          # =======
           findimagedupes
-          # =======
-          frangipanni
-          sftpman
         ];
 
         services.syncthing.enable = true; # TODO: consider separate option(s)
