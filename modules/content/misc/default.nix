@@ -41,7 +41,6 @@ in
           findimagedupes
           # =======
           frangipanni
-          monolith
           sftpman
         ];
 
@@ -55,6 +54,26 @@ in
         programs.zsh.shellAliases = {
           yg = "${pkgs.you-get}/bin/you-get";
         };
+        xdg.configFile."espanso/user/content_misc.yml".text = ''
+          name: content_misc
+          parent: default
+          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
+
+          matches:
+            - trigger: ":mt"
+              replace: "nix shell 'nixpkgs#monolith' -c monolith --isolate --base-url {{baseurl.value}} --output $|$"
+              vars:
+                - name: baseurl
+                  type: form
+                  params:
+                    layout: |
+                      URL: {{value}}
+                # does not work for some reason
+                # - name: outfile
+                #   type: shell
+                #   params:
+                #     cmd: echo {{baseurl.value}}
+        '';
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
