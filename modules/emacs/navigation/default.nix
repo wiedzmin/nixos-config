@@ -23,8 +23,29 @@ in
         assertion = config.ide.emacs.core.enable;
         message = "emacs/navigation: core configuration must be enabled.";
       }];
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [ ripgrep ];
+        xdg.configFile."espanso/user/navigation_emacs.yml".text = ''
+          name: navigation_emacs
+          parent: default
+          filter_class: "Emacs"
 
-      home-manager.users."${user}" = { home.packages = with pkgs; [ ripgrep ]; };
+          matches:
+            - trigger: ":rgr"
+              replace: "[[elisp:(progn (require 'rg) (rg-run \"{{token.value}}\" \"everything\" default-directory nil nil '(\"--context={{context.size}}\")))]]"
+              vars:
+                - name: token
+                  type: form
+                  params:
+                    layout: |
+                      search for: {{value}}
+                - name: context
+                  type: form
+                  params:
+                    layout: |
+                      context size: {{size}}
+        '';
+      };
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.avy
         epkgs.beginend
