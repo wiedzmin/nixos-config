@@ -790,6 +790,17 @@ rec {
         }
       ];
     };
+    goodies = {
+      local.path = homePrefix user "docs/org/roam/current_goodies.org";
+      windowRules = [
+        {
+          class = "Emacs";
+          title = "current_goodies.org";
+          desktop = "edit";
+          activate = true;
+        }
+      ];
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
