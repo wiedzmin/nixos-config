@@ -473,3 +473,11 @@
         ("j" . org-roam-dailies-capture-today)))
 
 ;; TODO: https://github.com/nobiot/org-transclusion
+
+(use-package orglink
+  :after org
+  :custom
+  (orglink-activate-in-modes '(emacs-lisp-mode
+                               nix-mode)) ;NOTE: extend as needed
+  :config
+  (global-orglink-mode))

@@ -109,6 +109,7 @@ in
         epkgs.org-rich-yank
         epkgs.org-roam
         epkgs.orgit
+        epkgs.orglink
         epkgs.russian-holidays
       ] ++ optionals cfg.cliplink.enable [ epkgs.org-cliplink ];
       ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/orgmode.el ])
