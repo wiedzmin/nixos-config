@@ -1,5 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
+with config.navigation.bookmarks.workspaces;
 with lib;
 
 let
@@ -140,6 +141,9 @@ in
 
             - trigger: ":elt"
               replace: "builtins.head (inputs.unstable.lib.sublist 1$|$ 1 nixosConfigurations.laptoptop.config.wmCommon.wsMapping.rules)"
+
+            - trigger: ":nrep"
+              replace: "cd ${wsRoot roots "github"}/wiedzmin/nixos-config && nix repl ./flake-repl.nix"
         '';
       };
 

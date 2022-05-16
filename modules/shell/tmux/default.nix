@@ -47,11 +47,6 @@ in
           ".tmuxp/main.yml".text = ''
             session_name: ${cfg.defaultSession}
             windows:
-              - window_name: repl
-                panes:
-                  - shell_command:
-                    - cd ${configPrefix roots ""}
-                    - nix repl ./flake-repl.nix
               - window_name: files
                 panes:
                   - mc
