@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.dev.codesearch;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     dev.codesearch = {
       enable = mkOption {
@@ -24,7 +25,7 @@ in {
   config = mkMerge [
     (mkIf cfg.enable {
       shell.core.variables = [{
-        CSEARCHINDEX = "${homePrefix user config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex";
+        CSEARCHINDEX = "${config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex";
       }];
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ codesearch ];
