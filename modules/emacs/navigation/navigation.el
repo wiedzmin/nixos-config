@@ -780,10 +780,6 @@ res param is needed for default behavior"
       (aif (get-buffer (concat "magit: " current-project-name))
           (switch-to-buffer it)
         (magit-status))))
-  (defun projectile-switch-project-action-codesearch-search (project)
-    "Search project's files with Codesearch."
-    (let ((projectile-switch-project-action #'projectile-codesearch-search))
-      (projectile-switch-project-by-name project)))
   (defun projectile-switch-project-action-open-todos (project)
     "Open project's TODOs."
     (let ((projectile-switch-project-action #'custom/open-project-todos))
