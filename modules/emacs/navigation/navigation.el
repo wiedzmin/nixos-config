@@ -798,7 +798,7 @@ res param is needed for default behavior"
         ("d" . projectile-dired)
         ("i" . projectile-invalidate-cache)
         ("k" . projectile-kill-buffers)
-        ("t" . custom/open-project-todos)
+        ("t" . custom/open-project-todos) ;FIXME: redefined somewhere else
         ("m" . custom/open-project-magit-status)
         ("f" . recentf-open-files)
         ("h" . projectile-find-file))
