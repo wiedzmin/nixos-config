@@ -49,9 +49,23 @@
   (org-mode-hook . add-pcomplete-to-capf)
   (prog-mode-hook . company-mode)
   :custom-face
-  (company-preview ((t (:inherit company-tooltip :foreground "steelblue" :background "#B0D6C0" :weight bold :underline nil))))
-  (company-tooltip-common ((t (:inherit company-tooltip :foreground "white" :background "steelblue" :weight bold :underline nil))))
-  (company-tooltip-common-selection ((t (:inherit company-tooltip-selection :foreground "white" :background "steelblue" :weight bold :underline nil))))
+  ;NOTE: do we need `company-tooltip-mouse' here?
+  (company-echo ((t (:inherit company-tooltip :background "firebrick4"))))
+  (company-echo-common ((t (:inherit company-tooltip :foreground "cyan"))))
+  (company-preview ((t (:inherit company-tooltip :foreground "wheat" :background "gray30" :weight bold :underline t))))
+  (company-preview-common ((t (:inherit company-preview :background "gray30" :foreground "cyan"))))
+  (company-preview-common--show-p ((t (:inherit company-preview :background "skyblue"))))
+  (company-preview-search ((t (:inherit company-preview :background "white"))))
+  (company-scrollbar-bg ((t (:inherit company-tooltip :background "#002b37"))))
+  (company-scrollbar-fg ((t (:inherit company-tooltip :background "orange"))))
+  (company-tooltip ((t (:foreground "#dfdfe1" :background "#393939" :weight bold :underline nil))))
+  (company-tooltip-annotation ((t (:inherit company-tooltip :background "#002b37"))))
+  (company-tooltip-annotation-selection ((t (:inherit company-tooltip :background "orange"))))
+  (company-tooltip-common ((t (:inherit company-tooltip :foreground "black" :background "lightgrey" :weight bold :underline nil)))) ;TODO: play with '(:inherit font-lock-constant-face)
+  (company-tooltip-common-selection ((t (:inherit company-tooltip-selection :background "gray80" :foreground "red" :weight bold :underline nil))))
+  (company-tooltip-search ((t (:inherit company-tooltip :foreground "#002b37" :background "#244f36" :weight bold :underline nil))))
+  (company-tooltip-selection ((t (:inherit company-tooltip :foreground "black" :background "steelblue" :weight bold :underline nil)))) ;TODO: play with '(:inherit font-lock-function-name-face)
+  (lazy-highlight ((t (:inherit default :background nil :foreground "#CFD7E5" :distant-foreground nil))))
   :custom
   (company-backends '(company-capf company-keywords company-elisp))
   (company-begin-commands '(self-insert-command
