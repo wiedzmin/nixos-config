@@ -223,7 +223,7 @@ res param is needed for default behavior"
         (alist-get ?\M-w avy-dispatch-alist) 'avy-action-copy-proxy
         (alist-get ?W avy-dispatch-alist) 'avy-action-copy-whole-line
         (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line
-        (alist-get ?e avy-dispatch-alist) 'avy-action-exchange
+        (alist-get ?E avy-dispatch-alist) 'avy-action-exchange
         (alist-get ?\C-t avy-dispatch-alist) 'avy-action-teleport-proxy
         (alist-get ?\C-h avy-dispatch-alist) 'avy-action-helpful
         (alist-get ?\C-r avy-dispatch-alist) 'avy-replace-action
