@@ -85,6 +85,7 @@ in
         epkgs.selectrum
         epkgs.selectrum-prescient
         epkgs.treemacs
+        epkgs.treemacs-icons-dired
         epkgs.treemacs-projectile
         epkgs.winum
         epkgs.zygospore

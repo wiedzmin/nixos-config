@@ -935,6 +935,11 @@ res param is needed for default behavior"
   (treemacs-fringe-indicator-mode t)
   (treemacs-git-mode 'deferred))
 
+(use-package treemacs-icons-dired
+  :after treemacs
+  :config
+  (treemacs-icons-dired-mode 1))
+
 (use-package treemacs-projectile
   :demand t
   :after treemacs projectile
