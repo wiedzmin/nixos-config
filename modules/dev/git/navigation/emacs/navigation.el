@@ -24,5 +24,5 @@
   :bind
   (:map mode-specific-map
         ("C-d" . magit-todos-list))
-  (:map custom-projectile-map
+  (:map custom-projects-map
         ("t" . magit-todos-list)))

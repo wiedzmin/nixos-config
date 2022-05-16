@@ -789,7 +789,7 @@ res param is needed for default behavior"
     (let ((projectile-switch-project-action #'custom/open-project-magit-status))
       (projectile-switch-project-by-name project)))
   :bind
-  (:map custom-projectile-map
+  (:map custom-projects-map
         ("C" . projectile-commander)
         ("d" . projectile-dired)
         ("i" . projectile-invalidate-cache)
@@ -940,7 +940,7 @@ res param is needed for default behavior"
   :demand t
   :after treemacs projectile
   :bind
-  (:map custom-projectile-map
+  (:map custom-projects-map
         ("e" . treemacs-projectile)))
 
 (use-package goggles
@@ -954,7 +954,7 @@ res param is needed for default behavior"
    :bind
    (:map mode-specific-map
          ("C-d" . magit-todos-list))
-   (:map custom-projectile-map
+   (:map custom-projects-map
          ("T" . magit-todos-list)))
 
 (use-package xref

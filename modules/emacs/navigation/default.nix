@@ -100,7 +100,7 @@ in
         "custom-help-map" = "<f1>";
         "custom-narrowing-map" = "<f9>";
         "custom-nav-map" = "C-q";
-        "custom-projectile-map" = "<f8>";
+        "custom-projects-map" = "<f8>";
         "custom-treemacs-map" = "C-x t";
         "custom-ws-map" = "C-c x";
         "custom-goto-map" = "M-s";
