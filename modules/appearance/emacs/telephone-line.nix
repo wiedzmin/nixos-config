@@ -2,7 +2,8 @@
 with lib;
 
 let cfg = config.appearance.emacs.modeline.telephone;
-in {
+in
+{
   options = {
     appearance.emacs.modeline.telephone = {
       enable = mkOption {
@@ -31,17 +32,25 @@ in {
           (telephone-line-primary-right-separator 'telephone-line-cubed-right)
           (telephone-line-secondary-right-separator 'telephone-line-cubed-hollow-right)
           (telephone-line-height ${builtins.toString cfg.height})
-          (telephone-line-lhs
-           '((evil   . (telephone-line-buffer-modified-segment))
-             (accent . (telephone-line-narrow-segment
-                        telephone-line-position-segment
-                        telephone-line-vc-segment))
-             (nil    . (telephone-line-projectile-buffer-segment))))
           (telephone-line-rhs
            '((nil    . (telephone-line-minor-mode-segment))
              (accent . (telephone-line-major-mode-segment
                         telephone-line-flycheck-segment))
-             (evil   . ()))))
+             (evil   . ())))
+          :config
+          (if (fboundp 'projectile-get-project-root)
+              (setq telephone-line-lhs
+                    '((evil   . (telephone-line-buffer-modified-segment))
+                      (accent . (telephone-line-narrow-segment
+                                 telephone-line-position-segment
+                                 telephone-line-vc-segment))
+                      (nil . (telephone-line-projectile-buffer-segment))))
+            (setq telephone-line-lhs
+                  '((evil   . (telephone-line-buffer-modified-segment))
+                    (accent . (telephone-line-narrow-segment
+                               telephone-line-position-segment
+                               telephone-line-vc-segment))
+                    (nil . (telephone-line-buffer-name-segment))))))
       '';
     })
   ];
