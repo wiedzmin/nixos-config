@@ -94,7 +94,6 @@ in
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.deft
         epkgs.doct
-        epkgs.helm-org-rifle
         epkgs.ob-async
         epkgs.ob-blockdiag
         epkgs.ob-restclient

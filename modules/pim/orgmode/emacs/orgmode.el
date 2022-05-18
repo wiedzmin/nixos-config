@@ -1,10 +1,3 @@
-(use-package helm-org-rifle
-  :after (helm org)
-  :bind
-  (:map custom-org-map
-        ("l" . helm-org-rifle)
-        ("o" . helm-org-rifle-occur)))
-
 (use-package doct
   :commands (doct))
 
