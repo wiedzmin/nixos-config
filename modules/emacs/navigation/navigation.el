@@ -505,7 +505,6 @@ res param is needed for default behavior"
   (consult-line-point-placement 'match-beginning)
   (consult-line-start-from-top t)
   (consult-narrow-key "<")
-  (consult-project-root-function #'projectile-project-root)
   (register-preview-delay 0.1)
   (register-preview-function #'consult-register-format)
   (xref-show-definitions-function #'consult-xref)
@@ -520,8 +519,7 @@ res param is needed for default behavior"
   (define-minibuffer-key "\C-s"
                          'consult-location #'previous-history-element
                          'file #'consult-find-for-minibuffer)
-  (fset 'multi-occur #'consult-multi-occur)
-  (fset 'projectile-ripgrep 'consult-ripgrep))
+  (fset 'multi-occur #'consult-multi-occur))
 
 (use-package consult-dir
   :ensure t
@@ -813,7 +811,10 @@ res param is needed for default behavior"
   (projectile-project-root-functions '(
      projectile-root-local
      projectile-root-bottom-up))
-  (projectile-project-root-files '(@projectsRootMarkersEmacs@)))
+  (projectile-project-root-files '(@projectsRootMarkersEmacs@))
+  (consult-project-function #'projectile-project-root)
+  :config
+  (fset 'projectile-ripgrep 'consult-ripgrep))
 
 (use-package ripgrep
   :bind
