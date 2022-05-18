@@ -276,6 +276,8 @@ res param is needed for default behavior"
   (selectrum-quick-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
   :custom-face
   (selectrum-current-candidate ((t (:background "#3a3f5a"))))
+  (selectrum-quick-keys-highlight ((t (:foreground "red"))))
+  (selectrum-quick-keys-match ((t (:foreground "green"))))
   :config
   (selectrum-mode +1))
 
