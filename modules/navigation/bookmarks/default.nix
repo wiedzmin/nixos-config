@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.navigation.bookmarks;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     navigation.bookmarks = {
       enable = mkOption {
@@ -52,20 +53,6 @@ in {
         assertion = config.workstation.systemtraits.enable;
         message = "navigation/bookmarks: must enable systemtraits maintainence.";
       }];
-
-      home-manager.users."${user}" = lib.optionalAttrs cfg.emacs.enable {
-        home.activation.emacsKnownProjects = {
-          after = [ "linkGeneration" ];
-          before = [ ];
-          data = let
-            uid = config.attributes.mainUser.ID;
-            emacsPkg = config.ide.emacs.core.package;
-          in emacsCmd uid emacsPkg
-            "(mapcar (lambda (p) (projectile-add-known-project p)) (list ${
-              builtins.concatStringsSep " " (localEmacsBookmarks cfg.entries)
-            }))";
-        };
-      };
 
       workstation.systemtraits.instructions = with config.navigation.bookmarks; ''
         ${pkgs.redis}/bin/redis-cli set nav/bookmarks ${

@@ -804,7 +804,6 @@ res param is needed for default behavior"
   (projectile-completion-system 'default)
   (projectile-enable-caching t)
   (projectile-require-project-root t)
-  (projectile-track-known-projects-automatically nil)
   (projectile-file-exists-remote-cache-expire nil)
   (projectile-project-search-path
    '("~/workspace/repos"
