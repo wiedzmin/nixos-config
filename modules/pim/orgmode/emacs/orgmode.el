@@ -469,6 +469,7 @@
 
 (use-package orglink
   :after org
+  :delight " *>"
   :custom
   (orglink-activate-in-modes '(emacs-lisp-mode
                                nix-mode)) ;NOTE: extend as needed
