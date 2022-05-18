@@ -529,7 +529,7 @@ res param is needed for default behavior"
         ("C-x d" . consult-dir)
         ("J" . consult-dir-jump-file))
   :custom
-  (consult-dir-project-list-function #'consult-dir-projectile-dirs)
+  (consult-dir-project-list-function #'consult-dir-project-dirs)
   (consult-dir-default-command
    #'(lambda (&optional dirname switches)
        (interactive)
