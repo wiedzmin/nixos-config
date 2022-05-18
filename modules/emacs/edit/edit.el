@@ -184,3 +184,7 @@
         ("<down>" . drag-stuff-down)
         ("<left>" . drag-stuff-left)
         ("<right>" . drag-stuff-right)))
+
+(use-package hippie-expand
+  :bind
+  ([remap dabbrev-expand] . hippie-expand))
