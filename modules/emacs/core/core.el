@@ -30,14 +30,6 @@
 
 (global-set-key (kbd "C-x C-.") #'goto-char)
 
-(use-package auto-compile
-  :config
-  (auto-compile-on-load-mode 1)
-  (auto-compile-on-save-mode 1)
-  :custom
-  (auto-compile-display-buffer nil)
-  (auto-compile-mode-line-counter t))
-
 (use-package anaphora)
 (use-package deferred)
 (use-package delight)
