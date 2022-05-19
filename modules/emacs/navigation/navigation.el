@@ -444,8 +444,6 @@ res param is needed for default behavior"
 
 ;; TODO: consider trying `fd' finder tool, see https://github.com/minad/consult/wiki#find-files-using-fd for reference
 ;; Note: this requires lexical binding
-;; TODO: consider adding flexible project root function (projectile/vc/whatever),
-;; probably this should be done at `projectile' config
 (use-package consult
   :init
   (use-package consult-selectrum)
@@ -557,10 +555,9 @@ res param is needed for default behavior"
                      :items    #'bookmark-view-names)
                'append))
 
-(use-package consult-projectile
-  :after projectile
+(use-package consult-project-extra
   :bind
-  ("C-<f1>" . consult-projectile))
+  ("C-<f1>" . consult-project-extra-find))
 
 (use-package consult-flycheck
   :after (consult flycheck)
@@ -623,14 +620,6 @@ res param is needed for default behavior"
              (beginend-org-mode nil "beginend")
              (beginend-outline-mode nil "beginend")))
   (beginend-global-mode))
-
-(use-package flycheck-projectile
-  :after (projectile flycheck)
-  :bind
-  (:map mode-specific-map
-        ("p" . flycheck-projectile-list-errors))
-  (:map flycheck-mode-map
-        ("C-c ! p" . flycheck-projectile-list-errors)))
 
 (use-package mwim
   :bind
@@ -760,61 +749,19 @@ res param is needed for default behavior"
     :config
     (phi-search-mc/setup-keys)))
 
-(use-package projectile
-  :delight '(:eval
-             (if (file-remote-p default-directory)
-                 " ¶[*remote*]"
-               (format " ¶[%s]" (projectile-project-name))))
+(use-package project
+  :delight
   :preface
-  (defun custom/open-project-todos ()
-    (interactive)
-    (let ((todos-file (expand-file-name "todo.org" (projectile-project-root))))
-      (condition-case nil
-          (when (file-exists-p todos-file)
-            (find-file todos-file))
-        (error (message "Cannot find project todos")))))
-  (defun custom/open-project-magit-status ()
-    (interactive)
-    (require 'anaphora)
-    (let ((current-project-name (projectile-default-project-name (locate-dominating-file buffer-file-name ".git"))))
-      (aif (get-buffer (concat "magit: " current-project-name))
-          (switch-to-buffer it)
-        (magit-status))))
-  (defun projectile-switch-project-action-open-todos (project)
-    "Open project's TODOs."
-    (let ((projectile-switch-project-action #'custom/open-project-todos))
-      (projectile-switch-project-by-name project)))
-  (defun projectile-switch-project-action-open-magit-status (project)
-    "Open project's Magit status buffer."
-    (let ((projectile-switch-project-action #'custom/open-project-magit-status))
-      (projectile-switch-project-by-name project)))
+  (defun custom/project-project-name ()
+    (file-name-nondirectory
+     (directory-file-name
+      (project-root (project-current)))))
   :bind
   (:map custom-projects-map
-        ("C" . projectile-commander)
-        ("d" . projectile-dired)
-        ("i" . projectile-invalidate-cache)
-        ("k" . projectile-kill-buffers)
-        ("t" . custom/open-project-todos) ;FIXME: redefined somewhere else
-        ("m" . custom/open-project-magit-status)
-        ("f" . recentf-open-files)
-        ("h" . projectile-find-file))
-  :hook
-  (after-init-hook . projectile-mode)
-  :custom
-  (projectile-completion-system 'default)
-  (projectile-enable-caching t)
-  (projectile-require-project-root t)
-  (projectile-file-exists-remote-cache-expire nil)
-  (projectile-project-search-path
-   '("~/workspace/repos"
-     "~/workspace/repos.stale"))
-  (projectile-project-root-functions '(
-     projectile-root-local
-     projectile-root-bottom-up))
-  (projectile-project-root-files '(@projectsRootMarkersEmacs@))
-  (consult-project-function #'projectile-project-root)
-  :config
-  (fset 'projectile-ripgrep 'consult-ripgrep))
+        ("d" . project-dired)
+        ("f" . consult-recent-file)
+        ("h" . project-find-file))
+        ("k" . project-kill-buffers))
 
 (use-package ripgrep
   :bind
@@ -937,13 +884,6 @@ res param is needed for default behavior"
   :after treemacs
   :config
   (treemacs-icons-dired-mode 1))
-
-(use-package treemacs-projectile
-  :demand t
-  :after treemacs projectile
-  :bind
-  (:map custom-projects-map
-        ("e" . treemacs-projectile)))
 
 (use-package goggles
   :delight " 6d"

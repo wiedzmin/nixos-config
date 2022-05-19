@@ -56,13 +56,13 @@ in
         epkgs.consult
         epkgs.consult-dir
         epkgs.consult-flycheck
+        epkgs.consult-project-extra
         epkgs.dired-filetype-face
         epkgs.dired-narrow
         epkgs.dired-subtree
         epkgs.dogears
         epkgs.embark
         epkgs.embark-consult
-        epkgs.flycheck-projectile
         epkgs.goggles
         epkgs.imenu-anywhere
         epkgs.link-hint
@@ -75,18 +75,15 @@ in
         epkgs.phi-search-mc
         epkgs.polymode
         epkgs.prescient
-        epkgs.projectile
         epkgs.pulsar
         epkgs.rainbow-delimiters
         epkgs.recursive-narrow
         epkgs.rg
         epkgs.ripgrep
-        epkgs.consult-projectile
         epkgs.selectrum
         epkgs.selectrum-prescient
         epkgs.treemacs
         epkgs.treemacs-icons-dired
-        epkgs.treemacs-projectile
         epkgs.winum
         epkgs.zygospore
       ];
