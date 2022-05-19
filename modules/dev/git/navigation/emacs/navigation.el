@@ -20,7 +20,7 @@
   :after treemacs magit)
 
 (use-package magit-todos
-  :after (magit projectile)
+  :after magit
   :bind
   (:map mode-specific-map
         ("C-d" . magit-todos-list))

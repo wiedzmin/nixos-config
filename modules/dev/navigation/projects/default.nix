@@ -36,7 +36,7 @@ in
       };
       rootMarkers = mkOption {
         type = types.listOf types.str;
-        default = [ ".projectile" ];
+        default = [ ];
         description = "Filenames that could be used to denote project root";
       };
       wm.enable = mkOption {

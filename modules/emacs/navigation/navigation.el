@@ -952,12 +952,12 @@ res param is needed for default behavior"
   (setq-default goggles-pulse t))
 
 (use-package magit-todos
-   :after (magit projectile)
-   :bind
-   (:map mode-specific-map
-         ("C-d" . magit-todos-list))
-   (:map custom-projects-map
-         ("T" . magit-todos-list)))
+  :after magit
+  :bind
+  (:map mode-specific-map
+        ("C-d" . magit-todos-list))
+  (:map custom-projects-map
+        ("T" . magit-todos-list)))
 
 (use-package xref
   :custom
