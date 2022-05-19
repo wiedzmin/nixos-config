@@ -51,8 +51,6 @@
 
 (global-set-key (kbd "C-x C-.") #'goto-char)
 
-(require 'anaphora) ;TODO: use-package
-
 (use-package auto-compile
   :config
   (auto-compile-on-load-mode 1)
@@ -61,13 +59,12 @@
   (auto-compile-display-buffer nil)
   (auto-compile-mode-line-counter t))
 
+(use-package anaphora)
+(use-package deferred)
+(use-package delight)
+(use-package f)
+
 (use-package compdef)
-
-(require 'deferred) ;TODO: use-package
-
-(require 'delight) ;TODO: use-package
-
-(require 'f) ;TODO: use-package
 
 (use-package no-littering
   :custom
