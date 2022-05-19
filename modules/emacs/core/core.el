@@ -15,27 +15,6 @@
 (setq initial-major-mode 'fundamental-mode)
 (setq frame-inhibit-implied-resize t)
 
-(require 'cl)
-(require 'package)
-(require 'subr-x) ;; NOTE: for those packages where it was suddenly forgotten
-
-(when @fallbackPackageArchives@
-  (add-to-list 'package-archives '("melpa-stable" . "https://stable.melpa.org/packages/"))
-  (add-to-list 'package-archives '("melpa" . "https://melpa.org/packages/"))
-  (add-to-list 'package-archives '("org" . "https://orgmode.org/elpa/")))
-
-(unless package--initialized
-  (package-initialize))
-(setq package-enable-at-startup nil)
-
-(mapcar
- (lambda (package)
-   (unless (package-installed-p package)
-     (unless package-archive-contents
-       (package-refresh-contents))
-     (package-install package)))
- '(use-package))
-
 (setq use-package-compute-statistics t)
 (setq use-package-verbose t)
 (setq use-package-hook-name-suffix "")
