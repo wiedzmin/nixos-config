@@ -101,6 +101,7 @@ in
         epkgs.org-bullets
         epkgs.org-clock-today
         epkgs.org-contrib
+        epkgs.org-edit-indirect
         epkgs.org-pomodoro
         epkgs.org-ql
         epkgs.org-randomnote

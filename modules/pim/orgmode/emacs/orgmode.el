@@ -475,3 +475,7 @@
                                nix-mode)) ;NOTE: extend as needed
   :config
   (global-orglink-mode))
+
+(use-package org-edit-indirect
+  :hook
+  (org-mode . org-edit-indirect-mode))
