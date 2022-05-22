@@ -152,9 +152,10 @@ in
     emacs.themes.zenburn.enable = true;
     emacs = {
       enable = true;
-      modeline.telephone = {
+      modeline.doom = {
         enable = true;
         height = 24;
+        displayMinorModes = true;
       };
     };
     fonts = {
