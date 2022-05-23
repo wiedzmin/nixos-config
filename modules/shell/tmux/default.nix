@@ -143,7 +143,9 @@ in
           sessionist
           {
             plugin = tmux-fzf;
-            extraConfig = "set -g @tmux-fzf-launch-key 'f'"; # FIXME: does not work
+            extraConfig = ''
+              TMUX_FZF_LAUNCH_KEY="z"
+            '';
           }
           cfg.theme.package
         ];
