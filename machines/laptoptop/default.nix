@@ -229,7 +229,14 @@ in
   completion = {
     enable = true;
     expansions.enable = true;
-    shell.enable = true;
+    shell = {
+      enable = true;
+      recent.mcfly = {
+        fuzzySearch = 5;
+        resultsCount = 30;
+        resultsSort = "LAST_RUN";
+      };
+    };
     emacs.enable = true;
     wm.enable = true;
   };

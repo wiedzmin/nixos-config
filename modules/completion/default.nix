@@ -75,6 +75,37 @@ in
         default = "mcfly";
         description = "Which tool to use to navigate recent commands history";
       };
+      shell.recent.mcfly.fuzzySearch = mkOption {
+        type = types.int;
+        default = 2;
+        description = ''
+          Fuzzy Searching
+
+          To enable fuzzy searching, set MCFLY_FUZZY to an integer.
+          0 is off; higher numbers weight toward shorter matches.
+          Values in the 2-5 range get good results so far;
+        '';
+      };
+      shell.recent.mcfly.resultsCount = mkOption {
+        type = types.int;
+        default = 10;
+        description = "The maximum number of results shown";
+      };
+      shell.recent.mcfly.interfaceView = mkOption {
+        type = types.enum [ "TOP" "BOTTOM" ];
+        default = "TOP";
+        description = "Interface view";
+      };
+      shell.recent.mcfly.disableMenu = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to disable the menu interface";
+      };
+      shell.recent.mcfly.resultsSort = mkOption {
+        type = types.enum [ "RANK" "LAST_RUN" ];
+        default = "RANK";
+        description = "Sorting options of shown results";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -148,9 +179,16 @@ in
         home.packages = with pkgs; [ mmv-go ];
         programs.mcfly = optionalAttrs (cfg.shell.recent.backend == "mcfly") {
           enable = true;
-          enableFuzzySearch = true;
           enableZshIntegration = true;
         };
+      } // optionalAttrs (cfg.shell.recent.backend == "mcfly") {
+        home.sessionVariables.MCFLY_FUZZY = builtins.toString cfg.shell.recent.mcfly.fuzzySearch;
+        home.sessionVariables.MCFLY_RESULTS = builtins.toString cfg.shell.recent.mcfly.resultsCount;
+        home.sessionVariables.MCFLY_RESULTS_SORT = cfg.shell.recent.mcfly.resultsSort;
+      } // optionalAttrs (cfg.shell.recent.backend == "mcfly" && cfg.shell.recent.mcfly.interfaceView != "TOP") {
+        home.sessionVariables.MCFLY_INTERFACE_VIEW = cfg.shell.recent.mcfly.interfaceView;
+      } // optionalAttrs (cfg.shell.recent.backend == "mcfly" && cfg.shell.recent.mcfly.disableMenu) {
+        home.sessionVariables.MCFLY_DISABLE_MENU = "TRUE";
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
