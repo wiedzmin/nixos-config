@@ -275,6 +275,24 @@ in
             mode = "root";
           }
           {
+            key = [ prefix "Shift" "bracketleft" ];
+            cmd = ''move workspace to output ${config.attributes.hardware.monitors.externalPrimaryHead.name}'';
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = [ prefix "Shift" "bracketright" ];
+            cmd = ''move workspace to output ${config.attributes.hardware.monitors.externalSecondaryHead.name}'';
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = [ prefix "Shift" "backslash" ];
+            cmd = ''move workspace to output ${config.attributes.hardware.monitors.internalHead.name}'';
+            mode = "root";
+            raw = true;
+          }
+          {
             key = [ "w" ];
             cmd = "layout toggle split";
             mode = "layout";
