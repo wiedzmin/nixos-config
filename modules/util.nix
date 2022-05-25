@@ -12,6 +12,9 @@ let
     "<" = "less";
     ">" = "more"; # ERROR: Could not translate string to key symbol: "more"
     "=" = "equal";
+    "{" = "bracketleft";
+    "}" = "bracketright";
+    "\\" = "backslash";
   };
   scratchpadModeToken = "scratchpad";
   keySepAwesome = "-";
@@ -54,7 +57,8 @@ let
     "role" = ''^@$'';
     "instance" = ''^@$'';
   };
-  approvedDefaultBrowsersWC = [ # NOTE: is this the best location for this metadata?
+  approvedDefaultBrowsersWC = [
+    # NOTE: is this the best location for this metadata?
     "Chromium-browser"
     "Firefox"
   ];
