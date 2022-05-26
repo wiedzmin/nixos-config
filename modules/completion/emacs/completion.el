@@ -61,14 +61,6 @@
   (lazy-highlight ((t (:inherit default :background nil :foreground "#CFD7E5" :distant-foreground nil))))
   :custom
   (company-backends '(company-capf company-keywords company-elisp))
-  (company-begin-commands '(self-insert-command
-                            self-insert-command
-                            org-self-insert-command
-                            orgtbl-self-insert-command
-                            c-scope-operator
-                            c-electric-colon
-                            c-electric-lt-gt
-                            c-electric-slash))
   (company-dabbrev-downcase nil)
   (company-echo-delay 0)
   (company-idle-delay 0)
