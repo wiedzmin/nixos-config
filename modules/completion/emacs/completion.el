@@ -62,7 +62,6 @@
   :custom
   (company-backends '(company-capf company-keywords company-elisp))
   (company-dabbrev-downcase nil)
-  (company-echo-delay 0)
   (company-idle-delay 0)
   (company-lighter-base "")
   (company-minimum-prefix-length 1)
