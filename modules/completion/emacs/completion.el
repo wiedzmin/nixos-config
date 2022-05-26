@@ -119,10 +119,10 @@
   ("C-~" . company-try-hard))
 
 (use-package company-box
-  :after company
+  :after (company all-the-icons)
   :if (display-graphic-p)
   :defines company-box-icons-all-the-icons
-  :hook (prog-mode-hook . company-box-mode)
+  :hook (company-mode-hook . company-box-mode)
   :custom
   (company-box-backends-colors nil)
   :config
