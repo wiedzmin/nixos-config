@@ -202,8 +202,9 @@
                   'company-tabnine)
               (unless (gethash candidate candidates-table)
                 (push candidate candidates-tabnine))
-            (push candidate candidates-lsp)
-            (puthash candidate t candidates-table)))
+            (progn
+              (push candidate candidates-lsp)
+              (puthash candidate t candidates-table))))
         (setq candidates-lsp (nreverse candidates-lsp))
         (setq candidates-tabnine (nreverse candidates-tabnine))
         (nconc (seq-take candidates-lsp 2)
