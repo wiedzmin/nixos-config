@@ -1,4 +1,4 @@
-;;TODO: investigate major mode completions handling by examplke below:
+;;TODO: investigate major mode completions handling by example below:
 ;; (defun company-c-setup ()
 ;;   ;; make `company-backends' local is critical
 ;;   ;; or else, you will have completion in every major mode, that's very annoying!
