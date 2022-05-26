@@ -19,6 +19,7 @@
                         (highlight-lines-matching-regexp "wdb.set_trace()")))
   (python-mode-hook . lsp-deferred)
   (python-mode-hook . flycheck-mode)
+  :company (company-tabnine company-capf)
   :bind
   (:map python-mode-map
         ("C-k" . sp-kill-hybrid-sexp)
