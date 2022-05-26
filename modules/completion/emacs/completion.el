@@ -103,18 +103,16 @@
     (company-files-chop-trailing-slash nil)
     :config
     (add-to-list 'company-backends 'company-files))
-  (when (string-equal "i3" (getenv "CURRENT_WM"))
-    (use-package company-quickhelp
-      :custom
-      (company-quickhelp-idle-delay 0.1)
-      (company-quickhelp-delay nil)
-      :config
-      (company-quickhelp-mode 1)
-      (use-package pos-tip
-        :ensure t))
-    (use-package company-statistics
-      :config
-      (company-statistics-mode))))
+  (use-package company-quickhelp
+    :custom
+    (company-quickhelp-idle-delay 0.1)
+    (company-quickhelp-delay nil)
+    :config
+    (company-quickhelp-mode 1)
+    (use-package pos-tip))
+  (use-package company-statistics
+    :config
+    (company-statistics-mode)))
 
 (use-package company-try-hard
   :after company

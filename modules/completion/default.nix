@@ -203,6 +203,7 @@ in
         epkgs.company-statistics
         epkgs.company-tabnine
         epkgs.company-try-hard
+        epkgs.pos-tip
         epkgs.yasnippet
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/completion.el ];
