@@ -9,12 +9,6 @@
   :preface
   (defun add-pcomplete-to-capf () ;; Enable company in Org mode
     (add-hook 'completion-at-point-functions #'pcomplete-completions-at-point nil t))
-  (defun custom/company-complete-selection ()
-    "Insert the selected candidate or the first if none are selected."
-    (interactive)
-    (if company-selection
-        (company-complete-selection)
-      (company-complete-number 1)))
   :bind
   ("C-<tab>" . company-complete)
   ("C-M-<tab>" . company-complete-common)
@@ -30,7 +24,6 @@
         ("C-p" . company-select-previous)
         ("C-s" . company-filter-candidates)
         ("M-." . company-show-location)
-        ("M-<tab>" . custom/company-complete-selection)
         ("M-h" . company-show-doc-buffer)
         ("M-q" . company-other-backend)
         ("RET" . company-complete-selection))
