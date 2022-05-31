@@ -232,7 +232,7 @@ in
     shell = {
       enable = true;
       recent.mcfly = {
-        fuzzySearch = 5;
+        fuzzySearch = 3;
         resultsCount = 30;
         resultsSort = "LAST_RUN";
       };
