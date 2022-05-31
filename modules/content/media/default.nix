@@ -84,7 +84,8 @@ in
             - trigger: ":4yt"
               replace: "nix shell \"nixpkgs#yt-dlp\" -c yt-dlp \"$|$\" --merge-output-format mp4"
 
-
+            - trigger: ":aft"
+              replace: "nix shell \"nixpkgs#android-file-transfer\" -c android-file-transfer"
         '';
         # TODO: deal with converting from `webm` ^^^ (use ffmpeg btw)
         programs.mpv = {
