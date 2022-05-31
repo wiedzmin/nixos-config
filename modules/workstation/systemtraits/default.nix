@@ -41,7 +41,20 @@ in
       };
       systemd.services.redis-default.postStart = cfg.instructions;
 
-      home-manager.users."${user}" = { home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release ]; };
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release ];
+        xdg.configFile."espanso/user/systemtraits.yml".text = ''
+          name: systemtraits
+          parent: default
+
+          matches:
+            - trigger: ":pms"
+              replace: "sudo pmap -d $|$ | sort -k2 -n"
+
+            - trigger: ":pss"
+              replace: "ps -o pid,user,%mem,command ax | sort -b -k3 -r"
+        '';
+      };
     })
   ];
 }
