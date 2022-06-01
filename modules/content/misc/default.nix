@@ -23,6 +23,11 @@ in
         default = false;
         description = "Whether to enable content-related Emacs infra";
       };
+      syncthing.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable Syncthing service";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -34,8 +39,6 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-
-        services.syncthing.enable = true; # TODO: consider separate option(s)
         programs.aria2 = {
           enable = true;
           settings = {
@@ -79,6 +82,11 @@ in
         epkgs.elfeed-score
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ../../pim/orgmode/subst.nix ] [ ./emacs/content.el ];
+    })
+    (mkIf (cfg.enable && cfg.syncthing.enable) {
+      home-manager.users."${user}" = {
+        services.syncthing.enable = false;
+      };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [
