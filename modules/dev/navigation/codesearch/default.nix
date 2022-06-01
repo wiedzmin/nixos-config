@@ -37,8 +37,8 @@ in
         serviceConfig = {
           Type = "oneshot";
           Environment =
-            [ "CSEARCHINDEX=${homePrefix user config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex" ];
-          ExecStart = "${pkgs.codesearch}/bin/cindex ${homePrefix user config.navigation.bookmarks.workspaces.globalRoot}";
+            [ "CSEARCHINDEX=${config.navigation.bookmarks.workspaces.globalRoot}/.csearchindex" ];
+          ExecStart = "${pkgs.codesearch}/bin/cindex ${config.navigation.bookmarks.workspaces.globalRoot}";
           StandardOutput = "journal";
           StandardError = "journal";
         };

@@ -5,5 +5,5 @@ let
   user = config.attributes.mainUser.name;
 in
 rec {
-  globalWorkspaceRoot = homePrefix user config.navigation.bookmarks.workspaces.globalRoot;
+  globalWorkspaceRoot = config.navigation.bookmarks.workspaces.globalRoot;
 }
