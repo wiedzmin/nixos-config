@@ -102,8 +102,13 @@
   (lsp-ui-peek-list-width 50)
   (lsp-ui-peek-peek-height 20))
 
-(use-package lsp-ui-flycheck ;TODO: review lsp-ui-flycheck.el -> /nix/store/paw7y6dsyjsp9qjdf458sbjd9cmxsb6v-emacs-lsp-ui-20210216.1218/share/emacs/site-lisp/elpa/lsp-ui-20210216.1218/lsp-ui-flycheck.el
+(use-package lsp-ui-flycheck
   :ensure lsp-ui
+  :bind
+  (:map mode-specific-map
+        ("p" . lsp-ui-flycheck-list))
+  (:map flycheck-mode-map
+        ("C-c ! p" . lsp-ui-flycheck-list))
   :custom
   (lsp-ui-flycheck-enable t))
 
