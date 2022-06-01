@@ -212,6 +212,7 @@ in
     };
     misc = {
       enable = true;
+      syncthing.enable = false;
       emacs.enable = true;
       wm.enable = true;
     };
