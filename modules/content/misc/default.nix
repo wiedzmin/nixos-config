@@ -34,9 +34,6 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          findimagedupes
-        ];
 
         services.syncthing.enable = true; # TODO: consider separate option(s)
         programs.aria2 = {
@@ -67,6 +64,9 @@ in
                 #   type: shell
                 #   params:
                 #     cmd: echo {{baseurl.value}}
+
+            - trigger: ":idu"
+              replace: "nix shell 'nixpkgs#findimagedupes' -c findimagedupes ."
         '';
       };
     })
