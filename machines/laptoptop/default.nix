@@ -536,8 +536,8 @@ in
         wm.enable = true;
       };
       transparency = {
-        enable = true;
-        wm.enable = true;
+        enable = false;
+        wm.enable = false;
       };
     };
   };
