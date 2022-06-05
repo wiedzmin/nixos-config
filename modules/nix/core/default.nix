@@ -144,6 +144,9 @@ in
 
             - trigger: ":nrep"
               replace: "cd ${wsRoot roots "github"}/wiedzmin/nixos-config && nix repl ./flake-repl.nix"
+
+            - trigger: ":nsfd"
+              replace: "nix shell \"nixpkgs#fd\" -c fd $|$ /nix/store"
         '';
       };
 
