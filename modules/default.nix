@@ -12,7 +12,6 @@
     ./browsers/chromium
     ./browsers/ext
     ./browsers/firefox
-    ./browsers/firefox/impl.nix
     ./browsers/nyxt
     ./browsers/qutebrowser
     ./completion
