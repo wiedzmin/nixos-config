@@ -228,7 +228,7 @@
   (org-attach-directory "@orgRoot@/org-attach-data")
   (org-blank-before-new-entry '((heading) (plain-list-item . auto)))
   (org-catch-invisible-edits nil)
-                                        ;TODO: extend minimal clocking setup below
+  ;;TODO: extend minimal clocking setup below
   (org-clock-history-length 35)
   (org-clock-idle-time 3) ;TODO: make variable and use here and in xidlehook
   (org-clock-in-resume t)
