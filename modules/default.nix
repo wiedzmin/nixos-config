@@ -74,6 +74,7 @@
     ./shell/alacritty
     ./shell/bookmarks
     ./shell/core
+    ./shell/kitty
     ./shell/prompts/liquid
     ./shell/prompts/ohmyzsh
     ./shell/prompts/powerline-go
