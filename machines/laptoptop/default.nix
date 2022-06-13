@@ -559,13 +559,8 @@ in
       emacs.enable = true;
     };
     prompts.starship.enable = true;
-    tmux = {
-      enable = true;
-      theme.package = pkgs.tmuxPlugins.power-theme;
-      wm.enable = true;
-    };
     tools.enable = true;
-    vt.alacritty = {
+    vt.kitty = {
       enable = true;
       autostart = true;
       wm.enable = true;
