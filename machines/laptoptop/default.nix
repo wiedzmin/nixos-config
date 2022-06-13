@@ -699,7 +699,7 @@ in
   home-manager = {
     useGlobalPkgs = true;
     users."${user}" = {
-      home.packages = with pkgs; [ xkb-switch ];
+      home.packages = with pkgs; [ xkb-switch ] ++ [ nurpkgs.dmenu-ng rofi /* NOTE: temp, until publishing upstream */ ];
       xdg.enable = true;
       home.stateVersion = "20.09";
     };

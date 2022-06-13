@@ -158,10 +158,6 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      home-manager.users."${user}" = {
-        # NOTE: temp, until publishing upstream
-        home.packages = with pkgs; [ nurpkgs.dmenu-ng rofi ];
-      };
       wmCommon.keys = [{
         key = [ "t" ];
         cmd = "${nurpkgs.toolbox}/bin/tmuxctl";
