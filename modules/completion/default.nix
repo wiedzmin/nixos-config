@@ -54,6 +54,7 @@ in
         default = ''
           toggle_key: ${cfg.expansions.toggleKey}
           auto_restart: false
+          backend: Clipboard
         '';
         visible = false;
         readOnly = true;
