@@ -65,7 +65,6 @@ in
         epkgs.embark-consult
         epkgs.goggles
         epkgs.imenu-anywhere
-        epkgs.link-hint
         epkgs.magit-todos
         epkgs.manage-minor-mode-table
         epkgs.marginalia
