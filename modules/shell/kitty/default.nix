@@ -78,16 +78,19 @@ in
             visual_window_select_characters = "qweasdzxc";
             enabled_layouts = "splits:split_axis=horizontal,grid,tall,fat,stack";
           };
-          keybindings = { # FIXME: investigate why "ctrl+x..." bindings do not work, using "alt+x" until then
+          keybindings = {
+            # FIXME: investigate why "ctrl+x..." bindings do not work, using "ctrl+c" until then
             # windows
             "f2>n" = "new_window";
-            "alt+x>n" = "new_window";
+            "ctrl+c>n" = "new_window";
             "f2>k" = "close_window";
-            "alt+x>k" = "close_window";
-          } // { # fonts
+            "ctrl+c>k" = "close_window";
+          } // {
+            # fonts
             "ctrl+minus" = "change_font_size all -0.5";
             "ctrl+equal" = "change_font_size all +0.5";
-          } // { # navigation
+          } // {
+            # navigation
             "f2>w" = "focus_visible_window";
             "alt+tab" = "focus_visible_window";
             "ctrl+left" = "neighboring_window left";
@@ -98,17 +101,18 @@ in
             "ctrl+shift+right" = "move_window right";
             "ctrl+shift+up" = "move_window up";
             "ctrl+shift+down" = "move_window down";
-          } // { # layouts
-            "alt+x>2" = "launch --location=hsplit";
-            "alt+x>minus" = "launch --location=hsplit";
-            "alt+x>3" = "launch --location=vsplit";
-            "alt+x>bar" = "launch --location=vsplit";
-            "alt+l>s" = "goto_layout splits:split_axis=horizontal";
-            "alt+l>g" = "goto_layout grid";
-            "alt+l>t" = "goto_layout tall";
-            "alt+l>f" = "goto_layout fat";
-            "alt+z" = "toggle_layout stack";
-            "alt+0x2e" = "toggle_layout stack";
+          } // {
+            # layouts
+            "ctrl+c>2" = "launch --location=hsplit";
+            "ctrl+c>minus" = "launch --location=hsplit";
+            "ctrl+c>3" = "launch --location=vsplit";
+            "ctrl+c>backslash" = "launch --location=vsplit";
+            "ctrl+l>s" = "goto_layout splits:split_axis=horizontal";
+            "ctrl+l>g" = "goto_layout grid";
+            "ctrl+l>t" = "goto_layout tall";
+            "ctrl+l>f" = "goto_layout fat";
+            "ctrl+z" = "toggle_layout stack";
+            "ctrl+0x2e" = "toggle_layout stack";
           }; # "ctrl+0x79" = "paste_from_clipboard";
         };
       };
