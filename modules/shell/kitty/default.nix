@@ -69,7 +69,11 @@ in
           theme = "zenburned"; # FIXME: move under `appearance`
           settings = {
             # FIXME: === move under appearance ===
-            font_family = "Iosevka";
+            # If Regular is not distinguishable, use Medium
+            font_family = "Iosevka Term Light";
+            bold_font = "Iosevka Term Regular";
+            italic_font = "Iosevka Term Light Italic";
+            bold_italic_font = "Iosevka Term Regular Italic";
             font_size = "10.0";
             # ====================================
             cursor_shape = "beam";
