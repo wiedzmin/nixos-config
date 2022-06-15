@@ -120,6 +120,15 @@ in
           } // {
             # editing
             "ctrl+y" = "paste_from_clipboard";
+            "alt+s>alt+s" = "kitten hints --type word --alphabet qweasdzxc --program @";
+            "alt+s>alt+p" = "kitten hints --type path --alphabet qweasdzxc --program @";
+            "alt+s>alt+r" = "kitten hints --type regex --alphabet qweasdzxc --program @";
+            "alt+s>alt+l" = "kitten hints --type line --alphabet qweasdzxc --program @";
+            "alt+s>alt+u" = "kitten hints --type url --alphabet qweasdzxc --program @";
+            "alt+s>alt+h" = "kitten hints --type hash --alphabet qweasdzxc --program @";
+            "alt+s>alt+k" = "kitten hints --type hyperlink --alphabet qweasdzxc --program @";
+            "alt+s>alt+i" = "kitten hints --type ip --alphabet qweasdzxc --program @";
+            "alt+s>alt+n" = "kitten hints --type linenum --alphabet qweasdzxc --linenum-action background --program emacsclient";
           } // {
             # misc
             "ctrl+c" = "signal_child SIGTERM";
