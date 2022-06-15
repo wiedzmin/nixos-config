@@ -151,11 +151,6 @@ in
               src = inputs.zsh-you-should-use;
             }
             {
-              name = "pass-zsh-completion";
-              file = "pass-zsh-completion.plugin.zsh";
-              src = inputs.pass-zsh-completion;
-            }
-            {
               name = "zsh-async";
               file = "async.plugin.zsh";
               src = inputs.zsh-async;

@@ -86,6 +86,15 @@ in
             use-agent = true;
           };
         };
+        programs.zsh = {
+          plugins = [
+            {
+              name = "pass-zsh-completion";
+              file = "pass-zsh-completion.plugin.zsh";
+              src = inputs.pass-zsh-completion;
+            }
+          ];
+        };
         services.gpg-agent = {
           enable = true;
           defaultCacheTtl = 34560000;
