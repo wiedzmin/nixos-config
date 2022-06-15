@@ -118,6 +118,9 @@ in
             "ctrl+z" = "toggle_layout stack";
             "ctrl+0x2e" = "toggle_layout stack";
           } // {
+            # editing
+            "ctrl+y" = "paste_from_clipboard";
+          } // {
             # misc
             "ctrl+c" = "signal_child SIGTERM";
           };
