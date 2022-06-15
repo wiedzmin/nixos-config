@@ -83,12 +83,12 @@ in
             enabled_layouts = "splits:split_axis=horizontal,grid,tall,fat,stack";
           };
           keybindings = {
-            # FIXME: investigate why "ctrl+x..." bindings do not work, using "ctrl+c" until then
+            # FIXME: investigate why "ctrl+x..." bindings do not work, using "alt+x" until then
             # windows
             "f2>n" = "new_window";
-            "ctrl+c>n" = "new_window";
+            "alt+x>n" = "new_window";
             "f2>k" = "close_window";
-            "ctrl+c>k" = "close_window";
+            "alt+x>k" = "close_window";
           } // {
             # fonts
             "ctrl+minus" = "change_font_size all -0.5";
@@ -107,19 +107,27 @@ in
             "ctrl+shift+down" = "move_window down";
           } // {
             # layouts
-            "ctrl+c>2" = "launch --location=hsplit";
-            "ctrl+c>minus" = "launch --location=hsplit";
-            "ctrl+c>3" = "launch --location=vsplit";
-            "ctrl+c>backslash" = "launch --location=vsplit";
+            "alt+x>2" = "launch --location=hsplit";
+            "alt+x>minus" = "launch --location=hsplit";
+            "alt+x>3" = "launch --location=vsplit";
+            "alt+x>backslash" = "launch --location=vsplit";
             "ctrl+l>s" = "goto_layout splits:split_axis=horizontal";
             "ctrl+l>g" = "goto_layout grid";
             "ctrl+l>t" = "goto_layout tall";
             "ctrl+l>f" = "goto_layout fat";
             "ctrl+z" = "toggle_layout stack";
             "ctrl+0x2e" = "toggle_layout stack";
-          }; # "ctrl+0x79" = "paste_from_clipboard";
+          } // {
+            # misc
+            "ctrl+c" = "signal_child SIGTERM";
+          };
         };
       };
+      workstation.input.xkeysnail.rc = ''
+        define_keymap(re.compile("${lib.last cfg.windowClass}"), {
+            K("C-x"): K("M-x"),
+        }, "kitty")
+      ''; # NOTE: workaround for unexpectedly non-working direct `C-x` prefix
       wmCommon.autostart.entries = optionals cfg.autostart [ (builtins.head cfg.command) ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
