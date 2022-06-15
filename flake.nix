@@ -61,10 +61,6 @@
       url = "github:chisui/zsh-nix-shell";
       flake = false;
     };
-    zsh-notify = {
-      url = "github:marzocchi/zsh-notify";
-      flake = false;
-    };
     zsh-reentry-hook = {
       url = "github:RobSis/zsh-reentry-hook";
       flake = false;

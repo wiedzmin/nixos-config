@@ -117,7 +117,8 @@ in
 
             fpath=(${inputs.zsh-go-task-completions} $fpath)
           '';
-          sessionVariables = { # NOTE: zsh-specific, keep, do not bind to custom module(s)
+          sessionVariables = {
+            # NOTE: zsh-specific, keep, do not bind to custom module(s)
             HISTFILE = "${dataHome}/.histfile";
             LESSHISTFILE = "${dataHome}/.lesshst";
           };
@@ -135,11 +136,6 @@ in
             vg = "EDITOR=emacsclient ${pkgs.vgrep}/bin/vgrep --interactive --show c5";
           };
           plugins = [
-            {
-              name = "zsh-notify";
-              file = "notify.plugin.zsh";
-              src = inputs.zsh-notify;
-            }
             {
               name = "zsh-nix-shell";
               file = "nix-shell.plugin.zsh";

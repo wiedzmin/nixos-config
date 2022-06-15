@@ -316,7 +316,6 @@
         "zsh-fuzzy-search-and-edit": "zsh-fuzzy-search-and-edit",
         "zsh-go-task-completions": "zsh-go-task-completions",
         "zsh-nix-shell": "zsh-nix-shell",
-        "zsh-notify": "zsh-notify",
         "zsh-reentry-hook": "zsh-reentry-hook",
         "zsh-syntax-highlighting": "zsh-syntax-highlighting",
         "zsh-you-should-use": "zsh-you-should-use"
@@ -494,22 +493,6 @@
       "original": {
         "owner": "chisui",
         "repo": "zsh-nix-shell",
-        "type": "github"
-      }
-    },
-    "zsh-notify": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1653304637,
-        "narHash": "sha256-528C3y/Nr6W3EpR0r3t+RS3TbKGdh4siuXL8E8q9v4I=",
-        "owner": "marzocchi",
-        "repo": "zsh-notify",
-        "rev": "ae6e958d1346f1fa64dea69528b148c8d616677c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "marzocchi",
-        "repo": "zsh-notify",
         "type": "github"
       }
     },
