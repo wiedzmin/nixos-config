@@ -81,7 +81,13 @@ in
             window_border_width = "1.0pt";
             draw_minimal_borders = "no";
             visual_window_select_characters = "qweasdzxc";
-            enabled_layouts = "splits:split_axis=horizontal,grid,tall,fat,stack";
+            enabled_layouts = concatStringsSep "," [
+              "splits:split_axis=horizontal"
+              "grid"
+              "tall"
+              "fat"
+              "stack"
+            ];
             scrollback_lines = "10000"; # TODO: make module option
           };
           keybindings = {
