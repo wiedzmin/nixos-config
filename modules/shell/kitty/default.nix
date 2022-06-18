@@ -79,6 +79,7 @@ in
             cursor_shape = "beam";
             active_border_color = "red";
             window_border_width = "1.0pt";
+            draw_minimal_borders = "no";
             visual_window_select_characters = "qweasdzxc";
             enabled_layouts = "splits:split_axis=horizontal,grid,tall,fat,stack";
           };
