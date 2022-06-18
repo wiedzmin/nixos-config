@@ -82,6 +82,7 @@ in
             draw_minimal_borders = "no";
             visual_window_select_characters = "qweasdzxc";
             enabled_layouts = "splits:split_axis=horizontal,grid,tall,fat,stack";
+            scrollback_lines = "10000"; # TODO: make module option
           };
           keybindings = {
             # FIXME: investigate why "ctrl+x..." bindings do not work, using "alt+x" until then
