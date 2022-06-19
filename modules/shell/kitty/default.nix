@@ -146,7 +146,7 @@ in
             "alt+s>alt+n" = "kitten hints --type linenum --alphabet qweasdzxc --linenum-action background --program emacsclient";
           } // {
             # misc
-            "ctrl+c" = "signal_child SIGTERM";
+            "ctrl+c" = "copy_or_interrupt";
           };
         };
       };
