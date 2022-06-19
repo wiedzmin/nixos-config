@@ -52,6 +52,9 @@ in
           frame_color = "#D64E4E";
         };
       };
+      programs.kitty = {
+        theme = "zenburned";
+      };
     };
     wm.i3.theme = {
       client = ''

@@ -35,6 +35,14 @@ in
         };
         size = 11.0;
       };
+      programs.kitty.settings = {
+        # If Regular is not distinguishable, use Medium
+        font_family = "Iosevka Term Light";
+        bold_font = "Iosevka Term Regular";
+        italic_font = "Iosevka Term Light Italic";
+        bold_italic_font = "Iosevka Term Regular Italic";
+        font_size = "9.0";
+      };
       programs.rofi.font = "Iosevka Bold 11";
       programs.zathura.options.font = "Iosevka Bold 10";
       services.dunst.settings.global.font = "Iosevka Bold 10";

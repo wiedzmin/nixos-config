@@ -66,16 +66,7 @@ in
       home-manager.users."${user}" = {
         programs.kitty = {
           enable = true;
-          theme = "zenburned"; # FIXME: move under `appearance`
           settings = {
-            # FIXME: === move under appearance ===
-            # If Regular is not distinguishable, use Medium
-            font_family = "Iosevka Term Light";
-            bold_font = "Iosevka Term Regular";
-            italic_font = "Iosevka Term Light Italic";
-            bold_italic_font = "Iosevka Term Regular Italic";
-            font_size = "10.0";
-            # ====================================
             cursor_shape = "beam";
             active_border_color = "red";
             window_border_width = "1.0pt";
