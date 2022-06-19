@@ -67,10 +67,19 @@ in
         programs.kitty = {
           enable = true;
           settings = {
+            # ======== appearance ================
             cursor_shape = "beam";
             active_border_color = "red";
             window_border_width = "1.0pt";
             draw_minimal_borders = "no";
+            tab_bar_edge = "top";
+            tab_bar_background = "none";
+            tab_bar_style = "powerline";
+            tab_title_template = "{fmt.fg.c2c2c2}{title}";
+            active_tab_title_template = "{fmt.fg._fff}{title}";
+            active_tab_font_style = "bold-italic";
+            url_style = "curly";
+
             visual_window_select_characters = "qweasdzxc";
             enabled_layouts = concatStringsSep "," [
               "splits:split_axis=horizontal"
