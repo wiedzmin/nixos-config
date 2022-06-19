@@ -67,7 +67,7 @@ in
         programs.kitty = {
           enable = true;
           settings = {
-            # ======== appearance ================
+            # appearance
             cursor_shape = "beam";
             active_border_color = "red";
             window_border_width = "1.0pt";
@@ -80,7 +80,6 @@ in
             active_tab_font_style = "bold-italic";
             url_style = "curly";
 
-            visual_window_select_characters = "qweasdzxc";
             enabled_layouts = concatStringsSep "," [
               "splits:split_axis=horizontal"
               "grid"
@@ -88,7 +87,15 @@ in
               "fat"
               "stack"
             ];
+          } // {
+            # navigation
+            visual_window_select_characters = "qweasdzxc";
             scrollback_lines = "10000"; # TODO: make module option
+          } // {
+            # resize
+            remember_window_size = "yes";
+            window_resize_step_cells = "2";
+            window_resize_step_lines = "2";
           };
           keybindings = {
             # FIXME: investigate why "ctrl+x..." bindings do not work, using "alt+x" until then
