@@ -496,7 +496,7 @@ in
       core = {
         enable = true;
         xmodmap = {
-          enable = true;
+          enable = false;
           rc = ''
             clear mod1
             clear mod4
