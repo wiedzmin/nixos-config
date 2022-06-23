@@ -114,8 +114,6 @@ in
             source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
 
             bindkey '^P' fuzzy-search-and-edit
-
-            fpath=(${inputs.zsh-go-task-completions} $fpath)
           '';
           sessionVariables = {
             # NOTE: zsh-specific, keep, do not bind to custom module(s)

@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.shell.prompts.ohmyzsh;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     shell.prompts.ohmyzsh = {
       enable = mkOption {
@@ -45,7 +46,8 @@ in {
 
       home-manager.users."${user}" = {
         programs.zsh = {
-          oh-my-zsh = { # TODO: extract option(s)
+          oh-my-zsh = {
+            # TODO: extract option(s)
             enable = true;
             inherit (cfg) plugins theme;
           };
@@ -53,10 +55,6 @@ in {
             name = "zsh-command-time";
             file = "command-time.plugin.zsh";
             src = inputs.zsh-command-time;
-          }] ++ [{
-            name = "go-task-completions";
-            file = "_task";
-            src = inputs.zsh-go-task-completions;
           }];
         };
       };

@@ -73,10 +73,6 @@
       url = "github:MichaelAquilina/zsh-you-should-use";
       flake = false;
     };
-    zsh-go-task-completions = {
-      url = "github:sawadashota/go-task-completions";
-      flake = false;
-    };
     zsh-autocomplete = {
       # TODO: keep for future reevaluation (not completely usasble yet)
       url = "github:marlonrichert/zsh-autocomplete";
