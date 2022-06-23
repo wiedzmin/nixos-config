@@ -64,6 +64,19 @@ in
       attributes.vt.default.cmd = cfg.command;
       attributes.vt.default.windowClass = cfg.windowClass;
       home-manager.users."${user}" = {
+        xdg.configFile = {
+          "espanso/user/kitty.yml".text = ''
+            name: kitty
+            parent: default
+
+            matches:
+              - trigger: ":ksk"
+                replace: "kitty +kitten show_key"
+
+              - trigger: ":ksmk"
+                replace: "kitty +kitten show_key -m kitty"
+          '';
+        };
         programs.kitty = {
           enable = true;
           settings = {
