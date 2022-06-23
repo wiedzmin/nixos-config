@@ -85,6 +85,8 @@ in
               "grid"
               "tall"
               "fat"
+              "horizontal"
+              "vertical"
               "stack"
             ];
           } // {
@@ -130,6 +132,8 @@ in
             "ctrl+l>g" = "goto_layout grid";
             "ctrl+l>t" = "goto_layout tall";
             "ctrl+l>f" = "goto_layout fat";
+            "ctrl+l>h" = "goto_layout horizontal";
+            "ctrl+l>v" = "goto_layout vertical";
             "ctrl+z" = "toggle_layout stack";
             "ctrl+0x2e" = "toggle_layout stack";
           } // {
