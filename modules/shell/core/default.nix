@@ -7,7 +7,8 @@ let
   user = config.attributes.mainUser.name;
   serviceAttrsNames = [ "global" "emacs" ];
   envVars = filterAttrs (name: _: !builtins.elem name serviceAttrsNames);
-in {
+in
+{
   options = {
     shell.core = {
       enable = mkOption {
@@ -67,6 +68,7 @@ in {
           perl # for plugins
           bashate # linter
           fancy-motd
+          ets
         ];
       };
     })
