@@ -115,8 +115,6 @@ in
           keybindings = {
             # FIXME: investigate why "ctrl+x..." bindings do not work, using "alt+x" until then
             # windows
-            "f2>n" = "new_window";
-            "alt+x>n" = "new_window";
             "f2>k" = "close_window";
             "alt+x>k" = "close_window";
           } // {
