@@ -117,6 +117,8 @@ in
             # windows
             "f2>k" = "close_window";
             "alt+x>k" = "close_window";
+            "f2>d" = "detach_window";
+            "f2>shift+d" = "detach_window ask";
           } // {
             # fonts
             "ctrl+minus" = "change_font_size all -0.5";
