@@ -149,7 +149,8 @@ in
             "ctrl+0x2e" = "toggle_layout stack";
           } // {
             # editing
-            "ctrl+y" = "paste_from_clipboard";
+            "ctrl+0x76" = "paste_from_clipboard";
+            "ctrl+0x78" = "copy_to_clipboard";
             "alt+s>alt+s" = "kitten hints --type word --alphabet qweasdzxc --program @";
             "alt+s>alt+p" = "kitten hints --type path --alphabet qweasdzxc --program @";
             "alt+s>alt+r" = "kitten hints --type regex --alphabet qweasdzxc --program @";
