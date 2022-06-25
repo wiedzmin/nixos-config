@@ -162,6 +162,10 @@ in
             "ctrl+0x78" = "copy_to_clipboard";
             "home" = "send_text all \\x1b\\x62"; # C-a
             "end" = "send_text all \\x1b\\x66"; # C-e
+            "ctrl+alt+slash>enter" = "create_marker";
+            "ctrl+alt+slash>escape" = "remove_marker";
+            "alt+s>p" = "scroll_to_mark prev";
+            "alt+s>n" = "scroll_to_mark next";
             "alt+s>alt+s" = "kitten hints --type word --alphabet qweasdzxc --program @";
             "alt+s>alt+p" = "kitten hints --type path --alphabet qweasdzxc --program @";
             "alt+s>alt+r" = "kitten hints --type regex --alphabet qweasdzxc --program @";
