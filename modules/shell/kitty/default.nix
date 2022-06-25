@@ -136,6 +136,13 @@ in
             "ctrl+shift+up" = "move_window up";
             "ctrl+shift+down" = "move_window down";
           } // {
+            # resize
+            "alt+shift+left" = "resize_window narrower";
+            "alt+shift+right" = "resize_window wider";
+            "alt+shift+down" = "resize_window taller";
+            "alt+shift+up" = "resize_window shorter 3";
+            "alt+shift+delete" = "resize_window reset";
+          } // {
             # layouts
             "alt+x>2" = "launch --location=hsplit";
             "alt+x>minus" = "launch --location=hsplit";
