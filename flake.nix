@@ -25,6 +25,12 @@
       flake = false;
     };
 
+    # NOTE: Kitty's kittens
+    kitty-grab = {
+      url = "github:yurikhan/kitty_grab";
+      flake = false;
+    };
+
     git-extra-commands = {
       url = "github:unixorn/git-extra-commands";
       flake = false;
@@ -139,6 +145,11 @@
                     in
                     old.nyxt.overrideAttrs
                       (_: rec { src = nyxt'; });
+                  kitty_grab = unstable.legacyPackages.${system}.applyPatches {
+                    patches = [ ./modules/shell/kitty/patches/fixed-ui-module-accessibility.patch ];
+                    name = "kitty_grab";
+                    src = inputs.kitty-grab;
+                  };
                 })
               ];
             }

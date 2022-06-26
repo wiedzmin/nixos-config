@@ -136,6 +136,22 @@
         "type": "github"
       }
     },
+    "kitty-grab": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1641469193,
+        "narHash": "sha256-6H9ecE7nsgDg6df7x10eTeZk8N0cqhyuIIHKPVIIRYg=",
+        "owner": "yurikhan",
+        "repo": "kitty_grab",
+        "rev": "3bc70215ed82a238ddf11205d414f2f661cb6e4f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yurikhan",
+        "repo": "kitty_grab",
+        "type": "github"
+      }
+    },
     "liquidprompt": {
       "flake": false,
       "locked": {
@@ -300,6 +316,7 @@
         "home-manager": "home-manager",
         "i3blocks-contrib": "i3blocks-contrib",
         "i3status-rust-stable": "i3status-rust-stable",
+        "kitty-grab": "kitty-grab",
         "liquidprompt": "liquidprompt",
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",

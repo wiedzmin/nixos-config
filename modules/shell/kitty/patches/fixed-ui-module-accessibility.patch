@@ -1,0 +1,34 @@
+From 6b20c432979d5051cdf6ff883a8b60d5ea46a2f8 Mon Sep 17 00:00:00 2001
+From: Alex Ermolov <aaermolov@gmail.com>
+Date: Sun, 26 Jun 2022 13:27:30 +0300
+Subject: [PATCH] fixed ui module accessibility
+
+---
+ grab.py | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
+
+diff --git a/grab.py b/grab.py
+index 5ca77c5..0cdd4aa 100644
+--- a/grab.py
++++ b/grab.py
+@@ -4,8 +4,6 @@ from typing import Any, Dict, List, Sequence
+ from kittens.tui.handler import result_handler
+ from kitty.typing import BossType
+ 
+-import _grab_ui
+-
+ 
+ def main(args: List[str]) -> None:
+     pass
+@@ -24,7 +22,7 @@ def handle_result(args: List[str], data: Dict[str, Any], target_window_id: int,
+     content = content.replace('\r\n', '\n').replace('\r', '\n')
+     n_lines = content.count('\n')
+     top_line = (n_lines - (window.screen.lines - 1) - window.screen.scrolled_by)
+-    boss._run_kitten(_grab_ui.__file__, args=[
++    boss._run_kitten("grab/_grab_ui.py", args=[
+         '--title={}'.format(window.title),
+         '--cursor-x={}'.format(window.screen.cursor.x),
+         '--cursor-y={}'.format(window.screen.cursor.y),
+-- 
+2.36.1
+

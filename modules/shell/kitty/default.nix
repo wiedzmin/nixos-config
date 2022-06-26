@@ -76,6 +76,10 @@ in
               - trigger: ":ksmk"
                 replace: "kitty +kitten show_key -m kitty"
           '';
+          "kitty/grab" = {
+            source = pkgs.kitty_grab;
+            recursive = true;
+          };
         };
         programs.kitty = {
           enable = true;
@@ -142,7 +146,12 @@ in
             "alt+shift+page_down" = "scroll_page_down";
             "alt+shift+page_up" = "scroll_page_up";
 
-            "alt+x>page_up" = "show_last_command_output";
+            # FIXME: debug and add token-wise selection, see example below:
+            # "Shift+Alt+B" = "select stream word left";
+            # "Shift+Alt+F" = "select stream word right";
+            # TODO: try https://github.com/yurikhan/kitty-smart-scroll, see example below:
+            # map Ctrl+Shift+Home  kitten smart_scroll.py scroll_home Ctrl+Shift+Home
+            # map Ctrl+Shift+End   kitten smart_scroll.py scroll_end  Ctrl+Shift+End
           } // {
             # resize
             "alt+shift+left" = "resize_window narrower";
@@ -186,6 +195,8 @@ in
           } // {
             # misc
             "ctrl+c" = "copy_or_interrupt";
+            "alt+x>page_up" = "kitten grab/grab.py";
+            "alt+i" = "kitten grab/grab.py";
           };
         };
       };
