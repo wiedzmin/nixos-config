@@ -82,6 +82,7 @@ in
           settings = {
             # appearance
             cursor_shape = "beam";
+            cursor_blink_interval = "-1";
             active_border_color = "red";
             window_border_width = "1.0pt";
             draw_minimal_borders = "no";
