@@ -135,6 +135,13 @@ in
             "ctrl+shift+right" = "move_window right";
             "ctrl+shift+up" = "move_window up";
             "ctrl+shift+down" = "move_window down";
+
+            "alt+shift+left_bracket" = "scroll_home";
+            "alt+shift+right_bracket" = "scroll_end";
+            "alt+shift+page_down" = "scroll_page_down";
+            "alt+shift+page_up" = "scroll_page_up";
+
+            "alt+x>page_up" = "show_last_command_output";
           } // {
             # resize
             "alt+shift+left" = "resize_window narrower";
@@ -184,8 +191,10 @@ in
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("${lib.last cfg.windowClass}"), {
             K("C-x"): K("M-x"),
+            K("M-Shift-comma"): K("M-Shift-LEFT_BRACE"),
+            K("M-Shift-dot"): K("M-Shift-RIGHT_BRACE"),
         }, "kitty")
-      ''; # NOTE: workaround for unexpectedly non-working direct `C-x` prefix
+      ''; # NOTE: workarounds for some unexpectedly non-working prefixes
       wmCommon.autostart.entries = optionals cfg.autostart [ (builtins.head cfg.command) ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
