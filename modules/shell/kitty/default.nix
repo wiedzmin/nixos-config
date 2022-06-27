@@ -65,6 +65,7 @@ in
       attributes.vt.default.windowClass = cfg.windowClass;
       home-manager.users."${user}" = {
         xdg.configFile = {
+          # TODO: set window class of EDITOR/emacsclient opened by `hyperlinked_grep` to prevent moving window somewhere
           # TODO: incorporate $EDITOR in open actions
           "kitty/open-actions.conf".text = ''
             # Open any file with a fragment in vim, fragments are generated
