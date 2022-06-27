@@ -30,6 +30,10 @@
       url = "github:yurikhan/kitty_grab";
       flake = false;
     };
+    kitty-search = {
+      url = "github:trygveaa/kitty-kitten-search";
+      flake = false;
+    };
 
     git-extra-commands = {
       url = "github:unixorn/git-extra-commands";
@@ -149,6 +153,11 @@
                     patches = [ ./modules/shell/kitty/patches/fixed-ui-module-accessibility.patch ];
                     name = "kitty_grab";
                     src = inputs.kitty-grab;
+                  };
+                  kitty_search = unstable.legacyPackages.${system}.applyPatches {
+                    patches = [ ];
+                    name = "kitty_search";
+                    src = inputs.kitty-search;
                   };
                 })
               ];

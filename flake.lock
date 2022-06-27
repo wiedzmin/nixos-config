@@ -152,6 +152,22 @@
         "type": "github"
       }
     },
+    "kitty-search": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1640619541,
+        "narHash": "sha256-Q0OgcR3q1kjBU5VWSg/thXSrsKOZt9cA2lRpX5XPn0A=",
+        "owner": "trygveaa",
+        "repo": "kitty-kitten-search",
+        "rev": "8cc3237e6a995b6e7e101cba667fcda5439d96e2",
+        "type": "github"
+      },
+      "original": {
+        "owner": "trygveaa",
+        "repo": "kitty-kitten-search",
+        "type": "github"
+      }
+    },
     "liquidprompt": {
       "flake": false,
       "locked": {
@@ -317,6 +333,7 @@
         "i3blocks-contrib": "i3blocks-contrib",
         "i3status-rust-stable": "i3status-rust-stable",
         "kitty-grab": "kitty-grab",
+        "kitty-search": "kitty-search",
         "liquidprompt": "liquidprompt",
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",

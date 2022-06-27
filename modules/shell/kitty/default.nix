@@ -80,6 +80,10 @@ in
             source = pkgs.kitty_grab;
             recursive = true;
           };
+          "kitty/search" = {
+            source = pkgs.kitty_search;
+            recursive = true;
+          };
         };
         programs.kitty = {
           enable = true;
@@ -197,6 +201,7 @@ in
             "ctrl+c" = "copy_or_interrupt";
             "alt+x>page_up" = "kitten grab/grab.py";
             "alt+i" = "kitten grab/grab.py";
+            "alt+x>f" = "launch --location=hsplit --allow-remote-control kitty +kitten search/search.py @active-kitty-window-id";
           };
         };
       };
