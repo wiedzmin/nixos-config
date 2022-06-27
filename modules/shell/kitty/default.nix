@@ -13,7 +13,7 @@ in
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable Kitty.";
+        description = "Whether to enable Kitty. Docs at https://sw.kovidgoyal.net/kitty/";
       };
       autostart = mkOption {
         type = types.bool;
