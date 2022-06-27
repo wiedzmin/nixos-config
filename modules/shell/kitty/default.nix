@@ -22,7 +22,7 @@ in
       };
       command = mkOption {
         type = types.listOf types.str;
-        default = [ "${pkgs.kitty}/bin/kitty" "-e" ];
+        default = [ "${pkgs.kitty}/bin/kitty" "-c" ];
         description = "Default command line to invoke";
       };
       windowClass = mkOption {
