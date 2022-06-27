@@ -420,11 +420,11 @@
     "yasnippet-snippets": {
       "flake": false,
       "locked": {
-        "lastModified": 1626715699,
-        "narHash": "sha256-2Jqf+Z3oy6B6PSyEY1dSOtLzPNIi45plsWdW22ZLnXk=",
+        "lastModified": 1656326310,
+        "narHash": "sha256-E5NKQ1F/5YtfZuvF3xa5WxRKx2dAURP7yUNyjaYz8FU=",
         "owner": "wiedzmin",
         "repo": "yasnippet-snippets",
-        "rev": "a3024752508b20516368e57465920d480736c2f3",
+        "rev": "32fcebfde2d59045c852d42e9a1e9072b3c3c923",
         "type": "github"
       },
       "original": {
