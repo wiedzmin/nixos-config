@@ -88,6 +88,9 @@ in
 
               - trigger: ":ksmk"
                 replace: "kitty +kitten show_key -m kitty"
+
+              - trigger: ":khg"
+                replace: "kitty +kitten hyperlinked_grep $|$"
           '';
           "kitty/grab" = {
             source = pkgs.kitty_grab;
