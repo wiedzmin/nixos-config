@@ -66,18 +66,17 @@ in
       home-manager.users."${user}" = {
         xdg.configFile = {
           # TODO: set window class of EDITOR/emacsclient opened by `hyperlinked_grep` to prevent moving window somewhere
-          # TODO: incorporate $EDITOR in open actions
           "kitty/open-actions.conf".text = ''
             # Open any file with a fragment in vim, fragments are generated
             # by the hyperlink_grep kitten and nothing else so far.
             protocol file
             fragment_matches [0-9]+
-            action launch --type=overlay emacsclient -nc +''${FRAGMENT} ''${FILE_PATH}
+            action launch --type=overlay $EDITOR +''${FRAGMENT} ''${FILE_PATH}
 
             # Open text files without fragments in the editor
             protocol file
             mime text/*
-            action launch --type=overlay emacsclient -nc ''${FILE_PATH}
+            action launch --type=overlay $EDITOR ''${FILE_PATH}
           '';
           "espanso/user/kitty.yml".text = ''
             name: kitty
