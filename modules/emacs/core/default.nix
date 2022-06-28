@@ -198,7 +198,6 @@ in
         ] ++ lib.optionals config.wm.i3.enable [ epkgs.reverse-im ];
       ide.emacs.core.config = lib.optionalString config.wm.i3.enable ''
         (use-package reverse-im
-          :ensure t
           :custom
           (reverse-im-input-methods '("russian-computer"))
           :config
