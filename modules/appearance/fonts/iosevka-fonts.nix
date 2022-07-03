@@ -7,11 +7,24 @@ let
   inherit (config.appearance.fonts) beautify;
 in
 {
-  options.appearance.fonts.iosevka = { enable = mkEnableOption "iosevka"; };
+  options = {
+    appearance.fonts.iosevka = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Iosevka font";
+      };
+      comfy.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to use Comfy version from Prot";
+      };
+    };
+  };
 
   config = mkIf cfg.enable {
     fonts = {
-      fonts = with pkgs; [ iosevka ];
+      fonts = with pkgs; lib.optionals (!cfg.comfy.enable) [ iosevka ] ++ lib.optionals (cfg.comfy.enable) [ iosevka-comfy.comfy ];
       fontconfig = { defaultFonts = { monospace = [ "Iosevka" ]; }; };
     };
     wmCommon.fonts.default = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
