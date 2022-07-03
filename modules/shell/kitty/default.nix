@@ -25,6 +25,11 @@ in
         default = [ "${pkgs.kitty}/bin/kitty" "-c" ];
         description = "Default command line to invoke";
       };
+      scrollbackSize = mkOption {
+        type = types.int;
+        default = 100000;
+        description = "Scrollback buffer size";
+      };
       windowClass = mkOption {
         type = types.listOf types.str;
         default = [ "kitty" "kitty" ];
@@ -133,7 +138,7 @@ in
           } // {
             # navigation
             visual_window_select_characters = "qweasdzxc";
-            scrollback_lines = "10000"; # TODO: make module option
+            scrollback_lines = "${builtins.toString cfg.scrollbackSize}";
           } // {
             # resize
             remember_window_size = "yes";
