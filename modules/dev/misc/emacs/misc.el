@@ -71,3 +71,7 @@
   :bind
   (:map custom-webpaste-map
         ("0" . 0x0-upload-text)))
+
+(use-package hl-prog-extra
+  :config
+  (global-hl-prog-extra-mode))

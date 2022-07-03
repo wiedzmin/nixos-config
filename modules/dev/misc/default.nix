@@ -178,6 +178,7 @@ in
         epkgs.consult-lsp
         epkgs.elmacro
         epkgs.fic-mode
+        epkgs.hl-prog-extra
         epkgs.jinja2-mode
         epkgs.just-mode
         epkgs.justl
