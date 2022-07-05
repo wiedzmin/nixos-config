@@ -137,7 +137,7 @@ in
             ];
           } // {
             # navigation
-            visual_window_select_characters = "qweasdzxc";
+            visual_window_select_characters = "qwerasdfzxcv";
             scrollback_lines = "${builtins.toString cfg.scrollbackSize}";
           } // {
             # resize
