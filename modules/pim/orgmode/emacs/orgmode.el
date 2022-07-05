@@ -474,7 +474,8 @@
   :delight " *>"
   :custom
   (orglink-activate-in-modes '(emacs-lisp-mode
-                               nix-mode)) ;NOTE: extend as needed
+                               nix-mode
+                               go-mode)) ;NOTE: extend as needed
   :config
   (global-orglink-mode))
 
