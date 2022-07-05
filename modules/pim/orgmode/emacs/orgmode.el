@@ -392,6 +392,10 @@
         ("C-M-y" . org-rich-yank)))
 
 (use-package orgit
+  :after org
+  :bind
+  (:map custom-org-map
+        ("q" . orgit-store-link))
   :custom
   (orgit-store-reference t))
 
