@@ -15,9 +15,8 @@ if not args.sessions_path:
     notify("[Firefox]", f"No sessions base path provided", urgency=URGENCY_CRITICAL, timeout=5000)
     sys.exit(1)
 if args.save_session:
-    session_name = get_selection_rofi([], "save as")
-    if session_name:
-        shell_cmd(f"dump_firefox_session {session_name}")
+    notify("[Firefox]", f"Sessions saving temporary disabled,\n it will be accessible soon through another sessions management tool", urgency=URGENCY_CRITICAL, timeout=5000)
+    sys.exit(1)
 elif args.open_session:
     session_name = get_selection_rofi(sorted(collect_sessions(args.sessions_path)), "open")
     if session_name:

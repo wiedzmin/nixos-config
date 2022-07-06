@@ -194,7 +194,10 @@ in
     firefox = {
       enable = true;
       isDefault = true;
-      sessions.backup.enable = true;
+      sessions = {
+        backup.enable = true;
+        keepHistory = true;
+      };
     };
   };
 

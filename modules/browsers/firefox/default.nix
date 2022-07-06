@@ -92,6 +92,11 @@ in
         default = "firefox-session-auto";
         description = "Filename template for Firefox session files.";
       };
+      sessions.keepHistory = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to also backup tabs navigation history";
+      };
       staging.enableSettings = mkOption {
         type = types.bool;
         default = false;
@@ -102,11 +107,8 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        dump_firefox_session = mkPythonScriptWithDeps pkgs "dump_firefox_session"
-          (with pkgs; [ coreutils nurpkgs.wiedzmin.pystdlib python3Packages.python-lz4 ])
-          (builtins.readFile ./scripts/dump_firefox_session.py);
         manage_firefox_sessions = mkPythonScriptWithDeps pkgs "manage_firefox_sessions"
-          (with pkgs; [ coreutils dump_firefox_session emacs firefox-unwrapped nurpkgs.wiedzmin.pystdlib ])
+          (with pkgs; [ coreutils emacs firefox-unwrapped nurpkgs.wiedzmin.pystdlib ])
           (builtins.readFile ./scripts/manage_firefox_sessions.py);
       };
       workstation.input.xkeysnail.rc = ''
@@ -461,11 +463,11 @@ in
         description = "Backup current firefox session (tabs)";
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${pkgs.dump_firefox_session}/bin/dump_firefox_session --dump-path ${cfg.sessions.path}";
-          ExecStopPost =
-            "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --rotate --path ${cfg.sessions.path} --history-length ${
-              builtins.toString cfg.sessions.historyLength
-            }";
+          ExecStart = ''${goBinPrefix user "ffsessions"} --dumps-path ${cfg.sessions.path} dump ${
+              if cfg.sessions.keepHistory then "-k" else ""}'';
+          # sessions rotation in "ExecStopPost" is
+          # - [was] not working due to import error in pystdlib
+          # - will be superseded by the same functionality of `toolbox/ffsessions` soon
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -503,7 +505,7 @@ in
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ dump_firefox_session manage_firefox_sessions ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ manage_firefox_sessions ]; };
     })
   ];
 }
