@@ -445,6 +445,7 @@ res param is needed for default behavior"
 ;; TODO: consider trying `fd' finder tool, see https://github.com/minad/consult/wiki#find-files-using-fd for reference
 ;; Note: this requires lexical binding
 (use-package consult
+  :after dired
   :init
   (use-package consult-selectrum)
   (use-package consult-utils)
