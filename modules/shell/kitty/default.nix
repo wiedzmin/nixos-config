@@ -82,6 +82,23 @@ in
             protocol file
             mime text/*
             action launch --type=overlay $EDITOR ''${FILE_PATH}
+
+            protocol file
+            ext csv
+            action launch --type=overlay ${pkgs.visidata}/bin/vd ''${FILE_PATH}
+
+            protocol file
+            mime inode/directory
+            action launch --location hsplit ''${MYFEXP} ''${FILE_PATH}
+
+            # Open any image in the full kitty window by clicking on it
+            protocol file
+            mime image/*
+            action launch --type=overlay kitty +kitten icat --hold ''${FILE_PATH}
+
+            protocol file
+            file *.*
+            action launch --type=overlay $EDITOR ''${FILE_PATH}
           '';
           "espanso/user/kitty.yml".text = ''
             name: kitty
