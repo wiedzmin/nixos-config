@@ -66,6 +66,7 @@ in
           enable = true;
           enableAutosuggestions = true;
           enableCompletion = true;
+          enableSyntaxHighlighting = true;
           history = {
             size = 10000;
             save = 10000;
@@ -164,12 +165,7 @@ in
               file = "plugin.zsh";
               src = inputs.zsh-fuzzy-search-and-edit;
             }
-          ] ++ [{
-            # NOTE: should be last in the list
-            name = "zsh-syntax-highlighting";
-            file = "zsh-syntax-highlighting.plugin.zsh";
-            src = inputs.zsh-syntax-highlighting;
-          }];
+          ];
         };
         programs.direnv.enableZshIntegration = true;
         programs.fzf.enableZshIntegration = true;
