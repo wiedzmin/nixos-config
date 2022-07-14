@@ -181,9 +181,9 @@ in
         programs.mcfly = optionalAttrs (cfg.shell.recent.backend == "mcfly") {
           enable = true;
           enableZshIntegration = true;
+          fuzzySearchFactor = cfg.shell.recent.mcfly.fuzzySearch;
         };
       } // optionalAttrs (cfg.shell.recent.backend == "mcfly") {
-        home.sessionVariables.MCFLY_FUZZY = builtins.toString cfg.shell.recent.mcfly.fuzzySearch;
         home.sessionVariables.MCFLY_RESULTS = builtins.toString cfg.shell.recent.mcfly.resultsCount;
         home.sessionVariables.MCFLY_RESULTS_SORT = cfg.shell.recent.mcfly.resultsSort;
       } // optionalAttrs (cfg.shell.recent.backend == "mcfly" && cfg.shell.recent.mcfly.interfaceView != "TOP") {
