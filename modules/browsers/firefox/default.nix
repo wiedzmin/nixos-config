@@ -386,7 +386,7 @@ in
           ".mozilla/native-messaging-hosts/tridactyl.json".text = builtins.toJSON {
             name = "tridactyl";
             description = "Tridactyl native command handler";
-            path = "${pkgs.tridactyl-native}/share/tridactyl/native_main.py";
+            path = "${pkgs.tridactyl-native}/bin/native_main";
             type = "stdio";
             allowed_extensions = [
               "tridactyl.vim@cmcaine.co.uk"
