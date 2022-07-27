@@ -6,10 +6,6 @@ let
   cfg = config.ext.virtualization.virtualbox;
   user = config.attributes.mainUser.name;
   kernelVersionCap = "5.4";
-  stable = import inputs.stable {
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {
@@ -35,7 +31,6 @@ in
       virtualisation.virtualbox.host = {
         enable = true;
         enableExtensionPack = true;
-        package = stable.virtualbox;
       };
       users.users."${user}".extraGroups = [ "vboxusers" ];
 
