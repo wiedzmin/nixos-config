@@ -879,14 +879,6 @@ res param is needed for default behavior"
   (goggles-mode)
   (setq-default goggles-pulse t))
 
-(use-package magit-todos
-  :after magit
-  :bind
-  (:map mode-specific-map
-        ("C-d" . magit-todos-list))
-  (:map custom-projects-map
-        ("T" . magit-todos-list)))
-
 (use-package xref
   :custom
   (xref-search-program 'ripgrep))
