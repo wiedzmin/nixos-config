@@ -1,6 +1,5 @@
 ;;TODO: review functionality / find substitute for / reimplement:
 ;; - doom-todo-ivy
-;; - ivy-pass
 ;; - ivy-omni-org
 ;; - counsel-org-clock
 ;; TODO: https://github.com/minad/consult/issues/6
