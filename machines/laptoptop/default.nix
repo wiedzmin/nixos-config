@@ -137,7 +137,7 @@ in
   job = {
     "52604ab078".secrets.enable = true;
     "7880d0f26f".secrets.enable = true;
-    "8a1add5330".secrets.enable = true;
+    "8286b572a1".secrets.enable = true;
   };
   dev.secrets.enable = true;
 
