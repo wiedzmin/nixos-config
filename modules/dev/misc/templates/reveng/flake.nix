@@ -3,7 +3,7 @@
 
   inputs = {
     flake-utils.url = github:numtide/flake-utils;
-    nur.url = "/home/alex3rd/workspace/repos/github.com/wiedzmin/NUR";
+    nur.url = github:wiedzmin/NUR;
     unstable.url = github:NixOS/nixpkgs/ {
       { .inputsUnstableRev }};
       };
