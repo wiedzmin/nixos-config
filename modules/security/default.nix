@@ -63,7 +63,7 @@ in
 
       nixpkgs.config.packageOverrides = _: rec {
         passctl = mkPythonScriptWithDeps pkgs "passctl"
-          (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis xdotool ])
+          (with pkgs; [ python3Packages.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis xdotool ])
           (builtins.readFile ./scripts/passctl.py);
       };
 

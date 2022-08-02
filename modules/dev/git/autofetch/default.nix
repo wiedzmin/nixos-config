@@ -52,7 +52,7 @@ in {
 
       nixpkgs.config.packageOverrides = _: rec {
         gitfetch = mkPythonScriptWithDeps pkgs "gitfetch"
-          (with pkgs; [ nurpkgs.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
+          (with pkgs; [ python3Packages.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
           (builtins.readFile ./scripts/gitfetch.py);
       };
 
