@@ -226,6 +226,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-mspyls": {
+      "locked": {
+        "lastModified": 1658648081,
+        "narHash": "sha256-RL5nr4Xhp0zQeEGG/I3t3FmqaI9QrBg5PH31NF+7A/A=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "e494a908e8895b9cba18e21d5fc83362f64b3f6a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "e494a908e8895b9cba18e21d5fc83362f64b3f6a",
+        "type": "github"
+      }
+    },
     "nixpkgs_2": {
       "locked": {
         "lastModified": 1654953433,
@@ -287,6 +303,7 @@
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs-index-fm": "nixpkgs-index-fm",
+        "nixpkgs-mspyls": "nixpkgs-mspyls",
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",
         "scantailor-stable": "scantailor-stable",
