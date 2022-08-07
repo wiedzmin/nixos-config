@@ -747,7 +747,7 @@ res param is needed for default behavior"
   (:map custom-projects-map
         ("d" . project-dired)
         ("f" . consult-recent-file)
-        ("h" . project-find-file))
+        ("h" . consult-project-extra-find))
         ("k" . project-kill-buffers))
 
 (use-package ripgrep
