@@ -2,6 +2,8 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# [[file:todo.org::*get opts/mappings list from https://sw.kovidgoyal.net/kitty/][get opts/mappings list from https://sw.kovidgoyal.net/kitty/]]
+
 let
   cfg = config.shell.vt.kitty;
   user = config.attributes.mainUser.name;
@@ -126,8 +128,78 @@ in
             recursive = true;
           };
         };
+        # TODO: kitten hint for dealing with sha256
         programs.kitty = {
           enable = true;
+          # TODO: play with opacity (settings, mappable actions, etc.)
+          # TODO: play with scrolling functionality
+          # TODO: bind tabs-related actions
+
+          # TODO: review escape sequences ============
+          # \x1b[2;5~ # same esc-seq as C-Insert # kitty_mod+c
+          # \x1b[2;2~ # same esc-seq as S-Insert # kitty_mod+v
+          # \x1b[2;3~
+          # \x63
+          # \x1bB # alt+left
+          # \x1bF # alt+right
+          # \x1b[1;5H
+          # \x1b[1;5F
+          # \x1b[1;3H
+          # \x1b[1;3F
+          # \x1b[1;5A
+          # \x1b[1;5B
+          # \x1b[1;5D
+          # \x1b[1;5C
+          # \x1b[1;2A
+          # \x1b[1;2B
+          # \x1b[1;2D
+          # \x1b[1;2C
+          # \x1b[1;6A
+          # \x1b[1;6B
+          # \x1b[1;6D
+          # \x1b[1;6C
+          # \x1b[1;3A
+          # \x1b[1;3B
+          # \x1b[1;3D
+          # \x1b[1;3C
+          # \x1b[1;7A
+          # \x1b[1;7B
+          # \x1b[1;7D
+          # \x1b[1;7C
+          # \x1b[1;4A
+          # \x1b[1;4B
+          # \x1b[1;4D
+          # \x1b[1;4C
+          # \x1b[5;5~
+          # \x1b[5;6~
+          # \x1b[5;3~
+          # \x1b[5;7~
+          # \x1b[6;5~
+          # \x1b[6;6~
+          # \x1b[6;3~
+          # \x1b[6;7~
+          # \x1b[2;5~
+          # \x1b[2;2~
+          # \x1b[2;6~
+          # \x1b[2;3~
+          # \x1b[2;4~
+          # \x1b[2;7~
+          # \x1b[3;5~
+          # \x1b[3;2~
+          # \x1b[3;6~
+          # \x1b[3;3~
+          # \x1b[3;4~
+          # \x1b[3;7~
+          # \x1b[13;2u
+          # \x1b[13;5u
+          # \x1b[13;5u
+          # \x1b[13;2u
+          # \x1b[9;5u
+          # \x1b[9;6u
+          # \x0c
+          # \x1b\x08
+          # \x15
+          # ==========================================
           settings = {
             # appearance
             cursor_shape = "beam";
