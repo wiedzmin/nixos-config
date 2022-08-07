@@ -70,6 +70,18 @@ in
       ];
       attributes.vt.default.cmd = cfg.command;
       attributes.vt.default.windowClass = cfg.windowClass;
+
+      navigation.bookmarks.entries = {
+        kitty-docs = {
+          desc = "Kitty VT documentation";
+          remote = {
+            url = "https://sw.kovidgoyal.net/kitty/";
+            jump = true;
+            searchSuffix = "search/?q=";
+          };
+        };
+      };
+
       home-manager.users."${user}" = {
         xdg.configFile = {
           # TODO: set window class of EDITOR/emacsclient opened by `hyperlinked_grep` to prevent moving window somewhere
