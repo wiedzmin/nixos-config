@@ -203,6 +203,7 @@ in
           settings = {
             # appearance
             cursor_shape = "beam";
+            cursor_beam_thickness = "1.5";
             cursor_blink_interval = "-1";
             active_border_color = "red";
             window_border_width = "1.0pt";
@@ -210,16 +211,29 @@ in
             tab_bar_edge = "top";
             tab_bar_background = "none";
             tab_bar_style = "powerline";
-            tab_title_template = "{fmt.fg.c2c2c2}{title}";
+            tab_title_template = "{fmt.fg.c2c2c2} {index}: {f'{title[:6]}…{title[-6:]}' if title.rindex(title[-1]) + 1 > 13 else title} ";
             active_tab_title_template = "{fmt.fg._fff}{title}";
             active_tab_font_style = "bold-italic";
             url_style = "curly";
-
-            enabled_layouts = concatStringsSep "," [
+            bell_on_tab = "🔔 ";
+            adjust_line_height = "115%";
+            enable_audio_bell = "no";
+            mark1_background = "#98d3cb";
+            mark1_foreground = "black";
+            mark2_background = "#f2dcd3";
+            mark2_foreground = "black";
+            mark3_background = "#f274bc";
+            mark3_foreground = "black";
+            tab_activity_symbol = "▲";
+            pointer_shape_when_dragging = "beam";
+            pointer_shape_when_grabbed = "arrow";
+            url_color = "#0087bd";
+            scrollback_fill_enlarged_window = "yes";
+            enabled_layouts = concatStringsSep ", " [
               "splits:split_axis=horizontal"
               "grid"
-              "tall"
-              "fat"
+              "tall:bias=70;full_size=1;mirrored=true"
+              "fat:bias=50;full_size=1;mirrored=false"
               "horizontal"
               "vertical"
               "stack"
@@ -228,11 +242,27 @@ in
             # navigation
             visual_window_select_characters = "qwerasdfzxcv";
             scrollback_lines = "${builtins.toString cfg.scrollbackSize}";
+            scrollback_pager = "bat"; # TODO: consider making module for `bat` and make respective option for `kitty`
           } // {
             # resize
             remember_window_size = "yes";
             window_resize_step_cells = "2";
             window_resize_step_lines = "2";
+            resize_draw_strategy = "scale";
+          } // {
+            # editing
+            clipboard_control = "write-clipboard write-primary no-append";
+          } // {
+            # misc
+            # kitty_mod = "ctrl+shift"; # TODO: play with this
+            allow_hyperlinks = "yes";
+            allow_remote_control = "yes";
+            detect_urls = "yes";
+            select_by_word_characters = ":@-./_~?&=%+#";
+            strip_trailing_spaces = "smart";
+            update_check_interval = "0";
+            url_prefixes = "http https file mailto git";
+            window_alert_on_bell = "yes";
           };
           keybindings = {
             # FIXME: investigate why "ctrl+x..." bindings do not work, using "alt+x" until then
@@ -245,6 +275,7 @@ in
             # fonts
             "ctrl+minus" = "change_font_size all -0.5";
             "ctrl+equal" = "change_font_size all +0.5";
+            "ctrl+0" = "change_font_size all 0";
           } // {
             # navigation
             "f2>w" = "focus_visible_window";
@@ -262,6 +293,8 @@ in
             "alt+shift+right_bracket" = "scroll_end";
             "alt+shift+page_down" = "scroll_page_down";
             "alt+shift+page_up" = "scroll_page_up";
+
+            "alt+x>[" = "combine : show_scrollback : send_text all \x2F";
 
             # FIXME: debug and add token-wise selection, see example below:
             # "Shift+Alt+B" = "select stream word left";
@@ -316,7 +349,14 @@ in
             "alt+x>page_up" = "kitten grab/grab.py";
             "alt+i" = "kitten grab/grab.py";
             "alt+x>f" = "launch --location=hsplit --allow-remote-control kitty +kitten search/search.py @active-kitty-window-id";
+            "ctrl+alt+enter" = "launch --location=hsplit --cwd=current"; # TODO: keybinding
           };
+          extraConfig = ''
+            # These are not broken after 0.21.0 https://github.com/kovidgoyal/kitty/issues/3718
+            mouse_map super+left press grabbed mouse_discard_event
+            mouse_map super+left release grabbed,ungrabbed mouse_click_url
+            mouse_map super+alt+left press ungrabbed mouse_selection rectangle
+          '';
         };
       };
       workstation.input.xkeysnail.rc = ''
