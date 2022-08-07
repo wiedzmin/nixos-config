@@ -1,9 +1,13 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 
 with lib;
 let
   cfg = config.appearance.fonts.iosevka;
   user = config.attributes.mainUser.name;
+  nixpkgs-iocomfy = import inputs.nixpkgs-iocomfy {
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  };
   inherit (config.appearance.fonts) beautify;
 in
 {
@@ -24,7 +28,8 @@ in
 
   config = mkIf cfg.enable {
     fonts = {
-      fonts = with pkgs; lib.optionals (!cfg.comfy.enable) [ iosevka ] ++ lib.optionals (cfg.comfy.enable) [ iosevka-comfy.comfy ];
+      fonts = with pkgs; lib.optionals (!cfg.comfy.enable) [ iosevka ] ++
+        lib.optionals (cfg.comfy.enable) [ nixpkgs-iocomfy.iosevka-comfy.comfy ];
       fontconfig = { defaultFonts = { monospace = [ "Iosevka" ]; }; };
     };
     wmCommon.fonts.default = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";

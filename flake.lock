@@ -226,6 +226,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-iocomfy": {
+      "locked": {
+        "lastModified": 1659305579,
+        "narHash": "sha256-SFeQTmh7hc9Y2fSkooHaoS8mDfPa04sfmUCtQ8MA6Pg=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "5857574d45925585baffde730369414319228a84",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "5857574d45925585baffde730369414319228a84",
+        "type": "github"
+      }
+    },
     "nixpkgs-mspyls": {
       "locked": {
         "lastModified": 1658648081,
@@ -303,6 +319,7 @@
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs-index-fm": "nixpkgs-index-fm",
+        "nixpkgs-iocomfy": "nixpkgs-iocomfy",
         "nixpkgs-mspyls": "nixpkgs-mspyls",
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",

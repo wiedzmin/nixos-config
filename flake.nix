@@ -19,6 +19,7 @@
     scantailor-stable.url = "github:nixos/nixpkgs/ff9efb0724de5ae0f9db9df2debefced7eb1571d";
     nixpkgs-index-fm.url = "github:nixos/nixpkgs/a4bf44345706231f9dd56f85757499af1e940847";
     nixpkgs-mspyls.url = "github:nixos/nixpkgs/e494a908e8895b9cba18e21d5fc83362f64b3f6a";
+    nixpkgs-iocomfy.url = "github:nixos/nixpkgs/5857574d45925585baffde730369414319228a84";
 
     # NOTE: using these instead of quelpa
     emacs-org-bars = {
