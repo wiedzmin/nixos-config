@@ -341,7 +341,7 @@ in
             "ctrl+0x78" = "copy_to_clipboard";
             "home" = "send_text all \\x1b\\x62"; # C-a
             "end" = "send_text all \\x1b\\x66"; # C-e
-            # FIXME: bind C-r correctly
+            "ctrl+shift+r" = "send_text all \\x12";
             "ctrl+alt+slash>enter" = "create_marker";
             "ctrl+alt+slash>escape" = "remove_marker";
             "alt+s>p" = "scroll_to_mark prev";
@@ -374,6 +374,7 @@ in
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("${lib.last cfg.windowClass}"), {
             K("C-x"): K("M-x"),
+            K("C-r"): K("C-Shift-r"),
             K("M-Shift-comma"): K("M-Shift-LEFT_BRACE"),
             K("M-Shift-dot"): K("M-Shift-RIGHT_BRACE"),
         }, "kitty")
