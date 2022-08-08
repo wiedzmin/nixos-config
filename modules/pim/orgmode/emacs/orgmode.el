@@ -489,3 +489,5 @@
 (use-package org-edit-indirect
   :hook
   (org-mode . org-edit-indirect-mode))
+
+;; [[file:~/workspace/repos/github.com/wiedzmin/nixos-config/modules/pim/orgmode/todo.org::*https://github.com/akirak/akirak-mode/blob/1fa4845e5ad4af95b58c3cdba7ead7223f05cef0/akirak-consult-org.el#L7][TODO: review custom solutions]]
