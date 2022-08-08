@@ -4,6 +4,15 @@ with lib;
 
 # [[file:todo.org::*get opts/mappings list from https://sw.kovidgoyal.net/kitty/][get opts/mappings list from https://sw.kovidgoyal.net/kitty/]]
 
+# some hex ctrl-prefixed keycodes:
+# \x09 --> tab
+# \x15 --> ^U
+# \x12 --> ^R
+# \x0c --> ^L
+# \x01 --> ^A
+# \x05 --> ^E
+# \x04 --> ^D
+
 let
   cfg = config.shell.vt.kitty;
   user = config.attributes.mainUser.name;
