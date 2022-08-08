@@ -92,6 +92,7 @@ in
       pim.orgmode.agendaRoots = { "${cfg.rootDir}" = 3000; };
       pim.timetracking.rules = mkArbttTitleRule [ "^emacs - [^ ]+\\.org .*$" ] "edit:orgmode";
       ide.emacs.core.extraPackages = epkgs: [
+        epkgs.consult-org-roam
         epkgs.deft
         epkgs.doct
         epkgs.ob-async

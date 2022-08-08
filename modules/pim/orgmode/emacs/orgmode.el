@@ -433,11 +433,6 @@
 ;; TODO: review https://melpa.org/#/org-roam-ui
 ;; TODO: review https://melpa.org/#/org-roam-timestamps / https://github.com/ThomasFKJorna/org-roam-timestamps
 (use-package org-roam
-  :preface
-  (defun custom/consult-ripgrep-roam ()
-    (interactive)
-    (let ((consult-ripgrep-command "rg --null --ignore-case --type org --line-buffered --color=always --max-columns=500 --no-heading --line-number . -e ARG OPTS"))
-      (consult-ripgrep "@emacsOrgRoamPath@")))
   :init
   (setq org-roam-v2-ack t)
   (setq org-roam-db-gc-threshold most-positive-fixnum)
@@ -458,14 +453,26 @@
   (use-package org-roam-protocol)
   :bind
   (:map org-roam-map
-        ("b" . org-roam-buffer-toggle)
         ("f" . org-roam-node-find)
-        ("F" . org-roam-dailies-find-directory)
-        ("g" . custom/consult-ripgrep-roam)
+        ("d" . org-roam-dailies-find-directory)
         ("G" . org-roam-graph)
         ("i" . org-roam-node-insert)
         ("c" . org-roam-capture)
         ("j" . org-roam-dailies-capture-today)))
+
+(use-package consult-org-roam
+  :after (org-roam consult)
+  :config
+  ;; Eventually suppress previewing for certain functions
+  (consult-customize
+   consult-org-roam-forward-links
+   :preview-key (kbd "M-."))
+  (consult-org-roam-mode 1)
+  :bind
+  (:map org-roam-map
+        ("b" . consult-org-roam-backlinks)
+        ("f" . consult-org-roam-file-find)
+        ("g" . consult-org-roam-search)))
 
 ;; TODO: https://github.com/nobiot/org-transclusion
 
