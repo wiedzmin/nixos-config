@@ -168,7 +168,9 @@
 (use-package misc
   :bind
   (:map mode-specific-map
-        ("^" . copy-from-above-command)))
+        ("^" . copy-from-above-command)
+        ("2" . duplicate-dwim)
+        ("@" . duplicate-line)))
 
 (use-package simple
   :bind
