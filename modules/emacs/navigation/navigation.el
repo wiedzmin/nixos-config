@@ -519,7 +519,6 @@ res param is needed for default behavior"
   (fset 'multi-occur #'consult-multi-occur))
 
 (use-package consult-dir
-  :ensure t
   :bind
   ("C-x d" . consult-dir)
   (:map selectrum-minibuffer-map

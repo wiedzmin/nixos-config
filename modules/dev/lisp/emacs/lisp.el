@@ -43,7 +43,6 @@
   )
 
 (use-package slime-company
-  :ensure t
   :after (slime company))
 
 (use-package inf-lisp
@@ -51,5 +50,4 @@
   (setq inferior-lisp-program "sbcl"))
 
 (use-package common-lisp-snippets
-  :ensure t
   :after (yasnippet))
