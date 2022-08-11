@@ -578,6 +578,16 @@ res param is needed for default behavior"
                               :foreground "green"
                               :height 0.1)))))
 
+(use-package link-hint
+  :bind
+  (:map custom-open-map
+        ("f" . link-hint-open-link)
+        ("y" . link-hint-copy-link)
+        ("F" . link-hint-open-multiple-links)
+        ("Y" . link-hint-copy-multiple-links))
+  :custom
+  (link-hint-avy-style 'de-bruijn))
+
 (use-package find-func
   :bind
   (:map custom-help-map
