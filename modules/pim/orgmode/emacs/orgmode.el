@@ -461,6 +461,7 @@
         ("j" . org-roam-dailies-capture-today)))
 
 (use-package consult-org-roam
+  :delight " |>"
   :config
   ;; Eventually suppress previewing for certain functions
   (consult-customize
