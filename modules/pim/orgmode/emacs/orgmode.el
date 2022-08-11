@@ -461,7 +461,6 @@
         ("j" . org-roam-dailies-capture-today)))
 
 (use-package consult-org-roam
-  :after (org-roam consult)
   :config
   ;; Eventually suppress previewing for certain functions
   (consult-customize
@@ -477,7 +476,6 @@
 ;; TODO: https://github.com/nobiot/org-transclusion
 
 (use-package orglink
-  :after org
   :delight " *>"
   :custom
   (orglink-activate-in-modes '(emacs-lisp-mode
