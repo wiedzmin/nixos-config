@@ -206,6 +206,7 @@ res param is needed for default behavior"
   (avy-linum-mode t)
   (avy-background t)
   (avy-all-windows 'all-frames)
+  (setq avy-style 'at-full)
   :custom-face (avy-goto-char-timer-face ((nil (:foreground "green" :weight bold))))
   :config
   (advice-add 'avy-goto-char-timer :before #'avy-intial-interruption-check)
@@ -586,7 +587,7 @@ res param is needed for default behavior"
         ("F" . link-hint-open-multiple-links)
         ("Y" . link-hint-copy-multiple-links))
   :custom
-  (link-hint-avy-style 'de-bruijn))
+  (link-hint-avy-style 'at-full))
 
 (use-package find-func
   :bind
