@@ -197,7 +197,7 @@ res param is needed for default behavior"
   :bind
   ("C-:" . avy-region-compound)
   (:map custom-goto-map
-        ("M-w" . avy-goto-word-0)
+        ("M-d" . avy-goto-word-0)
         ("M-s" . avy-goto-char-timer)
         ("," . pop-global-mark))
   :custom
@@ -568,6 +568,9 @@ res param is needed for default behavior"
         ("!" . consult-flycheck)))
 
 (use-package ace-window
+  :bind
+  (:map custom-goto-map
+        ("M-w" . ace-window))
   :custom
   (aw-background nil)
   (aw-leading-char-style 'char)
