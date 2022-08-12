@@ -68,6 +68,7 @@
   (avy-linum-mode t)
   (avy-background t)
   (avy-all-windows 'all-frames)
+  (avy-single-candidate-jump nil)
   (setq avy-style 'at-full)
   :custom-face (avy-goto-char-timer-face ((nil (:foreground "green" :weight bold))))
   :config
