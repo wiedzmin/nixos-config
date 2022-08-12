@@ -76,11 +76,11 @@
         avy-dispatch-alist (assq-delete-all ?x avy-dispatch-alist)
         avy-dispatch-alist (assq-delete-all ?c avy-dispatch-alist))
   (setf (alist-get ?Z avy-dispatch-alist) 'avy-action-zap-to-char
-        (alist-get ?, avy-dispatch-alist) 'avy-action-embark
+        (alist-get ?E avy-dispatch-alist) 'avy-action-embark
         (alist-get ?. avy-dispatch-alist) 'avy-action-mark-point
         (alist-get ?W avy-dispatch-alist) 'avy-action-copy-whole-line
         (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line
-        (alist-get ?E avy-dispatch-alist) 'avy-action-exchange
+        (alist-get ?X avy-dispatch-alist) 'avy-action-exchange
         (alist-get ?\C-h avy-dispatch-alist) 'avy-action-helpful
         (alist-get ?\C-  avy-dispatch-alist) 'avy-action-mark-to-char
         (alist-get ?\C-l avy-dispatch-alist) 'avy-action-clone-line)
