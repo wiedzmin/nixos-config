@@ -581,11 +581,11 @@ res param is needed for default behavior"
 
 (use-package link-hint
   :bind
-  (:map custom-open-map
-        ("f" . link-hint-open-link)
-        ("y" . link-hint-copy-link)
-        ("F" . link-hint-open-multiple-links)
-        ("Y" . link-hint-copy-multiple-links))
+  (:map custom-goto-map
+        ("M-f" . link-hint-open-link)
+        ("M-F" . link-hint-open-multiple-links)
+        ("M-y" . link-hint-copy-link)
+        ("M-Y" . link-hint-copy-multiple-links))
   :custom
   (link-hint-avy-style 'at-full))
 

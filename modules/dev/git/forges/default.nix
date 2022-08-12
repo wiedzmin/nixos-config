@@ -233,9 +233,6 @@ in
           epkgs.forge
           epkgs.git-link
         ];
-        ide.emacs.core.customKeymaps = {
-          "custom-open-map" = "C-c o";
-        };
         ide.emacs.core.config =
           builtins.readFile ./emacs/forges.el +
           optionalString (length (attrValues mapping) > 0)

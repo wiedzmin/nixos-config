@@ -2,9 +2,9 @@
 
 (use-package browse-at-remote
   :bind
-  (:map custom-open-map
-        ("r" . browse-at-remote)
-        ("R" . browse-at-remote-kill))
+  (:map custom-goto-map
+        ("M-r" . browse-at-remote)
+        ("M-R" . browse-at-remote-kill))
   (:map magit-log-mode-map
         ("o" . browse-at-remote)
         ("y" . browse-at-remote-kill)))
