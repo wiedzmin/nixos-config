@@ -79,6 +79,7 @@
   (setf (alist-get ?Z avy-dispatch-alist) 'avy-action-zap-to-char
         (alist-get ?E avy-dispatch-alist) 'avy-action-embark
         (alist-get ?. avy-dispatch-alist) 'avy-action-mark-point
+        (alist-get ?\C-w avy-dispatch-alist) 'avy-action-copy
         (alist-get ?W avy-dispatch-alist) 'avy-action-copy-whole-line
         (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line
         (alist-get ?X avy-dispatch-alist) 'avy-action-exchange
