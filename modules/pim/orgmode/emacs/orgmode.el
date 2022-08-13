@@ -404,15 +404,6 @@
              org-html-export-as-html
              org-html-export-to-html))
 
-(use-package deft
-  :bind
-  ("<f12>" . deft)
-  :custom
-  (deft-directory "@deftPath@")
-  (deft-use-filter-string-for-filename t)
-  (deft-recursive t)
-  (deft-extensions '("org" "txt")))
-
 (use-package org-appear
   :hook
   (org-mode-hook . org-appear-mode)

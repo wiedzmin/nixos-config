@@ -5,7 +5,6 @@ let
   user = config.attributes.mainUser.name;
 in
 rec {
-  deftPath = homePrefix user "docs/deft";
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
   emacsOrgRoamDotBinary = "${pkgs.graphviz}/bin/dot";
   emacsOrgRoamPath = homePrefix user "docs/org/roam";
