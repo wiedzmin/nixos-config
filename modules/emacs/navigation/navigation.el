@@ -43,6 +43,16 @@
      (cdr
       (ring-ref avy-ring 0)))
     t)
+  (defun avy-action-kill-whole-line-stay (pt)
+    (save-excursion
+      (goto-char pt)
+      (kill-whole-line))
+    (let ((dat (ring-ref avy-ring 0)))
+      (select-frame-set-input-focus
+       (window-frame (cdr dat)))
+      (select-window (cdr dat))
+      (goto-char (car dat)))
+    t)
   (defun avy-action-embark (pt)
     (unwind-protect
         (save-excursion
@@ -91,7 +101,8 @@
         (alist-get ?W avy-dispatch-alist) 'avy-action-copy-whole-line
         (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line
         (alist-get ?k avy-dispatch-alist) 'avy-action-kill-stay
-        (alist-get ?K avy-dispatch-alist) 'avy-action-kill-whole-line
+        (alist-get ?K avy-dispatch-alist) 'avy-action-kill-whole-line-stay
+        (alist-get ?M-K avy-dispatch-alist) 'avy-action-kill-whole-line
         (alist-get ?X avy-dispatch-alist) 'avy-action-exchange
         (alist-get ?\C-h avy-dispatch-alist) 'avy-action-helpful
         (alist-get ?M avy-dispatch-alist) 'avy-action-mark-to-char
