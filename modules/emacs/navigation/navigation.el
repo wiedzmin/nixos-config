@@ -71,7 +71,7 @@
         ("M-s" . avy-goto-char-timer)
         ("," . pop-global-mark))
   :custom
-  (avy-timeout-seconds 0.25)
+  (avy-timeout-seconds 0.3)
   (avy-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
   (avy-linum-mode t)
   (avy-background t)
