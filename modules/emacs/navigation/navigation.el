@@ -94,7 +94,7 @@
         (alist-get ?K avy-dispatch-alist) 'avy-action-kill-whole-line
         (alist-get ?X avy-dispatch-alist) 'avy-action-exchange
         (alist-get ?\C-h avy-dispatch-alist) 'avy-action-helpful
-        (alist-get ?\C-  avy-dispatch-alist) 'avy-action-mark-to-char
+        (alist-get ?M avy-dispatch-alist) 'avy-action-mark-to-char
         (alist-get ?\C-l avy-dispatch-alist) 'avy-action-clone-line)
   (avy-setup-default))
 
