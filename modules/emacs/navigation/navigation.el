@@ -90,6 +90,7 @@
         (alist-get ?\C-w avy-dispatch-alist) 'avy-action-copy
         (alist-get ?W avy-dispatch-alist) 'avy-action-copy-whole-line
         (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line
+        (alist-get ?k avy-dispatch-alist) 'avy-action-kill-stay
         (alist-get ?K avy-dispatch-alist) 'avy-action-kill-whole-line
         (alist-get ?X avy-dispatch-alist) 'avy-action-exchange
         (alist-get ?\C-h avy-dispatch-alist) 'avy-action-helpful
