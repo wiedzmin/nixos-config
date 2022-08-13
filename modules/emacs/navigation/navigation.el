@@ -35,6 +35,14 @@
     (avy-action-copy-whole-line pt)
     (save-excursion (yank))
     t)
+  (defun avy-action-kill-whole-line (pt)
+    (save-excursion
+      (goto-char pt)
+      (kill-whole-line))
+    (select-window
+     (cdr
+      (ring-ref avy-ring 0)))
+    t)
   (defun avy-action-embark (pt)
     (unwind-protect
         (save-excursion
@@ -82,6 +90,7 @@
         (alist-get ?\C-w avy-dispatch-alist) 'avy-action-copy
         (alist-get ?W avy-dispatch-alist) 'avy-action-copy-whole-line
         (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line
+        (alist-get ?K avy-dispatch-alist) 'avy-action-kill-whole-line
         (alist-get ?X avy-dispatch-alist) 'avy-action-exchange
         (alist-get ?\C-h avy-dispatch-alist) 'avy-action-helpful
         (alist-get ?\C-  avy-dispatch-alist) 'avy-action-mark-to-char
