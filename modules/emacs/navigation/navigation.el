@@ -31,6 +31,18 @@
      (cdr
       (ring-ref avy-ring 0)))
     t)
+  (defun avy-action-copy-tap (pt)
+    (save-excursion
+      (goto-char pt)
+      (cl-destructuring-bind (start . end)
+          (bounds-of-thing-at-point 'sexp)
+        (copy-region-as-kill start end)))
+    (let ((dat (ring-ref avy-ring 0)))
+      (select-frame-set-input-focus
+       (window-frame (cdr dat)))
+      (select-window (cdr dat))
+      (goto-char (car dat)))
+    t)
   (defun avy-action-yank-whole-line (pt)
     (avy-action-copy-whole-line pt)
     (save-excursion (yank))
@@ -98,6 +110,7 @@
         (alist-get ?E avy-dispatch-alist) 'avy-action-embark
         (alist-get ?. avy-dispatch-alist) 'avy-action-mark-point
         (alist-get ?\C-w avy-dispatch-alist) 'avy-action-copy
+        (alist-get ?\M-w avy-dispatch-alist) 'avy-action-copy-tap
         (alist-get ?W avy-dispatch-alist) 'avy-action-copy-whole-line
         (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line
         (alist-get ?k avy-dispatch-alist) 'avy-action-kill-stay
