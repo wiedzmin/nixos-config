@@ -272,7 +272,6 @@ in
           cmd = ''${nurpkgs.toolbox}/bin/services --flat --term-command "${
             lib.concatStringsSep " " config.attributes.vt.default.cmd}"'';
           mode = "services";
-          desktop = "shell";
         }
         {
           key = [ prefix "Shift" "u" ];
