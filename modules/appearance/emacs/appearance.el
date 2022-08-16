@@ -5,7 +5,7 @@
 (use-package transwin
   :after frame
   :bind
-  (:map frame-map
+  (:map custom-frame-map
         ("v" . transwin-toggle-transparent-frame)
         ("V" . transwin-ask-set-transparency)
         ("<up>" . transwin-increment-frame-transparent)

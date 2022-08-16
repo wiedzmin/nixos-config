@@ -86,7 +86,7 @@
       (string-inflection-insert str)))
   :commands (string-inflection-get-current-word)
   :bind
-  (:map common-editing-map
+  (:map token-editing-map
         ("6" . string-inflection-lower-camelcase)
         ("^" . string-inflection-camelcase)
         ("_" . string-inflection-underscore)
@@ -127,13 +127,13 @@
 
 (use-package sort
   :bind
-  (:map custom-sorting-map
+  (:map misc-editing-map
         ("s" . sort-lines)
         ("u" . delete-duplicate-lines)))
 
 (use-package tabify
   :bind
-  (:map custom-tabs-map
+  (:map misc-editing-map
         ("SPC" . untabify)
         ("TAB" . tabify)))
 
@@ -177,7 +177,7 @@
   (:map misc-editing-map
         ("c" . clone-buffer)
         ("C" . clone-indirect-buffer)
-        ("i" . clone-indirect-buffer-other-window)))
+        ("I" . clone-indirect-buffer-other-window)))
 
 (use-package drag-stuff
   :bind

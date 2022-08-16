@@ -50,6 +50,9 @@
   ("M-\"" . eval-region)
   (:map ctl-x-map
         ("k" . custom/kill-buffer))
+  (:map custom-goto-map
+        ("TAB" . move-to-column)
+        ("c" . goto-char))
   :hook
   (minibuffer-setup-hook . (lambda () (setq gc-cons-threshold most-positive-fixnum)))
   (minibuffer-exit-hook . (lambda () (setq gc-cons-threshold 800000)))

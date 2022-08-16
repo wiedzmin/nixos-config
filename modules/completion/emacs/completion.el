@@ -253,7 +253,7 @@
   :mode (("@emacsYasnippetSnippets@" . snippet-mode)
          ("\\.yasnippet$" . snippet-mode))
   :bind
-  (:map custom-yasnippet-map
+  (:map misc-editing-map
         ("i" . yas-insert-snippet))
   :config
   (yas-global-mode)

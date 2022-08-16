@@ -1,6 +1,6 @@
 (use-package consult-ghq
   :bind
-  (:map custom-nav-map
+  (:map custom-search-map
         ("C-f" . consult-ghq-find)
         ("C-g" . consult-ghq-grep))
   :custom

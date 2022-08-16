@@ -61,11 +61,11 @@
   ("M-SPC" . cycle-spacing)
   (:map misc-editing-map
         ("b" . subword-mode)
-        ("v" . view-mode))
-  (:map common-editing-map
+        ("v" . view-mode)
+        ("t" . transpose-sexps))
+  (:map token-editing-map
         ("o" . cycle-spacing)
-        ("w" . delete-trailing-whitespace)
-        ("s" . transpose-sexps))
+        ("w" . delete-trailing-whitespace))
   :custom
   (bidi-display-reordering nil)
   (kill-whole-line t)

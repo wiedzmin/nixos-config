@@ -95,24 +95,14 @@ in
       ide.emacs.core.customKeymaps = {
         "custom-help-map" = "<f1>";
         "custom-narrowing-map" = "<f9>";
-        "custom-nav-map" = "C-q";
+        "custom-search-map" = "C-q";
         "custom-projects-map" = "<f8>";
         "custom-treemacs-map" = "C-x t";
         "custom-ws-map" = "C-c x";
         "custom-goto-map" = "M-s";
-        "frame-map" = "<f2>";
-        # TODO: remap original goto-map back to global keys space, because of current accessibility reduce for:
-        # simple:
-        # ("n" . next-error)
-        # ("p" . previous-error)
-        # ("M-n" . next-error)
-        # ("M-p" . previous-error)
-        # emacs:
-        # ("TAB" . move-to-column)
-        # ("c" . goto-char)
+        "custom-frame-map" = "<f2>";
       };
-      # TODO: consider enhance custom keymaps nix machinery in a way of automatically unbinding
-      # either global or some submapped confilcting keybindings
+      # TODO: consider enhance custom keymaps nix machinery in a way of automatically unbinding, either global or some submapped conflicting keybindings
     })
   ];
 }

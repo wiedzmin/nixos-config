@@ -339,26 +339,26 @@
   ([remap switch-to-buffer] . consult-buffer)
   ([remap yank-pop] . consult-yank-replace)
   ;;TODO: bind `consult-org-agenda' here or under `org-mode' config
-  (:map custom-nav-map
+  (:map custom-search-map
         ("G" . consult-ripgrep-symbol-at-point)
-        ("I" . consult-imenu-multi)
-        ("M" . consult-minor-mode-menu)
-        ("O" . consult-file-externally)
-        ("SPC" . consult-mark)
-        ("`" . consult-compile-error)
-        ("c" . consult-complex-command)
+        ("M" . consult-minor-mode-menu) ; help-map / custom-help-map
+        ("O" . consult-file-externally) ; custom-projects-map
         ("g" . consult-ripgrep)
         ("h" . consult-find)
+        ("m" . consult-multi-occur))
+  (:map custom-goto-map
+        ("C-s" . consult-line-multi)
+        ("I" . consult-imenu-multi)
+        ("M-SPC" . consult-mark)
+        ("`" . consult-compile-error)
+        ("c" . consult-complex-command)
         ("j" . consult-global-mark)
         ("k" . consult-kmacro)
-        ("m" . consult-multi-occur)
         ("o" . consult-outline)
         ("r b" . consult-bookmark)
         ("r l" . consult-register-load)
         ("r s" . consult-register-store)
         ("r x" . consult-register))
-  (:map custom-goto-map
-        ("C-s" . consult-line-multi))
   (:map dired-mode-map
         ("`" . consult-file-externally))
   (:map minibuffer-local-map
@@ -511,8 +511,8 @@
         ("r" . narrow-to-region)
         ("d" . narrow-to-defun)
         ("w" . widen)
-        ("N" . recursive-narrow-or-widen-dwim)
-        ("D" . recursive-widen-dwim)))
+        ("n" . recursive-narrow-or-widen-dwim)
+        ("W" . recursive-widen-dwim)))
 
 (use-package whitespace
   :hook
@@ -596,7 +596,7 @@
     (server-edit)
     (delete-frame))
   :bind
-  (:map frame-map
+  (:map custom-frame-map
         ("n" . make-frame-command)
         ("k" . mark-done-kill-frame)
         ("s" . delete-other-frames))
@@ -614,8 +614,8 @@
 (use-package imenu-anywhere
   :commands imenu-anywhere
   :bind
-  (:map custom-nav-map
-               ("I" . imenu-anywhere)))
+  (:map custom-goto-map
+               ("M-i" . imenu-anywhere)))
 
 (use-package phi-search
   :hook (isearch-mode-hook . phi-search-from-isearch-mc/setup-keys)
@@ -640,12 +640,12 @@
 
 (use-package ripgrep
   :bind
-  (:map custom-nav-map
+  (:map custom-search-map
         ("f" . ripgrep-regexp)))
 
 (use-package rg
   :bind
-  (:map custom-nav-map
+  (:map custom-search-map
         ("d" . rg-project)
         ("t" . rg-menu))
   :custom
@@ -824,7 +824,7 @@
   ;;TODO: also lift frames bookmark opening up to `open-project' script
   ;;      level, otherwise be prepared for frames doubling in some cases
   :bind
-  (:map frame-map
+  (:map custom-frame-map
         ("b" . burly-bookmark-windows)
         ("B" . burly-bookmark-frames))
   (:map custom-goto-map

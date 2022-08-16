@@ -50,10 +50,6 @@ in
           };
         };
       };
-      ide.emacs.core.customKeymaps = {
-        "custom-sorting-map" = "C-c s";
-        "custom-tabs-map" = "C-c b";
-      };
       ide.emacs.core.config = builtins.readFile ./edit.el;
     })
   ];
