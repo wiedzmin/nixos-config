@@ -102,7 +102,7 @@
         (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line
         (alist-get ?k avy-dispatch-alist) 'avy-action-kill-stay
         (alist-get ?K avy-dispatch-alist) 'avy-action-kill-whole-line-stay
-        (alist-get ?M-K avy-dispatch-alist) 'avy-action-kill-whole-line
+        (alist-get ?\M-k avy-dispatch-alist) 'avy-action-kill-whole-line
         (alist-get ?X avy-dispatch-alist) 'avy-action-exchange
         (alist-get ?\C-h avy-dispatch-alist) 'avy-action-helpful
         (alist-get ?M avy-dispatch-alist) 'avy-action-mark-to-char
