@@ -82,6 +82,11 @@ in
         default = homePrefix user "docs/org/browser-sessions/firefox";
         description = "Where to save plaintext Firefox session contents.";
       };
+      sessions.keepMinutes = mkOption {
+        type = types.int;
+        default = 180;
+        description = "Keep sessions age under this amount";
+      };
       sessions.historyLength = mkOption {
         type = types.int;
         default = 10;
@@ -106,11 +111,6 @@ in
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: rec {
-        manage_firefox_sessions = mkPythonScriptWithDeps pkgs "manage_firefox_sessions"
-          (with pkgs; [ coreutils emacs firefox-unwrapped nurpkgs.wiedzmin.pystdlib ])
-          (builtins.readFile ./scripts/manage_firefox_sessions.py);
-      };
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("${lib.last cfg.windowClass}"), {
             K("C-j"): K("C-f6"), # Type C-j to focus to the content
@@ -422,6 +422,7 @@ in
       shell.core.variables = [{
         TB_DEFAULT_BROWSER = cfg.command;
         TB_DEFAULT_BROWSER_SESSIONS_STORE = cfg.sessions.path;
+        TB_FIREFOX_SESSIONS_KEEP_MINUTES = builtins.toString cfg.sessions.keepMinutes;
         global = true;
       }];
 
@@ -461,13 +462,13 @@ in
       };
       systemd.user.services."backup-current-session-firefox" = {
         description = "Backup current firefox session (tabs)";
+        path = [ pkgs.xkb-switch ];
         serviceConfig = {
           Type = "oneshot";
+          Environment = [ "TB_FIREFOX_SESSIONS_KEEP_MINUTES=${builtins.toString cfg.sessions.keepMinutes}" ];
           ExecStart = ''${goBinPrefix user "ffsessions"} --dumps-path ${cfg.sessions.path} dump ${
               if cfg.sessions.keepHistory then "-k" else ""}'';
-          # sessions rotation in "ExecStopPost" is
-          # - [was] not working due to import error in pystdlib
-          # - will be superseded by the same functionality of `toolbox/ffsessions` soon
+          ExecStopPost = ''${goBinPrefix user "ffsessions"} --dumps-path ${cfg.sessions.path} rotate'';
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -480,32 +481,21 @@ in
       wmCommon.keys = [
         {
           key = [ "s" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
-            cfg.sessions.path} --save";
-          mode = "browser";
-        }
-        {
-          key = [ "o" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
-            cfg.sessions.path} --open";
+          cmd = "${goBinPrefix user "ffsessions"} --dumps-path ${cfg.sessions.path} dump ${
+              if cfg.sessions.keepHistory then "-k" else ""}";
           mode = "browser";
         }
         {
           key = [ "e" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
-            cfg.sessions.path} --edit";
+          cmd = "${goBinPrefix user "ffsessions"} --dumps-path ${cfg.sessions.path} edit";
           mode = "browser";
         }
         {
           key = [ "d" ];
-          cmd = "${pkgs.manage_firefox_sessions}/bin/manage_firefox_sessions --path ${
-            cfg.sessions.path} --delete";
+          cmd = "${goBinPrefix user "ffsessions"} --dumps-path ${cfg.sessions.path} remove";
           mode = "browser";
         }
       ];
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ manage_firefox_sessions ]; };
     })
   ];
 }
