@@ -86,7 +86,6 @@
     ./shell/zsh
     ./virt/docker/core
     ./virt/docker/devdns
-    ./virt/docker/swarm
     ./virt/libvirt
     ./virt/virtualbox
     ./wm

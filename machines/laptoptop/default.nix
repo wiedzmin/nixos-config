@@ -590,10 +590,6 @@ in
         enable = true;
         wm.enable = true;
       };
-      swarm = {
-        enable = true;
-        wm.enable = true;
-      };
     };
     libvirt.enable = true;
     virtualbox.enable = true;
