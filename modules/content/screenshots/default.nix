@@ -66,18 +66,13 @@ in
       wmCommon.autostart.entries = [ "flameshot" ];
     })
     (mkIf (cfg.enable && cfg.ordering.enable) {
-      nixpkgs.config.packageOverrides = _: rec {
-        order_screenshots = mkPythonScriptWithDeps pkgs "order_screenshots" (with pkgs; [ coreutils nurpkgs.wiedzmin.pystdlib ])
-          (builtins.readFile ./scripts/order_screenshots.py);
-      };
-
       systemd.user.services."order-screenshots" = {
         description = "Screenshots ordering";
         wantedBy = [ "graphical.target" ];
         partOf = [ "graphical.target" ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${pkgs.order_screenshots}/bin/order_screenshots --base-dir ${cfg.baseDir}";
+          ExecStart = "${goBinPrefix user "screenshots"} --root ${cfg.baseDir}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
