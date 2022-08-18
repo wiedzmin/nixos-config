@@ -63,25 +63,13 @@ in
           runtimeInputs = with pkgs; [ docker ];
           text = builtins.readFile ./scripts/hadolintd.sh;
         };
-        docker_containers_traits = mkPythonScriptWithDeps pkgs "docker_containers_traits"
-          (with pkgs; [ docker nurpkgs.pystdlib nurpkgs.toolbox python3Packages.redis xsel yad ])
-          (builtins.readFile ./scripts/docker_containers_traits.py);
-        discover_containerized_services =
-          mkPythonScriptWithDeps pkgs "discover_containerized_services" (with pkgs; [ docker nurpkgs.pystdlib ])
-            (builtins.readFile ./scripts/discover_containerized_services.py);
-        docker_shell = mkPythonScriptWithDeps pkgs "docker_shell"
-          (with pkgs; [ nurpkgs.pystdlib nurpkgs.toolbox python3Packages.libtmux python3Packages.redis ])
-          (builtins.readFile ./scripts/docker_shell.py);
       };
 
       environment.systemPackages = with pkgs; [
         ctop
-        discover_containerized_services
         dive
         dlint
         docker-compose
-        docker_containers_traits
-        docker_shell
         hadolintd
         libcgroup
       ];
@@ -121,28 +109,11 @@ in
       wmCommon.modeBindings = {
         "docker" = [ prefix "Shift" "d" ];
       };
-      wmCommon.keys = [
-        {
-          key = [ "t" ];
-          cmd = "${pkgs.docker_containers_traits}/bin/docker_containers_traits";
-          desktop = "shell";
-          mode = "docker";
-        }
-        {
-          key = [ "s" ];
-          cmd = "${pkgs.docker_shell}/bin/docker_shell";
-          desktop = "shell";
-          mode = "docker";
-        }
-      ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
-          discover_containerized_services
           dlint
-          docker_containers_traits
-          docker_shell
           hadolintd
         ];
       };
