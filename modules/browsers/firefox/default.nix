@@ -466,9 +466,9 @@ in
         serviceConfig = {
           Type = "oneshot";
           Environment = [ "TB_FIREFOX_SESSIONS_KEEP_MINUTES=${builtins.toString cfg.sessions.keepMinutes}" ];
-          ExecStart = ''${goBinPrefix user "ffsessions"} --dumps-path ${cfg.sessions.path} dump ${
+          ExecStart = ''${nurpkgs.wiedzmin.toolbox}/bin/ffsessions --dumps-path ${cfg.sessions.path} dump ${
               if cfg.sessions.keepHistory then "-k" else ""}'';
-          ExecStopPost = ''${goBinPrefix user "ffsessions"} --dumps-path ${cfg.sessions.path} rotate'';
+          ExecStopPost = ''${nurpkgs.wiedzmin.toolbox}/bin/ffsessions --dumps-path ${cfg.sessions.path} rotate'';
           StandardOutput = "journal";
           StandardError = "journal";
         };
@@ -481,18 +481,18 @@ in
       wmCommon.keys = [
         {
           key = [ "s" ];
-          cmd = "${goBinPrefix user "ffsessions"} --dumps-path ${cfg.sessions.path} dump ${
+          cmd = "${nurpkgs.wiedzmin.toolbox}/bin/ffsessions --dumps-path ${cfg.sessions.path} dump ${
               if cfg.sessions.keepHistory then "-k" else ""}";
           mode = "browser";
         }
         {
           key = [ "e" ];
-          cmd = "${goBinPrefix user "ffsessions"} --dumps-path ${cfg.sessions.path} edit";
+          cmd = "${nurpkgs.wiedzmin.toolbox}/bin/ffsessions --dumps-path ${cfg.sessions.path} edit";
           mode = "browser";
         }
         {
           key = [ "d" ];
-          cmd = "${goBinPrefix user "ffsessions"} --dumps-path ${cfg.sessions.path} remove";
+          cmd = "${nurpkgs.wiedzmin.toolbox}/bin/ffsessions --dumps-path ${cfg.sessions.path} remove";
           mode = "browser";
         }
       ];

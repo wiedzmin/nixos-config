@@ -5,7 +5,7 @@ with lib;
 let
   cfg = config.content.screenshots;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   inherit (config.wmCommon) prefix;
 in
 {
@@ -72,7 +72,7 @@ in
         partOf = [ "graphical.target" ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${goBinPrefix user "screenshots"} --root ${cfg.baseDir}";
+          ExecStart = "${nurpkgs.toolbox}/bin/screenshots --root ${cfg.baseDir}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
