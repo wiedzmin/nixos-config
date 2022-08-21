@@ -83,7 +83,7 @@ in
       wmCommon.keys = [
         {
           key = [ "Print" ];
-          cmd = "${pkgs.flameshot}/bin/flameshot screen --path ${cfg.baseDir}";
+          cmd = "${pkgs.scrot}/bin/scrot --focused '${cfg.baseDir}/screenshot-%Y-%m-%d_%H-%M-%S.png'"; # NOTE: flameshot behaves strangely on kitty windows
           mode = "root";
         }
         {
