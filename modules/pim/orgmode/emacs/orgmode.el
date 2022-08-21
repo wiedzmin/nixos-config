@@ -481,4 +481,13 @@
   :hook
   (org-mode . org-edit-indirect-mode))
 
+;;NOTE: example of inter-package dependencies
+;;TODO: search and review other similar dependencies
+(eval-after-load 'avy
+  (use-package avy
+    :bind
+    (:map custom-org-map
+          ("h" . avy-org-goto-heading-timer)
+          ("^" . avy-org-refile-as-child))))
+
 ;; [[file:~/workspace/repos/github.com/wiedzmin/nixos-config/modules/pim/orgmode/todo.org::*https://github.com/akirak/akirak-mode/blob/1fa4845e5ad4af95b58c3cdba7ead7223f05cef0/akirak-consult-org.el#L7][TODO: review custom solutions]]
