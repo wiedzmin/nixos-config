@@ -71,8 +71,11 @@ in
       nixpkgs.config.packageOverrides = _: rec {
         xrandrutil = mkPythonScriptWithDeps pkgs "xrandrutil" (with pkgs; [ autorandr nurpkgs.pystdlib python3Packages.ewmh ])
           (builtins.readFile ./scripts/xrandrutil.py);
-        rescreen = pkgs.writeShellApplication { name = "rescreen"; runtimeInputs = with pkgs; [ autorandr ];
-                                                text = ''rescreen-"$(autorandr --detected)"-i3''; };
+        rescreen = pkgs.writeShellApplication {
+          name = "rescreen";
+          runtimeInputs = with pkgs; [ autorandr ];
+          text = ''rescreen-"$(autorandr --detected)"-i3'';
+        };
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
@@ -84,7 +87,7 @@ in
         }
         {
           key = [ "a" ];
-          cmd = "${pkgs.xrandrutil}/bin/xrandrutil --switch";
+          cmd = "${nurpkgs.toolbox}/bin/randrcli activate --profiles-root /home/alex3rd/.config/autorandr";
           mode = "xserver";
         }
         {
@@ -105,7 +108,7 @@ in
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ rescreen xrandrutil ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ rescreen nurpkgs.randrcli ]; };
     })
   ];
 }
