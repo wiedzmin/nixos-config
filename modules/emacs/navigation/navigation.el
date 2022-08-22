@@ -458,7 +458,7 @@
 (use-package ace-window
   :bind
   (:map custom-goto-map
-        ("M-w" . ace-window))
+        ("w" . ace-window))
   :custom
   (aw-background nil)
   (aw-leading-char-style 'char)
