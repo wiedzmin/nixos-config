@@ -57,7 +57,11 @@ in
           '';
         };
       };
-      shell.core.variables = [{ TB_TMUX_SESSION = cfg.defaultSession; global = true; }];
+      shell.core.variables = [{
+        TB_TMUX_SESSION = cfg.defaultSession;
+        TB_VT_ORG_TOOL = "tmux";
+        global = true;
+      }];
       workstation.video.transparency.opacityRule = [ ''65:name *?= "${cfg.defaultSession}" && class_g = "Alacritty"'' ];
       ext.programs.tmux = {
         enable = true;

@@ -75,6 +75,7 @@ in
 
       shell.core.variables = [
         { TERMINAL = builtins.head cfg.command; global = true; }
+        { TB_VT_ORG_TOOL = "kitty"; global = true; }
         { TB_TERMINAL_CMD = cfg.command; }
       ];
       attributes.vt.default.cmd = cfg.command;
