@@ -33,7 +33,7 @@ in
       };
       command = mkOption {
         type = types.listOf types.str;
-        default = [ "${pkgs.kitty}/bin/kitty" "-c" ];
+        default = [ "${pkgs.kitty}/bin/kitty" ];
         description = "Default command line to invoke";
       };
       scrollbackSize = mkOption {
