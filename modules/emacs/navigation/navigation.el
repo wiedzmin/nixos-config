@@ -648,8 +648,8 @@
   (:map custom-projects-map
         ("d" . project-dired)
         ("f" . consult-recent-file)
-        ("h" . consult-project-extra-find))
-        ("k" . project-kill-buffers))
+        ("h" . consult-project-extra-find)
+        ("k" . project-kill-buffers)))
 
 (use-package ripgrep
   :bind
