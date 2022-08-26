@@ -302,7 +302,6 @@ in
           } // {
             # navigation
             "f2>w" = "focus_visible_window";
-            "alt+tab" = "focus_visible_window";
             "alt+s>w" = "focus_visible_window";
             "ctrl+left" = "neighboring_window left";
             "ctrl+right" = "neighboring_window right";
