@@ -2,6 +2,9 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# TODO: backtrace-on-redisplay-error
+# TODO: js-json-mode
+
 let
   cfg = config.ide.emacs.core;
   user = config.attributes.mainUser.name;
