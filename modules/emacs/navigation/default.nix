@@ -63,6 +63,7 @@ in
         epkgs.dogears
         epkgs.embark
         epkgs.embark-consult
+        epkgs.fzf
         epkgs.goggles
         epkgs.imenu-anywhere
         epkgs.link-hint
