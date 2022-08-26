@@ -1,8 +1,3 @@
-(use-package lsp-python-ms
-  :custom
-  (lsp-python-ms-executable "@lspPythonMsExecutable@")
-  (lsp-python-ms-extra-paths [@lspPythonMsExtraPaths@]))
-
 (use-package python
   :mode ("\\.py$" . python-mode)
   :hook
@@ -30,7 +25,11 @@
   :capf python-completion-at-point
   :config
   (add-function :before-until (local 'eldoc-documentation-function)
-                #'(lambda () "")))
+                #'(lambda () ""))
+  (use-package lsp-python-ms
+    :custom
+    (lsp-python-ms-executable "@lspPythonMsExecutable@")
+    (lsp-python-ms-extra-paths [@lspPythonMsExtraPaths@])))
 
 (use-package flycheck-prospector
   :after flycheck)

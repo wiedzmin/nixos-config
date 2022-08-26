@@ -1,4 +1,6 @@
 (use-package cc-mode
+  :mode (("\\.c$" . cc-mode)
+         ("\\.h$" . cc-mode))
   ;; :after dap
   :config
   ;; (use-package dap-cpptools)

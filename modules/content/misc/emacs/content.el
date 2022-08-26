@@ -1,4 +1,5 @@
-(use-package elfeed)
+(use-package elfeed
+  :defer t)
 
 (use-package elfeed-org
   :after elfeed

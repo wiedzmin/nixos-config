@@ -469,13 +469,12 @@
 
 (use-package orglink
   :delight " *>"
+  :hook
+  (emacs-lisp-mode-hook . orglink-mode)
+  (nix-mode-hook . orglink-mode)
+  (go-mode-hook . orglink-mode)
   :custom
-  (orglink-activate-in-modes '(emacs-lisp-mode
-                               nix-mode
-                               go-mode)) ;NOTE: extend as needed
-  (orglink-match-anywhere t)
-  :config
-  (global-orglink-mode 1))
+  (orglink-match-anywhere t))
 
 (use-package org-edit-indirect
   :hook

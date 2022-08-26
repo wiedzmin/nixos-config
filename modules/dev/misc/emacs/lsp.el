@@ -129,6 +129,7 @@
   )
 
 (use-package lsp-ui-sideline
+  :after lsp-mode
   :ensure lsp-ui
   :custom
   (lsp-ui-sideline-code-actions-prefix "💡 ")

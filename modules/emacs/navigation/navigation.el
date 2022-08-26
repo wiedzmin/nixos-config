@@ -810,7 +810,6 @@
 
 ;TODO: play with groups/workspaces (https://github.com/alphapapa/bufler.el#default-groups-example)
 (use-package bufler
-  :demand t
   :preface
   (defvar consult--bufler-workspace+
     (list :name "Workspace"

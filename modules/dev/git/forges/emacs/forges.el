@@ -1,4 +1,6 @@
-(use-package forge)
+(use-package forge
+  ;TODO: investigate package and use-cases
+  :after magit)
 
 (use-package browse-at-remote
   :bind
