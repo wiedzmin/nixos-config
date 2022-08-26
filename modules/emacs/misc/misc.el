@@ -15,7 +15,6 @@
       (imagemagick-register-types)))
 
 (use-package hl-todo
-  :if (string-equal "i3" (getenv "CURRENT_WM"))
   :hook
   (prog-mode-hook . hl-todo-mode))
 
