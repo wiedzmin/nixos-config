@@ -9,11 +9,6 @@
   :custom
   (disabled-command-function nil))
 
-(if (version< emacs-version "27.1")
-    (use-package image
-      :config
-      (imagemagick-register-types)))
-
 (use-package hl-todo
   :hook
   (prog-mode-hook . hl-todo-mode))
