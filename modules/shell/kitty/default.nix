@@ -33,7 +33,7 @@ in
       };
       command = mkOption {
         type = types.listOf types.str;
-        default = [ "${pkgs.kitty}/bin/kitty" ];
+        default = [ "${pkgs.kitty}/bin/kitty" "-1" "--listen-on tcp:localhost:${builtins.toString cfg.remote.port}" ];
         description = "Default command line to invoke";
       };
       scrollbackSize = mkOption {
@@ -47,6 +47,12 @@ in
         visible = false;
         internal = true;
         description = "Kitty default window class.";
+      };
+      # TODO: consider ""nix-optionalizing"" remote control feature
+      remote.port = mkOption {
+        type = types.int;
+        default = 12345;
+        description = "TCP port for kitty to listen to";
       };
       wm.enable = mkOption {
         type = types.bool;
@@ -76,6 +82,7 @@ in
       shell.core.variables = [
         { TERMINAL = builtins.head cfg.command; global = true; }
         { TB_VT_ORG_TOOL = "kitty"; global = true; }
+        { TB_KITTY_SOCKET = "tcp:localhost:${builtins.toString cfg.remote.port}"; global = true; }
         { TB_TERMINAL_CMD = cfg.command; }
       ];
       attributes.vt.default.cmd = cfg.command;
@@ -279,7 +286,7 @@ in
             # kitty_mod = "ctrl+shift"; # TODO: play with this
             allow_hyperlinks = "yes";
             allow_remote_control = "yes";
-            listen_on = "unix:/tmp/kitty";
+            listen_on = "tcp:localhost:12345";
             detect_urls = "yes";
             select_by_word_characters = ":@-./_~?&=%+#";
             strip_trailing_spaces = "smart";
@@ -379,8 +386,6 @@ in
             mouse_map super+left press grabbed mouse_discard_event
             mouse_map super+left release grabbed,ungrabbed mouse_click_url
             mouse_map super+alt+left press ungrabbed mouse_selection rectangle
-
-            export KITTY_LISTEN_ON=unix:/tmp/kitty-$PPID
           '';
         };
       };
@@ -392,12 +397,12 @@ in
             K("M-Shift-dot"): K("M-Shift-RIGHT_BRACE"),
         }, "kitty")
       ''; # NOTE: workarounds for some unexpectedly non-working prefixes
-      wmCommon.autostart.entries = optionals cfg.autostart [ (builtins.head cfg.command) ];
+      wmCommon.autostart.entries = optionals cfg.autostart [ (lib.concatStringsSep " " cfg.command) ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ prefix "Shift" "Return" ];
-        cmd = builtins.head cfg.command;
+        cmd = lib.concatStringsSep " " cfg.command;
         mode = "root";
       }];
     })
