@@ -70,11 +70,11 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        wifi-status = pkgs.writeShellApplication { name = "wifi-status"; runtimeInputs = with pkgs; [ gawk wirelesstools ];
-                                                   text = builtins.readFile ./scripts/wifi-status.sh; };
-        headset_battery = mkPythonScriptWithDeps pkgs "headset_battery"
-          (with pkgs; [ nurpkgs.pystdlib python3Packages.redis bluetooth_battery ])
-          (builtins.readFile ./scripts/headset_battery.py);
+        wifi-status = pkgs.writeShellApplication {
+          name = "wifi-status";
+          runtimeInputs = with pkgs; [ gawk wirelesstools ];
+          text = builtins.readFile ./scripts/wifi-status.sh;
+        };
       };
 
       boot.extraModprobeConfig = ''
@@ -116,11 +116,6 @@ in
           lib.strings.escapeNixString (builtins.toJSON (lib.forEach cfg.bluetooth.devices (d: d.mac)))
         }
       '';
-      wmCommon.keys = [{
-        key = [ "h" ];
-        mode = "network";
-        cmd = "${pkgs.headset_battery}/bin/headset_battery";
-      }];
     })
     (mkIf (cfg.enable && cfg.tools.enable) { programs.wavemon.enable = true; })
     (mkIf (cfg.enable && cfg.wm.enable) {
@@ -152,7 +147,7 @@ in
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ wifi-status headset_battery ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ wifi-status ]; };
     })
   ];
 }
