@@ -646,6 +646,7 @@
       (project-root (project-current)))))
   :bind
   (:map custom-projects-map
+        ("b" . custom/kill-vc-current-buffer-file-path)
         ("d" . project-dired)
         ("r" . consult-recent-file)
         ("h" . consult-project-extra-find)

@@ -91,6 +91,7 @@ in
         "minibuffer-edit" = builtins.readFile ./custom/minibuffer-edit.el;
         "orderless-dispatchers" = builtins.readFile ./custom/orderless-dispatchers.el;
         "consult-utils" = builtins.readFile ./custom/consult-utils.el;
+        "misc" = builtins.readFile ./custom/misc.el;
       };
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./navigation.el ];
       ide.emacs.core.customKeymaps = {
