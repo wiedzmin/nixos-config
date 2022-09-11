@@ -88,7 +88,7 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
         key = [ "b" ];
-        cmd = "${nurpkgs.toolbox}/bin/bookshelf";
+        cmd = "${nurpkgs.toolbox}/bin/insight ebooks";
         mode = "select";
         leaveFullscreen = true;
       }];
