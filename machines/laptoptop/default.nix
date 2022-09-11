@@ -111,7 +111,6 @@ in
   services.xserver = {
     enable = true;
     videoDrivers = [ "modesetting" ];
-    useGlamor = true;
     exportConfiguration = true;
     displayManager = {
       lightdm = {

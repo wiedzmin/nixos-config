@@ -122,7 +122,6 @@ in {
   services.xserver = {
     enable = true;
     videoDrivers = [ "modesetting" ];
-    useGlamor = true;
     exportConfiguration = true;
     desktopManager = {
       xterm.enable = false;
