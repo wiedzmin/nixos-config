@@ -7,12 +7,14 @@ let
   user = config.attributes.mainUser.name;
   mkKeyValue = key: value:
     let
-      mvalue = if builtins.isBool value then
-        (if value then "True" else "False")
-      else
-        builtins.toString value;
-    in "${key}=${mvalue}";
-  toINIColon = generators.toINI { mkKeyValue = generators.mkKeyValueDefault {} ":"; };
+      mvalue =
+        if builtins.isBool value then
+          (if value then "True" else "False")
+        else
+          builtins.toString value;
+    in
+    "${key}=${mvalue}";
+  toINIColon = generators.toINI { mkKeyValue = generators.mkKeyValueDefault { } ":"; };
   toINICustom = generators.toINI { inherit mkKeyValue; };
 in
 {
@@ -213,7 +215,7 @@ in
           PLUGINS = {
             print = "default";
           };
-          ALIASES = {};
+          ALIASES = { };
         };
         xdg.configFile."vimiv/styles/custom".text = lib.generators.toINI { } {
           STYLE = {

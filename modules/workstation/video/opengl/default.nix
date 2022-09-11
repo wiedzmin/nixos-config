@@ -4,7 +4,8 @@ with lib;
 
 let
   cfg = config.workstation.video.opengl;
-in {
+in
+{
   options = {
     workstation.video.opengl = {
       enable = mkOption {

@@ -5,7 +5,8 @@ let
   cfg = config.appearance.fonts.fira-code;
   user = config.attributes.mainUser.name;
   inherit (config.appearance.fonts) beautify;
-in {
+in
+{
   options.appearance.fonts.fira-code = { enable = mkEnableOption "fira-code"; };
 
   config = mkIf cfg.enable {

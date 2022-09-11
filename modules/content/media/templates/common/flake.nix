@@ -14,5 +14,6 @@
           inherit system;
           overlays = [ nur.overlay ];
         };
-      in { devShell = import ./shell.nix { inherit pkgs; }; });
+      in
+        { devShell = import ./shell.nix { inherit pkgs; }; });
 }

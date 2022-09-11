@@ -6,7 +6,8 @@ let
   cfg = config.dev.git.autopush;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     dev.git.autopush = {
       enable = mkOption {

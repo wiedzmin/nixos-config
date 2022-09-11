@@ -14,7 +14,8 @@ with lib;
 let
   cfg = config.dev.frontend;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     dev.frontend = {
       enable = mkOption {

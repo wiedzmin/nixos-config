@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.appearance.xresources;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     appearance.xresources = {
       enable = mkOption {

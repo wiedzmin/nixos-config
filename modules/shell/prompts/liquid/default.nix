@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.shell.prompts.liquid;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     shell.prompts.liquid = {
       enable = mkOption {
@@ -30,7 +31,8 @@ in {
       ];
 
       home-manager.users."${user}" = {
-        home.file = { # TODO: extract options
+        home.file = {
+          # TODO: extract options
           ".lp.ps1".text = builtins.readFile ./assets/.lp.ps1;
           ".liquidpromptrc".text = builtins.readFile ./assets/.liquidpromptrc;
         };

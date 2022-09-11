@@ -6,7 +6,8 @@ let
   cfg = config.pim.scheduling;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     pim.scheduling = {
       enable = mkOption {
@@ -60,19 +61,22 @@ in {
           '';
         };
       };
-      systemd.user.services = (lib.mapAttrs (name: meta: {
-        description = "${name}";
-        serviceConfig = let forWork = builtins.hasAttr "forWork" meta && meta.forWork;
-        in {
-          Type = "oneshot";
-          Environment = [ "DISPLAY=:0" ];
-          ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
-          ExecStart = optionalString forWork ''${pkgs.fcalendar}/bin/fcalendar check --cmd "'' + "${meta.cmd}"
-            + optionalString forWork ''"'';
-          StandardOutput = "journal";
-          StandardError = "journal";
-        };
-      }) cfg.entries) // {
+      systemd.user.services = (lib.mapAttrs
+        (name: meta: {
+          description = "${name}";
+          serviceConfig =
+            let forWork = builtins.hasAttr "forWork" meta && meta.forWork;
+            in {
+              Type = "oneshot";
+              Environment = [ "DISPLAY=:0" ];
+              ExecStartPre = "${config.systemd.package}/bin/systemctl --user import-environment DISPLAY XAUTHORITY";
+              ExecStart = optionalString forWork ''${pkgs.fcalendar}/bin/fcalendar check --cmd "'' + "${meta.cmd}"
+                + optionalString forWork ''"'';
+              StandardOutput = "journal";
+              StandardError = "journal";
+            };
+        })
+        cfg.entries) // {
         "fcalendar-update" = {
           description = "Update factory calendar";
           serviceConfig = {
@@ -85,11 +89,13 @@ in {
           };
         };
       };
-      systemd.user.timers = (lib.mapAttrs (name: meta: {
-        description = "${name}";
-        wantedBy = [ "timers.target" ];
-        timerConfig = { OnCalendar = meta.cal; };
-      }) cfg.entries) // {
+      systemd.user.timers = (lib.mapAttrs
+        (name: meta: {
+          description = "${name}";
+          wantedBy = [ "timers.target" ];
+          timerConfig = { OnCalendar = meta.cal; };
+        })
+        cfg.entries) // {
         "fcalendar-update" = {
           description = "Update factory calendar";
           wantedBy = [ "timers.target" ];

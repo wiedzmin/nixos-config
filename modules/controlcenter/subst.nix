@@ -1,6 +1,7 @@
 { ... }:
 
-rec { # FIXME: provide actual values (was lost)
+rec {
+  # FIXME: provide actual values (was lost)
   defaultBrowser = "";
   defaultEbookReader = "";
   defaultPager = "";

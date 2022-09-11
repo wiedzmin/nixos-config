@@ -11,7 +11,8 @@ let
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
   };
-in {
+in
+{
   options = {
     dbms.pgsql = {
       enable = mkOption {

@@ -15,7 +15,8 @@ let
     gitstats
     gomp
   ];
-in mkShell {
+in
+mkShell {
   buildInputs = base ++ git ++ [ ];
   shellHook = ''
     export ANSIBLE_RETRY_FILES_SAVE_PATH=`pwd`/.ansible

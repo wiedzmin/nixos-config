@@ -4,7 +4,8 @@ with lib;
 
 let
   cfg = config.workstation.backups;
-in {
+in
+{
   options = {
     workstation.backups = {
       enable = mkOption {

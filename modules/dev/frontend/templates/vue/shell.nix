@@ -17,7 +17,8 @@ let
     gitstats
     gomp
   ];
-in mkShell {
+in
+mkShell {
   buildInputs = base ++ stats ++ git ++ [ nodejs-14_x yarn ];
   shellHook = ''
     [ -f "./.aux" ] && source ./.aux

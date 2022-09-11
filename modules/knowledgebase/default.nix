@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.knowledgebase;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     knowledgebase = {
       enable = mkOption {

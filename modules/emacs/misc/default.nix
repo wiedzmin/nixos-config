@@ -4,7 +4,8 @@ with lib;
 
 let
   cfg = config.ide.emacs.misc;
-in {
+in
+{
   options = {
     ide.emacs.misc = {
       enable = mkOption {

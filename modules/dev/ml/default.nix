@@ -4,7 +4,8 @@ with lib;
 
 let
   cfg = config.dev.ml;
-in {
+in
+{
   options = {
     dev.ml = {
       emacs.enable = mkOption {

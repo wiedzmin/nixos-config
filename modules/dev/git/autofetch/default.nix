@@ -6,7 +6,8 @@ let
   cfg = config.dev.git.autofetch;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-in {
+in
+{
   options = {
     dev.git.autofetch = {
       enable = mkOption {
@@ -58,11 +59,13 @@ in {
 
       # IDEA: place empty ".noauto" or like file in repo root to prevent any further breakage if something went wrong
       dev.batchvcs.commands = {
-        mu = [ # merge upstream
+        mu = [
+          # merge upstream
           "${pkgs.gitctl}/bin/gitfetch --op fetch --remote ${cfg.defaultOriginRemote}"
           "${pkgs.gitctl}/bin/gitfetch --op merge ${cfg.mainBranchName}"
         ];
-        ru = [ # rebase upstream
+        ru = [
+          # rebase upstream
           "${pkgs.gitfetch}/bin/gitfetch --op fetch"
           "${pkgs.gitfetch}/bin/gitfetch --op rebase"
         ];

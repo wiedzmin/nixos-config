@@ -4,7 +4,8 @@ with lib;
 
 let
   cfg = config.dev.lisp;
-in {
+in
+{
   options = {
     dev.lisp = {
       enable = mkOption {

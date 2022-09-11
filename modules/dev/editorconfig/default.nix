@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.dev.editorconfig;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     dev.editorconfig = {
       enable = mkOption {

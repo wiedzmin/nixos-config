@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.gc;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     gc = {
       enable = mkOption {

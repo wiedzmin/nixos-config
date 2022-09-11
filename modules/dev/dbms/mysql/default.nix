@@ -11,7 +11,8 @@ let
     localSystem = { system = "x86_64-linux"; };
   };
   inherit (hm.xdg) dataHome;
-in {
+in
+{
   options = {
     dbms.mysql = {
       enable = mkOption {

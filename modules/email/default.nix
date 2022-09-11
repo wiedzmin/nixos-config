@@ -10,7 +10,8 @@ let
     echo $(${pkgs.pass}/bin/pass $1 | ${pkgs.coreutils}/bin/head -n 1)
   '';
   inherit (hm.xdg) dataHome;
-in {
+in
+{
   options = {
     email = {
       enable = mkOption {

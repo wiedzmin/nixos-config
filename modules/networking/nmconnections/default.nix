@@ -213,9 +213,10 @@ in
       environment.etc = builtins.listToAttrs (lib.forEach
         (builtins.filter
           (conn: (conn.type == "wifi" && conn.id != "" && conn.uuid != "" && conn.wifi.ssid != "" && conn.wifi.password != "") ||
-                 (conn.type == "vpn" && conn.l2vpn.ipsec.psk != "" &&
-                  conn.l2vpn.user != "" && conn.l2vpn.password != "" && conn.l2vpn.gateway != "")) cfg.connections)
-          (conn: lib.nameValuePair "NetworkManager/system-connections/${conn.id}.nmconnection" (genNMConn conn)));
+            (conn.type == "vpn" && conn.l2vpn.ipsec.psk != "" &&
+              conn.l2vpn.user != "" && conn.l2vpn.password != "" && conn.l2vpn.gateway != ""))
+          cfg.connections)
+        (conn: lib.nameValuePair "NetworkManager/system-connections/${conn.id}.nmconnection" (genNMConn conn)));
     })
     (mkIf ((builtins.filter (c: c.type == "vpn") cfg.connections) != [ ]) {
       networking.networkmanager.enableStrongSwan = true;

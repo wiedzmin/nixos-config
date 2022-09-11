@@ -5,7 +5,8 @@ let
   cfg = config.appearance.fonts.jetbrains-mono;
   user = config.attributes.mainUser.name;
   inherit (config.appearance.fonts) beautify;
-in {
+in
+{
   options.appearance.fonts.jetbrains-mono = { enable = mkEnableOption "jetbrains-mono"; };
 
   config = mkIf cfg.enable {

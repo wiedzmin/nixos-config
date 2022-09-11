@@ -41,8 +41,10 @@ in
 
       nixpkgs.config.packageOverrides = _: rec {
         debug-qtile = mkWMDebugScript
-          pkgs "debug-qtile" pkgs.qtile config.attributes.hardware.monitors.internalHead
-            ''qtile start -c "$XDG_CONFIG_HOME/qtile/config.py"'';
+          pkgs "debug-qtile"
+          pkgs.qtile
+          config.attributes.hardware.monitors.internalHead
+          ''qtile start -c "$XDG_CONFIG_HOME/qtile/config.py"'';
       };
 
       home-manager.users."${user}" = {

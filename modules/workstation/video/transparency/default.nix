@@ -6,7 +6,8 @@ let
   cfg = config.workstation.video.transparency;
   user = config.attributes.mainUser.name;
   inherit (config.wmCommon) prefix;
-in {
+in
+{
   options = {
     workstation.video.transparency = {
       enable = mkOption {

@@ -73,7 +73,8 @@ let
     "doom-atom"
     "doom-colors" # for less minimal icon theme
   ];
-in {
+in
+{
   options = {
     appearance.emacs.themes.doom = {
       enable = mkOption {

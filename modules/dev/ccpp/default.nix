@@ -6,7 +6,8 @@ with lib;
 let
   cfg = config.dev.ccpp;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     dev.ccpp = {
       enable = mkOption {

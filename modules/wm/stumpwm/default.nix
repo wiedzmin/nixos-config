@@ -4,7 +4,8 @@ with lib;
 let
   cfg = config.wm.stumpwm;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     wm.stumpwm = {
       enable = mkOption {

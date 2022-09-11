@@ -5,7 +5,8 @@ with lib;
 let
   cfg = config.ext.nix.navigation;
   user = config.attributes.mainUser.name;
-in {
+in
+{
   options = {
     ext.nix.navigation = {
       enable = mkOption {

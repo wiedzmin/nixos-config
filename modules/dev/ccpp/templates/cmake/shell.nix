@@ -17,7 +17,8 @@ let
     gitstats
     gomp
   ];
-in mkShell {
+in
+mkShell {
   buildInputs = base ++ stats ++ git ++ [ uncrustify debugedit-unstable ];
   shellHook = ''
     [ -f "./.aux" ] && source ./.aux
