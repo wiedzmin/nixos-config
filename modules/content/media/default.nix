@@ -69,7 +69,7 @@ in
         "media.common" = configPrefix config.navigation.bookmarks.workspaces.roots "modules/content/media/templates/common";
       };
 
-      environment.systemPackages = with pkgs; [ ncmpcpp freetube ytfzf moc ];
+      environment.systemPackages = with pkgs; [ clipgrab freetube moc ncmpcpp ytfzf ];
 
       home-manager.users."${user}" = {
         xdg.configFile."espanso/user/content.yml".text = ''
