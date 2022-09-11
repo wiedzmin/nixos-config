@@ -86,7 +86,7 @@ in
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
-        key = [ "XF86ScreenSaver" ];
+        key = (if config.attributes.hardware.dmiSystemVersion == "ThinkPad X270" then [ "XF86Tools" ] else [ "XF86ScreenSaver" ]);
         cmd = "${cfg.command.lock}";
         mode = "root";
       }];
