@@ -779,6 +779,15 @@ rec {
       local.path = "${wsRoot roots "github"}/jwiegley/notes/gists/fef31cdaae1d00c39fce075e9a0ac1e4/loop.nix";
       transient = true;
     };
+    papers-i-love = {
+      desc = "Computer science and computer-adjacent papers";
+      local.path = "${wsRoot roots "github"}/fogus/papers-i-love";
+      remote = {
+        url = "https://github.com/fogus/papers-i-love";
+        jump = true;
+        searchSuffix = "search?q=";
+      };
+    };
     agenda = {
       local.path = homePrefix user "docs/org/roam/agenda.org";
       windowRules = [
