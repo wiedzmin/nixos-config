@@ -303,12 +303,6 @@ in
       };
     })
     (mkIf cfg.docflow.enable {
-      nixpkgs.config.packageOverrides = _: rec {
-        open-doc =
-          mkPythonScriptWithDeps pkgs "open-doc" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis stable.libreoffice onlyoffice-bin ])
-            (builtins.readFile ./scripts/open-doc.py);
-      };
-
       systemd.user.services = builtins.listToAttrs (forEach (localFiles "docs" config.navigation.bookmarks.entries) (root:
         let
           token = concatStringsSep "-" (takeLast 2 (splitString "/" root)); # TODO: review token construction algorithm
@@ -337,14 +331,13 @@ in
 
       wmCommon.keys = [{
         key = [ "d" ];
-        cmd = "${pkgs.open-doc}/bin/open-doc";
+        cmd = "${nurpkgs.toolbox}/bin/insight docs";
         mode = "select";
       }];
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           stable.libreoffice
-          open-doc
           unipicker
         ];
         xdg.mimeApps.defaultApplications =
@@ -354,6 +347,8 @@ in
 
       pim.timetracking.rules =
         mkArbttProgramMultipleTagsRule "libreoffice" [ "activity:docflow" "program:libreoffice" ];
+      # TODO: consider using metadata similar to `config.attributes.ebookreader.default`
+      shell.core.variables = [{ TB_DOCS_VIEWER_COMMAND = "${stable.libreoffice}/bin/soffice"; global = true; }];
     })
     (mkIf cfg.processors.enable {
       home-manager.users."${user}" = {
