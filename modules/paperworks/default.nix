@@ -229,7 +229,7 @@ in
         }
         {
           assertion = cfg.scanning.snapscan.enable && builtins.pathExists cfg.scanning.snapscan.firmware;
-          message = "paperwork: no firmware file found at ${cfg.scanning.snapscan.firmware}.";
+          message = "paperwork: no firmware file found at ${cfg.scanning.snapscan.firmware}";
         }
       ];
       nixpkgs.config = { sane.snapscanFirmware = cfg.scanning.snapscan.firmware; };
