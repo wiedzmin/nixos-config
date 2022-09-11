@@ -309,27 +309,31 @@ in
             (builtins.readFile ./scripts/open-doc.py);
       };
 
-      systemd.user.services = builtins.listToAttrs (forEach (localFiles "docs" config.navigation.bookmarks.entries) (root: {
-        name = "update-docs-${concatStringsSep "-" (takeLast 2 (splitString "/" root))}";
-        value = {
-          description = "Update ${concatStringsSep "-" (takeLast 2 (splitString "/" root))} contents";
-          after = [ "graphical-session-pre.target" ];
-          partOf = [ "graphical-session.target" ];
-          wantedBy = [ "graphical-session.target" ];
-          path = [ pkgs.bash ];
-          serviceConfig = {
-            Type = "simple";
-            WorkingDirectory = root;
-            ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
+      systemd.user.services = builtins.listToAttrs (forEach (localFiles "docs" config.navigation.bookmarks.entries) (root:
+        let
+          token = concatStringsSep "-" (takeLast 2 (splitString "/" root)); # TODO: review token construction algorithm
+        in
+        {
+          name = "update-docs-${token}";
+          value = {
+            description = "Update ${token} contents";
+            after = [ "graphical-session-pre.target" ];
+            partOf = [ "graphical-session.target" ];
+            wantedBy = [ "graphical-session.target" ];
+            path = [ pkgs.bash ];
+            serviceConfig = {
+              Type = "simple";
+              WorkingDirectory = root;
+              ExecStart = "${pkgs.watchexec}/bin/watchexec -r --exts ${
                 concatStringsSep "," cfg.docflow.extensions
-            } -- ${nurpkgs.toolbox}/bin/collect --root ${root} --exts ${
+              } -- ${nurpkgs.toolbox}/bin/collect --root ${root} --exts ${
                 concatStringsSep "," cfg.docflow.extensions
-            } --key paperworks/docs";
-            StandardOutput = "journal";
-            StandardError = "journal";
+              } --key paperworks/${token}/docs";
+              StandardOutput = "journal";
+              StandardError = "journal";
+            };
           };
-        };
-      }));
+        }));
 
       wmCommon.keys = [{
         key = [ "d" ];
