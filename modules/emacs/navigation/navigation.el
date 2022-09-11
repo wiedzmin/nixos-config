@@ -862,6 +862,10 @@
   (fzf/position-bottom t)
   (fzf/window-height 15))
 
+(use-package window
+  :custom
+  (switch-to-buffer-obey-display-actions t))
+
 (define-hostmode poly-nix-hostmode :mode 'nix-mode)
 
 (define-innermode poly-emacs-innermode
