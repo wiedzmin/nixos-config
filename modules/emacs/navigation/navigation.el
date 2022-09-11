@@ -676,6 +676,7 @@
   :hook
   ((consult-after-jump-hook imenu-after-jump-hook) . pulsar-recenter-top)
   ((consult-after-jump-hook imenu-after-jump-hook) . pulsar-reveal-entry)
+  (next-error-hook . pulsar-pulse-line)
   :custom
   (pulsar-pulse-functions '(recenter-top-bottom
                             move-to-window-line-top-bottom
@@ -693,7 +694,6 @@
                             outline-next-visible-heading
                             outline-previous-visible-heading
                             outline-up-heading))
-  (pulsar-pulse-on-window-change t)
   (pulsar-pulse t)
   (pulsar-delay 0.055)
   (pulsar-iterations 20)
