@@ -3,7 +3,7 @@
 
   # TODO: try cachix/pre-commit-hooks.nix
   inputs = rec {
-    stable.url = "github:NixOS/nixpkgs/nixos-20.03";
+    stable.url = "github:NixOS/nixpkgs/nixos-22.05";
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nur.url = "github:wiedzmin/NUR";
