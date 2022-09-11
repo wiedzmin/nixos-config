@@ -53,6 +53,12 @@ in
 
             - trigger: ":pss"
               replace: "ps -o pid,user,%mem,command ax | sort -b -k3 -r"
+
+            - trigger: ":redkj"
+              replace: "redis-cli keys '*' | cut -d\\  -f2 | fzf | xargs redis-cli get | jq ."
+
+            - trigger: ":redkr"
+              replace: "redis-cli keys '*' | cut -d\\  -f2 | fzf | xargs redis-cli get"
         '';
       };
     })
