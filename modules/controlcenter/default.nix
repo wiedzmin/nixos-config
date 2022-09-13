@@ -126,6 +126,7 @@ in
           };
         };
       };
+      services.udisks2.enable = true;
     })
     (mkIf (cfg.enable && cfg.notifications.backend == "dunst") {
       home-manager.users."${user}" = {
