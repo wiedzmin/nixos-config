@@ -61,8 +61,8 @@ in
         '';
       };
       scanning.snapscan.firmware = mkOption {
-        type = types.str;
-        default = "/homeless-shelter";
+        type = types.path;
+        default = /homeless-shelter;
         description = "Path to snapscan firmware file.";
       };
       scanning.frontend = mkOption {
