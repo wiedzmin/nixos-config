@@ -433,7 +433,11 @@ in
     };
     scanning = {
       enable = true;
-      extraBackends = [ stable.hplipWithPlugin ];
+      extraBackends = [ pkgs.epkowa ];
+      snapscan = {
+        enable = true;
+        firmware = ../../modules/paperworks/assets/Esfw52.bin;
+      };
       paperless = {
         enable = false;
         consumptionDir = homePrefix user "docs/paperless/consume";
