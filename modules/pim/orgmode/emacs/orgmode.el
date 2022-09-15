@@ -160,6 +160,7 @@
         ("u" . outline-up-heading)
         ("v" . org-reveal)
         ("w" . org-store-link)
+        ("x" . org-export-dispatch)
         ("y" . org-insert-link-global)
         ("|" . org-deadline)
         ("[" . org-agenda-file-to-front))
