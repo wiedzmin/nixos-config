@@ -35,6 +35,14 @@ in
         };
         size = 11.0;
       };
+      programs.kitty.settings = {
+        # If Regular is not distinguishable, use Medium
+        font_family = "JetBrains Mono Light";
+        bold_font = "JetBrains Mono Regular";
+        italic_font = "JetBrains Mono Light Italic";
+        bold_italic_font = "JetBrains Mono Regular Italic";
+        font_size = "9.0";
+      };
       programs.rofi.font = "JetBrains Mono Bold 11";
       programs.zathura.options.font = "JetBrains Mono Bold 9";
       services.dunst.settings.global.font = "JetBrains Mono Bold 8";

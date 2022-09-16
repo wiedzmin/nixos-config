@@ -35,6 +35,14 @@ in
         };
         size = 11.0;
       };
+      programs.kitty.settings = {
+        # If Regular is not distinguishable, use Medium
+        font_family = "Fira Code Light";
+        bold_font = "Fira Code Regular";
+        italic_font = "Fira Code Light Italic";
+        bold_italic_font = "Fira Code Regular Italic";
+        font_size = "9.0";
+      };
       programs.rofi.font = "Fira Code Bold 11";
       programs.zathura.options.font = "Fira Code Bold 8";
       services.dunst.settings.global.font = "Fira Code Bold 8";

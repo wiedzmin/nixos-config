@@ -35,6 +35,14 @@ in
         };
         size = 11.0;
       };
+      programs.kitty.settings = {
+        # If Regular is not distinguishable, use Medium
+        font_family = "Source Code Pro Light";
+        bold_font = "Source Code Pro Regular";
+        italic_font = "Source Code Pro Light Italic";
+        bold_italic_font = "Source Code Pro Regular Italic";
+        font_size = "9.0";
+      };
       programs.zathura.options.font = "Source Code Pro Bold 10";
       services.dunst.settings.global.font = "Source Code Pro Bold 10";
       xresources.properties = {

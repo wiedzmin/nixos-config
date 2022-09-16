@@ -35,6 +35,14 @@ in
         };
         size = 11.0;
       };
+      programs.kitty.settings = {
+        # If Regular is not distinguishable, use Medium
+        font_family = "Hack Light";
+        bold_font = "Hack Regular";
+        italic_font = "Hack Light Italic";
+        bold_italic_font = "Hack Regular Italic";
+        font_size = "9.0";
+      };
       programs.rofi.font = "Hack Bold 11";
       programs.zathura.options.font = "Hack Bold 10";
       services.dunst.settings.global.font = "Hack Bold 10";
