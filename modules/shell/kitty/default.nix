@@ -379,7 +379,7 @@ in
             "alt+x>page_up" = "kitten grab/grab.py";
             "alt+i" = "kitten grab/grab.py";
             "alt+x>f" = "launch --location=hsplit --allow-remote-control kitty +kitten search/search.py @active-kitty-window-id";
-            "ctrl+alt+enter" = "launch --location=hsplit --cwd=current"; # TODO: keybinding
+            "ctrl+alt+enter" = "launch --location=hsplit --cwd=current";
           };
           extraConfig = ''
             # These are not broken after 0.21.0 https://github.com/kovidgoyal/kitty/issues/3718
