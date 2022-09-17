@@ -165,6 +165,22 @@
         "type": "github"
       }
     },
+    "nix-zsh-completions": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1614026477,
+        "narHash": "sha256-TWgo56l+FBXssOYWlAfJ5j4pOHNmontOEolcGdihIJs=",
+        "owner": "spwhitt",
+        "repo": "nix-zsh-completions",
+        "rev": "468d8cf752a62b877eba1a196fbbebb4ce4ebb6f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "spwhitt",
+        "repo": "nix-zsh-completions",
+        "type": "github"
+      }
+    },
     "nixos-artwork": {
       "flake": false,
       "locked": {
@@ -316,6 +332,7 @@
         "kitty-grab": "kitty-grab",
         "kitty-search": "kitty-search",
         "liquidprompt": "liquidprompt",
+        "nix-zsh-completions": "nix-zsh-completions",
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs-index-fm": "nixpkgs-index-fm",

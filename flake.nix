@@ -73,6 +73,10 @@
       url = "github:chisui/zsh-nix-shell";
       flake = false;
     };
+    nix-zsh-completions = {
+      url = "github:spwhitt/nix-zsh-completions";
+      flake = false;
+    };
     zsh-reentry-hook = {
       url = "github:RobSis/zsh-reentry-hook";
       flake = false;

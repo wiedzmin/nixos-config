@@ -141,6 +141,11 @@ in
               src = inputs.zsh-nix-shell;
             }
             {
+              name = "nix-zsh-completions";
+              file = "nix-zsh-completions.plugin.zsh";
+              src = inputs.nix-zsh-completions;
+            }
+            {
               name = "you-should-use";
               file = "you-should-use.plugin.zsh";
               src = inputs.zsh-you-should-use;
