@@ -9,7 +9,7 @@
 (use-package avy
   :preface
   (defun avy-generic-command-action (action-f)
-    "Excecutes action-f at point and stays"
+    "Executes action-f at point and stays"
     (save-excursion
       (goto-char pt)
       (funcall action-f))
