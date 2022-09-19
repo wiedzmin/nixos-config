@@ -43,6 +43,16 @@
       (select-window (cdr dat))
       (goto-char (car dat)))
     t)
+  (defun avy-action-websearch (pt)
+    "Search web for sexp at PT."
+    (save-excursion
+      (goto-char pt)
+      (cl-destructuring-bind (start . end)
+          (bounds-of-thing-at-point 'sexp) ;TODO: fine-tune TAP type
+        (let ((term (buffer-substring start end)))
+          (message "searching for: %s" term)
+          (call-process "@websearchBinary@" nil 0 nil "--term" term))))
+    t)
   (defun avy-action-yank-whole-line (pt)
     (avy-action-copy-whole-line pt)
     (save-excursion (yank))
@@ -111,6 +121,7 @@
         (alist-get ?. avy-dispatch-alist) 'avy-action-mark-point
         (alist-get ?\C-w avy-dispatch-alist) 'avy-action-copy
         (alist-get ?\M-w avy-dispatch-alist) 'avy-action-copy-tap
+        (alist-get ?S avy-dispatch-alist) 'avy-action-websearch
         (alist-get ?W avy-dispatch-alist) 'avy-action-copy-whole-line
         (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line
         (alist-get ?k avy-dispatch-alist) 'avy-action-kill-stay
