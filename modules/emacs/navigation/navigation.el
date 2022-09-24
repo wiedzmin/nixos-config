@@ -53,6 +53,17 @@
           (message "searching for: %s" term)
           (call-process "@websearchBinary@" nil 0 nil "--term" term))))
     t)
+  (defun avy-action-open-url (pt)
+    "Open URL at PT."
+    (save-excursion
+      (goto-char pt)
+      (cl-destructuring-bind (start . end)
+          (bounds-of-thing-at-point 'url)
+        (let ((url (buffer-substring start end)))
+          (message "opening %s" url)
+          (browse-url url)
+          )))
+    t)
   (defun avy-action-yank-whole-line (pt)
     (avy-action-copy-whole-line pt)
     (save-excursion (yank))
@@ -122,6 +133,7 @@
         (alist-get ?\C-w avy-dispatch-alist) 'avy-action-copy
         (alist-get ?\M-w avy-dispatch-alist) 'avy-action-copy-tap
         (alist-get ?S avy-dispatch-alist) 'avy-action-websearch
+        (alist-get ?u avy-dispatch-alist) 'avy-action-open-url
         (alist-get ?W avy-dispatch-alist) 'avy-action-copy-whole-line
         (alist-get ?Y avy-dispatch-alist) 'avy-action-yank-whole-line
         (alist-get ?k avy-dispatch-alist) 'avy-action-kill-stay
