@@ -232,7 +232,7 @@ rec {
       code = ''rg -l "" | cut -f1,2 -d/ | sort | uniq | wc -l'';
     }
   ];
-  home-manager.users."${user}" = {
+  home-manager.users."${user}" = lib.optionals (config.completion.expansions.enable) {
     xdg.configFile."espanso/user/personal.yml".text = ''
       name: personal
       parent: default

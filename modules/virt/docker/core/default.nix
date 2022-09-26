@@ -79,6 +79,11 @@ in
           ignored = [ "DL3007" ];
           trustedRegistries = [ "docker.io" ];
         };
+      };
+      shell.prompts.starship.modulesConfiguration = { docker_context = { format = "via [🐋 $context](blue bold)"; }; };
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
         xdg.configFile."espanso/user/docker.yml".text = ''
           name: docker
           parent: default
@@ -89,8 +94,6 @@ in
               replace: "docker-compose up --detach --build && docker-compose restart $|$"
         '';
       };
-
-      shell.prompts.starship.modulesConfiguration = { docker_context = { format = "via [🐋 $context](blue bold)"; }; };
     })
     (mkIf (cfg.enable && cfg.aux.enable) {
       environment.systemPackages = with pkgs; [

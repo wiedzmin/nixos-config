@@ -123,6 +123,20 @@ in
         home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback statix ] ++
           lib.optionals cfg.lsp.enable [ rnix-lsp ];
         home.sessionPath = [ (homePrefix user ".cargo/bin") ];
+      };
+
+      systemd.services.nix-daemon = {
+        environment.TMPDIR = "/tmp/buildroot";
+        preStart = ''
+          mkdir -p /tmp/buildroot
+        '';
+      };
+
+      dev.misc.timeTracking.extensions.dev = { "nix" = "coding:nix"; };
+      pim.timetracking.rules = mkArbttProgramTitleRule [ "emacs" ] [ "/nixos-config/" ] "project:nixos-config";
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
         xdg.configFile."espanso/user/nix-core.yml".text = ''
           name: nix-core
           parent: default
@@ -149,16 +163,6 @@ in
               replace: "nix shell \"nixpkgs#fd\" -c fd $|$ /nix/store"
         '';
       };
-
-      systemd.services.nix-daemon = {
-        environment.TMPDIR = "/tmp/buildroot";
-        preStart = ''
-          mkdir -p /tmp/buildroot
-        '';
-      };
-
-      dev.misc.timeTracking.extensions.dev = { "nix" = "coding:nix"; };
-      pim.timetracking.rules = mkArbttProgramTitleRule [ "emacs" ] [ "/nixos-config/" ] "project:nixos-config";
     })
     (mkIf (cfg.enable && cfg.shell.enable) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ stable.nix-zsh-completions ]; };

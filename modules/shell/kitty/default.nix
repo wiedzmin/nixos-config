@@ -131,23 +131,6 @@ in
             file *.*
             action launch --type=overlay $EDITOR ''${FILE_PATH}
           '';
-          "espanso/user/kitty.yml".text = ''
-            name: kitty
-            parent: default
-
-            matches:
-              - trigger: ":ksk"
-                replace: "kitty +kitten show_key"
-
-              - trigger: ":ksmk"
-                replace: "kitty +kitten show_key -m kitty"
-
-              - trigger: ":khg"
-                replace: "kitty +kitten hyperlinked_grep $|$"
-
-              - trigger: ":ksa" # NOTE: temporary workaround for some strangely behaving (in terms of input) ssh sessions (no cause revealed yet)
-                replace: "nix shell \"nixpkgs#sakura\" -c sakura"
-          '';
           "kitty/grab" = {
             source = pkgs.kitty_grab;
             recursive = true;
@@ -398,6 +381,29 @@ in
         }, "kitty")
       ''; # NOTE: workarounds for some unexpectedly non-working prefixes
       wmCommon.autostart.entries = optionals cfg.autostart [ (lib.concatStringsSep " " cfg.command) ];
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile = {
+          "espanso/user/kitty.yml".text = ''
+            name: kitty
+            parent: default
+
+            matches:
+              - trigger: ":ksk"
+                replace: "kitty +kitten show_key"
+
+              - trigger: ":ksmk"
+                replace: "kitty +kitten show_key -m kitty"
+
+              - trigger: ":khg"
+                replace: "kitty +kitten hyperlinked_grep $|$"
+
+              - trigger: ":ksa" # NOTE: temporary workaround for some strangely behaving (in terms of input) ssh sessions (no cause revealed yet)
+                replace: "nix shell \"nixpkgs#sakura\" -c sakura"
+          '';
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{

@@ -43,6 +43,10 @@ in
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release ];
+      };
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
         xdg.configFile."espanso/user/systemtraits.yml".text = ''
           name: systemtraits
           parent: default

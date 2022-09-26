@@ -63,6 +63,18 @@ in
       users.users."${user}".extraGroups = [ "networkmanager" ];
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ anydesk ipinfo ];
+      };
+      wmCommon.modeBindings = {
+        "network" = [ prefix "n" ];
+      };
+      wmCommon.wsMapping.rules = [{
+        class = "Anydesk";
+        desktop = "tools";
+        activate = true;
+      }];
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
         xdg.configFile."espanso/user/networking.yml".text = ''
           name: networking
           parent: default
@@ -80,14 +92,6 @@ in
               replace: "sudo ifconfig $|$ down"
         '';
       };
-      wmCommon.modeBindings = {
-        "network" = [ prefix "n" ];
-      };
-      wmCommon.wsMapping.rules = [{
-        class = "Anydesk";
-        desktop = "tools";
-        activate = true;
-      }];
     })
   ];
 }

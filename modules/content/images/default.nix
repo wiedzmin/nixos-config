@@ -37,15 +37,6 @@ in
           imagemagick
           vimiv-qt
         ];
-        xdg.configFile."espanso/user/images.yml".text = ''
-          name: images
-          parent: default
-
-          matches:
-            - trigger: ":idim"
-              replace: "identify -verbose $|$"
-        '';
-
         xdg.configFile."vimiv/keys.conf".text = toINIColon {
           GLOBAL = {
             "<colon>" = "command";
@@ -312,6 +303,18 @@ in
         programs.zsh.shellAliases = {
           viq = "${pkgs.vimiv-qt}/bin/vimiv";
         };
+      };
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/user/images.yml".text = ''
+          name: images
+          parent: default
+
+          matches:
+            - trigger: ":idim"
+              replace: "identify -verbose $|$"
+        '';
       };
     })
   ];

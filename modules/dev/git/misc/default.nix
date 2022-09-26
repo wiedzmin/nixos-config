@@ -38,6 +38,16 @@ in
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ gitleaks ];
+      };
+
+      dev.batchvcs.commands = {
+        synctags = [ "${pkgs.gittags}/bin/gittags --sync" ];
+        usynctags = [ "${pkgs.gittags}/bin/gittags --sync --remote ${cfg.defaultUpstreamRemote}" ];
+        trim = [ "${pkgs.gitAndTools.git-trim}/bin/git-trim --delete=merged-local" ];
+      };
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
         xdg.configFile."espanso/user/git.yml".text = ''
           name: git
           parent: default
@@ -65,12 +75,6 @@ in
             - trigger: ":trec"
               replace: "git log -S$|$ --since=HEAD~50 --until=HEAD"
         '';
-      };
-
-      dev.batchvcs.commands = {
-        synctags = [ "${pkgs.gittags}/bin/gittags --sync" ];
-        usynctags = [ "${pkgs.gittags}/bin/gittags --sync --remote ${cfg.defaultUpstreamRemote}" ];
-        trim = [ "${pkgs.gitAndTools.git-trim}/bin/git-trim --delete=merged-local" ];
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

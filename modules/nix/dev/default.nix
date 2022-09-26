@@ -33,6 +33,10 @@ in
           nix-template
           nix-review # https://github.com/Mic92/nix-review
         ];
+      };
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
         xdg.configFile."espanso/user/nix-dev.yml".text = ''
           name: nix-dev
           parent: default

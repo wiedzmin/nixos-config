@@ -48,6 +48,10 @@ in
         programs.zsh.shellAliases = {
           yg = "${pkgs.you-get}/bin/you-get";
         };
+      };
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
         xdg.configFile."espanso/user/content_misc.yml".text = ''
           name: content_misc
           parent: default

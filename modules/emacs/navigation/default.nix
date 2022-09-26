@@ -25,26 +25,6 @@ in
       }];
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ ripgrep ];
-        xdg.configFile."espanso/user/navigation_emacs.yml".text = ''
-          name: navigation_emacs
-          parent: default
-          filter_class: "Emacs"
-
-          matches:
-            - trigger: ":rgr"
-              replace: "[[elisp:(progn (require 'rg) (rg-run \"{{token.value}}\" \"everything\" default-directory nil nil '(\"--context={{context.size}}\")))]]"
-              vars:
-                - name: token
-                  type: form
-                  params:
-                    layout: |
-                      search for: {{value}}
-                - name: context
-                  type: form
-                  params:
-                    layout: |
-                      context size: {{size}}
-        '';
       };
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.avy
@@ -105,6 +85,30 @@ in
         "custom-frame-map" = "<f2>";
       };
       # TODO: consider enhance custom keymaps nix machinery in a way of automatically unbinding, either global or some submapped conflicting keybindings
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/user/navigation_emacs.yml".text = ''
+          name: navigation_emacs
+          parent: default
+          filter_class: "Emacs"
+
+          matches:
+            - trigger: ":rgr"
+              replace: "[[elisp:(progn (require 'rg) (rg-run \"{{token.value}}\" \"everything\" default-directory nil nil '(\"--context={{context.size}}\")))]]"
+              vars:
+                - name: token
+                  type: form
+                  params:
+                    layout: |
+                      search for: {{value}}
+                - name: context
+                  type: form
+                  params:
+                    layout: |
+                      context size: {{size}}
+        '';
+      };
     })
   ];
 }

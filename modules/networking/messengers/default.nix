@@ -31,21 +31,6 @@ in
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ tdesktop zoom-us tdlib ];
-        xdg.configFile."espanso/user/telegram.yml".text = ''
-          name: telegram
-          parent: default
-          filter_class: "TelegramDesktop"
-
-          matches:
-            - trigger: ":shr"
-              replace: "¯\\_(ツ)_/¯"
-
-            - trigger: ":sm"
-              replace: "ツ"
-
-            - trigger: ":cr"
-              replace: "©"
-        '';
       };
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {
@@ -63,6 +48,25 @@ in
         }, "Slack")
       '';
       wmCommon.autostart.entries = optionals cfg.telegram.autostart [ "${pkgs.tdesktop}/bin/telegram-desktop" ];
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/user/telegram.yml".text = ''
+          name: telegram
+          parent: default
+          filter_class: "TelegramDesktop"
+
+          matches:
+            - trigger: ":shr"
+              replace: "¯\\_(ツ)_/¯"
+
+            - trigger: ":sm"
+              replace: "ツ"
+
+            - trigger: ":cr"
+              replace: "©"
+        '';
+      };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.telega ]; # review https://github.com/zevlg/telega.el as it goes
