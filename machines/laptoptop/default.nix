@@ -562,6 +562,7 @@ in
     core = {
       enable = true;
       dev.enable = true;
+      queueing.enable = true;
       emacs.enable = true;
     };
     prompts.starship.enable = true;

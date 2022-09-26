@@ -69,7 +69,7 @@ in
         "media.common" = configPrefix config.navigation.bookmarks.workspaces.roots "modules/content/media/templates/common";
       };
 
-      environment.systemPackages = with pkgs; [ clipgrab freetube moc ncmpcpp ytfzf ];
+      environment.systemPackages = with pkgs; [ clipgrab freetube moc ncmpcpp yt-dlp ytfzf ];
 
       home-manager.users."${user}" = {
         # TODO: deal with converting from `webm` ^^^ (use ffmpeg btw)
@@ -108,21 +108,36 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/content.yml".text = ''
-          name: content
-          parent: default
-          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
+        xdg.configFile = {
+          "espanso/user/content.yml".text = ''
+            name: content
+            parent: default
+            filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
 
-          matches:
-            - trigger: ":yt"
-              replace: "nix shell \"nixpkgs#yt-dlp\" -c yt-dlp \"$|$\""
+            matches:
+              - trigger: ":yt"
+                replace: "yt-dlp \"$|$\""
 
-            - trigger: ":4yt"
-              replace: "nix shell \"nixpkgs#yt-dlp\" -c yt-dlp \"$|$\" --merge-output-format mp4"
+              - trigger: ":4yt"
+                replace: "yt-dlp \"$|$\" --merge-output-format mp4"
 
-            - trigger: ":aft"
-              replace: "nix shell \"nixpkgs#android-file-transfer\" -c android-file-transfer"
-        '';
+              - trigger: ":aft"
+                replace: "nix shell \"nixpkgs#android-file-transfer\" -c android-file-transfer"
+          '';
+        } // lib.optionalString (config.shell.core.queueing.enable) {
+          "espanso/user/content_queueing.yml".text = ''
+            name: content_queueing
+            parent: default
+            filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
+
+            matches:
+              - trigger: ":pyt"
+                replace: "pueue add 'yt-dlp \"$|$\"'"
+
+              - trigger: ":p4yt"
+                replace: "pueue add 'yt-dlp \"$|$\" --merge-output-format mp4'"
+          '';
+        };
       };
     })
     (mkIf (cfg.enable && cfg.mpd.enable) {

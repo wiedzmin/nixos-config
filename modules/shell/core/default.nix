@@ -21,6 +21,11 @@ in
         default = [ ];
         description = "Metadata-augmented environment variables registry";
       };
+      queueing.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable shell commands queueing, using `pueue` machinery";
+      };
       dev.enable = mkOption {
         type = types.bool;
         default = false;
@@ -74,6 +79,55 @@ in
     })
     (mkIf (cfg.enable && cfg.dev.enable) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ checkbashisms shellcheck ]; };
+    })
+    (mkIf (cfg.enable && cfg.queueing.enable) {
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [ pueue ];
+      };
+      systemd.user.services."pueue-daemon" = {
+        description = "Pueue daemon";
+        path = [ pkgs.bash ];
+        serviceConfig = {
+          ExecStart = "${pkgs.pueue}/bin/pueued";
+          ExecReload = "${pkgs.pueue}/bin/pueued";
+          Restart = "no";
+          StandardOutput = "journal+console";
+          StandardError = "inherit";
+        };
+        wantedBy = [ "multi-user.target" ];
+      };
+      navigation.bookmarks.entries = {
+        pueue-wiki = {
+          desc = "Pueue github project wiki";
+          remote.url = "https://github.com/Nukesor/pueue/wiki";
+        };
+        emacs-pueue-repo = {
+          desc = "Pueue emacs frontend project repo";
+          remote.url = "https://github.com/xFA25E/pueue";
+        };
+      };
+    })
+    (mkIf (cfg.enable && cfg.queueing.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        # TODO: some fzf-based tasks listing automation
+        xdg.configFile."espanso/user/shell_core.yml".text = ''
+          name: shell_core
+          parent: default
+
+          matches:
+            - trigger: ":pus"
+              replace: "pueue status"
+
+            - trigger: ":pul"
+              replace: "pueue log"
+
+            - trigger: ":pur"
+              replace: "pueue restart $|$"
+
+            - trigger: ":pupr"
+              replace: "pueue restart --in-place $|$"
+        '';
+      };
     })
     (mkIf (cfg.enable && cfg.dev.enable && cfg.emacs.enable) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.bash-language-server ]; };
