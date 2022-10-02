@@ -31,7 +31,7 @@ in
           nix-prefetch-scripts
           nixos-generators
           nix-template
-          nix-review # https://github.com/Mic92/nix-review
+          nixpkgs-review # https://github.com/Mic92/nix-review
         ];
       };
     })

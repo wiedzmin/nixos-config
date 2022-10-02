@@ -241,7 +241,7 @@ in
               Include=shovel
 
           include/shovel
-              Open=(${pkgs.xdg_utils}/bin/xdg-open %f >/dev/null 2>&1 &)
+              Open=(${pkgs.xdg-utils}/bin/xdg-open %f >/dev/null 2>&1 &)
         '';
       };
     })

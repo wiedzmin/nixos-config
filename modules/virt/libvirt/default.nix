@@ -31,7 +31,7 @@ in
         spice-gtk
         vagrant
         vdi2qcow2
-        virtmanager
+        virt-manager
         virt-viewer
       ];
 

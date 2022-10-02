@@ -101,7 +101,7 @@ in
         bluetooth = {
           enable = true;
           powerOnBoot = true;
-          package = pkgs.bluezFull;
+          package = pkgs.bluez;
         };
       };
       services.blueman.enable = true;
