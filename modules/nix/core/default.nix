@@ -146,6 +146,9 @@ in
             - trigger: ":nsp"
               replace: "nix shell \"nixpkgs#$|$\""
 
+            - trigger: ":ns2"
+              replace: " \"nixpkgs#$|$\""
+
             - trigger: ":pkgs"
               replace: "inputs.unstable.legacyPackages.x86_64-linux.$|$"
 
