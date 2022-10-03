@@ -5,3 +5,8 @@
   :ensure lsp-mode
   :hook
   (sh-mode-hook . lsp-deferred))
+
+(use-package pueue
+  :bind
+  (:map mode-specific-map
+        ("q" . pueue)))

@@ -134,7 +134,7 @@ in
     })
     (mkIf (cfg.enable && cfg.dev.enable && cfg.emacs.enable) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.bash-language-server ]; };
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms ];
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms epkgs.pueue ];
       ide.emacs.core.config = builtins.readFile ./emacs/shell.el;
     })
   ];
