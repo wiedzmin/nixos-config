@@ -121,6 +121,9 @@ in
             - trigger: ":pul"
               replace: "pueue log"
 
+            - trigger: ":puc"
+              replace: "pueue clean"
+
             - trigger: ":pur"
               replace: "pueue restart $|$"
 
