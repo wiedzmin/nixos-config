@@ -42,6 +42,18 @@ rec {
         searchSuffix = "search?q=";
       };
     };
+    nix-versions = {
+      desc = "Mapping packages version to Nixpkgs repo git history";
+      remote = {
+        url = "https://lazamar.co.uk/nix-versions/";
+        jump = true;
+        searchSuffix = "?channel=nixos-unstable&package=";
+      };
+    };
+    nix-versions-blogpost = {
+      desc = "Descriptive blog post for `nix-versions` (see alongside)";
+      remote.url = "https://lazamar.github.io/download-specific-package-version-with-nix/";
+    };
     nixos-hardware = {
       desc = "NixOS hardware presets";
       local.path = "${wsRoot roots "github"}/NixOS/nixos-hardware";
@@ -535,10 +547,6 @@ rec {
       desc = "Internet connection speed";
       tags = [ "networking" "internet" "speed" ];
       remote.url = "https://speedtest24net.ru/";
-    };
-    "nixvers" = {
-      desc = "Nixpkgs versions search";
-      remote.url = "https://lazamar.co.uk/nix-versions/";
     };
     "orgupd" = {
       desc = "Orgmode updates";
