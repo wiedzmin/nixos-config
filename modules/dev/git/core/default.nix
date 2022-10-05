@@ -114,6 +114,18 @@ in
         };
       };
     })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/user/git-core.yml".text = ''
+          name: git-core
+          parent: default
+
+          matches:
+            - trigger: ":gitB"
+              replace: "git branch -a | fzf | tr -d \"[:blank:]\" | tr -d '\\n' | xsel -ib"
+        '';
+      };
+    })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.blamer
