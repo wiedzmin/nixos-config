@@ -121,7 +121,12 @@
   (avy-all-windows 'all-frames)
   (avy-single-candidate-jump nil)
   (setq avy-style 'at-full)
-  :custom-face (avy-goto-char-timer-face ((nil (:foreground "green" :weight bold))))
+  :custom-face
+  (avy-goto-char-timer-face ((nil (:foreground "green" :weight bold))))
+  (avy-lead-face ((nil (:foreground "black" :background "gold" :weight bold))))
+  (avy-lead-face-0 ((nil (:foreground "white" :background "blue" :weight bold))))
+  (avy-lead-face-1 ((nil (:foreground "white" :background "green" :weight bold))))
+  (avy-lead-face-2 ((nil (:foreground "white" :background "red" :weight bold))))
   :config
   ;NOTE: removed 'avy-dispatch-alist vs 'avy-keys conflicts
   (setf avy-dispatch-alist (assq-delete-all ?z avy-dispatch-alist)
