@@ -15,12 +15,7 @@ in
         default = false;
         description = "Whether to enable transparency customizations.";
       };
-      extraOptions = mkOption {
-        type = types.listOf types.str;
-        default = [ ];
-        description = "Extra options for Picom X11 compositor";
-      };
-      opacityRule = mkOption {
+      opacityRules = mkOption {
         type = types.listOf types.str;
         default = [ ];
         description = "View <home-manager.services.picom.description>";
@@ -43,14 +38,7 @@ in
             backend = "glx";
             vSync = true;
             package = pkgs.picom;
-            extraOptions = ''
-              glx-no-rebind-pixmap = true;
-              glx-no-stencil = true;
-              xrender-sync-fence = true;
-
-              ${concatStringsSep "\n" cfg.extraOptions}
-            '';
-            inherit (cfg) opacityRule;
+            inherit (cfg) opacityRules;
           };
         };
       };

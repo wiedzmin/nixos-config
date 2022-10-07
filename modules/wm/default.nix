@@ -201,8 +201,7 @@ in
         mode = "xserver";
       }];
       workstation.video.transparency = {
-        extraOptions = [ "detect-client-opacity = true;" ];
-        opacityRule = [ "0:_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'" ];
+        opacityRules = [ "0:_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'" ];
       };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {

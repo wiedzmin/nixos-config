@@ -62,7 +62,7 @@ in
         TB_VT_ORG_TOOL = "tmux";
         global = true;
       }];
-      workstation.video.transparency.opacityRule = [ ''65:name *?= "${cfg.defaultSession}" && class_g = "Alacritty"'' ];
+      workstation.video.transparency.opacityRules = [ ''65:name *?= "${cfg.defaultSession}" && class_g = "Alacritty"'' ];
       ext.programs.tmux = {
         enable = true;
         baseIndex = 1;
