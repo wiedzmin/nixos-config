@@ -453,6 +453,30 @@
         ("j" . org-roam-dailies-capture-today)))
 
 (use-package consult-org-roam
+  :preface
+  (defun avy-action-search-org-roam (pt)
+    "Search org-roam corpus for sexp at PT."
+    (save-excursion
+      (goto-char pt)
+      (cl-destructuring-bind (start . end)
+          (bounds-of-thing-at-point 'sexp) ;TODO: fine-tune TAP type
+        (let ((term (buffer-substring start end)))
+          (message "searching `org-roam' data for: %s" term)
+          (consult-org-roam-search term))))
+    t)
+  (defun avy-action-search-url-org-roam (pt)
+    "Search org-roam corpus for sexp at PT."
+    (save-excursion
+      (goto-char pt)
+      (condition-case nil
+          (cl-destructuring-bind (start . end)
+              (bounds-of-thing-at-point 'url)
+            (let ((term (buffer-substring start end)))
+              (message "searching `org-roam' data for: %s" term)
+              (consult-org-roam-search term)))
+        (error
+         (message "%s seems to not being an URL" (thing-at-point 'sexp)))))
+    t)
   :delight " |>"
   :config
   ;; Eventually suppress previewing for certain functions
@@ -464,7 +488,10 @@
   (:map org-roam-map
         ("b" . consult-org-roam-backlinks)
         ("f" . consult-org-roam-file-find)
-        ("g" . consult-org-roam-search)))
+        ("g" . consult-org-roam-search))
+  :config
+  (setf (alist-get ?o avy-dispatch-alist) 'avy-action-search-org-roam
+        (alist-get ?O avy-dispatch-alist) 'avy-action-search-url-org-roam))
 
 ;; TODO: https://github.com/nobiot/org-transclusion
 
