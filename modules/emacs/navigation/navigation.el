@@ -36,7 +36,8 @@
       (goto-char pt)
       (cl-destructuring-bind (start . end)
           (bounds-of-thing-at-point 'sexp)
-        (copy-region-as-kill start end)))
+        (copy-region-as-kill start end)
+        (message "Copied: %s" (buffer-substring start end))))
     (let ((dat (ring-ref avy-ring 0)))
       (select-frame-set-input-focus
        (window-frame (cdr dat)))
