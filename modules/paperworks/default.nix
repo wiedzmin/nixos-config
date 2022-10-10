@@ -205,16 +205,16 @@ in
 
       wmCommon.wsMapping.rules = lib.optionals (cfg.scanning.frontend == "skanlite") [{
         class = "skanlite";
-        desktop = "tools";
+        desktop = "scan";
       }] ++ lib.optionals (cfg.scanning.frontend == "gscan2pdf") [{
         class = "gscan2pdf-wrapped-wrapped";
-        desktop = "tools";
+        desktop = "scan";
       }] ++ lib.optionals (cfg.scanning.frontend == "simple-scan") [{
         class = "Simple-scan";
-        desktop = "tools";
+        desktop = "scan";
       }] ++ lib.optionals (cfg.scanning.frontend == "xsane") [{
         class = "Xsane";
-        desktop = "tools";
+        desktop = "scan";
       }];
     })
     (mkIf (cfg.scanning.enable && cfg.scanning.snapscan.enable) {
