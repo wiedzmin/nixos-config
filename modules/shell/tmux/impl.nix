@@ -3,11 +3,6 @@
 with lib;
 
 let
-  stable = import inputs.stable {
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  };
-
   cfg = config.ext.programs.tmux;
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
@@ -517,7 +512,7 @@ in
     {
       home-manager.users."${user}" = {
         home.packages = [ cfg.package ] ++ optional cfg.tmuxinator.enable pkgs.tmuxinator
-          ++ optional cfg.tmuxp.enable stable.tmuxp;
+          ++ optional cfg.tmuxp.enable tmuxp;
         home.file.".tmux.conf".text = tmuxConf;
       };
     }

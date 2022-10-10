@@ -5,10 +5,6 @@ with lib;
 let
   cfg = config.ext.nix.cachix;
   user = config.attributes.mainUser.name;
-  stable = import inputs.stable {
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {
@@ -48,7 +44,7 @@ in
       }];
 
       home-manager.users."${user}" = {
-        home.packages = [ stable.cachix ];
+        home.packages = with pkgs; [ cachix ];
         xdg.configFile."cachix/cachix.dhall".text =
           optionalString (cfg.configuration != "") cfg.configuration;
         home.activation.pushToCachix = {

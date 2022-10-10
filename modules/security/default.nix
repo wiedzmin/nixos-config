@@ -6,10 +6,6 @@ let
   cfg = config.ext.security;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  stable = import inputs.stable {
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {
@@ -71,7 +67,7 @@ in
         home.packages = with pkgs; [ gpg-tui mkpasswd paperkey passphrase2pgp senv ssh-to-pgp ];
         programs.password-store = {
           enable = true;
-          package = stable.pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
+          package = with pkgs; pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
           settings = {
             PASSWORD_STORE_CLIP_TIME = "60";
             PASSWORD_STORE_DIR = cfg.passwordStorePath;

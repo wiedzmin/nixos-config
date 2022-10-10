@@ -341,7 +341,6 @@
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",
         "scantailor-stable": "scantailor-stable",
-        "stable": "stable",
         "unstable": "unstable",
         "yasnippet-snippets": "yasnippet-snippets",
         "zsh-async": "zsh-async",
@@ -367,22 +366,6 @@
         "owner": "nixos",
         "repo": "nixpkgs",
         "rev": "ff9efb0724de5ae0f9db9df2debefced7eb1571d",
-        "type": "github"
-      }
-    },
-    "stable": {
-      "locked": {
-        "lastModified": 1664491521,
-        "narHash": "sha256-1Zj7Vi7zswETSHXueX8Oh1OA2f68DS7TOHoelLukA1U=",
-        "owner": "NixOS",
-        "repo": "nixpkgs",
-        "rev": "c9389643ae662834fd584ffa1898dc52956e1fba",
-        "type": "github"
-      },
-      "original": {
-        "owner": "NixOS",
-        "ref": "nixos-22.05",
-        "repo": "nixpkgs",
         "type": "github"
       }
     },

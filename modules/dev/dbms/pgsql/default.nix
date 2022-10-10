@@ -7,10 +7,6 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
   inherit (hm.xdg) dataHome;
-  stable = import inputs.stable {
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {
@@ -22,7 +18,7 @@ in
       };
       pgcli.package = mkOption {
         type = types.package;
-        default = stable.pgcli;
+        default = pkgs.pgcli;
         description = "PgCLI log file location.";
       };
       pgcli.logPath = mkOption {

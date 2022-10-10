@@ -3,10 +3,6 @@ with pkgs.unstable.commonutils;
 
 let
   user = config.attributes.mainUser.name;
-  stable = import inputs.stable {
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  };
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
@@ -426,7 +422,7 @@ in
   paperworks = {
     printing = {
       enable = true;
-      drivers = [ stable.hplip ];
+      drivers = [ pkgs.hplip ];
     };
     scanning = {
       enable = true;

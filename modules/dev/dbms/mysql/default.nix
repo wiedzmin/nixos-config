@@ -6,10 +6,6 @@ let
   cfg = config.dbms.mysql;
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
-  stable = import inputs.stable {
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  };
   inherit (hm.xdg) dataHome;
 in
 {
@@ -66,7 +62,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ MYCLI_HISTFILE = cfg.mycli.historyPath; global = true; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ stable.mycli ];
+        home.packages = with pkgs; [ mycli ];
         xdg.configFile.".myclirc".text = lib.generators.toINI { } {
           main = {
             audit_log = cfg.mycli.auditLogPath;

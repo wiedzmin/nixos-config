@@ -74,7 +74,6 @@ in
           config.flake = inputs.self;
           emacs.flake = inputs.emacs;
           unstable.flake = inputs.unstable;
-          stable.flake = inputs.stable;
         };
 
         optimise.automatic = false;
@@ -168,7 +167,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.shell.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ stable.nix-zsh-completions ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ nix-zsh-completions ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];

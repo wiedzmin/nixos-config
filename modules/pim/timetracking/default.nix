@@ -6,10 +6,6 @@ let
   cfg = config.pim.timetracking;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  stable = import inputs.stable {
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {
@@ -186,13 +182,13 @@ in
       };
       services.arbtt = {
         enable = true;
-        package = stable.haskellPackages.arbtt;
+        package = pkgs.haskellPackages.arbtt;
       };
       home-manager.users."${user}" = {
         home.file = { ".arbtt/categorize.cfg".text = cfg.config; };
         home.packages = with pkgs;
           [
-            stable.haskellPackages.arbtt # for stats viewing
+            haskellPackages.arbtt # for stats viewing
           ] ++ lib.optionals config.attributes.debug.scripts [ tt_capture ];
       };
     })
