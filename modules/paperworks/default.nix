@@ -6,7 +6,7 @@ let
   cfg = config.paperworks;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  scantailor-stable = import inputs.scantailor-stable {
+  nixpkgs-scantailor = import inputs.nixpkgs-scantailor {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
   };
@@ -197,7 +197,7 @@ in
       };
 
       environment.systemPackages = with pkgs;
-        [ deskew scantailor-stable.scantailor-advanced ] ++ lib.optionals (cfg.scanning.frontend == "skanlite") [ skanlite ] # scantailor-advanced --> ff9efb0724de5ae0f9db9df2debefced7eb1571d
+        [ deskew nixpkgs-scantailor.scantailor-advanced ] ++ lib.optionals (cfg.scanning.frontend == "skanlite") [ skanlite ]
         ++ lib.optionals (cfg.scanning.frontend == "gscan2pdf") [ gscan2pdf ]
         ++ lib.optionals (cfg.scanning.frontend == "simple-scan") [ simple-scan ]
         ++ lib.optionals (cfg.scanning.frontend == "xsane") [ xsane ];

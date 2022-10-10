@@ -6,7 +6,7 @@ let
   cfg = config.wm.i3;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  i3status-rs-stable = import inputs.i3status-rust-stable {
+  nixpkgs-i3status-rs = import inputs.nixpkgs-i3status-rs {
     config = config.nixpkgs.config // { allowUnfree = true; };
     localSystem = { system = "x86_64-linux"; };
   };
@@ -359,7 +359,7 @@ in
             enable = true;
             extraPackages = with pkgs;
               lib.optionals (cfg.statusbar.impl == "py3") [ i3status python3Packages.py3status file ]
-              ++ lib.optionals (cfg.statusbar.impl == "i3-rs") [ i3status-rs-stable.i3status-rust ]
+              ++ lib.optionals (cfg.statusbar.impl == "i3-rs") [ nixpkgs-i3status-rs.i3status-rust ]
               ++ lib.optionals (cfg.statusbar.impl == "blocks") [ i3blocks ] ++ cfg.statusbar.deps;
           };
         };
