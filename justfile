@@ -43,7 +43,7 @@ momcat-switch-no-net:
 
 # Remove system build local output
 clean:
-    unlink ./result
+    unlink ./result || exit 0
 
 # Rollback to previous working configuration(s)
 rollback:
