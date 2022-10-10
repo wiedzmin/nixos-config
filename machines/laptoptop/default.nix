@@ -426,6 +426,7 @@ in
     };
     scanning = {
       enable = true;
+      frontend = "xsane";
       extraBackends = [ pkgs.epkowa ];
       snapscan = {
         enable = true;
