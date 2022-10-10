@@ -215,6 +215,7 @@ in
       }] ++ lib.optionals (cfg.scanning.frontend == "xsane") [{
         class = "Xsane";
         desktop = "scan";
+        float = false;
       }];
     })
     (mkIf (cfg.scanning.enable && cfg.scanning.snapscan.enable) {
