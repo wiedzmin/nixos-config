@@ -437,6 +437,10 @@
   (org-roam-db-update-method 'immediate)
   (org-roam-tag-sources '(prop vanilla all-directories))
   (org-roam-verbose t)
+  (org-roam-mode-sections
+        (list #'org-roam-backlinks-section :unique t
+              #'org-roam-reflinks-section
+              #'org-roam-unlinked-references-section))
   (org-roam-capture-templates
    '(("d" "default" plain "%?" :target
       (file+head "${slug}.org" "#+title: ${title}\n") :unnarrowed t)))
