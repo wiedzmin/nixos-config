@@ -422,6 +422,13 @@ in
         }
       '';
 
+      navigation.bookmarks.entries = {
+        i3-userguide = {
+          desc = "i3 userguide";
+          remote.url = "https://i3wm.org/docs/userguide.html";
+        };
+      };
+
       home-manager.users."${user}" = {
         xdg.configFile = {
           "i3/config".text = ''
