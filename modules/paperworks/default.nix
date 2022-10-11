@@ -159,6 +159,11 @@ in
         default = false;
         description = "Whether to enable docflow tooling";
       };
+      docflow.libreoffice.package = mkOption {
+        type = types.package;
+        default = pkgs.unstable.libreoffice-still;
+        description = "The `libreoffice` package to install";
+      };
       docflow.extensions = mkOption {
         type = types.listOf types.str;
         default = [ "doc" "docx" "xls" "xlsx" "odt" ];
@@ -334,7 +339,7 @@ in
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
-          stable.libreoffice
+          cfg.docflow.libreoffice.package
           unipicker
         ];
         xdg.mimeApps.defaultApplications =
@@ -345,7 +350,7 @@ in
       pim.timetracking.rules =
         mkArbttProgramMultipleTagsRule "libreoffice" [ "activity:docflow" "program:libreoffice" ];
       # TODO: consider using metadata similar to `config.attributes.ebookreader.default`
-      shell.core.variables = [{ TB_DOCS_VIEWER_COMMAND = "${stable.libreoffice}/bin/soffice"; global = true; }];
+      shell.core.variables = [{ TB_DOCS_VIEWER_COMMAND = "${cfg.docflow.libreoffice.package}/bin/soffice"; global = true; }];
     })
     (mkIf cfg.processors.enable {
       home-manager.users."${user}" = {
