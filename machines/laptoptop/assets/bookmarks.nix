@@ -8,15 +8,6 @@ in
 rec {
   navigation.bookmarks.workspaces.roots = { "stale" = homePrefix user "workspace/repos.stale"; };
   navigation.bookmarks.entries = {
-    home-manager = {
-      desc = "home-manager upstream repo";
-      local.path = "${wsRoot roots "github"}/rycee/home-manager";
-      remote = {
-        url = "https://github.com/rycee/home-manager/";
-        jump = true;
-        searchSuffix = "search?q=";
-      };
-    };
     nixos = {
       desc = "My NixOS configurations";
       local.path = "${wsRoot roots "github"}/wiedzmin/nixos-config";
@@ -32,52 +23,6 @@ rec {
           desktop = "edit";
         }
       ];
-    };
-    nixpkgs = {
-      desc = "Nixpkgs upstream repo";
-      local.path = "${wsRoot roots "github"}/NixOS/nixpkgs";
-      remote = {
-        url = "https://github.com/NixOS/nixpkgs/";
-        jump = true;
-        searchSuffix = "search?q=";
-      };
-    };
-    nix-versions = {
-      desc = "Mapping packages version to Nixpkgs repo git history";
-      remote = {
-        url = "https://lazamar.co.uk/nix-versions/";
-        jump = true;
-        searchSuffix = "?channel=nixos-unstable&package=";
-      };
-    };
-    nix-versions-blogpost = {
-      desc = "Descriptive blog post for `nix-versions` (see alongside)";
-      remote.url = "https://lazamar.github.io/download-specific-package-version-with-nix/";
-    };
-    nixos-hardware = {
-      desc = "NixOS hardware presets";
-      local.path = "${wsRoot roots "github"}/NixOS/nixos-hardware";
-      remote = {
-        url = "https://github.com/NixOS/nixos-hardware";
-      };
-    };
-    emacs-overlay = {
-      desc = "nix emacs overlay";
-      local.path = "${wsRoot roots "github"}/nix-community/emacs-overlay";
-      remote = {
-        url = "https://github.com/nix-community/emacs-overlay/";
-        jump = true;
-        searchSuffix = "search?q=";
-      };
-    };
-    yasnippet-snippets = {
-      desc = "Yasnippet snippets collection";
-      local.path = "${wsRoot roots "github"}/wiedzmin/yasnippet-snippets";
-      remote = {
-        url = "https://github.com/wiedzmin/yasnippet-snippets/";
-        jump = true;
-        searchSuffix = "search?q=";
-      };
     };
     git-hooks = {
       desc = "my custom git hooks for `pre-commit`";
@@ -99,11 +44,6 @@ rec {
     jwt-io = {
       desc = "JWT online debugger and libraries reference";
       remote.url = "https://jwt.io/";
-    };
-    use-package = { remote.url = "https://github.com/jwiegley/use-package"; };
-    "rycee/nur-expressions" = {
-      local.path = "${config.navigation.bookmarks.workspaces.globalRoot}/gitlab.com/rycee/nur-expressions";
-      remote.url = "https://gitlab.com/rycee/nur-expressions/";
     };
     "mastering/vlan" = {
       desc = "VLAN article";
@@ -151,17 +91,6 @@ rec {
       tags = [ "map" "weather" ];
       remote.url = "https://www.marinetraffic.com";
     };
-    "emacs-news" = {
-      desc = "Emacs news";
-      remote.url = "https://sachachua.com/blog/category/emacs-news/";
-      windowRules = [
-        {
-          class = mkWSMappingBrowsersRegexp config.attributes.browser;
-          title = "sachachua emacs news";
-          desktop = "web";
-        }
-      ];
-    };
     "chillout" = {
       desc = "Music streams"; # note /chillout
       tags = [ "media" "fm" ];
@@ -195,24 +124,6 @@ rec {
       tags = [ "media" "photo" ];
       remote.url = "https://photos.google.com/";
     };
-    "addons/firefox" = {
-      desc = "Firefox addons";
-      enable = config.browsers.firefox.enable;
-      remote = {
-        url = "https://addons.mozilla.org/en-US/firefox/";
-        searchSuffix = "search/?cat=all&x=0&y=0&q=";
-      };
-    };
-    "about/config" = {
-      desc = "Firefox configuration options";
-      enable = with config.browsers.firefox; (enable && isDefault);
-      remote.url = "about:config";
-    };
-    "about/memory" = {
-      desc = "Firefox addons reference";
-      enable = with config.browsers.firefox; (enable && isDefault);
-      remote.url = "about:memory";
-    };
     "bitbucket" = {
       desc = "Bitbucket code hosting";
       tags = [ "forge" ];
@@ -232,14 +143,6 @@ rec {
       desc = "Crontab format helpers";
       tags = [ "tools" "online" ];
       remote.url = "https://crontab.guru/";
-    };
-    "discourse/nixos" = {
-      desc = "NixOS Discourse";
-      remote.url = "https://discourse.nixos.org/";
-    };
-    "discourse/org-roam" = {
-      desc = "NixOS Discourse";
-      remote.url = "https://org-roam.discourse.group/";
     };
     "gdocs" = {
       remote = {
@@ -284,20 +187,9 @@ rec {
       tags = [ "forge" ];
       remote.url = "https://github.com/wiedzmin";
     };
-    "dockerhub" = {
-      desc = "Docker Hub";
-      remote = {
-        url = "https://hub.docker.com/";
-        searchSuffix = "search/?q=";
-      };
-    };
     "gmail" = {
       desc = "GMail account";
       remote.url = "https://mail.google.com/mail/u/0/";
-    };
-    "nixospkg" = {
-      desc = "NixOS packages";
-      remote.url = "https://nixos.org/nixos/packages.html";
     };
     "repology/projects" = {
       desc = "Repology";
@@ -317,17 +209,6 @@ rec {
       desc = "Repology repositories";
       remote.url = "https://repology.org/repositories";
     };
-    "nixos-status" = {
-      desc = "NixOS status page";
-      remote.url = "https://status.nixos.org/";
-      windowRules = [
-        {
-          class = mkWSMappingBrowsersRegexp config.attributes.browser;
-          title = "status nixos";
-          desktop = "web";
-        }
-      ];
-    };
     "torrefacto" = {
       desc = "Torrefacto shop";
       remote.url = "https://torrefacto.ru/";
@@ -340,10 +221,6 @@ rec {
     "teleweb" = {
       desc = "Telegram web interface";
       remote.url = "https://web.telegram.org/";
-    };
-    "nixos-news" = {
-      desc = "NixOS weekly news";
-      remote.url = "https://weekly.nixos.org/";
     };
     "fb" = {
       tags = [ "fb" ];
@@ -425,14 +302,6 @@ rec {
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZT0PdGw9dp_Ic9jYODxqxB";
-        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
-      };
-    };
-    "nix" = {
-      desc = "it/nix";
-      tags = [ "media" "video" ];
-      remote = {
-        url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZiPdYVvHZY8Day5RC934CE";
         browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
@@ -548,10 +417,6 @@ rec {
       tags = [ "networking" "internet" "speed" ];
       remote.url = "https://speedtest24net.ru/";
     };
-    "orgupd" = {
-      desc = "Orgmode updates";
-      remote.url = "https://updates.orgmode.org/";
-    };
     "dict" = {
       desc = "Dictionary";
       remote = {
@@ -597,35 +462,6 @@ rec {
         searchSuffix = "";
       };
     };
-    "nixosr" = {
-      desc = "NixOS + ";
-      remote = {
-        url = "";
-        searchSuffix = "https://www.google.ru/?q=nixos+";
-      };
-    };
-    "nixosopt" = {
-      desc = "NixOS/options";
-      remote = {
-        url = "https://nixos.org/nixos/options.html#";
-        searchSuffix = "";
-      };
-    };
-    "nixhydra" = {
-      desc = "Nixpkgs from Hydra";
-      remote = {
-        url = "https://hydra.nixos.org/";
-        searchSuffix = "search?query=";
-      };
-    };
-    "pypi" = {
-      desc = "PyPI";
-      tags = [ "dev" "python" ];
-      remote = {
-        url = "https://pypi.org";
-        searchSuffix = "/search/?q=";
-      };
-    };
     "scode" = {
       desc = "Searchcode";
       tags = [ "dev" ];
@@ -640,52 +476,6 @@ rec {
       remote = {
         url = "https://web.archive.org/";
         searchSuffix = "web/*/";
-      };
-    };
-    "dockr" = {
-      desc = "docker + ";
-      remote = {
-        url = "https://www.google.ru/";
-        searchSuffix = "?q=docker+";
-      };
-    };
-    "gooem" = {
-      desc = "emacs + ";
-      remote = {
-        url = "https://www.google.ru/";
-        searchSuffix = "?q=emacs+";
-      };
-    };
-    "goopy" = {
-      desc = "python + ";
-      tags = [ "dev" ];
-      remote = {
-        url = "https://www.google.ru/";
-        searchSuffix = "?q=python+";
-      };
-    };
-    "google/xmonad" = {
-      desc = "xmonad +";
-      remote = {
-        url = "https://www.google.ru/";
-        searchSuffix = "?q=xmonad+";
-      };
-    };
-    "nixos/packages" = {
-      desc = "Nixpkgs/unstable";
-      remote = {
-        url = "https://nixos.org/nixos/packages/";
-        searchSuffix = "?channel=nixpkgs-unstable&query=";
-      };
-    };
-    "nix/pm/repo" = mkGithubBookmark "NixOS" "nix" roots // { desc = "nix package manager repo"; };
-    "ghnix" = {
-      desc = "github/lang:nix";
-      tags = [ "forge" ];
-      remote = {
-        url = "https://github.com/";
-        jump = false;
-        searchSuffix = "search?q=language%3Anix+";
       };
     };
     "codeforces" = {
@@ -712,10 +502,6 @@ rec {
       tags = [ "contest" "code" ];
       remote.url = "https://www.codewars.com/";
     };
-    "libhunt/elisp" = {
-      tags = [ "search" "libraries" "emacs" "elisp" ];
-      remote.url = "https://www.libhunt.com/l/emacs-lisp";
-    };
     "projects/loggerhead" = mkGithubBookmark "wiedzmin" "loggerhead" roots; # arbtt analog
     "projects/gourmet" = mkGithubBookmarkWithMyrepos "wiedzmin" "gourmet" roots;
     "mastering/wiedzmin/cl-study" = mkGithubBookmarkWithMyrepos "wiedzmin" "cl-study" roots;
@@ -729,14 +515,6 @@ rec {
       transient = true;
     };
     "rofi" = mkGithubBookmark "davatorium" "rofi" roots // { transient = true; };
-    "nyxt" = mkGithubBookmark "atlas-engineer" "nyxt" roots // {
-      tags = [ "nyxt" "repo" ];
-      transient = true;
-    };
-    "nyxt/discourse" = {
-      tags = [ "nyxt" "forum" ];
-      remote = { url = "https://discourse.atlas.engineer/"; };
-    };
     "cppreference" = {
       tags = [ "c++" "cpp" "reference" ];
       remote = { url = "https://en.cppreference.com/w/"; };
@@ -771,21 +549,6 @@ rec {
     "ddg/bangs" = {
       tags = [ "duckduckgo" "bangs" ];
       remote = { url = "https://duckduckgo.com/bang"; };
-    };
-    nixos-util-lib-1 = {
-      desc = "nixpkgs-like util lib example 1";
-      local.path = "${wsRoot roots "github"}/neXromancers/nixromancers/default.nix";
-      transient = true;
-    };
-    nixos-util-lib-2 = {
-      desc = "nixpkgs-like util lib example 2";
-      local.path = "${wsRoot roots "github"}/bb010g/nur-packages/lib/default.nix";
-      transient = true;
-    };
-    nixos-util-lib-3 = {
-      desc = "nixpkgs-like util lib example 3";
-      local.path = "${wsRoot roots "github"}/jwiegley/notes/gists/fef31cdaae1d00c39fce075e9a0ac1e4/loop.nix";
-      transient = true;
     };
     papers-i-love = {
       desc = "Computer science and computer-adjacent papers";

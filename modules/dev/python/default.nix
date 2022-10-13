@@ -49,6 +49,11 @@ in
         default = false;
         description = "Whether to enable Emacs Python setup.";
       };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable Python-related bookmarks";
+      };
     };
   };
 
@@ -83,6 +88,26 @@ in
       # TODO: also play with the `pylsp` (https://github.com/python-lsp/python-lsp-server)
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/python.el ];
+    })
+    (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "goopy" = {
+          desc = "python + ";
+          tags = [ "dev" ];
+          remote = {
+            url = "https://www.google.ru/";
+            searchSuffix = "?q=python+";
+          };
+        };
+        "pypi" = {
+          desc = "PyPI";
+          tags = [ "dev" "python" ];
+          remote = {
+            url = "https://pypi.org";
+            searchSuffix = "/search/?q=";
+          };
+        };
+      };
     })
   ];
 }

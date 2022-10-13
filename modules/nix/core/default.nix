@@ -40,6 +40,11 @@ in
         default = false;
         description = "Whether to enable Nix-related Emacs setup";
       };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable Nix-related bookmarks";
+      };
       # TODO: consider adding system-wide option for enabling heavy resources consumers and AND it here and there
       lsp.enable = mkOption {
         type = types.bool;
@@ -172,6 +177,131 @@ in
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/nix.el ];
+    })
+    (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        home-manager = {
+          desc = "home-manager upstream repo";
+          local.path = "${wsRoot roots "github"}/rycee/home-manager";
+          remote = {
+            url = "https://github.com/rycee/home-manager/";
+            jump = true;
+            searchSuffix = "search?q=";
+          };
+        };
+        nixpkgs = {
+          desc = "Nixpkgs upstream repo";
+          local.path = "${wsRoot roots "github"}/NixOS/nixpkgs";
+          remote = {
+            url = "https://github.com/NixOS/nixpkgs/";
+            jump = true;
+            searchSuffix = "search?q=";
+          };
+        };
+        nix-versions = {
+          desc = "Mapping packages version to Nixpkgs repo git history";
+          remote = {
+            url = "https://lazamar.co.uk/nix-versions/";
+            jump = true;
+            searchSuffix = "?channel=nixos-unstable&package=";
+          };
+        };
+        nix-versions-blogpost = {
+          desc = "Descriptive blog post for `nix-versions` (see alongside)";
+          remote.url = "https://lazamar.github.io/download-specific-package-version-with-nix/";
+        };
+        nixos-hardware = {
+          desc = "NixOS hardware presets";
+          local.path = "${wsRoot roots "github"}/NixOS/nixos-hardware";
+          remote = {
+            url = "https://github.com/NixOS/nixos-hardware";
+          };
+        };
+        "nixospkg" = {
+          desc = "NixOS packages";
+          remote.url = "https://nixos.org/nixos/packages.html";
+        };
+        "nixos-status" = {
+          desc = "NixOS status page";
+          remote.url = "https://status.nixos.org/";
+          windowRules = [
+            {
+              class = mkWSMappingBrowsersRegexp config.attributes.browser;
+              title = "status nixos";
+              desktop = "web";
+            }
+          ];
+        };
+        "nix" = {
+          desc = "it/nix";
+          tags = [ "media" "video" ];
+          remote = {
+            url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZiPdYVvHZY8Day5RC934CE";
+            browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
+          };
+        };
+        "nixos-news" = {
+          desc = "NixOS weekly news";
+          remote.url = "https://weekly.nixos.org/";
+        };
+        "nixos/packages" = {
+          desc = "Nixpkgs/unstable";
+          remote = {
+            url = "https://nixos.org/nixos/packages/";
+            searchSuffix = "?channel=nixpkgs-unstable&query=";
+          };
+        };
+        "nix/pm/repo" = mkGithubBookmark "NixOS" "nix" roots // { desc = "nix package manager repo"; };
+        "ghnix" = {
+          desc = "github/lang:nix";
+          tags = [ "forge" ];
+          remote = {
+            url = "https://github.com/";
+            jump = false;
+            searchSuffix = "search?q=language%3Anix+";
+          };
+        };
+        "nixosr" = {
+          desc = "NixOS + ";
+          remote = {
+            url = "";
+            searchSuffix = "https://www.google.ru/?q=nixos+";
+          };
+        };
+        "nixosopt" = {
+          desc = "NixOS/options";
+          remote = {
+            url = "https://nixos.org/nixos/options.html#";
+            searchSuffix = "";
+          };
+        };
+        "nixhydra" = {
+          desc = "Nixpkgs from Hydra";
+          remote = {
+            url = "https://hydra.nixos.org/";
+            searchSuffix = "search?query=";
+          };
+        };
+        "discourse/nixos" = {
+          desc = "NixOS Discourse";
+          remote.url = "https://discourse.nixos.org/";
+        };
+        nixos-util-lib-1 = {
+          desc = "nixpkgs-like util lib example 1";
+          local.path = "${wsRoot roots "github"}/neXromancers/nixromancers/default.nix";
+          transient = true;
+        };
+        nixos-util-lib-2 = {
+          desc = "nixpkgs-like util lib example 2";
+          local.path = "${wsRoot roots "github"}/bb010g/nur-packages/lib/default.nix";
+          transient = true;
+        };
+        nixos-util-lib-3 = {
+          desc = "nixpkgs-like util lib example 3";
+          local.path = "${wsRoot roots "github"}/jwiegley/notes/gists/fef31cdaae1d00c39fce075e9a0ac1e4/loop.nix";
+          transient = true;
+        };
+      };
     })
   ];
 }

@@ -37,6 +37,11 @@ in
         default = false;
         description = "Whether to enable WM keybindings.";
       };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable Docker-related bookmarks";
+      };
     };
   };
 
@@ -119,6 +124,24 @@ in
           dlint
           hadolintd
         ];
+      };
+    })
+    (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "dockr" = {
+          desc = "docker + ";
+          remote = {
+            url = "https://www.google.ru/";
+            searchSuffix = "?q=docker+";
+          };
+        };
+        "dockerhub" = {
+          desc = "Docker Hub";
+          remote = {
+            url = "https://hub.docker.com/";
+            searchSuffix = "search/?q=";
+          };
+        };
       };
     })
   ];

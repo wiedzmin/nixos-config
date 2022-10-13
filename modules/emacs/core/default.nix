@@ -1,5 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
+with config.navigation.bookmarks.workspaces;
 with lib;
 
 # TODO: backtrace-on-redisplay-error
@@ -179,6 +180,11 @@ in
         default = false;
         description = "Whether to enable WM keybindings.";
       };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable Emacs-related bookmarks";
+      };
     };
   };
 
@@ -257,6 +263,51 @@ in
           raw = true;
         }
       ];
+    })
+    (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        emacs-overlay = {
+          desc = "nix emacs overlay";
+          local.path = "${wsRoot roots "github"}/nix-community/emacs-overlay";
+          remote = {
+            url = "https://github.com/nix-community/emacs-overlay/";
+            jump = true;
+            searchSuffix = "search?q=";
+          };
+        };
+        yasnippet-snippets = {
+          desc = "Yasnippet snippets collection";
+          local.path = "${wsRoot roots "github"}/wiedzmin/yasnippet-snippets";
+          remote = {
+            url = "https://github.com/wiedzmin/yasnippet-snippets/";
+            jump = true;
+            searchSuffix = "search?q=";
+          };
+        };
+        use-package = { remote.url = "https://github.com/jwiegley/use-package"; };
+        "emacs-news" = {
+          desc = "Emacs news";
+          remote.url = "https://sachachua.com/blog/category/emacs-news/";
+          windowRules = [
+            {
+              class = mkWSMappingBrowsersRegexp config.attributes.browser;
+              title = "sachachua emacs news";
+              desktop = "web";
+            }
+          ];
+        };
+        "libhunt/elisp" = {
+          tags = [ "search" "libraries" "emacs" "elisp" ];
+          remote.url = "https://www.libhunt.com/l/emacs-lisp";
+        };
+        "gooem" = {
+          desc = "emacs + ";
+          remote = {
+            url = "https://www.google.ru/";
+            searchSuffix = "?q=emacs+";
+          };
+        };
+      };
     })
   ];
 }

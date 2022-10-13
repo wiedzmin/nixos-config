@@ -78,6 +78,11 @@ in
         internal = true;
         description = "Nyxt default window class.";
       };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable Nyxt-related bookmarks";
+      };
     };
   };
   config = mkMerge [
@@ -141,6 +146,18 @@ in
       attributes.browser.fallback.cmd = cfg.command;
       attributes.browser.fallback.windowClass = cfg.windowClass;
       shell.core.variables = [{ TB_FALLBACK_BROWSER = cfg.command; global = true; }];
+    })
+    (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "nyxt" = mkGithubBookmark "atlas-engineer" "nyxt" roots // {
+          tags = [ "nyxt" "repo" ];
+          transient = true;
+        };
+        "nyxt/discourse" = {
+          tags = [ "nyxt" "forum" ];
+          remote = { url = "https://discourse.atlas.engineer/"; };
+        };
+      };
     })
   ];
 }

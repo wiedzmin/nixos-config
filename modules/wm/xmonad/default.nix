@@ -267,6 +267,11 @@ in
         };
         description = "Internal (quite tightly coupled with) XMonad keybindings.";
       };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable XMonad-related bookmarks";
+      };
     };
   };
 
@@ -323,6 +328,17 @@ in
           };
         };
         xdg.configFile."xmobar/xmobarrc".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/xmobarrc ];
+      };
+    })
+    (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "google/xmonad" = {
+          desc = "xmonad +";
+          remote = {
+            url = "https://www.google.ru/";
+            searchSuffix = "?q=xmonad+";
+          };
+        };
       };
     })
   ];

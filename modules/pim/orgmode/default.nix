@@ -78,6 +78,11 @@ in
         internal = true;
         description = "Elisp code to insert to orgmode configuration.";
       };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable Orgmode-related bookmarks";
+      };
     };
   };
 
@@ -127,6 +132,18 @@ in
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ org-capture ]; };
+    })
+    (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "discourse/org-roam" = {
+          desc = "Org-roam Discourse";
+          remote.url = "https://org-roam.discourse.group/";
+        };
+        "orgupd" = {
+          desc = "Orgmode updates";
+          remote.url = "https://updates.orgmode.org/";
+        };
+      };
     })
   ];
 }
