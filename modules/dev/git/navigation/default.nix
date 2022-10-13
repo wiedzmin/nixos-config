@@ -35,7 +35,7 @@ in
         programs.zsh.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
       };
     })
-    (mkIf (cfg.enable && cfg.ghq.enable && config.completion.expansions.enable) {
+    (mkIf (cfg.enable && cfg.ghq.enable && config.shell.core.queueing.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
         xdg.configFile."espanso/user/git_navigation.yml".text = ''
           name: git_navigation
