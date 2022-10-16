@@ -286,6 +286,10 @@ in
           desc = "NixOS Discourse";
           remote.url = "https://discourse.nixos.org/";
         };
+        "HM/documentation" = {
+          desc = "Home Manager documentation";
+          remote.url = "https://nix-community.github.io/home-manager/index.html";
+        };
         nixos-util-lib-1 = {
           desc = "nixpkgs-like util lib example 1";
           local.path = "${wsRoot roots "github"}/neXromancers/nixromancers/default.nix";
