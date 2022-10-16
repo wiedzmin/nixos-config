@@ -497,6 +497,13 @@
   (setf (alist-get ?o avy-dispatch-alist) 'avy-action-search-org-roam
         (alist-get ?O avy-dispatch-alist) 'avy-action-search-url-org-roam))
 
+(use-package org-roam-ui
+  :custom
+  (org-roam-ui-sync-theme t)
+  (org-roam-ui-follow t)
+  (org-roam-ui-update-on-save t)
+  (org-roam-ui-open-on-start t))
+
 ;; TODO: https://github.com/nobiot/org-transclusion
 
 (use-package orglink

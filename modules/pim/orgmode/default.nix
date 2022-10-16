@@ -113,6 +113,7 @@ in
         epkgs.org-recent-headings
         epkgs.org-rich-yank
         epkgs.org-roam
+        epkgs.org-roam-ui
         epkgs.orgit
         epkgs.orglink
         epkgs.russian-holidays
@@ -142,6 +143,10 @@ in
         "orgupd" = {
           desc = "Orgmode updates";
           remote.url = "https://updates.orgmode.org/";
+        };
+        "orui" = {
+          desc = "Org-roam UI";
+          remote.url = "http://127.0.0.1:35901/";
         };
       };
     })
