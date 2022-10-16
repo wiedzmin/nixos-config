@@ -115,7 +115,7 @@
         };
       };
     in
-    {
+    rec {
       overlay = import ./overlay.nix inputs;
 
       devShell."${system}" = import ./shell.nix { pkgs = inputs.unstable.legacyPackages.${system}; };
@@ -187,5 +187,7 @@
 
       laptoptop = inputs.self.nixosConfigurations.laptoptop.config.system.build.toplevel;
       momcat = inputs.self.nixosConfigurations.momcat.config.system.build.toplevel;
+
+      defaultPackage.x86_64-linux = nixosConfigurations.laptoptop.config.system.build.toplevel;
     };
 }
