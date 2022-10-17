@@ -290,21 +290,6 @@ in
           desc = "Home Manager documentation";
           remote.url = "https://nix-community.github.io/home-manager/index.html";
         };
-        nixos-util-lib-1 = {
-          desc = "nixpkgs-like util lib example 1";
-          local.path = "${wsRoot roots "github"}/neXromancers/nixromancers/default.nix";
-          transient = true;
-        };
-        nixos-util-lib-2 = {
-          desc = "nixpkgs-like util lib example 2";
-          local.path = "${wsRoot roots "github"}/bb010g/nur-packages/lib/default.nix";
-          transient = true;
-        };
-        nixos-util-lib-3 = {
-          desc = "nixpkgs-like util lib example 3";
-          local.path = "${wsRoot roots "github"}/jwiegley/notes/gists/fef31cdaae1d00c39fce075e9a0ac1e4/loop.nix";
-          transient = true;
-        };
       };
     })
   ];
