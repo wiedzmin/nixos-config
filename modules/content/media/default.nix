@@ -60,6 +60,11 @@ in
         default = false;
         description = "Whether to enable WM keybindings";
       };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable media-related bookmarks";
+      };
     };
   };
 
@@ -248,6 +253,32 @@ in
           mode = "root";
         }
       ];
+    })
+    (mkIf (cfg.enable && cfg.bookmarks.enable && config.navigation.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "mpv-keys" = {
+          desc = "mpv default keybindings reference";
+          remote.url = "https://github.com/mpv-player/mpv/blob/master/etc/input.conf";
+          windowRules = [
+            {
+              class = mkWSMappingBrowsersRegexp config.attributes.browser;
+              title = "github mpv-player";
+              desktop = "web";
+            }
+          ];
+        };
+        "mpv-manual" = {
+          desc = "mpv manual";
+          remote.url = "https://mpv.io/manual/";
+          windowRules = [
+            {
+              class = mkWSMappingBrowsersRegexp config.attributes.browser;
+              title = "mpv manual";
+              desktop = "web";
+            }
+          ];
+        };
+      };
     })
   ];
 }
