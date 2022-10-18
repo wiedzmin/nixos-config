@@ -451,7 +451,6 @@
   (:map org-roam-map
         ("f" . org-roam-node-find)
         ("d" . org-roam-dailies-find-directory)
-        ("G" . org-roam-graph)
         ("i" . org-roam-node-insert)
         ("c" . org-roam-capture)
         ("j" . org-roam-dailies-capture-today)))
