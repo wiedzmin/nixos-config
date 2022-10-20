@@ -9,7 +9,8 @@ with pkgs.unstable.commonutils;
 
   hardware = {
     cpu.intel.updateMicrocode = true;
-    enableAllFirmware = true;
+    enableRedistributableFirmware = true;
+    wirelessRegulatoryDatabase = true;
     ksm.enable = true;
     sensor.iio.enable = true;
   };
