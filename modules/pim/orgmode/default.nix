@@ -148,6 +148,14 @@ in
           desc = "Org-roam UI";
           remote.url = "http://127.0.0.1:35901/";
         };
+        "jethrokuan/braindump/src" = {
+          desc = "Jethrokuan's braindump src";
+          remote.url = "https://github.com/jethrokuan/braindump/tree/master/org";
+        };
+        "jethrokuan/braindump" = {
+          desc = "Jethrokuan's braindump";
+          remote.url = "https://braindump.jethro.dev/";
+        };
       };
     })
   ];
