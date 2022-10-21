@@ -6,11 +6,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1665402918,
-        "narHash": "sha256-ho3WvQ0D/tbpjU8IlgFTxiSuqffuCEbvuzFjsyI9SV8=",
+        "lastModified": 1666242330,
+        "narHash": "sha256-AWtyGxkcpPespK4bLitR8qyoKsQIwvQlN03FWm3bhyg=",
         "owner": "nix-community",
         "repo": "emacs-overlay",
-        "rev": "31389685a5613c5abad2b79a68e080f07073a16c",
+        "rev": "62180668ad617d98bbafc9468048b62f6808a13c",
         "type": "github"
       },
       "original": {
@@ -53,11 +53,11 @@
     "git-extra-commands": {
       "flake": false,
       "locked": {
-        "lastModified": 1664665426,
-        "narHash": "sha256-Tuc6lPYiZWXNjhNpRJqt6V348iMjx3dM8fFq2b1DvCA=",
+        "lastModified": 1666107085,
+        "narHash": "sha256-nWC76523Oujv8+OJ5SBeT/hX5eD+MyVDpgluenYG4aw=",
         "owner": "unixorn",
         "repo": "git-extra-commands",
-        "rev": "894ffb9dde1f74ed7a1cccda908830e63ff5d747",
+        "rev": "9b0ea56ac34a9302a2e7564201bf483ca8bc5e6b",
         "type": "github"
       },
       "original": {
@@ -72,11 +72,11 @@
         "utils": "utils"
       },
       "locked": {
-        "lastModified": 1665271265,
-        "narHash": "sha256-4Nn0T5YoR3bBLFnPy6Tkc8zzmzMTBjSGZq05c5hKhEI=",
+        "lastModified": 1666253070,
+        "narHash": "sha256-MtaNgghmfp+ywh5mv9FcspFT4ACaYINSN+D98PCkrP0=",
         "owner": "nix-community",
         "repo": "home-manager",
-        "rev": "e1f1160284198a68ea8c7fffbbb1436f99e46ef9",
+        "rev": "c485669ca529e01c1505429fa9017c9a93f15559",
         "type": "github"
       },
       "original": {
@@ -136,11 +136,11 @@
     "liquidprompt": {
       "flake": false,
       "locked": {
-        "lastModified": 1665064638,
-        "narHash": "sha256-V4vzyuDz4HJBpqWorAVmbNmWFKitqL1P2cyPXYidIDQ=",
+        "lastModified": 1665689861,
+        "narHash": "sha256-2NjJ1KQpwUZ01vefnZrlQEUavIMJU/CSRSYzwuLqjzU=",
         "owner": "nojhan",
         "repo": "liquidprompt",
-        "rev": "1bfe48e719f4f7916db96699b92d88234b8b10ec",
+        "rev": "df326928dc2f3f6f0d5db7ad959f5df208c4c4b5",
         "type": "github"
       },
       "original": {
@@ -183,11 +183,11 @@
     },
     "nixos-hardware": {
       "locked": {
-        "lastModified": 1665321371,
-        "narHash": "sha256-0SO6MTW0bX6lxZmz1AZW/Xmk+hnTd7/hp1vF7Tp7jg0=",
+        "lastModified": 1665987993,
+        "narHash": "sha256-MvlaIYTRiqefG4dzI5p6vVCfl+9V8A1cPniUjcn6Ngc=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "236ba4df714131059945d7754c0aa3fbe9d2f74c",
+        "rev": "0e6593630071440eb89cd97a52921497482b22c6",
         "type": "github"
       },
       "original": {
@@ -198,11 +198,11 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1665296151,
-        "narHash": "sha256-uOB0oxqxN9K7XGF1hcnY+PQnlQJ+3bP2vCn/+Ru/bbc=",
+        "lastModified": 1666244578,
+        "narHash": "sha256-OO0F2b83isMVHYtcvxiExig28zPE7Weo7r1fHtQTZzU=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "14ccaaedd95a488dd7ae142757884d8e125b3363",
+        "rev": "260eb420a2e55e3a0411e731b933c3a8bf6b778e",
         "type": "github"
       },
       "original": {
@@ -371,11 +371,11 @@
     },
     "unstable": {
       "locked": {
-        "lastModified": 1665259268,
-        "narHash": "sha256-ONFhHBLv5nZKhwV/F2GOH16197PbvpyWhoO0AOyktkU=",
+        "lastModified": 1666198336,
+        "narHash": "sha256-VTrWD8Bb48h2pi57P1++LuvZIgum3gSLiRzZ/8q3rg0=",
         "owner": "nixos",
         "repo": "nixpkgs",
-        "rev": "c5924154f000e6306030300592f4282949b2db6c",
+        "rev": "db25c4da285c5989b39e4ce13dea651a88b7a9d4",
         "type": "github"
       },
       "original": {
@@ -435,11 +435,11 @@
     "zsh-autocomplete": {
       "flake": false,
       "locked": {
-        "lastModified": 1662732890,
-        "narHash": "sha256-JdTkH0kx8WlgCLXE6XHzsBe61uw/1ZJ9dXEk1i2OAlw=",
+        "lastModified": 1665997950,
+        "narHash": "sha256-n5wlMj2vGun/DVaAMQmSgcbmfi31hPp1+Hf8kgVIuC4=",
         "owner": "marlonrichert",
         "repo": "zsh-autocomplete",
-        "rev": "aed8e17de6d16dca940a344117894f3e57022ed5",
+        "rev": "3de533e7d322cec073f09264a6bf211e0ba627de",
         "type": "github"
       },
       "original": {
