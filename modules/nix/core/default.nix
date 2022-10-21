@@ -126,8 +126,12 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback statix ] ++
           lib.optionals cfg.lsp.enable [ rnix-lsp ];
-        home.sessionPath = [ (homePrefix user ".cargo/bin") ];
+        home.sessionPath = [ (homePrefix user ".local/share/cargo/bin") ]; # FIXME: use XDG_DATA_HOME
       };
+      shell.core.variables = [{
+        CARGO_HOME = "$XDG_DATA_HOME/cargo";
+        global = true;
+      }];
 
       systemd.services.nix-daemon = {
         environment.TMPDIR = "/tmp/buildroot";
