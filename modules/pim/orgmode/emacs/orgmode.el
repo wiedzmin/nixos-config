@@ -434,7 +434,6 @@
   (org-roam-directory "@emacsOrgRoamPath@")
   (org-roam-graph-executable "@emacsOrgRoamDotBinary@")
   (org-roam-db-location "@emacsOrgRoamPath@/org-roam.db")
-  (org-roam-db-update-method 'immediate)
   (org-roam-tag-sources '(prop vanilla all-directories))
   (org-roam-verbose t)
   (org-roam-mode-sections
