@@ -4,6 +4,14 @@ with lib;
 
 let
   cfg = config.content.core;
+  which-mime = pkgs.writeShellApplication {
+    # usage example: "which-mime image/jpeg"
+    name = "which-mime";
+    runtimeInputs = with pkgs; [ xdg-utils ];
+    text = ''
+      XDG_UTILS_DEBUG_LEVEL=3 xdg-mime query default "$1"
+    '';
+  };
   user = config.attributes.mainUser.name;
 in
 {
@@ -26,7 +34,7 @@ in
       };
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ archiver archivemount pbzip2 pigz rar ];
+        home.packages = with pkgs; [ archiver archivemount pbzip2 pigz rar which-mime ];
         home.activation.ensureMimeappsList = {
           after = [ ];
           before = [ "checkLinkTargets" ];
