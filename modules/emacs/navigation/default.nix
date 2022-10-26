@@ -53,7 +53,6 @@ in
         epkgs.orderless
         epkgs.phi-search
         epkgs.phi-search-mc
-        epkgs.polymode
         epkgs.prescient
         epkgs.pulsar
         epkgs.rainbow-delimiters

@@ -894,25 +894,3 @@
 (use-package window
   :custom
   (switch-to-buffer-obey-display-actions t))
-
-(define-hostmode poly-nix-hostmode :mode 'nix-mode)
-
-(define-innermode poly-emacs-innermode
-  :mode 'emacs-lisp-mode
-  :head-matcher (rx "(use-package" space (zero-or-more alnum))
-  :tail-matcher (rx ")")
-  :head-mode 'host
-  :tail-mode 'host)
-(define-innermode poly-haskell-innermode
-  :mode 'haskell-mode
-  :head-matcher (rx (zero-or-more space) (or (minimal-match "--") "module" "{-# LANGUAGE"))
-  :tail-matcher (rx ")")
-  :head-mode 'host
-  :tail-mode 'host)
-
-(define-polymode poly-nix-emacs-mode
-  :hostmode 'poly-nix-hostmode
-  :innermodes '(poly-emacs-innermode))
-(define-polymode poly-nix-haskell-mode
-  :hostmode 'poly-nix-hostmode
-  :innermodes '(poly-haskell-innermode))
