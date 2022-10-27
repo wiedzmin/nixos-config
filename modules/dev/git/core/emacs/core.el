@@ -48,6 +48,7 @@
   :config
   (setq magit-completing-read-function
         (cond ((fboundp 'selectrum-mode) #'selectrum-completing-read)
+              ;TODO: try to handle other packages, if needed
               (t #'magit-builtin-completing-read)))
   (advice-add 'magit-whitespace-disallowed :around (lambda (orig-fun &rest args) (interactive) (insert "-")))
   (transient-append-suffix 'magit-stash "z" '("h" "Hide dev environment" custom/magit-hide-devenv))
