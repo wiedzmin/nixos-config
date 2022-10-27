@@ -78,6 +78,11 @@ in
         internal = true;
         description = "Elisp code to insert to orgmode configuration.";
       };
+      org-roam.autosync.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable org-roam DB auto-synchronization";
+      };
       bookmarks.enable = mkOption {
         type = types.bool;
         default = true;

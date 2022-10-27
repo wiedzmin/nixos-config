@@ -13,4 +13,5 @@ rec {
   pimCommonCaptureDataTemplate = config.pim.orgmode.commonCaptureDataTemplate;
   pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;
   xprintidleBinary = "${pkgs.xprintidle}/bin/xprintidle";
+  orgRoamAutosyncEnable = if config.pim.orgmode.org-roam.autosync.enable then "(org-roam-db-autosync-enable)" else "";
 }

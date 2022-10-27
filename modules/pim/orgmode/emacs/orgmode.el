@@ -444,7 +444,7 @@
    '(("d" "default" plain "%?" :target
       (file+head "${slug}.org" "#+title: ${title}\n") :unnarrowed t)))
   :config
-  (org-roam-setup)
+  @orgRoamAutosyncEnable@
   (use-package org-roam-protocol)
   :bind
   (:map org-roam-map
