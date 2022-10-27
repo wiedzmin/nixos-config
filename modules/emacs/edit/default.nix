@@ -12,7 +12,12 @@ in
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable editing extensions.";
+        description = "Whether to enable editing extensions";
+      };
+      autorevert.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable autorevert package";
       };
     };
   };
@@ -51,6 +56,9 @@ in
         };
       };
       ide.emacs.core.config = builtins.readFile ./edit.el;
+    })
+    (mkIf (cfg.enable && cfg.autorevert.enable) {
+      ide.emacs.core.config = builtins.readFile ./autorevert.el;
     })
   ];
 }

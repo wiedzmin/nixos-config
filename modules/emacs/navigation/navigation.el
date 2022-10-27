@@ -581,7 +581,7 @@
 
 (use-package dired
   :commands dired
-  :hook (dired-mode-hook . auto-revert-mode)
+  @autorevertEnable@
   :bind
   ([remap list-directory] . dired)
   (:map dired-mode-map
