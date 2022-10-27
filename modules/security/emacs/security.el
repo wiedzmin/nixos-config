@@ -21,8 +21,7 @@
   (pass-show-keybindings t)
   (pass-username-field "login"))
 
-(use-package selectrum-pass
-  :after selectrum
+(use-package pass-client
   :bind
   (:map custom-pass-map
-        ("!" . selectrum-pass)))
+        ("!" . pass-client)))

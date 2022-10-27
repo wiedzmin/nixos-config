@@ -110,7 +110,7 @@ in
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pass ];
       ide.emacs.core.customKeymaps = { "custom-pass-map" = "<f6>"; };
       ide.emacs.core.customPackages = {
-        "selectrum-pass" = builtins.readFile ./emacs/selectrum-pass.el;
+        "pass-client" = builtins.readFile ./emacs/pass-client.el;
       };
       ide.emacs.core.config = builtins.readFile ./emacs/security.el;
     })
