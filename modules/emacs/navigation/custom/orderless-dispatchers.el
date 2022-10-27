@@ -3,7 +3,7 @@
 (require 'orderless)
 (require 'company)
 
-(defun dispatchers/selectrum-without-if-bang (pattern index total)
+(defun dispatchers/without-if-bang (pattern index total)
   "Allow to negate a PATTERN if requested.
 It makes sense to use it on front:
 - it's typically use would be to exclude some pattern from the match list

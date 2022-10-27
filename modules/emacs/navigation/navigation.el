@@ -227,7 +227,7 @@
   :custom
   ;;TODO: investigate if `completion-styles' setting is really _alternative_ against using `prescient'
   (completion-styles '(partial-completion substring orderless))
-  (orderless-style-dispatchers '(dispatchers/selectrum-without-if-bang
+  (orderless-style-dispatchers '(dispatchers/without-if-bang
                                  dispatchers/flex
                                  dispatchers/initialism
                                  dispatchers/literal))
