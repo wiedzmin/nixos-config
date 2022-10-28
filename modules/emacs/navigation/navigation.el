@@ -440,8 +440,7 @@
   :bind
   ("C-x d" . consult-dir)
   (:map selectrum-minibuffer-map
-        ("C-x d" . consult-dir)
-        ("J" . consult-dir-jump-file))
+        ("C-x d" . consult-dir))
   :custom
   (consult-dir-project-list-function #'consult-dir-project-dirs)
   (consult-dir-default-command
