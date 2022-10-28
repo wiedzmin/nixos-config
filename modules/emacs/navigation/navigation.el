@@ -285,8 +285,6 @@
         ("C-:" . embark-act))
   (:map completion-list-mode-map
         (";" . embark-act))
-  (:map selectrum-minibuffer-map
-        ("C-c x" . embark-export))
   (:map iso-transl-ctl-x-8-map
         ("RET" . embark-save-unicode-character))
   ([remap kill-buffer] . embark-kill-buffer-and-window)
