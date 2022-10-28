@@ -289,7 +289,6 @@
         ("RET" . embark-save-unicode-character))
   ([remap kill-buffer] . embark-kill-buffer-and-window)
   :hook
-  (embark-setup-hook selectrum-set-selected-candidate)
   (embark-target-finders . current-candidate+category)
   (embark-candidate-collectors . current-candidates+category)
   (embark-pre-action-hook . (lambda () (setq selectrum--previous-input-string nil)))
