@@ -404,11 +404,6 @@
         ("M-." . custom/embark-preview)
         ("<next>" . scroll-up-command)
         ("<prior>" . scroll-down-command))
-  (:map selectrum-minibuffer-map
-        ("<next>" . scroll-up-command)
-        ("<prior>" . scroll-down-command)
-        ("S-<up>" . selectrum-previous-candidate)
-        ("S-<down>" . selectrum-next-candidate))
   :custom
   (completion-in-region-function #'consult-completion-in-region)
   (consult-async-input-debounce 0.1)
