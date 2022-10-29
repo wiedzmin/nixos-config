@@ -314,7 +314,6 @@
   ("M-g" . consult-goto-line)
   ([remap apropos] . consult-apropos)
   ([remap bookmark-jump] . consult-bookmark)
-  ([remap imenu] . consult-imenu)
   ([remap man] . consult-man)
   ([remap recentf-open-files] . consult-recent-file)
   ([remap switch-to-buffer-other-frame]  . consult-buffer-other-frame)
@@ -331,6 +330,7 @@
         ("m" . consult-multi-occur))
   (:map custom-goto-map
         ("C-s" . consult-line-multi)
+        ("i" . consult-imenu)
         ("I" . consult-imenu-multi)
         ("M-SPC" . consult-mark)
         ("`" . consult-compile-error)
