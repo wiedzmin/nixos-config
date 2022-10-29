@@ -16,7 +16,7 @@ in
       };
       completion.backend = mkOption {
         type = types.enum [ "selectrum" "vertico" ];
-        default = "selectrum";
+        default = "vertico";
         description = "Completion UI to use, like Ivy, Selectrum, Vertico, etc. Currently, only Selectrum is supported.";
       };
     };
