@@ -81,8 +81,8 @@ in
         "misc" = builtins.readFile ./custom/misc.el;
       };
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
-        ([ ./navigation.el ] ++ optionals (cfg.completion.backend == "selectrum") [ ./selectrum.el ]
-          ++ optionals (cfg.completion.backend == "vertico") [ ./vertico.el ]);
+        ([ ./elisp/navigation.el ] ++ optionals (cfg.completion.backend == "selectrum") [ ./elisp/selectrum.el ]
+          ++ optionals (cfg.completion.backend == "vertico") [ ./elisp/vertico.el ]);
 
       ide.emacs.core.customKeymaps = {
         "custom-help-map" = "<f1>";
