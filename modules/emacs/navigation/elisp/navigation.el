@@ -385,7 +385,7 @@
                      :category 'bookmark
                      :face     'font-lock-keyword-face
                      :history  'bookmark-view-history
-                     :action   #'consult--bookmark-jump
+                     :action   #'consult--bookmark-action
                      :items    #'bookmark-view-names)
                'append))
 
