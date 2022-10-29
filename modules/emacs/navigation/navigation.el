@@ -164,38 +164,6 @@
   (:map mode-specific-map
         ("m" . manage-minor-mode-table)))
 
-(use-package selectrum
-  :demand t
-  :init
-  (use-package minibuffer-edit)
-  :bind
-  (:map selectrum-minibuffer-map
-        ("C-'" . selectrum-quick-select)
-        ("C-r" . selectrum-select-from-history)
-        ("<S-backspace>" . minibuffer-edit-smart-delete-backwards)
-        ("<C-S-backspace>" . selectrum-backward-kill-sexp)
-        ("<escape>" . abort-minibuffers))
-  (:map minibuffer-local-map
-        ("M-h" . backward-kill-word))
-  (:map mode-specific-map
-        ("u" . selectrum-repeat)) ; "z"
-  :custom
-  (completion-ignore-case t)
-  (read-buffer-completion-ignore-case t)
-  (read-file-name-completion-ignore-case t)
-  (selectrum-count-style 'current/matches)
-  (selectrum-files-select-input-dirs t)
-  (selectrum-fix-vertical-window-height t)
-  (selectrum-max-window-height .2) ; 20
-  (selectrum-num-candidates-displayed 20)
-  (selectrum-quick-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
-  :custom-face
-  (selectrum-current-candidate ((t (:background "#3a3f5a"))))
-  (selectrum-quick-keys-highlight ((t (:foreground "red"))))
-  (selectrum-quick-keys-match ((t (:foreground "green"))))
-  :config
-  (selectrum-mode +1))
-
 (use-package prescient
   :commands prescient-persist-mode
   :custom
@@ -203,14 +171,6 @@
   (prescient-history-length 1000)
   :config
   (prescient-persist-mode +1))
-
-(use-package selectrum-prescient
-  :after (selectrum prescient)
-  :config
-  ;; use Prescient on top of Orderless, see selectrum docs for details
-  ;; https://github.com/raxod502/selectrum#user-content-alternative-2-orderless
-  (setq selectrum-prescient-enable-filtering nil)
-  (selectrum-prescient-mode +1))
 
 (use-package orderless
   :preface
@@ -234,8 +194,6 @@
   (orderless-matching-styles '(orderless-literal
                                orderless-regexp))
   (completion-category-defaults nil)
-  (selectrum-refine-candidates-function #'orderless-filter)
-  (selectrum-highlight-candidates-function #'orderless-highlight-matches)
   (completion-category-overrides
    '((buffer (orderless-matching-styles orderless-flex))
      (command (styles . (orderless)))
@@ -249,7 +207,6 @@
      (xref-location (styles . (orderless)))))
   (orderless-component-separator "[ &]") ; TODO: try "[ -]"
   :config
-  (setq orderless-skip-highlighting (lambda () selectrum-is-active)) ;perf tip: highlight only visible candidates
   (advice-add 'company-capf--candidates :around #'just-one-face))
 
 (use-package embark
@@ -291,7 +248,6 @@
   :hook
   (embark-target-finders . current-candidate+category)
   (embark-candidate-collectors . current-candidates+category)
-  (embark-pre-action-hook . (lambda () (setq selectrum--previous-input-string nil)))
   :custom
   (embark-allow-edit-default t)
   (embark-indicators '(embark-minimal-indicator embark-highlight-indicator))
@@ -339,17 +295,7 @@
   (:map embark-general-map
         ("A" . marginalia-cycle))
   :config
-  ;; Default command category to 'marginalia-annotate-binding instead of
-  ;; 'marginalia-annotate-command which has a slight performance impact when
-  ;; filtering M-x candidates.
-  (mapc
-   (lambda (x)
-     (pcase (car x) ('command (setcdr x (cons 'marginalia-annotate-binding
-                                              (remq 'marginalia-annotate-binding (cdr x)))))))
-   marginalia-annotator-registry)
   (add-to-list 'marginalia-annotator-registry '(project-buffer custom/annotate-project-buffer))
-  (advice-add #'marginalia-cycle :after
-              (lambda () (when (bound-and-true-p selectrum-mode) (selectrum-exhibit 'keep-selected))))
   (marginalia-mode +1)
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
@@ -360,7 +306,6 @@
 (use-package consult
   :after dired
   :init
-  (use-package consult-selectrum)
   (use-package consult-utils)
   :bind
   ("C-S-s" . consult-line-symbol-at-point)
@@ -428,6 +373,7 @@
   (fset 'multi-occur #'consult-multi-occur))
 
 (use-package consult-dir
+  @consultDirEnable@
   :bind
   ("C-x d" . consult-dir)
   :custom

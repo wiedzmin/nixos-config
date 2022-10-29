@@ -14,6 +14,11 @@ in
         default = false;
         description = "Whether to enable emacs navigation extensions.";
       };
+      completion.backend = mkOption {
+        type = types.enum [ "selectrum" ];
+        default = "selectrum";
+        description = "Completion UI to use, like Ivy, Selectrum, Vertico, etc. Currently, only Selectrum is supported.";
+      };
     };
   };
 
@@ -59,12 +64,13 @@ in
         epkgs.recursive-narrow
         epkgs.rg
         epkgs.ripgrep
-        epkgs.selectrum
-        epkgs.selectrum-prescient
         epkgs.treemacs
         epkgs.treemacs-icons-dired
         epkgs.winum
         epkgs.zygospore
+      ] ++ optionals (cfg.completion.backend == "selectrum") [
+        epkgs.selectrum
+        epkgs.selectrum-prescient
       ];
       ide.emacs.core.customPackages = {
         "minibuffer-edit" = builtins.readFile ./custom/minibuffer-edit.el;
@@ -72,7 +78,9 @@ in
         "consult-utils" = builtins.readFile ./custom/consult-utils.el;
         "misc" = builtins.readFile ./custom/misc.el;
       };
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./navigation.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
+        ([ ./navigation.el ] ++ optionals (cfg.completion.backend == "selectrum") [ ./selectrum.el ]);
+
       ide.emacs.core.customKeymaps = {
         "custom-help-map" = "<f1>";
         "custom-narrowing-map" = "<f9>";
