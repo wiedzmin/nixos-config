@@ -123,7 +123,7 @@ in
         epkgs.orglink
         epkgs.russian-holidays
       ] ++ optionals cfg.cliplink.enable [ epkgs.org-cliplink ];
-      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/orgmode.el ])
+      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/orgmode.el ])
         + lib.optionalString cfg.cliplink.enable ''
         (use-package org-cliplink
           :after (org)

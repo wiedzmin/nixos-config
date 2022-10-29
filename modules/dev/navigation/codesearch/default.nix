@@ -47,7 +47,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.codesearch ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ../../subst.nix ] [ ./emacs/codesearch.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ../../subst.nix ] [ ./elisp/codesearch.el ];
     })
   ];
 }

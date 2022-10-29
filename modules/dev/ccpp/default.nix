@@ -62,7 +62,7 @@ in
         epkgs.cmake-mode
         epkgs.modern-cpp-font-lock
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/ccpp.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ccpp.el ];
     })
   ];
 }

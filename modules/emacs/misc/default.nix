@@ -36,7 +36,7 @@ in
         "custom-formatting-map" = "C-c f";
         "misc-editing-map" = "<f5>";
       };
-      ide.emacs.core.config = builtins.readFile ./misc.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/misc.el;
     })
   ];
 }

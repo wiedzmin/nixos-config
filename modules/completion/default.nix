@@ -207,7 +207,7 @@ in
         epkgs.pos-tip
         epkgs.yasnippet
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/completion.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/completion.el ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{

@@ -39,7 +39,7 @@ in
         epkgs.unicode-fonts
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
-        ([ ./appearance.el ] ++ lib.optionals config.ide.emacs.core.useModernDrawingLibs [ ./appearance-clean.el ]);
+        ([ ./elisp/appearance.el ] ++ lib.optionals config.ide.emacs.core.useModernDrawingLibs [ ./elisp/appearance-clean.el ]);
     })
   ];
 }

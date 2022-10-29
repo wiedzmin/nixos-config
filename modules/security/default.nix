@@ -110,9 +110,9 @@ in
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pass ];
       ide.emacs.core.customKeymaps = { "custom-pass-map" = "<f6>"; };
       ide.emacs.core.customPackages = {
-        "pass-client" = builtins.readFile ./emacs/pass-client.el;
+        "pass-client" = builtins.readFile ./elisp/custom/pass-client.el;
       };
-      ide.emacs.core.config = builtins.readFile ./emacs/security.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/security.el;
     })
     (mkIf cfg.polkit.silentAuth {
       security.polkit.extraConfig = ''

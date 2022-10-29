@@ -55,10 +55,10 @@ in
           };
         };
       };
-      ide.emacs.core.config = builtins.readFile ./edit.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/edit.el;
     })
     (mkIf (cfg.enable && cfg.autorevert.enable) {
-      ide.emacs.core.config = builtins.readFile ./autorevert.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/autorevert.el;
     })
   ];
 }

@@ -54,7 +54,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.editorconfig ];
-      ide.emacs.core.config = builtins.readFile ./emacs/ec.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/ec.el;
     })
   ];
 }

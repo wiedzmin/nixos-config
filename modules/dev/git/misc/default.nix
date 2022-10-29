@@ -79,7 +79,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.diff-hl epkgs.git-commit epkgs.git-msg-prefix ];
-      ide.emacs.core.config = builtins.readFile ./emacs/misc.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/misc.el;
     })
   ];
 }

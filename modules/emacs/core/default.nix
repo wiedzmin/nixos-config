@@ -159,7 +159,7 @@ in
 
           (require 'notifications)
 
-          ${readSubstituted config inputs pkgs [ ./subst.nix ] [ ./core.el ]}
+          ${readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/core.el ]}
 
           ${cfg.config}
 

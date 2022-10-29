@@ -102,7 +102,7 @@ in
         epkgs.ob-go
       ];
       ide.emacs.core.customKeymaps = { "custom-gotag-map" = "C-c `"; };
-      ide.emacs.core.config = builtins.readFile ./emacs/golang.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/golang.el;
     })
   ];
 }

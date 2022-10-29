@@ -234,7 +234,7 @@ in
           epkgs.git-link
         ];
         ide.emacs.core.config =
-          builtins.readFile ./emacs/forges.el +
+          builtins.readFile ./elisp/forges.el +
           optionalString (length (attrValues mapping) > 0)
             ((genBrowseAtRemoteTypesPatch mapping) + (genGitlinkTypesPatch mapping));
       }

@@ -187,7 +187,7 @@ in
         epkgs.yaml-mode
         epkgs.groovy-mode
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./emacs/misc.el ./emacs/lsp.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ./elisp/lsp.el ];
       ide.emacs.core.customKeymaps = {
         "custom-lsp-treemacs-map" = "C-c t";
         "custom-webpaste-map" = "C-c [";

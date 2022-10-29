@@ -111,7 +111,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.dockerfile-mode ];
-      ide.emacs.core.config = builtins.readFile ./emacs/docker.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/docker.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.modeBindings = {

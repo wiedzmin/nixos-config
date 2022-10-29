@@ -28,7 +28,7 @@ in
         epkgs.recentf-ext
         epkgs.savekill
       ];
-      ide.emacs.core.config = builtins.readFile ./history.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/history.el;
     })
   ];
 }

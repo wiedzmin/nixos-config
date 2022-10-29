@@ -80,7 +80,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.helpful epkgs.which-key ];
-      ide.emacs.core.config = builtins.readFile ./emacs/knowledgebase.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/knowledgebase.el;
     })
   ];
 }

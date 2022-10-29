@@ -75,10 +75,10 @@ in
         epkgs.vertico
       ];
       ide.emacs.core.customPackages = {
-        "minibuffer-edit" = builtins.readFile ./custom/minibuffer-edit.el;
-        "orderless-dispatchers" = builtins.readFile ./custom/orderless-dispatchers.el;
-        "consult-utils" = builtins.readFile ./custom/consult-utils.el;
-        "misc" = builtins.readFile ./custom/misc.el;
+        "minibuffer-edit" = builtins.readFile ./elisp/custom/minibuffer-edit.el;
+        "orderless-dispatchers" = builtins.readFile ./elisp/custom/orderless-dispatchers.el;
+        "consult-utils" = builtins.readFile ./elisp/custom/consult-utils.el;
+        "misc" = builtins.readFile ./elisp/custom/misc.el;
       };
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
         ([ ./elisp/navigation.el ] ++ optionals (cfg.completion.backend == "selectrum") [ ./elisp/selectrum.el ]
