@@ -272,21 +272,6 @@
 
 (use-package marginalia
   :demand t
-  :preface
-  (defun custom/annotate-project-buffer-file (buffer)
-    "Return the file or process name of BUFFER relative to project root, if it is within project root."
-    (let ((root (marginalia--project-root))
-          (file (marginalia--buffer-file buffer)))
-        (if (string-equal root file) file
-          (string-remove-prefix root file))))
-  (defun custom/annotate-project-buffer (cand)
-    "Annotate project buffer CAND with modification status, file name and major mode."
-    (when-let (buffer (get-buffer cand))
-      (marginalia--fields
-       ((marginalia--buffer-status buffer))
-       ((custom/annotate-project-buffer-file buffer)
-        :truncate (/ marginalia-truncate-width 2)
-        :face 'marginalia-file-name))))
   :bind
   (:map minibuffer-local-map
         ("C-M-a" . marginalia-cycle))
@@ -295,7 +280,6 @@
   (:map embark-general-map
         ("A" . marginalia-cycle))
   :config
-  (add-to-list 'marginalia-annotator-registry '(project-buffer custom/annotate-project-buffer))
   (marginalia-mode +1)
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
