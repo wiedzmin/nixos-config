@@ -19,6 +19,11 @@ in
         default = "vertico";
         description = "Completion UI to use, like Ivy, Selectrum, Vertico, etc. Currently, only Selectrum is supported.";
       };
+      projects.backend = mkOption {
+        type = types.enum [ "project" "projectile" ];
+        default = "project";
+        description = "Projects handling package to use. Currently, `project.el` and `projectile` are supported.";
+      };
     };
   };
 
@@ -73,16 +78,25 @@ in
         epkgs.selectrum-prescient
       ] ++ optionals (cfg.completion.backend == "vertico") [
         epkgs.vertico
+      ] ++ optionals (cfg.projects.backend == "project") [
+        epkgs.consult-project-extra
+      ] ++ optionals (cfg.projects.backend == "projectile") [
+        epkgs.projectile
+        epkgs.flycheck-projectile
+        epkgs.consult-projectile
+        epkgs.treemacs-projectile
       ];
       ide.emacs.core.customPackages = {
         "minibuffer-edit" = builtins.readFile ./elisp/custom/minibuffer-edit.el;
         "orderless-dispatchers" = builtins.readFile ./elisp/custom/orderless-dispatchers.el;
-        "consult-utils" = builtins.readFile ./elisp/custom/consult-utils.el;
+        "consult-utils" = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/consult-utils.el ];
         "misc" = builtins.readFile ./elisp/custom/misc.el;
       };
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
         ([ ./elisp/navigation.el ] ++ optionals (cfg.completion.backend == "selectrum") [ ./elisp/selectrum.el ]
-          ++ optionals (cfg.completion.backend == "vertico") [ ./elisp/vertico.el ]);
+         ++ optionals (cfg.completion.backend == "vertico") [ ./elisp/vertico.el ]
+         ++ optionals (cfg.projects.backend == "project") [ ./elisp/project.el ]
+         ++ optionals (cfg.projects.backend == "projectile") [ ./elisp/projectile.el ]);
 
       ide.emacs.core.customKeymaps = {
         "custom-help-map" = "<f1>";

@@ -361,7 +361,7 @@
   :bind
   ("C-x d" . consult-dir)
   :custom
-  (consult-dir-project-list-function #'consult-dir-project-dirs)
+  (consult-dir-project-list-function #'@consultDirProjectListFunction@)
   (consult-dir-default-command
    #'(lambda (&optional dirname switches)
        (interactive)
@@ -388,10 +388,6 @@
                      :action   #'consult--bookmark-action
                      :items    #'bookmark-view-names)
                'append))
-
-(use-package consult-project-extra
-  :bind
-  ("C-<f1>" . consult-project-extra-find))
 
 (use-package consult-flycheck
   :after (consult flycheck)
@@ -583,21 +579,6 @@
   (use-package phi-search-mc
     :config
     (phi-search-mc/setup-keys)))
-
-(use-package project
-  :delight
-  :preface
-  (defun custom/project-project-name ()
-    (file-name-nondirectory
-     (directory-file-name
-      (project-root (project-current)))))
-  :bind
-  (:map custom-projects-map
-        ("b" . custom/kill-vc-current-buffer-file-path)
-        ("d" . project-dired)
-        ("r" . consult-recent-file)
-        ("h" . consult-project-extra-find)
-        ("k" . project-kill-buffers)))
 
 (use-package ripgrep
   :bind

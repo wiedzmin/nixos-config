@@ -37,8 +37,8 @@
 
 (defun consult-ripgrep-symbol-at-point ()
   (interactive)
-  (require 'project)
-  (consult-ripgrep (project-root (project-current)) (thing-at-point 'symbol)))
+  @projectBackendRequire@
+  (consult-ripgrep @projectRootSexp@ (thing-at-point 'symbol)))
 
 ;;TODO: add #'consult-focus-lines-symbol-at-point for occasssional reference write-ups
 (defun custom/embark-preview ()

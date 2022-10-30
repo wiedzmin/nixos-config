@@ -36,7 +36,7 @@ in
       };
       rootMarkers = mkOption {
         type = types.listOf types.str;
-        default = [ ];
+        default = [ ] ++ lib.optionals (config.ide.emacs.navigation.projects.backend == "projectile") [ ".projectile" ];
         description = "Filenames that could be used to denote project root";
       };
       wm.enable = mkOption {
