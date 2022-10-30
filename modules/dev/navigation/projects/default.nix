@@ -48,7 +48,7 @@ in
   };
 
   config = mkMerge [
-    (mkIf cfg.wm.enable {
+    (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = lib.optionals cfg.fuzzySearch.enable [{
         key = [ "r" ];
         cmd = with config.dev.navigation.projects.fuzzySearch;
