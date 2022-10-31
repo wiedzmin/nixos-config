@@ -330,7 +330,10 @@ in
       wm.enable = true;
     };
     edit.enable = true;
-    navigation.enable = true;
+    navigation = {
+      enable = true;
+      projects.backend = "projectile";
+    };
     history.enable = true;
     misc.enable = true;
   };
