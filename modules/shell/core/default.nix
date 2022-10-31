@@ -84,7 +84,7 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ pueue ];
       };
-      systemd.user.services."pueue-daemon" = {
+      systemd.user.services."pueued" = {
         description = "Pueue daemon";
         path = [ pkgs.bash ];
         serviceConfig = {
