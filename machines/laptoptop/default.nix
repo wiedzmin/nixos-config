@@ -343,7 +343,10 @@ in
   navigation = {
     bookmarks = {
       enable = true;
-      workspaces.globalRoot = homePrefix user "workspace/repos";
+      workspaces = {
+        globalRoot = homePrefix user "workspace/repos";
+        globalRootStale = homePrefix user "workspace/repos.stale";
+      };
       emacs.enable = true;
     };
   };
