@@ -448,10 +448,22 @@
   (use-package org-roam-protocol)
   :bind
   (:map org-roam-map
+        ("a" . org-roam-alias-add)
+        ("A" . org-roam-alias-remove)
+        ("t" . org-roam-tag-add)
+        ("T" . org-roam-tag-remove)
+        ("l" . org-roam-ref-add)
+        ("L" . org-roam-ref-remove)
         ("f" . org-roam-node-find)
+        ("F" . org-roam-ref-find)
         ("d" . org-roam-dailies-find-directory)
         ("i" . org-roam-node-insert)
         ("c" . org-roam-capture)
+        ("r" . org-roam-refile)
+        ("R" . org-roam-node-random)
+        ("x" . org-roam-extract-subtree)
+        ("." . org-roam-demote-entire-buffer)
+        ("," . org-roam-promote-entire-buffer)
         ("j" . org-roam-dailies-capture-today)))
 
 (use-package consult-org-roam
