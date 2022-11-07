@@ -204,6 +204,7 @@
   (org-agenda-show-future-repeats 'next)
   (org-agenda-show-inherited-tags nil)
   (org-agenda-show-log t)
+  (org-agenda-show-outline-path 'title)
   (org-agenda-skip-additional-timestamps-same-entry t)
   (org-agenda-skip-deadline-if-done t)
   (org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
