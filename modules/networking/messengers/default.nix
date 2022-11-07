@@ -19,6 +19,11 @@ in
         default = false;
         description = "Whether to start telegram automatically wit X session";
       };
+      zoom.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Zoom";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -30,7 +35,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ tdesktop zoom-us tdlib ];
+        home.packages = with pkgs; [ tdesktop tdlib ] ++ optionals (cfg.zoom.enable) [ zoom-us ];
       };
       workstation.input.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {
