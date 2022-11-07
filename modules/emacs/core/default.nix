@@ -3,8 +3,6 @@ with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
 
-# TODO: backtrace-on-redisplay-error
-
 let
   cfg = config.ide.emacs.core;
   user = config.attributes.mainUser.name;
@@ -306,6 +304,19 @@ in
             searchSuffix = "?q=emacs+";
           };
         };
+      };
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/user/emacs.yml".text = ''
+          name: emacs
+          parent: default
+          filter_class: Emacs
+
+          matches:
+            - trigger: ":bore"
+              replace: "(setq backtrace-on-redisplay-error $|$)"
+        '';
       };
     })
   ];
