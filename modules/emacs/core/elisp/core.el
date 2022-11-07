@@ -53,6 +53,8 @@
                    crm-separator)
                   (car args))
           (cdr args)))
+  :mode (("\\.js$" . js-json-mode)
+         ("\\.json$" . js-json-mode))
   :bind
   ("M-\"" . eval-region)
   (:map ctl-x-map

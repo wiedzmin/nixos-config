@@ -4,7 +4,6 @@ with config.navigation.bookmarks.workspaces;
 with lib;
 
 # TODO: backtrace-on-redisplay-error
-# TODO: js-json-mode
 
 let
   cfg = config.ide.emacs.core;
