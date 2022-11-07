@@ -172,6 +172,9 @@ in
 
             - trigger: ":nsfd"
               replace: "nix shell \"nixpkgs#fd\" -c fd $|$ /nix/store"
+
+            - trigger: ":llv"
+              replace: "inputs.unstable.legacyPackages.x86_64-linux.linuxPackages."
         '';
       };
     })
