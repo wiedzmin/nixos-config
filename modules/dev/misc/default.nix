@@ -78,6 +78,11 @@ in
         default = false;
         description = "Whether to enable xserver info/debug tools.";
       };
+      just.chooserCmd = mkOption {
+        type = types.str;
+        default = "rofi -dmenu";
+        description = "Chooser command to use for `just` recipes selection";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -88,7 +93,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      shell.core.variables = [{ JUST_CHOOSER = "rofi -dmenu"; }];
+      shell.core.variables = [{ JUST_CHOOSER = cfg.just.chooserCmd; }];
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ dfmt go-task just lnav comby tagref xh ];
       };

@@ -289,6 +289,7 @@ in
       patching.enable = true;
       tools.xserver.enable = true;
       tools.misc.enable = true;
+      just.chooserCmd = "dmenu -l 10";
       emacs.enable = true;
     };
     python = {
