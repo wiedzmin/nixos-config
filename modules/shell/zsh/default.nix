@@ -102,6 +102,8 @@ in
             # review https://github.com/Aloxaf/fzf-tab/wiki/Configuration
             source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
 
+            bindkey '\e[3~' delete-char # appropriate action for `delete` key
+
             bindkey '^P' fuzzy-search-and-edit
           '';
           sessionVariables = {
