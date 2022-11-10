@@ -105,6 +105,14 @@ in
             bindkey '\e[3~' delete-char # appropriate action for `delete` key
 
             bindkey '^P' fuzzy-search-and-edit
+          '' + optionalString (config.shell.vt.kitty.enable) ''
+            # input navigation shim, see https://github.com/kovidgoyal/kitty/issues/2748 for details
+
+            bindkey '^[[1;3C' emacs-forward-word
+            bindkey '^[[1;3D' emacs-backward-word
+
+            bindkey '\e[H'  beginning-of-line
+            bindkey '\e[F'  end-of-line
           '';
           sessionVariables = {
             # NOTE: zsh-specific, keep, do not bind to custom module(s)

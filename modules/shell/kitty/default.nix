@@ -340,8 +340,6 @@ in
             # editing
             "ctrl+0x76" = "paste_from_clipboard";
             "ctrl+0x78" = "copy_to_clipboard";
-            "home" = "send_text all \\x1b\\x62"; # C-a
-            "end" = "send_text all \\x1b\\x66"; # C-e
             "ctrl+shift+r" = "send_text all \\x12";
             "ctrl+alt+slash>enter" = "create_marker";
             "ctrl+alt+slash>escape" = "remove_marker";
