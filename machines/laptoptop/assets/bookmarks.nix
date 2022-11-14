@@ -542,6 +542,12 @@ rec {
         browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
+    "mongoltoli" = {
+      tags = [ "mongol" "dictionary" "reference" ];
+      remote = {
+        url = "https://mongoltoli.mn";
+      };
+    };
     "cider/discord" = {
       tags = [ "emacs" "clojure" "cider" "discord" ];
       remote = { url = "https://discord.com/channels/797747718385696768/797750325179973672"; };
