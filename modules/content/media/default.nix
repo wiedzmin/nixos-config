@@ -278,6 +278,13 @@ in
             }
           ];
         };
+        "pdf-searching" = {
+          desc = "pdf + ";
+          remote = {
+            url = "https://www.google.ru/";
+            searchSuffix = "?q=pdf+";
+          };
+        };
       };
     })
   ];
