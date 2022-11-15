@@ -39,6 +39,7 @@ in
         epkgs.highlight-numbers
         epkgs.multiple-cursors
         epkgs.region-bindings-mode
+        epkgs.selected
         epkgs.shift-number
         epkgs.smartparens
         epkgs.string-inflection

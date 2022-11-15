@@ -36,6 +36,28 @@
         ("C-S-<down>" . mc/mark-next-like-this)
         ("C-%" . mc/mark-more-like-this-extended)))
 
+(use-package selected
+  :demand t
+  :bind
+  (:map selected-keymap
+        ("c" . capitalize-region)
+        ("d" . downcase-region)
+        ("u" . upcase-region)
+        ;; ======================
+        ("s" . sort-lines)
+        ("D" . delete-duplicate-lines)
+        ;; ======================
+        ("/" . undo-in-region)
+        ("m" . apply-macro-to-region-lines)
+        ("n" . drag-stuff-down)
+        ("p" . drag-stuff-up)
+        ("w" . count-words-region)
+        ;; ======================
+        ("q" . selected-off)
+        ("C-g" . selected-off))
+  :config
+  (selected-global-mode))
+
 (use-package shift-number
   :bind
   ("M-+" . shift-number-up)
