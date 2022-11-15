@@ -8,10 +8,20 @@ in
 {
   options = {
     dev.ml = {
+      enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable development infra";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable development infra for Emacs.";
+        description = "Whether to enable development infra for Emacs";
+      };
+      bookmarks.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable relevant bookmarks";
       };
     };
   };
@@ -20,6 +30,21 @@ in
     (mkIf cfg.emacs.enable {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.tuareg ];
       ide.emacs.core.config = builtins.readFile ./elisp/ml.el;
+    })
+    (mkIf (cfg.enable && cfg.bookmarks.enable && config.navigation.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "ocaml-file-extensions" = {
+          tags = [ "ocaml" "reference" ];
+          remote.url = "https://blog.waleedkhan.name/ocaml-file-extensions/";
+          windowRules = [
+            {
+              class = mkWSMappingBrowsersRegexp config.attributes.browser;
+              title = "OCaml file extensions";
+              activate = true;
+            }
+          ];
+        };
+      };
     })
   ];
 }
