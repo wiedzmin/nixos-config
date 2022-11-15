@@ -306,6 +306,10 @@ in
       misc.enable = true;
       emacs.enable = true;
     };
+    ml = {
+      enable = true;
+      emacs.enable = true;
+    };
     lisp.enable = false; # FIXME: slime. Also check ability to pin particular epkgs
   };
 
