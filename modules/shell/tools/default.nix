@@ -30,6 +30,7 @@ in
           jless
           lfs
           miller
+          moar
           pipe-rename
           ripgrep-all
           sad # TODO: consider creating shell aliases
@@ -94,7 +95,10 @@ in
           };
         };
       };
-      shell.core.variables = [{ GIT_PAGER = "${pkgs.delta}/bin/delta"; }];
+      shell.core.variables = [{
+        GIT_PAGER = "${pkgs.delta}/bin/delta";
+        PAGER = "${pkgs.moar}/bin/moar";
+      }];
     })
   ];
 }
