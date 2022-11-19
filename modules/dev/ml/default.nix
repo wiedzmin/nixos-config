@@ -44,6 +44,24 @@ in
             }
           ];
         };
+        "parsing-ocamllex-menhir" = {
+          tags = [ "ocaml" "reference" "blogpost" ];
+          remote.url = "https://mukulrathi.com/create-your-own-programming-language/parsing-ocamllex-menhir/";
+          windowRules = [
+            {
+              class = mkWSMappingBrowsersRegexp config.attributes.browser;
+              title = "OCamllex and Menhir";
+              activate = true;
+            }
+          ];
+        };
+        "ocaml-augmented-search" = {
+          desc = "ocaml + ";
+          remote = {
+            url = "https://www.google.ru/";
+            searchSuffix = "?q=ocaml+";
+          };
+        };
       };
     })
   ];
