@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.dev.navigation.projects;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
@@ -48,6 +49,16 @@ in
   };
 
   config = mkMerge [
+    (mkIf (cfg.enable) {
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [ onefetch ];
+        programs.git = {
+          aliases = {
+            psum = "!which onefetch && onefetch";
+          };
+        };
+      };
+    })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = lib.optionals cfg.fuzzySearch.enable [{
         key = [ "r" ];
