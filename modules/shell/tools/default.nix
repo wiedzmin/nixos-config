@@ -31,6 +31,7 @@ in
           lfs
           miller
           moar
+          moreutils # NOTE: see https://joeyh.name/code/moreutils/ for reference
           pipe-rename
           ripgrep-all
           sad # TODO: consider creating shell aliases
