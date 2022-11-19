@@ -374,13 +374,6 @@ in
               path = true;
               delimiter = " // ";
             };
-          ".mozilla/native-messaging-hosts/me.f1u77y.web_media_controller.json".text = builtins.toJSON {
-            name = "me.f1u77y.web_media_controller";
-            description = "Allows controlling embedded players (YT, etc) via MPRIS";
-            path = "${pkgs.wmc-mpris}/bin/web-media-controller";
-            type = "stdio";
-            allowed_extensions = [ "web-media-controller@f1u77y.me" ];
-          };
           ".mozilla/native-messaging-hosts/passff.json".text = builtins.toJSON {
             name = "passff";
             description = "Host for communicating with zx2c4 pass";
