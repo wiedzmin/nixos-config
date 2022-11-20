@@ -68,7 +68,7 @@ in
         + mkArbttPrefixedTitlesRule (with cfg.extensions; primary ++ secondary) "read:";
       home-manager.users."${user}" = {
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.ebook "org.pwmt.zathura.desktop";
-        home.packages = with pkgs; [ calibre djview djvulibre ];
+        home.packages = with pkgs; [ djview djvulibre ];
         programs.zathura = {
           enable = true;
           options = {
