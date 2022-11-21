@@ -156,7 +156,7 @@ in
     fonts = {
       enable = true;
       antialias = true; # NOTE: use `nix-index consolefonts` to search values for `console.font`
-      jetbrains-mono.enable = true;
+      iosevka.enable = true;
     };
     wallpaper = {
       enable = true;
