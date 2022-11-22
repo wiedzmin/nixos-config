@@ -297,6 +297,10 @@ in
           desc = "Home Manager documentation";
           remote.url = "https://nix-community.github.io/home-manager/index.html";
         };
+        "nix-lib" = {
+          desc = "Nix library reference";
+          remote.url = "https://teu5us.github.io/nix-lib.html";
+        };
       };
     })
   ];
