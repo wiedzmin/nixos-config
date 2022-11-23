@@ -56,6 +56,7 @@
         ("q" . selected-off)
         ("C-g" . selected-off))
   :config
+  (transient-mark-mode 1)
   (selected-global-mode))
 
 (use-package shift-number

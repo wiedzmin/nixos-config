@@ -76,7 +76,6 @@
   (line-number-mode 1)
   (size-indication-mode 1)
   (toggle-truncate-lines 1)
-  (transient-mark-mode -1)
   (delight 'eldoc-mode nil "eldoc")
   (put 'transient-mark-mode 'permanent-local t)
   (put 'set-goal-column 'disabled nil))
