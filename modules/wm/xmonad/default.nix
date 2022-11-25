@@ -217,6 +217,11 @@ in
         default = false;
         description = "Whether to enable xmonad.";
       };
+      isDefault = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Set `XMonad` as default WM";
+      };
       # FIXME: adopt new workspace keybindings implementation (presumably broken)
       internalKeys = mkOption {
         type = types.attrs;
@@ -272,19 +277,36 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.haskell-mode ];
+
+      environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
+      home-manager.users."${user}" = {
+        home.file = {
+          ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./lib/ExtraCombinators.hs;
+          ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./lib/WindowTypes.hs;
+          ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./lib/XkbToggle.hs;
+          ".xmonad/lib/XMonad/Workspaces.hs".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./lib/Workspaces.hs ];
+          ".xmonad/xmonad.hs" = {
+            text = configText;
+            onChange = "xmonad --recompile";
+          };
+        };
+        xdg.configFile."xmobar/xmobarrc".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/xmobarrc ];
+      };
+    })
+    (mkIf (cfg.enable && cfg.isDefault) {
       assertions = [
         {
           assertion = config.workstation.systemtraits.enable;
           message = "xmonad: must enable systemtraits maintainence.";
         }
         {
-          assertion = !config.wm.i3.enable && !config.wm.stumpwm.enable;
-          message = "xmonad: exactly one WM could be enabled.";
+          assertion = !config.wm.awesome.isDefault && !config.wm.i3.isDefault && !config.wm.qtile.isDefault && !config.wm.stumpwm.isDefault;
+          message = "xmonad: exactly one WM could be the default.";
         }
       ];
 
       shell.core.variables = [{ CURRENT_WM = "xmonad"; global = true; emacs = true; }];
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.haskell-mode ];
 
       # TODO: ensure config dir exists (~/.xmonad or another if changeable)
       services.xserver = {
@@ -309,21 +331,6 @@ in
           lib.strings.escapeNixString (builtins.toJSON (cfg.internalKeys // config.wmCommon.keybindings.common))
         }
       '';
-
-      environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
-      home-manager.users."${user}" = {
-        home.file = {
-          ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./lib/ExtraCombinators.hs;
-          ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./lib/WindowTypes.hs;
-          ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./lib/XkbToggle.hs;
-          ".xmonad/lib/XMonad/Workspaces.hs".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./lib/Workspaces.hs ];
-          ".xmonad/xmonad.hs" = {
-            text = configText;
-            onChange = "xmonad --recompile";
-          };
-        };
-        xdg.configFile."xmobar/xmobarrc".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/xmobarrc ];
-      };
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       navigation.bookmarks.entries = {

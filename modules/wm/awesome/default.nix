@@ -20,10 +20,10 @@ in
         default = false;
         description = "Whether to enable AwesomeWM";
       };
-      config.enable = mkOption {
+      isDefault = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable custom config for AwesomeWM";
+        description = "Set `AwesomeWM` as default WM";
       };
       luaModules = mkOption {
         default = [ ];
@@ -36,9 +36,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      shell.core.variables = [{ CURRENT_WM = "awesome"; global = true; emacs = true; }];
-    })
-    (mkIf cfg.config.enable {
       fonts.fonts = with pkgs; [ font-awesome ];
 
       nixpkgs.config.packageOverrides = _: rec {
@@ -49,7 +46,8 @@ in
           ''awesome -c "$XDG_CONFIG_HOME/awesome/rc.lua" ${makeSearchPath cfg.luaModules}'';
       };
 
-      wmCommon.keybindings.debug = [
+      # TODO: implement respective Lua code generation
+      wmCommon.keybindings.common = [
         {
           key = [ prefix "Escape" ];
           cmd = ''
@@ -288,6 +286,24 @@ in
           "awesome/themes" = { source = ./themes; recursive = true; };
           "awesome/lib/debug.lua".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./lib/debug.lua ];
         };
+      };
+    })
+    (mkIf (cfg.enable && cfg.isDefault) {
+      assertions = [{
+        assertion = !config.wm.i3.isDefault && !config.wm.qtile.isDefault && !config.wm.stumpwm.isDefault && !config.wm.xmonad.isDefault;
+        message = "awesome: exactly one WM could be the default.";
+      }];
+
+      shell.core.variables = [{ CURRENT_WM = "awesome"; global = true; emacs = true; }];
+
+      services.xserver = {
+        windowManager = {
+          awesome = {
+            enable = true;
+            luaModules = cfg.luaModules;
+          };
+        };
+        displayManager = { defaultSession = "none+awesome"; };
       };
     })
   ];

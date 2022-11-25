@@ -35,6 +35,7 @@ in
         default = [ ];
         description = "Common keybindings.";
       };
+      # NOTE: do we need this?
       keybindings.debug = mkOption {
         type = types.listOf types.attrs;
         default = [ ];

@@ -26,6 +26,11 @@ in
         default = false;
         description = "Whether to enable i3.";
       };
+      isDefault = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Set `i3` as default WM";
+      };
       containerLayout = mkOption {
         type = types.enum [ "default" "stacking" "tabbed" ];
         default = "default";
@@ -101,21 +106,13 @@ in
     };
   };
 
-  # TODO: make `default` and enabled semantics for WMs, assertions for `single WM` should only apply to former
-  # TODO: split `enable` and `[custom]config.enable` settings for all WMs, see `awesome` and `qtile` for example
   config = mkMerge [
     (mkIf cfg.enable {
-      assertions = [{
-        assertion = !config.wm.xmonad.enable && !config.wm.stumpwm.enable;
-        message = "i3: exactly one WM could be enabled.";
-      }];
-
       environment.pathsToLink = optionals (cfg.statusbar.impl == "blocks") [ "/libexec" ];
       fonts.fonts = optionals (cfg.statusbar.impl == "blocks") (with pkgs; [ font-awesome ]);
 
       wmCommon = {
         enable = true;
-        autostart.entries = [ { cmd = "${pkgs.i3-auto-layout}/bin/i3-auto-layout"; restart = true; } ];
         modeBindings = {
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
           "scratchpad" = [ prefix "grave" ];
@@ -353,75 +350,6 @@ in
         ];
       };
 
-      services.xserver = {
-        windowManager = {
-          i3 = {
-            enable = true;
-            extraPackages = with pkgs;
-              lib.optionals (cfg.statusbar.impl == "py3") [ i3status python3Packages.py3status file ]
-              ++ lib.optionals (cfg.statusbar.impl == "i3-rs") [ nixpkgs-i3status-rs.i3status-rust ]
-              ++ lib.optionals (cfg.statusbar.impl == "blocks") [ i3blocks ] ++ cfg.statusbar.deps;
-          };
-        };
-        displayManager = { defaultSession = "none+i3"; };
-      };
-
-      systemd.user.services.i3-kbdswitcher = {
-        description = "i3 KBD switcher";
-        after = [ "graphical-session-pre.target" ];
-        partOf = [ "graphical-session.target" ];
-        wantedBy = [ "graphical-session.target" ];
-        path = [ pkgs.xkb-switch pkgs.i3 pkgs.bash ];
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${nurpkgs.wmtools}/bin/i3-kbd";
-          Restart = "on-failure";
-          StandardOutput = "journal";
-          StandardError = "journal";
-        };
-      };
-
-      systemd.user.services.i3-desktops = optionalAttrs (cfg.windowRules.method == "ipc") {
-        description = "i3 windows mapper";
-        after = [ "graphical-session-pre.target" ];
-        partOf = [ "graphical-session.target" ];
-        wantedBy = [ "graphical-session.target" ];
-        path = [ pkgs.i3 pkgs.bash ];
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${nurpkgs.wmtools}/bin/i3-desktops";
-          Restart = "always";
-          StandardOutput = "journal";
-          StandardError = "journal";
-        };
-      };
-
-      systemd.user.services.i3-mousewarp = optionalAttrs cfg.mouseFollowsFocus {
-        description = "mouse warp for i3";
-        after = [ "graphical-session-pre.target" ];
-        partOf = [ "graphical-session.target" ];
-        wantedBy = [ "graphical-session.target" ];
-        path = [ pkgs.i3 pkgs.bash ];
-        serviceConfig = {
-          Type = "simple";
-          ExecStart = "${nurpkgs.wmtools}/bin/i3-mousewarp";
-          Restart = "always";
-          StandardOutput = "journal";
-          StandardError = "journal";
-        };
-      };
-
-      shell.core.variables = [{ CURRENT_WM = "i3"; global = true; emacs = true; }];
-
-      workstation.systemtraits.instructions = ''
-        ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
-          lib.strings.escapeNixString (builtins.toJSON config.wmCommon.keybindings.common)
-        }
-        ${pkgs.redis}/bin/redis-cli set wm/modebindings ${
-          lib.strings.escapeNixString (builtins.toJSON config.wmCommon.modeBindings)
-        }
-      '';
-
       navigation.bookmarks.entries = {
         i3-userguide = {
           desc = "i3 userguide";
@@ -648,6 +576,85 @@ in
             theme = cfg.theme.i3status-rs;
           });
         };
+      };
+    })
+    (mkIf (cfg.enable && cfg.isDefault) {
+      assertions = [{
+        assertion = !config.wm.awesome.isDefault && !config.wm.qtile.isDefault && !config.wm.stumpwm.isDefault && !config.wm.xmonad.isDefault;
+        message = "i3: exactly one WM could be the default.";
+      }];
+
+      shell.core.variables = [{ CURRENT_WM = "i3"; global = true; emacs = true; }];
+
+      wmCommon = {
+        autostart.entries = [{ cmd = "${pkgs.i3-auto-layout}/bin/i3-auto-layout"; restart = true; }];
+      };
+
+      workstation.systemtraits.instructions = ''
+        ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
+          lib.strings.escapeNixString (builtins.toJSON config.wmCommon.keybindings.common)
+        }
+        ${pkgs.redis}/bin/redis-cli set wm/modebindings ${
+          lib.strings.escapeNixString (builtins.toJSON config.wmCommon.modeBindings)
+        }
+      '';
+
+      systemd.user.services.i3-kbdswitcher = {
+        description = "i3 KBD switcher";
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        path = [ pkgs.xkb-switch pkgs.i3 pkgs.bash ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${nurpkgs.wmtools}/bin/i3-kbd";
+          Restart = "on-failure";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+      };
+
+      systemd.user.services.i3-desktops = optionalAttrs (cfg.windowRules.method == "ipc") {
+        description = "i3 windows mapper";
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        path = [ pkgs.i3 pkgs.bash ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${nurpkgs.wmtools}/bin/i3-desktops";
+          Restart = "always";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+      };
+
+      systemd.user.services.i3-mousewarp = optionalAttrs cfg.mouseFollowsFocus {
+        description = "mouse warp for i3";
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        path = [ pkgs.i3 pkgs.bash ];
+        serviceConfig = {
+          Type = "simple";
+          ExecStart = "${nurpkgs.wmtools}/bin/i3-mousewarp";
+          Restart = "always";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+      };
+
+      services.xserver = {
+        windowManager = {
+          i3 = {
+            enable = true;
+            extraPackages = with pkgs;
+              lib.optionals (cfg.statusbar.impl == "py3") [ i3status python3Packages.py3status file ]
+              ++ lib.optionals (cfg.statusbar.impl == "i3-rs") [ nixpkgs-i3status-rs.i3status-rust ]
+              ++ lib.optionals (cfg.statusbar.impl == "blocks") [ i3blocks ] ++ cfg.statusbar.deps;
+          };
+        };
+        displayManager = { defaultSession = "none+i3"; };
       };
     })
   ];

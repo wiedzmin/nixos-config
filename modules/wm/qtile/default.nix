@@ -14,29 +14,16 @@ in
         default = false;
         description = "Whether to enable Qtile";
       };
-      config.enable = mkOption {
+      isDefault = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable custom config for Qtile";
+        description = "Set `Qtile` as default WM";
       };
     };
   };
 
   config = mkMerge [
     (mkIf cfg.enable {
-      # FIXME: review all `CURRENT_WM` usages, then correct
-      shell.core.variables = [{ CURRENT_WM = "i3"; global = true; emacs = true; }];
-
-      services.xserver = {
-        windowManager = {
-          qtile = {
-            enable = true;
-          };
-        };
-        displayManager = { defaultSession = "none+qtile"; };
-      };
-    })
-    (mkIf cfg.config.enable {
       fonts.fonts = with pkgs; [ font-awesome ];
 
       nixpkgs.config.packageOverrides = _: rec {
@@ -52,6 +39,24 @@ in
         xdg.configFile = {
           "qtile/config.py".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./config.py ];
         };
+      };
+    })
+    (mkIf (cfg.enable && cfg.isDefault) {
+      assertions = [{
+        assertion = !config.wm.awesome.isDefault && !config.wm.i3.isDefault && !config.wm.stumpwm.isDefault && !config.wm.xmonad.isDefault;
+        message = "qtile: exactly one WM could be the default.";
+      }];
+
+      # FIXME: review all `CURRENT_WM` usages, then correct
+      shell.core.variables = [{ CURRENT_WM = "qtile"; global = true; emacs = true; }];
+
+      services.xserver = {
+        windowManager = {
+          qtile = {
+            enable = true;
+          };
+        };
+        displayManager = { defaultSession = "none+qtile"; };
       };
     })
   ];

@@ -11,6 +11,7 @@ local utils = require('utils')
 ezconfig.modkey = "@wmPrefix@"
 ezconfig.altkey = "@wmPrefixAlt@"
 
+-- FIXME: use wmCommon.keybindings*
 controls.globalkeys = ezconfig.keytable.join({
     ['M-<Escape>'] = function()
        awful.tag.history.restore()

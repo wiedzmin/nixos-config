@@ -629,10 +629,11 @@ in
 
   wm.i3 = {
     enable = true;
+    isDefault = true;
     statusbar.impl = "i3-rs";
   };
   wm.awesome = {
-    config.enable = true;
+    enable = true;
     luaModules = with pkgs; [
       luaPackages.luafilesystem
       luaPackages.vicious
@@ -642,7 +643,7 @@ in
     ];
   };
   wm.qtile = {
-    config.enable = true;
+    enable = true;
   };
 
   wmCommon.workspaces = [
