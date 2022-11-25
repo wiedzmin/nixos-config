@@ -115,7 +115,7 @@ in
 
       wmCommon = {
         enable = true;
-        autostart.entries = [ "${pkgs.i3-auto-layout}/bin/i3-auto-layout" ];
+        autostart.entries = [ { cmd = "${pkgs.i3-auto-layout}/bin/i3-auto-layout"; restart = true; } ];
         modeBindings = {
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
           "scratchpad" = [ prefix "grave" ];
@@ -454,7 +454,14 @@ in
             bindsym ${prefix}+Return workspace back_and_forth
 
             ${lib.concatStringsSep "\n"
-              (lib.forEach config.wmCommon.autostart.entries (e: "exec --no-startup-id ${e}"))}
+              (lib.forEach (builtins.filter (e: !builtins.hasAttr "restart" e || (builtins.hasAttr "restart" e && !e.restart))
+                config.wmCommon.autostart.entries)
+                (e: "exec --no-startup-id ${e.cmd}"))}
+
+            ${lib.concatStringsSep "\n"
+              (lib.forEach (builtins.filter (e: builtins.hasAttr "restart" e && e.restart)
+                config.wmCommon.autostart.entries)
+                (e: "exec_always --no-startup-id ${e.cmd}"))}
 
             ${optionalString (cfg.theme.client != "") cfg.theme.client}
 

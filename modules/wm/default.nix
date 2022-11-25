@@ -107,7 +107,7 @@ in
         description = "Whether focus should follow mouse";
       };
       autostart.entries = mkOption {
-        type = types.listOf types.str;
+        type = types.listOf types.attrs;
         default = [ ];
         description = "Applications to start automatically.";
       };
@@ -194,7 +194,7 @@ in
     })
     (mkIf (cfg.enable && cfg.focus.show) {
       # TODO: review https://github.com/fennerm/flashfocus/wiki
-      wmCommon.autostart.entries = [ "${pkgs.flashfocus}/bin/flashfocus" ];
+      wmCommon.autostart.entries = [ { cmd = "${pkgs.flashfocus}/bin/flashfocus"; } ];
       wmCommon.keys = [{
         key = [ "f" ];
         cmd = "${pkgs.flashfocus}/bin/focus_window";

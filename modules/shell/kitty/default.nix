@@ -378,7 +378,7 @@ in
             K("M-Shift-dot"): K("M-Shift-RIGHT_BRACE"),
         }, "kitty")
       ''; # NOTE: workarounds for some unexpectedly non-working prefixes
-      wmCommon.autostart.entries = optionals cfg.autostart [ (lib.concatStringsSep " " cfg.command) ];
+      wmCommon.autostart.entries = optionals cfg.autostart [ { cmd = lib.concatStringsSep " " cfg.command; } ];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {

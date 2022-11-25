@@ -121,7 +121,7 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       programs.nm-applet.enable = if (config.wm.i3.enable || !config.attributes.wms.enabled) then true else false;
 
-      wmCommon.autostart.entries = optionals cfg.bluetooth.enable [ "blueman-manager" ];
+      wmCommon.autostart.entries = optionals cfg.bluetooth.enable [ { cmd = "blueman-manager"; } ];
 
       home-manager.users."${user}" = {
         home.packages = with pkgs;

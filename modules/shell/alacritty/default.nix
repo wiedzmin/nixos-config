@@ -91,7 +91,7 @@ in
             },
         }, "Alacritty")
       '';
-      wmCommon.autostart.entries = optionals cfg.autostart [ (builtins.head cfg.command) ];
+      wmCommon.autostart.entries = optionals cfg.autostart [ { cmd = builtins.head cfg.command; } ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keys = [{
