@@ -557,7 +557,7 @@ in
           false "";
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable && cfg.isDefault) {
-      wmCommon.keys = [
+      wmCommon.keybindings.common = [
         {
           key = [ "s" ];
           cmd = "${nurpkgs.toolbox}/bin/qbsessions -export";

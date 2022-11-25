@@ -128,7 +128,7 @@ in
           optionals (cfg.backend == "wireless") [ wpa_supplicant_gui ]
           ++ optionals (cfg.backend == "networkmanager" && cfg.wm.dmenu.enable) [ nurpkgs.dmenu-ng ];
       };
-      wmCommon.keys = optionals (cfg.backend == "networkmanager") [
+      wmCommon.keybindings.common = optionals (cfg.backend == "networkmanager") [
         ({
           key = [ "Shift" "w" ];
           desktop = "shell";

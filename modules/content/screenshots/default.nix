@@ -80,7 +80,7 @@ in
       systemd.user.timers."order-screenshots" = renderTimer "Screenshots ordering" "" "" cfg.ordering.timespec false "";
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [
+      wmCommon.keybindings.common = [
         {
           key = [ "Print" ];
           cmd = "${pkgs.scrot}/bin/scrot --focused '${cfg.baseDir}/screenshot-%Y-%m-%d_%H-%M-%S.png'"; # NOTE: flameshot behaves strangely on kitty windows

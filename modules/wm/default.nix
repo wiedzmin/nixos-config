@@ -30,10 +30,15 @@ in
         default = "Mod1";
         description = "WM alternate prefix key";
       };
-      keys = mkOption {
+      keybindings.common = mkOption {
         type = types.listOf types.attrs;
         default = [ ];
         description = "Common keybindings.";
+      };
+      keybindings.debug = mkOption {
+        type = types.listOf types.attrs;
+        default = [ ];
+        description = "Common keybindings, debug version.";
       };
       autorepeat.delay = mkOption {
         type = types.int;
@@ -44,11 +49,6 @@ in
         type = types.int;
         default = 30;
         description = "Autorepeat rate for xset";
-      };
-      debugKeys = mkOption {
-        type = types.listOf types.attrs;
-        default = [ ];
-        description = "Common keybindings, debug version.";
       };
       wsMapping.rules = mkOption {
         type = types.listOf types.attrs;
@@ -163,7 +163,7 @@ in
         "services" = [ cfg.prefix "s" ];
         "xserver" = [ cfg.prefix "x" ];
       };
-      wmCommon.keys = [
+      wmCommon.keybindings.common = [
         {
           key = [ cfg.prefix "k" ];
           cmd = "${pkgs.keybindings}/bin/keybindings";
@@ -195,7 +195,7 @@ in
     (mkIf (cfg.enable && cfg.focus.show) {
       # TODO: review https://github.com/fennerm/flashfocus/wiki
       wmCommon.autostart.entries = [ { cmd = "${pkgs.flashfocus}/bin/flashfocus"; } ];
-      wmCommon.keys = [{
+      wmCommon.keybindings.common = [{
         key = [ "f" ];
         cmd = "${pkgs.flashfocus}/bin/focus_window";
         mode = "xserver";

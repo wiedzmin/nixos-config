@@ -82,7 +82,7 @@ in
       wmCommon.modeBindings = {
         "browser" = [ prefix "b" ];
       };
-      wmCommon.keys = [
+      wmCommon.keybindings.common = [
         {
           key = [ prefix "slash" ];
           cmd = "${nurpkgs.toolbox}/bin/websearch";

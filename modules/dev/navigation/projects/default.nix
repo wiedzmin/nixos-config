@@ -60,7 +60,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = lib.optionals cfg.fuzzySearch.enable [{
+      wmCommon.keybindings.common = lib.optionals cfg.fuzzySearch.enable [{
         key = [ "r" ];
         cmd = with config.dev.navigation.projects.fuzzySearch;
           "${nurpkgs.toolbox}/bin/projects search --root ${root} --depth ${builtins.toString depth}";

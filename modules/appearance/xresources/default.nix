@@ -47,7 +47,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [
+      wmCommon.keybindings.common = [
         {
           key = [ "Shift" "r" ];
           cmd = "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources";

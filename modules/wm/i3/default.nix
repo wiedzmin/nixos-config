@@ -120,7 +120,7 @@ in
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
           "scratchpad" = [ prefix "grave" ];
         };
-        keys = [
+        keybindings.common = [
           {
             key = [ prefix "Shift" "q" ];
             cmd = ''exec "i3-msg reload"'';
@@ -415,7 +415,7 @@ in
 
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
-          lib.strings.escapeNixString (builtins.toJSON config.wmCommon.keys)
+          lib.strings.escapeNixString (builtins.toJSON config.wmCommon.keybindings.common)
         }
         ${pkgs.redis}/bin/redis-cli set wm/modebindings ${
           lib.strings.escapeNixString (builtins.toJSON config.wmCommon.modeBindings)
@@ -435,7 +435,7 @@ in
             # i3 config file (v4)
 
             ${cfg.settings}
-            ${bindkeysI3 config.wmCommon.keys config.wmCommon.modeBindings cfg.modeExitBindings
+            ${bindkeysI3 config.wmCommon.keybindings.common config.wmCommon.modeBindings cfg.modeExitBindings
             config.wmCommon.workspaces config.controlcenter.commandsDebugLogRoot}
             ${mkWorkspacesI3 config.wmCommon.workspaces prefix}
 
@@ -449,7 +449,7 @@ in
 
             ${bindkeysFocusI3 config.wmCommon.wsMapping.rules}
 
-            ${with config.wmCommon; genScratchpadSettingsI3 wsMapping.rules keys cfg.modeExitBindings workspaces config.controlcenter.commandsDebugLogRoot}
+            ${with config.wmCommon; genScratchpadSettingsI3 wsMapping.rules keybindings.common cfg.modeExitBindings workspaces config.controlcenter.commandsDebugLogRoot}
 
             bindsym ${prefix}+Return workspace back_and_forth
 

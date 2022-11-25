@@ -134,7 +134,7 @@ in
       '';
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [{
+      wmCommon.keybindings.common = [{
         key = [ "p" ];
         cmd = "${pkgs.passctl}/bin/passctl";
         mode = "select";

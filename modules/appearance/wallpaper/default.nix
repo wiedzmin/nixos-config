@@ -76,7 +76,7 @@ in
       boot.loader.grub.splashImage = optionalString (cfg.boot.splashImage != "") cfg.boot.splashImage;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [{
+      wmCommon.keybindings.common = [{
         key = [ "w" ];
         cmd = "${rescale-wallpaper}/bin/rescale-wallpaper";
         mode = "xserver";

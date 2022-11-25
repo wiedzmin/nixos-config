@@ -65,7 +65,7 @@ in
       home-manager.users."${user}" = { home.packages = lib.optionals (cfg.controlCenter.meta != { }) (with pkgs; [ dbms beekeeper-studio ]); };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = lib.optionals (cfg.controlCenter.meta != { }) [{
+      wmCommon.keybindings.common = lib.optionals (cfg.controlCenter.meta != { }) [{
         key = [ "d" ];
         cmd = ''${pkgs.dbms}/bin/dbms --term-command "${
           lib.concatStringsSep " " config.attributes.vt.default.cmd}" '';

@@ -34,7 +34,7 @@ in
       '';
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [
+      wmCommon.keybindings.common = [
         {
           key = [ "v" ];
           cmd = "${nurpkgs.toolbox}/bin/vpn --status";

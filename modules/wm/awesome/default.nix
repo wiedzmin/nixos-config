@@ -49,7 +49,7 @@ in
           ''awesome -c "$XDG_CONFIG_HOME/awesome/rc.lua" ${makeSearchPath cfg.luaModules}'';
       };
 
-      wmCommon.debugKeys = [
+      wmCommon.keybindings.debug = [
         {
           key = [ prefix "Escape" ];
           cmd = ''

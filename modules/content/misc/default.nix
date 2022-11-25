@@ -93,7 +93,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [
+      wmCommon.keybindings.common = [
         {
           key = [ "i" ];
           cmd = "${nixpkgs-index-fm.index-fm}/bin/index";

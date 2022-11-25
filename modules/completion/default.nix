@@ -210,7 +210,7 @@ in
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/completion.el ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [{
+      wmCommon.keybindings.common = [{
         key = [ "Shift" "s" ];
         cmd = "${pkgs.snippets}/bin/snippets";
         mode = "run";

@@ -91,7 +91,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [
+      wmCommon.keybindings.common = [
         {
           key = [ "XF86MonBrightnessDown" ];
           cmd = "${pkgs.light}/bin/light -U ${toString cfg.delta}";

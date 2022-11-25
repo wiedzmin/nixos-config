@@ -82,7 +82,7 @@ in
       shell.core.variables = [{ TB_EBOOKS_READER_COMMAND = config.attributes.ebookreader.default.cmd; global = true; }];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keys = [{
+      wmCommon.keybindings.common = [{
         key = [ "b" ];
         cmd = "${nurpkgs.toolbox}/bin/insight ebooks";
         mode = "select";

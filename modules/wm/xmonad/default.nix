@@ -127,7 +127,7 @@ let
                   ]
 
     customKeys conf = [ ${mkKeysXmonadRaw cfg.internalKeys 18}
-                      , ${mkKeysXmonadSpawn config.wmCommon.keys 18}
+                      , ${mkKeysXmonadSpawn config.wmCommon.keybindings.common 18}
                       ]
 
     layoutKeys = [ "M-; " ++ keys ~> sendMessage $ JumpToLayout $ layout | (keys, layout) <- layoutMappings ]
@@ -299,14 +299,14 @@ in
       };
 
       # FIXME: adopt new workspace keybindings implementation (presumably broken)
-      wmCommon.keys = {
+      wmCommon.keybindings.common = {
         "M-C-q" = { cmd = "xmonad --recompile; xmonad --restart"; };
         "M-q" = { cmd = "xmonad --restart"; };
       };
 
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
-          lib.strings.escapeNixString (builtins.toJSON (cfg.internalKeys // config.wmCommon.keys))
+          lib.strings.escapeNixString (builtins.toJSON (cfg.internalKeys // config.wmCommon.keybindings.common))
         }
       '';
 
