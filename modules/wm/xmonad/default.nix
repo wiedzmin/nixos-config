@@ -217,11 +217,6 @@ in
         default = false;
         description = "Whether to enable xmonad.";
       };
-      wsMapping.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable mapping windows to workspaces.";
-      };
       # FIXME: adopt new workspace keybindings implementation (presumably broken)
       internalKeys = mkOption {
         type = types.attrs;
