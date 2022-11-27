@@ -38,6 +38,11 @@
 
 (use-package selected
   :demand t
+  :preface
+  (defun custom/selected-mode-off ()
+    (selected-minor-mode -1))
+  :hook
+  (magit-status-mode-hook . custom/selected-mode-off)
   :bind
   (:map selected-keymap
         ("c" . capitalize-region)
