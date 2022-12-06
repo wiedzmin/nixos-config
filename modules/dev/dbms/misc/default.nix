@@ -38,6 +38,8 @@ in
       dev.projectenv.templates.entries = {
         "tools.dbms" = configPrefix config.navigation.bookmarks.workspaces.roots "modules/dev/dbms/misc/templates/dbms";
       };
+
+      home-manager.users."${user}" = { home.packages = with pkgs; [ sq ]; };
     })
     (mkIf (cfg.enable && cfg.controlCenter.enable) {
       assertions = [
