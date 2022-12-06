@@ -110,5 +110,20 @@ in
         };
       };
     })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/user/pgsql.yml".text = ''
+          name: pgsql
+          parent: default
+
+          matches:
+            - trigger: ":pdbs"
+              replace: "SELECT pg_size_pretty(pg_database_size('$|$'));"
+
+            - trigger: ":ptbs"
+              replace: "SELECT pg_size_pretty(pg_total_relation_size('$|$'));"
+        '';
+      };
+    })
   ];
 }
