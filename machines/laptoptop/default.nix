@@ -236,7 +236,10 @@ in
         resultsSort = "LAST_RUN";
       };
     };
-    emacs.enable = true;
+    emacs = {
+      enable = true;
+      backend = "corfu";
+    };
     wm.enable = true;
   };
 
