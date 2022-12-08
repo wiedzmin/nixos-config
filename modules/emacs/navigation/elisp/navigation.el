@@ -186,7 +186,7 @@
         ("?" . nil))
   :custom
   ;;TODO: investigate if `completion-styles' setting is really _alternative_ against using `prescient'
-  (completion-styles '(basic partial-completion substring orderless))
+  (completion-styles '(basic partial-completion substring orderless)) ;TODO: try flex+emacs22 instead of orderless
   (orderless-style-dispatchers '(dispatchers/without-if-bang
                                  dispatchers/flex
                                  dispatchers/initialism
