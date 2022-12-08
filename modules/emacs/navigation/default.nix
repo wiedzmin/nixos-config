@@ -14,10 +14,10 @@ in
         default = false;
         description = "Whether to enable emacs navigation extensions.";
       };
-      completion.backend = mkOption {
+      selection.backend = mkOption {
         type = types.enum [ "selectrum" "vertico" ];
         default = "vertico";
-        description = "Completion UI to use, like Ivy, Selectrum, Vertico, etc. Currently, only Selectrum is supported.";
+        description = "Selection UI to use, like Ivy, Selectrum, Vertico, etc.";
       };
       projects.backend = mkOption {
         type = types.enum [ "project" "projectile" ];
@@ -73,10 +73,10 @@ in
         epkgs.treemacs-icons-dired
         epkgs.winum
         epkgs.zygospore
-      ] ++ optionals (cfg.completion.backend == "selectrum") [
+      ] ++ optionals (cfg.selection.backend == "selectrum") [
         epkgs.selectrum
         epkgs.selectrum-prescient
-      ] ++ optionals (cfg.completion.backend == "vertico") [
+      ] ++ optionals (cfg.selection.backend == "vertico") [
         epkgs.vertico
       ] ++ optionals (cfg.projects.backend == "project") [
         epkgs.consult-project-extra
@@ -93,10 +93,10 @@ in
         "misc" = builtins.readFile ./elisp/custom/misc.el;
       };
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
-        ([ ./elisp/navigation.el ] ++ optionals (cfg.completion.backend == "selectrum") [ ./elisp/selectrum.el ]
-         ++ optionals (cfg.completion.backend == "vertico") [ ./elisp/vertico.el ]
-         ++ optionals (cfg.projects.backend == "project") [ ./elisp/project.el ]
-         ++ optionals (cfg.projects.backend == "projectile") [ ./elisp/projectile.el ]);
+        ([ ./elisp/navigation.el ] ++ optionals (cfg.selection.backend == "selectrum") [ ./elisp/selectrum.el ]
+          ++ optionals (cfg.selection.backend == "vertico") [ ./elisp/vertico.el ]
+          ++ optionals (cfg.projects.backend == "project") [ ./elisp/project.el ]
+          ++ optionals (cfg.projects.backend == "projectile") [ ./elisp/projectile.el ]);
 
       ide.emacs.core.customKeymaps = {
         "custom-help-map" = "<f1>";
