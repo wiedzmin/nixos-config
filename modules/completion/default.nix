@@ -112,6 +112,12 @@ in
         default = false;
         description = "Whether to enable Emacs completion setup";
       };
+      emacs.backend = mkOption {
+        # TODO: consider extracting dedicated module
+        type = types.enum [ "company" "corfu" ];
+        default = "company";
+        description = "Emacs completion UI to use. Currently, `company` and `corfu` are supported.";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -195,6 +201,9 @@ in
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.all-the-icons-completion
+        epkgs.pos-tip
+        epkgs.yasnippet
+      ] ++ optionals (cfg.emacs.backend == "company") [
         epkgs.company
         epkgs.company-box
         epkgs.company-fuzzy
@@ -204,10 +213,17 @@ in
         epkgs.company-statistics
         epkgs.company-tabnine
         epkgs.company-try-hard
-        epkgs.pos-tip
-        epkgs.yasnippet
+      ] ++ optionals (cfg.emacs.backend == "corfu") [
+        epkgs.cape
+        epkgs.corfu
+        epkgs.corfu-doc
+        epkgs.corfu-prescient
+        epkgs.kind-icon
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/completion.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
+        ([ ./elisp/completion.el ] ++ optionals (cfg.emacs.backend == "company") [ ./elisp/company.el ]
+          ++ optionals (cfg.emacs.backend == "corfu") [ ./elisp/corfu.el ]
+          ++ optionals (cfg.emacs.backend == "corfu" && config.ide.emacs.history.enable) [ ./elisp/corfu-history.el ]);
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.common = [{
