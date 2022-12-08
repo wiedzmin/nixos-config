@@ -16,15 +16,15 @@ in
         default = false;
         description = "Whether to enable completion setup";
       };
-      expansions.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable expansions";
-      };
       snippets.entries = mkOption {
         type = types.listOf types.attrs;
         description = "Various text snippets, mostly for development automation.";
         default = [ ];
+      };
+      expansions.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable expansions";
       };
       expansions.entries = mkOption {
         type = types.listOf types.attrs;
