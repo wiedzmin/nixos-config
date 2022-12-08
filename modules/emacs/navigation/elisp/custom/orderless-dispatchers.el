@@ -1,7 +1,6 @@
 ;; -*- lexical-binding: t -*-
 
 (require 'orderless)
-(require 'company)
 
 (defun dispatchers/without-if-bang (pattern index total)
   "Allow to negate a PATTERN if requested.
