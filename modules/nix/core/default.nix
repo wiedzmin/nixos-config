@@ -301,6 +301,10 @@ in
           desc = "Nix library reference";
           remote.url = "https://teu5us.github.io/nix-lib.html";
         };
+        "mynixos" = {
+          desc = "Build and share reproducible software environments with Nix and NixOS";
+          remote.url = "https://mynixos.com";
+        };
       };
     })
   ];
