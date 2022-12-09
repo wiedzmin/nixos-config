@@ -175,6 +175,18 @@ in
 
             - trigger: ":llv"
               replace: "inputs.unstable.legacyPackages.x86_64-linux.linuxPackages."
+
+            - trigger: ":nwda"
+              replace: "nix why-depends --all \"nixpkgs#$|$\" \"nixpkgs#\""
+
+            - trigger: ":nwdo"
+              replace: "nix why-depends \"nixpkgs#$|$\" \"nixpkgs#\""
+
+            - trigger: ":nwdd"
+              replace: "nix why-depends --derivation \"nixpkgs#$|$\" \"nixpkgs#\""
+
+            - trigger: ":nwd?"
+              replace: "nix why-depends --help"
         '';
       };
     })
