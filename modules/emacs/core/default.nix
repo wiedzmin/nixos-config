@@ -51,10 +51,10 @@ in
         default = false;
         description = "Whether to build debuggable emacs package.";
       };
-      native.enable = mkOption {
+      fromGit = mkOption {
         type = types.bool;
-        default = false;
-        description = "Whether to build emacs with nativecomp features enabled";
+        default = true;
+        description = "Whether to build emacs Git version";
       };
       pgtk.enable = mkOption {
         type = types.bool;
@@ -107,9 +107,8 @@ in
         type = types.package;
         default =
           let
-            flavor = with pkgs.unstable; if cfg.native.enable then
-              if cfg.pgtk.enable then emacsPgtkNativeComp else emacsGitNativeComp else
-              if cfg.pgtk.enable then emacsPgtk else emacs;
+            flavor = with pkgs.unstable; if cfg.pgtk.enable then emacsPgtk else
+              if cfg.fromGit then emacsGit else emacs;
             configured = (flavor.override {
               withGTK2 = false;
               withGTK3 = if cfg.pgtk.enable then true else false;

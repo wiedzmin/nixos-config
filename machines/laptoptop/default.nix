@@ -332,7 +332,6 @@ in
   ide.emacs = {
     core = {
       enable = true;
-      native.enable = true;
       pgtk.enable = false;
       useModernDrawingLibs = false;
       wm.enable = true;
