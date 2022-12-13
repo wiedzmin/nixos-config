@@ -246,4 +246,8 @@
 (use-package text-mode
   :after company-dabbrev
   :hook (text-mode-hook . company-mode)
-  :company (company-tabnine company-capf company-dabbrev))
+  :config
+  (when (boundp 'company-backends)
+    (add-to-list 'company-backends 'company-tabnine)
+    (add-to-list 'company-backends 'company-capf)
+    (add-to-list 'company-backends 'company-dabbrev)))

@@ -35,8 +35,6 @@
 (use-package delight)
 (use-package f)
 
-(use-package compdef)
-
 (use-package no-littering
   :custom
   (no-littering-var-directory "@emacsDatadir@/"))

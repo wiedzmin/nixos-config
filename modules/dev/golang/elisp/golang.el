@@ -6,9 +6,11 @@
   (go-mode-hook . lsp-deferred)
   (go-mode-hook . whitespace-turn-off)
   (go-mode-hook . yas-minor-mode)
-  :company (company-tabnine company-capf)
-  :capf #'pcomplete-completions-at-point
   :config
+  (when (boundp 'company-backends)
+    (add-to-list 'company-backends 'company-tabnine)
+    (add-to-list 'company-backends 'company-capf))
+  (add-to-list 'completion-at-point-functions #'pcomplete-completions-at-point)
   (use-package lsp-go)
   ;;TODO: enable after proper setup
   (use-package dap-go

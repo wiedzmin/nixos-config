@@ -14,7 +14,6 @@
                         (highlight-lines-matching-regexp "wdb.set_trace()")))
   (python-mode-hook . lsp-deferred)
   (python-mode-hook . flycheck-mode)
-  :company (company-tabnine company-capf)
   :bind
   (:map python-mode-map
         ("C-k" . sp-kill-hybrid-sexp)
@@ -22,8 +21,11 @@
         ("C-<right>" . sp-slurp-hybrid-sexp)
         ("M-_" . python-indent-shift-left)
         ("M-+" . python-indent-shift-right))
-  :capf python-completion-at-point
   :config
+  (when (boundp 'company-backends)
+    (add-to-list 'company-backends 'company-tabnine)
+    (add-to-list 'company-backends 'company-capf))
+  (add-to-list 'completion-at-point-functions #'pcomplete-completions-at-point)
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'(lambda () ""))
   (use-package lsp-python-ms

@@ -194,7 +194,6 @@ in
       ide.emacs.core.extraPackages = epkgs:
         [
           epkgs.anaphora
-          epkgs.compdef
           epkgs.deferred
           epkgs.delight
           epkgs.f

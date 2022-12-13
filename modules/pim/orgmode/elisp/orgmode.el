@@ -124,8 +124,6 @@
   ;; https://github.com/chuntaro/emacs-keypression
   :mode (("\\.org$" . org-mode)
          ("\\.org_archive$" . org-mode))
-  :company '(company-dabbrev company-capf)
-  :capf #'pcomplete-completions-at-point
   :hook
   (org-mode-hook . turn-on-font-lock)
   (org-mode-hook . visual-line-mode)
@@ -328,6 +326,10 @@
   (org-yank-adjusted-subtrees t)
   :config
   (advice-add 'org-yank :after #'custom/make-yank-writeable)
+  (when (boundp 'company-backends)
+    (add-to-list 'company-backends 'company-dabbrev)
+    (add-to-list 'company-backends 'company-capf))
+  (add-to-list 'completion-at-point-functions #'pcomplete-completions-at-point)
   (require 'deferred)
   (deferred:$
     @pimOrgAgendaElPatch@
