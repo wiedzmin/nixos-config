@@ -30,10 +30,10 @@ in
             source = ./layouts;
             recursive = true;
           };
-          ".stumpwm.d/custom.lisp".source = ./custom.lisp;
-          ".stumpwm.d/defs.lisp".source = ./defs.lisp;
-          ".stumpwm.d/init.lisp".source = ./init.lisp;
-          ".stumpwm.d/keydefs.lisp".source = ./keydefs.lisp;
+          ".stumpwm.d/custom.lisp".source = ./lisp/custom.lisp;
+          ".stumpwm.d/defs.lisp".source = ./lisp/defs.lisp;
+          ".stumpwm.d/init.lisp".source = ./lisp/init.lisp;
+          ".stumpwm.d/keydefs.lisp".source = ./lisp/keydefs.lisp;
         };
       };
     })
