@@ -499,6 +499,8 @@
   :bind
   ([remap list-directory] . dired)
   (:map dired-mode-map
+        ("i" . image-dired))
+  (:map dired-mode-map
         ("e" . (lambda ()
                  (interactive)
                  (when (derived-mode-p 'dired-mode)
