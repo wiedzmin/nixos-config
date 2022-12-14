@@ -179,13 +179,6 @@
   :config
   (add-to-list 'company-backends 'company-restclient))
 
-(use-package company-prescient
-  :after (company prescient)
-  :custom
-  (company-prescient-sort-length-enable nil)
-  :config
-  (company-prescient-mode +1))
-
 ;;; Prerequisite: Execute M-x company-tabnine-install-binary to install the TabNine binary for your system.
 (use-package company-tabnine
   :after (company)

@@ -30,14 +30,6 @@
   :config
   (selectrum-mode +1))
 
-(use-package selectrum-prescient
-  :after (selectrum prescient)
-  :config
-  ;; use Prescient on top of Orderless, see selectrum docs for details
-  ;; https://github.com/raxod502/selectrum#user-content-alternative-2-orderless
-  (setq selectrum-prescient-enable-filtering nil)
-  (selectrum-prescient-mode +1))
-
 (use-package consult-selectrum) ;TODO: check if it is loaded early enough to handle its assignment properly
 
 (with-eval-after-load 'orderless

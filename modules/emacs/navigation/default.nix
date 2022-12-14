@@ -63,7 +63,6 @@ in
         epkgs.orderless
         epkgs.phi-search
         epkgs.phi-search-mc
-        epkgs.prescient
         epkgs.pulsar
         epkgs.rainbow-delimiters
         epkgs.recursive-narrow
@@ -75,7 +74,6 @@ in
         epkgs.zygospore
       ] ++ optionals (cfg.selection.backend == "selectrum") [
         epkgs.selectrum
-        epkgs.selectrum-prescient
       ] ++ optionals (cfg.selection.backend == "vertico") [
         epkgs.vertico
       ] ++ optionals (cfg.projects.backend == "project") [

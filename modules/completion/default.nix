@@ -207,7 +207,6 @@ in
         epkgs.company
         epkgs.company-box
         epkgs.company-fuzzy
-        epkgs.company-prescient
         epkgs.company-quickhelp
         epkgs.company-restclient
         epkgs.company-statistics
@@ -217,7 +216,6 @@ in
         epkgs.cape
         epkgs.corfu
         epkgs.corfu-doc
-        epkgs.corfu-prescient
         epkgs.kind-icon
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]

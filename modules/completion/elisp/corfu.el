@@ -66,8 +66,3 @@
   (kind-icon-default-style '(:padding -1 :stroke 0 :margin 0 :radius 0 :height 0.5 :scale 1))
   :config
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
-
-(use-package corfu-prescient
-  :after corfu
-  :config
-  (corfu-prescient-mode 1))

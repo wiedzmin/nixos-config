@@ -164,14 +164,6 @@
   (:map mode-specific-map
         ("m" . manage-minor-mode-table)))
 
-(use-package prescient
-  :commands prescient-persist-mode
-  :custom
-  (prescient-filter-method '(fuzzy initialism regexp literal))
-  (prescient-history-length 1000)
-  :config
-  (prescient-persist-mode +1))
-
 (use-package orderless
   :preface
   (defun just-one-face (fn &rest args)
