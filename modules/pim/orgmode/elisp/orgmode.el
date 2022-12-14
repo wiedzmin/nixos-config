@@ -427,6 +427,7 @@
 ;; TODO: review https://www.reddit.com/r/OrgRoam/comments/or31g0/a_few_qol_tricks_i_havent_seen_much_of_on_the/
 ;; TODO: review https://melpa.org/#/org-roam-ui
 ;; TODO: review https://melpa.org/#/org-roam-timestamps / https://github.com/ThomasFKJorna/org-roam-timestamps
+;; TODO: review https://github.com/sanka047/dotfiles/blob/7d4fdab3d2534749a7bf5295c5d9eea6ff36e091/emacs/init.el#L530
 (use-package org-roam
   :init
   (setq org-roam-v2-ack t)
