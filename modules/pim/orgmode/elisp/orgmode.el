@@ -161,6 +161,7 @@
         ("x" . org-export-dispatch)
         ("y" . org-insert-link-global)
         ("|" . org-deadline)
+        ("c" . org-cut-subtree)
         ("[" . org-agenda-file-to-front))
   (:map org-src-mode-map
         ("s-l" . org-edit-src-exit)
@@ -429,6 +430,15 @@
 ;; TODO: review https://melpa.org/#/org-roam-timestamps / https://github.com/ThomasFKJorna/org-roam-timestamps
 ;; TODO: review https://github.com/sanka047/dotfiles/blob/7d4fdab3d2534749a7bf5295c5d9eea6ff36e091/emacs/init.el#L530
 (use-package org-roam
+  :preface
+  (defun custom/refile-to-roam ()
+    "Moves current org subtree to org-roam node"
+    (interactive)
+    (save-excursion
+      (org-cut-subtree)
+      (org-roam-node-find t)
+      (end-of-buffer)
+      (org-yank)))
   :init
   (setq org-roam-v2-ack t)
   (setq org-roam-db-gc-threshold most-positive-fixnum)
@@ -463,6 +473,7 @@
         ("d" . org-roam-dailies-find-directory)
         ("i" . org-roam-node-insert)
         ("c" . org-roam-capture)
+        ("C" . custom/refile-to-roam)
         ("r" . org-roam-refile)
         ("R" . org-roam-node-random)
         ("x" . org-roam-extract-subtree)
