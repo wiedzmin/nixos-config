@@ -20,6 +20,8 @@
     nixpkgs-mspyls.url = "github:nixos/nixpkgs/e494a908e8895b9cba18e21d5fc83362f64b3f6a";
     nixpkgs-iocomfy.url = "github:nixos/nixpkgs/5857574d45925585baffde730369414319228a84";
 
+    devenv-src.url = "github:cachix/devenv";
+
     # NOTE: using these instead of quelpa
     emacs-org-bars = {
       url = "github:tonyaldon/org-bars";
@@ -118,6 +120,7 @@
     rec {
       overlay = import ./overlay.nix inputs;
 
+      # TODO: try https://devenv.sh/guides/using-with-flakes/#1-at-commit-time-to-make-sure-that-commits-are-well-formatted
       devShell."${system}" = import ./shell.nix { pkgs = inputs.unstable.legacyPackages.${system}; };
 
       nixosConfigurations = {

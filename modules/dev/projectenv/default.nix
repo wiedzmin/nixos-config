@@ -18,7 +18,7 @@ in
       configName = mkOption {
         type = types.str;
         default = ".devenv";
-        description = "File name for dev-env files list";
+        description = "File name for denv files list";
       };
       stashName = mkOption {
         type = types.str;
@@ -28,7 +28,7 @@ in
       backupRoot = mkOption {
         type = types.str;
         default = "${homePrefix user config.navigation.bookmarks.workspaces.globalRoot}/.devenv-backup";
-        description = "File name for dev-env files list.";
+        description = "File name for denv files list.";
       };
       markerFiles = mkOption {
         type = types.listOf types.str;
@@ -61,33 +61,33 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nixpkgs.config.packageOverrides = _: rec {
-        devenv = mkPythonScriptWithDeps pkgs "devenv"
+        denv = mkPythonScriptWithDeps pkgs "denv"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.pyyaml renderizer stgit ])
-          (builtins.readFile ./scripts/devenv.py);
+          (builtins.readFile ./scripts/denv.py);
         git-hideenv = pkgs.writeShellApplication {
           name = "git-hideenv";
-          runtimeInputs = with pkgs; [ devenv ];
-          text = "devenv --hide";
+          runtimeInputs = with pkgs; [ denv ];
+          text = "denv --hide";
         };
         git-unhideenv = pkgs.writeShellApplication {
           name = "git-unhideenv";
-          runtimeInputs = with pkgs; [ devenv ];
-          text = "devenv --unhide";
+          runtimeInputs = with pkgs; [ denv ];
+          text = "denv --unhide";
         };
         git-exportenv = pkgs.writeShellApplication {
           name = "git-exportenv";
-          runtimeInputs = with pkgs; [ devenv ];
-          text = "devenv --export";
+          runtimeInputs = with pkgs; [ denv ];
+          text = "denv --export";
         };
         git-removeenv = pkgs.writeShellApplication {
           name = "git-removeenv";
-          runtimeInputs = with pkgs; [ devenv ];
-          text = "devenv --remove";
+          runtimeInputs = with pkgs; [ denv ];
+          text = "denv --remove";
         };
       };
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ devenv git-exportenv git-hideenv git-removeenv git-unhideenv ];
+        home.packages = with pkgs; [ denv git-exportenv git-hideenv git-removeenv git-unhideenv ];
 
         home.activation.ensureDevEnvBackupRoot = {
           after = [ ];
