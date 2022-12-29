@@ -9,6 +9,8 @@
 (use-package jinja2-mode
   :mode "\\.j2$")
 
+(use-package yaml-pro) ;FIXME: review modes/keybindings/etc.
+
 (use-package yaml-mode
   :mode
   ("\\.yaml\\'" . yaml-mode)

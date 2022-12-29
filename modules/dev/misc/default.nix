@@ -189,6 +189,7 @@ in
         epkgs.lua-mode
         epkgs.plantuml-mode
         epkgs.webpaste
+        epkgs.yaml-pro
         epkgs.yaml-mode
         epkgs.groovy-mode
       ];
