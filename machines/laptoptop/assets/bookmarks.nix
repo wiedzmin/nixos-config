@@ -587,6 +587,10 @@ rec {
         }
       ];
     };
+    "shops/ozon" = {
+      tags = [ "shop" "ozon" "orders" ];
+      remote = { url = "https://www.ozon.ru/my/orderlist"; };
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
