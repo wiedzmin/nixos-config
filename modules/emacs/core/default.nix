@@ -103,7 +103,7 @@ in
         default =
           let
             flavor = with pkgs.unstable; if cfg.pgtk.enable then emacsPgtk else
-              if cfg.fromGit then emacsGit else emacs;
+            if cfg.fromGit then emacsGit else emacs;
             configured = (flavor.override {
               withGTK2 = false;
               withGTK3 = if cfg.pgtk.enable then true else false;
@@ -190,7 +190,6 @@ in
           epkgs.delight
           epkgs.f
           epkgs.no-littering
-          epkgs.use-package
         ] ++ lib.optionals config.wm.i3.enable [ epkgs.reverse-im ];
       ide.emacs.core.config = lib.optionalString config.wm.i3.enable ''
         (use-package reverse-im
