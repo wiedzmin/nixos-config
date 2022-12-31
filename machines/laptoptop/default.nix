@@ -333,7 +333,6 @@ in
     core = {
       enable = true;
       pgtk.enable = false;
-      useModernDrawingLibs = false;
       wm.enable = true;
     };
     edit.enable = true;

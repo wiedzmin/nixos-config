@@ -70,11 +70,9 @@ in
         "Xmessage*faceWeight" = "Bold";
 
         "dzen2.font" = "Iosevka:weight=Bold:size=16";
-      } // lib.optionalAttrs (!config.ide.emacs.core.useModernDrawingLibs) {
-        "Emacs.Font" = "Iosevka:weight=Bold:size=14";
       };
     };
-    ide.emacs.core.config = lib.optionalString config.ide.emacs.core.useModernDrawingLibs ''
+    ide.emacs.core.config = ''
       (defun custom/set-font (frame)
         "Configure faces on frame creation"
         (select-frame frame)

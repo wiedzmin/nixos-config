@@ -51,11 +51,9 @@ in
         "Xmessage*faceWeight" = "Bold";
 
         "dzen2.font" = "Source Code Pro:weight=Bold:size=12";
-      } // lib.optionalAttrs (!config.ide.emacs.core.useModernDrawingLibs) {
-        "Emacs.Font" = "Source Code Pro:weight=Bold:size=12";
       };
     };
-    ide.emacs.core.config = lib.optionalString config.ide.emacs.core.useModernDrawingLibs ''
+    ide.emacs.core.config = ''
       (defun custom/set-font (frame)
         "Configure faces on frame creation"
         (select-frame frame)

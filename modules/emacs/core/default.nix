@@ -61,11 +61,6 @@ in
         default = false;
         description = "Whether to build PGTK emacs flavor";
       };
-      useModernDrawingLibs = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to build emacs with Cairo/HarfBuzz enabled";
-      };
       customPackages = mkOption {
         type = types.attrs;
         default = { };
@@ -114,9 +109,6 @@ in
               withGTK3 = if cfg.pgtk.enable then true else false;
             }).overrideAttrs (old: rec {
               withCsrc = true;
-            } // lib.optionalAttrs (!cfg.useModernDrawingLibs) {
-              configureFlags = (remove "--with-cairo" (remove "--with-harfbuzz" old.configureFlags))
-                ++ [ "--without-harfbuzz" "--without-cairo" ];
             });
           in
           if cfg.debug.enable then (pkgs.enableDebugging configured) else configured;

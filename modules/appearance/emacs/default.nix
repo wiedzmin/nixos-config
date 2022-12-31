@@ -21,15 +21,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users."${user}" = lib.optionalAttrs (!config.ide.emacs.core.useModernDrawingLibs) {
-        xresources.properties = {
-          "Emacs.fontBackend" = "xft,x";
-          "Emacs.menuBar" = "0";
-          "Emacs.toolBar" = "0";
-          "Emacs.verticalScrollBars" = false;
-        };
-      };
-
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.diredfl
         epkgs.default-text-scale
@@ -38,8 +29,7 @@ in
         epkgs.transwin
         epkgs.unicode-fonts
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
-        ([ ./elisp/appearance.el ] ++ lib.optionals config.ide.emacs.core.useModernDrawingLibs [ ./elisp/appearance-clean.el ]);
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/appearance.el ];
     })
   ];
 }
