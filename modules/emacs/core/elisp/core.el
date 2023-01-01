@@ -44,13 +44,6 @@
   (defun custom/kill-buffer ()
     (interactive)
     (kill-buffer nil))
-  (defun crm-indicator (args)
-    (cons (format "[CRM%s] %s"
-                  (replace-regexp-in-string
-                   "\\`\\[.*?]\\*\\|\\[.*?]\\*\\'" ""
-                   crm-separator)
-                  (car args))
-          (cdr args)))
   :mode (("\\.js$" . js-json-mode)
          ("\\.json$" . js-json-mode))
   :bind
@@ -90,7 +83,6 @@
   (fset 'yes-or-no-p 'y-or-n-p)
   (set-charset-priority 'unicode)
   (set-default 'indent-tabs-mode nil) ;; Never insert tabs, !!!DO NOT REMOVE!!!
-  (advice-add #'completing-read-multiple :filter-args #'crm-indicator)
   (when (version<= "28.0.50" emacs-version)
     (setq read-extended-command-predicate #'command-completion-default-include-p))
   (setq-default tab-width 4)
