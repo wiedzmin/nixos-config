@@ -21,7 +21,7 @@
   (selectrum-files-select-input-dirs t)
   (selectrum-fix-vertical-window-height t)
   (selectrum-max-window-height .2) ; 20
-  (selectrum-num-candidates-displayed 20)
+  (selectrum-num-candidates-displayed @selectionCandidatesCount@)
   (selectrum-quick-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
   :custom-face
   (selectrum-current-candidate ((t (:background "#3a3f5a"))))

@@ -19,6 +19,11 @@ in
         default = "vertico";
         description = "Selection UI to use, like Ivy, Selectrum, Vertico, etc.";
       };
+      selection.candidatesCount = mkOption {
+        type = types.int;
+        default = 20;
+        description = "Candidates count to show at once, for selection UI in use";
+      };
       projects.backend = mkOption {
         type = types.enum [ "project" "projectile" ];
         default = "project";

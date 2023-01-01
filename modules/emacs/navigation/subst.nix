@@ -19,4 +19,5 @@ rec {
     lib.optionalString (navigation.projects.backend == "projectile") "consult-dir-projectile-dirs";
   projectsSearchPaths = with config.navigation.bookmarks.workspaces;
     builtins.concatStringsSep " " (lib.forEach [ globalRoot globalRootStale ] (root: ''"${root}"''));
+  selectionCandidatesCount = builtins.toString navigation.selection.candidatesCount;
 }

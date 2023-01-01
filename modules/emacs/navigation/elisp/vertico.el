@@ -3,7 +3,7 @@
   (vertico-mode)
   :custom
   (vertico-scroll-margin 0)
-  (vertico-count 20) ;FIXME: unify this at nix level
+  (vertico-count @selectionCandidatesCount@)
   (vertico-resize t)
   (vertico-cycle t))
 
