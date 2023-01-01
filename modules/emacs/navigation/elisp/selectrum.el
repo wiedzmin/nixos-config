@@ -33,7 +33,6 @@
 (use-package consult-selectrum) ;TODO: check if it is loaded early enough to handle its assignment properly
 
 (with-eval-after-load 'orderless
-  (setq orderless-skip-highlighting (lambda () selectrum-is-active)) ;; perf tip: highlight only visible candidates
   (setq selectrum-refine-candidates-function #'orderless-filter)
   (setq selectrum-highlight-candidates-function #'orderless-highlight-matches))
 

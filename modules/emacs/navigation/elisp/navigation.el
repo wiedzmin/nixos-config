@@ -203,17 +203,6 @@
 
 (use-package embark
   :demand t
-  :preface
-  (defun current-candidate+category ()
-    (when selectrum-is-active
-      (cons (selectrum--get-meta 'category)
-            (selectrum-get-current-candidate))))
-  (defun current-candidates+category ()
-    (when selectrum-is-active
-      (cons (selectrum--get-meta 'category)
-            (selectrum-get-current-candidates
-             ;; Pass relative file names for dired.
-             minibuffer-completing-file-name))))
   :bind
   ;;TODO: embark-act-all
   ;;TODO: embark-bindings
@@ -237,9 +226,6 @@
   (:map iso-transl-ctl-x-8-map
         ("RET" . embark-save-unicode-character))
   ([remap kill-buffer] . embark-kill-buffer-and-window)
-  :hook
-  (embark-target-finders . current-candidate+category)
-  (embark-candidate-collectors . current-candidates+category)
   :custom
   (embark-allow-edit-default t)
   (embark-indicators '(embark-minimal-indicator embark-highlight-indicator))
