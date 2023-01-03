@@ -9,8 +9,6 @@ rec {
   websearchBinary = "${nurpkgs.toolbox}/bin/websearch";
   projectsRootMarkersEmacs = builtins.concatStringsSep " " (lib.forEach config.dev.navigation.projects.rootMarkers (marker: ''"${marker}"''));
   autorevertEnable = if edit.autorevert.enable then ":hook (dired-mode-hook . auto-revert-mode)" else "";
-  # NOTE: Selectrum support has been recently deprecated in favor of Vertico
-  consultDirEnable = if navigation.selection.backend == "selectrum" then ":disabled" else "";
   projectRootSexp = lib.optionalString (navigation.projects.backend == "project") "(project-root (project-current))" +
     lib.optionalString (navigation.projects.backend == "projectile") "(projectile-project-root)";
   projectBackendRequire = lib.optionalString (navigation.projects.backend == "project") "(require 'project)" +

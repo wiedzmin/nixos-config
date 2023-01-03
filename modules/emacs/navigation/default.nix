@@ -15,9 +15,9 @@ in
         description = "Whether to enable emacs navigation extensions.";
       };
       selection.backend = mkOption {
-        type = types.enum [ "selectrum" "vertico" ];
+        type = types.enum [ "vertico" ];
         default = "vertico";
-        description = "Selection UI to use, like Ivy, Selectrum, Vertico, etc.";
+        description = "Selection UI to use, like Ivy, Vertico, etc.";
       };
       selection.candidatesCount = mkOption {
         type = types.int;
@@ -77,8 +77,6 @@ in
         epkgs.treemacs-icons-dired
         epkgs.winum
         epkgs.zygospore
-      ] ++ optionals (cfg.selection.backend == "selectrum") [
-        epkgs.selectrum
       ] ++ optionals (cfg.selection.backend == "vertico") [
         epkgs.vertico
       ] ++ optionals (cfg.projects.backend == "project") [
@@ -96,8 +94,7 @@ in
         "misc" = builtins.readFile ./elisp/custom/misc.el;
       };
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
-        ([ ./elisp/navigation.el ] ++ optionals (cfg.selection.backend == "selectrum") [ ./elisp/selectrum.el ]
-          ++ optionals (cfg.selection.backend == "vertico") [ ./elisp/vertico.el ]
+        ([ ./elisp/navigation.el ] ++ optionals (cfg.selection.backend == "vertico") [ ./elisp/vertico.el ]
           ++ optionals (cfg.projects.backend == "project") [ ./elisp/project.el ]
           ++ optionals (cfg.projects.backend == "projectile") [ ./elisp/projectile.el ]);
 
