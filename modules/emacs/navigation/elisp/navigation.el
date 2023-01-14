@@ -490,6 +490,7 @@
   (dired-recursive-deletes 'top) ;; Allows recursive deletes
   (dired-dwim-target t)
   (dired-listing-switches "-lah1v --group-directories-first") ;;TODO: think of using TIME_STYLE env var
+  (dired-recursive-copies 'always)
   :config
   (use-package dired-x
     :custom
