@@ -72,7 +72,7 @@ in
         description = "Whether to enable various shell completion helpers";
       };
       shell.recent.backend = mkOption {
-        type = types.enum [ "mcfly" "fzf" ];
+        type = types.enum [ "atuin" "mcfly" "fzf" ];
         default = "mcfly";
         description = "Which tool to use to navigate recent commands history";
       };
@@ -188,6 +188,17 @@ in
           enable = true;
           enableZshIntegration = true;
           fuzzySearchFactor = cfg.shell.recent.mcfly.fuzzySearch;
+        };
+        programs.atuin = optionalAttrs (cfg.shell.recent.backend == "atuin") {
+          enable = true;
+          enableZshIntegration = true;
+        };
+        # NOTE: see below for references
+        # https://github.com/ellie/atuin/blob/main/docs/config.md
+        # https://github.com/ellie/atuin/blob/main/atuin-client/config.toml
+        xdg.configFile."atuin/config.toml".source = toml.generate "config.toml" {
+          search_mode = "fuzzy";
+          style = "compact";
         };
       } // optionalAttrs (cfg.shell.recent.backend == "mcfly") {
         home.sessionVariables.MCFLY_RESULTS = builtins.toString cfg.shell.recent.mcfly.resultsCount;
