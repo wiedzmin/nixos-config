@@ -49,7 +49,7 @@ in
 
       shell.core.variables = [
         { TERMINAL = builtins.head cfg.command; global = true; }
-        { TB_TERMINAL_CMD = cfg.command; }
+        { TB_TERMINAL_CMD = builtins.head cfg.command; }
       ];
       attributes.vt.default.cmd = cfg.command;
       attributes.vt.default.windowClass = cfg.windowClass;

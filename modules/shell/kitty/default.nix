@@ -83,7 +83,7 @@ in
         { TERMINAL = builtins.head cfg.command; global = true; }
         { TB_VT_ORG_TOOL = "kitty"; global = true; }
         { TB_KITTY_SOCKET = "tcp:localhost:${builtins.toString cfg.remote.port}"; global = true; }
-        { TB_TERMINAL_CMD = cfg.command; }
+        { TB_TERMINAL_CMD = builtins.head cfg.command; }
       ];
       attributes.vt.default.cmd = cfg.command;
       attributes.vt.default.windowClass = cfg.windowClass;
