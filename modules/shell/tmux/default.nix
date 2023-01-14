@@ -149,6 +149,7 @@ in
             extraConfig = "set -g @fingers-hint-format '#[fg=green,bold]%s'";
           }
           logging
+          mode-indicator
           prefix-highlight
           sessionist
           {
