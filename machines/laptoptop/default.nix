@@ -230,6 +230,7 @@ in
     expansions.enable = true;
     shell = {
       enable = true;
+      recent.backend = "atuin";
       recent.mcfly = {
         fuzzySearch = 3;
         resultsCount = 30;
