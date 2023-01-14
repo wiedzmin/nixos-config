@@ -38,6 +38,7 @@ in
         epkgs.expand-region
         epkgs.highlight-numbers
         epkgs.multiple-cursors
+        epkgs.reformatter
         epkgs.region-bindings-mode
         epkgs.selected
         epkgs.shift-number
