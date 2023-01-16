@@ -249,7 +249,7 @@ rec {
       desc = "VK";
       tags = [ "vk" ];
       remote = {
-        # browser = config.attributes.browser.fallback.cmd;
+        browser = config.attributes.browser.fallback.cmd;
         url = "https://vk.com/";
       };
     };
