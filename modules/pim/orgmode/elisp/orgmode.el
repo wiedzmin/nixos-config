@@ -155,6 +155,7 @@
         ("R" . org-refile)
         ("s" . org-schedule)
         ("t" . org-toggle-timestamp-type)
+        ("L" . org-toggle-link-display)
         ("u" . outline-up-heading)
         ("v" . org-reveal)
         ("w" . org-store-link)
