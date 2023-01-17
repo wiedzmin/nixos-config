@@ -6,6 +6,7 @@ with lib;
 let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -95,7 +96,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ JUST_CHOOSER = cfg.just.chooserCmd; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ dfmt go-task just lnav comby tagref xh ];
+        home.packages = with pkgs; [ dfmt go-task just lnav comby tagref xh nurpkgs.code-maat ];
       };
       pim.timetracking.rules =
         mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ])
