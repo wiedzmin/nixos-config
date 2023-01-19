@@ -40,7 +40,6 @@ in
         epkgs.multiple-cursors
         epkgs.reformatter
         epkgs.region-bindings-mode
-        epkgs.selected
         epkgs.shift-number
         epkgs.smartparens
         epkgs.string-inflection
