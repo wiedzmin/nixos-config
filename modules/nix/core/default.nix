@@ -56,6 +56,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
+      boot.readOnlyNixStore = true; # TODO: should it be moved to host/machines level?
       nix = {
         settings = {
           cores = lib.mkDefault config.attributes.hardware.cores;
@@ -67,7 +68,6 @@ in
           trusted-users = [ "root" user ];
         };
         package = pkgs.nixUnstable;
-        readOnlyStore = true;
         extraOptions = ''
           auto-optimise-store = true
           keep-outputs = true
