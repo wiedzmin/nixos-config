@@ -382,7 +382,9 @@
   :custom
   (aw-background nil)
   (aw-leading-char-style 'char)
+  (aw-make-frame-char ?r) ;NOTE: beware of further possible conflicts
   (aw-scope 'visible)
+  (aw-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
   :config
   (ace-window-display-mode 1)
   :custom-face (aw-leading-char-face1
