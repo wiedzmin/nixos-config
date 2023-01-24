@@ -118,13 +118,25 @@ in
               manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
             '';
           };
+          # FIXME: parameterize "nixpkgs#" below
+          nix-build-offline = pkgs.writeShellApplication {
+            name = "nix-build-offline";
+            text = ''
+              nix eval nixpkgs#"$1".drvPath --raw \
+                | xargs nix-store -qR \
+                | grep '\.drv$' \
+                | xargs -n1 nix show-derivation \
+                | jq -s '.[] | select(.[] | .env | has("outputHash")) | keys | .[]' -r \
+                | xargs nix build --no-link --print-out-paths
+            '';
+          };
         };
       };
 
       programs.nix-ld.enable = false; # enable on-demand, see https://github.com/Mic92/nix-ld for reference
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup rollback statix ] ++
+        home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup nix-build-offline rollback statix ] ++
           lib.optionals cfg.lsp.enable [ rnix-lsp ];
         home.sessionPath = [ (homePrefix user ".local/share/cargo/bin") ]; # FIXME: use XDG_DATA_HOME
       };
