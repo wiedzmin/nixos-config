@@ -3,6 +3,8 @@ with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
 
+# TODO: parameterize daemonization, e.g. if the feature is used or not
+
 let
   cfg = config.ide.emacs.core;
   user = config.attributes.mainUser.name;
