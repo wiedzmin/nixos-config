@@ -759,19 +759,6 @@
   ;FIXME: rebind
   ("C-x 1" . zygospore-toggle-delete-other-windows))
 
-(use-package fzf
-  :bind
-  (:map custom-projects-map
-        ("f" . fzf-git)
-        ("F" . fzf-hg))
-  :custom
-  (fzf/args "-x --color bw --print-query --margin=1,0 --no-hscroll")
-  (fzf/executable "fzf")
-  (fzf/git-grep-args "-i --line-number %s")
-  (fzf/grep-command "rg --no-heading -nH")
-  (fzf/position-bottom t)
-  (fzf/window-height 15))
-
 (use-package window
   :custom
   (switch-to-buffer-obey-display-actions t))
