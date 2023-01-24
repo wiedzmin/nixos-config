@@ -517,7 +517,6 @@
   :bind
   (:map org-roam-map
         ("b" . consult-org-roam-backlinks)
-        ("f" . consult-org-roam-file-find)
         ("g" . consult-org-roam-search))
   :config
   (setf (alist-get ?o avy-dispatch-alist) 'avy-action-search-org-roam
