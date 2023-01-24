@@ -591,6 +591,10 @@ rec {
       tags = [ "shop" "ozon" "orders" ];
       remote = { url = "https://www.ozon.ru/my/orderlist"; };
     };
+    "mongol.su/calendar" = {
+      tags = [ "mongol" "reference" "calendar" ];
+      remote = { url = "http://mongol.su/календарь/"; };
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
