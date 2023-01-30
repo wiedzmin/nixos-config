@@ -6,10 +6,6 @@ let
   cfg = config.paperworks;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  nixpkgs-scantailor = import inputs.nixpkgs-scantailor {
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  };
 
   paperlessDefaultUser = "paperless";
 
@@ -202,7 +198,7 @@ in
       };
 
       environment.systemPackages = with pkgs;
-        [ deskew nixpkgs-scantailor.scantailor-advanced ] ++ lib.optionals (cfg.scanning.frontend == "skanlite") [ skanlite ]
+        [ deskew scantailor-advanced ] ++ lib.optionals (cfg.scanning.frontend == "skanlite") [ skanlite ]
         ++ lib.optionals (cfg.scanning.frontend == "gscan2pdf") [ gscan2pdf ]
         ++ lib.optionals (cfg.scanning.frontend == "simple-scan") [ simple-scan ]
         ++ lib.optionals (cfg.scanning.frontend == "xsane") [ xsane ];

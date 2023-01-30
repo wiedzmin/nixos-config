@@ -5,10 +5,6 @@ with lib;
 let
   cfg = config.content.misc;
   user = config.attributes.mainUser.name;
-  nixpkgs-index-fm = import inputs.nixpkgs-index-fm {
-    config = config.nixpkgs.config // { allowUnfree = true; };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {
@@ -96,7 +92,7 @@ in
       wmCommon.keybindings.common = [
         {
           key = [ "i" ];
-          cmd = "${nixpkgs-index-fm.index-fm}/bin/index";
+          cmd = "${pkgs.index-fm}/bin/index";
           mode = "run";
         }
       ];
