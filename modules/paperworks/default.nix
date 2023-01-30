@@ -6,6 +6,10 @@ let
   cfg = config.paperworks;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  };
 
   paperlessDefaultUser = "paperless";
 
@@ -157,7 +161,7 @@ in
       };
       docflow.libreoffice.package = mkOption {
         type = types.package;
-        default = pkgs.unstable.libreoffice-still;
+        default = nixpkgs-last-unbroken.libreoffice-still;
         description = "The `libreoffice` package to install";
       };
       docflow.extensions = mkOption {

@@ -14,6 +14,7 @@
       url = "github:vivien/i3blocks-contrib";
       flake = false;
     };
+    nixpkgs-last-unbroken.url = "github:nixos/nixpkgs/0f213d0fee84280d8c3a97f7469b988d6fe5fcdf";
 
     devenv-src.url = "github:cachix/devenv";
 
