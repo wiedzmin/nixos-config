@@ -1,10 +1,9 @@
-;;TODO: review functionality / find substitute for / reimplement:
+;; TODO: review functionality / find substitute for / reimplement:
 ;; - doom-todo-ivy
 ;; - ivy-omni-org
 ;; - counsel-org-clock
-;; TODO: https://github.com/minad/consult/issues/6
 ;; TODO: setup xref package, then search for some modern completion UI (ivy/vertico/etc.) xref impl
-;; TODO: bind consult-error when compilation buffers will be used more extensively
+;; TODO: avy-isearch
 
 (use-package avy
   :preface
