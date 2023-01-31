@@ -89,6 +89,11 @@ in
         default = false;
         description = "Whether to enable development infra for Emacs.";
       };
+      emacs.lsp.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable LSP functionality inside Emacs";
+      };
     };
   };
 
@@ -177,7 +182,6 @@ in
         epkgs."0x0"
         epkgs.blockdiag-mode
         epkgs.comby
-        epkgs.consult-lsp
         epkgs.elmacro
         epkgs.fic-mode
         epkgs.hl-prog-extra
@@ -185,8 +189,6 @@ in
         epkgs.just-mode
         epkgs.justl
         epkgs.leetcode
-        epkgs.lsp-mode
-        epkgs.lsp-ui
         epkgs.lua-mode
         epkgs.plantuml-mode
         epkgs.webpaste
@@ -194,10 +196,25 @@ in
         epkgs.yaml-mode
         epkgs.groovy-mode
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ./elisp/lsp.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ];
+      ide.emacs.core.customKeymaps = {
+        "custom-webpaste-map" = "C-c [";
+      };
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable && cfg.emacs.lsp.enable) {
+      assertions = [{
+        assertion = config.ide.emacs.core.enable;
+        message = "dev/misc/emacs/lsp: core configuration must be enabled.";
+      }];
+
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.consult-lsp
+        epkgs.lsp-mode
+        epkgs.lsp-ui
+      ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/lsp.el ];
       ide.emacs.core.customKeymaps = {
         "custom-lsp-treemacs-map" = "C-c t";
-        "custom-webpaste-map" = "C-c [";
       };
       home-manager.users."${user}" = {
         home.activation.ensureLspSessionDir = {

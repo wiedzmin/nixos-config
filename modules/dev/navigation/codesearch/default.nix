@@ -46,6 +46,11 @@ in
       systemd.user.timers."codesearch-reindex" = renderTimer "Codesearch index updating" "" "" "*-*-* 4:00:00" false "";
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
+      assertions = [{
+        assertion = config.ide.emacs.navigation.enable;
+        message = "dev/codesearch/emacs: ide/emacs/navigation must be enabled.";
+      }];
+
       ide.emacs.core.extraPackages = epkgs: [ epkgs.codesearch ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ../../subst.nix ] [ ./elisp/codesearch.el ];
     })

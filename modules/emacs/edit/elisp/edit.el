@@ -105,6 +105,24 @@
   :custom
   (wgrep-auto-save-buffer t))
 
+(use-package whitespace
+  :hook
+  ((prog-mode-hook text-mode-hook) . whitespace-turn-on)
+  (org-mode-hook . whitespace-turn-off)
+  :bind
+  (:map custom-ws-map
+        ("w" . whitespace-mode))
+  :custom
+  (whitespace-line-column 121)
+  (whitespace-style '(indentation::space
+                      space-after-tab
+                      space-before-tab
+                      trailing
+                      lines-tail
+                      tab-mark
+                      face
+                      tabs)))
+
 (use-package ws-butler
   :after whitespace
   :bind

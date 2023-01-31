@@ -57,6 +57,11 @@ in
         };
       };
       ide.emacs.core.config = builtins.readFile ./elisp/edit.el;
+      ide.emacs.core.customKeymaps = {
+        "custom-ws-map" = "C-c x";
+        "misc-editing-map" = "<f5>";
+        "token-editing-map" = "C-z";
+      };
     })
     (mkIf (cfg.enable && cfg.autorevert.enable) {
       ide.emacs.core.config = builtins.readFile ./elisp/autorevert.el;

@@ -34,10 +34,17 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      assertions = [{
-        assertion = config.ide.emacs.core.enable;
-        message = "emacs/navigation: core configuration must be enabled.";
-      }];
+      assertions = [
+        {
+          assertion = config.ide.emacs.core.enable;
+          message = "emacs/navigation: core configuration must be enabled.";
+        }
+        {
+          assertion = config.ide.emacs.edit.enable;
+          message = "emacs/navigation: emacs/edit must be enabled.";
+        }
+      ];
+
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ ripgrep ];
       };
@@ -104,8 +111,6 @@ in
         "custom-search-map" = "C-q";
         "custom-projects-map" = "<f8>";
         "custom-treemacs-map" = "C-x t";
-        "custom-ws-map" = "C-c x";
-        "custom-goto-map" = "M-s";
         "custom-frame-map" = "<f2>";
       };
       # TODO: consider enhance custom keymaps nix machinery in a way of automatically unbinding, either global or some submapped conflicting keybindings

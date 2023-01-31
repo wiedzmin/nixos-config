@@ -281,14 +281,17 @@
   ([remap switch-to-buffer-other-window] . consult-buffer-other-window)
   ([remap switch-to-buffer] . consult-buffer)
   ([remap yank-pop] . consult-yank-replace)
-  ;;TODO: bind `consult-org-agenda' here or under `org-mode' config
   (:map custom-search-map
         ("G" . consult-ripgrep-symbol-at-point)
-        ("M" . consult-minor-mode-menu) ; help-map / custom-help-map
-        ("O" . consult-file-externally) ; custom-projects-map
         ("g" . consult-ripgrep)
         ("h" . consult-find)
         ("m" . consult-multi-occur))
+  (:map help-map
+        ("M" . consult-minor-mode-menu))
+  (:map custom-help-map
+        ("M" . consult-minor-mode-menu))
+  (:map custom-projects-map
+        ("O" . consult-file-externally))
   (:map custom-goto-map
         ("C-s" . consult-line-multi)
         ("i" . consult-imenu)
@@ -447,24 +450,6 @@
         ("w" . widen)
         ("n" . recursive-narrow-or-widen-dwim)
         ("W" . recursive-widen-dwim)))
-
-(use-package whitespace
-  :hook
-  ((prog-mode-hook text-mode-hook) . whitespace-turn-on)
-  (org-mode-hook . whitespace-turn-off)
-  :bind
-  (:map custom-ws-map
-        ("w" . whitespace-mode))
-  :custom
-  (whitespace-line-column 121)
-  (whitespace-style '(indentation::space
-                      space-after-tab
-                      space-before-tab
-                      trailing
-                      lines-tail
-                      tab-mark
-                      face
-                      tabs)))
 
 (use-package dired-subtree
   :after dired

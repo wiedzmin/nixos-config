@@ -228,6 +228,11 @@ in
         mapping = getUrlsToTypesMapping cfg.forges;
       in
       {
+        assertions = [{
+          assertion = config.ide.emacs.core.enable;
+          message = "git/forges/emacs: core configuration must be enabled.";
+        }];
+
         ide.emacs.core.extraPackages = epkgs: [
           epkgs.browse-at-remote
           epkgs.forge

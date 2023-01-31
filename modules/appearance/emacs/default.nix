@@ -21,6 +21,11 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
+      assertions = [{
+        assertion = config.ide.emacs.navigation.enable;
+        message = "appearance/emacs: ide/emacs/navigation must be enabled.";
+      }];
+
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.diredfl
         epkgs.default-text-scale

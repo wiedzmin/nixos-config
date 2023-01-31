@@ -200,6 +200,9 @@ in
           :config
           (reverse-im-mode t))
       '';
+      ide.emacs.core.customKeymaps = {
+        "custom-goto-map" = "M-s";
+      };
       shell.core.variables = [{
         EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
         VISUAL = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";

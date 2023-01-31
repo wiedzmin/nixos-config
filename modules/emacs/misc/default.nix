@@ -18,10 +18,16 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      assertions = [{
-        assertion = config.ide.emacs.core.enable;
-        message = "emacs/misc: core configuration must be enabled.";
-      }];
+      assertions = [
+        {
+          assertion = config.ide.emacs.core.enable;
+          message = "emacs/misc: core configuration must be enabled.";
+        }
+        {
+          assertion = config.ide.emacs.edit.enable;
+          message = "emacs/misc: emacs/edit must be enabled.";
+        }
+      ];
 
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.flycheck
@@ -32,9 +38,7 @@ in
         epkgs.markdown-mode
       ];
       ide.emacs.core.customKeymaps = {
-        "token-editing-map" = "C-z";
         "custom-formatting-map" = "C-c f";
-        "misc-editing-map" = "<f5>";
       };
       ide.emacs.core.config = builtins.readFile ./elisp/misc.el;
     })
