@@ -8,9 +8,6 @@
   :delight yas-minor-mode
   :mode (("@emacsYasnippetSnippets@" . snippet-mode)
          ("\\.yasnippet$" . snippet-mode))
-  :bind
-  (:map misc-editing-map
-        ("i" . yas-insert-snippet))
   :config
   (yas-global-mode)
   :custom

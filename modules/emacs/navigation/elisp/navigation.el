@@ -762,3 +762,8 @@
 (use-package window
   :custom
   (switch-to-buffer-obey-display-actions t))
+
+(use-package consult-yasnippet
+  :bind
+  (:map misc-editing-map
+        ("i" . consult-yasnippet)))

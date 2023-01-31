@@ -52,6 +52,7 @@ in
         epkgs.consult-dir
         epkgs.consult-flycheck
         epkgs.consult-project-extra
+        epkgs.consult-yasnippet
         epkgs.dired-filetype-face
         epkgs.dired-narrow
         epkgs.dired-subtree
