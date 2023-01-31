@@ -528,11 +528,11 @@
     "yasnippet-snippets": {
       "flake": false,
       "locked": {
-        "lastModified": 1656326310,
-        "narHash": "sha256-E5NKQ1F/5YtfZuvF3xa5WxRKx2dAURP7yUNyjaYz8FU=",
+        "lastModified": 1675180403,
+        "narHash": "sha256-6jxikpHcm1lFGlyQBBqjrt78YBfBYLCAAxSwxQG6sgA=",
         "owner": "wiedzmin",
         "repo": "yasnippet-snippets",
-        "rev": "32fcebfde2d59045c852d42e9a1e9072b3c3c923",
+        "rev": "0b03e4d204739fb394e8740d216e350b448ce715",
         "type": "github"
       },
       "original": {
