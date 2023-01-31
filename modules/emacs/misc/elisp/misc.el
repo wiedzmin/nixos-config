@@ -83,3 +83,8 @@
 (use-package eldoc
   :config
   (global-eldoc-mode -1))
+
+(use-package vc
+  ;;NOTE: vc-refresh-state on save hook?
+  :custom
+  (vc-handled-backends '(SVN Git Hg)))
