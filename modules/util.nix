@@ -200,8 +200,7 @@ rec {
   takeLast = n: l: with lib; reverseList (take n (reverseList l));
   # TODO: create function for ensuring non-prefix keys absence
   mkEmacsCustomKeymap = name: binding: ''
-    (define-prefix-command '${name})
-    (define-key global-map (kbd "${binding}") '${name})
+    (keymap-global-set "${binding}" (define-keymap :prefix '${name}))
   '';
   # TODO: consider adding keymap prompts
   genEmacsCustomKeymaps = meta:
