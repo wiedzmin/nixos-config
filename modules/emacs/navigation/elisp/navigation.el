@@ -388,6 +388,18 @@
   (aw-make-frame-char ?r) ;NOTE: beware of further possible conflicts
   (aw-scope 'visible)
   (aw-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
+  (aw-dispatch-alist '((?k aw-delete-window "Delete Window")
+                       (?m aw-swap-window "Swap Windows")
+                       (?M aw-move-window "Move Window")
+                       (?C aw-copy-window "Copy Window")
+                       (?j aw-switch-buffer-in-window "Select Buffer")
+                       (?n aw-flip-window)
+                       (?u aw-switch-buffer-other-window "Switch Buffer Other Window")
+                       (?f aw-split-window-fair "Split Fair Window")
+                       (?v aw-split-window-vert "Split Vert Window")
+                       (?h aw-split-window-horz "Split Horz Window")
+                       (?o delete-other-windows "Delete Other Windows")
+                       (?? aw-show-dispatch-help)))
   :config
   (ace-window-display-mode 1)
   :custom-face (aw-leading-char-face1
