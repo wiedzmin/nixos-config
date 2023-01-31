@@ -383,6 +383,7 @@
         ("w" . ace-window))
   :custom
   (aw-background nil)
+  (aw-dispatch-always t)
   (aw-leading-char-style 'char)
   (aw-make-frame-char ?r) ;NOTE: beware of further possible conflicts
   (aw-scope 'visible)
