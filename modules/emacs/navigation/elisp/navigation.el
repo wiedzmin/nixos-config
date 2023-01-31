@@ -298,7 +298,7 @@
         ("I" . consult-imenu-multi)
         ("M-SPC" . consult-mark)
         ("`" . consult-compile-error)
-        ("c" . consult-complex-command)
+        ("C" . consult-complex-command)
         ("j" . consult-global-mark)
         ("k" . consult-kmacro)
         ("o" . consult-outline)
