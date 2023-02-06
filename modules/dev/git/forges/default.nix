@@ -43,12 +43,14 @@ let
     (foldAttrs (n: a: n // a) { } (collect (f: f ? extraConfig) forges))."extraConfig";
   getUrlsToTypesMapping = forges:
     mapAttrs' (_: meta: nameValuePair meta.ssh.matchBlock.hostname meta.type) forges;
+  getUrlsToTypesMappingRegexEscaped = forges:
+    mapAttrs' (_: meta: nameValuePair "^${replaceStrings ["."] ["\\\\."] meta.ssh.matchBlock.hostname}$" meta.type) forges;
   genBrowseAtRemoteTypesPatch = mapping: ''
     (eval-after-load 'browse-at-remote
       '(progn
       ${mkIndent 4}${concatStringsSep "\n${mkIndent 4}"
         (mapAttrsToList (host: type: ''
-          (push '("${host}" . "${type}") browse-at-remote-remote-type-regexps)
+          (push '(:host "${host}" :type "${type}") browse-at-remote-remote-type-regexps)
         '') mapping)}))
   '';
   genGitlinkTypesPatch = mapping: ''
@@ -225,7 +227,8 @@ in
     ))
     (mkIf (cfg.enable && cfg.emacs.enable) (
       let
-        mapping = getUrlsToTypesMapping cfg.forges;
+        BARmapping = getUrlsToTypesMappingRegexEscaped cfg.forges;
+        GLmapping = getUrlsToTypesMapping cfg.forges;
       in
       {
         assertions = [{
@@ -240,8 +243,8 @@ in
         ];
         ide.emacs.core.config =
           builtins.readFile ./elisp/forges.el +
-          optionalString (length (attrValues mapping) > 0)
-            ((genBrowseAtRemoteTypesPatch mapping) + (genGitlinkTypesPatch mapping));
+          optionalString (length (attrValues BARmapping) > 0) (genBrowseAtRemoteTypesPatch BARmapping) +
+          optionalString (length (attrValues GLmapping) > 0) (genGitlinkTypesPatch GLmapping);
       }
     ))
   ];
