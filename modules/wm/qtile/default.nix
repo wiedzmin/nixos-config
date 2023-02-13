@@ -5,6 +5,10 @@ with lib;
 let
   cfg = config.wm.qtile;
   user = config.attributes.mainUser.name;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -29,7 +33,7 @@ in
       nixpkgs.config.packageOverrides = _: rec {
         debug-qtile = mkWMDebugScript
           pkgs "debug-qtile"
-          pkgs.qtile
+          nixpkgs-last-unbroken.qtile
           config.attributes.hardware.monitors.internalHead
           ''qtile start -c "$XDG_CONFIG_HOME/qtile/config.py"'';
       };
@@ -54,6 +58,7 @@ in
         windowManager = {
           qtile = {
             enable = true;
+            package = nixpkgs-last-unbroken.qtile;
           };
         };
         displayManager = { defaultSession = "none+qtile"; };
