@@ -140,14 +140,6 @@ in
           ];
         programs.firefox = {
           enable = true;
-          extensions = with nurpkgs.rycee.firefox-addons;
-            [
-              browserpass
-              clearurls
-              greasemonkey
-
-              # nurpkgs.wiedzmin.firefox-addons.url-in-title # NOTE: derivation is temporarily broken at nur-packages
-            ] ++ optionals cfg.keyboardCentric [ tridactyl ];
           profiles = {
             default = {
               name = "profile.default";
@@ -233,6 +225,14 @@ in
                 "security.sandbox.content.level" = 2;
                 "urlclassifier.trackingTable" = ""; # because 2md layer list blocks google captcha, use 1st layer
               };
+              extensions = with nurpkgs.rycee.firefox-addons;
+                [
+                  browserpass
+                  clearurls
+                  greasemonkey
+
+                  # nurpkgs.wiedzmin.firefox-addons.url-in-title # NOTE: derivation is temporarily broken at nur-packages
+                ] ++ optionals cfg.keyboardCentric [ tridactyl ];
               userChrome = ''
                 #TabsToolbar { visibility: collapse !important; }
                 #titlebar { visibility: collapse !important; }

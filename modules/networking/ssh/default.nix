@@ -62,7 +62,7 @@ in
       services.openssh = {
         enable = true;
         allowSFTP = true;
-        forwardX11 = false;
+        settings.X11Forwarding = false;
         startWhenNeeded = true;
         authorizedKeysFiles = cfg.authorizedKeys;
       };
