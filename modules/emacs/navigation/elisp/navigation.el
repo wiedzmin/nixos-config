@@ -518,6 +518,8 @@
                system-name)
            (buffer-name)
            (cond
+            ((project-current)
+             (concat "(" (file-relative-name buffer-file-truename (cdr (project-current))) ")"))
             (buffer-file-truename
              (concat "(" buffer-file-truename ")"))
             (dired-directory
