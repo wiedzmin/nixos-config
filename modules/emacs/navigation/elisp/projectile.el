@@ -1,5 +1,5 @@
 (use-package projectile
-  :delight '(:eval (concat " ¶[" (projectile-project-name) "]")) ;NOTE: ignoring remote buffers, they are rarely used
+  :delight
   :preface
   (defun custom/open-project-todos ()
     (interactive)
