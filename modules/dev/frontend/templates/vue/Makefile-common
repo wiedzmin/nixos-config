@@ -1,8 +1,0 @@
-build/docker:
-	docker-compose build
-
-publish: generate build lint
-	git push
-
-publish/force: generate build lint
-	git push --force-with-lease

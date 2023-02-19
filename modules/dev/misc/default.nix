@@ -117,17 +117,6 @@ in
         };
         "*.md" = { trim_trailing_whitespace = false; };
       };
-      dev.projectenv.templates.settings.common = {
-        gitUsername = config.attributes.mainUser.fullName;
-        gitEmail = config.attributes.mainUser.email;
-        gpgSigningKey = config.attributes.mainUser.gpgKeyID;
-        bugReferenceBugRegexp = "\\\\#\\\\(?2:[0-9]+\\\\)\\\\>";
-        inputsUnstableRev = inputs.unstable.rev;
-      };
-      dev.projectenv.templates.entries = {
-        "ansible" = configPrefix roots "modules/dev/dbms/misc/templates/ansible";
-        "reveng" = configPrefix roots "modules/dev/dbms/misc/templates/reveng";
-      };
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ diffoscope icdiff patchutils wiggle xmldiff ]; };

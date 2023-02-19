@@ -41,9 +41,6 @@ in
           indent_size = "2";
         };
       };
-      dev.projectenv.templates.entries = {
-        "frontend.vue" = configPrefix config.navigation.bookmarks.workspaces.roots "modules/dev/frontend/templates/vue";
-      };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.vue-mode ];

@@ -47,10 +47,6 @@ in
         "h" = "coding:c";
         "hpp" = "coding:cpp";
       };
-      dev.projectenv.templates.entries = {
-        "ccpp.generic" = configPrefix roots "modules/dev/ccpp/templates/generic";
-        "ccpp.cmake" = configPrefix roots "modules/dev/ccpp/templates/cmake";
-      };
     })
     (mkIf (cfg.enable && cfg.rootMarkers.enable) {
       dev.navigation.projects.rootMarkers = [ "CMakeLists.txt" "Makefile" ];

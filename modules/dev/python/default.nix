@@ -59,15 +59,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      dev.projectenv.templates.entries = {
-        "python.project" = configPrefix config.navigation.bookmarks.workspaces.roots "modules/dev/python/templates/project";
-      };
-      dev.projectenv.templates.settings.common = {
-        "pythonColumnLimit" = cfg.lineLengthThreshold;
-        "pythonExcludes" = lib.concatStringsSep "," cfg.excludes;
-        "pythonIgnores" = lib.concatStringsSep ", " cfg.ignoredErrors;
-        "pythonEnableBlack" = false;
-      };
       dev.editorconfig.rules = {
         "*.py" = {
           charset = "utf-8";

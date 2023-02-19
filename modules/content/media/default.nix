@@ -70,10 +70,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      dev.projectenv.templates.entries = {
-        "media.common" = configPrefix config.navigation.bookmarks.workspaces.roots "modules/content/media/templates/common";
-      };
-
       environment.systemPackages = with pkgs; [ clipgrab freetube moc ncmpcpp yt-dlp ytfzf ];
 
       home-manager.users."${user}" = {

@@ -72,15 +72,6 @@ in
       dev.misc.timeTracking.extensions.dev = { "go" = "coding:go"; };
 
       shell.prompts.starship.modulesConfiguration = { golang = { format = "[🐹 $version](bold cyan) "; }; };
-
-      dev.projectenv.templates.entries = {
-        # TODO: consider unbind lp-repl from golang since it is more of common functionality
-        "golang.lp-repl" = configPrefix roots "modules/dev/golang/templates/lp-repl";
-        "golang.nix" = configPrefix roots "modules/dev/golang/templates/go2nix";
-        "golang.project" = configPrefix roots "modules/dev/golang/templates/project";
-      };
-
-      dev.projectenv.templates.settings.common = { "golangEnableModules" = true; };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
       nixpkgs.config.packageOverrides = _: rec {
