@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 

@@ -109,7 +109,7 @@ in
             configured = (flavor.override {
               withGTK2 = false;
               withGTK3 = if cfg.pgtk.enable then true else false;
-            }).overrideAttrs (old: rec {
+            }).overrideAttrs (_: rec {
               withCsrc = true;
             });
           in

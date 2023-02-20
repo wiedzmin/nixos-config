@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ inputs, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
 {

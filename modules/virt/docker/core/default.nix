@@ -1,11 +1,10 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
 let
   cfg = config.ext.virtualization.docker.core;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   inherit (config.wmCommon) prefix;
 in
 {

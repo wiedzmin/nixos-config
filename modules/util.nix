@@ -17,7 +17,6 @@ let
     "\\" = "backslash";
   };
   scratchpadModeToken = "scratchpad";
-  keySepAwesome = "-";
   keySymsAwesomeEZ = {
     "Control" = "C";
     "Shift" = "S";
@@ -366,8 +365,6 @@ rec {
         else
           "disable"
       }"));
-  mkScratchpadToggleI3 = x:
-    "";
   genScratchpadSettingsI3 = rules: keys: exitBindings: desktops: logsroot:
     let
       scratchpadBindings = (lib.filterAttrs (k: _: k == scratchpadModeToken)
@@ -454,7 +451,7 @@ rec {
     "${
       lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList (key: cmd: ''"${key}" ~> ${cmd}'') keys)
     }${mkIndent indent}";
-  convertKeyXmonad = key: ""; # FIXME: fuse
+  convertKeyXmonad = _: ""; # FIXME: fuse
   mkWorkspacesXmonad = wss: indent: # FIXME: update logic (presumably broken)
     "${
       lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList

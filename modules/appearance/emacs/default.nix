@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.appearance.emacs;
-  user = config.attributes.mainUser.name;
 in
 {
   imports = [ ./doom-modeline.nix ./doom-themes.nix ./dracula-theme.nix ./telephone-line.nix ./zenburn-theme.nix ];

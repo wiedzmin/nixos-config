@@ -1,10 +1,9 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
 let
   cfg = config.navigation.bookmarks;
-  user = config.attributes.mainUser.name;
 in
 {
   options = {

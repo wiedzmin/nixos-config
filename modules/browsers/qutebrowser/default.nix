@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -6,7 +6,6 @@ let
   cfg = config.browsers.qutebrowser;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  scriptsPathPrefix = "${pkgs.qutebrowser}/share/qutebrowser/scripts";
   suspensionRule = {
     qutebrowser = {
       suspendDelay = 15;

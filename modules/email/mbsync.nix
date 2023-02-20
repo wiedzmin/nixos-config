@@ -17,13 +17,6 @@ let
     }
     // optionalAttrs (tls.enable && tls.certificatesFile != null) { CertificateFile = toString tls.certificatesFile; };
 
-  masterSlaveMapping = {
-    none = "None";
-    imap = "Master";
-    maildir = "Slave";
-    both = "Both";
-  };
-
   genSection = header: entries:
     let
       escapeValue = escape [ ''"'' ];
