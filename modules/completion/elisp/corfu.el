@@ -45,6 +45,7 @@
   :after corfu
   :bind
   (:map corfu-map
+        ("M-s M-s" . corfu-quick-complete)
         ("C-'" . corfu-quick-complete)
         ("C-q" . corfu-quick-insert)))
 
