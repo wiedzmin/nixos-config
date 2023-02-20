@@ -11,6 +11,8 @@
   (corfu-separator ?\s)
   (corfu-scroll-margin 5)
   (corfu-quit-no-match 'separator)
+  (corfu-quit-at-boundary 'separator)
+  (corfu-preview-current 'insert)
   :config
   (global-corfu-mode 1))
 
