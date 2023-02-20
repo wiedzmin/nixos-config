@@ -5,8 +5,6 @@
   :custom
   (corfu-cycle t)
   (corfu-count 14)
-  (corfu-auto t)
-  (corfu-auto-prefix 1)
   (corfu-auto-delay 0.0)
   (corfu-min-width 40)
   (corfu-max-width 80)
