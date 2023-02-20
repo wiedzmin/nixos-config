@@ -1,4 +1,4 @@
-(use-package git-modes ;TODO: consider adding more customizations
+(use-package git-modes
   :config
   (add-to-list 'auto-mode-alist
                (cons "/.dockerignore\\'" 'gitignore-mode)))
