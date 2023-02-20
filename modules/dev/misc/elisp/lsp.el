@@ -1,3 +1,5 @@
+;; TODO: investigate interoperation between lsp* and corfu/company, as found in some configs
+
 (use-package lsp-mode
   :hook
   (lsp-mode-hook . lsp-enable-which-key-integration)
@@ -32,9 +34,13 @@
   (lsp-enable-snippet t)
   (lsp-enable-symbol-highlighting t)
   (lsp-enable-text-document-color t)
+  (lsp-headerline-breadcrumb-enable t)
   (lsp-headerline-breadcrumb-enable-symbol-numbers t)
   (lsp-headerline-breadcrumb-segments '(project file symbols))
   (lsp-idle-delay 0.5)
+  (lsp-keymap-prefix "C-c l")
+  (lsp-lens-place-po1sition 'above-line)
+  (lsp-log-io t)
   (lsp-modeline-code-actions-segments '(count icon name))
   (lsp-modeline-diagnostics-scope :workspace)
   (lsp-prefer-flymake nil)
@@ -43,9 +49,7 @@
   (lsp-semantic-tokens-enable t)
   (lsp-signature-render-documentation t)
   (read-process-output-max (* 1024 1024))
-  (lsp-lens-place-po1sition 'above-line)
   :config
-  ;;TODO: play with lsp-keymap-prefix
   (lsp-lens-mode 1)
   (lsp-dired-mode 1)
   (lsp-headerline-breadcrumb-mode)
@@ -55,7 +59,9 @@
 (use-package lsp-ui
   :after lsp-mode
   :hook
-  (lsp-mode-hook . lsp-ui-mode))
+  (lsp-mode-hook . lsp-ui-mode)
+  :custom
+  (lsp-ui-sideline-delay 0.5))
 
 (use-package lsp-ui-doc
   :ensure lsp-ui

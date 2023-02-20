@@ -16,3 +16,6 @@
 (use-package consult-project-extra
   :bind
   ("C-<f1>" . consult-project-extra-find))
+
+(with-eval-after-load 'lsp-mode
+  (setq lsp-auto-guess-root t))

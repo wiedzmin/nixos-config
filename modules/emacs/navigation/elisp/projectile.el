@@ -73,3 +73,6 @@
   (setq marginalia-command-categories '((projectile-find-file . project-file)
                                         (projectile-find-dir . project-file)
                                         (projectile-switch-project . file))))
+
+(with-eval-after-load 'lsp-mode
+  (setq lsp-auto-guess-root t))
