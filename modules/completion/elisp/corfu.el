@@ -16,6 +16,10 @@
   :config
   (global-corfu-mode 1))
 
+(use-package corfu-history
+  :config
+  (corfu-history-mode 1))
+
 (use-package corfu-echo
   :after corfu
   :custom
