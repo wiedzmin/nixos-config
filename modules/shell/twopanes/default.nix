@@ -203,45 +203,77 @@ in
           Найти оригиналы (*.orig) после команды patch=find . -name \\*.orig -print
           Найти программы с установленными SUID/SGID битами=find . \\( \\( -perm -04000 -a -perm /011 \\) -o \\( -perm -02000 -a -perm /01 \\) \\) -print
         '';
-        xdg.configFile."mc/mc.ext".text = ''
-          regex/\.([pP][dD][fF])$
-              Include=shovel
-          regex/\.([dD][jJ][vV][uU])$
-              Include=shovel
+        # .ini
+        xdg.configFile."mc/mc.ext.ini".text = ''
+          [mc.ext.ini]
+          Version=4.0
 
-          regex/\.([jJ][pP][gG])$
-              Include=shovel
-          regex/\.([pP][nN][gG])$
-              Include=shovel
-          regex/\.([jJ][pP][eE][gG])$
-              Include=shovel
+          [pdf]
+          Regex=\.([pP][dD][fF])$
+          Include=shovel
 
-          regex/\.([mM][pP]4)$
-              Include=shovel
-          regex/\.([fF][lL][vV])$
-              Include=shovel
-          regex/\.([mM][kK][vV])$
-              Include=shovel
+          [djvu]
+          Regex=\.([dD][jJ][vV][uU])$
+          Include=shovel
 
-          regex/\.([dD][oO][cC])$
-              Include=shovel
-          regex/\.([dD][oO][cC][xX])$
-              Include=shovel
-          regex/\.([xX][lL][sS])$
-              Include=shovel
-          regex/\.([xX][lL][sS][xX])$
-              Include=shovel
-          regex/\.([pP][pP][tT])$
-              Include=shovel
-          regex/\.([pP][pP][sS])$
-              Include=shovel
-          regex/\.([pP][pP][tT][xX])$
-              Include=shovel
-          regex/\.([pP][pP][sS][xX])$
-              Include=shovel
+          [jpg]
+          Regex=\.([jJ][pP][gG])$
+          Include=shovel
 
-          include/shovel
-              Open=(${pkgs.xdg-utils}/bin/xdg-open %f >/dev/null 2>&1 &)
+          [png]
+          Regex=\.([pP][nN][gG])$
+          Include=shovel
+
+          [jpeg]
+          Regex=\.([jJ][pP][eE][gG])$
+          Include=shovel
+
+          [mp4]
+          Regex=\.([mM][pP]4)$
+          Include=shovel
+
+          [flv]
+          Regex=\.([fF][lL][vV])$
+          Include=shovel
+
+          [mkv]
+          Regex=\.([mM][kK][vV])$
+          Include=shovel
+
+          [doc]
+          Regex=\.([dD][oO][cC])$
+          Include=shovel
+
+          [docx]
+          Regex=\.([dD][oO][cC][xX])$
+          Include=shovel
+
+          [xls]
+          Regex=\.([xX][lL][sS])$
+          Include=shovel
+
+          [xlsx]
+          Regex=\.([xX][lL][sS][xX])$
+          Include=shovel
+
+          [ppt]
+          Regex=\.([pP][pP][tT])$
+          Include=shovel
+
+          [pps]
+          Regex=\.([pP][pP][sS])$
+          Include=shovel
+
+          [pptx]
+          Regex=\.([pP][pP][tT][xX])$
+          Include=shovel
+
+          [ppsx]
+          Regex=\.([pP][pP][sS][xX])$
+          Include=shovel
+
+          [Include/shovel]
+          Open=(${pkgs.xdg-utils}/bin/xdg-open %f >/dev/null 2>&1 &)
         '';
       };
     })
