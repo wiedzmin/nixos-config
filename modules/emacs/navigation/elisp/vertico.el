@@ -19,6 +19,7 @@
         ("C-'" . vertico-quick-insert)))
 
 (use-package vertico-multiform
+  :disabled
   :after vertico
   :custom
   ;TODO: investigate options throughly
