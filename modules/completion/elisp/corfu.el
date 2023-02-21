@@ -50,6 +50,9 @@
         ("C-q" . corfu-quick-insert)))
 
 (use-package cape
+  :bind
+  (:map mode-specific-map
+        ("c d" . cape-dabbrev)) ;; or dabbrev-completion
   :config
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
