@@ -239,7 +239,7 @@ in
     };
     emacs = {
       enable = true;
-      backend = "corfu";
+      backend = "company";
     };
     wm.enable = true;
   };
