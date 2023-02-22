@@ -1,10 +1,10 @@
-(use-package cc-mode
-  :mode (("\\.c$" . cc-mode)
-         ("\\.h$" . cc-mode))
+(use-package c-mode
+  :mode (("\\.c$" . c-mode)
+         ("\\.h$" . c-mode))
   ;; :after dap
   :config
   ;; (use-package dap-cpptools)
-  (setq-default c-basic-offset 4))
+  (setq-default c-basic-offset 2))
 
 (use-package ccls
   :preface
