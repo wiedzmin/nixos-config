@@ -35,6 +35,10 @@ in
         default = [ ];
         description = "Common keybindings.";
       };
+      keybindings.help.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable showing WM keybindings help, using respective script";
       };
       autorepeat.delay = mkOption {
         type = types.int;
@@ -148,7 +152,7 @@ in
       };
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ keybindings ];
+        home.packages = with pkgs; optionals (cfg.keybindings.help.enable) [ keybindings ];
       };
       wmCommon.modeBindings = {
         "dev" = [ cfg.prefix "d" ];
@@ -161,6 +165,12 @@ in
       };
       wmCommon.keybindings.common = [
         {
+          key = [ "w" ];
+          cmd = "${pkgs.rofi}/bin/rofi -modi window -show";
+          mode = "select";
+        }
+      ] ++ optionals (cfg.keybindings.help.enable) [
+        {
           key = [ cfg.prefix "k" ];
           cmd = "${pkgs.keybindings}/bin/keybindings";
           mode = "root";
@@ -169,11 +179,6 @@ in
           key = [ cfg.prefix "Shift" "k" ];
           cmd = "${pkgs.keybindings}/bin/keybindings --fuzzy";
           mode = "root";
-        }
-        {
-          key = [ "w" ];
-          cmd = "${pkgs.rofi}/bin/rofi -modi window -show";
-          mode = "select";
         }
       ];
       workstation.systemtraits.instructions = ''
