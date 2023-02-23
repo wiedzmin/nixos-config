@@ -35,11 +35,6 @@ in
         default = [ ];
         description = "Common keybindings.";
       };
-      # NOTE: do we need this?
-      keybindings.debug = mkOption {
-        type = types.listOf types.attrs;
-        default = [ ];
-        description = "Common keybindings, debug version.";
       };
       autorepeat.delay = mkOption {
         type = types.int;
@@ -195,7 +190,7 @@ in
     })
     (mkIf (cfg.enable && cfg.focus.show) {
       # TODO: review https://github.com/fennerm/flashfocus/wiki
-      wmCommon.autostart.entries = [ { cmd = "${pkgs.flashfocus}/bin/flashfocus"; } ];
+      wmCommon.autostart.entries = [{ cmd = "${pkgs.flashfocus}/bin/flashfocus"; }];
       wmCommon.keybindings.common = [{
         key = [ "f" ];
         cmd = "${pkgs.flashfocus}/bin/focus_window";
