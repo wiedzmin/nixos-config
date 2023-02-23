@@ -40,6 +40,22 @@
         "type": "github"
       }
     },
+    "emacs-highlight-sexp": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1402451840,
+        "narHash": "sha256-6XhhfKVTcU6VPa5MZqXMN9x2nmKBTw8FU+SaV7CYnok=",
+        "owner": "daimrod",
+        "repo": "highlight-sexp",
+        "rev": "403f32f76b6524fe6eac967b559a5fcc64901f7a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "daimrod",
+        "repo": "highlight-sexp",
+        "type": "github"
+      }
+    },
     "emacs-org-bars": {
       "flake": false,
       "locked": {
@@ -469,6 +485,7 @@
       "inputs": {
         "devenv-src": "devenv-src",
         "emacs": "emacs",
+        "emacs-highlight-sexp": "emacs-highlight-sexp",
         "emacs-org-bars": "emacs-org-bars",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",

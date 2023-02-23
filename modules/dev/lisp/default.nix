@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -8,20 +8,39 @@ in
 {
   options = {
     dev.lisp = {
-      enable = mkOption {
+      cl.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable emacs misc extensions.";
+        description = "Whether to enable Common Lisp setup";
+      };
+      elisp.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Emacs Lisp setup";
       };
     };
   };
 
   config = mkMerge [
-    (mkIf cfg.enable {
+    (mkIf cfg.cl.enable {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.melpaStablePackages.slime
       ];
-      ide.emacs.core.config = builtins.readFile ./elisp/lisp.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/cl.el;
+    })
+    (mkIf cfg.elisp.enable {
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.elsa
+        epkgs.erefactor
+        epkgs.eros
+        epkgs.flycheck-elsa
+        epkgs.flycheck-package
+        epkgs.highlight-defined
+        epkgs.highlight-quoted
+        epkgs.ipretty
+        epkgs.suggest
+      ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/elisp.el ];
     })
   ];
 }

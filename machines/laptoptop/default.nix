@@ -314,7 +314,10 @@ in
       enable = true;
       emacs.enable = true;
     };
-    lisp.enable = false; # FIXME: slime. Also check ability to pin particular epkgs
+    lisp = {
+      cl.enable = false; # FIXME: slime. Also check ability to pin particular epkgs
+      elisp.enable = true;
+    };
   };
 
   gc = {

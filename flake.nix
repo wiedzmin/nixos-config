@@ -23,6 +23,10 @@
       url = "github:tonyaldon/org-bars";
       flake = false;
     };
+    emacs-highlight-sexp = {
+      url = "github:daimrod/highlight-sexp";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {
