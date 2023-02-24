@@ -65,7 +65,7 @@ in
         };
       };
       services.udev.extraRules = ''
-        ACTION=="change", SUBSYSTEM=="drm", RUN+="${pkgs.autorandr}/bin/autorandr --batch --change --default default"
+        ACTION=="change", SUBSYSTEM=="drm", RUN+="${pkgs.autorandr}/bin/autorandr --batch --change"
       '';
 
       nixpkgs.config.packageOverrides = _: rec {
