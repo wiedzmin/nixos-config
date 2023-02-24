@@ -19,6 +19,11 @@ in
         default = 10;
         description = "Backlight delta percents.";
       };
+      redshift.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Redshift service";
+      };
       redshift.latitude = mkOption {
         type = types.str;
         default = "";
@@ -71,8 +76,7 @@ in
       home-manager.users."${user}" = {
         services = {
           redshift = {
-            enable = true;
-            inherit (cfg.redshift) latitude longitude;
+            inherit (cfg.redshift) enable latitude longitude;
             temperature.day = cfg.redshift.temperature.day;
             temperature.night = cfg.redshift.temperature.night;
             settings = {
