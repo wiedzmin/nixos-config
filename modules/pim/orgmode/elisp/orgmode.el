@@ -66,7 +66,7 @@
   :commands (org-babel-execute:restclient))
 
 (use-package org
-  :after (f consult)
+  :after f
   :delight org-src-mode
   :preface
   ;; remove read-only props from yanked text (e.g. from jabber.el chat buffer)
@@ -112,15 +112,6 @@
                (time-add (current-idle-time) custom/idle-clockout-recheck-interval)
                nil
                'custom/clockout-when-idle)))))
-  (defun custom/consult-ripgrep-org ()
-    (interactive)
-    (consult-ripgrep "@orgRoot@"))
-  (defvar consult--source-org-buffer
-    (list :name "Org"
-          :narrow ?o
-          :category 'buffer
-          :state #'consult--buffer-state
-          :items (lambda () (mapcar #'buffer-name (org-buffer-list)))))
   ;; https://github.com/chuntaro/emacs-keypression
   :mode (("\\.org$" . org-mode)
          ("\\.org_archive$" . org-mode))
@@ -141,7 +132,6 @@
         ("<up>" . org-backward-heading-same-level)
         ("=" . org-show-todo-tree)
         ("D" . org-delete-property)
-        ("g" . custom/consult-ripgrep-org)
         ("G" . org-goto)
         ("S" . org-set-property)
         ("T" . org-table-create)
@@ -351,8 +341,7 @@
                   ("emacs" :keys "e" :olp ("feeds" "emacs") :template "* @pimCommonCaptureDataTemplate@")
                   ("rest" :keys "r" :olp ("feeds" "rest") :template "* @pimCommonCaptureDataTemplate@"))))))
   (run-with-idle-timer custom/idle-clockout-timeout t 'custom/clockout-when-idle)
-  (turn-on-orgtbl)
-  (add-to-list 'consult-buffer-sources consult--source-org-buffer 'append))
+  (turn-on-orgtbl))
 
 (use-package org-ql
   :after org
@@ -482,46 +471,6 @@
         ("," . org-roam-promote-entire-buffer)
         ("j" . org-roam-dailies-capture-today)))
 
-(use-package consult-org-roam
-  :preface
-  (defun avy-action-search-org-roam (pt)
-    "Search org-roam corpus for sexp at PT."
-    (save-excursion
-      (goto-char pt)
-      (cl-destructuring-bind (start . end)
-          (bounds-of-thing-at-point 'sexp) ;TODO: fine-tune TAP type
-        (let ((term (buffer-substring start end)))
-          (message "searching `org-roam' data for: %s" term)
-          (consult-org-roam-search term))))
-    t)
-  (defun avy-action-search-url-org-roam (pt)
-    "Search org-roam corpus for sexp at PT."
-    (save-excursion
-      (goto-char pt)
-      (condition-case nil
-          (cl-destructuring-bind (start . end)
-              (bounds-of-thing-at-point 'url)
-            (let ((term (buffer-substring start end)))
-              (message "searching `org-roam' data for: %s" term)
-              (consult-org-roam-search term)))
-        (error
-         (message "%s seems to not being an URL" (thing-at-point 'sexp)))))
-    t)
-  :delight " |>"
-  :config
-  ;; Eventually suppress previewing for certain functions
-  (consult-customize
-   consult-org-roam-forward-links
-   :preview-key (kbd "M-."))
-  (consult-org-roam-mode 1)
-  :bind
-  (:map org-roam-map
-        ("b" . consult-org-roam-backlinks)
-        ("g" . consult-org-roam-search))
-  :config
-  (setf (alist-get ?o avy-dispatch-alist) 'avy-action-search-org-roam
-        (alist-get ?O avy-dispatch-alist) 'avy-action-search-url-org-roam))
-
 (use-package org-roam-ui
   :custom
   (org-roam-ui-sync-theme t)
@@ -552,5 +501,3 @@
     (:map custom-org-map
           ("h" . avy-org-goto-heading-timer)
           ("^" . avy-org-refile-as-child))))
-
-;; [[file:~/workspace/repos/github.com/wiedzmin/nixos-config/modules/pim/orgmode/todo.org::*https://github.com/akirak/akirak-mode/blob/1fa4845e5ad4af95b58c3cdba7ead7223f05cef0/akirak-consult-org.el#L7][TODO: review custom solutions]]

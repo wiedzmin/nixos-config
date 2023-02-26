@@ -69,7 +69,6 @@ in
         epkgs.treemacs-magit
       ];
       ide.emacs.core.config = builtins.readFile ./elisp/navigation.el;
-
     })
     (mkIf (cfg.enable && cfg.ghq.enable && cfg.emacs.enable) {
       assertions = [
@@ -80,7 +79,7 @@ in
       ];
 
       ide.emacs.core.extraPackages = epkgs: [ epkgs.consult-ghq ];
-      ide.emacs.core.config = builtins.readFile ./elisp/ghq.el;
+      ide.emacs.core.config = optionalString (config.ide.emacs.navigation.collections.backend == "consult") (builtins.readFile ./elisp/consult.el);
     })
   ];
 }

@@ -19,6 +19,11 @@ in
         default = "vertico";
         description = "Selection UI to use, like Ivy, Vertico, etc.";
       };
+      collections.backend = mkOption {
+        type = types.enum [ "consult" ];
+        default = "consult";
+        description = "Collections completion backend to use, like Counsel, Consult, etc.";
+      };
       selection.candidatesCount = mkOption {
         type = types.int;
         default = 20;
@@ -55,17 +60,11 @@ in
         epkgs.bookmark-view
         epkgs.bufler
         epkgs.burly
-        epkgs.consult
-        epkgs.consult-dir
-        epkgs.consult-flycheck
-        epkgs.consult-project-extra
-        epkgs.consult-yasnippet
         epkgs.dired-filetype-face
         epkgs.dired-narrow
         epkgs.dired-subtree
         epkgs.dogears
         epkgs.embark
-        epkgs.embark-consult
         epkgs.goggles
         epkgs.imenu-anywhere
         epkgs.link-hint
@@ -86,24 +85,36 @@ in
         epkgs.zygospore
       ] ++ optionals (cfg.selection.backend == "vertico") [
         epkgs.vertico
-      ] ++ optionals (cfg.projects.backend == "project") [
+      ] ++ optionals (cfg.collections.backend == "consult") [
+        epkgs.consult
+        epkgs.consult-dir
+        epkgs.consult-flycheck
+        epkgs.consult-project-extra
+        epkgs.consult-yasnippet
+        epkgs.embark-consult
+      ] ++ optionals (cfg.projects.backend == "project" && cfg.collections.backend == "consult") [
         epkgs.consult-project-extra
       ] ++ optionals (cfg.projects.backend == "projectile") [
         epkgs.projectile
         epkgs.flycheck-projectile
-        epkgs.consult-projectile
         epkgs.treemacs-projectile
+      ] ++ optionals (cfg.projects.backend == "projectile" && cfg.collections.backend == "consult") [
+        epkgs.consult-projectile
       ];
       ide.emacs.core.customPackages = {
         "minibuffer-edit" = builtins.readFile ./elisp/custom/minibuffer-edit.el;
         "orderless-dispatchers" = builtins.readFile ./elisp/custom/orderless-dispatchers.el;
-        "consult-utils" = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/consult-utils.el ];
         "misc" = builtins.readFile ./elisp/custom/misc.el;
+      } // optionalAttrs (cfg.collections.backend == "consult") {
+        "consult-utils" = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/consult-utils.el ];
       };
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
         ([ ./elisp/navigation.el ] ++ optionals (cfg.selection.backend == "vertico") [ ./elisp/vertico.el ]
+          ++ optionals (cfg.collections.backend == "consult") [ ./elisp/consult.el ]
           ++ optionals (cfg.projects.backend == "project") [ ./elisp/project.el ]
-          ++ optionals (cfg.projects.backend == "projectile") [ ./elisp/projectile.el ]);
+          ++ optionals (cfg.projects.backend == "project" && cfg.collections.backend == "consult") [ ./elisp/consult-project.el ]
+          ++ optionals (cfg.projects.backend == "projectile") [ ./elisp/projectile.el ]
+          ++ optionals (cfg.projects.backend == "projectile" && cfg.collections.backend == "consult") [ ./elisp/consult-projectile.el ]);
 
       ide.emacs.core.customKeymaps = {
         "custom-help-map" = "<f1>";

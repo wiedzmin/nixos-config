@@ -44,15 +44,7 @@
   (projectile-project-root-functions '(
      projectile-root-local
      projectile-root-bottom-up))
-  (projectile-project-root-files '(@projectsRootMarkersEmacs@))
-  (consult-project-function #'projectile-project-root)
-  :config
-  (fset 'projectile-ripgrep 'consult-ripgrep))
-
-(use-package consult-projectile
-  :after projectile
-  :bind
-  ("C-<f1>" . consult-projectile))
+  (projectile-project-root-files '(@projectsRootMarkersEmacs@)))
 
 (use-package flycheck-projectile
   :after (projectile flycheck)

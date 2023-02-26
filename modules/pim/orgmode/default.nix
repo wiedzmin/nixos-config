@@ -102,7 +102,6 @@ in
       pim.orgmode.agendaRoots = { "${cfg.rootDir}" = 3000; };
       pim.timetracking.rules = mkArbttTitleRule [ "^emacs - [^ ]+\\.org .*$" ] "edit:orgmode";
       ide.emacs.core.extraPackages = epkgs: [
-        epkgs.consult-org-roam
         epkgs.doct
         epkgs.ob-async
         epkgs.ob-blockdiag
@@ -122,8 +121,10 @@ in
         epkgs.orgit
         epkgs.orglink
         epkgs.russian-holidays
-      ] ++ optionals cfg.cliplink.enable [ epkgs.org-cliplink ];
+      ] ++ optionals cfg.cliplink.enable [ epkgs.org-cliplink ]
+      ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ epkgs.consult-org-roam ];
       ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/orgmode.el ])
+        + (optionalString (config.ide.emacs.navigation.collections.backend == "consult") readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/consult.el ])
         + lib.optionalString cfg.cliplink.enable ''
         (use-package org-cliplink
           :after (org)
