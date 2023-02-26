@@ -23,8 +23,6 @@
   :after vertico
   :custom
   ;TODO: investigate options throughly
-  (vertico-multiform-commands '((consult-line buffer)
-                                (consult-imenu reverse buffer)))
   (vertico-multiform-categories '((file buffer grid)
                                   (imenu (:not indexed mouse))
                                   (symbol (vertico-sort-function . vertico-sort-alpha))))
