@@ -183,5 +183,17 @@ in
         };
       };
     })
+    (mkIf (cfg.enable && cfg.org-roam.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/user/emacs_orgmode.yml".text = ''
+          name: emacs_orgmode
+          parent: default
+
+          matches:
+            - trigger: ":orc"
+              replace: "cd ${cfg.org-roam.rootDir} && ls | grep -v \"\\\\.db$\" | xargs wc -l | ${pkgs.moar}/bin/moar"
+        '';
+      };
+    })
   ];
 }
