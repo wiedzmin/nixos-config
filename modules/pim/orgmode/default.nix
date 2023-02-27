@@ -78,6 +78,18 @@ in
         internal = true;
         description = "Elisp code to insert to orgmode configuration.";
       };
+      org-roam.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable org-roam functionality";
+      };
+      org-roam.rootDir = mkOption {
+        type = types.str;
+        default = "${cfg.rootDir}/roam";
+        description = ''
+          Path to store org-roam docs under.
+        '';
+      };
       org-roam.autosync.enable = mkOption {
         type = types.bool;
         default = true;
@@ -116,8 +128,6 @@ in
         epkgs.org-randomnote
         epkgs.org-recent-headings
         epkgs.org-rich-yank
-        epkgs.org-roam
-        epkgs.org-roam-ui
         epkgs.orgit
         epkgs.orglink
         epkgs.russian-holidays
@@ -134,6 +144,15 @@ in
       '';
       ide.emacs.core.customKeymaps = {
         "custom-org-map" = "<f7>";
+      };
+    })
+    (mkIf (cfg.enable && cfg.org-roam.enable) {
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.org-roam
+        epkgs.org-roam-ui
+      ];
+      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/org-roam.el ]);
+      ide.emacs.core.customKeymaps = {
         "org-roam-map" = "<f7> r";
       };
     })
