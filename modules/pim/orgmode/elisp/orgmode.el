@@ -373,10 +373,6 @@
       ((org-ql-block '(scheduled)
                      ((org-ql-block-header "Scheduled tasks"))))))))
 
-(use-package org-bullets
-  :hook
-  (org-mode-hook . org-bullets-mode))
-
 (use-package org-protocol
   :after org server)
 
@@ -404,12 +400,6 @@
   (org-mode-hook . org-appear-mode)
   :custom
   (org-appear-autolinks t))
-
-(use-package org-bars
-  :if (display-graphic-p)
-  :load-path "@emacsOrgBarsPath@"
-  :hook
-  (org-mode-hook . org-bars-mode))
 
 ;; TODO: https://github.com/nobiot/org-transclusion
 

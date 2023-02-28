@@ -95,6 +95,11 @@ in
         default = true;
         description = "Whether to enable org-roam DB auto-synchronization";
       };
+      blings.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Orgmode blinging";
+      };
       bookmarks.enable = mkOption {
         type = types.bool;
         default = true;
@@ -119,7 +124,6 @@ in
         epkgs.ob-blockdiag
         epkgs.ob-restclient
         epkgs.org-appear
-        epkgs.org-bullets
         epkgs.org-clock-today
         epkgs.org-contrib
         epkgs.org-edit-indirect
@@ -155,6 +159,12 @@ in
       ide.emacs.core.customKeymaps = {
         "org-roam-map" = "<f7> r";
       };
+    })
+    (mkIf (cfg.enable && cfg.blings.enable) {
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.org-bullets
+      ];
+      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/blings.el ]);
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ org-capture ]; };
