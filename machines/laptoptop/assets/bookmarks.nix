@@ -595,6 +595,10 @@ rec {
       tags = [ "mongol" "reference" "calendar" ];
       remote = { url = "http://mongol.su/календарь/"; };
     };
+    "shops/wildberries" = {
+      tags = [ "shop" "wildberries" "orders" ];
+      remote = { url = "https://www.wildberries.ru/lk/myorders/delivery"; };
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
