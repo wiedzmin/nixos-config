@@ -69,7 +69,7 @@ in
         .mypy_cache/*
       '';
       dev.misc.timeTracking.extensions.dev = { "py" = "coding:python"; };
-      completion.tabnine.config = { language.python = { command = "python-language-server"; }; };
+      completion.tabnine.config = { language.python = { command = "python-lsp-server"; }; };
     })
     (mkIf (cfg.enable && cfg.rootMarkers.enable) {
       dev.navigation.projects.rootMarkers =
