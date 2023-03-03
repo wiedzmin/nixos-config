@@ -118,6 +118,13 @@ in
         default = "company";
         description = "Emacs completion UI to use. Currently, `company` and `corfu` are supported.";
       };
+      tabnine.config = mkOption {
+        type = types.attrs;
+        default = { };
+        visible = false;
+        internal = true;
+        description = "TabNine configuration";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -152,8 +159,7 @@ in
     (mkIf (cfg.enable && cfg.dev.enable) {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ tabnine ]; # FIXME: install it to be consumable by company-tabnine
-        xdg.configFile."TabNine/TabNine.toml".source =
-          toml.generate "TabNine.toml" { language.python = { command = "python-language-server"; }; };
+        xdg.configFile."TabNine/TabNine.toml".source = toml.generate "TabNine.toml" cfg.tabnine.config;
       };
     })
     (mkIf (cfg.enable && cfg.expansions.enable) {
