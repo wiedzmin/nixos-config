@@ -118,6 +118,21 @@ in
         default = "company";
         description = "Emacs completion UI to use. Currently, `company` and `corfu` are supported.";
       };
+      emacs.snippets.backend = mkOption {
+        type = types.enum [ "yasnippet" "tempel" ];
+        default = "yasnippet";
+        description = "Emacs snippets backend to use. Currently, `yasnippet` and `tempel` are supported.";
+      };
+      emacs.tempel.snippets = mkOption {
+        type = types.lines;
+        description = "Tempel templates contents";
+        default = '''';
+      };
+      emacs.tempel.snippetsPath = mkOption {
+        type = types.str;
+        description = "Tempel templates contents file path";
+        default = homePrefix user ".config/emacs/templates"; # TODO: search/use more specialized solution(s)
+      };
       tabnine.config = mkOption {
         type = types.attrs;
         default = { };
@@ -219,7 +234,6 @@ in
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.all-the-icons-completion
         epkgs.pos-tip
-        epkgs.yasnippet
       ] ++ optionals (cfg.emacs.backend == "company") [
         epkgs.company
         epkgs.company-box
@@ -234,11 +248,53 @@ in
         epkgs.corfu
         epkgs.corfu-doc
         epkgs.kind-icon
+      ] ++ optionals (cfg.emacs.snippets.backend == "yasnippet") [
+        epkgs.yasnippet
+      ] ++ optionals (cfg.emacs.snippets.backend == "tempel") [
+        epkgs.tempel
+        epkgs.tempel-collection
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
         ([ ./elisp/completion.el ] ++ optionals (cfg.emacs.backend == "company") [ ./elisp/company.el ]
           ++ optionals (cfg.emacs.backend == "corfu") [ ./elisp/corfu.el ]
-          ++ optionals (cfg.emacs.backend == "corfu" && config.ide.emacs.history.enable) [ ./elisp/corfu-history.el ]);
+          ++ optionals (cfg.emacs.backend == "corfu" && config.ide.emacs.history.enable) [ ./elisp/corfu-history.el ]
+          ++ optionals (cfg.emacs.snippets.backend == "yasnippet") [ ./elisp/yasnippet.el ]
+          ++ optionals (cfg.emacs.snippets.backend == "tempel") [ ./elisp/tempel.el ]);
+      home-manager.users."${user}" = {
+        home.file = optionalAttrs (cfg.emacs.snippets.backend == "tempel")
+          {
+            "${cfg.emacs.tempel.snippetsPath}".text = cfg.emacs.tempel.snippets;
+          } // optionalAttrs (cfg.emacs.snippets.backend == "yasnippet") {
+          ".emacs.d/resources/yasnippet" = {
+            source = inputs.yasnippet-snippets;
+            recursive = true;
+          };
+        };
+      };
+    })
+    (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
+      navigation.bookmarks.entries = optionalAttrs (cfg.emacs.snippets.backend == "yasnippet")
+        {
+          yasnippet-snippets = {
+            desc = "Yasnippet snippets collection";
+            local.path = "${wsRoot roots "github"}/wiedzmin/yasnippet-snippets";
+            remote = {
+              url = "https://github.com/wiedzmin/yasnippet-snippets/";
+              jump = true;
+              searchSuffix = "search?q=";
+            };
+          };
+        } // optionalAttrs (cfg.emacs.snippets.backend == "tempel") {
+        tempel = {
+          desc = "Tempel repo";
+          local.path = "${wsRoot roots "github"}/wiedzmin/minad/tempel";
+          remote = {
+            url = "https://github.com/minad/tempel";
+            jump = true;
+            searchSuffix = "search?q=";
+          };
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.common = [{
