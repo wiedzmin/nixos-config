@@ -240,6 +240,7 @@ in
     emacs = {
       enable = true;
       backend = "company";
+      snippets.backend = "tempel";
     };
     wm.enable = true;
   };
