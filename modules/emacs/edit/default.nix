@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -48,14 +48,6 @@ in
         epkgs.whole-line-or-region
         epkgs.ws-butler
       ];
-      home-manager.users."${user}" = {
-        home.file = {
-          ".emacs.d/resources/yasnippet" = {
-            source = inputs.yasnippet-snippets;
-            recursive = true;
-          };
-        };
-      };
       ide.emacs.core.config = builtins.readFile ./elisp/edit.el;
       ide.emacs.core.customKeymaps = {
         "custom-ws-map" = "C-c x";
