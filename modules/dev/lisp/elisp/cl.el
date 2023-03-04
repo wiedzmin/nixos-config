@@ -50,4 +50,4 @@
   (setq inferior-lisp-program "sbcl"))
 
 (use-package common-lisp-snippets
-  :after (yasnippet))
+  @clsDisabled@)

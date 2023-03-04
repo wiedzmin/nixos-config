@@ -1,5 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
+with config.navigation.bookmarks.workspaces;
 with lib;
 
 let
@@ -250,6 +251,8 @@ in
         epkgs.kind-icon
       ] ++ optionals (cfg.emacs.snippets.backend == "yasnippet") [
         epkgs.yasnippet
+      ] ++ optionals (cfg.emacs.snippets.backend == "yasnippet" && config.ide.emacs.navigation.collections.backend == "consult") [
+        epkgs.consult-yasnippet
       ] ++ optionals (cfg.emacs.snippets.backend == "tempel") [
         epkgs.tempel
         epkgs.tempel-collection
@@ -259,6 +262,7 @@ in
           ++ optionals (cfg.emacs.backend == "corfu") [ ./elisp/corfu.el ]
           ++ optionals (cfg.emacs.backend == "corfu" && config.ide.emacs.history.enable) [ ./elisp/corfu-history.el ]
           ++ optionals (cfg.emacs.snippets.backend == "yasnippet") [ ./elisp/yasnippet.el ]
+          ++ optionals (cfg.emacs.snippets.backend == "yasnippet" && config.ide.emacs.navigation.collections.backend == "consult") [ ./elisp/consult-yasnippet.el ]
           ++ optionals (cfg.emacs.snippets.backend == "tempel") [ ./elisp/tempel.el ]);
       home-manager.users."${user}" = {
         home.file = optionalAttrs (cfg.emacs.snippets.backend == "tempel")

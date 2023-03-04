@@ -122,11 +122,6 @@
         ("C-c ! o" . consult-flycheck)
         ("!" . consult-flycheck)))
 
-(use-package consult-yasnippet
-  :bind
-  (:map misc-editing-map
-        ("i" . consult-yasnippet)))
-
 (with-eval-after-load 'pulsar
   (mapc (lambda (x) (add-hook 'consult-after-jump-hook x)) `(#'pulsar-recenter-top #'pulsar-reveal-entry)))
 

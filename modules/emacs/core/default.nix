@@ -275,15 +275,6 @@ in
             searchSuffix = "search?q=";
           };
         };
-        yasnippet-snippets = {
-          desc = "Yasnippet snippets collection";
-          local.path = "${wsRoot roots "github"}/wiedzmin/yasnippet-snippets";
-          remote = {
-            url = "https://github.com/wiedzmin/yasnippet-snippets/";
-            jump = true;
-            searchSuffix = "search?q=";
-          };
-        };
         use-package = { remote.url = "https://github.com/jwiegley/use-package"; };
         "emacs-news" = {
           desc = "Emacs news";
