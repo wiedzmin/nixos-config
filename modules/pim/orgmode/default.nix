@@ -149,6 +149,18 @@ in
       ide.emacs.core.customKeymaps = {
         "custom-org-map" = "<f7>";
       };
+      completion.emacs.tempel.snippets = ''
+        org-mode
+
+        (caption "#+caption: ")
+        (title "#+title: ")
+        (author "#+author: ")
+        (drawer ":" p ":" n r ":end:")
+        (begin "#+begin_" (s name) n> r> n "#+end_" name)
+        (quote "#+begin_quote" n> r> n "#+end_quote")
+        (example "#+begin_example" n> r n "#+end_example")
+        (src "#+begin_src " q n> r> n "#+end_src")
+      '';
     })
     (mkIf (cfg.enable && cfg.org-roam.enable) {
       ide.emacs.core.extraPackages = epkgs: [
