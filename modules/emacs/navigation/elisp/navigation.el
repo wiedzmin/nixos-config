@@ -348,7 +348,8 @@
   :bind
   ([remap list-directory] . dired)
   (:map dired-mode-map
-        ("i" . image-dired))
+        ("i" . image-dired)
+        ("C-c" . org-copy-visible))
   (:map dired-mode-map
         ("e" . (lambda ()
                  (interactive)
