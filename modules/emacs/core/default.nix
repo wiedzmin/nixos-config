@@ -221,6 +221,15 @@ in
           '';
           ".emacs.d/init.el".text = cfg.initElContent;
         };
+        home.activation = {
+          ensureEmacsXdgConfigPath = {
+            after = [ ];
+            before = [ "linkGeneration" ];
+            data = ''
+              mkdir -p ${homePrefix user ".config/emacs"}
+            '';
+          };
+        };
       };
       systemd.user.services."emacs" =
         let icon = "${cfg.package}/share/icons/hicolor/scalable/apps/emacs.svg";
