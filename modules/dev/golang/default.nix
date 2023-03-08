@@ -94,6 +94,14 @@ in
       ];
       ide.emacs.core.customKeymaps = { "custom-gotag-map" = "C-c `"; };
       ide.emacs.core.config = builtins.readFile ./elisp/golang.el;
+      completion.emacs.tempel.snippets = ''
+        go-mode
+
+        (deb "fmt.Println(\">>> " (s text) "\", " text ")" q)
+        (log "fmt.Println(\">>> " (s text) "\", " text ")" q)
+        (err "if err != nil {" n> "panic(err)" q n "}" n)
+        (print "fmt.Println(\"" q "\")")
+      '';
     })
   ];
 }

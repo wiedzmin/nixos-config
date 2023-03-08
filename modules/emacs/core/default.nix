@@ -207,6 +207,16 @@ in
         EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
         VISUAL = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
       }];
+      completion.emacs.tempel.snippets = ''
+        fundamental-mode
+
+        (todo "TODO: ")
+        (note "NOTE: ")
+        (fixme "FIXME: ")
+        (todop "TODO(${user}): ")
+        (notep "NOTE(${user}): ")
+        (fixmep "FIXME(${user}): ")
+      '';
       home-manager.users."${user}" = {
         home.packages = (with pkgs; [ drop-corrupted ispell nurpkgs.my_cookies ])
           ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
