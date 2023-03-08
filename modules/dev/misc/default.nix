@@ -197,6 +197,11 @@ in
         (bug (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "BUG: ")
         (hack (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "HACK: ")
         (note (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "NOTE: ")
+        (fixmep (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "FIXME(${user}): ")
+        (todop (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "TODO(${user}): ")
+        (bugp (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "BUG(${user}): ")
+        (hackp (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "HACK(${user}): ")
+        (notep (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "NOTE(${user}): ")
       '';
     })
     (mkIf (cfg.enable && cfg.emacs.enable && cfg.emacs.lsp.enable) {

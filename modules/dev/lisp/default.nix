@@ -35,6 +35,10 @@ in
         org-mode
 
         (elisp "#+begin_src emacs-lisp" n> r> n "#+end_src" :post (org-edit-src-code))
+
+        emacs-lisp-mode
+
+        (deb "(progn (print \">>> " (s text) "\") (prin1 " text " t))" q)
       '';
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.elsa
