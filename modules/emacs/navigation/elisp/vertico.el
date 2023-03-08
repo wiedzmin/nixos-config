@@ -16,7 +16,8 @@
   :after vertico
   :bind
   (:map vertico-map
-        ("C-'" . vertico-quick-insert)))
+        ("C-." . vertico-quick-insert)
+        ("C-'" . vertico-quick-jump)))
 
 (use-package vertico-multiform
   :disabled
