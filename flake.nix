@@ -104,6 +104,8 @@
 
   # TODO: review https://github.com/nix-community/nixt
 
+  # TODO: devenv: play with https://devenv.sh/guides/using-with-flakes/
+
   outputs = { self, unstable, ... }@inputs:
     let
       lib = unstable.lib;
