@@ -16,12 +16,12 @@ charset = utf-8
 # Match nix/ruby/docbook files, set indent to spaces with width of two
 [*.{nix,rb,xml}]
 indent_style = space
-indent_size = 4
+indent_size = 2
 
 # Match shell/python/perl scripts, set indent to spaces with width of four
 [*.{sh,py}]
 indent_style = space
-indent_size = 4
+indent_size = 2
 
 # Match diffs, avoid to trim trailing whitespace
 [*.{diff,patch}]
