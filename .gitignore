@@ -3,3 +3,8 @@ configuration.nix
 .gitattributes
 notice
 result
+
+# Devenv
+.devenv*
+devenv.local.nix
+

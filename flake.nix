@@ -120,9 +120,6 @@
     rec {
       overlay = import ./overlay.nix inputs;
 
-      # TODO: try https://devenv.sh/guides/using-with-flakes/#1-at-commit-time-to-make-sure-that-commits-are-well-formatted
-      devShell."${system}" = import ./shell.nix { pkgs = inputs.unstable.legacyPackages.${system}; };
-
       nixosConfigurations = {
         laptoptop = lib.nixosSystem {
           inherit system;

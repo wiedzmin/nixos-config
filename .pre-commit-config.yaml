@@ -1,14 +1,1 @@
-repos:
-  - repo: "https://github.com/wiedzmin/git-hooks"
-    rev: "2f2e47d946dcc31229b7a5add7edf107de189e7c"
-    hooks:
-      - id: "forbid-pushing-wip"
-      # - id: "nixfmt"
-      - id: "nixpkgs-fmt"
-  - repo: "https://github.com/jumanjihouse/pre-commit-hooks"
-    rev: "2.1.5"
-    hooks:
-      - id: "shfmt"
-        args:
-          - "-i"
-          - "2"
+/nix/store/pnmfpzhyibqc9d8isnr88kfnb49qzf70-pre-commit-config.json
