@@ -74,6 +74,9 @@ in
 
             - trigger: ":trec"
               replace: "git log -S$|$ --since=HEAD~50 --until=HEAD"
+
+            - trigger: ":ghsf"
+              replace: "filename:$|$"
         '';
       };
     })
