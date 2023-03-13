@@ -334,6 +334,10 @@ in
           desc = "Build and share reproducible software environments with Nix and NixOS";
           remote.url = "https://mynixos.com";
         };
+        "nix.dev" = {
+          desc = "An opinionated guide for developers getting things done using the Nix ecosystem.";
+          remote.url = "https://nix.dev";
+        };
       };
     })
   ];
