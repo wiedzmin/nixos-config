@@ -59,6 +59,20 @@ in
         epkgs.modern-cpp-font-lock
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ccpp.el ];
+      completion.emacs.tempel.snippets = ''
+        c-mode
+
+        (fixme "// FIXME: ")
+        (todo "// TODO: ")
+        (bug "// BUG: ")
+        (hack "// HACK: ")
+        (note "// NOTE: ")
+        (fixmep "// FIXME(${user}): ")
+        (todop "// TODO(${user}): ")
+        (bugp "// BUG(${user}): ")
+        (hackp "// HACK(${user}): ")
+        (notep "// NOTE(${user}): ")
+      '';
     })
   ];
 }
