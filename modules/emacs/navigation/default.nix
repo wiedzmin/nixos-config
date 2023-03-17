@@ -103,7 +103,7 @@ in
       ide.emacs.core.customPackages = {
         "minibuffer-edit" = builtins.readFile ./elisp/custom/minibuffer-edit.el;
         "orderless-dispatchers" = builtins.readFile ./elisp/custom/orderless-dispatchers.el;
-        "misc" = builtins.readFile ./elisp/custom/misc.el;
+        "navigation-misc" = builtins.readFile ./elisp/custom/misc.el;
       } // optionalAttrs (cfg.collections.backend == "consult") {
         "consult-utils" = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/consult-utils.el ];
       };
