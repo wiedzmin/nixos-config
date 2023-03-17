@@ -34,6 +34,19 @@ in
         default = "project";
         description = "Projects handling package to use. Currently, `project.el` and `projectile` are supported.";
       };
+      customWindowRecentering.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable custom windows recentering";
+      };
+      customWindowRecentering.eyeLevel = mkOption {
+        type = types.float;
+        default = 0.2;
+        description = ''
+          The relative position of the line considered as eye level in the
+          current window, as a ratio between 0 and 1.
+        '';
+      };
     };
   };
 
@@ -103,7 +116,7 @@ in
       ide.emacs.core.customPackages = {
         "minibuffer-edit" = builtins.readFile ./elisp/custom/minibuffer-edit.el;
         "orderless-dispatchers" = builtins.readFile ./elisp/custom/orderless-dispatchers.el;
-        "navigation-misc" = builtins.readFile ./elisp/custom/misc.el;
+        "navigation-misc" = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/misc.el ];
       } // optionalAttrs (cfg.collections.backend == "consult") {
         "consult-utils" = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/consult-utils.el ];
       };

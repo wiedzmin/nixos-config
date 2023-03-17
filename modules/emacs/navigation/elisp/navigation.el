@@ -5,7 +5,10 @@
 ;; TODO: setup xref package, then search for some modern completion UI (ivy/vertico/etc.) xref impl
 ;; TODO: avy-isearch
 
-(use-package navigation-misc)
+(use-package navigation-misc
+  @recenterWindowDisabled@
+  :bind
+  ("C-l" . custom/recenter-window))
 
 (use-package avy
   :preface

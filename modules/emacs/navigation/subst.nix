@@ -18,4 +18,7 @@ rec {
   projectsSearchPaths = with config.navigation.bookmarks.workspaces;
     builtins.concatStringsSep " " (lib.forEach [ globalRoot globalRootStale ] (root: ''"${root}"''));
   selectionCandidatesCount = builtins.toString navigation.selection.candidatesCount;
+  emacsEpithetPath = inputs.emacs-epithet;
+  recenterWindowDisabled = if config.ide.emacs.navigation.customWindowRecentering.enable then "" else ":disabled";
+  recenterWindowEyeLevel = lib.strings.floatToString config.ide.emacs.navigation.customWindowRecentering.eyeLevel;
 }
