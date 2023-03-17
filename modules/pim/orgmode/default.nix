@@ -213,7 +213,16 @@ in
 
           matches:
             - trigger: ":orc"
-              replace: "cd ${cfg.org-roam.rootDir} && ls | grep -v \"\\\\.db$\" | xargs wc -l | ${pkgs.moar}/bin/moar"
+              replace: "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k2 | ${pkgs.moar}/bin/moar"
+
+            - trigger: ":sorc"
+              replace: "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k1n | ${pkgs.moar}/bin/moar"
+
+            - trigger: ":sforc"
+              replace: "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k1n | ${pkgs.fzf}/bin/fzf --tac"
+
+            - trigger: ":sForc"
+              replace: "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k1n | ${pkgs.fzf}/bin/fzf"
         '';
       };
     })
