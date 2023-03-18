@@ -101,3 +101,5 @@
   :custom
   (select-enable-clipboard t)
   (x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+
+(use-package emacs-everywhere)
