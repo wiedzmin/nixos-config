@@ -22,7 +22,6 @@
   (default-text-scale-mode 1))
 
 (use-package hl-line
-  :if (string-equal "i3" (getenv "CURRENT_WM"))
   :config
   (global-hl-line-mode 1))
 

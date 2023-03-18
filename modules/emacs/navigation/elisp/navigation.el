@@ -312,7 +312,6 @@
         ("i" . info-lookup-symbol)))
 
 (use-package beginend
-  :if (string-equal "i3" (getenv "CURRENT_WM"))
   :config
   (delight '((beginend-global-mode nil "beginend")
              (beginend-prog-mode nil "beginend")
@@ -419,8 +418,7 @@
   (:map ctl-x-map
         ("C-c" . delete-frame)) ;; for keeping daemon running
   :config
-  (unless (string-equal "i3" (getenv "CURRENT_WM"))
-    (add-hook 'pre-redisplay-functions 'keep-custom-frame-title))
+  (add-hook 'pre-redisplay-functions 'keep-custom-frame-title)
   (blink-cursor-mode 0)
   (when (fboundp 'undelete-frame-mode)
     (undelete-frame-mode +1))
