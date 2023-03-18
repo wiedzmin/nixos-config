@@ -175,6 +175,11 @@ in
         default = true;
         description = "Whether to enable Emacs-related bookmarks";
       };
+      emacsEverywhere.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable system-wide popup Emacs windows for quick edits (package `emacs-everywhere`)";
+      };
     };
   };
 
@@ -192,7 +197,8 @@ in
           epkgs.delight
           epkgs.f
           epkgs.no-littering
-        ] ++ lib.optionals config.wm.i3.enable [ epkgs.reverse-im ];
+        ] ++ lib.optionals config.wm.i3.enable [ epkgs.reverse-im ]
+        ++ lib.optionals cfg.emacsEverywhere.enable [ epkgs.emacs-everywhere ];
       ide.emacs.core.config = lib.optionalString config.wm.i3.enable ''
         (use-package reverse-im
           :custom
@@ -219,7 +225,13 @@ in
       '';
       home-manager.users."${user}" = {
         home.packages = (with pkgs; [ drop-corrupted ispell nurpkgs.my_cookies ])
-          ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ];
+          ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ]
+          ++ optionals (cfg.emacsEverywhere.enable) (with pkgs; [
+          xclip
+          xdotool
+          xorg.xprop
+          xorg.xwininfo
+        ]);
         home.file = {
           ".emacs.d/early-init.el".text = ''
             (setenv "EDITOR" "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server")
@@ -271,6 +283,12 @@ in
           cmd = ''[class="^Emacs$"] scratchpad show'';
           mode = "scratchpad";
           raw = true;
+        }
+      ] ++ optionals (cfg.emacsEverywhere.enable) [
+        {
+          key = [ "e" ];
+          cmd = "${cfg.package}/bin/emacsclient --eval \"(emacs-everywhere)\"";
+          mode = "run";
         }
       ];
     })
