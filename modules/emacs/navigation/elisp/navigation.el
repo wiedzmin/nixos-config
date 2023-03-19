@@ -658,3 +658,14 @@
 (use-package window
   :custom
   (switch-to-buffer-obey-display-actions t))
+
+(use-package epithet
+  :load-path "@emacsEpithetPath@"
+  :hook
+  (Info-selection-hook . epithet-rename-buffer)
+  (eww-after-render-hook . epithet-rename-buffer)
+  (help-mode-hook . epithet-rename-buffer)
+  (occur-mode-hook . epithet-rename-buffer)
+  (shell-mode-hook . epithet-rename-buffer)
+  (compilation-start-hook . epithet-rename-buffer-ignoring-arguments)
+  (compilation-finish-functions . epithet-rename-buffer-ignoring-arguments))
