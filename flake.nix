@@ -27,6 +27,10 @@
       url = "github:daimrod/highlight-sexp";
       flake = false;
     };
+    emacs-epithet = {
+      url = "github:oantolin/epithet";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {

@@ -40,6 +40,22 @@
         "type": "github"
       }
     },
+    "emacs-epithet": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1673619515,
+        "narHash": "sha256-Asr5K5WkbFbWnsSEb5C1Y+h7jp9MSuRB8npH3uBV/48=",
+        "owner": "oantolin",
+        "repo": "epithet",
+        "rev": "aff2704e65b6e6db354b8c4c3bcb22656385e113",
+        "type": "github"
+      },
+      "original": {
+        "owner": "oantolin",
+        "repo": "epithet",
+        "type": "github"
+      }
+    },
     "emacs-highlight-sexp": {
       "flake": false,
       "locked": {
@@ -485,6 +501,7 @@
       "inputs": {
         "devenv-src": "devenv-src",
         "emacs": "emacs",
+        "emacs-epithet": "emacs-epithet",
         "emacs-highlight-sexp": "emacs-highlight-sexp",
         "emacs-org-bars": "emacs-org-bars",
         "git-extra-commands": "git-extra-commands",
