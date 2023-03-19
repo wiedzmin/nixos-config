@@ -393,10 +393,10 @@
            (or (file-remote-p default-directory 'user)
                user-real-login-name)
            (or (file-remote-p default-directory 'host)
-               system-name)
+               (system-name))
            (buffer-name)
            (cond
-            ((project-current)
+            ((and (project-current) buffer-file-truename)
              (concat "(" (file-relative-name buffer-file-truename (cdr (project-current))) ")"))
             (buffer-file-truename
              (concat "(" buffer-file-truename ")"))
