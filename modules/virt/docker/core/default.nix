@@ -18,7 +18,7 @@ in
       aux.enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable Docker auxillary packages";
+        description = "Whether to enable Docker auxiliary packages";
       };
       storageDriver = mkOption {
         type = types.str;
