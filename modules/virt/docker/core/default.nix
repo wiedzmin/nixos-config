@@ -6,6 +6,7 @@ let
   cfg = config.ext.virtualization.docker.core;
   user = config.attributes.mainUser.name;
   inherit (config.wmCommon) prefix;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -88,15 +89,17 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/docker.yml".text = ''
-          name: docker
-          parent: default
-          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
-
-          matches:
-            - trigger: ":dcr"
-              replace: "docker-compose up --detach --build && docker-compose restart $|$"
-        '';
+        xdg.configFile."espanso/user/docker.yml".source = yaml.generate "espanso-docker.yml" {
+          name = "docker";
+          parent = "default";
+          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
+          matches = [
+            {
+              trigger = ":dcr";
+              replace = "docker-compose up --detach --build && docker-compose restart $|$";
+            }
+          ];
+        };
       };
     })
     (mkIf (cfg.enable && cfg.aux.enable) {

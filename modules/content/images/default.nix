@@ -16,6 +16,7 @@ let
     "${key}=${mvalue}";
   toINIColon = generators.toINI { mkKeyValue = generators.mkKeyValueDefault { } ":"; };
   toINICustom = generators.toINI { inherit mkKeyValue; };
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -307,14 +308,16 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/images.yml".text = ''
-          name: images
-          parent: default
-
-          matches:
-            - trigger: ":idim"
-              replace: "identify -verbose $|$"
-        '';
+        xdg.configFile."espanso/user/images.yml".source = yaml.generate "espanso-images.yml" {
+          name = "images";
+          parent = "default";
+          matches = [
+            {
+              trigger = ":idim";
+              replace = "identify -verbose $|$";
+            }
+          ];
+        };
       };
     })
   ];

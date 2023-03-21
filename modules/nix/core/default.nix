@@ -6,6 +6,7 @@ with lib;
 let
   cfg = config.ext.nix.core;
   user = config.attributes.mainUser.name;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -157,49 +158,62 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/nix-core.yml".text = ''
-          name: nix-core
-          parent: default
-          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
-
-          matches:
-            - trigger: ":nsp"
-              replace: "nix shell \"nixpkgs#$|$\""
-
-            - trigger: ":ns2"
-              replace: " \"nixpkgs#$|$\""
-
-            - trigger: ":pkgs"
-              replace: "inputs.unstable.legacyPackages.x86_64-linux.$|$"
-
-            # TODO: script and reference to it, to collect machines names and select among it (try if it is even possible)
-            - trigger: ":cfg"
-              replace: "nixosConfigurations.laptoptop.config.$|$"
-
-            - trigger: ":elt"
-              replace: "builtins.head (inputs.unstable.lib.sublist 1$|$ 1 nixosConfigurations.laptoptop.config.wmCommon.wsMapping.rules)"
-
-            - trigger: ":nrep"
-              replace: "cd ${wsRoot roots "github"}/wiedzmin/nixos-config && nix repl ./flake-repl.nix"
-
-            - trigger: ":nsfd"
-              replace: "nix shell \"nixpkgs#fd\" -c fd $|$ /nix/store"
-
-            - trigger: ":llv"
-              replace: "inputs.unstable.legacyPackages.x86_64-linux.linuxPackages."
-
-            - trigger: ":nwda"
-              replace: "nix why-depends --all \"nixpkgs#$|$\" \"nixpkgs#\""
-
-            - trigger: ":nwdo"
-              replace: "nix why-depends \"nixpkgs#$|$\" \"nixpkgs#\""
-
-            - trigger: ":nwdd"
-              replace: "nix why-depends --derivation \"nixpkgs#$|$\" \"nixpkgs#\""
-
-            - trigger: ":nwd?"
-              replace: "nix why-depends --help"
-        '';
+        xdg.configFile."espanso/user/nix-core.yml".source = yaml.generate "espanso-nix-core.yml" {
+          name = "nix-core";
+          parent = "default";
+          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
+          matches = [
+            {
+              trigger = ":nsp";
+              replace = "nix shell \"nixpkgs#$|$\"";
+            }
+            {
+              trigger = ":ns2";
+              replace = " \"nixpkgs#$|$\"";
+            }
+            {
+              trigger = ":pkgs";
+              replace = "inputs.unstable.legacyPackages.x86_64-linux.$|$";
+            }
+            {
+              # TODO: script and reference to it, to collect machines names and select among it (try if it is even possible)
+              trigger = ":cfg";
+              replace = "nixosConfigurations.laptoptop.config.$|$";
+            }
+            {
+              trigger = ":elt";
+              replace = "builtins.head (inputs.unstable.lib.sublist 1$|$ 1 nixosConfigurations.laptoptop.config.wmCommon.wsMapping.rules)";
+            }
+            {
+              trigger = ":nrep";
+              replace = "cd ${wsRoot roots "github"}/wiedzmin/nixos-config && nix repl ./flake-repl.nix";
+            }
+            {
+              trigger = ":nsfd";
+              replace = "nix shell \"nixpkgs#fd\" -c fd $|$ /nix/store";
+            }
+            {
+              trigger = ":llv";
+              replace = "inputs.unstable.legacyPackages.x86_64-linux.linuxPackages.";
+            }
+            {
+              trigger = ":nwda";
+              replace = "nix why-depends --all \"nixpkgs#$|$\" \"nixpkgs#\"";
+            }
+            {
+              trigger = ":nwdo";
+              replace = "nix why-depends \"nixpkgs#$|$\" \"nixpkgs#\"";
+            }
+            {
+              trigger = ":nwdd";
+              replace = "nix why-depends --derivation \"nixpkgs#$|$\" \"nixpkgs#\"";
+            }
+            {
+              trigger = ":nwd?";
+              replace = "nix why-depends --help";
+            }
+          ];
+        };
       };
     })
     (mkIf (cfg.enable && cfg.shell.enable) {

@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.content.misc;
   user = config.attributes.mainUser.name;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -48,29 +49,33 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/content_misc.yml".text = ''
-          name: content_misc
-          parent: default
-          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
-
-          matches:
-            - trigger: ":mt"
-              replace: "nix shell 'nixpkgs#monolith' -c monolith --isolate --base-url {{baseurl.value}} --output $|$"
-              vars:
-                - name: baseurl
-                  type: form
-                  params:
-                    layout: |
-                      URL: {{value}}
-                # does not work for some reason
-                # - name: outfile
-                #   type: shell
-                #   params:
-                #     cmd: echo {{baseurl.value}}
-
-            - trigger: ":idu"
-              replace: "nix shell 'nixpkgs#findimagedupes' -c findimagedupes ."
-        '';
+        xdg.configFile."espanso/user/content_misc.yml".source = yaml.generate "espanso-content_misc.yml" {
+          name = "content_misc";
+          parent = "default";
+          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
+          matches = [
+            {
+              trigger = ":idu";
+              replace = "nix shell 'nixpkgs#findimagedupes' -c findimagedupes .";
+            }
+            {
+              trigger = ":mt";
+              replace = "nix shell 'nixpkgs#monolith' -c monolith --isolate --base-url {{baseurl.value}} --output $|$";
+              vars = [
+                {
+                  name = "baseurl";
+                  type = "form";
+                  params = { layout = "URL: {{value}}"; };
+                }
+                # { # does not work for some reason
+                #   name = "outfile";
+                #   type = "shell";
+                #   params = { cmd = "echo {{baseurl.value}}"; };
+                # }
+              ];
+            }
+          ];
+        };
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

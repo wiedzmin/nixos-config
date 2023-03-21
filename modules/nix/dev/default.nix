@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.ext.nix.dev;
   user = config.attributes.mainUser.name;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -37,15 +38,17 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/nix-dev.yml".text = ''
-          name: nix-dev
-          parent: default
-          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
-
-          matches:
-            - trigger: ":nsd"
-              replace: "nix show-derivation 'nixpkgs/nixos-unstable#$|$'"
-        '';
+        xdg.configFile."espanso/user/nix-dev.yml".source = yaml.generate "espanso-nix-dev.yml" {
+          name = "nix-dev";
+          parent = "default";
+          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
+          matches = [
+            {
+              trigger = ":nsd";
+              replace = "nix show-derivation 'nixpkgs/nixos-unstable#$|$'";
+            }
+          ];
+        };
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {

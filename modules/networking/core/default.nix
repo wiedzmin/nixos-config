@@ -5,6 +5,7 @@ let
   cfg = config.ext.networking.core;
   user = config.attributes.mainUser.name;
   inherit (config.wmCommon) prefix;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -75,22 +76,27 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/networking.yml".text = ''
-          name: networking
-          parent: default
-
-          matches:
-            - trigger: ":ip"
-              replace: "{{output}}"
-              vars:
-                - name: output
-                  type: shell
-                  params:
-                    cmd: "curl https://api.ipify.org"
-
-            - trigger: ":ifd"
-              replace: "sudo ifconfig $|$ down"
-        '';
+        xdg.configFile."espanso/user/networking.yml".source = yaml.generate "espanso-networking.yml" {
+          name = "networking";
+          parent = "default";
+          matches = [
+            {
+              trigger = ":ifd";
+              replace = "sudo ifconfig $|$ down";
+            }
+            {
+              trigger = ":ip";
+              replace = "{{output}}";
+              vars = [
+                {
+                  name = "output";
+                  type = "shell";
+                  params = { cmd = "curl https://api.ipify.org"; };
+                }
+              ];
+            }
+          ];
+        };
       };
     })
   ];

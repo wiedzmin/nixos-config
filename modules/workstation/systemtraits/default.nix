@@ -6,6 +6,7 @@ let
   cfg = config.workstation.systemtraits;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -47,23 +48,28 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/systemtraits.yml".text = ''
-          name: systemtraits
-          parent: default
-
-          matches:
-            - trigger: ":pms"
-              replace: "sudo pmap -d $|$ | sort -k2 -n"
-
-            - trigger: ":pss"
-              replace: "ps -o pid,user,%mem,command ax | sort -b -k3 -r"
-
-            - trigger: ":redkj"
-              replace: "redis-cli keys '*' | cut -d\\  -f2 | fzf | xargs redis-cli get | jq ."
-
-            - trigger: ":redkr"
-              replace: "redis-cli keys '*' | cut -d\\  -f2 | fzf | xargs redis-cli get"
-        '';
+        xdg.configFile."espanso/user/systemtraits.yml".source = yaml.generate "espanso-systemtraits.yml" {
+          name = "systemtraits";
+          parent = "default";
+          matches = [
+            {
+              trigger = ":pms";
+              replace = "sudo pmap -d $|$ | sort -k2 -n";
+            }
+            {
+              trigger = ":pss";
+              replace = "ps -o pid,user,%mem,command ax | sort -b -k3 -r";
+            }
+            {
+              trigger = ":redkj";
+              replace = "redis-cli keys '*' | cut -d\\  -f2 | fzf | xargs redis-cli get | jq .";
+            }
+            {
+              trigger = ":redkr";
+              replace = "redis-cli keys '*' | cut -d\\  -f2 | fzf | xargs redis-cli get";
+            }
+          ];
+        };
       };
     })
   ];

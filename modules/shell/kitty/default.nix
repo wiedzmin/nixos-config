@@ -17,6 +17,7 @@ let
   cfg = config.shell.vt.kitty;
   user = config.attributes.mainUser.name;
   inherit (config.wmCommon) prefix;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -382,24 +383,27 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile = {
-          "espanso/user/kitty.yml".text = ''
-            name: kitty
-            parent: default
-
-            matches:
-              - trigger: ":ksk"
-                replace: "kitty +kitten show_key"
-
-              - trigger: ":ksmk"
-                replace: "kitty +kitten show_key -m kitty"
-
-              - trigger: ":khg"
-                replace: "kitty +kitten hyperlinked_grep $|$"
-
-              - trigger: ":ksa" # NOTE: temporary workaround for some strangely behaving (in terms of input) ssh sessions (no cause revealed yet)
-                replace: "nix shell \"nixpkgs#sakura\" -c sakura"
-          '';
+        xdg.configFile."espanso/user/kitty.yml".source = yaml.generate "espanso-kitty.yml" {
+          name = "kitty";
+          parent = "default";
+          matches = [
+            {
+              trigger = ":ksk";
+              replace = "kitty +kitten show_key";
+            }
+            {
+              trigger = ":ksmk";
+              replace = "kitty +kitten show_key -m kitty";
+            }
+            {
+              trigger = ":khg";
+              replace = "kitty +kitten hyperlinked_grep $|$";
+            }
+            {
+              trigger = ":ksa"; # NOTE: temporary workaround for some strangely behaving (in terms of input) ssh sessions (no cause revealed yet)
+              replace = "nix shell \"nixpkgs#sakura\" -c sakura";
+            }
+          ];
         };
       };
     })

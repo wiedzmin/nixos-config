@@ -1,7 +1,9 @@
 { config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
-let user = config.attributes.mainUser.name;
+let
+  user = config.attributes.mainUser.name;
+  yaml = pkgs.formats.yaml { };
 in
 rec {
   completion.snippets.entries = [
@@ -233,13 +235,15 @@ rec {
     }
   ];
   home-manager.users."${user}" = lib.optionals (config.completion.expansions.enable) {
-    xdg.configFile."espanso/user/personal.yml".text = ''
-      name: personal
-      parent: default
-
-      matches:
-        - trigger: ":emp"
-          replace: "${config.attributes.mainUser.email}"
-    '';
+    xdg.configFile."espanso/user/personal.yml".source = yaml.generate "espanso-personal.yml" {
+      name = "personal";
+      parent = "default";
+      matches = [
+        {
+          trigger = ":emp";
+          replace = "${config.attributes.mainUser.email}";
+        }
+      ];
+    };
   };
 }
