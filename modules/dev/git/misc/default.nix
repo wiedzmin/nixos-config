@@ -6,6 +6,7 @@ let
   cfg = config.dev.git.misc;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -48,36 +49,45 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/git.yml".text = ''
-          name: git
-          parent: default
-          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
-
-          matches:
-            - trigger: ":glcont"
-              replace: "git log --pretty=oneline --pickaxe-regex -S$|$"
-
-            - trigger: ":gpcont"
-              replace: "git log -p --all -S '$|$'"
-
-            - trigger: ":gldiff"
-              replace: "git log --pretty=oneline --pickaxe-all -G$|$"
-
-            - trigger: ":gpdiff"
-              replace: "git log -p --all -G '$|$'"
-
-            - trigger: ":bdiff"
-              replace: "git diff ${config.dev.git.autofetch.mainBranchName} $|$ > ../master-${config.dev.git.autofetch.mainBranchName}.patch"
-
-            - trigger: ":tbcont"
-              replace: "git log --branches -S'$|$' --oneline | awk '{print $1}' | xargs git branch -a --contains"
-
-            - trigger: ":trec"
-              replace: "git log -S$|$ --since=HEAD~50 --until=HEAD"
-
-            - trigger: ":ghsf"
-              replace: "filename:$|$"
-        '';
+        xdg.configFile."espanso/user/git.yml".source = yaml.generate "espanso-git.yml" {
+          name = "git";
+          parent = "default";
+          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
+          matches = [
+            {
+              trigger = ":glcont";
+              replace = "git log --pretty=oneline --pickaxe-regex -S$|$";
+            }
+            {
+              trigger = ":gpcont";
+              replace = "git log -p --all -S '$|$'";
+            }
+            {
+              trigger = ":gldiff";
+              replace = "git log --pretty=oneline --pickaxe-all -G$|$";
+            }
+            {
+              trigger = ":gpdiff";
+              replace = "git log -p --all -G '$|$'";
+            }
+            {
+              trigger = ":bdiff";
+              replace = "git diff ${config.dev.git.autofetch.mainBranchName} $|$ > ../master-${config.dev.git.autofetch.mainBranchName}.patch";
+            }
+            {
+              trigger = ":tbcont";
+              replace = "git log --branches -S'$|$' --oneline | awk '{print $1}' | xargs git branch -a --contains";
+            }
+            {
+              trigger = ":trec";
+              replace = "git log -S$|$ --since=HEAD~50 --until=HEAD";
+            }
+            {
+              trigger = ":ghsf";
+              replace = "filename:$|$";
+            }
+          ];
+        };
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

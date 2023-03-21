@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.dev.git.navigation;
   user = config.attributes.mainUser.name;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -38,14 +39,16 @@ in
         programs.zsh.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
 
         xdg.configFile = optionalAttrs (config.shell.core.queueing.enable && config.completion.expansions.enable) {
-          "espanso/user/git_navigation.yml".text = ''
-            name: git_navigation
-            parent: default
-
-            matches:
-              - trigger: ":pgg"
-                replace: "pueue add 'ghq get $|$'"
-          '';
+          "espanso/user/git_navigation.yml".source = yaml.generate "espanso-git_navigation.yml" {
+            name = "git_navigation";
+            parent = "default";
+            matches = [
+              {
+                trigger = ":pgg";
+                replace = "pueue add 'ghq get $|$'";
+              }
+            ];
+          };
         };
       };
     })

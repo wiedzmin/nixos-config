@@ -7,6 +7,7 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
   inherit (hm.xdg) dataHome;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -176,18 +177,21 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/zsh.yml".text = ''
-          name: zsh
-          parent: default
-          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
-
-          matches:
-            - trigger: ":ts"
-              replace: "$|$ | rtss"
-
-            - trigger: ":rlw"
-              replace: "readlink -f `which $|$`"
-        '';
+        xdg.configFile."espanso/user/zsh.yml".source = yaml.generate "espanso-zsh.yml" {
+          name = "zsh";
+          parent = "default";
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
+          matches = [
+            {
+              trigger = ":ts";
+              replace = "$|$ | rtss";
+            }
+            {
+              trigger = ":rlw";
+              replace = "readlink -f `which $|$`";
+            }
+          ];
+        };
       };
     })
   ];

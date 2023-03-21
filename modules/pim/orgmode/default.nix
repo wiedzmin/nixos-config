@@ -6,6 +6,7 @@ let
   cfg = config.pim.orgmode;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -207,23 +208,28 @@ in
     })
     (mkIf (cfg.enable && cfg.org-roam.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/emacs_orgmode.yml".text = ''
-          name: emacs_orgmode
-          parent: default
-
-          matches:
-            - trigger: ":orc"
-              replace: "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k2 | ${pkgs.moar}/bin/moar"
-
-            - trigger: ":sorc"
-              replace: "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k1n | ${pkgs.moar}/bin/moar"
-
-            - trigger: ":sforc"
-              replace: "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k1n | ${pkgs.fzf}/bin/fzf --tac"
-
-            - trigger: ":sForc"
-              replace: "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k1n | ${pkgs.fzf}/bin/fzf"
-        '';
+        xdg.configFile."espanso/user/emacs_orgmode.yml".source = yaml.generate "espanso-emacs_orgmode.yml" {
+          name = "emacs_orgmode";
+          parent = "default";
+          matches = [
+            {
+              trigger = ":orc";
+              replace = "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k2 | ${pkgs.moar}/bin/moar";
+            }
+            {
+              trigger = ":sorc";
+              replace = "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k1n | ${pkgs.moar}/bin/moar";
+            }
+            {
+              trigger = ":sforc";
+              replace = "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k1n | ${pkgs.fzf}/bin/fzf --tac";
+            }
+            {
+              trigger = ":sForc";
+              replace = "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k1n | ${pkgs.fzf}/bin/fzf";
+            }
+          ];
+        };
       };
     })
   ];

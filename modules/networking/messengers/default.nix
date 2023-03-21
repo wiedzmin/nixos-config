@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.ext.networking.messengers;
   user = config.attributes.mainUser.name;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -56,27 +57,32 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/telegram.yml".text = ''
-          name: telegram
-          parent: default
-          filter_class: "TelegramDesktop"
-
-          matches:
-            - trigger: ":shr"
-              replace: "¯\\_(ツ)_/¯"
-
-            - trigger: ":sm"
-              replace: "ツ"
-
-            - trigger: ":cr"
-              replace: "©"
-
-            - trigger: ":code"
-              replace: |
-                        ```
-                        $|$
-                        ```
-        '';
+        xdg.configFile."espanso/user/telegram.yml".source = yaml.generate "espanso-telegram.yml" {
+          name = "telegram";
+          parent = "default";
+          filter_class = "TelegramDesktop";
+          matches = [
+            {
+              trigger = ":shr";
+              replace = "¯\\_(ツ)_/¯";
+            }
+            {
+              trigger = ":sm";
+              replace = "ツ";
+            }
+            {
+              trigger = ":cr";
+              replace = "©";
+            }
+            {
+              trigger = ":code";
+              replace = ''
+                ```
+                $|$
+                ```'';
+            }
+          ];
+        };
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

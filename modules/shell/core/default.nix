@@ -7,6 +7,7 @@ let
   user = config.attributes.mainUser.name;
   serviceAttrsNames = [ "global" "emacs" ];
   envVars = filterAttrs (name: _: !builtins.elem name serviceAttrsNames);
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -110,26 +111,32 @@ in
     (mkIf (cfg.enable && cfg.queueing.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
         # TODO: some fzf-based tasks listing automation
-        xdg.configFile."espanso/user/shell_core.yml".text = ''
-          name: shell_core
-          parent: default
-
-          matches:
-            - trigger: ":pus"
-              replace: "pueue status"
-
-            - trigger: ":pul"
-              replace: "pueue log"
-
-            - trigger: ":puc"
-              replace: "pueue clean"
-
-            - trigger: ":pur"
-              replace: "pueue restart $|$"
-
-            - trigger: ":pupr"
-              replace: "pueue restart --in-place $|$"
-        '';
+        xdg.configFile."espanso/user/shell_core.yml".source = yaml.generate "espanso-shell_core.yml" {
+          name = "shell_core";
+          parent = "default";
+          matches = [
+            {
+              trigger = ":pus";
+              replace = "pueue status";
+            }
+            {
+              trigger = ":pul";
+              replace = "pueue log";
+            }
+            {
+              trigger = ":puc";
+              replace = "pueue clean";
+            }
+            {
+              trigger = ":pur";
+              replace = "pueue restart $|$";
+            }
+            {
+              trigger = ":pupr";
+              replace = "pueue restart --in-place $|$";
+            }
+          ];
+        };
       };
     })
     (mkIf (cfg.enable && cfg.dev.enable && cfg.emacs.enable) {

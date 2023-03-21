@@ -7,6 +7,7 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
   inherit (hm.xdg) dataHome;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -116,14 +117,16 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/git-core.yml".text = ''
-          name: git-core
-          parent: default
-
-          matches:
-            - trigger: ":gitB"
-              replace: "git branch -a | fzf | tr -d \"[:blank:]\" | tr -d '\\n' | xsel -ib"
-        '';
+        xdg.configFile."espanso/user/git-core.yml".source = yaml.generate "espanso-git-core.yml" {
+          name = "git-core";
+          parent = "default";
+          matches = [
+            {
+              trigger = ":gitB";
+              replace = "git branch -a | fzf | tr -d \"[:blank:]\" | tr -d '\\n' | xsel -ib";
+            }
+          ];
+        };
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

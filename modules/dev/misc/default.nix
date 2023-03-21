@@ -7,6 +7,7 @@ let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -233,15 +234,17 @@ in
     # FIXME: make tmux session templating optional everywhere (see below) !!!!
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/dev_misc.yml".text = ''
-          name: dev_misc
-          parent: default
-          filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
-
-          matches:
-            - trigger: ":gma"
-              replace: "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log"
-        '';
+        xdg.configFile."espanso/user/dev_misc.yml".source = yaml.generate "espanso-dev_misc.yml" {
+          name = "dev_misc";
+          parent = "default";
+          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
+          matches = [
+            {
+              trigger = ":gma";
+              replace = "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log";
+            }
+          ];
+        };
       };
     })
   ];

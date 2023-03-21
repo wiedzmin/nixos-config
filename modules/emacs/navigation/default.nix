@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.ide.emacs.navigation;
   user = config.attributes.mainUser.name;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -140,26 +141,29 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/navigation_emacs.yml".text = ''
-          name: navigation_emacs
-          parent: default
-          filter_class: "Emacs"
-
-          matches:
-            - trigger: ":rgr"
-              replace: "[[elisp:(progn (require 'rg) (rg-run \"{{token.value}}\" \"everything\" default-directory nil nil '(\"--context={{context.size}}\")))]]"
-              vars:
-                - name: token
-                  type: form
-                  params:
-                    layout: |
-                      search for: {{value}}
-                - name: context
-                  type: form
-                  params:
-                    layout: |
-                      context size: {{size}}
-        '';
+        xdg.configFile."espanso/user/navigation_emacs.yml".source = yaml.generate "espanso-navigation_emacs.yml" {
+          name = "navigation_emacs";
+          parent = "default";
+          filter_class = "Emacs";
+          matches = [
+            {
+              trigger = ":rgr";
+              replace = "[[elisp:(progn (require 'rg) (rg-run \"{{token.value}}\" \"everything\" default-directory nil nil '(\"--context={{context.size}}\")))]]";
+              vars = [
+                {
+                  name = "token";
+                  type = "form";
+                  params = { layout = "search for: {{value}}"; };
+                }
+                {
+                  name = "context";
+                  type = "form";
+                  params = { layout = "context size: {{size}}"; };
+                }
+              ];
+            }
+          ];
+        };
       };
     })
   ];

@@ -39,6 +39,7 @@ let
             ''
         ) customPackages)}
     '';
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -330,15 +331,17 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/emacs.yml".text = ''
-          name: emacs
-          parent: default
-          filter_class: Emacs
-
-          matches:
-            - trigger: ":bore"
-              replace: "(setq backtrace-on-redisplay-error $|$)"
-        '';
+        xdg.configFile."espanso/user/emacs.yml".source = yaml.generate "espanso-emacs.yml" {
+          name = "emacs";
+          parent = "default";
+          filter_class = "Emacs";
+          matches = [
+            {
+              trigger = ":bore";
+              replace = "(setq backtrace-on-redisplay-error $|$)";
+            }
+          ];
+        };
       };
     })
   ];

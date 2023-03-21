@@ -6,6 +6,7 @@ let
   cfg = config.content.media;
   user = config.attributes.mainUser.name;
   inherit (config.wmCommon) prefix prefixAlt;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -110,34 +111,41 @@ in
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
         xdg.configFile = {
-          "espanso/user/content.yml".text = ''
-            name: content
-            parent: default
-            filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
-
-            matches:
-              - trigger: ":yt"
-                replace: "yt-dlp \"$|$\""
-
-              - trigger: ":4yt"
-                replace: "yt-dlp \"$|$\" --merge-output-format mp4"
-
-              - trigger: ":aft"
-                replace: "nix shell \"nixpkgs#android-file-transfer\" -c android-file-transfer"
-          '';
+          "espanso/user/content.yml".source = yaml.generate "espanso-content.yml" {
+            name = "content";
+            parent = "default";
+            filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
+            matches = [
+              {
+                trigger = ":yt";
+                replace = "yt-dlp \"$|$\"";
+              }
+              {
+                trigger = ":4yt";
+                replace = "yt-dlp \"$|$\" --merge-output-format mp4";
+              }
+              {
+                trigger = ":aft";
+                replace = "nix shell \"nixpkgs#android-file-transfer\" -c android-file-transfer";
+              }
+            ];
+          };
         } // lib.optionalString (config.shell.core.queueing.enable) {
-          "espanso/user/content_queueing.yml".text = ''
-            name: content_queueing
-            parent: default
-            filter_title: ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*"
-
-            matches:
-              - trigger: ":pyt"
-                replace: "pueue add 'yt-dlp \"$|$\"'"
-
-              - trigger: ":p4yt"
-                replace: "pueue add 'yt-dlp \"$|$\" --merge-output-format mp4'"
-          '';
+          "espanso/user/content_queueing.yml".source = yaml.generate "espanso-content_queueing.yml" {
+            name = "content_queueing";
+            parent = "default";
+            filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
+            matches = [
+              {
+                trigger = ":pyt";
+                replace = "pueue add 'yt-dlp \"$|$\"'";
+              }
+              {
+                trigger = ":p4yt";
+                replace = "pueue add 'yt-dlp \"$|$\" --merge-output-format mp4'";
+              }
+            ];
+          };
         };
       };
     })

@@ -7,6 +7,7 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
   inherit (hm.xdg) dataHome;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -112,17 +113,20 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/pgsql.yml".text = ''
-          name: pgsql
-          parent: default
-
-          matches:
-            - trigger: ":pdbs"
-              replace: "SELECT pg_size_pretty(pg_database_size('$|$'));"
-
-            - trigger: ":ptbs"
-              replace: "SELECT pg_size_pretty(pg_total_relation_size('$|$'));"
-        '';
+        xdg.configFile."espanso/user/pgsql.yml".source = yaml.generate "espanso-pgsql.yml" {
+          name = "pgsql";
+          parent = "default";
+          matches = [
+            {
+              trigger = ":pdbs";
+              replace = "SELECT pg_size_pretty(pg_database_size('$|$'));";
+            }
+            {
+              trigger = ":ptbs";
+              replace = "SELECT pg_size_pretty(pg_total_relation_size('$|$'));";
+            }
+          ];
+        };
       };
     })
   ];
