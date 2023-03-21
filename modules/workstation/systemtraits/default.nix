@@ -14,7 +14,7 @@ in
         type = types.bool;
         default = false;
         description = ''
-          Whether to enable system traits maintainence.
+          Whether to enable system traits maintenance.
 
           Essential for custom scripts, etc.
         '';
