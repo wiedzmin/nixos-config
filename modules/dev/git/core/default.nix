@@ -117,9 +117,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/git-core.yml".source = yaml.generate "espanso-git-core.yml" {
-          name = "git-core";
-          parent = "default";
+        xdg.configFile."espanso/match/git-core.yml".source = yaml.generate "espanso-git-core.yml" {
           matches = [
             {
               trigger = ":gitB";

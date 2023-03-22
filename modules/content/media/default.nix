@@ -111,9 +111,7 @@ in
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
         xdg.configFile = {
-          "espanso/user/content.yml".source = yaml.generate "espanso-content.yml" {
-            name = "content";
-            parent = "default";
+          "espanso/match/content.yml".source = yaml.generate "espanso-content.yml" {
             filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
             matches = [
               {
@@ -131,9 +129,7 @@ in
             ];
           };
         } // lib.optionalString (config.shell.core.queueing.enable) {
-          "espanso/user/content_queueing.yml".source = yaml.generate "espanso-content_queueing.yml" {
-            name = "content_queueing";
-            parent = "default";
+          "espanso/match/content_queueing.yml".source = yaml.generate "espanso-content_queueing.yml" {
             filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
             matches = [
               {

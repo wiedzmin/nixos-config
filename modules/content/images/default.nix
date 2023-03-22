@@ -308,9 +308,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/images.yml".source = yaml.generate "espanso-images.yml" {
-          name = "images";
-          parent = "default";
+        xdg.configFile."espanso/match/images.yml".source = yaml.generate "espanso-images.yml" {
           matches = [
             {
               trigger = ":idim";

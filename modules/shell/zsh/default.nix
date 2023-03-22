@@ -177,9 +177,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/zsh.yml".source = yaml.generate "espanso-zsh.yml" {
-          name = "zsh";
-          parent = "default";
+        xdg.configFile."espanso/match/zsh.yml".source = yaml.generate "espanso-zsh.yml" {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
           matches = [
             {

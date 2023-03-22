@@ -141,9 +141,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/navigation_emacs.yml".source = yaml.generate "espanso-navigation_emacs.yml" {
-          name = "navigation_emacs";
-          parent = "default";
+        xdg.configFile."espanso/match/navigation_emacs.yml".source = yaml.generate "espanso-navigation_emacs.yml" {
           filter_class = "Emacs";
           matches = [
             {

@@ -208,9 +208,7 @@ in
     })
     (mkIf (cfg.enable && cfg.org-roam.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/emacs_orgmode.yml".source = yaml.generate "espanso-emacs_orgmode.yml" {
-          name = "emacs_orgmode";
-          parent = "default";
+        xdg.configFile."espanso/match/emacs_orgmode.yml".source = yaml.generate "espanso-emacs_orgmode.yml" {
           matches = [
             {
               trigger = ":orc";

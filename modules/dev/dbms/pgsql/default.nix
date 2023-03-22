@@ -113,9 +113,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/pgsql.yml".source = yaml.generate "espanso-pgsql.yml" {
-          name = "pgsql";
-          parent = "default";
+        xdg.configFile."espanso/match/pgsql.yml".source = yaml.generate "espanso-pgsql.yml" {
           matches = [
             {
               trigger = ":pdbs";

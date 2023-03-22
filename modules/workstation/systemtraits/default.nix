@@ -48,9 +48,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/systemtraits.yml".source = yaml.generate "espanso-systemtraits.yml" {
-          name = "systemtraits";
-          parent = "default";
+        xdg.configFile."espanso/match/systemtraits.yml".source = yaml.generate "espanso-systemtraits.yml" {
           matches = [
             {
               trigger = ":pms";

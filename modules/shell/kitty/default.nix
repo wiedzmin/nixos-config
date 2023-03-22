@@ -383,27 +383,31 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/kitty.yml".source = yaml.generate "espanso-kitty.yml" {
-          name = "kitty";
-          parent = "default";
-          matches = [
-            {
-              trigger = ":ksk";
-              replace = "kitty +kitten show_key";
-            }
-            {
-              trigger = ":ksmk";
-              replace = "kitty +kitten show_key -m kitty";
-            }
-            {
-              trigger = ":khg";
-              replace = "kitty +kitten hyperlinked_grep $|$";
-            }
-            {
-              trigger = ":ksa"; # NOTE: temporary workaround for some strangely behaving (in terms of input) ssh sessions (no cause revealed yet)
-              replace = "nix shell \"nixpkgs#sakura\" -c sakura";
-            }
-          ];
+        xdg.configFile = {
+          "espanso/config/_kitty.yml".source = yaml.generate "espanso-config-kitty.yml" {
+            filter_class = "kitty";
+            disable_x11_fast_inject = true;
+          };
+          "espanso/match/kitty.yml".source = yaml.generate "espanso-kitty.yml" {
+            matches = [
+              {
+                trigger = ":ksk";
+                replace = "kitty +kitten show_key";
+              }
+              {
+                trigger = ":ksmk";
+                replace = "kitty +kitten show_key -m kitty";
+              }
+              {
+                trigger = ":khg";
+                replace = "kitty +kitten hyperlinked_grep $|$";
+              }
+              {
+                trigger = ":ksa"; # NOTE: temporary workaround for some strangely behaving (in terms of input) ssh sessions (no cause revealed yet)
+                replace = "nix shell \"nixpkgs#sakura\" -c sakura";
+              }
+            ];
+          };
         };
       };
     })

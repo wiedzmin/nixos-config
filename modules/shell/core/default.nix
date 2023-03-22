@@ -111,9 +111,7 @@ in
     (mkIf (cfg.enable && cfg.queueing.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
         # TODO: some fzf-based tasks listing automation
-        xdg.configFile."espanso/user/shell_core.yml".source = yaml.generate "espanso-shell_core.yml" {
-          name = "shell_core";
-          parent = "default";
+        xdg.configFile."espanso/match/shell_core.yml".source = yaml.generate "espanso-shell_core.yml" {
           matches = [
             {
               trigger = ":pus";

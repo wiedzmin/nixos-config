@@ -49,9 +49,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/git.yml".source = yaml.generate "espanso-git.yml" {
-          name = "git";
-          parent = "default";
+        xdg.configFile."espanso/match/git.yml".source = yaml.generate "espanso-git.yml" {
           filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
           matches = [
             {

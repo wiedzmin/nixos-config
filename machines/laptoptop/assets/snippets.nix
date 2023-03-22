@@ -235,7 +235,7 @@ rec {
     }
   ];
   home-manager.users."${user}" = lib.optionals (config.completion.expansions.enable) {
-    xdg.configFile."espanso/user/personal.yml".source = yaml.generate "espanso-personal.yml" {
+    xdg.configFile."espanso/match/personal.yml".source = yaml.generate "espanso-personal.yml" {
       name = "personal";
       parent = "default";
       matches = [
