@@ -49,9 +49,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/content_misc.yml".source = yaml.generate "espanso-content_misc.yml" {
-          name = "content_misc";
-          parent = "default";
+        xdg.configFile."espanso/match/content_misc.yml".source = yaml.generate "espanso-content_misc.yml" {
           filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
           matches = [
             {
@@ -65,7 +63,7 @@ in
                 {
                   name = "baseurl";
                   type = "form";
-                  params = { layout = "URL: {{value}}"; };
+                  params = { layout = "URL: [[value]]"; };
                 }
                 # { # does not work for some reason
                 #   name = "outfile";

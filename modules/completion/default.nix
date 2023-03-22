@@ -29,7 +29,7 @@ in
       };
       expansions.entries = mkOption {
         type = types.listOf types.attrs;
-        description = "Various text snippets, mostly for development automation.";
+        description = "Various expandable text snippets, mostly for development automation.";
         default = [ ];
       };
       expansions.toggleKey = mkOption {
@@ -50,17 +50,32 @@ in
         ];
         default = "RIGHT_SHIFT";
       };
-      espansoConfig = mkOption {
+      expansions.searchShortcut = mkOption {
+        type = types.enum [
+          "ALT+SPACE"
+        ];
+        default = "ALT+SPACE";
+      };
+      espanso.config = mkOption {
         type = types.lines;
         default = ''
           toggle_key: ${cfg.expansions.toggleKey}
+          search_shortcut: ${cfg.expansions.searchShortcut}
           auto_restart: false
-          backend: Clipboard
+          backend: Inject
         '';
         visible = false;
         readOnly = true;
         internal = true;
         description = "Espanso main config";
+      };
+      espanso.package = mkOption {
+        type = types.package;
+        default = nurpkgs.espanso;
+        visible = false;
+        readOnly = true;
+        internal = true;
+        description = "Espanso package to use";
       };
       dev.enable = mkOption {
         type = types.bool;
@@ -153,7 +168,7 @@ in
     (mkIf cfg.enable {
       assertions = [{
         assertion = config.workstation.systemtraits.enable;
-        message = "navigation/completion: must enable systemtraits maintainence.";
+        message = "navigation/completion: must enable systemtraits maintenance.";
       }];
 
       nixpkgs.config.packageOverrides = _: rec {
@@ -179,21 +194,28 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.expansions.enable) {
-      services.espanso.enable = true;
-      # FIXME: package auxillary `modulo` binary in `nur-packages`
-      systemd.user.services.espanso.path = [ pkgs.bash nurpkgs.modulo pkgs.curl ];
+      systemd.user.services.espanso-custom = {
+        description = "Espanso daemon";
+        path = [ pkgs.bash pkgs.curl ];
+        serviceConfig = {
+          ExecStart = "${cfg.espanso.package}/bin/espanso daemon";
+          Restart = "on-failure";
+        };
+        wantedBy = [ "default.target" ];
+      };
+      environment.systemPackages = [ cfg.espanso.package ];
       # TODO: script(s) to store expansions in redis and show on demand (in case some useful expansions were forgotten)
       home-manager.users."${user}" = {
         home.activation = {
           populateEspansoConfig = {
             after = [ ];
             before = [ "linkGeneration" ];
-            data = ''echo "${cfg.espansoConfig}" > /home/alex3rd/.config/espanso/default.yml'';
+            data = ''mkdir -p /home/alex3rd/.config/espanso/config && echo "${cfg.espanso.config}" > /home/alex3rd/.config/espanso/config/default.yml'';
           };
           restartEspanso = {
             after = [ "linkGeneration" ];
             before = [ ];
-            data = "${pkgs.systemd}/bin/systemctl --user restart espanso.service";
+            data = "${pkgs.systemd}/bin/systemctl --user restart espanso-custom.service";
           };
         };
       };

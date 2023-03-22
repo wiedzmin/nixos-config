@@ -39,9 +39,7 @@ in
         programs.zsh.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
 
         xdg.configFile = optionalAttrs (config.shell.core.queueing.enable && config.completion.expansions.enable) {
-          "espanso/user/git_navigation.yml".source = yaml.generate "espanso-git_navigation.yml" {
-            name = "git_navigation";
-            parent = "default";
+          "espanso/match/git_navigation.yml".source = yaml.generate "espanso-git_navigation.yml" {
             matches = [
               {
                 trigger = ":pgg";

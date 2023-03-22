@@ -38,9 +38,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/nix-dev.yml".source = yaml.generate "espanso-nix-dev.yml" {
-          name = "nix-dev";
-          parent = "default";
+        xdg.configFile."espanso/match/nix-dev.yml".source = yaml.generate "espanso-nix-dev.yml" {
           filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
           matches = [
             {

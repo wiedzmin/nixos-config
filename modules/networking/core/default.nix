@@ -76,9 +76,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/user/networking.yml".source = yaml.generate "espanso-networking.yml" {
-          name = "networking";
-          parent = "default";
+        xdg.configFile."espanso/match/networking.yml".source = yaml.generate "espanso-networking.yml" {
           matches = [
             {
               trigger = ":ifd";
