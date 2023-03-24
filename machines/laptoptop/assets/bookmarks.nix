@@ -599,6 +599,11 @@ rec {
       tags = [ "shop" "wildberries" "orders" ];
       remote = { url = "https://www.wildberries.ru/lk/myorders/delivery"; };
     };
+    "russia1_hd" = {
+      tags = [ "media" "tv" ];
+      browser = config.attributes.browser.fallback.cmd;
+      remote = { url = "https://more.tv/online/russia1_hd"; };
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
