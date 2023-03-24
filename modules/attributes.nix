@@ -257,5 +257,10 @@ with lib;
       '';
       description = "Input devices to listen for mouse events";
     };
+    workspace.assets.subpath = mkOption {
+      description = "Subpath to store workspace-related assets under";
+      type = types.str;
+      default = "workspace/assets";
+    };
   };
 }
