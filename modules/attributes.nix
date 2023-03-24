@@ -215,7 +215,7 @@ with lib;
       visible = false;
       readOnly = true;
       internal = true;
-      description = "Date suffix formats fo various needs";
+      description = "Date suffix formats for various needs";
     };
     regexes = mkOption {
       description = "Common regular expression";
