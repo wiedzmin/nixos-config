@@ -7,6 +7,7 @@ let
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   inherit (config.wmCommon) prefix;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -314,6 +315,27 @@ in
           mode = "root";
         }
       ];
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/match/controlcenter.yml".source = yaml.generate "espanso-controlcenter.yml" {
+          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
+          matches = [
+            {
+              trigger = ":sctlf";
+              replace = "systemctl --user --state=failed";
+            }
+            {
+              trigger = ":sctrf";
+              replace = "systemctl --user reset-failed";
+            }
+            {
+              trigger = ":fatr";
+              replace = "nix run nixpkgs.fatrace -c fatrace";
+            }
+          ];
+        };
+      };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ uptime_info ifconfless ]; };

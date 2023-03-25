@@ -8,6 +8,7 @@ let
   vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
   '';
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -64,6 +65,21 @@ in
         class = "Virt-manager";
         desktop = "tools";
       }];
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/match/libvirt.yml".source = yaml.generate "espanso-libvirt.yml" {
+          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
+          matches = [
+            {
+              # TODO: parameterize filename
+              # TODO: ensure tools availability
+              trigger = ":vdq";
+              replace = "qemu-img convert -f vdi -O qcow2 vm-disk-name.vdi vm-disk-name.qcow2";
+            }
+          ];
+        };
+      };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${user}" = {

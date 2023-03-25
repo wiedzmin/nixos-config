@@ -80,6 +80,16 @@ in
         default = false;
         description = "Whether to enable xserver info/debug tools.";
       };
+      shebangedBinaries = mkOption {
+        type = types.listOf types.str;
+        default = [ "bash" "python" ];
+        description = ''
+          Patterns to ignore when running Comby refactoring.
+
+          Comby plays badly with symlinks to /nix/store, so here they are.
+        '';
+      };
+
       just.chooserCmd = mkOption {
         type = types.str;
         default = "rofi -dmenu";
@@ -237,6 +247,34 @@ in
         xdg.configFile."espanso/match/dev_misc.yml".source = yaml.generate "espanso-dev_misc.yml" {
           filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
           matches = [
+            {
+              trigger = ":sheb";
+              replace = "#!/usr/bin/env {{binary.value}}";
+              vars = [
+                {
+                  name = "binary";
+                  type = "choice";
+                  params = { values = cfg.shebangedBinaries; };
+                }
+              ];
+            }
+            {
+              # FIXME: investigate/debug relative paths usage (see below)
+              trigger = ":sjar";
+              replace = "nix shell \"nixpkgs#adoptopenjdk-bin\" -c jar tf {{jarfilename.value}}";
+              vars = [
+                {
+                  name = "files";
+                  type = "shell";
+                  params = { cmd = "fd -e jar"; };
+                }
+                {
+                  name = "jarfilename";
+                  type = "choice";
+                  params = { values = "{{files}}"; };
+                }
+              ];
+            }
             {
               trigger = ":gma";
               replace = "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log";

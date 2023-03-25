@@ -79,6 +79,10 @@ in
         xdg.configFile."espanso/match/networking.yml".source = yaml.generate "espanso-networking.yml" {
           matches = [
             {
+              trigger = ":emp";
+              replace = "${config.attributes.mainUser.email}";
+            }
+            {
               trigger = ":ifd";
               replace = "sudo ifconfig $|$ down";
             }

@@ -8,6 +8,7 @@ let
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   toml = pkgs.formats.toml { };
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -16,11 +17,6 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable completion setup";
-      };
-      snippets.entries = mkOption {
-        type = types.listOf types.attrs;
-        description = "Various text snippets, mostly for development automation.";
-        default = [ ];
       };
       expansions.enable = mkOption {
         type = types.bool;
@@ -171,21 +167,8 @@ in
         message = "navigation/completion: must enable systemtraits maintenance.";
       }];
 
-      nixpkgs.config.packageOverrides = _: rec {
-        snippets = mkPythonScriptWithDeps pkgs "snippets" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis xsel ])
-          (builtins.readFile ./scripts/snippets.py);
-      };
       # NOTE: unzip is for tabnine binaries installation
-      home-manager.users."${user}" = { home.packages = with pkgs; [ snippets unzip ]; };
-      workstation.systemtraits.instructions = ''
-        ${pkgs.redis}/bin/redis-cli set nav/snippets ${
-          lib.strings.escapeNixString (builtins.toJSON (builtins.listToAttrs (forEach cfg.snippets.entries (s:
-            nameValuePair
-            "${lib.concatStringsSep ":" (maybeAttrList "tags" s "-")} | ${(maybeAttrString "description" s "-")} | ${
-              (maybeAttrString "language" s "-")
-            } | ${s.code}" s.code))))
-        }
-      '';
+      home-manager.users."${user}" = { home.packages = with pkgs; [ unzip ]; };
     })
     (mkIf (cfg.enable && cfg.dev.enable) {
       home-manager.users."${user}" = {
@@ -217,6 +200,14 @@ in
             before = [ ];
             data = "${pkgs.systemd}/bin/systemctl --user restart espanso-custom.service";
           };
+        };
+        xdg.configFile."espanso/match/completion.yml".source = yaml.generate "espanso-completion.yml" {
+          matches = [
+            {
+              trigger = ":tabns";
+              replace = "TabNine::sem";
+            }
+          ];
         };
       };
     })
@@ -321,16 +312,6 @@ in
           };
         };
       };
-    })
-    (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [{
-        key = [ "Shift" "s" ];
-        cmd = "${pkgs.snippets}/bin/snippets";
-        mode = "run";
-      }];
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ snippets ]; };
     })
   ];
 }

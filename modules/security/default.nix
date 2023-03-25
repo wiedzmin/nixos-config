@@ -6,6 +6,7 @@ let
   cfg = config.ext.security;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -132,6 +133,46 @@ in
             }
         });
       '';
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/match/security.yml".source = yaml.generate "espanso-security.yml" {
+          filter_class = "Emacs";
+          matches = [
+            {
+              trigger = ":gpk";
+              replace = "gpgconf --kill gpg-agent";
+            }
+            {
+              trigger = ":gprec";
+              replace = "gpg --list-only --no-default-keyring --secret-keyring /dev/null";
+            }
+            # TODO: play with "gpgconf --kill gpg-agent; # echo \"UPDATESTARTUPTTY\" | gpg-connect-agent > /dev/null 2>&1"
+            {
+              trigger = ":sslct";
+              replace = "nix shell \"nixpkgs#openssl\" -c openssl s_client -showcerts -servername {{server.value}} -connect {{server.value}}:443 </dev/null | openssl x509 -inform pem -noout -text";
+              vars = [
+                {
+                  name = "server";
+                  type = "form";
+                  params = { layout = "Server [[value]]"; };
+                }
+              ];
+            }
+            {
+              trigger = ":sslcd";
+              replace = "nix shell \"nixpkgs#openssl\" -c openssl s_client -connect {{server.value}}:443 2>/dev/null | openssl x509 -dates -noout";
+              vars = [
+                {
+                  name = "server";
+                  type = "form";
+                  params = { layout = "Server [[value]]"; };
+                }
+              ];
+            }
+          ];
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.common = [{

@@ -298,7 +298,7 @@ in
       assertions = [
         {
           assertion = config.workstation.systemtraits.enable;
-          message = "xmonad: must enable systemtraits maintainence.";
+          message = "xmonad: must enable systemtraits maintenance.";
         }
         {
           assertion = !config.wm.awesome.isDefault && !config.wm.i3.isDefault && !config.wm.qtile.isDefault && !config.wm.stumpwm.isDefault;
@@ -340,6 +340,19 @@ in
             url = "https://www.google.ru/";
             searchSuffix = "?q=xmonad+";
           };
+        };
+      };
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/match/xmonad.yml".source = yaml.generate "espanso-xmonad.yml" {
+          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
+          matches = [
+            {
+              trigger = ":ygr";
+              replace = "rm /home/${user}/.local/share/yeganesh/default";
+            }
+          ];
         };
       };
     })

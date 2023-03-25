@@ -20,7 +20,7 @@ let
       };
     };
   };
-
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -132,6 +132,42 @@ in
           mode = "network";
         }
       ];
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/match/ssh.yml".source = yaml.generate "espanso-ssh.yml" {
+          matches = [
+            {
+              trigger = ":ssf";
+              replace = "ssh -L {{port}}:{{forwardfrom}}:{{port}} {{remoteuser}}@{{forwardto}}";
+              vars = [
+                {
+                  name = "port";
+                  type = "form";
+                  params = { layout = "Forward port [[value]]"; };
+                }
+                {
+                  name = "forwardfrom";
+                  type = "form";
+                  params = { layout = "Forward from IP [[value]]"; };
+                }
+                {
+                  name = "forwardto";
+                  type = "form";
+                  params = { layout = "Forward to IP [[value]]"; };
+                }
+                {
+                  name = "remoteuser";
+                  type = "choice";
+                  params = {
+                    values = [ "root" user ];
+                  };
+                }
+              ];
+            }
+          ];
+        };
+      };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ sshmenu ]; };
