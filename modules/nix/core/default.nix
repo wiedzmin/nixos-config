@@ -162,6 +162,37 @@ in
           filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
           matches = [
             {
+              trigger = ":npg";
+              replace = "nix shell \"nixpkgs#nix-prefetch-github\" -c nix-prefetch-git --rev {{revision.value}} {{repolink}}";
+              vars = [
+                {
+                  name = "revision";
+                  type = "form";
+                  params = { layout = "Prefetch revision: [[value]]"; };
+                }
+                {
+                  name = "repolink";
+                  type = "clipboard";
+                }
+              ];
+            }
+            {
+              trigger = ":npnew";
+              replace = "nix shell \"nixpkgs#git\" git log --pretty=oneline ORIG_HEAD..FETCH_HEAD | grep init | grep -v Merge";
+            }
+            {
+              trigger = ":nscptree";
+              replace = "nix-store -q --tree ~/.nix-profile";
+            }
+            {
+              trigger = ":ngcr";
+              replace = "nix-store --gc --print-roots | cut -d' ' -f1 | uniq | grep -v /proc | grep -v { | grep -v /run | grep ${user} | grep direnv";
+            }
+            {
+              trigger = ":npvim";
+              replace = "nix shell \"nixpkgs#vim\" -c vim ";
+            }
+            {
               trigger = ":nsp";
               replace = "nix shell \"nixpkgs#$|$\"";
             }
@@ -174,9 +205,20 @@ in
               replace = "inputs.unstable.legacyPackages.x86_64-linux.$|$";
             }
             {
-              # TODO: script and reference to it, to collect machines names and select among it (try if it is even possible)
               trigger = ":cfg";
-              replace = "nixosConfigurations.laptoptop.config.$|$";
+              replace = "nixosConfigurations.laptoptop.config.{{machine.value}}";
+              vars = [
+                {
+                  name = "machines";
+                  type = "shell";
+                  params = { cmd = "ls ${configPrefix roots "machines"}"; };
+                }
+                {
+                  name = "machine";
+                  type = "choice";
+                  params = { values = "{{machines}}"; };
+                }
+              ];
             }
             {
               trigger = ":elt";

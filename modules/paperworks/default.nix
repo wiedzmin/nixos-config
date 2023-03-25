@@ -22,6 +22,7 @@ let
     inherit (cfg.scanning.paperless) dataDir ocrLanguages;
     paperlessPkg = cfg.scanning.paperless.package;
   };
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -345,6 +346,23 @@ in
         xdg.mimeApps.defaultApplications =
           (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop")
           // (mapMimesToApp config.attributes.mimetypes.office.spreadsheets "calc.desktop");
+        xdg.configFile = optionalAttrs (config.completion.expansions.enable) {
+          "espanso/match/paperworks_docflow.yml".source = yaml.generate "espanso-paperworks_docflow.yml" {
+            matches = [
+              {
+                trigger = ":docpdf";
+                replace = "libreoffice --headless --convert-to pdf {{inputfile.value}}";
+                vars = [
+                  {
+                    name = "inputfile";
+                    type = "form";
+                    params = { layout = "Inputfile [[value]]"; };
+                  }
+                ];
+              }
+            ];
+          };
+        };
       };
 
       pim.timetracking.rules =
@@ -355,6 +373,28 @@ in
     (mkIf cfg.processors.enable {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ enca pandoc pdfcpu pdftk pdfchain pdfslicer ocamlPackages.cpdf ];
+        xdg.configFile = optionalAttrs (config.completion.expansions.enable) {
+          "espanso/match/paperworks_processors.yml".source = yaml.generate "espanso-paperworks_processors.yml" {
+            matches = [
+              {
+                trigger = ":pmdpdf";
+                replace = "pandoc --self-contained -o {{namesansext}}.pdf {{inputfile.value}}.md";
+                vars = [
+                  {
+                    name = "inputfile";
+                    type = "form";
+                    params = { layout = "Inputfile [[value]]"; };
+                  }
+                  {
+                    name = "namesansext";
+                    type = "shell";
+                    params = { cmd = "echo \"toolbox-migration.org\" | cut -d'.' -f1"; };
+                  }
+                ];
+              }
+            ];
+          };
+        };
       };
     })
   ];

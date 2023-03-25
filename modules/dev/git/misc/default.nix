@@ -53,6 +53,45 @@ in
           filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
           matches = [
             {
+              trigger = ":gmrde";
+              replace = "nix shell \"nixpkgs#mr\" -c mr direnv";
+            }
+            {
+              trigger = ":gmrt";
+              replace = "nix shell \"nixpkgs#mr\" -c mr trim";
+            }
+            {
+              trigger = ":gcob";
+              replace = "nix shell \"nixpkgs#git\" \"nixpkgs#fzf\" -c git checkout `git branch --format='%(refname:short)' | fzf`";
+            }
+            {
+              trigger = ":gstexp";
+              replace = "nix shell \"nixpkgs#git\" \"nixpkgs#fzf\" -c git stash show -p `git stash list | fzf | cut -d: -f1` > {{exportbasename.value}}.patch";
+              vars = [
+                {
+                  name = "exportbasename";
+                  type = "form";
+                  params = { layout = "export to: [[value]]"; };
+                }
+              ];
+            }
+            {
+              trigger = ":gstsh";
+              replace = "nix shell \"nixpkgs#git\" \"nixpkgs#fzf\" -c git stash show -p `git stash list | fzf | cut -d: -f1`";
+            }
+            {
+              trigger = ":precall";
+              replace = "pre-commit run --all-files";
+            }
+            {
+              trigger = ":gpruna";
+              replace = "git prune-remote; git prune-local";
+            }
+            {
+              trigger = ":gitsc";
+              replace = "git config --list --show-origin --show-scope";
+            }
+            {
               trigger = ":glcont";
               replace = "git log --pretty=oneline --pickaxe-regex -S$|$";
             }
