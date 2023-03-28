@@ -112,6 +112,11 @@
                (time-add (current-idle-time) custom/idle-clockout-recheck-interval)
                nil
                'custom/clockout-when-idle)))))
+  (defun custom/toggle-link-display ()
+    (interactive)
+    (if (eq org-appear-autolinks t)
+        (setq org-appear-autolinks 'just-brackets)
+      (setq org-appear-autolinks t)))
   ;; https://github.com/chuntaro/emacs-keypression
   :mode (("\\.org$" . org-mode)
          ("\\.org_archive$" . org-mode))
@@ -153,6 +158,7 @@
         ("y" . org-insert-link-global)
         ("|" . org-deadline)
         ("c" . org-cut-subtree)
+        ("l" . custom/toggle-link-display)
         ("[" . org-agenda-file-to-front))
   (:map org-src-mode-map
         ("s-l" . org-edit-src-exit)
