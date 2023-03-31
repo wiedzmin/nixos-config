@@ -90,8 +90,6 @@ in
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
         xdg.configFile."espanso/match/docker.yml".source = yaml.generate "espanso-docker.yml" {
-          name = "docker";
-          parent = "default";
           filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
           matches = [
             {
