@@ -103,179 +103,181 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/content_misc.yml".source = yaml.generate "espanso-content_misc.yml" {
-          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
-          matches = [
-            {
-              trigger = ":fdelta";
-              replace = "nix shell \"nixpkgs#fd\" \"nixpkgs#sad\" \"nixpkgs#delta\" -c fd -e {{fdregex.value}} | sad {{changefrom.value}} {{changeto.value}} | delta";
-              vars = [
-                {
-                  name = "fdregex";
-                  type = "form";
-                  params = { layout = "Search regexp: [[value]]"; };
-                }
-                {
-                  name = "changefrom";
-                  type = "form";
-                  params = { layout = "change from: [[value]]"; };
-                }
-                {
-                  name = "changeto";
-                  type = "form";
-                  params = { layout = "change to: [[value]]"; };
-                }
-              ];
-            }
-            {
-              trigger = ":colinks";
-              replace = "nix shell \"nixpkgs#xidel\" -c xidel {{sourcefile.value}} --extract '//a/@href' --output-format {{outputformat.value}} > links.log";
-              vars = [
-                {
-                  name = "sourcefile";
-                  type = "form";
-                  params = { layout = "Search root: [[value]]"; };
-                }
-                {
-                  name = "outputformat";
-                  type = "choice";
-                  params = { values = [ "adhoc" "bash" "json" ]; };
-                }
-              ];
-            }
-            {
-              trigger = ":fsame";
-              replace = "find -L {{searchroot.value}} -samefile {{comparewith.value}}";
-              vars = [
-                {
-                  name = "searchroot";
-                  type = "form";
-                  params = { layout = "Search root: [[value]]"; };
-                }
-                {
-                  name = "comparewith";
-                  type = "form";
-                  params = { layout = "Compare with: [[value]]"; };
-                }
-              ];
-            }
-            {
-              trigger = ":fdnew";
-              replace = "nix shell \"nixpkgs#fd\" \"nixpkgs#ripgrep\" \"nixpkgs#fzf\" -c fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | fzf";
-              vars = [
-                {
-                  name = "changenewerthan";
-                  type = "choice";
-                  params = { values = timeDurations; };
-                }
-              ];
-            }
-            {
-              trigger = ":fdold";
-              replace = "nix shell \"nixpkgs#fd\" \"nixpkgs#ripgrep\" \"nixpkgs#fzf\" -c fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | fzf";
-              vars = [
-                {
-                  name = "changeolderthan";
-                  type = "choice";
-                  params = { values = timeDurations; };
-                }
-              ];
-            }
-            {
-              trigger = ":uis";
-              replace = "{{result.value}}";
-              vars = [
-                {
-                  name = "result";
-                  type = "choice";
-                  params = {
-                    values = [
-                      {
-                        label = "week";
-                        id = "604800";
-                      }
-                      {
-                        label = "day";
-                        id = "86400";
-                      }
-                      {
-                        label = "hour";
-                        id = "3600";
-                      }
-                    ];
-                  };
-                }
-              ];
-            }
-            {
-              trigger = ":uims";
-              replace = "{{result.value}}";
-              vars = [
-                {
-                  name = "result";
-                  type = "choice";
-                  params = {
-                    values = [
-                      {
-                        label = "week";
-                        id = "604800000";
-                      }
-                      {
-                        label = "day";
-                        id = "86400000";
-                      }
-                      {
-                        label = "hour";
-                        id = "3600000";
-                      }
-                    ];
-                  };
-                }
-              ];
-            }
-            {
-              trigger = ":isofd";
-              replace = "sudo dd bs={{blocksize.value}} if={{isopath.value}} of={{devicepath.value}} conv=fdatasync";
-              vars = [
-                {
-                  name = "blocksize";
-                  type = "choice";
-                  params = {
-                    values = [
-                      "1M"
-                      "2M"
-                      "4M"
-                    ];
-                  };
-                }
-                {
-                  name = "isopath";
-                  type = "form";
-                  params = { layout = "ISO path: [[value]]"; };
-                }
-                {
-                  name = "devicepath";
-                  type = "form";
-                  params = { layout = "Device path: [[value]]"; };
-                }
-              ];
-            }
-            {
-              trigger = ":idu";
-              replace = "nix shell 'nixpkgs#findimagedupes' -c findimagedupes .";
-            }
-            {
-              trigger = ":mt";
-              replace = "nix shell 'nixpkgs#monolith' -c monolith --isolate --base-url {{baseurl.value}} --output $|$";
-              vars = [
-                {
-                  name = "baseurl";
-                  type = "form";
-                  params = { layout = "URL: [[value]]"; };
-                }
-              ];
-            }
-          ];
+        xdg.configFile."espanso/match/content_misc.yml".source = yaml.generate "espanso-content_misc.yml"
+          {
+            matches = [
+              {
+                trigger = ":fdelta";
+                replace = "nix shell \"nixpkgs#fd\" \"nixpkgs#sad\" \"nixpkgs#delta\" -c fd -e {{fdregex.value}} | sad {{changefrom.value}} {{changeto.value}} | delta";
+                vars = [
+                  {
+                    name = "fdregex";
+                    type = "form";
+                    params = { layout = "Search regexp: [[value]]"; };
+                  }
+                  {
+                    name = "changefrom";
+                    type = "form";
+                    params = { layout = "change from: [[value]]"; };
+                  }
+                  {
+                    name = "changeto";
+                    type = "form";
+                    params = { layout = "change to: [[value]]"; };
+                  }
+                ];
+              }
+              {
+                trigger = ":colinks";
+                replace = "nix shell \"nixpkgs#xidel\" -c xidel {{sourcefile.value}} --extract '//a/@href' --output-format {{outputformat.value}} > links.log";
+                vars = [
+                  {
+                    name = "sourcefile";
+                    type = "form";
+                    params = { layout = "Search root: [[value]]"; };
+                  }
+                  {
+                    name = "outputformat";
+                    type = "choice";
+                    params = { values = [ "adhoc" "bash" "json" ]; };
+                  }
+                ];
+              }
+              {
+                trigger = ":fsame";
+                replace = "find -L {{searchroot.value}} -samefile {{comparewith.value}}";
+                vars = [
+                  {
+                    name = "searchroot";
+                    type = "form";
+                    params = { layout = "Search root: [[value]]"; };
+                  }
+                  {
+                    name = "comparewith";
+                    type = "form";
+                    params = { layout = "Compare with: [[value]]"; };
+                  }
+                ];
+              }
+              {
+                trigger = ":fdnew";
+                replace = "nix shell \"nixpkgs#fd\" \"nixpkgs#ripgrep\" \"nixpkgs#fzf\" -c fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | fzf";
+                vars = [
+                  {
+                    name = "changenewerthan";
+                    type = "choice";
+                    params = { values = timeDurations; };
+                  }
+                ];
+              }
+              {
+                trigger = ":fdold";
+                replace = "nix shell \"nixpkgs#fd\" \"nixpkgs#ripgrep\" \"nixpkgs#fzf\" -c fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | fzf";
+                vars = [
+                  {
+                    name = "changeolderthan";
+                    type = "choice";
+                    params = { values = timeDurations; };
+                  }
+                ];
+              }
+              {
+                trigger = ":uis";
+                replace = "{{result.value}}";
+                vars = [
+                  {
+                    name = "result";
+                    type = "choice";
+                    params = {
+                      values = [
+                        {
+                          label = "week";
+                          id = "604800";
+                        }
+                        {
+                          label = "day";
+                          id = "86400";
+                        }
+                        {
+                          label = "hour";
+                          id = "3600";
+                        }
+                      ];
+                    };
+                  }
+                ];
+              }
+              {
+                trigger = ":uims";
+                replace = "{{result.value}}";
+                vars = [
+                  {
+                    name = "result";
+                    type = "choice";
+                    params = {
+                      values = [
+                        {
+                          label = "week";
+                          id = "604800000";
+                        }
+                        {
+                          label = "day";
+                          id = "86400000";
+                        }
+                        {
+                          label = "hour";
+                          id = "3600000";
+                        }
+                      ];
+                    };
+                  }
+                ];
+              }
+              {
+                trigger = ":isofd";
+                replace = "sudo dd bs={{blocksize.value}} if={{isopath.value}} of={{devicepath.value}} conv=fdatasync";
+                vars = [
+                  {
+                    name = "blocksize";
+                    type = "choice";
+                    params = {
+                      values = [
+                        "1M"
+                        "2M"
+                        "4M"
+                      ];
+                    };
+                  }
+                  {
+                    name = "isopath";
+                    type = "form";
+                    params = { layout = "ISO path: [[value]]"; };
+                  }
+                  {
+                    name = "devicepath";
+                    type = "form";
+                    params = { layout = "Device path: [[value]]"; };
+                  }
+                ];
+              }
+              {
+                trigger = ":idu";
+                replace = "nix shell 'nixpkgs#findimagedupes' -c findimagedupes .";
+              }
+              {
+                trigger = ":mt";
+                replace = "nix shell 'nixpkgs#monolith' -c monolith --isolate --base-url {{baseurl.value}} --output $|$";
+                vars = [
+                  {
+                    name = "baseurl";
+                    type = "form";
+                    params = { layout = "URL: [[value]]"; };
+                  }
+                ];
+              }
+            ];
+          } // optionalAttrs (config.shell.tmux.enable) {
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };
     })

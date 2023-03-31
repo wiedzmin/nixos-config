@@ -345,14 +345,16 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/xmonad.yml".source = yaml.generate "espanso-xmonad.yml" {
-          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
-          matches = [
-            {
-              trigger = ":ygr";
-              replace = "rm /home/${user}/.local/share/yeganesh/default";
-            }
-          ];
+        xdg.configFile."espanso/match/xmonad.yml".source = yaml.generate "espanso-xmonad.yml"
+          {
+            matches = [
+              {
+                trigger = ":ygr";
+                replace = "rm /home/${user}/.local/share/yeganesh/default";
+              }
+            ];
+          } // optionalAttrs (config.shell.tmux.enable) {
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };
     })

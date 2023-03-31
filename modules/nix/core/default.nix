@@ -158,101 +158,103 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/nix-core.yml".source = yaml.generate "espanso-nix-core.yml" {
-          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
-          matches = [
-            {
-              trigger = ":npg";
-              replace = "nix shell \"nixpkgs#nix-prefetch-github\" -c nix-prefetch-git --rev {{revision.value}} {{repolink}}";
-              vars = [
-                {
-                  name = "revision";
-                  type = "form";
-                  params = { layout = "Prefetch revision: [[value]]"; };
-                }
-                {
-                  name = "repolink";
-                  type = "clipboard";
-                }
-              ];
-            }
-            {
-              trigger = ":npnew";
-              replace = "nix shell \"nixpkgs#git\" git log --pretty=oneline ORIG_HEAD..FETCH_HEAD | grep init | grep -v Merge";
-            }
-            {
-              trigger = ":nscptree";
-              replace = "nix-store -q --tree ~/.nix-profile";
-            }
-            {
-              trigger = ":ngcr";
-              replace = "nix-store --gc --print-roots | cut -d' ' -f1 | uniq | grep -v /proc | grep -v { | grep -v /run | grep ${user} | grep direnv";
-            }
-            {
-              trigger = ":npvim";
-              replace = "nix shell \"nixpkgs#vim\" -c vim ";
-            }
-            {
-              trigger = ":nsp";
-              replace = "nix shell \"nixpkgs#$|$\"";
-            }
-            {
-              trigger = ":ns2";
-              replace = " \"nixpkgs#$|$\"";
-            }
-            {
-              trigger = ":pkgs";
-              replace = "inputs.unstable.legacyPackages.x86_64-linux.$|$";
-            }
-            {
-              trigger = ":cfg";
-              replace = "nixosConfigurations.laptoptop.config.{{machine.value}}";
-              vars = [
-                {
-                  name = "machines";
-                  type = "shell";
-                  params = { cmd = "ls ${configPrefix roots "machines"}"; };
-                }
-                {
-                  name = "machine";
-                  type = "choice";
-                  params = { values = "{{machines}}"; };
-                }
-              ];
-            }
-            {
-              trigger = ":elt";
-              replace = "builtins.head (inputs.unstable.lib.sublist 1$|$ 1 nixosConfigurations.laptoptop.config.wmCommon.wsMapping.rules)";
-            }
-            {
-              trigger = ":nrep";
-              replace = "cd ${wsRoot roots "github"}/wiedzmin/nixos-config && nix repl ./flake-repl.nix";
-            }
-            {
-              trigger = ":nsfd";
-              replace = "nix shell \"nixpkgs#fd\" -c fd $|$ /nix/store";
-            }
-            {
-              trigger = ":llv";
-              replace = "inputs.unstable.legacyPackages.x86_64-linux.linuxPackages.";
-            }
-            {
-              trigger = ":nwda";
-              replace = "nix why-depends --all \"nixpkgs#$|$\" \"nixpkgs#\"";
-            }
-            {
-              trigger = ":nwdo";
-              replace = "nix why-depends \"nixpkgs#$|$\" \"nixpkgs#\"";
-            }
-            {
-              trigger = ":nwdd";
-              replace = "nix why-depends --derivation \"nixpkgs#$|$\" \"nixpkgs#\"";
-            }
-            {
-              trigger = ":nwd?";
-              replace = "nix why-depends --help";
-            }
-          ];
+        xdg.configFile."espanso/match/nix-core.yml".source = yaml.generate "espanso-nix-core.yml"
+          {
+            matches = [
+              {
+                trigger = ":npg";
+                replace = "nix shell \"nixpkgs#nix-prefetch-github\" -c nix-prefetch-git --rev {{revision.value}} {{repolink}}";
+                vars = [
+                  {
+                    name = "revision";
+                    type = "form";
+                    params = { layout = "Prefetch revision: [[value]]"; };
+                  }
+                  {
+                    name = "repolink";
+                    type = "clipboard";
+                  }
+                ];
+              }
+              {
+                trigger = ":npnew";
+                replace = "nix shell \"nixpkgs#git\" git log --pretty=oneline ORIG_HEAD..FETCH_HEAD | grep init | grep -v Merge";
+              }
+              {
+                trigger = ":nscptree";
+                replace = "nix-store -q --tree ~/.nix-profile";
+              }
+              {
+                trigger = ":ngcr";
+                replace = "nix-store --gc --print-roots | cut -d' ' -f1 | uniq | grep -v /proc | grep -v { | grep -v /run | grep ${user} | grep direnv";
+              }
+              {
+                trigger = ":npvim";
+                replace = "nix shell \"nixpkgs#vim\" -c vim ";
+              }
+              {
+                trigger = ":nsp";
+                replace = "nix shell \"nixpkgs#$|$\"";
+              }
+              {
+                trigger = ":ns2";
+                replace = " \"nixpkgs#$|$\"";
+              }
+              {
+                trigger = ":pkgs";
+                replace = "inputs.unstable.legacyPackages.x86_64-linux.$|$";
+              }
+              {
+                trigger = ":cfg";
+                replace = "nixosConfigurations.laptoptop.config.{{machine.value}}";
+                vars = [
+                  {
+                    name = "machines";
+                    type = "shell";
+                    params = { cmd = "ls ${configPrefix roots "machines"}"; };
+                  }
+                  {
+                    name = "machine";
+                    type = "choice";
+                    params = { values = "{{machines}}"; };
+                  }
+                ];
+              }
+              {
+                trigger = ":elt";
+                replace = "builtins.head (inputs.unstable.lib.sublist 1$|$ 1 nixosConfigurations.laptoptop.config.wmCommon.wsMapping.rules)";
+              }
+              {
+                trigger = ":nrep";
+                replace = "cd ${wsRoot roots "github"}/wiedzmin/nixos-config && nix repl ./flake-repl.nix";
+              }
+              {
+                trigger = ":nsfd";
+                replace = "nix shell \"nixpkgs#fd\" -c fd $|$ /nix/store";
+              }
+              {
+                trigger = ":llv";
+                replace = "inputs.unstable.legacyPackages.x86_64-linux.linuxPackages.";
+              }
+              {
+                trigger = ":nwda";
+                replace = "nix why-depends --all \"nixpkgs#$|$\" \"nixpkgs#\"";
+              }
+              {
+                trigger = ":nwdo";
+                replace = "nix why-depends \"nixpkgs#$|$\" \"nixpkgs#\"";
+              }
+              {
+                trigger = ":nwdd";
+                replace = "nix why-depends --derivation \"nixpkgs#$|$\" \"nixpkgs#\"";
+              }
+              {
+                trigger = ":nwd?";
+                replace = "nix why-depends --help";
+              }
+            ];
+          } // optionalAttrs (config.shell.tmux.enable) {
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };
     })

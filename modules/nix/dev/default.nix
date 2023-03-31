@@ -38,14 +38,16 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/nix-dev.yml".source = yaml.generate "espanso-nix-dev.yml" {
-          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
-          matches = [
-            {
-              trigger = ":nsd";
-              replace = "nix show-derivation 'nixpkgs/nixos-unstable#$|$'";
-            }
-          ];
+        xdg.configFile."espanso/match/nix-dev.yml".source = yaml.generate "espanso-nix-dev.yml"
+          {
+            matches = [
+              {
+                trigger = ":nsd";
+                replace = "nix show-derivation 'nixpkgs/nixos-unstable#$|$'";
+              }
+            ];
+          } // optionalAttrs (config.shell.tmux.enable) {
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };
     })
