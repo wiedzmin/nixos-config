@@ -89,6 +89,7 @@ in
             after = [ "linkGeneration" ];
             before = [ ];
             # FIXME: TB_TERMINAL_CMD setting
+            # FIXME: seems like it does not work
             data = ''DISPLAY=:0 ${nurpkgs.toolbox}/bin/services --invalidate-cache --term-command "${
               lib.concatStringsSep " " config.attributes.vt.default.cmd}"'';
           };
