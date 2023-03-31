@@ -244,42 +244,44 @@ in
     # FIXME: make tmux session templating optional everywhere (see below) !!!!
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/dev_misc.yml".source = yaml.generate "espanso-dev_misc.yml" {
-          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
-          matches = [
-            {
-              trigger = ":sheb";
-              replace = "#!/usr/bin/env {{binary.value}}";
-              vars = [
-                {
-                  name = "binary";
-                  type = "choice";
-                  params = { values = cfg.shebangedBinaries; };
-                }
-              ];
-            }
-            {
-              # FIXME: investigate/debug relative paths usage (see below)
-              trigger = ":sjar";
-              replace = "nix shell \"nixpkgs#adoptopenjdk-bin\" -c jar tf {{jarfilename.value}}";
-              vars = [
-                {
-                  name = "files";
-                  type = "shell";
-                  params = { cmd = "fd -e jar"; };
-                }
-                {
-                  name = "jarfilename";
-                  type = "choice";
-                  params = { values = "{{files}}"; };
-                }
-              ];
-            }
-            {
-              trigger = ":gma";
-              replace = "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log";
-            }
-          ];
+        xdg.configFile."espanso/match/dev_misc.yml".source = yaml.generate "espanso-dev_misc.yml"
+          {
+            matches = [
+              {
+                trigger = ":sheb";
+                replace = "#!/usr/bin/env {{binary.value}}";
+                vars = [
+                  {
+                    name = "binary";
+                    type = "choice";
+                    params = { values = cfg.shebangedBinaries; };
+                  }
+                ];
+              }
+              {
+                # FIXME: investigate/debug relative paths usage (see below)
+                trigger = ":sjar";
+                replace = "nix shell \"nixpkgs#adoptopenjdk-bin\" -c jar tf {{jarfilename.value}}";
+                vars = [
+                  {
+                    name = "files";
+                    type = "shell";
+                    params = { cmd = "fd -e jar"; };
+                  }
+                  {
+                    name = "jarfilename";
+                    type = "choice";
+                    params = { values = "{{files}}"; };
+                  }
+                ];
+              }
+              {
+                trigger = ":gma";
+                replace = "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log";
+              }
+            ];
+          } // optionalAttrs (config.shell.tmux.enable) {
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };
     })

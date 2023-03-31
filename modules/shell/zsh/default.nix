@@ -177,18 +177,20 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/zsh.yml".source = yaml.generate "espanso-zsh.yml" {
+        xdg.configFile."espanso/match/zsh.yml".source = yaml.generate "espanso-zsh.yml"
+          {
+            matches = [
+              {
+                trigger = ":ts";
+                replace = "$|$ | rtss";
+              }
+              {
+                trigger = ":rlw";
+                replace = "readlink -f `which $|$`";
+              }
+            ];
+          } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
-          matches = [
-            {
-              trigger = ":ts";
-              replace = "$|$ | rtss";
-            }
-            {
-              trigger = ":rlw";
-              replace = "readlink -f `which $|$`";
-            }
-          ];
         };
       };
     })

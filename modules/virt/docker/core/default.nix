@@ -89,14 +89,16 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/docker.yml".source = yaml.generate "espanso-docker.yml" {
-          filter_title = ".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*";
-          matches = [
-            {
-              trigger = ":dcr";
-              replace = "docker-compose up --detach --build && docker-compose restart $|$";
-            }
-          ];
+        xdg.configFile."espanso/match/docker.yml".source = yaml.generate "espanso-docker.yml"
+          {
+            matches = [
+              {
+                trigger = ":dcr";
+                replace = "docker-compose up --detach --build && docker-compose restart $|$";
+              }
+            ];
+          } // optionalAttrs (config.shell.tmux.enable) {
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };
     })
