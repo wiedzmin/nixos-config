@@ -252,6 +252,10 @@ in
                 trigger = ":nwd?";
                 replace = "nix why-depends --help";
               }
+              {
+                trigger = ":nwtt";
+                replace = "nix shell \"nixpkgs#tree\" -c tree /nix/var/nix/{gcroots,profiles}";
+              }
             ];
           } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
