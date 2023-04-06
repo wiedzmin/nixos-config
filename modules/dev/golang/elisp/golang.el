@@ -5,7 +5,6 @@
   (before-save-hook . gofmt-before-save)
   (go-mode-hook . lsp-deferred)
   (go-mode-hook . whitespace-turn-off)
-  (go-mode-hook . yas-minor-mode)
   :config
   (when (boundp 'company-backends)
     (add-to-list 'company-backends 'company-tabnine)
