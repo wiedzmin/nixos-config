@@ -251,7 +251,6 @@ in
       enable = true;
       emacs.enable = true;
     };
-    projectenv.enable = true;
     batchvcs.enable = true;
     git = {
       autofetch = {
