@@ -12,3 +12,6 @@
                           yas-no-prompt))
   (yas-wrap-around-region t)
   (yas-snippet-dirs '("@emacsYasnippetSnippets@")))
+
+(with-eval-after-load 'go-mode
+  (add-hook 'consult-after-jump-hook 'yas-minor-mode))
