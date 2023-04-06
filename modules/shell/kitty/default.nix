@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, inputs, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -16,6 +16,10 @@ with lib;
 let
   cfg = config.shell.vt.kitty;
   user = config.attributes.mainUser.name;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  };
   inherit (config.wmCommon) prefix;
   yaml = pkgs.formats.yaml { };
 in
@@ -117,7 +121,7 @@ in
 
             protocol file
             ext csv
-            action launch --type=overlay ${pkgs.visidata}/bin/vd ''${FILE_PATH}
+            action launch --type=overlay ${nixpkgs-last-unbroken.visidata}/bin/vd ''${FILE_PATH}
 
             protocol file
             mime inode/directory
