@@ -43,7 +43,6 @@
     ./dev/ml
     ./dev/navigation/codesearch
     ./dev/navigation/projects
-    ./dev/projectenv
     ./dev/python
     ./emacs/core
     ./emacs/edit
