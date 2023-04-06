@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.ext.security;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -56,12 +55,6 @@ in
         allowUserNamespaces = true;
         allowSimultaneousMultithreading = true;
         lockKernelModules = false;
-      };
-
-      nixpkgs.config.packageOverrides = _: rec {
-        passctl = mkPythonScriptWithDeps pkgs "passctl"
-          (with pkgs; [ python3Packages.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis xdotool ])
-          (builtins.readFile ./scripts/passctl.py);
       };
 
       home-manager.users."${user}" = {
@@ -173,16 +166,6 @@ in
           ];
         };
       };
-    })
-    (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [{
-        key = [ "p" ];
-        cmd = "${pkgs.passctl}/bin/passctl";
-        mode = "select";
-      }];
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ passctl ]; };
     })
   ];
 }
