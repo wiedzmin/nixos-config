@@ -50,6 +50,7 @@ in
     shell = pkgs.zsh;
     extraGroups = [ "wheel" ];
   };
+  programs.zsh.enable = true;
 
   users.mutableUsers = false;
   users.users = {
