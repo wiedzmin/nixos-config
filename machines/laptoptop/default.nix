@@ -72,7 +72,7 @@ in
         efiInstallAsRemovable = true;
         efiSupport = true;
         device = "/dev/sda";
-        configurationLimit = 30;
+        configurationLimit = 50;
         version = 2;
       };
     };
