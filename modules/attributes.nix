@@ -257,6 +257,11 @@ with lib;
       '';
       description = "Input devices to listen for mouse events";
     };
+    hardware.memory.swap.enable = mkOption {
+      type = types.bool;
+      default = false;
+      description = "Whether to enable memory swapping";
+    };
     workspace.assets.subpath = mkOption {
       description = "Subpath to store workspace-related assets under";
       type = types.str;
