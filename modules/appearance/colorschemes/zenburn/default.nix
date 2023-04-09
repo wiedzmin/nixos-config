@@ -74,7 +74,7 @@ in
         urgent_workspace   #ffffff #900000
       '';
       i3status-rs = {
-        name = "gruvbox-dark";
+        theme = "gruvbox-dark";
         overrides = {
           alternating_tint_bg = "#0f0f0f";
           alternating_tint_fg = "#282828";

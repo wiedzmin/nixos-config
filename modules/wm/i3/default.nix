@@ -490,47 +490,54 @@ in
           '';
         } // lib.optionalAttrs (cfg.statusbar.impl == "i3-rs") {
           "i3status-rust/config.toml".source = toml.generate "config.toml" ({
-            icons = "awesome";
+            icons = {
+              icons = "awesome6";
+            };
             block = [
               {
                 block = "cpu";
                 interval = 1;
-                format = " {utilization}";
+                format = " $icon $utilization ";
+                format_alt = " $icon $barchart $frequency{ $boost|} ";
               }
               {
                 block = "load";
                 interval = 1;
-                format = " {1m}";
+                format = " $icon $1m.eng(w:4) ";
               }
-              {
+              ({
                 block = "memory";
-                format_mem = "{mem_free;M}";
-                display_type = "memory";
-                icons = true;
-                clickable = false;
+                format = " $icon $mem_free.eng(w:3,u:B,p:M) ";
+                format_alt = " $icon $mem_avail.eng(w:3,u:B,p:M) ";
                 interval = 5;
                 warning_mem = 80;
-                warning_swap = 80;
                 critical_mem = 95;
+              } // optionalAttrs (config.attributes.hardware.memory.swap.enable) {
+                warning_swap = 80;
                 critical_swap = 95;
-              }
+              })
               {
                 block = "disk_space";
                 path = "/";
-                alias = "/";
+                format = " $icon $available ";
+                format_alt = " $icon $available / $total ";
                 info_type = "available";
-                unit = "GB";
+                alert_unit = "GB";
+                alert = 10.0;
+                warning = 15.0;
                 interval = 20;
               }
               {
                 block = "net";
                 device = "wlan0";
-                format = "{ssid} {signal_strength}";
+                format = " $icon $ssid $signal_strength ";
+                format_alt = " $icon $device $frequency $bitrate $ip";
                 interval = 5;
               }
               ({
                 block = "battery";
-                format = " {percentage} {time}";
+                format = " $icon $percentage $time $power ";
+                missing_format = "";
               } // optionalAttrs config.services.upower.enable {
                 driver = "upower";
               } // optionalAttrs (with config; services.upower.enable && attributes.hardware.dmiSystemVersion == "ThinkPad X270") {
@@ -543,30 +550,40 @@ in
               (dev: {
                 block = "bluetooth";
                 mac = dev.mac;
-                format = "${dev.name} {percentage}";
-                format_unavailable = "${dev.name} x";
-                hide_disconnected = true;
-              }) ++
-            [{
-              block = "sound";
-              mappings = {
-                # TODO: adjust icons
-                "alsa_output.usb-Logitech_Logitech_USB_Headset_000000000000-00.analog-stereo" = "🔈";
-                "alsa_output.pci-0000_00_1b.0.analog-stereo" = "🎧";
-              };
-            }
+                format = " $icon ${dev.name} ";
+                disconnected_format = "";
+              }) ++ [
+              {
+                block = "sound";
+                format = " $output_name{ $volume|} ";
+                headphones_indicator = true;
+                # FIXME: unhardcode mappings
+                mappings = {
+                  "alsa_output.pci-0000_00_1f.3.analog-stereo" = "🔈";
+                  "alsa_output.pci-0000_00_1b.0.analog-stereo" = "🎧";
+                  "bluez_sink.6C_CE_44_AE_97_39.a2dp_sink" = "🎧";
+                };
+              }
               {
                 block = "time";
                 interval = 60;
-                format = " %a %d-%m-%Y %R";
+                format = " $icon $timestamp.datetime(f:'%a %d-%m-%Y %R', l:ru_RU) ";
                 timezone = config.time.timeZone;
-                locale = "ru_RU";
               }
               {
                 block = "keyboard_layout";
                 driver = "kbddbus";
+                mappings = {
+                  "English (US)" = "en";
+                  "Russian (N/A)" = "ru";
+                };
               }
-              # TODO: block = "music"
+              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/music/index.html
+              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/focused_window/index.html
+              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/hueshift/index.html
+              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/menu/index.html
+              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/service_status/index.html
+              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/tea_timer/index.html
             ];
           } // lib.optionalAttrs (cfg.theme.i3status-rs != "") {
             theme = cfg.theme.i3status-rs;
