@@ -99,7 +99,7 @@ rec {
   mkNewlineAndIndent = width: with lib; "\n" + (concatStrings (genList (const " ") width));
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
   homePrefix = user: suffix: "/home/${user}/" + suffix;
-  goBinPrefix = user: suffix: "/home/${user}/workspace/go/bin/" + suffix;
+  goBinPrefix = goPath: suffix: "${goPath}/bin/" + suffix;
   xdgConfig = user: suffix: (homePrefix user ".config") + suffix; # FIXME: deal with slashes seamlessly
   wsRoot = roots: key: lib.getAttrFromPath [ key ] roots;
   configPrefix = roots: suffix: "${wsRoot roots "github"}/wiedzmin/nixos-config/" + suffix;
