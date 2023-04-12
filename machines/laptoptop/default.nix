@@ -509,6 +509,7 @@ in
     };
     randr = {
       enable = true;
+      heads.orientation.primary = "left";
       heads.orientation.secondary = "normal";
       wm.enable = true;
     };
