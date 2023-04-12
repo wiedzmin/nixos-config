@@ -662,7 +662,7 @@ in
       name = "edit";
       key = [ "F2" ];
       transient = false;
-      type = "primary";
+      type = dockableWS config.attributes.hardware.monitors.count;
     }
     {
       name = "tools";
