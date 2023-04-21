@@ -45,6 +45,10 @@ in
                 trigger = ":nsd";
                 replace = "nix show-derivation 'nixpkgs/nixos-unstable#$|$'";
               }
+              {
+                trigger = ":gcp";
+                replace = "# git-crypt dirty tree placeholder :D";
+              }
             ];
           } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
