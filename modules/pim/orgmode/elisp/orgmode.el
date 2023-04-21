@@ -183,6 +183,7 @@
   (appt-message-warning-time 10)
   (calendar-date-style 'european)
   (org-M-RET-may-split-line '((default . nil)))
+  (org-adapt-indentation t)
   (org-agenda-clockreport-parameter-plist '(:link t :maxlevel 2 :narrow 60))
   (org-agenda-dim-blocked-tasks 'invisible)
   (org-agenda-include-all-todo t)
