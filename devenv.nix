@@ -11,7 +11,6 @@
     cloc
     gitAndTools.git-crypt
     just
-    nixUnstable
     vim
   ];
 
