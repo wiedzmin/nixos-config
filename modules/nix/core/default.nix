@@ -226,7 +226,7 @@ in
               }
               {
                 trigger = ":nrep";
-                replace = "cd ${wsRoot roots "github"}/wiedzmin/nixos-config && nix repl ./flake-repl.nix";
+                replace = "cd ${wsRoot roots "github"}/wiedzmin/nixos-config && nix repl --file ./flake-repl.nix";
               }
               {
                 trigger = ":nsfd";
