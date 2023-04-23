@@ -56,6 +56,11 @@ in
         default = false;
         description = "Whether to enable non-web Youtube frontends";
       };
+      ffmpeg.workdir = mkOption {
+        type = types.str;
+        default = "/home/alex3rd/blobs/work/camdata"; # FIXME: parameterize
+        description = "Predefined working directory for various ffmpeg operations";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -125,6 +130,31 @@ in
                 {
                   trigger = ":aft";
                   replace = "nix shell \"nixpkgs#android-file-transfer\" -c android-file-transfer";
+                }
+                {
+                  trigger = ":ffmc";
+                  replace = "cd ${cfg.ffmpeg.workdir} && nix shell \"nixpkgs#ffmpeg\" -c ffmpeg -i {{inputfile.value}} -c:v copy -c:a copy -f mp4 {{namesansext.value}}.mp4 && echo \"file '${cfg.ffmpeg.workdir}/{{namesansext.value}}.mp4'\">> ${cfg.ffmpeg.workdir}/files.list";
+                  vars = [
+                    {
+                      name = "mtsfiles";
+                      type = "shell";
+                      params = { cmd = "ls ${cfg.ffmpeg.workdir} | grep -e \"[Mm][Tt][Ss]\""; };
+                    }
+                    {
+                      name = "inputfile";
+                      type = "choice";
+                      params = { values = "{{mtsfiles}}"; };
+                    }
+                    {
+                      name = "namesansext";
+                      type = "shell";
+                      params = { cmd = "echo \"{{inputfile.value}}\" | cut -d'.' -f1"; };
+                    }
+                  ];
+                }
+                {
+                  trigger = ":ffmg";
+                  replace = "cd ${cfg.ffmpeg.workdir} && nix shell \"nixpkgs#ffmpeg\" -c ffmpeg -f concat -safe 0 -i files.list -c copy result.mp4"; # FIXME: consider parameterizing output filename in some way
                 }
               ];
             } // optionalAttrs (config.shell.tmux.enable) {
