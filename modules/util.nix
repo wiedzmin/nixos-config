@@ -256,7 +256,7 @@ rec {
   getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
   enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: _: i) wsdata) wsdata;
   windowRuleClauses = rule:
-    lib.filterAttrs (k: _: !builtins.elem k [ "activate" "debug" "desktop" "float" "key" "scratchpad" ]) rule;
+    lib.filterAttrs (k: _: !builtins.elem k [ "activate" "debug" "desktop" "float" "fullscreen" "key" "scratchpad" ]) rule;
   mkWMDebugScript = nixpkgs: name: wmpkg: internalHead: wmcmd:
     nixpkgs.writeShellApplication {
       inherit name;
@@ -362,6 +362,14 @@ rec {
             else
               ""
           }"
+        else
+          "disable"
+      }"));
+  genWindowRulesFullscreenI3 = rules:
+    lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "fullscreen" r) rules) (r:
+      "for_window ${mkWindowRuleI3 r} fullscreen ${
+        if r.fullscreen then
+          "enable"
         else
           "disable"
       }"));
