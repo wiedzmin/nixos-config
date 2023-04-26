@@ -356,7 +356,7 @@ rec {
     lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "float" r) rules) (r:
       "for_window ${mkWindowRuleI3 r} floating ${
         if r.float then
-          "toggle${
+          "enable${
             if builtins.hasAttr "resize" r then
               "; ${lib.concatStringsSep "; " (lib.forEach r.resize (d: "resize ${d}"))}"
             else
