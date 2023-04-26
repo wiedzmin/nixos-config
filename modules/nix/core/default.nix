@@ -138,7 +138,7 @@ in
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup nix-build-offline rollback statix ] ++
-          lib.optionals cfg.lsp.enable [ rnix-lsp ];
+          lib.optionals cfg.lsp.enable [ nil ];
         home.sessionPath = [ (homePrefix user ".local/share/cargo/bin") ]; # FIXME: use XDG_DATA_HOME
       };
       shell.core.variables = [{
