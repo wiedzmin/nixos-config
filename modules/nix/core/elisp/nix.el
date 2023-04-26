@@ -1,10 +1,10 @@
 (use-package nix-mode
-  @rnixInitSection@
+  @nixLspInitSection@
   :mode (("\\.nix$" . nix-mode)
          ((rx (eval "configuration.nix") (zero-or-more anything) eol) . nix-mode))
   :hook
   (nix-mode-hook . (lambda () (setq-local tab-width 2)))
-  @rnixHookSection@
+  @nixLspHookSection@
   :config
   (when (boundp 'company-backends)
     (add-to-list 'company-backends 'company-tabnine)
