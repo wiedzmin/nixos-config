@@ -370,6 +370,7 @@ in
             for_window [class="Rofi"] floating enable
 
             ${genWindowRulesFloatI3 config.wmCommon.wsMapping.rules}
+            ${genWindowRulesFullscreenI3 config.wmCommon.wsMapping.rules}
 
             ${bindkeysFocusI3 config.wmCommon.wsMapping.rules}
 
