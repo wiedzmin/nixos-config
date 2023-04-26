@@ -99,6 +99,11 @@ in
           inherit (cfg) pinentryFlavor;
         };
       };
+
+      wmCommon.wsMapping.rules = [{
+        class = ".*pinentry.*";
+        fullscreen = true;
+      }];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pass ];
