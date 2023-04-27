@@ -2,7 +2,7 @@
   description = "Reproducible localhost configurations";
 
   # TODO: try cachix/pre-commit-hooks.nix
-  inputs = rec {
+  inputs = {
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
     nur.url = "github:wiedzmin/NUR";
@@ -133,13 +133,13 @@
             {
               nixpkgs.overlays = [
                 overlays.unstable
-                (_: old: rec {
-                  i3lock-color = old.i3lock-color.overrideAttrs (_: rec {
+                (_: old: {
+                  i3lock-color = old.i3lock-color.overrideAttrs (_: {
                     patches = [ ./modules/workstation/lockscreen/patches/i3lock-color-pass-layout-switching.patch ];
                   });
                   mps-youtube = old.mps-youtube.overrideAttrs
-                    (_: rec { patches = [ ./modules/content/media/patches/0001-fix-1134.patch ]; });
-                  tabnine = old.tabnine.overrideAttrs (_: rec {
+                    (_: { patches = [ ./modules/content/media/patches/0001-fix-1134.patch ]; });
+                  tabnine = old.tabnine.overrideAttrs (_: {
                     installPhase = ''
                       mkdir -p $out/bin
                       cp $src $out/bin/TabNine
@@ -149,7 +149,7 @@
                   vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
                   nyxt =
                     let
-                      nyxt' = old.lispPackages.nyxt.overrideAttrs (_: rec {
+                      nyxt' = old.lispPackages.nyxt.overrideAttrs (_: {
                         patches = [
                           (old.fetchpatch {
                             url = "https://github.com/atlas-engineer/nyxt/commit/0786ee9fd80bf47827b6a9858895663db8498d12.patch";
@@ -159,7 +159,7 @@
                       });
                     in
                     old.nyxt.overrideAttrs
-                      (_: rec { src = nyxt'; });
+                      (_: { src = nyxt'; });
                   kitty_grab = unstable.legacyPackages.${system}.applyPatches {
                     patches = [ ./modules/shell/kitty/patches/fixed-ui-module-accessibility.patch ];
                     name = "kitty_grab";
