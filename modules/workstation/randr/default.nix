@@ -108,7 +108,7 @@ in
       ];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ rescreen nurpkgs.randrcli ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ rescreen ]; };
     })
   ];
 }

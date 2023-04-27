@@ -63,7 +63,7 @@ in
           xdg.configFile."flameshot.ini".text = flameshot_config_text;
           xdg.configFile."flameshot/flameshot.ini".text = flameshot_config_text;
         };
-      wmCommon.autostart.entries = [ { cmd = "flameshot"; } ];
+      wmCommon.autostart.entries = [{ cmd = "flameshot"; }];
     })
     (mkIf (cfg.enable && cfg.ordering.enable) {
       systemd.user.services."order-screenshots" = {
@@ -97,9 +97,6 @@ in
           mode = "root";
         }
       ];
-    })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ order_screenshots ]; };
     })
   ];
 }
