@@ -1,6 +1,5 @@
-{ config, pkgs, ... }:
-with pkgs.unstable.commonutils;
+{ config, ... }:
 
-rec {
+{
   globalWorkspaceRoot = config.navigation.bookmarks.workspaces.globalRoot;
 }

@@ -36,7 +36,7 @@ in
         }
       ];
 
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         gitpush = mkPythonScriptWithDeps pkgs "gitpush"
           (with pkgs; [ python3Packages.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
           (builtins.readFile ./scripts/gitpush.py);

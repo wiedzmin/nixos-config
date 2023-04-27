@@ -1,10 +1,10 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
 let
   user = config.attributes.mainUser.name;
 in
-rec {
+{
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
   emacsOrgRoamDotBinary = "${pkgs.graphviz}/bin/dot";
   emacsOrgRoamPath = homePrefix user "docs/org/roam";

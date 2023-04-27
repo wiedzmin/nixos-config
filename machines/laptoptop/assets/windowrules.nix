@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
-rec {
+{
   wmCommon.wsMapping.rules = [
     {
       class = lib.last config.attributes.vt.default.windowClass;

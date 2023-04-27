@@ -44,7 +44,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         fcalendar = mkPythonScriptWithDeps pkgs "fcalendar"
           (with pkgs; [ nurpkgs.pystdlib python3Packages.redis python3Packages.requests ])
           (builtins.readFile ./scripts/fcalendar.py);

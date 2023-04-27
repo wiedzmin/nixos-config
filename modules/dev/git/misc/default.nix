@@ -31,7 +31,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         gittags = mkPythonScriptWithDeps pkgs "gittags"
           (with pkgs; [ python3Packages.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
           (builtins.readFile ./scripts/gittags.py);

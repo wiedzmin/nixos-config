@@ -5,7 +5,7 @@ with config.navigation.bookmarks.workspaces;
 let
   user = config.attributes.mainUser.name;
 in
-rec {
+{
   navigation.bookmarks.workspaces.roots = { "stale" = homePrefix user "workspace/repos.stale"; };
   navigation.bookmarks.entries = {
     nixos = {
@@ -321,8 +321,8 @@ rec {
         browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
       };
     };
-    "technics" = {
-      desc = "ethnic/music/technics";
+    "techniques" = {
+      desc = "ethnic/music/techniques";
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGaKdF1Ewgg9IWW96UPpxTFi";

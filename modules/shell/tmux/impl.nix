@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 
 with lib;
 
@@ -164,7 +164,6 @@ let
   defaultResize = 5;
   defaultShell = "$SHELL";
   defaultShortcut = if versionAtLeast hm.home.stateVersion "19.09" then "C-b" else "b";
-  defaultTerminal = "screen";
 
   boolToStr = value: if value then "on" else "off";
 

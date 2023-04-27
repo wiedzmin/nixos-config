@@ -30,7 +30,7 @@ in
     (mkIf cfg.enable {
       fonts.fonts = with pkgs; [ font-awesome ];
 
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         debug-qtile = mkWMDebugScript
           pkgs "debug-qtile"
           nixpkgs-last-unbroken.qtile

@@ -74,7 +74,7 @@ in
       shell.prompts.starship.modulesConfiguration = { golang = { format = "[🐹 $version](bold cyan) "; }; };
     })
     (mkIf (cfg.enable && cfg.misc.enable) {
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         go-install-wrapper = pkgs.writeShellApplication {
           name = "go-install-wrapper";
           runtimeInputs = [ ];

@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.ide.emacs.edit;
-  user = config.attributes.mainUser.name;
 in
 {
   options = {

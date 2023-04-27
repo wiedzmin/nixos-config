@@ -95,7 +95,7 @@ in
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         yank-image = pkgs.writeShellApplication {
           name = "yank-image";
           runtimeInputs = with pkgs; [ wget xclip ];

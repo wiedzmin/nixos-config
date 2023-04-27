@@ -57,7 +57,7 @@ in
 
       networking.dhcpcd.denyInterfaces = [ "docker*" ];
 
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         dlint = pkgs.writeShellApplication {
           name = "dlint";
           runtimeInputs = with pkgs; [ docker ];

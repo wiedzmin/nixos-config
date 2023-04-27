@@ -18,7 +18,7 @@ in
       inactiveSec = mkOption {
         type = types.int;
         default = 60;
-        description = "arbtt inactivity treshold.";
+        description = "arbtt inactivity threshold.";
       };
       inactiveTag = mkOption {
         type = types.str;
@@ -169,7 +169,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         tt_capture = mkPythonScriptWithDeps pkgs "tt_capture"
           (with pkgs; [
             nurpkgs.pystdlib

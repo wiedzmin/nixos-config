@@ -6,7 +6,7 @@ let
   user = config.attributes.mainUser.name;
 in
 {
-  nixpkgs.config.packageOverrides = _: rec {
+  nixpkgs.config.packageOverrides = _: {
     "rescreen-${profileName}-i3" = pkgs.writeShellApplication {
       name = "rescreen-${profileName}-i3";
       runtimeInputs = with pkgs; [ i3 ];

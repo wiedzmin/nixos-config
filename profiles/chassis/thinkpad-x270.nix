@@ -1,5 +1,4 @@
-{ inputs, pkgs, ... }:
-with pkgs.unstable.commonutils;
+{ inputs, ... }:
 
 {
   imports = [

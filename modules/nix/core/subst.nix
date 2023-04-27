@@ -1,6 +1,6 @@
 { config, ... }:
 
-rec {
+{
   nixLspInitSection =
     if config.ext.nix.core.lsp.enable then ''
       :init
