@@ -256,6 +256,10 @@ in
                 trigger = ":nwtt";
                 replace = "nix shell \"nixpkgs#tree\" -c tree /nix/var/nix/{gcroots,profiles}";
               }
+              {
+                trigger = ":nnd";
+                replace = "nix shell \"nixpkgs#nil\" \"nixpkgs#findutils\" -c find . -name \"*.nix\" -exec nil diagnostics {} \\;";
+              }
             ];
           } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
