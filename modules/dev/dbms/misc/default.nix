@@ -41,7 +41,7 @@ in
       assertions = [
         {
           assertion = config.workstation.systemtraits.enable;
-          message = "dev/dbms/misc: must enable systemtraits maintainence.";
+          message = "dev/dbms/misc: must enable systemtraits maintenance.";
         }
         {
           assertion = config.ext.networking.vpn.enable;
@@ -49,7 +49,7 @@ in
         }
       ];
 
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         dbms = mkPythonScriptWithDeps pkgs "dbms" (with pkgs; [ pass nurpkgs.pystdlib python3Packages.redis tmux nurpkgs.toolbox ])
           (builtins.readFile ./scripts/dbms.py);
       };

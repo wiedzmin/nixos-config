@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.workstation.input.mouse;
-  user = config.attributes.mainUser.name;
 in
 {
   options = {

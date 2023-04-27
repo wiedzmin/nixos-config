@@ -99,7 +99,7 @@ in
 
         inherit (cfg) permittedInsecurePackages;
 
-        packageOverrides = _: rec {
+        packageOverrides = _: {
           # TODO: try https://github.com/lf-/nix-doc
           rollback = pkgs.writeShellApplication {
             name = "rollback";

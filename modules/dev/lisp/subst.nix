@@ -1,6 +1,6 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, inputs, ... }:
 
-rec {
+{
   emacsHighlightSexpPath = inputs.emacs-highlight-sexp;
   clsDisabled = if config.completion.emacs.snippets.backend != "yasnippet" then ":disabled" else "";
 }

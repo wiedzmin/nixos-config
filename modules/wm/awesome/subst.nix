@@ -1,7 +1,7 @@
 { config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
-rec {
+{
   awesomeDebugPrint = "";
   defaultVTCmd = builtins.head config.attributes.vt.default.cmd;
   defaultVTExecCmd = config.attributes.vt.default.cmd;

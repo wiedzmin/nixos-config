@@ -116,7 +116,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         keybindings = mkPythonScriptWithDeps pkgs "keybindings" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis yad ])
           (builtins.readFile ./scripts/keybindings.py);
       };

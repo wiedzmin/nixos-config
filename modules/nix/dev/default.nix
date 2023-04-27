@@ -56,7 +56,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.scripts.enable) {
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         get-pr-override = pkgs.writeShellApplication {
           name = "get-pr-override";
           runtimeInputs = with pkgs; [ coreutils curl gnugrep ];

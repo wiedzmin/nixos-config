@@ -68,7 +68,7 @@ in
         ACTION=="change", SUBSYSTEM=="drm", RUN+="${pkgs.autorandr}/bin/autorandr --batch --change"
       '';
 
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         xrandrutil = mkPythonScriptWithDeps pkgs "xrandrutil" (with pkgs; [ autorandr nurpkgs.pystdlib python3Packages.ewmh ])
           (builtins.readFile ./scripts/xrandrutil.py);
         rescreen = pkgs.writeShellApplication {

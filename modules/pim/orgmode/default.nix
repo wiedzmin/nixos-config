@@ -111,7 +111,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         org-capture = mkPythonScriptWithDeps pkgs "org-capture" (with pkgs; [ emacs nurpkgs.pystdlib tmux xsel ])
           (builtins.readFile ./scripts/org-capture.py);
       };

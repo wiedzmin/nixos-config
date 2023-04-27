@@ -85,9 +85,7 @@ in
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          vdi2qcow2
-        ];
+        home.packages = [ vdi2qcow2 ];
       };
     })
   ];

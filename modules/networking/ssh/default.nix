@@ -54,7 +54,7 @@ in
         message = "networking/ssh: must enable vpn functionality.";
       }];
 
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         sshmenu = mkPythonScriptWithDeps pkgs "sshmenu"
           (with pkgs; [ openssh nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis nurpkgs.toolbox ])
           (builtins.readFile ./scripts/sshmenu.py);

@@ -83,7 +83,7 @@ in
       }];
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ rescale-wallpaper ]; };
+      home-manager.users."${user}" = { home.packages = [ rescale-wallpaper ]; };
     })
   ];
 }

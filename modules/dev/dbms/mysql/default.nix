@@ -66,7 +66,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ MYCLI_HISTFILE = cfg.mycli.historyPath; global = true; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ nixpkgs-last-unbroken.mycli ];
+        home.packages = [ nixpkgs-last-unbroken.mycli ];
         xdg.configFile.".myclirc".text = lib.generators.toINI { } {
           main = {
             audit_log = cfg.mycli.auditLogPath;

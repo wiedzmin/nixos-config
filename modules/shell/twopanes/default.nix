@@ -25,7 +25,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         mcpanes = mkPythonScriptWithDeps pkgs "mcpanes" (with pkgs; [ mc nurpkgs.pystdlib python3Packages.redis ])
           (builtins.readFile ./scripts/mcpanes.py);
       };

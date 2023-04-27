@@ -264,7 +264,7 @@ in
     (mkIf cfg.enable {
       fonts.fonts = with pkgs; [ font-awesome ];
 
-      nixpkgs.config.packageOverrides = _: rec {
+      nixpkgs.config.packageOverrides = _: {
         debug-awesome = mkWMDebugScript
           pkgs "debug-awesome"
           pkgs.awesome
