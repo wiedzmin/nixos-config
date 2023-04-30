@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -8,6 +8,10 @@ let
   vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
   '';
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // { allowUnfree = true; };
+    localSystem = { system = "x86_64-linux"; };
+  };
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -30,7 +34,7 @@ in
         qemu-utils
         spice
         spice-gtk
-        vagrant
+        nixpkgs-last-unbroken.vagrant
         vdi2qcow2
         virt-manager
         virt-viewer
