@@ -20,10 +20,9 @@
         ("C-'" . vertico-quick-jump)))
 
 (use-package vertico-multiform
-  :disabled
   :after vertico
   :custom
-  ;TODO: investigate options throughly
+  ;TODO: investigate options thoroughly
   (vertico-multiform-categories '((file buffer grid)
                                   (imenu (:not indexed mouse))
                                   (symbol (vertico-sort-function . vertico-sort-alpha))))
