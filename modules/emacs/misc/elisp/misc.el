@@ -41,6 +41,12 @@
   (flycheck-display-errors-delay 0.4)
   (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list))
 
+(use-package avy-flycheck
+  :after flycheck
+  :bind
+  (:map custom-goto-map
+        ("M-e" . avy-flycheck-goto-error)))
+
 (use-package format-all
   :after copy-as-format
   :bind
