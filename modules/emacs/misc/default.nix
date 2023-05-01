@@ -31,6 +31,7 @@ in
 
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.flycheck
+        epkgs.avy-flycheck
         epkgs.hl-todo
         epkgs.copy-as-format
         epkgs.format-all
