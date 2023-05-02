@@ -34,7 +34,7 @@ in
       };
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ archiver archivemount pbzip2 pigz rar which-mime ];
+        home.packages = with pkgs; [ archiver archivemount pbzip2 pigz rar unzrip which-mime ];
         home.activation.ensureMimeappsList = {
           after = [ ];
           before = [ "checkLinkTargets" ];
