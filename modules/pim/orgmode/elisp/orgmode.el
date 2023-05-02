@@ -129,7 +129,6 @@
                              (setq-local org-complete-tags-always-offer-all-agenda-tags t)))
   :bind
   (:map custom-org-map
-        ("o" . ace-link-org)
         (";" . custom/org-tags-all)
         ("<down>" . org-forward-heading-same-level)
         ("<left>" . outline-previous-visible-heading)
@@ -145,7 +144,6 @@
         ("." . org-table-move-row-down)
         ("a" . org-agenda)
         ("e" . org-capture)
-        ("f" . ace-link-org)
         ("n" . org-narrow-to-subtree)
         ("R" . org-refile)
         ("s" . org-schedule)
