@@ -137,7 +137,7 @@ in
       programs.nix-ld.enable = false; # enable on-demand, see https://github.com/Mic92/nix-ld for reference
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup nix-build-offline rollback statix ] ++
+        home.packages = with pkgs; [ cargo /*for unpackaged Rust tools*/ nix-doc-lookup nix-build-offline nix-init nix-melt rollback statix ] ++
           lib.optionals cfg.lsp.enable [ nil ];
         home.sessionPath = [ (homePrefix user ".local/share/cargo/bin") ]; # FIXME: use XDG_DATA_HOME
       };
