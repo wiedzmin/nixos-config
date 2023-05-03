@@ -7,7 +7,7 @@ in
 {
   ditaaJar = "${pkgs.ditaa}/lib/ditaa.jar";
   emacsOrgRoamDotBinary = "${pkgs.graphviz}/bin/dot";
-  emacsOrgRoamPath = homePrefix user "docs/org/roam";
+  emacsOrgRoamDir = homePrefix user "docs/org/roam";
   emacsOrgBarsPath = inputs.emacs-org-bars;
   orgRoot = config.pim.orgmode.rootDir;
   pimCommonCaptureDataTemplate = config.pim.orgmode.commonCaptureDataTemplate;
