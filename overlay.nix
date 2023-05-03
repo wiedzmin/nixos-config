@@ -1,7 +1,7 @@
-inputs: final: prev:
+_: final: _:
 let
-  inherit (final) lib;
+  inherit (final) lib pkgs;
 in
 {
-  commonutils = import ./modules/util.nix { inherit lib; };
+  commonutils = import ./modules/util.nix { inherit lib pkgs; };
 }

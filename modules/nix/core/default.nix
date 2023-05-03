@@ -101,17 +101,14 @@ in
 
         packageOverrides = _: {
           # TODO: try https://github.com/lf-/nix-doc
-          rollback = pkgs.writeShellApplication {
-            name = "rollback";
-            runtimeInputs = with pkgs; [ fzf ];
-            text = ''
-              GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
-              if [ -n "$GENERATION" ]; then
-                GENERATION_PATH=/nix/var/nix/profiles/system-$(echo "$GENERATION" | cut -d\  -f1)-link
-                pkexec nix-env --profile /nix/var/nix/profiles/system --set "$GENERATION_PATH" && pkexec "$GENERATION_PATH/bin/switch-to-configuration switch"
-              fi
-            '';
-          };
+          rollback = mkShellScriptWithDeps "rollback" (with pkgs; [ fzf ]) ''
+            GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
+            if [ -n "$GENERATION" ]; then
+              GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
+              pkexec nix-env --profile /nix/var/nix/profiles/system --set $GENERATION_PATH && pkexec $GENERATION_PATH/bin/switch-to-configuration switch
+            fi
+          '';
+
           nix-doc-lookup = pkgs.writeShellApplication {
             name = "nix-doc-lookup";
             runtimeInputs = with pkgs; [ fzf gnused manix ];

@@ -1,4 +1,4 @@
-{ lib }:
+{ lib, pkgs }:
 
 # TODO: review https://github.com/ysndr/blog/blob/e4588f821ce6aee9ec3688ee9af3d2e61e143530/blog.nix#L14
 
@@ -65,6 +65,31 @@ in
 rec {
   addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
   withPatches = pkg: patches: lib.overrideDerivation pkg (_: { inherit patches; });
+  mkShellScriptWithDeps = name: packages: contents:
+    pkgs.stdenv.mkDerivation rec {
+      inherit name;
+      version = "unstable";
+      src = pkgs.writeTextFile {
+        name = "${name}.sh";
+        text = ''
+          #!${pkgs.stdenv.shell}
+          ${contents}
+        '';
+        executable = true;
+      };
+      unpackPhase = "true";
+      buildInputs = with pkgs; [ makeWrapper ];
+      propagatedBuildInputs = with pkgs; packages;
+      buildPhase = "mkdir -p $out/bin && cp -r $src $out/bin/${name}";
+      installPhase = ''
+        mkdir -p $out/bin
+        wrapProgram $out/bin/${name} \
+          --prefix PATH : ${pkgs.lib.makeBinPath packages}
+      '';
+      postInstall = ''
+        chmod a+x $out/bin/${name}
+      '';
+    };
   mkPythonScriptWithDeps = nixpkgs: pname: packages: text:
     nixpkgs.python3Packages.buildPythonPackage rec {
       inherit pname;
