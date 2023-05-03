@@ -33,7 +33,12 @@
   :custom
   ;TODO: investigate options thoroughly
   (vertico-multiform-categories '((file buffer grid)
+                                  (buffer flat (vertico-cycle . t))
                                   (imenu (:not indexed mouse))
+                                  (consult-grep buffer)
                                   (symbol (vertico-sort-function . vertico-sort-alpha))))
+  (vertico-multiform-commands
+      '((consult-imenu buffer indexed)
+        (execute-extended-command unobtrusive)))
   :config
   (vertico-multiform-mode))
