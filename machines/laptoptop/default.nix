@@ -716,9 +716,9 @@ in
     users."${user}" = {
       home.packages = with pkgs; [ xkb-switch ] ++ [ nurpkgs.dmenu-ng rofi /* NOTE: temp, until publishing upstream */ ];
       xdg.enable = true;
-      home.stateVersion = "20.09";
+      home.stateVersion = "22.11";
     };
   };
 
-  system.stateVersion = "20.09";
+  system.stateVersion = "22.09";
 }
