@@ -8,6 +8,8 @@ let
   hm = config.home-manager.users."${user}";
   inherit (hm.xdg) dataHome;
   yaml = pkgs.formats.yaml { };
+  pluginEnabled = plugin:
+    builtins.elem plugin (forEach config.home-manager.users."${user}".programs.zsh.plugins (x: x.name));
 in
 {
   options = {
@@ -105,7 +107,7 @@ in
 
             bindkey '\e[3~' delete-char # appropriate action for `delete` key
 
-            bindkey '^P' fuzzy-search-and-edit
+            ${optionalString (pluginEnabled "zsh-fuzzy-search-and-edit") "bindkey '^P' fuzzy-search-and-edit"}
           '' + optionalString (config.shell.vt.kitty.enable) ''
             # input navigation shim, see https://github.com/kovidgoyal/kitty/issues/2748 for details
 
