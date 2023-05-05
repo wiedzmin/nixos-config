@@ -33,7 +33,7 @@ in
           cmd_duration = {
             min_time = 100;
             format = "[$duration](bold yellow)";
-            show_notifications = true;
+            show_notifications = false;
           };
           directory = {
             truncation_length = 8;
