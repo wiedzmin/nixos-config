@@ -37,6 +37,7 @@
   (after-init-hook . projectile-mode)
   :custom
   (projectile-completion-system 'default)
+  (projectile-track-known-projects-automatically t)
   (projectile-enable-caching t)
   (projectile-require-project-root t)
   (projectile-file-exists-remote-cache-expire nil)
