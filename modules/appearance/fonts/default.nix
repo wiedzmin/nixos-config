@@ -50,7 +50,20 @@ in
         fontDir.enable = true;
         enableGhostscriptFonts = true;
         enableDefaultFonts = true;
-      } // lib.optionalAttrs cfg.beautify { fonts = with pkgs; [ nerdfonts ]; };
+      } // lib.optionalAttrs cfg.beautify {
+        fonts = with pkgs; [
+          (nerdfonts.override
+            {
+              fonts = [
+                "FiraCode"
+                "Hack"
+                "Iosevka"
+                "JetBrainsMono"
+                "SourceCodePro"
+              ];
+            })
+        ];
+      };
       console = {
         font = cfg.console;
         useXkbConfig = true;
