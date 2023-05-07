@@ -41,8 +41,8 @@
   (projectile-require-project-root t)
   (projectile-file-exists-remote-cache-expire nil)
   (projectile-project-search-path '(@projectsSearchPaths@))
-  (projectile-project-root-functions '(
-     projectile-root-local
+  (projectile-project-root-functions
+   '(projectile-root-local
      projectile-root-bottom-up))
   (projectile-project-root-files '(@projectsRootMarkersEmacs@)))
 
