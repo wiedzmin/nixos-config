@@ -165,3 +165,9 @@
 (with-eval-after-load 'vertico-multiform
   (setq vertico-multiform-commands '((consult-line buffer)
                                      (consult-imenu reverse buffer))))
+
+(eval-after-load 'xref
+  (use-package xref
+    :custom
+    (xref-show-xrefs-function #'consult-xref)
+    (xref-show-definitions-function #'consult-xref)))
