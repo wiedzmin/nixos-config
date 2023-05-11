@@ -204,6 +204,11 @@ with lib;
           Dock stations should update this according to their video outputs.
         '';
       };
+      layouts = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Collection of all xrandr heads spatial layouts";
+      };
     };
     dateFormats = mkOption {
       type = types.attrsOf types.str;
