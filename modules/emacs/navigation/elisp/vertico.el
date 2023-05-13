@@ -36,6 +36,7 @@
                                   (buffer flat (vertico-cycle . t))
                                   (imenu (:not indexed mouse))
                                   (consult-grep buffer)
+                                  (consult-xref buffer)
                                   (symbol (vertico-sort-function . vertico-sort-alpha))))
   (vertico-multiform-commands
       '((consult-imenu buffer indexed)
