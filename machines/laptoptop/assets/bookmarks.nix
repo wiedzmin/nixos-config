@@ -604,6 +604,10 @@ in
       browser = config.attributes.browser.fallback.cmd;
       remote = { url = "https://more.tv/online/russia1_hd"; };
     };
+    "good-wheels_ru" = {
+      tags = [ "shop" "car" ];
+      remote = { url = "https://good-wheels.ru"; };
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
