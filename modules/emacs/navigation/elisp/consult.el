@@ -63,7 +63,7 @@
    consult-theme :preview-key '(:debounce 0.2 any)
    consult-recent-file :preview-key '("S-<up>" "S-<down>"))
   (advice-add #'register-preview :override #'consult-register-window)
-  (consult-customize consult-line :keymap my-consult-line-map)
+  (consult-customize consult-line :keymap custom/consult-line-map)
   (define-minibuffer-key "\C-s"
                          'consult-location #'previous-history-element
                          'file #'consult-find-for-minibuffer)

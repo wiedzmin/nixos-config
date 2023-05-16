@@ -1,4 +1,4 @@
-(defvar my-consult-line-map
+(defvar custom/consult-line-map
   (let ((map (make-sparse-keymap)))
     (define-key map "\C-s" #'previous-history-element)
     map))
