@@ -53,7 +53,9 @@
   (consult-async-refresh-delay 0.15)
   (consult-line-point-placement 'match-beginning)
   (consult-line-start-from-top t)
+  (consult-line-numbers-widen t)
   (consult-narrow-key "<")
+  (consult-preview-key '(:debounce 0.5 any))
   (register-preview-delay 0.1)
   (register-preview-function #'consult-register-format)
   (xref-show-definitions-function #'consult-xref)
@@ -62,6 +64,7 @@
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
    consult-recent-file :preview-key '("S-<up>" "S-<down>"))
+  (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
   (advice-add #'register-preview :override #'consult-register-window)
   (consult-customize consult-line :keymap custom/consult-line-map)
   (define-minibuffer-key "\C-s"
