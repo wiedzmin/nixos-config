@@ -178,3 +178,15 @@
     :custom
     (xref-show-xrefs-function #'consult-xref)
     (xref-show-definitions-function #'consult-xref)))
+
+(use-package orderless
+  :preface
+  (defun dispatcher/dollar (pattern index total)
+    (when (string-suffix-p "$" pattern)
+      (cons 'orderless-regexp
+            (format "%s[%c-%c]*$"
+                    (substring pattern 0 -1)
+                    consult--tofu-char
+                    (+ consult--tofu-char consult--tofu-range -1)))))
+  :config
+  (add-to-list 'orderless-style-dispatchers 'dispatcher/dollar))
