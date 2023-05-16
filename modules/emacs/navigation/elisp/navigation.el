@@ -566,8 +566,30 @@
   (setq-default goggles-pulse t))
 
 (use-package xref
+  :hook
+  (xref--xref-buffer-mode-hook . hl-line-mode)
+  ((xref-after-return-hook xref-after-jump-hook) . recenter)
+  :bind
+  ("M-?" . xref-find-references)
+  ("M-[" . xref-pop-marker-stack)
+  ("C-M-." . xref-find-apropos)
+  (:map xref--xref-buffer-mode-map
+        ("C-o" . xref-show-location-at-point)
+        ("<tab>" . xref-quit-and-goto-xref)
+        ("r" . xref-query-replace-in-results))
   :custom
-  (xref-search-program 'ripgrep))
+  (xref-file-name-display 'project-relative)
+  (xref-history-storage 'xref-window-local-history)
+  (xref-marker-ring-length 1024)
+  (xref-search-program 'ripgrep)
+  (xref-show-definitions-function #'xref-show-definitions-completing-read)
+  (xref-show-xrefs-function #'xref-show-definitions-buffer)
+  (xref-history-storage 'xref-window-local-history)
+  (xref-show-xrefs-function #'xref-show-definitions-completing-read)
+  (xref-show-definitions-function #'xref-show-definitions-completing-read)
+  :config
+  (defadvice xref-goto-xref (after my activate)
+    (delete-window (get-buffer-window (get-buffer "*xref*")))))
 
 (use-package dogears
   :demand t

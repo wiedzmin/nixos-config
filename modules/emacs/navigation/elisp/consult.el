@@ -67,6 +67,11 @@
   (advice-add #'completing-read-multiple :override #'consult-completing-read-multiple)
   (advice-add #'register-preview :override #'consult-register-window)
   (consult-customize consult-line :keymap custom/consult-line-map)
+  (dolist (func '(consult-git-grep consult-ripgrep consult-grep))
+    (advice-add func :before
+                (defun custom/mark-jump-point (&rest _)
+                  (xref-push-marker-stack)
+                  (push-mark))))
   (define-minibuffer-key "\C-s"
                          'consult-location #'previous-history-element
                          'file #'consult-find-for-minibuffer)
@@ -100,7 +105,6 @@
 
 (use-package consult-xref
   :custom
-  (xref-search-program 'ripgrep)
   (xref-show-xrefs-function #'consult-xref)
   (xref-show-definitions-function #'consult-xref))
 
