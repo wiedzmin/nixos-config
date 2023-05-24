@@ -283,7 +283,7 @@
   :custom-face (aw-leading-char-face
                 ((t (:inherit ace-jump-face-foreground
                               :foreground "green"
-                              :height 0.1)))))
+                              :height 2.0)))))
 
 (use-package link-hint
   :bind
