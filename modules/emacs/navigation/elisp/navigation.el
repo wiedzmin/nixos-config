@@ -280,7 +280,7 @@
                        (?? aw-show-dispatch-help)))
   :config
   (ace-window-display-mode 1)
-  :custom-face (aw-leading-char-face1
+  :custom-face (aw-leading-char-face
                 ((t (:inherit ace-jump-face-foreground
                               :foreground "green"
                               :height 0.1)))))
