@@ -6,7 +6,6 @@ with lib;
 let
   cfg = config.completion;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   toml = pkgs.formats.toml { };
   yaml = pkgs.formats.yaml { };
 in
@@ -67,7 +66,7 @@ in
       };
       espanso.package = mkOption {
         type = types.package;
-        default = nurpkgs.espanso;
+        default = pkgs.espanso;
         visible = false;
         readOnly = true;
         internal = true;
