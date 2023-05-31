@@ -54,6 +54,7 @@
   (consult-line-point-placement 'match-beginning)
   (consult-line-start-from-top t)
   (consult-narrow-key "<")
+  (consult-line-numbers-widen t)
   (register-preview-delay 0.1)
   (register-preview-function #'consult-register-format)
   (xref-show-definitions-function #'consult-xref)
