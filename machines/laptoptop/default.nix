@@ -73,7 +73,6 @@ in
         efiSupport = true;
         device = "/dev/sda";
         configurationLimit = 50;
-        version = 2;
       };
     };
     initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
