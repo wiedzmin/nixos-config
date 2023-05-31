@@ -6,7 +6,10 @@ let
   cfg = config.dbms.mysql;
   user = config.attributes.mainUser.name;
   nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
-    config = config.nixpkgs.config // { allowUnfree = true; };
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
     localSystem = { system = "x86_64-linux"; };
   };
   hm = config.home-manager.users."${user}";
