@@ -319,6 +319,10 @@ in
             searchSuffix = "?q=pdf+";
           };
         };
+        "camdata" = {
+          desc = "Camera content workdir";
+          local.path = homePrefix user "blobs/work/camdata";
+        };
       };
     })
   ];
