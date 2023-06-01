@@ -691,3 +691,7 @@
   (shell-mode-hook . epithet-rename-buffer)
   (compilation-start-hook . epithet-rename-buffer-ignoring-arguments)
   (compilation-finish-functions . epithet-rename-buffer-ignoring-arguments))
+
+(use-package isearch
+  :custom
+  (lazy-count-suffix-format "   (%s/%s)"))
