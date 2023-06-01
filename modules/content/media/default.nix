@@ -133,7 +133,7 @@ in
                 }
                 {
                   trigger = ":ffmc";
-                  replace = "cd ${cfg.ffmpeg.workdir} && nix shell \"nixpkgs#ffmpeg\" -c ffmpeg -i {{inputfile.value}} -c:v copy -c:a copy -f mp4 {{namesansext.value}}.mp4 && echo \"file '${cfg.ffmpeg.workdir}/{{namesansext.value}}.mp4'\">> ${cfg.ffmpeg.workdir}/files.list";
+                  replace = "cd ${cfg.ffmpeg.workdir} && nix shell \"nixpkgs#ffmpeg\" -c ffmpeg -i {{inputfile.value}} -c:v copy -c:a copy -f mp4 {{namesansext.value}}.mp4 && mv {{inputfile.value}} ${cfg.ffmpeg.workdir}/done && echo \"file '${cfg.ffmpeg.workdir}/{{namesansext.value}}.mp4'\">> ${cfg.ffmpeg.workdir}/files.list";
                   vars = [
                     {
                       name = "mtsfiles";
