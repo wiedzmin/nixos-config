@@ -144,6 +144,17 @@ in
                 ];
               }
               {
+                trigger = ":ggr";
+                replace = "nix shell \"nixpkgs#ripgrep\" \"nixpkgs#fzf\" \"nixpkgs#gron\" \"nixpkgs#gnugrep\" -c cat `rg --files | grep -e \"\\.json\" | fzf` | gron | grep {{searchterm.value}} | gron --ungron";
+                vars = [
+                  {
+                    name = "searchterm";
+                    type = "form";
+                    params = { layout = "Search term: [[value]]"; };
+                  }
+                ];
+              }
+              {
                 trigger = ":fsame";
                 replace = "find -L {{searchroot.value}} -samefile {{comparewith.value}}";
                 vars = [
