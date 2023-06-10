@@ -183,12 +183,12 @@ in
       isDefault = false;
       isFallback = true;
     };
-    firefox = {
+    qutebrowser = {
       enable = true;
       isDefault = true;
+      suspendInactive = false;
       sessions = {
         backup.enable = true;
-        keepHistory = true;
       };
     };
   };
