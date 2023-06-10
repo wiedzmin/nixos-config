@@ -11,7 +11,7 @@ let
       suspendDelay = 15;
       matchWmClassContains = "qutebrowser";
       suspendSubtreePattern = "qtwebengine";
-      downclockOnBattery = 3;
+      downclockOnBattery = 0;
       resumeEvery = 60;
       resumeFor = 3;
       sendSignals = true;
