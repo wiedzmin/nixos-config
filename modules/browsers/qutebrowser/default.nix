@@ -68,6 +68,20 @@ in
         default = "lightness-hsl";
         description = "Darkmode algorithm to use";
       };
+      emacs.browseUrlSetup = mkOption {
+        type = types.lines;
+        default = ''
+          (use-package browse-url
+            :config
+            (setq browse-url-browser-function 'browse-url-generic)
+            (setq browse-url-generic-program "${builtins.head (splitString " " cfg.command)}")
+            (setq browse-url-generic-args '(${concatStringsSep " " (forEach (builtins.tail (splitString " " cfg.command))
+              (s: "\"" + s + "\""))})))
+        '';
+        visible = false;
+        internal = true;
+        description = "Specialized Qutebrowser-aware `browse-url` package setup";
+      };
       sessions.backup.enable = mkOption {
         type = types.bool;
         default = false;
@@ -123,6 +137,14 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           yank-image
+          (makeDesktopItem {
+            name = "org.custom.qutebrowser.windowed";
+            type = "Application";
+            exec = "${cfg.command} %U";
+            comment = "Qutebrowser that opens links preferably in new windows";
+            desktopName = "Qutebrowser";
+            categories = [ "Network" "WebBrowser" ];
+          })
         ];
         xdg.configFile."qutebrowser/hint-words".text = builtins.readFile ./assets/hint-words;
         programs.qutebrowser = {
@@ -505,6 +527,8 @@ in
       '';
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
+
+      browsers.ext.emacs.browseUrlSetup = cfg.emacs.browseUrlSetup;
 
       workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
 
