@@ -6,6 +6,8 @@ let
   cfg = config.browsers.qutebrowser;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  standardDesktopID = "org.qutebrowser.qutebrowser";
+  windowedDesktopID = "org.custom.qutebrowser.windowed";
   suspensionRule = {
     qutebrowser = {
       suspendDelay = 15;
@@ -57,6 +59,11 @@ in
         visible = false;
         internal = true;
         description = "Qutebrowser default window class.";
+      };
+      desktopID = mkOption {
+        type = types.enum [ standardDesktopID windowedDesktopID ];
+        default = windowedDesktopID;
+        description = "Desktop entry name";
       };
       darkmode.enable = mkOption {
         type = types.bool;
@@ -138,7 +145,7 @@ in
         home.packages = with pkgs; [
           yank-image
           (makeDesktopItem {
-            name = "org.custom.qutebrowser.windowed";
+            name = windowedDesktopID;
             type = "Application";
             exec = "${cfg.command} %U";
             comment = "Qutebrowser that opens links preferably in new windows";
@@ -512,19 +519,20 @@ in
           message = "browsers: qutebrowser: there should be exactly one default.";
         }
       ];
+      home-manager.users."${user}" = {
+        xdg.mimeApps.defaultApplications =
+          mapMimesToApp config.attributes.mimetypes.browser "${cfg.desktopID}.desktop";
+      };
+      services.xserver.displayManager.sessionCommands = ''
+        ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser ${cfg.desktopID}.desktop
+      '';
       shell.core.variables = [{
         TB_DEFAULT_BROWSER = cfg.command;
         TB_DEFAULT_BROWSER_SESSIONS_STORE = cfg.sessions.path;
         TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES = builtins.toString cfg.sessions.keepMinutes;
         global = true;
       }];
-      home-manager.users."${user}" = {
-        xdg.mimeApps.defaultApplications =
-          mapMimesToApp config.attributes.mimetypes.browser "org.custom.qutebrowser.windowed.desktop";
-      };
-      services.xserver.displayManager.sessionCommands = ''
-        ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser org.qutebrowser.qutebrowser.desktop
-      '';
+
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
 
