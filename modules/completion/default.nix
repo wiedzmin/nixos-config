@@ -51,13 +51,17 @@ in
         ];
         default = "ALT+SPACE";
       };
+      espanso.backend = mkOption {
+        type = types.enum [ "Auto" "Clipboard" "Inject" ];
+        default = "Auto";
+      };
       espanso.config = mkOption {
         type = types.lines;
         default = ''
           toggle_key: ${cfg.expansions.toggleKey}
           search_shortcut: ${cfg.expansions.searchShortcut}
           auto_restart: false
-          backend: Inject
+          backend: ${cfg.espanso.backend}
         '';
         visible = false;
         readOnly = true;
