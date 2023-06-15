@@ -6,6 +6,8 @@ let
   cfg = config.browsers.firefox;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos;
+  standardDesktopID = "firefox";
+  windowedDesktopID = "org.custom.firefox.windowed";
   suspensionRule = {
     Firefox = {
       suspendDelay = 10;
@@ -58,6 +60,25 @@ in
         visible = false;
         internal = true;
         description = "Firefox default window class.";
+      };
+      desktopID = mkOption {
+        type = types.enum [ standardDesktopID windowedDesktopID ];
+        default = windowedDesktopID;
+        description = "Desktop entry name";
+      };
+      emacs.browseUrlSetup = mkOption {
+        type = types.lines;
+        default = ''
+          (use-package browse-url
+            :config
+            (setq browse-url-browser-function 'browse-url-firefox)
+            (setq browse-url-firefox-program "${builtins.head (splitString " " cfg.command)}")
+            (setq browse-url-firefox-arguments '("${concatStringsSep " " (forEach (builtins.tail (splitString " " cfg.command))
+              (s: "\"" + s + "\""))}")))
+        '';
+        visible = false;
+        internal = true;
+        description = "Specialized Firefox-aware `browse-url` package setup";
       };
       sessions.backup.enable = mkOption {
         type = types.bool;
@@ -137,6 +158,14 @@ in
         home.packages = with pkgs;
           [
             xsel # for firefox native clients
+            (makeDesktopItem {
+              name = windowedDesktopID;
+              type = "Application";
+              exec = "${cfg.command} %U";
+              comment = "Firefox that opens links preferably in new windows";
+              desktopName = "Firefox";
+              categories = [ "Network" "WebBrowser" ];
+            })
           ];
         programs.firefox = {
           enable = true;
@@ -409,13 +438,15 @@ in
       ];
 
       home-manager.users."${user}" = {
-        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "firefox.desktop";
+        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "${cfg.desktopID}.desktop";
       };
       services.xserver.displayManager.sessionCommands = ''
-        ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser firefox.desktop
+        ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser ${cfg.desktopID}.desktop
       '';
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
+
+      browsers.ext.emacs.browseUrlSetup = cfg.emacs.browseUrlSetup;
 
       shell.core.variables = [{
         TB_DEFAULT_BROWSER = cfg.command;

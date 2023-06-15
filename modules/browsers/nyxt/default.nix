@@ -35,6 +35,8 @@ with lib;
 let
   cfg = config.browsers.nyxt;
   user = config.attributes.mainUser.name;
+  standardDesktopID = "nyxt";
+  customDesktopID = "org.custom.nyxt.custom";
 in
 {
   options = {
@@ -78,6 +80,23 @@ in
         internal = true;
         description = "Nyxt default window class.";
       };
+      desktopID = mkOption {
+        type = types.enum [ standardDesktopID customDesktopID ];
+        default = customDesktopID;
+        description = "Desktop entry name";
+      };
+      emacs.browseUrlSetup = mkOption {
+        type = types.lines;
+        default = ''
+          (use-package browse-url
+            :config
+            (setq browse-url-browser-function 'browse-url-generic)
+            (setq browse-url-generic-program "${builtins.head (splitString " " cfg.command)}"))
+        '';
+        visible = false;
+        internal = true;
+        description = "Specialized Nyxt-aware `browse-url` package setup";
+      };
       bookmarks.enable = mkOption {
         type = types.bool;
         default = true;
@@ -88,7 +107,19 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ nyxt extract_url xurls ];
+        home.packages = with pkgs; [
+          nyxt
+          (makeDesktopItem {
+            name = customDesktopID;
+            type = "Application";
+            exec = "${cfg.command} %U";
+            comment = "Custom Nyxt desktop item, customizations pending after more close usage";
+            desktopName = "Nyxt";
+            categories = [ "Network" "WebBrowser" ];
+          })
+          extract_url
+          xurls
+        ];
         xdg.configFile."nyxt/init.lisp" = {
           text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./config/init.lisp ];
           force = true;
@@ -119,17 +150,18 @@ in
           message = "browsers: nyxt: there should be exactly one default.";
         }
       ];
-
       home-manager.users."${user}" = {
-        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "nyxt.desktop";
+        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "${cfg.desktopID}.desktop";
       };
       services.xserver.displayManager.sessionCommands = ''
-        ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser nyxt.desktop
+        ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser ${cfg.desktopID}.desktop
       '';
       shell.core.variables = [{ TB_DEFAULT_BROWSER = cfg.command; global = true; }];
 
       attributes.browser.default.cmd = cfg.command;
       attributes.browser.default.windowClass = cfg.windowClass;
+
+      browsers.ext.emacs.browseUrlSetup = cfg.emacs.browseUrlSetup;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
