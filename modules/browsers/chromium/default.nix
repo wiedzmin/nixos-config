@@ -5,6 +5,8 @@ with lib;
 let
   cfg = config.browsers.chromium;
   user = config.attributes.mainUser.name;
+  standardDesktopID = "chromium";
+  windowedDesktopID = "org.custom.chromium.windowed";
   suspensionRule = {
     Chromium = {
       suspendDelay = 10;
@@ -71,6 +73,11 @@ in
         internal = true;
         description = "Chromium default window class.";
       };
+      desktopID = mkOption {
+        type = types.enum [ standardDesktopID windowedDesktopID ];
+        default = windowedDesktopID;
+        description = "Desktop entry name";
+      };
       # TODO: idea: advice link hint opening function to use "--new-tab" or such as argument after first link
       # FIXME: consider refactoring `cfg.command` representation above
       emacs.browseUrlSetup = mkOption {
@@ -80,7 +87,8 @@ in
             :config
             (setq browse-url-browser-function 'browse-url-chromium)
             (setq browse-url-chromium-program "${builtins.head (splitString " " cfg.command)}")
-            (setq browse-url-chromium-arguments '("${builtins.head (builtins.tail (splitString " " cfg.command))}")))
+            (setq browse-url-chromium-arguments '("${concatStringsSep " " (forEach (builtins.tail (splitString " " cfg.command))
+              (s: "\"" + s + "\""))}")))
         '';
         visible = false;
         internal = true;
@@ -118,7 +126,7 @@ in
         };
         home.packages = with pkgs; [
           (makeDesktopItem {
-            name = "org.custom.chromium.windowed";
+            name = windowedDesktopID;
             type = "Application";
             exec = "${cfg.command} %U";
             comment = "Chromium that opens links preferably in new windows";
@@ -171,10 +179,10 @@ in
         }
       ];
       home-manager.users."${user}" = {
-        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "chromium.desktop";
+        xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.browser "${cfg.desktopID}.desktop";
       };
       services.xserver.displayManager.sessionCommands = ''
-        ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser org.custom.chromium.windowed.desktop
+        ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser ${cfg.desktopID}.desktop
       '';
       shell.core.variables = [{ TB_DEFAULT_BROWSER = cfg.command; global = true; }];
 
