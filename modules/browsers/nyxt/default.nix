@@ -43,7 +43,7 @@ in
         type = types.bool;
         default = false;
         description = ''
-          Whether to enable Next'.
+          Whether to enable Nyxt'.
         '';
       };
       downloadPath = mkOption {
@@ -58,13 +58,13 @@ in
         type = types.bool;
         default = false;
         description = ''
-          Next should be the default browser.
+          Nyxt should be the default browser.
         '';
       };
       isFallback = mkOption {
         type = types.bool;
         default = false;
-        description = "Next should be the fallback browser";
+        description = "Nyxt should be the fallback browser";
       };
       command = mkOption {
         type = types.str;
