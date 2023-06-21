@@ -20,37 +20,12 @@ with pkgs.unstable.commonutils;
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http blog";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http blogspot";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "http docs i3wm";
       desktop = "web";
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "http facebook github";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http feedly";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http flake";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http github";
       desktop = "web";
     }
     {
@@ -67,21 +42,6 @@ with pkgs.unstable.commonutils;
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "http opennews";
       desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http radiosputnik.ria.ru";
-      desktop = "ent";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http ria.ru";
-      desktop = "ent";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http infox";
-      desktop = "ent";
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
