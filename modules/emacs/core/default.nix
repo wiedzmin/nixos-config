@@ -106,7 +106,7 @@ in
         default =
           let
             flavor = with pkgs.unstable; if cfg.pgtk.enable then emacsPgtk else
-            if cfg.fromGit then emacsGit else emacs;
+            if cfg.fromGit then emacs-git else emacs;
             configured = (flavor.override {
               withGTK2 = false;
               withGTK3 = if cfg.pgtk.enable then true else false;
