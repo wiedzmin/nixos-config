@@ -49,4 +49,5 @@
   (savehist-additional-variables
    '(kill-ring
      search-ring
+     register-alist
      regexp-search-ring)))
