@@ -68,6 +68,7 @@ in
         default = false;
         description = "Nyxt should be the fallback browser";
       };
+      # TODO: https://discourse.atlas.engineer/t/how-to-open-a-new-browser-window-from-command-line/811
       command = mkOption {
         type = types.str;
         default = "${pkgs.nyxt}/bin/nyxt";
