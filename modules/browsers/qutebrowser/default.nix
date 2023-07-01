@@ -75,6 +75,16 @@ in
         default = "lightness-hsl";
         description = "Darkmode algorithm to use";
       };
+      hints.mode = mkOption {
+        type = types.enum [ "letter" "number" "word" ];
+        default = "letter";
+        description = "Mode to use for hints";
+      };
+      hints.chars = mkOption {
+        type = types.str;
+        default = "qweasdzxc";
+        description = "Characters used for hint strings";
+      };
       emacs.browseUrlSetup = mkOption {
         type = types.lines;
         default = ''
@@ -275,8 +285,9 @@ in
               hide_unmatched_rapid_hints = true;
               leave_on_load = true;
               min_chars = 1;
-              mode = "word";
+              mode = cfg.hints.mode;
               dictionary = xdgConfig "${user}" "/qutebrowser/hint-words";
+              chars = cfg.hints.chars;
               next_regexes = [
                 "\\\\bnext\\\\b"
                 "\\\\bmore\\\\b"
