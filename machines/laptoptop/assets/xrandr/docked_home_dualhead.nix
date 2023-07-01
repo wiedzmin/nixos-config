@@ -31,7 +31,7 @@ in
             "${config.attributes.hardware.monitors.internalHead.name}" =
               config.attributes.hardware.monitors.internalHead.edid;
           };
-          config = config.attributes.hardware.monitors.layouts.twoExtHeadsInternalDownright;
+          config = config.attributes.hardware.monitors.layouts.twoExtHeadsInternalAtRight;
           hooks.postswitch = lib.optionalString (config.wm.i3.enable) "rescreen-${profileName}-i3";
         };
       };
