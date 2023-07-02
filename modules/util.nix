@@ -259,7 +259,8 @@ rec {
       (lib.mapAttrsToList (re: tag: "current window ($title =~ m!^emacs - [^ ]+\\.${re} .*$!) ==> tag ${tag},")
         title2tag);
   reAddWildcards = s: builtins.replaceStrings [ " " ] [ ".*" ] s;
-  dockableWS = headscount: if headscount > 2 then "secondary" else "primary";
+  dockablePrimaryWS = headscount: if headscount > 2 then "primary" else "secondary";
+  dockableSecondaryWS = headscount: if headscount > 2 then "secondary" else "primary";
   ####################################################################################################################
   #                                                   WM utils                                                       #
   ####################################################################################################################

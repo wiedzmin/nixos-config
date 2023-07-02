@@ -662,7 +662,7 @@ in
       name = "edit";
       key = [ "F2" ];
       transient = false;
-      type = dockableWS config.attributes.hardware.monitors.count;
+      type = dockablePrimaryWS config.attributes.hardware.monitors.count;
     }
     {
       name = "tools";
@@ -680,7 +680,7 @@ in
       name = "ent";
       key = [ "Escape" ];
       transient = false;
-      type = dockableWS config.attributes.hardware.monitors.count;
+      type = dockableSecondaryWS config.attributes.hardware.monitors.count;
     }
     {
       name = "shell";
