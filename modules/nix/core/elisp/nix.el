@@ -6,6 +6,7 @@
   (nix-mode-hook . (lambda () (setq-local tab-width 2)))
   @nixLspHookSection@
   :config
+  @nixLspNixdSection@
   (when (boundp 'company-backends)
     (add-to-list 'company-backends 'company-tabnine)
     (add-to-list 'company-backends 'company-capf))

@@ -52,6 +52,11 @@ in
         default = false;
         description = "Whether to enable LSP functionality";
       };
+      lsp.server = mkOption {
+        type = types.enum [ "nil" "nixd" ];
+        default = "nil";
+        description = "Which LSP server implementation to use";
+      };
     };
   };
 
@@ -144,7 +149,9 @@ in
           rollback
           statix
         ] ++
-        lib.optionals cfg.lsp.enable [ nil ];
+        lib.optionals cfg.lsp.enable
+          ((lib.optionals (cfg.lsp.server == "nixd") [ nixd ]) ++
+            (lib.optionals (cfg.lsp.server == "nil") [ nil ]));
         home.sessionPath = [ (homePrefix user ".local/share/cargo/bin") ]; # FIXME: use XDG_DATA_HOME
       };
       shell.core.variables = [{
