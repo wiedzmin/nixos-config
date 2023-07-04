@@ -608,6 +608,14 @@ in
       tags = [ "shop" "car" ];
       remote = { url = "https://good-wheels.ru"; };
     };
+    "best-tyres_ru" = {
+      tags = [ "shop" "car" ];
+      remote = { url = "https://www.best-tyres.ru"; };
+    };
+    "thinkpad/reddit" = {
+      tags = [ "laptop" "thinkpad" "reddit" ];
+      remote = { url = "https://www.reddit.com/r/Thinkpad"; };
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
