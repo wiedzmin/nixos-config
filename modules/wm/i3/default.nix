@@ -392,6 +392,7 @@ in
 
             bar {
                 position top
+                tray_output ${config.attributes.hardware.monitors.externalPrimaryHead.name}
                 tray_output ${config.attributes.hardware.monitors.internalHead.name}
                 mode dock
                 modifier ${prefix}
