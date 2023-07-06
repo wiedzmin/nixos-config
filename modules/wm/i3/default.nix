@@ -346,7 +346,7 @@ in
         ] ++ optionals (cfg.windowFocus.impl == "wmfocus") [
           {
             key = [ prefix "Tab" ];
-            cmd = ''${pkgs.wmfocus}/bin/wmfocus --chars qweasdzxc --textcoloralt "#eeeeee"'';
+            cmd = ''${pkgs.wmfocus}/bin/wmfocus --halign center --valign center --chars qweasdzxc --textcoloralt "#eeeeee"'';
             mode = "root";
           }
         ] ++ optionals (cfg.windowFocus.impl == "easyfocus") [
