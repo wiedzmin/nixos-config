@@ -576,6 +576,19 @@ in
         }
       ];
     };
+    roam-root = {
+      desc = "Org Roam root directory";
+      tags = [ "roam" "org" ];
+      local.path = homePrefix user "docs/org/roam";
+      windowRules = [
+        {
+          class = "Emacs";
+          title = "org/roam";
+          desktop = "edit";
+          activate = true;
+        }
+      ];
+    };
     goodies = {
       local.path = homePrefix user "docs/org/roam/current_goodies.org";
       windowRules = [
