@@ -61,6 +61,11 @@ in
           `ipc` - rely on IPC service, listening for window titles changes
         '';
       };
+      windowFocus.impl = mkOption {
+        type = types.enum [ "wmfocus" "easyfocus" ];
+        default = "wmfocus";
+        description = "Which tool to use for hinted windows navigation";
+      };
       mouseFollowsFocus = mkOption {
         type = types.bool;
         default = true;
@@ -263,11 +268,6 @@ in
             mode = "layout";
           }
           {
-            key = [ prefix "Tab" ];
-            cmd = ''${pkgs.wmfocus}/bin/wmfocus --chars qweasdzxc --textcoloralt "#eeeeee"'';
-            mode = "root";
-          }
-          {
             key = [ prefix "Shift" "bracketleft" ];
             cmd = ''move workspace to output ${config.attributes.hardware.monitors.externalPrimaryHead.name}'';
             mode = "root";
@@ -342,6 +342,18 @@ in
             cmd = "fullscreen disable; floating enable; resize set 40 ppt 40 ppt; sticky enable; move position 60 ppt 4 ppt";
             mode = "root";
             raw = true;
+          }
+        ] ++ optionals (cfg.windowFocus.impl == "wmfocus") [
+          {
+            key = [ prefix "Tab" ];
+            cmd = ''${pkgs.wmfocus}/bin/wmfocus --chars qweasdzxc --textcoloralt "#eeeeee"'';
+            mode = "root";
+          }
+        ] ++ optionals (cfg.windowFocus.impl == "easyfocus") [
+          {
+            key = [ prefix "Tab" ];
+            cmd = ''${pkgs.i3-easyfocus}/bin/i3-easyfocus'';
+            mode = "root";
           }
         ];
       };
