@@ -352,7 +352,8 @@ in
         ] ++ optionals (cfg.windowFocus.impl == "easyfocus") [
           {
             key = [ prefix "Tab" ];
-            cmd = ''${pkgs.i3-easyfocus}/bin/i3-easyfocus'';
+            # FIXME: parameterize font, use example below
+            cmd = ''${pkgs.i3-easyfocus}/bin/i3-easyfocus --all --keys alpha --font -misc-iosevka-bold-r-normal--16-0-0-0-m-0-iso10646-1'';
             mode = "root";
           }
         ];
