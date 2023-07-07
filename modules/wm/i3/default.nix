@@ -364,6 +364,10 @@ in
           desc = "i3 userguide";
           remote.url = "https://i3wm.org/docs/userguide.html";
         };
+        i3-debugging = {
+          desc = "i3 userguide";
+          remote.url = "https://i3wm.org/docs/debugging.html";
+        };
       };
 
       home-manager.users."${user}" = {
