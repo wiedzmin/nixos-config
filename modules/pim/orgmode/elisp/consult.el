@@ -47,6 +47,8 @@
   (:map org-roam-map
         ("b" . consult-org-roam-backlinks)
         ("g" . consult-org-roam-search))
+  :custom
+  (consult-org-roam-grep-func 'consult-ripgrep)
   :config
   (setf (alist-get ?o avy-dispatch-alist) 'avy-action-search-org-roam
         (alist-get ?O avy-dispatch-alist) 'avy-action-search-url-org-roam))
