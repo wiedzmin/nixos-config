@@ -71,7 +71,7 @@
   (kill-whole-line t)
   (next-line-add-newlines nil)
   (blink-matching-paren nil)
-  (set-mark-command-repeat-pop nil)
+  (set-mark-command-repeat-pop t)
   (save-interprogram-paste-before-kill t)
   (x-gtk-use-system-tooltips nil)
   (eval-expression-print-length nil)
