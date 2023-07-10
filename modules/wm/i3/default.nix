@@ -258,6 +258,18 @@ in
             raw = true;
           }
           {
+            key = [ prefix "semicolon" ];
+            cmd = "layout stacking";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = [ prefix "apostrophe" ];
+            cmd = "layout tabbed";
+            mode = "root";
+            raw = true;
+          }
+          {
             key = [ "b" ];
             cmd = "${pkgs.i3-balance-workspace}/bin/i3_balance_workspace";
             mode = "layout";
