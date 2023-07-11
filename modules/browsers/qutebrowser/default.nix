@@ -312,13 +312,6 @@ in
               partial_timeout = 2000;
               spatial_navigation = true;
             };
-            fileselect = {
-              handler = "external";
-              single_file.command = config.attributes.vt.default.cmd
-                ++ [ "${pkgs.ranger}/bin/ranger" "--choosefile={}" ];
-              multiple_files.command = config.attributes.vt.default.cmd
-                ++ [ "${pkgs.ranger}/bin/ranger" "--choosefiles={}" ];
-            };
             keyhint.delay = 20;
             new_instance_open_target = "tab";
             new_instance_open_target_window = "last-focused";
