@@ -64,6 +64,7 @@ in
     (mkIf cfg.enable {
       boot.readOnlyNixStore = true; # TODO: should it be moved to host/machines level?
       nix = {
+        nixPath = lib.mkForce [ "nixpkgs=/etc/nixpkgs" ];
         settings = {
           cores = lib.mkDefault config.attributes.hardware.cores;
           max-jobs = lib.mkDefault config.attributes.nix.jobs;
