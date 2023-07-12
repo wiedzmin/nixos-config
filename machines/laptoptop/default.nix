@@ -635,6 +635,7 @@ in
   wm.i3 = {
     enable = true;
     isDefault = true;
+    titleAlignment = "center";
     statusbar.impl = "i3-rs";
   };
   wm.awesome = {
