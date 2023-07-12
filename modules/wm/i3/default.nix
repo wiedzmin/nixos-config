@@ -32,6 +32,11 @@ in
         default = "default";
         description = "Default container layout.";
       };
+      titleAlignment = mkOption {
+        type = types.enum [ "left" "center" "right" ];
+        default = "left";
+        description = "Window titles alignment";
+      };
       settings = mkOption {
         type = types.lines;
         # TODO: play with `default_orientation auto`
@@ -40,6 +45,8 @@ in
           floating_modifier ${prefix}
           hide_edge_borders smart
           workspace_layout ${cfg.containerLayout}
+
+          title_align ${cfg.titleAlignment}
 
           mouse_warping output
           focus_follows_mouse no
