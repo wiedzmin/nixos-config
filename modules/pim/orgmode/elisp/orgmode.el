@@ -66,7 +66,7 @@
   :commands (org-babel-execute:restclient))
 
 (use-package org
-  :after f
+  :after (f dired)
   :delight org-src-mode
   :preface
   ;; remove read-only props from yanked text (e.g. from jabber.el chat buffer)
@@ -117,6 +117,10 @@
     (if (eq org-appear-autolinks t)
         (setq org-appear-autolinks 'just-brackets)
       (setq org-appear-autolinks t)))
+  (defun custom/org-attach-dired-copy ()
+    (interactive)
+    (let ((org-attach-method 'cp))
+      (call-interactively #'org-attach-dired-to-subtree)))
   ;; https://github.com/chuntaro/emacs-keypression
   :mode (("\\.org$" . org-mode)
          ("\\.org_archive$" . org-mode))
@@ -157,7 +161,10 @@
         ("|" . org-deadline)
         ("c" . org-cut-subtree)
         ("l" . custom/toggle-link-display)
-        ("[" . org-agenda-file-to-front))
+        ("[" . org-agenda-file-to-front)
+        ("o" . org-attach-open)
+        ("d" . org-attach-delete-one)
+        ("C-d" . org-attach-delete-all))
   (:map org-src-mode-map
         ("s-l" . org-edit-src-exit)
         ("C-c C-'" . org-edit-src-exit))
@@ -170,6 +177,8 @@
         ("s-k" . org-babel-previous-src-block)
         ("s-l" . org-edit-src-code)
         ("C-c C-'" . org-edit-src-code))
+  (:map dired-mode-map
+        ("|" . custom/org-attach-dired-copy))
   :custom-face (org-done ((nil (:foreground "PaleGreen" :weight normal :strike-through t))))
   :custom-face (org-headline-done ((nil (:foreground "LightSalmon" :weight normal :strike-through t))))
   :custom
@@ -322,6 +331,7 @@
   (org-x11idle-exists-p t)
   (org-yank-adjusted-subtrees t)
   :config
+  (use-package org-attach-git)
   (advice-add 'org-yank :after #'custom/make-yank-writeable)
   (when (boundp 'company-backends)
     (add-to-list 'company-backends 'company-dabbrev)
