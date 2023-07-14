@@ -43,10 +43,11 @@ in
         default = ''
           font ${config.wmCommon.fonts.default}
           floating_modifier ${prefix}
-          hide_edge_borders smart
           workspace_layout ${cfg.containerLayout}
 
           title_align ${cfg.titleAlignment}
+
+          hide_edge_borders none
 
           mouse_warping output
           focus_follows_mouse no
