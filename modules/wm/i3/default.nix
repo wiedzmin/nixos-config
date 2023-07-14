@@ -39,10 +39,10 @@ in
       };
       settings = mkOption {
         type = types.lines;
-        # TODO: play with `default_orientation auto`
         default = ''
           font ${config.wmCommon.fonts.default}
           floating_modifier ${prefix}
+          default_orientation auto
           workspace_layout ${cfg.containerLayout}
 
           title_align ${cfg.titleAlignment}
