@@ -99,8 +99,8 @@ in
           inherit (cfg) pinentryFlavor;
         };
       };
-
-      wmCommon.wsMapping.rules = [{
+      # TODO: generalize for multiple WMs
+      wmCommon.wsMapping.rules = optionals (config.wm.i3.popupDuringFullscreen != "leave_fullscreen") [{
         class = ".*pinentry.*";
         fullscreen = true;
       }];
