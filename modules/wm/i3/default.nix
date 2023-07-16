@@ -42,6 +42,11 @@ in
         default = 500;
         description = "Urgency hint display duration, in ms";
       };
+      focusWrappingMode = mkOption {
+        type = types.enum [ "yes" "no" "force" "workspace" ];
+        default = "workspace";
+        description = "Window focus wrapping mode";
+      };
       settings = mkOption {
         type = types.lines;
         default = ''
@@ -61,6 +66,7 @@ in
 
           force_display_urgency_hint ${toString cfg.urgencyHintDuration} ms
           focus_on_window_activation smart
+          focus_wrapping ${cfg.focusWrappingMode}
         '';
         description = "Custom settings for i3.";
       };
