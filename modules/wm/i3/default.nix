@@ -37,6 +37,11 @@ in
         default = "left";
         description = "Window titles alignment";
       };
+      urgencyHintDuration = mkOption {
+        type = types.int;
+        default = 500;
+        description = "Urgency hint display duration, in ms";
+      };
       settings = mkOption {
         type = types.lines;
         default = ''
@@ -54,7 +59,7 @@ in
           bindsym Button4 nop
           bindsym button5 nop
 
-          force_display_urgency_hint 1500 ms
+          force_display_urgency_hint ${toString cfg.urgencyHintDuration} ms
           focus_on_window_activation smart
         '';
         description = "Custom settings for i3.";
