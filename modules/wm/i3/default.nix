@@ -47,6 +47,11 @@ in
         default = "workspace";
         description = "Window focus wrapping mode";
       };
+      popupDuringFullscreen = mkOption {
+        type = types.enum [ "smart" "leave_fullscreen" ];
+        default = "leave_fullscreen";
+        description = "How to behave on popup creation in fullscreen mode";
+      };
       settings = mkOption {
         type = types.lines;
         default = ''
@@ -67,6 +72,7 @@ in
           force_display_urgency_hint ${toString cfg.urgencyHintDuration} ms
           focus_on_window_activation smart
           focus_wrapping ${cfg.focusWrappingMode}
+          popup_during_fullscreen ${cfg.popupDuringFullscreen}
         '';
         description = "Custom settings for i3.";
       };
