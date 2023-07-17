@@ -47,6 +47,11 @@ in
         default = "workspace";
         description = "Window focus wrapping mode";
       };
+      focusOnWindowActivation = mkOption {
+        type = types.enum [ "smart" "urgent" "focus" "none" ];
+        default = "smart";
+        description = "How to handle focus on window activation";
+      };
       popupDuringFullscreen = mkOption {
         type = types.enum [ "smart" "leave_fullscreen" ];
         default = "leave_fullscreen";
@@ -75,7 +80,7 @@ in
           bindsym button5 nop
 
           force_display_urgency_hint ${toString cfg.urgencyHintDuration} ms
-          focus_on_window_activation smart
+          focus_on_window_activation ${cfg.focusOnWindowActivation}
           focus_wrapping ${cfg.focusWrappingMode}
           popup_during_fullscreen ${cfg.popupDuringFullscreen}
 
