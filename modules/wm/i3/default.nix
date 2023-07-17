@@ -62,6 +62,21 @@ in
         default = "no";
         description = "Automatic back-and-forth when switching to the current workspace";
       };
+      gaps.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable gaps between windows";
+      };
+      gaps.inner.size = mkOption {
+        type = types.int;
+        default = 3;
+        description = "Inner gaps size in pixels";
+      };
+      gaps.outer.size = mkOption {
+        type = types.int;
+        default = 3;
+        description = "Outer gaps size in pixels";
+      };
       settings = mkOption {
         type = types.lines;
         default = ''
@@ -86,6 +101,9 @@ in
           popup_during_fullscreen ${cfg.popupDuringFullscreen}
 
           workspace_auto_back_and_forth ${cfg.autoBackAndForth}
+
+          ${optionalString cfg.gaps.enable "gaps inner ${toString cfg.gaps.inner.size} px"}
+          ${optionalString cfg.gaps.enable "gaps outer ${toString cfg.gaps.outer.size} px"}
         '';
         description = "Custom settings for i3.";
       };
