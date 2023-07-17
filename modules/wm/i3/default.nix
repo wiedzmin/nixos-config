@@ -52,6 +52,11 @@ in
         default = "leave_fullscreen";
         description = "How to behave on popup creation in fullscreen mode";
       };
+      autoBackAndForth = mkOption {
+        type = types.enum [ "yes" "no" ];
+        default = "no";
+        description = "Automatic back-and-forth when switching to the current workspace";
+      };
       settings = mkOption {
         type = types.lines;
         default = ''
@@ -73,6 +78,8 @@ in
           focus_on_window_activation smart
           focus_wrapping ${cfg.focusWrappingMode}
           popup_during_fullscreen ${cfg.popupDuringFullscreen}
+
+          workspace_auto_back_and_forth ${cfg.autoBackAndForth}
         '';
         description = "Custom settings for i3.";
       };
