@@ -637,6 +637,11 @@ in
     isDefault = true;
     titleAlignment = "center";
     focusOnWindowActivation = "urgent";
+    gaps = {
+      enable = true;
+      inner.size = 5;
+      outer.size = 10;
+    };
     statusbar.impl = "i3-rs";
   };
   wm.awesome = {
