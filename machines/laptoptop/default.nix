@@ -636,6 +636,7 @@ in
     enable = true;
     isDefault = true;
     titleAlignment = "center";
+    focusOnWindowActivation = "urgent";
     statusbar.impl = "i3-rs";
   };
   wm.awesome = {
