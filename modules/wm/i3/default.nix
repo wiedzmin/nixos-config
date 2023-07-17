@@ -78,6 +78,7 @@ in
           focus_follows_mouse no
           bindsym Button4 nop
           bindsym button5 nop
+          tiling_drag modifier titlebar
 
           force_display_urgency_hint ${toString cfg.urgencyHintDuration} ms
           focus_on_window_activation ${cfg.focusOnWindowActivation}
