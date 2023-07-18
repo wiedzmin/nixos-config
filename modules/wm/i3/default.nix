@@ -354,9 +354,21 @@ in
             raw = true;
           }
           {
-            key = [ "w" ];
+            key = [ prefix "w" ];
             cmd = "layout toggle split";
-            mode = "layout";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = [ prefix "Shift" "w" ];
+            cmd = "layout toggle stacking tabbed";
+            mode = "root";
+            raw = true;
+          }
+          {
+            key = [ prefix "0" ];
+            cmd = "layout toggle all";
+            mode = "root";
             raw = true;
           }
           {
