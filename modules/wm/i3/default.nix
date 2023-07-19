@@ -326,14 +326,10 @@ in
             raw = true;
           }
           {
-            key = [ "b" ];
+            key = [ "=" ];
             cmd = "${pkgs.i3-balance-workspace}/bin/i3_balance_workspace";
-            mode = "layout";
-          }
-          {
-            key = [ "Shift" "b" ];
-            cmd = "${pkgs.i3-balance-workspace}/bin/i3_balance_workspace --scope focus";
-            mode = "layout";
+            mode = "resize";
+            sticky = true;
           }
           {
             key = [ prefix "Shift" "bracketleft" ];
@@ -373,28 +369,28 @@ in
           }
           {
             key = [ "Left" ];
-            cmd = "resize shrink width 10 px or 10 ppt";
+            cmd = "resize grow width 10 px or 10 ppt";
             mode = "resize";
             raw = true;
             sticky = true;
           }
           {
             key = [ "Down" ];
-            cmd = "resize grow height 10 px or 10 ppt";
-            mode = "resize";
-            raw = true;
-            sticky = true;
-          }
-          {
-            key = [ "Up" ];
             cmd = "resize shrink height 10 px or 10 ppt";
             mode = "resize";
             raw = true;
             sticky = true;
           }
           {
+            key = [ "Up" ];
+            cmd = "resize grow height 10 px or 10 ppt";
+            mode = "resize";
+            raw = true;
+            sticky = true;
+          }
+          {
             key = [ "Right" ];
-            cmd = "resize grow width 10 px or 10 ppt";
+            cmd = "resize shrink width 10 px or 10 ppt";
             mode = "resize";
             raw = true;
             sticky = true;
