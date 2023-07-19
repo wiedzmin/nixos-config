@@ -182,7 +182,7 @@
         ("?" . nil))
   :custom
   ;;TODO: investigate if `completion-styles' setting is really _alternative_ against using `prescient'
-  (completion-styles '(basic partial-completion substring orderless)) ;TODO: try flex+emacs22 instead of orderless
+  (completion-styles '(orderless))
   (orderless-style-dispatchers '(dispatchers/without-if-bang
                                  dispatchers/flex
                                  dispatchers/initialism
@@ -191,13 +191,13 @@
                                orderless-regexp))
   (completion-category-defaults nil)
   (completion-category-overrides
-   '((buffer (orderless-matching-styles orderless-flex))
+   '((buffer (styles orderless-matching-styles partial-completion substring flex orderless-flex))
      (command (styles . (orderless)))
      (file (styles . (partial-completion initials orderless)))
      (function (styles . (orderless)))
      (info-menu (styles . (orderless)))
      (minibuffer (initials))
-     (project-file (styles . (orderless)))
+     (project-file (styles orderless) (cycle . t))
      (unicode-name (styles . (substring orderless)))
      (variable (styles . (orderless)))
      (xref-location (styles . (orderless)))))
