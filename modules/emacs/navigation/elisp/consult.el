@@ -63,7 +63,7 @@
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
    consult-recent-file :preview-key '("S-<up>" "S-<down>")
-   consult-line :keymap custom/consult-line-map)
+   consult-line :preview-key 'any :keymap custom/consult-line-map)
   (advice-add #'register-preview :override #'consult-register-window)
   (dolist (func '(consult-git-grep consult-ripgrep consult-grep))
     (advice-add func :before
