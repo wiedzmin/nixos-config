@@ -26,7 +26,10 @@
   :bind
   (:map vertico-map
         ("C-." . vertico-quick-insert)
-        ("C-'" . vertico-quick-jump)))
+        ("C-'" . vertico-quick-jump))
+  :custom
+  (vertico-quick1 "qweasd")
+  (vertico-quick2 "zxc"))
 
 (use-package vertico-multiform
   :after vertico
