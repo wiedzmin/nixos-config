@@ -30,11 +30,6 @@ with pkgs.unstable.commonutils;
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http gnu.org";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "http nixos planet";
       desktop = "web";
     }
