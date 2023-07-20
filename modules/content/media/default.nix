@@ -83,7 +83,7 @@ in
         programs.mpv = {
           # TODO: consider extracting options
           enable = true;
-          scripts = with pkgs.mpvScripts; [ youtube-quality ] ++ lib.optionals cfg.mpris.enable [ mpris ];
+          scripts = with pkgs.mpvScripts; [ quality-menu ] ++ lib.optionals cfg.mpris.enable [ mpris ];
           config = {
             save-position-on-quit = true;
             hdr-compute-peak = false; # prevents brightness changes
