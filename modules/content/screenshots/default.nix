@@ -62,6 +62,7 @@ in
           services.flameshot.enable = true;
           xdg.configFile."flameshot.ini".text = flameshot_config_text;
           xdg.configFile."flameshot/flameshot.ini".text = flameshot_config_text;
+          home.packages = with pkgs; [ ksnip shutter ];
         };
       wmCommon.autostart.entries = [{ cmd = "flameshot"; }];
     })
