@@ -62,12 +62,6 @@
   :hook
   (css-mode-hook . rainbow-mode))
 
-(use-package lin
-  :custom
-  (lin-face 'lin-green-override-fg)
-  :config
-  (lin-global-mode 1))
-
 (use-package menu-bar
   :config
   (menu-bar-mode -1))
