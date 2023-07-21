@@ -302,7 +302,10 @@
 
 (use-package help
   :bind
+  (:map help-map
+        ("F" . describe-face))
   (:map custom-help-map
+        ("F" . describe-face)
         ("b" . describe-bindings)
         ("i" . info-lookup-symbol)))
 
