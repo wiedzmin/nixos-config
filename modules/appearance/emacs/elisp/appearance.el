@@ -22,6 +22,9 @@
   (default-text-scale-mode 1))
 
 (use-package hl-line
+  :custom
+  (hl-line-sticky-flag nil)
+  (global-hl-line-sticky-flag nil)
   :config
   (global-hl-line-mode 1))
 
