@@ -80,5 +80,7 @@
   :config
   (scroll-bar-mode -1))
 
-(set-face-attribute 'mode-line-active nil :inherit 'mode-line)
-(set-face-attribute 'mode-line-inactive nil :inherit 'mode-line)
+(use-package faces
+  :config
+  (set-face-attribute 'mode-line-active nil :inherit 'mode-line)
+  (set-face-attribute 'mode-line-inactive nil :inherit 'mode-line))
