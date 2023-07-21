@@ -25,6 +25,7 @@
   :custom
   (hl-line-sticky-flag nil)
   (global-hl-line-sticky-flag nil)
+  @currentLineHighlightFaceHlLinePatch@
   :config
   (global-hl-line-mode 1))
 

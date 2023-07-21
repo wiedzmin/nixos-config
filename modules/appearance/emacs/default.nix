@@ -15,6 +15,11 @@ in
         default = false;
         description = "Whether to enable Emacs appearance customization.";
       };
+      currentLineHighlightFace = mkOption {
+        description = "Face for highlighting current line in buffer";
+        type = types.str;
+        default = "";
+      };
     };
   };
 

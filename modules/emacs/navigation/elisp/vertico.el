@@ -1,6 +1,7 @@
 (use-package vertico
   :init
   (vertico-mode)
+  @currentLineHighlightFaceVerticoPatch@
   :custom
   (vertico-scroll-margin 0)
   (vertico-count @selectionCandidatesCount@)
