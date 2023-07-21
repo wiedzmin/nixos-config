@@ -260,13 +260,6 @@ in
         url = "https://www.multitran.com/m.exe?l1=1&l2=2";
         searchSuffix = "&s=";
       };
-      windowRules = [
-        {
-          class = mkWSMappingBrowsersRegexp config.attributes.browser;
-          title = "multitran";
-          desktop = "web";
-        }
-      ];
     };
     "ventusky" = {
       desc = "Weather map / temperature";
