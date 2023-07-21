@@ -147,6 +147,7 @@ in
     emacs.themes.zenburn.enable = true;
     emacs = {
       enable = true;
+      currentLineHighlightFace = "dark slate blue";
       modeline.doom = {
         enable = true;
         height = 24;
