@@ -40,16 +40,6 @@ with pkgs.unstable.commonutils;
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http reddit i3wm";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http reddit";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "(Oo)rg http youtube";
       desktop = "web";
     }
@@ -65,7 +55,7 @@ with pkgs.unstable.commonutils;
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http zen yandex";
+      title = "http dzen";
       desktop = "ent";
     }
     {
