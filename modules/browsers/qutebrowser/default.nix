@@ -19,6 +19,7 @@ let
       sendSignals = true;
     };
   };
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -163,7 +164,13 @@ in
             categories = [ "Network" "WebBrowser" ];
           })
         ];
-        xdg.configFile."qutebrowser/hint-words".text = builtins.readFile ./assets/hint-words;
+        xdg.configFile = {
+          "qutebrowser/hint-words".text = builtins.readFile ./assets/hint-words;
+          "espanso/config/qutebrowser.yml".source = yaml.generate "espanso-config-qutebrowser.yml" {
+            filter_class = "qutebrowser";
+            backend = "Clipboard";
+          };
+        };
         programs.qutebrowser = {
           enable = true;
           package = pkgs.qutebrowser;

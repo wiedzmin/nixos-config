@@ -391,9 +391,10 @@ in
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
         xdg.configFile = {
-          "espanso/config/_kitty.yml".source = yaml.generate "espanso-config-kitty.yml" {
+          "espanso/config/kitty.yml".source = yaml.generate "espanso-config-kitty.yml" {
             filter_class = "kitty";
             disable_x11_fast_inject = true;
+            backend = "Inject";
           };
           "espanso/match/kitty.yml".source = yaml.generate "espanso-kitty.yml" {
             matches = [
