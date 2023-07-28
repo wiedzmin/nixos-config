@@ -28,7 +28,7 @@ in
           command_timeout = 2000;
           character = {
             success_symbol = "[➜](bold green) ";
-            error_symbol = "[✗](bold red) ";
+            error_symbol = "[➜](bold red) ";
           };
           cmd_duration = {
             min_time = 100;
