@@ -10,7 +10,6 @@ let
   user = config.attributes.mainUser.name;
   drop-corrupted = pkgs.writeShellApplication {
     name = "drop-corrupted";
-    runtimeInputs = with pkgs; [ gitAndTools.git coreutils ];
     text = ''
       ${pkgs.systemd}/bin/systemctl --user stop emacs.service
       sleep 2
