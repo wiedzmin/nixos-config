@@ -114,6 +114,10 @@ in
           style = "bold green";
         };
       };
+
+      shell.core.variables = [{
+        GIT_PAGER = "${pkgs.delta}/bin/delta";
+      }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {

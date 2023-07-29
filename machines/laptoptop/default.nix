@@ -582,7 +582,10 @@ in
       emacs.enable = true;
     };
     prompts.starship.enable = true;
-    tools.enable = true;
+    tools = {
+      enable = true;
+      pager = "moar";
+    };
     vt.kitty = {
       enable = true;
       autostart = true;
