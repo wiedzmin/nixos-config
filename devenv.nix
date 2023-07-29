@@ -9,6 +9,7 @@
 
   packages = with pkgs; with config.nur.repos; [
     cloc
+    gitFull
     gitAndTools.git-crypt
     just
     vim
