@@ -94,6 +94,11 @@ with lib;
       type = types.listOf types.str;
       default = [ ];
     };
+    pager.cmd = mkOption {
+      description = "Pager command";
+      type = types.str;
+      default = "";
+    };
     mimetypes.ebook = mkOption {
       description = "MIME types to handle as e-books";
       type = types.listOf types.str;

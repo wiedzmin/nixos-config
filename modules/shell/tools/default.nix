@@ -14,6 +14,11 @@ in
         default = false;
         description = "Whether to enable successors of some traditional tools like find, sed, etc.";
       };
+      pager = mkOption {
+        type = types.enum [ "less" "moar" ];
+        default = "less";
+        description = "Pager tool to use";
+      };
     };
   };
 
@@ -95,10 +100,10 @@ in
           };
         };
       };
-      shell.core.variables = [{
-        GIT_PAGER = "${pkgs.delta}/bin/delta";
-        PAGER = "${pkgs.moar}/bin/moar";
-      }];
+
+      attributes.pager.cmd = optionalString (cfg.pager == "less") "${pkgs.less}/bin/less" +
+        optionalString (cfg.pager == "moar") "${pkgs.moar}/bin/moar";
+      shell.core.variables = [{ PAGER = config.attributes.pager.cmd; }];
     })
   ];
 }
