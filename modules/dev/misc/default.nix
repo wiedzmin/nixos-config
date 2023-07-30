@@ -244,6 +244,11 @@ in
     # FIXME: make tmux session templating optional everywhere (see below) !!!!
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          # NOTE: expansions deps
+          adoptopenjdk-bin
+          git
+        ];
         xdg.configFile."espanso/match/dev_misc.yml".source = yaml.generate "espanso-dev_misc.yml"
           {
             matches = [
@@ -261,7 +266,7 @@ in
               {
                 # FIXME: investigate/debug relative paths usage (see below)
                 trigger = ":sjar";
-                replace = "nix shell \"nixpkgs#adoptopenjdk-bin\" -c jar tf {{jarfilename.value}}";
+                replace = "jar tf {{jarfilename.value}}";
                 vars = [
                   {
                     name = "files";
