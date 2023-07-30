@@ -106,7 +106,6 @@ in
         home.packages = with pkgs; [
           # NOTE: expansions deps
           fd
-          findimagedupes
           fzf
           gnugrep
           gron
@@ -282,10 +281,6 @@ in
                     params = { layout = "Device path: [[value]]"; };
                   }
                 ];
-              }
-              {
-                trigger = ":idu";
-                replace = "findimagedupes .";
               }
               {
                 trigger = ":mt";
