@@ -172,12 +172,21 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          # NOTE: expansions deps
+          fd
+          findutils
+          git
+          nil
+          nix-prefetch-github
+          tree
+        ];
         xdg.configFile."espanso/match/nix-core.yml".source = yaml.generate "espanso-nix-core.yml"
           {
             matches = [
               {
                 trigger = ":npg";
-                replace = "nix shell \"nixpkgs#nix-prefetch-github\" -c nix-prefetch-git --rev {{revision.value}} {{repolink}}";
+                replace = "nix-prefetch-git --rev {{revision.value}} {{repolink}}";
                 vars = [
                   {
                     name = "revision";
@@ -192,7 +201,7 @@ in
               }
               {
                 trigger = ":npnew";
-                replace = "nix shell \"nixpkgs#git\" git log --pretty=oneline ORIG_HEAD..FETCH_HEAD | grep init | grep -v Merge";
+                replace = "git log --pretty=oneline ORIG_HEAD..FETCH_HEAD | grep init | grep -v Merge";
               }
               {
                 trigger = ":nscptree";
@@ -240,7 +249,7 @@ in
               }
               {
                 trigger = ":nsfd";
-                replace = "nix shell \"nixpkgs#fd\" -c fd $|$ /nix/store";
+                replace = "fd $|$ /nix/store";
               }
               {
                 trigger = ":llv";
@@ -264,11 +273,11 @@ in
               }
               {
                 trigger = ":nwtt";
-                replace = "nix shell \"nixpkgs#tree\" -c tree /nix/var/nix/{gcroots,profiles}";
+                replace = "tree /nix/var/nix/{gcroots,profiles}";
               }
               {
                 trigger = ":nnd";
-                replace = "nix shell \"nixpkgs#nil\" \"nixpkgs#findutils\" -c find . -name \"*.nix\" -exec nil diagnostics {} \\;";
+                replace = "find . -name \"*.nix\" -exec nil diagnostics {} \\;";
               }
             ];
           } // optionalAttrs (config.shell.tmux.enable) {
