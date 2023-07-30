@@ -103,12 +103,24 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          # NOTE: expansions deps
+          fd
+          findimagedupes
+          fzf
+          gnugrep
+          gron
+          monolith
+          ripgrep
+          sad
+          xidel
+        ];
         xdg.configFile."espanso/match/content_misc.yml".source = yaml.generate "espanso-content_misc.yml"
           {
             matches = [
               {
                 trigger = ":fdelta";
-                replace = "nix shell \"nixpkgs#fd\" \"nixpkgs#sad\" \"nixpkgs#delta\" -c fd -e {{fdregex.value}} | sad {{changefrom.value}} {{changeto.value}} | delta";
+                replace = "fd -e {{fdregex.value}} | sad {{changefrom.value}} {{changeto.value}} | ${config.attributes.gitPager.cmd}";
                 vars = [
                   {
                     name = "fdregex";
@@ -129,7 +141,7 @@ in
               }
               {
                 trigger = ":colinks";
-                replace = "nix shell \"nixpkgs#xidel\" -c xidel {{sourcefile.value}} --extract '//a/@href' --output-format {{outputformat.value}} > links.log";
+                replace = "xidel {{sourcefile.value}} --extract '//a/@href' --output-format {{outputformat.value}} > links.log";
                 vars = [
                   {
                     name = "sourcefile";
@@ -145,7 +157,7 @@ in
               }
               {
                 trigger = ":ggr";
-                replace = "nix shell \"nixpkgs#ripgrep\" \"nixpkgs#fzf\" \"nixpkgs#gron\" \"nixpkgs#gnugrep\" -c cat `rg --files | grep -e \"\\.json\" | fzf` | gron | grep {{searchterm.value}} | gron --ungron";
+                replace = "cat `rg --files | grep -e \"\\.json\" | fzf` | gron | grep {{searchterm.value}} | gron --ungron";
                 vars = [
                   {
                     name = "searchterm";
@@ -172,7 +184,7 @@ in
               }
               {
                 trigger = ":fdnew";
-                replace = "nix shell \"nixpkgs#fd\" \"nixpkgs#ripgrep\" \"nixpkgs#fzf\" -c fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | fzf";
+                replace = "fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | fzf";
                 vars = [
                   {
                     name = "changenewerthan";
@@ -183,7 +195,7 @@ in
               }
               {
                 trigger = ":fdold";
-                replace = "nix shell \"nixpkgs#fd\" \"nixpkgs#ripgrep\" \"nixpkgs#fzf\" -c fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | fzf";
+                replace = "fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | fzf";
                 vars = [
                   {
                     name = "changeolderthan";
@@ -273,11 +285,11 @@ in
               }
               {
                 trigger = ":idu";
-                replace = "nix shell 'nixpkgs#findimagedupes' -c findimagedupes .";
+                replace = "findimagedupes .";
               }
               {
                 trigger = ":mt";
-                replace = "nix shell 'nixpkgs#monolith' -c monolith --isolate --base-url {{baseurl.value}} --output $|$";
+                replace = "monolith --isolate --base-url {{baseurl.value}} --output $|$";
                 vars = [
                   {
                     name = "baseurl";
