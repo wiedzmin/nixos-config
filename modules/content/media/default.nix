@@ -76,7 +76,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [ clipgrab freetube moc ncmpcpp yt-dlp ytfzf ];
+      environment.systemPackages = with pkgs; [ clipgrab freetube moc ncmpcpp ytfzf ];
 
       home-manager.users."${user}" = {
         # TODO: deal with converting from `webm` ^^^ (use ffmpeg btw)
@@ -115,6 +115,12 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          # NOTE: expansions deps
+          android-file-transfer
+          ffmpeg
+          yt-dlp
+        ];
         xdg.configFile = {
           "espanso/match/content.yml".source = yaml.generate "espanso-content.yml"
             {
@@ -129,11 +135,11 @@ in
                 }
                 {
                   trigger = ":aft";
-                  replace = "nix shell \"nixpkgs#android-file-transfer\" -c android-file-transfer";
+                  replace = "android-file-transfer";
                 }
                 {
                   trigger = ":ffmc";
-                  replace = "cd ${cfg.ffmpeg.workdir} && nix shell \"nixpkgs#ffmpeg\" -c ffmpeg -i {{inputfile.value}} -c:v copy -c:a copy -f mp4 {{namesansext.value}}.mp4 && mv {{inputfile.value}} ${cfg.ffmpeg.workdir}/done && echo \"file '${cfg.ffmpeg.workdir}/{{namesansext.value}}.mp4'\">> ${cfg.ffmpeg.workdir}/files.list";
+                  replace = "cd ${cfg.ffmpeg.workdir} && ffmpeg -i {{inputfile.value}} -c:v copy -c:a copy -f mp4 {{namesansext.value}}.mp4 && mv {{inputfile.value}} ${cfg.ffmpeg.workdir}/done && echo \"file '${cfg.ffmpeg.workdir}/{{namesansext.value}}.mp4'\">> ${cfg.ffmpeg.workdir}/files.list";
                   vars = [
                     {
                       name = "mtsfiles";
@@ -154,7 +160,7 @@ in
                 }
                 {
                   trigger = ":ffmg";
-                  replace = "cd ${cfg.ffmpeg.workdir} && nix shell \"nixpkgs#ffmpeg\" -c ffmpeg -f concat -safe 0 -i files.list -c copy result.mp4"; # FIXME: consider parameterizing output filename in some way
+                  replace = "cd ${cfg.ffmpeg.workdir} && ffmpeg -f concat -safe 0 -i files.list -c copy result.mp4"; # FIXME: consider parameterizing output filename in some way
                 }
               ];
             } // optionalAttrs (config.shell.tmux.enable) {
