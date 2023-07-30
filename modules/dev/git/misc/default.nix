@@ -49,24 +49,31 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          # NOTE: expansions deps
+          fzf
+          git
+          mr
+          pre-commit
+        ];
         xdg.configFile."espanso/match/git.yml".source = yaml.generate "espanso-git.yml"
           {
             matches = [
               {
                 trigger = ":gmrde";
-                replace = "nix shell \"nixpkgs#mr\" -c mr direnv";
+                replace = "mr direnv";
               }
               {
                 trigger = ":gmrt";
-                replace = "nix shell \"nixpkgs#mr\" -c mr trim";
+                replace = "mr trim";
               }
               {
                 trigger = ":gcob";
-                replace = "nix shell \"nixpkgs#git\" \"nixpkgs#fzf\" -c git checkout `git branch --format='%(refname:short)' | fzf`";
+                replace = "git checkout `git branch --format='%(refname:short)' | fzf`";
               }
               {
                 trigger = ":gstexp";
-                replace = "nix shell \"nixpkgs#git\" \"nixpkgs#fzf\" -c git stash show -p `git stash list | fzf | cut -d: -f1` > {{exportbasename.value}}.patch";
+                replace = "git stash show -p `git stash list | fzf | cut -d: -f1` > {{exportbasename.value}}.patch";
                 vars = [
                   {
                     name = "exportbasename";
@@ -77,7 +84,7 @@ in
               }
               {
                 trigger = ":gstsh";
-                replace = "nix shell \"nixpkgs#git\" \"nixpkgs#fzf\" -c git stash show -p `git stash list | fzf | cut -d: -f1`";
+                replace = "git stash show -p `git stash list | fzf | cut -d: -f1`";
               }
               {
                 trigger = ":precall";
