@@ -99,6 +99,11 @@ with lib;
       type = types.str;
       default = "";
     };
+    gitPager.cmd = mkOption {
+      description = "Pager command to use with Git";
+      type = types.str;
+      default = "";
+    };
     mimetypes.ebook = mkOption {
       description = "MIME types to handle as e-books";
       type = types.listOf types.str;
