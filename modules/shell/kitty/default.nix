@@ -410,10 +410,6 @@ in
                 trigger = ":khg";
                 replace = "kitty +kitten hyperlinked_grep $|$";
               }
-              {
-                trigger = ":ksa"; # NOTE: temporary workaround for some strangely behaving (in terms of input) ssh sessions (no cause revealed yet)
-                replace = "nix shell \"nixpkgs#sakura\" -c sakura";
-              }
             ];
           };
         };
