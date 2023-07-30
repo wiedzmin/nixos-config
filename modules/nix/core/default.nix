@@ -257,6 +257,10 @@ in
                 replace = "inputs.unstable.legacyPackages.x86_64-linux.linuxPackages.";
               }
               {
+                trigger = ":slv";
+                replace = "grep -e '^  linuxPackages' /etc/nixpkgs/pkgs/top-level/all-packages.nix";
+              }
+              {
                 trigger = ":nwda";
                 replace = "nix why-depends --all \"nixpkgs#$|$\" \"nixpkgs#\"";
               }
