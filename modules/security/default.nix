@@ -134,6 +134,10 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          # NOTE: expansions deps
+          openssl
+        ];
         xdg.configFile."espanso/match/security.yml".source = yaml.generate "espanso-security.yml" {
           filter_class = "Emacs";
           matches = [
@@ -148,7 +152,7 @@ in
             # TODO: play with "gpgconf --kill gpg-agent; # echo \"UPDATESTARTUPTTY\" | gpg-connect-agent > /dev/null 2>&1"
             {
               trigger = ":sslct";
-              replace = "nix shell \"nixpkgs#openssl\" -c openssl s_client -showcerts -servername {{server.value}} -connect {{server.value}}:443 </dev/null | openssl x509 -inform pem -noout -text";
+              replace = "openssl s_client -showcerts -servername {{server.value}} -connect {{server.value}}:443 </dev/null | openssl x509 -inform pem -noout -text";
               vars = [
                 {
                   name = "server";
@@ -159,7 +163,7 @@ in
             }
             {
               trigger = ":sslcd";
-              replace = "nix shell \"nixpkgs#openssl\" -c openssl s_client -connect {{server.value}}:443 2>/dev/null | openssl x509 -dates -noout";
+              replace = "openssl s_client -connect {{server.value}}:443 2>/dev/null | openssl x509 -dates -noout";
               vars = [
                 {
                   name = "server";
