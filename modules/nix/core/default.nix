@@ -203,10 +203,6 @@ in
                 replace = "nix-store --gc --print-roots | cut -d' ' -f1 | uniq | grep -v /proc | grep -v { | grep -v /run | grep ${user} | grep direnv";
               }
               {
-                trigger = ":npvim";
-                replace = "nix shell \"nixpkgs#vim\" -c vim ";
-              }
-              {
                 trigger = ":nsp";
                 replace = "nix shell \"nixpkgs#$|$\"";
               }
