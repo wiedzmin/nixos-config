@@ -24,6 +24,11 @@ in
         internal = true;
         description = "Global gitignore contents.";
       };
+      pager = mkOption {
+        type = types.enum [ "delta" ];
+        default = "delta";
+        description = "Pager tool to use";
+      };
       assets.dirName = mkOption {
         type = types.str;
         default = "git-assets";
@@ -115,9 +120,8 @@ in
         };
       };
 
-      shell.core.variables = [{
-        GIT_PAGER = "${pkgs.delta}/bin/delta";
-      }];
+      attributes.gitPager.cmd = optionalString (cfg.pager == "delta") "${pkgs.delta}/bin/delta";
+      shell.core.variables = [{ GIT_PAGER = config.attributes.gitPager.cmd; }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
