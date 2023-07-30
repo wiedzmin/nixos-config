@@ -179,6 +179,7 @@ in
           git
           nil
           nix-prefetch-github
+          nvd
           tree
         ];
         xdg.configFile."espanso/match/nix-core.yml".source = yaml.generate "espanso-nix-core.yml"
@@ -278,6 +279,98 @@ in
               {
                 trigger = ":nnd";
                 replace = "find . -name \"*.nix\" -exec nil diagnostics {} \\;";
+              }
+              {
+                trigger = ":nvdln";
+                replace = "nvd --color always list /run/booted-system /run/current-system";
+              }
+              {
+                trigger = ":nvdlcu";
+                replace = "nvd --color always list {{profile1.value}} {{profile2.value}}";
+                vars = [
+                  {
+                    name = "profiles";
+                    type = "shell";
+                    params = { cmd = "find /nix/var/nix/profiles/per-user/${user} -name '*link' | grep -v channels"; };
+                  }
+                  {
+                    name = "profile1";
+                    type = "choice";
+                    params = { values = "{{profiles}}"; };
+                  }
+                  {
+                    name = "profile2";
+                    type = "choice";
+                    params = { values = "{{profiles}}"; };
+                  }
+                ];
+              }
+              {
+                trigger = ":nvdlcs";
+                replace = "nvd --color always list {{profile1.value}} {{profile2.value}}";
+                vars = [
+                  {
+                    name = "profiles";
+                    type = "shell";
+                    params = { cmd = "find /nix/var/nix/profiles/ -maxdepth 1 -name '*link'"; };
+                  }
+                  {
+                    name = "profile1";
+                    type = "choice";
+                    params = { values = "{{profiles}}"; };
+                  }
+                  {
+                    name = "profile2";
+                    type = "choice";
+                    params = { values = "{{profiles}}"; };
+                  }
+                ];
+              }
+              {
+                trigger = ":nvddn";
+                replace = "nvd --color always diff /run/booted-system /run/current-system";
+              }
+              {
+                trigger = ":nvddcu";
+                replace = "nvd --color always diff {{profile1.value}} {{profile2.value}}";
+                vars = [
+                  {
+                    name = "profiles";
+                    type = "shell";
+                    params = { cmd = "find /nix/var/nix/profiles/per-user/${user} -name '*link' | grep -v channels"; };
+                  }
+                  {
+                    name = "profile1";
+                    type = "choice";
+                    params = { values = "{{profiles}}"; };
+                  }
+                  {
+                    name = "profile2";
+                    type = "choice";
+                    params = { values = "{{profiles}}"; };
+                  }
+                ];
+              }
+              {
+                trigger = ":nvddcs";
+                replace = "nvd --color always diff {{profile1.value}} {{profile2.value}}";
+                vars = [
+                  {
+                    name = "profiles";
+                    type = "shell";
+                    params = { cmd = "find /nix/var/nix/profiles/ -maxdepth 1 -name '*link'"; };
+                  }
+                  {
+                    name = "profile1";
+                    type = "choice";
+                    params = { values = "{{profiles}}"; };
+                  }
+                  {
+                    name = "profile2";
+                    type = "choice";
+                    params = { values = "{{profiles}}"; };
+                  }
+                ];
               }
             ];
           } // optionalAttrs (config.shell.tmux.enable) {
