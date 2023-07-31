@@ -59,7 +59,7 @@ in
         "Configure faces on frame creation"
         (select-frame frame)
         (if (display-graphic-p)
-            (set-frame-font "Hack ExtraBold 10" nil t)))
+            (set-frame-font "Hack Bold 10" nil t)))
       (add-hook 'after-make-frame-functions #'custom/set-font)
     '';
   };

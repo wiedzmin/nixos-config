@@ -59,7 +59,7 @@ in
         "Configure faces on frame creation"
         (select-frame frame)
         (if (display-graphic-p)
-            (set-frame-font "Fira Code ExtraBold 8" nil t)))
+            (set-frame-font "Fira Code Bold 8" nil t)))
       (add-hook 'after-make-frame-functions #'custom/set-font)
     '';
   };
