@@ -547,8 +547,8 @@ in
       };
       xkeysnail.enable = true;
       mouse = {
+        enable = false;
         constraintMouse = { enable = false; };
-        keynav.enable = false;
       };
     };
     video = {
