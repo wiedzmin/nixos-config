@@ -491,4 +491,11 @@ rec {
       lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList
         (ws: meta: ''("${ws}", Just "${convertKeyXmonad meta.key}", ${toHaskellBool meta.transient})'') wss)
     }${mkIndent indent}";
+  ####################################################################################################################
+  #                                                   Fonts utils                                                    #
+  ####################################################################################################################
+  makeFontStrPango = fontdef: "pango:${fontdef.family} ${fontdef.style} ${builtins.toString fontdef.size}";
+  makeFontStrSimple = fontdef: "${fontdef.family} ${fontdef.style} ${builtins.toString fontdef.size}";
+  makeFontStrColons = fontdef: "${fontdef.family}:${lib.toLower fontdef.style}:size=${builtins.toString fontdef.size}";
+  makeFontStrColons2 = fontdef: "${fontdef.family}:weight=${fontdef.style}:size=${builtins.toString fontdef.size}";
 }

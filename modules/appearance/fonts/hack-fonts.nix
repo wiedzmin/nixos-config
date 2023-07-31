@@ -1,10 +1,22 @@
 { config, lib, pkgs, ... }:
-
+with pkgs.unstable.commonutils;
 with lib;
+
 let
   cfg = config.appearance.fonts.hack;
   user = config.attributes.mainUser.name;
   inherit (config.appearance.fonts) beautify;
+  baseFont = {
+    family = "Hack";
+    style = "Bold";
+    size = 8;
+  };
+  fontBeautified = baseFont // { family = "Hack ${if beautify then "Nerd Font" else ""}"; };
+  fontDec1 = baseFont // { size = 7; };
+  fontRofi = baseFont // { size = 9; };
+  fontXresources = baseFont // { size = 12; };
+  sizeAlacritty = 9.0;
+  sizeKitty = 8.0;
 in
 {
   options.appearance.fonts.hack = { enable = mkEnableOption "hack"; };
@@ -12,46 +24,45 @@ in
   config = mkIf cfg.enable {
     fonts = {
       fonts = with pkgs; [ hack-font ];
-      fontconfig = { defaultFonts = { monospace = [ "Hack" ]; }; };
+      fontconfig = { defaultFonts = { monospace = [ baseFont.family ]; }; };
     };
-    wmCommon.fonts.default = "pango:Hack ${if beautify then "Nerd Font " else ""}Bold 8";
-    wmCommon.fonts.simple = "Hack ${if beautify then "Nerd Font " else ""}Bold 8";
-    wmCommon.fonts.dmenu = "Hack:bold:size=8";
-    wmCommon.fonts.statusbar = "pango:Hack ${if beautify then "Nerd Font " else ""}Bold 8";
-    shell.core.variables = [{ TB_SELECTOR_FONT = "Hack:bold:size=8"; global = true; }];
+    wmCommon.fonts.default = makeFontStrPango fontBeautified;
+    wmCommon.fonts.simple = makeFontStrSimple fontBeautified;
+    wmCommon.fonts.dmenu = makeFontStrColons fontDec1;
+    wmCommon.fonts.statusbar = makeFontStrPango fontBeautified;
+    shell.core.variables = [{ TB_SELECTOR_FONT = makeFontStrColons fontDec1; global = true; }];
     home-manager.users."${user}" = {
       programs.alacritty.settings.font = {
         normal = {
-          family = "Hack";
-          Style = "Bold";
+          family = baseFont.family;
+          style = baseFont.style;
         };
         bold = {
-          family = "Hack";
-          style = "Bold";
+          family = baseFont.family;
+          style = baseFont.style;
         };
         italic = {
-          family = "Hack";
+          family = baseFont.family;
           style = "Italic";
         };
-        size = 11.0;
+        size = sizeAlacritty;
       };
       programs.kitty.settings = {
-        # If Regular is not distinguishable, use Medium
-        font_family = "Hack Light";
-        bold_font = "Hack Regular";
-        italic_font = "Hack Light Italic";
-        bold_italic_font = "Hack Regular Italic";
-        font_size = "9.0";
+        font_family = baseFont.family;
+        bold_font = "auto";
+        italic_font = "auto";
+        bold_italic_font = "auto";
+        font_size = builtins.toString sizeKitty;
       };
-      programs.rofi.font = "Hack Bold 11";
-      programs.zathura.options.font = "Hack Bold 10";
-      services.dunst.settings.global.font = "Hack Bold 10";
+      programs.rofi.font = makeFontStrSimple fontRofi;
+      programs.zathura.options.font = makeFontStrSimple baseFont;
+      services.dunst.settings.global.font = makeFontStrSimple baseFont;
       xresources.properties = {
-        "Xmessage*faceName" = "Hack";
-        "Xmessage*faceSize" = "16";
-        "Xmessage*faceWeight" = "Bold";
+        "Xmessage*faceName" = fontXresources.family;
+        "Xmessage*faceSize" = builtins.toString fontXresources.size;
+        "Xmessage*faceWeight" = fontXresources.style;
 
-        "dzen2.font" = "Hack:weight=Bold:size=16";
+        "dzen2.font" = makeFontStrColons2 fontXresources;
       };
     };
     ide.emacs.core.config = ''
@@ -59,7 +70,7 @@ in
         "Configure faces on frame creation"
         (select-frame frame)
         (if (display-graphic-p)
-            (set-frame-font "Hack Bold 10" nil t)))
+            (set-frame-font "${makeFontStrSimple fontDec1}" nil t)))
       (add-hook 'after-make-frame-functions #'custom/set-font)
     '';
   };

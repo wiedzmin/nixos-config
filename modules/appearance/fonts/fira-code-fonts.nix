@@ -1,10 +1,22 @@
 { config, lib, pkgs, ... }:
-
+with pkgs.unstable.commonutils;
 with lib;
+
 let
   cfg = config.appearance.fonts.fira-code;
   user = config.attributes.mainUser.name;
   inherit (config.appearance.fonts) beautify;
+  baseFont = {
+    family = "Fira Code";
+    style = "Bold";
+    size = 8;
+  };
+  fontBeautified = baseFont // { family = if beautify then "FiraCode Nerd Font" else "Fira Code"; };
+  fontDec1 = baseFont // { size = 7; };
+  fontRofi = baseFont // { size = 9; };
+  fontXresources = baseFont // { size = 12; };
+  sizeAlacritty = 9.0;
+  sizeKitty = 8.0;
 in
 {
   options.appearance.fonts.fira-code = { enable = mkEnableOption "fira-code"; };
@@ -12,46 +24,45 @@ in
   config = mkIf cfg.enable {
     fonts = {
       fonts = with pkgs; [ fira-code ];
-      fontconfig = { defaultFonts = { monospace = [ "Fira Code" ]; }; };
+      fontconfig = { defaultFonts = { monospace = [ baseFont.family ]; }; };
     };
-    wmCommon.fonts.default = "pango:${if beautify then "FiraCode Nerd Font " else "Fira Code "}Bold 8";
-    wmCommon.fonts.simple = "${if beautify then "FiraCode Nerd Font " else "Fira Code "}Bold 8";
-    wmCommon.fonts.dmenu = "Fira Code:bold:pixelsize=12";
-    wmCommon.fonts.statusbar = "pango:${if beautify then "FiraCode Nerd Font " else "Fira Code "}Bold 8";
-    shell.core.variables = [{ TB_SELECTOR_FONT = "Fira Code:bold:pixelsize=12"; global = true; }];
+    wmCommon.fonts.default = makeFontStrPango fontBeautified;
+    wmCommon.fonts.simple = makeFontStrSimple fontBeautified;
+    wmCommon.fonts.dmenu = makeFontStrColons fontDec1;
+    wmCommon.fonts.statusbar = makeFontStrPango fontBeautified;
+    shell.core.variables = [{ TB_SELECTOR_FONT = makeFontStrColons fontDec1; global = true; }];
     home-manager.users."${user}" = {
       programs.alacritty.settings.font = {
         normal = {
-          family = "Fira Code";
-          Style = "Bold";
+          family = baseFont.family;
+          style = baseFont.style;
         };
         bold = {
-          family = "Fira Code";
-          style = "Bold";
+          family = baseFont.family;
+          style = baseFont.style;
         };
         italic = {
-          family = "Fira Code";
+          family = baseFont.family;
           style = "Italic";
         };
-        size = 11.0;
+        size = sizeAlacritty;
       };
       programs.kitty.settings = {
-        # If Regular is not distinguishable, use Medium
-        font_family = "Fira Code Light";
-        bold_font = "Fira Code Regular";
-        italic_font = "Fira Code Light Italic";
-        bold_italic_font = "Fira Code Regular Italic";
-        font_size = "9.0";
+        font_family = baseFont.family;
+        bold_font = "auto";
+        italic_font = "auto";
+        bold_italic_font = "auto";
+        font_size = builtins.toString sizeKitty;
       };
-      programs.rofi.font = "Fira Code Bold 11";
-      programs.zathura.options.font = "Fira Code Bold 8";
-      services.dunst.settings.global.font = "Fira Code Bold 8";
+      programs.rofi.font = makeFontStrSimple fontRofi;
+      programs.zathura.options.font = makeFontStrSimple baseFont;
+      services.dunst.settings.global.font = makeFontStrSimple baseFont;
       xresources.properties = {
-        "Xmessage*faceName" = "Fira Code";
-        "Xmessage*faceSize" = "12";
-        "Xmessage*faceWeight" = "Bold";
+        "Xmessage*faceName" = fontXresources.family;
+        "Xmessage*faceSize" = builtins.toString fontXresources.size;
+        "Xmessage*faceWeight" = fontXresources.style;
 
-        "dzen2.font" = "Fira Code:weight=Bold:size=12";
+        "dzen2.font" = makeFontStrColons2 fontXresources;
       };
     };
     ide.emacs.core.config = ''
@@ -59,7 +70,7 @@ in
         "Configure faces on frame creation"
         (select-frame frame)
         (if (display-graphic-p)
-            (set-frame-font "Fira Code Bold 8" nil t)))
+            (set-frame-font "${makeFontStrSimple fontDec1}" nil t)))
       (add-hook 'after-make-frame-functions #'custom/set-font)
     '';
   };

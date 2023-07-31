@@ -1,10 +1,24 @@
 { config, lib, pkgs, ... }:
-
+with pkgs.unstable.commonutils;
 with lib;
+
+# TODO: add `magnified` bool option, that will result in slightly incremented font sizes (for all fonts)
+
 let
   cfg = config.appearance.fonts.iosevka;
   user = config.attributes.mainUser.name;
   inherit (config.appearance.fonts) beautify;
+  baseFont = {
+    family = "Iosevka";
+    style = "Bold";
+    size = 8;
+  };
+  fontBeautified = baseFont // { family = "Iosevka ${if beautify then "Nerd Font" else ""}"; };
+  fontRofi = baseFont // { size = 10; };
+  fontDunst = baseFont // { size = 9; };
+  fontXresources = baseFont // { size = 12; };
+  sizeAlacritty = 9.0;
+  sizeKitty = 9.0;
 in
 {
   options = {
@@ -26,46 +40,45 @@ in
     fonts = {
       fonts = with pkgs; lib.optionals (!cfg.comfy.enable) [ iosevka ] ++
         lib.optionals (cfg.comfy.enable) [ iosevka-comfy.comfy ];
-      fontconfig = { defaultFonts = { monospace = [ "Iosevka" ]; }; };
+      fontconfig = { defaultFonts = { monospace = [ baseFont.family ]; }; };
     };
-    wmCommon.fonts.default = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
-    wmCommon.fonts.simple = "Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
-    wmCommon.fonts.dmenu = "Iosevka:bold:size=9";
-    wmCommon.fonts.statusbar = "pango:Iosevka ${if beautify then "Nerd Font " else ""}Bold 9";
-    shell.core.variables = [{ TB_SELECTOR_FONT = "Iosevka:bold:size=9"; global = true; }];
+    wmCommon.fonts.default = makeFontStrPango fontBeautified;
+    wmCommon.fonts.simple = makeFontStrSimple fontBeautified;
+    wmCommon.fonts.dmenu = makeFontStrColons baseFont;
+    wmCommon.fonts.statusbar = makeFontStrPango fontBeautified;
+    shell.core.variables = [{ TB_SELECTOR_FONT = makeFontStrColons baseFont; global = true; }];
     home-manager.users."${user}" = {
       programs.alacritty.settings.font = {
         normal = {
-          family = "Iosevka";
-          style = "Bold";
+          family = baseFont.family;
+          style = baseFont.style;
         };
         bold = {
-          family = "Iosevka";
-          style = "Bold";
+          family = baseFont.family;
+          style = baseFont.style;
         };
         italic = {
-          family = "Iosevka";
+          family = baseFont.family;
           style = "Italic";
         };
-        size = 11.0;
+        size = sizeAlacritty;
       };
       programs.kitty.settings = {
-        # If Regular is not distinguishable, use Medium
-        font_family = "Iosevka Term Light";
-        bold_font = "Iosevka Term Regular";
-        italic_font = "Iosevka Term Light Italic";
-        bold_italic_font = "Iosevka Term Regular Italic";
-        font_size = "9.0";
+        font_family = baseFont.family;
+        bold_font = "auto";
+        italic_font = "auto";
+        bold_italic_font = "auto";
+        font_size = builtins.toString sizeKitty;
       };
-      programs.rofi.font = "Iosevka Bold 11";
-      programs.zathura.options.font = "Iosevka Bold 10";
-      services.dunst.settings.global.font = "Iosevka Bold 10";
+      programs.rofi.font = makeFontStrSimple fontRofi;
+      programs.zathura.options.font = makeFontStrSimple baseFont;
+      services.dunst.settings.global.font = makeFontStrSimple fontDunst;
       xresources.properties = {
-        "Xmessage*faceName" = "Iosevka";
-        "Xmessage*faceSize" = "16";
-        "Xmessage*faceWeight" = "Bold";
+        "Xmessage*faceName" = fontXresources.family;
+        "Xmessage*faceSize" = builtins.toString fontXresources.size;
+        "Xmessage*faceWeight" = fontXresources.style;
 
-        "dzen2.font" = "Iosevka:weight=Bold:size=16";
+        "dzen2.font" = makeFontStrColons2 fontXresources;
       };
     };
     ide.emacs.core.config = ''
@@ -73,7 +86,7 @@ in
         "Configure faces on frame creation"
         (select-frame frame)
         (if (display-graphic-p)
-            (set-frame-font "Iosevka ExtraBold 8" nil t)))
+            (set-frame-font "${makeFontStrSimple baseFont}" nil t)))
       (add-hook 'after-make-frame-functions #'custom/set-font)
     '';
   };
