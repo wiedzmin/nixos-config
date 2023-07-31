@@ -58,7 +58,7 @@ in
         "Configure faces on frame creation"
         (select-frame frame)
         (if (display-graphic-p)
-            (set-frame-font "Source Code Pro ExtraBold 8" nil t)))
+            (set-frame-font "Source Code Pro Bold 8" nil t)))
       (add-hook 'after-make-frame-functions #'custom/set-font)
     '';
   };
