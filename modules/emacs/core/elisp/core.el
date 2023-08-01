@@ -51,6 +51,8 @@
   (:map ctl-x-map
         ("k" . custom/kill-buffer)
         ("K" . kill-matching-buffers-no-ask))
+  (:map mode-specific-map
+        ("C-r" . rename-visited-file))
   (:map custom-goto-map
         ("TAB" . move-to-column)
         ("c" . goto-char))
