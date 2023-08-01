@@ -68,14 +68,6 @@ in
         internal = true;
         description = "Espanso main config";
       };
-      espanso.package = mkOption {
-        type = types.package;
-        default = pkgs.espanso;
-        visible = false;
-        readOnly = true;
-        internal = true;
-        description = "Espanso package to use";
-      };
       dev.enable = mkOption {
         type = types.bool;
         default = false;
@@ -180,16 +172,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.expansions.enable) {
-      systemd.user.services.espanso-custom = {
-        description = "Espanso daemon";
-        path = [ pkgs.bash pkgs.curl ];
-        serviceConfig = {
-          ExecStart = "${cfg.espanso.package}/bin/espanso daemon";
-          Restart = "on-failure";
-        };
-        wantedBy = [ "default.target" ];
-      };
-      environment.systemPackages = [ cfg.espanso.package ];
+      services.espanso.enable = true;
       # TODO: script(s) to store expansions in redis and show on demand (in case some useful expansions were forgotten)
       home-manager.users."${user}" = {
         home.activation = {
@@ -201,7 +184,7 @@ in
           restartEspanso = {
             after = [ "linkGeneration" ];
             before = [ ];
-            data = "${pkgs.systemd}/bin/systemctl --user restart espanso-custom.service";
+            data = "${pkgs.systemd}/bin/systemctl --user restart espanso.service";
           };
         };
         xdg.configFile."espanso/match/completion.yml".source = yaml.generate "espanso-completion.yml" {
