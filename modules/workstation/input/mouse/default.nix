@@ -4,6 +4,9 @@ with lib;
 
 let
   cfg = config.workstation.input.mouse;
+  user = config.attributes.mainUser.name;
+  inherit (config.wmCommon) prefix;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -17,7 +20,7 @@ in
         '';
       };
       keynavTool = mkOption {
-        type = types.enum [ "keynav" ];
+        type = types.enum [ "keynav" "warpd" ];
         default = "keynav";
         description = "Tool to use for navigation mouse with keyboard";
       };
@@ -51,6 +54,58 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
+      home-manager.users."${user}" = optionalAttrs (cfg.keynavTool == "warpd") {
+        home.packages = with pkgs; [
+          warpd
+          xsel
+        ];
+        xdg.configFile = {
+          "warpd/config".text = ''
+            hint_font: Iosevka
+
+            left: Left
+            down: Down
+            up: Up
+            right: Right
+
+            grid_up: C-Up
+            grid_left: C-Left
+            grid_down: C-Down
+            grid_right: C-Right
+
+            top: C-S-Up
+            middle: C-S-Right
+            bottom: C-S-Down
+            start: C-0
+            end: C-$
+
+            left: Left
+            down: Down
+            up: Up
+            right: Right
+
+            screen_chars: qweasdzxc
+          '';
+        };
+      };
+      wmCommon.keybindings.common = optionals (cfg.keynavTool == "warpd") [
+        {
+          key = [ prefix "Mod1" "x" ];
+          cmd = "warpd --hint";
+          mode = "root";
+        }
+        {
+          key = [ prefix "Mod1" "c" ];
+          cmd = "warpd --normal";
+          mode = "root";
+        }
+        {
+          key = [ prefix "Mod1" "g" ];
+          cmd = "warpd --grid";
+          mode = "root";
+        }
+      ];
+
       systemd.user.services = optionalAttrs (cfg.keynavTool == "keynav") {
         "keynav" = (
           let
@@ -114,6 +169,18 @@ in
         );
       };
       services.xbanish.enable = true;
+    })
+    (mkIf (cfg.keynavTool == "warpd" && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/match/mouse.yml".source = yaml.generate "espanso-mouse.yml" {
+          matches = [
+            {
+              trigger = ":wdop";
+              replace = "warpd --list-options | xsel -ib";
+            }
+          ];
+        };
+      };
     })
     (mkIf cfg.constraintMouse.enable {
       systemd.user.services."xpointerbarrier" = {

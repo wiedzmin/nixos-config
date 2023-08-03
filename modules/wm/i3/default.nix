@@ -89,7 +89,7 @@ in
 
           hide_edge_borders none
 
-          mouse_warping output
+          ${optionalString (config.workstation.input.mouse.keynavTool != "warpd") "mouse_warping output"}
           focus_follows_mouse no
           bindsym Button4 nop
           bindsym button5 nop
