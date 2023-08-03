@@ -15,3 +15,8 @@
 
 (with-eval-after-load 'go-mode
   (add-hook 'consult-after-jump-hook 'yas-minor-mode))
+
+(eval-after-load 'lsp
+  (use-package lsp
+    :custom
+    (lsp-enable-snippet t)))
