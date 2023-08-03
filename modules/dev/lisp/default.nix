@@ -31,7 +31,7 @@ in
       ide.emacs.core.config = builtins.readFile ./elisp/cl.el;
     })
     (mkIf cfg.elisp.enable {
-      completion.emacs.tempel.snippets = ''
+      ide.emacs.completion.tempel.snippets = ''
         org-mode
 
         (elisp "#+begin_src emacs-lisp" n> r> n "#+end_src" :post (org-edit-src-code))

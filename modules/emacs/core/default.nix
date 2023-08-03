@@ -213,7 +213,7 @@ in
         EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
         VISUAL = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
       }];
-      completion.emacs.tempel.snippets = ''
+      ide.emacs.completion.tempel.snippets = ''
         fundamental-mode
 
         (todo "TODO: ")

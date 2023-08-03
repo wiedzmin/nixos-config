@@ -388,7 +388,7 @@ in
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/nix.el ];
-      completion.emacs.tempel.snippets = ''
+      ide.emacs.completion.tempel.snippets = ''
         org-mode
 
         (nixsrc "#+begin_src nix" n> r> n "#+end_src" :post (org-edit-src-code))

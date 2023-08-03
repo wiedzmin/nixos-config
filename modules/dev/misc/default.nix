@@ -200,7 +200,7 @@ in
       ide.emacs.core.customKeymaps = {
         "custom-webpaste-map" = "C-c [";
       };
-      completion.emacs.tempel.snippets = ''
+      ide.emacs.completion.tempel.snippets = ''
         prog-mode
 
         (fixme (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "FIXME: ")

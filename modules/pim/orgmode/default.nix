@@ -150,7 +150,7 @@ in
       ide.emacs.core.customKeymaps = {
         "custom-org-map" = "<f7>";
       };
-      completion.emacs.tempel.snippets = ''
+      ide.emacs.completion.tempel.snippets = ''
         org-mode
 
         (caption "#+caption: ")
