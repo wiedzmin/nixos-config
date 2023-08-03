@@ -6,6 +6,12 @@
   ;; (use-package dap-cpptools)
   (setq-default c-basic-offset 2))
 
+
+(use-package files
+  :config
+  (add-to-list 'find-sibling-rules '("\\([^/]+\\)\\.c\\'" "\\1.h"))
+  (add-to-list 'find-sibling-rules '("\\([^/]+\\)\\.h\\'" "\\1.c")))
+
 (use-package ccls
   :preface
   (when (featurep 'lsp-ui)
