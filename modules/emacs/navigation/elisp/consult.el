@@ -128,7 +128,7 @@
         ("!" . consult-flycheck)))
 
 (with-eval-after-load 'pulsar
-  (mapc (lambda (x) (add-hook 'consult-after-jump-hook x)) `(#'pulsar-recenter-top #'pulsar-reveal-entry)))
+  (mapc (lambda (x) (add-hook 'consult-after-jump-hook x)) `(pulsar-recenter-top pulsar-reveal-entry)))
 
 (with-eval-after-load 'dogears
   (defvar consult--source-dogears
