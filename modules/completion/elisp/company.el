@@ -230,7 +230,7 @@
       (when (and company-message-func
                  (stringp (funcall company-message-func)))
         (unless (string-match "The free version of TabNine only indexes up to" (funcall company-message-func))
-          ad-do-it))))
+          ad-do-it)))) ;; FIXME: consider using advice-* machinery
   (add-to-list 'company-transformers 'company/sort-by-tabnine t)
   ;; (add-to-list 'company-backends #'company-tabnine)
   (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))
