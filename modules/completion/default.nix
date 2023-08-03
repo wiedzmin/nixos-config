@@ -68,11 +68,6 @@ in
         internal = true;
         description = "Espanso main config";
       };
-      dev.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable development-related completion setup";
-      };
       shell.enable = mkOption {
         type = types.bool;
         default = false;
@@ -140,6 +135,16 @@ in
         description = "Tempel templates contents file path";
         default = homePrefix user ".config/emacs/templates"; # TODO: search/use more specialized solution(s)
       };
+      tabnine.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable TabNine";
+      };
+      tabnine.useNixpkgsVersion = mkOption {
+        type = types.bool;
+        default = false; # NOTE: nixpkgs version is currently broken (invalid interpreter)
+        description = "Use TabNine version from nixpkgs";
+      };
       tabnine.config = mkOption {
         type = types.attrs;
         default = { };
@@ -161,13 +166,12 @@ in
         assertion = config.workstation.systemtraits.enable;
         message = "navigation/completion: must enable systemtraits maintenance.";
       }];
-
-      # NOTE: unzip is for tabnine binaries installation
-      home-manager.users."${user}" = { home.packages = with pkgs; [ unzip ]; };
     })
-    (mkIf (cfg.enable && cfg.dev.enable) {
+    (mkIf (cfg.enable && cfg.tabnine.enable) {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ tabnine ]; # FIXME: install it to be consumable by company-tabnine
+        home.packages = with pkgs; optionals (!cfg.tabnine.useNixpkgsVersion) [
+          unzip # NOTE: for in-band tabnine binaries installation
+        ];
         xdg.configFile."TabNine/TabNine.toml".source = toml.generate "TabNine.toml" cfg.tabnine.config;
       };
     })
@@ -240,8 +244,9 @@ in
         epkgs.company-quickhelp
         epkgs.company-restclient
         epkgs.company-statistics
-        epkgs.company-tabnine
         epkgs.company-try-hard
+      ] ++ optionals (cfg.emacs.backend == "company" && cfg.tabnine.enable) [
+        epkgs.company-tabnine
       ] ++ optionals (cfg.emacs.backend == "corfu") [
         epkgs.cape
         epkgs.corfu
