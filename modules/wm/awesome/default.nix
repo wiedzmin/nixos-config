@@ -262,7 +262,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      fonts.fonts = with pkgs; [ font-awesome ];
+      fonts.packages = with pkgs; [ font-awesome ];
 
       nixpkgs.config.packageOverrides = _: {
         debug-awesome = mkWMDebugScript
