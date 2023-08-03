@@ -49,9 +49,9 @@ in
         };
         fontDir.enable = true;
         enableGhostscriptFonts = true;
-        enableDefaultFonts = true;
+        enableDefaultPackages = true;
       } // lib.optionalAttrs cfg.beautify {
-        fonts = with pkgs; [
+        packages = with pkgs; [
           (nerdfonts.override
             {
               fonts = [

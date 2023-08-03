@@ -23,7 +23,7 @@ in
 
   config = mkIf cfg.enable {
     fonts = {
-      fonts = with pkgs; [ source-code-pro ];
+      packages = with pkgs; [ source-code-pro ];
       fontconfig = { defaultFonts = { monospace = [ baseFont.family ]; }; };
     };
     wmCommon.fonts.default = makeFontStrPango fontBeautified;

@@ -38,7 +38,7 @@ in
 
   config = mkIf cfg.enable {
     fonts = {
-      fonts = with pkgs; lib.optionals (!cfg.comfy.enable) [ iosevka ] ++
+      packages = with pkgs; lib.optionals (!cfg.comfy.enable) [ iosevka ] ++
         lib.optionals (cfg.comfy.enable) [ iosevka-comfy.comfy ];
       fontconfig = { defaultFonts = { monospace = [ baseFont.family ]; }; };
     };

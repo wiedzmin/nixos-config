@@ -166,7 +166,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       environment.pathsToLink = optionals (cfg.statusbar.impl == "blocks") [ "/libexec" ];
-      fonts.fonts = optionals (cfg.statusbar.impl == "blocks") (with pkgs; [ font-awesome ]);
+      fonts.packages = optionals (cfg.statusbar.impl == "blocks") (with pkgs; [ font-awesome ]);
 
       wmCommon = {
         enable = true;

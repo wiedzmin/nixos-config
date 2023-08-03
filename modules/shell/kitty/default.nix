@@ -82,7 +82,7 @@ in
           message = "Only one VT program should be enabled at the same time";
         }
       ];
-      fonts = { fonts = with pkgs; [ powerline-fonts ]; };
+      fonts.packages = with pkgs; [ powerline-fonts ];
 
       pim.timetracking.rules = mkArbttProgramTitleRule [ "kitty" ]
         [ "(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/" ] "project:$1-$2-$3";
