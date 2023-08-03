@@ -230,7 +230,10 @@ in
     expansions.enable = true;
     tabnine = {
       enable = true;
-      emacs.enable = true;
+      emacs = {
+        enable = true;
+        package = "company-tabnine";
+      };
     };
   };
 
