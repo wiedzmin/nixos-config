@@ -22,7 +22,8 @@
   (before-save-hook . delete-trailing-whitespace)
   :bind
   (:map ctl-x-map
-        ("f" . find-file))
+        ("f" . find-file)
+        ("g" . find-sibling-file))
   :custom
   ;; backup settings
   (auto-save-default nil)
