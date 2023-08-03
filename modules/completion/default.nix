@@ -173,7 +173,6 @@ in
     })
     (mkIf (cfg.enable && cfg.expansions.enable) {
       services.espanso.enable = true;
-      # TODO: script(s) to store expansions in redis and show on demand (in case some useful expansions were forgotten)
       home-manager.users."${user}" = {
         home.activation = {
           populateEspansoConfig = {
