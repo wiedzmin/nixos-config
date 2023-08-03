@@ -181,8 +181,10 @@
 
 ;;; Prerequisite: Execute M-x company-tabnine-install-binary to install the TabNine binary for your system.
 (use-package company-tabnine
+  @tabnineDisabled@
   :after (company)
   :preface
+  @tabnineExecutablePathAdvice@
   (defun company/sort-by-tabnine (candidates)
     "Integrate company-tabnine with lsp-mode"
     (if (or (functionp company-backend)
@@ -231,6 +233,7 @@
                  (stringp (funcall company-message-func)))
         (unless (string-match "The free version of TabNine only indexes up to" (funcall company-message-func))
           ad-do-it)))) ;; FIXME: consider using advice-* machinery
+  @tabnineExecutablePathPatch@
   (add-to-list 'company-transformers 'company/sort-by-tabnine t)
   ;; (add-to-list 'company-backends #'company-tabnine)
   (add-to-list 'company-backends '(company-capf :with company-tabnine :separate))
