@@ -14,7 +14,8 @@
     ./browsers/firefox
     ./browsers/nyxt
     ./browsers/qutebrowser
-    ./completion
+    ./completion/expansions
+    ./completion/tabnine
     ./content/core
     ./content/ebooks
     ./content/images
@@ -44,14 +45,15 @@
     ./dev/navigation/codesearch
     ./dev/navigation/projects
     ./dev/python
+    ./emacs/completion
     ./emacs/core
     ./emacs/edit
-    ./emacs/history
     ./emacs/misc
     ./emacs/navigation
     ./email
     ./email/mbsync.nix
     ./gc
+    ./history
     ./knowledgebase
     ./navigation/bookmarks
     ./networking/core

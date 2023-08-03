@@ -227,23 +227,24 @@ in
   };
 
   completion = {
-    enable = true;
     expansions.enable = true;
+    tabnine = {
+      enable = true;
+      emacs.enable = true;
+    };
+  };
+
+  history = {
     shell = {
       enable = true;
-      recent.backend = "atuin";
-      recent.mcfly = {
+      backend = "atuin";
+      mcfly = {
         fuzzySearch = 3;
         resultsCount = 30;
         resultsSort = "LAST_RUN";
       };
     };
-    emacs = {
-      enable = true;
-      backend = "company";
-      snippets.backend = "tempel";
-    };
-    wm.enable = true;
+    emacs.enable = true;
   };
 
   dev = {
@@ -345,7 +346,11 @@ in
       enable = true;
       projects.backend = "projectile";
     };
-    history.enable = true;
+    completion = {
+      enable = true;
+      backend = "company";
+      snippets.backend = "tempel";
+    };
     misc.enable = true;
   };
 
