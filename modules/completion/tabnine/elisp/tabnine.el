@@ -1,6 +1,7 @@
 ;;; Prerequisite: Execute M-x company-tabnine-install-binary to install the TabNine binary for your system.
 (use-package company-tabnine
   :after (company)
+  :delight " ⌬"
   :preface
   @tabnineExecutablePathAdvice@
   (defun company/sort-by-tabnine (candidates)
