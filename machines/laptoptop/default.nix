@@ -555,8 +555,9 @@ in
       };
       xkeysnail.enable = true;
       mouse = {
-        enable = false;
+        enable = true;
         constraintMouse = { enable = false; };
+        keynavTool = "warpd";
       };
     };
     video = {
