@@ -78,6 +78,7 @@ in
         ;;       for 'doom-modeline-project-detection'. Also make choiced parameter for those packages.
 
         (use-package doom-modeline
+          :hook (after-init-hook . doom-modeline-mode)
           :custom
           (doom-modeline-height ${builtins.toString cfg.height})
           (doom-modeline-icon t)
@@ -98,8 +99,7 @@ in
           (doom-modeline-env-version t)
           :config
           (display-time-mode -1)
-          (when (display-graphic-p) (setq doom-modeline-hud t))
-          (doom-modeline-mode 1))
+          (when (display-graphic-p) (setq doom-modeline-hud t)))
       '';
     })
   ];
