@@ -54,6 +54,21 @@ in
         bold_italic_font = "auto";
         font_size = builtins.toString sizeKitty;
       };
+      programs.qutebrowser.extraConfig = ''
+        c.fonts.completion.category = '${makeFontStrQB baseFont}'
+        c.fonts.completion.entry = '${makeFontStrQB baseFont}'
+        c.fonts.debug_console = '${makeFontStrQB baseFont}'
+        c.fonts.downloads = '${makeFontStrQB baseFont}'
+        c.fonts.hints = '${makeFontStrQB (baseFont // { size = 9; })}'
+        c.fonts.keyhint = '${makeFontStrQB baseFont}'
+        c.fonts.messages.error = '${makeFontStrQB baseFont}'
+        c.fonts.messages.info = '${makeFontStrQB baseFont}'
+        c.fonts.messages.warning = '${makeFontStrQB baseFont}'
+        c.fonts.prompts = '${makeFontStrQB baseFont}'
+        c.fonts.statusbar = '${makeFontStrQB baseFont}'
+        c.fonts.tabs.selected = '${makeFontStrQB baseFont}'
+        c.fonts.tabs.unselected = '${makeFontStrQB baseFont}'
+      '';
       programs.rofi.font = makeFontStrSimple fontRofi;
       programs.zathura.options.font = makeFontStrSimple baseFont;
       services.dunst.settings.global.font = makeFontStrSimple baseFont;
