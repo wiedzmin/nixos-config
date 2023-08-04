@@ -207,7 +207,17 @@ in
           })
         cfg.mpd.collections;
 
-      home-manager.users."${user}" = { home.packages = with pkgs; [ ario sonata cantata ]; };
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [ ario sonata cantata ];
+        programs.qutebrowser = {
+          keyBindings = {
+            normal = {
+              "ym" = "spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}";
+              "нь" = "spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}";
+            };
+          };
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.youtubeFrontends.enable) {
       # TODO: try https://github.com/trizen/youtube-viewer

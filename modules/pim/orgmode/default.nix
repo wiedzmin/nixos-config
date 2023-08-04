@@ -116,6 +116,18 @@ in
           (builtins.readFile ./scripts/org-capture.py);
       };
 
+      home-manager.users."${user}" = {
+        programs.qutebrowser = {
+          keyBindings = {
+            normal = {
+              "y;" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
+              "нж" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
+              "y'" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
+              "нэ" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
+            };
+          };
+        };
+      };
       ext.programs.tmux.bindings.copyMode = { "M-n" = ''run-shell "${pkgs.org-capture}/bin/org-capture ns"''; };
       pim.orgmode.agendaRoots = { "${cfg.rootDir}" = 3000; };
       pim.timetracking.rules = mkArbttTitleRule [ "^emacs - [^ ]+\\.org .*$" ] "edit:orgmode";
@@ -164,6 +176,18 @@ in
       '';
     })
     (mkIf (cfg.enable && cfg.org-roam.enable) {
+      home-manager.users."${user}" = {
+        programs.qutebrowser = {
+          keyBindings = {
+            normal = {
+              # FIXME: does not work yet
+              "<Ctrl-Shift-r>" = "open javascript:location.href='org-protocol://roam-ref?template=d&ref=+encodeURIComponent'(location.href)+'&title='+encodeURIComponent(document.title)";
+              "<Ctrl-Shift-к>" = "open javascript:location.href='org-protocol://roam-ref?template=d&ref='+encodeURIComponent(location.href)+'&title='+encodeURIComponent(document.title)";
+            };
+          };
+        };
+      };
+
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.org-roam
         epkgs.org-roam-ui

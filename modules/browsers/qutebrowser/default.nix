@@ -2,6 +2,8 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# TODO: review *all* settings
+
 let
   cfg = config.browsers.qutebrowser;
   user = config.attributes.mainUser.name;
@@ -75,6 +77,11 @@ in
         type = types.enum [ "lightness-cielab" "lightness-hsl" "brightness-rgb" ];
         default = "lightness-hsl";
         description = "Darkmode algorithm to use";
+      };
+      emacsKeys.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Emacs-like keybindings";
       };
       hints.mode = mkOption {
         type = types.enum [ "letter" "number" "word" ];
@@ -191,24 +198,27 @@ in
               "+{line}:{column}"
               "{}"
             ];
-            zoom.levels = [
-              "25%"
-              "33%"
-              "50%"
-              "67%"
-              "75%"
-              "90%"
-              "100%"
-              "110%"
-              "125%"
-              "150%"
-              "175%"
-              "200%"
-              "250%"
-              "300%"
-              "400%"
-              "500%"
-            ];
+            zoom = {
+              levels = [
+                "25%"
+                "33%"
+                "50%"
+                "67%"
+                "75%"
+                "90%"
+                "100%"
+                "110%"
+                "125%"
+                "150%"
+                "175%"
+                "200%"
+                "250%"
+                "300%"
+                "400%"
+                "500%"
+              ];
+              default = "100%";
+            };
             colors = {
               statusbar.url.success.https.fg = "white";
               tabs = rec {
@@ -250,8 +260,8 @@ in
               };
             };
             completion = {
-              height = "20%";
-              quick = false;
+              height = "50%";
+              quick = true;
               show = "auto";
               shrink = true;
               timestamp_format = "%d-%m-%Y";
@@ -266,6 +276,11 @@ in
               canvas_reading = true;
               cookies.store = true;
               geolocation = "ask";
+              headers = {
+                do_not_track = true;
+                custom = { };
+                accept_language = "en-US,en";
+              };
               javascript.enabled = true;
               mute = true;
               notifications = {
@@ -274,11 +289,12 @@ in
               };
               pdfjs = true;
               plugins = true;
-              proxy = "none";
+              proxy = "system";
               register_protocol_handler = true;
               tls.certificate_errors = "ask-block-thirdparty";
               webgl = true;
             };
+            messages.timeout = 500;
             downloads = {
               location = {
                 directory = config.browsers.qutebrowser.downloadPath;
@@ -309,6 +325,7 @@ in
             };
             history_gap_interval = 30;
             input = {
+              forward_unbound_keys = "auto";
               insert_mode = {
                 auto_leave = true;
                 auto_load = true;
@@ -328,10 +345,14 @@ in
             };
             search.ignore_case = "smart";
             session.lazy_restore = false; # NOTE: see qute://warning/sessions for details
-            statusbar = { widgets = [ "keypress" "url" "history" "tabs" "progress" ]; };
+            statusbar = {
+              position = "bottom";
+              widgets = [ "keypress" "url" "history" "tabs" "progress" ];
+            };
             tabs = {
               background = true;
               last_close = "close";
+              mousewheel_switching = false;
               new_position = {
                 related = "next";
                 unrelated = "last";
@@ -343,6 +364,7 @@ in
               title = {
                 format = "{audio}{current_title}";
                 format_pinned = "{audio}";
+                alignment = "center";
               };
             };
             url = {
@@ -370,25 +392,19 @@ in
                 "и" = "set-cmd-text -s :tab-select";
                 "t" = "set-cmd-text -s :open -t";
                 "е" = "set-cmd-text -s :open -t";
+                "<Ctrl-Return>" = "selection-follow";
+                "<Ctrl-Shift-Return>" = "selection-follow -t";
                 "<Ctrl-F5>" = "reload -f";
-                "<Ctrl-Return>" = "selection-follow -t";
-                "<Ctrl-Shift-T>" = "undo";
-                "<Ctrl-Shift-Е>" = "undo";
-                "u" = "undo";
-                "г" = "undo";
-                "<Ctrl-W>" = "tab-close";
-                "<Ctrl-Ц>" = "tab-close";
-                "<Ctrl-g>" = "stop";
-                "<Ctrl-п>" = "stop";
-                "<Ctrl-p>" = "tab-pin";
-                "<Ctrl-з>" = "tab-pin";
-                "<F12>" = "inspector";
-                "<F5>" = "reload";
-                "<Return>" = "selection-follow";
                 "Ctrl-r" = "reload";
                 "Ctrl-к" = "reload";
+                "u" = "undo";
+                "U" = "undo --window";
+                "<F12>" = "inspector";
+                "<F5>" = "reload";
                 "Sh" = "open qute://history";
                 "Ыр" = "open qute://history";
+                "Ss" = "open qute://settings";
+                "Ыы" = "open qute://settings";
                 "ct" = "open -t -- {clipboard}";
                 "се" = "open -t -- {clipboard}";
                 "cw" = "open -w -- {clipboard}";
@@ -427,12 +443,6 @@ in
                 "нз" = "yank pretty-url";
                 "yt" = "yank title";
                 "не" = "yank title";
-                "y;" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
-                "нж" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
-                "y'" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
-                "нэ" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
-                "ym" = "spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}";
-                "нь" = "spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}";
                 ";;" = "hint links download";
                 "жж" = "hint links download";
                 ";I" = "hint images tab";
@@ -492,16 +502,56 @@ in
                 "цы" = "config-write-py --force --defaults config.current.py";
                 "i" = "mode-enter insert";
                 "ш" = "mode-enter insert";
+              } // optionalAttrs (cfg.emacsKeys.enable) {
+                "<Ctrl-s>" = "set-cmd-text /";
+                "<Ctrl-r>" = "set-cmd-text ?";
+                "<Ctrl-W>" = "tab-close";
+                "<Ctrl-Ц>" = "tab-close";
+                "<Ctrl-g>" = "stop";
+                "<Ctrl-п>" = "stop";
+                "<Ctrl-p>" = "tab-pin";
+                "<Ctrl-з>" = "tab-pin";
+                "<Ctrl-Shift-_>" = "undo";
+                "<Ctrl-u><Ctrl-Shift-_>" = "undo --window";
+                "<Ctrl-x><Ctrl-r>" = "config-source";
+                "<Ctrl-x>k" = "tab-close";
+                "<Ctrl-x>1" = "tab-only";
+                "<Ctrl-x>r" = "reload";
+                "<Alt-w>" = "yank";
+                "<Ctrl-u><Alt-w>d" = "yank domain";
+                "<Ctrl-u><Alt-w>p" = "yank pretty-url";
+                "<Ctrl-u><Alt-w>t" = "yank title";
+                "<Alt-x>" = "set-cmd-text :";
+                "<Alt-b>" = "back";
+                "<Alt-f>" = "forward";
+                "<Ctrl-e>" = "tab-next";
+                "<Ctrl-a>" = "tab-prev";
+                "<Ctrl-x><Ctrl-f>" = "set-cmd-text -s :open";
+                "<Ctrl-u><Ctrl-x><Ctrl-f>" = "set-cmd-text -s :open -t";
+                "<Alt-Shift-,>" = "scroll-to-perc 0";
+                "<Alt-Shift-.>" = "scroll-to-perc";
+                "<Ctrl-x><Ctrl-c>" = "quit";
               };
-              insert = {
+              insert = optionalAttrs (cfg.emacsKeys.enable) {
+                "<Ctrl-e>" = "edit-text";
                 "<Ctrl-y>" = "insert-text -- {clipboard}";
                 "<Shift-y>" = "insert-text -- {primary}";
+              };
+              command = optionalAttrs (cfg.emacsKeys.enable) {
+                "<Ctrl-s>" = "search-next";
+                "<Ctrl-r>" = "search-prev";
+              };
+              prompt = optionalAttrs (cfg.emacsKeys.enable) {
+                "<Ctrl-s>" = "search-next";
+                "<Ctrl-r>" = "search-prev";
               };
             };
           extraConfig = ''
             config.set('content.javascript.enabled', True, 'chrome://*/*')
             config.set('content.javascript.enabled', True, 'file://*')
             config.set('content.javascript.enabled', True, 'qute://*/*')
+
+            ${optionalString cfg.emacsKeys.enable "config.unbind(\"<Ctrl-u>\")"}
 
             c.statusbar.padding['top'] = 4
             c.statusbar.padding['bottom'] = 4
@@ -511,6 +561,10 @@ in
             c.tabs.padding['bottom'] = 1
             c.tabs.padding['right'] = 5
             c.tabs.padding['left'] = 5
+            c.tabs.indicator.padding['top'] = 2
+            c.tabs.indicator.padding['bottom'] = 2
+            c.tabs.indicator.padding['right'] = 0
+            c.tabs.indicator.padding['left'] = 4
           '';
         };
       };
@@ -551,6 +605,25 @@ in
       navigation.bookmarks.entries = {
         "qutebrowser/sessions/raw" = { local.path = homePrefix user ".local/share/qutebrowser/sessions"; };
         "qutebrowser/sessions/exported" = { local.path = homePrefix user "docs/org/browser-sessions/qutebrowser"; };
+        "qutebrowser_plus" = {
+          desc = "qutebrowser + ";
+          remote = {
+            url = "https://www.google.ru/";
+            searchSuffix = "?q=qutebrowser+";
+          };
+        };
+        "qutebrowser_help_index" = {
+          desc = "qutebrowser help index";
+          remote.url = "https://qutebrowser.org/doc/help/index.html";
+        };
+        "qutebrowser_help_commands" = {
+          desc = "qutebrowser commands reference";
+          remote.url = "https://qutebrowser.org/doc/help/commands.html";
+        };
+        "qutebrowser_help_settings" = {
+          desc = "qutebrowser settings reference";
+          remote.url = "https://qutebrowser.org/doc/help/settings.html";
+        };
       };
     })
     (mkIf (cfg.enable && cfg.isFallback) {

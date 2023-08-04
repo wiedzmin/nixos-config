@@ -498,4 +498,6 @@ rec {
   makeFontStrSimple = fontdef: "${fontdef.family} ${fontdef.style} ${builtins.toString fontdef.size}";
   makeFontStrColons = fontdef: "${fontdef.family}:${lib.toLower fontdef.style}:size=${builtins.toString fontdef.size}";
   makeFontStrColons2 = fontdef: "${fontdef.family}:weight=${fontdef.style}:size=${builtins.toString fontdef.size}";
+  makeFontStrQB = fontdef: "${if (builtins.hasAttr "style" fontdef && fontdef.style != "")
+    then "${lib.toLower fontdef.style} " else ""}${builtins.toString fontdef.size}pt ${fontdef.family}";
 }
