@@ -3,23 +3,31 @@ with pkgs.unstable.commonutils;
 with lib;
 
 let
-  cfg = config.workstation.input.xkeysnail;
+  cfg = config.workstation.input.keyboard;
   user = config.attributes.mainUser.name;
 in
 {
   options = {
-    workstation.input.xkeysnail = {
+    workstation.input.keyboard = {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable xkeysnail";
+        description = ''
+          Whether to enable various auxiliary tools
+          for controlling mouse input
+        '';
       };
-      configPath = mkOption {
+      remappingTool = mkOption {
+        type = types.enum [ "xkeysnail" "keyd" ];
+        default = "xkeysnail";
+        description = "Keyboard remapping tool to use";
+      };
+      xkeysnail.configPath = mkOption {
         type = types.str;
         default = homePrefix user ".config/xkeysnail/config.py";
         description = "Config file absolute path";
       };
-      inputDevices = mkOption {
+      xkeysnail.inputDevices = mkOption {
         type = types.listOf types.str;
         default = [ ];
         example = literalExpression ''
@@ -33,12 +41,12 @@ in
           devices)
         '';
       };
-      rc = mkOption {
+      xkeysnail.rc = mkOption {
         type = types.lines;
         default = "";
         description = "xkeysnail customizations";
       };
-      rcCommon = mkOption {
+      xkeysnail.rcCommon = mkOption {
         type = types.lines;
         default = ''
           # Emacs-like keybindings in non-Emacs applications
@@ -109,7 +117,7 @@ in
         '';
         description = "common xkeysnail customizations";
       };
-      setupText = mkOption {
+      xkeysnail.setupText = mkOption {
         type = types.lines;
         default = ''
           # -*- coding: utf-8 -*-
@@ -117,8 +125,8 @@ in
           import re
           from xkeysnail.transform import *
 
-          ${cfg.rc}
-          ${cfg.rcCommon}
+          ${cfg.xkeysnail.rc}
+          ${cfg.xkeysnail.rcCommon}
         '';
         visible = false;
         internal = true;
@@ -129,10 +137,10 @@ in
   };
 
   config = mkMerge [
-    (mkIf cfg.enable {
+    (mkIf (cfg.enable && cfg.remappingTool == "xkeysnail") {
       assertions = [{
-        assertion = cfg.configPath != "";
-        message = "XKeysnail: must provide path to config file";
+        assertion = cfg.xkeysnail.configPath != "";
+        message = "input/keyboard/XKeysnail: must provide path to config file";
       }];
 
       systemd.user.services."xkeysnail" = {
@@ -145,15 +153,17 @@ in
           Restart = "always";
           RestartSec = 1;
           ExecStart = "/run/wrappers/bin/sudo ${pkgs.xkeysnail}/bin/xkeysnail ${
-              optionalString (cfg.inputDevices != [ ])
-              "--devices ${lib.concatStringsSep " " cfg.inputDevices}"
-            } ${cfg.configPath}";
+              optionalString (cfg.xkeysnail.inputDevices != [ ])
+              "--devices ${lib.concatStringsSep " " cfg.xkeysnail.inputDevices}"
+            } ${cfg.xkeysnail.configPath}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
       };
       users.users."${user}".extraGroups = [ "input" ];
-      home-manager.users."${user}" = { xdg.configFile."xkeysnail/config.py".text = cfg.setupText; };
+      home-manager.users."${user}" = { xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText; };
     })
+    # (mkIf (cfg.enable && cfg.remappingTool == "keyd") {
+    # })
   ];
 }

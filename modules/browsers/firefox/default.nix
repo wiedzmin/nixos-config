@@ -137,7 +137,7 @@ in
   };
   config = mkMerge [
     (mkIf cfg.enable {
-      workstation.input.xkeysnail.rc = ''
+      workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("${lib.last cfg.windowClass}"), {
             K("C-j"): K("C-f6"), # Type C-j to focus to the content
             K("C-g"): K("f5"),

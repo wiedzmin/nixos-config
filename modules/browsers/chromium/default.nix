@@ -135,7 +135,7 @@ in
           })
         ];
       };
-      workstation.input.xkeysnail.rc = ''
+      workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("${lib.last cfg.windowClass}"), {
             K("C-g"): K("f5"),
             K("M-comma"): K("Shift-h"),

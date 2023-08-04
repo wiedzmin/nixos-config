@@ -134,7 +134,7 @@ in
           text = ''wget "$1" -q -O - | xclip -i -selection primary -t image/jpeg'';
         };
       };
-      workstation.input.xkeysnail.rc = ''
+      workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("${lib.last cfg.windowClass}"), {
             K("C-g"): K("f5"),
             K("C-n"): K("C-g"),
