@@ -553,7 +553,10 @@ in
           '';
         };
       };
-      xkeysnail.enable = true;
+      keyboard = {
+        enable = true;
+        remappingTool = "xkeysnail";
+      };
       mouse = {
         enable = true;
         constraintMouse = { enable = false; };

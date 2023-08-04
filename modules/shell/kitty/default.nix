@@ -378,7 +378,7 @@ in
           '';
         };
       };
-      workstation.input.xkeysnail.rc = ''
+      workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("${lib.last cfg.windowClass}"), {
             K("C-x"): K("M-x"),
             K("C-r"): K("C-Shift-r"),

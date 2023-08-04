@@ -98,7 +98,7 @@
     ./workstation/backups
     ./workstation/input/core
     ./workstation/input/mouse
-    ./workstation/input/xkeysnail
+    ./workstation/input/keyboard
     ./workstation/lockscreen
     ./workstation/performance
     ./workstation/power/battery

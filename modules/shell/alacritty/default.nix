@@ -84,14 +84,14 @@ in
           };
         };
       };
-      workstation.input.xkeysnail.rc = ''
+      workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("Alacritty"), {
             K("C-x"): {
                 K("k"): K("C-d"),
             },
         }, "Alacritty")
       '';
-      wmCommon.autostart.entries = optionals cfg.autostart [ { cmd = builtins.head cfg.command; } ];
+      wmCommon.autostart.entries = optionals cfg.autostart [{ cmd = builtins.head cfg.command; }];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.common = [{

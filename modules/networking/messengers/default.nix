@@ -38,7 +38,7 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ tdesktop tdlib ] ++ optionals (cfg.zoom.enable) [ zoom-us ];
       };
-      workstation.input.xkeysnail.rc = ''
+      workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {
             K("C-x"): {
                 K("C-c"): K("C-q"),
