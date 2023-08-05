@@ -261,7 +261,6 @@ in
             content = {
               autoplay = false;
               cache = {
-                appcache = true;
                 size = 5242880;
               };
               canvas_reading = true;
@@ -361,8 +360,6 @@ in
             {
               normal = {
                 # TODO: play with "set completion.open_categories [<something>] ;; set-cmd-text -s :<cmd>" and "completion-item-focus next-category"
-                "xb" = "config-cycle statusbar.hide";
-                "чи" = "config-cycle statusbar.hide";
                 "<Alt-,>" = "back";
                 "<Alt-б>" = "back";
                 "<Alt-.>" = "forward";
