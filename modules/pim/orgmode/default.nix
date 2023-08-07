@@ -204,6 +204,10 @@ in
           desc = "Jethrokuan's braindump";
           remote.url = "https://braindump.jethro.dev/";
         };
+        "org-roam/proto" = {
+          desc = "org-protocol docs for org-roam";
+          remote.url = "https://www.orgroam.com/manual.html#The-roam_002dnode-protocol";
+        };
       };
     })
     (mkIf (cfg.enable && cfg.org-roam.enable && config.completion.expansions.enable) {
