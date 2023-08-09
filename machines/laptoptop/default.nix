@@ -186,6 +186,7 @@ in
     };
     qutebrowser = {
       enable = true;
+      emacsKeys.enable = true;
       isDefault = true;
       suspendInactive = false;
       sessions = {
