@@ -65,11 +65,6 @@ with pkgs.unstable.commonutils;
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http wikipedia";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "documentation";
       desktop = "web";
     }
