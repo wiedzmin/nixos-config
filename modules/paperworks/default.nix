@@ -142,12 +142,7 @@ in
         default = config.attributes.localGroup;
         description = "Group under which Paperless runs.";
       };
-      scanning.paperless.package = mkOption {
-        type = types.package;
-        default = pkgs.paperless;
-        defaultText = "pkgs.paperless";
-        description = "The Paperless package to use.";
-      };
+      scanning.paperless.package = mkPackageOption pkgs "paperless" { extraDescription = "The Paperless package to use"; };
       scanning.paperless.manage = mkOption {
         type = types.package;
         readOnly = true;
@@ -163,11 +158,7 @@ in
         default = false;
         description = "Whether to enable docflow tooling";
       };
-      docflow.libreoffice.package = mkOption {
-        type = types.package;
-        default = nixpkgs-last-unbroken.libreoffice-still;
-        description = "The `libreoffice` package to install";
-      };
+      docflow.libreoffice.package = mkPackageOption nixpkgs-last-unbroken "libreoffice-still" { extraDescription = "The `libreoffice` package to install"; };
       docflow.extensions = mkOption {
         type = types.listOf types.str;
         default = [ "doc" "docx" "xls" "xlsx" "odt" ];
