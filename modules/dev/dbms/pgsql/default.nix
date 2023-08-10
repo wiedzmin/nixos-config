@@ -17,11 +17,7 @@ in
         default = false;
         description = "Whether to enable PostgreSQL helper tools.";
       };
-      pgcli.package = mkOption {
-        type = types.package;
-        default = pkgs.pgcli;
-        description = "PgCLI log file location.";
-      };
+      pgcli.package = mkPackageOption pkgs "pgcli" { extraDescription = "PgCLI log file location"; };
       pgcli.logPath = mkOption {
         type = types.str;
         default = "${dataHome}/pgcli/log";
