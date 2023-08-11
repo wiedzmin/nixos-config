@@ -41,12 +41,20 @@ in
     (mkIf cfg.enable {
       boot = {
         kernelParams = [
+          "hugepages=5"
+          "hugepagesz=1GB"
           "l1tf=off"
+          "mds=off"
+          "no_stf_barrier"
+          "noibpb"
+          "noibrs"
           "nospec_store_bypass_disable"
           "nospectre_v1"
           "nospectre_v2"
           "pti=off"
           "scsi_mod.use_blk_mq=1"
+          "tsx=on"
+          "tsx_async_abort=off"
         ];
         kernelModules = [ "bfq" ];
       };
