@@ -176,22 +176,22 @@ rec {
     lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
       (_: meta: trueValueByPathStrict meta [ "local" type ])
       (checkedBookmarks bookmarks [ "local" "path" ]));
-  localEmacsBookmarks = bookmarks:
+  localBookmarksEmacs = bookmarks:
     lib.mapAttrsToList (_: meta: meta.local.path) (checkedBookmarks bookmarks [ "local" "path" ]);
   localBookmarksKeyMeta = bookmarks: sep: tagSep:
     lib.mapAttrs'
-      (key: meta: lib.nameValuePair (mkBookmarkNameLocal (meta // { inherit key; }) sep tagSep)
-        (mkBookmarkDestLocal meta.local))
+      (key: meta: lib.nameValuePair (mkLocalBookmarkName (meta // { inherit key; }) sep tagSep)
+        (mkLocalBookmarkDest meta.local))
       (checkedBookmarks bookmarks [ "local" "path" ]);
   localBookmarksKVText = bookmarks:
     lib.concatStringsSep "\n" (lib.mapAttrsToList (id: meta: id + " : " + meta.local.path) (checkedBookmarks bookmarks [ "local" "path" ]));
-  mkBookmarkNameLocal = meta: sep: tagSep:
+  mkLocalBookmarkName = meta: sep: tagSep:
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.key ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
-  mkBookmarkDestLocal = meta:
+  mkLocalBookmarkDest = meta:
     { inherit (meta) path; } // lib.optionalAttrs (lib.hasAttrByPath [ "shell" ] meta) { inherit (meta) shell; }
     // lib.optionalAttrs (lib.hasAttrByPath [ "tmux" ] meta) { inherit (meta) tmux; };
-  mkBookmarkNameRemote = meta: sep: tagSep:
+  mkRemoteBookmarkName = meta: sep: tagSep:
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.remote.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
   mkBookmarkWebjumpDest = meta:
@@ -204,13 +204,13 @@ rec {
     } // lib.optionalAttrs (lib.hasAttrByPath [ "remote" "vpn" ] meta) { inherit (meta.remote) vpn; }
     // lib.optionalAttrs (lib.hasAttrByPath [ "remote" "browser" ] meta) { inherit (meta.remote) browser; }
     // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; };
-  remoteWebjumps = remotes: sep: tagSep:
-    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkWebjumpDest meta))
+  webjumpsMeta = remotes: sep: tagSep:
+    lib.mapAttrs' (_: meta: lib.nameValuePair (mkRemoteBookmarkName meta sep tagSep) (mkBookmarkWebjumpDest meta))
       (lib.filterAttrs
         (_: meta: (trueValueByPath meta [ "remote" "jump" ] || falseValueByPath meta [ "remote" "searchSuffix" ]))
         (checkedBookmarks remotes [ "remote" "url" ]));
-  remoteSearchEngines = remotes: sep: tagSep:
-    lib.mapAttrs' (_: meta: lib.nameValuePair (mkBookmarkNameRemote meta sep tagSep) (mkBookmarkSearchengineDest meta))
+  searchenginesMeta = remotes: sep: tagSep:
+    lib.mapAttrs' (_: meta: lib.nameValuePair (mkRemoteBookmarkName meta sep tagSep) (mkBookmarkSearchengineDest meta))
       (lib.filterAttrs
         (_: meta: lib.hasAttrByPath [ "remote" "searchSuffix" ] meta)
         (checkedBookmarks remotes [ "remote" "url" ]));
