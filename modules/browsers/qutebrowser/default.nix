@@ -294,7 +294,7 @@ in
               tls.certificate_errors = "ask-block-thirdparty";
               webgl = true;
             };
-            messages.timeout = 500;
+            messages.timeout = 1000;
             downloads = {
               location = {
                 directory = config.browsers.qutebrowser.downloadPath;
