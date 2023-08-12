@@ -28,8 +28,6 @@ in
           "BRACE_CCL"
           "EXTENDED_GLOB"
           "HIST_FIND_NO_DUPS"
-          "HIST_IGNORE_ALL_DUPS"
-          "HIST_IGNORE_SPACE"
           "HIST_NO_STORE"
           "HIST_SAVE_NO_DUPS"
           "INC_APPEND_HISTORY"
@@ -63,6 +61,8 @@ in
             save = 10000;
             path = "${dataHome}/.histfile";
             ignoreDups = true;
+            ignoreAllDups = true;
+            ignoreSpace = true;
             expireDuplicatesFirst = true;
             extended = true;
             share = true;
