@@ -369,13 +369,6 @@ in
         jump = true;
         searchSuffix = "search/?text=";
       };
-      windowRules = [
-        {
-          class = mkWSMappingBrowsersRegexp config.attributes.browser;
-          title = "http yandex";
-          desktop = "web";
-        }
-      ];
     };
     "lol" = {
       desc = "LOL paintings";
