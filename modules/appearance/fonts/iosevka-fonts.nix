@@ -18,7 +18,7 @@ let
   fontDunst = baseFont // { size = 9; };
   fontXresources = baseFont // { size = 12; };
   sizeAlacritty = 9.0;
-  sizeKitty = 9.0;
+  sizeKitty = 8.0;
 in
 {
   options = {
