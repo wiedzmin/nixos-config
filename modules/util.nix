@@ -195,15 +195,15 @@ rec {
     lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.remote.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
       ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
   mkBookmarkWebjumpDest = meta:
-    { inherit (meta.remote) url; } // lib.optionalAttrs (lib.hasAttrByPath [ "remote" "vpn" ] meta) { inherit (meta.remote) vpn; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "remote" "browser" ] meta) { inherit (meta.remote) browser; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; };
+    { inherit (meta.remote) url; } // mkBookmarkRemoteDest meta;
   mkBookmarkSearchengineDest = meta:
     {
       url = meta.remote.url + lib.optionalString (lib.hasAttrByPath [ "remote" "searchSuffix" ] meta) meta.remote.searchSuffix;
-    } // lib.optionalAttrs (lib.hasAttrByPath [ "remote" "vpn" ] meta) { inherit (meta.remote) vpn; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "remote" "browser" ] meta) { inherit (meta.remote) browser; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; };
+    } // mkBookmarkRemoteDest meta;
+  mkBookmarkRemoteDest = meta:
+    lib.optionalAttrs (lib.hasAttrByPath [ "remote" "vpn" ] meta) { inherit (meta.remote) vpn; } //
+    lib.optionalAttrs (lib.hasAttrByPath [ "remote" "browser" ] meta) { inherit (meta.remote) browser; } //
+    lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; };
   webjumpsMeta = remotes: sep: tagSep:
     lib.mapAttrs' (_: meta: lib.nameValuePair (mkRemoteBookmarkName meta sep tagSep) (mkBookmarkWebjumpDest meta))
       (lib.filterAttrs
