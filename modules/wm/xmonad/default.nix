@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.wm.xmonad;
   user = config.attributes.mainUser.name;
+  yaml = pkgs.formats.yaml { };
   configText = ''
     module Main where
 
