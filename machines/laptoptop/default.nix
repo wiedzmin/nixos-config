@@ -149,10 +149,11 @@ in
       enable = true;
       currentLineHighlightFace = "dark slate blue";
       modeline.doom = {
-        enable = true;
+        enable = false;
         height = 24;
         displayMinorModes = true;
       };
+      modeline.telephone.enable = true;
     };
     fonts = {
       enable = true;
