@@ -507,7 +507,7 @@ in
           false "";
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable && cfg.isDefault) {
-      wmCommon.keybindings.common = [
+      wmCommon.keybindings.entries = [
         {
           key = [ "s" ];
           cmd = "${nurpkgs.wiedzmin.toolbox}/bin/ffsessions --dumps-path ${cfg.sessions.path} dump ${

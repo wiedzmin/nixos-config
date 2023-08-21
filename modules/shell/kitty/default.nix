@@ -416,7 +416,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [{
+      wmCommon.keybindings.entries = [{
         key = [ prefix "Shift" "Return" ];
         cmd = lib.concatStringsSep " " cfg.command;
         mode = "root";

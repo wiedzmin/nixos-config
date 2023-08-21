@@ -326,7 +326,7 @@ in
           };
         }));
 
-      wmCommon.keybindings.common = [{
+      wmCommon.keybindings.entries = [{
         key = [ "d" ];
         cmd = "${nurpkgs.toolbox}/bin/insight docs";
         mode = "select";

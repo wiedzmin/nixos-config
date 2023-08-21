@@ -44,7 +44,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [
+      wmCommon.keybindings.entries = [
         {
           key = [ prefix "F8" ];
           cmd = "${pkgs.picom}/bin/picom-trans -c +10";

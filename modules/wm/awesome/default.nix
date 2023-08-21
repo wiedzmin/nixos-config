@@ -295,7 +295,7 @@ in
 
       shell.core.variables = [{ CURRENT_WM = "awesome"; global = true; emacs = true; }];
 
-      wmCommon.keybindings.common = keybindings;
+      wmCommon.keybindings.entries = keybindings;
 
       services.xserver = {
         windowManager = {

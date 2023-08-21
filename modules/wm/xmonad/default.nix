@@ -322,14 +322,14 @@ in
       };
 
       # FIXME: adopt new workspace keybindings implementation (presumably broken)
-      wmCommon.keybindings.common = {
+      wmCommon.keybindings.entries = {
         "M-C-q" = { cmd = "xmonad --recompile; xmonad --restart"; };
         "M-q" = { cmd = "xmonad --restart"; };
       };
 
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
-          lib.strings.escapeNixString (builtins.toJSON (cfg.internalKeys // config.wmCommon.keybindings.common))
+          lib.strings.escapeNixString (builtins.toJSON (cfg.internalKeys // config.wmCommon.keybindings.entries))
         }
       '';
     })

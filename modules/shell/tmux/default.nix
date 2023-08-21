@@ -159,7 +159,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [{
+      wmCommon.keybindings.entries = [{
         key = [ "t" ];
         cmd = "${nurpkgs.toolbox}/bin/tmuxctl";
         mode = "select";

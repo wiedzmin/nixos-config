@@ -272,7 +272,7 @@ in
         };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [
+      wmCommon.keybindings.entries = [
         {
           key = [ "Shift" "e" ];
           cmd = "${pkgs.procps}/bin/pkill -SIGUSR2 emacs";

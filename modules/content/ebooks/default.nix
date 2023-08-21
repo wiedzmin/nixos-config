@@ -23,7 +23,7 @@ in
       extensions.secondary = mkOption {
         type = types.listOf types.str;
         default = [ "mobi" "fb2" ];
-        description = "Auxillary ebook file extensions, mostly for timetracking at the moment.";
+        description = "Auxiliary ebook file extensions, mostly for timetracking at the moment.";
       };
       wm.enable = mkOption {
         type = types.bool;
@@ -82,7 +82,7 @@ in
       shell.core.variables = [{ TB_EBOOKS_READER_COMMAND = config.attributes.ebookreader.default.cmd; global = true; }];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [{
+      wmCommon.keybindings.entries = [{
         key = [ "b" ];
         cmd = "${nurpkgs.toolbox}/bin/insight ebooks";
         mode = "select";

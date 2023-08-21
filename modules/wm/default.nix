@@ -30,7 +30,7 @@ in
         default = "Mod1";
         description = "WM alternate prefix key";
       };
-      keybindings.common = mkOption {
+      keybindings.entries = mkOption {
         type = types.listOf types.attrs;
         default = [ ];
         description = "Common keybindings.";
@@ -163,7 +163,7 @@ in
         "services" = [ cfg.prefix "s" ];
         "xserver" = [ cfg.prefix "x" ];
       };
-      wmCommon.keybindings.common = [
+      wmCommon.keybindings.entries = [
         {
           key = [ "w" ];
           cmd = "${pkgs.rofi}/bin/rofi -modi window -show";
@@ -196,7 +196,7 @@ in
     (mkIf (cfg.enable && cfg.focus.show) {
       # TODO: review https://github.com/fennerm/flashfocus/wiki
       wmCommon.autostart.entries = [{ cmd = "${pkgs.flashfocus}/bin/flashfocus"; }];
-      wmCommon.keybindings.common = [{
+      wmCommon.keybindings.entries = [{
         key = [ "f" ];
         cmd = "${pkgs.flashfocus}/bin/focus_window";
         mode = "xserver";

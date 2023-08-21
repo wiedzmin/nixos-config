@@ -88,7 +88,7 @@ in
           '';
         };
       };
-      wmCommon.keybindings.common = optionals (cfg.keynavTool == "warpd") [
+      wmCommon.keybindings.entries = optionals (cfg.keynavTool == "warpd") [
         {
           key = [ prefix "Mod1" "x" ];
           cmd = "warpd --hint";

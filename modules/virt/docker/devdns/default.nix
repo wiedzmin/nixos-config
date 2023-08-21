@@ -75,7 +75,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [
+      wmCommon.keybindings.entries = [
         {
           key = [ "Control" "d" ];
           cmd = "${pkgs.systemd}/bin/systemctl restart docker-devdns.service";
