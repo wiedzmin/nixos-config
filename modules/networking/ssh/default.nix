@@ -112,7 +112,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [
+      wmCommon.keybindings.entries = [
         {
           key = [ "d" ];
           cmd = "${pkgs.sshmenu}/bin/sshmenu --choices --term-command '${

@@ -49,7 +49,7 @@ in
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       # TODO: find a handy balance between PA and mpris (taking respective keybindings into account)
-      wmCommon.keybindings.common = [
+      wmCommon.keybindings.entries = [
         {
           key = [ "XF86AudioMute" ];
           cmd = "${pkgs.pulseaudio}/bin/pactl set-sink-mute @DEFAULT_SINK@ toggle";

@@ -278,7 +278,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [{
+      wmCommon.keybindings.entries = [{
         key = [ "Shift" "m" ];
         cmd = "${pkgs.mcpanes}/bin/mcpanes";
         mode = "run";

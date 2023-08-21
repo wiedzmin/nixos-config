@@ -239,7 +239,7 @@ in
           key = [ "n" ];
         }
       ];
-      wmCommon.keybindings.common = [
+      wmCommon.keybindings.entries = [
         {
           key = [ "XF86AudioRaiseVolume" ];
           cmd = "${pkgs.playerctl}/bin/playerctl --all-players volume ${builtins.toString cfg.volume.deltaFraction}+";

@@ -94,7 +94,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable && cfg.appsSuspension.rules != { }) {
-      wmCommon.keybindings.common = [
+      wmCommon.keybindings.entries = [
         {
           key = [ "x" ];
           cmd = "${pkgs.systemd}/bin/systemctl --user restart xsuspender.service";

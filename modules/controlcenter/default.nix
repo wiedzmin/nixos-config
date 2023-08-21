@@ -252,7 +252,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [
+      wmCommon.keybindings.entries = [
         {
           key = [ "j" ];
           # FIXME: TB_TERMINAL_CMD setting

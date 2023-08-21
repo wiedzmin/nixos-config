@@ -79,7 +79,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.common = [
+      wmCommon.keybindings.entries = [
         {
           key = [ "m" ];
           cmd = "${pkgs.autorandr}/bin/autorandr --load mobile";
