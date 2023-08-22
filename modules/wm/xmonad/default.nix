@@ -283,10 +283,10 @@ in
       environment.systemPackages = with pkgs; [ haskellPackages.xmobar ];
       home-manager.users."${user}" = {
         home.file = {
-          ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./lib/ExtraCombinators.hs;
-          ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./lib/WindowTypes.hs;
-          ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./lib/XkbToggle.hs;
-          ".xmonad/lib/XMonad/Workspaces.hs".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./lib/Workspaces.hs ];
+          ".xmonad/lib/XMonad/Util/ExtraCombinators.hs".source = ./assets/lib/ExtraCombinators.hs;
+          ".xmonad/lib/XMonad/Util/WindowTypes.hs".source = ./assets/lib/WindowTypes.hs;
+          ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./assets/lib/XkbToggle.hs;
+          ".xmonad/lib/XMonad/Workspaces.hs".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/lib/Workspaces.hs ];
           ".xmonad/xmonad.hs" = {
             text = configText;
             onChange = "xmonad --recompile";
