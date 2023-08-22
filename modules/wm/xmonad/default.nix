@@ -288,8 +288,7 @@ in
           ".xmonad/lib/XMonad/Util/Xkb.hs".source = ./assets/lib/XkbToggle.hs;
           ".xmonad/lib/XMonad/Workspaces.hs".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/lib/Workspaces.hs ];
           ".xmonad/xmonad.hs" = {
-            text = configText;
-            onChange = "xmonad --recompile";
+            text = configText; # FIXME: reenable on-change recompilation after placing `xmonad` binary to PATH
           };
         };
         xdg.configFile."xmobar/xmobarrc".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/xmobarrc ];
