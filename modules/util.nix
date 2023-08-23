@@ -486,10 +486,11 @@ rec {
       lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList (key: cmd: ''"${key}" ~> ${cmd}'') keys)
     }${mkIndent indent}";
   convertKeyXmonad = _: ""; # FIXME: fuse
-  mkWorkspacesXmonad = wss: indent: # FIXME: update logic (presumably broken)
+  mkWorkspacesXmonad = wss: type: indent:
     "${
-      lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList
-        (ws: meta: ''("${ws}", Just "${convertKeyXmonad meta.key}", ${toHaskellBool meta.transient})'') wss)
+      lib.concatStringsSep "${mkNewlineAndIndent indent},  " (lib.forEach
+        (builtins.filter (ws: builtins.hasAttr "type" ws && ws.type == type) wss)
+        (meta: ''("${meta.name}", Just "${convertKeyXmonad meta.key}", ${toHaskellBool meta.transient})''))
     }${mkIndent indent}";
   ####################################################################################################################
   #                                                   Fonts utils                                                    #
