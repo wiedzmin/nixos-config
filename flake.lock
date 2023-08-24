@@ -462,11 +462,11 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1691178924,
-        "narHash": "sha256-xG//GC81z+E3p9Mvco0MdJQBjJFsWT/wf9ynEJ6bhNk=",
+        "lastModified": 1692365733,
+        "narHash": "sha256-CcTbGEdsljGZVY2GFnMgpDKFH9/fu//MEexWvPTVxyQ=",
         "owner": "wiedzmin",
         "repo": "NUR",
-        "rev": "a21c6072eda63948981a603a9c1ba2644906d6c2",
+        "rev": "177ffd1434f1f149ee2af70f66c4b4649f85d1fe",
         "type": "github"
       },
       "original": {
