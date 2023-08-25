@@ -36,6 +36,7 @@ let
     "XF86MonBrightnessDown" = "<XF86MonBrightnessDown>";
     "Print" = "<Print>";
   };
+  keySepXmonad = "-";
   keysymsXmonad = {
     "F1" = "<F1>";
     "F2" = "<F2>";
@@ -472,7 +473,9 @@ rec {
     '';
   # TODO: review floating property for window rules, regardless of WM being used
   toHaskellBool = v: builtins.replaceStrings [ "true" "false" ] [ "True" "False" ] (lib.trivial.boolToString v);
-  mkKeysymXmonad = key: if builtins.hasAttr key keysymsXmonad then builtins.getAttr key keysymsXmonad else key;
+  mkKeysymXmonad = keys:
+    lib.concatStringsSep keySepXmonad
+      (lib.forEach keys (k: if builtins.hasAttr k keysymsXmonad then builtins.getAttr k keysymsXmonad else k));
   mkKeysXmonadSpawn = keys: indent: # FIXME: update logic (presumably broken)
     "${
       lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList (key: meta:
@@ -485,12 +488,11 @@ rec {
     "${
       lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList (key: cmd: ''"${key}" ~> ${cmd}'') keys)
     }${mkIndent indent}";
-  convertKeyXmonad = _: ""; # FIXME: fuse
   mkWorkspacesXmonad = wss: type: indent:
     "${
-      lib.concatStringsSep "${mkNewlineAndIndent indent},  " (lib.forEach
+      lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.forEach
         (builtins.filter (ws: builtins.hasAttr "type" ws && ws.type == type) wss)
-        (meta: ''("${meta.name}", Just "${convertKeyXmonad meta.key}", ${toHaskellBool meta.transient})''))
+        (meta: ''("${meta.name}", Just "${mkKeysymXmonad meta.key}", ${toHaskellBool meta.transient})''))
     }${mkIndent indent}";
   ####################################################################################################################
   #                                                   Fonts utils                                                    #
