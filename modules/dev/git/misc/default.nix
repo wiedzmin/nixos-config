@@ -128,7 +128,7 @@ in
               }
               {
                 trigger = ":ghsf";
-                replace = "filename:$|$";
+                replace = "path:**/$|$";
               }
               {
                 trigger = ":greb";
