@@ -38,6 +38,7 @@ let
   };
   keySepXmonad = "-";
   keysymsXmonad = {
+    "backslash" = "\\";
     "F1" = "<F1>";
     "F2" = "<F2>";
     "F3" = "<F3>";
@@ -50,6 +51,16 @@ let
     "F10" = "<F10>";
     "F11" = "<F11>";
     "F12" = "<F12>";
+    "Home" = "<Home>";
+    "End" = "<End>";
+    "Return" = "<Return>";
+    "Space" = "<Space>";
+    "Tab" = "<Tab>";
+    "Backspace" = "<Backspace>";
+    "Up" = "<Up>";
+    "Down" = "<Down>";
+    "Left" = "<Left>";
+    "Right" = "<Right>";
   };
   windowRulePlaceholders = {
     "class" = ''^@$'';
