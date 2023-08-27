@@ -169,7 +169,6 @@ in
       fonts.packages = optionals (cfg.statusbar.impl == "blocks") (with pkgs; [ font-awesome ]);
 
       wmCommon = {
-        enable = true;
         modeBindings = {
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
           "scratchpad" = [ prefix "grave" ];
