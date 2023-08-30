@@ -173,7 +173,7 @@ in
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
           "scratchpad" = [ prefix "grave" ];
         };
-        keybindings.entries = [
+        keybindings.entries = (forEach [
           {
             key = [ prefix "Shift" "q" ];
             cmd = ''exec "i3-msg reload"'';
@@ -418,7 +418,8 @@ in
             mode = "root";
             raw = true;
           }
-        ] ++ optionals (cfg.windowFocus.impl == "wmfocus") [
+        ]
+          (e: e // { wm = "i3"; })) ++ optionals (cfg.windowFocus.impl == "wmfocus") [
           {
             key = [ prefix "Tab" ];
             cmd = ''${pkgs.wmfocus}/bin/wmfocus --halign center --valign center --chars qweasdzxc --textcoloralt "#eeeeee"'';
