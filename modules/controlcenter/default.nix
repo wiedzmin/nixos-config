@@ -255,16 +255,12 @@ in
       wmCommon.keybindings.entries = [
         {
           key = [ "j" ];
-          # FIXME: TB_TERMINAL_CMD setting
-          cmd = ''${nurpkgs.toolbox}/bin/services --flat --term-command "${
-            lib.concatStringsSep " " config.attributes.vt.default.cmd}"'';
+          cmd = ''${nurpkgs.toolbox}/bin/services --flat'';
           mode = "services";
         }
         {
           key = [ "Shift" "j" ];
-          # FIXME: TB_TERMINAL_CMD setting
-          cmd = ''${nurpkgs.toolbox}/bin/services --dump-show-cmd --flat --term-command "${
-            lib.concatStringsSep " " config.attributes.vt.default.cmd}"'';
+          cmd = ''${nurpkgs.toolbox}/bin/services --dump-show-cmd --flat'';
           mode = "services";
         }
         {
