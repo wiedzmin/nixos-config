@@ -54,7 +54,7 @@ in
           "workspace" = [ prefix "Shift" "w" ];
           "window" = [ prefix "Shift" "n" ];
         };
-        keybindings.entries = [
+        keybindings.entries = (forEach [
           {
             key = [ "Control" "backslash" ];
             cmd = ''sendMessage (XkbToggle Nothing)'';
@@ -278,7 +278,8 @@ in
             mode = "root";
             raw = true;
           }
-        ];
+        ]
+          (e: e // { wm = "xmonad"; }));
       };
     })
     (mkIf (cfg.enable && cfg.isDefault) {
