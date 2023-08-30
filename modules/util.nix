@@ -366,8 +366,10 @@ rec {
     ]);
   bindkeysI3 = keys: modeBindings: exitBindings: desktops: logsroot:
     let
-      prefixedModesMeta = lib.filterAttrs (k: _: k != "root" && k != scratchpadModeToken) (lib.groupBy (x: x.mode) keys);
-      rootModeBindings = (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) keys)).root;
+      i3Keys = builtins.filter (kb: builtins.hasAttr "raw" kb && kb.raw && builtins.hasAttr "wm" kb && kb.wm == "i3") keys ++
+        (builtins.filter (kb: !builtins.hasAttr "raw" kb || builtins.hasAttr "raw" kb && !kb.raw) keys);
+      prefixedModesMeta = lib.filterAttrs (k: _: k != "root" && k != scratchpadModeToken) (lib.groupBy (x: x.mode) i3Keys);
+      rootModeBindings = (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) i3Keys)).root;
     in
     ''
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (mode: bindings: ''
