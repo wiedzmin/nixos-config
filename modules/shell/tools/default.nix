@@ -1,10 +1,17 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
 let
   cfg = config.shell.tools;
   user = config.attributes.mainUser.name;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -37,7 +44,7 @@ in
           miller
           moreutils # NOTE: see https://joeyh.name/code/moreutils/ for reference
           pipe-rename
-          ripgrep-all
+          nixpkgs-last-unbroken.ripgrep-all
           sad # TODO: consider creating shell aliases
           sd # TODO: play with it in streaming use-cases
           up
