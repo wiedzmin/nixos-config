@@ -156,7 +156,7 @@ in
         home.sessionPath = [ (homePrefix user ".local/share/cargo/bin") ]; # FIXME: use XDG_DATA_HOME
       };
       shell.core.variables = [{
-        CARGO_HOME = "$XDG_DATA_HOME/cargo";
+        CARGO_HOME = ''''${XDG_DATA_HOME}/cargo'';
         global = true;
       }];
 
