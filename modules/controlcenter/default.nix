@@ -84,11 +84,12 @@ in
             detailed_cpu_time = true;
           };
         };
+        home.extraActivationPath = with pkgs; [ xkb-switch systemd ]; # NOTE: for `uncacheServices` below when using local binaries
         home.activation = {
           uncacheServices = {
             after = [ "linkGeneration" ];
             before = [ ];
-            data = ''DISPLAY=:0 ${nurpkgs.toolbox}/bin/services --invalidate-cache'';
+            data = ''${nurpkgs.toolbox}/bin/services --invalidate-cache'';
           };
           ensureDebugLogsRoot = {
             after = [ "linkGeneration" ];
