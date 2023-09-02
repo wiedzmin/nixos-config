@@ -381,17 +381,17 @@ in
             in
             {
               normal = {
-                # TODO: play with "set completion.open_categories [<something>] ;; set-cmd-text -s :<cmd>" and "completion-item-focus next-category"
+                # TODO: play with "set completion.open_categories [<something>] ;; cmd-set-text -s :<cmd>" and "completion-item-focus next-category"
                 "<Alt-,>" = "back";
                 "<Alt-б>" = "back";
                 "<Alt-.>" = "forward";
                 "<Alt-ю>" = "forward";
                 "<ctrl+shift+tab>" = "tab-prev";
                 "<ctrl+tab>" = "tab-next";
-                "b" = "set-cmd-text -s :tab-select";
-                "и" = "set-cmd-text -s :tab-select";
-                "t" = "set-cmd-text -s :open -t";
-                "е" = "set-cmd-text -s :open -t";
+                "b" = "cmd-set-text -s :tab-select";
+                "и" = "cmd-set-text -s :tab-select";
+                "t" = "cmd-set-text -s :open -t";
+                "е" = "cmd-set-text -s :open -t";
                 "<Ctrl-Return>" = "selection-follow";
                 "<Ctrl-Shift-Return>" = "selection-follow -t";
                 "<Ctrl-F5>" = "reload -f";
@@ -425,8 +425,8 @@ in
                 "пщ" = "spawn ${config.attributes.browser.fallback.cmd} {url}";
                 "gs" = "view-source";
                 "пы" = "view-source";
-                "gw" = "set-cmd-text -s :tab-give";
-                "пц" = "set-cmd-text -s :tab-give";
+                "gw" = "cmd-set-text -s :tab-give";
+                "пц" = "cmd-set-text -s :tab-give";
                 "pt" = "open -t -- {primary}";
                 "зе" = "open -t -- {primary}";
                 "pw" = "open -w -- {primary}";
@@ -503,8 +503,8 @@ in
                 "i" = "mode-enter insert";
                 "ш" = "mode-enter insert";
               } // optionalAttrs (cfg.emacsKeys.enable) {
-                "<Ctrl-s>" = "set-cmd-text /";
-                "<Ctrl-r>" = "set-cmd-text ?";
+                "<Ctrl-s>" = "cmd-set-text /";
+                "<Ctrl-r>" = "cmd-set-text ?";
                 "<Ctrl-W>" = "tab-close";
                 "<Ctrl-Ц>" = "tab-close";
                 "<Ctrl-g>" = "stop";
@@ -521,13 +521,13 @@ in
                 "<Ctrl-u><Alt-w>d" = "yank domain";
                 "<Ctrl-u><Alt-w>p" = "yank pretty-url";
                 "<Ctrl-u><Alt-w>t" = "yank title";
-                "<Alt-x>" = "set-cmd-text :";
+                "<Alt-x>" = "cmd-set-text :";
                 "<Alt-b>" = "back";
                 "<Alt-f>" = "forward";
                 "<Ctrl-e>" = "tab-next";
                 "<Ctrl-a>" = "tab-prev";
-                "<Ctrl-x><Ctrl-f>" = "set-cmd-text -s :open";
-                "<Ctrl-u><Ctrl-x><Ctrl-f>" = "set-cmd-text -s :open -t";
+                "<Ctrl-x><Ctrl-f>" = "cmd-set-text -s :open";
+                "<Ctrl-u><Ctrl-x><Ctrl-f>" = "cmd-set-text -s :open -t";
                 "<Alt-Shift-,>" = "scroll-to-perc 0";
                 "<Alt-Shift-.>" = "scroll-to-perc";
                 "<Ctrl-x><Ctrl-c>" = "quit";
