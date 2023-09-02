@@ -21,7 +21,10 @@
 
   languages.lua.enable = true;
   languages.nix.enable = true;
-  languages.python.enable = true;
+  languages.python = {
+    enable = true;
+    package = pkgs.python311;
+  };
 
   pre-commit.hooks = {
     deadnix.enable = true;
