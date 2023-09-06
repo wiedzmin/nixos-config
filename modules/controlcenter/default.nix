@@ -63,8 +63,6 @@ in
     (mkIf cfg.enable {
       # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
       nixpkgs.config.packageOverrides = _: {
-        uptime_info = mkPythonScriptWithDeps pkgs "uptime_info" (with pkgs; [ dunst gnused procps ])
-          (builtins.readFile ./scripts/uptime_info.sh);
         ifconfless = mkPythonScriptWithDeps pkgs "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
           (builtins.readFile ./scripts/ifconfless.py);
       };
@@ -266,7 +264,7 @@ in
         }
         {
           key = [ prefix "Shift" "u" ];
-          cmd = "${pkgs.uptime_info}/bin/uptime_info";
+          cmd = "${pkgs.citron}/bin/citron uptime";
           mode = "root";
         }
       ] ++ optionals (cfg.launcher == "rofi") [
@@ -335,7 +333,7 @@ in
       };
     })
     (mkIf (cfg.enable && config.attributes.debug.scripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ uptime_info ifconfless ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ ifconfless ]; };
     })
   ];
 }
