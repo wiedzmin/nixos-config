@@ -141,7 +141,7 @@ in
           (setq debug-on-error t)
           (setq debug-on-quit t)
 
-          (when (fboundp 'native-comp-available-p)
+          (when (and (fboundp 'native-comp-available-p) (native-comp-available-p))
             (setq comp-async-query-on-exit t)
             (setq comp-async-jobs-number 4)
             (setq comp-async-report-warnings-errors nil)
