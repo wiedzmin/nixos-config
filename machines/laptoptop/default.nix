@@ -432,7 +432,6 @@ in
   ext.nix = {
     core = {
       enable = true;
-      lsp.enable = true;
       emacs.enable = true;
     };
     cachix = {

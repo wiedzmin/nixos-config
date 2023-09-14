@@ -46,17 +46,6 @@ in
         default = true;
         description = "Whether to enable Nix-related bookmarks";
       };
-      # TODO: consider adding system-wide option for enabling heavy resources consumers and AND it here and there
-      lsp.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable LSP functionality";
-      };
-      lsp.server = mkOption {
-        type = types.enum [ "nil" "nixd" ];
-        default = "nil";
-        description = "Which LSP server implementation to use";
-      };
     };
   };
 
@@ -149,10 +138,7 @@ in
           nix-melt
           rollback
           statix
-        ] ++
-        lib.optionals cfg.lsp.enable
-          ((lib.optionals (cfg.lsp.server == "nixd") [ nixd ]) ++
-            (lib.optionals (cfg.lsp.server == "nil") [ nil ]));
+        ];
         home.sessionPath = [ (homePrefix user ".local/share/cargo/bin") ]; # FIXME: use XDG_DATA_HOME
       };
       shell.core.variables = [{
@@ -387,7 +373,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/nix.el ];
+      ide.emacs.core.config = builtins.readFile ./elisp/nix.el;
       ide.emacs.completion.tempel.snippets = ''
         org-mode
 
