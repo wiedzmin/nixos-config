@@ -221,6 +221,15 @@ in
         (hackp (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "HACK(${user}): ")
         (notep (if (derived-mode-p 'emacs-lisp-mode) ";; " comment-start) "NOTE(${user}): ")
       '';
+      ide.emacs.core.treesitter.grammars = {
+        json = "https://github.com/tree-sitter/tree-sitter-json";
+        make = "https://github.com/alemuller/tree-sitter-make";
+      };
+      ide.emacs.core.treesitter.modeRemappings = {
+        json-mode = "json-ts-mode";
+        js-json-mode = "json-ts-mode";
+        makefile-mode = "cmake-ts-mode";
+      };
     })
     (mkIf (cfg.enable && cfg.emacs.enable && cfg.emacs.lsp.enable) {
       assertions = [{

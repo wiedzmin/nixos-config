@@ -28,8 +28,21 @@ in
 
   config = mkMerge [
     (mkIf cfg.emacs.enable {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.tuareg ];
-      ide.emacs.core.config = builtins.readFile ./elisp/ml.el;
+      ide.emacs.core.extraPackages = epkgs: optionals (config.ide.emacs.core.treesitter.enable) [ epkgs.ocaml-ts-mode ]
+        ++ optionals (!config.ide.emacs.core.treesitter.enable) [ epkgs.tuareg ];
+      ide.emacs.core.config =
+        if config.ide.emacs.core.treesitter.enable then ''
+          (use-package ocaml-ts-mode)
+        '' else ''
+          (use-package tuareg
+            :mode ("\\.ml[4ilpy]?$" . tuareg-mode))
+        '';
+      ide.emacs.core.treesitter.grammars = {
+        ocaml = "https://github.com/tree-sitter/tree-sitter-ocaml";
+      };
+      ide.emacs.core.treesitter.modeRemappings = {
+        ocaml-mode = "ocaml-ts-mode";
+      };
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable && config.navigation.bookmarks.enable) {
       navigation.bookmarks.entries = {

@@ -102,6 +102,14 @@ in
         (err "if err != nil {" n> "panic(err)" q n "}" n)
         (print "fmt.Println(\"" q "\")")
       '';
+      ide.emacs.core.treesitter.grammars = {
+        go = "https://github.com/tree-sitter/tree-sitter-go";
+        # TODO: gomod = "https://github.com/camdencheek/tree-sitter-go-mod.git";
+      };
+      ide.emacs.core.treesitter.modeRemappings = {
+        go-mode = "go-ts-mode";
+        # TODO: go-mod-mode = "go-mod-ts-mode"; # https://github.com/zkry/go-mod-mode
+      };
     })
   ];
 }

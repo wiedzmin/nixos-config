@@ -63,6 +63,47 @@ in
         default = false;
         description = "Whether to build PGTK emacs flavor";
       };
+      treesitter.enable = mkOption {
+        # FIXME: consider relocating treesitter functionality to `emacs/edit` for example
+        type = types.bool;
+        default = true;
+        description = "Whether to include tree-sitter support";
+      };
+      treesitter.grammars = mkOption {
+        type = types.attrsOf (types.either (types.listOf types.str) types.str);
+        default = { };
+        example = {
+          c = "https://github.com/tree-sitter/tree-sitter-c";
+          python = "https://github.com/tree-sitter/tree-sitter-python";
+          tsx = [ "https://github.com/tree-sitter/tree-sitter-typescript" "master" "tsx/src" ];
+          typescript = [ "https://github.com/tree-sitter/tree-sitter-typescript" "master" "typescript/src" ];
+        };
+        description = ''
+          Configuration for downloading and installing tree-sitter language grammars.
+          Refer to `treesit-language-source-alist` emacs variable for details.
+        '';
+      };
+      treesitter.modeRemappings = mkOption {
+        type = types.attrsOf types.str;
+        default = { };
+        example = {
+          c-mode = "c-ts-mode";
+          clojure-mode = "clojure-ts-mode";
+        };
+        description = ''
+          Alist mapping file-specified mode to actual mode.
+          Refer to `major-mode-remap-alist` emacs variable for details.
+        '';
+      };
+      treesitter.fontLockLevel = mkOption {
+        type = types.int;
+        default = 4;
+        description = ''
+          Features are grouped into decoration levels, right now there
+          are 4 levels and the default level is 3. If you want to program
+          in skittles, set treesit-font-lock-level to 4 ;-)
+        '';
+      };
       customPackages = mkOption {
         type = types.attrs;
         default = { };
@@ -198,6 +239,7 @@ in
           epkgs.f
           epkgs.no-littering
         ] ++ lib.optionals config.wm.i3.enable [ epkgs.reverse-im ]
+        ++ lib.optionals cfg.treesitter.enable [ epkgs.treesit-auto ]
         ++ lib.optionals cfg.emacsEverywhere.enable [ epkgs.emacs-everywhere ];
       ide.emacs.core.config = lib.optionalString config.wm.i3.enable ''
         (use-package reverse-im
@@ -205,7 +247,8 @@ in
           (reverse-im-input-methods '("russian-computer"))
           :config
           (reverse-im-mode t))
-      '';
+      '' + lib.optionalString cfg.treesitter.enable
+        (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/treesit.el ]);
       ide.emacs.core.customKeymaps = {
         "custom-goto-map" = "M-s";
       };

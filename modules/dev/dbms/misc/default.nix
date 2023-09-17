@@ -25,6 +25,11 @@ in
         default = { };
         description = "Various dbms access metadata.";
       };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable development infra for Emacs";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -61,6 +66,11 @@ in
       '';
 
       home-manager.users."${user}" = { home.packages = lib.optionals (cfg.controlCenter.meta != { }) (with pkgs; [ dbms beekeeper-studio ]); };
+    })
+    (mkIf cfg.emacs.enable {
+      ide.emacs.core.treesitter.grammars = {
+        sql = "https://github.com/m-novikov/tree-sitter-sql";
+      };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = lib.optionals (cfg.controlCenter.meta != { }) [{

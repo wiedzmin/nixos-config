@@ -140,6 +140,13 @@ in
       home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.bash-language-server ]; };
       ide.emacs.core.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms epkgs.pueue ];
       ide.emacs.core.config = builtins.readFile ./elisp/shell.el;
+      ide.emacs.core.treesitter.grammars = {
+        bash = "https://github.com/tree-sitter/tree-sitter-bash";
+      };
+      ide.emacs.core.treesitter.modeRemappings = {
+        bash-mode = "bash-ts-mode";
+        sh-mode = "bash-ts-mode";
+      };
     })
   ];
 }
