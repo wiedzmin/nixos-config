@@ -164,7 +164,7 @@ in
       enable = true;
       boot.splashImage = "${inputs.nixos-artwork}/wallpapers/nix-wallpaper-mosaic-blue.png";
       rootDir = homePrefix user "blobs/wallpaper";
-      current = "alena-aenami-over-the-city-1k.jpg";
+      current = "homeland__8_00_am.jpg";
       wm.enable = true;
     };
     xresources = {
