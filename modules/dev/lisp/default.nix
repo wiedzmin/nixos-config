@@ -52,6 +52,9 @@ in
         epkgs.suggest
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/elisp.el ];
+      ide.emacs.core.treesitter.grammars = {
+        elisp = "https://github.com/Wilfred/tree-sitter-elisp";
+      };
     })
   ];
 }

@@ -174,6 +174,9 @@ in
         (example "#+begin_example" n> r n "#+end_example")
         (src "#+begin_src " q n> r> n "#+end_src")
       '';
+      ide.emacs.core.treesitter.grammars = {
+        org = "https://github.com/milisims/tree-sitter-org";
+      };
     })
     (mkIf (cfg.enable && cfg.org-roam.enable) {
       home-manager.users."${user}" = {

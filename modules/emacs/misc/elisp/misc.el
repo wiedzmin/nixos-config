@@ -94,3 +94,6 @@
   ;;NOTE: vc-refresh-state on save hook?
   :custom
   (vc-handled-backends '(SVN Git Hg)))
+
+(use-package markdown-mode
+  :mode ("\\.md$" . markdown-mode))

@@ -372,8 +372,35 @@ in
       home-manager.users."${user}" = { home.packages = with pkgs; [ nix-zsh-completions ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.company-nixos-options epkgs.nix-mode ];
-      ide.emacs.core.config = builtins.readFile ./elisp/nix.el;
+      ide.emacs.core.extraPackages = epkgs: optionals (config.ide.emacs.core.treesitter.enable) [ epkgs.nix-ts-mode ]
+        ++ optionals (!config.ide.emacs.core.treesitter.enable) [ epkgs.nix-mode ];
+      ide.emacs.core.config =
+        if config.ide.emacs.core.treesitter.enable then ''
+          (use-package nix-ts-mode
+            :mode (("\\.nix$" . nix-ts-mode)
+                  ((rx (eval "configuration.nix") (zero-or-more anything) eol) . nix-ts-mode))
+            :hook
+            (nix-mode-hook . (lambda () (setq-local tab-width 2)))
+            :config
+            (setq-default comment-start "#"))
+        '' else ''
+          (use-package nix-mode
+            :mode (("\\.nix$" . nix-mode)
+                   ((rx (eval "configuration.nix") (zero-or-more anything) eol) . nix-mode))
+            :hook
+            (nix-mode-hook . (lambda () (setq-local tab-width 2)))
+            :config
+            (when (boundp 'company-backends)
+              (add-to-list 'company-backends 'company-tabnine)
+              (add-to-list 'company-backends 'company-capf))
+            (add-to-list 'completion-at-point-functions #'pcomplete-completions-at-point))
+        '';
+      ide.emacs.core.treesitter.grammars = {
+        nix = "https://github.com/nix-community/tree-sitter-nix";
+      };
+      ide.emacs.core.treesitter.modeRemappings = {
+        nix-mode = "nix-ts-mode";
+      };
       ide.emacs.completion.tempel.snippets = ''
         org-mode
 

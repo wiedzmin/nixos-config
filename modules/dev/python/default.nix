@@ -79,6 +79,12 @@ in
       # TODO: also play with the `pylsp` (https://github.com/python-lsp/python-lsp-server)
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector epkgs.lsp-python-ms ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/python.el ];
+      ide.emacs.core.treesitter.grammars = {
+        python = "https://github.com/tree-sitter/tree-sitter-python";
+      };
+      ide.emacs.core.treesitter.modeRemappings = {
+        python-mode = "python-ts-mode";
+      };
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       navigation.bookmarks.entries = {

@@ -53,12 +53,15 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
-        epkgs.ccls
         epkgs.cmake-font-lock
         epkgs.cmake-mode
         epkgs.modern-cpp-font-lock
+      ] ++ optionals (!config.ide.emacs.core.treesitter.enable) [
+        epkgs.ccls
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ccpp.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/common.el ] +
+        optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/standard.el ]) +
+        optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]);
       ide.emacs.completion.tempel.snippets = ''
         c-mode
 
@@ -73,6 +76,16 @@ in
         (hackp "// HACK(${user}): ")
         (notep "// NOTE(${user}): ")
       '';
+      ide.emacs.core.treesitter.grammars = {
+        c = "https://github.com/tree-sitter/tree-sitter-c";
+        cmake = "https://github.com/uyha/tree-sitter-cmake";
+        cpp = "https://github.com/tree-sitter/tree-sitter-cpp";
+      };
+      ide.emacs.core.treesitter.modeRemappings = {
+        "c++-mode" = "c++-ts-mode";
+        "c-mode" = "c-ts-mode";
+        "c-or-c++-mode" = "c-or-c++-ts-mode";
+      };
     })
   ];
 }

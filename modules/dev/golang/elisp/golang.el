@@ -9,6 +9,9 @@
   (when (boundp 'company-backends)
     (add-to-list 'company-backends 'company-tabnine)
     (add-to-list 'company-backends 'company-capf))
+  (when (featurep 'treesit)
+    (add-hook 'go-ts-mode-hook 'whitespace-turn-off)
+    (add-hook 'go-ts-mode-hook (lambda() (treesit-inspect-mode t))))
   (add-to-list 'completion-at-point-functions #'pcomplete-completions-at-point)
   (use-package lsp-go)
   ;;TODO: enable after proper setup

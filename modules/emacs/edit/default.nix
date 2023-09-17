@@ -53,6 +53,14 @@ in
         "misc-editing-map" = "<f5>";
         "token-editing-map" = "C-z";
       };
+      ide.emacs.core.treesitter.grammars = {
+        toml = "https://github.com/tree-sitter/tree-sitter-toml";
+        yaml = "https://github.com/ikatyang/tree-sitter-yaml";
+      };
+      ide.emacs.core.treesitter.modeRemappings = {
+        conf-toml-mode = "toml-ts-mode";
+        yaml-mode = "yaml-ts-mode";
+      };
     })
     (mkIf (cfg.enable && cfg.autorevert.enable) {
       ide.emacs.core.config = builtins.readFile ./elisp/autorevert.el;
