@@ -433,6 +433,7 @@ in
     core = {
       enable = true;
       emacs.enable = true;
+      treesitter.enable = false;
     };
     cachix = {
       enable = true;

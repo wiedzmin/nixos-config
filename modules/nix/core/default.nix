@@ -41,6 +41,11 @@ in
         default = false;
         description = "Whether to enable Nix-related Emacs setup";
       };
+      treesitter.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable treesitter infrastructure for Nix-related Emacs setup";
+      };
       bookmarks.enable = mkOption {
         type = types.bool;
         default = true;
@@ -372,10 +377,10 @@ in
       home-manager.users."${user}" = { home.packages = with pkgs; [ nix-zsh-completions ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: optionals (config.ide.emacs.core.treesitter.enable) [ epkgs.nix-ts-mode ]
-        ++ optionals (!config.ide.emacs.core.treesitter.enable) [ epkgs.nix-mode ];
+      ide.emacs.core.extraPackages = epkgs: optionals (config.ide.emacs.core.treesitter.enable && cfg.treesitter.enable) [ epkgs.nix-ts-mode ]
+        ++ optionals (!config.ide.emacs.core.treesitter.enable || !cfg.treesitter.enable) [ epkgs.nix-mode ];
       ide.emacs.core.config =
-        if config.ide.emacs.core.treesitter.enable then ''
+        if (config.ide.emacs.core.treesitter.enable && cfg.treesitter.enable) then ''
           (use-package nix-ts-mode
             :mode (("\\.nix$" . nix-ts-mode)
                   ((rx (eval "configuration.nix") (zero-or-more anything) eol) . nix-ts-mode))
@@ -395,10 +400,10 @@ in
               (add-to-list 'company-backends 'company-capf))
             (add-to-list 'completion-at-point-functions #'pcomplete-completions-at-point))
         '';
-      ide.emacs.core.treesitter.grammars = {
+      ide.emacs.core.treesitter.grammars = optionalAttrs (config.ide.emacs.core.treesitter.enable && cfg.treesitter.enable) {
         nix = "https://github.com/nix-community/tree-sitter-nix";
       };
-      ide.emacs.core.treesitter.modeRemappings = {
+      ide.emacs.core.treesitter.modeRemappings = optionalAttrs (config.ide.emacs.core.treesitter.enable && cfg.treesitter.enable) {
         nix-mode = "nix-ts-mode";
       };
       ide.emacs.completion.tempel.snippets = ''
