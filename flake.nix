@@ -9,6 +9,10 @@
 
     home-manager.url = "github:nix-community/home-manager";
     emacs.url = "github:nix-community/emacs-overlay";
+    telega = {
+      url = "github:ipvych/telega-overlay";
+      inputs.nixpkgs.follows = "unstable";
+    };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
     i3blocks-contrib = {
       url = "github:vivien/i3blocks-contrib";
@@ -117,7 +121,7 @@
       overlays = {
         unstable = _: _: {
           unstable = import inputs.unstable {
-            overlays = with inputs; [ emacs.overlay nur.overlay self.overlay ];
+            overlays = with inputs; [ emacs.overlay nur.overlay self.overlay telega.overlay ];
             inherit system;
           };
         };

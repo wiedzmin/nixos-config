@@ -538,6 +538,7 @@
         "nixpkgs-last-unbroken": "nixpkgs-last-unbroken",
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",
+        "telega": "telega",
         "unstable": "unstable",
         "yasnippet-snippets": "yasnippet-snippets",
         "zsh-async": "zsh-async",
@@ -577,6 +578,26 @@
       "original": {
         "owner": "nix-systems",
         "repo": "default",
+        "type": "github"
+      }
+    },
+    "telega": {
+      "inputs": {
+        "nixpkgs": [
+          "unstable"
+        ]
+      },
+      "locked": {
+        "lastModified": 1694999114,
+        "narHash": "sha256-u5uOeyt77NLB9Gx9YRcs+qnfFcJnmeSFpgHkVr74WhM=",
+        "owner": "ipvych",
+        "repo": "telega-overlay",
+        "rev": "f4b0a799d9e167f679de1ac4644a25426a659f3f",
+        "type": "github"
+      },
+      "original": {
+        "owner": "ipvych",
+        "repo": "telega-overlay",
         "type": "github"
       }
     },
