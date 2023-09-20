@@ -84,6 +84,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
+      # NOTE: epkgs.telega/stable | melpaPackages.telega/unstable
       ide.emacs.core.extraPackages = epkgs: [ epkgs.telega ]; # review https://github.com/zevlg/telega.el as it goes
       ide.emacs.core.config = ''
         (use-package telega
