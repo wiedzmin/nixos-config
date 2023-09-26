@@ -13,7 +13,6 @@ let
     };
     localSystem = { system = "x86_64-linux"; };
   };
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -119,7 +118,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ JUST_CHOOSER = cfg.just.chooserCmd; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ dfmt go-task just lnav comby tagref xh nurpkgs.code-maat ];
+        home.packages = with pkgs; [ dfmt go-task just lnav comby tagref xh code-maat ];
       };
       pim.timetracking.rules =
         mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ])
