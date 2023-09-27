@@ -1,6 +1,6 @@
 ;; -*- lexical-binding: t -*-
 
-(require 'orderless)
+(require 'orderless nil t)
 
 (defun dispatchers/without-if-bang (pattern index total)
   "Allow to negate a PATTERN if requested.

@@ -82,11 +82,11 @@
   (line-number-mode 1)
   (size-indication-mode 1)
   (toggle-truncate-lines 1)
-  (delight 'eldoc-mode nil "eldoc")
   (put 'transient-mark-mode 'permanent-local t)
   (put 'set-goal-column 'disabled nil))
 
 (use-package eldoc
+  :delight "eldoc"
   :config
   (global-eldoc-mode -1))
 

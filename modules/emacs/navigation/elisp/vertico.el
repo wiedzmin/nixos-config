@@ -1,16 +1,17 @@
 (use-package vertico
   :init
-  (vertico-mode)
   @currentLineHighlightFaceVerticoPatch@
   :custom
   (vertico-scroll-margin 0)
   (vertico-count @selectionCandidatesCount@)
   (vertico-resize t)
-  (vertico-cycle t))
+  (vertico-cycle t)
+  :config
+  (vertico-mode))
 
 (use-package vertico-buffer
   :after vertico
-  :init
+  :config
   (vertico-buffer-mode))
 
 (use-package vertico-directory
