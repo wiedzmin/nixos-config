@@ -287,6 +287,13 @@ in
           ".emacs.d/init.el".text = cfg.initElContent;
         };
         home.activation = {
+          ensureEmacsConfigValid = {
+            after = [ "linkGeneration" ];
+            before = [ ];
+            data = ''
+              ${cfg.package}/bin/emacs --batch -l ${homePrefix user ".emacs.d"}/early-init.el -l ${homePrefix user ".emacs.d"}/init.el
+            '';
+          };
           ensureEmacsXdgConfigPath = {
             after = [ ];
             before = [ "linkGeneration" ];
