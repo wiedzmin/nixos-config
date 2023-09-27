@@ -122,6 +122,11 @@ in
         default = "wmfocus";
         description = "Which tool to use for hinted windows navigation";
       };
+      windowFocus.fontSize = mkOption {
+        type = types.int;
+        default = 72;
+        description = "Windows navigation hints font size";
+      };
       mouseFollowsFocus = mkOption {
         type = types.bool;
         default = true;
@@ -422,7 +427,8 @@ in
           (e: e // { wm = "i3"; })) ++ optionals (cfg.windowFocus.impl == "wmfocus") [
           {
             key = [ prefix "Tab" ];
-            cmd = ''${pkgs.wmfocus}/bin/wmfocus --halign center --valign center --chars qweasdzxc --textcoloralt "#eeeeee"'';
+            cmd = ''${pkgs.wmfocus}/bin/wmfocus --halign center --valign center --chars qweasdzxc --font Mono:${
+              builtins.toString cfg.windowFocus.fontSize} --textcoloralt "#eeeeee"'';
             mode = "root";
           }
         ] ++ optionals (cfg.windowFocus.impl == "easyfocus") [

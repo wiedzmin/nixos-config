@@ -661,6 +661,7 @@ in
       outer.size = 10;
     };
     statusbar.impl = "i3-rs";
+    windowFocus.fontSize = 55;
   };
   wm.awesome = {
     enable = true;
