@@ -1,5 +1,10 @@
 ;FIXME: fails to start
 (use-package slime ;NOTE: from melpa-stable, because it should correspond to quicklisp version
+  :preface
+  (defun change-browse-url-browser-function (orig-fun &rest args)
+    "Use w3m for slime documentation lookup."
+    (let ((browse-url-browser-function 'w3m-browse-url))
+      (apply orig-fun args)))
   :hook ((lisp-mode-hook . (lambda ()
                              (slime-mode t)
                              (set (make-local-variable 'slime-lisp-implementations)
@@ -17,11 +22,7 @@
   (slime-complete-symbol-function 'slime-fuzzy-complete-symbol)
   (slime-net-coding-system 'utf-8-unix)
   :config
-  (defadvice slime-documentation-lookup
-      (around change-browse-url-browser-function activate)
-    "Use w3m for slime documentation lookup."
-    (let ((browse-url-browser-function 'w3m-browse-url))
-      ad-do-it))
+  (advice-add 'slime-documentation-lookup :around #'change-browse-url-browser-function)
   (slime-setup
    '(slime-fancy-inspector
      slime-fancy-trace

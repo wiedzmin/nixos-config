@@ -569,6 +569,9 @@
   (setq-default goggles-pulse t))
 
 (use-package xref
+  :preface
+  (defun custom/revert-dired-buffer ()
+    (delete-window (get-buffer-window (get-buffer "*xref*"))))
   :hook
   (xref--xref-buffer-mode-hook . hl-line-mode)
   ((xref-after-return-hook xref-after-jump-hook) . recenter)
@@ -591,8 +594,7 @@
   (xref-show-xrefs-function #'xref-show-definitions-completing-read)
   (xref-show-definitions-function #'xref-show-definitions-completing-read)
   :config
-  (defadvice xref-goto-xref (after my activate)
-    (delete-window (get-buffer-window (get-buffer "*xref*")))))
+  (advice-add 'xref-goto-xref :after #'custom/revert-dired-buffer))
 
 (use-package dogears
   :demand t

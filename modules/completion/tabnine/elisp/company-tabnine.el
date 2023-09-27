@@ -41,18 +41,20 @@
       (setq company-transformers (delete 'company/sort-by-tabnine company-transformers))
       (company-tabnine-kill-process)
       (message "TabNine disabled.")))
+  (defun disable-tabnine-upgrade-message (orig-fun &rest args)
+    (let* ((company-message-func (car args))
+           (result (funcall company-message-func)))
+      (when (and company-message-func
+                 (stringp result))
+        (unless (string-match "The free version of TabNine only indexes up to" result)
+          (apply orig-fun args)))))
   :hook
   (kill-emacs . company-tabnine-kill-process)
   :custom
   (company-tabnine-max-num-results 10)
   (company-tabnine-max-restart-count 3)
   :config
-  (defadvice company-echo-show (around disable-tabnine-upgrade-message activate)
-    (let ((company-message-func (ad-get-arg 0)))
-      (when (and company-message-func
-                 (stringp (funcall company-message-func)))
-        (unless (string-match "The free version of TabNine only indexes up to" (funcall company-message-func))
-          ad-do-it)))) ;; FIXME: consider using advice-* machinery
+  (advice-add 'company-echo-show :around #'disable-tabnine-upgrade-message)
   @tabnineExecutablePathPatch@
   (add-to-list 'company-transformers 'company/sort-by-tabnine t)
   ;; (add-to-list 'company-backends #'company-tabnine)
