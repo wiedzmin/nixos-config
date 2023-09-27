@@ -2,6 +2,7 @@
   :hook (after-save-hook . backup-each-save))
 
 (use-package recentf
+  :after no-littering
   :config
   (use-package recentf-ext)
   (add-to-list 'recentf-exclude no-littering-var-directory)

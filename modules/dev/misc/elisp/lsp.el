@@ -49,6 +49,11 @@
   (lsp-semantic-tokens-enable t)
   (lsp-signature-render-documentation t)
   (read-process-output-max (* 1024 1024))
+  :init
+  (use-package lsp-lens)
+  (use-package lsp-dired)
+  (use-package lsp-headerline)
+  (use-package lsp-modeline)
   :config
   (lsp-lens-mode 1)
   (lsp-dired-mode 1)
@@ -64,7 +69,7 @@
   (lsp-ui-sideline-delay 0.5))
 
 (use-package lsp-ui-doc
-  :ensure lsp-ui
+  :after lsp-ui
   :preface
   (defun custom/toggle-lsp-ui-doc ()
     (interactive)
@@ -96,7 +101,7 @@
   (lsp-ui-doc-show-with-mouse nil))
 
 (use-package lsp-ui-peek
-  :ensure lsp-ui
+  :after lsp-ui
   :bind
   (:map lsp-mode-map
         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
@@ -109,7 +114,7 @@
   (lsp-ui-peek-peek-height 20))
 
 (use-package lsp-ui-flycheck
-  :ensure lsp-ui
+  :after lsp-ui
   :bind
   (:map mode-specific-map
         ("p" . lsp-ui-flycheck-list))
@@ -119,7 +124,7 @@
   (lsp-ui-flycheck-enable t))
 
 (use-package lsp-ui-imenu
-  :ensure lsp-ui
+  :after lsp-ui
   :hook
   (lsp-after-open-hook . lsp-enable-imenu)
   :bind
@@ -136,7 +141,7 @@
 
 (use-package lsp-ui-sideline
   :after lsp-mode
-  :ensure lsp-ui
+  :after lsp-ui
   :custom
   (lsp-ui-sideline-code-actions-prefix "💡 ")
   (lsp-ui-sideline-enable t)
