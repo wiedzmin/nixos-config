@@ -248,7 +248,10 @@ in
           :config
           (reverse-im-mode t))
       '' + lib.optionalString cfg.treesitter.enable
-        (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/treesit.el ]);
+        (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/treesit.el ])
+      + lib.optionalString cfg.emacsEverywhere.enable ''
+        (use-package emacs-everywhere)
+      '';
       ide.emacs.core.customKeymaps = {
         "custom-goto-map" = "M-s";
       };
