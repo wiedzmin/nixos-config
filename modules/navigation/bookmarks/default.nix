@@ -55,13 +55,12 @@ in
     (mkIf cfg.enable {
       assertions = [{
         assertion = config.workstation.systemtraits.enable;
-        message = "navigation/bookmarks: must enable systemtraits maintainence.";
+        message = "navigation/bookmarks: must enable systemtraits maintenance.";
       }];
 
       workstation.systemtraits.instructions = with config.navigation.bookmarks; ''
         ${pkgs.redis}/bin/redis-cli set nav/bookmarks ${
-          lib.strings.escapeNixString
-            (builtins.toJSON (localBookmarksKeyMeta cfg.entries separator.fields separator.tags))
+          mkRedisJSON (localBookmarksKeyMeta cfg.entries separator.fields separator.tags)
         }
       '';
     })

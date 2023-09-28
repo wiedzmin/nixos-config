@@ -146,6 +146,8 @@ rec {
   maybeAttrString = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else ph;
   maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
   emacsBoolToString = v: if v then "t" else "nil";
+  mkRedisJSON = s:
+    lib.escape [ "$" "`" ] (builtins.toJSON (builtins.toJSON s));
   wsRootAtHomedir = user: key: lib.removePrefix (homePrefix user "") key;
   mkGithubBookmark = user: repo: roots: {
     local.path = "${wsRoot roots "github"}/${user}/${repo}";

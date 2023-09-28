@@ -60,9 +60,7 @@ in
       };
 
       workstation.systemtraits.instructions = ''
-        ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${
-          lib.strings.escapeNixString (builtins.toJSON cfg.controlCenter.meta)
-        }
+        ${pkgs.redis}/bin/redis-cli set misc/dbms_meta ${mkRedisJSON cfg.controlCenter.meta}
       '';
 
       home-manager.users."${user}" = { home.packages = lib.optionals (cfg.controlCenter.meta != { }) (with pkgs; [ dbms beekeeper-studio ]); };

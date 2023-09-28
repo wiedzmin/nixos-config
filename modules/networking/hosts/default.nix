@@ -1,4 +1,5 @@
 { config, lib, pkgs, ... }:
+with pkgs.unstable.commonutils;
 with lib;
 
 let
@@ -35,7 +36,7 @@ in
     (mkIf cfg.enable {
       assertions = [{
         assertion = config.workstation.systemtraits.enable;
-        message = "networking/hosts: must enable systemtraits maintainence.";
+        message = "networking/hosts: must enable systemtraits maintenance.";
       }];
 
       systemd.services.dhcpcd.serviceConfig.Type = mkForce "simple"; # NOTE: forking is not acceptable for dhcpcd.
@@ -56,9 +57,9 @@ in
 
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set net/extra_hosts ${
-          strings.escapeNixString (builtins.toJSON
+          mkRedisJSON
             (filterAttrs (_: v: (!builtins.hasAttr "ssh" v) || ((builtins.hasAttr "ssh" v) && v.ssh))
-              cfg.entries))
+              cfg.entries)
         }
       '';
     })

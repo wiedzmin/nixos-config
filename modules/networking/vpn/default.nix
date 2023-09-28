@@ -30,7 +30,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       workstation.systemtraits.instructions = ''
-        ${pkgs.redis}/bin/redis-cli set net/vpn_meta ${lib.strings.escapeNixString (builtins.toJSON cfg.meta)}
+        ${pkgs.redis}/bin/redis-cli set net/vpn_meta ${mkRedisJSON cfg.meta}
       '';
     })
     (mkIf (cfg.enable && cfg.wm.enable) {

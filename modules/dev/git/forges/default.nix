@@ -205,7 +205,7 @@ in
       {
         assertions = [{
           assertion = config.workstation.systemtraits.enable;
-          message = "git/forges: must enable systemtraits maintainence.";
+          message = "git/forges: must enable systemtraits maintenance.";
         }];
 
         home-manager.users."${user}" = {
@@ -219,9 +219,7 @@ in
         navigation.bookmarks.workspaces.roots = workspaceRoots;
         workstation.systemtraits.instructions =
           optionalString (credentials != { }) ''
-            ${pkgs.redis}/bin/redis-cli set git/credentials_mapping ${
-              strings.escapeNixString (builtins.toJSON credentials)
-            }
+            ${pkgs.redis}/bin/redis-cli set git/credentials_mapping ${mkRedisJSON credentials}
           '';
       }
     ))
