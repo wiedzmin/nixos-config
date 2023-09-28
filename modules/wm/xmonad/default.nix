@@ -316,7 +316,7 @@ in
 
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
-          lib.strings.escapeNixString (builtins.toJSON (cfg.internalKeys // config.wmCommon.keybindings.entries))
+          mkRedisJSON (cfg.internalKeys // config.wmCommon.keybindings.entries)
         }
       '';
     })

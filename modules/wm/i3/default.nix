@@ -705,12 +705,8 @@ in
       };
 
       workstation.systemtraits.instructions = ''
-        ${pkgs.redis}/bin/redis-cli set wm/keybindings ${
-          lib.strings.escapeNixString (builtins.toJSON config.wmCommon.keybindings.entries)
-        }
-        ${pkgs.redis}/bin/redis-cli set wm/modebindings ${
-          lib.strings.escapeNixString (builtins.toJSON config.wmCommon.modeBindings)
-        }
+        ${pkgs.redis}/bin/redis-cli set wm/keybindings ${mkRedisJSON config.wmCommon.keybindings.entries}
+        ${pkgs.redis}/bin/redis-cli set wm/modebindings ${mkRedisJSON config.wmCommon.modeBindings}
       '';
 
       systemd.user.services.i3-kbdswitcher = {

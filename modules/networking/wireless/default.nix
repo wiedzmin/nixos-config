@@ -113,7 +113,7 @@ in
       home-manager.users."${user}" = { home.packages = with pkgs; [ bluetooth_battery ]; };
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set networking/wireless/headsets ${
-          lib.strings.escapeNixString (builtins.toJSON (lib.forEach cfg.bluetooth.devices (d: d.mac)))
+          mkRedisJSON (lib.forEach cfg.bluetooth.devices (d: d.mac))
         }
       '';
     })
