@@ -19,7 +19,7 @@ laptoptop-build-no-net:
 
 # Build + switch "laptoptop" flake
 laptoptop-switch:
-    nixos-rebuild switch --use-remote-sudo --flake ".#laptoptop"
+    nixos-rebuild switch -j 4 --use-remote-sudo --flake ".#laptoptop"
 
 # Build + switch "laptoptop" flake without network access
 laptoptop-switch-no-net:
