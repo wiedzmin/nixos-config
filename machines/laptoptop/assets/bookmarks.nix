@@ -370,21 +370,6 @@ in
         searchSuffix = "search/?text=";
       };
     };
-    "lol" = {
-      desc = "LOL paintings";
-      tags = [ "paintings" ];
-      remote.url = "https://deti-online.com/raskraski/lol";
-    };
-    "4let" = {
-      desc = "var paintings";
-      tags = [ "paintings" ];
-      remote.url = "https://moi-raskraski.ru/raskraski-dlya-malenkikh/raskraski-dlya-detej-4-let";
-    };
-    "porosenok" = {
-      desc = "porosenok";
-      tags = [ "paintings" ];
-      remote.url = "https://shutniki.club/wp-content/uploads/2020/04/Raskraska_s_porosenkom_4_15120840.jpg";
-    };
     "ml24" = {
       enable = false;
       tags = [ "shop" ];
@@ -510,16 +495,6 @@ in
       tags = [ "paint" "play" ];
       browser = config.attributes.browser.fallback.cmd;
       remote = { url = "https://yandex.ru/search/?lr=213&text=раскраски"; };
-    };
-    "paintings/dragons" = {
-      tags = [ "paint" "play" ];
-      browser = config.attributes.browser.fallback.cmd;
-      remote = { url = "https://deti-online.com/raskraski/drakony/"; };
-    };
-    "paintings/lilo_stitch" = {
-      tags = [ "paint" "play" ];
-      browser = config.attributes.browser.fallback.cmd;
-      remote = { url = "https://raskrasil.com/raskraski-lilo-i-stich/"; };
     };
     "real mongolia" = {
       tags = [ "mongol" "video" "youtube" ];
