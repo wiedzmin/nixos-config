@@ -43,7 +43,7 @@ in
       systemd.services.redis-default.postStart = cfg.instructions;
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release ];
+        home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release redisinsight ];
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
