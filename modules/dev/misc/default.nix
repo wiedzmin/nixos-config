@@ -299,6 +299,10 @@ in
                 trigger = ":gma";
                 replace = "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log";
               }
+              {
+                trigger = ":gdeb";
+                replace = "goBinPrefix config.dev.golang.goPath \"$|$\"";
+              }
             ];
           } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
