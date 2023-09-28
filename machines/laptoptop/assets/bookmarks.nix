@@ -590,6 +590,14 @@ in
       tags = [ "laptop" "thinkpad" "reddit" ];
       remote = { url = "https://www.reddit.com/r/Thinkpad"; };
     };
+    "musicforprogramming" = {
+      tags = [ "music" "programming" ];
+      remote = { url = "https://musicforprogramming.net/latest/"; };
+    };
+    "crackmes" = {
+      tags = [ "reveng" "crackme" "contest" ];
+      remote = { url = "https://crackmes.one/"; };
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
