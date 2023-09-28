@@ -345,6 +345,7 @@ in
       enable = true;
       pgtk.enable = false;
       wm.enable = true;
+      emacsEverywhere.enable = true;
     };
     edit.enable = true;
     navigation = {
