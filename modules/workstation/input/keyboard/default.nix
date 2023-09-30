@@ -18,7 +18,8 @@ in
         '';
       };
       remappingTool = mkOption {
-        type = types.enum [ "xkeysnail" "keyd" ];
+        # TODO: monitor "keymapper" evolution, whether it could be an additional option in the future
+        type = types.enum [ "xkeysnail" ];
         default = "xkeysnail";
         description = "Keyboard remapping tool to use";
       };
@@ -163,7 +164,5 @@ in
       users.users."${user}".extraGroups = [ "input" ];
       home-manager.users."${user}" = { xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText; };
     })
-    # (mkIf (cfg.enable && cfg.remappingTool == "keyd") {
-    # })
   ];
 }
