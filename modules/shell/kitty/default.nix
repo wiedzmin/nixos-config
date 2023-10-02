@@ -394,7 +394,7 @@ in
           "espanso/config/kitty.yml".source = yaml.generate "espanso-config-kitty.yml" {
             filter_class = "kitty";
             disable_x11_fast_inject = true;
-            backend = "Inject";
+            backend = "Clipboard";
           };
           "espanso/match/kitty.yml".source = yaml.generate "espanso-kitty.yml" {
             matches = [
