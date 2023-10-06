@@ -7,10 +7,11 @@
           (cond ((string-match-p "NixOS" linux-release) "/run/current-system/sw/bin/bash")
                 (t "/bin/bash")))))
 
-(setq gc-cons-percentage 0.5)
-(setq gc-cons-threshold most-positive-fixnum)
-(add-hook 'after-init-hook #'(lambda ()
-                               (setq gc-cons-threshold 800000)))
+(let ((old-threshold gc-cons-threshold))
+  (add-hook 'emacs-startup-hook
+            (lambda ()
+              (setq gc-cons-threshold old-threshold)))
+  (setq gc-cons-threshold most-positive-fixnum))
 
 (setq initial-major-mode 'fundamental-mode)
 (setq frame-inhibit-implied-resize t)
