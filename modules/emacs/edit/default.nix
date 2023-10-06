@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -32,7 +32,6 @@ in
         epkgs.aggressive-indent
         epkgs.drag-stuff
         epkgs.easy-kill
-        epkgs.easy-kill-extras # add to .el
         epkgs.evil-nerd-commenter
         epkgs.expand-region
         epkgs.highlight-numbers
@@ -47,7 +46,7 @@ in
         epkgs.whole-line-or-region
         epkgs.ws-butler
       ];
-      ide.emacs.core.config = builtins.readFile ./elisp/edit.el;
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/edit.el ];
       ide.emacs.core.customKeymaps = {
         "custom-ws-map" = "C-c x";
         "misc-editing-map" = "<f5>";
