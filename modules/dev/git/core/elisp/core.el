@@ -106,7 +106,7 @@
                      ("<mouse-1>" . blamer-callback-show-commit-diff)))
   :custom-face
   (blamer-face ((t :foreground "#7a88cf"
-                   :background nil
+                   :background "unspecified"
                    :italic t))))
 
 (use-package magit-commit-mark
