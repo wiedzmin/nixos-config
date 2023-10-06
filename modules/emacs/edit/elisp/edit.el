@@ -30,6 +30,10 @@
   ([remap kill-ring-save] . easy-kill)
   ([remap mark-sexp] . easy-mark))
 
+(use-package easy-kill-extras
+  :after easy-kill
+  :load-path "@emacsEasyKillExtrasPath@")
+
 (use-package multiple-cursors
   :after region-bindings-mode
   :bind

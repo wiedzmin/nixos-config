@@ -41,6 +41,22 @@
         "type": "github"
       }
     },
+    "emacs-easy-kill-extras": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1693286768,
+        "narHash": "sha256-tLAEzTgtySVoXzhsFR7NeRtNEHIwRJQyuijWZNyWZzY=",
+        "owner": "knu",
+        "repo": "easy-kill-extras.el",
+        "rev": "677435739c698ed81c3732188c29aa98bd9ffb08",
+        "type": "github"
+      },
+      "original": {
+        "owner": "knu",
+        "repo": "easy-kill-extras.el",
+        "type": "github"
+      }
+    },
     "emacs-epithet": {
       "flake": false,
       "locked": {
@@ -523,6 +539,7 @@
       "inputs": {
         "devenv-src": "devenv-src",
         "emacs": "emacs",
+        "emacs-easy-kill-extras": "emacs-easy-kill-extras",
         "emacs-epithet": "emacs-epithet",
         "emacs-highlight-sexp": "emacs-highlight-sexp",
         "emacs-org-bars": "emacs-org-bars",

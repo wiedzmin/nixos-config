@@ -35,6 +35,10 @@
       url = "github:oantolin/epithet";
       flake = false;
     };
+    emacs-easy-kill-extras = {
+      url = "github:knu/easy-kill-extras.el";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {
