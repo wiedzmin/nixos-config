@@ -91,5 +91,13 @@ in
           :commands (telega))
       '';
     })
+    (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "telega/manual" = {
+          desc = "Telega.el manual";
+          remote.url = "https://zevlg.github.io/telega.el/";
+        };
+      };
+    })
   ];
 }
