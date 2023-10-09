@@ -86,7 +86,7 @@
   (put 'set-goal-column 'disabled nil))
 
 (use-package eldoc
-  :delight "eldoc"
+  :delight " eldoc"
   :config
   (global-eldoc-mode -1))
 
