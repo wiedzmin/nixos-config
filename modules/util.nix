@@ -148,6 +148,8 @@ rec {
   emacsBoolToString = v: if v then "t" else "nil";
   mkRedisJSON = s:
     lib.escape [ "$" "`" ] (builtins.toJSON (builtins.toJSON s));
+  binaryAbsPathFromCmd = cmd: builtins.head (lib.splitString " " cmd);
+  binaryFromCmd = cmd: lib.last (lib.splitString "/" (binaryAbsPathFromCmd cmd));
   wsRootAtHomedir = user: key: lib.removePrefix (homePrefix user "") key;
   mkGithubBookmark = user: repo: roots: {
     local.path = "${wsRoot roots "github"}/${user}/${repo}";
