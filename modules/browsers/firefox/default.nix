@@ -11,8 +11,8 @@ let
   suspensionRule = {
     Firefox = {
       suspendDelay = 10;
-      matchWmClassContains = "Firefox";
-      suspendSubtreePattern = "firefox";
+      matchWmClassContains = lib.last cfg.windowClass;
+      suspendSubtreePattern = binaryFromCmd cfg.command;
     };
   };
 in

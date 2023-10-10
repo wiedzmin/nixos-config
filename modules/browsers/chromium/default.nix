@@ -10,8 +10,8 @@ let
   suspensionRule = {
     Chromium = {
       suspendDelay = 10;
-      matchWmClassContains = "Chromium-browser";
-      suspendSubtreePattern = "chromium";
+      matchWmClassContains = lib.last cfg.windowClass;
+      suspendSubtreePattern = binaryFromCmd cfg.command;
     };
   };
   yaml = pkgs.formats.yaml { };
