@@ -14,6 +14,7 @@ let
       suspendSubtreePattern = "chromium";
     };
   };
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -123,6 +124,12 @@ in
             "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
             # "gfbliohnnapiefjpjlpjnehglfpaknnc" # Surfingkeys
           ];
+        };
+        xdg.configFile = {
+          "espanso/config/chromium.yml".source = yaml.generate "espanso-config-chromium.yml" {
+            filter_class = lib.last cfg.windowClass;
+            backend = "Clipboard";
+          };
         };
         home.packages = with pkgs; [
           (makeDesktopItem {
