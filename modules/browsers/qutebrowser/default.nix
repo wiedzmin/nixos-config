@@ -13,7 +13,7 @@ let
   suspensionRule = {
     qutebrowser = {
       suspendDelay = 15;
-      matchWmClassContains = "qutebrowser";
+      matchWmClassContains = lib.last cfg.windowClass;
       suspendSubtreePattern = "qtwebengine";
       downclockOnBattery = 0;
       resumeEvery = 60;
@@ -174,7 +174,7 @@ in
         xdg.configFile = {
           "qutebrowser/hint-words".text = builtins.readFile ./assets/hint-words;
           "espanso/config/qutebrowser.yml".source = yaml.generate "espanso-config-qutebrowser.yml" {
-            filter_class = "qutebrowser";
+            filter_class = lib.last cfg.windowClass;
             backend = "Clipboard";
           };
         };
