@@ -25,7 +25,7 @@ in
     (mkIf cfg.cl.enable {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.melpaStablePackages.slime
-      ] ++ optionals (cfg.emacs.backend == "yasnippet") [
+      ] ++ optionals (config.ide.emacs.completion.snippets.backend == "yasnippet") [
         epkgs.common-lisp-snippets
       ];
       ide.emacs.core.config = builtins.readFile ./elisp/cl.el;
