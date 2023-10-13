@@ -123,5 +123,5 @@
   (magit-commit-mark-on-show-commit nil)
   :custom-face
   (magit-commit-mark-read-face ((t :foreground "#7a88cf"
-                                   :background nil
+                                   :background "unspecified"
                                    :italic t))))

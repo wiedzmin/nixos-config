@@ -61,7 +61,7 @@
   (company-tooltip-common-selection ((t (:inherit company-tooltip-selection :background "gray80" :foreground "red" :weight bold :underline nil))))
   (company-tooltip-search ((t (:inherit company-tooltip :foreground "#002b37" :background "#244f36" :weight bold :underline nil))))
   (company-tooltip-selection ((t (:inherit company-tooltip :foreground "black" :background "steelblue" :weight bold :underline nil)))) ;TODO: play with '(:inherit font-lock-function-name-face)
-  (lazy-highlight ((t (:inherit default :background nil :foreground "#CFD7E5" :distant-foreground nil))))
+  (lazy-highlight ((t (:inherit default :foreground "#CFD7E5"))))
   :custom
   (company-backends '(company-capf company-keywords company-elisp company-files company-dabbrev company-dabbrev-code))
   (company-dabbrev-downcase nil)
