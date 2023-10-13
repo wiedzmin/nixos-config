@@ -86,7 +86,6 @@
   (:map custom-goto-map
         ("I" . lsp-ui-doc-focus-frame))
   :custom-face
-  (lsp-ui-doc-background ((t (:background nil))))
   (lsp-ui-doc-header ((t (:inherit (font-lock-string-face italic)))))
   :custom
   (lsp-ui-doc-enable t)
