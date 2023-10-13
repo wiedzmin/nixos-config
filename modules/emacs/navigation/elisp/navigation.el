@@ -365,6 +365,10 @@
                        (message "Directories cannot be opened in EWW")
                      (eww-open-file (dired-get-file-for-visit)))))))
   :preface
+  (defvar go-away-repl-regexp
+    (rx bos "*" (or "Async")
+        (zero-or-more nonl))
+    "Regexp for matching windows to disappear")
   (defun custom/revert-dired-buffer (func &rest args) (revert-buffer))
   :custom
   (dired-recursive-deletes 'top) ;; Allows recursive deletes
@@ -378,6 +382,10 @@
   (when (version<= "28.0.50" emacs-version)
     (setq dired-kill-when-opening-new-dired-buffer nil))
   (put 'dired-find-alternate-file 'disabled nil)
+  (add-to-list 'display-buffer-alist
+               `(,go-away-repl-regexp
+                 display-buffer-no-window
+                 (inhibit-same-window . t)))
   (advice-add 'dired-do-rename :after #'custom/revert-dired-buffer)
   (advice-add 'dired-create-directory :after #'custom/revert-dired-buffer)
   (use-package dired-filetype-face))
