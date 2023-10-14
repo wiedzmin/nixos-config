@@ -110,7 +110,7 @@ in
     (mkIf (cfg.enable && cfg.queueing.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
         # TODO: some fzf-based tasks listing automation
-        xdg.configFile."espanso/match/shell_core.yml".source = yaml.generate "espanso-shell_core.yml" {
+        xdg.configFile."espanso/match/shell_core_queueing.yml".source = yaml.generate "espanso-shell_core_queueing.yml" {
           matches = [
             {
               trigger = ":pus";
@@ -131,6 +131,18 @@ in
             {
               trigger = ":pupr";
               replace = "pueue restart --in-place $|$";
+            }
+          ];
+        };
+      };
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile."espanso/match/shell_core.yml".source = yaml.generate "espanso-shell_core.yml" {
+          matches = [
+            {
+              trigger = ":ptim";
+              replace = "ps -ef | fzf --header-lines=1 | tr -s ' ' | cut -d' ' -f2 | xargs ps -o pid,lstart,start,etime,etimes -p";
             }
           ];
         };
