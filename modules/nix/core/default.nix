@@ -440,6 +440,14 @@ in
             searchSuffix = "?channel=nixos-unstable&package=";
           };
         };
+        nixos-search = {
+          desc = "Search NixOS packages";
+          remote = {
+            url = "https://search.nixos.org/packages";
+            jump = true;
+            searchSuffix = "?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=";
+          };
+        };
         nix-versions-blogpost = {
           desc = "Descriptive blog post for `nix-versions` (see alongside)";
           remote.url = "https://lazamar.github.io/download-specific-package-version-with-nix/";
