@@ -256,7 +256,11 @@ in
       enable = true;
       emacs.enable = true;
     };
-    batchvcs.enable = true;
+    vcs = {
+      enable = true;
+      batch.enable = true;
+      emacs.enable = true;
+    };
     git = {
       autofetch = {
         enable = false;
@@ -280,7 +284,6 @@ in
       };
       misc = {
         enable = true;
-        emacs.enable = true;
       };
       navigation = {
         enable = true;

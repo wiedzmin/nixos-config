@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -21,11 +21,6 @@ in
         default = "upstream";
         description = "Name of upstream repo remote.";
       };
-      emacs.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable Emacs-related setup.";
-      };
     };
   };
 
@@ -41,7 +36,7 @@ in
         home.packages = with pkgs; [ gitleaks gitnuro ];
       };
 
-      dev.batchvcs.commands = {
+      dev.vcs.batch.commands = {
         synctags = [ "${pkgs.gittags}/bin/gittags --sync" ];
         usynctags = [ "${pkgs.gittags}/bin/gittags --sync --remote ${cfg.defaultUpstreamRemote}" ];
         trim = [ "${pkgs.gitAndTools.git-trim}/bin/git-trim --delete=merged-local" ];
@@ -139,10 +134,6 @@ in
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };
-    })
-    (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.diff-hl epkgs.git-commit ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ];
     })
   ];
 }

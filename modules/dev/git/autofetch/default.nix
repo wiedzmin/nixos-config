@@ -42,7 +42,7 @@ in
     (mkIf cfg.enable {
       assertions = [
         {
-          assertion = config.dev.batchvcs.enable;
+          assertion = config.dev.vcs.batch.enable;
           message = "git: automatic updates fetching requires batch VCS setup to be enabled.";
         }
         {
@@ -58,7 +58,7 @@ in
       };
 
       # IDEA: place empty ".noauto" or like file in repo root to prevent any further breakage if something went wrong
-      dev.batchvcs.commands = {
+      dev.vcs.batch.commands = {
         mu = [
           # merge upstream
           "${pkgs.gitctl}/bin/gitfetch --op fetch --remote ${cfg.defaultOriginRemote}"

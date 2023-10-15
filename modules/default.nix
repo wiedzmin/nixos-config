@@ -32,7 +32,7 @@
     ./dev/frontend
     ./dev/git/autofetch
     ./dev/git/autopush
-    ./dev/batchvcs
+    ./dev/vcs
     ./dev/git/core
     ./dev/git/forges
     ./dev/git/misc

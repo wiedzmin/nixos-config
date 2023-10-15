@@ -1,15 +1,3 @@
-(use-package git-msg-prefix
-  :load-path "@emacsGitMsgPrefixPath@"
-  :bind
-  (:map git-commit-mode-map
-        ("C-c i" . git-msg-prefix))
-  :custom
-  (git-msg-prefix-regex
-   (rx bol (group (one-or-more
-                   (group (zero-or-more alnum) ":" space)))))
-  (git-msg-prefix-log-flags " --since='1 week ago' ")
-  (git-msg-prefix-input-method 'completing-read))
-
 (use-package smerge-mode
   :delight " ∓"
   :bind
