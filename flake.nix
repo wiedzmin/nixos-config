@@ -39,6 +39,12 @@
       url = "github:knu/easy-kill-extras.el";
       flake = false;
     };
+    emacs-git-msg-prefix = {
+      # NOTE: fixes deprecated/removed function in upstream
+      # FIXME: either return to upstream version in case of PR merge or fork+fix otherwise
+      url = "github:acastanedam/git-msg-prefix.el/update-cl";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {
