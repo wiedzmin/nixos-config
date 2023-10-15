@@ -10,8 +10,6 @@
   :preface
   (defun add-pcomplete-to-capf () ;; Enable company in Org mode
     (add-hook 'completion-at-point-functions #'pcomplete-completions-at-point nil t))
-  (defun company-capf-noerror (orig-fun &rest args)
-    (ignore-errors (apply orig-fun args)))
   :bind
   ("C-<tab>" . company-complete)
   ("C-M-<tab>" . company-complete-common)
@@ -82,7 +80,9 @@
                           company-sort-by-occurrence))
   (completion-ignore-case t)
   :config
-  (advice-add 'company-capf :around #'company-capf-noerror)
+  ;; FIXME: find the correct way to use "advice-add" here
+  (defadvice company-capf (around bar activate) ;; Ignore errors
+    (ignore-errors add-do-it))
   (add-to-list 'company-frontends 'company-preview-frontend)
   (use-package company-dabbrev-code
     :custom
