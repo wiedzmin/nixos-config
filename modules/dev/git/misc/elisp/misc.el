@@ -33,7 +33,8 @@
   :delight diff-hl-amend-mode
   :hook
   (magit-post-refresh-hook . diff-hl-magit-post-refresh)
-  (prog-mode . diff-hl-mode)
+  (prog-mode-hook . turn-on-diff-hl-mode)
+  (vc-dir-mode-hook . turn-on-diff-hl-mode)
   :bind
   (:map mode-specific-map
         ("d" . custom/toggle-diff-hl))
