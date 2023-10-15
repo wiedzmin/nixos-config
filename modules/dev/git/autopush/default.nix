@@ -27,7 +27,7 @@ in
     (mkIf cfg.enable {
       assertions = [
         {
-          assertion = config.dev.batchvcs.enable;
+          assertion = config.dev.vcs.batch.enable;
           message = "git: automatic updates pushing requires batch VCS setup to be enabled.";
         }
         {
@@ -42,7 +42,7 @@ in
           (builtins.readFile ./scripts/gitpush.py);
       };
 
-      dev.batchvcs.commands = { push = [ "${pkgs.gitpush}/bin/gitpush" ]; };
+      dev.vcs.batch.commands = { push = [ "${pkgs.gitpush}/bin/gitpush" ]; };
 
       systemd.services."git-push-updates" = {
         description = "Push updates to registered git upstream(s)";

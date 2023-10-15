@@ -48,7 +48,7 @@ in
           whitelist = { prefix = cfg.whitelist; };
         };
       };
-      dev.batchvcs.commands = { direnv = [ "[ -f .envrc ] && direnv allow || exit 0" ]; };
+      dev.vcs.batch.commands = { direnv = [ "[ -f .envrc ] && direnv allow || exit 0" ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs:

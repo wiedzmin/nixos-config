@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -144,7 +144,8 @@ in
         epkgs.magit-filenotify
         epkgs.magit-popup # *
       ] ++ optionals cfg.emacs.delta.enable epkgs.magit-delta;
-      ide.emacs.core.config = builtins.readFile ./elisp/core.el + optionalString cfg.emacs.delta.enable ''
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/core.el ]
+        + optionalString cfg.emacs.delta.enable ''
         (use-package magit-delta
           :disabled
           :hook (magit-mode-hook . magit-delta-mode))

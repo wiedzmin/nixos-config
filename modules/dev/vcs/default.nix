@@ -3,7 +3,7 @@ with pkgs.unstable.commonutils;
 with lib;
 
 let
-  cfg = config.dev.batchvcs;
+  cfg = config.dev.vcs;
   user = config.attributes.mainUser.name;
   collectReposMetadata = bookmarks:
     (lib.mapAttrs'
@@ -25,22 +25,27 @@ let
 in
 {
   options = {
-    dev.batchvcs = {
+    dev.vcs = {
       enable = mkOption {
         type = types.bool;
         default = false;
-        description = "Whether to enable operations batching for various repos, currently using `myrepos`.";
+        description = "Whether to enable common VCS configuration";
       };
-      commands = mkOption {
+      batch.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable operations batching for various repos, currently using `myrepos`";
+      };
+      batch.commands = mkOption {
         type = types.attrsOf (types.listOf types.str);
         default = { };
         description = "Myrepos custom commands attrset.";
       };
-      configContent = mkOption {
+      batch.configContent = mkOption {
         type = types.lines;
         default = ''
           [DEFAULT]
-          ${formatMyreposCommands cfg.commands 2}
+          ${formatMyreposCommands cfg.batch.commands 2}
 
           ${lib.concatStringsSep "\n" (lib.mapAttrsToList (path: meta: formatMyreposRepoMeta path meta)
             (collectReposMetadata config.navigation.bookmarks.entries))}
@@ -50,14 +55,23 @@ in
         internal = true;
         description = "Configuration data.";
       };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Emacs-related setup.";
+      };
     };
   };
 
   config = mkMerge [
-    (mkIf cfg.enable {
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.diff-hl ];
+      ide.emacs.core.config = builtins.readFile ./elisp/misc.el;
+    })
+    (mkIf (cfg.enable && cfg.batch.enable) {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ mr ];
-        home.file = { ".mrconfig".text = cfg.configContent; };
+        home.file = { ".mrconfig".text = cfg.batch.configContent; };
       };
     })
   ];
