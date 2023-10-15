@@ -73,6 +73,23 @@
         "type": "github"
       }
     },
+    "emacs-git-msg-prefix": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1695378722,
+        "narHash": "sha256-WV5cC4LeouCgPoXl/CmsSeQ4SlvGvwnsQzYeNmRksPw=",
+        "owner": "acastanedam",
+        "repo": "git-msg-prefix.el",
+        "rev": "631d9adce959e98d757644a08f6e2321fd61127c",
+        "type": "github"
+      },
+      "original": {
+        "owner": "acastanedam",
+        "ref": "update-cl",
+        "repo": "git-msg-prefix.el",
+        "type": "github"
+      }
+    },
     "emacs-highlight-sexp": {
       "flake": false,
       "locked": {
@@ -541,6 +558,7 @@
         "emacs": "emacs",
         "emacs-easy-kill-extras": "emacs-easy-kill-extras",
         "emacs-epithet": "emacs-epithet",
+        "emacs-git-msg-prefix": "emacs-git-msg-prefix",
         "emacs-highlight-sexp": "emacs-highlight-sexp",
         "emacs-org-bars": "emacs-org-bars",
         "git-extra-commands": "git-extra-commands",

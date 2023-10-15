@@ -1,4 +1,5 @@
 (use-package git-msg-prefix
+  :load-path "@emacsGitMsgPrefixPath@"
   :bind
   (:map git-commit-mode-map
         ("C-c i" . git-msg-prefix))
