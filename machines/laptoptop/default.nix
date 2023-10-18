@@ -372,7 +372,7 @@ in
       enable = true;
       workspaces = {
         globalRoot = homePrefix user "workspace/repos";
-        globalRootStale = homePrefix user "workspace/repos.stale";
+        globalRootStale = homePrefix user "workspace/stale";
       };
       emacs.enable = true;
     };
