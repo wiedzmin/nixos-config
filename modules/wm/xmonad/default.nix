@@ -51,8 +51,8 @@ in
       wmCommon = {
         modeBindings = {
           # FIXME: review mode bindings
-          "workspace" = [ prefix "Shift" "w" ];
-          "window" = [ prefix "Shift" "n" ];
+          "workspace" = [ prefix "Control" "w" ];
+          "window" = [ prefix "Control" "n" ];
         };
         keybindings.entries = (forEach [
           {
