@@ -502,6 +502,7 @@ in
                 "цы" = "config-write-py --force --defaults config.current.py";
                 "i" = "mode-enter insert";
                 "ш" = "mode-enter insert";
+                "e" = "cmd-set-text \/rror loading http"; # NOTE: for searching url parts in windows, where renderer process was killed
               } // optionalAttrs (cfg.emacsKeys.enable) {
                 "<Ctrl-s>" = "cmd-set-text /";
                 "<Ctrl-r>" = "cmd-set-text ?";
@@ -531,6 +532,7 @@ in
                 "<Alt-Shift-,>" = "scroll-to-perc 0";
                 "<Alt-Shift-.>" = "scroll-to-perc";
                 "<Ctrl-x><Ctrl-c>" = "quit";
+                "<Ctrl-x>e" = "cmd-set-text \/rror loading http"; # NOTE: for searching url parts in windows, where renderer process was killed
               };
               insert = optionalAttrs (cfg.emacsKeys.enable) {
                 "<Ctrl-e>" = "edit-text";
