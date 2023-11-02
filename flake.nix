@@ -148,7 +148,14 @@
               nixpkgs.overlays = [
                 overlays.unstable
                 (_: old: {
-                  i3lock-color = old.i3lock-color.overrideAttrs (_: {
+                  i3lock-color = old.i3lock-color.overrideAttrs (_: rec {
+                    version = "2.13.c.4";
+                    src = old.fetchFromGitHub {
+                      owner = "PandorasFox";
+                      repo = "i3lock-color";
+                      rev = version;
+                      sha256 = "sha256-bbjkvgSKD57sdOtPYGLAKpQoIsJnF6s6ySq4dTWC3tI=";
+                    };
                     patches = [ ./modules/workstation/lockscreen/patches/i3lock-color-pass-layout-switching.patch ];
                   });
                   mps-youtube = old.mps-youtube.overrideAttrs
