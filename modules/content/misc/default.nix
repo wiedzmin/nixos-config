@@ -239,6 +239,10 @@ in
                     params = {
                       values = [
                         {
+                          label = "10min";
+                          id = "600000";
+                        }
+                        {
                           label = "week";
                           id = "604800000";
                         }
