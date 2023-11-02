@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -55,6 +55,7 @@ in
           search_shortcut: ${cfg.espanso.searchShortcut}
           auto_restart: false
           backend: ${cfg.espanso.backend}
+          x11_use_xclip_backend: true
         '';
         visible = false;
         readOnly = true;
