@@ -39,7 +39,7 @@
   :custom
   (display-time-day-and-date t)
   (display-time-form-list (list 'time 'load))
-  (display-time-world-list
+  (world-clock-list
    '(("@systemTimeZone@" "@systemTimeZone@")))
   (display-time-mail-file t)
   (display-time-default-load-average nil)
