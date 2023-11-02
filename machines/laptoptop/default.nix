@@ -659,7 +659,7 @@ in
     titleAlignment = "center";
     focusOnWindowActivation = "urgent";
     gaps = {
-      enable = true;
+      enable = false;
       inner.size = 5;
       outer.size = 10;
     };
