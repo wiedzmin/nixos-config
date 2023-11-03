@@ -83,6 +83,7 @@
   (cursor-type 'bar)
   (completion-cycle-threshold 3)
   (completion-ignored-extensions nil)
+  (window-combination-resize t)
   :config
   (fset 'yes-or-no-p 'y-or-n-p)
   (set-charset-priority 'unicode)
