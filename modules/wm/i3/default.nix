@@ -165,6 +165,11 @@ in
         default = { };
         description = "i3status-rust theming";
       };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable i3wm-related Emacs infra";
+      };
     };
   };
 
@@ -766,6 +771,10 @@ in
         };
         displayManager = { defaultSession = "none+i3"; };
       };
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.i3wm epkgs.i3wm-config-mode ];
+      ide.emacs.core.config = builtins.readFile ./elisp/i3wm.el;
     })
   ];
 }

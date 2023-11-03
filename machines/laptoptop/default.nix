@@ -665,6 +665,7 @@ in
     };
     statusbar.impl = "i3-rs";
     windowFocus.fontSize = 55;
+    emacs.enable = true;
   };
   wm.awesome = {
     enable = true;
