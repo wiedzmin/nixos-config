@@ -164,7 +164,7 @@ with lib;
       default = 4;
     };
     debug.scripts = mkOption {
-      description = "Whethet to expose custom scripts to shell for debugging";
+      description = "Whether to expose custom scripts to shell for debugging";
       type = types.bool;
       default = false;
     };
