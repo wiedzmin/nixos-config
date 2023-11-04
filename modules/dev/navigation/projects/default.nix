@@ -65,11 +65,13 @@ in
         cmd = with config.dev.navigation.projects.fuzzySearch;
           "${nurpkgs.toolbox}/bin/projects search --root ${root} --depth ${builtins.toString depth}";
         mode = "dev";
-      }] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable) [{
-        key = [ "p" ];
-        cmd = "${nurpkgs.toolbox}/bin/projects open";
-        mode = "dev";
-      }];
+      }] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable) [
+        (goLocalDebugKeybinding config {
+          key = [ "p" ];
+          cmd = [ "projects" "open" ];
+          mode = "dev";
+        })
+      ];
     })
   ];
 }

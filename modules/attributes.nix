@@ -168,6 +168,11 @@ with lib;
       type = types.bool;
       default = false;
     };
+    debug.useLocalGoBinaries = mkOption {
+      description = "Whether to use local Go programs from $GOPATH/bin, mostly for debugging purposes";
+      type = types.bool;
+      default = false;
+    };
     hardware.monitors = {
       internalHead = {
         name = mkOption {
