@@ -203,7 +203,7 @@ in
         opacityRules = [ "0:_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'" ];
       };
     })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+    (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ keybindings ]; };
     })
   ];

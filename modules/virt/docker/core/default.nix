@@ -120,7 +120,7 @@ in
         "docker" = [ prefix "Shift" "d" ];
       };
     })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+    (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           dlint

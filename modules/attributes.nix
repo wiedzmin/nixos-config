@@ -163,7 +163,7 @@ with lib;
       type = types.int;
       default = 4;
     };
-    debug.scripts = mkOption {
+    debug.exposeScripts = mkOption {
       description = "Whether to expose custom scripts to shell for debugging";
       type = types.bool;
       default = false;

@@ -189,7 +189,7 @@ in
         home.packages = with pkgs;
           [
             haskellPackages.arbtt # for stats viewing
-          ] ++ lib.optionals config.attributes.debug.scripts [ tt_capture ];
+          ] ++ lib.optionals config.attributes.debug.exposeScripts [ tt_capture ];
       };
     })
   ];
