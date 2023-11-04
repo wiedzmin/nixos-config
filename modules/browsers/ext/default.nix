@@ -105,21 +105,21 @@ in
           mode = "root";
           leaveFullscreen = true;
         }
-        {
+        (goLocalDebugKeybinding config {
           key = [ prefix "j" ];
-          cmd = "${nurpkgs.toolbox}/bin/webjumps";
+          cmd = [ "webjumps" ];
           mode = "root";
-        }
-        {
+        })
+        (goLocalDebugKeybinding config {
           key = [ prefix "Shift" "j" ];
-          cmd = "${nurpkgs.toolbox}/bin/webjumps -use-fallback";
+          cmd = [ "webjumps" "-use-fallback" ];
           mode = "root";
-        }
-        {
+        })
+        (goLocalDebugKeybinding config {
           key = [ prefix "Control" "j" ];
-          cmd = "${nurpkgs.toolbox}/bin/webjumps -copy";
+          cmd = [ "webjumps" "-copy" ];
           mode = "root";
-        }
+        })
         {
           key = [ "c" ];
           cmd = "${nurpkgs.toolbox}/bin/links";

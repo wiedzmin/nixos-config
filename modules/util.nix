@@ -73,6 +73,7 @@ let
     "Chromium-browser"
     "Firefox"
   ];
+  nurpkgs = pkgs.nur.repos.wiedzmin;
 in
 rec {
   addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
@@ -137,6 +138,15 @@ rec {
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
   homePrefix = user: suffix: "/home/${user}/" + suffix;
   goBinPrefix = goPath: suffix: "${goPath}/bin/" + suffix;
+  goLocalDebugKeybinding = cfg: meta: {
+    key = meta.key;
+    mode = meta.mode;
+    cmd =
+      if cfg.attributes.debug.useLocalGoBinaries
+      then ''${goBinPrefix cfg.dev.golang.goPath (builtins.head meta.cmd)} ${lib.concatStringsSep " " (lib.tail meta.cmd)}''
+      else ''${nurpkgs.toolbox}/bin/${builtins.head meta.cmd} ${lib.concatStringsSep " " (lib.tail meta.cmd)}'';
+    debug = cfg.attributes.debug.useLocalGoBinaries || (builtins.hasAttr "debug" meta) && meta.debug;
+  };
   xdgConfig = user: suffix: (homePrefix user ".config") + suffix; # FIXME: deal with slashes seamlessly
   wsRoot = roots: key: lib.getAttrFromPath [ key ] roots;
   configPrefix = roots: suffix: "${wsRoot roots "github"}/wiedzmin/nixos-config/" + suffix;
