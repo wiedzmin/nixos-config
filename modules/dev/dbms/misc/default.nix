@@ -78,6 +78,6 @@ in
         mode = "dev";
       }];
     })
-    (mkIf config.attributes.debug.scripts { home-manager.users."${user}" = { home.packages = with pkgs; [ dbms ]; }; })
+    (mkIf config.attributes.debug.exposeScripts { home-manager.users."${user}" = { home.packages = with pkgs; [ dbms ]; }; })
   ];
 }

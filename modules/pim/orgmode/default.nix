@@ -206,7 +206,7 @@ in
       ];
       ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/blings.el ]);
     })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+    (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ org-capture ]; };
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {

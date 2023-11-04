@@ -284,7 +284,7 @@ in
         mode = "run";
       }];
     })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+    (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ mcpanes ];
       };

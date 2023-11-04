@@ -146,7 +146,7 @@ in
         cmd = "${pkgs.blueman}/bin/blueman-manager";
       }];
     })
-    (mkIf (cfg.enable && config.attributes.debug.scripts) {
+    (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ wifi-status ]; };
     })
   ];
