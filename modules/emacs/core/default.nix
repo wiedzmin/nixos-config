@@ -238,8 +238,8 @@ in
           epkgs.delight
           epkgs.f
           epkgs.no-littering
-        ] ++ lib.optionals config.wm.i3.enable [ epkgs.reverse-im ]
-        ++ lib.optionals cfg.treesitter.enable [ epkgs.treesit-auto ]
+          epkgs.reverse-im
+        ] ++ lib.optionals cfg.treesitter.enable [ epkgs.treesit-auto ]
         ++ lib.optionals cfg.emacsEverywhere.enable [ epkgs.emacs-everywhere ];
       ide.emacs.core.config = lib.optionalString config.wm.i3.enable ''
         (use-package reverse-im
