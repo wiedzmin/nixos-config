@@ -34,3 +34,5 @@
   (setq treesit-language-source-alist (treesit-auto--build-treesit-source-alist))
   (treesit-auto-install-all)
   (global-treesit-auto-mode))
+
+(use-package treesit-util)
