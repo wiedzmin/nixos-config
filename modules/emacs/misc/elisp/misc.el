@@ -85,6 +85,10 @@
   (put 'transient-mark-mode 'permanent-local t)
   (put 'set-goal-column 'disabled nil))
 
+(use-package indent-aux
+  :custom
+  (kill-ring-deindent-mode t))
+
 (use-package eldoc
   :delight " eldoc"
   :config
