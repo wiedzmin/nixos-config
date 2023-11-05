@@ -252,6 +252,9 @@ in
       + lib.optionalString cfg.emacsEverywhere.enable ''
         (use-package emacs-everywhere)
       '';
+      ide.emacs.core.customPackages = lib.optionalAttrs cfg.treesitter.enable {
+        "treesit-util" = builtins.readFile ./elisp/custom/treesit-util.el;
+      };
       ide.emacs.core.customKeymaps = {
         "custom-goto-map" = "M-s";
       };
