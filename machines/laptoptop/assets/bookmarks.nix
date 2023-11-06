@@ -190,6 +190,7 @@ in
     "gmail" = {
       desc = "GMail account";
       remote.url = "https://mail.google.com/mail/u/0/";
+      browser = config.attributes.browser.fallback.cmd;
     };
     "repology/projects" = {
       desc = "Repology";
