@@ -8,7 +8,7 @@ let
   user = config.attributes.mainUser.name;
 in
 {
-  imports = [ ./fira-code-fonts.nix ./hack-fonts.nix ./iosevka-fonts.nix ./jbmono-fonts.nix ./scp-fonts.nix ];
+  imports = [ ./agave-fonts.nix ./fira-code-fonts.nix ./hack-fonts.nix ./iosevka-fonts.nix ./jbmono-fonts.nix ./scp-fonts.nix ];
 
   options = {
     appearance.fonts = {
