@@ -57,6 +57,19 @@ collect-garbage:
 remove-dead-nix:
     deadnix .
 
+# cleanup current devenv
+devenv-cleanup:
+    rm -rf ${PWD}/.devenv ${PWD}/.direnv
+    rm -f ${PWD}/devenv.lock ${PWD}/.devenv.flake.nix ${PWD}/.pre-commit-config.yaml
+    touch .envrc
+
+# cleanup and GC current devenv
+devenv-cleanup-and-gc:
+    rm -rf ${PWD}/.devenv ${PWD}/.direnv
+    rm -f ${PWD}/devenv.lock ${PWD}/.devenv.flake.nix ${PWD}/.pre-commit-config.yaml
+    sudo nix-collect-garbage -d
+    touch .envrc
+
 # generate git log for `code-maat` consumption
 maat-log:
     git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log
