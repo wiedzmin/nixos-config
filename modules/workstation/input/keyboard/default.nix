@@ -138,6 +138,9 @@ in
   };
 
   config = mkMerge [
+    (mkIf (cfg.enable) {
+      users.users."${user}".extraGroups = [ "input" ];
+    })
     (mkIf (cfg.enable && cfg.remappingTool == "xkeysnail") {
       assertions = [{
         assertion = cfg.xkeysnail.configPath != "";
@@ -161,7 +164,6 @@ in
           StandardError = "journal";
         };
       };
-      users.users."${user}".extraGroups = [ "input" ];
       home-manager.users."${user}" = { xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText; };
     })
   ];
