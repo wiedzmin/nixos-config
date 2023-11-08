@@ -1,9 +1,13 @@
 { config, pkgs, inputs, ... }:
 
 {
-  env.PROJECTNAME = "nixos-config";
+  env = {
+    PROJECTNAME = "nixos-config";
+    GREEN="\\033[0;32m";
+    NC="\\033[0m"; # No Color
+  };
 
-  scripts.hello.exec = "echo welcome to $PROJECTNAME";
+  scripts.hello.exec = ''echo -e "''${GREEN}welcome to $PROJECTNAME''${NC}"'';
 
   imports = [ inputs.nur.nixosModules.nur ];
 
