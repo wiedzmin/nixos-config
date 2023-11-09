@@ -423,6 +423,8 @@ in
                 "пл" = "tab-move -";
                 "go" = "spawn ${config.attributes.browser.fallback.cmd} {url}";
                 "пщ" = "spawn ${config.attributes.browser.fallback.cmd} {url}";
+                "ge" = "cmd-set-text :open {url}";
+                "пу" = "cmd-set-text :open {url}";
                 "gl" = "open {url:scheme}://mail.gnu.org{url:path}";
                 "пд" = "open {url:scheme}://mail.gnu.org{url:path}";
                 "gs" = "view-source";
