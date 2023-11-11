@@ -710,7 +710,7 @@ in
       type = "primary";
     }
     {
-      name = "ent";
+      name = "var";
       key = [ "Escape" ];
       transient = false;
       type = dockableSecondaryWS config.attributes.hardware.monitors.count;

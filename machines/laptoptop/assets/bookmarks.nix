@@ -234,7 +234,7 @@ in
         {
           class = mkWSMappingBrowsersRegexp config.attributes.browser;
           title = "http facebook";
-          desktop = "ent";
+          desktop = "var";
         }
       ];
     };
