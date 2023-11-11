@@ -366,7 +366,7 @@ in
     })
     (mkIf cfg.processors.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ enca pandoc pdfcpu pdftk pdfchain pdfslicer ocamlPackages.cpdf ];
+        home.packages = with pkgs; [ enca imagemagick img2pdf ocamlPackages.cpdf pandoc pdfchain pdfcpu pdfslicer pdftk ];
         xdg.configFile = optionalAttrs (config.completion.expansions.enable) {
           "espanso/match/paperworks_processors.yml".source = yaml.generate "espanso-paperworks_processors.yml" {
             matches = [
@@ -385,6 +385,15 @@ in
                     params = { cmd = "echo \"toolbox-migration.org\" | cut -d'.' -f1"; };
                   }
                 ];
+              }
+              # TODO: consider unwiring source file extension(s) and parameterizing output file name (probably sans extension)
+              {
+                trigger = ":impdf";
+                replace = "convert *.jp* -auto-orient result.pdf";
+              }
+              {
+                trigger = ":imqpdf";
+                replace = "img2pdf *.jp* --output result.pdf";
               }
             ];
           };
