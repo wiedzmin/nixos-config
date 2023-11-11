@@ -80,3 +80,9 @@
 (use-package hl-prog-extra
   :config
   (global-hl-prog-extra-mode))
+
+(use-package jq-format
+  :bind
+  (:map mode-specific-map
+        ;; NOTE: use "delete-indentation" on region to stringify the data back (beware of spaces separation afterwards)
+        ("j" . jq-format-json-region)))
