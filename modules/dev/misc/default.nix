@@ -192,6 +192,7 @@ in
         epkgs.fic-mode
         epkgs.hl-prog-extra
         epkgs.jinja2-mode
+        epkgs.jq-format
         epkgs.just-mode
         epkgs.justl
         epkgs.leetcode
