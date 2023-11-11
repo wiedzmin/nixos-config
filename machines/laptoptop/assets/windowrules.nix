@@ -51,12 +51,12 @@ with pkgs.unstable.commonutils;
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "http pravmir";
-      desktop = "ent";
+      desktop = "var";
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "http dzen";
-      desktop = "ent";
+      desktop = "var";
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -71,7 +71,7 @@ with pkgs.unstable.commonutils;
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "rambler.ru";
-      desktop = "ent";
+      desktop = "var";
     }
     {
       class = "lxqt-openssh-askpass";
