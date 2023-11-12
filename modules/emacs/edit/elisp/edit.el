@@ -220,3 +220,10 @@
 (use-package hippie-expand
   :bind
   ([remap dabbrev-expand] . hippie-expand))
+
+(use-package misearch
+  :bind
+  (:map misc-editing-map
+        ("r" . replace-regexp-as-diff)
+        ("m" . multi-file-replace-regexp-as-diff)
+        ("d" . dired-do-replace-regexp-as-diff)))
