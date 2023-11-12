@@ -36,7 +36,6 @@ in
           modules = [
             "cwd"
             "docker"
-            "docker_context"
             "exit"
             "git"
             "hg"
