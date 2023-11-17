@@ -399,6 +399,22 @@
     },
     "nixpkgs-last-unbroken": {
       "locked": {
+        "lastModified": 1697456312,
+        "narHash": "sha256-roiSnrqb5r+ehnKCauPLugoU8S36KgmWraHgRqVYndo=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ca012a02bf8327be9e488546faecae5e05d7d749",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ca012a02bf8327be9e488546faecae5e05d7d749",
+        "type": "github"
+      }
+    },
+    "nixpkgs-libreoffice": {
+      "locked": {
         "lastModified": 1673540789,
         "narHash": "sha256-xqnxBOK3qctIeUVxecydrEDbEXjsvHCPGPbvsl63M/U=",
         "owner": "nixos",
@@ -571,6 +587,7 @@
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs-last-unbroken": "nixpkgs-last-unbroken",
+        "nixpkgs-libreoffice": "nixpkgs-libreoffice",
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",
         "telega": "telega",
