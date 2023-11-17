@@ -54,7 +54,6 @@ in
       ] ++ optionals (cfg.backend == "corfu") [
         epkgs.cape
         epkgs.corfu
-        epkgs.corfu-doc
         epkgs.kind-icon
       ] ++ optionals (cfg.snippets.backend == "yasnippet") [
         epkgs.yasnippet
@@ -67,7 +66,7 @@ in
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
         ([ ./elisp/completion.el ] ++ optionals (cfg.backend == "company") [ ./elisp/company.el ]
           ++ optionals (cfg.backend == "corfu") [ ./elisp/corfu.el ]
-          ++ optionals (cfg.backend == "corfu" && config.ide.emacs.history.enable) [ ./elisp/corfu-history.el ]
+          ++ optionals (cfg.backend == "corfu" && config.history.emacs.enable) [ ./elisp/corfu-history.el ]
           ++ optionals (cfg.snippets.backend == "yasnippet") [ ./elisp/yasnippet.el ]
           ++ optionals (cfg.snippets.backend == "yasnippet" && config.ide.emacs.navigation.collections.backend == "consult") [ ./elisp/consult-yasnippet.el ]
           ++ optionals (cfg.snippets.backend == "tempel") [ ./elisp/tempel.el ]);
