@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
@@ -6,6 +6,13 @@ with lib;
 let
   cfg = config.dev.golang;
   user = config.attributes.mainUser.name;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -59,7 +66,7 @@ in
         })
       ];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ delve gopls go gomacro ];
+        home.packages = with pkgs; [ delve gopls go nixpkgs-last-unbroken.gomacro ];
         home.sessionPath = [ "${cfg.goPath}/bin" ];
       };
       dev.editorconfig.rules = {

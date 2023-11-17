@@ -6,7 +6,7 @@ let
   cfg = config.paperworks;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+  nixpkgs-libreoffice = import inputs.nixpkgs-libreoffice {
     config = config.nixpkgs.config // {
       allowUnfree = true;
       permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
@@ -158,7 +158,7 @@ in
         default = false;
         description = "Whether to enable docflow tooling";
       };
-      docflow.libreoffice.package = mkPackageOption nixpkgs-last-unbroken "libreoffice-still" { extraDescription = "The `libreoffice` package to install"; };
+      docflow.libreoffice.package = mkPackageOption nixpkgs-libreoffice "libreoffice-still" { extraDescription = "The `libreoffice` package to install"; };
       docflow.extensions = mkOption {
         type = types.listOf types.str;
         default = [ "doc" "docx" "xls" "xlsx" "odt" ];
