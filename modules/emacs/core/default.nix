@@ -186,6 +186,7 @@ in
             (setq comp-async-query-on-exit t)
             (setq comp-async-jobs-number 4)
             (setq comp-async-report-warnings-errors nil)
+            (setq native-comp-async-report-warnings-errors 'silent)
             (setq comp-deferred-compilation t))
 
           (require 'notifications)
