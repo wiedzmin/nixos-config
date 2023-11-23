@@ -148,6 +148,7 @@ in
         epkgs.orgit
         epkgs.orglink
         epkgs.russian-holidays
+        epkgs.hyperbole # FIXME: consider extracting core PIM functionality from this module
       ] ++ optionals cfg.cliplink.enable [ epkgs.org-cliplink ]
       ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ epkgs.consult-org-roam ];
       ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/orgmode.el ])
