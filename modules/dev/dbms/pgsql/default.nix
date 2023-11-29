@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -7,6 +7,13 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
   inherit (hm.xdg) dataHome;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -17,7 +24,7 @@ in
         default = false;
         description = "Whether to enable PostgreSQL helper tools.";
       };
-      pgcli.package = mkPackageOption pkgs "pgcli" { extraDescription = "PgCLI log file location"; };
+      pgcli.package = mkPackageOption nixpkgs-last-unbroken "pgcli" { extraDescription = "PgCLI log file location"; };
       pgcli.logPath = mkOption {
         type = types.str;
         default = "${dataHome}/pgcli/log";
