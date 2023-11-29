@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -6,6 +6,13 @@ let
   cfg = config.workstation.systemtraits;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -43,7 +50,7 @@ in
       systemd.services.redis-default.postStart = cfg.instructions;
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release redisinsight ];
+        home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release nixpkgs-last-unbroken.redisinsight ];
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
