@@ -111,7 +111,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ JUST_CHOOSER = cfg.just.chooserCmd; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ dfmt go-task just lnav comby tagref xh code-maat ];
+        home.packages = with pkgs; [ code-maat comby dfmt fastmod go-task just lnav tagref xh ];
       };
       pim.timetracking.rules =
         mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ])
