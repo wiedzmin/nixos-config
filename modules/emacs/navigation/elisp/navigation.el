@@ -696,6 +696,21 @@
 
 (use-package epithet
   :load-path "@emacsEpithetPath@"
+  :preface
+  ;; FIXME: check if some interdepenencies enforcement is needed for rg being used here
+  (defun epithet-for-rg ()
+    "Suggest a name for an 'rg-mode' buffer"
+    (when-let* (((derived-mode-p 'rg-mode))
+                (command (car compilation-arguments))
+                (searchterm (string-join
+                             (cdr (member "-e" (split-string command " "))) " "))
+                (filetype (cadr
+                           (split-string
+                            (car (seq-filter (lambda (l) (string-prefix-p "--type" l))
+                                             (split-string command " "))) "="))))
+      (format "\"%s\" <%s>"
+              (replace-regexp-in-string (rx "\\" (group anything)) "\\1" searchterm)
+              filetype)))
   :hook
   (Info-selection-hook . epithet-rename-buffer)
   (eww-after-render-hook . epithet-rename-buffer)
@@ -703,7 +718,9 @@
   (occur-mode-hook . epithet-rename-buffer)
   (shell-mode-hook . epithet-rename-buffer)
   (compilation-start-hook . epithet-rename-buffer-ignoring-arguments)
-  (compilation-finish-functions . epithet-rename-buffer-ignoring-arguments))
+  (compilation-finish-functions . epithet-rename-buffer-ignoring-arguments)
+  :config
+  (add-to-list 'epithet-suggesters #'epithet-for-rg))
 
 (use-package isearch
   :custom
