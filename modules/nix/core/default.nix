@@ -544,6 +544,10 @@ in
           desc = "An opinionated guide for developers getting things done using the Nix ecosystem.";
           remote.url = "https://nix.dev";
         };
+        "nixlang.wiki" = {
+          desc = "An unofficial, maintained wiki for NixOS";
+          remote.url = "https://nixlang.wiki/";
+        };
       };
     })
   ];
