@@ -591,6 +591,13 @@ in
       tags = [ "reveng" "crackme" "contest" ];
       remote = { url = "https://crackmes.one/"; };
     };
+    "torrent_files_search" = {
+      desc = "torrent + ";
+      remote = {
+        url = "https://www.yandex.ru/";
+        searchSuffix = "?q=torrent+";
+      };
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
