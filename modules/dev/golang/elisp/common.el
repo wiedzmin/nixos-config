@@ -1,25 +1,3 @@
-(use-package go-mode
-  :no-require t
-  :mode ("\\.go$" . go-mode)
-  :hook
-  (before-save-hook . gofmt-before-save)
-  (go-mode-hook . lsp-deferred)
-  (go-mode-hook . whitespace-turn-off)
-  :config
-  (when (boundp 'company-backends)
-    (add-to-list 'company-backends 'company-tabnine)
-    (add-to-list 'company-backends 'company-capf))
-  (when (featurep 'treesit)
-    (add-hook 'go-ts-mode-hook 'whitespace-turn-off)
-    (add-hook 'go-ts-mode-hook (lambda() (treesit-inspect-mode t))))
-  (add-to-list 'completion-at-point-functions #'pcomplete-completions-at-point)
-  (use-package lsp-go)
-  ;;TODO: enable after proper setup
-  (use-package dap-go
-    :after lsp-mode dap-mode
-    :disabled)
-  (setq gofmt-command "goimports"))
-
 (use-package flycheck-golangci-lint
   :after (flycheck go-mode)
   :hook (go-mode-hook . flycheck-golangci-lint-setup))
