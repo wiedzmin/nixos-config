@@ -1,9 +1,10 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
 let
   cfg = config.dev.python;
+  user = config.attributes.mainUser.name;
 in
 {
   options = {
@@ -76,9 +77,14 @@ in
         [ "Pipfile" "manage.py" "poetry.lock" "requirements.txt" "requirements.pip" "setup.py" "tox.ini" ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      # TODO: also play with the `pylsp` (https://github.com/python-lsp/python-lsp-server)
+      # TODO: consider reorganizing some settings below under other module's options, if appropriate (including creating new ones)
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [ python3Packages.python-lsp-server ];
+      };
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/python.el ];
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/python-mode.el) +
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/python-ts-mode.el) +
+        (builtins.readFile ./elisp/common.el);
       ide.emacs.core.treesitter.grammars = {
         python = "https://github.com/tree-sitter/tree-sitter-python";
       };
