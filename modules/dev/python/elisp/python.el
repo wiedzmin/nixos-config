@@ -27,11 +27,7 @@
     (add-to-list 'company-backends 'company-capf))
   (add-to-list 'completion-at-point-functions #'pcomplete-completions-at-point)
   (add-function :before-until (local 'eldoc-documentation-function)
-                #'(lambda () ""))
-  (use-package lsp-python-ms
-    :custom
-    (lsp-python-ms-executable "@lspPythonMsExecutable@")
-    (lsp-python-ms-extra-paths [@lspPythonMsExtraPaths@])))
+                #'(lambda () "")))
 
 (use-package flycheck-prospector
   :after flycheck)
