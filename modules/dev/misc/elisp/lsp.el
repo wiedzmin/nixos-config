@@ -31,6 +31,7 @@
   (lsp-enable-indentation t)
   (lsp-enable-links t)
   (lsp-enable-on-type-formatting nil)
+  (lsp-enable-snippet nil)
   (lsp-enable-symbol-highlighting t)
   (lsp-enable-text-document-color t)
   (lsp-enable-xref t)
