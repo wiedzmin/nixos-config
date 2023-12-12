@@ -3,8 +3,8 @@
 {
   env = {
     PROJECTNAME = "nixos-config";
-    GREEN="\\033[0;32m";
-    NC="\\033[0m"; # No Color
+    GREEN = "\\033[0;32m";
+    NC = "\\033[0m"; # No Color
   };
 
   scripts.hello.exec = ''echo -e "''${GREEN}welcome to $PROJECTNAME''${NC}"'';
@@ -17,6 +17,7 @@
     gitAndTools.git-crypt
     just
     vim
+    wiedzmin.pystdlib
   ];
 
   enterShell = ''
