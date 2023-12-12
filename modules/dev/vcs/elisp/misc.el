@@ -29,3 +29,8 @@
         ("d" . custom/toggle-diff-hl))
   :config
   (diff-hl-amend-mode 1))
+
+(use-package ediff
+  :custom
+  (ediff-window-setup-function 'ediff-setup-windows-plain)
+  (ediff-split-window-function 'split-window-horizontally))
