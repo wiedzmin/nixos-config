@@ -319,6 +319,9 @@ in
           restartIfChanged = false;
           serviceConfig = {
             Type = "simple";
+            # NOTE: something in nixpkgs commits range 8cfef6986adf..a9bf124c46ef broke this command ("exec: emacs: command not found"),
+            # and there is no fix/workaround available yet. It may also be some recent systemd change(s), that breaks the old behavior.
+            # this note will be kept for historical and educational reason for some sane timerange
             ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
             ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
             ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
