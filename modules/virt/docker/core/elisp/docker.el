@@ -5,4 +5,4 @@
   :custom
   (dockerfile-mode-command "docker")
   :config
-  (put 'docker-image-name 'safe-local-variable #'stringp))
+  (use-package lsp-dockerfile))

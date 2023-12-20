@@ -113,7 +113,14 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.dockerfile-mode ];
-      ide.emacs.core.config = builtins.readFile ./elisp/docker.el;
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/docker.el) +
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/docker-ts.el);
+      ide.emacs.core.treesitter.grammars = {
+        dockerfile = "https://github.com/camdencheek/tree-sitter-dockerfile";
+      };
+      ide.emacs.core.treesitter.modeRemappings = {
+        dockerfile-mode = "dockerfile-ts-mode";
+      };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.modeBindings = {
