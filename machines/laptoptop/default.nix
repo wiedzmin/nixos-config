@@ -407,6 +407,7 @@ in
           "MiAir2" = "6C:CE:44:AE:97:39";
           "BO9" = "1A:2B:F5:5E:BE:63";
         };
+        defaultHeadset = "MiAir2";
       };
       wm = {
         enable = true;
