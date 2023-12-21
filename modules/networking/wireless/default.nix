@@ -46,8 +46,13 @@ in
       };
       bluetooth.devices = mkOption {
         type = types.attrs;
-        default = [ ];
+        default = { };
         description = "Bluetooth devices metadata";
+      };
+      bluetooth.defaultHeadset = mkOption {
+        type = types.str;
+        default = "";
+        description = "Default Bluetooth headset to use";
       };
       tools.enable = mkOption {
         type = types.bool;
@@ -155,12 +160,12 @@ in
         {
           key = [ "h" ];
           mode = "network";
-          cmd = "${pkgs.bluez}/bin/bluetoothctl connect ${cfg.bluetooth.devices.MiAir2}";
+          cmd = "${pkgs.bluez}/bin/bluetoothctl connect ${with cfg.bluetooth; devices.${defaultHeadset}}";
         }
         {
           key = [ "Shift" "h" ];
           mode = "network";
-          cmd = "${pkgs.bluez}/bin/bluetoothctl disconnect ${cfg.bluetooth.devices.MiAir2}";
+          cmd = "${pkgs.bluez}/bin/bluetoothctl disconnect ${with cfg.bluetooth; devices.${defaultHeadset}}";
         }
       ];
     })
