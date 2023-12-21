@@ -669,7 +669,8 @@ in
                 mappings = {
                   "alsa_output.pci-0000_00_1f.3.analog-stereo" = "🔈";
                   "alsa_output.pci-0000_00_1b.0.analog-stereo" = "🎧";
-                  "bluez_sink.6C_CE_44_AE_97_39.a2dp_sink" = "🎧";
+                  # TODO: consider adding some kind of respective module attribute for "default headset", or something alike
+                  "bluez_sink.${macUnderscore config.ext.networking.wireless.bluetooth.devices.MiAir2}.a2dp_sink" = "🎧";
                 };
               }
               {

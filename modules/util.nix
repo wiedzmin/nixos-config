@@ -133,6 +133,7 @@ rec {
       // lib.optionalAttrs persistent { Persistent = "true"; }
       // lib.optionalAttrs (unit != "") { Unit = "${unit}"; };
   };
+  macUnderscore = mac: builtins.replaceStrings [ ":" ] [ "_" ] mac;
   mkIndent = width: with lib; (concatStrings (genList (const " ") width));
   mkNewlineAndIndent = width: with lib; "\n" + (concatStrings (genList (const " ") width));
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
