@@ -45,7 +45,7 @@ in
         description = "Whether to enable Bluetooth support";
       };
       bluetooth.devices = mkOption {
-        type = types.listOf types.attrs;
+        type = types.attrs;
         default = [ ];
         description = "Bluetooth devices metadata";
       };
@@ -119,7 +119,7 @@ in
       home-manager.users."${user}" = { home.packages = with pkgs; [ bluetooth_battery ]; };
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set networking/wireless/headsets ${
-          mkRedisJSON (lib.forEach cfg.bluetooth.devices (d: d.mac))
+          mkRedisJSON (lib.mapAttrsToList (_: mac: mac) cfg.bluetooth.devices)
         }
       '';
     })

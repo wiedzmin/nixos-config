@@ -652,13 +652,15 @@ in
                 driver = "sysfs";
                 device = "BAT0";
               })
-            ] ++ lib.optionals true forEach config.ext.networking.wireless.bluetooth.devices
-              (dev: {
+            ] ++ lib.optionals true mapAttrsToList
+              (d: m: {
                 block = "bluetooth";
-                mac = dev.mac;
-                format = " $icon ${dev.name} ";
+                mac = m;
+                format = " $icon ${d} ";
                 disconnected_format = "";
-              }) ++ [
+              })
+              config.ext.networking.wireless.bluetooth.devices
+            ++ [
               {
                 block = "sound";
                 format = " $output_name{ $volume|} ";
