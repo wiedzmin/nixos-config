@@ -403,10 +403,10 @@ in
       macAddress = "60:67:20:ec:34:14";
       bluetooth = {
         enable = true;
-        devices = [
-          { name = "MiAir2"; mac = "6C:CE:44:AE:97:39"; }
-          { name = "BO9"; mac = "1A:2B:F5:5E:BE:63"; }
-        ];
+        devices = {
+          "MiAir2" = "6C:CE:44:AE:97:39";
+          "BO9" = "1A:2B:F5:5E:BE:63";
+        };
       };
       wm = {
         enable = true;
