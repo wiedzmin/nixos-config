@@ -146,11 +146,23 @@ in
         key = [ "w" ];
         cmd = ''${pkgs.runtimeShell} -l -c "exec ${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu"'';
         mode = "network";
-      }] ++ optionals cfg.bluetooth.enable [{
-        key = [ "b" ];
-        mode = "network";
-        cmd = "${pkgs.blueman}/bin/blueman-manager";
-      }];
+      }] ++ optionals cfg.bluetooth.enable [
+        {
+          key = [ "b" ];
+          mode = "network";
+          cmd = "${pkgs.blueman}/bin/blueman-manager";
+        }
+        {
+          key = [ "h" ];
+          mode = "network";
+          cmd = "${pkgs.bluez}/bin/bluetoothctl connect ${cfg.bluetooth.devices.MiAir2}";
+        }
+        {
+          key = [ "Shift" "h" ];
+          mode = "network";
+          cmd = "${pkgs.bluez}/bin/bluetoothctl disconnect ${cfg.bluetooth.devices.MiAir2}";
+        }
+      ];
     })
     (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ wifi-status ]; };
