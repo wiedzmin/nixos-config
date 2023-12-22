@@ -439,7 +439,3 @@
     (:map custom-org-map
           ("h" . avy-org-goto-heading-timer)
           ("^" . avy-org-refile-as-child))))
-
-(use-package hyperbole
-  :config
-  (hyperbole-mode 1))
