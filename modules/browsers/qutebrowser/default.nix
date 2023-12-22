@@ -250,12 +250,12 @@ in
                     background = 128; # 0 100 200 205 70
                     text = 128; # 200 256
                   };
-                  grayscale.images = 0; # 0.0 0.5
+                  grayscale.images = 0; # 0.0 0.5 # FIXME: removed in 3.1.0
                 } // optionalAttrs
                   (cfg.darkmode.algorithm == "lightness-hsl" || cfg.darkmode.algorithm == "brightness-rgb")
                   {
                     contrast = -2.5e-2; # 0.0 0.5 0.9 1.0
-                    grayscale.all = true; # false
+                    grayscale.all = true; # false # FIXME: removed in 3.1.0
                   };
               };
             };
