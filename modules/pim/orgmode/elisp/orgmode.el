@@ -121,6 +121,11 @@
     (interactive)
     (let ((org-attach-method 'cp))
       (call-interactively #'org-attach-dired-to-subtree)))
+  (defun custom/org-sort-tags ()
+    "On a heading sort the tags."
+    (interactive)
+    (when (org-at-heading-p)
+      (org-set-tags (sort (org-get-tags) #'string<))))
   ;; https://github.com/chuntaro/emacs-keypression
   :mode (("\\.org$" . org-mode)
          ("\\.org_archive$" . org-mode))
@@ -146,6 +151,7 @@
         ("i" . org-table-insert-row)
         ("," . org-table-move-row-up)
         ("." . org-table-move-row-down)
+        ("\\" . custom/org-sort-tags)
         ("a" . org-agenda)
         ("e" . org-capture)
         ("n" . org-narrow-to-subtree)
@@ -308,6 +314,7 @@
   (org-stuck-projects '("+LEVEL=1/-DONE" ("TODO" "GOING" "NEXT" "WAITING" "HOLD" "CANCELLED") nil ""))
   (org-tags-column -80)
   (org-tags-exclude-from-inheritance '("project"))
+  (setq org-tags-sort-function 'org-string-collate-greaterp)
   (org-todo-keyword-faces
    '(("BACKLOG" . (:foreground "gray" :weight bold))
      ("SOON" . (:foreground "magenta" :weight bold))
