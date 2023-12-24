@@ -96,6 +96,9 @@
   (setq-default truncate-lines t))
 
 (use-package cus-edit
+  :bind
+  (:map mode-specific-map
+        ("e" . customize-dirlocals))
   :custom
   (custom-file (locate-user-emacs-file "custom-vars.el"))
   :config
@@ -105,4 +108,3 @@
   :custom
   (select-enable-clipboard t)
   (x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
-
