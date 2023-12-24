@@ -13,7 +13,7 @@ with pkgs.unstable.commonutils;
   keysXmonadRaw = mkKeysXmonadRaw config.wm.xmonad.internalKeys 18;
   keysXmonadSpawn = mkKeysXmonadSpawn config.wmCommon.keybindings.entries 18;
 
-  xmobarMaybeFont = ""; # FIXME: reveal correct value (was lost)
+  xmobarFontDef = config.wm.xmonad.xmobar.font;
   xmonadPrimaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces "primary" 20;
   xmonadSecondaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces "secondary" 22;
   xmonadTertiaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces "tertiary" 20;

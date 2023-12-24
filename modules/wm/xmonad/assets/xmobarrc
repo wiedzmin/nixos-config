@@ -1,4 +1,5 @@
-Config { @xmobarMaybeFont@bgColor = "black"
+Config { font = @xmobarFontDef@
+       , bgColor = "black"
        , fgColor = "grey"
        , position = BottomW L 100
        , lowerOnStart = False

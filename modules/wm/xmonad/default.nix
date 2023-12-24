@@ -26,6 +26,11 @@ in
         default = true;
         description = "Whether to enable XMonad-related bookmarks";
       };
+      xmobar.font = mkOption {
+        type = types.str;
+        default = "";
+        description = "XMobar font definition";
+      };
     };
   };
 
