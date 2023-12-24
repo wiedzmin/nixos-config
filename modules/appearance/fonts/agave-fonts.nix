@@ -40,6 +40,9 @@ in
     wmCommon.fonts.simple = makeFontStrSimple fontBeautified;
     wmCommon.fonts.dmenu = makeFontStrColons baseFont;
     wmCommon.fonts.statusbar = makeFontStrPango (fontBeautified // { size = 7; });
+
+    wm.xmonad.xmobar.font = makeFontStrXft baseFont;
+
     shell.core.variables = [{ TB_SELECTOR_FONT = makeFontStrColons baseFont; global = true; }];
     home-manager.users."${user}" = {
       programs.alacritty.settings.font = {

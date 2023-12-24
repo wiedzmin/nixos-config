@@ -30,6 +30,9 @@ in
     wmCommon.fonts.simple = makeFontStrSimple fontBeautified;
     wmCommon.fonts.dmenu = makeFontStrColons fontDec1;
     wmCommon.fonts.statusbar = makeFontStrPango fontBeautified;
+
+    wm.xmonad.xmobar.font = makeFontStrXft baseFont;
+
     shell.core.variables = [{ TB_SELECTOR_FONT = makeFontStrColons fontDec1; global = true; }];
     home-manager.users."${user}" = {
       programs.alacritty.settings.font = {
