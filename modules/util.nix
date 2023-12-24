@@ -529,6 +529,8 @@ rec {
   makeFontStrSimple = fontdef: "${fontdef.family} ${fontdef.style} ${builtins.toString fontdef.size}";
   makeFontStrColons = fontdef: "${fontdef.family}:${lib.toLower fontdef.style}:size=${builtins.toString fontdef.size}";
   makeFontStrColons2 = fontdef: "${fontdef.family}:weight=${fontdef.style}:size=${builtins.toString fontdef.size}";
+  # TODO: consider playing with `antialias`, `pixelsize`, `autohint`, `hinting` and maybe other XFT specifiers
+  makeFontStrXft = fontdef: "xft:${makeFontStrColons2 fontdef}";
   makeFontStrQB = fontdef: "${if (builtins.hasAttr "style" fontdef && fontdef.style != "")
     then "${lib.toLower fontdef.style} " else ""}${builtins.toString fontdef.size}pt ${fontdef.family}";
 }
