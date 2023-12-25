@@ -187,6 +187,11 @@ in
       tags = [ "forge" ];
       remote.url = "https://github.com/wiedzmin";
     };
+    "cba" = {
+      desc = "Codeberg personal account";
+      tags = [ "forge" ];
+      remote.url = "https://codeberg.org/alex3rd";
+    };
     "gmail" = {
       desc = "GMail account";
       remote.url = "https://mail.google.com/mail/u/0/";
