@@ -8,4 +8,5 @@
 (with-eval-after-load 'lsp-mode
   (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
 
-;TODO: add js/ts/whatever needed setups
+;; TODO: add js/ts/whatever needed setups
+;; TODO: emmet + lsp: https://emacs-lsp.github.io/lsp-mode/page/lsp-emmet/
