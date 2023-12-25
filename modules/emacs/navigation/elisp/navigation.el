@@ -692,6 +692,9 @@
   ("C-x 1" . zygospore-toggle-delete-other-windows))
 
 (use-package window
+  :bind
+  (:map mode-specific-map
+        ("D" . toggle-window-dedicated))
   :custom
   (switch-to-buffer-obey-display-actions t))
 
