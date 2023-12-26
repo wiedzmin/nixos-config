@@ -129,6 +129,16 @@ in
                 trigger = ":greb";
                 replace = "git rebase `git rev-parse --abbrev-ref --symbolic-full-name '@{u}'`";
               }
+              {
+                trigger = ":gcs";
+                replace = "git show {{clipboard}}";
+                vars = [
+                  {
+                    name = "clipboard";
+                    type = "clipboard";
+                  }
+                ];
+              }
             ];
           } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
