@@ -112,6 +112,7 @@ in
           monolith
           ripgrep
           sad
+          ugrep
           xidel
         ];
         xdg.configFile."espanso/match/content_misc.yml".source = yaml.generate "espanso-content_misc.yml"
