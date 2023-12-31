@@ -76,6 +76,7 @@ let
   nurpkgs = pkgs.nur.repos.wiedzmin;
 in
 rec {
+  # {{{ Nix
   addBuildInputs = pkg: ins: pkg.overrideAttrs (attrs: { buildInputs = attrs.buildInputs ++ ins; });
   withPatches = pkg: patches: lib.overrideDerivation pkg (_: { inherit patches; });
   mkShellScriptWithDeps = name: packages: contents:
@@ -124,57 +125,6 @@ rec {
         chmod a+x $out/bin/${pname}
       '';
     };
-  renderTimer = desc: boot: active: cal: persistent: unit: {
-    description = "${desc}";
-    wantedBy = [ "timers.target" ];
-    timerConfig = lib.optionalAttrs (boot != "") { OnBootSec = "${boot}"; }
-      // lib.optionalAttrs (active != "") { OnUnitActiveSec = "${active}"; }
-      // lib.optionalAttrs (cal != "") { OnCalendar = "${cal}"; }
-      // lib.optionalAttrs persistent { Persistent = "true"; }
-      // lib.optionalAttrs (unit != "") { Unit = "${unit}"; };
-  };
-  macUnderscore = mac: builtins.replaceStrings [ ":" ] [ "_" ] mac;
-  mkIndent = width: with lib; (concatStrings (genList (const " ") width));
-  mkNewlineAndIndent = width: with lib; "\n" + (concatStrings (genList (const " ") width));
-  mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
-  homePrefix = user: suffix: "/home/${user}/" + suffix;
-  goBinPrefix = goPath: suffix: "${goPath}/bin/" + suffix;
-  goLocalDebugKeybinding = cfg: meta: {
-    key = meta.key;
-    mode = meta.mode;
-    cmd =
-      if cfg.attributes.debug.useLocalGoBinaries
-      then ''${goBinPrefix cfg.dev.golang.goPath (builtins.head meta.cmd)} ${lib.concatStringsSep " " (lib.tail meta.cmd)}''
-      else ''${nurpkgs.toolbox}/bin/${builtins.head meta.cmd} ${lib.concatStringsSep " " (lib.tail meta.cmd)}'';
-    debug = cfg.attributes.debug.useLocalGoBinaries || (builtins.hasAttr "debug" meta) && meta.debug;
-  };
-  xdgConfig = user: suffix: (homePrefix user ".config") + suffix; # FIXME: deal with slashes seamlessly
-  wsRoot = roots: key: lib.getAttrFromPath [ key ] roots;
-  configPrefix = roots: suffix: "${wsRoot roots "github"}/wiedzmin/nixos-config/" + suffix;
-  secretsPrefix = machine: suffix: roots: configPrefix roots ("machines/" + machine + "/secrets/" + suffix);
-  assetsPrefix = machine: suffix: roots: configPrefix roots ("machines/" + machine + "/assets/" + suffix);
-  maybeAttrIsBool = name: set: (builtins.hasAttr name set) && set."${name}";
-  maybeAttrString = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else ph;
-  maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
-  emacsBoolToString = v: if v then "t" else "nil";
-  mkRedisJSON = s:
-    lib.escape [ "$" "`" ] (builtins.toJSON (builtins.toJSON s));
-  binaryAbsPathFromCmd = cmd: builtins.head (lib.splitString " " cmd);
-  binaryFromCmd = cmd: lib.last (lib.splitString "/" (binaryAbsPathFromCmd cmd));
-  wsRootAtHomedir = user: key: lib.removePrefix (homePrefix user "") key;
-  mkGithubBookmark = user: repo: roots: {
-    local.path = "${wsRoot roots "github"}/${user}/${repo}";
-    remote.url = "https://github.com/${user}/${repo}";
-  };
-  mkGithubBookmarkWithMyrepos = user: repo: roots: {
-    local.path = "${wsRoot roots "github"}/${user}/${repo}";
-    remote.url = "https://github.com/${user}/${repo}";
-    batchvcs = {
-      "${wsRoot roots "github"}/${user}/${repo}" = {
-        checkout = [ "git clone 'https://github.com/${user}/${repo}.git' '${repo}'" ];
-      };
-    };
-  };
   selectorFunction = lib.mkOptionType {
     name = "selectorFunction";
     description = "Function that takes an attribute set and returns a list"
@@ -188,11 +138,90 @@ rec {
         (lib.foldl (collector: subst: collector // ((import subst { inherit config inputs lib pkgs; }) // { src = e; }))
           { }
           substs))));
+  # }}}
+  # {{{ Systemd
+  renderTimer = desc: boot: active: cal: persistent: unit: {
+    description = "${desc}";
+    wantedBy = [ "timers.target" ];
+    timerConfig = lib.optionalAttrs (boot != "") { OnBootSec = "${boot}"; }
+      // lib.optionalAttrs (active != "") { OnUnitActiveSec = "${active}"; }
+      // lib.optionalAttrs (cal != "") { OnCalendar = "${cal}"; }
+      // lib.optionalAttrs persistent { Persistent = "true"; }
+      // lib.optionalAttrs (unit != "") { Unit = "${unit}"; };
+  };
+  # }}}
+  # {{{ Strings.Common
+  macUnderscore = mac: builtins.replaceStrings [ ":" ] [ "_" ] mac;
+  mkIndent = width: with lib; (concatStrings (genList (const " ") width));
+  mkNewlineAndIndent = width: with lib; "\n" + (concatStrings (genList (const " ") width));
+  reAddWildcards = s: builtins.replaceStrings [ " " ] [ ".*" ] s;
+  mkRedisJSON = s:
+    lib.escape [ "$" "`" ] (builtins.toJSON (builtins.toJSON s));
+  # }}}
+  # {{{ Strings.Fonts
+  makeFontStrPango = fontdef: "pango:${fontdef.family} ${fontdef.style} ${builtins.toString fontdef.size}";
+  makeFontStrSimple = fontdef: "${fontdef.family} ${fontdef.style} ${builtins.toString fontdef.size}";
+  makeFontStrColons = fontdef: "${fontdef.family}:${lib.toLower fontdef.style}:size=${builtins.toString fontdef.size}";
+  makeFontStrColons2 = fontdef: "${fontdef.family}:weight=${fontdef.style}:size=${builtins.toString fontdef.size}";
+  # TODO: consider playing with `antialias`, `pixelsize`, `autohint`, `hinting` and maybe other XFT specifiers
+  makeFontStrXft = fontdef: "xft:${makeFontStrColons2 fontdef}";
+  makeFontStrQB = fontdef: "${if (builtins.hasAttr "style" fontdef && fontdef.style != "")
+    then "${lib.toLower fontdef.style} " else ""}${builtins.toString fontdef.size}pt ${fontdef.family}";
+  # }}}
+  # {{{ Strings.Paths
+  homePrefix = user: suffix: "/home/${user}/" + suffix;
+  goBinPrefix = goPath: suffix: "${goPath}/bin/" + suffix;
+  xdgConfig = user: suffix: (homePrefix user ".config") + suffix; # FIXME: deal with slashes seamlessly
+  configPrefix = roots: suffix: "${wsRoot roots "github"}/wiedzmin/nixos-config/" + suffix;
+  secretsPrefix = machine: suffix: roots: configPrefix roots ("machines/" + machine + "/secrets/" + suffix);
+  assetsPrefix = machine: suffix: roots: configPrefix roots ("machines/" + machine + "/assets/" + suffix);
+  binaryAbsPathFromCmd = cmd: builtins.head (lib.splitString " " cmd);
+  binaryFromCmd = cmd: lib.last (lib.splitString "/" (binaryAbsPathFromCmd cmd));
+  wsRootAtHomedir = user: key: lib.removePrefix (homePrefix user "") key;
+  # }}}
+  # {{{ Misc
+  mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
+  wsRoot = roots: key: lib.getAttrFromPath [ key ] roots;
+  goLocalDebugKeybinding = cfg: meta: {
+    key = meta.key;
+    mode = meta.mode;
+    cmd =
+      if cfg.attributes.debug.useLocalGoBinaries
+      then ''${goBinPrefix cfg.dev.golang.goPath (builtins.head meta.cmd)} ${lib.concatStringsSep " " (lib.tail meta.cmd)}''
+      else ''${nurpkgs.toolbox}/bin/${builtins.head meta.cmd} ${lib.concatStringsSep " " (lib.tail meta.cmd)}'';
+    debug = cfg.attributes.debug.useLocalGoBinaries || (builtins.hasAttr "debug" meta) && meta.debug;
+  };
+  # }}}
+  # {{{ Data.Attributes
+  maybeAttrIsBool = name: set: (builtins.hasAttr name set) && set."${name}";
+  maybeAttrString = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else ph;
+  maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
+  emacsBoolToString = v: if v then "t" else "nil";
   emptyValueByPath = meta: path: (lib.attrByPath path "" meta) == "";
   nonEmptyValueByPath = meta: path: !(emptyValueByPath meta path);
   trueValueByPath = meta: path: (lib.attrByPath path true meta) == true;
   trueValueByPathStrict = meta: path: (lib.attrByPath path false meta) == true;
   falseValueByPath = meta: path: !(trueValueByPath meta path);
+  # }}}
+  # {{{ Data.Lists
+  concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
+  concatStringListsRaw = sep: ll: lib.concatStringsSep sep (lib.flatten ll);
+  takeLast = n: l: with lib; reverseList (take n (reverseList l));
+  # }}}
+  # {{{ Bookmarks
+  mkGithubBookmark = user: repo: roots: {
+    local.path = "${wsRoot roots "github"}/${user}/${repo}";
+    remote.url = "https://github.com/${user}/${repo}";
+  };
+  mkGithubBookmarkWithMyrepos = user: repo: roots: {
+    local.path = "${wsRoot roots "github"}/${user}/${repo}";
+    remote.url = "https://github.com/${user}/${repo}";
+    batchvcs = {
+      "${wsRoot roots "github"}/${user}/${repo}" = {
+        checkout = [ "git clone 'https://github.com/${user}/${repo}.git' '${repo}'" ];
+      };
+    };
+  };
   checkedBookmarks = bookmarks: checkPath:
     (lib.filterAttrs
       (_: meta:
@@ -246,9 +275,8 @@ rec {
       browserDefault.cmd
     else
       browserFallback.cmd;
-  concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
-  concatStringListsRaw = sep: ll: lib.concatStringsSep sep (lib.flatten ll);
-  takeLast = n: l: with lib; reverseList (take n (reverseList l));
+  # }}}
+  # {{{ Emacs
   # TODO: create function for ensuring non-prefix keys absence
   mkEmacsCustomKeymap = name: binding: ''
     (keymap-global-set "${binding}" (define-keymap :prefix '${name}))
@@ -259,6 +287,8 @@ rec {
   emacsCmd = uid: emacspkg: elisp:
     let emacsServerSocket = "/run/user/${uid}/emacs/server";
     in "[ -f ${emacsServerSocket} ] && ${emacspkg}/bin/emacsclient -s ${emacsServerSocket} -e '${elisp}'";
+  # }}}
+  # {{{ Programs.ARBTT
   mkArbttProgramTitleRule = windowClasses: titles: tag:
     lib.concatStringsSep "\n" (lib.forEach titles (t:
       "current window ($program == [${
@@ -285,31 +315,9 @@ rec {
     lib.concatStringsSep "\n"
       (lib.mapAttrsToList (re: tag: "current window ($title =~ m!^emacs - [^ ]+\\.${re} .*$!) ==> tag ${tag},")
         title2tag);
-  reAddWildcards = s: builtins.replaceStrings [ " " ] [ ".*" ] s;
-  dockablePrimaryWS = headscount: if headscount > 2 then "primary" else "secondary";
-  dockableSecondaryWS = headscount: if headscount > 2 then "secondary" else "primary";
-  ####################################################################################################################
-  #                                                   WM utils                                                       #
-  ####################################################################################################################
-  windowRulesFromBookmarks = bookmarks:
-    lib.foldl (a: b: a ++ b) [ ]
-      (lib.mapAttrsToList (_: meta: meta.windowRules)
-        (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "windowRules" ] meta) bookmarks));
-  mkWSMappingBrowsersRegexp = browser:
-    concatStringListsRaw "|" (with browser; [ default.windowClass fallback.windowClass ]);
-  mkWSMappingEbookReadersRegexp = ebookreader:
-    concatStringListsRaw "|" (with ebookreader; [ default.windowClass fallback.windowClass ]);
-  mkWSMappingEbookReadersExtsRegexp = primexts: "(" + (concatStringListsRaw "|" primexts) + ")";
-  prepareWindowRule = rule:
-    rule // (lib.mapAttrs
-      (k: v: builtins.replaceStrings [ "@" ]
-        [ (if k == "title" then reAddWildcards rule."${k}" else rule."${k}") ]
-        v)
-      (lib.filterAttrs (k: _: builtins.hasAttr k rule) windowRulePlaceholders));
-  getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
-  enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: _: i) wsdata) wsdata;
-  windowRuleClauses = rule:
-    lib.filterAttrs (k: _: !builtins.elem k [ "activate" "debug" "desktop" "float" "fullscreen" "key" "scratchpad" ]) rule;
+  # }}}
+  # TODO: review floating property for window rules, regardless of WM being used
+  # {{{ WM.Common
   mkWMDebugScript = nixpkgs: name: wmpkg: internalHead: wmcmd:
     nixpkgs.writeShellApplication {
       inherit name;
@@ -332,6 +340,45 @@ rec {
         DISPLAY=:1.0 ${wmcmd}
       '';
     };
+  mkCmdDebugAbsFilename = root: cmd:
+    "${root}/${
+      lib.last (lib.splitString "/"
+        (builtins.head (lib.splitString " " cmd)))}-$(date +%Y-%m-%d-%H-%M-%S | tr -d '[:cntrl:]').log";
+  mkCmdExec = meta: logsroot:
+    let
+      debugEnabled = maybeAttrIsBool "debug" meta && !maybeAttrIsBool "raw" meta;
+    in
+    [
+      ((lib.optionalString debugEnabled "DEBUG_MODE=1 ") + meta.cmd + lib.optionalString debugEnabled
+        " > ${mkCmdDebugAbsFilename logsroot meta.cmd} 2>&1")
+    ];
+  # }}}
+  # {{{ WM.Common.Workspaces
+  dockablePrimaryWS = headscount: if headscount > 2 then "primary" else "secondary";
+  dockableSecondaryWS = headscount: if headscount > 2 then "secondary" else "primary";
+  enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: _: i) wsdata) wsdata;
+  getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
+  mkWSMappingBrowsersRegexp = browser:
+    concatStringListsRaw "|" (with browser; [ default.windowClass fallback.windowClass ]);
+  mkWSMappingEbookReadersRegexp = ebookreader:
+    concatStringListsRaw "|" (with ebookreader; [ default.windowClass fallback.windowClass ]);
+  mkWSMappingEbookReadersExtsRegexp = primexts: "(" + (concatStringListsRaw "|" primexts) + ")";
+  # }}}
+  # {{{ WM.Common.WindowRules
+  windowRulesFromBookmarks = bookmarks:
+    lib.foldl (a: b: a ++ b) [ ]
+      (lib.mapAttrsToList (_: meta: meta.windowRules)
+        (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "windowRules" ] meta) bookmarks));
+  prepareWindowRule = rule:
+    rule // (lib.mapAttrs
+      (k: v: builtins.replaceStrings [ "@" ]
+        [ (if k == "title" then reAddWildcards rule."${k}" else rule."${k}") ]
+        v)
+      (lib.filterAttrs (k: _: builtins.hasAttr k rule) windowRulePlaceholders));
+  windowRuleClauses = rule:
+    lib.filterAttrs (k: _: !builtins.elem k [ "activate" "debug" "desktop" "float" "fullscreen" "key" "scratchpad" ]) rule;
+  # }}}
+  # {{{ WM.i3
   mkWindowRuleI3 = rule:
     "[${lib.concatStringsSep " " (lib.mapAttrsToList (k: v: ''${k}="${v}"'')
       (windowRuleClauses (prepareWindowRule rule)))}]";
@@ -358,18 +405,6 @@ rec {
       "workspace --no-auto-back-and-forth ${
         builtins.toString ws.fst
       }: ${ws.snd.name}; layout ${layout}; "))}";
-  mkCmdDebugAbsFilename = root: cmd:
-    "${root}/${
-      lib.last (lib.splitString "/"
-        (builtins.head (lib.splitString " " cmd)))}-$(date +%Y-%m-%d-%H-%M-%S | tr -d '[:cntrl:]').log";
-  mkCmdExec = meta: logsroot:
-    let
-      debugEnabled = maybeAttrIsBool "debug" meta && !maybeAttrIsBool "raw" meta;
-    in
-    [
-      ((lib.optionalString debugEnabled "DEBUG_MODE=1 ") + meta.cmd + lib.optionalString debugEnabled
-        " > ${mkCmdDebugAbsFilename logsroot meta.cmd} 2>&1")
-    ];
   mkKeybindingI3 = meta: desktops: logsroot:
     builtins.concatStringsSep " " ([ "bindsym" (mkKeysymI3 meta.key) ]
       ++ lib.optionals (maybeAttrIsBool "leaveFullscreen" meta) [ "fullscreen disable;" ]
@@ -467,6 +502,8 @@ rec {
         else
           ""
       }"));
+  # }}}
+  # {{{ WM.Awesome
   mkWindowRuleAwesome = rule: width: ''
     ${mkIndent width}{
        ${mkIndent width}rule = { ${lib.concatStringsSep ", " (lib.mapAttrsToList (k: v: ''${k}="${v}"'')
@@ -500,7 +537,8 @@ rec {
               mkCmdDebugAbsFilename logsroot meta.cmd} 2>&1"}''}
       end
     '';
-  # TODO: review floating property for window rules, regardless of WM being used
+  # }}}
+  # {{{ WM.XMonad
   toHaskellBool = v: builtins.replaceStrings [ "true" "false" ] [ "True" "False" ] (lib.trivial.boolToString v);
   mkKeysymXmonad = keys:
     lib.concatStringsSep keySepXmonad
@@ -523,15 +561,5 @@ rec {
         (builtins.filter (ws: builtins.hasAttr "type" ws && ws.type == type) wss)
         (meta: ''("${meta.name}", Just "${mkKeysymXmonad meta.key}", ${toHaskellBool meta.transient})''))
     }${mkIndent indent}";
-  ####################################################################################################################
-  #                                                   Fonts utils                                                    #
-  ####################################################################################################################
-  makeFontStrPango = fontdef: "pango:${fontdef.family} ${fontdef.style} ${builtins.toString fontdef.size}";
-  makeFontStrSimple = fontdef: "${fontdef.family} ${fontdef.style} ${builtins.toString fontdef.size}";
-  makeFontStrColons = fontdef: "${fontdef.family}:${lib.toLower fontdef.style}:size=${builtins.toString fontdef.size}";
-  makeFontStrColons2 = fontdef: "${fontdef.family}:weight=${fontdef.style}:size=${builtins.toString fontdef.size}";
-  # TODO: consider playing with `antialias`, `pixelsize`, `autohint`, `hinting` and maybe other XFT specifiers
-  makeFontStrXft = fontdef: "xft:${makeFontStrColons2 fontdef}";
-  makeFontStrQB = fontdef: "${if (builtins.hasAttr "style" fontdef && fontdef.style != "")
-    then "${lib.toLower fontdef.style} " else ""}${builtins.toString fontdef.size}pt ${fontdef.family}";
+  # }}}
 }
