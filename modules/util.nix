@@ -353,6 +353,15 @@ rec {
         " > ${mkCmdDebugAbsFilename logsroot meta.cmd} 2>&1")
     ];
   # }}}
+  # {{{ WM.Common.Keybindings
+  wmKeys = keys: wm:
+    builtins.filter (kb: builtins.hasAttr "raw" kb && kb.raw && builtins.hasAttr "wm" kb && kb.wm == wm) keys ++
+    (builtins.filter (kb: !builtins.hasAttr "raw" kb || builtins.hasAttr "raw" kb && !kb.raw) keys);
+  prefixedModesMeta = keys: wm:
+    lib.filterAttrs (k: _: k != "root" && k != scratchpadModeToken) (lib.groupBy (x: x.mode) (wmKeys keys wm));
+  rootModeBindings = keys: wm:
+    (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) (wmKeys keys wm))).root;
+  # }}}
   # {{{ WM.Common.Workspaces
   dockablePrimaryWS = headscount: if headscount > 2 then "primary" else "secondary";
   dockableSecondaryWS = headscount: if headscount > 2 then "secondary" else "primary";
@@ -416,12 +425,6 @@ rec {
         ++ lib.optionals (!maybeAttrIsBool "sticky" meta && meta.mode != "root") [ ''mode "default"'' ]))
     ]);
   bindkeysI3 = keys: modeBindings: exitBindings: desktops: logsroot:
-    let
-      i3Keys = builtins.filter (kb: builtins.hasAttr "raw" kb && kb.raw && builtins.hasAttr "wm" kb && kb.wm == "i3") keys ++
-        (builtins.filter (kb: !builtins.hasAttr "raw" kb || builtins.hasAttr "raw" kb && !kb.raw) keys);
-      prefixedModesMeta = lib.filterAttrs (k: _: k != "root" && k != scratchpadModeToken) (lib.groupBy (x: x.mode) i3Keys);
-      rootModeBindings = (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) i3Keys)).root;
-    in
     ''
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (mode: bindings: ''
         mode "${mode}" {
@@ -434,8 +437,8 @@ rec {
               }) exitBindings)) (x: mkKeybindingI3 x desktops logsroot))
           }
         }
-      '') prefixedModesMeta)}
-      ${lib.concatStringsSep "\n" (lib.forEach rootModeBindings (x: mkKeybindingI3 x desktops logsroot))}
+      '') (prefixedModesMeta keys "i3"))}
+      ${lib.concatStringsSep "\n" (lib.forEach (rootModeBindings keys "i3") (x: mkKeybindingI3 x desktops logsroot))}
 
       ${lib.concatStringsSep "\n"
       (lib.mapAttrsToList (mode: key: ''bindsym ${mkKeysymI3 key} mode "${mode}"'') modeBindings)}
