@@ -114,7 +114,7 @@ scratchpads = [ NS "htop" (scratchpadTerminal ++ " -t htop -e @htopBinary@") (ti
               , NS "iotop" (scratchpadTerminal ++ " -t iotop -e sudo @iotopBinary@") (title =? "iotop") nonFloating
               , NS "gotop" (scratchpadTerminal ++ " -t gotop -e @gotopBinary@") (title =? "gotop") nonFloating
               , NS "bc" (scratchpadTerminal ++ " -t calc -e @bcBinary@") (title =? "calc") nonFloating
-              -- , NS "redis" (scratchpadTerminal ++ " -t redis -e redis-tui") (title =? "redis") nonFloating -- FIXME: no package available
+              , NS "redis" (scratchpadTerminal ++ " -t redis -e @redisTuiBinary@") (title =? "redis") nonFloating
               ]
 
 customKeys conf = [ @xmonadKeys@
