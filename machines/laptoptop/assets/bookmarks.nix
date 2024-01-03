@@ -488,8 +488,11 @@ in
     "projects/reference/xgbutil" = mkGithubBookmark "BurntSushi" "xgbutil" roots;
     "projects/reference/arbtt" = mkGithubBookmark "nomeata" "arbtt" roots;
     "projects/reference/code-maat" = mkGithubBookmark "adamtornhill" "code-maat" roots // {
-      # TODO: https://grahamenos.com/ft-clojure-nix.html - java/clojure packaging
       transient = true;
+    };
+    "ft-clojure-nix" = {
+      tags = [ "java" "clojure" "packaging" "nix" ];
+      remote.url = "https://grahamenos.com/ft-clojure-nix.html";
     };
     "rofi" = mkGithubBookmark "davatorium" "rofi" roots // { transient = true; };
     "cppreference" = {
