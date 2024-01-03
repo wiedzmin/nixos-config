@@ -546,6 +546,7 @@ rec {
   mkKeysymXmonad = keys:
     lib.concatStringsSep keySepXmonad
       (lib.forEach keys (k: if builtins.hasAttr k keysymsXmonad then builtins.getAttr k keysymsXmonad else k));
+  bindKeysXmonad = _: _: "-- not fixed/reimplemented yet";
   mkKeysXmonadSpawn = keys: indent: # FIXME: update logic (presumably broken)
     "${
       lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList (key: meta:

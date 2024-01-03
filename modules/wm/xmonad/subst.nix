@@ -10,8 +10,7 @@ with pkgs.unstable.commonutils;
   bcBinary = "${pkgs.bc}/bin/bc";
   xmobarBinary = "${pkgs.xmobar}/bin/xmobar";
 
-  keysXmonadRaw = mkKeysXmonadRaw config.wm.xmonad.internalKeys 18;
-  keysXmonadSpawn = mkKeysXmonadSpawn config.wmCommon.keybindings.entries 18;
+  xmonadKeys = bindKeysXmonad config.wmCommon.keybindings.entries 18;
 
   xmobarFontDef = config.wm.xmonad.xmobar.font;
   xmonadPrimaryWorkspaces = mkWorkspacesXmonad config.wmCommon.workspaces "primary" 20;

@@ -117,8 +117,7 @@ scratchpads = [ NS "htop" (scratchpadTerminal ++ " -t htop -e @htopBinary@") (ti
               -- , NS "redis" (scratchpadTerminal ++ " -t redis -e redis-tui") (title =? "redis") nonFloating -- FIXME: no package available
               ]
 
-customKeys conf = [ @keysXmonadRaw@
-                  , @keysXmonadSpawn@
+customKeys conf = [ @xmonadKeys@
                   ]
 
 layoutKeys = [ "M-; " ++ keys ~> sendMessage $ JumpToLayout $ layout | (keys, layout) <- layoutMappings ]
