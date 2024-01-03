@@ -22,7 +22,7 @@
   (treesit-major-mode-setup))
 
 (use-package treesit-auto
-  :disabled ;; FIXME: lisp error "void-variable quote", maybe byte-code issue
+  :disabled ;; NOTE: lisp error "void-variable quote", maybe byte-code issue
   :custom
   (treesit-auto-install . 'prompt)
   (treesit-auto-fallback-alist
