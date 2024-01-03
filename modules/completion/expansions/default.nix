@@ -19,7 +19,6 @@ in
         description = "Various expandable text snippets, mostly for development automation.";
         default = [ ];
       };
-      # TODO: consider parameterizing expansions backend some time later
       espanso.toggleKey = mkOption {
         type = types.enum [
           "ALT"
