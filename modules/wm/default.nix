@@ -192,7 +192,11 @@ in
       '';
     })
     (mkIf (cfg.enable && cfg.focus.show) {
-      # TODO: review https://github.com/fennerm/flashfocus/wiki
+      assertions = [{
+        assertion = config.workstation.video.transparency.enable;
+        message = "wm: common: `flashfocus` requires window compositor on X";
+      }];
+
       wmCommon.autostart.entries = [{ cmd = "${pkgs.flashfocus}/bin/flashfocus"; }];
       wmCommon.keybindings.entries = [{
         key = [ "f" ];
