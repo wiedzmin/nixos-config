@@ -101,7 +101,7 @@ in
           mode = "xserver";
         }
         {
-          key = [ "f" ];
+          key = [ "Shift" "f" ];
           cmd = "${pkgs.autorandr}/bin/autorandr --force $(${pkgs.autorandr}/bin/autorandr --detected)";
           mode = "xserver";
         }
