@@ -1,6 +1,9 @@
 { config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
+let
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+in
 {
   dwmLayoutFont = lib.optionalString (config.wmCommon.fonts.default != "") ''fontName = "${config.wmCommon.fonts.default}"'';
 
@@ -9,6 +12,7 @@ with pkgs.unstable.commonutils;
   gotopBinary = "${pkgs.gotop}/bin/gotop";
   bcBinary = "${pkgs.bc}/bin/bc";
   xmobarBinary = "${pkgs.xmobar}/bin/xmobar";
+  redisTuiBinary = "${nurpkgs.redis-tui}/bin/redis-tui";
 
   xmonadKeys = bindKeysXmonad config.wmCommon.keybindings.entries 18;
 
