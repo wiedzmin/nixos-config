@@ -371,7 +371,6 @@ in
                 "<Ctrl-Return>" = "selection-follow";
                 "<Ctrl-Shift-Return>" = "selection-follow -t";
                 "<Ctrl-F5>" = "reload -f";
-                "Ctrl-r" = "reload";
                 "u" = "undo";
                 "U" = "undo --window";
                 "<F12>" = "inspector";
