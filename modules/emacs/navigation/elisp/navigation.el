@@ -3,7 +3,6 @@
 ;; - ivy-omni-org
 ;; - counsel-org-clock
 ;; TODO: setup xref package, then search for some modern completion UI (ivy/vertico/etc.) xref impl
-;; TODO: avy-isearch
 
 (use-package navigation-misc
   @recenterWindowDisabled@
@@ -118,6 +117,8 @@
         ("M-d" . avy-goto-word-0)
         ("M-s" . avy-goto-char-timer)
         ("," . pop-global-mark))
+  (:map isearch-mode-map
+        ("M-s" . avy-isearch))
   :custom
   (avy-timeout-seconds 0.3)
   (avy-keys '(?q ?w ?e ?a ?s ?d ?z ?x ?c))
@@ -134,6 +135,7 @@
   (avy-lead-face-2 ((nil (:foreground "white" :background "red" :weight bold))))
   :config
   ;NOTE: removed 'avy-dispatch-alist vs 'avy-keys conflicts
+  (use-package isearch)
   (setf avy-dispatch-alist (assq-delete-all ?z avy-dispatch-alist)
         avy-dispatch-alist (assq-delete-all ?x avy-dispatch-alist)
         avy-dispatch-alist (assq-delete-all ?c avy-dispatch-alist))
