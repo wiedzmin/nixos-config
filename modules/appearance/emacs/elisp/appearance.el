@@ -90,3 +90,5 @@
   (window-divider-default-places t)
   :config
   (window-divider-mode @wdMinus@1))
+
+(use-package all-the-icons)

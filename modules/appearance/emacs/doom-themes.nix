@@ -122,11 +122,8 @@ in
 
   config = mkMerge [
     (mkIf (cfg.enable && config.wm.i3.enable) {
-      ide.emacs.core.extraPackages = epkgs:
-        [ epkgs.doom-themes ] ++ lib.optionals (cfg.themes.neotree.enable) [ epkgs.all-the-icons ];
-      ide.emacs.core.config = lib.optionalString (cfg.themes.neotree.enable) ''
-        (use-package all-the-icons)
-      '' + ''
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.doom-themes ];
+      ide.emacs.core.config = ''
         (use-package doom-themes
           :custom
           (doom-themes-enable-bold ${if cfg.faces.bold.enable then "t" else "nil"})

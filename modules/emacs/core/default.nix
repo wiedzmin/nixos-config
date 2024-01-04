@@ -227,7 +227,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      fonts.packages = with pkgs; [ emacs-all-the-icons-fonts ];
       dev.git.core.gitignore = ''
         *.elc
       '';
