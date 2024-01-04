@@ -18,6 +18,7 @@ let
   sizeAlacritty = 9.0;
   sizeKitty = 8.0;
   sizeXLFDLarge = 16;
+  sizeFamilySizeLarge = 55;
 in
 {
   options.appearance.fonts.hack = { enable = mkEnableOption "hack"; };
@@ -32,6 +33,7 @@ in
     wmCommon.fonts.dmenu = makeFontStrColons fontDec1;
     wmCommon.fonts.statusbar = makeFontStrPango fontBeautified;
     wmCommon.fonts.xlfd.large = makeXLFDStrIso10646 (fontBeautified // { size = sizeXLFDLarge; });
+    wmCommon.fonts.familySize.large = makeFamilySizeStr (fontBeautified // { size = sizeFamilySizeLarge; });
 
     wm.xmonad.xmobar.font = makeFontStrXft baseFont;
 
