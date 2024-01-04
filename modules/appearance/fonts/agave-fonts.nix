@@ -20,6 +20,7 @@ let
   sizeAlacritty = 9.0;
   sizeKitty = 8.0;
   sizeXLFDLarge = 16;
+  sizeFamilySizeLarge = 55;
 in
 {
   options = {
@@ -42,6 +43,7 @@ in
     wmCommon.fonts.dmenu = makeFontStrColons baseFont;
     wmCommon.fonts.statusbar = makeFontStrPango (fontBeautified // { size = 7; });
     wmCommon.fonts.xlfd.large = makeXLFDStrIso10646 (fontBeautified // { size = sizeXLFDLarge; });
+    wmCommon.fonts.familySize.large = makeFamilySizeStr (fontBeautified // { size = sizeFamilySizeLarge; });
 
     wm.xmonad.xmobar.font = makeFontStrXft baseFont;
 
