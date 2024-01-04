@@ -302,7 +302,7 @@ in
     (mkIf cfg.docflow.enable {
       systemd.user.services = builtins.listToAttrs (forEach (localFiles "docs" config.navigation.bookmarks.entries) (root:
         let
-          token = concatStringsSep "-" (takeLast 2 (splitString "/" root)); # TODO: review token construction algorithm
+          token = concatStringsSep "-" (takeLast 2 (splitString "/" root));
         in
         {
           name = "update-docs-${token}";
