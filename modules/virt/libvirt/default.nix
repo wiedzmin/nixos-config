@@ -72,10 +72,15 @@ in
           {
             matches = [
               {
-                # TODO: parameterize filename
-                # TODO: ensure tools availability
                 trigger = ":vdq";
-                replace = "qemu-img convert -f vdi -O qcow2 vm-disk-name.vdi vm-disk-name.qcow2";
+                replace = "qemu-img convert -f vdi -O qcow2 {{image_basename.value}}.vdi {{image_basename.value}}.qcow2";
+                vars = [
+                  {
+                    name = "image_basename";
+                    type = "form";
+                    params = { layout = "image base name: {{value}}"; };
+                  }
+                ];
               }
             ];
           } // optionalAttrs (config.shell.tmux.enable) {
