@@ -19,6 +19,7 @@ let
   fontXresources = baseFont // { size = 12; };
   sizeAlacritty = 9.0;
   sizeKitty = 8.0;
+  sizeXLFDLarge = 16;
 in
 {
   options = {
@@ -40,6 +41,7 @@ in
     wmCommon.fonts.simple = makeFontStrSimple fontBeautified;
     wmCommon.fonts.dmenu = makeFontStrColons baseFont;
     wmCommon.fonts.statusbar = makeFontStrPango (fontBeautified // { size = 7; });
+    wmCommon.fonts.xlfd.large = makeXLFDStrIso10646 (fontBeautified // { size = sizeXLFDLarge; });
 
     wm.xmonad.xmobar.font = makeFontStrXft baseFont;
 

@@ -86,6 +86,11 @@ in
         default = "";
         description = "Current WM `internal` statusbar font' definition.";
       };
+      fonts.xlfd.large = mkOption {
+        type = types.str;
+        default = "";
+        description = "System-wide XLFD font representation, large version for OSD use";
+      };
       kbdd.enable = mkOption {
         type = types.bool;
         default = true;

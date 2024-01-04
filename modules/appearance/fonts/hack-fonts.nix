@@ -17,6 +17,7 @@ let
   fontXresources = baseFont // { size = 12; };
   sizeAlacritty = 9.0;
   sizeKitty = 8.0;
+  sizeXLFDLarge = 16;
 in
 {
   options.appearance.fonts.hack = { enable = mkEnableOption "hack"; };
@@ -30,6 +31,7 @@ in
     wmCommon.fonts.simple = makeFontStrSimple fontBeautified;
     wmCommon.fonts.dmenu = makeFontStrColons fontDec1;
     wmCommon.fonts.statusbar = makeFontStrPango fontBeautified;
+    wmCommon.fonts.xlfd.large = makeXLFDStrIso10646 (fontBeautified // { size = sizeXLFDLarge; });
 
     wm.xmonad.xmobar.font = makeFontStrXft baseFont;
 
