@@ -224,27 +224,12 @@ in
               };
               webpage = {
                 preferred_color_scheme = "dark";
-                # TODO: play with toggling darkmode, example just below:
-                # if c.colors.webpage.darkmode.enabled:
-                #     config.bind('\\d', 'set colors.webpage.darkmode.enabled False ;; restart')
-                # else:
-                #     config.bind('\\d', 'set colors.webpage.darkmode.enabled True ;; restart')
-                # C-d: set colors.webpage.darkmode.enabled false
-                # ===============================================================================
-                # TODO: play with commented out values below
                 darkmode = {
                   inherit (cfg.darkmode) algorithm;
                   enabled = cfg.darkmode.enable;
-                  policy.images = "smart"; # "never"
-                  policy.page = "smart"; # "always"
-                  threshold = {
-                    # With selective inversion of non-image elements:
-                    # Set `colors.webpage.darkmode.threshold.text` to 150 and
-                    #     `colors.webpage.darkmode.threshold.background` to 205.
-                    # Set `background` to 256 to never invert the color or to 0 to always invert it.
-                    background = 128; # 0 100 200 205 70
-                    text = 128; # 200 256
-                  };
+                  policy.images = "smart";
+                  policy.page = "smart";
+                  threshold.background = 128;
                   grayscale.images = 0; # 0.0 0.5 # FIXME: removed in 3.1.0
                 } // optionalAttrs
                   (cfg.darkmode.algorithm == "lightness-hsl" || cfg.darkmode.algorithm == "brightness-rgb")
