@@ -40,9 +40,12 @@ in
         message = "appearance/emacs: ide/emacs/navigation must be enabled.";
       }];
 
+      fonts.packages = with pkgs; [ emacs-all-the-icons-fonts ];
+
       ide.emacs.core.extraPackages = epkgs: [
-        epkgs.diredfl
+        epkgs.all-the-icons
         epkgs.default-text-scale
+        epkgs.diredfl
         epkgs.rainbow-mode
         epkgs.transwin
         epkgs.unicode-fonts

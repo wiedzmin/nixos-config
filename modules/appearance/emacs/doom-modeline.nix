@@ -72,8 +72,6 @@ in
     (mkIf (cfg.enable && config.wm.i3.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.doom-modeline ];
       ide.emacs.core.config = ''
-        (use-package all-the-icons) ; TODO: consider lifting up to Nix level and make SPOT
-
         ;; TODO: implement Nix harness and respect relative packages setup (project.el/projectile/ffip)
         ;;       for 'doom-modeline-project-detection'. Also make choiced parameter for those packages.
 
