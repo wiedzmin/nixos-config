@@ -284,7 +284,6 @@ rec {
   mkEmacsCustomKeymap = name: binding: ''
     (keymap-global-set "${binding}" (define-keymap :prefix '${name}))
   '';
-  # TODO: consider adding keymap prompts
   genEmacsCustomKeymaps = meta:
     lib.concatStringsSep "\n" (lib.mapAttrsToList (name: binding: mkEmacsCustomKeymap name binding) meta);
   emacsCmd = uid: emacspkg: elisp:
