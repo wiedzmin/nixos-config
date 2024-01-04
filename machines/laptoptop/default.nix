@@ -194,6 +194,7 @@ in
       };
     };
   };
+  attributes.browser.downloadPath = homePrefix user "Downloads";
 
   content = {
     core.enable = true;

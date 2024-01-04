@@ -48,14 +48,6 @@ in
           Whether to enable Nyxt'.
         '';
       };
-      downloadPath = mkOption {
-        # TODO: parameterize in config
-        type = types.str;
-        default = homePrefix user "Downloads";
-        description = ''
-          Downloads path'.
-        '';
-      };
       isDefault = mkOption {
         type = types.bool;
         default = false;

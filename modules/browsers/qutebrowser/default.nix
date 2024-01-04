@@ -31,11 +31,6 @@ in
         default = false;
         description = "Whether to enable qutebrowser.";
       };
-      downloadPath = mkOption {
-        type = types.str;
-        default = homePrefix user "Downloads";
-        description = "Downloads path.";
-      };
       isDefault = mkOption {
         type = types.bool;
         default = false;
@@ -297,7 +292,7 @@ in
             messages.timeout = 1000;
             downloads = {
               location = {
-                directory = config.browsers.qutebrowser.downloadPath;
+                directory = config.attributes.browser.downloadPath;
                 prompt = true;
                 remember = true;
                 suggestion = "both";

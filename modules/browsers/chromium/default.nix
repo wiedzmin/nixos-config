@@ -26,13 +26,6 @@ in
           Whether to enable Chromium'.
         '';
       };
-      downloadPath = mkOption {
-        type = types.str;
-        default = homePrefix user "Downloads";
-        description = ''
-          Downloads path'.
-        '';
-      };
       isDefault = mkOption {
         type = types.bool;
         default = false;
