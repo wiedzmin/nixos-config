@@ -144,7 +144,7 @@ in
           rollback
           statix
         ];
-        home.sessionPath = [ (homePrefix user ".local/share/cargo/bin") ]; # FIXME: use XDG_DATA_HOME
+        home.sessionPath = [ ''''${XDG_DATA_HOME}/cargo/bin'' ];
       };
       shell.core.variables = [{
         CARGO_HOME = ''''${XDG_DATA_HOME}/cargo'';
