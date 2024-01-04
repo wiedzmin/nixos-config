@@ -1,8 +1,6 @@
 { config, lib, pkgs, ... }:
 with lib;
 
-# TODO: review https://devfonts.gafi.dev/ and https://coding-fonts.css-tricks.com/ lists
-
 let
   cfg = config.appearance.fonts;
   user = config.attributes.mainUser.name;
@@ -70,6 +68,18 @@ in
       };
       i18n = { defaultLocale = cfg.locale; };
       home-manager.users."${user}" = { home.packages = with pkgs; [ cicero-tui fontfor ]; };
+    })
+    (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "devfonts" = {
+          desc = "JS fonts theming and comparison";
+          remote.url = "https://devfonts.gafi.dev/";
+        };
+        "coding-fonts-css-tricks" = {
+          desc = "CSS fonts tricks";
+          remote.url = "https://coding-fonts.css-tricks.com/";
+        };
+      };
     })
   ];
 }
