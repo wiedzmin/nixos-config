@@ -169,6 +169,7 @@ rec {
     then "${lib.toLower fontdef.style} " else ""}${builtins.toString fontdef.size}pt ${fontdef.family}";
   makeXLFDStrIso10646 = fontdef: "-misc-${lib.toLower fontdef.family}-${lib.toLower fontdef.style}-r-normal--${
     builtins.toString fontdef.size}-0-0-0-m-0-iso10646-1";
+  makeFamilySizeStr = fontdef: "${fontdef.family}:${builtins.toString fontdef.size}";
   # }}}
   # {{{ Strings.Paths
   homePrefix = user: suffix: "/home/${user}/" + suffix;
