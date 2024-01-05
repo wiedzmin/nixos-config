@@ -2,8 +2,6 @@
 with pkgs.unstable.commonutils;
 with lib;
 
-# TODO: review *all* settings
-
 let
   cfg = config.browsers.qutebrowser;
   user = config.attributes.mainUser.name;
@@ -186,34 +184,6 @@ in
               interval = 15000;
               session = true;
             };
-            editor.command = [
-              "${config.ide.emacs.core.package}/bin/emacsclient"
-              "-c"
-              "-s /run/user/${builtins.toString config.users.extraUsers."${user}".uid}/emacs/server"
-              "+{line}:{column}"
-              "{}"
-            ];
-            zoom = {
-              levels = [
-                "25%"
-                "33%"
-                "50%"
-                "67%"
-                "75%"
-                "90%"
-                "100%"
-                "110%"
-                "125%"
-                "150%"
-                "175%"
-                "200%"
-                "250%"
-                "300%"
-                "400%"
-                "500%"
-              ];
-              default = "100%";
-            };
             colors = {
               statusbar.url.success.https.fg = "white";
               tabs = rec {
@@ -244,7 +214,7 @@ in
               quick = true;
               show = "auto";
               shrink = true;
-              timestamp_format = "%d-%m-%Y";
+              timestamp_format = "%d-%m-%Y %H:%M";
               use_best_match = false;
             };
             confirm_quit = [ "downloads" ];
@@ -283,6 +253,13 @@ in
                 suggestion = "both";
               };
             };
+            editor.command = [
+              "${config.ide.emacs.core.package}/bin/emacsclient"
+              "-c"
+              "-s /run/user/${builtins.toString config.users.extraUsers."${user}".uid}/emacs/server"
+              "+{line}:{column}"
+              "{}"
+            ];
             hints = {
               hide_unmatched_rapid_hints = true;
               leave_on_load = true;
@@ -313,7 +290,7 @@ in
               };
               links_included_in_focus_chain = true;
               partial_timeout = 2000;
-              spatial_navigation = true;
+              spatial_navigation = false;
             };
             keyhint.delay = 20;
             new_instance_open_target = "tab";
@@ -350,10 +327,34 @@ in
             url = {
               auto_search = "never";
               default_page = "about:blank";
-              incdec_segments = [ "path" "query" ];
-              yank_ignored_parameters = [ "ref" "utm_source" "utm_medium" "utm_campaign" "utm_term" "utm_content" ];
+              incdec_segments = [ "port" "path" "query" "anchor" ];
+              yank_ignored_parameters = [ "ref" "utm_source" "utm_medium" "utm_campaign" "utm_term" "utm_content" "utm_name" ];
             };
-            window.title_format = "{private}{perc}{current_title}{title_sep}qutebrowser | {current_url}";
+            window = {
+              title_format = "{private}{perc}{current_title}{title_sep}qutebrowser | {current_url}";
+              hide_decoration = false;
+            };
+            zoom = {
+              levels = [
+                "25%"
+                "33%"
+                "50%"
+                "67%"
+                "75%"
+                "90%"
+                "100%"
+                "110%"
+                "125%"
+                "150%"
+                "175%"
+                "200%"
+                "250%"
+                "300%"
+                "400%"
+                "500%"
+              ];
+              default = "100%";
+            };
           };
           keyBindings =
             let
