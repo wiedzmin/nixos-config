@@ -616,6 +616,10 @@ in
           desc = "qutebrowser settings reference";
           remote.url = "https://qutebrowser.org/doc/help/settings.html";
         };
+        "qutebrowser_help_configuring" = {
+          desc = "qutebrowser configuration overview";
+          remote.url = "https://qutebrowser.org/doc/help/configuring.html";
+        };
       };
     })
     (mkIf (cfg.enable && cfg.isFallback) {
