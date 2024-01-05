@@ -123,6 +123,11 @@ in
         default = 180;
         description = "Keep sessions age under this amount";
       };
+      tabs.position = mkOption {
+        type = types.enum [ "top" "bottom" "left" "right" ];
+        default = "top";
+        description = "Where to place tabs";
+      };
     };
   };
   config = mkMerge [
@@ -314,7 +319,7 @@ in
                 related = "next";
                 unrelated = "last";
               };
-              position = "top";
+              position = cfg.tabs.position;
               select_on_remove = "next";
               show = "multiple";
               tabs_are_windows = false;
