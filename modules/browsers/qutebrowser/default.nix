@@ -367,7 +367,6 @@ in
             in
             {
               normal = {
-                # TODO: play with "set completion.open_categories [<something>] ;; cmd-set-text -s :<cmd>" and "completion-item-focus next-category"
                 "<Alt-,>" = "back";
                 "<Alt-.>" = "forward";
                 "<ctrl+shift+tab>" = "tab-prev";
