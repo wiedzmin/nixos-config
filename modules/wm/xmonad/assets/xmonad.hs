@@ -121,6 +121,10 @@ customKeys conf = [ @xmonadKeys@
                   ]
 
 layoutKeys = [ "M-; " ++ keys ~> sendMessage $ JumpToLayout $ layout | (keys, layout) <- layoutMappings ]
+-- NOTE: consider adding keybindings metadata for commands that needs keyboard layout to be reset to default/0,
+--       see "sendMessage (XkbToggle (Just 0)) >>" as example, maybe extrapolate to other WMs
+-- NOTE: check "desktop" attribute of keybinding metadata, implement as "spawn ... >> WS.showWSOnProperScreen ..."
+--       see i3 implementation as a reference
 
 switchScreenKeys = [ "M-" ++ m ++ key ~> f sc
                    | (f, m) <- [(viewScreen naturalScreenOrderer, "C-"), (sendToScreen def, "M1-")]
