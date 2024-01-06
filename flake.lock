@@ -230,22 +230,6 @@
         "type": "github"
       }
     },
-    "i3blocks-contrib": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1670390867,
-        "narHash": "sha256-z7bLhDex8qCPBX73Umpg47VB4csxr2p6VMIyf/cjCdw=",
-        "owner": "vivien",
-        "repo": "i3blocks-contrib",
-        "rev": "fc2c10551c32558be44226c6924d64bae611e32c",
-        "type": "github"
-      },
-      "original": {
-        "owner": "vivien",
-        "repo": "i3blocks-contrib",
-        "type": "github"
-      }
-    },
     "kitty-grab": {
       "flake": false,
       "locked": {
@@ -579,7 +563,6 @@
         "emacs-org-bars": "emacs-org-bars",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
-        "i3blocks-contrib": "i3blocks-contrib",
         "kitty-grab": "kitty-grab",
         "kitty-search": "kitty-search",
         "liquidprompt": "liquidprompt",
