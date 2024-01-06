@@ -61,7 +61,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      # FIXME: use ideas from https://github.com/mitchweaver/bin/blob/5bad2e16006d82aeeb448f7185ce665934a9c242/util/pad
       nixpkgs.config.packageOverrides = _: {
         ifconfless = mkPythonScriptWithDeps pkgs "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
           (builtins.readFile ./scripts/ifconfless.py);
