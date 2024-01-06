@@ -39,7 +39,6 @@ in
                         telephone-line-dedicated-window-segment))
              (evil   . ())))
           :config
-          ;; TODO: play with `mode-line-window-dedicated` value
           (telephone-line-defsegment* telephone-line-dedicated-window-segment ()
             '("" mode-line-window-dedicated))
           (if (fboundp 'projectile-get-project-root)
