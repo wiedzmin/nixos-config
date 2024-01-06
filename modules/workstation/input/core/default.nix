@@ -53,7 +53,6 @@ in
         };
       };
       services.xserver.libinput = {
-        # TODO: move to specialized xserver module when exists
         enable = true;
         touchpad = {
           naturalScrolling = true;
