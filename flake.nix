@@ -14,10 +14,6 @@
       inputs.nixpkgs.follows = "unstable";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    i3blocks-contrib = {
-      url = "github:vivien/i3blocks-contrib";
-      flake = false;
-    };
     nixpkgs-libreoffice.url = "github:nixos/nixpkgs/0f213d0fee84280d8c3a97f7469b988d6fe5fcdf";
     nixpkgs-last-unbroken.url = "github:nixos/nixpkgs/ca012a02bf8327be9e488546faecae5e05d7d749";
 

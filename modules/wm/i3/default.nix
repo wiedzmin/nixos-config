@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -9,7 +9,6 @@ let
   statusBarImplToCmd = {
     "py3" = "py3status";
     "i3-rs" = "i3status-rs";
-    "blocks" = "i3blocks";
   };
   toml = pkgs.formats.toml { };
   inherit (config.wmCommon) prefix;
@@ -133,7 +132,7 @@ in
         description = "Does mouse cursor follow window focus?";
       };
       statusbar.impl = mkOption {
-        type = types.enum [ "py3" "i3-rs" "blocks" ];
+        type = types.enum [ "py3" "i3-rs" ];
         default = "py3";
         description = "Statusbar implementation";
       };
@@ -175,9 +174,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      environment.pathsToLink = optionals (cfg.statusbar.impl == "blocks") [ "/libexec" ];
-      fonts.packages = optionals (cfg.statusbar.impl == "blocks") (with pkgs; [ font-awesome ]);
-
       wmCommon = {
         modeBindings = {
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
@@ -511,39 +507,6 @@ in
                 bindsym button4 nop
                 bindsym button5 nop
             }
-          '';
-        } // optionalAttrs (cfg.statusbar.impl == "blocks") {
-          # FIXME: currently broken
-          # TODO: create derivation for accessing prebuilt C blocklets
-          # TODO: tune kbdd_layout output (either patch packages or extract script)
-          # TODO: ${inputs.i3blocks-contrib}/dunst/dunst - reimplement and unwire some meta (fonts, etc)
-          # TODO: make homebrew script for openvpn/nm-vpn, refer to `toolbox/vpn`
-          # TODO: review https://github.com/vivien/i3blocks-contrib blocklets
-          "i3blocks/config".text = ''
-            [disk]
-            command=${inputs.i3blocks-contrib}/disk/disk
-            LABEL=H:
-            DIR=$HOME/${user}
-            ALERT_LOW=10
-            interval=30
-
-            [bandwidth3]
-            command=${inputs.i3blocks-contrib}/bandwidth3/bandwidth3
-            unit=Kb
-            interval=persist
-            markup=pango
-            PRINTF_COMMAND=printf " %-3.1f/%3.1f %s/s\n", rx, wx, unit
-
-            [calendar]
-            command=${inputs.i3blocks-contrib}/calendar/calendar
-            interval=1
-            DATEFMT=+%a %H:%M:%S
-            HEIGHT=180
-            WIDTH=220
-
-            [kbdd_layout]
-            command=${inputs.i3blocks-contrib}/kbdd_layout/kbdd_layout
-            interval=persist
           '';
         } // optionalAttrs (cfg.statusbar.impl == "py3") {
           "i3status/config".text = ''
