@@ -482,6 +482,7 @@ in
     orgmode.enable = true;
     scheduling = {
       enable = true;
+      factoryCal.updateTimespec = "*-*-* 06:00:00";
       emacs.enable = true;
     };
     timetracking.enable = true;

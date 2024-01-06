@@ -34,6 +34,11 @@ in
           Task definition is simple a shell command line to execute.
         '';
       };
+      factoryCal.updateTimespec = mkOption {
+        type = types.str;
+        default = "";
+        description = "Timestamp of `fcalendar-update` service activation (in systemd format).";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -99,7 +104,7 @@ in
         "fcalendar-update" = {
           description = "Update factory calendar";
           wantedBy = [ "timers.target" ];
-          timerConfig = { OnCalendar = "*-*-* 06:00:00"; }; # TODO: consider extracting option
+          timerConfig = { OnCalendar = cfg.factoryCal.updateTimespec; };
         };
       };
     })
