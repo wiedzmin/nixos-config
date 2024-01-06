@@ -109,7 +109,6 @@ in
       systemd.user.services = optionalAttrs (cfg.keynavTool == "keynav") {
         "keynav" = (
           let
-            # FIXME: put keybinding at Nix level
             keynavConfig = pkgs.writeText "keynav.conf" ''
               clear
               grid-nav on
