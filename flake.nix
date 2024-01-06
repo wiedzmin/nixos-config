@@ -41,8 +41,7 @@
       flake = false;
     };
     emacs-git-msg-prefix = {
-      # NOTE: fixes deprecated/removed function in upstream
-      # FIXME: either return to upstream version in case of PR merge or fork+fix otherwise
+      # NOTE: fixes deprecated/removed function in upstream (hardly ever be merged)
       url = "github:acastanedam/git-msg-prefix.el/update-cl";
       flake = false;
     };
