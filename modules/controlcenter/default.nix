@@ -225,7 +225,6 @@ in
           before = [ ];
           data = "${config.systemd.package}/bin/systemctl --user stop dunst.service || exit 0";
         };
-        # TODO: add keybinding for programmatic removal of all currently visible notifications (like in dunst)
       };
       systemd.user.services."linux_notification_center" = {
         description = "Deadd Notification Center";
@@ -243,6 +242,13 @@ in
         partOf = [ "graphical-session.target" ];
         wantedBy = [ "graphical-session.target" ];
       };
+      wmCommon.keybindings.entries = [
+        {
+          key = [ "n" ];
+          cmd = ''kill -s USR1 $(pidof deadd-notification-center)'';
+          mode = "xserver";
+        }
+      ];
     })
     (mkIf (cfg.enable && cfg.launcher == "gmrun") {
       home-manager.users."${user}" = {
