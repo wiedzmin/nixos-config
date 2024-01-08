@@ -568,4 +568,11 @@ rec {
         (meta: ''("${meta.name}", Just "${mkKeysymXmonad meta.key}", ${toHaskellBool meta.transient})''))
     }${mkIndent indent}";
   # }}}
+  # {{{ XApps
+  appWindowClass = traits: lib.last traits.wmClass;
+  appCmdFull = traits: with traits.command;
+    lib.concatStringsSep " " [ binary parameters ];
+  appCmdParametersQuotedSpaced = traits: lib.concatStringsSep " "
+    (lib.forEach (lib.splitString " " traits.command.parameters) (s: "\"" + s + "\""));
+  # }}}
 }
