@@ -602,6 +602,17 @@ in
                 format_alt = " $icon $device $frequency $bitrate $ip";
                 interval = 5;
               }
+            ] ++ (mapAttrsToList
+              (vpn: meta: {
+                block = "service_status";
+                service = "openvpn-${vpn}";
+                active_format = " ${meta.title} VPN ";
+                inactive_format = " ${meta.title} VPN ";
+                active_state = "Good";
+                inactive_state = "Warning";
+              })
+              config.ext.networking.vpn.meta)
+            ++ [
               ({
                 block = "battery";
                 format = " $icon $percentage $time $power ";
@@ -648,12 +659,6 @@ in
                   "Russian (N/A)" = "ru";
                 };
               }
-              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/music/index.html
-              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/focused_window/index.html
-              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/hueshift/index.html
-              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/menu/index.html
-              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/service_status/index.html
-              # TODO: https://greshake.github.io/i3status-rust/i3status_rs/blocks/tea_timer/index.html
             ];
           } // lib.optionalAttrs (cfg.theme.i3status-rs != "") {
             theme = cfg.theme.i3status-rs;
