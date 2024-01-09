@@ -65,7 +65,7 @@ in
       '';
 
       pim.timetracking.rules =
-        mkArbttProgramRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ]) "activity:web"
+        mkArbttProgramRule (with config.attributes.browser; [ default.traits.wmClass fallback.traits.wmClass ]) "activity:web"
         + "\n" + mkArbttBrowserTitleRule [ "Gmail" ] "web:email" config.attributes.browser + "\n"
         + mkArbttBrowserTitleRule [ "Google" "DuckDuckGo" ] "web:search" config.attributes.browser + "\n"
         + mkArbttBrowserTitleRule [ "wikipedia" ] "site:wikipedia" config.attributes.browser;

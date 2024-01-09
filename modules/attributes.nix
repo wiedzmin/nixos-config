@@ -54,25 +54,11 @@ with lib;
         "x-scheme-handler/unknown"
       ];
     };
-    browser.default.cmd = mkOption {
-      description = "Default browser command";
-      type = types.str;
-      default = "";
+    browser.default.traits = mkOption {
+      type = types.submodule (import ./workstation/systemtraits/xapp-traits.nix);
     };
-    browser.default.windowClass = mkOption {
-      description = "Default browser window class";
-      type = types.listOf types.str;
-      default = [ ];
-    };
-    browser.fallback.cmd = mkOption {
-      description = "Fallback browser command";
-      type = types.str;
-      default = "";
-    };
-    browser.fallback.windowClass = mkOption {
-      description = "Fallback browser window class";
-      type = types.listOf types.str;
-      default = [ ];
+    browser.fallback.traits = mkOption {
+      type = types.submodule (import ./workstation/systemtraits/xapp-traits.nix);
     };
     browser.downloadPath = mkOption {
       type = types.str;

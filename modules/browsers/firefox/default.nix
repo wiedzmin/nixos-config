@@ -8,13 +8,6 @@ let
   nurpkgs = pkgs.unstable.nur.repos;
   standardDesktopID = "firefox";
   windowedDesktopID = "org.custom.firefox.windowed";
-  suspensionRule = {
-    Firefox = {
-      suspendDelay = 10;
-      matchWmClassContains = lib.last cfg.windowClass;
-      suspendSubtreePattern = binaryFromCmd cfg.command;
-    };
-  };
 in
 {
   options = {
@@ -23,6 +16,10 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable firefox.";
+      };
+      traits = mkOption {
+        type = types.submodule (import ../../workstation/systemtraits/xapp-traits.nix);
+        description = "Firefox application traits";
       };
       isDefault = mkOption {
         type = types.bool;
@@ -44,18 +41,6 @@ in
         default = true;
         description = "Enable keyboard-centric controls (tridactyl, etc.)";
       };
-      command = mkOption {
-        type = types.str;
-        default = "${pkgs.firefox-unwrapped}/bin/firefox --new-window";
-        description = "Default command line to invoke";
-      };
-      windowClass = mkOption {
-        type = types.listOf types.str;
-        default = [ "Navigator" "firefox" ];
-        visible = false;
-        internal = true;
-        description = "Firefox default window class.";
-      };
       desktopID = mkOption {
         type = types.enum [ standardDesktopID windowedDesktopID ];
         default = windowedDesktopID;
@@ -67,9 +52,8 @@ in
           (use-package browse-url
             :config
             (setq browse-url-browser-function 'browse-url-firefox)
-            (setq browse-url-firefox-program "${builtins.head (splitString " " cfg.command)}")
-            (setq browse-url-firefox-arguments '("${concatStringsSep " " (forEach (builtins.tail (splitString " " cfg.command))
-              (s: "\"" + s + "\""))}")))
+            (setq browse-url-firefox-program "${cfg.traits.command.binary}")
+            (setq browse-url-firefox-arguments '("${appCmdParametersQuotedSpaced cfg.traits}")))
         '';
         visible = false;
         internal = true;
@@ -132,8 +116,22 @@ in
   };
   config = mkMerge [
     (mkIf cfg.enable {
+      browsers.firefox.traits = rec {
+        command = {
+          binary = "${pkgs.firefox-unwrapped}/bin/firefox";
+          parameters = "--new-window";
+        };
+        wmClass = [ "Navigator" "firefox" ];
+        suspensionRule = {
+          Firefox = {
+            suspendDelay = 10;
+            matchWmClassContains = lib.last wmClass;
+            suspendSubtreePattern = binaryFromCmd (appCmdFull cfg.traits);
+          };
+        };
+      };
       workstation.input.keyboard.xkeysnail.rc = ''
-        define_keymap(re.compile("${lib.last cfg.windowClass}"), {
+        define_keymap(re.compile("${appWindowClass cfg.traits}"), {
             K("C-j"): K("C-f6"), # Type C-j to focus to the content
             K("C-g"): K("f5"),
             K("C-n"): K("C-g"),
@@ -149,6 +147,9 @@ in
             },
         }, "Firefox")
       '';
+
+      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
+
       home-manager.users."${user}" = {
         home.packages = with pkgs;
           [
@@ -156,7 +157,7 @@ in
             (makeDesktopItem {
               name = windowedDesktopID;
               type = "Application";
-              exec = "${cfg.command} %U";
+              exec = "${appCmdFull cfg.traits} %U";
               comment = "Firefox that opens links preferably in new windows";
               desktopName = "Firefox";
               categories = [ "Network" "WebBrowser" ];
@@ -438,13 +439,12 @@ in
       services.xserver.displayManager.sessionCommands = ''
         ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser ${cfg.desktopID}.desktop
       '';
-      attributes.browser.default.cmd = cfg.command;
-      attributes.browser.default.windowClass = cfg.windowClass;
+      attributes.browser.default.traits = cfg.traits;
 
       browsers.ext.emacs.browseUrlSetup = cfg.emacs.browseUrlSetup;
 
       shell.core.variables = [{
-        TB_DEFAULT_BROWSER = cfg.command;
+        TB_DEFAULT_BROWSER = appCmdFull cfg.traits;
         TB_DEFAULT_BROWSER_SESSIONS_STORE = cfg.sessions.path;
         TB_FIREFOX_SESSIONS_KEEP_MINUTES = builtins.toString cfg.sessions.keepMinutes;
         global = true;
@@ -452,7 +452,6 @@ in
 
       workstation.performance.warmup.paths = [ (homePrefix user ".mozilla") ];
 
-      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
       navigation.bookmarks.entries = {
         "firefox/sessions/exported" = { local.path = homePrefix user "docs/org/browser-sessions/firefox"; };
       };
@@ -469,12 +468,9 @@ in
           message = "browsers: firefox: there should be exactly one fallback.";
         }
       ];
-      attributes.browser.fallback.cmd = cfg.command;
-      attributes.browser.fallback.windowClass = cfg.windowClass;
+      attributes.browser.fallback.traits = cfg.traits;
 
-      shell.core.variables = [{ TB_FALLBACK_BROWSER = cfg.command; global = true; }];
-
-      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
+      shell.core.variables = [{ TB_FALLBACK_BROWSER = appCmdFull cfg.traits; global = true; }];
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
       home-manager.users."${user}" = {

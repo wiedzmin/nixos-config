@@ -7,13 +7,6 @@ let
   user = config.attributes.mainUser.name;
   standardDesktopID = "chromium";
   windowedDesktopID = "org.custom.chromium.windowed";
-  suspensionRule = {
-    Chromium = {
-      suspendDelay = 10;
-      matchWmClassContains = lib.last cfg.windowClass;
-      suspendSubtreePattern = binaryFromCmd cfg.command;
-    };
-  };
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -25,6 +18,10 @@ in
         description = ''
           Whether to enable Chromium'.
         '';
+      };
+      traits = mkOption {
+        type = types.submodule (import ../../workstation/systemtraits/xapp-traits.nix);
+        description = "Chromium application traits";
       };
       isDefault = mkOption {
         type = types.bool;
@@ -55,34 +52,20 @@ in
         default = true;
         description = "Enable videoconferencing-related options";
       };
-      command = mkOption {
-        type = types.str;
-        default = "${pkgs.chromium}/bin/chromium --new-window";
-        description = "Default command line to invoke";
-      };
-      windowClass = mkOption {
-        type = types.listOf types.str;
-        default = [ "chromium-browser" "Chromium-browser" ];
-        visible = false;
-        internal = true;
-        description = "Chromium default window class.";
-      };
       desktopID = mkOption {
         type = types.enum [ standardDesktopID windowedDesktopID ];
         default = windowedDesktopID;
         description = "Desktop entry name";
       };
       # TODO: idea: advice link hint opening function to use "--new-tab" or such as argument after first link
-      # FIXME: consider refactoring `cfg.command` representation above
       emacs.browseUrlSetup = mkOption {
         type = types.lines;
         default = ''
           (use-package browse-url
             :config
             (setq browse-url-browser-function 'browse-url-chromium)
-            (setq browse-url-chromium-program "${builtins.head (splitString " " cfg.command)}")
-            (setq browse-url-chromium-arguments '("${concatStringsSep " " (forEach (builtins.tail (splitString " " cfg.command))
-              (s: "\"" + s + "\""))}")))
+            (setq browse-url-chromium-program "${cfg.traits.command.binary}")
+            (setq browse-url-chromium-arguments '("${appCmdParametersQuotedSpaced cfg.traits}")))
         '';
         visible = false;
         internal = true;
@@ -101,6 +84,20 @@ in
   };
   config = mkMerge [
     (mkIf cfg.enable {
+      browsers.chromium.traits = rec {
+        command = {
+          binary = "${pkgs.chromium}/bin/chromium";
+          parameters = "--new-window";
+        };
+        wmClass = [ "chromium-browser" "Chromium-browser" ];
+        suspensionRule = {
+          Chromium = {
+            suspendDelay = 10;
+            matchWmClassContains = lib.last wmClass;
+            suspendSubtreePattern = binaryFromCmd (appCmdFull cfg.traits);
+          };
+        };
+      };
       home-manager.users."${user}" = {
         # chrome-export
         programs.chromium = {
@@ -120,7 +117,7 @@ in
         };
         xdg.configFile = {
           "espanso/config/chromium.yml".source = yaml.generate "espanso-config-chromium.yml" {
-            filter_class = lib.last cfg.windowClass;
+            filter_class = appWindowClass cfg.traits;
             backend = "Clipboard";
           };
         };
@@ -128,7 +125,7 @@ in
           (makeDesktopItem {
             name = windowedDesktopID;
             type = "Application";
-            exec = "${cfg.command} %U";
+            exec = "${appCmdFull cfg.traits} %U";
             comment = "Chromium that opens links preferably in new windows";
             desktopName = "Chromium";
             categories = [ "Network" "WebBrowser" ];
@@ -136,7 +133,7 @@ in
         ];
       };
       workstation.input.keyboard.xkeysnail.rc = ''
-        define_keymap(re.compile("${lib.last cfg.windowClass}"), {
+        define_keymap(re.compile("${appWindowClass cfg.traits}"), {
             K("C-g"): K("f5"),
             K("M-comma"): K("Shift-h"),
             K("M-dot"): K("Shift-l"),
@@ -169,6 +166,8 @@ in
         TranslateEnabled = false;
         ExternalProtocolDialogShowAlwaysOpenCheckbox = true;
       };
+
+      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       assertions = [
@@ -184,14 +183,11 @@ in
       services.xserver.displayManager.sessionCommands = ''
         ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser ${cfg.desktopID}.desktop
       '';
-      shell.core.variables = [{ TB_DEFAULT_BROWSER = cfg.command; global = true; }];
+      shell.core.variables = [{ TB_DEFAULT_BROWSER = appCmdFull cfg.traits; global = true; }];
 
-      attributes.browser.default.cmd = cfg.command;
-      attributes.browser.default.windowClass = cfg.windowClass;
+      attributes.browser.default.traits = cfg.traits;
 
       browsers.ext.emacs.browseUrlSetup = cfg.emacs.browseUrlSetup;
-
-      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
     })
     (mkIf (cfg.enable && cfg.isFallback) {
       assertions = [
@@ -201,11 +197,8 @@ in
           message = "browsers: chromium: there should be exactly one fallback.";
         }
       ];
-      attributes.browser.fallback.cmd = cfg.command;
-      attributes.browser.fallback.windowClass = cfg.windowClass;
-      shell.core.variables = [{ TB_FALLBACK_BROWSER = cfg.command; global = true; }];
-
-      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
+      attributes.browser.fallback.traits = cfg.traits;
+      shell.core.variables = [{ TB_FALLBACK_BROWSER = appCmdFull cfg.traits; global = true; }];
     })
     (mkIf (cfg.enable && cfg.videoconferencing.enable) {
       browsers.chromium.extraOpts = {

@@ -114,7 +114,7 @@ in
         home.packages = with pkgs; [ code-maat comby dfmt fastmod go-task just lnav tagref xh ];
       };
       pim.timetracking.rules =
-        mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.windowClass fallback.windowClass ])
+        mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.traits.wmClass fallback.traits.wmClass ])
           cfg.timeTracking.extensions.dev + "\n" + mkArbttEmacsMapTitleRule cfg.timeTracking.extensions.dev;
       dev.editorconfig.rules = {
         "Makefile" = {
