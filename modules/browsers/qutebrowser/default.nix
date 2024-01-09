@@ -8,17 +8,6 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   standardDesktopID = "org.qutebrowser.qutebrowser";
   windowedDesktopID = "org.custom.qutebrowser.windowed";
-  suspensionRule = {
-    qutebrowser = {
-      suspendDelay = 15;
-      matchWmClassContains = lib.last cfg.windowClass;
-      suspendSubtreePattern = "qtwebengine";
-      downclockOnBattery = 0;
-      resumeEvery = 60;
-      resumeFor = 3;
-      sendSignals = true;
-    };
-  };
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -28,6 +17,10 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable qutebrowser.";
+      };
+      traits = mkOption {
+        type = types.submodule (import ../../workstation/systemtraits/xapp-traits.nix);
+        description = "Qutebrowser application traits";
       };
       isDefault = mkOption {
         type = types.bool;
@@ -43,18 +36,6 @@ in
         type = types.bool;
         default = true;
         description = "Suspend when inactive (using xsuspender)";
-      };
-      command = mkOption {
-        type = types.str;
-        default = "${pkgs.qutebrowser}/bin/qutebrowser --target window";
-        description = "Default command line to invoke";
-      };
-      windowClass = mkOption {
-        type = types.listOf types.str;
-        default = [ "qutebrowser" "qutebrowser" ];
-        visible = false;
-        internal = true;
-        description = "Qutebrowser default window class.";
       };
       desktopID = mkOption {
         type = types.enum [ standardDesktopID windowedDesktopID ];
@@ -92,9 +73,8 @@ in
           (use-package browse-url
             :config
             (setq browse-url-browser-function 'browse-url-generic)
-            (setq browse-url-generic-program "${builtins.head (splitString " " cfg.command)}")
-            (setq browse-url-generic-args '(${concatStringsSep " " (forEach (builtins.tail (splitString " " cfg.command))
-              (s: "\"" + s + "\""))})))
+            (setq browse-url-generic-program "${cfg.traits.command.binary}")
+            (setq browse-url-generic-args '(${appCmdParametersQuotedSpaced cfg.traits})))
         '';
         visible = false;
         internal = true;
@@ -132,6 +112,24 @@ in
   };
   config = mkMerge [
     (mkIf cfg.enable {
+      browsers.qutebrowser.traits = rec {
+        command = {
+          binary = "${pkgs.qutebrowser}/bin/qutebrowser";
+          parameters = "--target window";
+        };
+        wmClass = [ "qutebrowser" "qutebrowser" ];
+        suspensionRule = {
+          qutebrowser = {
+            suspendDelay = 15;
+            matchWmClassContains = lib.last wmClass;
+            suspendSubtreePattern = "qtwebengine";
+            downclockOnBattery = 0;
+            resumeEvery = 60;
+            resumeFor = 3;
+            sendSignals = true;
+          };
+        };
+      };
       nixpkgs.config.packageOverrides = _: {
         yank-image = pkgs.writeShellApplication {
           name = "yank-image";
@@ -140,7 +138,7 @@ in
         };
       };
       workstation.input.keyboard.xkeysnail.rc = ''
-        define_keymap(re.compile("${lib.last cfg.windowClass}"), {
+        define_keymap(re.compile("${appWindowClass cfg.traits}"), {
             K("C-g"): K("f5"),
             K("C-n"): K("C-g"),
             K("M-comma"): K("Shift-h"),
@@ -155,7 +153,7 @@ in
         }, "qutebrowser")
       '';
 
-      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
+      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
@@ -163,7 +161,7 @@ in
           (makeDesktopItem {
             name = windowedDesktopID;
             type = "Application";
-            exec = "${cfg.command} %U";
+            exec = "${appCmdFull cfg.traits} %U";
             comment = "Qutebrowser that opens links preferably in new windows";
             desktopName = "Qutebrowser";
             categories = [ "Network" "WebBrowser" ];
@@ -172,7 +170,7 @@ in
         xdg.configFile = {
           "qutebrowser/hint-words".text = builtins.readFile ./assets/hint-words;
           "espanso/config/qutebrowser.yml".source = yaml.generate "espanso-config-qutebrowser.yml" {
-            filter_class = lib.last cfg.windowClass;
+            filter_class = appWindowClass cfg.traits;
             backend = "Clipboard";
           };
         };
@@ -294,6 +292,7 @@ in
                 plugins = false;
               };
               links_included_in_focus_chain = true;
+              # match_counts = true for vi bindings, emacs otherwise
               partial_timeout = 2000;
               spatial_navigation = false;
             };
@@ -390,7 +389,7 @@ in
                 "gc" = "tab-clone";
                 "gj" = "tab-move +";
                 "gk" = "tab-move -";
-                "go" = "spawn ${config.attributes.browser.fallback.cmd} {url}";
+                "go" = "spawn ${appCmdFull config.attributes.browser.fallback.traits} {url}";
                 "ge" = "cmd-set-text :open {url}";
                 "gl" = "open {url:scheme}://mail.gnu.org{url:path}";
                 "gs" = "view-source";
@@ -580,18 +579,15 @@ in
         ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser ${cfg.desktopID}.desktop
       '';
       shell.core.variables = [{
-        TB_DEFAULT_BROWSER = cfg.command;
+        TB_DEFAULT_BROWSER = appCmdFull cfg.traits;
         TB_DEFAULT_BROWSER_SESSIONS_STORE = cfg.sessions.path;
         TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES = builtins.toString cfg.sessions.keepMinutes;
         global = true;
       }];
 
-      attributes.browser.default.cmd = cfg.command;
-      attributes.browser.default.windowClass = cfg.windowClass;
+      attributes.browser.default.traits = cfg.traits;
 
       browsers.ext.emacs.browseUrlSetup = cfg.emacs.browseUrlSetup;
-
-      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
 
       navigation.bookmarks.entries = {
         "qutebrowser/sessions/raw" = { local.path = homePrefix user ".local/share/qutebrowser/sessions"; };
@@ -633,12 +629,9 @@ in
           message = "browsers: qutebrowser: there should be exactly one fallback.";
         }
       ];
-      attributes.browser.fallback.cmd = cfg.command;
-      attributes.browser.fallback.windowClass = cfg.windowClass;
+      attributes.browser.fallback.traits = cfg.traits;
 
-      shell.core.variables = [{ TB_FALLBACK_BROWSER = cfg.command; global = true; }];
-
-      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
+      shell.core.variables = [{ TB_FALLBACK_BROWSER = appCmdFull cfg.traits; global = true; }];
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
       home-manager.users."${user}" = {

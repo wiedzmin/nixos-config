@@ -26,8 +26,6 @@ with lib;
 # .marked { background-color: darkgray; font-weight: bold; color: white; }
 # .selected { background-color: gray; color: white; }")))
 
-
-
 # ~/.local/share/nyxt/history/default.lisp - history
 # ~/.local/share/nyxt/sessions/default.lisp - sessions
 
@@ -48,6 +46,11 @@ in
           Whether to enable Nyxt'.
         '';
       };
+      # TODO: https://discourse.atlas.engineer/t/how-to-open-a-new-browser-window-from-command-line/811
+      traits = mkOption {
+        type = types.submodule (import ../../workstation/systemtraits/xapp-traits.nix);
+        description = "Nyxt application traits";
+      };
       isDefault = mkOption {
         type = types.bool;
         default = false;
@@ -60,19 +63,6 @@ in
         default = false;
         description = "Nyxt should be the fallback browser";
       };
-      # TODO: https://discourse.atlas.engineer/t/how-to-open-a-new-browser-window-from-command-line/811
-      command = mkOption {
-        type = types.str;
-        default = "${pkgs.nyxt}/bin/nyxt";
-        description = "Default command line to invoke";
-      };
-      windowClass = mkOption {
-        type = types.listOf types.str;
-        default = [ "nyxt" "Nyxt" ];
-        visible = false;
-        internal = true;
-        description = "Nyxt default window class.";
-      };
       desktopID = mkOption {
         type = types.enum [ standardDesktopID customDesktopID ];
         default = customDesktopID;
@@ -84,7 +74,7 @@ in
           (use-package browse-url
             :config
             (setq browse-url-browser-function 'browse-url-generic)
-            (setq browse-url-generic-program "${builtins.head (splitString " " cfg.command)}"))
+            (setq browse-url-generic-program "${cfg.traits.command.binary}"))
         '';
         visible = false;
         internal = true;
@@ -99,13 +89,19 @@ in
   };
   config = mkMerge [
     (mkIf cfg.enable {
+      browsers.nyxt.traits = rec {
+        command = {
+          binary = "${pkgs.nyxt}/bin/nyxt";
+        };
+        wmClass = [ "nyxt" "Nyxt" ];
+      };
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           nyxt
           (makeDesktopItem {
             name = customDesktopID;
             type = "Application";
-            exec = "${cfg.command} %U";
+            exec = "${appCmdFull cfg.traits} %U";
             comment = "Custom Nyxt desktop item, customizations pending after more close usage";
             desktopName = "Nyxt";
             categories = [ "Network" "WebBrowser" ];
@@ -149,10 +145,9 @@ in
       services.xserver.displayManager.sessionCommands = ''
         ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser ${cfg.desktopID}.desktop
       '';
-      shell.core.variables = [{ TB_DEFAULT_BROWSER = cfg.command; global = true; }];
+      shell.core.variables = [{ TB_DEFAULT_BROWSER = appCmdFull cfg.traits; global = true; }];
 
-      attributes.browser.default.cmd = cfg.command;
-      attributes.browser.default.windowClass = cfg.windowClass;
+      attributes.browser.default.traits = cfg.traits;
 
       browsers.ext.emacs.browseUrlSetup = cfg.emacs.browseUrlSetup;
     })
@@ -168,9 +163,8 @@ in
           message = "browsers: nyxt: there should be exactly one fallback.";
         }
       ];
-      attributes.browser.fallback.cmd = cfg.command;
-      attributes.browser.fallback.windowClass = cfg.windowClass;
-      shell.core.variables = [{ TB_FALLBACK_BROWSER = cfg.command; global = true; }];
+      attributes.browser.fallback.traits = cfg.traits;
+      shell.core.variables = [{ TB_FALLBACK_BROWSER = appCmdFull cfg.traits; global = true; }];
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       navigation.bookmarks.entries = {

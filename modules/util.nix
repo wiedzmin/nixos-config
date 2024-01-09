@@ -274,10 +274,10 @@ rec {
         (_: meta: lib.hasAttrByPath [ "remote" "searchSuffix" ] meta)
         (checkedBookmarks remotes [ "remote" "url" ]));
   maybeDefaultBrowserCmd = browserDefault: browserFallback:
-    if builtins.elem (lib.last browserDefault.windowClass) approvedDefaultBrowsersWC then
-      browserDefault.cmd
+    if builtins.elem (appWindowClass browserDefault.traits) approvedDefaultBrowsersWC then
+      appCmdFull browserDefault.traits
     else
-      browserFallback.cmd;
+      appCmdFull browserFallback.traits;
   # }}}
   # {{{ Emacs
   # TODO: create function for ensuring non-prefix keys absence
@@ -305,7 +305,7 @@ rec {
   mkArbttPrefixedTitlesRule = titles: prefix:
     lib.concatStringsSep "\n" (lib.forEach titles (t: "current window ($title =~ m!${t}!) ==> tag ${prefix}${t},"));
   mkArbttBrowserTitleRule = titles: tag: browser:
-    mkArbttProgramTitleRule (with browser; [ default.windowClass fallback.windowClass ]) titles tag;
+    mkArbttProgramTitleRule (with browser; [ default.traits.wmClass fallback.traits.wmClass ]) titles tag;
   mkArbttProgramMapTitleRule = windowClasses: title2tag:
     lib.concatStringsSep "\n" (lib.mapAttrsToList
       (re: tag:
@@ -370,7 +370,7 @@ rec {
   enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: _: i) wsdata) wsdata;
   getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
   mkWSMappingBrowsersRegexp = browser:
-    concatStringListsRaw "|" (with browser; [ default.windowClass fallback.windowClass ]);
+    concatStringListsRaw "|" (with browser; [ default.traits.wmClass fallback.traits.wmClass ]);
   mkWSMappingEbookReadersRegexp = ebookreader:
     concatStringListsRaw "|" (with ebookreader; [ default.windowClass fallback.windowClass ]);
   mkWSMappingEbookReadersExtsRegexp = primexts: "(" + (concatStringListsRaw "|" primexts) + ")";

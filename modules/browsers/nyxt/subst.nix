@@ -1,5 +1,5 @@
 { config, ... }:
 
 {
-  fallbackBrowser = config.attributes.browser.fallback.cmd;
+  fallbackBrowser = appCmdFull config.attributes.browser.fallback.traits;
 }

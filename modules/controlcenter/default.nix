@@ -122,7 +122,7 @@ in
               alignment = "left";
               always_run_script = "true";
               bounce_freq = 0;
-              browser = "${pkgs.firefox-unwrapped}/bin/firefox -new-tab";
+              browser = appCmdFull browser.default.traits;
               dmenu = "${nurpkgs.dmenu-ng}/bin/dmenu -p dunst:";
               ellipsize = "middle";
               follow = "keyboard";

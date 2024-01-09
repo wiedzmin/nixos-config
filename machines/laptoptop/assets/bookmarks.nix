@@ -147,7 +147,7 @@ in
     "gdocs" = {
       remote = {
         url = "https://docs.google.com/document/u/0/";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = appCmdFull config.attributes.browser.fallback.traits;
       };
     };
     "gh" = {
@@ -195,7 +195,7 @@ in
     "gmail" = {
       desc = "GMail account";
       remote.url = "https://mail.google.com/mail/u/0/";
-      browser = config.attributes.browser.fallback.cmd;
+      browser = appCmdFull config.attributes.browser.fallback.traits;
     };
     "repology/projects" = {
       desc = "Repology";
@@ -247,7 +247,7 @@ in
       desc = "Facebook Messenger";
       tags = [ "fb" ];
       remote = {
-        browser = config.attributes.browser.fallback.cmd;
+        browser = appCmdFull config.attributes.browser.fallback.traits;
         url = "https://www.facebook.com/messages/t/";
       };
     };
@@ -255,7 +255,7 @@ in
       desc = "VK";
       tags = [ "vk" ];
       remote = {
-        browser = config.attributes.browser.fallback.cmd;
+        browser = appCmdFull config.attributes.browser.fallback.traits;
         url = "https://vk.com/";
       };
     };
@@ -325,7 +325,7 @@ in
       tags = [ "media" "video" ];
       remote = {
         url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGaKdF1Ewgg9IWW96UPpxTFi";
-        browser = config.attributes.browser.fallback.cmd;
+        browser = appCmdFull config.attributes.browser.fallback.traits;
       };
     };
     "var" = {
@@ -502,7 +502,7 @@ in
     "libtmux" = mkGithubBookmark "tmux-python" "libtmux" roots // { transient = true; };
     "paintings" = {
       tags = [ "paint" "play" ];
-      browser = config.attributes.browser.fallback.cmd;
+      browser = appCmdFull config.attributes.browser.fallback.traits;
       remote = { url = "https://yandex.ru/search/?lr=213&text=раскраски"; };
     };
     "real mongolia" = {
@@ -576,7 +576,7 @@ in
     };
     "russia1_hd" = {
       tags = [ "media" "tv" ];
-      browser = config.attributes.browser.fallback.cmd;
+      browser = appCmdFull config.attributes.browser.fallback.traits;
       remote = { url = "https://more.tv/online/russia1_hd"; };
     };
     "good-wheels_ru" = {
