@@ -1,7 +1,6 @@
 {
   description = "Reproducible localhost configurations";
 
-  # TODO: try cachix/pre-commit-hooks.nix
   inputs = {
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
 
@@ -104,18 +103,7 @@
       url = "github:MichaelAquilina/zsh-you-should-use";
       flake = false;
     };
-    zsh-autocomplete = {
-      # TODO: keep for future reevaluation (not completely usasble yet)
-      url = "github:marlonrichert/zsh-autocomplete";
-      flake = false;
-    };
   };
-
-  # TODO: review https://github.com/leo60228/dotfiles/blob/5d32894eec01aad2303b7eecb3ca6fc7813c3c56/flake.nix deeper
-
-  # TODO: review https://github.com/nix-community/nixt
-
-  # TODO: devenv: play with https://devenv.sh/guides/using-with-flakes/
 
   outputs = { self, unstable, ... }@inputs:
     let

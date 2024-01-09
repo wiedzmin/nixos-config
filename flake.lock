@@ -577,7 +577,6 @@
         "unstable": "unstable",
         "yasnippet-snippets": "yasnippet-snippets",
         "zsh-async": "zsh-async",
-        "zsh-autocomplete": "zsh-autocomplete",
         "zsh-command-time": "zsh-command-time",
         "zsh-fuzzy-search-and-edit": "zsh-fuzzy-search-and-edit",
         "zsh-nix-shell": "zsh-nix-shell",
@@ -681,22 +680,6 @@
       "original": {
         "owner": "mafredri",
         "repo": "zsh-async",
-        "type": "github"
-      }
-    },
-    "zsh-autocomplete": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1702543845,
-        "narHash": "sha256-u2BnkHZOSGVhcJvhGwHBdeAOVdszye7QZ324xinbELE=",
-        "owner": "marlonrichert",
-        "repo": "zsh-autocomplete",
-        "rev": "c7b65508fd3a016dc9cdb410af9ee7806b3f9be1",
-        "type": "github"
-      },
-      "original": {
-        "owner": "marlonrichert",
-        "repo": "zsh-autocomplete",
         "type": "github"
       }
     },
