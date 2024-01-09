@@ -111,9 +111,6 @@
     };
   };
 
-  # TODO: consider thinking of https://github.com/lokegustafsson/nixfiles/blob/7e3ecc70c3ce7e29c857e0f8fc96cf002d3a1b4d/flake.nix
-  # with context of role-based configuration
-
   # TODO: review https://github.com/leo60228/dotfiles/blob/5d32894eec01aad2303b7eecb3ca6fc7813c3c56/flake.nix deeper
 
   # TODO: review https://github.com/nix-community/nixt
