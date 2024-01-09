@@ -212,6 +212,7 @@ rec {
   takeLast = n: l: with lib; reverseList (take n (reverseList l));
   # }}}
   # {{{ Bookmarks
+  # TODO: filter out bookmarks under any VPN that is disabled (check/provide some mechanism for this)
   mkGithubBookmark = user: repo: roots: {
     local.path = "${wsRoot roots "github"}/${user}/${repo}";
     remote.url = "https://github.com/${user}/${repo}";
