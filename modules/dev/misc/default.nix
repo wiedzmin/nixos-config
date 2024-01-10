@@ -250,7 +250,6 @@ in
         };
       };
     })
-    # FIXME: make tmux session templating optional everywhere (see below) !!!!
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
