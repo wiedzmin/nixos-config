@@ -203,7 +203,7 @@
      (unicode-name (styles . (substring orderless)))
      (variable (styles . (orderless)))
      (xref-location (styles . (orderless)))))
-  (orderless-component-separator "[ &]") ; TODO: try "[ -]"
+  (orderless-component-separator "[ &-+]")
   :config
   (advice-add 'company-capf--candidates :around #'just-one-face))
 
