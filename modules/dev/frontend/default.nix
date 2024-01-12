@@ -2,15 +2,6 @@
 with pkgs.unstable.commonutils;
 with lib;
 
-# TODO: review reference links:
-# https://azzamsa.com/n/vue-emacs/
-# https://emacs-lsp.github.io/lsp-mode/page/lsp-vetur/
-# https://github.com/azzamsa/emacs.d/blob/master/modules/aza-lsp.el
-# https://github.com/vuejs/vetur
-# https://github.com/vuejs/vetur/tree/master/server
-# https://medium.com/kloeckner-i/til-language-server-setup-for-elixir-and-vue-with-emacs-33a38be0672f
-# https://www.google.com/search?num=100&q=emacs+vue+js+lsp
-# https://www.reddit.com/r/emacs/comments/ciocbr/help_with_lsp_and_vue_language_server/
 let
   cfg = config.dev.frontend;
   user = config.attributes.mainUser.name;
