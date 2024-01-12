@@ -133,6 +133,9 @@ in
 
             zr = ". ~/.zshrc";
 
+            # FIXME: parameterize EDITOR setting according to the daemon enablement status
+            # FIXME: review setup and applications, do we really need it, or could enhance workflow in some way?
+            # TODO: review usage, consult https://github.com/vrothberg/vgrep for details
             vg = "EDITOR=emacsclient ${pkgs.vgrep}/bin/vgrep --interactive --show c5";
           };
           plugins = [

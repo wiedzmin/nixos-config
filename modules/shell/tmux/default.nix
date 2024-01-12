@@ -136,7 +136,9 @@ in
             plugin = extrakto;
             extraConfig = ''
               set -g @extrakto_filter_order "line all word" # FIXME: strangely, defaults are unchangeable now, find a way to patch sources
-              EDITOR="${config.ide.emacs.core.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server"
+              ${lib.optionalString (config.ide.emacs.core.daemon.enable) ''
+                (setenv "EDITOR" "${config.ide.emacs.core.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server")
+              ''}
             '';
           }
           fpp

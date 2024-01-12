@@ -347,6 +347,7 @@ in
   ide.emacs = {
     core = {
       enable = true;
+      daemon.enable = true;
       pgtk.enable = false;
       wm.enable = true;
       emacsEverywhere.enable = true;

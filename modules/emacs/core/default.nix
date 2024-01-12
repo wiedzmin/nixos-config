@@ -3,8 +3,6 @@ with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
 
-# TODO: parameterize daemonization, e.g. if the feature is used or not
-
 let
   cfg = config.ide.emacs.core;
   user = config.attributes.mainUser.name;
@@ -52,6 +50,11 @@ in
         type = types.bool;
         default = false;
         description = "Whether to build debuggable emacs package.";
+      };
+      daemon.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to daemonize";
       };
       fromGit = mkOption {
         type = types.bool;
@@ -227,6 +230,11 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
+      assertions = [{
+        assertion = cfg.emacsEverywhere.enable && cfg.daemon.enable || !cfg.emacsEverywhere.enable && !cfg.daemon.enable;
+        message = "emacs/core: daemon should be enabled for `emacsEverywhere` to work";
+      }];
+
       dev.git.core.gitignore = ''
         *.elc
       '';
@@ -258,7 +266,7 @@ in
       ide.emacs.core.customKeymaps = {
         "custom-goto-map" = "M-s";
       };
-      shell.core.variables = [{
+      shell.core.variables = lib.optionals cfg.daemon.enable [{
         EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
         VISUAL = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
       }];
@@ -283,7 +291,10 @@ in
         ]);
         home.file = {
           ".emacs.d/early-init.el".text = ''
-            (setenv "EDITOR" "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server")
+            ${lib.optionalString (cfg.daemon.enable) ''
+              (setenv "EDITOR" "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server")
+            ''}
+            ;; FIXME: elaborate alternative command for the case of disabled daemon
             ${lib.optionalString (cfg.environment != { }) (builtins.concatStringsSep "\n"
               (lib.mapAttrsToList (var: value: ''(setenv "${var}" "${value}")'') cfg.environment))}
 
@@ -309,26 +320,28 @@ in
           };
         };
       };
-      systemd.user.services."emacs" =
-        let icon = "${cfg.package}/share/icons/hicolor/scalable/apps/emacs.svg";
-        in
-        {
-          description = "Emacs: the extensible, self-documenting text editor";
-          documentation = [ "info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/" ];
-          restartIfChanged = false;
-          serviceConfig = {
-            Type = "simple";
-            # NOTE: something in nixpkgs commits range 8cfef6986adf..a9bf124c46ef broke this command ("exec: emacs: command not found"),
-            # and there is no fix/workaround available yet. It may also be some recent systemd change(s), that breaks the old behavior.
-            # this note will be kept for historical and educational reason for some sane timerange
-            ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
-            ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
-            ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
-            Restart = "on-failure";
-            StandardOutput = "journal";
-            StandardError = "journal";
-          };
-        };
+      systemd.user.services."emacs" = optionalAttrs cfg.daemon.enable
+        (
+          let icon = "${cfg.package}/share/icons/hicolor/scalable/apps/emacs.svg";
+          in
+          {
+            description = "Emacs: the extensible, self-documenting text editor";
+            documentation = [ "info:emacs" "man:emacs(1)" "https://gnu.org/software/emacs/" ];
+            restartIfChanged = false;
+            serviceConfig = {
+              Type = "simple";
+              # NOTE: something in nixpkgs commits range 8cfef6986adf..a9bf124c46ef broke this command ("exec: emacs: command not found"),
+              # and there is no fix/workaround available yet. It may also be some recent systemd change(s), that breaks the old behavior.
+              # this note will be kept for historical and educational reason for some sane timerange
+              ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
+              ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
+              ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
+              Restart = "on-failure";
+              StandardOutput = "journal";
+              StandardError = "journal";
+            };
+          }
+        );
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = [
