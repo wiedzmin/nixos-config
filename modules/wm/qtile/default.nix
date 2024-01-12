@@ -47,7 +47,6 @@ in
         message = "qtile: exactly one WM could be the default.";
       }];
 
-      # FIXME: review all `CURRENT_WM` usages, then correct
       shell.core.variables = [{ CURRENT_WM = "qtile"; global = true; emacs = true; }];
 
       services.xserver = {
