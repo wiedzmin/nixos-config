@@ -606,8 +606,8 @@ in
               (vpn: meta: {
                 block = "service_status";
                 service = "openvpn-${vpn}";
-                active_format = " ${meta.title} VPN ";
-                inactive_format = " ${meta.title} VPN ";
+                active_format = " ${meta.title} 🔒";
+                inactive_format = " ${meta.title} 🔒";
                 active_state = "Good";
                 inactive_state = "Warning";
               })
