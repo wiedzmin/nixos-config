@@ -396,6 +396,10 @@ in
               trigger = ":bore";
               replace = "(setq backtrace-on-redisplay-error $|$)";
             }
+            {
+              trigger = ":el";
+              replace = "\\.el";
+            }
           ];
         };
       };
