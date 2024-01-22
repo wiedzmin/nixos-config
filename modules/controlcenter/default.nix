@@ -37,6 +37,15 @@ in
         default = homePrefix user "wm-logs";
         description = "Path to store WM commands debug logs under";
       };
+      substitutions = mkOption {
+        type = types.attrs;
+        visible = false; # NOTE: really?
+        internal = true;
+        default = {
+          "lists.gnu.org" = "mail.gnu.org";
+        };
+        description = "Common system-wide text substitutions";
+      };
       gmrun.historySize = mkOption {
         type = types.int;
         default = 1024;
