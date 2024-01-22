@@ -391,7 +391,7 @@ in
                 "gk" = "tab-move -";
                 "go" = "spawn ${appCmdFull config.attributes.browser.fallback.traits} {url}";
                 "ge" = "cmd-set-text :open {url}";
-                "gl" = "open {url:scheme}://mail.gnu.org{url:path}";
+                "gl" = "open {url:scheme}://${config.controlcenter.substitutions."lists.gnu.org"}{url:path}";
                 "gs" = "view-source";
                 "gw" = "cmd-set-text -s :tab-give";
                 "pt" = "open -t -- {primary}";
