@@ -6,7 +6,6 @@ let
   user = config.attributes.mainUser.name;
 in
 {
-  navigation.bookmarks.workspaces.roots = { "stale" = homePrefix user "workspace/stale"; };
   navigation.bookmarks.entries = {
     nixos = {
       desc = "My NixOS configurations";

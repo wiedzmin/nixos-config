@@ -16,7 +16,7 @@ in
   consultDirProjectListFunction = lib.optionalString (navigation.projects.backend == "project") "consult-dir-project-dirs" +
     lib.optionalString (navigation.projects.backend == "projectile") "consult-dir-projectile-dirs";
   projectsSearchPaths = with config.navigation.bookmarks.workspaces;
-    builtins.concatStringsSep " " (lib.forEach [ globalRoot globalRootStale ] (root: ''"${root}"''));
+    builtins.concatStringsSep " " (lib.forEach [ globalRoot ] (root: ''"${root}"''));
   selectionCandidatesCount = builtins.toString navigation.selection.candidatesCount;
   emacsEpithetPath = inputs.emacs-epithet;
   recenterWindowDisabled = if config.ide.emacs.navigation.customWindowRecentering.enable then "" else ":disabled";
