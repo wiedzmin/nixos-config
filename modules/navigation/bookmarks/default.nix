@@ -38,11 +38,6 @@ in
         default = "";
         description = "Global workspace root";
       };
-      workspaces.globalRootStale = mkOption {
-        type = types.str;
-        default = "";
-        description = "Global workspace root (stale projects)";
-      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
