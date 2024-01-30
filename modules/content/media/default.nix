@@ -51,6 +51,11 @@ in
         default = { };
         description = "Music collections mounts into MPD music directory";
       };
+      mpv.osc.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable OSC for MPV";
+      };
       youtubeFrontends.enable = mkOption {
         type = types.bool;
         default = false;
@@ -81,7 +86,6 @@ in
       home-manager.users."${user}" = {
         # TODO: deal with converting from `webm` ^^^ (use ffmpeg btw)
         programs.mpv = {
-          # TODO: consider extracting options
           enable = true;
           scripts = with pkgs.mpvScripts; [ quality-menu ] ++ lib.optionals cfg.mpris.enable [ mpris ];
           config = {
@@ -102,11 +106,15 @@ in
             cache-on-disk = "yes";
             cache-pause-initial = "yes";
             cache-pause-wait = "10";
-            osc = "no";
             # # Always use 1080p+ or 60 fps where available. Prefer VP9
             # # over AVC and VP8 for high-resolution streams.
             # ytdl=yes
             # ytdl-format=(bestvideo[ext=webm]/bestvideo[height>720]/bestvideo[fps=60])[tbr<13000]+(bestaudio[acodec=opus]/bestaudio[ext=webm]/bestaudio)/best
+          } // lib.optionalAttrs cfg.mpv.osc.enable {
+            osd-level = 2;
+            osc = "yes";
+          } // lib.optionalAttrs (!cfg.mpv.osc.enable) {
+            osc = "no";
           };
         };
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.video "mpv.desktop";

@@ -209,6 +209,7 @@ in
         enable = true;
         collections = { "mongol" = homePrefix user "blobs/music/mongol"; };
       };
+      mpv.osc.enable = true;
       wm.enable = true;
     };
     misc = {
