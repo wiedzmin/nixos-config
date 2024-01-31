@@ -84,7 +84,6 @@ in
       environment.systemPackages = with pkgs; [ clipgrab freetube moc ncmpcpp ytfzf ];
 
       home-manager.users."${user}" = {
-        # TODO: deal with converting from `webm` ^^^ (use ffmpeg btw)
         programs.mpv = {
           enable = true;
           scripts = with pkgs.mpvScripts; [ quality-menu ] ++ lib.optionals cfg.mpris.enable [ mpris ];
