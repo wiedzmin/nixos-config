@@ -63,9 +63,9 @@
   (focus-out-hook . garbage-collect)
   (minibuffer-setup-hook . cursor-intangible-mode)
   :custom
-  (use-dialog-box nil)
+  (use-dialog-box nil "Disable dialog boxes")
   (create-lockfiles nil)
-  (enable-recursive-minibuffers t)
+  (enable-recursive-minibuffers t "allow minibuffer commands in the minibuffer")
   (minibuffer-prompt-properties
    '(read-only t point-entered cursor-intangible t minibuffer-avoid-prompt face minibuffer-prompt))
   (undo-limit 1000000)
