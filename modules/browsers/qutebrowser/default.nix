@@ -74,7 +74,7 @@ in
             :config
             (setq browse-url-browser-function 'browse-url-generic)
             (setq browse-url-generic-program "${cfg.traits.command.binary}")
-            (setq browse-url-generic-args '(${appCmdParametersQuotedSpaced cfg.traits})))
+            ${optionalString (cfg.traits.command.parameters != "") "(setq browse-url-generic-args '(${appCmdParametersQuotedSpaced cfg.traits}))"})
         '';
         visible = false;
         internal = true;
