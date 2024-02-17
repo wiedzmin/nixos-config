@@ -548,6 +548,10 @@ in
           desc = "An unofficial, maintained wiki for NixOS";
           remote.url = "https://nixlang.wiki/";
         };
+        "nixpkgs-ref-custom" = {
+          desc = "Nixpkgs overview and reference by RyanTM";
+          remote.url = "https://ryantm.github.io/nixpkgs";
+        };
       };
     })
   ];
