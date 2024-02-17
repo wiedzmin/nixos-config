@@ -115,7 +115,6 @@ in
       browsers.qutebrowser.traits = rec {
         command = {
           binary = "${pkgs.qutebrowser}/bin/qutebrowser";
-          parameters = "--target window";
         };
         wmClass = [ "qutebrowser" "qutebrowser" ];
         suspensionRule = {
