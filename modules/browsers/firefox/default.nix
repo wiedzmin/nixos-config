@@ -53,7 +53,7 @@ in
             :config
             (setq browse-url-browser-function 'browse-url-firefox)
             (setq browse-url-firefox-program "${cfg.traits.command.binary}")
-            (setq browse-url-firefox-arguments '("${appCmdParametersQuotedSpaced cfg.traits}")))
+            ${optionalString (cfg.traits.command.parameters != "") "(setq browse-url-firefox-arguments '(${appCmdParametersQuotedSpaced cfg.traits}))"})
         '';
         visible = false;
         internal = true;
