@@ -365,6 +365,11 @@
   (run-with-idle-timer custom/idle-clockout-timeout t 'custom/clockout-when-idle)
   (turn-on-orgtbl))
 
+(use-package ol
+  :config
+  (setf (alist-get 'elisp org-link-frame-setup) #'find-file)
+  (setf (alist-get 'file org-link-frame-setup) #'find-file-other-frame))
+
 (use-package org-ql
   :after org
   :custom
