@@ -154,6 +154,19 @@ in
 
       workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
 
+      wmCommon.keybindings.entries = [
+        (goLocalDebugKeybinding config {
+          key = [ "t" ];
+          cmd = [ "qbtarget --target tab" ];
+          mode = "browser";
+        })
+        (goLocalDebugKeybinding config {
+          key = [ "w" ];
+          cmd = [ "qbtarget --target window" ];
+          mode = "browser";
+        })
+      ];
+
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           yank-image
