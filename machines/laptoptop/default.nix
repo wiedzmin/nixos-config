@@ -152,7 +152,6 @@ in
         height = 24;
         displayMinorModes = true;
       };
-      modeline.telephone.enable = true;
     };
     fonts = {
       enable = true;
