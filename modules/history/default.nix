@@ -51,6 +51,11 @@ in
         default = "RANK";
         description = "Sorting options of shown results";
       };
+      shell.mcfly.fzfIntegration.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable fzf integration";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -73,6 +78,7 @@ in
           enable = true;
           enableZshIntegration = true;
           fuzzySearchFactor = cfg.shell.mcfly.fuzzySearch;
+          fzf.enable = cfg.shell.mcfly.fzfIntegration.enable;
         };
         programs.atuin = optionalAttrs (cfg.shell.backend == "atuin") {
           enable = true;
