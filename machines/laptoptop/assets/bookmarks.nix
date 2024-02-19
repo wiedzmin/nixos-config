@@ -194,7 +194,7 @@ in
     "gmail" = {
       desc = "GMail account";
       remote.url = "https://mail.google.com/mail/u/0/";
-      browser = appCmdFull config.attributes.browser.fallback.traits;
+      remote.browser = appCmdFull config.attributes.browser.fallback.traits;
     };
     "repology/projects" = {
       desc = "Repology";
