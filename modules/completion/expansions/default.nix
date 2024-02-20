@@ -14,6 +14,7 @@ in
         default = false;
         description = "Whether to enable expansions";
       };
+      # TODO: consider setting up emacs abbrev-mode as independent option for some subset of collected expansion
       expansions.entries = mkOption {
         type = types.listOf types.attrs;
         description = "Various expandable text snippets, mostly for development automation.";
