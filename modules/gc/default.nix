@@ -19,7 +19,7 @@ in
         default = false;
         description = "Whether to enable trash cleaning.";
       };
-      trash.emptyInterval = mkOption {
+      trash.daysToKeep = mkOption {
         type = types.int;
         default = 7;
         description = "Days to keep trash.";
@@ -73,7 +73,7 @@ in
         description = "Clean trash";
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${pkgs.trash-cli}/bin/trash-empty ${builtins.toString cfg.trash.emptyInterval}";
+          ExecStart = "${pkgs.trash-cli}/bin/trash-empty ${builtins.toString cfg.trash.daysToKeep}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
