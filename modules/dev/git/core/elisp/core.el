@@ -28,6 +28,19 @@
   (defun custom/magit-show-commit-by-rev (commit)
     (interactive "MCommit id: ")
     (magit-show-commit commit))
+  (defun custom/magit-display-status-pop-up-frame (buffer)
+    "Display `magit-status' in new frame when opening `orgit' links"
+    (if (with-current-buffer buffer (eq major-mode 'magit-status-mode))
+        (let* ((previous-buffer (caar (window-prev-buffers)))
+               (previous-buffer-filename (buffer-file-name previous-buffer)))
+          (if (and previous-buffer-filename
+                   (string-suffix-p "\.org" previous-buffer-filename))
+            (display-buffer buffer
+                            '((display-buffer-reuse-window
+                               display-buffer-pop-up-frame)
+                              (reusable-frames . t)))
+            (magit-display-buffer-same-window-except-diff-v1 buffer)))
+      (magit-display-buffer-same-window-except-diff-v1 buffer)))
   :mode (("COMMIT_EDITMSG" . conf-javaprop-mode)
          ("COMMIT" . git-commit-mode))
   :bind
@@ -57,7 +70,7 @@
   (magit-completing-read-function 'completing-read)
   (magit-section-initial-visibility-alist '((stashes . hide) (untracked . hide) (unpushed . hide)))
   (magit-diff-refine-hunk t)
-  (magit-display-buffer-function 'magit-display-buffer-same-window-except-diff-v1))
+  (magit-display-buffer-function 'custom/magit-display-status-pop-up-frame))
 
 (use-package blamer
   :after magit
