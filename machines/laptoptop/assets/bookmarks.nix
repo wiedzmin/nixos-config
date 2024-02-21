@@ -605,6 +605,13 @@ in
         searchSuffix = "?q=torrent+";
       };
     };
+    "mongol_russian_dict" = {
+      desc = "MN - RU dict";
+      remote = {
+        url = "https://glosbe.com/ru/mn/";
+        searchSuffix = "";
+      };
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
