@@ -28,11 +28,13 @@
         ("g" . which-key-show-top-level)
         ("j" . which-key-show-major-mode)
         ("C-u" . which-key-undo))
-  :config
+  :custom
   ;; make sure which-key doesn't show normally but refreshes quickly after it is
   ;; triggered.
-  (setq which-key-show-early-on-C-h t)
-  (setq which-key-idle-secondary-delay 0.05)
-  (setq which-key-idle-delay 10000)
+  (which-key-idle-delay 10000)
+  (which-key-idle-secondary-delay 0.05)
+  (which-key-show-early-on-C-h t)
+  (which-key-sort-order 'which-key-key-order-alpha)
+  :config
   (which-key-setup-side-window-right-bottom)
   (which-key-mode))
