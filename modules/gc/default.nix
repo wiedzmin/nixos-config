@@ -82,7 +82,7 @@ in
     })
     (mkIf (cfg.enable && cfg.expired.enable) {
       assertions = [{
-        assertion = cfg.expired.enable && cfg.trash.calendarTimespec != "";
+        assertion = cfg.expired.enable && cfg.expired.calendarTimespec != "";
         message = "gc: must schedule trash cleaning once it was enabled.";
       }];
 
