@@ -333,10 +333,6 @@ in
 
   gc = {
     enable = true;
-    trash = {
-      enable = true;
-      calendarTimespec = "*-*-* 23:00:00";
-    };
     expired = {
       enable = true;
       calendarTimespec = "*-*-* 23:30:00";

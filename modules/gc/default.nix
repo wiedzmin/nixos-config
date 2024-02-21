@@ -14,21 +14,6 @@ in
         default = false;
         description = "Whether to enable automated 'housekeeping'.";
       };
-      trash.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable trash cleaning.";
-      };
-      trash.daysToKeep = mkOption {
-        type = types.int;
-        default = 7;
-        description = "Days to keep trash.";
-      };
-      trash.calendarTimespec = mkOption {
-        type = types.str;
-        default = "";
-        description = "Timestamp of service activation (in systemd format).";
-      };
       expired.enable = mkOption {
         type = types.bool;
         default = false;
@@ -63,23 +48,6 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable && cfg.trash.enable) {
-      assertions = [{
-        assertion = cfg.trash.enable && cfg.trash.calendarTimespec != "";
-        message = "gc: must schedule trash cleaning once it was enabled.";
-      }];
-
-      systemd.user.services."clean-trash" = {
-        description = "Clean trash";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.trash-cli}/bin/trash-empty ${builtins.toString cfg.trash.daysToKeep}";
-          StandardOutput = "journal";
-          StandardError = "journal";
-        };
-      };
-      systemd.user.timers."clean-trash" = renderTimer "Clean trash" "" "" cfg.trash.calendarTimespec false "";
-    })
     (mkIf (cfg.enable && cfg.expired.enable) {
       assertions = [{
         assertion = cfg.expired.enable && cfg.expired.calendarTimespec != "";
