@@ -220,6 +220,7 @@
   (org-agenda-skip-deadline-prewarning-if-scheduled 'pre-scheduled)
   (org-agenda-skip-scheduled-if-done t)
   (org-agenda-skip-timestamp-if-done t)
+  (org-agenda-sort-notime-is-late nil)
   (org-agenda-span 'month)
   (org-agenda-start-on-weekday 1)
   (org-agenda-sticky nil) ;otherwise agenda behaves strangely on non-stuck projects
