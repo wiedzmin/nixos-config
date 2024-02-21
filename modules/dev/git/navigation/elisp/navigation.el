@@ -25,4 +25,6 @@
   (:map mode-specific-map
         ("C-d" . magit-todos-list))
   (:map custom-projects-map
-        ("t" . magit-todos-list)))
+        ("t" . magit-todos-list))
+  :config
+  (magit-todos-mode 1))
