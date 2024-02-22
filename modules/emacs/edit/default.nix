@@ -4,6 +4,8 @@ with lib;
 
 let
   cfg = config.ide.emacs.edit;
+  user = config.attributes.mainUser.name;
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -62,6 +64,22 @@ in
     })
     (mkIf (cfg.enable && cfg.autorevert.enable) {
       ide.emacs.core.config = builtins.readFile ./elisp/autorevert.el;
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          # NOTE: expansions deps
+          vim
+        ];
+        xdg.configFile."espanso/match/emacs-emergency.yml".source = yaml.generate "espanso-emacs-emergency.yml" {
+          matches = [
+            {
+              trigger = ":ve";
+              replace = "vim `rg --files | fzf`";
+            }
+          ];
+        };
+      };
     })
   ];
 }
