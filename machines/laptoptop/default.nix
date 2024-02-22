@@ -125,8 +125,10 @@ in
     };
     autoRepeatDelay = 200;
     autoRepeatInterval = 40;
-    xkbOptions = "caps:none";
-    layout = "us,ru";
+    xkb = {
+      options = "caps:none";
+      layout = "us,ru";
+    };
   };
 
   job = {

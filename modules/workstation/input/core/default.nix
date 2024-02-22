@@ -86,7 +86,7 @@ in
         '';
     })
     (mkIf (cfg.enable && cfg.xcompose.enable) {
-      services.xserver.xkbOptions = "compose:${cfg.xcompose.key}";
+      services.xserver.xkb.options = "compose:${cfg.xcompose.key}";
       home-manager.users."${user}" = {
         home.file = {
           ".XCompose".text = ''
