@@ -728,6 +728,10 @@
   :config
   (add-to-list 'epithet-suggesters #'epithet-for-rg))
 
+(use-package which-func
+  :custom
+  (which-function-mode 1))
+
 (use-package isearch
   :custom
   (lazy-count-suffix-format "   (%s/%s)"))
