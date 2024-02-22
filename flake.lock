@@ -90,6 +90,22 @@
         "type": "github"
       }
     },
+    "emacs-haproxy-mode": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1707391893,
+        "narHash": "sha256-UcUI4NKndr43+3SX7Mi8zr9MC7cVxwFzA5eH2/DzYN8=",
+        "owner": "port19x",
+        "repo": "haproxy-mode",
+        "rev": "a8cff87487a763ad6523add4d332e654570d56c0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "port19x",
+        "repo": "haproxy-mode",
+        "type": "github"
+      }
+    },
     "emacs-highlight-sexp": {
       "flake": false,
       "locked": {
@@ -559,6 +575,7 @@
         "emacs-easy-kill-extras": "emacs-easy-kill-extras",
         "emacs-epithet": "emacs-epithet",
         "emacs-git-msg-prefix": "emacs-git-msg-prefix",
+        "emacs-haproxy-mode": "emacs-haproxy-mode",
         "emacs-highlight-sexp": "emacs-highlight-sexp",
         "emacs-org-bars": "emacs-org-bars",
         "git-extra-commands": "git-extra-commands",

@@ -194,7 +194,6 @@ in
         epkgs.webpaste
         epkgs.yaml-pro
         epkgs.yaml-mode
-        epkgs.groovy-mode
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ];
       ide.emacs.core.customKeymaps = {

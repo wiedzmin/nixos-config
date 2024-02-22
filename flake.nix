@@ -40,6 +40,10 @@
       url = "github:acastanedam/git-msg-prefix.el/update-cl";
       flake = false;
     };
+    emacs-haproxy-mode = {
+      url = "github:port19x/haproxy-mode";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {
