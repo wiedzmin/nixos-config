@@ -39,6 +39,11 @@ in
         default = '''';
         description = "Custom XCompose mappings";
       };
+      hints.alphabet = mkOption {
+        type = types.str;
+        default = "qweasdzxc";
+        description = "Common charset for keyboard navigation hints in various apps, like browsers, VT, etc.";
+      };
     };
   };
 

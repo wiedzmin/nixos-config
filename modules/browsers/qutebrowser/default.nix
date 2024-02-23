@@ -62,11 +62,6 @@ in
         default = "letter";
         description = "Mode to use for hints";
       };
-      hints.chars = mkOption {
-        type = types.str;
-        default = "qweasdzxc";
-        description = "Characters used for hint strings";
-      };
       emacs.browseUrlSetup = mkOption {
         type = types.lines;
         default = ''
@@ -279,7 +274,7 @@ in
               min_chars = 1;
               mode = cfg.hints.mode;
               dictionary = xdgConfig "${user}" "/qutebrowser/hint-words";
-              chars = cfg.hints.chars;
+              chars = config.workstation.input.core.hints.alphabet;
               next_regexes = [
                 "\\\\bnext\\\\b"
                 "\\\\bmore\\\\b"

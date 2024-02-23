@@ -298,7 +298,7 @@ in
 
           " Sane hinting mode
           set hintfiltermode vimperator-reflow
-          set hintchars qweasdzxc
+          set hintchars ${config.workstation.input.core.hints.alphabet}
           set hintuppercase false
           set hintnames uniform
 
