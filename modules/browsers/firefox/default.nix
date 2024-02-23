@@ -53,7 +53,7 @@ in
             :config
             (setq browse-url-browser-function 'browse-url-firefox)
             (setq browse-url-firefox-program "${cfg.traits.command.binary}")
-            ${optionalString (cfg.traits.command.parameters != "") "(setq browse-url-firefox-arguments '(${appCmdParametersQuotedSpaced cfg.traits}))"})
+            ${optionalString (cfg.traits.command.parameters != [ ]) "(setq browse-url-firefox-arguments '(${appCmdParametersQuotedSpaced cfg.traits}))"})
         '';
         visible = false;
         internal = true;
@@ -119,7 +119,7 @@ in
       browsers.firefox.traits = rec {
         command = {
           binary = "${pkgs.firefox-unwrapped}/bin/firefox";
-          parameters = "--new-window";
+          parameters = [ "--new-window" ];
         };
         wmClass = [ "Navigator" "firefox" ];
         suspensionRule = {
