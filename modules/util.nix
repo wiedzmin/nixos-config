@@ -572,8 +572,8 @@ rec {
   # {{{ XApps
   appWindowClass = traits: lib.last traits.wmClass;
   appCmdFull = traits: with traits.command;
-    lib.concatStringsSep " " [ binary parameters ];
+    lib.concatStringsSep " " ([ binary ] ++ parameters);
   appCmdParametersQuotedSpaced = traits: lib.concatStringsSep " "
-    (lib.forEach (lib.splitString " " traits.command.parameters) (s: "\"" + s + "\""));
+    (lib.forEach traits.command.parameters (s: "\"" + s + "\""));
   # }}}
 }

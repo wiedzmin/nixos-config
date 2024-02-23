@@ -10,9 +10,9 @@ in
       description = "X application binary";
     };
     command.parameters = mkOption {
-      type = types.str;
-      default = "";
-      description = "X application command parameters";
+      type = types.listOf types.str;
+      default = [ ];
+      description = "X application command parameters list";
     };
     wmClass = mkOption {
       type = types.listOf types.str;

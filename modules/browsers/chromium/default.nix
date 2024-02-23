@@ -65,7 +65,7 @@ in
             :config
             (setq browse-url-browser-function 'browse-url-chromium)
             (setq browse-url-chromium-program "${cfg.traits.command.binary}")
-            ${optionalString (cfg.traits.command.parameters != "") "(setq browse-url-chromium-arguments '(${appCmdParametersQuotedSpaced cfg.traits}))"})
+            ${optionalString (cfg.traits.command.parameters != [ ]) "(setq browse-url-chromium-arguments '(${appCmdParametersQuotedSpaced cfg.traits}))"})
         '';
         visible = false;
         internal = true;
@@ -87,7 +87,7 @@ in
       browsers.chromium.traits = rec {
         command = {
           binary = "${pkgs.chromium}/bin/chromium";
-          parameters = "--new-window";
+          parameters = [ "--new-window" ];
         };
         wmClass = [ "chromium-browser" "Chromium-browser" ];
         suspensionRule = {
