@@ -27,27 +27,19 @@ in
         default = false;
         description = "Whether to enable Kitty. Docs at https://sw.kovidgoyal.net/kitty/";
       };
+      traits = mkOption {
+        type = types.submodule (import ../../workstation/systemtraits/xapp-traits.nix);
+        description = "Kitty application traits";
+      };
       autostart = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to autostart Kitty with X session start";
       };
-      command = mkOption {
-        type = types.listOf types.str;
-        default = [ "${pkgs.kitty}/bin/kitty" "-1" "--listen-on tcp:localhost:${builtins.toString cfg.remote.port}" ];
-        description = "Default command line to invoke";
-      };
       scrollbackSize = mkOption {
         type = types.int;
         default = 100000;
         description = "Scrollback buffer size";
-      };
-      windowClass = mkOption {
-        type = types.listOf types.str;
-        default = [ "kitty" "kitty" ];
-        visible = false;
-        internal = true;
-        description = "Kitty default window class.";
       };
       # TODO: consider ""nix-optionalizing"" remote control feature
       remote.port = mkOption {
@@ -75,19 +67,27 @@ in
           message = "Only one VT program should be enabled at the same time";
         }
       ];
+
+      shell.vt.kitty.traits = rec {
+        command = {
+          binary = "${pkgs.kitty}/bin/kitty";
+          parameters = [ "-1" "--listen-on tcp:localhost:${builtins.toString cfg.remote.port}" ];
+        };
+        wmClass = [ "kitty" "kitty" ];
+      };
+
       fonts.packages = with pkgs; [ powerline-fonts ];
 
-      pim.timetracking.rules = mkArbttProgramTitleRule [ "kitty" ]
+      pim.timetracking.rules = mkArbttProgramTitleRule [ (appWindowClass cfg.traits) ]
         [ "(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/" ] "project:$1-$2-$3";
 
       shell.core.variables = [
-        { TERMINAL = builtins.head cfg.command; global = true; }
-        { TB_VT_ORG_TOOL = "kitty"; global = true; }
+        { TERMINAL = cfg.traits.command.binary; global = true; }
+        { TB_VT_ORG_TOOL = binaryFromCmd cfg.traits.command.binary; global = true; }
         { TB_KITTY_SOCKET = "tcp:localhost:${builtins.toString cfg.remote.port}"; global = true; }
-        { TB_TERMINAL_CMD = builtins.head cfg.command; }
+        { TB_TERMINAL_CMD = cfg.traits.command.binary; }
       ];
-      attributes.vt.default.cmd = cfg.command;
-      attributes.vt.default.windowClass = cfg.windowClass;
+      attributes.vt.default.traits = cfg.traits;
 
       navigation.bookmarks.entries = {
         kitty-docs = {
@@ -372,20 +372,20 @@ in
         };
       };
       workstation.input.keyboard.xkeysnail.rc = ''
-        define_keymap(re.compile("${lib.last cfg.windowClass}"), {
+        define_keymap(re.compile("${appWindowClass cfg.traits}"), {
             K("C-x"): K("M-x"),
             K("C-r"): K("C-Shift-r"),
             K("M-Shift-comma"): K("M-Shift-LEFT_BRACE"),
             K("M-Shift-dot"): K("M-Shift-RIGHT_BRACE"),
-        }, "kitty")
+        }, "${appWindowClass cfg.traits}")
       ''; # NOTE: workarounds for some unexpectedly non-working prefixes
-      wmCommon.autostart.entries = optionals cfg.autostart [{ cmd = lib.concatStringsSep " " cfg.command; }];
+      wmCommon.autostart.entries = optionals cfg.autostart [{ cmd = appCmdFull cfg.traits; }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
         xdg.configFile = {
           "espanso/config/kitty.yml".source = yaml.generate "espanso-config-kitty.yml" {
-            filter_class = "kitty";
+            filter_class = appWindowClass cfg.traits;
             disable_x11_fast_inject = true;
             backend = "Clipboard";
           };
@@ -411,7 +411,7 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = [{
         key = [ prefix "Shift" "Return" ];
-        cmd = lib.concatStringsSep " " cfg.command;
+        cmd = appCmdFull cfg.traits;
         mode = "root";
       }];
     })
