@@ -233,15 +233,9 @@ with lib;
       type = types.attrs;
       default = { url = { py = "(https?|ftp|file)://[-A-Za-z0-9+&@#/%?=~_|!:,.;]*[-A-Za-z0-9+&@#/%=~_|]"; }; };
     };
-    vt.default.cmd = mkOption {
-      type = types.listOf types.str;
-      default = [ ];
-      description = "Default virtual terminal command elements (including `command` flag, for executing something)";
-    };
-    vt.default.windowClass = mkOption {
-      description = "Default virtual terminal window class";
-      type = types.listOf types.str;
-      default = [ ];
+    vt.default.traits = mkOption {
+      type = types.submodule (import ./workstation/systemtraits/xapp-traits.nix);
+      description = "Default virtual terminal traits";
     };
     wms.enabled = mkOption {
       description = "Whether any window manager is enabled in current setup";

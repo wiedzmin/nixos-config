@@ -115,20 +115,17 @@ in
       wmCommon.keybindings.entries = [
         {
           key = [ "d" ];
-          cmd = "${pkgs.sshmenu}/bin/sshmenu --choices --term-command '${
-            lib.concatStringsSep " " config.attributes.vt.default.cmd}'";
+          cmd = "${pkgs.sshmenu}/bin/sshmenu --choices --term-command '${appCmdFull config.attributes.vt.default.traits}'";
           mode = "network";
         }
         {
           key = [ "s" ];
-          cmd = "${pkgs.sshmenu}/bin/sshmenu --term-command '${
-            lib.concatStringsSep " " config.attributes.vt.default.cmd}'";
+          cmd = "${pkgs.sshmenu}/bin/sshmenu --term-command '${appCmdFull config.attributes.vt.default.traits}'";
           mode = "network";
         }
         {
           key = [ "t" ];
-          cmd = "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux --term-command '${
-            lib.concatStringsSep " " config.attributes.vt.default.cmd}'";
+          cmd = "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux --term-command '${appCmdFull config.attributes.vt.default.traits}'";
           mode = "network";
         }
       ];

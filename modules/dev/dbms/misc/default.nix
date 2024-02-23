@@ -73,8 +73,7 @@ in
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = lib.optionals (cfg.controlCenter.meta != { }) [{
         key = [ "d" ];
-        cmd = ''${pkgs.dbms}/bin/dbms --term-command "${
-          lib.concatStringsSep " " config.attributes.vt.default.cmd}" '';
+        cmd = ''${pkgs.dbms}/bin/dbms --term-command "${appCmdFull config.attributes.vt.default.traits}" '';
         mode = "dev";
       }];
     })

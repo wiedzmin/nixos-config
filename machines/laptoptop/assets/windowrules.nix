@@ -1,10 +1,10 @@
-{ config, lib, pkgs, ... }:
+{ config, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
 {
   wmCommon.wsMapping.rules = [
     {
-      class = lib.last config.attributes.vt.default.windowClass;
+      class = appWindowClass config.attributes.vt.default.traits;
       title = "main ${config.attributes.machine.name}";
       desktop = "shell";
     }

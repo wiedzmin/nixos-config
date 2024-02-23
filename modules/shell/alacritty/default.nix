@@ -15,22 +15,14 @@ in
         default = false;
         description = "Whether to enable Alacritty.";
       };
+      traits = mkOption {
+        type = types.submodule (import ../../workstation/systemtraits/xapp-traits.nix);
+        description = "Kitty application traits";
+      };
       autostart = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to autostart Alacritty with X session start";
-      };
-      command = mkOption {
-        type = types.listOf types.str;
-        default = [ "${pkgs.alacritty}/bin/alacritty" "-e" ];
-        description = "Default command line to invoke";
-      };
-      windowClass = mkOption {
-        type = types.listOf types.str;
-        default = [ "Alacritty" "Alacritty" ];
-        visible = false;
-        internal = true;
-        description = "Alacritty default window class.";
       };
       wm.enable = mkOption {
         type = types.bool;
@@ -42,17 +34,24 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
+      shell.vt.kitty.traits = rec {
+        command = {
+          binary = "${pkgs.alacritty}/bin/alacritty";
+          parameters = [ "-e" ];
+        };
+        wmClass = [ "Alacritty" "Alacritty" ];
+      };
+
       fonts = { fonts = with pkgs; [ powerline-fonts ]; };
 
-      pim.timetracking.rules = mkArbttProgramTitleRule [ "Alacritty" ]
+      pim.timetracking.rules = mkArbttProgramTitleRule [ (appWindowClass cfg.traits) ]
         [ "(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/" ] "project:$1-$2-$3";
 
       shell.core.variables = [
-        { TERMINAL = builtins.head cfg.command; global = true; }
-        { TB_TERMINAL_CMD = builtins.head cfg.command; }
+        { TERMINAL = cfg.traits.command.binary; global = true; }
+        { TB_TERMINAL_CMD = cfg.traits.command.binary; }
       ];
-      attributes.vt.default.cmd = cfg.command;
-      attributes.vt.default.windowClass = cfg.windowClass;
+      attributes.vt.default.traits = cfg.traits;
       home-manager.users."${user}" = {
         programs.alacritty = {
           enable = true;
@@ -85,18 +84,18 @@ in
         };
       };
       workstation.input.keyboard.xkeysnail.rc = ''
-        define_keymap(re.compile("Alacritty"), {
+        define_keymap(re.compile("${appWindowClass cfg.traits}"), {
             K("C-x"): {
                 K("k"): K("C-d"),
             },
-        }, "Alacritty")
+        }, "${appWindowClass cfg.traits}")
       '';
-      wmCommon.autostart.entries = optionals cfg.autostart [{ cmd = builtins.head cfg.command; }];
+      wmCommon.autostart.entries = optionals cfg.autostart [{ cmd = cfg.traits.command.binary; }];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = [{
         key = [ prefix "Shift" "Return" ];
-        cmd = builtins.head cfg.command;
+        cmd = cfg.traits.command.binary;
         mode = "root";
       }];
     })
