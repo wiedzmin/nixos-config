@@ -84,7 +84,7 @@ in
             up: Up
             right: Right
 
-            screen_chars: qweasdzxc
+            screen_chars: ${config.workstation.input.core.hints.alphabet}
           '';
         };
       };

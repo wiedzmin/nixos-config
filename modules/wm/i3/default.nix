@@ -428,7 +428,8 @@ in
           (e: e // { wm = "i3"; })) ++ optionals (cfg.windowFocus.impl == "wmfocus") [
           {
             key = [ prefix "Tab" ];
-            cmd = ''${pkgs.wmfocus}/bin/wmfocus --halign center --valign center --chars qweasdzxc --font ${
+            cmd = ''${pkgs.wmfocus}/bin/wmfocus --halign center --valign center --chars ${
+              config.workstation.input.core.hints.alphabet} --font ${
               config.wmCommon.fonts.familySize.large} --textcoloralt "#eeeeee"'';
             mode = "root";
           }
