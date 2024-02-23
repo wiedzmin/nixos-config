@@ -18,6 +18,7 @@ let
   user = config.attributes.mainUser.name;
   inherit (config.wmCommon) prefix;
   yaml = pkgs.formats.yaml { };
+  remoteConnString = "tcp:localhost:${builtins.toString cfg.remote.port}";
 in
 {
   options = {
@@ -71,7 +72,7 @@ in
       shell.vt.kitty.traits = rec {
         command = {
           binary = "${pkgs.kitty}/bin/kitty";
-          parameters = [ "-1" "--listen-on tcp:localhost:${builtins.toString cfg.remote.port}" ];
+          parameters = [ "-1" "--listen-on ${remoteConnString}" ];
         };
         wmClass = [ "kitty" "kitty" ];
       };
@@ -84,7 +85,7 @@ in
       shell.core.variables = [
         { TERMINAL = cfg.traits.command.binary; global = true; }
         { TB_VT_ORG_TOOL = binaryFromCmd cfg.traits.command.binary; global = true; }
-        { TB_KITTY_SOCKET = "tcp:localhost:${builtins.toString cfg.remote.port}"; global = true; }
+        { TB_KITTY_SOCKET = remoteConnString; global = true; }
         { TB_TERMINAL_CMD = cfg.traits.command.binary; }
       ];
       attributes.vt.default.traits = cfg.traits;
