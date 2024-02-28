@@ -6,6 +6,7 @@ with lib;
 let
   cfg = config.ide.emacs.core;
   user = config.attributes.mainUser.name;
+  emacsWithPkgs = (pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages;
   drop-corrupted = pkgs.writeShellApplication {
     name = "drop-corrupted";
     text = ''
@@ -267,8 +268,8 @@ in
         "custom-goto-map" = "M-s";
       };
       shell.core.variables = lib.optionals cfg.daemon.enable [{
-        EDITOR = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
-        VISUAL = "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
+        EDITOR = "${emacsWithPkgs}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
+        VISUAL = "${emacsWithPkgs}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
       }];
       ide.emacs.completion.tempel.snippets = ''
         fundamental-mode
@@ -282,7 +283,7 @@ in
       '';
       home-manager.users."${user}" = {
         home.packages = (with pkgs; [ drop-corrupted ispell nurpkgs.my_cookies ])
-          ++ [ ((pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages) ]
+          ++ [ emacsWithPkgs ]
           ++ optionals (cfg.emacsEverywhere.enable) (with pkgs; [
           xclip
           xdotool
@@ -292,7 +293,7 @@ in
         home.file = {
           ".emacs.d/early-init.el".text = ''
             ${lib.optionalString (cfg.daemon.enable) ''
-              (setenv "EDITOR" "${cfg.package}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server")
+              (setenv "EDITOR" "${emacsWithPkgs}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server")
             ''}
             ;; FIXME: elaborate alternative command for the case of disabled daemon
             ${lib.optionalString (cfg.environment != { }) (builtins.concatStringsSep "\n"
@@ -308,7 +309,7 @@ in
             after = [ "linkGeneration" ];
             before = [ ];
             data = ''
-              ${cfg.package}/bin/emacs --batch -l ${homePrefix user ".emacs.d"}/early-init.el -l ${homePrefix user ".emacs.d"}/init.el
+              ${emacsWithPkgs}/bin/emacs --batch -l ${homePrefix user ".emacs.d"}/early-init.el -l ${homePrefix user ".emacs.d"}/init.el
             '';
           };
           ensureEmacsXdgConfigPath = {
@@ -322,7 +323,7 @@ in
       };
       systemd.user.services."emacs" = optionalAttrs cfg.daemon.enable
         (
-          let icon = "${cfg.package}/share/icons/hicolor/scalable/apps/emacs.svg";
+          let icon = "${emacsWithPkgs}/share/icons/hicolor/scalable/apps/emacs.svg";
           in
           {
             description = "Emacs: the extensible, self-documenting text editor";
@@ -330,11 +331,8 @@ in
             restartIfChanged = false;
             serviceConfig = {
               Type = "simple";
-              # NOTE: something in nixpkgs commits range 8cfef6986adf..a9bf124c46ef broke this command ("exec: emacs: command not found"),
-              # and there is no fix/workaround available yet. It may also be some recent systemd change(s), that breaks the old behavior.
-              # this note will be kept for historical and educational reason for some sane timerange
-              ExecStart = ''${pkgs.runtimeShell} -l -c "exec emacs --fg-daemon"'';
-              ExecStop = "${cfg.package}/bin/emacsclient --eval '(kill-emacs 0)'";
+              ExecStart = ''${pkgs.runtimeShell} -l -c "exec ${emacsWithPkgs}/bin/emacs --fg-daemon"'';
+              ExecStop = "${emacsWithPkgs}/bin/emacsclient --eval '(kill-emacs 0)'";
               ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
               Restart = "on-failure";
               StandardOutput = "journal";
@@ -359,7 +357,7 @@ in
       ] ++ optionals (cfg.emacsEverywhere.enable) [
         {
           key = [ "e" ];
-          cmd = "${cfg.package}/bin/emacsclient --eval \"(emacs-everywhere)\"";
+          cmd = "${emacsWithPkgs}/bin/emacsclient --eval \"(emacs-everywhere)\"";
           mode = "run";
         }
       ];
