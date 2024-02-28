@@ -733,6 +733,7 @@ in
         windowManager = {
           i3 = {
             enable = true;
+            updateSessionEnvironment = false;
             extraPackages = with pkgs;
               lib.optionals (cfg.statusbar.impl == "py3") [ i3status python3Packages.py3status file ]
               ++ lib.optionals (cfg.statusbar.impl == "i3-rs") [ i3status-rust ]
