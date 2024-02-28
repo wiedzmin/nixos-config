@@ -75,6 +75,7 @@ in
           keep-derivations = true
           http-connections = 10
           experimental-features = nix-command flakes
+          access-tokens = github.com=${config.ext.networking.secrets.accessTokens."github"}
         '';
         registry = {
           config.flake = inputs.self;
