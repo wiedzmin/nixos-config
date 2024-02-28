@@ -1,9 +1,16 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with lib;
 
 let
   cfg = config.appearance.fonts;
   user = config.attributes.mainUser.name;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   imports = [ ./agave-fonts.nix ./fira-code-fonts.nix ./hack-fonts.nix ./iosevka-fonts.nix ./jbmono-fonts.nix ./scp-fonts.nix ];
@@ -67,7 +74,7 @@ in
         useXkbConfig = true;
       };
       i18n = { defaultLocale = cfg.locale; };
-      home-manager.users."${user}" = { home.packages = with pkgs; [ cicero-tui fontfor ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ cicero-tui nixpkgs-last-unbroken.fontfor ]; };
     })
     (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
       navigation.bookmarks.entries = {

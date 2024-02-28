@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -7,6 +7,13 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
   inherit (hm.xdg) dataHome;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -62,7 +69,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ MYCLI_HISTFILE = cfg.mycli.historyPath; global = true; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ mycli ];
+        home.packages = with pkgs; [ nixpkgs-last-unbroken.mycli ];
         xdg.configFile.".myclirc".text = lib.generators.toINI { } {
           main = {
             audit_log = cfg.mycli.auditLogPath;

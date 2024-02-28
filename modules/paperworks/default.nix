@@ -13,6 +13,13 @@ let
     };
     localSystem = { system = "x86_64-linux"; };
   };
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 
   paperlessDefaultUser = "paperless";
 
@@ -366,7 +373,7 @@ in
     })
     (mkIf cfg.processors.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ enca imagemagick img2pdf ocamlPackages.cpdf pandoc pdfchain pdfcpu pdfslicer pdftk ];
+        home.packages = with pkgs; [ enca imagemagick img2pdf ocamlPackages.cpdf pandoc pdfchain pdfcpu nixpkgs-last-unbroken.pdfslicer pdftk ];
         xdg.configFile = optionalAttrs (config.completion.expansions.enable) {
           "espanso/match/paperworks_processors.yml".source = yaml.generate "espanso-paperworks_processors.yml" {
             matches = [
