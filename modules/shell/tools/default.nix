@@ -32,6 +32,8 @@ in
           gron
           htmlq
           jc
+          jj
+          jp
           jless
           lfs
           miller
