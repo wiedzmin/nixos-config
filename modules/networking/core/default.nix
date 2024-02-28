@@ -63,7 +63,7 @@ in
       };
       users.users."${user}".extraGroups = [ "networkmanager" ];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ anydesk ipinfo ];
+        home.packages = with pkgs; [ anydesk ipinfo socat ];
       };
       wmCommon.modeBindings = {
         "network" = [ prefix "n" ];
