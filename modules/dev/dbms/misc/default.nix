@@ -40,7 +40,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ sq ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ sq sqlite ]; };
     })
     (mkIf (cfg.enable && cfg.controlCenter.enable) {
       assertions = [
