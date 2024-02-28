@@ -33,7 +33,7 @@ in
       };
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ gitleaks gitnuro ];
+        home.packages = with pkgs; [ gitleaks gitnuro mgitstatus ];
       };
 
       dev.vcs.batch.commands = {
