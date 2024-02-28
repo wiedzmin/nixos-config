@@ -57,6 +57,16 @@ in
         default = true;
         description = "Whether to daemonize";
       };
+      daemon.debug = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable pre-start debug output for systemd service";
+      };
+      daemon.debugCmd = mkOption {
+        type = types.str;
+        default = "";
+        description = "Command used to produce debug output for systemd service";
+      };
       fromGit = mkOption {
         type = types.bool;
         default = true;
@@ -337,6 +347,8 @@ in
               Restart = "on-failure";
               StandardOutput = "journal";
               StandardError = "journal";
+            } // optionalAttrs (cfg.debug.enable && cfg.daemon.debugCmd != "") {
+              ExecStartPre = ''${pkgs.stdenv.shell} -l -c "${cfg.daemon.debugCmd} | tee /tmp/emacs-service-$(date +%Y-%m-%d-%H-%M-%S | tr -d '[:cntrl:]').debug"'';
             };
           }
         );
