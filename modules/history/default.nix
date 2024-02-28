@@ -88,7 +88,11 @@ in
         # https://github.com/ellie/atuin/blob/main/docs/config.md
         # https://github.com/ellie/atuin/blob/main/atuin-client/config.toml
         xdg.configFile."atuin/config.toml".source = toml.generate "config.toml" {
+          timezone = "local";
+          update_check = false;
           search_mode = "fuzzy";
+          inline_height = 30;
+          workspaces = true;
           style = "compact";
         };
       } // optionalAttrs (cfg.shell.backend == "mcfly") {
