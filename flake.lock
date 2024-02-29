@@ -592,6 +592,7 @@
         "pass-zsh-completion": "pass-zsh-completion",
         "telega": "telega",
         "unstable": "unstable",
+        "unstable-future": "unstable-future",
         "yasnippet-snippets": "yasnippet-snippets",
         "zsh-async": "zsh-async",
         "zsh-command-time": "zsh-command-time",
@@ -665,6 +666,22 @@
         "owner": "nixos",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "unstable-future": {
+      "locked": {
+        "lastModified": 1709150264,
+        "narHash": "sha256-HofykKuisObPUfj0E9CJVfaMhawXkYx3G8UIFR/XQ38=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "9099616b93301d5cf84274b184a3a5ec69e94e08",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "9099616b93301d5cf84274b184a3a5ec69e94e08",
         "type": "github"
       }
     },
