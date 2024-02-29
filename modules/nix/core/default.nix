@@ -6,6 +6,13 @@ with lib;
 let
   cfg = config.ext.nix.core;
   user = config.attributes.mainUser.name;
+  unstable-future = import inputs.unstable-future {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -144,6 +151,7 @@ in
           nix-melt
           rollback
           statix
+          unstable-future.flake-checker
         ];
         home.sessionPath = [ ''''${XDG_DATA_HOME}/cargo/bin'' ];
       };
