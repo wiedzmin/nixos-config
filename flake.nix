@@ -3,6 +3,7 @@
 
   inputs = {
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
+    unstable-future.url = "github:nixos/nixpkgs/9099616b93301d5cf84274b184a3a5ec69e94e08";
 
     nur.url = "github:wiedzmin/NUR";
 
