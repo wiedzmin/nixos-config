@@ -701,13 +701,13 @@ in
     }
     {
       name = "tools";
-      key = [ "1" ];
+      key = [ "F9" ];
       transient = false;
       type = "primary";
     }
     {
       name = "scan";
-      key = [ "2" ];
+      key = [ "F10" ];
       transient = false;
       type = "primary";
     }
@@ -725,7 +725,7 @@ in
     }
     {
       name = "read";
-      key = [ "3" ];
+      key = [ "F7" ];
       transient = false;
       type = "secondary";
     }
