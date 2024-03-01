@@ -20,11 +20,6 @@ with pkgs.unstable.commonutils;
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "http docs i3wm";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "http facebook github";
       desktop = "web";
     }
@@ -61,11 +56,6 @@ with pkgs.unstable.commonutils;
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "nixos github";
-      desktop = "web";
-    }
-    {
-      class = mkWSMappingBrowsersRegexp config.attributes.browser;
-      title = "documentation";
       desktop = "web";
     }
     {
