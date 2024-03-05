@@ -1,45 +1,28 @@
+host_name := `hostname`
+nixpkgs_main_input := "unstable"
+
 default:
     @just --choose
 
-# Update flake inputs versions
-flake-update-inputs:
-    nix flake update
+# Build configuration flake for current host
+build host=host_name:
+    nixos-rebuild build --flake ".#{{host}}"
 
-# Build "laptoptop" flake
-laptoptop-build:
-    nixos-rebuild build --flake ".#laptoptop"
+# Build configuration flake for current host with debug output
+build-debug host=host_name:
+    nixos-rebuild build --flake ".#{{host}}" --show-trace
 
-# Build "laptoptop" flake with debug output
-laptoptop-build-debug:
-    nixos-rebuild build --flake ".#laptoptop" --show-trace
+# Build configuration flake for current host without network access
+build-no-net host=host_name:
+    nixos-rebuild build --flake ".#{{host}}" --option binary-caches ''
 
-# Build "laptoptop" flake without network access
-laptoptop-build-no-net:
-    nixos-rebuild build --flake ".#laptoptop" --option binary-caches ''
+# Build + switch configuration flake for current host
+switch host=host_name:
+    nixos-rebuild switch -j 4 --use-remote-sudo --flake ".#{{host}}"
 
-# Build + switch "laptoptop" flake
-laptoptop-switch:
-    nixos-rebuild switch -j 4 --use-remote-sudo --flake ".#laptoptop"
-
-# Build + switch "laptoptop" flake without network access
-laptoptop-switch-no-net:
-    sudo nixos-rebuild switch --flake ".#laptoptop" --option binary-caches ''
-
-# Build "momcat" flake
-momcat-build:
-    nixos-rebuild build --flake ".#momcat"
-
-# Build "momcat" flake with debug output
-momcat-build-debug:
-    nixos-rebuild build --flake ".#momcat" --show-trace
-
-# Build + switch "momcat" flake
-momcat-switch:
-    nixos-rebuild switch --use-remote-sudo --flake ".#momcat"
-
-# Build + switch "momcat" flake without network access
-momcat-switch-no-net:
-    sudo nixos-rebuild switch --flake ".#momcat" --option binary-caches ''
+# Build + switch configuration flake for current host without network access
+switch-no-net host=host_name:
+    nixos-rebuild switch --use-remote-sudo --flake ".#{{host}}" --option binary-caches ''
 
 # Remove system build local output
 clean:
@@ -70,9 +53,22 @@ devenv-cleanup-and-gc:
     sudo nix-collect-garbage -d
     touch .envrc
 
+# Update flake inputs versions
+flake-update-inputs: flake-update-inputs-nixpkgs-main flake-update-inputs-emacs
+    nix flake update
+
+# Update `unstable` flake input
+flake-update-inputs-nixpkgs-main:
+    nix flake update {{nixpkgs_main_input}}
+
+# Update `unstable` flake input
+flake-update-inputs-emacs:
+    nix flake update emacs
+
+# Lint configuration flake(s)
+check-config-flake:
+    flake-checker -n {{nixpkgs_main_input}}
+
 # generate git log for `code-maat` consumption
 maat-log:
     git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log
-
-check-flake:
-    flake-checker -n unstable
