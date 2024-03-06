@@ -357,6 +357,7 @@
   :bind
   ([remap list-directory] . dired)
   (:map dired-mode-map
+        ("/" . custom/dired-current-path-to-clipboard)
         ("i" . image-dired)
         ("C-c" . org-copy-visible))
   (:map dired-mode-map
@@ -372,6 +373,10 @@
         (zero-or-more nonl))
     "Regexp for matching windows to disappear")
   (defun custom/revert-dired-buffer (func &rest args) (revert-buffer))
+  (defun custom/dired-current-path-to-clipboard ()
+    (interactive)
+    (when (eq major-mode 'dired-mode)
+      (kill-new dired-directory)))
   :custom
   (dired-recursive-deletes 'top) ;; Allows recursive deletes
   (dired-dwim-target t)
