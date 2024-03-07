@@ -4,11 +4,6 @@ with pkgs.unstable.commonutils;
 {
   wmCommon.wsMapping.rules = [
     {
-      class = appWindowClass config.attributes.vt.default.traits;
-      title = "main ${config.attributes.machine.name}";
-      desktop = "shell";
-    }
-    {
       class = "TelegramDesktop";
       desktop = "im";
     }
