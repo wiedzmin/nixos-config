@@ -70,7 +70,8 @@
   (magit-completing-read-function 'completing-read)
   (magit-section-initial-visibility-alist '((stashes . hide) (untracked . hide) (unpushed . hide)))
   (magit-diff-refine-hunk t)
-  (magit-display-buffer-function 'custom/magit-display-status-pop-up-frame))
+  (magit-display-buffer-function 'custom/magit-display-status-pop-up-frame)
+  (magit-bury-buffer-function 'magit-restore-window-configuration))
 
 (use-package blamer
   :after magit
