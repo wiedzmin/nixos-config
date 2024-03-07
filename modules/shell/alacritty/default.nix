@@ -17,7 +17,7 @@ in
       };
       traits = mkOption {
         type = types.submodule (import ../../workstation/systemtraits/xapp-traits.nix);
-        description = "Kitty application traits";
+        description = "Alacritty application traits";
       };
       autostart = mkOption {
         type = types.bool;
@@ -34,7 +34,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      shell.vt.kitty.traits = rec {
+      shell.vt.alacritty.traits = rec {
         command = {
           binary = "${pkgs.alacritty}/bin/alacritty";
           parameters = [ "-e" ];
