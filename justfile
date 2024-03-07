@@ -18,11 +18,11 @@ build-no-net host=host_name:
 
 # Build + switch configuration flake for current host
 switch host=host_name:
-    nixos-rebuild switch -j 4 --use-remote-sudo --flake ".#{{host}}"
+    nixos-rebuild switch{{ if env_var_or_default("VERBOSE", "false") == "true" { " -v" } else { "" } }} -j 4 --use-remote-sudo --flake ".#{{host}}"
 
 # Build + switch configuration flake for current host without network access
 switch-no-net host=host_name:
-    nixos-rebuild switch --use-remote-sudo --flake ".#{{host}}" --option binary-caches ''
+    nixos-rebuild switch{{ if env_var_or_default("VERBOSE", "false") == "true" { " -v" } else { "" } }} --use-remote-sudo --flake ".#{{host}}" --option binary-caches ''
 
 # Remove system build local output
 clean:
