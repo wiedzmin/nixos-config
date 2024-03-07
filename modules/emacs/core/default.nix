@@ -385,6 +385,14 @@ in
             searchSuffix = "search?q=";
           };
         };
+        melpa = {
+          desc = "MELPA";
+          remote = {
+            url = "https://melpa.org/#/";
+            jump = true;
+            searchSuffix = "?q=";
+          };
+        };
         use-package = { remote.url = "https://github.com/jwiegley/use-package"; };
         "emacs-news" = {
           desc = "Emacs news";
