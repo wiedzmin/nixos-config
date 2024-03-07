@@ -142,7 +142,6 @@ in
       wmCommon.keybindings.entries = optionals (cfg.backend == "networkmanager") [
         ({
           key = [ "Shift" "w" ];
-          desktop = "shell";
           mode = "network";
         } // optionalAttrs (cfg.backend == "networkmanager") {
           cmd = "tmux new-window ${pkgs.networkmanager}/bin/nmtui";

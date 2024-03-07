@@ -607,7 +607,7 @@ in
     };
     vt.kitty = {
       enable = true;
-      autostart = true;
+      autostart = false;
       wm.enable = true;
     };
     twopanes = {
@@ -716,12 +716,6 @@ in
       key = [ "Escape" ];
       transient = false;
       type = dockableSecondaryWS config.attributes.hardware.monitors.count;
-    }
-    {
-      name = "shell";
-      key = [ "F3" ];
-      transient = false;
-      type = "secondary";
     }
     {
       name = "read";
