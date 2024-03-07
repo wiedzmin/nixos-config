@@ -45,6 +45,14 @@
       url = "github:port19x/haproxy-mode";
       flake = false;
     };
+    emacs-consult-org-clock = {
+      url = "github:overideal/consult-org-clock";
+      flake = false;
+    };
+    emacs-consult-todo = {
+      url = "github:liuyinz/consult-todo";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {

@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -41,7 +41,7 @@ in
       ide.emacs.core.customKeymaps = {
         "custom-formatting-map" = "C-c f";
       };
-      ide.emacs.core.config = builtins.readFile ./elisp/misc.el;
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ];
       ide.emacs.core.treesitter.grammars = {
         markdown = "https://github.com/ikatyang/tree-sitter-markdown";
       };

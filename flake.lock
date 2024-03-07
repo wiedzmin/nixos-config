@@ -41,6 +41,38 @@
         "type": "github"
       }
     },
+    "emacs-consult-org-clock": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1696157751,
+        "narHash": "sha256-TOmXB9hDp5mlX7WCeyx1rVKtKCA8hkujy98W4Fgy4Gg=",
+        "owner": "overideal",
+        "repo": "consult-org-clock",
+        "rev": "5531ec172c9088e81c87c373769545c8b3a97031",
+        "type": "github"
+      },
+      "original": {
+        "owner": "overideal",
+        "repo": "consult-org-clock",
+        "type": "github"
+      }
+    },
+    "emacs-consult-todo": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1698008383,
+        "narHash": "sha256-OaMPZ4gf/ZZ2hCWYzgLLOy0iWJp3exBSRMZn1RI1Y2w=",
+        "owner": "liuyinz",
+        "repo": "consult-todo",
+        "rev": "84f3c9876a285f733d75053076a97cc30f7d8eb9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "liuyinz",
+        "repo": "consult-todo",
+        "type": "github"
+      }
+    },
     "emacs-easy-kill-extras": {
       "flake": false,
       "locked": {
@@ -572,6 +604,8 @@
       "inputs": {
         "devenv-src": "devenv-src",
         "emacs": "emacs",
+        "emacs-consult-org-clock": "emacs-consult-org-clock",
+        "emacs-consult-todo": "emacs-consult-todo",
         "emacs-easy-kill-extras": "emacs-easy-kill-extras",
         "emacs-epithet": "emacs-epithet",
         "emacs-git-msg-prefix": "emacs-git-msg-prefix",

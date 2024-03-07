@@ -9,6 +9,7 @@ in
   emacsOrgRoamDotBinary = "${pkgs.graphviz}/bin/dot";
   emacsOrgRoamDir = homePrefix user "docs/org/roam";
   emacsOrgBarsPath = inputs.emacs-org-bars;
+  emacsConsultOrgClockPath = inputs.emacs-consult-org-clock;
   orgRoot = config.pim.orgmode.rootDir;
   pimCommonCaptureDataTemplate = config.pim.orgmode.commonCaptureDataTemplate;
   pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;

@@ -53,4 +53,17 @@
   (setf (alist-get ?o avy-dispatch-alist) 'avy-action-search-org-roam
         (alist-get ?O avy-dispatch-alist) 'avy-action-search-url-org-roam))
 
+(use-package consult-org-clock
+  :load-path "@emacsConsultOrgClockPath@"
+  :preface
+  (defun consult-org-clock-agenda-predicate (entry)
+    "Return non-nil if ENTRY belongs to no file or to an org agenda file."
+    (let ((file (buffer-file-name (marker-buffer entry))))
+      (or (not file) (org-agenda-file-p file))))
+  :bind
+  ("C-c C-x TAB" . consult-org-clock)
+  ("C-c C-x C-j" . consult-org-clock-goto)
+  :custom
+  (consult-org-clock-predicate-secondary . 'consult-org-clock-agenda-predicate))
+
 ;; [[file:~/workspace/repos/github.com/wiedzmin/nixos-config/modules/pim/orgmode/todo.org::*https://github.com/akirak/akirak-mode/blob/1fa4845e5ad4af95b58c3cdba7ead7223f05cef0/akirak-consult-org.el#L7][TODO: review custom solutions]]
