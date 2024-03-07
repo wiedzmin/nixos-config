@@ -1,7 +1,3 @@
-;; TODO: review functionality / find substitute for / reimplement:
-;; - doom-todo-ivy
-;; - ivy-omni-org
-;; - counsel-org-clock
 ;; TODO: setup xref package, then search for some modern completion UI (ivy/vertico/etc.) xref impl
 
 (use-package navigation-misc
