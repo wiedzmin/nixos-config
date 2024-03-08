@@ -16,6 +16,7 @@
     gitFull
     gitAndTools.git-crypt
     just
+    tagref
     vim
     wiedzmin.pystdlib
   ];

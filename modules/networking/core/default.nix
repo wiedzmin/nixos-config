@@ -70,7 +70,7 @@ in
       };
       wmCommon.wsMapping.rules = [{
         class = "Anydesk";
-        desktop = "tools";
+        desktop = "tools"; # [ref:desktop_tools]
         activate = true;
       }];
     })

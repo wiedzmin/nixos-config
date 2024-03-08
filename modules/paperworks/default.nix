@@ -212,16 +212,16 @@ in
 
       wmCommon.wsMapping.rules = lib.optionals (cfg.scanning.frontend == "skanlite") [{
         class = "skanlite";
-        desktop = "scan";
+        desktop = "scan"; # [ref:desktop_scan]
       }] ++ lib.optionals (cfg.scanning.frontend == "gscan2pdf") [{
         class = "gscan2pdf-wrapped-wrapped";
-        desktop = "scan";
+        desktop = "scan"; # [ref:desktop_scan]
       }] ++ lib.optionals (cfg.scanning.frontend == "simple-scan") [{
         class = "Simple-scan";
-        desktop = "scan";
+        desktop = "scan"; # [ref:desktop_scan]
       }] ++ lib.optionals (cfg.scanning.frontend == "xsane") [{
         class = "Xsane";
-        desktop = "scan";
+        desktop = "scan"; # [ref:desktop_scan]
         float = false;
       }];
     })

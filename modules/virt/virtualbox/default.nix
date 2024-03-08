@@ -38,7 +38,7 @@ in
 
       wmCommon.wsMapping.rules = [{
         class = "VirtualBox Manager";
-        desktop = "tools";
+        desktop = "tools"; # [ref:desktop_tools]
       }];
     })
   ];

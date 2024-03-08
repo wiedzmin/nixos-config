@@ -688,48 +688,56 @@ in
 
   wmCommon.workspaces = [
     {
+      # [tag:desktop_web]
       name = "web";
       key = [ "F1" ];
       transient = false;
       type = "primary";
     }
     {
+      # [tag:desktop_edit]
       name = "edit";
       key = [ "F2" ];
       transient = false;
       type = dockablePrimaryWS config.attributes.hardware.monitors.count;
     }
     {
+      # [tag:desktop_tools]
       name = "tools";
       key = [ "F9" ];
       transient = false;
       type = "primary";
     }
     {
+      # [tag:desktop_scan]
       name = "scan";
       key = [ "F10" ];
       transient = false;
       type = "primary";
     }
     {
+      # [tag:desktop_var]
       name = "var";
       key = [ "Escape" ];
       transient = false;
       type = dockableSecondaryWS config.attributes.hardware.monitors.count;
     }
     {
+      # [tag:desktop_read]
       name = "read";
       key = [ "F7" ];
       transient = false;
       type = "secondary";
     }
     {
+      # [tag:desktop_im]
       name = "im";
       key = [ "c" ];
       transient = false;
       type = "secondary";
     }
     {
+      # [tag:desktop_scratch]
       name = "scratch";
       key = [ "h" ];
       transient = false;

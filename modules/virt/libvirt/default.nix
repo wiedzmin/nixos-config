@@ -63,7 +63,7 @@ in
 
       wmCommon.wsMapping.rules = [{
         class = "Virt-manager";
-        desktop = "tools";
+        desktop = "tools"; # [ref:desktop_tools]
       }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
