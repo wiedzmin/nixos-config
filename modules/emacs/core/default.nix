@@ -7,13 +7,14 @@ let
   cfg = config.ide.emacs.core;
   user = config.attributes.mainUser.name;
   emacsWithPkgs = (pkgs.unstable.emacsPackagesFor cfg.package).emacsWithPackages cfg.extraPackages;
+  emacsInitDir = homePrefix user cfg.initDir;
   drop-corrupted = pkgs.writeShellApplication {
     name = "drop-corrupted";
     text = ''
       ${pkgs.systemd}/bin/systemctl --user stop emacs.service
       sleep 2
-      rm -f /home/${user}/.emacs.d/data/{save-kill.el,savehist.el}
-      rm -f /home/${user}/.emacs.d/var/{save-kill.el,savehist.el}
+      rm -f ${cfg.dataDir}/{save-kill.el,savehist.el}
+      rm -f ${cfg.varDir}/{save-kill.el,savehist.el}
       ${pkgs.systemd}/bin/systemctl --user restart emacs.service
     '';
   };
@@ -46,6 +47,12 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable emacs core setup.";
+      };
+      # NOTE: there is only "/etc" to consider outside of $HOME, but Emacs is user-centric after all, hence the base dir
+      initDir = mkOption {
+        type = types.str;
+        default = ".emacs.d";
+        description = "Where to look for the Emacs init files, under $HOME";
       };
       debug.enable = mkOption {
         type = types.bool;
@@ -132,12 +139,22 @@ in
       };
       dataDir = mkOption {
         type = types.str;
-        default = homePrefix user ".emacs.d/data";
+        default = "${emacsInitDir}/data";
         visible = false;
         readOnly = true;
         internal = true;
         description = ''
           Path to store user data under.
+        '';
+      };
+      varDir = mkOption {
+        type = types.str;
+        default = "${emacsInitDir}/var";
+        visible = false;
+        readOnly = true;
+        internal = true;
+        description = ''
+          Path to store various data under.
         '';
       };
       environment = mkOption {
@@ -301,7 +318,7 @@ in
           xorg.xwininfo
         ]);
         home.file = {
-          ".emacs.d/early-init.el".text = ''
+          "${cfg.initDir}/early-init.el".text = ''
             ${lib.optionalString (cfg.daemon.enable) ''
               (setenv "EDITOR" "${emacsWithPkgs}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server")
             ''}
@@ -312,21 +329,21 @@ in
             ${genEmacsCustomKeymaps cfg.customKeymaps}
             ${genCustomPackages cfg.customPackages}
           '';
-          ".emacs.d/init.el".text = cfg.initElContent;
+          "${cfg.initDir}/init.el".text = cfg.initElContent;
         };
         home.activation = {
           ensureEmacsConfigValid = {
             after = [ "linkGeneration" ];
             before = [ ];
             data = ''
-              ${emacsWithPkgs}/bin/emacs --batch -l ${homePrefix user ".emacs.d"}/early-init.el -l ${homePrefix user ".emacs.d"}/init.el
+              ${emacsWithPkgs}/bin/emacs --batch -l ${emacsInitDir}/early-init.el -l ${emacsInitDir}/init.el
             '';
           };
-          ensureEmacsXdgConfigPath = {
+          ensureEmacsConfigPath = {
             after = [ ];
             before = [ "linkGeneration" ];
             data = ''
-              mkdir -p ${homePrefix user ".config/emacs"}
+              mkdir -p ${emacsInitDir}
             '';
           };
         };
@@ -341,7 +358,7 @@ in
             restartIfChanged = false;
             serviceConfig = {
               Type = "simple";
-              ExecStart = ''${pkgs.runtimeShell} -l -c "exec ${emacsWithPkgs}/bin/emacs --fg-daemon"'';
+              ExecStart = ''${pkgs.runtimeShell} -l -c "exec ${emacsWithPkgs}/bin/emacs --init-directory ${emacsInitDir} --fg-daemon"'';
               ExecStop = "${emacsWithPkgs}/bin/emacsclient --eval '(kill-emacs 0)'";
               ExecStopPost = "${pkgs.libnotify}/bin/notify-send --icon ${icon} 'Emacs' 'Stopped server'";
               Restart = "on-failure";
