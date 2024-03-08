@@ -333,7 +333,7 @@ in
       ];
       wmCommon.wsMapping.rules = [{
         class = "index";
-        desktop = "tools";
+        desktop = "tools"; # [ref:desktop_tools]
         activate = true;
       }];
     })

@@ -72,3 +72,6 @@ check-config-flake:
 # generate git log for `code-maat` consumption
 maat-log:
     git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log
+
+tagref:
+    tagref --file-sigil fn

@@ -19,7 +19,7 @@ in
         {
           class = "Emacs";
           title = "nixos";
-          desktop = "edit";
+          desktop = "edit"; # [ref:desktop_edit]
         }
       ];
     };
@@ -57,7 +57,7 @@ in
         {
           class = "Emacs";
           title = "toolbox";
-          desktop = "edit";
+          desktop = "edit"; # [ref:desktop_edit]
         }
       ];
     };
@@ -66,7 +66,7 @@ in
         {
           class = "Emacs";
           title = "wmtools";
-          desktop = "edit";
+          desktop = "edit"; # [ref:desktop_edit]
         }
       ];
     };
@@ -238,7 +238,7 @@ in
         {
           class = mkWSMappingBrowsersRegexp config.attributes.browser;
           title = "http facebook";
-          desktop = "var";
+          desktop = "var"; # [ref:desktop_var]
         }
       ];
     };
@@ -540,7 +540,7 @@ in
         {
           class = "Emacs";
           title = "agenda.org";
-          desktop = "edit";
+          desktop = "edit"; # [ref:desktop_edit]
           activate = true;
         }
       ];
@@ -556,7 +556,7 @@ in
         {
           class = "Emacs";
           title = "current_goodies.org";
-          desktop = "edit";
+          desktop = "edit"; # [ref:desktop_edit]
           activate = true;
         }
       ];
