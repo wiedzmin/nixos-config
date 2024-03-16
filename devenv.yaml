@@ -1,5 +1,7 @@
 inputs:
   nixpkgs:
     url: github:NixOS/nixpkgs/nixpkgs-unstable
+  nixpkgs-future:
+    url: github:NixOS/nixpkgs/0ad13a6833440b8e238947e47bea7f11071dc2b2 # FIXME: investigate deduplication with flake.nix
   nur:
     url: github:wiedzmin/NUR/master
