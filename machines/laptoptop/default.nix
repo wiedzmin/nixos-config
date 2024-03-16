@@ -689,15 +689,8 @@ in
 
   wmCommon.workspaces = [
     {
-      # [tag:desktop_web]
-      name = "web";
-      key = [ "F1" ];
-      transient = false;
-      type = "primary";
-    }
-    {
-      # [tag:desktop_edit]
-      name = "edit";
+      # [tag:desktop_main]
+      name = "main";
       key = [ "F2" ];
       transient = false;
       type = dockablePrimaryWS config.attributes.hardware.monitors.count;

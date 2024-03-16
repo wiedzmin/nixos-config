@@ -418,7 +418,7 @@ in
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
               title = "sachachua emacs news";
-              desktop = "web"; # [ref:desktop_web]
+              desktop = "main"; # [ref:desktop_main]
             }
           ];
         };

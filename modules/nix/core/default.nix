@@ -479,7 +479,7 @@ in
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
               title = "status nixos";
-              desktop = "web"; # [ref:desktop_web]
+              desktop = "main"; # [ref:desktop_main]
             }
           ];
         };

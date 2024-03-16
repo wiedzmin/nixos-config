@@ -16,27 +16,27 @@ with pkgs.unstable.commonutils;
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "http facebook github";
-      desktop = "web"; # [ref:desktop_web]
+      desktop = "main"; # [ref:desktop_main]
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "http nixos planet";
-      desktop = "web"; # [ref:desktop_web]
+      desktop = "main"; # [ref:desktop_main]
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "http opennews";
-      desktop = "web"; # [ref:desktop_web]
+      desktop = "main"; # [ref:desktop_main]
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "(Oo)rg http youtube";
-      desktop = "web"; # [ref:desktop_web]
+      desktop = "main"; # [ref:desktop_main]
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "(Ee)macs http youtube";
-      desktop = "web"; # [ref:desktop_web]
+      desktop = "main"; # [ref:desktop_main]
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -51,7 +51,7 @@ with pkgs.unstable.commonutils;
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "nixos github";
-      desktop = "web"; # [ref:desktop_web]
+      desktop = "main"; # [ref:desktop_main]
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;

@@ -19,7 +19,7 @@ in
         {
           class = "Emacs";
           title = "nixos";
-          desktop = "edit"; # [ref:desktop_edit]
+          desktop = "main"; # [ref:desktop_main]
         }
       ];
     };
@@ -57,7 +57,7 @@ in
         {
           class = "Emacs";
           title = "toolbox";
-          desktop = "edit"; # [ref:desktop_edit]
+          desktop = "main"; # [ref:desktop_main]
         }
       ];
     };
@@ -66,7 +66,7 @@ in
         {
           class = "Emacs";
           title = "wmtools";
-          desktop = "edit"; # [ref:desktop_edit]
+          desktop = "main"; # [ref:desktop_main]
         }
       ];
     };
@@ -540,7 +540,7 @@ in
         {
           class = "Emacs";
           title = "agenda.org";
-          desktop = "edit"; # [ref:desktop_edit]
+          desktop = "main"; # [ref:desktop_main]
           activate = true;
         }
       ];
@@ -556,7 +556,7 @@ in
         {
           class = "Emacs";
           title = "current_goodies.org";
-          desktop = "edit"; # [ref:desktop_edit]
+          desktop = "main"; # [ref:desktop_main]
           activate = true;
         }
       ];
