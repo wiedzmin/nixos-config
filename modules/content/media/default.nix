@@ -320,7 +320,7 @@ in
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
               title = "github mpv-player";
-              desktop = "web"; # [ref:desktop_web]
+              desktop = "main"; # [ref:desktop_main]
             }
           ];
         };
@@ -331,7 +331,7 @@ in
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
               title = "mpv manual";
-              desktop = "web"; # [ref:desktop_web]
+              desktop = "main"; # [ref:desktop_main]
             }
           ];
         };
