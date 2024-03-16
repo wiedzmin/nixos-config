@@ -56,8 +56,6 @@
         ("C-c ! p" . flycheck-projectile-list-errors)))
 
 (use-package treemacs-projectile
-  :demand t
-  :after treemacs projectile
   :bind
   (:map custom-projects-map
         ("e" . treemacs-projectile)))
