@@ -11,7 +11,7 @@
 
   imports = [ inputs.nur.nixosModules.nur ];
 
-  packages = with pkgs; with config.nur.repos; [
+  packages = with pkgs; with config.nur.repos; with inputs.nixpkgs-future.legacyPackages."x86_64-linux"; [
     cloc
     gitFull
     gitAndTools.git-crypt
