@@ -96,6 +96,11 @@ in
         default = "";
         description = "System-wide XLFD font representation, large version for OSD use";
       };
+      fonts.deaddFamily = mkOption {
+        type = types.str;
+        default = "";
+        description = "System-wide font family for `deadd notification system` notifier";
+      };
       kbdd.enable = mkOption {
         type = types.bool;
         default = true;

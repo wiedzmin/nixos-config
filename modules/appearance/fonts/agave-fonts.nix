@@ -44,6 +44,7 @@ in
     wmCommon.fonts.statusbar = makeFontStrPango (fontBeautified // { size = 7; });
     wmCommon.fonts.xlfd.large = makeXLFDStrIso10646 (fontBeautified // { size = sizeXLFDLarge; });
     wmCommon.fonts.familySize.large = makeFamilySizeStr (fontBeautified // { size = sizeFamilySizeLarge; });
+    wmCommon.fonts.deaddFamily = fontBeautified.family;
 
     wm.xmonad.xmobar.font = makeFontStrXft baseFont;
 

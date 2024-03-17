@@ -8,6 +8,50 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   inherit (config.wmCommon) prefix;
   yaml = pkgs.formats.yaml { };
+  lncThemeModule = types.submodule {
+    options = {
+      foregroundNormal = mkOption {
+        type = types.str;
+        description = "Normal status text color";
+        default = "#322";
+      };
+      foregroundCritical = mkOption {
+        type = types.str;
+        description = "Critical status text color";
+        default = "#000";
+      };
+      backgroundNormal = mkOption {
+        type = types.str;
+        description = "Normal status background";
+        default = "rgba(255, 255, 255, 0.5)";
+      };
+      backgroundCritical = mkOption {
+        type = types.str;
+        description = "Critical status background";
+        default = "rgba(255, 0, 0, 0.5)";
+      };
+      foregroundNormalNC = mkOption {
+        type = types.str;
+        description = "Normal status text color for notification center";
+        default = "#322";
+      };
+      foregroundCriticalNC = mkOption {
+        type = types.str;
+        description = "Critical status text color for notification center";
+        default = "#000";
+      };
+      backgroundNormalNC = mkOption {
+        type = types.str;
+        description = "Normal status background for notification center";
+        default = "rgba(255, 255, 255, 0.4)";
+      };
+      backgroundCriticalNC = mkOption {
+        type = types.str;
+        description = "Critical status background for notification center";
+        default = "rgba(155, 0, 20, 0.5)";
+      };
+    };
+  };
 in
 {
   options = {
@@ -26,6 +70,10 @@ in
         type = types.enum [ "dunst" "lnc" ];
         default = "dunst";
         description = "System notifications backend to use";
+      };
+      lnc.theme = mkOption {
+        type = lncThemeModule;
+        description = "LNC theming CSS settings";
       };
       launcher = mkOption {
         type = types.enum [ "rofi" "gmrun" ];
@@ -185,47 +233,56 @@ in
       # TODO: https://github.com/Mesabloo/nix-config/blob/57d97b983803005778f265ac117ed7aacb03cd0d/modules/services/deadd.nix
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ deadd-notification-center ];
-        # TODO: review https://github.com/phuhl/linux_notification_center/blob/62c8e42d3cd8e913320d20a5c18d17725d2ec72d/style.css
-        xdg.configFile."deadd/deadd.css".text = "";
-        xdg.configFile."deadd/deadd.conf".text = generators.toINI { } {
+        # FIXME: parameterize font sizes and style/weight
+        xdg.configFile."deadd/deadd.css".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/deadd.css ];
+        xdg.configFile."deadd/deadd.yml".source = yaml.generate "deadd.yml" {
           notification-center = {
-            hideOnMouseLeave = true;
-            marginTop = 0;
-            marginBottom = 0;
-            marginRight = 0;
-            width = 500;
+            margin-top = 0;
+            margin-right = 0;
+            margin-bottom = 0;
+            width = 650;
             monitor = 0;
-            followMouse = true;
-            newFirst = true;
-            useActionIcons = true;
-            ignoreTransient = false;
-            useMarkup = true;
-            parseHtmlEntities = true;
-            configSendNotiClosedDbusMessage = false;
-            guessIconFromAppname = true;
+            follow-mouse = true;
+            hide-on-mouse-leave = true;
+            new-first = true;
+            ignore-transient = false;
+            buttons = {
+              buttons-per-row = 5;
+              button-height = 60;
+              button-margin = 2;
+            };
           };
-          notification-center-notification-popup = {
-            notiDefaultTimeout = 10000;
-            distanceTop = 50;
-            distanceRight = 50;
-            distanceBetween = 20;
-            width = 500;
-            monitor = 1;
-            followMouse = true;
-            iconSize = 20;
-            maxImageSize = 100;
-            imageMarginTop = 15;
-            imageMarginBottom = 15;
-            imageMarginLeft = 15;
-            imageMarginRight = 0;
-            shortenBody = 5;
-            dismissButton = "mouse1";
-            defaultActionButton = "mouse3";
-          };
-          buttons = {
-            buttonsPerRow = 5;
-            buttonHeight = 60;
-            buttonMargin = 2;
+          notification = {
+            use-markup = true;
+            parse-html-entities = true;
+            dbus = {
+              send-noti-closed = false;
+            };
+            app-icon = {
+              # guess-icon-from-name = true;
+              icon-size = 15;
+            };
+            image = {
+              size = 25;
+              # margin-top = 15;
+              # margin-bottom = 15;
+              # margin-left = 15;
+              # margin-right = 0;
+            };
+            popup = {
+              default-timeout = 10000;
+              margin-top = 50;
+              margin-right = 50;
+              margin-between = 20;
+              max-lines-in-body = 3;
+              hide-body-if-empty = false;
+              monitor = 0;
+              follow-mouse = true;
+              click-behavior = {
+                dismiss = "mouse1";
+                default-action = "mouse3";
+              };
+            };
           };
         };
         home.activation.stop_dunst = {

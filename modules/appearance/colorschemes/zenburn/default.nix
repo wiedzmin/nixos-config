@@ -56,6 +56,14 @@ in
         theme = "zenburned";
       };
     };
+    controlcenter.lnc.theme = {
+      foregroundNormal = "#B9967F";
+      foregroundCritical = "#B9967F";
+      backgroundNormal = "#404040";
+      foregroundNormalNC = "#B9967F";
+      foregroundCriticalNC = "#B9967F";
+      backgroundNormalNC = "#404040";
+    };
     wm.i3.theme = {
       client = ''
         #                       border  bground text
