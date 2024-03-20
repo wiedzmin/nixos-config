@@ -53,6 +53,10 @@
       url = "github:liuyinz/consult-todo";
       flake = false;
     };
+    emacs-treesit-jump = {
+      url = "github:dmille56/treesit-jump";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {

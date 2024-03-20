@@ -35,4 +35,14 @@
   (treesit-auto-install-all)
   (global-treesit-auto-mode))
 
+(use-package treesit-jump
+  :load-path "@emacsTreesitJumpPath@"
+  :bind
+  (:map custom-goto-map
+        ("." . treesit-jump-jump)
+        ("!" . treesit-jump-delete)
+        ("=" . treesit-jump-select)
+        ("t" . treesit-jump-transient)
+        ("^" . treesit-jump-parent-jump)))
+
 (use-package treesit-util)

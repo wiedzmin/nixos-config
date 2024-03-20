@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
 let
@@ -22,4 +22,5 @@ in
     (setq major-mode-remap-alist '(
     ${genTreesitModeRemapAlist config.ide.emacs.core.treesitter.modeRemappings}))'';
   treesitFontLockLevelPatch = "(treesit-font-lock-level ${builtins.toString config.ide.emacs.core.treesitter.fontLockLevel})";
+  emacsTreesitJumpPath = inputs.emacs-treesit-jump;
 }
