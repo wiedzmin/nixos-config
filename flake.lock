@@ -170,6 +170,22 @@
         "type": "github"
       }
     },
+    "emacs-treesit-jump": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1710923215,
+        "narHash": "sha256-Yd4Pb5PN+eHCOzMVsn0lZ9bguXAfok8hxUa2t5QlYjk=",
+        "owner": "dmille56",
+        "repo": "treesit-jump",
+        "rev": "32b3929acb134a8bdb2f5ac90f8140ee55ea1892",
+        "type": "github"
+      },
+      "original": {
+        "owner": "dmille56",
+        "repo": "treesit-jump",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -612,6 +628,7 @@
         "emacs-haproxy-mode": "emacs-haproxy-mode",
         "emacs-highlight-sexp": "emacs-highlight-sexp",
         "emacs-org-bars": "emacs-org-bars",
+        "emacs-treesit-jump": "emacs-treesit-jump",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
         "kitty-grab": "kitty-grab",
