@@ -61,7 +61,7 @@ flake-update-inputs: flake-update-inputs-nixpkgs-main flake-update-inputs-emacs
 flake-update-inputs-nixpkgs-main:
     nix flake update {{nixpkgs_main_input}}
 
-# Update `unstable` flake input
+# Update `emacs` flake input
 flake-update-inputs-emacs:
     nix flake update emacs
 
