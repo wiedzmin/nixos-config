@@ -79,6 +79,11 @@ in
         default = "";
         description = "Command used to produce debug output for systemd service";
       };
+      daemon.ttyCmd = mkOption {
+        type = types.str;
+        default = "emacsclient -tc -s ${cfg.serverSocket}";
+        description = "Command used for terminal emacs' flavor";
+      };
       fromGit = mkOption {
         type = types.bool;
         default = true;
