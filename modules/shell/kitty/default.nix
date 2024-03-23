@@ -333,8 +333,8 @@ in
             # resize
             "alt+shift+left" = "resize_window narrower";
             "alt+shift+right" = "resize_window wider";
-            "alt+shift+down" = "resize_window taller";
-            "alt+shift+up" = "resize_window shorter 3";
+            "alt+shift+down" = "resize_window shorter";
+            "alt+shift+up" = "resize_window taller";
             "alt+shift+delete" = "resize_window reset";
           } // {
             # layouts
