@@ -32,6 +32,11 @@ in
         type = types.submodule (import ../../workstation/systemtraits/xapp-traits.nix);
         description = "Kitty application traits";
       };
+      editorCmd = mkOption {
+        type = types.str;
+        default = "${pkgs.vim}/bin/vim";
+        description = "Value for `editor` setting";
+      };
       autostart = mkOption {
         type = types.bool;
         default = false;
@@ -103,35 +108,41 @@ in
 
       home-manager.users."${user}" = {
         xdg.configFile = {
-          # TODO: set window class of EDITOR/emacsclient opened by `hyperlinked_grep` to prevent moving window somewhere
           "kitty/open-actions.conf".text = ''
-            # Open any file with a fragment in vim, fragments are generated
+            # Open any file with a fragment in EDITOR, fragments are generated
             # by the hyperlink_grep kitten and nothing else so far.
             protocol file
             fragment_matches [0-9]+
-            action launch --type=overlay $EDITOR +''${FRAGMENT} ''${FILE_PATH}
+            action launch --type=overlay ''${EDITOR} +''${FRAGMENT} ''${FILE_PATH}
 
             # Open text files without fragments in the editor
             protocol file
             mime text/*
-            action launch --type=overlay $EDITOR ''${FILE_PATH}
+            action launch --type=overlay ''${EDITOR} ''${FILE_PATH}
 
             protocol file
             ext csv
             action launch --type=overlay ${pkgs.visidata}/bin/vd ''${FILE_PATH}
 
+            # Open directories
             protocol file
             mime inode/directory
-            action launch --location hsplit ''${MYFEXP} ''${FILE_PATH}
+            action launch --type=os-window --cwd ''${FILE_PATH}
 
             # Open any image in the full kitty window by clicking on it
             protocol file
             mime image/*
             action launch --type=overlay kitty +kitten icat --hold ''${FILE_PATH}
 
+            # Tail a log file (*.log) and reduce its font size
+            protocol file
+            ext log
+            action launch --title ''${FILE} --type=os-window tail -f ''${FILE_PATH}
+            action change_font_size current -2
+
             protocol file
             file *.*
-            action launch --type=overlay $EDITOR ''${FILE_PATH}
+            action launch --type=overlay ''${EDITOR} ''${FILE_PATH}
           '';
           "kitty/grab" = {
             source = pkgs.kitty_grab;
@@ -278,6 +289,7 @@ in
             update_check_interval = "0";
             url_prefixes = "http https file mailto git";
             window_alert_on_bell = "yes";
+            editor = cfg.editorCmd;
           };
           keybindings = {
             # FIXME: investigate why "ctrl+x..." bindings do not work, using "alt+x" until then
