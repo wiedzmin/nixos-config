@@ -54,6 +54,11 @@ in
         default = ".emacs.d";
         description = "Where to look for the Emacs init files, under $HOME";
       };
+      serverSocket = mkOption {
+        type = types.str;
+        default = "/run/user/${config.attributes.mainUser.ID}/emacs/server";
+        description = "Server socket path";
+      };
       debug.enable = mkOption {
         type = types.bool;
         default = false;
@@ -295,8 +300,8 @@ in
         "custom-goto-map" = "M-s";
       };
       shell.core.variables = lib.optionals cfg.daemon.enable [{
-        EDITOR = "${emacsWithPkgs}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
-        VISUAL = "${emacsWithPkgs}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server";
+        EDITOR = "${emacsWithPkgs}/bin/emacsclient -c -s ${cfg.serverSocket}";
+        VISUAL = "${emacsWithPkgs}/bin/emacsclient -c -s ${cfg.serverSocket}";
       }];
       ide.emacs.completion.tempel.snippets = ''
         fundamental-mode
@@ -320,7 +325,7 @@ in
         home.file = {
           "${cfg.initDir}/early-init.el".text = ''
             ${lib.optionalString (cfg.daemon.enable) ''
-              (setenv "EDITOR" "${emacsWithPkgs}/bin/emacsclient -c -s /run/user/${config.attributes.mainUser.ID}/emacs/server")
+              (setenv "EDITOR" "${emacsWithPkgs}/bin/emacsclient -c -s ${cfg.serverSocket}")
             ''}
             ;; FIXME: elaborate alternative command for the case of disabled daemon
             ${lib.optionalString (cfg.environment != { }) (builtins.concatStringsSep "\n"
