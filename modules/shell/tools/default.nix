@@ -65,6 +65,7 @@ in
               };
               date = "+%a %Y %b %d %X";
               dereference = true;
+              hyperlink = "always";
               icons = {
                 when = "auto";
                 theme = "fancy";
