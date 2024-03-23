@@ -40,7 +40,7 @@
   (lsp-headerline-breadcrumb-segments '(project file symbols))
   (lsp-idle-delay 0.5)
   (lsp-keymap-prefix "C-c l")
-  (lsp-lens-place-po1sition 'above-line)
+  (lsp-lens-place-position 'above-line)
   (lsp-log-io t)
   (lsp-modeline-code-actions-segments '(count icon name))
   (lsp-modeline-diagnostics-scope :workspace)
