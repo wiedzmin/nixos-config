@@ -53,17 +53,79 @@ devenv-cleanup-and-gc:
     sudo nix-collect-garbage -d
     touch .envrc
 
-# Update flake inputs versions
-flake-update-inputs: flake-update-inputs-nixpkgs-main flake-update-inputs-emacs
-    nix flake update
+# Update flake inputs
+flake-update-inputs: flake-update-inputs-nixpkgs-main \
+    flake-update-inputs-nur \
+    flake-update-inputs-home-manager \
+    flake-update-inputs-telega \
+    flake-update-inputs-nixos-aux \
+    flake-update-inputs-devenv \
+    flake-update-inputs-emacs \
+    flake-update-inputs-emacs-unpackaged \
+    flake-update-inputs-kitty-unpackaged \
+    flake-update-inputs-shell-unpackaged
+
+# Update flake inputs, sans `devenv-src`
+flake-update-inputs-sans-devenv: flake-update-inputs-nixpkgs-main \
+    flake-update-inputs-nur \
+    flake-update-inputs-home-manager \
+    flake-update-inputs-telega \
+    flake-update-inputs-nixos-aux \
+    flake-update-inputs-emacs \
+    flake-update-inputs-emacs-unpackaged \
+    flake-update-inputs-kitty-unpackaged \
+    flake-update-inputs-shell-unpackaged
 
 # Update `unstable` flake input
 flake-update-inputs-nixpkgs-main:
     nix flake update {{nixpkgs_main_input}}
 
+# Update `nur` flake input
+flake-update-inputs-nur:
+    nix flake update nur
+
+# Update `home-manager` flake input
+flake-update-inputs-home-manager:
+    nix flake update home-manager
+
+# Update `telega` flake input
+flake-update-inputs-telega:
+    nix flake update telega
+
+# Update nixos-related auxiliary inputs
+flake-update-inputs-nixos-aux:
+    nix flake update nixos-hardware
+    nix flake update nixos-artwork
+
+# Update `devenv-src` flake input
+flake-update-inputs-devenv:
+    nix flake update devenv-src
+
 # Update `emacs` flake input
 flake-update-inputs-emacs:
     nix flake update emacs
+
+# Update `emacs` flake inputs for emacs unpackaged extensions
+flake-update-inputs-emacs-unpackaged:
+    nix flake update emacs-org-bars
+    nix flake update emacs-highlight-sexp
+    nix flake update emacs-epithet
+    nix flake update emacs-easy-kill-extras
+    nix flake update emacs-consult-org-clock
+    nix flake update emacs-treesit-jump
+
+# Update flake inputs for Kitty unpackaged extensions
+flake-update-inputs-kitty-unpackaged:
+    nix flake update kitty-grab
+    nix flake update kitty-search
+
+# Update flake inputs for unpackaged shell extensions
+flake-update-inputs-shell-unpackaged:
+    nix flake update git-extra-commands
+    nix flake update pass-zsh-completion
+    nix flake update zsh-async
+    nix flake update zsh-fuzzy-search-and-edit
+    nix flake update zsh-reentry-hook
 
 # Lint configuration flake(s)
 check-config-flake:
