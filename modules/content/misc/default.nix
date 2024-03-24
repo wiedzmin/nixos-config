@@ -108,6 +108,7 @@ in
           fd
           fzf
           gnugrep
+          gpick
           gron
           monolith
           ripgrep
@@ -301,6 +302,10 @@ in
                     params = { layout = "URL: [[value]]"; };
                   }
                 ];
+              }
+              {
+                trigger = ":gp";
+                replace = "gpick";
               }
             ];
           } // optionalAttrs (config.shell.tmux.enable) {
