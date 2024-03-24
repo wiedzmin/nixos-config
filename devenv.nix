@@ -19,7 +19,6 @@
     tagref
     vim
     wiedzmin.pystdlib
-    gitu
   ];
 
   enterShell = ''
