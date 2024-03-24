@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -54,7 +54,7 @@ in
           plugins = lib.optionals (!config.shell.prompts.liquid.enable) [{
             name = "zsh-command-time";
             file = "command-time.plugin.zsh";
-            src = inputs.zsh-command-time;
+            src = pkgs.zsh-command-time;
           }];
         };
       };

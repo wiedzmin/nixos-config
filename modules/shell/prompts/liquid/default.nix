@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -40,7 +40,7 @@ in
           plugins = [{
             name = "liquidprompt";
             file = "liquidprompt.plugin.zsh";
-            src = inputs.liquidprompt;
+            src = pkgs.liquidprompt;
           }];
         };
       };

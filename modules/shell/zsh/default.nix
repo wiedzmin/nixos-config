@@ -142,17 +142,17 @@ in
             {
               name = "zsh-nix-shell";
               file = "nix-shell.plugin.zsh";
-              src = inputs.zsh-nix-shell;
+              src = pkgs.zsh-nix-shell;
             }
             {
               name = "nix-zsh-completions";
               file = "nix-zsh-completions.plugin.zsh";
-              src = inputs.nix-zsh-completions;
+              src = pkgs.nix-zsh-completions;
             }
             {
               name = "you-should-use";
               file = "you-should-use.plugin.zsh";
-              src = inputs.zsh-you-should-use;
+              src = pkgs.zsh-you-should-use;
             }
             {
               name = "zsh-async";

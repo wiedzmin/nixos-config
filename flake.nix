@@ -3,23 +3,24 @@
 
   inputs = {
     unstable.url = "github:nixos/nixpkgs/nixos-unstable";
-    unstable-future.url = "github:nixos/nixpkgs/b06025f1533a1e07b6db3e75151caa155d1c7eb3";
 
     nur.url = "github:wiedzmin/NUR";
 
     home-manager.url = "github:nix-community/home-manager";
-    emacs.url = "github:nix-community/emacs-overlay";
     telega = {
       url = "github:ipvych/telega-overlay";
       inputs.nixpkgs.follows = "unstable";
     };
     nixos-hardware.url = "github:NixOS/nixos-hardware";
-    nixpkgs-libreoffice.url = "github:nixos/nixpkgs/0f213d0fee84280d8c3a97f7469b988d6fe5fcdf";
-    nixpkgs-last-unbroken.url = "github:nixos/nixpkgs/ca012a02bf8327be9e488546faecae5e05d7d749";
+    nixos-artwork = {
+      url = "github:NixOS/nixos-artwork";
+      flake = false;
+    };
 
     devenv-src.url = "github:cachix/devenv";
 
-    # NOTE: using these instead of quelpa
+    emacs.url = "github:nix-community/emacs-overlay";
+    # NOTE: unpackaged emacs extensions
     emacs-org-bars = {
       url = "github:tonyaldon/org-bars";
       flake = false;
@@ -33,6 +34,7 @@
       flake = false;
     };
     emacs-easy-kill-extras = {
+      # NOTE: deps broken upstream, hence using as input
       url = "github:knu/easy-kill-extras.el";
       flake = false;
     };
@@ -41,20 +43,16 @@
       url = "github:acastanedam/git-msg-prefix.el/update-cl";
       flake = false;
     };
-    emacs-haproxy-mode = {
-      url = "github:port19x/haproxy-mode";
-      flake = false;
-    };
     emacs-consult-org-clock = {
       url = "github:overideal/consult-org-clock";
       flake = false;
     };
-    emacs-consult-todo = {
-      url = "github:liuyinz/consult-todo";
-      flake = false;
-    };
     emacs-treesit-jump = {
       url = "github:dmille56/treesit-jump";
+      flake = false;
+    };
+    yasnippet-snippets = {
+      url = "github:wiedzmin/yasnippet-snippets";
       flake = false;
     };
 
@@ -72,54 +70,27 @@
       url = "github:unixorn/git-extra-commands";
       flake = false;
     };
-    liquidprompt = {
-      url = "github:nojhan/liquidprompt";
-      flake = false;
-    };
-    nixos-artwork = {
-      url = "github:NixOS/nixos-artwork";
-      flake = false;
-    };
     pass-zsh-completion = {
       url = "github:ninrod/pass-zsh-completion";
-      flake = false;
-    };
-    yasnippet-snippets = {
-      url = "github:wiedzmin/yasnippet-snippets";
       flake = false;
     };
     zsh-async = {
       url = "github:mafredri/zsh-async";
       flake = false;
     };
-    zsh-command-time = {
-      url = "github:popstas/zsh-command-time";
-      flake = false;
-    };
     zsh-fuzzy-search-and-edit = {
       url = "github:seletskiy/zsh-fuzzy-search-and-edit";
-      flake = false;
-    };
-    zsh-nix-shell = {
-      url = "github:chisui/zsh-nix-shell";
-      flake = false;
-    };
-    nix-zsh-completions = {
-      url = "github:spwhitt/nix-zsh-completions";
       flake = false;
     };
     zsh-reentry-hook = {
       url = "github:RobSis/zsh-reentry-hook";
       flake = false;
     };
-    zsh-syntax-highlighting = {
-      url = "github:zsh-users/zsh-syntax-highlighting";
-      flake = false;
-    };
-    zsh-you-should-use = {
-      url = "github:MichaelAquilina/zsh-you-should-use";
-      flake = false;
-    };
+
+    # NOTE: pinned
+    unstable-future.url = "github:nixos/nixpkgs/b06025f1533a1e07b6db3e75151caa155d1c7eb3";
+    nixpkgs-libreoffice.url = "github:nixos/nixpkgs/0f213d0fee84280d8c3a97f7469b988d6fe5fcdf";
+    nixpkgs-last-unbroken.url = "github:nixos/nixpkgs/ca012a02bf8327be9e488546faecae5e05d7d749";
   };
 
   outputs = { self, unstable, ... }@inputs:
