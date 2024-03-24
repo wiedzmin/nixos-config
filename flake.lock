@@ -57,22 +57,6 @@
         "type": "github"
       }
     },
-    "emacs-consult-todo": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1698008383,
-        "narHash": "sha256-OaMPZ4gf/ZZ2hCWYzgLLOy0iWJp3exBSRMZn1RI1Y2w=",
-        "owner": "liuyinz",
-        "repo": "consult-todo",
-        "rev": "84f3c9876a285f733d75053076a97cc30f7d8eb9",
-        "type": "github"
-      },
-      "original": {
-        "owner": "liuyinz",
-        "repo": "consult-todo",
-        "type": "github"
-      }
-    },
     "emacs-easy-kill-extras": {
       "flake": false,
       "locked": {
@@ -119,22 +103,6 @@
         "owner": "acastanedam",
         "ref": "update-cl",
         "repo": "git-msg-prefix.el",
-        "type": "github"
-      }
-    },
-    "emacs-haproxy-mode": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1707391893,
-        "narHash": "sha256-UcUI4NKndr43+3SX7Mi8zr9MC7cVxwFzA5eH2/DzYN8=",
-        "owner": "port19x",
-        "repo": "haproxy-mode",
-        "rev": "a8cff87487a763ad6523add4d332e654570d56c0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "port19x",
-        "repo": "haproxy-mode",
         "type": "github"
       }
     },
@@ -326,22 +294,6 @@
         "type": "github"
       }
     },
-    "liquidprompt": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1708794958,
-        "narHash": "sha256-l4/yBDs16ltnSekcnB8kOCTM+bsqA4Hmwj4g2Cfi7K4=",
-        "owner": "nojhan",
-        "repo": "liquidprompt",
-        "rev": "fa1fa987f0a224865ea55fbb8bbdd4818fbf08ce",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nojhan",
-        "repo": "liquidprompt",
-        "type": "github"
-      }
-    },
     "lowdown-src": {
       "flake": false,
       "locked": {
@@ -379,22 +331,6 @@
         "owner": "domenkozar",
         "ref": "relaxed-flakes",
         "repo": "nix",
-        "type": "github"
-      }
-    },
-    "nix-zsh-completions": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1696846724,
-        "narHash": "sha256-JStpIKU+jU6TkXToTONfdEhLjaASGzC+tRmSJRiqKWU=",
-        "owner": "spwhitt",
-        "repo": "nix-zsh-completions",
-        "rev": "a7c8781b5a18026fbc3edb36397931526f243590",
-        "type": "github"
-      },
-      "original": {
-        "owner": "spwhitt",
-        "repo": "nix-zsh-completions",
         "type": "github"
       }
     },
@@ -621,11 +557,9 @@
         "devenv-src": "devenv-src",
         "emacs": "emacs",
         "emacs-consult-org-clock": "emacs-consult-org-clock",
-        "emacs-consult-todo": "emacs-consult-todo",
         "emacs-easy-kill-extras": "emacs-easy-kill-extras",
         "emacs-epithet": "emacs-epithet",
         "emacs-git-msg-prefix": "emacs-git-msg-prefix",
-        "emacs-haproxy-mode": "emacs-haproxy-mode",
         "emacs-highlight-sexp": "emacs-highlight-sexp",
         "emacs-org-bars": "emacs-org-bars",
         "emacs-treesit-jump": "emacs-treesit-jump",
@@ -633,8 +567,6 @@
         "home-manager": "home-manager",
         "kitty-grab": "kitty-grab",
         "kitty-search": "kitty-search",
-        "liquidprompt": "liquidprompt",
-        "nix-zsh-completions": "nix-zsh-completions",
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs-last-unbroken": "nixpkgs-last-unbroken",
@@ -646,12 +578,8 @@
         "unstable-future": "unstable-future",
         "yasnippet-snippets": "yasnippet-snippets",
         "zsh-async": "zsh-async",
-        "zsh-command-time": "zsh-command-time",
         "zsh-fuzzy-search-and-edit": "zsh-fuzzy-search-and-edit",
-        "zsh-nix-shell": "zsh-nix-shell",
-        "zsh-reentry-hook": "zsh-reentry-hook",
-        "zsh-syntax-highlighting": "zsh-syntax-highlighting",
-        "zsh-you-should-use": "zsh-you-should-use"
+        "zsh-reentry-hook": "zsh-reentry-hook"
       }
     },
     "systems": {
@@ -768,22 +696,6 @@
         "type": "github"
       }
     },
-    "zsh-command-time": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1605448670,
-        "narHash": "sha256-ndHVFcz+XmUW0zwFq7pBXygdRKyPLjDZNmTelhd5bv8=",
-        "owner": "popstas",
-        "repo": "zsh-command-time",
-        "rev": "803d26eef526bff1494d1a584e46a6e08d25d918",
-        "type": "github"
-      },
-      "original": {
-        "owner": "popstas",
-        "repo": "zsh-command-time",
-        "type": "github"
-      }
-    },
     "zsh-fuzzy-search-and-edit": {
       "flake": false,
       "locked": {
@@ -800,22 +712,6 @@
         "type": "github"
       }
     },
-    "zsh-nix-shell": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1704028593,
-        "narHash": "sha256-Rtg8kWVLhXRuD2/Ctbtgz9MQCtKZOLpAIdommZhXKdE=",
-        "owner": "chisui",
-        "repo": "zsh-nix-shell",
-        "rev": "82ca15e638cc208e6d8368e34a1625ed75e08f90",
-        "type": "github"
-      },
-      "original": {
-        "owner": "chisui",
-        "repo": "zsh-nix-shell",
-        "type": "github"
-      }
-    },
     "zsh-reentry-hook": {
       "flake": false,
       "locked": {
@@ -829,38 +725,6 @@
       "original": {
         "owner": "RobSis",
         "repo": "zsh-reentry-hook",
-        "type": "github"
-      }
-    },
-    "zsh-syntax-highlighting": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1704566212,
-        "narHash": "sha256-4rW2N+ankAH4sA6Sa5mr9IKsdAg7WTgrmyqJ2V1vygQ=",
-        "owner": "zsh-users",
-        "repo": "zsh-syntax-highlighting",
-        "rev": "e0165eaa730dd0fa321a6a6de74f092fe87630b0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "zsh-users",
-        "repo": "zsh-syntax-highlighting",
-        "type": "github"
-      }
-    },
-    "zsh-you-should-use": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1681926346,
-        "narHash": "sha256-lKs6DhG3x/oRA5AxnRT+odCZFenpS86wPnPqxLonV2E=",
-        "owner": "MichaelAquilina",
-        "repo": "zsh-you-should-use",
-        "rev": "1f9cb008076d4f2011d5f814dfbcfbece94a99e0",
-        "type": "github"
-      },
-      "original": {
-        "owner": "MichaelAquilina",
-        "repo": "zsh-you-should-use",
         "type": "github"
       }
     }
