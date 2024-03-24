@@ -33,7 +33,7 @@ in
       };
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ gitleaks gitnuro mgitstatus ];
+        home.packages = with pkgs; [ gitleaks gitnuro mgitstatus difftastic ];
       };
 
       dev.vcs.batch.commands = {
@@ -41,6 +41,22 @@ in
         usynctags = [ "${pkgs.gittags}/bin/gittags --sync --remote ${cfg.defaultUpstreamRemote}" ];
         trim = [ "${pkgs.gitAndTools.git-trim}/bin/git-trim --delete=merged-local" ];
       };
+
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.difftastic # TODO: review package perks
+      ];
+      ide.emacs.core.config = ''
+        (use-package difftastic
+          ;; :demand t
+          :bind (:map magit-blame-read-only-mode-map
+                 ("D" . difftastic-magit-show)
+                 ("S" . difftastic-magit-show))
+          :config
+          (eval-after-load 'magit-diff
+            '(transient-append-suffix 'magit-diff '(-1 -1)
+               [("D" "Difftastic diff (dwim)" difftastic-magit-diff)
+                ("S" "Difftastic show" difftastic-magit-show)])))
+      '';
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
