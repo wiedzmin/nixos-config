@@ -420,6 +420,14 @@ in
             searchSuffix = "?q=";
           };
         };
+        elpa-gnu = {
+          desc = "GNU ELPA";
+          remote.url = "https://elpa.gnu.org/packages/";
+        };
+        elpa-nongnu = {
+          desc = "NonGNU ELPA";
+          remote.url = "https://elpa.nongnu.org/nongnu/";
+        };
         use-package = { remote.url = "https://github.com/jwiegley/use-package"; };
         "emacs-news" = {
           desc = "Emacs news";
