@@ -149,6 +149,12 @@ in
         browser = appCmdFull config.attributes.browser.fallback.traits;
       };
     };
+    "ydocs" = {
+      remote = {
+        url = "https://docs.yandex.ru";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
+    };
     "gh" = {
       desc = "Github code hosting";
       tags = [ "forge" ];
