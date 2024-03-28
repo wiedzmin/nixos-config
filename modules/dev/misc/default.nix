@@ -295,6 +295,17 @@ in
                 trigger = ":gdeb";
                 replace = "goBinPrefix config.dev.golang.goPath \"$|$\"";
               }
+              {
+                trigger = ":codo";
+                replace = "```$|$```"; # NOTE: one-liner, for cases with interpreted newlines
+              }
+              {
+                trigger = ":codm";
+                replace = ''
+                  ```
+                  $|$
+                  ```'';
+              }
             ];
           } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
