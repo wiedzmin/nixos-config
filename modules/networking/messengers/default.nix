@@ -57,8 +57,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/telegram.yml".source = yaml.generate "espanso-telegram.yml" {
-          filter_class = "TelegramDesktop";
+        xdg.configFile."espanso/match/messengers.yml".source = yaml.generate "espanso-messengers.yml" {
           matches = [
             {
               trigger = ":shr";
