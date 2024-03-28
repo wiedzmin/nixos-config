@@ -71,13 +71,6 @@ in
               trigger = ":cr";
               replace = "©";
             }
-            {
-              trigger = ":code";
-              replace = ''
-                ```
-                $|$
-                ```'';
-            }
           ];
         };
       };
