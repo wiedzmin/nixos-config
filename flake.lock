@@ -60,11 +60,11 @@
     "emacs-easy-kill-extras": {
       "flake": false,
       "locked": {
-        "lastModified": 1705942150,
-        "narHash": "sha256-kxs3GJqAtjXlwZuLlcS3tMh4pTLDmXLAmuZ67IavjxY=",
+        "lastModified": 1709874721,
+        "narHash": "sha256-POhLh05hTeRsORltWLd9Il/srJ0w+Dw9YKoyFOwNtp8=",
         "owner": "knu",
         "repo": "easy-kill-extras.el",
-        "rev": "6ec0a1ff47aee681f7aa7af4250ede75815385f2",
+        "rev": "ee8d24892c1eb2269e54a93f6bab855ce57badf1",
         "type": "github"
       },
       "original": {
@@ -141,11 +141,11 @@
     "emacs-treesit-jump": {
       "flake": false,
       "locked": {
-        "lastModified": 1710923215,
-        "narHash": "sha256-Yd4Pb5PN+eHCOzMVsn0lZ9bguXAfok8hxUa2t5QlYjk=",
+        "lastModified": 1711691443,
+        "narHash": "sha256-8/3RIzVXgtuwDkJYxgi2JhWVNQT+1RS+Ebz/um+gWEY=",
         "owner": "dmille56",
         "repo": "treesit-jump",
-        "rev": "32b3929acb134a8bdb2f5ac90f8140ee55ea1892",
+        "rev": "7ce57140052dd75fb554044f1ac8f56a2774dd63",
         "type": "github"
       },
       "original": {
