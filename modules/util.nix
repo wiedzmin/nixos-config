@@ -199,6 +199,10 @@ rec {
   maybeAttrIsBool = name: set: (builtins.hasAttr name set) && set."${name}"; # FIXME: enforce type safety
   maybeAttrString = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else ph;
   maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
+  mustAttrString = name: set: if (builtins.hasAttr name set) then set."${name}" else
+    builtins.trace "`${name}` attribute not found in `${set}`";
+  mustAttrList = name: set: if (builtins.hasAttr name set) then set."${name}" else
+    builtins.trace "`${name}` list attribute not found in `${set}`";
   emacsBoolToString = v: if v then "t" else "nil";
   emptyValueByPath = meta: path: (lib.attrByPath path "" meta) == "";
   nonEmptyValueByPath = meta: path: !(emptyValueByPath meta path);
