@@ -160,6 +160,11 @@ in
           cmd = [ "qbtarget --target window" ];
           mode = "browser";
         })
+        (goLocalDebugKeybinding config {
+          key = [ "." ];
+          cmd = [ "qbtarget --notify-status" ];
+          mode = "browser";
+        })
       ];
 
       wm.i3.statusbar.i3-rs.customBlocks = [
