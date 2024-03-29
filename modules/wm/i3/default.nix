@@ -136,6 +136,11 @@ in
         default = "py3";
         description = "Statusbar implementation";
       };
+      statusbar.i3-rs.customBlocks = mkOption {
+        type = with types; listOf attrs;
+        default = [ ];
+        description = "Statusbar custom blocks metadata";
+      };
       statusbar.deps = mkOption {
         type = types.listOf types.package;
         default = with pkgs; [ dbus dunst gawk iproute2 iw kbdd openvpn perl xdotool yad ];
@@ -652,6 +657,7 @@ in
                 format = " $icon $timestamp.datetime(f:'%a %d-%m-%Y %R', l:ru_RU) ";
                 timezone = config.time.timeZone;
               }
+            ] ++ cfg.statusbar.i3-rs.customBlocks ++ [
               {
                 block = "keyboard_layout";
                 driver = "kbddbus";
