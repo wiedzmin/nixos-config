@@ -162,6 +162,17 @@ in
         })
       ];
 
+      wm.i3.statusbar.i3-rs.customBlocks = [
+        {
+          # TODO: consider adding toggle clicking
+          block = "custom";
+          command = "qbtarget";
+          watch_files = [ "/tmp/qbtarget" ];
+          format = "$text.pango-str()";
+          interval = "once";
+        }
+      ];
+
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           yank-image
