@@ -196,7 +196,7 @@ rec {
   };
   # }}}
   # {{{ Data.Attributes
-  maybeAttrIsBool = name: set: (builtins.hasAttr name set) && set."${name}";
+  maybeAttrIsBool = name: set: (builtins.hasAttr name set) && set."${name}"; # FIXME: enforce type safety
   maybeAttrString = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else ph;
   maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
   emacsBoolToString = v: if v then "t" else "nil";
