@@ -5,6 +5,13 @@ with lib;
 let
   cfg = config.ext.networking.messengers;
   user = config.attributes.mainUser.name;
+  unstable-future = import inputs.unstable-future {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -36,7 +43,8 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ tdesktop tdlib ] ++ optionals (cfg.zoom.enable) [ zoom-us ];
+        # TODO: review `tdl` docs at https://docs.iyear.me/tdl/
+        home.packages = with pkgs; [ tdesktop tdlib ] ++ optionals (cfg.zoom.enable) [ zoom-us unstable-future.tdl ];
       };
       workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {
