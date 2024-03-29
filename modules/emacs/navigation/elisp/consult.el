@@ -187,4 +187,6 @@
                     consult--tofu-char
                     (+ consult--tofu-char consult--tofu-range -1)))))
   :config
-  (add-to-list 'orderless-style-dispatchers 'dispatcher/dollar))
+  (use-package orderless-kwd)
+  (add-to-list 'orderless-style-dispatchers 'dispatcher/dollar)
+  (add-to-list 'orderless-style-dispatchers #'orderless-kwd-dispatch))
