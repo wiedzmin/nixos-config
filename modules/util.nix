@@ -368,7 +368,11 @@ rec {
   # {{{ WM.Common.Workspaces
   dockablePrimaryWS = headscount: if headscount > 2 then "primary" else "secondary";
   dockableSecondaryWS = headscount: if headscount > 2 then "secondary" else "primary";
-  enumerateWorkspaces = wsdata: lib.zipLists (lib.imap1 (i: _: i) wsdata) wsdata;
+  enumerateWorkspaces = wsdata:
+    let
+      sortedWSData = lib.sort (p: q: p.name < q.name) wsdata;
+    in
+    lib.zipLists (lib.imap1 (i: _: i) sortedWSData) sortedWSData;
   getWorkspacesByType = wsdata: type: (lib.groupBy (x: x.snd.type) wsdata)."${type}";
   mkWSMappingBrowsersRegexp = browser:
     concatStringListsRaw "|" (with browser; [ default.traits.wmClass fallback.traits.wmClass ]);
