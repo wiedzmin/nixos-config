@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.dev.vcs;
   user = config.attributes.mainUser.name;
+  # FIXME: check/unwire batchvcs functionality from bookmarks
   collectReposMetadata = bookmarks:
     (lib.mapAttrs'
       (_: meta:
