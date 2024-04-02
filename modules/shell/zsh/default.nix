@@ -53,7 +53,7 @@ in
         home.packages = with pkgs; [ gdu rtss wmctrl xdotool rargs ydotool ];
         programs.zsh = {
           enable = true;
-          enableAutosuggestions = true;
+          autosuggestion.enable = true;
           enableCompletion = true;
           syntaxHighlighting.enable = true;
           history = {
