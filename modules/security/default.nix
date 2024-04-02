@@ -15,10 +15,10 @@ in
         default = false;
         description = "Whether to enable security tools.";
       };
-      pinentryFlavor = mkOption {
-        type = types.enum pkgs.pinentry.flavors;
-        example = "gnome3";
-        description = "Pinentry flavor to use.";
+      pinentryPackage = mkOption {
+        type = types.nullOr types.package;
+        example = "pkgs.pinentry-gnome3";
+        description = "Pinentry package to use.";
       };
       polkit.silentAuth = mkOption {
         type = types.bool;
@@ -46,8 +46,8 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       assertions = [{
-        assertion = cfg.pinentryFlavor != null;
-        message = "security: Must select exactly one pinentry flavor.";
+        assertion = cfg.pinentryPackage != null;
+        message = "security: Must select exactly one pinentry package.";
       }];
 
       security = {
@@ -96,7 +96,7 @@ in
             allow-emacs-pinentry
             no-allow-loopback-pinentry
           '';
-          inherit (cfg) pinentryFlavor;
+          inherit (cfg) pinentryPackage;
         };
       };
       # TODO: generalize for multiple WMs
