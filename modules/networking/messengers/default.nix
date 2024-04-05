@@ -79,6 +79,10 @@ in
               trigger = ":cr";
               replace = "©";
             }
+            {
+              trigger = ":stt";
+              replace = "~~$|$~~";
+            }
           ];
         };
       };
