@@ -88,7 +88,7 @@
     };
 
     # NOTE: pinned
-    unstable-future.url = "github:nixos/nixpkgs/d8fe5e6c92d0d190646fb9f1056741a229980089";
+    unstable-future.url = "github:nixos/nixpkgs/fd281bd6b7d3e32ddfa399853946f782553163b5";
     nixpkgs-libreoffice.url = "github:nixos/nixpkgs/0f213d0fee84280d8c3a97f7469b988d6fe5fcdf";
     nixpkgs-last-unbroken.url = "github:nixos/nixpkgs/ca012a02bf8327be9e488546faecae5e05d7d749";
   };
