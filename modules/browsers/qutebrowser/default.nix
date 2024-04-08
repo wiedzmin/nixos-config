@@ -171,7 +171,7 @@ in
         {
           # TODO: consider adding toggle clicking
           block = "custom";
-          command = "qbtarget";
+          command = "qbtarget -c -fg red";
           watch_files = [ "/tmp/qbtarget" ];
           format = "$text.pango-str()";
           interval = "once";
