@@ -172,8 +172,8 @@ in
     (mkIf (cfg.enable && cfg.tools.misc.enable) {
       environment.systemPackages = with pkgs; [
         # D-Bus debug tools
-        dfeet
-        bustle
+        d-spy
+        # bustle # recently broken
       ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
