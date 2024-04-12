@@ -27,7 +27,12 @@ in
       };
       tempel.snippets = mkOption {
         type = types.lines;
-        description = "Tempel templates contents";
+        description = ''
+          Tempel templates contents.
+
+          Refer to https://github.com/minad/tempel?tab=readme-ov-file#template-syntax
+          for snippets syntax.
+        '';
         default = '''';
       };
       tempel.snippetsPath = mkOption {
