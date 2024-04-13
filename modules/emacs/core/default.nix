@@ -38,6 +38,11 @@ let
             ''
         ) customPackages)}
     '';
+  debugTracePatch = ''
+    (let ((context (lambda () (format "\nload-file-name: %s" load-file-name))))
+      (trace-function #'load nil context)
+      (trace-function #'require nil context))
+  '';
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -63,6 +68,11 @@ in
         type = types.bool;
         default = false;
         description = "Whether to build debuggable emacs package.";
+      };
+      debug.trace = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to trace configuration loading";
       };
       daemon.enable = mkOption {
         type = types.bool;
@@ -231,6 +241,8 @@ in
             (setq comp-deferred-compilation t))
 
           (require 'notifications)
+
+          ${lib.optionalString (cfg.debug.trace) debugTracePatch}
 
           ${readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/core.el ]}
 
