@@ -43,6 +43,12 @@ let
       (trace-function #'load nil context)
       (trace-function #'require nil context))
   '';
+  debugBenchmarkPatch = ''
+    (use-package benchmark-init
+      :config
+      ;; To disable collection of benchmark data after init is done.
+      (add-hook 'after-init-hook 'benchmark-init/deactivate))
+  '';
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -73,6 +79,11 @@ in
         type = types.bool;
         default = false;
         description = "Whether to trace configuration loading";
+      };
+      debug.benchmark = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to benchmark configuration loading";
       };
       daemon.enable = mkOption {
         type = types.bool;
@@ -244,6 +255,9 @@ in
 
           ${lib.optionalString (cfg.debug.trace) debugTracePatch}
 
+          ${lib.optionalString (cfg.debug.benchmark) debugBenchmarkPatch}
+          ${lib.optionalString (cfg.debug.benchmark) ''(benchmark-init/activate)''}
+
           ${readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/core.el ]}
 
           ${cfg.config}
@@ -298,7 +312,8 @@ in
           epkgs.no-littering
           epkgs.reverse-im
         ] ++ lib.optionals cfg.treesitter.enable [ epkgs.treesit-auto ]
-        ++ lib.optionals cfg.emacsEverywhere.enable [ epkgs.emacs-everywhere ];
+        ++ lib.optionals cfg.emacsEverywhere.enable [ epkgs.emacs-everywhere ]
+        ++ lib.optionals cfg.debug.benchmark [ epkgs.benchmark-init ];
       ide.emacs.core.config = lib.optionalString config.wm.i3.enable ''
         (use-package reverse-im
           :custom
