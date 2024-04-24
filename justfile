@@ -32,6 +32,10 @@ clean:
 rollback:
     rollback
 
+# Fix config, in case Emacs part is broken
+fix-config:
+    emacs -q .
+
 # Collect garbage
 collect-garbage:
     sudo nix-collect-garbage -d
