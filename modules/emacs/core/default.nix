@@ -478,6 +478,10 @@ in
             searchSuffix = "?q=emacs+";
           };
         };
+        "yhetil-emacs-devel" = {
+          desc = "emacs-devel search engine";
+          remote.url = "https://yhetil.org/emacs-devel/";
+        };
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
