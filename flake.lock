@@ -44,11 +44,11 @@
     "emacs-consult-org-clock": {
       "flake": false,
       "locked": {
-        "lastModified": 1696157751,
-        "narHash": "sha256-TOmXB9hDp5mlX7WCeyx1rVKtKCA8hkujy98W4Fgy4Gg=",
+        "lastModified": 1714982085,
+        "narHash": "sha256-gFkntmoXnTA/dE8MNcrNyLcIc+OscXBcWJmWFzyMTTc=",
         "owner": "overideal",
         "repo": "consult-org-clock",
-        "rev": "5531ec172c9088e81c87c373769545c8b3a97031",
+        "rev": "1b281caaba3c016be301b166ddf7868d3d1e1c8a",
         "type": "github"
       },
       "original": {
@@ -141,11 +141,11 @@
     "emacs-treesit-jump": {
       "flake": false,
       "locked": {
-        "lastModified": 1711691443,
-        "narHash": "sha256-8/3RIzVXgtuwDkJYxgi2JhWVNQT+1RS+Ebz/um+gWEY=",
+        "lastModified": 1714380580,
+        "narHash": "sha256-v0gefpDexrmTAFR9yCisAe4a/FDqk/MQheufhaYrcHg=",
         "owner": "dmille56",
         "repo": "treesit-jump",
-        "rev": "7ce57140052dd75fb554044f1ac8f56a2774dd63",
+        "rev": "6be39322e80dc11d0c0d28d460a53934c74a41fc",
         "type": "github"
       },
       "original": {
@@ -209,11 +209,11 @@
     "git-extra-commands": {
       "flake": false,
       "locked": {
-        "lastModified": 1711727414,
-        "narHash": "sha256-22jkHDSSyeuzXj4D0MKIjnqL7JRYiuXHUCRyN2hMbtg=",
+        "lastModified": 1715275233,
+        "narHash": "sha256-AdWDWyjy6UjfD8GI+R4uilT5yJHbHGETn0wa5+sX2JU=",
         "owner": "unixorn",
         "repo": "git-extra-commands",
-        "rev": "7d4e8e54b96ae83018149f11e2110195fc70c787",
+        "rev": "38e04c16d3340051f93fb981bc9f848a5f2d0818",
         "type": "github"
       },
       "original": {
