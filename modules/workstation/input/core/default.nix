@@ -57,7 +57,7 @@ in
           emulateWheel = true;
         };
       };
-      services.xserver.libinput = {
+      services.libinput = {
         enable = true;
         touchpad = {
           naturalScrolling = true;
