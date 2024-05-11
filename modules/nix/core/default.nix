@@ -75,7 +75,7 @@ in
           trusted-public-keys = [ "cache.nixos.org-1:6NCHdD59X431o0gWypbMrAURkbJ16ZPMQFGspcDShjY=" ];
           trusted-users = [ "root" user ];
         };
-        package = pkgs.nixUnstable;
+        package = pkgs.nixVersions.latest;
         extraOptions = ''
           auto-optimise-store = true
           keep-outputs = true
