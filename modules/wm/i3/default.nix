@@ -746,8 +746,8 @@ in
               ++ lib.optionals (cfg.statusbar.impl == "blocks") [ i3blocks ] ++ cfg.statusbar.deps;
           };
         };
-        displayManager = { defaultSession = "none+i3"; };
       };
+      services.displayManager = { defaultSession = "none+i3"; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.i3wm epkgs.i3wm-config-mode ];

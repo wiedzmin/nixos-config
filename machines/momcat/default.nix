@@ -137,11 +137,6 @@ in {
         };
       };
       gdm.enable = false;
-      job = {
-        logToFile = true;
-        logToJournal = true;
-      };
-      defaultSession = "gnome";
     };
     autoRepeatDelay = 200;
     autoRepeatInterval = 40;
@@ -149,6 +144,11 @@ in {
       options = "caps:none";
       layout = "us,ru";
     };
+  };
+  services.displayManager = {
+    logToFile = true;
+    logToJournal = true;
+    defaultSession = "gnome";
   };
 
   knowledgebase = {
