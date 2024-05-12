@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.workstation.input.keyboard;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -19,7 +20,7 @@ in
       };
       remappingTool = mkOption {
         # TODO: monitor "keymapper" evolution, whether it could be an additional option in the future
-        type = types.enum [ "xkeysnail" ];
+        type = types.enum [ "xkeysnail" "xremap" ];
         default = "xkeysnail";
         description = "Keyboard remapping tool to use";
       };
@@ -140,6 +141,9 @@ in
   config = mkMerge [
     (mkIf (cfg.enable) {
       users.users."${user}".extraGroups = [ "input" ];
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [ nurpkgs.xremap ];
+      };
     })
     (mkIf (cfg.enable && cfg.remappingTool == "xkeysnail") {
       assertions = [{
@@ -165,6 +169,12 @@ in
         };
       };
       home-manager.users."${user}" = { xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText; };
+    })
+    (mkIf (cfg.enable && cfg.remappingTool == "xremap") {
+      assertions = [{
+        assertion = cfg.remappingTool != "xremap";
+        message = "input/keyboard/XRemap: functionality is not yet implemented";
+      }];
     })
   ];
 }
