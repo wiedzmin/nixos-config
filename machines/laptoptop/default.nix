@@ -140,7 +140,7 @@ in
 
   controlcenter = {
     enable = true;
-    notifications.backend = "lnc";
+    notifications.backend = "dunst";
     wm.enable = true;
   };
 
