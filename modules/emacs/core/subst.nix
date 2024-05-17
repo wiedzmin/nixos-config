@@ -23,4 +23,5 @@ in
     ${genTreesitModeRemapAlist config.ide.emacs.core.treesitter.modeRemappings}))'';
   treesitFontLockLevelPatch = "(treesit-font-lock-level ${builtins.toString config.ide.emacs.core.treesitter.fontLockLevel})";
   emacsTreesitJumpPath = inputs.emacs-treesit-jump;
+  emacsPasswordMenuPath = inputs.emacs-password-menu;
 }
