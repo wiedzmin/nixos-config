@@ -179,7 +179,7 @@ in
               alignment = "left";
               always_run_script = "true";
               bounce_freq = 0;
-              browser = appCmdFull browser.default.traits;
+              browser = appCmdFull config.attributes.browser.default.traits;
               dmenu = "${nurpkgs.dmenu-ng}/bin/dmenu -p dunst:";
               ellipsize = "middle";
               follow = "keyboard";
