@@ -108,3 +108,10 @@
   :custom
   (select-enable-clipboard t)
   (x-select-request-type '(UTF8_STRING COMPOUND_TEXT TEXT STRING)))
+
+(use-package password-menu
+  :load-path "@emacsPasswordMenuPath@"
+  :bind
+  (:map custom-goto-map
+        ("j" . password-menu-transient)
+        ("J" . password-menu-completing-read)))

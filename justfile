@@ -117,6 +117,7 @@ flake-update-inputs-emacs-unpackaged:
     nix flake update emacs-easy-kill-extras
     nix flake update emacs-consult-org-clock
     nix flake update emacs-treesit-jump
+    nix flake update emacs-password-menu
 
 # Update flake inputs for Kitty unpackaged extensions
 flake-update-inputs-kitty-unpackaged:

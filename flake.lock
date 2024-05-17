@@ -138,6 +138,22 @@
         "type": "github"
       }
     },
+    "emacs-password-menu": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1712529682,
+        "narHash": "sha256-hpHsMdwuLhJbhYEhJ0vyyd6S7XD8nJn9a/WesH5beh4=",
+        "owner": "rnadler",
+        "repo": "password-menu",
+        "rev": "46fb7241f7ee8ff646b9a3ea1b3138031de1c0d6",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rnadler",
+        "repo": "password-menu",
+        "type": "github"
+      }
+    },
     "emacs-treesit-jump": {
       "flake": false,
       "locked": {
@@ -562,6 +578,7 @@
         "emacs-git-msg-prefix": "emacs-git-msg-prefix",
         "emacs-highlight-sexp": "emacs-highlight-sexp",
         "emacs-org-bars": "emacs-org-bars",
+        "emacs-password-menu": "emacs-password-menu",
         "emacs-treesit-jump": "emacs-treesit-jump",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
