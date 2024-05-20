@@ -309,9 +309,9 @@ in
       };
       wmCommon.keybindings.entries = [
         {
-          key = [ "n" ];
+          key = [ "Control" "Shift" "Space" ];
           cmd = ''kill -s USR1 $(pidof deadd-notification-center)'';
-          mode = "xserver";
+          mode = "root";
         }
       ];
     })
