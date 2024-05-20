@@ -80,6 +80,9 @@ in
           "--no-dim"
         ];
       };
+      services.udev.extraRules = ''
+        KERNEL=="uinput", GROUP="input", TAG+="uaccess"
+      '';
     })
     (mkIf (cfg.enable && cfg.xmodmap.enable) {
       services.xserver.displayManager.sessionCommands =
