@@ -636,11 +636,11 @@
         ]
       },
       "locked": {
-        "lastModified": 1715303433,
-        "narHash": "sha256-Ge74zxvONE59xlPY7Nu90QEpzXz19O0ikoPAEGjyvkg=",
+        "lastModified": 1717204574,
+        "narHash": "sha256-eYGAKF20QkZSx7usUMrM2cKlUaev4Q6n2th6mH4vn+Q=",
         "owner": "ipvych",
         "repo": "telega-overlay",
-        "rev": "3d1d2d87117cf891e817cdaec0d67d8fbb36d5ab",
+        "rev": "213d2ae9abf12db1cc02a938a3f56604533eb7e5",
         "type": "github"
       },
       "original": {
