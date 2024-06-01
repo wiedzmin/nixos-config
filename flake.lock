@@ -225,11 +225,11 @@
     "git-extra-commands": {
       "flake": false,
       "locked": {
-        "lastModified": 1715275233,
-        "narHash": "sha256-AdWDWyjy6UjfD8GI+R4uilT5yJHbHGETn0wa5+sX2JU=",
+        "lastModified": 1716993013,
+        "narHash": "sha256-VesDJZfH/Ubm664aVkgzH4faxcqL3fAkw/nsggTD0Tc=",
         "owner": "unixorn",
         "repo": "git-extra-commands",
-        "rev": "38e04c16d3340051f93fb981bc9f848a5f2d0818",
+        "rev": "e1630e15662dbd8244dd79ee1e089cdebf87ce50",
         "type": "github"
       },
       "original": {
