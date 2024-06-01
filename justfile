@@ -6,23 +6,23 @@ default:
 
 # Build configuration flake for current host
 build host=host_name:
-    nixos-rebuild build --flake ".#{{host}}"
+    mkdir -p /tmp/buildroot/ && nixos-rebuild build --flake ".#{{host}}"
 
 # Build configuration flake for current host with debug output
 build-debug host=host_name:
-    nixos-rebuild build --flake ".#{{host}}" --show-trace
+    mkdir -p /tmp/buildroot/ && nixos-rebuild build --flake ".#{{host}}" --show-trace
 
 # Build configuration flake for current host without network access
 build-no-net host=host_name:
-    nixos-rebuild build --flake ".#{{host}}" --option binary-caches ''
+    mkdir -p /tmp/buildroot/ && nixos-rebuild build --flake ".#{{host}}" --option binary-caches ''
 
 # Build + switch configuration flake for current host
 switch host=host_name:
-    nixos-rebuild switch{{ if env_var_or_default("VERBOSE", "false") == "true" { " -v" } else { "" } }} -j 4 --use-remote-sudo --flake ".#{{host}}"
+    mkdir -p /tmp/buildroot/ && nixos-rebuild switch{{ if env_var_or_default("VERBOSE", "false") == "true" { " -v" } else { "" } }} -j 4 --use-remote-sudo --flake ".#{{host}}"
 
 # Build + switch configuration flake for current host without network access
 switch-no-net host=host_name:
-    nixos-rebuild switch{{ if env_var_or_default("VERBOSE", "false") == "true" { " -v" } else { "" } }} --use-remote-sudo --flake ".#{{host}}" --option binary-caches ''
+    mkdir -p /tmp/buildroot/ && nixos-rebuild switch{{ if env_var_or_default("VERBOSE", "false") == "true" { " -v" } else { "" } }} --use-remote-sudo --flake ".#{{host}}" --option binary-caches ''
 
 # Remove system build local output
 clean:
