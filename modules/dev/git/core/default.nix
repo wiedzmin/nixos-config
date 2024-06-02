@@ -7,7 +7,6 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
   inherit (hm.xdg) dataHome;
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -124,8 +123,8 @@ in
       shell.core.variables = [{ GIT_PAGER = config.attributes.gitPager.cmd; }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/git-core.yml".source = yaml.generate "espanso-git-core.yml" {
+      completion.expansions.espanso.matches = {
+        git-core = {
           matches = [
             {
               trigger = ":gitB";

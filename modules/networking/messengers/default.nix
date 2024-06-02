@@ -12,7 +12,6 @@ let
     };
     localSystem = { system = "x86_64-linux"; };
   };
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -64,8 +63,8 @@ in
       wmCommon.autostart.entries = optionals cfg.telegram.autostart [{ cmd = "${pkgs.tdesktop}/bin/telegram-desktop"; }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/messengers.yml".source = yaml.generate "espanso-messengers.yml" {
+      completion.expansions.espanso.matches = {
+        messengers = {
           matches = [
             {
               trigger = ":shr";

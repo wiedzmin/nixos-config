@@ -4,7 +4,6 @@ with pkgs.unstable.commonutils;
 let
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  yaml = pkgs.formats.yaml { };
 in
 {
   imports = [
@@ -233,7 +232,20 @@ in
   };
 
   completion = {
-    expansions.enable = true;
+    expansions = {
+      enable = true;
+      espanso.matches = {
+        # FIXME: should we use custom `ext.networking.hostname` option, or stick with nixos one?
+        "${config.networking.hostName}" = {
+          matches = [
+            {
+              trigger = ":un";
+              replace = user;
+            }
+          ];
+        };
+      };
+    };
     tabnine = {
       enable = true;
       emacs = {
@@ -747,15 +759,6 @@ in
       home.packages = with pkgs; [ xkb-switch ] ++ [ nurpkgs.dmenu-ng rofi /* NOTE: temp, until publishing upstream */ ];
       xdg.enable = true;
       home.stateVersion = "22.11";
-    } // lib.optionalAttrs (config.completion.expansions.enable) {
-      xdg.configFile."espanso/match/laptoptop.yml".source = yaml.generate "espanso-laptoptop.yml" {
-        matches = [
-          {
-            trigger = ":un";
-            replace = user;
-          }
-        ];
-      };
     };
   };
 

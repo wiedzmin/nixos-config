@@ -7,7 +7,6 @@ let
   user = config.attributes.mainUser.name;
   serviceAttrsNames = [ "global" "emacs" ];
   envVars = filterAttrs (name: _: !builtins.elem name serviceAttrsNames);
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -108,9 +107,9 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.queueing.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
+      completion.expansions.espanso.matches = {
         # TODO: some fzf-based tasks listing automation
-        xdg.configFile."espanso/match/shell_core_queueing.yml".source = yaml.generate "espanso-shell_core_queueing.yml" {
+        shell_core_queueing = {
           matches = [
             {
               trigger = ":pus";
@@ -137,8 +136,8 @@ in
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/shell_core.yml".source = yaml.generate "espanso-shell_core.yml" {
+      completion.expansions.espanso.matches = {
+        shell_core = {
           matches = [
             {
               trigger = ":ptim";

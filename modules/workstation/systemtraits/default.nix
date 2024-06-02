@@ -13,7 +13,6 @@ let
     };
     localSystem = { system = "x86_64-linux"; };
   };
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -54,8 +53,8 @@ in
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/systemtraits.yml".source = yaml.generate "espanso-systemtraits.yml" {
+      completion.expansions.espanso.matches = {
+        systemtraits = {
           matches = [
             {
               trigger = ":pms";

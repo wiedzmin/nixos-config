@@ -5,7 +5,6 @@ let
   cfg = config.ext.networking.core;
   user = config.attributes.mainUser.name;
   inherit (config.wmCommon) prefix;
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -75,8 +74,8 @@ in
       }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/networking.yml".source = yaml.generate "espanso-networking.yml" {
+      completion.expansions.espanso.matches = {
+        networking = {
           matches = [
             {
               trigger = ":emp";

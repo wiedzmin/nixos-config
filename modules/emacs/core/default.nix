@@ -49,7 +49,6 @@ let
       ;; To disable collection of benchmark data after init is done.
       (add-hook 'after-init-hook 'benchmark-init/deactivate))
   '';
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -485,8 +484,8 @@ in
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/emacs.yml".source = yaml.generate "espanso-emacs.yml" {
+      completion.expansions.espanso.matches = {
+        emacs = {
           filter_class = "Emacs";
           matches = [
             {

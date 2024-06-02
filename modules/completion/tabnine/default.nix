@@ -6,7 +6,6 @@ let
   cfg = config.completion.tabnine;
   user = config.attributes.mainUser.name;
   toml = pkgs.formats.toml { };
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -51,8 +50,8 @@ in
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/completion.yml".source = yaml.generate "espanso-completion.yml" {
+      completion.expansions.espanso.matches = {
+        completion = {
           matches = [
             {
               trigger = ":tabns";

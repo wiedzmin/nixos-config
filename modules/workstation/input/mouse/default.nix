@@ -6,7 +6,6 @@ let
   cfg = config.workstation.input.mouse;
   user = config.attributes.mainUser.name;
   inherit (config.wmCommon) prefix;
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -170,8 +169,8 @@ in
       services.xbanish.enable = true;
     })
     (mkIf (cfg.keynavTool == "warpd" && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/mouse.yml".source = yaml.generate "espanso-mouse.yml" {
+      completion.expansions.espanso.matches = {
+        mouse = {
           matches = [
             {
               trigger = ":wdop";

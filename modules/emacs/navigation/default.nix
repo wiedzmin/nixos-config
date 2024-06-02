@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.ide.emacs.navigation;
   user = config.attributes.mainUser.name;
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -140,8 +139,8 @@ in
       # TODO: consider enhance custom keymaps nix machinery in a way of automatically unbinding, either global or some submapped conflicting keybindings
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/navigation_emacs.yml".source = yaml.generate "espanso-navigation_emacs.yml" {
+      completion.expansions.espanso.matches = {
+        navigation_emacs = {
           filter_class = "Emacs";
           matches = [
             {
