@@ -7,7 +7,6 @@ with lib;
 let
   cfg = config.workstation.sound.pa;
   user = config.attributes.mainUser.name;
-  yaml = pkgs.formats.yaml { };
   inherit (config.wmCommon) prefix;
 in
 {
@@ -48,18 +47,6 @@ in
       };
       environment.systemPackages = with pkgs; [ pasystray lxqt.pavucontrol-qt ];
     })
-    (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/sound.yml".source = yaml.generate "espanso-sound.yml" {
-          matches = [
-            {
-              trigger = ":pakr";
-              replace = "pulseaudio -k && sudo alsactl restore --force";
-            }
-          ];
-        };
-      };
-    })
     (mkIf (cfg.enable && cfg.wm.enable) {
       # TODO: find a handy balance between PA and mpris (taking respective keybindings into account)
       wmCommon.keybindings.entries = [
@@ -76,6 +63,11 @@ in
         {
           key = [ prefix "p" ];
           cmd = "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt";
+          mode = "root";
+        }
+        {
+          key = [ prefix "Control" "p" ];
+          cmd = "${pkgs.pulseaudio}/bin/pulseaudio -k && sudo ${pkgs.alsa-utils}/bin/alsactl restore --force";
           mode = "root";
         }
       ];
