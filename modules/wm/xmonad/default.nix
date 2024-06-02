@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.wm.xmonad;
   user = config.attributes.mainUser.name;
-  yaml = pkgs.formats.yaml { };
   inherit (config.wmCommon) prefix;
 in
 {
@@ -337,16 +336,15 @@ in
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/xmonad.yml".source = yaml.generate "espanso-xmonad.yml"
-          {
-            matches = [
-              {
-                trigger = ":ygr";
-                replace = "rm /home/${user}/.local/share/yeganesh/default";
-              }
-            ];
-          } // optionalAttrs (config.shell.tmux.enable) {
+      completion.expansions.espanso.matches = {
+        xmonad = {
+          matches = [
+            {
+              trigger = ":ygr";
+              replace = "rm /home/${user}/.local/share/yeganesh/default";
+            }
+          ];
+        } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };

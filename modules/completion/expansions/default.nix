@@ -48,32 +48,48 @@ in
         type = types.enum [ "Auto" "Clipboard" "Inject" ];
         default = "Auto";
       };
-      espanso.config = mkOption {
-        type = types.lines;
-        default = ''
-          toggle_key: ${cfg.espanso.toggleKey}
-          search_shortcut: ${cfg.espanso.searchShortcut}
-          auto_restart: false
-          backend: ${cfg.espanso.backend}
-          x11_use_xclip_backend: true
-        '';
+      espanso.config.default = mkOption {
+        type = types.attrs;
+        default = {
+          toggle_key = cfg.espanso.toggleKey;
+          search_shortcut = cfg.espanso.searchShortcut;
+          auto_restart = false;
+          backend = cfg.espanso.backend;
+          x11_use_xclip_backend = true;
+        };
         visible = false;
         readOnly = true;
         internal = true;
         description = "Espanso main config";
+      };
+      espanso.configs = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Espanso per-app configs collection";
+      };
+      espanso.matches = mkOption {
+        type = types.attrs;
+        default = { };
+        description = "Espanso per-app matches collection";
       };
     };
   };
 
   config = mkMerge [
     (mkIf cfg.enable {
-      services.espanso.enable = true;
       home-manager.users."${user}" = {
+        services.espanso = {
+          enable = true;
+          configs = {
+            default = cfg.espanso.config.default;
+          } // cfg.espanso.configs;
+          matches = cfg.espanso.matches;
+        };
         home.activation = {
-          populateEspansoConfig = {
+          ensureEspansoConfigPath = {
             after = [ ];
             before = [ "linkGeneration" ];
-            data = ''mkdir -p /home/alex3rd/.config/espanso/config && echo "${cfg.espanso.config}" > /home/alex3rd/.config/espanso/config/default.yml'';
+            data = ''mkdir -p /home/alex3rd/.config/espanso/config'';
           };
           restartEspanso = {
             after = [ "linkGeneration" ];

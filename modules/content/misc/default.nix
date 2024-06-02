@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.content.misc;
   user = config.attributes.mainUser.name;
-  yaml = pkgs.formats.yaml { };
   timeDurations = [
     {
       label = "1 day";
@@ -103,6 +102,202 @@ in
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
+      completion.expansions.espanso.matches = {
+        content_misc = {
+          matches = [
+            {
+              trigger = ":fdelta";
+              replace = "fd -e {{fdregex.value}} | sad {{changefrom.value}} {{changeto.value}} | ${config.attributes.gitPager.cmd}";
+              vars = [
+                {
+                  name = "fdregex";
+                  type = "form";
+                  params = { layout = "Search regexp: [[value]]"; };
+                }
+                {
+                  name = "changefrom";
+                  type = "form";
+                  params = { layout = "change from: [[value]]"; };
+                }
+                {
+                  name = "changeto";
+                  type = "form";
+                  params = { layout = "change to: [[value]]"; };
+                }
+              ];
+            }
+            {
+              trigger = ":colinks";
+              replace = "xidel {{sourcefile.value}} --extract '//a/@href' --output-format {{outputformat.value}} > links.log";
+              vars = [
+                {
+                  name = "sourcefile";
+                  type = "form";
+                  params = { layout = "Search root: [[value]]"; };
+                }
+                {
+                  name = "outputformat";
+                  type = "choice";
+                  params = { values = [ "adhoc" "bash" "json" ]; };
+                }
+              ];
+            }
+            {
+              trigger = ":ggr";
+              replace = "cat `rg --files | grep -e \"\\.json\" | fzf` | gron | grep {{searchterm.value}} | gron --ungron";
+              vars = [
+                {
+                  name = "searchterm";
+                  type = "form";
+                  params = { layout = "Search term: [[value]]"; };
+                }
+              ];
+            }
+            {
+              trigger = ":fsame";
+              replace = "find -L {{searchroot.value}} -samefile {{comparewith.value}}";
+              vars = [
+                {
+                  name = "searchroot";
+                  type = "form";
+                  params = { layout = "Search root: [[value]]"; };
+                }
+                {
+                  name = "comparewith";
+                  type = "form";
+                  params = { layout = "Compare with: [[value]]"; };
+                }
+              ];
+            }
+            {
+              trigger = ":fdnew";
+              replace = "fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | fzf";
+              vars = [
+                {
+                  name = "changenewerthan";
+                  type = "choice";
+                  params = { values = timeDurations; };
+                }
+              ];
+            }
+            {
+              trigger = ":fdold";
+              replace = "fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | fzf";
+              vars = [
+                {
+                  name = "changeolderthan";
+                  type = "choice";
+                  params = { values = timeDurations; };
+                }
+              ];
+            }
+            {
+              trigger = ":uis";
+              replace = "{{result.value}}";
+              vars = [
+                {
+                  name = "result";
+                  type = "choice";
+                  params = {
+                    values = [
+                      {
+                        label = "week";
+                        id = "604800";
+                      }
+                      {
+                        label = "day";
+                        id = "86400";
+                      }
+                      {
+                        label = "hour";
+                        id = "3600";
+                      }
+                    ];
+                  };
+                }
+              ];
+            }
+            {
+              trigger = ":uims";
+              replace = "{{result.value}}";
+              vars = [
+                {
+                  name = "result";
+                  type = "choice";
+                  params = {
+                    values = [
+                      {
+                        label = "10min";
+                        id = "600000";
+                      }
+                      {
+                        label = "week";
+                        id = "604800000";
+                      }
+                      {
+                        label = "day";
+                        id = "86400000";
+                      }
+                      {
+                        label = "hour";
+                        id = "3600000";
+                      }
+                      {
+                        label = "72hours";
+                        id = "259200000";
+                      }
+                    ];
+                  };
+                }
+              ];
+            }
+            {
+              trigger = ":isofd";
+              replace = "sudo dd bs={{blocksize.value}} if={{isopath.value}} of={{devicepath.value}} conv=fdatasync";
+              vars = [
+                {
+                  name = "blocksize";
+                  type = "choice";
+                  params = {
+                    values = [
+                      "1M"
+                      "2M"
+                      "4M"
+                    ];
+                  };
+                }
+                {
+                  name = "isopath";
+                  type = "form";
+                  params = { layout = "ISO path: [[value]]"; };
+                }
+                {
+                  name = "devicepath";
+                  type = "form";
+                  params = { layout = "Device path: [[value]]"; };
+                }
+              ];
+            }
+            {
+              trigger = ":mt";
+              replace = "monolith --isolate --base-url {{baseurl.value}} --output $|$";
+              vars = [
+                {
+                  name = "baseurl";
+                  type = "form";
+                  params = { layout = "URL: [[value]]"; };
+                }
+              ];
+            }
+            {
+              trigger = ":gp";
+              replace = "gpick";
+            }
+          ];
+        } // optionalAttrs (config.shell.tmux.enable) {
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
+        };
+      };
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           # NOTE: expansions deps
@@ -117,201 +312,6 @@ in
           ugrep
           xidel
         ];
-        xdg.configFile."espanso/match/content_misc.yml".source = yaml.generate "espanso-content_misc.yml"
-          {
-            matches = [
-              {
-                trigger = ":fdelta";
-                replace = "fd -e {{fdregex.value}} | sad {{changefrom.value}} {{changeto.value}} | ${config.attributes.gitPager.cmd}";
-                vars = [
-                  {
-                    name = "fdregex";
-                    type = "form";
-                    params = { layout = "Search regexp: [[value]]"; };
-                  }
-                  {
-                    name = "changefrom";
-                    type = "form";
-                    params = { layout = "change from: [[value]]"; };
-                  }
-                  {
-                    name = "changeto";
-                    type = "form";
-                    params = { layout = "change to: [[value]]"; };
-                  }
-                ];
-              }
-              {
-                trigger = ":colinks";
-                replace = "xidel {{sourcefile.value}} --extract '//a/@href' --output-format {{outputformat.value}} > links.log";
-                vars = [
-                  {
-                    name = "sourcefile";
-                    type = "form";
-                    params = { layout = "Search root: [[value]]"; };
-                  }
-                  {
-                    name = "outputformat";
-                    type = "choice";
-                    params = { values = [ "adhoc" "bash" "json" ]; };
-                  }
-                ];
-              }
-              {
-                trigger = ":ggr";
-                replace = "cat `rg --files | grep -e \"\\.json\" | fzf` | gron | grep {{searchterm.value}} | gron --ungron";
-                vars = [
-                  {
-                    name = "searchterm";
-                    type = "form";
-                    params = { layout = "Search term: [[value]]"; };
-                  }
-                ];
-              }
-              {
-                trigger = ":fsame";
-                replace = "find -L {{searchroot.value}} -samefile {{comparewith.value}}";
-                vars = [
-                  {
-                    name = "searchroot";
-                    type = "form";
-                    params = { layout = "Search root: [[value]]"; };
-                  }
-                  {
-                    name = "comparewith";
-                    type = "form";
-                    params = { layout = "Compare with: [[value]]"; };
-                  }
-                ];
-              }
-              {
-                trigger = ":fdnew";
-                replace = "fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | fzf";
-                vars = [
-                  {
-                    name = "changenewerthan";
-                    type = "choice";
-                    params = { values = timeDurations; };
-                  }
-                ];
-              }
-              {
-                trigger = ":fdold";
-                replace = "fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | fzf";
-                vars = [
-                  {
-                    name = "changeolderthan";
-                    type = "choice";
-                    params = { values = timeDurations; };
-                  }
-                ];
-              }
-              {
-                trigger = ":uis";
-                replace = "{{result.value}}";
-                vars = [
-                  {
-                    name = "result";
-                    type = "choice";
-                    params = {
-                      values = [
-                        {
-                          label = "week";
-                          id = "604800";
-                        }
-                        {
-                          label = "day";
-                          id = "86400";
-                        }
-                        {
-                          label = "hour";
-                          id = "3600";
-                        }
-                      ];
-                    };
-                  }
-                ];
-              }
-              {
-                trigger = ":uims";
-                replace = "{{result.value}}";
-                vars = [
-                  {
-                    name = "result";
-                    type = "choice";
-                    params = {
-                      values = [
-                        {
-                          label = "10min";
-                          id = "600000";
-                        }
-                        {
-                          label = "week";
-                          id = "604800000";
-                        }
-                        {
-                          label = "day";
-                          id = "86400000";
-                        }
-                        {
-                          label = "hour";
-                          id = "3600000";
-                        }
-                        {
-                          label = "72hours";
-                          id = "259200000";
-                        }
-                      ];
-                    };
-                  }
-                ];
-              }
-              {
-                trigger = ":isofd";
-                replace = "sudo dd bs={{blocksize.value}} if={{isopath.value}} of={{devicepath.value}} conv=fdatasync";
-                vars = [
-                  {
-                    name = "blocksize";
-                    type = "choice";
-                    params = {
-                      values = [
-                        "1M"
-                        "2M"
-                        "4M"
-                      ];
-                    };
-                  }
-                  {
-                    name = "isopath";
-                    type = "form";
-                    params = { layout = "ISO path: [[value]]"; };
-                  }
-                  {
-                    name = "devicepath";
-                    type = "form";
-                    params = { layout = "Device path: [[value]]"; };
-                  }
-                ];
-              }
-              {
-                trigger = ":mt";
-                replace = "monolith --isolate --base-url {{baseurl.value}} --output $|$";
-                vars = [
-                  {
-                    name = "baseurl";
-                    type = "form";
-                    params = { layout = "URL: [[value]]"; };
-                  }
-                ];
-              }
-              {
-                trigger = ":gp";
-                replace = "gpick";
-              }
-            ];
-          } // optionalAttrs (config.shell.tmux.enable) {
-          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
-        };
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

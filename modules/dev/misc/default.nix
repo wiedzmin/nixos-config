@@ -6,7 +6,6 @@ with lib;
 let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -250,66 +249,67 @@ in
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
+      completion.expansions.espanso.matches = {
+        dev_misc = {
+          matches = [
+            {
+              trigger = ":sheb";
+              replace = "#!/usr/bin/env {{binary.value}}";
+              vars = [
+                {
+                  name = "binary";
+                  type = "choice";
+                  params = { values = cfg.shebangedBinaries; };
+                }
+              ];
+            }
+            {
+              # FIXME: investigate/debug relative paths usage (see below)
+              trigger = ":sjar";
+              replace = "jar tf {{jarfilename.value}}";
+              vars = [
+                {
+                  name = "files";
+                  type = "shell";
+                  params = { cmd = "fd -e jar"; };
+                }
+                {
+                  name = "jarfilename";
+                  type = "choice";
+                  params = { values = "{{files}}"; };
+                }
+              ];
+            }
+            {
+              trigger = ":gma";
+              replace = "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log";
+            }
+            {
+              trigger = ":gdeb";
+              replace = "goBinPrefix config.dev.golang.goPath \"$|$\"";
+            }
+            {
+              trigger = ":codo";
+              replace = "```$|$```"; # NOTE: one-liner, for cases with interpreted newlines
+            }
+            {
+              trigger = ":codm";
+              replace = ''
+                ```
+                $|$
+                ```'';
+            }
+          ];
+        } // optionalAttrs (config.shell.tmux.enable) {
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
+        };
+      };
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           # NOTE: expansions deps
           adoptopenjdk-bin
           git
         ];
-        xdg.configFile."espanso/match/dev_misc.yml".source = yaml.generate "espanso-dev_misc.yml"
-          {
-            matches = [
-              {
-                trigger = ":sheb";
-                replace = "#!/usr/bin/env {{binary.value}}";
-                vars = [
-                  {
-                    name = "binary";
-                    type = "choice";
-                    params = { values = cfg.shebangedBinaries; };
-                  }
-                ];
-              }
-              {
-                # FIXME: investigate/debug relative paths usage (see below)
-                trigger = ":sjar";
-                replace = "jar tf {{jarfilename.value}}";
-                vars = [
-                  {
-                    name = "files";
-                    type = "shell";
-                    params = { cmd = "fd -e jar"; };
-                  }
-                  {
-                    name = "jarfilename";
-                    type = "choice";
-                    params = { values = "{{files}}"; };
-                  }
-                ];
-              }
-              {
-                trigger = ":gma";
-                replace = "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log";
-              }
-              {
-                trigger = ":gdeb";
-                replace = "goBinPrefix config.dev.golang.goPath \"$|$\"";
-              }
-              {
-                trigger = ":codo";
-                replace = "```$|$```"; # NOTE: one-liner, for cases with interpreted newlines
-              }
-              {
-                trigger = ":codm";
-                replace = ''
-                  ```
-                  $|$
-                  ```'';
-              }
-            ];
-          } // optionalAttrs (config.shell.tmux.enable) {
-          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
-        };
       };
     })
   ];

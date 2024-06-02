@@ -13,7 +13,6 @@ let
     };
     localSystem = { system = "x86_64-linux"; };
   };
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -171,6 +170,205 @@ in
       pim.timetracking.rules = mkArbttProgramTitleRule [ "emacs" ] [ "/nixos-config/" ] "project:nixos-config";
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
+      completion.expansions.espanso.matches = {
+        nix-core = {
+          matches = [
+            {
+              trigger = ":npg";
+              replace = "nix-prefetch-git --rev {{revision.value}} {{repolink}}";
+              vars = [
+                {
+                  name = "revision";
+                  type = "form";
+                  params = { layout = "Prefetch revision: [[value]]"; };
+                }
+                {
+                  name = "repolink";
+                  type = "clipboard";
+                }
+              ];
+            }
+            {
+              trigger = ":npnew";
+              replace = "git log --pretty=oneline ORIG_HEAD..FETCH_HEAD | grep init | grep -v Merge";
+            }
+            {
+              trigger = ":nscptree";
+              replace = "nix-store -q --tree ~/.nix-profile";
+            }
+            {
+              trigger = ":ngcr";
+              replace = "nix-store --gc --print-roots | cut -d' ' -f1 | uniq | grep -v /proc | grep -v { | grep -v /run | grep ${user} | grep direnv";
+            }
+            {
+              trigger = ":nsp";
+              replace = "nix shell \"nixpkgs#$|$\"";
+            }
+            {
+              trigger = ":ns2";
+              replace = " \"nixpkgs#$|$\"";
+            }
+            {
+              trigger = ":pkgs";
+              replace = "inputs.unstable.legacyPackages.x86_64-linux.$|$";
+            }
+            {
+              trigger = ":cfg";
+              replace = "nixosConfigurations.laptoptop.config.{{machine.value}}";
+              vars = [
+                {
+                  name = "machines";
+                  type = "shell";
+                  params = { cmd = "ls ${configPrefix roots "machines"}"; };
+                }
+                {
+                  name = "machine";
+                  type = "choice";
+                  params = { values = "{{machines}}"; };
+                }
+              ];
+            }
+            {
+              trigger = ":elt";
+              replace = "builtins.head (inputs.unstable.lib.sublist 1$|$ 1 nixosConfigurations.laptoptop.config.wmCommon.wsMapping.rules)";
+            }
+            {
+              trigger = ":nrep";
+              replace = "cd ${wsRoot roots "github"}/wiedzmin/nixos-config && nix repl --file ./flake-repl.nix";
+            }
+            {
+              trigger = ":nsfd";
+              replace = "fd $|$ /nix/store";
+            }
+            {
+              trigger = ":llv";
+              replace = "inputs.unstable.legacyPackages.x86_64-linux.linuxPackages.";
+            }
+            {
+              trigger = ":slv";
+              replace = "grep -e '^  linuxPackages' /etc/nixpkgs/pkgs/top-level/all-packages.nix";
+            }
+            {
+              trigger = ":nwda";
+              replace = "nix why-depends --all \"nixpkgs#$|$\" \"nixpkgs#\"";
+            }
+            {
+              trigger = ":nwdo";
+              replace = "nix why-depends \"nixpkgs#$|$\" \"nixpkgs#\"";
+            }
+            {
+              trigger = ":nwdd";
+              replace = "nix why-depends --derivation \"nixpkgs#$|$\" \"nixpkgs#\"";
+            }
+            {
+              trigger = ":nwd?";
+              replace = "nix why-depends --help";
+            }
+            {
+              trigger = ":nwtt";
+              replace = "tree /nix/var/nix/{gcroots,profiles}";
+            }
+            {
+              trigger = ":nnd";
+              replace = "find . -name \"*.nix\" -exec nil diagnostics {} \\;";
+            }
+            {
+              trigger = ":nvdln";
+              replace = "nvd --color always list /run/booted-system /run/current-system";
+            }
+            {
+              trigger = ":nvdlcu";
+              replace = "nvd --color always list {{profile1.value}} {{profile2.value}}";
+              vars = [
+                {
+                  name = "profiles";
+                  type = "shell";
+                  params = { cmd = "find /nix/var/nix/profiles/per-user/${user} -name '*link' | grep -v channels"; };
+                }
+                {
+                  name = "profile1";
+                  type = "choice";
+                  params = { values = "{{profiles}}"; };
+                }
+                {
+                  name = "profile2";
+                  type = "choice";
+                  params = { values = "{{profiles}}"; };
+                }
+              ];
+            }
+            {
+              trigger = ":nvdlcs";
+              replace = "nvd --color always list {{profile1.value}} {{profile2.value}}";
+              vars = [
+                {
+                  name = "profiles";
+                  type = "shell";
+                  params = { cmd = "find /nix/var/nix/profiles/ -maxdepth 1 -name '*link'"; };
+                }
+                {
+                  name = "profile1";
+                  type = "choice";
+                  params = { values = "{{profiles}}"; };
+                }
+                {
+                  name = "profile2";
+                  type = "choice";
+                  params = { values = "{{profiles}}"; };
+                }
+              ];
+            }
+            {
+              trigger = ":nvddn";
+              replace = "nvd --color always diff /run/booted-system /run/current-system";
+            }
+            {
+              trigger = ":nvddcu";
+              replace = "nvd --color always diff {{profile1.value}} {{profile2.value}}";
+              vars = [
+                {
+                  name = "profiles";
+                  type = "shell";
+                  params = { cmd = "find /nix/var/nix/profiles/per-user/${user} -name '*link' | grep -v channels"; };
+                }
+                {
+                  name = "profile1";
+                  type = "choice";
+                  params = { values = "{{profiles}}"; };
+                }
+                {
+                  name = "profile2";
+                  type = "choice";
+                  params = { values = "{{profiles}}"; };
+                }
+              ];
+            }
+            {
+              trigger = ":nvddcs";
+              replace = "nvd --color always diff {{profile1.value}} {{profile2.value}}";
+              vars = [
+                {
+                  name = "profiles";
+                  type = "shell";
+                  params = { cmd = "find /nix/var/nix/profiles/ -maxdepth 1 -name '*link'"; };
+                }
+                {
+                  name = "profile1";
+                  type = "choice";
+                  params = { values = "{{profiles}}"; };
+                }
+                {
+                  name = "profile2";
+                  type = "choice";
+                  params = { values = "{{profiles}}"; };
+                }
+              ];
+            }
+          ];
+        } // optionalAttrs (config.shell.tmux.enable) {
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
+        };
+      };
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           # NOTE: expansions deps
@@ -182,204 +380,6 @@ in
           nvd
           tree
         ];
-        xdg.configFile."espanso/match/nix-core.yml".source = yaml.generate "espanso-nix-core.yml"
-          {
-            matches = [
-              {
-                trigger = ":npg";
-                replace = "nix-prefetch-git --rev {{revision.value}} {{repolink}}";
-                vars = [
-                  {
-                    name = "revision";
-                    type = "form";
-                    params = { layout = "Prefetch revision: [[value]]"; };
-                  }
-                  {
-                    name = "repolink";
-                    type = "clipboard";
-                  }
-                ];
-              }
-              {
-                trigger = ":npnew";
-                replace = "git log --pretty=oneline ORIG_HEAD..FETCH_HEAD | grep init | grep -v Merge";
-              }
-              {
-                trigger = ":nscptree";
-                replace = "nix-store -q --tree ~/.nix-profile";
-              }
-              {
-                trigger = ":ngcr";
-                replace = "nix-store --gc --print-roots | cut -d' ' -f1 | uniq | grep -v /proc | grep -v { | grep -v /run | grep ${user} | grep direnv";
-              }
-              {
-                trigger = ":nsp";
-                replace = "nix shell \"nixpkgs#$|$\"";
-              }
-              {
-                trigger = ":ns2";
-                replace = " \"nixpkgs#$|$\"";
-              }
-              {
-                trigger = ":pkgs";
-                replace = "inputs.unstable.legacyPackages.x86_64-linux.$|$";
-              }
-              {
-                trigger = ":cfg";
-                replace = "nixosConfigurations.laptoptop.config.{{machine.value}}";
-                vars = [
-                  {
-                    name = "machines";
-                    type = "shell";
-                    params = { cmd = "ls ${configPrefix roots "machines"}"; };
-                  }
-                  {
-                    name = "machine";
-                    type = "choice";
-                    params = { values = "{{machines}}"; };
-                  }
-                ];
-              }
-              {
-                trigger = ":elt";
-                replace = "builtins.head (inputs.unstable.lib.sublist 1$|$ 1 nixosConfigurations.laptoptop.config.wmCommon.wsMapping.rules)";
-              }
-              {
-                trigger = ":nrep";
-                replace = "cd ${wsRoot roots "github"}/wiedzmin/nixos-config && nix repl --file ./flake-repl.nix";
-              }
-              {
-                trigger = ":nsfd";
-                replace = "fd $|$ /nix/store";
-              }
-              {
-                trigger = ":llv";
-                replace = "inputs.unstable.legacyPackages.x86_64-linux.linuxPackages.";
-              }
-              {
-                trigger = ":slv";
-                replace = "grep -e '^  linuxPackages' /etc/nixpkgs/pkgs/top-level/all-packages.nix";
-              }
-              {
-                trigger = ":nwda";
-                replace = "nix why-depends --all \"nixpkgs#$|$\" \"nixpkgs#\"";
-              }
-              {
-                trigger = ":nwdo";
-                replace = "nix why-depends \"nixpkgs#$|$\" \"nixpkgs#\"";
-              }
-              {
-                trigger = ":nwdd";
-                replace = "nix why-depends --derivation \"nixpkgs#$|$\" \"nixpkgs#\"";
-              }
-              {
-                trigger = ":nwd?";
-                replace = "nix why-depends --help";
-              }
-              {
-                trigger = ":nwtt";
-                replace = "tree /nix/var/nix/{gcroots,profiles}";
-              }
-              {
-                trigger = ":nnd";
-                replace = "find . -name \"*.nix\" -exec nil diagnostics {} \\;";
-              }
-              {
-                trigger = ":nvdln";
-                replace = "nvd --color always list /run/booted-system /run/current-system";
-              }
-              {
-                trigger = ":nvdlcu";
-                replace = "nvd --color always list {{profile1.value}} {{profile2.value}}";
-                vars = [
-                  {
-                    name = "profiles";
-                    type = "shell";
-                    params = { cmd = "find /nix/var/nix/profiles/per-user/${user} -name '*link' | grep -v channels"; };
-                  }
-                  {
-                    name = "profile1";
-                    type = "choice";
-                    params = { values = "{{profiles}}"; };
-                  }
-                  {
-                    name = "profile2";
-                    type = "choice";
-                    params = { values = "{{profiles}}"; };
-                  }
-                ];
-              }
-              {
-                trigger = ":nvdlcs";
-                replace = "nvd --color always list {{profile1.value}} {{profile2.value}}";
-                vars = [
-                  {
-                    name = "profiles";
-                    type = "shell";
-                    params = { cmd = "find /nix/var/nix/profiles/ -maxdepth 1 -name '*link'"; };
-                  }
-                  {
-                    name = "profile1";
-                    type = "choice";
-                    params = { values = "{{profiles}}"; };
-                  }
-                  {
-                    name = "profile2";
-                    type = "choice";
-                    params = { values = "{{profiles}}"; };
-                  }
-                ];
-              }
-              {
-                trigger = ":nvddn";
-                replace = "nvd --color always diff /run/booted-system /run/current-system";
-              }
-              {
-                trigger = ":nvddcu";
-                replace = "nvd --color always diff {{profile1.value}} {{profile2.value}}";
-                vars = [
-                  {
-                    name = "profiles";
-                    type = "shell";
-                    params = { cmd = "find /nix/var/nix/profiles/per-user/${user} -name '*link' | grep -v channels"; };
-                  }
-                  {
-                    name = "profile1";
-                    type = "choice";
-                    params = { values = "{{profiles}}"; };
-                  }
-                  {
-                    name = "profile2";
-                    type = "choice";
-                    params = { values = "{{profiles}}"; };
-                  }
-                ];
-              }
-              {
-                trigger = ":nvddcs";
-                replace = "nvd --color always diff {{profile1.value}} {{profile2.value}}";
-                vars = [
-                  {
-                    name = "profiles";
-                    type = "shell";
-                    params = { cmd = "find /nix/var/nix/profiles/ -maxdepth 1 -name '*link'"; };
-                  }
-                  {
-                    name = "profile1";
-                    type = "choice";
-                    params = { values = "{{profiles}}"; };
-                  }
-                  {
-                    name = "profile2";
-                    type = "choice";
-                    params = { values = "{{profiles}}"; };
-                  }
-                ];
-              }
-            ];
-          } // optionalAttrs (config.shell.tmux.enable) {
-          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
-        };
       };
     })
     (mkIf (cfg.enable && cfg.shell.enable) {

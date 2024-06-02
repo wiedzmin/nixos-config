@@ -381,24 +381,23 @@ in
       ];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/controlcenter.yml".source = yaml.generate "espanso-controlcenter.yml"
-          {
-            matches = [
-              {
-                trigger = ":sctlf";
-                replace = "systemctl --user --state=failed";
-              }
-              {
-                trigger = ":sctrf";
-                replace = "systemctl --user reset-failed";
-              }
-              {
-                trigger = ":fatr";
-                replace = "nix run nixpkgs.fatrace -c fatrace";
-              }
-            ];
-          } // optionalAttrs (config.shell.tmux.enable) {
+      completion.expansions.espanso.matches = {
+        controlcenter = {
+          matches = [
+            {
+              trigger = ":sctlf";
+              replace = "systemctl --user --state=failed";
+            }
+            {
+              trigger = ":sctrf";
+              replace = "systemctl --user reset-failed";
+            }
+            {
+              trigger = ":fatr";
+              replace = "nix run nixpkgs.fatrace -c fatrace";
+            }
+          ];
+        } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };

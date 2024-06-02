@@ -8,7 +8,6 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   standardDesktopID = "org.qutebrowser.qutebrowser";
   windowedDesktopID = "org.custom.qutebrowser.windowed";
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -192,10 +191,6 @@ in
         ];
         xdg.configFile = {
           "qutebrowser/hint-words".text = builtins.readFile ./assets/hint-words;
-          "espanso/config/qutebrowser.yml".source = yaml.generate "espanso-config-qutebrowser.yml" {
-            filter_class = appWindowClass cfg.traits;
-            backend = "Clipboard";
-          };
         };
         programs.qutebrowser = {
           enable = true;
@@ -685,6 +680,14 @@ in
           mode = "browser";
         }
       ];
+    })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      completion.expansions.espanso.configs = {
+        qutebrowser = {
+          filter_class = appWindowClass cfg.traits;
+          backend = "Clipboard";
+        };
+      };
     })
     (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
       home-manager.users."${user}" = {

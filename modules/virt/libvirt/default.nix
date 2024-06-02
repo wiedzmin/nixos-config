@@ -8,7 +8,6 @@ let
   vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
   '';
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -67,23 +66,22 @@ in
       }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/libvirt.yml".source = yaml.generate "espanso-libvirt.yml"
-          {
-            matches = [
-              {
-                trigger = ":vdq";
-                replace = "qemu-img convert -f vdi -O qcow2 {{image_basename.value}}.vdi {{image_basename.value}}.qcow2";
-                vars = [
-                  {
-                    name = "image_basename";
-                    type = "form";
-                    params = { layout = "image base name: {{value}}"; };
-                  }
-                ];
-              }
-            ];
-          } // optionalAttrs (config.shell.tmux.enable) {
+      completion.expansions.espanso.matches = {
+        libvirt = {
+          matches = [
+            {
+              trigger = ":vdq";
+              replace = "qemu-img convert -f vdi -O qcow2 {{image_basename.value}}.vdi {{image_basename.value}}.qcow2";
+              vars = [
+                {
+                  name = "image_basename";
+                  type = "form";
+                  params = { layout = "image base name: {{value}}"; };
+                }
+              ];
+            }
+          ];
+        } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };

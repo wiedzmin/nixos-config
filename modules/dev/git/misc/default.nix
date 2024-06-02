@@ -6,7 +6,6 @@ let
   cfg = config.dev.git.misc;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -59,6 +58,99 @@ in
       '';
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
+      completion.expansions.espanso.matches = {
+        git = {
+          matches = [
+            {
+              trigger = ":gmrde";
+              replace = "mr direnv";
+            }
+            {
+              trigger = ":gmrt";
+              replace = "mr trim";
+            }
+            {
+              trigger = ":gcob";
+              replace = "git checkout `git branch --format='%(refname:short)' | fzf`";
+            }
+            {
+              trigger = ":gstexp";
+              replace = "git stash show -p `git stash list | fzf | cut -d: -f1` > {{exportbasename.value}}.patch";
+              vars = [
+                {
+                  name = "exportbasename";
+                  type = "form";
+                  params = { layout = "export to: [[value]]"; };
+                }
+              ];
+            }
+            {
+              trigger = ":gstsh";
+              replace = "git stash show -p `git stash list | fzf | cut -d: -f1`";
+            }
+            {
+              trigger = ":precall";
+              replace = "pre-commit run --all-files";
+            }
+            {
+              trigger = ":gpruna";
+              replace = "git prune-remote; git prune-local";
+            }
+            {
+              trigger = ":gitsc";
+              replace = "git config --list --show-origin --show-scope";
+            }
+            {
+              trigger = ":glcont";
+              replace = "git log --pretty=oneline --pickaxe-regex -S$|$";
+            }
+            {
+              trigger = ":gpcont";
+              replace = "git log -p --all -S '$|$'";
+            }
+            {
+              trigger = ":gldiff";
+              replace = "git log --pretty=oneline --pickaxe-all -G$|$";
+            }
+            {
+              trigger = ":gpdiff";
+              replace = "git log -p --all -G '$|$'";
+            }
+            {
+              trigger = ":bdiff";
+              replace = "git diff ${config.dev.git.autofetch.mainBranchName} $|$ > ../master-${config.dev.git.autofetch.mainBranchName}.patch";
+            }
+            {
+              trigger = ":tbcont";
+              replace = "git log --branches -S'$|$' --oneline | awk '{print $1}' | xargs git branch -a --contains";
+            }
+            {
+              trigger = ":trec";
+              replace = "git log -S$|$ --since=HEAD~50 --until=HEAD";
+            }
+            {
+              trigger = ":ghsf";
+              replace = "path:**/$|$";
+            }
+            {
+              trigger = ":greb";
+              replace = "git rebase `git rev-parse --abbrev-ref --symbolic-full-name '@{u}'`";
+            }
+            {
+              trigger = ":gcs";
+              replace = "git show {{clipboard}}";
+              vars = [
+                {
+                  name = "clipboard";
+                  type = "clipboard";
+                }
+              ];
+            }
+          ];
+        } // optionalAttrs (config.shell.tmux.enable) {
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
+        };
+      };
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           # NOTE: expansions deps
@@ -67,98 +159,6 @@ in
           mr
           pre-commit
         ];
-        xdg.configFile."espanso/match/git.yml".source = yaml.generate "espanso-git.yml"
-          {
-            matches = [
-              {
-                trigger = ":gmrde";
-                replace = "mr direnv";
-              }
-              {
-                trigger = ":gmrt";
-                replace = "mr trim";
-              }
-              {
-                trigger = ":gcob";
-                replace = "git checkout `git branch --format='%(refname:short)' | fzf`";
-              }
-              {
-                trigger = ":gstexp";
-                replace = "git stash show -p `git stash list | fzf | cut -d: -f1` > {{exportbasename.value}}.patch";
-                vars = [
-                  {
-                    name = "exportbasename";
-                    type = "form";
-                    params = { layout = "export to: [[value]]"; };
-                  }
-                ];
-              }
-              {
-                trigger = ":gstsh";
-                replace = "git stash show -p `git stash list | fzf | cut -d: -f1`";
-              }
-              {
-                trigger = ":precall";
-                replace = "pre-commit run --all-files";
-              }
-              {
-                trigger = ":gpruna";
-                replace = "git prune-remote; git prune-local";
-              }
-              {
-                trigger = ":gitsc";
-                replace = "git config --list --show-origin --show-scope";
-              }
-              {
-                trigger = ":glcont";
-                replace = "git log --pretty=oneline --pickaxe-regex -S$|$";
-              }
-              {
-                trigger = ":gpcont";
-                replace = "git log -p --all -S '$|$'";
-              }
-              {
-                trigger = ":gldiff";
-                replace = "git log --pretty=oneline --pickaxe-all -G$|$";
-              }
-              {
-                trigger = ":gpdiff";
-                replace = "git log -p --all -G '$|$'";
-              }
-              {
-                trigger = ":bdiff";
-                replace = "git diff ${config.dev.git.autofetch.mainBranchName} $|$ > ../master-${config.dev.git.autofetch.mainBranchName}.patch";
-              }
-              {
-                trigger = ":tbcont";
-                replace = "git log --branches -S'$|$' --oneline | awk '{print $1}' | xargs git branch -a --contains";
-              }
-              {
-                trigger = ":trec";
-                replace = "git log -S$|$ --since=HEAD~50 --until=HEAD";
-              }
-              {
-                trigger = ":ghsf";
-                replace = "path:**/$|$";
-              }
-              {
-                trigger = ":greb";
-                replace = "git rebase `git rev-parse --abbrev-ref --symbolic-full-name '@{u}'`";
-              }
-              {
-                trigger = ":gcs";
-                replace = "git show {{clipboard}}";
-                vars = [
-                  {
-                    name = "clipboard";
-                    type = "clipboard";
-                  }
-                ];
-              }
-            ];
-          } // optionalAttrs (config.shell.tmux.enable) {
-          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
-        };
       };
     })
   ];

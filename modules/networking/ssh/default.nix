@@ -20,7 +20,6 @@ let
       };
     };
   };
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -131,8 +130,8 @@ in
       ];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/ssh.yml".source = yaml.generate "espanso-ssh.yml" {
+      completion.expansions.espanso.matches = {
+        ssh = {
           matches = [
             {
               trigger = ":ssf";

@@ -14,7 +14,6 @@ let
     };
     localSystem = { system = "x86_64-linux"; };
   };
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -115,8 +114,8 @@ in
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        xdg.configFile."espanso/match/pgsql.yml".source = yaml.generate "espanso-pgsql.yml" {
+      completion.expansions.espanso.matches = {
+        pgsql = {
           matches = [
             {
               trigger = ":pdbs";

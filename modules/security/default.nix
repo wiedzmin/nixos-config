@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.ext.security;
   user = config.attributes.mainUser.name;
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -133,12 +132,8 @@ in
       '';
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          # NOTE: expansions deps
-          openssl
-        ];
-        xdg.configFile."espanso/match/security.yml".source = yaml.generate "espanso-security.yml" {
+      completion.expansions.espanso.matches = {
+        security = {
           filter_class = "Emacs";
           matches = [
             {
@@ -174,6 +169,12 @@ in
             }
           ];
         };
+      };
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          # NOTE: expansions deps
+          openssl
+        ];
       };
     })
   ];
