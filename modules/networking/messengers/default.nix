@@ -101,6 +101,10 @@ in
           desc = "Telega.el manual";
           remote.url = "https://zevlg.github.io/telega.el/";
         };
+        "telegram/service/status" = {
+          desc = "Telegram service status";
+          remote.url = "https://downdetector.com/status/telegram/";
+        };
       };
     })
   ];
