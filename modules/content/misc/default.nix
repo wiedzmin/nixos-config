@@ -89,7 +89,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ recode ];
+        home.packages = with pkgs; [ recode varia rep-grep ren-find ]; # TODO: consider making some expansions/templates/whatever
         programs.aria2 = {
           enable = true;
           settings = {
