@@ -84,6 +84,7 @@
   (completion-cycle-threshold 3)
   (completion-ignored-extensions nil)
   (window-combination-resize t)
+  (y-or-n-p-use-read-key t)
   :config
   (fset 'yes-or-no-p 'y-or-n-p)
   (set-charset-priority 'unicode)
