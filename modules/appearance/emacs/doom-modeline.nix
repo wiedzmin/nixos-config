@@ -1,6 +1,8 @@
 { config, lib, ... }:
 with lib;
 
+# NOTE: unicode squares could be fixed by installing `nerd-fonts`
+
 let cfg = config.appearance.emacs.modeline.doom;
 in
 {
