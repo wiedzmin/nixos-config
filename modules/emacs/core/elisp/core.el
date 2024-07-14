@@ -77,6 +77,7 @@
   (print-gensym t)
   (sentence-end-double-space nil)
   (tab-always-indent 'complete)
+  (text-mode-ispell-word-completion nil)
   (split-width-threshold nil)
   (split-height-threshold nil)
   (scroll-preserve-screen-position 'always)
