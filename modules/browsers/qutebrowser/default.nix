@@ -166,6 +166,8 @@ in
         })
       ];
 
+      wmCommon = { autostart.entries = [{ cmd = "touch /tmp/qbtarget"; restart = true; }]; };
+
       wm.i3.statusbar.i3-rs.customBlocks = [
         {
           # TODO: consider adding toggle clicking
