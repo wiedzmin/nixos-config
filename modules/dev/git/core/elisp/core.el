@@ -55,6 +55,7 @@
         ("w" . custom/magit-show-commit-by-rev))
   (:map magit-status-mode-map
         ("N" . magit-notes-edit)
+        ("F" . magit-commit-instant-fixup)
         ("C-c k" . magit-process-kill))
   (:map dired-mode-map
         ("@" . magit-dired-log))
