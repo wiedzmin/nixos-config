@@ -1,7 +1,7 @@
 (use-package corfu
   :bind
   (:map corfu-map
-        ("M-SPC" . corfu-insert-separator))
+        ("SPC" . corfu-insert-separator))
   :custom
   (corfu-cycle t)
   (corfu-count 14)
