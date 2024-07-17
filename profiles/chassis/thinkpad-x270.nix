@@ -2,7 +2,7 @@
 
 {
   imports = [
-    "${inputs.nixos-hardware}/common/cpu/intel/kaby-lake"
+    "${inputs.nixos-hardware}/common/gpu/intel/kaby-lake"
     "${inputs.nixos-hardware}/lenovo/thinkpad/x270"
   ];
 
