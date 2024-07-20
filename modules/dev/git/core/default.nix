@@ -93,6 +93,7 @@ in
             };
             "push" = { default = "current"; };
             "absorb" = { maxstack = 75; }; # TODO: package https://github.com/torbiak/git-autofixup
+            "pack" = { window = 1; };
           };
         };
       };
