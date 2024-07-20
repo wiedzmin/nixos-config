@@ -286,7 +286,7 @@
   (org-loop-over-headlines-in-active-region t)
   (org-lowest-priority 70) ;; extend priorities set (given ascii code)
   (org-modules
-   '(ol-bookmark ol-man org-checklist org-collector org-expiry org-id org-interactive-query org-protocol))
+   '(ol-bookmark ol-man org-checklist org-collector org-expiry org-id org-protocol))
   (org-outline-path-complete-in-steps nil)
   (org-priority-faces
    '((?A :foreground "red" :weight bold)
