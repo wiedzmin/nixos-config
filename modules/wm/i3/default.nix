@@ -141,6 +141,11 @@ in
         default = [ ];
         description = "Statusbar custom blocks metadata";
       };
+      statusbar.i3-rs.iconPadding = mkOption {
+        type = types.str;
+        default = "";
+        description = "Extra spaces to the right of icon, for readability, if needed";
+      };
       statusbar.deps = mkOption {
         type = types.listOf types.package;
         default = with pkgs; [ dbus dunst gawk iproute2 iw kbdd openvpn perl xdotool yad ];
@@ -577,12 +582,12 @@ in
               {
                 block = "load";
                 interval = 1;
-                format = " $icon $1m.eng(w:4) ";
+                format = " $icon ${cfg.statusbar.i3-rs.iconPadding}$1m.eng(w:4) ";
               }
               ({
                 block = "memory";
-                format = " $icon $mem_free.eng(w:3,u:B,p:M) ";
-                format_alt = " $icon $mem_avail.eng(w:3,u:B,p:M) ";
+                format = " $icon ${cfg.statusbar.i3-rs.iconPadding}$mem_free.eng(w:3,u:B,p:M) ";
+                format_alt = " $icon ${cfg.statusbar.i3-rs.iconPadding}$mem_avail.eng(w:3,u:B,p:M) ";
                 interval = 5;
                 warning_mem = 80;
                 critical_mem = 95;
@@ -593,8 +598,8 @@ in
               {
                 block = "disk_space";
                 path = "/";
-                format = " $icon $available ";
-                format_alt = " $icon $available / $total ";
+                format = " $icon ${cfg.statusbar.i3-rs.iconPadding}$available ";
+                format_alt = " $icon ${cfg.statusbar.i3-rs.iconPadding}$available / $total ";
                 info_type = "available";
                 alert_unit = "GB";
                 alert = 10.0;
@@ -604,7 +609,7 @@ in
               {
                 block = "net";
                 device = "wlan0";
-                format = " $icon $ssid $signal_strength ";
+                format = " $icon ${cfg.statusbar.i3-rs.iconPadding}$ssid $signal_strength ";
                 format_alt = " $icon $device $frequency $bitrate $ip";
                 interval = 5;
               }
@@ -635,7 +640,7 @@ in
               (d: m: {
                 block = "bluetooth";
                 mac = m;
-                format = " $icon ${d} ";
+                format = " $icon ${cfg.statusbar.i3-rs.iconPadding}${d} ";
                 disconnected_format = "";
               })
               config.ext.networking.wireless.bluetooth.devices
@@ -654,7 +659,7 @@ in
               {
                 block = "time";
                 interval = 60;
-                format = " $icon $timestamp.datetime(f:'%a %d-%m-%Y %R', l:ru_RU) ";
+                format = " $icon ${cfg.statusbar.i3-rs.iconPadding}$timestamp.datetime(f:'%a %d-%m-%Y %R', l:ru_RU) ";
                 timezone = config.time.timeZone;
               }
             ] ++ cfg.statusbar.i3-rs.customBlocks ++ [
