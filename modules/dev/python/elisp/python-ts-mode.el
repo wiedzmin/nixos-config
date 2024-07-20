@@ -1,4 +1,5 @@
 (use-package python
+  :after lsp-mode
   :mode ("\\.py$" . python-ts-mode)
   :hook
   (python-ts-mode-hook . (lambda ()
