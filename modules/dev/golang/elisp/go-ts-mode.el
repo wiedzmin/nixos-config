@@ -1,5 +1,6 @@
 (use-package go-ts-mode
   :no-require t
+  :after lsp-mode
   :mode ("\\.go$" . go-ts-mode)
   :hook
   (before-save-hook . (lambda () (interactive) (when (eq major-mode 'go-ts-mode) (gofmt))))

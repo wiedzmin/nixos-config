@@ -1,4 +1,5 @@
 (use-package dockerfile-ts-mode
+  :after lsp-mode
   :mode ("Dockerfile" . dockerfile-ts-mode)
   :hook
   (dockerfile-ts-mode-hook . lsp-deferred)

@@ -1,4 +1,5 @@
 (use-package sh-script
+  :after lsp-mode
   :mode ("\\.sh$" . bash-ts-mode)
   :hook
   (bash-ts-mode-hook . lsp-deferred)
