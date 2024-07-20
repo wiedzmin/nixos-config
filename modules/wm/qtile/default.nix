@@ -29,7 +29,7 @@ in
       nixpkgs.config.packageOverrides = _: {
         debug-qtile = mkWMDebugScript
           pkgs "debug-qtile"
-          pkgs.qtile
+          pkgs.qtile-unwrapped
           config.attributes.hardware.monitors.internalHead
           ''qtile start -c "$XDG_CONFIG_HOME/qtile/config.py"'';
       };
@@ -53,7 +53,7 @@ in
         windowManager = {
           qtile = {
             enable = true;
-            package = pkgs.qtile;
+            package = pkgs.qtile-unwrapped;
           };
         };
         displayManager = { defaultSession = "none+qtile"; };
