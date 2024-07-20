@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -16,6 +16,13 @@ let
     "${key}=${mvalue}";
   toINIColon = generators.toINI { mkKeyValue = generators.mkKeyValueDefault { } ":"; };
   toINICustom = generators.toINI { inherit mkKeyValue; };
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -35,7 +42,7 @@ in
           exiv2
           mediainfo
           imagemagick
-          vimiv-qt
+          nixpkgs-last-unbroken.vimiv-qt
         ];
         xdg.configFile."vimiv/keys.conf".text = toINIColon {
           GLOBAL = {
@@ -301,7 +308,7 @@ in
         };
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.images "vimiv.desktop";
         programs.zsh.shellAliases = {
-          viq = "${pkgs.vimiv-qt}/bin/vimiv";
+          viq = "${nixpkgs-last-unbroken.vimiv-qt}/bin/vimiv";
         };
       };
     })
