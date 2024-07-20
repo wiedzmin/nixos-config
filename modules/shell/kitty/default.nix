@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -19,6 +19,13 @@ let
   inherit (config.wmCommon) prefix;
   yaml = pkgs.formats.yaml { };
   remoteConnString = "tcp:localhost:${builtins.toString cfg.remote.port}";
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -122,7 +129,7 @@ in
 
             protocol file
             ext csv
-            action launch --type=overlay ${pkgs.visidata}/bin/vd ''${FILE_PATH}
+            action launch --type=overlay ${nixpkgs-last-unbroken.visidata}/bin/vd ''${FILE_PATH}
 
             # Open directories
             protocol file
