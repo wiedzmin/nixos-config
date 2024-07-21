@@ -36,6 +36,8 @@ in
     wmCommon.fonts.familySize.large = makeFamilySizeStr (fontBeautified // { size = sizeFamilySizeLarge; });
     wmCommon.fonts.deaddFamily = fontBeautified.family;
 
+    wm.i3.statusbar.i3-rs.iconPadding = " ";
+
     wm.xmonad.xmobar.font = makeFontStrXft baseFont;
 
     shell.core.variables = [{ TB_SELECTOR_FONT = makeFontStrColons fontDec1; global = true; }];
