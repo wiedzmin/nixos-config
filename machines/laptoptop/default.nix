@@ -631,23 +631,6 @@ in
     zsh.enable = true;
   };
 
-  ext.virtualization = {
-    docker = {
-      core = {
-        enable = true;
-        aux.enable = true;
-        emacs.enable = true;
-        wm.enable = true;
-      };
-      devdns = {
-        enable = true;
-        wm.enable = true;
-      };
-    };
-    libvirt.enable = true;
-    virtualbox.enable = false;
-  };
-
   dbms = {
     misc = {
       enable = true;
