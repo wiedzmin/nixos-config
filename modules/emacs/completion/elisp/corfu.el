@@ -27,6 +27,19 @@
 (use-package corfu-info
   :after corfu)
 
+(use-package corfu-indexed
+  :after corfu
+  :config
+  (corfu-indexed-mode t))
+
+(use-package corfu-history
+  :after corfu
+  :config
+  (corfu-history-mode t))
+
+(with-eval-after-load 'savehist
+  (add-to-list 'savehist-additional-variables 'corfu-history))
+
 (use-package corfu-popupinfo
   :after corfu
   :bind
@@ -51,9 +64,13 @@
         ("C-q" . corfu-quick-insert)))
 
 (use-package cape
+  :after corfu
+  :demand t
   :bind
   (:map mode-specific-map
         ("c d" . cape-dabbrev)) ;; or dabbrev-completion
+  :custom
+  (cape-dabbrev-min-length 2)
   :config
   (add-to-list 'completion-at-point-functions #'cape-dabbrev)
   (add-to-list 'completion-at-point-functions #'cape-file)
