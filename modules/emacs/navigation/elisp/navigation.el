@@ -399,6 +399,8 @@
                `(,go-away-repl-regexp
                  display-buffer-no-window
                  (inhibit-same-window . t)))
+  (add-to-list 'display-buffer-alist
+      (cons "\\*Warnings\\*" (cons #'display-buffer-no-window nil)))
   (advice-add 'dired-do-rename :after #'custom/revert-dired-buffer)
   (advice-add 'dired-create-directory :after #'custom/revert-dired-buffer)
   (use-package dired-filetype-face))
