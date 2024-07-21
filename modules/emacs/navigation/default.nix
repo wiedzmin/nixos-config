@@ -83,7 +83,7 @@ in
         epkgs.link-hint
         epkgs.manage-minor-mode-table
         epkgs.marginalia
-        epkgs.mwim
+        epkgs.mosey
         epkgs.orderless
         epkgs.phi-search
         epkgs.phi-search-mc
