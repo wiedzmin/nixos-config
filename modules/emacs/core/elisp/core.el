@@ -77,7 +77,7 @@
   (print-gensym t)
   (sentence-end-double-space nil)
   (tab-always-indent 'complete)
-  (text-mode-ispell-word-completion nil)
+  (text-mode-ispell-word-completion nil) ;; NOTE: Emacs 30 and newer: Disable Ispell completion function.
   (split-width-threshold nil)
   (split-height-threshold nil)
   (scroll-preserve-screen-position 'always)
