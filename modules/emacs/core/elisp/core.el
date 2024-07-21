@@ -45,6 +45,11 @@
   (defun custom/kill-buffer ()
     (interactive)
     (kill-buffer nil))
+  (defun custom/minibuffer-setup-hook ()
+    (interactive)
+    (setq gc-cons-threshold most-positive-fixnum)
+    ;; Do not allow the cursor in the minibuffer prompt
+    (cursor-intangible-mode))
   :mode (("\\.js$" . js-json-mode)
          ("\\.json$" . js-json-mode))
   :bind
@@ -58,16 +63,15 @@
         ("TAB" . move-to-column)
         ("c" . goto-char))
   :hook
-  (minibuffer-setup-hook . (lambda () (setq gc-cons-threshold most-positive-fixnum)))
+  (minibuffer-setup-hook . custom/minibuffer-setup-hook)
   (minibuffer-exit-hook . (lambda () (setq gc-cons-threshold 800000)))
   (focus-out-hook . garbage-collect)
-  (minibuffer-setup-hook . cursor-intangible-mode)
   :custom
   (use-dialog-box nil "Disable dialog boxes")
   (create-lockfiles nil)
   (enable-recursive-minibuffers t "allow minibuffer commands in the minibuffer")
   (minibuffer-prompt-properties
-   '(read-only t point-entered cursor-intangible t minibuffer-avoid-prompt face minibuffer-prompt))
+   '(read-only t cursor-intangible t face minibuffer-prompt))
   (undo-limit 1000000)
   (indent-tabs-mode nil)
   (inhibit-eol-conversion t)
