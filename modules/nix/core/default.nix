@@ -561,6 +561,10 @@ in
           desc = "Nixpkgs overview and reference by RyanTM";
           remote.url = "https://ryantm.github.io/nixpkgs";
         };
+        "flakes-inputs-syntax" = {
+          desc = "Flakes inputs syntax reference";
+          remote.url = "https://nixos-and-flakes.thiscute.world/other-usage-of-flakes/inputs";
+        };
       };
     })
   ];
