@@ -325,10 +325,17 @@
              (beginend-outline-mode nil "beginend")))
   (beginend-global-mode))
 
-(use-package mwim
+(use-package mosey
   :bind
-  ([remap move-beginning-of-line] . mwim-beginning-of-code-or-line)
-  ([remap move-end-of-line] . mwim-end-of-code-or-line))
+  ([remap move-beginning-of-line] . mosey-custom-backward-bounce)
+  ([remap move-end-of-line] . mosey-custom-forward-bounce)
+  :config
+  (defmosey '(beginning-of-line
+              back-to-indentation
+              mosey-goto-end-of-code
+              mosey-goto-beginning-of-comment-text
+              end-of-line)
+  :prefix "custom"))
 
 (use-package rainbow-delimiters
   :hook
