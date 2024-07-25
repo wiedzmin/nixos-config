@@ -6,6 +6,13 @@ with lib;
 let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -128,7 +135,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.patching.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ diffoscope icdiff patchutils wiggle xmldiff ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ nixpkgs-last-unbroken.diffoscope icdiff patchutils wiggle xmldiff ]; };
     })
     (mkIf (cfg.enable && cfg.diagrams.enable) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ pikchr plantuml ]; };
