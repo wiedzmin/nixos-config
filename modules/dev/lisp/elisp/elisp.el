@@ -61,4 +61,22 @@
   :hook
   (emacs-lisp-mode . flycheck-elsa-setup))
 
+(with-eval-after-load 'cape
+  (defun custom/ignore-elisp-keywords (cand)
+    (or (not (keywordp cand))
+        (eq (char-after (car completion-in-region--data)) ?:)))
+  (defun custom/setup-cape-elisp ()
+    (setq-local completion-at-point-functions
+                `(,(cape-capf-super
+                    (cape-capf-predicate
+                     #'elisp-completion-at-point
+                     #'custom/ignore-elisp-keywords)
+                    #'cape-dabbrev)
+                  cape-file)
+                cape-dabbrev-min-length 5))
+  (add-hook 'emacs-lisp-mode-hook #'custom/setup-cape-elisp)
+
+  (add-to-list 'completion-at-point-functions #'cape-elisp-block)
+  (add-to-list 'completion-at-point-functions #'cape-elisp-symbol))
+
 ;; https://github.com/AmaiKinono/puni
