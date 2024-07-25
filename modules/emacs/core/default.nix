@@ -425,6 +425,12 @@ in
           cmd = "${emacsCmdWM "1000" emacsWithPkgs "(emacs-everywhere)"}";
           mode = "run";
         }
+      ] ++ optionals (cfg.fromGit) [
+        {
+          key = [ "f" ];
+          cmd = "${emacsCmdWM "1000" emacsWithPkgs "(undelete-frame)"}";
+          mode = "run";
+        }
       ];
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
