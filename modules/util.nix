@@ -294,6 +294,9 @@ rec {
   emacsCmd = uid: emacspkg: elisp:
     let emacsServerSocket = "/run/user/${uid}/emacs/server";
     in "[ -f ${emacsServerSocket} ] && ${emacspkg}/bin/emacsclient -s ${emacsServerSocket} -e '${elisp}'";
+  emacsCmdWM = uid: emacspkg: elisp:
+    let emacsServerSocket = "/run/user/${uid}/emacs/server";
+    in "${emacspkg}/bin/emacsclient -s ${emacsServerSocket} -e '${elisp}'";
   # }}}
   # {{{ Programs.ARBTT
   mkArbttProgramTitleRule = windowClasses: titles: tag:

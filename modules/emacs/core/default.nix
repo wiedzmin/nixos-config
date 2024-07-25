@@ -422,7 +422,7 @@ in
       ] ++ optionals (cfg.emacsEverywhere.enable) [
         {
           key = [ "e" ];
-          cmd = "${emacsWithPkgs}/bin/emacsclient --eval \"(emacs-everywhere)\"";
+          cmd = "${emacsCmdWM "1000" emacsWithPkgs "(emacs-everywhere)"}";
           mode = "run";
         }
       ];
