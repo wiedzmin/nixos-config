@@ -24,11 +24,6 @@ in
         default = "xkeysnail";
         description = "Keyboard remapping tool to use";
       };
-      xkeysnail.configPath = mkOption {
-        type = types.str;
-        default = homePrefix user ".config/xkeysnail/config.py";
-        description = "Config file absolute path";
-      };
       xkeysnail.inputDevices = mkOption {
         type = types.listOf types.str;
         default = [ ];
@@ -146,11 +141,6 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.remappingTool == "xkeysnail") {
-      assertions = [{
-        assertion = cfg.xkeysnail.configPath != "";
-        message = "input/keyboard/XKeysnail: must provide path to config file";
-      }];
-
       systemd.user.services."xkeysnail" = {
         description = "Xkeysnail";
         after = [ "graphical-session-pre.target" ];
@@ -163,7 +153,7 @@ in
           ExecStart = "/run/wrappers/bin/sudo ${pkgs.xkeysnail}/bin/xkeysnail ${
               optionalString (cfg.xkeysnail.inputDevices != [ ])
               "--devices ${lib.concatStringsSep " " cfg.xkeysnail.inputDevices}"
-            } ${cfg.xkeysnail.configPath}";
+            } ${homePrefix user ".config/xkeysnail/config.py"}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
