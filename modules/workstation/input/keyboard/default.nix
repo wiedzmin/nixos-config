@@ -6,6 +6,7 @@ let
   cfg = config.workstation.input.keyboard;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  xremapSettingsFormat = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -130,6 +131,43 @@ in
         readOnly = true;
         description = "xkeysnail final config.py contents";
       };
+      xremap.package = mkOption {
+        type = types.package;
+        default = nurpkgs.xremap;
+        description = "XRemap package to install";
+      };
+      xremap.config = mkOption {
+        type = types.submodule { freeformType = xremapSettingsFormat.type; };
+        default = { };
+        description = ''
+          Xremap configuration.
+
+          See xremap repo for examples.
+
+          Cannot be used together with .yamlConfig
+        '';
+      };
+      xremap.yamlConfig = mkOption {
+        type = types.str;
+        default = "";
+        description = ''
+          The text of yaml config file for xremap. See xremap repo for examples. Cannot be used together with .config.
+        '';
+      };
+      xremap.deviceNames = mkOption {
+        type = with types; nullOr (listOf nonEmptyStr);
+        default = null;
+        description = "List of devices to remap.";
+      };
+      xremap.watch = mkEnableOption "running xremap watching new devices";
+      xremap.mouse = mkEnableOption "watching mice by default";
+      xremap.extraArgs = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        example = [ "--completions zsh" ];
+        description = "Extra arguments for xremap";
+      };
+      xremap.debug = mkEnableOption "run xremap with RUST_LOG=debug in case upstream needs logs";
     };
   };
 
@@ -161,10 +199,16 @@ in
       home-manager.users."${user}" = { xdg.configFile."xkeysnail/config.py".text = cfg.xkeysnail.setupText; };
     })
     (mkIf (cfg.enable && cfg.remappingTool == "xremap") {
-      assertions = [{
-        assertion = cfg.remappingTool != "xremap";
-        message = "input/keyboard/XRemap: functionality is not yet implemented";
-      }];
+      assertions = [
+        {
+          assertion = cfg.remappingTool != "xremap";
+          message = "input/keyboard/XRemap: functionality is not yet implemented";
+        }
+        {
+          assertion = (cfg.yamlConfig == "" && cfg.config != { }) || (cfg.yamlConfig != "" && cfg.config == { });
+          message = "input/keyboard/XRemap: config needs to be specified either in .yamlConfig or in .config";
+        }
+      ];
     })
   ];
 }
