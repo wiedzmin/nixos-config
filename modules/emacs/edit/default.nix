@@ -52,6 +52,9 @@ in
         "misc-editing-map" = "<f5>";
         "token-editing-map" = "C-z";
       };
+      ide.emacs.core.customPackages = {
+        "edit-misc" = builtins.readFile ./elisp/custom/edit-misc.el;
+      };
       ide.emacs.core.treesitter.grammars = {
         toml = "https://github.com/tree-sitter/tree-sitter-toml";
         yaml = "https://github.com/ikatyang/tree-sitter-yaml";
