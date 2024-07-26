@@ -1,8 +1,13 @@
 ;; TODO: investigate interoperation between lsp* and corfu/company, as found in some configs
 
 (use-package lsp-mode
+  :preface
+  (defun custom/fix-completion-default ()
+    (setq-local completion-category-defaults
+                (assoc-delete-all 'lsp-capf completion-category-defaults)))
   :hook
   (lsp-mode-hook . lsp-enable-which-key-integration)
+  (lsp-completion-mode-hook . custom/fix-completion-default)
   :bind
   (:map mode-specific-map
         ("R" . lsp-workspace-restart))
@@ -188,3 +193,7 @@
         ("s" . lsp-treemacs-symbols))
   :config
   (lsp-treemacs-sync-mode 1))
+
+(with-eval-after-load 'cape
+  (advice-add #'lsp-completion-at-point :around #'cape-wrap-nonexclusive)
+  (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible))
