@@ -180,7 +180,7 @@
         ("?" . nil))
   :custom
   ;;TODO: investigate if `completion-styles' setting is really _alternative_ against using `prescient'
-  (completion-styles '(orderless))
+  (completion-styles '(orderless partial-completion basic))
   (orderless-style-dispatchers '(dispatchers/without-if-bang
                                  dispatchers/flex
                                  dispatchers/initialism
