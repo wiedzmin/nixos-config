@@ -7,6 +7,29 @@ let
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   xremapSettingsFormat = pkgs.formats.yaml { };
+  xremapConfigFile =
+    if cfg.xremap.yamlConfig == "" then
+      xremapSettingsFormat.generate "config.yml" cfg.xremap.config
+    else
+      pkgs.writeTextFile {
+        name = "xremap-config.yml";
+        text = cfg.xremap.yamlConfig;
+      };
+  mkExecStartXremap =
+    configFile:
+    let
+      mkDeviceString = x: "--device '${x}'";
+    in
+    builtins.concatStringsSep " " (
+      lib.flatten (
+        lib.lists.singleton "${lib.getExe cfg.xremap.package}"
+        ++ (if cfg.xremap.deviceNames != null then map mkDeviceString cfg.xremap.deviceNames else [ ])
+        ++ lib.optional cfg.xremap.watch "--watch"
+        ++ lib.optional cfg.xremap.mouse "--mouse"
+        ++ cfg.xremap.extraArgs
+        ++ lib.lists.singleton configFile
+      )
+    );
 in
 {
   options = {
@@ -173,10 +196,11 @@ in
 
   config = mkMerge [
     (mkIf (cfg.enable) {
-      users.users."${user}".extraGroups = [ "input" ];
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [ nurpkgs.xremap ];
-      };
+      hardware.uinput.enable = true;
+      services.udev.extraRules = ''
+        KERNEL=="uinput", GROUP="input", TAG+="uaccess"
+      '';
+      users.users."${user}".extraGroups = [ "input" "uinput" ];
     })
     (mkIf (cfg.enable && cfg.remappingTool == "xkeysnail") {
       systemd.user.services."xkeysnail" = {
@@ -201,14 +225,45 @@ in
     (mkIf (cfg.enable && cfg.remappingTool == "xremap") {
       assertions = [
         {
-          assertion = cfg.remappingTool != "xremap";
-          message = "input/keyboard/XRemap: functionality is not yet implemented";
-        }
-        {
-          assertion = (cfg.yamlConfig == "" && cfg.config != { }) || (cfg.yamlConfig != "" && cfg.config == { });
+          assertion = (cfg.xremap.yamlConfig == "" && cfg.xremap.config != { }) || (cfg.xremap.yamlConfig != "" && cfg.xremap.config == { });
           message = "input/keyboard/XRemap: config needs to be specified either in .yamlConfig or in .config";
         }
       ];
+
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [ nurpkgs.xremap ];
+      };
+
+      systemd.user.services.xremap = {
+        description = "XRemap user service";
+        path = [ cfg.xremap.package ];
+        after = [ "graphical-session-pre.target" ];
+        partOf = [ "graphical-session.target" ];
+        wantedBy = [ "graphical-session.target" ];
+        serviceConfig = {
+          KeyringMode = "private";
+          SystemCallArchitectures = [ "native" ];
+          RestrictRealtime = true;
+          ProtectSystem = true;
+          SystemCallFilter = map (x: "~@${x}") [
+            "clock"
+            "debug"
+            "module"
+            "reboot"
+            "swap"
+            "cpu-emulation"
+            "obsolete"
+            # NOTE: These two make the spawned processes drop cores
+            # "privileged"
+            # "resources"
+          ];
+          LockPersonality = true;
+          UMask = "077";
+          RestrictAddressFamilies = "AF_UNIX";
+          Environment = [ "DISPLAY=:0" ] ++ optionals cfg.xremap.debug [ "RUST_LOG=debug" ];
+          ExecStart = "${mkExecStartXremap xremapConfigFile}";
+        };
+      };
     })
   ];
 }
