@@ -576,7 +576,7 @@ in
       };
       keyboard = {
         enable = true;
-        remappingTool = "xkeysnail";
+        remappingTool = "xremap";
       };
       mouse = {
         enable = true;
