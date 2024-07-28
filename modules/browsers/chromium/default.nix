@@ -136,7 +136,7 @@ in
             K("C-g"): K("f5"),
             K("M-comma"): K("Shift-h"),
             K("M-dot"): K("Shift-l"),
-        }, "chromium")
+        }, "${appName cfg.traits}")
       '';
       browsers.chromium.extraOpts = {
         AutofillAddressEnabled = false;

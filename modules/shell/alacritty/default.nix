@@ -88,7 +88,7 @@ in
             K("C-x"): {
                 K("k"): K("C-d"),
             },
-        }, "${appWindowClass cfg.traits}")
+        }, "${appName cfg.traits}")
       '';
       wmCommon.autostart.entries = optionals cfg.autostart [{ cmd = cfg.traits.command.binary; }];
     })

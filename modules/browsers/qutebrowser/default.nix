@@ -143,7 +143,7 @@ in
                 K("C-s"): [K("Esc"), K("Shift-semicolon"), K("w"), K("enter")],
                 K("C-c"): [K("Esc"), K("Shift-semicolon"), K("w"), K("q"), K("enter")],
             },
-        }, "qutebrowser")
+        }, "${appName cfg.traits}")
       '';
 
       workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;

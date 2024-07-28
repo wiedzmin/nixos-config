@@ -397,7 +397,7 @@ in
             K("C-r"): K("C-Shift-r"),
             K("M-Shift-comma"): K("M-Shift-LEFT_BRACE"),
             K("M-Shift-dot"): K("M-Shift-RIGHT_BRACE"),
-        }, "${appWindowClass cfg.traits}")
+        }, "${appName cfg.traits}")
       ''; # NOTE: workarounds for some unexpectedly non-working prefixes
       wmCommon.autostart.entries = optionals cfg.autostart [{ cmd = appCmdFull cfg.traits; }];
     })
