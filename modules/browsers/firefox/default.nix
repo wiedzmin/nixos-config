@@ -130,6 +130,31 @@ in
           };
         };
       };
+      workstation.input.keyboard.xremap.config = {
+        keymap = [
+          {
+            name = "${appName cfg.traits}";
+            application = { only = "${appWindowClass cfg.traits}"; };
+            remap = {
+              "C-j" = "C-f6"; # NOTE: Type C-j to focus to the content
+              "C-g" = "f5";
+              "C-n" = "C-g";
+              "C-Shift-n" = "C-Shift-g";
+              "M-comma" = "M-Left";
+              "M-dot" = "M-Right";
+              "C-x" = {
+                remap = {
+                  "b" = "b";
+                  "k" = "C-w";
+                  "u" = "C-Shift-t";
+                  "C-s" = "C-s";
+                  "C-c" = "C-q";
+                };
+              };
+            };
+          }
+        ];
+      };
       workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("${appWindowClass cfg.traits}"), {
             K("C-j"): K("C-f6"), # Type C-j to focus to the content

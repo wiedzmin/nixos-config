@@ -131,6 +131,19 @@ in
           })
         ];
       };
+      workstation.input.keyboard.xremap.config = {
+        keymap = [
+          {
+            name = "${appName cfg.traits}";
+            application = { only = "${appWindowClass cfg.traits}"; };
+            remap = {
+              "C-g" = "F5";
+              "M-Comma" = "Shift-h";
+              "M-dot" = "Shift-l";
+            };
+          }
+        ];
+      };
       workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("${appWindowClass cfg.traits}"), {
             K("C-g"): K("f5"),

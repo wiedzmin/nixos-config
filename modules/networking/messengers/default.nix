@@ -45,6 +45,25 @@ in
         # TODO: review `tdl` docs at https://docs.iyear.me/tdl/
         home.packages = with pkgs; [ tdesktop tdlib ] ++ optionals (cfg.zoom.enable) [ zoom-us unstable-future.tdl ];
       };
+      workstation.input.keyboard.xremap.config = {
+        keymap = [
+          {
+            name = "Telegram";
+            application = { only = "TelegramDesktop"; };
+            remap = {
+              "C-s" = [ "Esc" "Esc" "Esc" ];
+              "M-Comma" = "Esc";
+              "C-Shift-s" = "C-f";
+              "C-t" = [ "Shift-Left" "C-x" "Left" "C-v" "Right" ];
+              "C-x" = {
+                remap = {
+                  "C-c" = "C-q";
+                };
+              };
+            };
+          }
+        ];
+      };
       workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("TelegramDesktop"), {
             K("C-x"): {

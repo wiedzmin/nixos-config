@@ -83,6 +83,21 @@ in
           };
         };
       };
+      workstation.input.keyboard.xremap.config = {
+        keymap = [
+          {
+            name = "${appName cfg.traits}";
+            application = { only = "${appWindowClass cfg.traits}"; };
+            remap = {
+              "C-x" = {
+                remap = {
+                  "k" = "C-d";
+                };
+              };
+            };
+          }
+        ];
+      };
       workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("${appWindowClass cfg.traits}"), {
             K("C-x"): {
