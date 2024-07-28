@@ -130,6 +130,29 @@ in
           text = ''wget "$1" -q -O - | xclip -i -selection primary -t image/jpeg'';
         };
       };
+      workstation.input.keyboard.xremap.config = {
+        keymap = [
+          {
+            name = "${appName cfg.traits}";
+            application = { only = "${appWindowClass cfg.traits}"; };
+            remap = {
+              "C-g" = "F5";
+              "C-n" = "C-g";
+              "M-comma" = "Shift-h";
+              "M-dot" = "Shift-l";
+              "C-x" = {
+                remap = {
+                  "b" = "b";
+                  "k" = [ "Esc" "d" ];
+                  "u" = "u";
+                  "C-s" = [ "Esc" "Shift-semicolon" "w" "enter" ];
+                  "C-c" = [ "Esc" "Shift-semicolon" "w" "q" "enter" ];
+                };
+              };
+            };
+          }
+        ];
+      };
       workstation.input.keyboard.xkeysnail.rc = ''
         define_keymap(re.compile("${appWindowClass cfg.traits}"), {
             K("C-g"): K("f5"),
