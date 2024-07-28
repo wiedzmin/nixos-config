@@ -145,7 +145,7 @@ in
                 K("C-s"): K("C-s"),
                 K("C-c"): K("C-q"),
             },
-        }, "Firefox")
+        }, "${appName cfg.traits}")
       '';
 
       workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
