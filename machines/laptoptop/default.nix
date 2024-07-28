@@ -362,6 +362,7 @@ in
       pgtk.enable = false;
       wm.enable = true;
       emacsEverywhere.enable = true;
+      remapEverywhere.enable = true;
     };
     edit.enable = true;
     navigation = {
@@ -577,6 +578,7 @@ in
       keyboard = {
         enable = true;
         remappingTool = "xremap";
+        xremap.watch = true;
       };
       mouse = {
         enable = true;
