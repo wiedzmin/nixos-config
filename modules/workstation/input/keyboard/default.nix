@@ -24,7 +24,6 @@ let
       lib.flatten (
         lib.lists.singleton "${lib.getExe cfg.xremap.package}"
         ++ (if cfg.xremap.deviceNames != null then map mkDeviceString cfg.xremap.deviceNames else [ ])
-        ++ lib.optional cfg.xremap.watch "--watch"
         ++ lib.optional cfg.xremap.mouse "--mouse"
         ++ cfg.xremap.extraArgs
         ++ lib.lists.singleton configFile
@@ -234,6 +233,7 @@ in
         home.packages = with pkgs; [ nurpkgs.xremap ];
       };
 
+      # FIXME: currently needs manual restart
       systemd.user.services.xremap = {
         description = "XRemap user service";
         path = [ cfg.xremap.package ];
