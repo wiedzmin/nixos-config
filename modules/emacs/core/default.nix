@@ -454,10 +454,7 @@ in
               # set mark next word continuously.
               "C-M-space" = [ "C-Shift-right" { set_mark = true; } ];
               # Undo
-              "C-slash" = [ "C-z" { set_mark = false; } ];
               "C-Shift-ro" = "C-z";
-              # Mark
-              "C-space" = { set_mark = true; };
               # Search
               "C-s" = "C-f";
               "C-r" = "Shift-F3";
