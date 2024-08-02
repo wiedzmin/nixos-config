@@ -626,7 +626,7 @@ in
             ++ [
               ({
                 block = "battery";
-                format = " $icon $percentage $time $power ";
+                format = " $icon ${cfg.statusbar.i3-rs.iconPadding}$percentage $time $power ";
                 missing_format = "";
               } // optionalAttrs config.services.upower.enable {
                 driver = "upower";
