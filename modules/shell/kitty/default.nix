@@ -388,6 +388,7 @@ in
             mouse_map super+left press grabbed mouse_discard_event
             mouse_map super+left release grabbed,ungrabbed mouse_click_url
             mouse_map super+alt+left press ungrabbed mouse_selection rectangle
+            term xterm-256color
           '';
         };
       };
