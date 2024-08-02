@@ -138,15 +138,15 @@
   :custom
   (lsp-ui-imenu-enable t)
   (lsp-ui-imenu-kind-position 'left)
-  ;; lsp-ui-imenu-window-width set window width
-  ;; lsp-ui-imenu--custom-mode-line-format mode line format
-  ;; lsp-ui-imenu-auto-refresh auto refresh when necessary
-  ;; lsp-ui-imenu-refresh-delay delay to refresh imenu
-  )
+  (lsp-ui-imenu-auto-refresh t))
 
 (use-package lsp-ui-sideline
   :after lsp-mode
   :after lsp-ui
+  :bind
+  (:map lsp-ui-mode-map
+        ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+        ([remap xref-find-references] . lsp-ui-peek-find-references))
   :custom
   (lsp-ui-sideline-code-actions-prefix "💡 ")
   (lsp-ui-sideline-enable t)
@@ -158,14 +158,14 @@
   (lsp-ui-sideline-update-mode 'line)
   (lsp-ui-sideline-delay 1))
 
-
-;; (define-key lsp-ui-mode-map [remap xref-find-definitions] #'lsp-ui-peek-find-definitions)
-;; (define-key lsp-ui-mode-map [remap xref-find-references] #'lsp-ui-peek-find-references)
-;; (lsp-ui-peek-jump-backward)
-;; (lsp-ui-peek-jump-forward)
-;; (lsp-ui-peek-find-workspace-symbol "pattern 0")
-;; ;; If the server supports custom cross references
-;; (lsp-ui-peek-find-custom 'base "$cquery/base")
+(use-package lsp-ui-peek
+  :after lsp-mode
+  :after lsp-ui
+  :bind
+  (:map lsp-ui-mode-map
+        ("M-," . lsp-ui-peek-jump-backward)
+        ("M-." . lsp-ui-peek-jump-forward)
+        ("C->" . lsp-ui-peek-find-workspace-symbol)))
 
 ;; TODO: enable after proper setup
 ;; https://github.com/emacs-lsp/dap-mode#configuration
