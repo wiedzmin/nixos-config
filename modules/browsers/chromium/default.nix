@@ -71,15 +71,6 @@ in
         internal = true;
         description = "Specialized Chromium-aware `browse-url` package setup";
       };
-      extraOpts = mkOption {
-        type = types.attrs;
-        description = ''
-          Extra chromium policy options, see
-          <link xlink:href="https://www.chromium.org/administrators/policy-list-3">https://www.chromium.org/administrators/policy-list-3</link>
-          for a list of available options
-        '';
-        default = { };
-      };
     };
   };
   config = mkMerge [
@@ -154,33 +145,6 @@ in
       # NOTE: use settings below to overcome Youtube slowdown
       # chrome://flags/#enable-quic - Enabled
       # chrome://flags/#enable-tls13-kyber - Disabled
-      browsers.chromium.extraOpts = {
-        AutofillAddressEnabled = false;
-        AutofillCreditCardEnabled = false;
-        AutoplayAllowed = false;
-        BrowserSignin = 0; # Disable browser sign-in
-        BuiltInDnsClientEnabled = false;
-        DefaultBrowserSettingEnabled = false;
-        DefaultGeolocationSetting = 2; # Do not allow any site to track the users' physical location
-        DefaultNotificationsSetting = 2; # Do not allow any site to show desktop notifications
-        DefaultPluginsSetting = 2; # Block the Flash plugin
-        DefaultSearchProviderEnabled = true;
-        DefaultSearchProviderSearchURL = "https://duckduckgo.com/"
-          + "?kae=d&k1=-1&kc=1&kav=1&kd=-1&kh=1&q={searchTerms}";
-        EnableMediaRouter = false;
-        MetricsReportingEnabled = false;
-        PasswordManagerEnabled = false;
-        PromotionalTabsEnabled = false;
-        SSLErrorOverrideAllowed = false;
-        SafeBrowsingEnabled = false;
-        SearchSuggestEnabled = false;
-        SigninAllowed = false;
-        SpellCheckServiceEnabled = false;
-        SpellcheckEnabled = false;
-        SyncDisabled = true;
-        TranslateEnabled = false;
-        ExternalProtocolDialogShowAlwaysOpenCheckbox = true;
-      };
 
       workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
     })
@@ -214,12 +178,6 @@ in
       ];
       attributes.browser.fallback.traits = cfg.traits;
       shell.core.variables = [{ TB_FALLBACK_BROWSER = appCmdFull cfg.traits; global = true; }];
-    })
-    (mkIf (cfg.enable && cfg.videoconferencing.enable) {
-      browsers.chromium.extraOpts = {
-        AudioCaptureAllowed = true;
-        VideoCaptureAllowed = true;
-      };
     })
   ];
 }

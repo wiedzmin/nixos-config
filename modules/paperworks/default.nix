@@ -194,8 +194,6 @@ in
       };
       environment.systemPackages = with pkgs; [ system-config-printer gtklp ];
       users.users."${user}".extraGroups = [ "lp" ];
-
-      browsers.chromium.extraOpts = { PrintingEnabled = true; };
     })
     (mkIf cfg.scanning.enable {
       hardware.sane = {
