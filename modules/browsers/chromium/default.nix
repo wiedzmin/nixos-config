@@ -151,6 +151,9 @@ in
             K("M-dot"): K("Shift-l"),
         }, "${appName cfg.traits}")
       '';
+      # NOTE: use settings below to overcome Youtube slowdown
+      # chrome://flags/#enable-quic - Enabled
+      # chrome://flags/#enable-tls13-kyber - Disabled
       browsers.chromium.extraOpts = {
         AutofillAddressEnabled = false;
         AutofillCreditCardEnabled = false;
