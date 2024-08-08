@@ -373,7 +373,6 @@ rec {
     (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) (wmKeys keys wm))).root;
   # }}}
   # {{{ WM.Common.Workspaces
-  dockablePrimaryWS = headscount: if headscount > 2 then "primary" else "secondary";
   dockableSecondaryWS = headscount: if headscount > 2 then "secondary" else "primary";
   enumerateWorkspaces = wsdata:
     let
