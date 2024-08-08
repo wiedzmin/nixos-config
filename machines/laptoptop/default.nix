@@ -691,7 +691,7 @@ in
       name = "main";
       key = [ "F2" ];
       transient = false;
-      type = dockablePrimaryWS config.attributes.hardware.monitors.count;
+      type = "primary";
     }
     {
       # [tag:desktop_tools]
