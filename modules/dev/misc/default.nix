@@ -242,7 +242,7 @@ in
         epkgs.consult-lsp
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
-        ([ ./elisp/lsp.el ] ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ ./elisp/consult.el ]);
+        ([ ./elisp/lsp-mode.el ] ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ ./elisp/consult.el ]);
       ide.emacs.core.customKeymaps = {
         "custom-lsp-treemacs-map" = "C-c t";
       };
