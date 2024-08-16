@@ -541,7 +541,7 @@ in
     randr = {
       enable = true;
       heads.orientation.primary = "normal";
-      heads.orientation.secondary = "normal";
+      heads.orientation.secondary = "left";
       wm.enable = true;
     };
     input = {
