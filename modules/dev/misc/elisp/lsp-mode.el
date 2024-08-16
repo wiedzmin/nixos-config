@@ -7,6 +7,7 @@
                 (assoc-delete-all 'lsp-capf completion-category-defaults)))
   :hook
   (lsp-mode-hook . lsp-enable-which-key-integration)
+  (lsp-mode-hook . lsp-diagnostics-mode)
   (lsp-completion-mode-hook . custom/fix-completion-default)
   :bind
   (:map mode-specific-map
@@ -30,6 +31,7 @@
   (lsp-eldoc-enable-hover nil)
   (lsp-eldoc-render-all t)
   (lsp-enable-completion-at-point t)
+  (lsp-enable-dap-auto-configure nil)
   (lsp-enable-file-watchers nil)
   (lsp-enable-folding t)
   (lsp-enable-imenu t)
@@ -37,6 +39,7 @@
   (lsp-enable-links t)
   (lsp-enable-on-type-formatting nil)
   (lsp-enable-snippet nil)
+  (lsp-enable-suggest-server-download nil)
   (lsp-enable-symbol-highlighting t)
   (lsp-enable-text-document-color t)
   (lsp-enable-xref t)
@@ -44,6 +47,7 @@
   (lsp-headerline-breadcrumb-enable-symbol-numbers t)
   (lsp-headerline-breadcrumb-segments '(project file symbols))
   (lsp-idle-delay 0.5)
+  (lsp-keep-workspace-alive t)
   (lsp-keymap-prefix "C-c l")
   (lsp-lens-place-position 'above-line)
   (lsp-log-io t)
@@ -53,19 +57,41 @@
   (lsp-response-timeout 10)
   (lsp-restart 'interactive)
   (lsp-semantic-tokens-enable t)
+  (lsp-session-file (expand-file-name (format "%s/.lsp-session-v1" no-littering-var-directory) user-emacs-directory))
   (lsp-signature-render-documentation t)
   (read-process-output-max (* 1024 1024))
-  :init
-  (use-package lsp-lens)
-  (use-package lsp-dired)
-  (use-package lsp-headerline)
-  (use-package lsp-modeline)
   :config
-  (lsp-lens-mode 1)
-  (lsp-dired-mode 1)
-  (lsp-headerline-breadcrumb-mode)
-  (lsp-modeline-diagnostics-mode)
-  (delight 'lsp-lens-mode " Ꙫ" 'lsp-lens))
+  (use-package lsp-lens
+    :delight " Ꙫ"
+    :custom
+    (lsp-lens-enable t)
+    :config
+    (lsp-lens-mode 1))
+  (use-package lsp-dired
+    :config
+    (lsp-dired-mode 1))
+  (use-package lsp-headerline
+    :custom
+    (lsp-headerline-breadcrumb-enable nil)
+    (lsp-headerline-breadcrumb-enable-diagnostics nil)
+    (lsp-headerline-breadcrumb-enable-symbol-numbers nil)
+    (lsp-headerline-breadcrumb-icons-enable nil)
+    :config
+    (lsp-headerline-breadcrumb-mode 1))
+  (use-package lsp-modeline
+    :custom
+    (lsp-modeline-code-actions-enable nil)
+    (lsp-modeline-diagnostics-enable nil)
+    (lsp-modeline-workspace-status-enable nil)
+    (lsp-signature-doc-lines 1)
+    :config
+    (lsp-modeline-diagnostics-mode))
+  (use-package lsp-completion
+    :custom
+    (lsp-completion-enable t)
+    (lsp-completion-enable-additional-text-edit t)
+    (lsp-enable-snippet nil)
+    (lsp-completion-show-kind t)))
 
 (use-package lsp-ui
   :after lsp-mode
@@ -158,15 +184,6 @@
   (lsp-ui-sideline-update-mode 'line)
   (lsp-ui-sideline-delay 1))
 
-(use-package lsp-ui-peek
-  :after lsp-mode
-  :after lsp-ui
-  :bind
-  (:map lsp-ui-mode-map
-        ("M-," . lsp-ui-peek-jump-backward)
-        ("M-." . lsp-ui-peek-jump-forward)
-        ("C->" . lsp-ui-peek-find-workspace-symbol)))
-
 ;; TODO: enable after proper setup
 ;; https://github.com/emacs-lsp/dap-mode#configuration
 (use-package dap-mode
@@ -191,6 +208,8 @@
   (:map custom-lsp-treemacs-map
         ("e" . lsp-treemacs-errors-list)
         ("s" . lsp-treemacs-symbols))
+  :custom
+  (lsp-treemacs-theme "Iconless")
   :config
   (lsp-treemacs-sync-mode 1))
 
