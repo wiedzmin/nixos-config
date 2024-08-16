@@ -238,6 +238,7 @@ in
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.lsp-mode
         epkgs.lsp-ui
+        epkgs.lsp-treemacs
       ] ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [
         epkgs.consult-lsp
       ];
