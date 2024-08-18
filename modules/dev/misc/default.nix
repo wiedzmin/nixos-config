@@ -94,7 +94,6 @@ in
           Comby plays badly with symlinks to /nix/store, so here they are.
         '';
       };
-
       just.chooserCmd = mkOption {
         type = types.str;
         default = "rofi -dmenu";
@@ -109,6 +108,27 @@ in
         type = types.bool;
         default = true;
         description = "Whether to enable LSP functionality inside Emacs";
+      };
+      emacs.lsp.impl = mkOption {
+        type = types.enum [ "lsp-mode" "eglot" ];
+        default = "lsp-mode";
+        description = ''
+          Which client implementation to use.
+
+          Note that Eglot was recently added to Emacs as default LSP option.
+        '';
+      };
+      emacs.lsp.packageName = mkOption {
+        type = types.str;
+        readOnly = true;
+        default = if cfg.emacs.lsp.impl == "lsp-mode" then "lsp-mode" else "eglot";
+        description = "Emacs package name of LSP client";
+      };
+      emacs.lsp.startFunction = mkOption {
+        type = types.str;
+        readOnly = true;
+        default = if cfg.emacs.lsp.impl == "lsp-mode" then "lsp-deferred" else "eglot-ensure";
+        description = "Elisp function to use in major mode hooks for LSP client start";
       };
     };
   };
@@ -228,7 +248,8 @@ in
         js-json-mode = "json-ts-mode";
       };
     })
-    (mkIf (cfg.enable && cfg.emacs.enable && cfg.emacs.lsp.enable) {
+    # TODO: consider making some kind of frontend for common functionality, e.g. renaming, etc. for both impls
+    (mkIf (cfg.enable && cfg.emacs.enable && cfg.emacs.lsp.enable && cfg.emacs.lsp.impl == "lsp-mode") {
       assertions = [{
         assertion = config.ide.emacs.core.enable;
         message = "dev/misc/emacs/lsp: core configuration must be enabled.";
@@ -254,6 +275,22 @@ in
           data = "mkdir -p ${config.ide.emacs.core.dataDir}/lsp";
         };
       };
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable && cfg.emacs.lsp.enable && cfg.emacs.lsp.impl == "eglot") {
+      assertions = [{
+        assertion = config.ide.emacs.core.enable;
+        message = "dev/misc/emacs/lsp: core configuration must be enabled.";
+      }];
+
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.eglot # NOTE: do not depend on bundled version
+        epkgs.eglot-tempel
+      ] ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [
+        epkgs.consult-eglot
+        epkgs.consult-eglot-embark
+      ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
+        ([ ./elisp/eglot.el ] ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ ./elisp/consult-eglot.el ]);
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       completion.expansions.espanso.matches = {

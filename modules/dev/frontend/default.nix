@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -35,7 +35,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.vue-mode ];
-      ide.emacs.core.config = builtins.readFile ./elisp/frontend.el;
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/frontend.el ];
       ide.emacs.core.treesitter.grammars = {
         css = "https://github.com/tree-sitter/tree-sitter-css";
         html = "https://github.com/tree-sitter/tree-sitter-html";

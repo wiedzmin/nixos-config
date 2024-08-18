@@ -12,8 +12,9 @@
                         (highlight-lines-matching-regexp "ipdb.set_trace()")
                         (highlight-lines-matching-regexp "import wdb")
                         (highlight-lines-matching-regexp "wdb.set_trace()")))
-  (python-mode-hook . lsp-deferred)
+  (python-mode-hook . @lspStartFunction@)
   (python-mode-hook . flycheck-mode)
+  @lspModePythonRegisterServer@
   :bind
   (:map python-mode-map
         ("C-k" . sp-kill-hybrid-sexp)

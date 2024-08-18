@@ -1,9 +1,7 @@
 (use-package vue-mode
-  :disabled
+  :disabled ;FIXME: setup lsp
   :mode "\\.vue\\'"
-  :config
-  ;FIXME: setup lsp
-  (add-hook 'vue-mode-hook #'lsp-deferred))
+  :hook (vue-mode-hook . @lspStartFunction@))
 
 (with-eval-after-load 'lsp-mode
   (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
