@@ -8,3 +8,5 @@ result
 .devenv*
 devenv.local.nix
 
+contrib
+todo.org
