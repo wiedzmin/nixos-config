@@ -1,5 +1,3 @@
-(use-package lsp-clangd)
-
 (use-package c-ts-mode
   :mode (("\\.c$" . c-ts-mode)
          ("\\.h$" . c-ts-mode))
