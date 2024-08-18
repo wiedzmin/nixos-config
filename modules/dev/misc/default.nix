@@ -314,7 +314,7 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           # NOTE: expansions deps
-          adoptopenjdk-bin
+          temurin-bin # error: adoptopenjdk has been removed as the upstream project is deprecated. Consider using `temurin-bin`
           git
         ];
       };
