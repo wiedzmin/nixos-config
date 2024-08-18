@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -112,8 +112,8 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.dockerfile-mode ];
-      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/docker.el) +
-        lib.optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/docker-ts.el);
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/docker.el ]) +
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/docker-ts.el ]);
       ide.emacs.core.treesitter.grammars = {
         dockerfile = "https://github.com/camdencheek/tree-sitter-dockerfile";
       };

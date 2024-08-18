@@ -82,8 +82,8 @@ in
         home.packages = with pkgs; [ python3Packages.python-lsp-server ];
       };
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector ];
-      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/python-mode.el) +
-        lib.optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/python-ts-mode.el) +
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/python-mode.el ]) +
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/python-ts-mode.el ]) +
         (builtins.readFile ./elisp/common.el);
       ide.emacs.core.treesitter.grammars = {
         python = "https://github.com/tree-sitter/tree-sitter-python";

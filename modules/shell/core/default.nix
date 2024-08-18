@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -150,8 +150,8 @@ in
     (mkIf (cfg.enable && cfg.dev.enable && cfg.emacs.enable) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.bash-language-server ]; };
       ide.emacs.core.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms epkgs.pueue ];
-      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/sh-mode.el) +
-        lib.optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/bash-ts-mode.el) +
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/sh-mode.el ]) +
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/bash-ts-mode.el ]) +
         (builtins.readFile ./elisp/common.el);
       ide.emacs.core.treesitter.grammars = {
         bash = "https://github.com/tree-sitter/tree-sitter-bash";

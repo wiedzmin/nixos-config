@@ -3,7 +3,7 @@
   :mode ("\\.go$" . go-mode)
   :hook
   (before-save-hook . gofmt-before-save)
-  (go-mode-hook . lsp-deferred)
+  (go-mode-hook . @lspStartFunction@)
   (go-mode-hook . whitespace-turn-off)
   :config
   (when (boundp 'company-backends)

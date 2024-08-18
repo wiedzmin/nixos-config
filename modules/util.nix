@@ -297,6 +297,47 @@ rec {
   emacsCmdWM = uid: emacspkg: elisp:
     let emacsServerSocket = "/run/user/${uid}/emacs/server";
     in "${emacspkg}/bin/emacsclient -s ${emacsServerSocket} -e '${elisp}'";
+  emacsMkLspModeRegisterClient = argv0: bufLang: serverId: withConfig:
+    ''
+      ${lib.optionalString withConfig ":config"}
+        (lsp-register-client
+         (make-lsp-client :new-connection (lsp-stdio-connection '(${concatStringListsQuoted " " argv0}))
+                          :activation-fn (lsp-activate-on "${bufLang}")
+                          :server-id '${serverId}))
+    '';
+  emacsMkEglotRegisterClient = argv0: majorModes: withConfig:
+    ''
+      ${lib.optionalString withConfig ":config"}
+        (add-to-list 'eglot-server-programs '(${
+          if builtins.length majorModes == 1 then "${concatStringListsRaw " " majorModes}"
+          else "(${concatStringListsRaw " " majorModes})"
+        } . (${concatStringListsQuoted " " argv0})))
+    '';
+  emacsMkMaybeList = lst:
+    if builtins.length lst == 1 then "${concatStringListsRaw " " lst}"
+    else "(${concatStringListsRaw " " lst})";
+  emacsMkLspModeRegisterServer = hooks: argv0: bufLang: serverId:
+    let
+      hooksStr = emacsMkMaybeList hooks;
+      hooksIndent = (builtins.stringLength hooksStr) + (builtins.stringLength " . (") + 2/*u-p initial indent */;
+    in
+    ''
+      (${hooksStr} . (lambda ()
+       ${mkIndent hooksIndent}(require 'lsp-mode)
+       ${mkIndent hooksIndent}(lsp-register-client
+       ${mkIndent hooksIndent} (make-lsp-client :new-connection (lsp-stdio-connection '(${concatStringListsQuoted " " argv0}))
+       ${mkIndent hooksIndent}                  :activation-fn (lsp-activate-on "${bufLang}")
+       ${mkIndent hooksIndent}                  :server-id '${serverId}))))'';
+  emacsMkEglotRegisterServer = hooks: argv0: majorModes:
+    let
+      hooksStr = emacsMkMaybeList hooks;
+      hooksIndent = (builtins.stringLength hooksStr) + (builtins.stringLength " . (") + 2/*u-p initial indent */;
+    in
+    ''
+      (${hooksStr} . (lambda ()
+       ${mkIndent hooksIndent}(require 'eglot)
+       ${mkIndent hooksIndent}(add-to-list 'eglot-server-programs '(${
+         emacsMkMaybeList majorModes} . (${concatStringListsQuoted " " argv0})))))'';
   # }}}
   # {{{ Programs.ARBTT
   mkArbttProgramTitleRule = windowClasses: titles: tag:

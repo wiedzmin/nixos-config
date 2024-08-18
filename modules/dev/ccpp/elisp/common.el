@@ -15,6 +15,8 @@
   :commands (org-babel-expand-body:C org-babel-execute:C org-babel-expand-body:C++ org-babel-execute:C++))
 
 (use-package ccls
+  :if (string= "@lspPackageName@" "lsp-mode")
+  :after @lspPackageName@
   :preface
   (when (featurep 'lsp-ui)
     ;; NOTE: user content manipulation reference: https://github.com/MaskRay/ccls/wiki/lsp-mode#user-content-cross-reference-extensions
@@ -58,7 +60,7 @@
       (lsp-ui-peek-find-custom "textDocument/references"
                                (plist-put (lsp--text-document-position-params) :role 16))))
   :hook
-  ((c-mode-hook c++-mode-hook) . (lambda () (require 'ccls) (lsp-deferred)))
+  ((c-mode-hook c++-mode-hook) . (lambda () (require 'ccls) (@lspStartFunction@)))
   ((c-mode-hook c++-mode-hook) . ccls-code-lens-mode)
   :config
   (require 'ccls)
