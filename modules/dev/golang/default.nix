@@ -110,6 +110,13 @@ in
         (log "fmt.Println(\">>> " (s text) "\", " text ")" q)
         (err "if err != nil {" n> "panic(err)" q n "}" n)
         (print "fmt.Println(\"" q "\")")
+
+        go-ts-mode
+
+        (deb "fmt.Println(\">>> " (s text) "\", " text ")" q)
+        (log "fmt.Println(\">>> " (s text) "\", " text ")" q)
+        (err "if err != nil {" n> "panic(err)" q n "}" n)
+        (print "fmt.Println(\"" q "\")")
       '';
       ide.emacs.core.treesitter.grammars = {
         go = "https://github.com/tree-sitter/tree-sitter-go";
