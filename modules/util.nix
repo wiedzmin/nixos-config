@@ -316,6 +316,8 @@ rec {
   emacsMkMaybeList = lst:
     if builtins.length lst == 1 then "${concatStringListsRaw " " lst}"
     else "(${concatStringListsRaw " " lst})";
+  emacsMkLspStartFunction = hooks: function:
+    "(${emacsMkMaybeList hooks} . ${function})";
   emacsMkLspModeRegisterServer = hooks: argv0: bufLang: serverId:
     let
       hooksStr = emacsMkMaybeList hooks;

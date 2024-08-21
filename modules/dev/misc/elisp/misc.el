@@ -11,11 +11,16 @@
 
 (use-package yaml-pro) ;FIXME: review modes/keybindings/etc.
 
+;; FIXME: check/workaround [un]supported LSP cap(s), at least for `eglot'
+;; FIXME: consider extracting `tree-sitter` setup
 (use-package yaml-mode
   :mode
   ("\\.yaml\\'" . yaml-mode)
   ("\\.yml\\'" . yaml-mode)
   ("\\Taskfile\\'" . yaml-mode)
+  :hook
+  @lspStartFunction@
+  @lspModeYamlRegisterServer@
   :bind
   (:map yaml-mode-map
         ("C-m" . newline-and-indent)
