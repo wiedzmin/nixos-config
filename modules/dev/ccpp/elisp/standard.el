@@ -29,6 +29,6 @@
   :mode ("\\.cmake$" . cmake-mode)
   :hook
   (cmake-mode-hook . @lspStartFunction@)
-  @eglotClientCmakeRegistration@)
+  @lspModeCmakeRegisterServer@@eglotCmakeRegisterServer@)
 
 (use-package cmake-font-lock)

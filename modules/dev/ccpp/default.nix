@@ -32,7 +32,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ _RR_TRACE_DIR = "${homePrefix user config.navigation.bookmarks.workspaces.globalRoot}/rr"; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ gdb rr ccls ];
+        home.packages = with pkgs; [ gdb rr ccls neocmakelsp ];
       };
       boot.kernel.sysctl = {
         "kernel.perf_event_paranoid" = 1; # for rr
