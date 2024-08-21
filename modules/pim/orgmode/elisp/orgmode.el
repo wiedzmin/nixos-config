@@ -452,3 +452,8 @@
     (:map custom-org-map
           ("h" . avy-org-goto-heading-timer)
           ("^" . avy-org-refile-as-child))))
+
+;; FIXME: consider relocating more appropriately, along with `ditaa' and maybe others related
+(use-package graphviz-dot-mode
+  :hook (graphviz-dot-mode-hook . @lspStartFunction@)
+  @lspModeGraphvizRegisterServer@@eglotGraphvizRegisterServer@)

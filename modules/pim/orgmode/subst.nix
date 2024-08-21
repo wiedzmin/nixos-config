@@ -15,4 +15,13 @@ in
   pimOrgAgendaElPatch = config.pim.orgmode.agendaElPatch;
   xprintidleBinary = "${pkgs.xprintidle}/bin/xprintidle";
   orgRoamAutosyncEnable = if config.pim.orgmode.org-roam.autosync.enable then "(org-roam-db-autosync-enable)" else "";
+  lspStartFunction = config.dev.misc.emacs.lsp.startFunction;
+  lspModeGraphvizRegisterServer =
+    if config.dev.misc.emacs.lsp.impl == "lsp-mode"
+    then emacsMkLspModeRegisterServer [ "graphviz-dot-mode-hook" ] [ "dot-language-server" "--stdio" ] "dot" "dotls"
+    else "";
+  eglotGraphvizRegisterServer =
+    if config.dev.misc.emacs.lsp.impl == "eglot"
+    then emacsMkEglotRegisterServer [ "graphviz-dot-mode-hook" ] [ "dot-language-server" "--stdio" ] [ "graphviz-dot-mode" ]
+    else "";
 }
