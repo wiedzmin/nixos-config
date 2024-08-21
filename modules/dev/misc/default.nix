@@ -200,6 +200,7 @@ in
         # D-Bus debug tools
         d-spy
         # bustle # recently broken
+        yaml-language-server
       ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
