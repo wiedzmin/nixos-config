@@ -21,4 +21,4 @@
   :mode ("\\.cmake$" . cmake-ts-mode)
   :hook
   (cmake-ts-mode-hook . @lspStartFunction@)
-  @eglotClientCmakeTSRegistration@)
+  @lspModeCmakeTSRegisterServer@@eglotCmakeTSRegisterServer@)

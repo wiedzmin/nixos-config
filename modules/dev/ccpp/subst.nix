@@ -37,4 +37,20 @@ with pkgs.unstable.commonutils;
     if config.dev.misc.emacs.lsp.impl == "eglot"
     then emacsMkEglotRegisterServer [ "c++-ts-mode-hook" ] [ "ccls" ] [ "c++-ts-mode" ]
     else "";
+  lspModeCmakeRegisterServer =
+    if config.dev.misc.emacs.lsp.impl == "lsp-mode"
+    then emacsMkLspModeRegisterServer [ "cmake-mode-hook" ] [ "neocmakelsp" "--stdio" ] "cmake" "cmake-lsp"
+    else "";
+  lspModeCmakeTSRegisterServer =
+    if config.dev.misc.emacs.lsp.impl == "lsp-mode"
+    then emacsMkLspModeRegisterServer [ "cmake-ts-mode-hook" ] [ "neocmakelsp" "--stdio" ] "cmake" "cmake-lsp"
+    else "";
+  eglotCmakeRegisterServer =
+    if config.dev.misc.emacs.lsp.impl == "eglot"
+    then emacsMkEglotRegisterServer [ "cmake-mode-hook" ] [ "neocmakelsp" "--stdio" ] [ "cmake-mode" ]
+    else "";
+  eglotCmakeTSRegisterServer =
+    if config.dev.misc.emacs.lsp.impl == "eglot"
+    then emacsMkEglotRegisterServer [ "cmake-ts-mode-hook" ] [ "neocmakelsp" "--stdio" ] [ "cmake-ts-mode" ]
+    else "";
 }
