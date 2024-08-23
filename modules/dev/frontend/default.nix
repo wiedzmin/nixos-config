@@ -2,6 +2,12 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# TODO: add js/ts/whatever needed setups
+# TODO: emmet + lsp: https://emacs-lsp.github.io/lsp-mode/page/lsp-emmet/ + https://github.com/smihica/emmet-mode
+# TODO: elaborate setup for TypeScript
+# TODO: investigate web-mode + lsp setup
+# TODO: play with #''lsp-flycheck-add-mode for various major modes
+
 let
   cfg = config.dev.frontend;
   user = config.attributes.mainUser.name;
@@ -24,7 +30,13 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.vue-language-server ]; };
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          nodePackages.vue-language-server
+          vscode-langservers-extracted
+          typescript-language-server
+        ];
+      };
       dev.editorconfig.rules = {
         "*.js" = { charset = "utf-8"; };
         "lib/**.js" = {
@@ -34,8 +46,9 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.vue-mode ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/frontend.el ];
+      ide.emacs.core.extraPackages = epkgs: optionals (!config.ide.emacs.core.treesitter.enable) [ epkgs.vue-mode ];
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/frontend.el ]) +
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/frontend-ts.el ]);
       ide.emacs.core.treesitter.grammars = {
         css = "https://github.com/tree-sitter/tree-sitter-css";
         html = "https://github.com/tree-sitter/tree-sitter-html";
@@ -44,6 +57,7 @@ in
       };
       ide.emacs.core.treesitter.modeRemappings = {
         css-mode = "css-ts-mode";
+        html-mode = "html-ts-mode";
         javascript-mode = "js-ts-mode";
         js-mode = "js-ts-mode";
         js2-mode = "js-ts-mode";

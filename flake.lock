@@ -232,6 +232,22 @@
         "type": "github"
       }
     },
+    "emacs-vue-ts-mode": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1709456359,
+        "narHash": "sha256-1SOlRcq0KSO9n+isUSL5IhlujD4FWcU5I0zP6xuInuQ=",
+        "owner": "8uff3r",
+        "repo": "vue-ts-mode",
+        "rev": "5ec5bb317b80ce394e156c61b7b9c63996382a68",
+        "type": "github"
+      },
+      "original": {
+        "owner": "8uff3r",
+        "repo": "vue-ts-mode",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -770,6 +786,7 @@
         "emacs-org-bars": "emacs-org-bars",
         "emacs-password-menu": "emacs-password-menu",
         "emacs-treesit-jump": "emacs-treesit-jump",
+        "emacs-vue-ts-mode": "emacs-vue-ts-mode",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
         "kitty-grab": "kitty-grab",
