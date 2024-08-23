@@ -59,6 +59,10 @@
       url = "github:wiedzmin/yasnippet-snippets";
       flake = false;
     };
+    emacs-vue-ts-mode = {
+      url = "github:8uff3r/vue-ts-mode";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {

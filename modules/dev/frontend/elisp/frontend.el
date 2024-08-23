@@ -1,10 +1,27 @@
+(use-package css-mode
+  :mode "\\.css$"
+  :hook
+  (css-mode-hook . @lspStartFunction@)
+  @lspModeCssRegisterServer@)
+
+(use-package html-mode
+  :mode "\\.html$"
+  :hook (html-mode-hook . @lspStartFunction@)
+  @lspModeHtmlRegisterServer@)
+
+(use-package js-mode
+  :mode "\\.js$"
+  :hook
+  (css-mode-hook . @lspStartFunction@)
+  @lspModeJsRegisterServer@)
+
+(use-package js-json-mode
+  :mode "\\.json$"
+  :hook
+  (js-json-mode-hook . @lspStartFunction@)
+  @lspModeJsonRegisterServer@)
+
 (use-package vue-mode
-  :disabled ;FIXME: setup lsp
-  :mode "\\.vue\\'"
-  :hook (vue-mode-hook . @lspStartFunction@))
-
-(with-eval-after-load 'lsp-mode
-  (mapc #'lsp-flycheck-add-mode '(typescript-mode js-mode css-mode vue-html-mode)))
-
-;; TODO: add js/ts/whatever needed setups
-;; TODO: emmet + lsp: https://emacs-lsp.github.io/lsp-mode/page/lsp-emmet/ + https://github.com/smihica/emmet-mode
+  :mode "\\.vue$"
+  :hook (vue-mode-hook . @lspStartFunction@)
+  @lspModeVueRegisterServer@@eglotVueRegisterServer@)
