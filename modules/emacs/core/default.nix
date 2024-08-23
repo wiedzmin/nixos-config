@@ -357,7 +357,7 @@ in
           xdotool
           xorg.xprop
           xorg.xwininfo
-        ]);
+        ] ++ lib.optionals cfg.treesitter.enable [ gcc ] /* for building tree-sitter grammars, if needed */);
         home.file = {
           "${cfg.initDir}/early-init.el".text = ''
             ${lib.optionalString (cfg.daemon.enable) ''
