@@ -226,7 +226,6 @@ in
       ide.emacs.core.treesitter.modeRemappings = {
         json-mode = "json-ts-mode";
         js-json-mode = "json-ts-mode";
-        makefile-mode = "cmake-ts-mode";
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable && cfg.emacs.lsp.enable) {
