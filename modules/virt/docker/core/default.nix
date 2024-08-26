@@ -69,16 +69,16 @@ in
         };
       };
 
-      environment.systemPackages = with pkgs; [
-        ctop
-        dive
-        dlint
-        docker-compose
-        hadolintd
-        libcgroup
-      ];
-
       home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          ctop
+          dive
+          dlint
+          docker-compose
+          hadolintd
+          libcgroup
+          nodePackages.dockerfile-language-server-nodejs
+        ];
         xdg.configFile."hadolint.yaml".text = builtins.toJSON {
           ignored = [ "DL3007" ];
           trustedRegistries = [ "docker.io" ];
@@ -101,13 +101,14 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.aux.enable) {
-      environment.systemPackages = with pkgs; [
-        docker-slim
-        dockfmt
-        nsjail
-        skopeo
-        nodePackages.dockerfile-language-server-nodejs
-      ];
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          docker-slim
+          dockfmt
+          nsjail
+          skopeo
+        ];
+      };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.dockerfile-mode ];
