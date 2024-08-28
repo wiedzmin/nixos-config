@@ -3,7 +3,7 @@
          ("\\.h$" . c-mode))
   ;; :after dap
   :hook
-  ((c-mode-hook c++-mode-hook) . @lspStartFunction@)
+  (c-mode-hook . @lspStartFunction@)
   @lspModeCRegisterServer@@eglotCRegisterServer@
   :config
   ;; (use-package dap-cpptools)
@@ -15,7 +15,7 @@
          ("\\.hpp$" . c++-mode))
   :hook
   ;; FIXME: consider making substitution as lsp server registration, parameterized with hook name(s)
-  ((c-mode-hook c++-mode-hook) . @lspStartFunction@)
+  (c++-mode-hook . @lspStartFunction@)
   @lspModeCPPRegisterServer@@eglotCPPRegisterServer@
   :config
   (setq-default c-basic-offset 2))

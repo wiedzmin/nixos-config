@@ -2,7 +2,7 @@
   :mode (("\\.c$" . c-ts-mode)
          ("\\.h$" . c-ts-mode))
   :hook
-  ((c-ts-mode-hook c++-ts-mode-hook) . @lspStartFunction@)
+  (c-ts-mode-hook . @lspStartFunction@)
   @lspModeCTSRegisterServer@@eglotCTSRegisterServer@
   :config
   (setq-default c-basic-offset 2))
@@ -12,7 +12,7 @@
          ("\\.h$" . c++-ts-mode)
          ("\\.hpp$" . c++-ts-mode))
   :hook
-  ((c-ts-mode-hook c++-ts-mode-hook) . @lspStartFunction@)
+  (c++-ts-mode-hook . @lspStartFunction@)
   @lspModeCPPTSRegisterServer@@eglotCPPTSRegisterServer@
   :config
   (setq-default c-basic-offset 2))
