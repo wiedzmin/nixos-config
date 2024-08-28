@@ -70,6 +70,7 @@ in
       };
 
       home-manager.users."${user}" = {
+        # TODO: consider adding also `docker-compose-language-service` for compose
         home.packages = with pkgs; [
           ctop
           dive
