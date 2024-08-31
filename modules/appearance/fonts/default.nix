@@ -18,6 +18,7 @@ in
     ./fira-code-fonts.nix
     ./geist-fonts.nix
     ./hack-fonts.nix
+    ./inconsolata-fonts.nix
     ./iosevka-fonts.nix
     ./jbmono-fonts.nix
     ./martian-fonts.nix
