@@ -25,6 +25,7 @@ in
     ./martian-fonts.nix
     ./roboto-fonts.nix
     ./scp-fonts.nix
+    ./victor-fonts.nix
   ];
 
   options = {
