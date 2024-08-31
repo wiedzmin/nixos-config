@@ -15,6 +15,7 @@ in
 {
   imports = [
     ./agave-fonts.nix
+    ./cascadia-fonts.nix
     ./fira-code-fonts.nix
     ./geist-fonts.nix
     ./hack-fonts.nix
