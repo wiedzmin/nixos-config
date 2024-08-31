@@ -372,7 +372,7 @@ in
     };
     completion = {
       enable = true;
-      backend = "corfu";
+      backend = "company";
       snippets.backend = "tempel";
     };
     misc.enable = true;
