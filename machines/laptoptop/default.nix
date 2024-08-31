@@ -321,6 +321,7 @@ in
       tools.misc.enable = true;
       just.chooserCmd = "fzf";
       emacs.enable = true;
+      emacs.lsp.impl = "lsp-mode";
     };
     python = {
       enable = true;
