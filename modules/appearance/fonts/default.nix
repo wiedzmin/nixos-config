@@ -22,6 +22,7 @@ in
     ./iosevka-fonts.nix
     ./jbmono-fonts.nix
     ./martian-fonts.nix
+    ./roboto-fonts.nix
     ./scp-fonts.nix
   ];
 
