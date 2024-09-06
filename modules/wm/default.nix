@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.wmCommon;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -131,11 +130,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: {
-        keybindings = mkPythonScriptWithDeps pkgs "keybindings" (with pkgs; [ nurpkgs.pystdlib python3Packages.redis yad ])
-          (builtins.readFile ./scripts/keybindings.py);
-      };
-
       attributes.wms.enabled = true;
 
       services.xserver = {
@@ -166,9 +160,6 @@ in
         };
       };
 
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; optionals (cfg.keybindings.help.enable) [ keybindings ];
-      };
       wmCommon.modeBindings = {
         "dev" = [ cfg.prefix "d" ];
         "layout" = [ cfg.prefix "<" ];
@@ -185,16 +176,12 @@ in
           mode = "select";
         }
       ] ++ optionals (cfg.keybindings.help.enable) [
-        {
+        (goLocalDebugKeybinding config {
           key = [ cfg.prefix "k" ];
-          cmd = "${pkgs.keybindings}/bin/keybindings";
+          cmd = [ "wmkb" "keys" "--fuzzy" ];
           mode = "root";
-        }
-        {
-          key = [ cfg.prefix "Shift" "k" ];
-          cmd = "${pkgs.keybindings}/bin/keybindings --fuzzy";
-          mode = "root";
-        }
+          debug = true;
+        })
       ];
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/workspaces ${mkRedisJSON (lib.forEach cfg.workspaces (w: w.name))}
@@ -221,9 +208,6 @@ in
       workstation.video.transparency = {
         opacityRules = [ "0:_NET_WM_STATE@:32a *= '_NET_WM_STATE_HIDDEN'" ];
       };
-    })
-    (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ keybindings ]; };
     })
   ];
 }
