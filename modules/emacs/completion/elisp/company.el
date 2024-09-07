@@ -61,7 +61,7 @@
   (company-tooltip-selection ((t (:inherit company-tooltip :foreground "black" :background "steelblue" :weight bold :underline nil)))) ;TODO: play with '(:inherit font-lock-function-name-face)
   (lazy-highlight ((t (:inherit default :foreground "#CFD7E5"))))
   :custom
-  (company-backends '(company-capf company-keywords company-elisp company-files company-dabbrev company-dabbrev-code))
+  (company-backends '(company-capf company-keywords company-files company-dabbrev company-dabbrev-code))
   (company-dabbrev-downcase nil)
   (company-idle-delay 0.25)
   (company-lighter-base "")
