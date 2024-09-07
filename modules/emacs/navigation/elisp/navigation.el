@@ -483,28 +483,35 @@
   :bind
   (:map mode-specific-map
         ("h p" . pulsar-pulse-line)
+        ("h r" . pulsar-pulse-region)
         ("h h" . pulsar-highlight-line))
   :hook
   (imenu-after-jump-hook . pulsar-recenter-top)
   (imenu-after-jump-hook . pulsar-reveal-entry)
   (next-error-hook . pulsar-pulse-line)
   :custom
-  (pulsar-pulse-functions '(recenter-top-bottom
-                            move-to-window-line-top-bottom
-                            reposition-window
+  (pulsar-pulse-functions '(backward-page
                             forward-page
-                            backward-page
-                            scroll-up-command
-                            scroll-down-command
+                            goto-line
+                            handle-switch-frame
+                            move-to-window-line-top-bottom
+                            narrow-to-defun
+                            narrow-to-page
+                            narrow-to-region
+                            org-backward-heading-same-level
+                            org-forward-heading-same-level
                             org-next-visible-heading
                             org-previous-visible-heading
-                            org-forward-heading-same-level
-                            org-backward-heading-same-level
                             outline-backward-same-level
                             outline-forward-same-level
                             outline-next-visible-heading
                             outline-previous-visible-heading
-                            outline-up-heading))
+                            outline-up-heading
+                            recenter-top-bottom
+                            reposition-window
+                            scroll-down-command
+                            scroll-up-command
+                            widen))
   (pulsar-pulse t)
   (pulsar-delay 0.055)
   (pulsar-iterations 20)
