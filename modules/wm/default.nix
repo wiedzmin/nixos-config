@@ -182,6 +182,12 @@ in
           mode = "root";
           debug = true;
         })
+        (goLocalDebugKeybinding config {
+          key = [ cfg.prefix "m" ];
+          cmd = [ "wmkb" "modes" "--fuzzy" ];
+          mode = "root";
+          debug = true;
+        })
       ];
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/workspaces ${mkRedisJSON (lib.forEach cfg.workspaces (w: w.name))}
