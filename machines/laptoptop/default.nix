@@ -665,7 +665,10 @@ in
       inner.size = 5;
       outer.size = 10;
     };
-    statusbar.impl = "i3-rs";
+    statusbar = {
+      impl = "i3-rs";
+      i3-rs.iconset = "material-nf";
+    };
     windowFocus.fontSize = 55;
     emacs.enable = true;
   };

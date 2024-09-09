@@ -146,6 +146,15 @@ in
         default = "";
         description = "Extra spaces to the right of icon, for readability, if needed";
       };
+      statusbar.i3-rs.iconset = mkOption {
+        type = types.enum [ "none" "awesome4" "awesome5" "awesome6" "emoji" "material" "material-nf" ];
+        default = "none";
+        description = ''
+          Icons set used for `$icon` in blocks.
+
+          Use https://github.com/greshake/i3status-rust/blob/master/doc/themes.md#available-icon-sets for reference.
+        '';
+      };
       statusbar.deps = mkOption {
         type = types.listOf types.package;
         default = with pkgs; [ dbus dunst gawk iproute2 iw kbdd openvpn perl xdotool yad ];
@@ -570,7 +579,7 @@ in
         } // lib.optionalAttrs (cfg.statusbar.impl == "i3-rs") {
           "i3status-rust/config.toml".source = toml.generate "config.toml" ({
             icons = {
-              icons = "awesome6";
+              icons = "material-nf";
             };
             block = [
               {
