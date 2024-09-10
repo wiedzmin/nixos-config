@@ -237,6 +237,10 @@ in
           desc = "org-protocol docs for org-roam";
           remote.url = "https://www.orgroam.com/manual.html#The-roam_002dnode-protocol";
         };
+        "worg" = {
+          desc = "Hello Worg, the Org-Mode Community!";
+          remote.url = "https://orgmode.org/worg/index.html";
+        };
       };
     })
     (mkIf (cfg.enable && cfg.org-roam.enable && config.completion.expansions.enable) {
