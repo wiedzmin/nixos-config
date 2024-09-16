@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.shell.twopanes;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -25,11 +24,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: {
-        mcpanes = mkPythonScriptWithDeps pkgs "mcpanes" (with pkgs; [ mc nurpkgs.pystdlib python3Packages.redis ])
-          (builtins.readFile ./scripts/mcpanes.py);
-      };
-
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ mc ];
         xdg.configFile."mc/ini".text = ''
@@ -278,16 +272,13 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.entries = [{
-        key = [ "Shift" "m" ];
-        cmd = "${pkgs.mcpanes}/bin/mcpanes";
-        mode = "run";
-      }];
-    })
-    (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [ mcpanes ];
-      };
+      wmCommon.keybindings.entries = [
+        (goLocalDebugKeybinding config {
+          key = [ "Shift" "m" ];
+          cmd = [ "mcpanes" ];
+          mode = "run";
+        })
+      ];
     })
   ];
 }
