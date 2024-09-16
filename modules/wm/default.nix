@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.wmCommon;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -176,18 +177,21 @@ in
           mode = "select";
         }
       ] ++ optionals (cfg.keybindings.help.enable) [
-        (goLocalDebugKeybinding config {
+        {
           key = [ cfg.prefix "k" ];
-          cmd = [ "wmkb" "keys" "--fuzzy" ];
+          cmd = "${nurpkgs.toolbox}/bin/wmkb keys --fuzzy";
           mode = "root";
-          debug = true;
-        })
-        (goLocalDebugKeybinding config {
+        }
+        {
+          key = [ cfg.prefix "Shift" "k" ];
+          cmd = "${nurpkgs.toolbox}/bin/wmkb keys --tree";
+          mode = "root";
+        }
+        {
           key = [ cfg.prefix "m" ];
-          cmd = [ "wmkb" "modes" "--fuzzy" ];
+          cmd = "${nurpkgs.toolbox}/bin/wmkb modes --fuzzy";
           mode = "root";
-          debug = true;
-        })
+        }
       ];
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/workspaces ${mkRedisJSON (lib.forEach cfg.workspaces (w: w.name))}

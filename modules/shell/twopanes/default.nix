@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.shell.twopanes;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -273,11 +274,11 @@ in
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = [
-        (goLocalDebugKeybinding config {
+        {
           key = [ "Shift" "m" ];
-          cmd = [ "mcpanes" ];
+          cmd = "${nurpkgs.toolbox}/bin/mcpanes";
           mode = "run";
-        })
+        }
       ];
     })
   ];
