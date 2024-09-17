@@ -3,11 +3,10 @@
     "devenv": {
       "locked": {
         "dir": "src/modules",
-        "lastModified": 1725637114,
+        "lastModified": 1726417371,
         "owner": "cachix",
         "repo": "devenv",
-        "rev": "c31e347a96dbb7718a0279afa993752a7dfc6a39",
-        "treeHash": "e0dfcbbfb0974603336900406b364bd4d1308fa4",
+        "rev": "1f55f89ca32d617b7a7c18422e3c364cb003df3d",
         "type": "github"
       },
       "original": {
@@ -24,7 +23,6 @@
         "owner": "edolstra",
         "repo": "flake-compat",
         "rev": "0f9255e01c2351cc7d116c072cb317785dd33b33",
-        "treeHash": "2addb7b71a20a25ea74feeaf5c2f6a6b30898ecb",
         "type": "github"
       },
       "original": {
@@ -45,7 +43,6 @@
         "owner": "hercules-ci",
         "repo": "gitignore.nix",
         "rev": "637db329424fd7e46cf4185293b9cc8c88c95394",
-        "treeHash": "ca14199cabdfe1a06a7b1654c76ed49100a689f9",
         "type": "github"
       },
       "original": {
@@ -56,11 +53,10 @@
     },
     "nixpkgs": {
       "locked": {
-        "lastModified": 1725534445,
+        "lastModified": 1726481836,
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "9bb1e7571aadf31ddb4af77fc64b2d59580f9a39",
-        "treeHash": "42b4c844752e33185e2fac3d506d150637caae7d",
+        "rev": "20f9370d5f588fb8c72e844c54511cab054b5f40",
         "type": "github"
       },
       "original": {
@@ -76,7 +72,6 @@
         "owner": "NixOS",
         "repo": "nixpkgs",
         "rev": "0ad13a6833440b8e238947e47bea7f11071dc2b2",
-        "treeHash": "27017cfbcade90444c21a61e655cff6f408fbaf2",
         "type": "github"
       },
       "original": {
@@ -88,11 +83,10 @@
     },
     "nixpkgs-stable": {
       "locked": {
-        "lastModified": 1725407940,
+        "lastModified": 1726320982,
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "6f6c45b5134a8ee2e465164811e451dcb5ad86e3",
-        "treeHash": "f65d5344b23cfbe3695140b602bc463349b26638",
+        "rev": "8f7492cce28977fbf8bd12c72af08b1f6c7c3e49",
         "type": "github"
       },
       "original": {
@@ -104,11 +98,10 @@
     },
     "nur": {
       "locked": {
-        "lastModified": 1725189303,
+        "lastModified": 1726490638,
         "owner": "wiedzmin",
         "repo": "NUR",
-        "rev": "a4586a9d8e46a847c3a8c8e6d1e0dc1da61f51dd",
-        "treeHash": "c57bb380c00c6c92d85ec07e70202062720750bb",
+        "rev": "2a606c9783e7ba069f445f99861438240477f458",
         "type": "github"
       },
       "original": {
@@ -132,7 +125,6 @@
         "owner": "cachix",
         "repo": "pre-commit-hooks.nix",
         "rev": "7570de7b9b504cfe92025dd1be797bf546f66528",
-        "treeHash": "4b46d77870afecd8f642541cb4f4927326343b59",
         "type": "github"
       },
       "original": {
