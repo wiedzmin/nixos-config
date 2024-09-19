@@ -534,9 +534,8 @@ in
       timers.lock = 60;
       wm.enable = true;
     };
-    sound.pa = {
+    sound = {
       enable = true;
-      daemonConfig = { flat-volumes = "no"; };
       wm.enable = true;
     };
     randr = {

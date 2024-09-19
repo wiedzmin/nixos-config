@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.content.media;
   user = config.attributes.mainUser.name;
+  ID = config.attributes.mainUser.ID;
   inherit (config.wmCommon) prefix prefixAlt;
   yaml = pkgs.formats.yaml { };
 in
@@ -199,11 +200,16 @@ in
         startWhenNeeded = true;
         extraConfig = ''
           audio_output {
-            type     "pulse"
-            name     "Pulseaudio"
+            type     "pipewire"
+            name     "Pipewire"
             server   "127.0.0.1"
           }
         '';
+        user = user;
+      };
+      systemd.services.mpd.environment = {
+        # https://gitlab.freedesktop.org/pipewire/pipewire/-/issues/609
+        XDG_RUNTIME_DIR = "/run/user/${ID}"; # Must match above user. MPD will look inside this directory for the PipeWire socket.
       };
 
       fileSystems = mapAttrs'
