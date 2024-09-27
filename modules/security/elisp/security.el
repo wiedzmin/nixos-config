@@ -21,7 +21,8 @@
   (pass-show-keybindings t)
   (pass-username-field "login"))
 
-(use-package pass-client
+(use-package password-store-menu
+  :load-path "@emacsPasswordStoreMenuPath@"
   :bind
   (:map custom-pass-map
-        ("!" . pass-client)))
+        ("!" . password-store-menu)))

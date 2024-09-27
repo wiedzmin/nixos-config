@@ -290,6 +290,22 @@
         "type": "github"
       }
     },
+    "emacs-password-store-menu": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1724151325,
+        "narHash": "sha256-uND5oi4TmVUjOoG2dey4hZ2kItmw1QqSZ7rjzv6SMwg=",
+        "owner": "rjekker",
+        "repo": "password-store-menu",
+        "rev": "0b181f878c47f2f06da51f5279e04382d6da6527",
+        "type": "github"
+      },
+      "original": {
+        "owner": "rjekker",
+        "repo": "password-store-menu",
+        "type": "github"
+      }
+    },
     "emacs-treesit-jump": {
       "flake": false,
       "locked": {
@@ -1015,6 +1031,7 @@
         "emacs-highlight-sexp": "emacs-highlight-sexp",
         "emacs-org-bars": "emacs-org-bars",
         "emacs-password-menu": "emacs-password-menu",
+        "emacs-password-store-menu": "emacs-password-store-menu",
         "emacs-treesit-jump": "emacs-treesit-jump",
         "emacs-vue-ts-mode": "emacs-vue-ts-mode",
         "git-extra-commands": "git-extra-commands",

@@ -63,6 +63,10 @@
       url = "github:8uff3r/vue-ts-mode";
       flake = false;
     };
+    emacs-password-store-menu = {
+      url = "github:rjekker/password-store-menu";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {
