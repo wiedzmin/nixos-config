@@ -67,6 +67,10 @@
       url = "github:rjekker/password-store-menu";
       flake = false;
     };
+    emacs-combobulate = {
+      url = "github:mickeynp/combobulate";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {
