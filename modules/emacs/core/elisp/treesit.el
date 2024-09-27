@@ -45,4 +45,9 @@
         ("t" . treesit-jump-transient)
         ("^" . treesit-jump-parent-jump)))
 
+(use-package combobulate
+  :load-path "@emacsCombobulatePath@"
+  :hook
+  (prog-mode-hook . combobulate-mode))
+
 (use-package treesit-util)

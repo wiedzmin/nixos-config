@@ -177,6 +177,22 @@
         "type": "github"
       }
     },
+    "emacs-combobulate": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1727437950,
+        "narHash": "sha256-QZd3Z1OXq12Caq3WDUVFA4GFIL1VmuIGHKc1ZHR1LaA=",
+        "owner": "mickeynp",
+        "repo": "combobulate",
+        "rev": "a136eec9e22c763646729fd1d0e10e0aae0531ad",
+        "type": "github"
+      },
+      "original": {
+        "owner": "mickeynp",
+        "repo": "combobulate",
+        "type": "github"
+      }
+    },
     "emacs-consult-org-clock": {
       "flake": false,
       "locked": {
@@ -1024,6 +1040,7 @@
       "inputs": {
         "devenv-src": "devenv-src",
         "emacs": "emacs",
+        "emacs-combobulate": "emacs-combobulate",
         "emacs-consult-org-clock": "emacs-consult-org-clock",
         "emacs-easy-kill-extras": "emacs-easy-kill-extras",
         "emacs-epithet": "emacs-epithet",
