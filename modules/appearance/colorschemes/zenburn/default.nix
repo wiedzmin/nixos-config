@@ -53,7 +53,7 @@ in
         };
       };
       programs.kitty = {
-        theme = "zenburned";
+        themeFile = "zenburned";
       };
     };
     controlcenter.lnc.theme = {
