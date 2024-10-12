@@ -432,6 +432,12 @@ in
             raw = true;
           }
           {
+            key = [ "m" ];
+            cmd = "[title=\"mpv$\"] scratchpad show";
+            mode = "scratchpad";
+            raw = true;
+          }
+          {
             key = [ "s" ];
             cmd = "scratchpad show";
             mode = "scratchpad";
