@@ -284,7 +284,7 @@ in
             raw = true;
           }
           {
-            key = [ prefix "Shift" "f" ];
+            key = [ prefix "Shift" "l" ];
             cmd = "floating toggle";
             mode = "root";
             raw = true;
@@ -296,7 +296,7 @@ in
             raw = true;
           }
           {
-            key = [ prefix "t" ];
+            key = [ prefix "l" ];
             cmd = "focus mode_toggle";
             mode = "root";
             raw = true;
