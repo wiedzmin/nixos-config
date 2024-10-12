@@ -52,8 +52,6 @@ in
       programs.zsh.enable = true;
 
       home-manager.users."${user}" = {
-        # NOTE: play with ydotool client/server arch and respective permissions
-        home.packages = with pkgs; [ gdu rtss wmctrl xdotool rargs ydotool ];
         programs.zsh = {
           enable = true;
           autosuggestion.enable = true;
@@ -181,24 +179,6 @@ in
         };
         programs.direnv.enableZshIntegration = true;
         programs.fzf.enableZshIntegration = true;
-      };
-    })
-    (mkIf (cfg.enable && config.completion.expansions.enable) {
-      completion.expansions.espanso.matches = {
-        zsh = {
-          matches = [
-            {
-              trigger = ":ts";
-              replace = "$|$ | rtss";
-            }
-            {
-              trigger = ":rlw";
-              replace = "readlink -f `which $|$`";
-            }
-          ];
-        } // optionalAttrs (config.shell.tmux.enable) {
-          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
-        };
       };
     })
   ];

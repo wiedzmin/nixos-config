@@ -68,11 +68,18 @@ in
           enable = true;
           dbPath = ./assets/programs.sqlite;
         };
+        # NOTE: play with ydotool client/server arch and respective permissions
         home.packages = with pkgs; [
           libnotify # FWIW
           perl # for plugins
           bashate # linter
           ets
+          gdu
+          rargs
+          rtss
+          wmctrl
+          xdotool
+          ydotool
         ];
       };
     })
@@ -143,7 +150,17 @@ in
               trigger = ":ptim";
               replace = "ps -ef | fzf --header-lines=1 | tr -s ' ' | cut -d' ' -f2 | xargs ps -o pid,lstart,start,etime,etimes -p";
             }
+            {
+              trigger = ":ts";
+              replace = "$|$ | rtss";
+            }
+            {
+              trigger = ":rlw";
+              replace = "readlink -f `which $|$`";
+            }
           ];
+        } // optionalAttrs (config.shell.tmux.enable) {
+          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };
     })
