@@ -1,5 +1,6 @@
 { config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
+with config.navigation.bookmarks.workspaces;
 with lib;
 
 let
@@ -66,7 +67,7 @@ in
         programs.fzf.enable = true;
         programs.command-not-found = {
           enable = true;
-          dbPath = ./assets/programs.sqlite;
+          dbPath = configPrefix roots "modules/shell/core/assets/programs.sqlite";
         };
         # NOTE: play with ydotool client/server arch and respective permissions
         home.packages = with pkgs; [
