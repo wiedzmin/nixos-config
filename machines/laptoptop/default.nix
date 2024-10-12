@@ -47,10 +47,8 @@ in
     isNormalUser = true;
     uid = 1000;
     description = config.attributes.mainUser.fullName;
-    shell = pkgs.zsh;
     extraGroups = [ "wheel" ];
   };
-  programs.zsh.enable = true;
 
   users.mutableUsers = false;
   users.users = {
