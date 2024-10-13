@@ -24,12 +24,10 @@ in
     (mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
         qemu_kvm
-        libvirt # for `vagrant plugin install vagrant-libvirt`
-        nfs-utils # for vagrant
+        libvirt
         qemu-utils
         spice
         spice-gtk
-        vagrant
         vdi2qcow2
         virt-manager
         virt-viewer
