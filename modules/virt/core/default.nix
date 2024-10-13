@@ -3,7 +3,7 @@ with pkgs.unstable.commonutils;
 with lib;
 
 let
-  cfg = config.ext.virtualization.libvirt;
+  cfg = config.ext.virtualization.core;
   user = config.attributes.mainUser.name;
   vdi2qcow2 = pkgs.writeShellScriptBin "vdi2qcow2" ''
     ${pkgs.qemu}/bin/qemu-img convert -f vdi -O qcow2 $1 "''${1%.*}.qcow2"
@@ -11,7 +11,7 @@ let
 in
 {
   options = {
-    ext.virtualization.libvirt = {
+    ext.virtualization.core = {
       enable = mkOption {
         type = types.bool;
         default = false;
@@ -23,9 +23,10 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       environment.systemPackages = with pkgs; [
-        qemu_kvm
         libvirt
         qemu-utils
+        qemu_kvm
+        quickemu # see https://github.com/quickemu-project/quickemu for details
         spice
         spice-gtk
         vdi2qcow2

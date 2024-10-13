@@ -85,9 +85,9 @@
     ./shell/tools
     ./shell/twopanes
     ./shell/zsh
+    ./virt/core
     ./virt/docker/core
     ./virt/docker/devdns
-    ./virt/libvirt
     ./virt/virtualbox
     ./wm
     ./wm/awesome
