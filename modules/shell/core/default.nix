@@ -64,7 +64,10 @@ in
           YSU_MODE = "ALL";
         } // (foldl (a: b: a // (envVars b)) { } cfg.variables);
         programs.bash.sessionVariables = foldl (a: b: a // (envVars b)) { } cfg.variables;
-        programs.fzf.enable = true;
+        programs.fzf = {
+          enable = true;
+          enableZshIntegration = true;
+        };
         programs.command-not-found = {
           enable = true;
           dbPath = configPrefix roots "modules/shell/core/assets/programs.sqlite";
