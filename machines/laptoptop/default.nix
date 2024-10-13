@@ -70,7 +70,7 @@ in
         efiInstallAsRemovable = true;
         efiSupport = true;
         device = "/dev/sda";
-        configurationLimit = 50;
+        configurationLimit = 5;
       };
     };
     initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
