@@ -177,8 +177,6 @@ in
             }
           ];
         };
-        programs.direnv.enableZshIntegration = true;
-        programs.fzf.enableZshIntegration = true;
       };
     })
   ];

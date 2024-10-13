@@ -42,6 +42,7 @@ in
         programs.direnv = {
           enable = true;
           nix-direnv.enable = true;
+          enableZshIntegration = true;
         };
         xdg.configFile."direnv/direnv.toml".source = toml.generate "direnv.toml" {
           global = { disable_stdin = true; };
