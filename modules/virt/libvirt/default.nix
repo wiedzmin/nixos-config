@@ -46,7 +46,7 @@ in
       shell.core.variables = [{ LIBVIRT_DEFAULT_URI = "qemu:///system"; global = true; }];
 
       networking.nat.internalInterfaces = [ "virbr0" ];
-      services.dnsmasq.extraConfig = ''
+      services.dnsmasq.settings = ''
         except-interface=virbr0 # ignore virbr0 as libvirtd listens here
       '';
 
