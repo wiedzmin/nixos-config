@@ -33,30 +33,34 @@ in
         virt-viewer
       ];
 
-      boot.kernel.sysctl = {
-        "net.ipv4.ip_forward" = 1; # for VMs forwarding
+      boot = {
+        kernel.sysctl = {
+          "net.ipv4.ip_forward" = 1; # for VMs forwarding
+        };
+        kernelParams = [ "kvm.allow_unsafe_assigned_interrupts=1" "kvm.ignore_msrs=1" "kvm-intel.nested=1" ];
+        kernelModules = [ "kvm-intel" ];
+        extraModprobeConfig = ''
+          options kvm-intel nested=1
+        '';
       };
 
-      virtualisation.libvirtd = { enable = true; };
-      virtualisation.kvmgt.enable = true;
+      virtualisation = {
+        libvirtd.enable = true;
+        kvmgt.enable = true;
+        spiceUSBRedirection.enable = true;
+      };
 
-      users.users."${user}".extraGroups = [ "libvirtd" ];
-      shell.core.variables = [{ LIBVIRT_DEFAULT_URI = "qemu:///system"; global = true; }];
+      networking = {
+        nat.internalInterfaces = [ "virbr0" ];
+        dhcpcd.denyInterfaces = [ "virbr*" ];
+      };
 
-      networking.nat.internalInterfaces = [ "virbr0" ];
       services.dnsmasq.settings = ''
         except-interface=virbr0 # ignore virbr0 as libvirtd listens here
       '';
 
-      networking.dhcpcd.denyInterfaces = [ "virbr*" ];
-
-      boot.kernelParams = [ "kvm.allow_unsafe_assigned_interrupts=1" "kvm.ignore_msrs=1" "kvm-intel.nested=1" ];
-      boot.kernelModules = [ "kvm-intel" ];
-      boot.extraModprobeConfig = ''
-        options kvm-intel nested=1
-      '';
-
-      virtualisation.spiceUSBRedirection.enable = true;
+      users.users."${user}".extraGroups = [ "libvirtd" ];
+      shell.core.variables = [{ LIBVIRT_DEFAULT_URI = "qemu:///system"; global = true; }];
 
       wmCommon.wsMapping.rules = [{
         class = "Virt-manager";
