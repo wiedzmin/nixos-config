@@ -29,16 +29,11 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      assertions = [{
-        assertion = config.shell.zsh.enable;
-        message = "shell/bookmarks: enable Zsh first.";
-      }];
-
       shell.core.variables = [
         ({
           FZF_MARKS_FILE = "$HOME/${cfg.path}";
-          FZF_MARKS_JUMP = "^[[1;5P";
-        } // lib.optionalAttrs cfg.order { FZF_MARKS_KEEP_ORDER = "1"; })
+        } // lib.optionalAttrs (!config.shell.fish.enable) { FZF_MARKS_JUMP = "^[[1;5P"; }
+        // lib.optionalAttrs cfg.order { FZF_MARKS_KEEP_ORDER = "1"; })
       ];
 
       home-manager.users."${user}" = {

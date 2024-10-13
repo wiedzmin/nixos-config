@@ -75,6 +75,7 @@
     ./shell/alacritty
     ./shell/bookmarks
     ./shell/core
+    ./shell/fish
     ./shell/kitty
     ./shell/prompts/liquid
     ./shell/prompts/ohmyzsh
