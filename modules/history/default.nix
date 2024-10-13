@@ -66,23 +66,19 @@ in
 
   config = mkMerge [
     (mkIf (cfg.shell.enable) {
-      # FIXME: why only zsh?! *** parameterize somehow ***
-      assertions = [{
-        assertion = config.shell.zsh.enable;
-        message = "shell/completion: enable Zsh first.";
-      }];
-
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ mmv-go ];
         programs.mcfly = optionalAttrs (cfg.shell.backend == "mcfly") {
           enable = true;
           enableZshIntegration = true;
+          enableFishIntegration = true;
           fuzzySearchFactor = cfg.shell.mcfly.fuzzySearch;
           fzf.enable = cfg.shell.mcfly.fzfIntegration.enable;
         };
         programs.atuin = optionalAttrs (cfg.shell.backend == "atuin") {
           enable = true;
           enableZshIntegration = true;
+          enableFishIntegration = true;
         };
         # NOTE: see below for references
         # https://github.com/ellie/atuin/blob/main/docs/config.md
