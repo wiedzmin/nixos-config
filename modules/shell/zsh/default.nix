@@ -46,8 +46,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      environment.shells = with pkgs; [ "${zsh}/bin/zsh" "/run/current-system/sw/bin/zsh" ];
-
       users.extraUsers."${user}".shell = pkgs.zsh;
       programs.zsh.enable = true;
 
