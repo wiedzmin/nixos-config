@@ -55,10 +55,6 @@ in
     (mkIf cfg.enable {
       assertions = [
         {
-          assertion = config.shell.zsh.enable;
-          message = "shell/prompts/starship: enable Zsh first.";
-        }
-        {
           assertion = cfg.enable && !config.shell.prompts.ohmyzsh.enable && !config.shell.prompts.liquid.enable;
           message = "shell/prompts/starship: exactly one no theming should be used.";
         }
@@ -71,11 +67,12 @@ in
       appearance.fonts.beautify = true;
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ starship ];
-        # TODO: make evaluation in the very beginning of initExtra
-        programs.zsh.initExtra = ''
-          eval "$(starship init zsh)"
-        '';
+        programs.starship = {
+          enable = true;
+          enableFishIntegration = true;
+          enableZshIntegration = true;
+        };
+
         xdg.configFile = {
           "starship.toml".source = toml.generate "starship.toml" cfg.configuration;
         };
