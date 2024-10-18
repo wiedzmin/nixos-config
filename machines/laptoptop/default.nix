@@ -162,7 +162,7 @@ in
       enable = true;
       boot.splashImage = "${inputs.nixos-artwork}/wallpapers/nix-wallpaper-mosaic-blue.png";
       rootDir = homePrefix user "blobs/wallpaper/mongol/autumn";
-      current = "highway.jpg";
+      current = "forest_pano.jpg";
       wm.enable = true;
     };
     xresources = {
