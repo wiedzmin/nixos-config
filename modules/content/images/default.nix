@@ -42,7 +42,7 @@ in
           exiv2
           mediainfo
           imagemagick
-          nixpkgs-last-unbroken.vimiv-qt
+          vimiv-qt
         ];
         xdg.configFile."vimiv/keys.conf".text = toINIColon {
           GLOBAL = {
@@ -308,7 +308,7 @@ in
         };
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.images "vimiv.desktop";
         programs.zsh.shellAliases = {
-          viq = "${nixpkgs-last-unbroken.vimiv-qt}/bin/vimiv";
+          viq = "${pkgs.vimiv-qt}/bin/vimiv";
         };
       };
     })

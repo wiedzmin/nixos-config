@@ -371,7 +371,7 @@ in
     })
     (mkIf cfg.processors.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ enca imagemagick img2pdf ocamlPackages.cpdf pandoc pdfchain pdfcpu nixpkgs-last-unbroken.pdfslicer pdftk ];
+        home.packages = with pkgs; [ enca imagemagick img2pdf ocamlPackages.cpdf pandoc pdfchain pdfcpu pdfslicer pdftk ];
         xdg.configFile = optionalAttrs (config.completion.expansions.enable) {
           "espanso/match/paperworks_processors.yml".source = yaml.generate "espanso-paperworks_processors.yml" {
             matches = [
