@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -7,6 +7,13 @@ let
   user = config.attributes.mainUser.name;
   ID = config.attributes.mainUser.ID;
   inherit (config.wmCommon) prefix prefixAlt;
+  nixpkgs-last-unbroken-new = import inputs.nixpkgs-last-unbroken-new {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
   yaml = pkgs.formats.yaml { };
 in
 {
@@ -221,7 +228,7 @@ in
         cfg.mpd.collections;
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ ario sonata cantata ];
+        home.packages = with pkgs; [ ario sonata nixpkgs-last-unbroken-new.cantata ];
         programs.qutebrowser = {
           keyBindings = {
             normal = {
