@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
@@ -6,13 +6,6 @@ with lib;
 let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
-  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
-    config = config.nixpkgs.config // {
-      allowUnfree = true;
-      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
-    };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {
@@ -137,7 +130,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ JUST_CHOOSER = cfg.just.chooserCmd; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ code-maat comby dfmt fastmod nixpkgs-last-unbroken.go-task ida-free just lnav tagref xh ];
+        home.packages = with pkgs; [ code-maat comby dfmt fastmod ida-free just lnav tagref xh ];
       };
       pim.timetracking.rules =
         mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.traits.wmClass fallback.traits.wmClass ])
