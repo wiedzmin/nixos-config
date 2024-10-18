@@ -107,6 +107,7 @@
     unstable-future.url = "github:nixos/nixpkgs/fd281bd6b7d3e32ddfa399853946f782553163b5";
     nixpkgs-libreoffice.url = "github:nixos/nixpkgs/0f213d0fee84280d8c3a97f7469b988d6fe5fcdf";
     nixpkgs-last-unbroken.url = "github:nixos/nixpkgs/ca012a02bf8327be9e488546faecae5e05d7d749";
+    nixpkgs-last-unbroken-new.url = "github:nixos/nixpkgs/5633bcff0c6162b9e4b5f1264264611e950c8ec7";
   };
 
   outputs = { self, unstable, ... }@inputs:

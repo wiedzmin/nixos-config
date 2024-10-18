@@ -7,7 +7,7 @@ let
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
   inherit (hm.xdg) dataHome;
-  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+  nixpkgs-last-unbroken-new = import inputs.nixpkgs-last-unbroken-new {
     config = config.nixpkgs.config // {
       allowUnfree = true;
       permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
@@ -69,7 +69,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ MYCLI_HISTFILE = cfg.mycli.historyPath; global = true; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ mycli ];
+        home.packages = with pkgs; [ nixpkgs-last-unbroken-new.mycli ];
         xdg.configFile.".myclirc".text = lib.generators.toINI { } {
           main = {
             audit_log = cfg.mycli.auditLogPath;
