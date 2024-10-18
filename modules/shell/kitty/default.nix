@@ -129,7 +129,7 @@ in
 
             protocol file
             ext csv
-            action launch --type=overlay ${nixpkgs-last-unbroken.visidata}/bin/vd ''${FILE_PATH}
+            action launch --type=overlay ${pkgs.visidata}/bin/vd ''${FILE_PATH}
 
             # Open directories
             protocol file

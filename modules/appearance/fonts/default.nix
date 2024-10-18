@@ -87,7 +87,7 @@ in
         useXkbConfig = true;
       };
       i18n = { defaultLocale = cfg.locale; };
-      home-manager.users."${user}" = { home.packages = with pkgs; [ cicero-tui nixpkgs-last-unbroken.fontfor ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ cicero-tui fontfor ]; };
     })
     (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
       navigation.bookmarks.entries = {

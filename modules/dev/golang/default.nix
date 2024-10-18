@@ -66,7 +66,7 @@ in
         })
       ];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ delve gopls go nixpkgs-last-unbroken.gomacro ];
+        home.packages = with pkgs; [ delve gopls go gomacro ];
         home.sessionPath = [ "${cfg.goPath}/bin" ];
       };
       dev.editorconfig.rules = {
