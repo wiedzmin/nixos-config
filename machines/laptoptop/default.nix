@@ -628,7 +628,7 @@ in
       enable = true;
       wm.enable = true;
     };
-    zsh.enable = true;
+    fish.enable = true;
   };
 
   dbms = {
