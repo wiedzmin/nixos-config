@@ -269,7 +269,7 @@ in
   dev = {
     codesearch = {
       enable = true;
-      emacs.enable = true;
+      emacs.enable = false;
     };
     vcs = {
       enable = true;
