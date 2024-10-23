@@ -208,7 +208,6 @@ in
         epkgs.jq-format
         epkgs.just-mode
         epkgs.justl
-        epkgs.leetcode
         epkgs.lua-mode
         epkgs.plantuml-mode
         epkgs.webpaste

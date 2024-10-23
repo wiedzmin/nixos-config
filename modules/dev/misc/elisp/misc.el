@@ -60,14 +60,6 @@
 
 (use-package bug-reference)
 
-(use-package leetcode
-  :disabled
-  :custom
-  (leetcode-prefer-language "python3")
-  (leetcode-prefer-sql "mysql")
-  (leetcode-save-solutions t)
-  (leetcode-directory "~/workspace/leetcode"))
-
 (defun open-project (path)
   (cond ((f-directory? (format "%s/%s" path ".git")) (magit-status path))
         (t (dired path))))
