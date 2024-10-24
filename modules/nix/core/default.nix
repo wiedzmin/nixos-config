@@ -168,7 +168,7 @@ in
           matches = [
             {
               trigger = ":npg";
-              replace = "nix-prefetch-git --rev {{revision.value}} {{repolink}}";
+              replace = "nix-prefetch-git --rev refs/heads/{{revision.value}} {{repolink}}";
               vars = [
                 {
                   name = "revision";
