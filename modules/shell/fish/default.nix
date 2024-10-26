@@ -33,6 +33,8 @@ in
 
             df = "${pkgs.duf}/bin/duf";
             du = "${pkgs.du-dust}/bin/dust";
+
+            rm = "rm -r";
           };
           interactiveShellInit = "set fish_greeting";
           functions = {
