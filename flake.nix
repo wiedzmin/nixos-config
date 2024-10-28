@@ -71,6 +71,10 @@
       url = "github:mickeynp/combobulate";
       flake = false;
     };
+    just-ts-mode = {
+      url = "github:leon-barrett/just-ts-mode.el";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {

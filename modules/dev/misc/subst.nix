@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, inputs, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
 {
@@ -10,4 +10,5 @@ with pkgs.unstable.commonutils;
     if config.dev.misc.emacs.lsp.impl == "lsp-mode"
     then emacsMkLspModeRegisterServer [ "yaml-mode-hook" "yaml-ts-mode-hook" ] [ "yaml-language-server" "--stdio" ] "yaml" "yaml-lsp"
     else "";
+  emacsJustTsModePath = inputs.just-ts-mode;
 }

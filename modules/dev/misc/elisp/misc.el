@@ -26,10 +26,6 @@
         ("C-m" . newline-and-indent)
         ("<return>" . newline-and-indent)))
 
-(use-package just-mode
-  :mode
-  ("\\justfile\\'" . just-mode))
-
 (use-package justl
   :defer t
   :custom

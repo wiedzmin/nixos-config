@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, lib, inputs, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
@@ -206,15 +206,22 @@ in
         epkgs.hl-prog-extra
         epkgs.jinja2-mode
         epkgs.jq-format
-        epkgs.just-mode
         epkgs.justl
         epkgs.lua-mode
         epkgs.plantuml-mode
         epkgs.webpaste
         epkgs.yaml-pro
         epkgs.yaml-mode
-      ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ];
+      ] ++ lib.optionals (!config.ide.emacs.core.treesitter.enable) [ epkgs.just-mode ];
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/standard.el ]) +
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]) +
+        (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ]);
+      ide.emacs.core.treesitter.grammars = {
+        just = "https://github.com/IndianBoy42/tree-sitter-just";
+      };
+      ide.emacs.core.treesitter.modeRemappings = {
+        just-mode = "just-ts-mode";
+      };
       ide.emacs.core.customKeymaps = {
         "custom-webpaste-map" = "C-c [";
       };
