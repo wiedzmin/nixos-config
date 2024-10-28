@@ -515,6 +515,22 @@
         "type": "github"
       }
     },
+    "just-ts-mode": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1728946356,
+        "narHash": "sha256-J8SXIq7Tv1cdUNkPmkcpwSsJOlXVD3xfnKD286l9N20=",
+        "owner": "leon-barrett",
+        "repo": "just-ts-mode.el",
+        "rev": "acb598f1edabae9f679a507c8e22c21b3f2da132",
+        "type": "github"
+      },
+      "original": {
+        "owner": "leon-barrett",
+        "repo": "just-ts-mode.el",
+        "type": "github"
+      }
+    },
     "kitty-grab": {
       "flake": false,
       "locked": {
@@ -1069,6 +1085,7 @@
         "emacs-vue-ts-mode": "emacs-vue-ts-mode",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
+        "just-ts-mode": "just-ts-mode",
         "kitty-grab": "kitty-grab",
         "kitty-search": "kitty-search",
         "nixos-artwork": "nixos-artwork",
