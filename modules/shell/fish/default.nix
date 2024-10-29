@@ -42,6 +42,13 @@ in
               body = "__fish_default_command_not_found_handler $argv[1]";
               onEvent = "fish_command_not_found";
             };
+            mkcd = {
+              description = "Create [deeply] nested directory and change to it";
+              body = ''
+                mkdir -pv $argv;
+                cd $argv;
+              '';
+            };
           };
           plugins = [
             {
