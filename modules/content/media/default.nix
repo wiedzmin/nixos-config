@@ -124,6 +124,18 @@ in
             osc = "no";
           };
         };
+        programs.fish.functions = {
+          # TODO: consider replicating ffmpeg expansions also as Fish functions
+          screencast = {
+            # NOTE: see http://trac.ffmpeg.org/wiki/Capture/Desktop for reference
+            description = "Screen capture using ffmpeg";
+            # TODO: try elaborating Nix expression for https://github.com/scottkirkwood/key-mon or find and play with similar utilities
+            body = ''
+              mkdir -p /tmp/record
+              ffmpeg -probesize 3000000000 -f x11grab -framerate 25 -s $(redis-cli get wm/dimensions) -i :0.0 -vcodec libx264 -threads 2 -preset ultrafast -crf 0 /tmp/record/record-(date +"%FT%T%:z").mkv
+            '';
+          };
+        };
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.video "mpv.desktop";
         programs.zsh.shellAliases = { yg = "${pkgs.you-get}/bin/you-get"; };
       };
@@ -131,9 +143,8 @@ in
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
-          # NOTE: expansions deps
           android-file-transfer
-          ffmpeg
+          ffmpeg-full
           yt-dlp
         ];
         xdg.configFile = {
