@@ -15,6 +15,7 @@ in
           mvWorkspacesCmdI3 config.wmCommon.workspaces "primary" config.attributes.hardware.monitors.externalPrimaryHead.name}${
           mvWorkspacesCmdI3 config.wmCommon.workspaces "secondary" config.attributes.hardware.monitors.externalSecondaryHead.name
         }${mvWorkspacesCmdI3 config.wmCommon.workspaces "tertiary" config.attributes.hardware.monitors.internalHead.name}"
+        ${pkgs.xorg.xdpyinfo}/bin/xdpyinfo | grep dimensions | cut -f2 -d: | tr -s ' ' | cut -d ' ' -f2 | tr -d '\n' | redis-cli -x set wm/dimensions
       '';
     };
   };
