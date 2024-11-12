@@ -29,6 +29,8 @@ in
     (mkIf cfg.enable {
       users.users."${user}".extraGroups = [ "pipewire" ];
 
+      home-manager.users."${user}" = { home.packages = with pkgs; [ alsa-utils ]; };
+
       services.pipewire = {
         enable = true;
         pulse.enable = true;
