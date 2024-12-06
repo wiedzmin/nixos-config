@@ -136,7 +136,6 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           cargo /*for unpackaged Rust tools*/
-          git-crypt /*is needed but not accessible under devenv for some reason*/
           nix-doc-lookup
           nix-build-offline
           nix-init
