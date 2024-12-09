@@ -1,16 +1,9 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with lib;
 
 let
   cfg = config.appearance.fonts;
   user = config.attributes.mainUser.name;
-  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
-    config = config.nixpkgs.config // {
-      allowUnfree = true;
-      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
-    };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   imports = [
@@ -69,17 +62,12 @@ in
         enableGhostscriptFonts = true;
         enableDefaultPackages = true;
       } // lib.optionalAttrs cfg.beautify {
-        packages = with pkgs; [
-          (nerdfonts.override
-            {
-              fonts = [
-                "FiraCode"
-                "Hack"
-                "Iosevka"
-                "JetBrainsMono"
-                "SourceCodePro"
-              ];
-            })
+        packages = with pkgs.nerd-fonts; [
+          fira-code
+          hack
+          iosevka
+          jetbrains-mono
+          sauce-code-pro
         ];
       };
       console = {
