@@ -32,9 +32,7 @@ in
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.aggressive-indent
         epkgs.drag-stuff
-        epkgs.easy-kill
         epkgs.evil-nerd-commenter
-        epkgs.expand-region
         epkgs.highlight-numbers
         epkgs.multiple-cursors
         epkgs.region-bindings-mode
@@ -45,8 +43,16 @@ in
         epkgs.wgrep
         epkgs.whole-line-or-region
         epkgs.ws-butler
+      ] ++ optionals (!config.ide.emacs.core.treesitter.enable) [
+        epkgs.expand-region
+        epkgs.easy-kill
+      ] ++ optionals (config.ide.emacs.core.treesitter.enable) [
+        epkgs.expreg
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/edit.el ];
+      ide.emacs.core.config =
+        readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/edit.el ] +
+        optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/standard.el ]) +
+        optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]);
       ide.emacs.core.customKeymaps = {
         "custom-ws-map" = "C-c x";
         "misc-editing-map" = "<f5>";
