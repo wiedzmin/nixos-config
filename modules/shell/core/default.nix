@@ -159,10 +159,6 @@ in
               trigger = ":ts";
               replace = "$|$ | rtss";
             }
-            {
-              trigger = ":rlw";
-              replace = "readlink -f `which $|$`";
-            }
           ];
         } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
