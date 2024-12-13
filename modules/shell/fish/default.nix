@@ -166,5 +166,17 @@ in
         };
       };
     })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      completion.expansions.espanso.matches = {
+        shell_fish = {
+          matches = [
+            {
+              trigger = ":rlw";
+              replace = "readlink -f (which $|$)";
+            }
+          ];
+        };
+      };
+    })
   ];
 }
