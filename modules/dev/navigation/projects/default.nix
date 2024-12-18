@@ -71,6 +71,12 @@ in
           cmd = [ "projects" "open" ];
           mode = "dev";
         })
+      ] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable && config.pim.orgmode.enable) [
+        (goLocalDebugKeybinding config {
+          key = [ "a" ];
+          cmd = [ "projects" "open" "--path" "${config.pim.orgmode.org-roam.rootDir}/agenda.org" ];
+          mode = "dev";
+        })
       ];
     })
   ];
