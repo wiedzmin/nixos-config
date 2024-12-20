@@ -201,3 +201,19 @@
         ("r" . replace-regexp-as-diff)
         ("m" . multi-file-replace-regexp-as-diff)
         ("d" . dired-do-replace-regexp-as-diff)))
+
+(use-package focus
+  :bind
+  ;; FIXME: elaborate more modally local keybindgs
+  ;; NOTE: currently they are binded as is for the sake of keeping
+  (:map mode-specific-map
+        ("." . focus-mode)
+        ("," . focus-read-only-mode)
+        (">" . focus-pin)
+        ("<" . focus-unpin)
+        ("6" . focus-change-thing)
+        ("0" . focus-next-thing)
+        ("9" . focus-prev-thing))
+  :config
+  ;; NOTE: global question, not to forget - where should such inter-package settings reside? on which side?
+  (add-to-list 'focus-mode-to-thing '(python-mode . paragraph)))

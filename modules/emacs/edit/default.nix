@@ -33,6 +33,7 @@ in
         epkgs.aggressive-indent
         epkgs.drag-stuff
         epkgs.evil-nerd-commenter
+        epkgs.focus
         epkgs.highlight-numbers
         epkgs.multiple-cursors
         epkgs.region-bindings-mode
