@@ -78,6 +78,28 @@ in
         default = true;
         description = "Whether to enable Syncthing service";
       };
+      mount.external = mkOption {
+        type = types.str;
+        default = homePrefix user "mnt/ext";
+        description = "Standard path to mount external media (HDD, etc.) under";
+      };
+      mount.iso = mkOption {
+        type = types.str;
+        default = homePrefix user "mnt/iso";
+        description = "Standard path to mount ISO images under";
+      };
+      iso.workdir = mkOption {
+        type = types.str;
+        default = homePrefix user "blobs/work/iso";
+        description = "Path to workinf directory for ISO manipulations";
+      };
+      cdrom.dev = mkOption {
+        type = types.str;
+        default = "/dev/sr0";
+        visible = false;
+        internal = true;
+        description = "CDROM device path";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -293,6 +315,29 @@ in
               trigger = ":gp";
               replace = "gpick";
             }
+            {
+              trigger = ":cdd";
+              replace = "sudo dd if=${cfg.cdrom.dev} of=./{{isoname.value}} bs=2048 count=(isosize -d 2048 ${cfg.cdrom.dev}) status=progress";
+              vars = [
+                {
+                  name = "isoname";
+                  type = "form";
+                  params = { layout = "ISO name: [[value]]"; };
+                }
+              ];
+            }
+            {
+              trigger = ":mli";
+              replace = "fd -e iso | fzf | rargs sudo mount -o loop ./{1} ${cfg.mount.iso}";
+            }
+            {
+              trigger = ":uli";
+              replace = "sudo umount ${cfg.mount.iso}";
+            }
+            {
+              trigger = ":ule";
+              replace = "sudo umount ${cfg.mount.external}";
+            }
           ];
         } // optionalAttrs (config.shell.tmux.enable) {
           filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
@@ -342,6 +387,15 @@ in
         desktop = "tools"; # [ref:desktop_tools]
         activate = true;
       }];
+    })
+    (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "iso-working-directory" = {
+          desc = "ISO working directory";
+          tags = [ "content" "misc" "iso" ];
+          local.path = cfg.iso.workdir;
+        };
+      };
     })
   ];
 }
