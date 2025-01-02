@@ -187,6 +187,7 @@ rec {
   wsRoot = roots: key: lib.getAttrFromPath [ key ] roots;
   goLocalDebugKeybinding = cfg: meta: {
     key = meta.key;
+    keycode = maybeAttrIsBool "keycode" meta;
     mode = meta.mode;
     cmd =
       if cfg.attributes.debug.useLocalGoBinaries
@@ -471,7 +472,8 @@ rec {
         builtins.toString ws.fst
       }: ${ws.snd.name}; layout ${layout}; "))}";
   mkKeybindingI3 = meta: desktops: logsroot:
-    builtins.concatStringsSep " " ([ "bindsym" (mkKeysymI3 meta.key) ]
+    builtins.concatStringsSep " " (lib.optionals (!maybeAttrIsBool "keycode" meta) [ "bindsym" (mkKeysymI3 meta.key) ]
+      ++ lib.optionals (maybeAttrIsBool "keycode" meta) [ "bindcode" (builtins.head meta.key) ]
       ++ lib.optionals (maybeAttrIsBool "leaveFullscreen" meta) [ "fullscreen disable;" ]
       ++ lib.optionals (!maybeAttrIsBool "raw" meta) [ "exec" ]
       ++ lib.optionals (maybeAttrIsBool "transient" meta) [ "--no-startup-id" ] ++ [
