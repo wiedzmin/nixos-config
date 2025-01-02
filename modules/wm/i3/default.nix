@@ -773,5 +773,18 @@ in
       ide.emacs.core.extraPackages = epkgs: [ epkgs.i3wm epkgs.i3wm-config-mode ];
       ide.emacs.core.config = builtins.readFile ./elisp/i3wm.el;
     })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      completion.expansions.espanso.matches = {
+        i3 = {
+          matches = [
+            {
+              # NOTE: for cases when keybindings are completely broken, probably because of "clever" config experiments
+              trigger = ":i3r";
+              replace = "i3-msg restart";
+            }
+          ];
+        };
+      };
+    })
   ];
 }
