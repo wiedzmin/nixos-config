@@ -6,13 +6,6 @@ with lib;
 let
   cfg = config.dev.golang;
   user = config.attributes.mainUser.name;
-  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
-    config = config.nixpkgs.config // {
-      allowUnfree = true;
-      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
-    };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {

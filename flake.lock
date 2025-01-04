@@ -528,22 +528,6 @@
         "type": "github"
       }
     },
-    "nixpkgs-last-unbroken-new": {
-      "locked": {
-        "lastModified": 1728492678,
-        "narHash": "sha256-9UTxR8eukdg+XZeHgxW5hQA9fIKHsKCdOIUycTryeVw=",
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "5633bcff0c6162b9e4b5f1264264611e950c8ec7",
-        "type": "github"
-      },
-      "original": {
-        "owner": "nixos",
-        "repo": "nixpkgs",
-        "rev": "5633bcff0c6162b9e4b5f1264264611e950c8ec7",
-        "type": "github"
-      }
-    },
     "nixpkgs-libreoffice": {
       "locked": {
         "lastModified": 1673540789,
@@ -694,7 +678,6 @@
         "nixos-artwork": "nixos-artwork",
         "nixos-hardware": "nixos-hardware",
         "nixpkgs-last-unbroken": "nixpkgs-last-unbroken",
-        "nixpkgs-last-unbroken-new": "nixpkgs-last-unbroken-new",
         "nixpkgs-libreoffice": "nixpkgs-libreoffice",
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",

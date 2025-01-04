@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -19,13 +19,6 @@ let
   inherit (config.wmCommon) prefix;
   yaml = pkgs.formats.yaml { };
   remoteConnString = "tcp:localhost:${builtins.toString cfg.remote.port}";
-  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
-    config = config.nixpkgs.config // {
-      allowUnfree = true;
-      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
-    };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {
