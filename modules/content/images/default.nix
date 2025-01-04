@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -16,13 +16,6 @@ let
     "${key}=${mvalue}";
   toINIColon = generators.toINI { mkKeyValue = generators.mkKeyValueDefault { } ":"; };
   toINICustom = generators.toINI { inherit mkKeyValue; };
-  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
-    config = config.nixpkgs.config // {
-      allowUnfree = true;
-      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
-    };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {
