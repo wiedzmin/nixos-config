@@ -54,6 +54,9 @@ in
           qtile = {
             enable = true;
             package = pkgs.qtile-unwrapped;
+            extraPackages = python3Packages: with python3Packages; [
+              qtile-extras
+            ];
           };
         };
         displayManager = { defaultSession = "none+qtile"; };
