@@ -37,6 +37,11 @@ in
         default = false;
         description = "Whether to enable shell-related Emacs infra";
       };
+      emacs.orgmode.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Emacs org-mode helper packages for org-babel and such";
+      };
     };
   };
 
@@ -170,7 +175,14 @@ in
       ide.emacs.core.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms epkgs.pueue ];
       ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/sh-mode.el ]) +
         lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/bash-ts-mode.el ]) +
-        (builtins.readFile ./elisp/common.el);
+        (builtins.readFile ./elisp/common.el) +
+        lib.optionalString cfg.emacs.orgmode.enable ''
+          (use-package ob-shell
+            :commands (org-babel-execute:sh
+                       org-babel-expand-body:sh
+                       org-babel-execute:bash
+                       org-babel-expand-body:bash))
+        '';
       ide.emacs.core.treesitter.grammars = {
         bash = "https://github.com/tree-sitter/tree-sitter-bash";
       };

@@ -68,6 +68,7 @@
     ./nix/dev
     ./nix/navigation
     ./paperworks
+    ./pim/core
     ./pim/orgmode
     ./pim/scheduling
     ./pim/timetracking

@@ -18,6 +18,11 @@ in
         default = false;
         description = "Whether to enable Emacs Lisp setup";
       };
+      emacs.orgmode.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Emacs org-mode helper packages for org-babel and such";
+      };
     };
   };
 
@@ -28,7 +33,12 @@ in
       ] ++ optionals (config.ide.emacs.completion.snippets.backend == "yasnippet") [
         epkgs.common-lisp-snippets
       ];
-      ide.emacs.core.config = builtins.readFile ./elisp/cl.el;
+      ide.emacs.core.config = builtins.readFile ./elisp/cl.el +
+        lib.optionalString cfg.emacs.orgmode.enable ''
+          (use-package ob-lisp
+            :commands (org-babel-execute:lisp
+                       org-babel-expand-body:lisp))
+        '';
     })
     (mkIf cfg.elisp.enable {
       ide.emacs.completion.tempel.snippets = ''

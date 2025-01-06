@@ -492,6 +492,11 @@ in
   };
 
   pim = {
+    core = {
+      enable = true;
+      emacs.automation.enable = true;
+      wm.enable = true;
+    };
     orgmode.enable = true;
     scheduling = {
       enable = true;

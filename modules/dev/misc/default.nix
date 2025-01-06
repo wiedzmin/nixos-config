@@ -123,6 +123,11 @@ in
         default = if cfg.emacs.lsp.impl == "lsp-mode" then "lsp-deferred" else "eglot-ensure";
         description = "Elisp function to use in major mode hooks for LSP client start";
       };
+      emacs.orgmode.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Emacs org-mode helper packages for org-babel and such";
+      };
     };
   };
 
@@ -151,7 +156,7 @@ in
       home-manager.users."${user}" = { home.packages = with pkgs; [ diffoscope icdiff patchutils wiggle xmldiff ]; };
     })
     (mkIf (cfg.enable && cfg.diagrams.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ pikchr plantuml ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ dot-language-server pikchr plantuml ]; };
       services.plantuml-server = {
         inherit (cfg.diagrams.plantuml.server) enable;
         listenPort = cfg.diagrams.plantuml.server.port;
@@ -162,17 +167,6 @@ in
           remote.url = "http://localhost:${cfg.diagrams.plantuml.server.port}/";
         };
       };
-    })
-    (mkIf (cfg.enable && cfg.diagrams.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [
-        epkgs.pikchr-mode
-      ];
-      ide.emacs.core.config = ''
-        (use-package pikchr-mode
-          :commands (org-babel-default-header-args:pikchr
-                     org-babel-execute:pikchr
-                     org-babel-prep-session:pikchr))
-      '';
     })
     (mkIf (cfg.enable && cfg.networking.enable) {
       programs = {
@@ -199,7 +193,6 @@ in
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs."0x0"
-        epkgs.blockdiag-mode
         epkgs.comby
         epkgs.elmacro
         epkgs.fic-mode
@@ -208,14 +201,28 @@ in
         epkgs.jq-format
         epkgs.justl
         epkgs.lua-mode
-        epkgs.plantuml-mode
         epkgs.webpaste
         epkgs.yaml-pro
         epkgs.yaml-mode
-      ] ++ lib.optionals (!config.ide.emacs.core.treesitter.enable) [ epkgs.just-mode ];
+      ] ++ lib.optionals (!config.ide.emacs.core.treesitter.enable) [ epkgs.just-mode ]
+      ++ lib.optionals (cfg.diagrams.enable) [
+        epkgs.blockdiag-mode
+        epkgs.graphviz-dot-mode
+        epkgs.pikchr-mode
+        epkgs.plantuml-mode
+      ] ++ lib.optionals (cfg.diagrams.enable && cfg.emacs.orgmode.enable) [
+        epkgs.ob-blockdiag
+      ];
       ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/standard.el ]) +
         lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]) +
-        (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ]);
+        (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ]) +
+        lib.optionalString cfg.emacs.orgmode.enable ''
+          (use-package ob-restclient
+            :after ob restclient
+            :commands (org-babel-execute:restclient))
+        '' +
+        lib.optionalString cfg.diagrams.enable (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/diagrams.el ]) +
+        lib.optionalString (cfg.emacs.orgmode.enable && cfg.diagrams.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/orgmode-diagrams.el ]);
       ide.emacs.core.treesitter.grammars = {
         just = "https://github.com/IndianBoy42/tree-sitter-just";
       };
