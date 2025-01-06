@@ -95,7 +95,6 @@
     ./wm/i3
     ./wm/qtile
     ./wm/stumpwm
-    ./wm/xmonad
     ./workstation/backups
     ./workstation/input/core
     ./workstation/input/mouse

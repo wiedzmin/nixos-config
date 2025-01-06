@@ -36,32 +36,6 @@ let
     "XF86MonBrightnessDown" = "<XF86MonBrightnessDown>";
     "Print" = "<Print>";
   };
-  keySepXmonad = "-";
-  keysymsXmonad = {
-    "backslash" = "\\";
-    "F1" = "<F1>";
-    "F2" = "<F2>";
-    "F3" = "<F3>";
-    "F4" = "<F4>";
-    "F5" = "<F5>";
-    "F6" = "<F6>";
-    "F7" = "<F7>";
-    "F8" = "<F8>";
-    "F9" = "<F9>";
-    "F10" = "<F10>";
-    "F11" = "<F11>";
-    "F12" = "<F12>";
-    "Home" = "<Home>";
-    "End" = "<End>";
-    "Return" = "<Return>";
-    "Space" = "<Space>";
-    "Tab" = "<Tab>";
-    "Backspace" = "<Backspace>";
-    "Up" = "<Up>";
-    "Down" = "<Down>";
-    "Left" = "<Left>";
-    "Right" = "<Right>";
-  };
   windowRulePlaceholders = {
     "class" = ''^@$'';
     "title" = ''(?i).*@.*'';
@@ -598,31 +572,6 @@ rec {
               mkCmdDebugAbsFilename logsroot meta.cmd} 2>&1"}''}
       end
     '';
-  # }}}
-  # {{{ WM.XMonad
-  toHaskellBool = v: builtins.replaceStrings [ "true" "false" ] [ "True" "False" ] (lib.trivial.boolToString v);
-  mkKeysymXmonad = keys:
-    lib.concatStringsSep keySepXmonad
-      (lib.forEach keys (k: if builtins.hasAttr k keysymsXmonad then builtins.getAttr k keysymsXmonad else k));
-  bindKeysXmonad = _: _: "-- not fixed/reimplemented yet";
-  mkKeysXmonadSpawn = keys: indent: # FIXME: update logic (presumably broken)
-    "${
-      lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList (key: meta:
-        ''
-          "${key}" ~> spawn "${meta.cmd}"${
-            if lib.hasAttrByPath [ "desktop" ] meta then " >> showWSOnProperScreen \"${meta.desktop}\"" else ""
-          }'') keys)
-    }${mkIndent indent}";
-  mkKeysXmonadRaw = keys: indent: # FIXME: update logic (presumably broken)
-    "${
-      lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.mapAttrsToList (key: cmd: ''"${key}" ~> ${cmd}'') keys)
-    }${mkIndent indent}";
-  mkWorkspacesXmonad = wss: type: indent:
-    "${
-      lib.concatStringsSep "${mkNewlineAndIndent indent}, " (lib.forEach
-        (builtins.filter (ws: builtins.hasAttr "type" ws && ws.type == type) wss)
-        (meta: ''("${meta.name}", Just "${mkKeysymXmonad meta.key}", ${toHaskellBool meta.transient})''))
-    }${mkIndent indent}";
   # }}}
   # {{{ XApps
   appWindowClass = traits: lib.last traits.wmClass;
