@@ -675,7 +675,7 @@ in
     emacs.enable = true;
   };
   wm.awesome = {
-    enable = true;
+    enable = false;
     luaModules = with pkgs; [
       luaPackages.luafilesystem
       luaPackages.vicious
@@ -685,7 +685,7 @@ in
     ];
   };
   wm.qtile = {
-    enable = true;
+    enable = false;
   };
 
   wmCommon.workspaces = [
