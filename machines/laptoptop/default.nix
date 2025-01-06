@@ -682,9 +682,6 @@ in
   wm.qtile = {
     enable = true;
   };
-  wm.xmonad = {
-    enable = true;
-  };
 
   wmCommon.workspaces = [
     {

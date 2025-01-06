@@ -36,8 +36,6 @@ in
     wmCommon.fonts.familySize.large = makeFamilySizeStr (fontBeautified // { size = sizeFamilySizeLarge; });
     wmCommon.fonts.deaddFamily = fontBeautified.family;
 
-    wm.xmonad.xmobar.font = makeFontStrXft baseFont;
-
     shell.core.variables = [{ TB_SELECTOR_FONT = makeFontStrColons fontDec1; global = true; }];
     home-manager.users."${user}" = {
       programs.alacritty.settings.font = {
