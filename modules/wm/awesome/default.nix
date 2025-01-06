@@ -289,7 +289,7 @@ in
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       assertions = [{
-        assertion = !config.wm.i3.isDefault && !config.wm.qtile.isDefault && !config.wm.stumpwm.isDefault;
+        assertion = !config.wm.i3.isDefault && !config.wm.qtile.isDefault;
         message = "awesome: exactly one WM could be the default.";
       }];
 
