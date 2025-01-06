@@ -1,69 +1,13 @@
 (use-package doct
   :commands (doct))
 
-;;TODO: relocate ob-* appropriately (add orgmode.enable options respectively)
-(use-package ob-blockdiag
-  :commands (org-babel-execute:blockdiag))
-
-(use-package ob-css
-  :commands (org-babel-execute:css
-             org-babel-prep-session:css))
-
-(use-package ob-dot
-  :commands (org-babel-execute:dot
-             org-babel-expand-body:dot))
-
-(use-package ob-ditaa
-  :commands (org-babel-execute:ditaa
-             org-babel-prep-session:ditaa))
-
-(use-package ob-emacs-lisp
-  :commands (org-babel-execute:emacs-lisp
-             org-babel-expand-body:emacs-lisp))
-
-(use-package ob-lisp
-  :commands (org-babel-execute:lisp
-             org-babel-expand-body:lisp))
-
-(use-package ob-js
-  :commands (org-babel-execute:js
-             org-babel-prep-session:js
-             org-babel-variable-assignments:js))
-
-(use-package ob-latex
-  :commands (org-babel-execute:latex
-             org-babel-expand-body:latex
-             org-babel-prep-session:latex))
-
 (use-package ob-org
   :commands (org-babel-execute:org
              org-babel-expand-body:org
              org-babel-prep-session:org))
 
-(use-package ob-plantuml
-  :commands (org-babel-execute:plantuml
-             org-babel-prep-session:plantuml
-             org-babel-variable-assignments:plantuml))
-
-(use-package ob-scheme
-  :commands (org-babel-execute:scheme
-             org-babel-expand-body:scheme))
-
-(use-package ob-python
-  :commands (org-babel-execute:python))
-
-(use-package ob-shell
-  :commands (org-babel-execute:sh
-             org-babel-expand-body:sh
-             org-babel-execute:bash
-             org-babel-expand-body:bash))
-
 (use-package ob-async
   :after org ob)
-
-(use-package ob-restclient
-  :after ob restclient
-  :commands (org-babel-execute:restclient))
 
 (use-package org
   :after (f dired)
@@ -262,7 +206,6 @@
   (org-cycle-separator-lines 0)
   (org-deadline-warning-days 30)
   (org-default-notes-file "@orgRoot@/refile.org")
-  (org-ditaa-jar-path "@ditaaJar@")
   (org-done-keywords-for-agenda '("DONE(d)" "CANCELLED(c)" "OUTDATED(o)"))
   (org-ellipsis (if (featurep 'unicode-fonts) "⤵" "…"))
   (org-enforce-todo-checkbox-dependencies t)
@@ -452,8 +395,3 @@
     (:map custom-org-map
           ("h" . avy-org-goto-heading-timer)
           ("^" . avy-org-refile-as-child))))
-
-;; FIXME: consider relocating more appropriately, along with `ditaa' and maybe others related
-(use-package graphviz-dot-mode
-  :hook (graphviz-dot-mode-hook . @lspStartFunction@)
-  @lspModeGraphvizRegisterServer@@eglotGraphvizRegisterServer@)

@@ -19,7 +19,7 @@
   ("\\.yml\\'" . yaml-mode)
   ("\\Taskfile\\'" . yaml-mode)
   :hook
-  @lspStartFunction@
+  @lspStartFunctionYaml@
   @lspModeYamlRegisterServer@
   :bind
   (:map yaml-mode-map

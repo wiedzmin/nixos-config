@@ -23,7 +23,6 @@
   (after-init . org-roam-mode)
   :custom
   (org-roam-directory "@emacsOrgRoamDir@")
-  (org-roam-graph-executable "@emacsOrgRoamDotBinary@")
   (org-roam-db-location "@emacsOrgRoamDir@/org-roam.db")
   (org-roam-tag-sources '(prop vanilla all-directories))
   (org-roam-verbose t)

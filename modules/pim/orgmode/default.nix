@@ -116,8 +116,6 @@ in
       };
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ logseq dot-language-server ];
-
         programs.qutebrowser = {
           keyBindings = {
             normal = {
@@ -134,9 +132,7 @@ in
       pim.timetracking.rules = mkArbttTitleRule [ "^emacs - [^ ]+\\.org .*$" ] "edit:orgmode";
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.doct
-        epkgs.graphviz-dot-mode
         epkgs.ob-async
-        epkgs.ob-blockdiag
         epkgs.ob-restclient
         epkgs.org-appear
         epkgs.org-clock-today
