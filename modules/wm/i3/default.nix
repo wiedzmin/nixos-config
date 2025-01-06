@@ -695,7 +695,7 @@ in
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       assertions = [{
-        assertion = !config.wm.awesome.isDefault && !config.wm.qtile.isDefault && !config.wm.stumpwm.isDefault;
+        assertion = !config.wm.awesome.isDefault && !config.wm.qtile.isDefault;
         message = "i3: exactly one WM could be the default.";
       }];
 
