@@ -76,6 +76,9 @@ in
             };
           };
           extraConfig = {
+            "core" = {
+              compression = 0;
+            };
             "user" = {
               inherit (config.attributes.mainUser) email;
               name = config.attributes.mainUser.fullName;
