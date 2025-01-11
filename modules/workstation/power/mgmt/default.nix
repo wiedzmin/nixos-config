@@ -50,7 +50,7 @@ in
     })
     (mkIf (cfg.enable && cfg.laptop.enable) {
       services = {
-        auto-cpufreq.enable = false; # FIXME: re-enable after package deps fixed in upstream Nixpkgs
+        auto-cpufreq.enable = true;
       };
     })
     (mkIf (cfg.enable && cfg.laptop.enable && hasInfix "ThinkPad" config.attributes.hardware.dmiSystemVersion) {
