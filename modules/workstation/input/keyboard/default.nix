@@ -233,7 +233,6 @@ in
         home.packages = with pkgs; [ nurpkgs.xremap ];
       };
 
-      # FIXME: currently needs manual restart
       systemd.user.services.xremap = {
         description = "XRemap user service";
         path = [ cfg.xremap.package ];
