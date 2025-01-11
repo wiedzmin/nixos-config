@@ -76,7 +76,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.secondBrain.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ devdocs-desktop heimer freeplane logseq ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ devdocs-desktop freeplane logseq ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.helpful epkgs.which-key ];
