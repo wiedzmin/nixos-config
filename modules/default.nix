@@ -82,8 +82,6 @@
     ./shell/prompts/ohmyzsh
     ./shell/prompts/powerline-go
     ./shell/prompts/starship
-    ./shell/tmux
-    ./shell/tmux/impl.nix
     ./shell/tools
     ./shell/twopanes
     ./shell/zsh

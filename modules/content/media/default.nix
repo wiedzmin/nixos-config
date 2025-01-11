@@ -182,9 +182,7 @@ in
                   replace = "cd ${cfg.ffmpeg.workdir} && ffmpeg -f concat -safe 0 -i files.list -c copy result.mp4"; # FIXME: consider parameterizing output filename in some way
                 }
               ];
-            } // optionalAttrs (config.shell.tmux.enable) {
-            filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
-          };
+            };
         } // lib.optionalString (config.shell.core.queueing.enable) {
           "espanso/match/content_queueing.yml".source = yaml.generate "espanso-content_queueing.yml"
             {
@@ -198,9 +196,7 @@ in
                   replace = "pueue add 'yt-dlp \"$|$\" --merge-output-format mp4'";
                 }
               ];
-            } // optionalAttrs (config.shell.tmux.enable) {
-            filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
-          };
+            };
         };
       };
     })

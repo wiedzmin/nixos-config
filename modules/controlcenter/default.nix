@@ -397,8 +397,6 @@ in
               replace = "nix run nixpkgs.fatrace -c fatrace";
             }
           ];
-        } // optionalAttrs (config.shell.tmux.enable) {
-          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };
     })

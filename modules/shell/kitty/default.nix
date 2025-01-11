@@ -65,10 +65,6 @@ in
     (mkIf cfg.enable {
       assertions = [
         {
-          assertion = cfg.enable && !config.shell.tmux.enable;
-          message = "Kitty and Tmux have a fair functionality overlap, so it makes no sense to be enabled simultaneously.";
-        }
-        {
           assertion = cfg.enable && !config.shell.vt.alacritty.enable;
           message = "Only one VT program should be enabled at the same time";
         }

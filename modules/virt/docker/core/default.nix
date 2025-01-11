@@ -96,8 +96,6 @@ in
               replace = "docker-compose up --detach --build && docker-compose restart $|$";
             }
           ];
-        } // optionalAttrs (config.shell.tmux.enable) {
-          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };
     })
