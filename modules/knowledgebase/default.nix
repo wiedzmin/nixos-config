@@ -65,7 +65,7 @@ in
         dev.enable = cfg.dev.enable;
         nixos = {
           inherit (cfg.nixos) enable;
-          includeAllModules = false; # FIXME build error
+          includeAllModules = false; # NOTE build error
         };
       };
       home-manager.users."${user}" = {
