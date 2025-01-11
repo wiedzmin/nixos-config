@@ -144,8 +144,8 @@ in
           key = [ "Shift" "w" ];
           mode = "network";
         } // optionalAttrs (cfg.backend == "networkmanager") {
-          cmd = "tmux new-window ${pkgs.networkmanager}/bin/nmtui";
-        } // optionalAttrs (cfg.backend == "wireless") { cmd = "tmux new-window ${pkgs.wpa_supplicant}/bin/wpa_cli"; })
+          cmd = "${appCmdFull config.attributes.vt.default.traits} ${pkgs.networkmanager}/bin/nmtui";
+        } // optionalAttrs (cfg.backend == "wireless") { cmd = "${appCmdFull config.attributes.vt.default.traits} ${pkgs.wpa_supplicant}/bin/wpa_cli"; })
       ] ++ optionals (cfg.backend == "networkmanager" && cfg.wm.dmenu.enable) [{
         key = [ "w" ];
         cmd = ''${pkgs.runtimeShell} -l -c "exec ${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu"'';

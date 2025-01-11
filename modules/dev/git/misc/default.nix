@@ -147,8 +147,6 @@ in
               ];
             }
           ];
-        } // optionalAttrs (config.shell.tmux.enable) {
-          filter_title = "\".*${config.shell.tmux.defaultSession}.*${config.attributes.machine.name}.*\"";
         };
       };
       home-manager.users."${user}" = {

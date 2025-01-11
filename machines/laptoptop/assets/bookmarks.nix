@@ -70,7 +70,6 @@ in
         }
       ];
     };
-    "libtmux-go" = mkGithubBookmarkWithMyrepos "wiedzmin" "libtmux-go" roots;
     "lumosity" = {
       desc = "Lumosity";
       remote.url = "https://lumosity.com/";
@@ -504,7 +503,6 @@ in
       tags = [ "c++" "cpp" "reference" ];
       remote = { url = "https://en.cppreference.com/w/"; };
     };
-    "libtmux" = mkGithubBookmark "tmux-python" "libtmux" roots // { transient = true; };
     "paintings" = {
       tags = [ "paint" "play" ];
       browser = appCmdFull config.attributes.browser.fallback.traits;
