@@ -38,11 +38,6 @@ in
         default = [ ];
         description = "Authorized keys paths list";
       };
-      wm.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable WM keybindings.";
-      };
     };
   };
 
@@ -53,11 +48,6 @@ in
         message = "networking/ssh: must enable vpn functionality.";
       }];
 
-      nixpkgs.config.packageOverrides = _: {
-        sshmenu = mkPythonScriptWithDeps pkgs "sshmenu"
-          (with pkgs; [ openssh nurpkgs.pystdlib python3Packages.libtmux python3Packages.redis nurpkgs.toolbox ])
-          (builtins.readFile ./scripts/sshmenu.py);
-      };
       services.openssh = {
         enable = true;
         allowSFTP = true;
@@ -110,25 +100,6 @@ in
         # TODO: also add nix/redis-level registry of used keypairs and marry them to extraHosts infrastructure
       };
     })
-    (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.entries = [
-        {
-          key = [ "d" ];
-          cmd = "${pkgs.sshmenu}/bin/sshmenu --choices --term-command '${appCmdFull config.attributes.vt.default.traits}'";
-          mode = "network";
-        }
-        {
-          key = [ "s" ];
-          cmd = "${pkgs.sshmenu}/bin/sshmenu --term-command '${appCmdFull config.attributes.vt.default.traits}'";
-          mode = "network";
-        }
-        {
-          key = [ "t" ];
-          cmd = "${pkgs.sshmenu}/bin/sshmenu --ignore-tmux --term-command '${appCmdFull config.attributes.vt.default.traits}'";
-          mode = "network";
-        }
-      ];
-    })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       completion.expansions.espanso.matches = {
         ssh = {
@@ -164,9 +135,6 @@ in
           ];
         };
       };
-    })
-    (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ sshmenu ]; };
     })
   ];
 }
