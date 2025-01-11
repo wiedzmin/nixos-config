@@ -438,7 +438,6 @@ in
           config.attributes.machine.name "identity/id_rsa.mobile.pub"
           config.navigation.bookmarks.workspaces.roots)
       ];
-      wm.enable = true;
     };
     vpn = {
       enable = true;
