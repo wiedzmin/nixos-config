@@ -664,7 +664,9 @@ in
                 block = "sound";
                 format = " $output_name{ $volume|} ";
                 headphones_indicator = true;
-                # FIXME: unhardcode mappings
+                # FIXME: unhardcode mappings: rename devices, parameterize names and use them here
+                # see https://unix.stackexchange.com/questions/648666/rename-devices-in-pipewire for details
+                # see https://nixos.wiki/wiki/PipeWire for NixOS-specific information
                 mappings = {
                   "alsa_output.pci-0000_00_1f.3.analog-stereo" = "🔈";
                   "alsa_output.pci-0000_00_1b.0.analog-stereo" = "🎧";
