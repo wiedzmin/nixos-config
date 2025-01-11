@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.pim.orgmode;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -110,23 +109,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: {
-        org-capture = mkPythonScriptWithDeps pkgs "org-capture" (with pkgs; [ emacs nurpkgs.pystdlib tmux xsel ])
-          (builtins.readFile ./scripts/org-capture.py);
-      };
-
-      home-manager.users."${user}" = {
-        programs.qutebrowser = {
-          keyBindings = {
-            normal = {
-              "y;" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
-              "нж" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -e title'';
-              "y'" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
-              "нэ" = ''spawn ${pkgs.org-capture}/bin/org-capture -u "{url}" -t "{title}" -b "{primary}" -e title'';
-            };
-          };
-        };
-      };
       pim.orgmode.agendaRoots = { "${cfg.rootDir}" = 3000; };
       pim.timetracking.rules = mkArbttTitleRule [ "^emacs - [^ ]+\\.org .*$" ] "edit:orgmode";
       ide.emacs.core.extraPackages = epkgs: [
@@ -202,9 +184,6 @@ in
         epkgs.org-bullets
       ];
       ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/blings.el ]);
-    })
-    (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ org-capture ]; };
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       navigation.bookmarks.entries = {
