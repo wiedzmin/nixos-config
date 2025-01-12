@@ -685,6 +685,9 @@ in
   wm.qtile = {
     enable = false;
   };
+  wm.herbstluft = {
+    enable = true;
+  };
 
   wmCommon.workspaces = [
     {

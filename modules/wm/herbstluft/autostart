@@ -1,0 +1,16 @@
+#!/usr/bin/env bash
+
+hc() {
+	herbstclient "$@"
+}
+
+hc emit_hook reload
+
+herbstclient keyunbind --all
+
+Mod=Mod4 # Use the super key as the main modifier
+
+herbstclient keybind $Mod-Left focus left
+herbstclient keybind $Mod-Down focus down
+herbstclient keybind $Mod-Up focus up
+herbstclient keybind $Mod-Right focus right

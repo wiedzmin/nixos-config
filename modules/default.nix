@@ -91,6 +91,7 @@
     ./virt/virtualbox
     ./wm
     ./wm/awesome
+    ./wm/herbstluft
     ./wm/i3
     ./wm/qtile
     ./workstation/backups
