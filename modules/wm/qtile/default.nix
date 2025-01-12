@@ -43,7 +43,7 @@ in
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       assertions = [{
-        assertion = !config.wm.awesome.isDefault && !config.wm.i3.isDefault;
+        assertion = !config.wm.awesome.isDefault && !config.wm.i3.isDefault && !config.wm.herbstluft.isDefault;
         message = "qtile: exactly one WM could be the default.";
       }];
 
