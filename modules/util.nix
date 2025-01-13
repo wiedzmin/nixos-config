@@ -356,6 +356,7 @@ rec {
         xorg.xrandr
       ] ++ [ wmpkg ];
       text = ''
+        XDISPLAY=''${XDISPLAY:-:1}
         if [ "$(xrandr | grep connected | grep -c dis)" = "1" ]; then
           resolution=${internalHead.resolutionXephyr}
           echo "LVDS-only, using $resolution"
@@ -363,9 +364,9 @@ rec {
           resolution=${internalHead.resolution}
           echo "dock-station, using $resolution"
         fi
-        Xephyr -ac -br -noreset -screen $resolution :1 &
+        Xephyr -ac -br -noreset +extension RANDR -screen "''${SCREEN_SIZE:-$resolution}" "''${XDISPLAY}" &
         sleep 1
-        DISPLAY=:1.0 ${wmcmd}
+        DISPLAY=''${XDISPLAY}.0 ${wmcmd}
       '';
     };
   mkCmdDebugAbsFilename = root: cmd:
