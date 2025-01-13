@@ -83,6 +83,7 @@ in
           libnotify # FWIW
           perl # for plugins
           bashate # linter
+          dtach
           ets
           gdu
           rargs
@@ -170,7 +171,11 @@ in
     })
     (mkIf (cfg.enable && cfg.dev.enable && cfg.emacs.enable) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.bash-language-server ]; };
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.flycheck-checkbashisms epkgs.pueue ];
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.detached
+        epkgs.flycheck-checkbashisms
+        epkgs.pueue
+      ];
       ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/sh-mode.el ]) +
         lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/bash-ts-mode.el ]) +
         (builtins.readFile ./elisp/common.el) +
