@@ -464,6 +464,12 @@ in
             cmd = ''${pkgs.i3-easyfocus}/bin/i3-easyfocus --all --keys alpha --font ${config.wmCommon.fonts.xlfd.large}'';
             mode = "root";
           }
+        ] ++ optionals (config.wmCommon.focus.list.useWMSpecific) [
+          {
+            key = [ "w" ];
+            cmd = "${pkgs.list-windows-i3}/bin/list-windows-i3";
+            mode = "select";
+          }
         ];
       };
 
@@ -478,7 +484,23 @@ in
         };
       };
 
+      nixpkgs.config.packageOverrides = _: {
+        "list-windows-i3" = pkgs.writeShellApplication {
+          name = "list-windows-i3";
+          runtimeInputs = with pkgs; [ nurpkgs.dmenu-ng i3 jq ];
+          text = ''
+            windows=$(i3-msg -t get_tree | jq '.. | objects | select(.window_type == "normal" or .window_properties.class == "Emacs") | {name: (.window_properties.class + ": " + .name), id: .id}')
+
+            selected_window=$(echo "$windows" | jq -r '.name' | dmenu -i -l 15)
+            export selected_window
+
+            window_id=$(echo "$windows" | jq 'select(.name==env.selected_window) | .id') && i3-msg "[con_id=$window_id] focus"
+          '';
+        };
+      };
+
       home-manager.users."${user}" = {
+        home.packages = with pkgs; optionals (config.wmCommon.focus.list.useWMSpecific) [ list-windows-i3 ];
         xdg.configFile = {
           "i3/config".text = ''
             # i3 config file (v4)

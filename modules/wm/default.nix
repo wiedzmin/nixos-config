@@ -121,6 +121,11 @@ in
         default = false;
         description = "Whether focus should follow mouse";
       };
+      focus.list.useWMSpecific = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to use WM-specific scripts/tools for windows listing-->focusing";
+      };
       autostart.entries = mkOption {
         type = types.listOf types.attrs;
         default = [ ];
@@ -170,7 +175,7 @@ in
         "services" = [ cfg.prefix "s" ];
         "xserver" = [ cfg.prefix "x" ];
       };
-      wmCommon.keybindings.entries = [
+      wmCommon.keybindings.entries = optionals (!cfg.focus.list.useWMSpecific) [
         {
           key = [ "w" ];
           cmd = "${pkgs.rofi}/bin/rofi -modi window -show";
