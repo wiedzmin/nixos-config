@@ -741,7 +741,10 @@ in
     }
   ];
 
-  wmCommon.focus.show = false;
+  wmCommon = {
+    focus.show = false;
+    focus.list.useWMSpecific = true;
+  };
 
   home-manager = {
     useGlobalPkgs = true;
