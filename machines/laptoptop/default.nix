@@ -512,6 +512,7 @@ in
       mgmt = {
         enable = true;
         laptop.enable = true;
+        wm.enable = true;
         commands.resume = lib.concatStringsSep "\n"
           (lib.mapAttrsToList (server: _: "${pkgs.systemd}/bin/systemctl try-restart openvpn-${server}.service")
             config.services.openvpn.servers);
