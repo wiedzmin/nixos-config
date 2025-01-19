@@ -108,6 +108,11 @@ in
           List of apps to always run in terminal.
         '';
       };
+      clipboard.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable additional clipboard handling";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -321,6 +326,9 @@ in
         home.file = { ".gmrunrc".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/gmrunrc ]; };
       };
     })
+    (mkIf (cfg.enable && cfg.clipboard.enable) {
+      services.greenclip.enable = true;
+    })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = [
         {
@@ -378,7 +386,11 @@ in
           cmd = "${pkgs.dunst}/bin/dunstctl context";
           mode = "root";
         }
-      ];
+      ] ++ optionals cfg.clipboard.enable [{
+        key = [ "c" ];
+        cmd = ''rofi -modi "clipboard:greenclip print" -show clipboard'';
+        mode = "select";
+      }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       completion.expansions.espanso.matches = {
