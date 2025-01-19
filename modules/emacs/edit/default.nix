@@ -60,7 +60,7 @@ in
         "token-editing-map" = "C-z";
       };
       ide.emacs.core.customPackages = {
-        "edit-misc" = builtins.readFile ./elisp/custom/edit-misc.el;
+        "edit-misc" = { text = builtins.readFile ./elisp/custom/edit-misc.el; };
       };
       ide.emacs.core.treesitter.grammars = {
         toml = "https://github.com/tree-sitter/tree-sitter-toml";
