@@ -1,4 +1,3 @@
-;; FIXME: move to custom
 (defun custom/delete-duplicate-words ()
   "Delete duplicate words via `query-replace-regexp'."
   (interactive)
