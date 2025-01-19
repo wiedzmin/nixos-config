@@ -125,7 +125,7 @@ in
             # TODO: try elaborating Nix expression for https://github.com/scottkirkwood/key-mon or find and play with similar utilities
             body = ''
               mkdir -p /tmp/record
-              ffmpeg -probesize 3000000000 -f x11grab -framerate 25 -s $(redis-cli get wm/dimensions) -i :0.0 -vcodec libx264 -threads 2 -preset ultrafast -crf 0 /tmp/record/record-(date +"%FT%T%:z").mkv
+              ffmpeg -probesize 3000000000 -f x11grab -framerate 25 -s $(redis-cli get wm/dimensions) -i :0.0 -vcodec libx264 -threads 2 -preset ultrafast -crf 0 /tmp/record/record-(date +"%FT%T%:z").mp4
             '';
           };
         };
