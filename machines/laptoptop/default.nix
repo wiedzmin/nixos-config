@@ -138,6 +138,7 @@ in
   controlcenter = {
     enable = true;
     notifications.backend = "dunst";
+    clipboard.enable = true;
     wm.enable = true;
   };
 
