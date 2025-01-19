@@ -29,6 +29,11 @@ in
         default = "";
         description = "Commands to perform on system shutdown.";
       };
+      wm.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable WM keybindings.";
+      };
     };
   };
 
@@ -46,6 +51,7 @@ in
       };
       home-manager.users."${user}" = {
         services.poweralertd.enable = true;
+        home.packages = with pkgs; [ rofi-power-menu ];
       };
     })
     (mkIf (cfg.enable && cfg.laptop.enable) {
@@ -69,6 +75,13 @@ in
           };
         };
       };
+    })
+    (mkIf (cfg.enable && cfg.wm.enable) {
+      wmCommon.keybindings.entries = [{
+        key = [ "p" ];
+        cmd = ''${pkgs.rofi}/bin/rofi -show p -modi "p:rofi-power-menu --choices reboot/suspend"'';
+        mode = "services";
+      }];
     })
   ];
 }
