@@ -22,13 +22,13 @@ let
   genCustomPackages = customPackages:
     ''
       ${builtins.concatStringsSep "\n"
-        (lib.mapAttrsToList (feature: impl:
+        (lib.mapAttrsToList (feature: meta:
           let
             def = pkgs.writeTextFile {
               name = "${feature}";
               text = ''
-                ${impl}
-                (provide '${feature})
+                ${meta.text}
+                ${lib.optionalString (!maybeAttrIsBool "provided" meta) "(provide '${feature})"}
               '';
               destination = "/${feature}.el";
             };
@@ -191,7 +191,7 @@ in
         type = types.attrs;
         default = { };
         description = ''
-          Environment variabled to be passed to Emacs.
+          Environment variables to be passed to Emacs.
 
           These variables should be set explicitly, using #'setenv, because
           emacs startup methods may vary between systems and packages like
@@ -329,7 +329,7 @@ in
         (use-package emacs-everywhere)
       '';
       ide.emacs.core.customPackages = lib.optionalAttrs cfg.treesitter.enable {
-        "treesit-util" = builtins.readFile ./elisp/custom/treesit-util.el;
+        "treesit-util" = { text = builtins.readFile ./elisp/custom/treesit-util.el; };
       };
       ide.emacs.core.customKeymaps = {
         "custom-goto-map" = "M-s";
