@@ -8,6 +8,10 @@ default:
 build host=host_name:
     mkdir -p /tmp/buildroot/ && nixos-rebuild build --flake ".#{{host}}"
 
+# Build configuration flake VM for current host
+build-vm host=host_name:
+    mkdir -p /tmp/buildroot/ && nixos-rebuild build-vm --flake ".#{{host}}"
+
 # Build configuration flake for current host with debug output
 build-debug host=host_name:
     mkdir -p /tmp/buildroot/ && nixos-rebuild build --flake ".#{{host}}" --show-trace
