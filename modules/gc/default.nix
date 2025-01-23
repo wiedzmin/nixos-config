@@ -70,6 +70,7 @@ in
       };
       systemd.user.timers."purge-home-cache" =
         renderTimer "Purge homedir cache" "" "" cfg.expired.calendarTimespec false "";
+
       systemd.user.services."purge-temp-files" = {
         description = "Purge temporary files";
         serviceConfig = {
