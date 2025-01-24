@@ -60,7 +60,10 @@
   (:map dired-mode-map
         ("@" . magit-dired-log))
   :config
-  (advice-add 'magit-whitespace-disallowed :around (lambda (orig-fun &rest args) (interactive) (insert "-")))
+  (define-advice magit-whitespace-disallowed
+      (:around (orig-fun &rest args) custom/magit-whitespace-to-underscore)
+    (interactive)
+    (insert "-"))
   (transient-append-suffix 'magit-stash "z" '("h" "Hide dev environment" custom/magit-hide-devenv))
   (transient-append-suffix 'magit-stash "h" '("u" "Unhide dev environment" custom/magit-unhide-devenv))
   (transient-append-suffix 'magit-stash "u" '("e" "Export dev environment" custom/magit-export-devenv))

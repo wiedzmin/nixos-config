@@ -13,11 +13,6 @@
   :after (f dired)
   :delight org-src-mode
   :preface
-  ;; remove read-only props from yanked text (e.g. from jabber.el chat buffer)
-  (defun custom/make-yank-writeable (func &rest args)
-    (let ((inhibit-read-only t))
-      (remove-text-properties (region-beginning) (region-end)
-                              '(read-only t))))
   (defun custom/verify-refile-target () ;; Exclude DONE state tasks from refile targets
     "Exclude todo keywords with a done state from refile targets"
     (not (member (nth 2 (org-heading-components)) org-done-keywords)))
@@ -283,7 +278,11 @@
   (org-yank-adjusted-subtrees t)
   :config
   (use-package org-attach-git)
-  (advice-add 'org-yank :after #'custom/make-yank-writeable)
+  (define-advice org-yank ;; remove read-only props from yanked text (e.g. from jabber.el chat buffer)
+      (:after (orig-fun &rest args) custom/make-yank-writeable)
+    (let ((inhibit-read-only t))
+      (remove-text-properties (region-beginning) (region-end)
+                              '(read-only t))))
   (when (boundp 'company-backends)
     (add-to-list 'company-backends 'company-dabbrev)
     (add-to-list 'company-backends 'company-capf))

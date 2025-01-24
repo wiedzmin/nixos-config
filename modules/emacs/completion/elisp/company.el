@@ -10,8 +10,6 @@
   :preface
   (defun add-pcomplete-to-capf () ;; Enable company in Org mode
     (add-hook 'completion-at-point-functions #'pcomplete-completions-at-point nil t))
-  (defun company-capf-noerror (orig-fun &rest args)
-    (ignore-errors (apply orig-fun args)))
   :bind
   ("C-<tab>" . company-complete)
   ("C-M-<tab>" . company-complete-common)
@@ -82,7 +80,9 @@
                           company-sort-by-occurrence))
   (completion-ignore-case t)
   :config
-  (advice-add 'company-capf :around #'company-capf-noerror)
+  (define-advice company-capf
+      (:around (orig-fun &rest args) company-capf-noerror)
+    (ignore-errors (apply orig-fun args)))
   (add-to-list 'company-frontends 'company-preview-frontend)
   (use-package company-dabbrev-code
     :custom
@@ -130,7 +130,8 @@
   :config
   (with-no-warnings
     ;; Prettify icons
-    (defun my-company-box-icons--elisp (candidate)
+    (define-advice company-box-icons--elisp
+        (:override (candidate) custom/company-box-icons--elisp)
       (when (derived-mode-p 'emacs-lisp-mode)
         (let ((sym (intern candidate)))
           (cond ((fboundp sym) 'Function)
@@ -138,8 +139,7 @@
                 ((facep sym) 'Color)
                 ((boundp sym) 'Variable)
                 ((symbolp sym) 'Text)
-                (t . nil)))))
-    (advice-add #'company-box-icons--elisp :override #'my-company-box-icons--elisp))
+                (t . nil))))))
   (when (and (display-graphic-p)
              (require 'all-the-icons nil t))
     (declare-function all-the-icons-faicon 'all-the-icons)

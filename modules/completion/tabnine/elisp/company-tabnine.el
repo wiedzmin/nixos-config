@@ -4,7 +4,6 @@
   :after (company)
   :delight " ⌬"
   :preface
-  @tabnineExecutablePathAdvice@
   (defun company/sort-by-tabnine (candidates)
     "Integrate company-tabnine with lsp-mode"
     (if (or (functionp company-backend)
@@ -41,20 +40,20 @@
       (setq company-transformers (delete 'company/sort-by-tabnine company-transformers))
       (company-tabnine-kill-process)
       (message "TabNine disabled.")))
-  (defun disable-tabnine-upgrade-message (orig-fun &rest args)
-    (let* ((company-message-func (car args))
-           (result (funcall company-message-func)))
-      (when (and company-message-func
-                 (stringp result))
-        (unless (string-match "The free version of TabNine only indexes up to" result)
-          (apply orig-fun args)))))
   :hook
   (kill-emacs . company-tabnine-kill-process)
   :custom
   (company-tabnine-max-num-results 10)
   (company-tabnine-max-restart-count 3)
   :config
-  (advice-add 'company-echo-show :around #'disable-tabnine-upgrade-message)
+  (define-advice company-echo-show
+      (:around (orig-fun &rest args) disable-tabnine-upgrade-message)
+    (let* ((company-message-func (car args))
+           (result (funcall company-message-func)))
+      (when (and company-message-func
+                 (stringp result))
+        (unless (string-match "The free version of TabNine only indexes up to" result)
+          (apply orig-fun args)))))
   @tabnineExecutablePathPatch@
   (add-to-list 'company-transformers 'company/sort-by-tabnine t)
   ;; (add-to-list 'company-backends #'company-tabnine)
