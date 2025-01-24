@@ -66,10 +66,10 @@
    consult-line :preview-key 'any :keymap custom/consult-line-map)
   (advice-add #'register-preview :override #'consult-register-window)
   (dolist (func '(consult-git-grep consult-ripgrep consult-grep))
-    (advice-add func :before
-                (defun custom/mark-jump-point (&rest _)
-                  (xref-push-marker-stack)
-                  (push-mark))))
+    (define-advice func
+        (:before (&rest _) custom/mark-jump-point)
+      (xref-push-marker-stack)
+      (push-mark)))
   (define-minibuffer-key "\C-s"
                          'consult-location #'previous-history-element
                          'file #'consult-find-for-minibuffer)

@@ -167,10 +167,6 @@
         ("m" . manage-minor-mode-table)))
 
 (use-package orderless
-  :preface
-  (defun just-one-face (fn &rest args)
-    (let ((orderless-match-faces [completions-common-part]))
-      (apply fn args)))
   :init
   (use-package orderless-dispatchers)
   :bind
@@ -201,7 +197,10 @@
      (xref-location (styles . (orderless)))))
   (orderless-component-separator "[ &-+]")
   :config
-  (advice-add 'company-capf--candidates :around #'just-one-face))
+  (define-advice company-capf--candidates
+      (:around (orig-fun &rest args) just-one-face)
+    (let ((orderless-match-faces [completions-common-part]))
+      (apply orig-fun args))))
 
 (use-package embark
   :demand t
@@ -376,7 +375,6 @@
     (rx bos "*" (or "Async")
         (zero-or-more nonl))
     "Regexp for matching windows to disappear")
-  (defun custom/revert-dired-buffer (func &rest args) (revert-buffer))
   (defun custom/dired-current-path-to-clipboard ()
     (interactive)
     (when (eq major-mode 'dired-mode)
@@ -400,9 +398,11 @@
                  display-buffer-no-window
                  (inhibit-same-window . t)))
   (add-to-list 'display-buffer-alist
-      (cons "\\*Warnings\\*" (cons #'display-buffer-no-window nil)))
-  (advice-add 'dired-do-rename :after #'custom/revert-dired-buffer)
-  (advice-add 'dired-create-directory :after #'custom/revert-dired-buffer)
+               (cons "\\*Warnings\\*" (cons #'display-buffer-no-window nil)))
+  (dolist (func '(dired-do-rename dired-create-directory))
+    (define-advice func
+        (:after (orig-fun &rest args) custom/revert-dired-buffer)
+      (revert-buffer)))
   (use-package dired-filetype-face))
 
 (use-package wdired
@@ -410,7 +410,9 @@
   :custom
   (wdired-allow-to-change-permissions 'advanced)
   :config
-  (advice-add 'wdired-abort-changes :after #'custom/revert-dired-buffer))
+  (define-advice wdired-abort-changesfunc
+      (:after (orig-fun &rest args) custom/revert-dired-buffer)
+    (revert-buffer)))
 
 (use-package frame
   :preface
@@ -599,9 +601,6 @@
   (setq-default goggles-pulse t))
 
 (use-package xref
-  :preface
-  (defun custom/revert-dired-buffer ()
-    (delete-window (get-buffer-window (get-buffer "*xref*"))))
   :hook
   (xref--xref-buffer-mode-hook . hl-line-mode)
   ((xref-after-return-hook xref-after-jump-hook) . recenter)
@@ -624,7 +623,9 @@
   (xref-show-xrefs-function #'xref-show-definitions-completing-read)
   (xref-show-definitions-function #'xref-show-definitions-completing-read)
   :config
-  (advice-add 'xref-goto-xref :after #'custom/revert-dired-buffer))
+  (define-advice xref-goto-xref
+      (:after (orig-fun &rest args) custom/revert-dired-buffer)
+    (delete-window (get-buffer-window (get-buffer "*xref*")))))
 
 (use-package dogears
   :demand t
