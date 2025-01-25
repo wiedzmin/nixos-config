@@ -349,12 +349,12 @@ in
       ] ++ optionals (cfg.launcher == "rofi") [
         {
           key = [ "XF86Launch1" ];
-          cmd = "${pkgs.rofi}/bin/rofi -modi combi -show combi -combi-modi run,drun";
+          cmd = "${pkgs.rofi}/bin/rofi -modi combi -show combi -combi-modi run#drun";
           mode = "root";
         }
         {
           key = [ prefix "Shift" "p" ];
-          cmd = "${pkgs.rofi}/bin/rofi -modi combi -show combi -combi-modi run,drun";
+          cmd = "${pkgs.rofi}/bin/rofi -modi combi -show combi -combi-modi run#drun";
           mode = "root";
         }
       ] ++ optionals cfg.networking.enable [{
