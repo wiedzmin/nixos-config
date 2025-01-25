@@ -20,6 +20,11 @@ in
         default = [ ];
         description = "The collection of whitelisting prefixes for direnv to allow";
       };
+      hideEnvDiff = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to environment variables diff during direnv status change";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -45,7 +50,10 @@ in
           enableZshIntegration = true;
         };
         xdg.configFile."direnv/direnv.toml".source = toml.generate "direnv.toml" {
-          global = { disable_stdin = true; };
+          global = {
+            disable_stdin = true;
+            hide_env_diff = cfg.hideEnvDiff;
+          };
           whitelist = { prefix = cfg.whitelist; };
         };
       };
