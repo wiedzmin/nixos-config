@@ -90,10 +90,10 @@
     ./virt/docker/devdns
     ./virt/virtualbox
     ./wm
-    ./wm/awesome
-    ./wm/herbstluft
-    ./wm/i3
-    ./wm/qtile
+    ./wm/impl/awesome
+    ./wm/impl/herbstluft
+    ./wm/impl/i3
+    ./wm/impl/qtile
     ./workstation/backups
     ./workstation/input/core
     ./workstation/input/mouse
