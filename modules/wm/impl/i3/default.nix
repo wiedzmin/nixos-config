@@ -206,7 +206,7 @@ in
             raw = true;
           }
           {
-            key = [ prefix "q" ];
+            key = [ prefix "Shift" "backspace" ];
             cmd = "restart";
             mode = "root";
             raw = true;
