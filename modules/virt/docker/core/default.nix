@@ -77,6 +77,7 @@ in
           dlint
           docker-compose
           hadolintd
+          lazydocker
           libcgroup
           nodePackages.dockerfile-language-server-nodejs
         ];
