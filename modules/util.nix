@@ -15,6 +15,7 @@ let
     "{" = "bracketleft";
     "}" = "bracketright";
     "\\" = "backslash";
+    "backspace" = "BackSpace";
   };
   scratchpadModeToken = "scratchpad";
   keySymsAwesomeEZ = {
