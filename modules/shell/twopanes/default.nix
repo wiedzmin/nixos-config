@@ -26,7 +26,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ mc ];
+        home.packages = with pkgs; [ mc gnome-commander ];
         xdg.configFile."mc/ini".text = ''
           [Midnight-Commander]
           verbose=true
