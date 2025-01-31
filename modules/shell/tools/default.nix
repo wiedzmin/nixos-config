@@ -43,7 +43,7 @@ in
           sad # TODO: consider creating shell aliases
           sd # TODO: play with it in streaming use-cases
           up
-          uq
+          uq # FIXME: removed in recent nixpkgs, move to NUR, also add https://github.com/lostutils/groupby there
           pup
         ];
         programs = {
