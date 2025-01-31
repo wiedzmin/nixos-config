@@ -199,7 +199,7 @@ in
         }
       ];
       workstation.systemtraits.instructions = ''
-        ${pkgs.redis}/bin/redis-cli set wm/workspaces ${mkRedisJSON (lib.forEach cfg.workspaces (w: w.name))}
+        ${pkgs.redis}/bin/redis-cli set wm/workspaces ${mkRedisJSON (foldl (a: b: a // { "${b.name}" = builtins.head b.key; }) { } cfg.workspaces)}
 
         ${pkgs.redis}/bin/redis-cli set wm/window_rules ${
           lib.strings.escapeNixString (builtins.toJSON (builtins.filter
