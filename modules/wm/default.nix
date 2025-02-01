@@ -197,6 +197,11 @@ in
           cmd = "${nurpkgs.toolbox}/bin/wmkb modes --fuzzy";
           mode = "root";
         }
+        (goLocalDebugKeybinding config {
+          key = [ cfg.prefix "t" ];
+          cmd = [ "wmkb" "workspaces" "--fuzzy" ];
+          mode = "root";
+        })
       ];
       workstation.systemtraits.instructions = ''
         ${pkgs.redis}/bin/redis-cli set wm/workspaces ${mkRedisJSON (foldl (a: b: a // { "${b.name}" = builtins.head b.key; }) { } cfg.workspaces)}
