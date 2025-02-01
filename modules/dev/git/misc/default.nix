@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -6,6 +6,13 @@ let
   cfg = config.dev.git.misc;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  unstable-future = import inputs.unstable-future {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -32,7 +39,7 @@ in
       };
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ gitleaks gitnuro mgitstatus difftastic ];
+        home.packages = with pkgs; [ gitleaks gitnuro mgitstatus difftastic unstable-future.sourcegit ];
       };
 
       dev.vcs.batch.commands = {
