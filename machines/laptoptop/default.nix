@@ -648,6 +648,7 @@ in
 
   dev.direnv = {
     enable = true;
+    hideEnvDiff = true;
     emacs.enable = true;
     emacs.granularity = "file";
   };
