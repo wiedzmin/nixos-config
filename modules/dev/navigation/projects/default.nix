@@ -79,5 +79,13 @@ in
         })
       ];
     })
+    (mkIf (cfg.enable && cfg.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "cachix/devenv/options" = {
+          desc = "cachix/devenv options";
+          remote.url = "https://devenv.sh/reference/options/";
+        };
+      };
+    })
   ];
 }
