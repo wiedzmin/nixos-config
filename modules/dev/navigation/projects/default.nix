@@ -75,6 +75,12 @@ in
             [ "projects" "search" "--shell" "--root" "${root}" "--depth" "${builtins.toString depth}" ];
           mode = "dev";
         })
+        (goLocalDebugKeybinding config {
+          key = [ "Shift" "c" ];
+          cmd = with config.dev.navigation.projects.fuzzySearch;
+            [ "projects" "search" "--copy-local" "--root" "${root}" "--depth" "${builtins.toString depth}" ];
+          mode = "dev";
+        })
       ] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable) [
         (goLocalDebugKeybinding config {
           key = [ "p" ];
@@ -84,6 +90,11 @@ in
         (goLocalDebugKeybinding config {
           key = [ "s" ];
           cmd = [ "projects" "open" "--shell" ];
+          mode = "dev";
+        })
+        (goLocalDebugKeybinding config {
+          key = [ "c" ];
+          cmd = [ "projects" "open" "--copy-local" ];
           mode = "dev";
         })
       ] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable && config.pim.orgmode.enable) [
