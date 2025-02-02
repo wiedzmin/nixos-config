@@ -361,5 +361,12 @@ in
         ];
       };
     })
+    (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        linux_kernel_sources_2_6 = {
+          local.path = "${config.navigation.bookmarks.workspaces.globalRoot}/git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux";
+        };
+      };
+    })
   ];
 }
