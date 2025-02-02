@@ -672,7 +672,6 @@ in
       impl = "i3-rs";
       i3-rs.iconset = "material-nf";
     };
-    windowFocus.fontSize = 55;
     emacs.enable = true;
   };
   wm.awesome = {

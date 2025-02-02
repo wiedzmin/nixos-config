@@ -121,11 +121,6 @@ in
         default = "wmfocus";
         description = "Which tool to use for hinted windows navigation";
       };
-      windowFocus.fontSize = mkOption {
-        type = types.int;
-        default = 72;
-        description = "Windows navigation hints font size";
-      };
       mouseFollowsFocus = mkOption {
         type = types.bool;
         default = true;
