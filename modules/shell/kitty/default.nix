@@ -269,7 +269,7 @@ in
             remember_window_size = "yes";
             window_resize_step_cells = "2";
             window_resize_step_lines = "2";
-            resize_draw_strategy = "scale";
+            resize_draw_strategy = "scale"; # NOTE: setting became ignored for some reason, though no signs of removal was spotted
           } // {
             # editing
             clipboard_control = "write-clipboard write-primary no-append";
