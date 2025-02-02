@@ -62,15 +62,28 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.entries = lib.optionals cfg.fuzzySearch.enable [{
-        key = [ "r" ];
-        cmd = with config.dev.navigation.projects.fuzzySearch;
-          "${nurpkgs.toolbox}/bin/projects search --root ${root} --depth ${builtins.toString depth}";
-        mode = "dev";
-      }] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable) [
+      wmCommon.keybindings.entries = lib.optionals cfg.fuzzySearch.enable [
+        {
+          key = [ "r" ];
+          cmd = with config.dev.navigation.projects.fuzzySearch;
+            "${nurpkgs.toolbox}/bin/projects search --root ${root} --depth ${builtins.toString depth}";
+          mode = "dev";
+        }
+        (goLocalDebugKeybinding config {
+          key = [ "Shift" "s" ];
+          cmd = with config.dev.navigation.projects.fuzzySearch;
+            [ "projects" "search" "--shell" "--root" "${root}" "--depth" "${builtins.toString depth}" ];
+          mode = "dev";
+        })
+      ] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable) [
         (goLocalDebugKeybinding config {
           key = [ "p" ];
           cmd = [ "projects" "open" ];
+          mode = "dev";
+        })
+        (goLocalDebugKeybinding config {
+          key = [ "s" ];
+          cmd = [ "projects" "open" "--shell" ];
           mode = "dev";
         })
       ] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable && config.pim.orgmode.enable) [
