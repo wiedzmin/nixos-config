@@ -121,6 +121,21 @@ in
         default = "wmfocus";
         description = "Which tool to use for hinted windows navigation";
       };
+      windowFocus.wmfocus.halign = mkOption {
+        type = types.enum [ "left" "center" "right" ];
+        default = "left";
+        description = "Hints horizontal alignment for `wmfocus`";
+      };
+      windowFocus.wmfocus.valign = mkOption {
+        type = types.enum [ "top" "center" "bottom" ];
+        default = "top";
+        description = "Hints vertical alignment for `wmfocus`";
+      };
+      windowFocus.wmfocus.textcoloralt = mkOption {
+        type = types.str;
+        default = "#eeeeee";
+        description = "Hints vertical alignment for `wmfocus`";
+      };
       mouseFollowsFocus = mkOption {
         type = types.bool;
         default = true;
@@ -448,9 +463,9 @@ in
           (e: e // { wm = "i3"; })) ++ optionals (cfg.windowFocus.impl == "wmfocus") [
           {
             key = [ prefix "Tab" ];
-            cmd = ''${pkgs.wmfocus}/bin/wmfocus --halign center --valign center --chars ${
+            cmd = ''${pkgs.wmfocus}/bin/wmfocus --halign ${cfg.windowFocus.wmfocus.halign} --valign ${cfg.windowFocus.wmfocus.valign} --chars ${
               config.workstation.input.core.hints.alphabet} --font ${
-              config.wmCommon.fonts.familySize.large} --textcoloralt "#eeeeee"'';
+                config.wmCommon.fonts.familySize.large} --textcoloralt "${cfg.windowFocus.wmfocus.textcoloralt}"'';
             mode = "root";
           }
         ] ++ optionals (cfg.windowFocus.impl == "easyfocus") [
