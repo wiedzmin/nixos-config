@@ -2,6 +2,8 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# FIXME: consider extracting functionality more semantically or relocate module itself
+
 let
   cfg = config.dev.navigation.projects;
   user = config.attributes.mainUser.name;
