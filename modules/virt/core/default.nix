@@ -87,6 +87,26 @@ in
         };
       };
     })
+    (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "virt/vms/root" = {
+          desc = "VM root";
+          local.path = homePrefix user "workspace/virt/vm";
+        };
+        "quickemu" = {
+          desc = "Quickemu Github repo";
+          remote.url = "https://github.com/quickemu-project/quickemu";
+        };
+        "quickemu/wiki/references" = {
+          desc = "Quickemu Github wiki, references page";
+          remote.url = homePrefix user "https://github.com/quickemu-project/quickemu/wiki/08-References";
+        };
+        "quickemu/wiki/advanced-config" = {
+          desc = "Quickemu Github wiki, advanced configuration page";
+          remote.url = "https://github.com/quickemu-project/quickemu/wiki/05-Advanced-quickemu-configuration";
+        };
+      };
+    })
     (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
       home-manager.users."${user}" = {
         home.packages = [ vdi2qcow2 ];
