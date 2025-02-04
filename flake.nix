@@ -71,7 +71,7 @@
       url = "github:mickeynp/combobulate";
       flake = false;
     };
-    just-ts-mode = {
+    emacs-just-ts-mode = {
       url = "github:leon-barrett/just-ts-mode.el";
       flake = false;
     };
