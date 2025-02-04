@@ -755,3 +755,8 @@
 (use-package isearch
   :custom
   (lazy-count-suffix-format "   (%s/%s)"))
+
+(use-package project-headerline
+  :load-path "@emacsProjectHeaderlinePath@"
+  :config
+  (global-project-headerline-mode))

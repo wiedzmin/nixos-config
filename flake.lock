@@ -230,6 +230,22 @@
         "type": "github"
       }
     },
+    "emacs-project-headerline": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1738635934,
+        "narHash": "sha256-rUzIT4bACU+O3mUUHEp9OYGUUvLDL5PHMelzRCv1Dvk=",
+        "owner": "gavv",
+        "repo": "project-headerline",
+        "rev": "d9c2da504538a5174feb77358d89c424a55a1908",
+        "type": "github"
+      },
+      "original": {
+        "owner": "gavv",
+        "repo": "project-headerline",
+        "type": "github"
+      }
+    },
     "emacs-treesit-jump": {
       "flake": false,
       "locked": {
@@ -666,6 +682,7 @@
         "emacs-org-bars": "emacs-org-bars",
         "emacs-password-menu": "emacs-password-menu",
         "emacs-password-store-menu": "emacs-password-store-menu",
+        "emacs-project-headerline": "emacs-project-headerline",
         "emacs-treesit-jump": "emacs-treesit-jump",
         "emacs-vue-ts-mode": "emacs-vue-ts-mode",
         "git-extra-commands": "git-extra-commands",
