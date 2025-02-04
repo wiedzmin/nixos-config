@@ -554,6 +554,11 @@ in
       tags = [ "roam" "org" ];
       local.path = homePrefix user "docs/org/roam";
     };
+    "telegram/downloads" = {
+      desc = "Telegram donloads path";
+      tags = [ "telegram" ];
+      local.path = "${config.attributes.downloadPath.telegram}";
+    };
     goodies = {
       local.path = homePrefix user "docs/org/roam/current_goodies.org";
       windowRules = [
