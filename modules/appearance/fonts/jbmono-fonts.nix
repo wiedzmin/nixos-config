@@ -18,7 +18,7 @@ let
   sizeAlacritty = 9.0;
   sizeKitty = 8.0;
   sizeXLFDLarge = 16;
-  sizeFamilySizeLarge = 55;
+  sizeFamilySizeLarge = 40;
 in
 {
   options.appearance.fonts.jetbrains-mono = { enable = mkEnableOption "jetbrains-mono"; };
