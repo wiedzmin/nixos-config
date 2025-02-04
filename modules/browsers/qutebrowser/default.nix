@@ -291,7 +291,7 @@ in
             messages.timeout = 1000;
             downloads = {
               location = {
-                directory = config.attributes.browser.downloadPath;
+                directory = config.attributes.downloadPath.browser;
                 prompt = true;
                 remember = true;
                 suggestion = "both";

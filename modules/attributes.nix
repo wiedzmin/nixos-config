@@ -60,7 +60,7 @@ with lib;
     browser.fallback.traits = mkOption {
       type = types.submodule (import ./workstation/systemtraits/xapp-traits.nix);
     };
-    browser.downloadPath = mkOption {
+    downloadPath.browser = mkOption {
       type = types.str;
       default = "";
       description = "Downloads path";
