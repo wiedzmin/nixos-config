@@ -196,7 +196,7 @@ in
               path = "profile.default";
               settings = {
                 "browser.ctrlTab.recentlyUsedOrder" = false;
-                "browser.download.dir" = config.attributes.browser.downloadPath;
+                "browser.download.dir" = config.attributes.downloadPath.browser;
                 "browser.link.open_newwindow" = 2;
                 "browser.sessionstore.restore_on_demand" = true;
                 "browser.sessionstore.restore_tabs_lazily" = true;
