@@ -75,6 +75,10 @@
       url = "github:leon-barrett/just-ts-mode.el";
       flake = false;
     };
+    emacs-project-headerline = {
+      url = "github:gavv/project-headerline";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {
