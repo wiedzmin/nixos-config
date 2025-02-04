@@ -195,6 +195,7 @@ in
     };
   };
   attributes.downloadPath.browser = homePrefix user "Downloads";
+  attributes.downloadPath.telegram = "${config.attributes.downloadPath.browser}/Telegram Desktop";
   attributes.debug.useLocalGoBinaries = true;
 
   content = {
