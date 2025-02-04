@@ -638,6 +638,8 @@ in
     fish.enable = true;
   };
 
+  ext.virtualization.core.enable = true;
+
   dbms = {
     misc = {
       enable = true;
