@@ -65,6 +65,11 @@ with lib;
       default = "";
       description = "Downloads path";
     };
+    downloadPath.telegram = mkOption {
+      type = types.str;
+      default = "";
+      description = "Downloads path";
+    };
     ebookreader.default.cmd = mkOption {
       description = "Default ebook reader command";
       type = types.str;
