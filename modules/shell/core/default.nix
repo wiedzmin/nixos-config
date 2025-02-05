@@ -80,7 +80,6 @@ in
         };
         # NOTE: play with ydotool client/server arch and respective permissions
         home.packages = with pkgs; [
-          libnotify # FWIW
           perl # for plugins
           bashate # linter
           dtach

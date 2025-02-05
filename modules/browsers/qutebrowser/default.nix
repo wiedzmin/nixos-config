@@ -204,6 +204,7 @@ in
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
+          libnotify # [tag:qb_pkgs_libnotify]
           yank-image
           (makeDesktopItem {
             name = windowedDesktopID;
@@ -279,7 +280,7 @@ in
               mute = true;
               notifications = {
                 enabled = true;
-                presenter = "libnotify";
+                presenter = "libnotify"; # [ref:qb_pkgs_libnotify]
               };
               pdfjs = true;
               plugins = true;

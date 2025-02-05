@@ -47,7 +47,7 @@ in
       command.notify = mkOption {
         type = types.str;
         default = ''
-          ${pkgs.dunst}/bin/dunstify -t ${builtins.toString cfg.notification.timeout} \
+          ${pkgs.libnotify}/bin/notify-send -t ${builtins.toString cfg.notification.timeout} \
                                      -u ${cfg.notification.urgency} 'Locking in ${builtins.toString cfg.timers.lock} seconds' '';
         description = "Command to use for notification display";
       };
