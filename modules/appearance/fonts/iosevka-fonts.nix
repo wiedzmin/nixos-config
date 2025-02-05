@@ -30,18 +30,12 @@ in
         default = false;
         description = "Whether to enable Iosevka font";
       };
-      comfy.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to use Comfy version from Prot";
-      };
     };
   };
 
   config = mkIf cfg.enable {
     fonts = {
-      packages = with pkgs; lib.optionals (!cfg.comfy.enable) [ iosevka ] ++
-        lib.optionals (cfg.comfy.enable) [ iosevka-comfy.comfy ];
+      packages = with pkgs; iosevka;
       fontconfig = { defaultFonts = { monospace = [ baseFont.family ]; }; };
     };
     wmCommon.fonts.default = makeFontStrPango fontBeautified;
