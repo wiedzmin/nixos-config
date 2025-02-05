@@ -93,6 +93,10 @@ in
                 eval "$d"
             }
 
+            cpwd () {
+                pwd | tr -d '\n' | xsel -ib
+            }
+
             ${lib.concatMapStrings (opt: ''
               setopt ${opt}
             '') cfg.setopt}
@@ -115,6 +119,8 @@ in
 
             bindkey '\e[H'  beginning-of-line
             bindkey '\e[F'  end-of-line
+
+            bindkey '^[[1;5Q' cpwd
           '';
           sessionVariables = {
             # NOTE: zsh-specific, keep, do not bind to custom module(s)
