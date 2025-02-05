@@ -51,13 +51,13 @@ in {
           if [[ $battery_capacity -le ${
             builtins.toString cfg.dischargeNotificationPercents
           } && $battery_status = "Discharging" ]]; then
-              ${pkgs.dunst}/bin/dunstify -u critical "Battery low, consider plugging in."
+              ${pkgs.libnotify}/bin/notify-send -u critical "Battery low, consider plugging in."
           fi
 
           if [[ $battery_capacity -le ${
             builtins.toString cfg.suspension.percents
           } && $battery_status = "Discharging" ]]; then
-              ${pkgs.dunst}/bin/dunstify -u critical -t 5000 "Battery CRITICALLY low, will suspend in ${cfg.suspension.timeout}."
+              ${pkgs.libnotify}/bin/notify-send -u critical -t 5000 "Battery CRITICALLY low, will suspend in ${cfg.suspension.timeout}."
               sleep ${cfg.suspension.timeout}
 
               battery_status=$(${pkgs.coreutils}/bin/cat /sys/class/power_supply/${cfg.device}/status)
