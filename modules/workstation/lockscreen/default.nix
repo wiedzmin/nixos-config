@@ -51,10 +51,15 @@ in
                                      -u ${cfg.notification.urgency} 'Locking in ${builtins.toString cfg.timers.lock} seconds' '';
         description = "Command to use for notification display";
       };
-      command.lock = mkOption {
+      command.lock.manual = mkOption {
         type = types.str;
-        default = "${pkgs.i3lock-color}/bin/i3lock-color --keylayout 2 -c 232729 --pass-media-keys && sleep 1 && ${pkgs.xorg.xset}/bin/xset dpms force off";
-        description = "Command to use for screen locking";
+        default = "${pkgs.i3lock-color}/bin/i3lock-color --keylayout 2 -c 232729 --pass-media-keys && ${pkgs.xorg.xset}/bin/xset dpms force off";
+        description = "Command for locking screen manually";
+      };
+      command.lock.lid = mkOption {
+        type = types.str;
+        default = "${pkgs.i3lock-color}/bin/i3lock-color --nofork --keylayout 2 -c 232729 --pass-media-keys";
+        description = "Command for locking screen on lid close";
       };
       wm.enable = mkOption {
         type = types.bool;
@@ -71,6 +76,7 @@ in
           enable = true;
           not-when-fullscreen = cfg.respect.fullscreen;
           not-when-audio = cfg.respect.playback;
+          detect-sleep = true;
           timers = [
             {
               delay = cfg.timers.alert;
@@ -78,16 +84,30 @@ in
             }
             {
               delay = cfg.timers.lock;
-              command = cfg.command.lock;
+              command = cfg.command.lock.manual;
+              canceller = ''${pkgs.libnotify}/bin/notify-send "Idle" "Resuming activity"'';
             }
           ];
         };
       };
+      systemd.services.screenlocker = {
+        description = "Lock screen before going asleep";
+        environment = { DISPLAY = ":0"; };
+        serviceConfig = {
+          User = "${user}";
+          StandardOutput = "journal";
+          StandardError = "journal";
+        };
+        script = cfg.command.lock.lid;
+        before = [ "sleep.target" "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
+        wantedBy = [ "sleep.target" "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
+      };
+
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = [{
         key = (if config.attributes.hardware.dmiSystemVersion == "ThinkPad X270" then [ "XF86Tools" ] else [ "XF86ScreenSaver" ]);
-        cmd = "${cfg.command.lock}";
+        cmd = "${cfg.command.lock.manual}";
         mode = "root";
       }];
     })
