@@ -49,6 +49,12 @@ in
                 cd $argv;
               '';
             };
+            cpwd = {
+              description = "Copy PWD to clipboard";
+              body = ''
+                pwd | tr -d '\n' | xsel -ib
+              '';
+            };
           };
           plugins = [
             {
@@ -162,6 +168,7 @@ in
           ];
           shellInitLast = ''
             bind "[1;5P" fzm
+            bind "[1;5Q" cpwd
           '';
         };
       };
