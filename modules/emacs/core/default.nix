@@ -507,6 +507,17 @@ in
           cmd = "${emacsCmdWM "1000" emacsWithPkgs "(undelete-frame)"}";
           mode = "run";
         }
+      ] ++ lib.optionals config.navigation.bookmarks.enable [
+        (goLocalDebugKeybinding config {
+          key = [ "i" ];
+          cmd = [ "projects" "open" "--path" "${homePrefix user ".emacs.d/init.el"}" ];
+          mode = "dev";
+        })
+        (goLocalDebugKeybinding config {
+          key = [ "Shift" "i" ];
+          cmd = [ "projects" "open" "--path" "${homePrefix user ".emacs.d/early-init.el"}" ];
+          mode = "dev";
+        })
       ];
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
