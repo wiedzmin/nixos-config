@@ -122,10 +122,7 @@
   :after (consult flycheck)
   :bind
   (:map mode-specific-map
-        ("y" . consult-flycheck))
-  (:map flycheck-mode-map
-        ("C-c ! o" . consult-flycheck)
-        ("!" . consult-flycheck)))
+        ("y" . consult-flycheck)))
 
 (with-eval-after-load 'pulsar
   (mapc (lambda (x) (add-hook 'consult-after-jump-hook x)) `(pulsar-recenter-top pulsar-reveal-entry)))
