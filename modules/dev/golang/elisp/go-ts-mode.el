@@ -41,8 +41,8 @@
   :no-require t
   :after (go-ts-mode)
   :bind
-  (:map custom-gotag-map
-        ("t" . go-tag-add)
-        ("T" . go-tag-remove))
+  (:map go-ts-mode-map
+        ("C-c t" . go-tag-add)
+        ("C-c T" . go-tag-remove))
   :custom
   (go-tag-args '("-transform" "camelcase")))

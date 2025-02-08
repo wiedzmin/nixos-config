@@ -92,7 +92,6 @@ in
         epkgs.gotest
         epkgs.ob-go
       ];
-      ide.emacs.core.customKeymaps = { "custom-gotag-map" = "C-c `"; };
       ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/go-mode.el ]) +
         lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/go-ts-mode.el ]) +
         (builtins.readFile ./elisp/common.el);
