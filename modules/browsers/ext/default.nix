@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.browsers.ext;
-  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   inherit (config.wmCommon) prefix;
 in
@@ -52,8 +51,6 @@ in
           message = "browsers/core: must enable systemtraits maintenance.";
         }
       ];
-
-      home-manager.users."${user}" = { home.packages = with pkgs; [ rdrview ]; };
 
       workstation.systemtraits.instructions = with config.navigation.bookmarks; ''
         ${pkgs.redis}/bin/redis-cli set nav/webjumps ${
