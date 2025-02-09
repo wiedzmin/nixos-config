@@ -70,7 +70,6 @@ in
         epkgs.avy
         epkgs.beginend
         epkgs.block-nav
-        epkgs.bookmark-view
         epkgs.bufler
         epkgs.burly
         epkgs.dired-filetype-face

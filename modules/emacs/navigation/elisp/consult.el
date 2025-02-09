@@ -74,19 +74,6 @@
 (with-eval-after-load 'dired
   (keymap-set dired-mode-map "`" 'consult-file-externally))
 
-(with-eval-after-load 'bookmark-view
-  (setq consult-view-open-function #'bookmark-jump)
-  (setq consult-view-list-function #'bookmark-view-names)
-  (add-to-list 'consult-buffer-sources
-               (list :name     "View"
-                     :narrow   ?v
-                     :category 'bookmark
-                     :face     'font-lock-keyword-face
-                     :history  'bookmark-view-history
-                     :action   #'consult--bookmark-action
-                     :items    #'bookmark-view-names)
-               'append))
-
 (use-package consult-dir
   :bind
   ("C-x d" . consult-dir)
