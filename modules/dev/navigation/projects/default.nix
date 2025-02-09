@@ -111,6 +111,10 @@ in
           desc = "cachix/devenv options";
           remote.url = "https://devenv.sh/reference/options/";
         };
+        "cachix/devenv/releases" = {
+          desc = "cachix/devenv releases";
+          remote.url = "https://github.com/cachix/devenv/releases";
+        };
       };
     })
   ];
