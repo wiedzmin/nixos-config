@@ -19,14 +19,11 @@
   (:map custom-search-map
         ("G" . consult-ripgrep-symbol-at-point)
         ("g" . consult-ripgrep)
-        ("h" . consult-find)
-        ("m" . consult-multi-occur))
+        ("h" . consult-find))
   (:map help-map
         ("M" . consult-minor-mode-menu))
   (:map custom-help-map
         ("M" . consult-minor-mode-menu))
-  (:map custom-projects-map
-        ("O" . consult-file-externally))
   (:map custom-goto-map
         ("C-s" . consult-line-multi)
         ("i" . consult-imenu)
@@ -72,8 +69,7 @@
       (push-mark)))
   (define-minibuffer-key "\C-s"
                          'consult-location #'previous-history-element
-                         'file #'consult-find-for-minibuffer)
-  (fset 'multi-occur #'consult-multi-occur))
+                         'file #'consult-find-for-minibuffer))
 
 (with-eval-after-load 'dired
   (keymap-set dired-mode-map "`" 'consult-file-externally))
