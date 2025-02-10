@@ -398,5 +398,13 @@ in
         };
       };
     })
+    (mkIf (cfg.scanning.enable && config.navigation.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "scanning-work-directory" = {
+          tags = [ "scanning" "work" ];
+          local.path = homePrefix user "docs/paperless/raw";
+        };
+      };
+    })
   ];
 }
