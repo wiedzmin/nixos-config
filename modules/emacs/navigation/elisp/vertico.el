@@ -33,6 +33,10 @@
   (vertico-quick1 "qweasd")
   (vertico-quick2 "zxc"))
 
+(use-package vertico-grid
+  :custom
+  (vertico-grid-max-columns 3))
+
 (use-package vertico-multiform
   :after vertico
   :custom
