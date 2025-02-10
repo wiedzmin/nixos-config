@@ -87,7 +87,7 @@ in
         { TERMINAL = cfg.traits.command.binary; global = true; }
         { TB_VT_ORG_TOOL = binaryFromCmd cfg.traits.command.binary; global = true; }
         { TB_KITTY_SOCKET = remoteConnString; global = true; }
-        { TB_TERMINAL_CMD = cfg.traits.command.binary; }
+        { TB_TERMINAL_CMD = cfg.traits.command.binary; global = true; }
       ];
       attributes.vt.default.traits = cfg.traits;
 

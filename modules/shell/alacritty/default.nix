@@ -49,7 +49,7 @@ in
 
       shell.core.variables = [
         { TERMINAL = cfg.traits.command.binary; global = true; }
-        { TB_TERMINAL_CMD = cfg.traits.command.binary; }
+        { TB_TERMINAL_CMD = cfg.traits.command.binary; global = true; }
       ];
       attributes.vt.default.traits = cfg.traits;
       home-manager.users."${user}" = {
