@@ -90,7 +90,6 @@ in
         epkgs.rainbow-delimiters
         epkgs.recursive-narrow
         epkgs.rg
-        epkgs.ripgrep
         epkgs.treemacs
         epkgs.treemacs-icons-dired
         epkgs.winum

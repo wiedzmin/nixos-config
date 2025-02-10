@@ -19,7 +19,7 @@
   (:map custom-search-map
         ("G" . consult-ripgrep-symbol-at-point)
         ("g" . consult-ripgrep)
-        ("h" . consult-find))
+        ("f" . consult-find))
   (:map help-map
         ("M" . consult-minor-mode-menu))
   (:map custom-help-map

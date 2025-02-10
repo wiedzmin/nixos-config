@@ -466,19 +466,21 @@
     :config
     (phi-search-mc/setup-keys)))
 
-(use-package ripgrep
-  :bind
-  (:map custom-search-map
-        ("f" . ripgrep-regexp)))
-
 (use-package rg
   :bind
   (:map custom-search-map
-        ("d" . rg-project)
-        ("t" . rg-menu))
+        ("d" . rg-regexp-current-dir)
+        ("p" . rg-project)
+        ("m" . rg-menu))
   :custom
   (rg-group-result nil)
   :config
+  (rg-define-search rg-regexp-current-dir
+    "Search for regexp in files under the current directory."
+    :query ask
+    :format regexp
+    :files ask
+    :dir current)
   (rg-enable-default-bindings))
 
 (use-package pulsar
