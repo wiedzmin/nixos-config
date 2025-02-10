@@ -78,7 +78,6 @@ in
         epkgs.dogears
         epkgs.embark
         epkgs.goggles
-        epkgs.imenu-anywhere
         epkgs.link-hint
         epkgs.manage-minor-mode-table
         epkgs.marginalia

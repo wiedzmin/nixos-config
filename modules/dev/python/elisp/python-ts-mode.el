@@ -4,7 +4,6 @@
   (python-ts-mode-hook . (lambda ()
                            (setq indent-tabs-mode nil)
                            (setq tab-width 4)
-                           (setq imenu-create-index-function 'imenu-default-create-index-function)
                            (auto-fill-mode 1)))
   ;; Highlight the call to ipdb, src http://pedrokroger.com/2010/07/configuring-emacs-as-a-python-ide-2/
   (python-ts-mode-hook . (lambda ()

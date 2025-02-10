@@ -453,12 +453,6 @@
   (setq-default frame-title-format custom-frame-title-format) ;; for various external tools
   (setq truncate-partial-width-windows nil))
 
-(use-package imenu-anywhere
-  :commands imenu-anywhere
-  :bind
-  (:map custom-goto-map
-               ("M-i" . imenu-anywhere)))
-
 (use-package phi-search
   :hook (isearch-mode-hook . phi-search-from-isearch-mc/setup-keys)
   :config
@@ -490,8 +484,6 @@
         ("h r" . pulsar-pulse-region)
         ("h h" . pulsar-highlight-line))
   :hook
-  (imenu-after-jump-hook . pulsar-recenter-top)
-  (imenu-after-jump-hook . pulsar-reveal-entry)
   (next-error-hook . pulsar-pulse-line)
   :custom
   (pulsar-pulse-functions '(backward-page
