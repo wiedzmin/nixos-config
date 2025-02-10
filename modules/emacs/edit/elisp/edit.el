@@ -218,7 +218,4 @@
         ("<" . focus-unpin)
         ("6" . focus-change-thing)
         ("0" . focus-next-thing)
-        ("9" . focus-prev-thing))
-  :config
-  ;; NOTE: global question, not to forget - where should such inter-package settings reside? on which side?
-  (add-to-list 'focus-mode-to-thing '(python-mode . paragraph)))
+        ("9" . focus-prev-thing)))

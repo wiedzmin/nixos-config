@@ -22,3 +22,6 @@
         ("C-<right>" . sp-slurp-hybrid-sexp)
         ("M-_" . python-indent-shift-left)
         ("M-+" . python-indent-shift-right)))
+
+(with-eval-after-load 'focus
+  (add-to-list 'focus-mode-to-thing '(python-ts-mode . paragraph)))
