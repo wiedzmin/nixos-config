@@ -154,18 +154,6 @@
   :custom
   (lsp-ui-flycheck-enable t))
 
-(use-package lsp-ui-imenu
-  :after lsp-ui
-  :hook
-  (lsp-after-open-hook . lsp-enable-imenu)
-  :bind
-  (:map custom-goto-map
-        ("i" . lsp-ui-imenu))
-  :custom
-  (lsp-ui-imenu-enable t)
-  (lsp-ui-imenu-kind-position 'left)
-  (lsp-ui-imenu-auto-refresh t))
-
 (use-package lsp-ui-sideline
   :after lsp-mode
   :after lsp-ui

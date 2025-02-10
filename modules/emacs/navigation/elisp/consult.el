@@ -26,8 +26,6 @@
         ("M" . consult-minor-mode-menu))
   (:map custom-goto-map
         ("C-s" . consult-line-multi)
-        ("i" . consult-imenu)
-        ("I" . consult-imenu-multi)
         ("M-SPC" . consult-mark)
         ("`" . consult-compile-error)
         ("C" . consult-complex-command)
@@ -148,8 +146,7 @@
   (add-to-list 'consult-buffer-sources consult--bufler-workspace+ 'append))
 
 (with-eval-after-load 'vertico-multiform
-  (setq vertico-multiform-commands '((consult-line buffer)
-                                     (consult-imenu reverse buffer))))
+  (setq vertico-multiform-commands '((consult-line buffer))))
 
 (eval-after-load 'xref
   (use-package xref
