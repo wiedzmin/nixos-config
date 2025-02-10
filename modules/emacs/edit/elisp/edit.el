@@ -68,13 +68,21 @@
 (use-package string-inflection
   :preface
   (defun custom/string-inflection-gnocchi ()
-    "foo_bar => foo bar"
+    "foo*[Bb]ar => foo bar"
     (interactive)
-    (let ((case-fold-search nil)
-          (str (string-inflection-get-current-word)))
-      (setq str (string-inflection-underscore-function str))
-      (setq str (replace-regexp-in-string "_" " " str))
-      (string-inflection-insert str)))
+    (string-inflection--single-or-region
+     (lambda (str)
+       "foo_bar => foo bar"
+       (setq str (string-inflection-underscore-function str))
+       (mapconcat 'downcase (split-string str "_") " "))))
+  (defun custom/string-inflection-gnocchi-capitalized ()
+    "foo*[Bb]ar => Foo Bar"
+    (interactive)
+    (string-inflection--single-or-region
+     (lambda (str)
+       "foo_bar => foo bar"
+       (setq str (string-inflection-underscore-function str))
+       (mapconcat 'capitalize (split-string str "_") " "))))
   :commands (string-inflection-get-current-word)
   :bind
   (:map token-editing-map
@@ -82,7 +90,8 @@
         ("^" . string-inflection-camelcase)
         ("_" . string-inflection-underscore)
         ("-" . string-inflection-kebab-case)
-        ("SPC" . custom/string-inflection-gnocchi)))
+        ("SPC" . custom/string-inflection-gnocchi)
+        ("S-SPC" . custom/string-inflection-gnocchi-capitalized)))
 
 (use-package wgrep
   :commands wgrep-change-to-wgrep-mode
