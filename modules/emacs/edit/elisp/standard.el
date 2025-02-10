@@ -23,3 +23,7 @@
   (add-to-list 'easy-kill-alist '(?F string-up-to-char-forward ""))
   (add-to-list 'easy-kill-alist '(?t string-to-char-backward ""))
   (add-to-list 'easy-kill-alist '(?T string-up-to-char-backward "")))
+
+(use-package easy-kill-extras
+  :after easy-kill
+  :load-path "@emacsEasyKillExtrasPath@")

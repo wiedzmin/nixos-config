@@ -18,10 +18,6 @@
         ("\\" . evilnc-comment-and-kill-ring-save)
         ("|" . evilnc-comment-or-uncomment-paragraphs)))
 
-(use-package easy-kill-extras
-  :after easy-kill
-  :load-path "@emacsEasyKillExtrasPath@")
-
 (use-package multiple-cursors
   :after region-bindings-mode
   :bind
