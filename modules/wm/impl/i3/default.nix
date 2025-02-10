@@ -492,6 +492,10 @@ in
           desc = "i3 userguide";
           remote.url = "https://i3wm.org/docs/debugging.html";
         };
+        i3-configuration = {
+          desc = "i3 configuration";
+          local.path = homePrefix user ".config/i3/config";
+        };
       };
 
       nixpkgs.config.packageOverrides = _: {
