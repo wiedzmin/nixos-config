@@ -573,10 +573,10 @@ in
           enable = true;
           mappings = ''
             # Mongolian-specific
-            <Multi_key> <minus> <Down> : "ө"
-            <Multi_key> <minus> <Up> : "Ө"
-            <Multi_key> <minus> <Left> : "ү"
-            <Multi_key> <minus> <Right> : "Ү"
+            <Multi_key> <Down> : "ө"
+            <Multi_key> <Up> : "Ө"
+            <Multi_key> <Left> : "ү"
+            <Multi_key> <Right> : "Ү"
           '';
         };
       };
