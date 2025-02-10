@@ -1,6 +1,6 @@
 (use-package highlight-numbers
   :hook
-  (foo-mode-hook . highlight-numbers-mode))
+  (prog-mode-hook . highlight-numbers-mode))
 
 (use-package aggressive-indent
   :bind
