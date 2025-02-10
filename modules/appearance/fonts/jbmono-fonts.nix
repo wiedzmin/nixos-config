@@ -32,7 +32,7 @@ in
     wmCommon.fonts.simple = makeFontStrSimple fontBeautified;
     wmCommon.fonts.dmenu = makeFontStrColons fontDec1;
     wmCommon.fonts.statusbar = makeFontStrPango fontBeautified;
-    wmCommon.fonts.xlfd.large = makeXLFDStrIso10646 (fontBeautified // { size = sizeXLFDLarge; });
+    wmCommon.fonts.xlfd.large = makeXLFDStrIso10646 (baseFont // { size = sizeXLFDLarge; });
     wmCommon.fonts.familySize.large = makeFamilySizeStr (fontBeautified // { size = sizeFamilySizeLarge; });
     wmCommon.fonts.deaddFamily = fontBeautified.family;
 
