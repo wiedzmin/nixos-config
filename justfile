@@ -65,7 +65,6 @@ devenv-cleanup-and-gc:
 flake-update-inputs: flake-update-inputs-nixpkgs-main \
     flake-update-inputs-nur \
     flake-update-inputs-home-manager \
-    flake-update-inputs-telega \
     flake-update-inputs-nixos-aux \
     flake-update-inputs-devenv \
     flake-update-inputs-emacs \
@@ -77,7 +76,6 @@ flake-update-inputs: flake-update-inputs-nixpkgs-main \
 flake-update-inputs-sans-devenv: flake-update-inputs-nixpkgs-main \
     flake-update-inputs-nur \
     flake-update-inputs-home-manager \
-    flake-update-inputs-telega \
     flake-update-inputs-nixos-aux \
     flake-update-inputs-emacs \
     flake-update-inputs-emacs-unpackaged \
@@ -95,10 +93,6 @@ flake-update-inputs-nur:
 # Update `home-manager` flake input
 flake-update-inputs-home-manager:
     nix flake update home-manager
-
-# Update `telega` flake input
-flake-update-inputs-telega:
-    nix flake update telega
 
 # Update nixos-related auxiliary inputs
 flake-update-inputs-nixos-aux:
