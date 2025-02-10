@@ -384,14 +384,27 @@ in
                   }
                 ];
               }
-              # TODO: consider unwiring source file extension(s) and parameterizing output file name (probably sans extension)
               {
-                trigger = ":impdf";
-                replace = "convert *.jp* -auto-orient result.pdf";
+                trigger = ":imp";
+                replace = "convert *{{wildcard.value}}* -auto-orient result.pdf";
+                vars = [
+                  {
+                    name = "wildcard";
+                    type = "form";
+                    params = { layout = "Source name wildcard [[value]]"; };
+                  }
+                ];
               }
               {
-                trigger = ":imqpdf";
-                replace = "img2pdf *.jp* --output result.pdf";
+                trigger = ":im2d";
+                replace = "img2pdf *{{wildcard.value}}* --output result.pdf";
+                vars = [
+                  {
+                    name = "wildcard";
+                    type = "form";
+                    params = { layout = "Source name wildcard [[value]]"; };
+                  }
+                ];
               }
             ];
           };
