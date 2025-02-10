@@ -36,7 +36,7 @@ in
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
         # TODO: review `tdl` docs at https://docs.iyear.me/tdl/
-        home.packages = with pkgs; [ tdesktop tdlib ] ++ optionals (cfg.zoom.enable) [ zoom-us tdl ];
+        home.packages = with pkgs; [ tdesktop ] ++ optionals (cfg.zoom.enable) [ zoom-us tdl ];
       };
       workstation.input.keyboard.xremap.config = {
         keymap = [
@@ -100,7 +100,7 @@ in
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       # NOTE: epkgs.telega/stable | melpaPackages.telega/unstable
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.telega ]; # review https://github.com/zevlg/telega.el as it goes
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.melpaPackages.telega ]; # review https://github.com/zevlg/telega.el as it goes
       ide.emacs.core.config = ''
         (use-package telega
           :commands (telega))

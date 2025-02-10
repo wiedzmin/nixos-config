@@ -695,33 +695,12 @@
         "nixpkgs-libreoffice": "nixpkgs-libreoffice",
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",
-        "telega": "telega",
         "unstable": "unstable",
         "unstable-future": "unstable-future",
         "yasnippet-snippets": "yasnippet-snippets",
         "zsh-async": "zsh-async",
         "zsh-fuzzy-search-and-edit": "zsh-fuzzy-search-and-edit",
         "zsh-reentry-hook": "zsh-reentry-hook"
-      }
-    },
-    "telega": {
-      "inputs": {
-        "nixpkgs": [
-          "unstable"
-        ]
-      },
-      "locked": {
-        "lastModified": 1722803392,
-        "narHash": "sha256-UUm9R69AHeS5tVF9oIqsMo1MDHSbB5gZhPIb45pZWas=",
-        "owner": "ipvych",
-        "repo": "telega-overlay",
-        "rev": "6944e71e25e602a7fd389234dba1fd19e3dd0d50",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ipvych",
-        "repo": "telega-overlay",
-        "type": "github"
       }
     },
     "unstable": {
