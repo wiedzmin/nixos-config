@@ -42,18 +42,6 @@
   :custom
   (comby-args '("-exclude" "@combyExcludes@")))
 
-(use-package plantuml-mode
-  :mode "\\.plantuml\\'"
-  :custom
-  (plantuml-jar-path "@plantumlJar@")
-  (org-plantuml-jar-path plantuml-jar-path)
-  :config
-  (add-to-list 'org-src-lang-modes '("plantuml" . plantuml))
-  (org-babel-do-load-languages 'org-babel-load-languages
-                               '((plantuml . t))))
-
-(use-package blockdiag-mode)
-
 (use-package bug-reference)
 
 (defun open-project (path)
