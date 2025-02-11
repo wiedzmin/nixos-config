@@ -164,7 +164,7 @@ in
       navigation.bookmarks.entries = {
         plantuml-server = {
           desc = "PlantUML server instance";
-          remote.url = "http://localhost:${cfg.diagrams.plantuml.server.port}/";
+          remote.url = "http://localhost:${builtins.toString cfg.diagrams.plantuml.server.port}/plantuml";
         };
       };
     })
