@@ -17,7 +17,7 @@ let
   fontXresources = baseFont // { size = 12; };
   sizeAlacritty = 9.0;
   sizeKitty = 8.0;
-  sizeXLFDLarge = 16;
+  sizeXLFDLarge = 20;
   sizeFamilySizeLarge = 40;
 in
 {
