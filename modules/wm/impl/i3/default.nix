@@ -471,7 +471,7 @@ in
         ] ++ optionals (cfg.windowFocus.impl == "easyfocus") [
           {
             key = [ prefix "Tab" ];
-            cmd = ''${pkgs.i3-easyfocus}/bin/i3-easyfocus --all --keys alpha --font ${config.wmCommon.fonts.xlfd.large}'';
+            cmd = ''${pkgs.i3-easyfocus}/bin/i3-easyfocus --all --keys alpha --font "${config.wmCommon.fonts.xlfd.large}"'';
             mode = "root";
           }
         ] ++ optionals (config.wmCommon.focus.list.useWMSpecific) [
