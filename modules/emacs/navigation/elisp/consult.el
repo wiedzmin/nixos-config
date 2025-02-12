@@ -1,5 +1,3 @@
-;; TODO: consider trying `fd' finder tool, see https://github.com/minad/consult/wiki#find-files-using-fd for reference
-;; Note: this requires lexical binding
 (use-package consult
   :init
   (use-package consult-utils)
@@ -18,7 +16,7 @@
   (:map custom-search-map
         ("G" . consult-ripgrep-symbol-at-point)
         ("g" . consult-ripgrep)
-        ("f" . consult-find))
+        ("f" . consult-fd))
   (:map help-map
         ("M" . consult-minor-mode-menu))
   (:map custom-help-map
