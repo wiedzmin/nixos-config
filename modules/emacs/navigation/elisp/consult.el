@@ -146,7 +146,7 @@
   (add-to-list 'consult-buffer-sources consult--bufler-workspace+ 'append))
 
 (with-eval-after-load 'vertico-multiform
-  (setq vertico-multiform-commands '((consult-line buffer))))
+  (add-to-list 'vertico-multiform-commands '(consult-line buffer)))
 
 (eval-after-load 'xref
   (use-package xref
