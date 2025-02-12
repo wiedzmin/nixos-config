@@ -6,7 +6,6 @@
   :bind
   ("C-S-s" . consult-line-symbol-at-point)
   ("C-s" . consult-line)
-  ("M-*" . consult-line-symbol-at-point)
   ("M-g" . consult-goto-line)
   ([remap apropos] . consult-apropos)
   ([remap bookmark-jump] . consult-bookmark)
