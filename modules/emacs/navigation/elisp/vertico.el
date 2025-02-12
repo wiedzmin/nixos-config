@@ -46,7 +46,5 @@
                                   (consult-grep buffer)
                                   (consult-xref buffer)
                                   (symbol (vertico-sort-function . vertico-sort-alpha))))
-  (vertico-multiform-commands
-      '((execute-extended-command unobtrusive)))
   :config
   (vertico-multiform-mode))
