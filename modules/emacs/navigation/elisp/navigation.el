@@ -624,6 +624,13 @@
 
 (use-package dogears
   :demand t
+  :bind
+  (:map custom-goto-map
+        ("e" . dogears-go)
+        ("E" . dogears-list))
+  :custom
+  (dogears-idle 2)
+  (dogears-line-width 50)
   :config
   (dogears-mode +1))
 
