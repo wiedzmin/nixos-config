@@ -129,7 +129,7 @@ in
         "custom-help-map" = "<f1>";
         "custom-narrowing-map" = "<f9>";
         "custom-search-map" = "C-q";
-        "custom-projects-map" = "<f8>";
+        "custom-projects-map" = "<f11>";
         "custom-treemacs-map" = "C-x t";
         "custom-frame-map" = "<f2>";
       };
