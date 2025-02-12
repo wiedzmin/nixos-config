@@ -26,7 +26,7 @@
         ("M" . consult-minor-mode-menu))
   (:map custom-goto-map
         ("C-s" . consult-line-multi)
-        ("M-SPC" . consult-mark)
+        ("S-SPC" . consult-mark)
         ("`" . consult-compile-error)
         ("C" . consult-complex-command)
         ("j" . consult-global-mark)
