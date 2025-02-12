@@ -37,7 +37,6 @@
         ("r s" . consult-register-store)
         ("r x" . consult-register))
   (:map minibuffer-local-map
-        ("M-." . custom/embark-preview)
         ("<next>" . scroll-up-command)
         ("<prior>" . scroll-down-command))
   :custom
@@ -64,10 +63,7 @@
     (define-advice func
         (:before (&rest _) custom/mark-jump-point)
       (xref-push-marker-stack)
-      (push-mark)))
-  (define-minibuffer-key "\C-s"
-                         'consult-location #'previous-history-element
-                         'file #'consult-find-for-minibuffer))
+      (push-mark))))
 
 (with-eval-after-load 'dired
   (keymap-set dired-mode-map "`" 'consult-file-externally))
