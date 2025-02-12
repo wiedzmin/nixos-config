@@ -97,7 +97,7 @@
   (:map embark-buffer-map
         ("j" . consult-buffer-other-window))
   :hook
-  (embark-collect-mode . embark-consult-preview-minor-mode))
+  (embark-collect-mode-hook . embark-consult-preview-minor-mode))
 
 (use-package consult-flycheck
   :after (consult flycheck)
