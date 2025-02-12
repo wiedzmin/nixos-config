@@ -592,7 +592,7 @@
 (use-package goggles
   :delight " 6d"
   :config
-  (goggles-mode)
+  (goggles-mode +1)
   (setq-default goggles-pulse t))
 
 (use-package xref
