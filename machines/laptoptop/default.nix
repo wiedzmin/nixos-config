@@ -317,6 +317,7 @@ in
     misc = {
       enable = true;
       patching.enable = true;
+      diagrams.enable = true;
       tools.xserver.enable = true;
       tools.misc.enable = true;
       just.chooserCmd = "fzf";
