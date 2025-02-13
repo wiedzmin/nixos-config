@@ -23,10 +23,10 @@
         ("M" . consult-minor-mode-menu))
   (:map custom-goto-map
         ("C-s" . consult-line-multi)
-        ("S-SPC" . consult-mark)
+        ("SPC" . consult-mark)
         ("`" . consult-compile-error)
         ("C" . consult-complex-command)
-        ("j" . consult-global-mark)
+        ("S-SPC" . consult-global-mark)
         ("k" . consult-kmacro)
         ("o" . consult-outline)
         ("r b" . consult-bookmark)
