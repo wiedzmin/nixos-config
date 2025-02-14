@@ -265,15 +265,11 @@ in
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.lsp-mode
         epkgs.lsp-ui
-        epkgs.lsp-treemacs
       ] ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [
         epkgs.consult-lsp
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
         ([ ./elisp/lsp-mode.el ] ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ ./elisp/consult.el ]);
-      ide.emacs.core.customKeymaps = {
-        "custom-lsp-treemacs-map" = "C-c l";
-      };
       home-manager.users."${user}" = {
         home.activation.ensureLspSessionDir = {
           # lsp-deferred fails otherwise

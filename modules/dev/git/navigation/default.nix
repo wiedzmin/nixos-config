@@ -68,7 +68,6 @@ in
         epkgs.git-timemachine
         epkgs.git-walktree
         epkgs.magit-todos
-        epkgs.treemacs-magit
       ];
       ide.emacs.core.config = builtins.readFile ./elisp/navigation.el;
     })
