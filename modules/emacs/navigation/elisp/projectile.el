@@ -55,11 +55,6 @@
   (:map flycheck-mode-map
         ("C-c ! p" . flycheck-projectile-list-errors)))
 
-(use-package treemacs-projectile
-  :bind
-  (:map custom-projects-map
-        ("e" . treemacs-projectile)))
-
 (with-eval-after-load 'marginalia
   (setq marginalia-command-categories '((projectile-find-file . project-file)
                                         (projectile-find-dir . project-file)

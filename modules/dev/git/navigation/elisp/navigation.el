@@ -15,10 +15,6 @@
   (:map dired-mode-map
         (")" . dired-git-info-mode)))
 
-;;TODO: ensure dependency (on clients nix submodule)
-(use-package treemacs-magit
-  :after treemacs magit)
-
 (use-package magit-todos
   :after magit
   :bind

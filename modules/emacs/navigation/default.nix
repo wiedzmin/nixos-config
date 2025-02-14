@@ -89,8 +89,6 @@ in
         epkgs.rainbow-delimiters
         epkgs.recursive-narrow
         epkgs.rg
-        epkgs.treemacs
-        epkgs.treemacs-icons-dired
         epkgs.winum
         epkgs.zygospore
       ] ++ optionals (cfg.selection.backend == "vertico") [
@@ -106,7 +104,6 @@ in
       ] ++ optionals (cfg.projects.backend == "projectile") [
         epkgs.projectile
         epkgs.flycheck-projectile
-        epkgs.treemacs-projectile
       ] ++ optionals (cfg.projects.backend == "projectile" && cfg.collections.backend == "consult") [
         epkgs.consult-projectile
       ];
@@ -130,7 +127,6 @@ in
         "custom-narrowing-map" = "<f9>";
         "custom-search-map" = "C-q";
         "custom-projects-map" = "<f11>";
-        "custom-treemacs-map" = "C-x t";
         "custom-frame-map" = "<f2>";
       };
       # TODO: consider enhance custom keymaps nix machinery in a way of automatically unbinding, either global or some submapped conflicting keybindings

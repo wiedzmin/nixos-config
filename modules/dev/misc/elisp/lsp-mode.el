@@ -190,17 +190,6 @@
   (dap-mode 1)
   (dap-ui-mode 1))
 
-(use-package lsp-treemacs
-  :after treemacs lsp-mode
-  :bind
-  (:map custom-lsp-treemacs-map
-        ("e" . lsp-treemacs-errors-list)
-        ("s" . lsp-treemacs-symbols))
-  :custom
-  (lsp-treemacs-theme "Iconless")
-  :config
-  (lsp-treemacs-sync-mode 1))
-
 (with-eval-after-load 'cape
   (advice-add #'lsp-completion-at-point :around #'cape-wrap-nonexclusive)
   (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible))
