@@ -197,6 +197,9 @@
      (xref-location (styles . (orderless)))))
   (orderless-component-separator "[ &-+]")
   :config
+  (use-package orderless-kwd
+    :config
+    (add-to-list 'orderless-style-dispatchers #'orderless-kwd-dispatch))
   (define-advice company-capf--candidates
       (:around (orig-fun &rest args) just-one-face)
     (let ((orderless-match-faces [completions-common-part]))
