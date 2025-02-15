@@ -77,7 +77,6 @@ in
         epkgs.dired-subtree
         epkgs.dogears
         epkgs.embark
-        epkgs.goggles
         epkgs.link-hint
         epkgs.manage-minor-mode-table
         epkgs.marginalia
