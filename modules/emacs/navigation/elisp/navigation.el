@@ -306,8 +306,7 @@
         ("F" . describe-face))
   (:map custom-help-map
         ("F" . describe-face)
-        ("b" . describe-bindings)
-        ("i" . info-lookup-symbol)))
+        ("b" . describe-bindings)))
 
 (use-package info-look
   :bind
