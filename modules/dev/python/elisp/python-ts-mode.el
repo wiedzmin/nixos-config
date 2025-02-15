@@ -17,8 +17,6 @@
   :bind
   (:map python-ts-mode-map
         ("C-k" . sp-kill-hybrid-sexp)
-        ("C-<down>" . sp-push-hybrid-sexp)
-        ("C-<right>" . sp-slurp-hybrid-sexp)
         ("M-_" . python-indent-shift-left)
         ("M-+" . python-indent-shift-right)))
 
