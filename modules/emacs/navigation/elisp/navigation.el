@@ -484,7 +484,7 @@
   (:map mode-specific-map
         ("h p" . pulsar-pulse-line)
         ("h r" . pulsar-pulse-region)
-        ("h h" . pulsar-highlight-line))
+        ("h l" . pulsar-highlight-line))
   :hook
   (next-error-hook . pulsar-pulse-line)
   :custom
