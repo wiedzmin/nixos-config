@@ -48,19 +48,12 @@
   (consult-line-numbers-widen t)
   (register-preview-delay 0.1)
   (register-preview-function #'consult-register-format)
-  (xref-show-definitions-function #'consult-xref)
-  (xref-show-xrefs-function #'consult-xref)
   :config
   (consult-customize
    consult-theme :preview-key '(:debounce 0.2 any)
    consult-recent-file :preview-key '("S-<up>" "S-<down>")
    consult-line :preview-key 'any :keymap custom/consult-line-map)
-  (advice-add #'register-preview :override #'consult-register-window)
-  (dolist (func '(consult-git-grep consult-ripgrep consult-grep))
-    (define-advice func
-        (:before (&rest _) custom/mark-jump-point)
-      (xref-push-marker-stack)
-      (push-mark))))
+  (advice-add #'register-preview :override #'consult-register-window))
 
 (with-eval-after-load 'dired
   (keymap-set dired-mode-map "`" 'consult-file-externally))
@@ -74,11 +67,6 @@
    #'(lambda (&optional dirname switches)
        (interactive)
        (pop-to-buffer-same-window (dired-noselect dirname)))))
-
-(use-package consult-xref
-  :custom
-  (xref-show-xrefs-function #'consult-xref)
-  (xref-show-definitions-function #'consult-xref))
 
 (use-package embark-consult
   :after (embark consult)
@@ -140,12 +128,6 @@
 (with-eval-after-load 'vertico-multiform
   (add-to-list 'vertico-multiform-commands '(consult-line buffer)))
 
-(eval-after-load 'xref
-  (use-package xref
-    :custom
-    (xref-show-xrefs-function #'consult-xref)
-    (xref-show-definitions-function #'consult-xref)))
-
 (with-eval-after-load 'orderless
   (defun dispatcher/dollar (pattern index total)
   (when (string-suffix-p "$" pattern)
@@ -155,3 +137,14 @@
                   consult--tofu-char
                   (+ consult--tofu-char consult--tofu-range -1)))))
   (add-to-list 'orderless-style-dispatchers 'dispatcher/dollar))
+
+(with-eval-after-load 'xref
+  (dolist (func '(consult-git-grep consult-ripgrep consult-grep))
+    (define-advice func
+        (:before (&rest _) custom/mark-jump-point)
+      (xref-push-marker-stack)
+      (push-mark)))
+  (use-package consult-xref
+    :custom
+    (xref-show-definitions-function #'consult-xref)
+    (xref-show-xrefs-function #'consult-xref)))

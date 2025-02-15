@@ -1,5 +1,3 @@
-;; TODO: setup xref package, then search for some modern completion UI (ivy/vertico/etc.) xref impl
-
 (use-package navigation-misc
   @recenterWindowDisabled@
   :bind
