@@ -356,6 +356,21 @@
               ("TAB" . dired-subtree-toggle)))
 
 (use-package dired
+  :preface
+  (defun custom/dired-open-in-eww ()
+    (interactive)
+    (when (derived-mode-p 'dired-mode)
+      (if (file-directory-p (dired-get-filename))
+          (message "Directories cannot be opened in EWW")
+        (eww-open-file (dired-get-file-for-visit)))))
+  (defvar go-away-repl-regexp
+    (rx bos "*" (or "Async")
+        (zero-or-more nonl))
+    "Regexp for matching windows to disappear")
+  (defun custom/dired-current-path-to-clipboard ()
+    (interactive)
+    (when (eq major-mode 'dired-mode)
+      (kill-new dired-directory)))
   :commands dired
   @autorevertEnable@
   :bind
@@ -365,21 +380,7 @@
         ("i" . image-dired)
         ("C-c" . org-copy-visible))
   (:map dired-mode-map
-        ("e" . (lambda ()
-                 (interactive)
-                 (when (derived-mode-p 'dired-mode)
-                   (if (file-directory-p (dired-get-filename))
-                       (message "Directories cannot be opened in EWW")
-                     (eww-open-file (dired-get-file-for-visit)))))))
-  :preface
-  (defvar go-away-repl-regexp
-    (rx bos "*" (or "Async")
-        (zero-or-more nonl))
-    "Regexp for matching windows to disappear")
-  (defun custom/dired-current-path-to-clipboard ()
-    (interactive)
-    (when (eq major-mode 'dired-mode)
-      (kill-new dired-directory)))
+        ("e" . custom/dired-open-in-eww))
   :custom
   (dired-recursive-deletes 'top) ;; Allows recursive deletes
   (dired-dwim-target t)
@@ -391,6 +392,7 @@
   (use-package dired-x
     :custom
     (dired-guess-shell-alist-user '(("" "xdg-open"))))
+  (use-package dired-filetype-face)
   (when (version<= "28.0.50" emacs-version)
     (setq dired-kill-when-opening-new-dired-buffer nil))
   (put 'dired-find-alternate-file 'disabled nil)
@@ -403,8 +405,7 @@
   (dolist (func '(dired-do-rename dired-create-directory))
     (define-advice func
         (:after (orig-fun &rest args) custom/revert-dired-buffer)
-      (revert-buffer)))
-  (use-package dired-filetype-face))
+      (revert-buffer))))
 
 (use-package wdired
   :after dired
