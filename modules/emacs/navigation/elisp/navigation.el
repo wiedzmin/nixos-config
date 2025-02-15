@@ -510,6 +510,14 @@
                             scroll-down-command
                             scroll-up-command
                             widen))
+  (pulsar-pulse-region-functions '(delete-region
+                                   kill-region
+                                   primitive-undo
+                                   transpose-chars
+                                   transpose-lines
+                                   transpose-words
+                                   yank
+                                   yank-pop))
   (pulsar-pulse t)
   (pulsar-delay 0.055)
   (pulsar-iterations 20)
@@ -527,12 +535,6 @@
   :custom
   (block-nav-move-skip-shallower t)
   (block-nav-center-after-scroll t))
-
-(use-package goggles
-  :delight " 6d"
-  :config
-  (goggles-mode +1)
-  (setq-default goggles-pulse t))
 
 (use-package xref
   :hook
