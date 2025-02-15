@@ -16,6 +16,3 @@
   (add-to-list 'completion-at-point-functions #'pcomplete-completions-at-point)
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'(lambda () "")))
-
-(with-eval-after-load 'focus
-  (add-to-list 'focus-mode-to-thing '(python-mode . paragraph)))
