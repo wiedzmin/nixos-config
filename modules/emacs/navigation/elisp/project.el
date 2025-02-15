@@ -12,4 +12,5 @@
         ("k" . project-kill-buffers)))
 
 (with-eval-after-load 'lsp-mode
-  (setq lsp-auto-guess-root t))
+  (with-eval-after-load 'project
+    (setq lsp-auto-guess-root t)))

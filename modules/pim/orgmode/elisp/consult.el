@@ -1,15 +1,16 @@
 (with-eval-after-load 'consult
-  (defvar consult--source-org-buffer
-    (list :name "Org"
-          :narrow ?o
-          :category 'buffer
-          :state #'consult--buffer-state
-          :items (lambda () (mapcar #'buffer-name (org-buffer-list)))))
-  (add-to-list 'consult-buffer-sources consult--source-org-buffer 'append)
-  (defun custom/consult-ripgrep-org ()
-    (interactive)
-    (consult-ripgrep "@orgRoot@"))
-  (keymap-set custom-org-map "g" 'custom/consult-ripgrep-org))
+  (with-eval-after-load 'org
+    (defvar consult--source-org-buffer
+      (list :name "Org"
+            :narrow ?o
+            :category 'buffer
+            :state #'consult--buffer-state
+            :items (lambda () (mapcar #'buffer-name (org-buffer-list)))))
+    (add-to-list 'consult-buffer-sources consult--source-org-buffer 'append)
+    (defun custom/consult-ripgrep-org ()
+      (interactive)
+      (consult-ripgrep "@orgRoot@"))
+    (keymap-set custom-org-map "g" 'custom/consult-ripgrep-org)))
 
 (use-package consult-org-roam
   :preface

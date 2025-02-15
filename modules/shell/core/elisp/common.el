@@ -22,7 +22,8 @@
         ("q" . pueue)))
 
 (with-eval-after-load 'sh-mode
-  (when (boundp 'company-backends)
-    (add-to-list 'company-backends 'company-tabnine)
-    (add-to-list 'company-backends 'company-capf))
+  (with-eval-after-load 'company
+    (when (boundp 'company-backends)
+      (add-to-list 'company-backends 'company-tabnine)
+      (add-to-list 'company-backends 'company-capf)))
   (add-to-list 'completion-at-point-functions #'pcomplete-completions-at-point))

@@ -56,9 +56,11 @@
         ("C-c ! p" . flycheck-projectile-list-errors)))
 
 (with-eval-after-load 'marginalia
-  (setq marginalia-command-categories '((projectile-find-file . project-file)
-                                        (projectile-find-dir . project-file)
-                                        (projectile-switch-project . file))))
+  (with-eval-after-load 'projectile
+    (setq marginalia-command-categories '((projectile-find-file . project-file)
+                                          (projectile-find-dir . project-file)
+                                          (projectile-switch-project . file)))))
 
 (with-eval-after-load 'lsp-mode
-  (setq lsp-auto-guess-root t))
+  (with-eval-after-load 'projectile
+    (setq lsp-auto-guess-root t)))

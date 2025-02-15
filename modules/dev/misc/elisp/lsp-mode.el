@@ -191,5 +191,6 @@
   (dap-ui-mode 1))
 
 (with-eval-after-load 'cape
-  (advice-add #'lsp-completion-at-point :around #'cape-wrap-nonexclusive)
-  (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible))
+  (with-eval-after-load 'lsp-mode
+    (advice-add #'lsp-completion-at-point :around #'cape-wrap-nonexclusive)
+    (advice-add #'lsp-completion-at-point :around #'cape-wrap-noninterruptible)))

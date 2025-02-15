@@ -13,8 +13,9 @@
   (yas-wrap-around-region t)
   (yas-snippet-dirs '("@emacsYasnippetSnippets@")))
 
-(with-eval-after-load 'go-mode
-  (add-hook 'consult-after-jump-hook 'yas-minor-mode))
+(with-eval-after-load 'yasnippet
+  (with-eval-after-load 'consult
+    (add-hook 'consult-after-jump-hook 'yas-minor-mode)))
 
 (eval-after-load 'lsp
   (use-package lsp

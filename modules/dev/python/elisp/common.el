@@ -10,9 +10,10 @@
   :hook (pip-requirements-mode . custom/pip-requirements-ignore-case))
 
 (with-eval-after-load 'python
-  (when (boundp 'company-backends)
-    (add-to-list 'company-backends 'company-tabnine)
-    (add-to-list 'company-backends 'company-capf))
+  (with-eval-after-load 'company
+    (when (boundp 'company-backends)
+      (add-to-list 'company-backends 'company-tabnine)
+      (add-to-list 'company-backends 'company-capf)))
   (add-to-list 'completion-at-point-functions #'pcomplete-completions-at-point)
   (add-function :before-until (local 'eldoc-documentation-function)
                 #'(lambda () "")))

@@ -46,3 +46,10 @@
         ("C-c T" . go-tag-remove))
   :custom
   (go-tag-args '("-transform" "camelcase")))
+
+(with-eval-after-load 'eglot
+  (with-eval-after-load 'go-ts-mode
+    (setq-default eglot-workspace-configuration
+                  '((:gopls .
+                            ((staticcheck . t)
+                             (matcher . "CaseSensitive")))))))
