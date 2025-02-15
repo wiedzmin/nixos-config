@@ -82,15 +82,14 @@
 
 (use-package embark-consult
   :after (embark consult)
-  :demand t ; only necessary if you have the hook below
   :bind
   (:map embark-file-map
         ("x" . consult-file-externally)
         ("j" . find-file-other-window))
   (:map embark-buffer-map
         ("j" . consult-buffer-other-window))
-  :hook
-  (embark-collect-mode-hook . embark-consult-preview-minor-mode))
+  (:map embark-collect-mode-map
+        ("C-j" . consult-preview-at-point)))
 
 (use-package consult-flycheck
   :after (consult flycheck)
