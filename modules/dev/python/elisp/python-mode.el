@@ -23,4 +23,5 @@
         ("M-+" . python-indent-shift-right)))
 
 (with-eval-after-load 'focus
-  (add-to-list 'focus-mode-to-thing '(python-mode . paragraph)))
+  (with-eval-after-load 'python
+    (add-to-list 'focus-mode-to-thing '(python-mode . paragraph))))

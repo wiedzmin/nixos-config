@@ -1,6 +1,7 @@
 (with-eval-after-load 'consult
-  (keymap-set custom-projects-map "r" 'consult-recent-file)
-  (keymap-set custom-projects-map "h" 'consult-project-extra-find))
+  (with-eval-after-load 'project
+    (keymap-set custom-projects-map "h" 'consult-project-extra-find))
+  (keymap-set custom-projects-map "r" 'consult-recent-file))
 
 (use-package consult-project-extra
   :bind

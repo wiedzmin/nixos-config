@@ -56,7 +56,8 @@
   (advice-add #'register-preview :override #'consult-register-window))
 
 (with-eval-after-load 'dired
-  (keymap-set dired-mode-map "`" 'consult-file-externally))
+  (with-eval-after-load 'consult
+    (keymap-set dired-mode-map "`" 'consult-file-externally)))
 
 (use-package consult-dir
   :bind
@@ -86,65 +87,71 @@
         ("y" . consult-flycheck)))
 
 (with-eval-after-load 'pulsar
-  (mapc (lambda (x) (add-hook 'consult-after-jump-hook x)) `(pulsar-recenter-top pulsar-reveal-entry)))
+  (with-eval-after-load 'consult
+    (mapc (lambda (x) (add-hook 'consult-after-jump-hook x)) `(pulsar-recenter-top pulsar-reveal-entry))))
 
 (with-eval-after-load 'dogears
-  (defvar consult--source-dogears
-    (list :name     "Dogears"
-          :narrow   ?d
-          :category 'dogears
-          :items    (lambda ()
-                      (mapcar
-                       (lambda (place)
-                         (propertize (dogears--format-record place)
-                                     'consult--candidate place))
-                       dogears-list))
-          :action   (lambda (cand)
-                      (dogears-go (get-text-property 0 'consult--candidate cand)))))
-  (add-to-list 'consult-buffer-sources consult--source-dogears 'append)
-  (defun consult-dogears ()
-    (interactive)
-    (consult--multi '(consult--source-dogears))))
+ (with-eval-after-load 'consult
+   (defvar consult--source-dogears
+     (list :name     "Dogears"
+           :narrow   ?d
+           :category 'dogears
+           :items    (lambda ()
+                       (mapcar
+                        (lambda (place)
+                          (propertize (dogears--format-record place)
+                                      'consult--candidate place))
+                        dogears-list))
+           :action   (lambda (cand)
+                       (dogears-go (get-text-property 0 'consult--candidate cand)))))
+   (add-to-list 'consult-buffer-sources consult--source-dogears 'append)
+   (defun consult-dogears ()
+     (interactive)
+     (consult--multi '(consult--source-dogears)))))
 
 (with-eval-after-load 'bufler
-  (defvar consult--bufler-workspace+
-    (list :name "Workspace"
-          :narrow ?w
-          :category 'buffer
-          :face 'consult-buffer
-          :history 'buffer-name-history
-          :state #'consult--buffer-state
-          ;; :enabled (lambda () (frame-parameter nil 'bufler-workspace-path))
-          :items (lambda ()
-                   (let ((bufler-vc-state nil))
-                     (mapcar #'buffer-name
-                             (mapcar #'cdr
-                                     (bufler-buffer-alist-at
-                                      (frame-parameter nil 'bufler-workspace-path)
-                                      :filter-fns bufler-filter-buffer-fns))))))
-    "Bufler workspace buffers source for `consult-buffer'.")
-  (add-to-list 'consult-buffer-sources consult--bufler-workspace+ 'append))
+  (with-eval-after-load 'consult
+    (defvar consult--bufler-workspace+
+      (list :name "Workspace"
+            :narrow ?w
+            :category 'buffer
+            :face 'consult-buffer
+            :history 'buffer-name-history
+            :state #'consult--buffer-state
+            ;; :enabled (lambda () (frame-parameter nil 'bufler-workspace-path))
+            :items (lambda ()
+                     (let ((bufler-vc-state nil))
+                       (mapcar #'buffer-name
+                               (mapcar #'cdr
+                                       (bufler-buffer-alist-at
+                                        (frame-parameter nil 'bufler-workspace-path)
+                                        :filter-fns bufler-filter-buffer-fns))))))
+      "Bufler workspace buffers source for `consult-buffer'.")
+    (add-to-list 'consult-buffer-sources consult--bufler-workspace+ 'append)))
 
 (with-eval-after-load 'vertico-multiform
-  (add-to-list 'vertico-multiform-commands '(consult-line buffer)))
+  (with-eval-after-load 'consult
+    (add-to-list 'vertico-multiform-commands '(consult-line buffer))))
 
 (with-eval-after-load 'orderless
-  (defun dispatcher/dollar (pattern index total)
-  (when (string-suffix-p "$" pattern)
-    (cons 'orderless-regexp
-          (format "%s[%c-%c]*$"
-                  (substring pattern 0 -1)
-                  consult--tofu-char
-                  (+ consult--tofu-char consult--tofu-range -1)))))
-  (add-to-list 'orderless-style-dispatchers 'dispatcher/dollar))
+  (with-eval-after-load 'consult
+    (defun dispatcher/dollar (pattern index total)
+      (when (string-suffix-p "$" pattern)
+        (cons 'orderless-regexp
+              (format "%s[%c-%c]*$"
+                      (substring pattern 0 -1)
+                      consult--tofu-char
+                      (+ consult--tofu-char consult--tofu-range -1)))))
+    (add-to-list 'orderless-style-dispatchers 'dispatcher/dollar)))
 
 (with-eval-after-load 'xref
-  (dolist (func '(consult-git-grep consult-ripgrep consult-grep))
-    (define-advice func
-        (:before (&rest _) custom/mark-jump-point)
-      (xref-push-marker-stack)
-      (push-mark)))
-  (use-package consult-xref
-    :custom
-    (xref-show-definitions-function #'consult-xref)
-    (xref-show-xrefs-function #'consult-xref)))
+  (with-eval-after-load 'consult
+    (dolist (func '(consult-git-grep consult-ripgrep consult-grep))
+      (define-advice func
+          (:before (&rest _) custom/mark-jump-point)
+        (xref-push-marker-stack)
+        (push-mark)))
+    (use-package consult-xref
+      :custom
+      (xref-show-definitions-function #'consult-xref)
+      (xref-show-xrefs-function #'consult-xref))))

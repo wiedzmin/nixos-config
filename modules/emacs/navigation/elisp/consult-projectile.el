@@ -1,6 +1,7 @@
 (with-eval-after-load 'consult
-  (setq consult-project-function #'projectile-project-root)
-  (fset 'projectile-ripgrep 'consult-ripgrep))
+  (with-eval-after-load 'projectile
+    (setq consult-project-function #'projectile-project-root)
+    (fset 'projectile-ripgrep 'consult-ripgrep)))
 
 (use-package consult-projectile
   :after projectile

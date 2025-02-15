@@ -38,7 +38,8 @@
   (corfu-history-mode t))
 
 (with-eval-after-load 'savehist
-  (add-to-list 'savehist-additional-variables 'corfu-history))
+  (with-eval-after-load 'corfu
+    (add-to-list 'savehist-additional-variables 'corfu-history)))
 
 (use-package corfu-popupinfo
   :after corfu
@@ -91,4 +92,5 @@
   (add-to-list 'corfu-margin-formatters #'kind-icon-margin-formatter))
 
 (with-eval-after-load 'lsp-mode
-  (setq lsp-completion-provider :none))
+  (with-eval-after-load 'corfu
+    (setq lsp-completion-provider :none)))
