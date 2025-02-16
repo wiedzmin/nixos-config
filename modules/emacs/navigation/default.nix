@@ -75,7 +75,6 @@ in
         epkgs.dired-filetype-face
         epkgs.dired-narrow
         epkgs.dired-subtree
-        epkgs.dogears
         epkgs.embark
         epkgs.link-hint
         epkgs.manage-minor-mode-table
