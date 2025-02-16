@@ -563,18 +563,6 @@
       (:after (orig-fun &rest args) custom/revert-dired-buffer)
     (delete-window (get-buffer-window (get-buffer "*xref*")))))
 
-(use-package dogears
-  :demand t
-  :bind
-  (:map custom-goto-map
-        ("e" . dogears-go)
-        ("E" . dogears-list))
-  :custom
-  (dogears-idle 2)
-  (dogears-line-width 50)
-  :config
-  (dogears-mode +1))
-
 (use-package bufler
   :bind
   ([remap list-buffers] . bufler-switch-buffer)

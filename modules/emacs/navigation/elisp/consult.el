@@ -90,25 +90,6 @@
   (with-eval-after-load 'consult
     (mapc (lambda (x) (add-hook 'consult-after-jump-hook x)) `(pulsar-recenter-top pulsar-reveal-entry))))
 
-(with-eval-after-load 'dogears
- (with-eval-after-load 'consult
-   (defvar consult--source-dogears
-     (list :name     "Dogears"
-           :narrow   ?d
-           :category 'dogears
-           :items    (lambda ()
-                       (mapcar
-                        (lambda (place)
-                          (propertize (dogears--format-record place)
-                                      'consult--candidate place))
-                        dogears-list))
-           :action   (lambda (cand)
-                       (dogears-go (get-text-property 0 'consult--candidate cand)))))
-   (add-to-list 'consult-buffer-sources consult--source-dogears 'append)
-   (defun consult-dogears ()
-     (interactive)
-     (consult--multi '(consult--source-dogears)))))
-
 (with-eval-after-load 'bufler
   (with-eval-after-load 'consult
     (defvar consult--bufler-workspace+
