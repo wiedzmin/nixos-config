@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -46,14 +46,13 @@ in
         epkgs.ws-butler
       ] ++ optionals (!config.ide.emacs.core.treesitter.enable) [
         epkgs.expand-region
-        epkgs.easy-kill
       ] ++ optionals (config.ide.emacs.core.treesitter.enable) [
         epkgs.expreg
       ];
       ide.emacs.core.config =
-        readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/edit.el ] +
-        optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/standard.el ]) +
-        optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]);
+        builtins.readFile ./elisp/edit.el +
+        optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/standard.el) +
+        optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/ts.el);
       ide.emacs.core.customKeymaps = {
         "custom-ws-map" = "C-c x";
         "misc-editing-map" = "<f5>";

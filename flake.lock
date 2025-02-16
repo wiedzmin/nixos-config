@@ -101,22 +101,6 @@
         "type": "github"
       }
     },
-    "emacs-easy-kill-extras": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1738027045,
-        "narHash": "sha256-01+CrlC1Cj2StwApliDZXl4wJt3mAeyayiJraGgMx9g=",
-        "owner": "knu",
-        "repo": "easy-kill-extras.el",
-        "rev": "ffc8a332893f26b43eb28ba56a714f875cc14183",
-        "type": "github"
-      },
-      "original": {
-        "owner": "knu",
-        "repo": "easy-kill-extras.el",
-        "type": "github"
-      }
-    },
     "emacs-epithet": {
       "flake": false,
       "locked": {
@@ -674,7 +658,6 @@
         "emacs": "emacs",
         "emacs-combobulate": "emacs-combobulate",
         "emacs-consult-org-clock": "emacs-consult-org-clock",
-        "emacs-easy-kill-extras": "emacs-easy-kill-extras",
         "emacs-epithet": "emacs-epithet",
         "emacs-git-msg-prefix": "emacs-git-msg-prefix",
         "emacs-highlight-sexp": "emacs-highlight-sexp",
