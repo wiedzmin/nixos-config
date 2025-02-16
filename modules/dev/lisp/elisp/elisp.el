@@ -78,5 +78,3 @@
 
   (add-to-list 'completion-at-point-functions #'cape-elisp-block)
   (add-to-list 'completion-at-point-functions #'cape-elisp-symbol))
-
-;; https://github.com/AmaiKinono/puni

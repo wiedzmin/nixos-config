@@ -36,9 +36,9 @@ in
         epkgs.focus
         epkgs.highlight-numbers
         epkgs.multiple-cursors
+        epkgs.puni
         epkgs.region-bindings-mode
         epkgs.shift-number
-        epkgs.smartparens
         epkgs.string-inflection
         epkgs.undo-tree
         epkgs.wgrep

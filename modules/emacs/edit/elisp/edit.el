@@ -32,38 +32,18 @@
   ("M-+" . shift-number-up)
   ("M-_" . shift-number-down))
 
-(use-package smartparens
-  :after dash
-  :hook
-  ((prog-mode-hook yaml-mode-hook) . smartparens-mode)
-  ((prog-mode-hook yaml-mode-hook) . show-smartparens-mode)
-  ((lisp-mode-hook emacs-lisp-mode-hook markdown-mode-hook) . smartparens-strict-mode)
-  (eval-expression-minibuffer-setup-hook . smartparens-mode)
-  :bind
-  ("M-e" . sp-splice-sexp)
-  (:map smartparens-mode-map
-        ("C-M-t" . sp-transpose-sexp)
-        ("M-s" . nil)
-        ("M-e" . sp-splice-sexp))
-  (:map sp-keymap
-        ("C-M-t" . sp-transpose-sexp)
-        ("M-s" . nil)
-        ("M-e" . sp-splice-sexp))
+(use-package puni
   :config
-  (use-package smartparens-config)
-  (sp-use-paredit-bindings)
-  :custom
-  (sp-show-pair-delay 0.0)
-  :custom-face
-  (sp-show-pair-match-face
-   ((t (:inherit ace-jump-face-foreground
-                 :foreground "green" :background "#000000"))))
-  (sp-show-pair-mismatch-face
-   ((t (:inherit ace-jump-face-foreground
-                 :foreground "red" :background "#000000"))))
-  (sp-show-pair-match-content-face
-   ((t (:inherit ace-jump-face-foreground
-                 :foreground "#fcba03")))))
+  (puni-global-mode +1))
+
+(use-package elec-pair
+  :config
+  (electric-pair-mode +1))
+
+(use-package smie
+  :bind
+  (:map mode-specific-map
+        ("c" . smie-close-block)))
 
 (use-package string-inflection
   :preface
