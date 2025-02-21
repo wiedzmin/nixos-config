@@ -288,9 +288,7 @@
   (:map custom-goto-map
         ("M-f" . link-hint-open-link)
         ("M-F" . link-hint-open-multiple-links)
-        ("M-y" . link-hint-copy-link)
-        ;; FIXME: does not find any links for some reason
-        ("M-Y" . link-hint-copy-multiple-links))
+        ("M-y" . link-hint-copy-link))
   :custom
   (link-hint-avy-style 'at-full))
 
