@@ -638,11 +638,6 @@
         ("b" . burly-open-bookmark)
         ("M-b" . burly-open-last-bookmark)))
 
-(use-package zygospore
-  :bind
-  ;FIXME: rebind
-  ("C-x 1" . zygospore-toggle-delete-other-windows))
-
 (use-package window
   :bind
   (:map mode-specific-map
