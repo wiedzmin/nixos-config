@@ -88,7 +88,6 @@ in
         epkgs.recursive-narrow
         epkgs.rg
         epkgs.winum
-        epkgs.zygospore
       ] ++ optionals (cfg.selection.backend == "vertico") [
         epkgs.vertico
       ] ++ optionals (cfg.collections.backend == "consult") [
