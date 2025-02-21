@@ -219,8 +219,7 @@
         ("B" . embark-bindings))
   (:map minibuffer-local-map
         ("C-c x" . embark-export)
-        (">" . embark-become)
-        ("M-q" . embark-collect-toggle-view))
+        (">" . embark-become))
   (:map minibuffer-local-completion-map
         ("C-:" . embark-act))
   (:map completion-list-mode-map
