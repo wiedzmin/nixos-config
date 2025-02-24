@@ -66,7 +66,7 @@
   :bind
   ("M-SPC" . cycle-spacing)
   (:map misc-editing-map
-        ("b" . subword-mode)
+        ("w" . subword-mode)
         ("v" . view-mode)
         ("t" . transpose-sexps))
   (:map token-editing-map
