@@ -37,10 +37,6 @@
   :config
   (corfu-history-mode t))
 
-(with-eval-after-load 'savehist
-  (with-eval-after-load 'corfu
-    (add-to-list 'savehist-additional-variables 'corfu-history)))
-
 (use-package corfu-popupinfo
   :after corfu
   :bind
