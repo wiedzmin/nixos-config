@@ -35,6 +35,7 @@
         ("j" . copy-as-format-jira)
         ("w" . copy-as-format-mediawiki)
         ("r" . copy-as-format-rst)
+        ("t" . copy-as-format-telegram)
         ("f" . copy-as-format)))
 
 (use-package flycheck
