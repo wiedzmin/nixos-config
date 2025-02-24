@@ -131,6 +131,11 @@ in
         default = "top";
         description = "Hints vertical alignment for `wmfocus`";
       };
+      windowFocus.wmfocus.textcolor = mkOption {
+        type = types.str;
+        default = "#00fe00";
+        description = "`wmfocus` hints color";
+      };
       windowFocus.wmfocus.textcoloralt = mkOption {
         type = types.str;
         default = "#eeeeee";
@@ -465,7 +470,7 @@ in
             key = [ prefix "Tab" ];
             cmd = ''${pkgs.wmfocus}/bin/wmfocus --halign ${cfg.windowFocus.wmfocus.halign} --valign ${cfg.windowFocus.wmfocus.valign} --chars ${
               config.workstation.input.core.hints.alphabet} --font ${
-                config.wmCommon.fonts.familySize.large} --textcoloralt "${cfg.windowFocus.wmfocus.textcoloralt}"'';
+                config.wmCommon.fonts.familySize.large} --textcolor "${cfg.windowFocus.wmfocus.textcolor}" --textcoloralt "${cfg.windowFocus.wmfocus.textcoloralt}"'';
             mode = "root";
           }
         ] ++ optionals (cfg.windowFocus.impl == "easyfocus") [
