@@ -46,6 +46,7 @@
 
 (defun open-project (path)
   (cond ((f-directory? (format "%s/%s" path ".git")) (magit-status path))
+        ((f-directory? (format "%s/%s" path ".hg")) (vc-dir path))
         (t (dired path))))
 
 (use-package 0x0
