@@ -134,7 +134,7 @@ in
       windowFocus.wmfocus.textcoloralt = mkOption {
         type = types.str;
         default = "#eeeeee";
-        description = "Hints vertical alignment for `wmfocus`";
+        description = "`wmfocus` hints alternate color";
       };
       mouseFollowsFocus = mkOption {
         type = types.bool;
