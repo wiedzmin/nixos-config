@@ -25,19 +25,15 @@
 (use-package copy-as-format
   :bind
   (:map custom-formatting-map
-        ("s" . copy-as-format-slack)
         ("g" . copy-as-format-github)
         ("o" . copy-as-format-org-mode)
         ("m" . copy-as-format-markdown)
         ("a" . copy-as-format-asciidoc)
-        ("b" . copy-as-format-bitbucket)
         ("d" . copy-as-format-disqus)
         ("l" . copy-as-format-gitlab)
-        ("c" . copy-as-format-hipchat)
         ("h" . copy-as-format-html)
         ("j" . copy-as-format-jira)
         ("w" . copy-as-format-mediawiki)
-        ("p" . copy-as-format-pod)
         ("r" . copy-as-format-rst)
         ("f" . copy-as-format)))
 
