@@ -233,15 +233,16 @@
     "emacs-treesit-jump": {
       "flake": false,
       "locked": {
-        "lastModified": 1714380580,
-        "narHash": "sha256-v0gefpDexrmTAFR9yCisAe4a/FDqk/MQheufhaYrcHg=",
-        "owner": "dmille56",
+        "lastModified": 1732964227,
+        "narHash": "sha256-uekWkDQZJzt/lnGvyCTsUx3KgwelArhuSlRnDNuJxo8=",
+        "owner": "abougouffa",
         "repo": "treesit-jump",
-        "rev": "6be39322e80dc11d0c0d28d460a53934c74a41fc",
+        "rev": "8ae8b00b07b9252e9c5a62445436d23acf7b80a0",
         "type": "github"
       },
       "original": {
-        "owner": "dmille56",
+        "owner": "abougouffa",
+        "ref": "enhancements",
         "repo": "treesit-jump",
         "type": "github"
       }
