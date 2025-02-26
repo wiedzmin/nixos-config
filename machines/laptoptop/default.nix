@@ -671,7 +671,7 @@ in
     isDefault = true;
     titleAlignment = "center";
     focusOnWindowActivation = "urgent";
-    windowFocus.impl = "easyfocus";
+    windowFocus.impl = "wmfocus";
     gaps = {
       enable = false;
       inner.size = 5;
