@@ -365,6 +365,7 @@ in
       wm.enable = true;
       emacsEverywhere.enable = true;
       remapEverywhere.enable = true;
+      extraConfigureFlags = [ "--disable-gc-mark-trace" ];
     };
     edit.enable = true;
     navigation = {
