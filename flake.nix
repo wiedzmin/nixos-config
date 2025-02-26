@@ -151,6 +151,12 @@
                       chmod a+x $out/bin/TabNine
                     '';
                   });
+                  moar = old.moar.overrideAttrs (_: {
+                    postPatch = ''
+                      sed -i "s,^\trussiaNotSupported(),,g" moar.go
+                      cat moar.go
+                    '';
+                  });
                   vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
                   nyxt =
                     let
