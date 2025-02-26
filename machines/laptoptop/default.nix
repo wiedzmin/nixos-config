@@ -454,7 +454,10 @@ in
       enable = true;
       emacs.enable = true;
       treesitter.enable = false;
-      permittedInsecurePackages = [ "electron-27.3.11" ];
+      permittedInsecurePackages = [
+        "electron-27.3.11"
+        "archiver-3.5.1"
+      ];
     };
     cachix = {
       enable = true;
