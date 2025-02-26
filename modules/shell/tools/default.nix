@@ -5,6 +5,7 @@ with lib;
 let
   cfg = config.shell.tools;
   user = config.attributes.mainUser.name;
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -43,7 +44,7 @@ in
           sad # TODO: consider creating shell aliases
           sd # TODO: play with it in streaming use-cases
           up
-          uq # FIXME: removed in recent nixpkgs, move to NUR, also add https://github.com/lostutils/groupby there
+          nurpkgs.uq
           pup
         ];
         programs = {
