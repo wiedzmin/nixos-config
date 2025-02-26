@@ -39,7 +39,8 @@
       flake = false;
     };
     emacs-treesit-jump = {
-      url = "github:dmille56/treesit-jump";
+      # FIXME: switch to upstream after recent PR merging
+      url = "github:abougouffa/treesit-jump/enhancements";
       flake = false;
     };
     emacs-password-menu = {
