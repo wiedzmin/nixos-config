@@ -210,8 +210,9 @@ in
             if cfg.fromGit then emacs-git else emacs;
             configured = (flavor.override {
               withGTK3 = if cfg.pgtk.enable then true else false;
-            }).overrideAttrs (_: {
+            }).overrideAttrs (oa: {
               withCsrc = true;
+              configureFlags = oa.configureFlags ++ cfg.extraConfigureFlags;
             });
           in
           if cfg.debug.enable then (pkgs.enableDebugging configured) else configured;
@@ -229,6 +230,11 @@ in
           available packages run:
           <command>nix-env -f '&lt;nixpkgs&gt;' -qaP -A emacsPackages</command>.
         '';
+      };
+      extraConfigureFlags = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = "Additional flags for ./configure script";
       };
       customKeymaps = mkOption {
         type = types.attrsOf types.str;
