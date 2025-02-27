@@ -297,6 +297,7 @@ in
       };
       core = {
         enable = true;
+        pager = "riff";
         emacs.enable = true;
       };
       misc = {
