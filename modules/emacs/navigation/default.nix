@@ -82,8 +82,6 @@ in
         epkgs.marginalia
         epkgs.mosey
         epkgs.orderless
-        epkgs.phi-search
-        epkgs.phi-search-mc
         epkgs.pulsar
         epkgs.rainbow-delimiters
         epkgs.recursive-narrow

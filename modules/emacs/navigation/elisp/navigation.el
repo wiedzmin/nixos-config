@@ -457,13 +457,6 @@
   (setq-default frame-title-format custom-frame-title-format) ;; for various external tools
   (setq truncate-partial-width-windows nil))
 
-(use-package phi-search
-  :hook (isearch-mode-hook . phi-search-from-isearch-mc/setup-keys)
-  :config
-  (use-package phi-search-mc
-    :config
-    (phi-search-mc/setup-keys)))
-
 (use-package rg
   :bind
   (:map custom-search-map
