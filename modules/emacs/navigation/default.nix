@@ -68,6 +68,7 @@ in
       };
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.avy
+        epkgs.ace-window
         epkgs.beginend
         epkgs.block-nav
         epkgs.bufler
