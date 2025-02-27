@@ -404,6 +404,11 @@
         (:after (orig-fun &rest args) custom/revert-dired-buffer)
       (revert-buffer))))
 
+(use-package dired-aux
+  :bind
+  (:map misc-editing-map
+        ("d" . dired-do-replace-regexp-as-diff)))
+
 (use-package wdired
   :after dired
   :custom
