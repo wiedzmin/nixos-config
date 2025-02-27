@@ -84,25 +84,26 @@ in
             }
           ];
         };
-        services.gpg-agent = {
-          enable = true;
-          defaultCacheTtl = 34560000;
-          defaultCacheTtlSsh = 34560000;
-          maxCacheTtl = 34560000;
-          enableSshSupport = true;
-          enableExtraSocket = true;
-          extraConfig = ''
-            allow-emacs-pinentry
-            no-allow-loopback-pinentry
-          '';
-          inherit (cfg) pinentryPackage;
-        };
       };
       # TODO: generalize for multiple WMs
       wmCommon.wsMapping.rules = optionals (config.wm.i3.popupDuringFullscreen != "leave_fullscreen") [{
         class = ".*pinentry.*";
         fullscreen = true;
       }];
+      programs.gnupg.agent = {
+        enable = true;
+        enableSSHSupport = true;
+        enableExtraSocket = true;
+        # enableBrowserSocket = true;
+        settings = {
+          default-cache-ttl = 34560000;
+          default-cache-ttl-ssh = 34560000;
+          max-cache-ttl = 34560000;
+          allow-emacs-pinentry = true;
+          no-allow-loopback-pinentry = true;
+        };
+        inherit (cfg) pinentryPackage;
+      };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pass ];
