@@ -41,8 +41,9 @@ in
       espanso.searchShortcut = mkOption {
         type = types.enum [
           "ALT+SPACE"
+          "ALT+SHIFT+SPACE"
         ];
-        default = "ALT+SPACE";
+        default = "ALT+SHIFT+SPACE";
       };
       espanso.backend = mkOption {
         type = types.enum [ "Auto" "Clipboard" "Inject" ];
