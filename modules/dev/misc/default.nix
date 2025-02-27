@@ -200,18 +200,19 @@ in
         epkgs.jinja2-mode
         epkgs.jq-format
         epkgs.justl
-        epkgs.lua-mode
         epkgs.webpaste
         epkgs.yaml-pro
         epkgs.yaml-mode
-      ] ++ lib.optionals (!config.ide.emacs.core.treesitter.enable) [ epkgs.just-mode ]
-      ++ lib.optionals (cfg.diagrams.enable) [
+      ] ++ lib.optionals (cfg.diagrams.enable) [
         epkgs.blockdiag-mode
         epkgs.graphviz-dot-mode
         epkgs.pikchr-mode
         epkgs.plantuml-mode
       ] ++ lib.optionals (cfg.diagrams.enable && cfg.emacs.orgmode.enable) [
         epkgs.ob-blockdiag
+      ] ++ lib.optionals (!config.ide.emacs.core.treesitter.enable) [
+        epkgs.just-mode
+        epkgs.lua-mode
       ];
       ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/standard.el ]) +
         lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]) +
