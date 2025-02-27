@@ -184,8 +184,7 @@
   :bind
   (:map misc-editing-map
         ("r" . replace-regexp-as-diff)
-        ("m" . multi-file-replace-regexp-as-diff)
-        ("d" . dired-do-replace-regexp-as-diff)))
+        ("m" . multi-file-replace-regexp-as-diff)))
 
 (use-package focus
   :bind
