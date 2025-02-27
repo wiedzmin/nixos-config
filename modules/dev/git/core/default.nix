@@ -24,7 +24,7 @@ in
         description = "Global gitignore contents.";
       };
       pager = mkOption {
-        type = types.enum [ "delta" ];
+        type = types.enum [ "delta" "diff-so-fancy" "riff" ];
         default = "delta";
         description = "Pager tool to use";
       };
@@ -53,10 +53,10 @@ in
         programs.git = {
           enable = true;
           delta = {
-            enable = true;
+            enable = (cfg.pager == "delta");
             options = {
               dark = true;
-              diff-so-fancy = true;
+              diff-so-fancy = true; # NOTE: emulation mode
               features = "decorations";
               highlight-removed = true;
               hyperlinks = true;
@@ -75,6 +75,8 @@ in
               };
             };
           };
+          diff-so-fancy.enable = (cfg.pager == "diff-so-fancy");
+          riff.enable = (cfg.pager == "riff");
           extraConfig = {
             "core" = {
               compression = 0;
@@ -128,7 +130,9 @@ in
         };
       };
 
-      attributes.gitPager.cmd = optionalString (cfg.pager == "delta") "${pkgs.delta}/bin/delta";
+      attributes.gitPager.cmd = optionalString (cfg.pager == "delta") "${pkgs.delta}/bin/delta"
+        + optionalString (cfg.pager == "diff-so-fancy") "${pkgs.diff-so-fancy}/bin/diff-so-fancy"
+        + optionalString (cfg.pager == "riff") "${pkgs.riffdiff}/bin/riff";
       shell.core.variables = [{ GIT_PAGER = config.attributes.gitPager.cmd; }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {

@@ -107,7 +107,7 @@ in
 
       attributes.pager.cmd = optionalString (cfg.pager == "less") "${pkgs.less}/bin/less" +
         optionalString (cfg.pager == "moar") "${pkgs.moar}/bin/moar";
-      shell.core.variables = [{ PAGER = config.attributes.pager.cmd; }];
+      shell.core.variables = [{ PAGER = config.attributes.pager.cmd; global = true; }];
     })
   ];
 }
