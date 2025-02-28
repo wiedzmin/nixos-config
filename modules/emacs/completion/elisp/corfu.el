@@ -43,7 +43,6 @@
   (:map corfu-map
         ("M-n" . corfu-popupinfo-scroll-down)
         ("M-p" . corfu-popupinfo-scroll-up)
-        ;TODO: should we use `corfu-popupinfo-map`?
         ("M-l" . corfu-popupinfo-location)
         ("M-d" . corfu-popupinfo-documentation)
         ("M-t" . corfu-popupinfo-toggle))
