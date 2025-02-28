@@ -32,11 +32,6 @@
   :config
   (corfu-indexed-mode t))
 
-(use-package corfu-history
-  :after corfu
-  :config
-  (corfu-history-mode t))
-
 (use-package corfu-popupinfo
   :after corfu
   :bind
