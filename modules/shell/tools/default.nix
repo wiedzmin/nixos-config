@@ -36,6 +36,7 @@ in
           jj
           jp
           jless
+          jqp
           lfs
           miller
           moreutils # NOTE: see https://joeyh.name/code/moreutils/ for reference
