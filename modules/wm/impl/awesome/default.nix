@@ -268,6 +268,7 @@ in
         debug-awesome = mkWMDebugScript
           pkgs "debug-awesome"
           pkgs.awesome
+          [ ]
           config.attributes.hardware.monitors.internalHead
           ''awesome -c "$XDG_CONFIG_HOME/awesome/rc.lua" ${makeSearchPath cfg.luaModules}'';
       };
