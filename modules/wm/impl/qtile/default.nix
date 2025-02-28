@@ -30,6 +30,7 @@ in
         debug-qtile = mkWMDebugScript
           pkgs "debug-qtile"
           pkgs.qtile-unwrapped
+          [ ]
           config.attributes.hardware.monitors.internalHead
           ''qtile start -c "$XDG_CONFIG_HOME/qtile/config.py"'';
       };

@@ -30,6 +30,7 @@ in
         debug-herbstluft = mkWMDebugScript
           pkgs "debug-herbstluft"
           pkgs.herbstluftwm
+          [ pkgs.dzen2 ]
           config.attributes.hardware.monitors.internalHead
           ''herbstluftwm -c "$XDG_CONFIG_HOME/herbstluftwm/autostart"'';
       };
