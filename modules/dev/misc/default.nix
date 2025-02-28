@@ -188,6 +188,7 @@ in
         d-spy
         # bustle # recently broken
         yaml-language-server
+        nodejs
       ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
