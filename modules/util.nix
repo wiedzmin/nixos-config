@@ -347,7 +347,7 @@ rec {
   # }}}
   # TODO: review floating property for window rules, regardless of WM being used
   # {{{ WM.Common
-  mkWMDebugScript = nixpkgs: name: wmpkg: internalHead: wmcmd:
+  mkWMDebugScript = nixpkgs: name: wmpkg: pkgsAux: internalHead: wmcmd:
     nixpkgs.writeShellApplication {
       inherit name;
       runtimeInputs = with nixpkgs; [
@@ -355,7 +355,7 @@ rec {
         gnugrep
         xorg.xorgserver.out
         xorg.xrandr
-      ] ++ [ wmpkg ];
+      ] ++ [ wmpkg ] ++ pkgsAux;
       text = ''
         XDISPLAY=''${XDISPLAY:-:1}
         if [ "$(xrandr | grep connected | grep -c dis)" = "1" ]; then
