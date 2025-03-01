@@ -45,6 +45,15 @@
         ("t" . treesit-jump-transient)
         ("^" . treesit-jump-parent-jump)))
 
+(use-package treesit-fold
+  :bind
+  (:map mode-specific-map
+        ("TAB" . treesit-fold-toggle))
+  :config
+  (global-treesit-fold-mode 1)
+  (global-treesit-fold-indicators-mode 1)
+  (treesit-fold-line-comment-mode 1))
+
 (use-package combobulate
   :load-path "@emacsCombobulatePath@"
   :hook
