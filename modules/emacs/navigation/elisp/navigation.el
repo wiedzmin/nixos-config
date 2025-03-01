@@ -129,7 +129,6 @@
   (avy-lead-face-2 ((nil (:foreground "white" :background "red" :weight bold))))
   :config
   ;NOTE: removed 'avy-dispatch-alist vs 'avy-keys conflicts
-  (use-package isearch)
   (setf avy-dispatch-alist (assq-delete-all ?z avy-dispatch-alist)
         avy-dispatch-alist (assq-delete-all ?x avy-dispatch-alist)
         avy-dispatch-alist (assq-delete-all ?c avy-dispatch-alist))
@@ -674,6 +673,11 @@
   (which-function-mode 1))
 
 (use-package isearch
+  :bind
+  ("C-M-s" . isearch-forward-regexp)
+  ("C-M-r" . isearch-backward-regexp)
+  ("C-M-;" . isearch-forward-thing-at-point)
+  ("C-M-'" . isearch-backward-thing-at-point)
   :custom
   (lazy-count-suffix-format "   (%s/%s)"))
 
