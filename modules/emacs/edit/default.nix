@@ -32,6 +32,7 @@ in
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.aggressive-indent
         epkgs.drag-stuff
+        epkgs.edit-indirect
         epkgs.evil-nerd-commenter
         epkgs.focus
         epkgs.highlight-numbers
