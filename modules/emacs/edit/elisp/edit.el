@@ -151,6 +151,8 @@
   (global-undo-tree-mode 1))
 
 (use-package kmacro
+  :bind
+  ("C-<f3>" . list-keyboard-macros)
   :custom
   (setq kmacro-ring-max 16))
 
