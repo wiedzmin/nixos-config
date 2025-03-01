@@ -17,12 +17,16 @@
 
     emacs.url = "github:nix-community/emacs-overlay";
     # NOTE: unpackaged emacs extensions
-    emacs-org-bars = {
-      url = "github:tonyaldon/org-bars";
+    yasnippet-snippets = {
+      url = "github:wiedzmin/yasnippet-snippets";
       flake = false;
     };
-    emacs-highlight-sexp = {
-      url = "github:daimrod/highlight-sexp";
+    emacs-combobulate = {
+      url = "github:mickeynp/combobulate";
+      flake = false;
+    };
+    emacs-consult-org-clock = {
+      url = "github:overideal/consult-org-clock";
       flake = false;
     };
     emacs-epithet = {
@@ -34,8 +38,28 @@
       url = "github:acastanedam/git-msg-prefix.el/update-cl";
       flake = false;
     };
-    emacs-consult-org-clock = {
-      url = "github:overideal/consult-org-clock";
+    emacs-highlight-sexp = {
+      url = "github:daimrod/highlight-sexp";
+      flake = false;
+    };
+    emacs-just-ts-mode = {
+      url = "github:leon-barrett/just-ts-mode.el";
+      flake = false;
+    };
+    emacs-org-bars = {
+      url = "github:tonyaldon/org-bars";
+      flake = false;
+    };
+    emacs-password-menu = {
+      url = "github:rnadler/password-menu";
+      flake = false;
+    };
+    emacs-password-store-menu = {
+      url = "github:rjekker/password-store-menu";
+      flake = false;
+    };
+    emacs-project-headerline = {
+      url = "github:gavv/project-headerline";
       flake = false;
     };
     emacs-treesit-jump = {
@@ -43,32 +67,8 @@
       url = "github:abougouffa/treesit-jump/enhancements";
       flake = false;
     };
-    emacs-password-menu = {
-      url = "github:rnadler/password-menu";
-      flake = false;
-    };
-    yasnippet-snippets = {
-      url = "github:wiedzmin/yasnippet-snippets";
-      flake = false;
-    };
     emacs-vue-ts-mode = {
       url = "github:8uff3r/vue-ts-mode";
-      flake = false;
-    };
-    emacs-password-store-menu = {
-      url = "github:rjekker/password-store-menu";
-      flake = false;
-    };
-    emacs-combobulate = {
-      url = "github:mickeynp/combobulate";
-      flake = false;
-    };
-    emacs-just-ts-mode = {
-      url = "github:leon-barrett/just-ts-mode.el";
-      flake = false;
-    };
-    emacs-project-headerline = {
-      url = "github:gavv/project-headerline";
       flake = false;
     };
 
