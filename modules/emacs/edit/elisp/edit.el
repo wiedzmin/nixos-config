@@ -198,3 +198,8 @@
         ("6" . focus-change-thing)
         ("0" . focus-next-thing)
         ("9" . focus-prev-thing)))
+
+(use-package edit-indirect
+  :bind
+  (:map mode-specific-map
+        ("i" . edit-indirect-region)))
