@@ -8,7 +8,7 @@
         ("M-<left>" . tempel-previous))
   :custom
   (tempel-path "@emacsTempelSnippetsPath@")
-  ;; (tempel-trigger-prefix "<")
+  (tempel-trigger-prefix "<")
   :config
   (global-tempel-abbrev-mode))
 
