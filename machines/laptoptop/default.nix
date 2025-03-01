@@ -375,8 +375,8 @@ in
     };
     completion = {
       enable = true;
-      backend = "company";
-      snippets.backend = "tempel";
+      backend = "corfu";
+      snippets.backend = "yasnippet";
     };
     misc.enable = true;
   };
