@@ -560,6 +560,7 @@
 (use-package bufler
   :bind
   ([remap list-buffers] . bufler-switch-buffer)
+  ("<f12>" . bufler-list)
   :config
   (bufler-defgroups
   (group
