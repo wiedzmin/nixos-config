@@ -58,8 +58,7 @@
   :after corfu
   :demand t
   :bind
-  (:map mode-specific-map
-        ("c d" . cape-dabbrev)) ;; or dabbrev-completion
+  ("C-c p" . cape-prefix-map)
   :custom
   (cape-dabbrev-min-length 2)
   :config
@@ -69,6 +68,7 @@
   (add-hook 'completion-at-point-functions #'cape-keyword)
   (add-hook 'completion-at-point-functions #'cape-abbrev)
   (add-hook 'completion-at-point-functions #'cape-dict)
+  (add-hook 'completion-at-point-functions #'cape-elisp-block)
   ;; NOTE: Make these capfs composable
   (advice-add #'comint-completion-at-point :around #'cape-wrap-nonexclusive)
   (advice-add #'pcomplete-completions-at-point :around #'cape-wrap-nonexclusive))
