@@ -722,11 +722,11 @@
     "yasnippet-snippets": {
       "flake": false,
       "locked": {
-        "lastModified": 1675180403,
-        "narHash": "sha256-6jxikpHcm1lFGlyQBBqjrt78YBfBYLCAAxSwxQG6sgA=",
+        "lastModified": 1740840670,
+        "narHash": "sha256-LNo31BU+mHUUb3iLmZ1JDAW8SdKLV9ebiRH3bZXkeq8=",
         "owner": "wiedzmin",
         "repo": "yasnippet-snippets",
-        "rev": "0b03e4d204739fb394e8740d216e350b448ce715",
+        "rev": "736d4f0cabb0cf5941d300a45a29d1ecbfaf598d",
         "type": "github"
       },
       "original": {
