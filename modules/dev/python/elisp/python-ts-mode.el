@@ -18,7 +18,9 @@
   (:map python-ts-mode-map
         ("C-k" . sp-kill-hybrid-sexp)
         ("M-_" . python-indent-shift-left)
-        ("M-+" . python-indent-shift-right)))
+        ("M-+" . python-indent-shift-right))
+  :custom
+  (python-indent-block-paren-deeper t))
 
 (with-eval-after-load 'focus
   (with-eval-after-load 'python
