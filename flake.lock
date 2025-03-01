@@ -72,11 +72,11 @@
     "emacs-combobulate": {
       "flake": false,
       "locked": {
-        "lastModified": 1727437950,
-        "narHash": "sha256-QZd3Z1OXq12Caq3WDUVFA4GFIL1VmuIGHKc1ZHR1LaA=",
+        "lastModified": 1733298711,
+        "narHash": "sha256-XckwDNACLU0TCYwI5oiIk59UC7WXAFM9adLAEN8aGXw=",
         "owner": "mickeynp",
         "repo": "combobulate",
-        "rev": "a136eec9e22c763646729fd1d0e10e0aae0531ad",
+        "rev": "ca2545be196ec32945b5db109578582d7c7270b5",
         "type": "github"
       },
       "original": {
@@ -201,11 +201,11 @@
     "emacs-password-store-menu": {
       "flake": false,
       "locked": {
-        "lastModified": 1724151325,
-        "narHash": "sha256-uND5oi4TmVUjOoG2dey4hZ2kItmw1QqSZ7rjzv6SMwg=",
+        "lastModified": 1737989941,
+        "narHash": "sha256-ZtolcHyePb7NS051pyLyAscVY73gd+j4y4hn/zDkWAs=",
         "owner": "rjekker",
         "repo": "password-store-menu",
-        "rev": "0b181f878c47f2f06da51f5279e04382d6da6527",
+        "rev": "bb765da3d519d87306e13e983bc2847d3abe84a1",
         "type": "github"
       },
       "original": {
@@ -217,11 +217,11 @@
     "emacs-project-headerline": {
       "flake": false,
       "locked": {
-        "lastModified": 1738635934,
-        "narHash": "sha256-rUzIT4bACU+O3mUUHEp9OYGUUvLDL5PHMelzRCv1Dvk=",
+        "lastModified": 1739857352,
+        "narHash": "sha256-0nKH+xe+pv1U5acB6jBWZ1GyT3f8PWLDJxW1AVwk8OU=",
         "owner": "gavv",
         "repo": "project-headerline",
-        "rev": "d9c2da504538a5174feb77358d89c424a55a1908",
+        "rev": "0da7400923cf4936e6ba8e675b8078b89ca61936",
         "type": "github"
       },
       "original": {
@@ -250,11 +250,11 @@
     "emacs-vue-ts-mode": {
       "flake": false,
       "locked": {
-        "lastModified": 1709456359,
-        "narHash": "sha256-1SOlRcq0KSO9n+isUSL5IhlujD4FWcU5I0zP6xuInuQ=",
+        "lastModified": 1734516070,
+        "narHash": "sha256-9muZBcGVvxqkMlHqbk9syTXvvbgEy0sJtcQBpD94jqI=",
         "owner": "8uff3r",
         "repo": "vue-ts-mode",
-        "rev": "5ec5bb317b80ce394e156c61b7b9c63996382a68",
+        "rev": "db748208257d420600110495caf4898f6153e23b",
         "type": "github"
       },
       "original": {
