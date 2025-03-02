@@ -26,6 +26,13 @@
      :colorProvider
      :foldingRangeProvider)))
 
+(use-package sideline-eglot
+  :after eglot
+  :init
+  (setq sideline-backends-right '(sideline-eglot))
+  :hook
+  (eglot-managed-mode-hook . sideline-mode))
+
 (use-package eglot-tempel
   :after eglot)
 

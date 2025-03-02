@@ -290,6 +290,7 @@ in
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.eglot # NOTE: do not depend on bundled version
         epkgs.eglot-tempel
+        epkgs.sideline-eglot
       ] ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [
         epkgs.consult-eglot
         epkgs.consult-eglot-embark
