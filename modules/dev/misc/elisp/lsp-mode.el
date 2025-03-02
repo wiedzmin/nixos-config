@@ -148,9 +148,7 @@
   :after lsp-ui
   :bind
   (:map mode-specific-map
-        ("p" . lsp-ui-flycheck-list))
-  (:map flycheck-mode-map
-        ("C-c ! p" . lsp-ui-flycheck-list))
+        ("!" . lsp-ui-flycheck-list))
   :custom
   (lsp-ui-flycheck-enable t))
 
