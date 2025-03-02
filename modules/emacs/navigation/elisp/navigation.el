@@ -230,12 +230,7 @@
   (embark-allow-edit-default t)
   (embark-indicators '(embark-minimal-indicator embark-highlight-indicator))
   (embark-prompter 'embark-completing-read-prompter)
-  (prefix-help-command 'embark-prefix-help-command)
-  :config
-  (add-to-list 'display-buffer-alist ;; Hide the mode line of the Embark live/completions buffers
-               '("\\`\\*Embark Collect \\(Live\\|Completions\\)\\*"
-                 nil
-                 (window-parameters (mode-line-format . none)))))
+  (prefix-help-command 'embark-prefix-help-command))
 
 (use-package marginalia
   :demand t
