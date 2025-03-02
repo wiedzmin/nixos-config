@@ -28,3 +28,7 @@
 
 (use-package eglot-tempel
   :after eglot)
+
+(with-eval-after-load 'eglot
+  (with-eval-after-load 'cape
+    (advice-add #'eglot-completion-at-point :around #'cape-wrap-buster)))
