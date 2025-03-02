@@ -391,8 +391,6 @@
                `(,go-away-repl-regexp
                  display-buffer-no-window
                  (inhibit-same-window . t)))
-  (add-to-list 'display-buffer-alist
-               (cons "\\*Warnings\\*" (cons #'display-buffer-no-window nil)))
   (dolist (func '(dired-do-rename dired-create-directory))
     (define-advice func
         (:after (orig-fun &rest args) custom/revert-dired-buffer)
