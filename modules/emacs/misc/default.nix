@@ -33,7 +33,6 @@ in
         epkgs.flycheck
         epkgs.avy-flycheck
         epkgs.hl-todo
-        epkgs.consult-todo
         epkgs.copy-as-format
         epkgs.format-all
         epkgs.ini-mode
