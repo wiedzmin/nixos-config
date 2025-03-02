@@ -205,10 +205,10 @@
 (use-package embark
   :demand t
   :bind
-  ;;TODO: embark-act-all
-  ;;TODO: embark-bindings
   ("C-S-a" . embark-act)
+  ("C-*" . embark-act-all)
   ("C-S-d" . embark-dwim)
+  ("C->" . embark-select)
   (:map embark-general-map
         ("C-." . embark-cycle))
   (:map mode-specific-map
