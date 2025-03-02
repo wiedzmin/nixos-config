@@ -31,6 +31,7 @@ in
           broot
           each
           gron
+          nurpkgs.groupby
           htmlq
           jc
           jj
