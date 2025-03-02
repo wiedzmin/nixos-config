@@ -108,6 +108,10 @@
   (setq-default indicate-empty-lines t)
   (setq-default truncate-lines t))
 
+(use-package warnings
+  :custom
+  (warning-minimum-log-level :emergency))
+
 (use-package cus-edit
   :bind
   (:map mode-specific-map
