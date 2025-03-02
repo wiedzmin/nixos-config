@@ -13,15 +13,6 @@
   :hook
   (prog-mode-hook . hl-todo-mode))
 
-;; FIXME: fork and add projectile support
-(use-package consult-todo
-  :load-path "@emacsConsultTodoPath@"
-  :after (consult hl-todo)
-  :bind
-  (:map custom-search-map
-        ("." . consult-todo)
-        ("," . consult-todo-all)))
-
 (use-package copy-as-format
   :bind
   (:map custom-formatting-map
