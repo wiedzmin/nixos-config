@@ -205,10 +205,10 @@
 (use-package embark
   :demand t
   :bind
-  ;;TODO: embark-act-all
-  ;;TODO: embark-bindings
   ("C-S-a" . embark-act)
+  ("C-*" . embark-act-all)
   ("C-S-d" . embark-dwim)
+  ("C->" . embark-select)
   (:map embark-general-map
         ("C-." . embark-cycle))
   (:map mode-specific-map
@@ -218,7 +218,7 @@
         ("B" . embark-bindings))
   (:map minibuffer-local-map
         ("C-c x" . embark-export)
-        (">" . embark-become))
+        ("C-c b" . embark-become))
   (:map minibuffer-local-completion-map
         ("C-:" . embark-act))
   (:map completion-list-mode-map
