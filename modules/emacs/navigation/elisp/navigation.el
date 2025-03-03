@@ -509,16 +509,6 @@
   :config
   (pulsar-global-mode 1))
 
-(use-package block-nav
-  :bind
-  ("C-=" . block-nav-next-indentation-level)
-  ("C--" . block-nav-previous-indentation-level)
-  ("C-<down>" . block-nav-next-block)
-  ("C-<up>" . block-nav-previous-block)
-  :custom
-  (block-nav-move-skip-shallower t)
-  (block-nav-center-after-scroll t))
-
 (use-package xref
   :hook
   (xref--xref-buffer-mode-hook . hl-line-mode)
