@@ -30,6 +30,11 @@ in
         type = types.int;
         default = 4;
       };
+      iconSet = mkOption {
+        type = types.enum [ "none" "all-the-icons" "nerd-icons" ];
+        default = "none";
+        description = "Prettifying iconset to use";
+      };
     };
   };
 
@@ -44,13 +49,20 @@ in
 
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.all-the-icons
+        epkgs.nerd-icons
         epkgs.default-text-scale
         epkgs.diredfl
         epkgs.rainbow-mode
         epkgs.transwin
         epkgs.unicode-fonts
+      ] ++ lib.optionals (cfg.iconSet == "all-the-icons") [
+        epkgs.all-the-icons
+      ] ++ lib.optionals (cfg.iconSet == "nerd-icons") [
+        epkgs.nerd-icons
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/appearance.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/appearance.el ] +
+        optionalString (cfg.iconSet == "all-the-icons") (builtins.readFile ./elisp/all-the-icons.el) +
+        optionalString (cfg.iconSet == "nerd-icons") (builtins.readFile ./elisp/nerd-icons.el);
     })
   ];
 }
