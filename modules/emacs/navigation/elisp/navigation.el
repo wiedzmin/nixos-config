@@ -328,10 +328,6 @@
               end-of-line)
   :prefix "custom"))
 
-(use-package rainbow-delimiters
-  :hook
-  (prog-mode-hook . rainbow-delimiters-mode))
-
 (use-package recursive-narrow
   :bind
   (:map custom-narrowing-map
