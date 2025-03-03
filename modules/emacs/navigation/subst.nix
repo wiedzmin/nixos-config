@@ -23,4 +23,5 @@ in
   recenterWindowDisabled = if config.ide.emacs.navigation.customWindowRecentering.enable then "" else ":disabled";
   recenterWindowEyeLevel = lib.strings.floatToString config.ide.emacs.navigation.customWindowRecentering.eyeLevel;
   currentLineHighlightFaceVerticoPatch = if config.appearance.emacs.currentLineHighlightFace != "" then '':custom-face (vertico-current ((t (:background "${config.appearance.emacs.currentLineHighlightFace}"))))'' else "";
+  orgRoamRootDir = config.pim.orgmode.org-roam.rootDir;
 }

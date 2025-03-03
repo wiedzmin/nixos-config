@@ -555,11 +555,10 @@
                     "*Special*")))
      (group (name-match "**Special**" (rx bos "*" (or "Messages" "Warnings" "scratch" "Backtrace") "*")))
      (group (mode-match "*Magit* (non-status)" (rx bos (or "magit" "forge") "-")) (auto-directory))
-     (mode-match "*Helm*" (rx bos "helm-"))
      (auto-mode))
     (dir user-emacs-directory)
     (group
-     (dir (if (bound-and-true-p org-directory) org-directory "~/org"))
+     (dir "@orgRoamRootDir@")
      (group (auto-indirect) (auto-file))
      (group-not "*special*" (auto-file))
      (auto-mode))
