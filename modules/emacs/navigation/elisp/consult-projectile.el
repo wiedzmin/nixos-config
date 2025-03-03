@@ -6,4 +6,4 @@
 (use-package consult-projectile
   :after projectile
   :bind
-  ("C-<f1>" . consult-projectile))
+  ("C-<f1>" . consult-projectile-switch-project))
