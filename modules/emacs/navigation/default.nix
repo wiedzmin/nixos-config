@@ -83,7 +83,6 @@ in
         epkgs.mosey
         epkgs.orderless
         epkgs.pulsar
-        epkgs.rainbow-delimiters
         epkgs.recursive-narrow
         epkgs.rg
         epkgs.winum
