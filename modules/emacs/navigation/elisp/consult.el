@@ -33,6 +33,8 @@
         ("r l" . consult-register-load)
         ("r s" . consult-register-store)
         ("r x" . consult-register))
+  (:map custom-projects-map
+        ("r" . consult-recent-file))
   (:map minibuffer-local-map
         ("<next>" . scroll-up-command)
         ("<prior>" . scroll-down-command))
