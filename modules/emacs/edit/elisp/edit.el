@@ -87,8 +87,8 @@
   ((prog-mode-hook text-mode-hook) . whitespace-turn-on)
   (org-mode-hook . whitespace-turn-off)
   :bind
-  (:map custom-ws-map
-        ("w" . whitespace-mode))
+  (:map custom-formatting-map
+        ("s" . whitespace-mode))
   :custom
   (whitespace-line-column 121)
   (whitespace-style '(indentation::space
@@ -103,7 +103,7 @@
 (use-package ws-butler
   :after whitespace
   :bind
-  (:map custom-ws-map
+  (:map custom-formatting-map
         ("b" . ws-butler-mode)
         ("B" . ws-butler-global-mode))
   :custom
