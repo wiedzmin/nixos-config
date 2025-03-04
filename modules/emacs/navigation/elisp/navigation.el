@@ -460,7 +460,10 @@
     :format regexp
     :files ask
     :dir current)
-  (rg-enable-default-bindings))
+  (rg-enable-default-bindings)
+  (define-advice rg-run
+      (:before (orig-fun &rest args) custom/rg-run-before)
+    (rg-save-search)))
 
 (use-package pulsar
   :bind
