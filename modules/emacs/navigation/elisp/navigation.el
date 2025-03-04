@@ -588,7 +588,6 @@
 (use-package epithet
   :load-path "@emacsEpithetPath@"
   :preface
-  ;; FIXME: check if some interdepenencies enforcement is needed for rg being used here
   (defun epithet-for-rg ()
     "Suggest a name for an 'rg-mode' buffer"
     (when-let* (((derived-mode-p 'rg-mode))
