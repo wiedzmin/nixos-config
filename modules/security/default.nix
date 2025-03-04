@@ -84,6 +84,13 @@ in
             }
           ];
         };
+        home.activation = {
+          killGpgAgent = {
+            after = [ ];
+            before = [ "linkGeneration" ];
+            data = "${pkgs.gnupg}/bin/gpgconf --kill gpg-agent";
+          };
+        };
         services.gpg-agent = {
           enable = true;
           defaultCacheTtl = 34560000;
