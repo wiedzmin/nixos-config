@@ -48,7 +48,7 @@
   :after copy-as-format
   :bind
   (:map custom-formatting-map
-        ("b" . format-all-buffer)))
+        ("A" . format-all-buffer)))
 
 (use-package simple
   :delight auto-fill-function

@@ -55,7 +55,6 @@ in
         optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/standard.el) +
         optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/ts.el);
       ide.emacs.core.customKeymaps = {
-        "custom-ws-map" = "C-c x";
         "misc-editing-map" = "<f5>";
         "token-editing-map" = "C-z";
       };
