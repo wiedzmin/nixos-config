@@ -590,17 +590,16 @@
   :preface
   (defun epithet-for-rg ()
     "Suggest a name for an 'rg-mode' buffer"
-    (when-let* (((derived-mode-p 'rg-mode))
-                (command (car compilation-arguments))
-                (searchterm (string-join
-                             (cdr (member "-e" (split-string command " "))) " "))
-                (filetype (cadr
-                           (split-string
-                            (car (seq-filter (lambda (l) (string-prefix-p "--type" l))
-                                             (split-string command " "))) "="))))
-      (format "\"%s\" <%s>"
-              (replace-regexp-in-string (rx "\\" (group anything)) "\\1" searchterm)
-              filetype)))
+    (when (derived-mode-p 'rg-mode)
+      (let* ((command (car compilation-arguments))
+             (searchterm (string-join (cdr (member "-e" (split-string command " "))) " ")))
+        (let ((filetype-data (seq-filter
+                              (lambda (l) (string-prefix-p "--type" l))
+                              (split-string command " "))))
+          (format "rg <%s> [%s] at %s"
+                  (replace-regexp-in-string (rx "\\" (group anything)) "\\1" searchterm)
+                  (if filetype-data (cadr (split-string (car filetype-data) "=")) "all")
+                  compilation-directory)))))
   :hook
   (Info-selection-hook . epithet-rename-buffer)
   (eww-after-render-hook . epithet-rename-buffer)
