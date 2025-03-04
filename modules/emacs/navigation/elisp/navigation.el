@@ -245,7 +245,7 @@
   (marginalia-mode +1)
   :custom
   (marginalia-annotators '(marginalia-annotators-heavy marginalia-annotators-light nil))
-  (marginalia-align 'right))
+  (marginalia-align 'left))
 
 (use-package ace-window
   :bind
