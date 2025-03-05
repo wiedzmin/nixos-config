@@ -88,7 +88,6 @@ in
         epkgs.consult-projectile
       ];
       ide.emacs.core.customPackages = {
-        "minibuffer-edit" = { text = builtins.readFile ./elisp/custom/minibuffer-edit.el; };
         "orderless-dispatchers" = { text = builtins.readFile ./elisp/custom/orderless-dispatchers.el; };
         "navigation-misc" = { text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/misc.el ]; };
       } // optionalAttrs (cfg.collections.backend == "consult") {

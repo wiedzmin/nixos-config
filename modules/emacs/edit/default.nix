@@ -60,6 +60,7 @@ in
       };
       ide.emacs.core.customPackages = {
         "edit-misc" = { text = builtins.readFile ./elisp/custom/edit-misc.el; };
+        "minibuffer-edit" = { text = builtins.readFile ./elisp/custom/minibuffer-edit.el; };
       };
       ide.emacs.core.treesitter.grammars = {
         toml = "https://github.com/tree-sitter/tree-sitter-toml";
