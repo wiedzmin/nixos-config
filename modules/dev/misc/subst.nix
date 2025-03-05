@@ -21,4 +21,13 @@ with pkgs.unstable.commonutils;
     if config.dev.misc.emacs.lsp.impl == "eglot"
     then emacsMkEglotRegisterServer [ "graphviz-dot-mode-hook" ] [ "dot-language-server" "--stdio" ] [ "graphviz-dot-mode" ]
     else "";
+  lspStartFunctionJson = config.dev.misc.emacs.lsp.startFunction;
+  lspModeJsonRegisterServer =
+    if config.dev.misc.emacs.lsp.impl == "lsp-mode"
+    then emacsMkLspModeRegisterServer [ "js-json-mode-hook" ] [ "typescript-language-server" "--stdio" ] "json" "json-ls"
+    else "";
+  lspModeJsonTSRegisterServer =
+    if config.dev.misc.emacs.lsp.impl == "lsp-mode"
+    then emacsMkLspModeRegisterServer [ "json-ts-mode-hook" ] [ "typescript-language-server" "--stdio" ] "json" "json-ls"
+    else "";
 }

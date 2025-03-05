@@ -28,14 +28,6 @@ with pkgs.unstable.commonutils;
     if config.dev.misc.emacs.lsp.impl == "lsp-mode"
     then emacsMkLspModeRegisterServer [ "js-ts-mode-hook" ] [ "typescript-language-server" "--stdio" ] "javascript" "js-ls"
     else "";
-  lspModeJsonRegisterServer =
-    if config.dev.misc.emacs.lsp.impl == "lsp-mode"
-    then emacsMkLspModeRegisterServer [ "js-json-mode-hook" ] [ "typescript-language-server" "--stdio" ] "json" "json-ls"
-    else "";
-  lspModeJsonTSRegisterServer =
-    if config.dev.misc.emacs.lsp.impl == "lsp-mode"
-    then emacsMkLspModeRegisterServer [ "json-ts-mode-hook" ] [ "typescript-language-server" "--stdio" ] "json" "json-ls"
-    else "";
   lspModeVueRegisterServer =
     if config.dev.misc.emacs.lsp.impl == "lsp-mode"
     then emacsMkLspModeRegisterServer [ "vue-mode-hook" ] [ "vls" "--stdio" ] "vue" "vue-ls"
