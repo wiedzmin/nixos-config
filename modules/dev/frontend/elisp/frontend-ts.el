@@ -14,12 +14,6 @@
   (js-ts-mode-hook . @lspStartFunction@)
   @lspModeJsTSRegisterServer@)
 
-(use-package json-ts-mode
-  :mode "\\.json$"
-  :hook
-  (json-ts-mode-hook . @lspStartFunction@)
-  @lspModeJsonTSRegisterServer@)
-
 (use-package vue-ts-mode
   :load-path "@emacsVueTsModePath@"
   :mode "\\.vue$"

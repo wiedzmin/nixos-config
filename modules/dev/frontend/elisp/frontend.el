@@ -15,12 +15,6 @@
   (css-mode-hook . @lspStartFunction@)
   @lspModeJsRegisterServer@)
 
-(use-package js-json-mode
-  :mode "\\.json$"
-  :hook
-  (js-json-mode-hook . @lspStartFunction@)
-  @lspModeJsonRegisterServer@)
-
 (use-package vue-mode
   :mode "\\.vue$"
   :hook (vue-mode-hook . @lspStartFunction@)
