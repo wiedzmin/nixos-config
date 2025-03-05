@@ -570,17 +570,6 @@
     (auto-directory)
     (auto-mode)))
 
-(use-package burly
-  ;;TODO: also lift frames bookmark opening up to `open-project' script
-  ;;      level, otherwise be prepared for frames doubling in some cases
-  :bind
-  (:map custom-frame-map
-        ("b" . burly-bookmark-windows)
-        ("B" . burly-bookmark-frames))
-  (:map custom-goto-map
-        ("b" . burly-open-bookmark)
-        ("M-b" . burly-open-last-bookmark)))
-
 (use-package window
   :bind
   (:map mode-specific-map
