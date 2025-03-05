@@ -91,10 +91,5 @@
   :config
   (global-eldoc-mode -1))
 
-(use-package vc
-  ;;NOTE: vc-refresh-state on save hook?
-  :custom
-  (vc-handled-backends '(SVN Git Hg)))
-
 (use-package markdown-mode
   :mode ("\\.md$" . markdown-mode))
