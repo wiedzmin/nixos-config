@@ -67,6 +67,7 @@ in
   config = mkMerge [
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.diff-hl ];
+      ide.emacs.core.customKeymaps = { "custom-vc-map" = "C-;"; };
       ide.emacs.core.config = builtins.readFile ./elisp/misc.el;
     })
     (mkIf (cfg.enable && cfg.batch.enable) {
