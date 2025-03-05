@@ -39,7 +39,7 @@
   (flycheck-display-errors-function #'flycheck-display-error-messages-unless-error-list))
 
 (use-package avy-flycheck
-  :after flycheck
+  :after (avy flycheck)
   :bind
   (:map custom-goto-map
         ("M-e" . avy-flycheck-goto-error)))
