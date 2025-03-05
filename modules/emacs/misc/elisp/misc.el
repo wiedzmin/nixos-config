@@ -52,8 +52,7 @@
 
 (use-package simple
   :delight auto-fill-function
-  :hook (((prog-mode-hook text-mode-hook) . turn-on-auto-fill)
-         (eval-expression-minibuffer-setup-hook . eldoc-mode))
+  :hook (((prog-mode-hook text-mode-hook) . turn-on-auto-fill))
   :bind
   ("M-SPC" . cycle-spacing)
   (:map misc-editing-map
@@ -88,8 +87,10 @@
 
 (use-package eldoc
   :delight " eldoc"
+  :hook
+  (eval-expression-minibuffer-setup-hook . eldoc-mode)
   :config
-  (global-eldoc-mode -1))
+  (global-eldoc-mode 1))
 
 (use-package markdown-mode
   :mode ("\\.md$" . markdown-mode))
