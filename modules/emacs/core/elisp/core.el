@@ -50,10 +50,6 @@
     (setq gc-cons-threshold most-positive-fixnum)
     ;; Do not allow the cursor in the minibuffer prompt
     (cursor-intangible-mode))
-  (defun custom/backward-delete-word (arg)
-    "Delete characters backward until encountering the beginning of a word. With argument ARG, do this that many times."
-    (interactive "p")
-    (delete-region (point) (progn (backward-word arg) (point))))
   :bind
   ("M-\"" . eval-region)
   (:map ctl-x-map
@@ -64,9 +60,6 @@
   (:map custom-goto-map
         ("TAB" . move-to-column)
         ("c" . goto-char))
-  (:map minibuffer-local-map
-        ("M-<backspace>" . custom/backward-delete-word)
-        ("C-<backspace>" . custom/backward-delete-word))
   :hook
   (minibuffer-setup-hook . custom/minibuffer-setup-hook)
   (minibuffer-exit-hook . (lambda () (setq gc-cons-threshold 800000)))

@@ -205,3 +205,9 @@
   :bind
   (:map mode-specific-map
         ("i" . edit-indirect-region)))
+
+(use-package minibuffer-edit
+  :bind
+  (:map minibuffer-local-map
+      ("M-<backspace>" . minibuffer-edit-smart-delete-backwards)
+      ("C-<backspace>" . minibuffer-edit-smart-delete-backwards)))
