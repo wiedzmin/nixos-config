@@ -6,4 +6,6 @@
 (use-package consult-projectile
   :after projectile
   :bind
-  ("C-<f1>" . consult-projectile-switch-project))
+  ("C-<f1>" . consult-projectile-switch-project)
+  (:map custom-projects-map
+        ("h" . consult-projectile)))
