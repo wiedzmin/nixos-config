@@ -54,8 +54,6 @@
     "Delete characters backward until encountering the beginning of a word. With argument ARG, do this that many times."
     (interactive "p")
     (delete-region (point) (progn (backward-word arg) (point))))
-  :mode (("\\.js$" . js-json-mode)
-         ("\\.json$" . js-json-mode))
   :bind
   ("M-\"" . eval-region)
   (:map ctl-x-map
