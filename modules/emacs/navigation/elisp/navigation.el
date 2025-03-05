@@ -1,8 +1,3 @@
-(use-package navigation-misc
-  @recenterWindowDisabled@
-  :bind
-  ("C-l" . custom/recenter-window))
-
 (use-package avy
   :preface
   (defun avy-generic-command-action (action-f)
@@ -578,6 +573,7 @@
 
 (use-package window
   :bind
+  ("C-l" . recenter-top-bottom)
   (:map mode-specific-map
         ("D" . toggle-window-dedicated))
   :custom
