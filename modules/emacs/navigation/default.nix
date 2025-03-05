@@ -71,7 +71,6 @@ in
         epkgs.ace-window
         epkgs.beginend
         epkgs.bufler
-        epkgs.burly
         epkgs.dired-filetype-face
         epkgs.dired-narrow
         epkgs.dired-subtree
