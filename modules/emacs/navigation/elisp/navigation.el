@@ -299,6 +299,13 @@
         ("F" . describe-face)
         ("b" . describe-bindings)))
 
+(use-package shortdoc
+  :bind
+  (:map help-map
+        ("/" . shortdoc-display-group))
+  (:map custom-help-map
+        ("/" . shortdoc-display-group)))
+
 (use-package info-look
   :bind
   (:map custom-help-map
