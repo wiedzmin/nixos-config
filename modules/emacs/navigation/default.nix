@@ -34,19 +34,6 @@ in
         default = "project";
         description = "Projects handling package to use. Currently, `project.el` and `projectile` are supported.";
       };
-      customWindowRecentering.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable custom windows recentering";
-      };
-      customWindowRecentering.eyeLevel = mkOption {
-        type = types.float;
-        default = 0.2;
-        description = ''
-          The relative position of the line considered as eye level in the
-          current window, as a ratio between 0 and 1.
-        '';
-      };
     };
   };
 
