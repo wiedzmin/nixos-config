@@ -34,3 +34,15 @@
   :custom
   (ediff-window-setup-function 'ediff-setup-windows-plain)
   (ediff-split-window-function 'split-window-horizontally))
+
+(use-package vc
+  :bind
+  (:map custom-vc-map
+        ("s" . vc-dir)
+        ("b" . vc-annotate)
+        ("=" . vc-diff)
+        ("d" . vc-diff)
+        (", l" . vc-print-log))
+  :hook (after-save-hook . vc-refresh-state)
+  :custom
+  (vc-handled-backends '(SVN Git Hg)))
