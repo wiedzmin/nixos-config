@@ -2,6 +2,8 @@
   :bind
   (:map corfu-map
         ("SPC" . corfu-insert-separator))
+  :hook
+  ((text-mode-hook prog-mode-hook) . corfu-mode)
   :custom
   (corfu-cycle t)
   (corfu-count 14)
@@ -13,9 +15,7 @@
   (corfu-scroll-margin 5)
   (corfu-quit-no-match 'separator)
   (corfu-quit-at-boundary 'separator)
-  (corfu-preview-current 'insert)
-  :config
-  (global-corfu-mode 1))
+  (corfu-preview-current 'insert))
 
 (use-package corfu-echo
   :after corfu
