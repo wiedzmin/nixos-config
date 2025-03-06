@@ -39,9 +39,7 @@
   :after (projectile flycheck)
   :bind
   (:map mode-specific-map
-        ("p" . flycheck-projectile-list-errors))
-  (:map flycheck-mode-map
-        ("C-c ! p" . flycheck-projectile-list-errors)))
+        ("!" . flycheck-projectile-list-errors)))
 
 (with-eval-after-load 'marginalia
   (with-eval-after-load 'projectile
