@@ -92,26 +92,6 @@
   (with-eval-after-load 'consult
     (mapc (lambda (x) (add-hook 'consult-after-jump-hook x)) `(pulsar-recenter-top pulsar-reveal-entry))))
 
-(with-eval-after-load 'bufler
-  (with-eval-after-load 'consult
-    (defvar consult--bufler-workspace+
-      (list :name "Workspace"
-            :narrow ?w
-            :category 'buffer
-            :face 'consult-buffer
-            :history 'buffer-name-history
-            :state #'consult--buffer-state
-            ;; :enabled (lambda () (frame-parameter nil 'bufler-workspace-path))
-            :items (lambda ()
-                     (let ((bufler-vc-state nil))
-                       (mapcar #'buffer-name
-                               (mapcar #'cdr
-                                       (bufler-buffer-alist-at
-                                        (frame-parameter nil 'bufler-workspace-path)
-                                        :filter-fns bufler-filter-buffer-fns))))))
-      "Bufler workspace buffers source for `consult-buffer'.")
-    (add-to-list 'consult-buffer-sources consult--bufler-workspace+ 'append)))
-
 (with-eval-after-load 'vertico-multiform
   (with-eval-after-load 'consult
     (add-to-list 'vertico-multiform-commands '(consult-line buffer))))
