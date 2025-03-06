@@ -11,6 +11,9 @@
         (message "`%s' parser was installed." lang)
         (sit-for 0.75))))
   :commands (treesit-install-language-grammar custom/treesit-install-all-grammars)
+  :bind
+  (:map misc-editing-map
+        ("T" . treesit-explore))
   :init
   @treesitLanguageSourceAlistPatch@
   @treesitModeRemapAlistPatch@
