@@ -345,30 +345,17 @@
 
 (use-package dired
   :preface
-  (defun custom/dired-open-in-eww ()
-    (interactive)
-    (when (derived-mode-p 'dired-mode)
-      (if (file-directory-p (dired-get-filename))
-          (message "Directories cannot be opened in EWW")
-        (eww-open-file (dired-get-file-for-visit)))))
   (defvar go-away-repl-regexp
     (rx bos "*" (or "Async")
         (zero-or-more nonl))
     "Regexp for matching windows to disappear")
-  (defun custom/dired-current-path-to-clipboard ()
-    (interactive)
-    (when (eq major-mode 'dired-mode)
-      (kill-new dired-directory)))
   :commands dired
   @autorevertEnable@
   :bind
   ([remap list-directory] . dired)
   (:map dired-mode-map
-        ("/" . custom/dired-current-path-to-clipboard)
         ("i" . image-dired)
         ("C-c" . org-copy-visible))
-  (:map dired-mode-map
-        ("e" . custom/dired-open-in-eww))
   :custom
   (dired-recursive-deletes 'top) ;; Allows recursive deletes
   (dired-dwim-target t)
@@ -622,3 +609,12 @@
   :load-path "@emacsProjectHeaderlinePath@"
   :config
   (global-project-headerline-mode))
+
+(use-package navigation-misc
+  :bind
+  (:map dired-mode-map
+        ("/" . custom/dired-current-path-to-clipboard))
+  (:map dired-mode-map
+        ("e" . custom/dired-open-in-eww))
+  (:map custom-projects-map
+        ("b" . custom/kill-vc-current-buffer-file-path)))
