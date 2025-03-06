@@ -8,7 +8,6 @@
   :bind
   ("C-<f1>" . project-switch-project)
   (:map custom-projects-map
-        ("b" . custom/kill-vc-current-buffer-file-path)
         ("d" . project-dired)
         ("k" . project-kill-buffers)))
 
