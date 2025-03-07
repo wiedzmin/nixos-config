@@ -3,11 +3,15 @@
   :preface
   (defun custom/open-project-todos ()
     (interactive)
-    (let ((todos-file (expand-file-name "todo.org" (projectile-project-root))))
-      (condition-case nil
-          (when (file-exists-p todos-file)
-            (find-file todos-file))
-        (error (message "Cannot find project todos")))))
+    (let ((todofile (cl-loop for f in (mapcar
+                                       (lambda (f) (expand-file-name f (projectile-project-root)))
+                                       ;; TODO: parametrize files to search, consider using wildcards
+                                       '("todo.org" "project.org" "agenda.org"))
+                             until (file-exists-p f)
+                             finally return f)))
+      (if (file-exists-p todofile)
+          (find-file todofile)
+        (message "Cannot find any project TODO files"))))
   (defun projectile-switch-project-action-open-todos (project)
     "Open project's TODOs."
     (let ((projectile-switch-project-action #'custom/open-project-todos))
