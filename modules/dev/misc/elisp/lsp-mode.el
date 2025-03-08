@@ -131,19 +131,6 @@
   (lsp-ui-doc-show-with-cursor nil)
   (lsp-ui-doc-show-with-mouse nil))
 
-(use-package lsp-ui-peek
-  :after lsp-ui
-  :bind
-  (:map lsp-mode-map
-        ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-        ([remap xref-find-references] . lsp-ui-peek-find-references))
-  :custom
-  (lsp-ui-peek-enable t)
-  (lsp-ui-peek-show-directory t)
-  (lsp-ui-peek-fontify 'on-demand)
-  (lsp-ui-peek-list-width 50)
-  (lsp-ui-peek-peek-height 20))
-
 (use-package lsp-ui-flycheck
   :after lsp-ui
   :bind
@@ -155,10 +142,6 @@
 (use-package lsp-ui-sideline
   :after lsp-mode
   :after lsp-ui
-  :bind
-  (:map lsp-ui-mode-map
-        ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-        ([remap xref-find-references] . lsp-ui-peek-find-references))
   :custom
   (lsp-ui-sideline-code-actions-prefix "💡 ")
   (lsp-ui-sideline-enable t)
