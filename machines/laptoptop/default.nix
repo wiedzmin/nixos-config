@@ -153,7 +153,7 @@ in
         height = 24;
         displayMinorModes = true;
       };
-      iconSet = "nerd-icons";
+      iconSet = "all-the-icons";
     };
     fonts = {
       enable = true;
