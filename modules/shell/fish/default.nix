@@ -37,6 +37,10 @@ in
             rm = "rm -r";
           };
           interactiveShellInit = "set fish_greeting";
+          shellInit = ''
+            fish_default_key_bindings
+            bind \cH backward-kill-word
+          '';
           functions = {
             __fish_command_not_found_handler = {
               body = "__fish_default_command_not_found_handler $argv[1]";
