@@ -199,11 +199,18 @@
 
 (use-package embark
   :demand t
+  :preface
+  (defun custom/embark-toggle-prompter ()
+    (interactive)
+    (if (eq embark-prompter 'embark-completing-read-prompter)
+        (setq embark-prompter 'embark-keymap-prompter)
+      (setq embark-prompter 'embark-completing-read-prompter)))
   :bind
   ("C-S-a" . embark-act)
   ("C-*" . embark-act-all)
   ("C-S-d" . embark-dwim)
   ("C->" . embark-select)
+  ("C-&" . custom/embark-toggle-prompter)
   (:map embark-general-map
         ("C-." . embark-cycle))
   (:map mode-specific-map
@@ -224,7 +231,6 @@
   :custom
   (embark-allow-edit-default t)
   (embark-indicators '(embark-minimal-indicator embark-highlight-indicator))
-  (embark-prompter 'embark-completing-read-prompter)
   (prefix-help-command 'embark-prefix-help-command))
 
 (use-package marginalia
