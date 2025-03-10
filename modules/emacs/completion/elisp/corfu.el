@@ -8,6 +8,7 @@
   (corfu-cycle t)
   (corfu-count 14)
   (corfu-auto t)
+  (corfu-auto-delay 0.0)
   (corfu-auto-prefix 2)
   (corfu-min-width 40)
   (corfu-max-width 80)
@@ -15,7 +16,9 @@
   (corfu-scroll-margin 5)
   (corfu-quit-no-match 'separator)
   (corfu-quit-at-boundary 'separator)
-  (corfu-preview-current 'insert))
+  (corfu-preview-current 'insert)
+  :config
+  (corfu-history-mode 1))
 
 (use-package corfu-echo
   :after corfu
