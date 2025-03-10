@@ -91,6 +91,3 @@
   (eval-expression-minibuffer-setup-hook . eldoc-mode)
   :config
   (global-eldoc-mode 1))
-
-(use-package markdown-mode
-  :mode ("\\.md$" . markdown-mode))
