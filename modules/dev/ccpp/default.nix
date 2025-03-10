@@ -60,7 +60,7 @@ in
         epkgs.ccls
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/common.el ] +
-        optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/standard.el ]) +
+        optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/non-ts.el ]) +
         optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]);
       ide.emacs.completion.tempel.snippets = ''
         c-mode

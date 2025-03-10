@@ -176,8 +176,8 @@ in
         epkgs.flycheck-checkbashisms
         epkgs.pueue
       ];
-      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/sh-mode.el ]) +
-        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/bash-ts-mode.el ]) +
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/non-ts.el ]) +
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]) +
         (builtins.readFile ./elisp/common.el) +
         lib.optionalString cfg.emacs.orgmode.enable ''
           (use-package ob-shell
