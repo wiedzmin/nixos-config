@@ -215,7 +215,7 @@ in
         epkgs.just-mode
         epkgs.lua-mode
       ];
-      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/standard.el ]) +
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/non-ts.el ]) +
         lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]) +
         (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ]) +
         lib.optionalString cfg.emacs.orgmode.enable ''

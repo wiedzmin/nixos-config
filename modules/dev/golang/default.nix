@@ -92,8 +92,8 @@ in
         epkgs.gotest
         epkgs.ob-go
       ];
-      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/go-mode.el ]) +
-        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/go-ts-mode.el ]) +
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/non-ts.el ]) +
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]) +
         (builtins.readFile ./elisp/common.el);
       ide.emacs.completion.tempel.snippets = ''
         go-mode

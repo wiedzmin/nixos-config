@@ -87,8 +87,8 @@ in
         home.packages = with pkgs; [ python3Packages.python-lsp-server ];
       };
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector ];
-      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/python-mode.el ]) +
-        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/python-ts-mode.el ]) +
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/non-ts.el ]) +
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]) +
         (builtins.readFile ./elisp/common.el) +
         lib.optionalString cfg.emacs.orgmode.enable ''
           (use-package ob-python
