@@ -52,7 +52,7 @@ in
       ];
       ide.emacs.core.config =
         builtins.readFile ./elisp/edit.el +
-        optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/standard.el) +
+        optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/non-ts.el) +
         optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/ts.el);
       ide.emacs.core.customKeymaps = {
         "misc-editing-map" = "<f5>";
