@@ -50,11 +50,18 @@
     (setq gc-cons-threshold most-positive-fixnum)
     ;; Do not allow the cursor in the minibuffer prompt
     (cursor-intangible-mode))
+  (defun custom/toggle-minibuffer-focus ()
+    "Go back and forth between minibuffer and other window."
+    (interactive)
+    (if (window-minibuffer-p (selected-window))
+        (select-window (minibuffer-selected-window))
+      (select-window (active-minibuffer-window))))
   :bind
   ("M-\"" . eval-region)
   (:map ctl-x-map
         ("k" . custom/kill-buffer)
-        ("K" . kill-matching-buffers-no-ask))
+        ("K" . kill-matching-buffers-no-ask)
+        ("/" . custom/toggle-minibuffer-focus))
   (:map mode-specific-map
         ("C-r" . rename-visited-file))
   (:map custom-goto-map
