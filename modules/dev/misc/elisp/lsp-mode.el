@@ -102,19 +102,9 @@
 
 (use-package lsp-ui-doc
   :after lsp-ui
-  :preface
-  (defun custom/toggle-lsp-ui-doc ()
-    (interactive)
-    (if lsp-ui-doc-mode
-        (progn
-          (lsp-ui-doc-mode -1)
-          (lsp-ui-doc--hide-frame))
-      (lsp-ui-doc-mode 1)))
   :bind
   (:map lsp-mode-map
         ("C-c h" . lsp-ui-doc-glance))
-  (:map mode-specific-map
-        ("D" . custom/toggle-lsp-ui-doc))
   (:map custom-goto-map
         ("I" . lsp-ui-doc-focus-frame))
   :custom-face
@@ -122,8 +112,8 @@
   :custom
   (lsp-ui-doc-enable t)
   (lsp-ui-doc-border (face-foreground 'default))
-  (lsp-ui-doc-position 'top)
-  (lsp-ui-doc-delay 2)
+  (lsp-ui-doc-position 'at-point)
+  (lsp-ui-doc-delay 1)
   (lsp-ui-doc-header t)
   (lsp-ui-doc-include-signature t)
   (lsp-ui-doc-max-height 30)
