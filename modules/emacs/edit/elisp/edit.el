@@ -46,13 +46,13 @@
         ("c" . smie-close-block)))
 
 (use-package string-inflection
+  :demand t
   :preface
   (defun custom/string-inflection-gnocchi ()
     "foo*[Bb]ar => foo bar"
     (interactive)
     (string-inflection--single-or-region
      (lambda (str)
-       "foo_bar => foo bar"
        (setq str (string-inflection-underscore-function str))
        (mapconcat 'downcase (split-string str "_") " "))))
   (defun custom/string-inflection-gnocchi-capitalized ()
@@ -60,10 +60,22 @@
     (interactive)
     (string-inflection--single-or-region
      (lambda (str)
-       "foo_bar => foo bar"
        (setq str (string-inflection-underscore-function str))
        (mapconcat 'capitalize (split-string str "_") " "))))
-  :commands (string-inflection-get-current-word)
+  (defun custom/string-inflection-dotted-gnocchi ()
+    "foo*[Bb]ar => foo.bar"
+    (interactive)
+    (string-inflection--single-or-region
+     (lambda (str)
+       (setq str (string-inflection-underscore-function str))
+       (mapconcat 'downcase (split-string str "_") "."))))
+  (defun custom/string-inflection-dotted-gnocchi-capitalized ()
+    "foo*[Bb]ar => Foo.Bar"
+    (interactive)
+    (string-inflection--single-or-region
+     (lambda (str)
+       (setq str (string-inflection-underscore-function str))
+       (mapconcat 'capitalize (split-string str "_") "."))))
   :bind
   (:map token-editing-map
         ("6" . string-inflection-lower-camelcase)
@@ -71,7 +83,9 @@
         ("_" . string-inflection-underscore)
         ("-" . string-inflection-kebab-case)
         ("SPC" . custom/string-inflection-gnocchi)
-        ("S-SPC" . custom/string-inflection-gnocchi-capitalized)))
+        ("S-SPC" . custom/string-inflection-gnocchi-capitalized)
+        ("." . custom/string-inflection-dotted-gnocchi)
+        (">" . custom/string-inflection-dotted-gnocchi-capitalized)))
 
 (use-package wgrep
   :commands wgrep-change-to-wgrep-mode
