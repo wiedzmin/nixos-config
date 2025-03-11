@@ -61,12 +61,23 @@ in
         default = "letter";
         description = "Mode to use for hints";
       };
+      qbtarget.watchhfile = mkOption {
+        type = types.str;
+        default = "/tmp/qbtarget";
+        description = "Path of `qbtarget` state file for syncing state";
+      };
       emacs.browseUrlSetup = mkOption {
         type = types.lines;
         default = ''
           (use-package browse-url
             :config
-            (setq browse-url-browser-function 'browse-url-generic)
+            (advice-add #'browse-url-qutebrowser :around
+              (lambda (oldfun url &optional new-window &rest args)
+                (apply oldfun url t args)))
+            (setq browse-url-browser-function 'browse-url-qutebrowser)
+            (setq browse-url-new-window-flag t)
+            (setq browse-url-qutebrowser-new-window-is-tab
+              (string-suffix-p "tab\n" (f-read-text "${cfg.qbtarget.watchhfile}")))
             (setq browse-url-generic-program "${cfg.traits.command.binary}")
             ${optionalString (cfg.traits.command.parameters != [ ]) "(setq browse-url-generic-args '(${appCmdParametersQuotedSpaced cfg.traits}))"})
         '';
