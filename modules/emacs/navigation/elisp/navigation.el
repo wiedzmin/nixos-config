@@ -369,6 +369,7 @@
   (dired-recursive-copies 'always)
   (dired-filename-display-length 'window)
   (dired-vc-rename-file t)
+  (dired-movement-style 'cycle)
   :config
   (use-package dired-x
     :custom
