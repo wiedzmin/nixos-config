@@ -18,6 +18,12 @@
         ("M-p" . backward-paragraph))
   (:map mode-specific-map
         ("R" . lsp-workspace-restart))
+  (:map custom-goto-map
+        ("M-." . lsp-find-declaration)
+        ("M-," . lsp-find-definition)
+        ("M-i" . lsp-find-implementation)
+        ("M-6" . lsp-find-references)
+        ("M-t" . lsp-find-type-definition))
   :custom
   (gc-cons-threshold 100000000)
   (lsp-auto-configure nil)
