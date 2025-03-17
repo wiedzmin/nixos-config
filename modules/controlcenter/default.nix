@@ -123,10 +123,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: {
-        ifconfless = mkPythonScriptWithDeps pkgs "ifconfless" (with pkgs; [ nettools nurpkgs.pystdlib xsel yad ])
-          (builtins.readFile ./scripts/ifconfless.py);
-      };
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ btop fastfetch inotify-info sysz ];
         services.udiskie = {
@@ -357,11 +353,7 @@ in
           cmd = "${pkgs.rofi}/bin/rofi -modi combi -show combi -combi-modi run#drun";
           mode = "root";
         }
-      ] ++ optionals cfg.networking.enable [{
-        key = [ "i" ];
-        cmd = "${pkgs.ifconfless}/bin/ifconfless";
-        mode = "network";
-      }] ++ optionals (cfg.launcher == "gmrun") [{
+      ] ++ optionals (cfg.launcher == "gmrun") [{
         key = [ prefix "Shift" "p" ];
         cmd = "${pkgs.gmrun}/bin/gmrun";
         mode = "root";
@@ -411,9 +403,6 @@ in
           ];
         };
       };
-    })
-    (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ ifconfless ]; };
     })
   ];
 }

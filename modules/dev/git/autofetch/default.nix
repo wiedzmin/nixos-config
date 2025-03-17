@@ -4,8 +4,6 @@ with lib;
 
 let
   cfg = config.dev.git.autofetch;
-  user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -50,42 +48,6 @@ in
           message = "git: automatic updates fetching is enabled while not scheduled.";
         }
       ];
-
-      nixpkgs.config.packageOverrides = _: {
-        gitfetch = mkPythonScriptWithDeps pkgs "gitfetch"
-          (with pkgs; [ python3Packages.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
-          (builtins.readFile ./scripts/gitfetch.py);
-      };
-
-      # IDEA: place empty ".noauto" or like file in repo root to prevent any further breakage if something went wrong
-      dev.vcs.batch.commands = {
-        mu = [
-          # merge upstream
-          "${pkgs.gitctl}/bin/gitfetch --op fetch --remote ${cfg.defaultOriginRemote}"
-          "${pkgs.gitctl}/bin/gitfetch --op merge ${cfg.mainBranchName}"
-        ];
-        ru = [
-          # rebase upstream
-          "${pkgs.gitfetch}/bin/gitfetch --op fetch"
-          "${pkgs.gitfetch}/bin/gitfetch --op rebase"
-        ];
-      };
-
-      systemd.user.services."git-fetch-updates" = {
-        description = "Fetch updates from registered git upstream(s)";
-        serviceConfig = {
-          Type = "oneshot";
-          ExecStart = "${pkgs.mr}/bin/mr mu";
-          WorkingDirectory = homePrefix user "";
-          StandardOutput = "journal";
-          StandardError = "journal";
-        };
-      };
-      systemd.user.timers."git-fetch-updates" =
-        renderTimer "Fetch updates from registered git upstream(s)" "1m" "2m" cfg.fetchUpdates.when false "";
-    })
-    (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ gitfetch ]; };
     })
   ];
 }

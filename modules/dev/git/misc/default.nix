@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.dev.git.misc;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   unstable-future = import inputs.unstable-future {
     config = config.nixpkgs.config // {
       allowUnfree = true;
@@ -32,19 +31,11 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: {
-        gittags = mkPythonScriptWithDeps pkgs "gittags"
-          (with pkgs; [ python3Packages.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis ])
-          (builtins.readFile ./scripts/gittags.py);
-      };
-
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ gitleaks gitnuro mgitstatus difftastic unstable-future.sourcegit ];
       };
 
       dev.vcs.batch.commands = {
-        synctags = [ "${pkgs.gittags}/bin/gittags --sync" ];
-        usynctags = [ "${pkgs.gittags}/bin/gittags --sync --remote ${cfg.defaultUpstreamRemote}" ];
         trim = [ "${pkgs.gitAndTools.git-trim}/bin/git-trim --delete=merged-local" ];
       };
 

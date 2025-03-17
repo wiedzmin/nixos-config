@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.pim.timetracking;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -169,27 +168,15 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      nixpkgs.config.packageOverrides = _: {
-        tt_capture = mkPythonScriptWithDeps pkgs "tt_capture"
-          (with pkgs; [
-            nurpkgs.pystdlib
-            python3Packages.cbor2
-            python3Packages.pytz
-            python3Packages.xlib
-            xprintidle
-          ])
-          (builtins.readFile ./scripts/tt_capture.py);
-      };
       services.arbtt = {
         enable = true;
         package = pkgs.haskellPackages.arbtt;
       };
       home-manager.users."${user}" = {
         home.file = { ".arbtt/categorize.cfg".text = cfg.config; };
-        home.packages = with pkgs;
-          [
-            haskellPackages.arbtt # for stats viewing
-          ] ++ lib.optionals config.attributes.debug.exposeScripts [ tt_capture ];
+        home.packages = with pkgs; [
+          haskellPackages.arbtt # for stats viewing
+        ];
       };
     })
   ];

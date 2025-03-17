@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.dev.git.savewip;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -40,14 +39,6 @@ in
           message = "git: automatic WIP saving is enabled while not scheduled.";
         }
       ];
-
-      nixpkgs.config.packageOverrides = _: {
-        gitwip = mkPythonScriptWithDeps pkgs "gitwip"
-          (with pkgs; [ python3Packages.pyfzf nurpkgs.pystdlib python3Packages.pygit2 python3Packages.redis xprintidle ])
-          (builtins.readFile ./scripts/gitwip.py);
-      };
-
-      dev.vcs.batch.commands = { savewip = [ "${pkgs.gitwip}/bin/gitwip" ]; };
 
       systemd.user.services."git-save-wip" = {
         description = "Save work-in-progress in registered git repo(s)";
