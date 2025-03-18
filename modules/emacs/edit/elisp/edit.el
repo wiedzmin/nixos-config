@@ -192,6 +192,11 @@
         ("<left>" . drag-stuff-left)
         ("<right>" . drag-stuff-right)))
 
+(use-package align
+  :bind
+  (:map mode-specific-map
+        ("\\" . align-regexp)))
+
 (use-package hippie-expand
   :bind
   ([remap dabbrev-expand] . hippie-expand))
