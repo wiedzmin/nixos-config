@@ -80,6 +80,8 @@ in
         epkgs.consult-flycheck
         epkgs.consult-project-extra
         epkgs.embark-consult
+      ] ++ optionals (cfg.projects.backend == "project") [
+        epkgs.disproject
       ] ++ optionals (cfg.projects.backend == "project" && cfg.collections.backend == "consult") [
         epkgs.consult-project-extra
       ] ++ optionals (cfg.projects.backend == "projectile") [
