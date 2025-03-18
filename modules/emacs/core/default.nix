@@ -241,10 +241,19 @@ in
         default = { };
         description = "Custom config-wide keymaps definitions";
       };
+      globalLexicalBinding.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = ''
+          While the default is still the use dynamic binding dialect of ELisp
+          in those places that don't explicitly set 'lexical-binding' you can
+          change it globally with this option.
+        '';
+      };
       initElContent = mkOption {
         type = types.lines;
         default = ''
-          ;; -*- lexical-binding: t -*-
+          ${lib.optionalString (cfg.globalLexicalBinding.enable) "(set-default-toplevel-value 'lexical-binding t)"}
           (setq debug-on-error t)
           (setq debug-on-quit t)
 
