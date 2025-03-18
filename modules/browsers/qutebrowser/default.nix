@@ -31,6 +31,24 @@ in
         default = false;
         description = "Set qutebrowser as fallback browser.";
       };
+      useProxyBinary = mkOption {
+        type = types.bool;
+        default = true;
+        description = ''
+          Whether to use proxy `qbopen` binary.
+
+          It could be used either in QB custom desktop item or standalone.
+
+          There are two advantages of using it instead of browser's
+          binary itself:
+          - it requests url opening with qutebrowser's IPC interface
+            which turns out to work noticeably faster, than shelling-out
+            to browser's binary (due to bypassing OS process spawning).
+          - it respects system-wide url opening target value, that could
+            be controlled by changing `new_instance_open_target` setting,
+            either with setting it directly, or using `qbtarget` utility.
+        '';
+      };
       suspendInactive = mkOption {
         type = types.bool;
         default = true;
@@ -118,8 +136,11 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       browsers.qutebrowser.traits = rec {
-        command = {
+        command = optionalAttrs (!cfg.useProxyBinary) {
           binary = "${pkgs.qutebrowser}/bin/qutebrowser";
+        } // optionalAttrs cfg.useProxyBinary {
+          binary = goBinPrefix config.dev.golang.goPath "qbopen";
+          parameters = [ "-url" ];
         };
         wmClass = [ "qutebrowser" "qutebrowser" ];
         suspensionRule = {
