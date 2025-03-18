@@ -70,6 +70,7 @@ in
         epkgs.pulsar
         epkgs.recursive-narrow
         epkgs.rg
+        epkgs.winnow
         epkgs.winum
       ] ++ optionals (cfg.selection.backend == "vertico") [
         epkgs.vertico

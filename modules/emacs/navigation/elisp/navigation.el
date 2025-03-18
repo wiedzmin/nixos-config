@@ -153,6 +153,10 @@
              ("M-<RET>" . newline))
  :commands (goto-address-prog-mode goto-address-mode))
 
+(use-package winnow
+  :hook
+  (compilation-mode-hook . winnow-mode))
+
 (use-package manage-minor-mode-table
   :bind
   (:map mode-specific-map
