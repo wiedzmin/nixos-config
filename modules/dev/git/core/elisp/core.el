@@ -134,7 +134,9 @@
   (:map magit-log-mode-map
         (";" . magit-commit-mark-toggle-read)
         ("M-;" . magit-commit-mark-toggle-star)
-        ("C-." . magit-commit-mark-toggle-urgent))
+        ("C-." . magit-commit-mark-toggle-urgent)
+        ("C-c M-;" . magit-commit-mark-report-star)
+        ("C-c C-." . magit-commit-mark-report-urgent))
   :hook
   (magit-mode-hook . magit-commit-mark-mode)
   :custom
