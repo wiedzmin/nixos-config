@@ -14,7 +14,7 @@
   (setq gc-cons-threshold most-positive-fixnum))
 
 (setq initial-major-mode 'fundamental-mode)
-(setq frame-inhibit-implied-resize t)
+(setq frame-inhibit-implied-resize 'force)
 
 (setq use-package-compute-statistics t)
 (setq use-package-verbose t)
