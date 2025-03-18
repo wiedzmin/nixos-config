@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.dev.lisp;
+  user = config.attributes.mainUser.name;
 in
 {
   options = {
@@ -17,6 +18,11 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable Emacs Lisp setup";
+      };
+      clojure.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Clojure setup";
       };
       emacs.orgmode.enable = mkOption {
         type = types.bool;
@@ -64,6 +70,11 @@ in
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/elisp.el ];
       ide.emacs.core.treesitter.grammars = {
         elisp = "https://github.com/Wilfred/tree-sitter-elisp";
+      };
+    })
+    (mkIf cfg.clojure.enable {
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [ babashka ];
       };
     })
   ];
