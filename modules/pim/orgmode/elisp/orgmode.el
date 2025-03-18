@@ -375,6 +375,9 @@
 
 (use-package orglink
   :delight " *>"
+  :bind
+  (:map mode-specific-map
+        ("l" . orglink-mode))
   :hook
   (emacs-lisp-mode-hook . orglink-mode)
   (nix-mode-hook . orglink-mode)
