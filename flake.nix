@@ -71,6 +71,10 @@
       url = "github:8uff3r/vue-ts-mode";
       flake = false;
     };
+    emacs-jira-el = {
+      url = "github:unmonoqueteclea/jira.el";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {

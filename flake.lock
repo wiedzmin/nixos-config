@@ -150,6 +150,22 @@
         "type": "github"
       }
     },
+    "emacs-jira-el": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1742306608,
+        "narHash": "sha256-TLtRTH1eTtoi0tlhOiMSV20D2g+cv8+ii6Z6DXtyuqg=",
+        "owner": "unmonoqueteclea",
+        "repo": "jira.el",
+        "rev": "fcf2d588974a8f087b9796ab1291f9753cab2028",
+        "type": "github"
+      },
+      "original": {
+        "owner": "unmonoqueteclea",
+        "repo": "jira.el",
+        "type": "github"
+      }
+    },
     "emacs-just-ts-mode": {
       "flake": false,
       "locked": {
@@ -662,6 +678,7 @@
         "emacs-epithet": "emacs-epithet",
         "emacs-git-msg-prefix": "emacs-git-msg-prefix",
         "emacs-highlight-sexp": "emacs-highlight-sexp",
+        "emacs-jira-el": "emacs-jira-el",
         "emacs-just-ts-mode": "emacs-just-ts-mode",
         "emacs-org-bars": "emacs-org-bars",
         "emacs-password-menu": "emacs-password-menu",
