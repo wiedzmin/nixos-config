@@ -51,7 +51,10 @@ in
         message = "dev/codesearch/emacs: ide/emacs/navigation must be enabled.";
       }];
 
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.codesearch ];
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.codesearch
+        epkgs.consult-codesearch
+      ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ../../subst.nix ] [ ./elisp/codesearch.el ];
     })
   ];
