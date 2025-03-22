@@ -13,6 +13,7 @@
     (keymap-set custom-org-map "g" 'custom/consult-ripgrep-org)))
 
 (use-package consult-org-roam
+  :after org-roam
   :preface
   (defun avy-action-search-org-roam (pt)
     "Search org-roam corpus for sexp at PT."
@@ -46,10 +47,14 @@
   (consult-org-roam-mode 1)
   :bind
   (:map org-roam-map
-        ("b" . consult-org-roam-backlinks)
+        ("f" . consult-org-roam-file-find)
+        ("<" . consult-org-roam-backlinks-recursive)
+        (">" . consult-org-roam-forward-links)
         ("g" . consult-org-roam-search))
   :custom
   (consult-org-roam-grep-func 'consult-ripgrep)
+  (consult-org-roam-buffer-narrow-key ?r)
+  (consult-org-roam-buffer-after-buffers t)
   :config
   (setf (alist-get ?o avy-dispatch-alist) 'avy-action-search-org-roam
         (alist-get ?O avy-dispatch-alist) 'avy-action-search-url-org-roam))
