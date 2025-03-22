@@ -73,6 +73,10 @@ in
           info.enable = true;
           man.enable = true;
         };
+        home.packages = with pkgs; [
+          glibcInfo
+          man-pages
+        ];
       };
     })
     (mkIf (cfg.enable && cfg.secondBrain.enable) {
