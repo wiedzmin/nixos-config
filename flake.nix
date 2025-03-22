@@ -75,6 +75,10 @@
       url = "github:unmonoqueteclea/jira.el";
       flake = false;
     };
+    emacs-elisp-ts-mode = {
+      url = "github:nverno/emacs-lisp-ts-mode";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {

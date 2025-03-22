@@ -101,6 +101,22 @@
         "type": "github"
       }
     },
+    "emacs-elisp-ts-mode": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1714448840,
+        "narHash": "sha256-r2/PVwsPlZ6iPd6vBB7i4AYK0ofwUgRX8I+2FGwjFKI=",
+        "owner": "nverno",
+        "repo": "emacs-lisp-ts-mode",
+        "rev": "7d661005a7c4ac8b45d1584c9fdbbd9b1e49eb39",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nverno",
+        "repo": "emacs-lisp-ts-mode",
+        "type": "github"
+      }
+    },
     "emacs-epithet": {
       "flake": false,
       "locked": {
@@ -675,6 +691,7 @@
         "emacs": "emacs",
         "emacs-combobulate": "emacs-combobulate",
         "emacs-consult-org-clock": "emacs-consult-org-clock",
+        "emacs-elisp-ts-mode": "emacs-elisp-ts-mode",
         "emacs-epithet": "emacs-epithet",
         "emacs-git-msg-prefix": "emacs-git-msg-prefix",
         "emacs-highlight-sexp": "emacs-highlight-sexp",

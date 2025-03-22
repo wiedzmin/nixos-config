@@ -67,7 +67,10 @@ in
         epkgs.ipretty
         epkgs.suggest
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/elisp.el ];
+      ide.emacs.core.config =
+        readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/elisp.el ] +
+        optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/non-ts.el ]) +
+        optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]);
       ide.emacs.core.treesitter.grammars = {
         elisp = "https://github.com/Wilfred/tree-sitter-elisp";
       };

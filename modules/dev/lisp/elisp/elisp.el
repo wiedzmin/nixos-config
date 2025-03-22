@@ -2,13 +2,6 @@
   :hook
   (after-save . check-parens))
 
-(use-package elisp-mode
-  :bind
-  (:map emacs-lisp-mode-map
-        ("C-c C-d C-d" . describe-function)
-        ("C-c C-d d" . describe-function)
-        ("C-c C-k" . eval-buffer)))
-
 (use-package highlight-defined
   :custom
   (highlight-defined-face-use-itself t)
