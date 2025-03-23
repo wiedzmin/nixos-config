@@ -38,7 +38,8 @@
 
 (use-package no-littering
   :custom
-  (no-littering-var-directory "@emacsDatadir@/"))
+  (no-littering-var-directory "@emacsDatadir@/")
+  (no-littering-etc-directory "@emacsEtcDir@"))
 
 (use-package emacs
   :preface

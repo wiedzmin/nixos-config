@@ -177,6 +177,16 @@ in
           Path to store user data under.
         '';
       };
+      etcDir = mkOption {
+        type = types.str;
+        default = "${emacsInitDir}/etc";
+        visible = false;
+        readOnly = true;
+        internal = true;
+        description = ''
+          Path to store Emacs-local "etc" data under.
+        '';
+      };
       varDir = mkOption {
         type = types.str;
         default = "${emacsInitDir}/var";

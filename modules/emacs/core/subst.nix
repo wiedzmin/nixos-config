@@ -14,6 +14,7 @@ let
 in
 {
   emacsDatadir = config.ide.emacs.core.dataDir;
+  emacsEtcDir = config.ide.emacs.core.etcDir;
   fallbackPackageArchives = emacsBoolToString false;
   treesitLanguageSourceAlistPatch = ''
     (setq treesit-language-source-alist '(
