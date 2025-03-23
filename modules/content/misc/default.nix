@@ -364,12 +364,16 @@ in
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.elfeed
-        epkgs.elfeed-dashboard
         epkgs.elfeed-goodies
         epkgs.elfeed-org
         epkgs.elfeed-score
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ../../pim/orgmode/subst.nix ] [ ./elisp/content.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/content.el ];
+      home-manager.users."${user}" = {
+        home.file = {
+          ".emacs.d/etc/elfeed/score/score.el".text = builtins.readFile ./assets/score.el;
+        };
+      };
     })
     (mkIf (cfg.enable && cfg.syncthing.enable) {
       home-manager.users."${user}" = {
