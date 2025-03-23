@@ -138,5 +138,49 @@ in
         };
       };
     })
+    (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "emacs/vocem/consult" = {
+          desc = "VOCEM consult repo";
+          remote.url = "https://github.com/minad/consult";
+        };
+        "emacs/vocem/consult/wiki" = {
+          desc = "VOCEM consult wiki";
+          remote.url = "https://github.com/minad/consult/wiki";
+        };
+        "emacs/vocem/vertico" = {
+          desc = "VOCEM vertico repo";
+          remote.url = "https://github.com/minad/vertico";
+        };
+        "emacs/vocem/vertico/wiki" = {
+          desc = "VOCEM vertico wiki";
+          remote.url = "https://github.com/minad/vertico/wiki";
+        };
+        "emacs/vocem/embark" = {
+          desc = "VOCEM embark repo";
+          remote.url = "https://github.com/oantolin/embark";
+        };
+        "emacs/vocem/embark/wiki" = {
+          desc = "VOCEM embark wiki";
+          remote.url = "https://github.com/oantolin/embark/wiki";
+        };
+        "emacs/vocem/orderless" = {
+          desc = "VOCEM orderless repo";
+          remote.url = "https://github.com/oantolin/orderless";
+        };
+        "emacs/corfu" = {
+          desc = "corfu repo";
+          remote.url = "https://github.com/minad/corfu";
+        };
+        "emacs/corfu/wiki" = {
+          desc = "corfu/wiki";
+          remote.url = "https://github.com/minad/corfu/wiki";
+        };
+        "emacs/cape" = {
+          desc = "cape repo (corfu extension)";
+          remote.url = "https://github.com/minad/cape";
+        };
+      };
+    })
   ];
 }
