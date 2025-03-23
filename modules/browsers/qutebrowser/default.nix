@@ -467,7 +467,8 @@ in
                 "ge" = "cmd-set-text :open {url}";
                 "gl" = "open {url:scheme}://${config.controlcenter.substitutions."lists.gnu.org"}{url:path}";
                 "gs" = "view-source";
-                "gw" = "cmd-set-text -s :tab-give";
+                "g." = "cmd-set-text -s :tab-give";
+                "g," = "cmd-set-text -s :tab-take";
                 "pt" = "open -t -- {primary}";
                 "pw" = "open -w -- {primary}";
                 "yy" = "yank";
