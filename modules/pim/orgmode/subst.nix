@@ -1,11 +1,8 @@
 { config, inputs, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
-let
-  user = config.attributes.mainUser.name;
-in
 {
-  emacsOrgRoamDir = homePrefix user "docs/org/roam";
+  orgRoamRoot = config.pim.orgmode.org-roam.rootDir;
   emacsOrgBarsPath = inputs.emacs-org-bars;
   emacsConsultOrgClockPath = inputs.emacs-consult-org-clock;
   orgRoot = config.pim.orgmode.rootDir;

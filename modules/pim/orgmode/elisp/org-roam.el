@@ -22,8 +22,8 @@
   :hook
   (after-init . org-roam-mode)
   :custom
-  (org-roam-directory "@emacsOrgRoamDir@")
-  (org-roam-db-location "@emacsOrgRoamDir@/org-roam.db")
+  (org-roam-directory "@orgRoamRoot@")
+  (org-roam-db-location "@orgRoamRoot@/org-roam.db")
   (org-roam-tag-sources '(prop vanilla all-directories))
   (org-roam-verbose t)
   (org-roam-mode-sections

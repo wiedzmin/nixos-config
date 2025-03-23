@@ -21,5 +21,5 @@ in
   emacsEpithetPath = inputs.emacs-epithet;
   emacsProjectHeaderlinePath = inputs.emacs-project-headerline;
   currentLineHighlightFaceVerticoPatch = if config.appearance.emacs.currentLineHighlightFace != "" then '':custom-face (vertico-current ((t (:background "${config.appearance.emacs.currentLineHighlightFace}"))))'' else "";
-  orgRoamRootDir = config.pim.orgmode.org-roam.rootDir;
+  orgRoamRoot = config.pim.orgmode.org-roam.rootDir;
 }

@@ -562,7 +562,7 @@
      (auto-mode))
     (dir user-emacs-directory)
     (group
-     (dir "@orgRoamRootDir@")
+     (dir "@orgRoamRoot@")
      (group (auto-indirect) (auto-file))
      (group-not "*special*" (auto-file))
      (auto-mode))
