@@ -99,6 +99,14 @@ in
               searchSuffix = "search?q=";
             };
           };
+          "yasnippet/snippet-reference" = {
+            desc = "Yasnippet documentation / snippets reference";
+            remote.url = "http://joaotavora.github.io/yasnippet/snippet-reference.html";
+          };
+          "yasnippet/snippet-development" = {
+            desc = "Yasnippet documentation / snippets development";
+            remote.url = "http://joaotavora.github.io/yasnippet/snippet-development.html";
+          };
         } // optionalAttrs (cfg.snippets.backend == "tempel") {
         tempel = {
           desc = "Tempel repo";
