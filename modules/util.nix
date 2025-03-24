@@ -150,6 +150,7 @@ rec {
   homePrefix = user: suffix: "/home/${user}/" + suffix;
   goBinPrefix = goPath: suffix: "${goPath}/bin/" + suffix;
   xdgConfig = user: suffix: (homePrefix user ".config") + suffix; # FIXME: deal with slashes seamlessly
+  emacsConfigPrefix = user: suffix: (homePrefix user ".emacs.d") + suffix;
   configPrefix = roots: suffix: "${wsRoot roots "github"}/wiedzmin/nixos-config/" + suffix;
   secretsPrefix = machine: suffix: roots: configPrefix roots ("machines/" + machine + "/secrets/" + suffix);
   assetsPrefix = machine: suffix: roots: configPrefix roots ("machines/" + machine + "/assets/" + suffix);
