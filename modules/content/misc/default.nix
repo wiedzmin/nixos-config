@@ -91,7 +91,7 @@ in
       iso.workdir = mkOption {
         type = types.str;
         default = homePrefix user "blobs/work/iso";
-        description = "Path to workinf directory for ISO manipulations";
+        description = "Path to working directory for ISO manipulations";
       };
       cdrom.dev = mkOption {
         type = types.str;
