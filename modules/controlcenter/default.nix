@@ -327,11 +327,12 @@ in
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = [
-        {
+        (goLocalDebugKeybinding config {
           key = [ "j" ];
-          cmd = ''${nurpkgs.toolbox}/bin/services --flat'';
+          cmd = [ "services" "--flat" ];
           mode = "services";
-        }
+          debug = true;
+        })
         {
           key = [ "Shift" "j" ];
           cmd = ''${nurpkgs.toolbox}/bin/services --dump-show-cmd --flat'';
