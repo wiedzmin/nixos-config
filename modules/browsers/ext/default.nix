@@ -70,7 +70,9 @@ in
       programs.browserpass.enable = config.browsers.firefox.enable || config.browsers.chromium.enable;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.config = config.browsers.ext.emacs.browseUrlSetup;
+      ide.emacs.core.config =
+        config.browsers.ext.emacs.browseUrlSetup +
+        builtins.readFile ./elisp/browsers-ext.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.modeBindings = {
