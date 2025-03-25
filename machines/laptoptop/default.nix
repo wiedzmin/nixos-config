@@ -517,6 +517,10 @@ in
 
   workstation = {
     systemtraits.enable = true;
+    backups = {
+      enable = true;
+      emacs.enable = true;
+    };
     power = {
       mgmt = {
         enable = true;

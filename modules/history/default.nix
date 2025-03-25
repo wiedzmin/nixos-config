@@ -107,7 +107,6 @@ in
       }];
 
       ide.emacs.core.extraPackages = epkgs: [
-        epkgs.backup-each-save
         epkgs.recentf-ext
         epkgs.savekill
       ];

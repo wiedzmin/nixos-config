@@ -1,6 +1,3 @@
-(use-package backup-each-save
-  :hook (after-save-hook . backup-each-save))
-
 (use-package recentf
   :after no-littering
   :config
@@ -26,15 +23,6 @@
         ("f" . find-file)
         ("g" . find-sibling-file))
   :custom
-  ;; backup settings
-  (auto-save-default nil)
-  (backup-by-copying t)
-  (backup-by-copying-when-linked t)
-  (backup-directory-alist '(("." . "~/.cache/emacs/backups")))
-  (delete-old-versions -1)
-  (kept-new-versions 6)
-  (kept-old-versions 2)
-  (version-control t)
   (save-abbrevs 'silently)
   (view-read-only t)
   :config
