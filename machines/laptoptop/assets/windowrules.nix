@@ -17,6 +17,7 @@ with pkgs.unstable.commonutils;
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
       title = "http facebook github";
       desktop = "main"; # [ref:desktop_main]
+      enable = false;
     }
     {
       class = mkWSMappingBrowsersRegexp config.attributes.browser;
