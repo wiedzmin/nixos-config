@@ -449,8 +449,8 @@ in
       desc = "Searchcode";
       tags = [ "dev" ];
       remote = {
-        url = "";
-        searchSuffix = "https://searchcode.com/?q=";
+        url = "https://searchcode.com/";
+        searchSuffix = "?q=";
       };
     };
     "warc" = {
