@@ -233,6 +233,7 @@ in
       remote.url = "https://web.telegram.org/";
     };
     "fb" = {
+      enable = false;
       tags = [ "fb" ];
       remote = {
         url = "https://www.facebook.com/";
@@ -248,6 +249,7 @@ in
       ];
     };
     "fbmess" = {
+      enable = false;
       desc = "Facebook Messenger";
       tags = [ "fb" ];
       remote = {
