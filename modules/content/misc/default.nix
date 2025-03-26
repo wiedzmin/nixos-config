@@ -411,6 +411,11 @@ in
           tags = [ "content" "misc" "ext" ];
           local.path = cfg.mount.external;
         };
+        "mnt-external-fhs" = {
+          desc = "External HDD well-known mount point";
+          tags = [ "content" "misc" "ext" "fhs" ];
+          local.path = "/run/media/${user}";
+        };
         "temp-dir" = {
           desc = "System-wide user's temporary directory";
           tags = [ "content" "misc" "temp" ];
