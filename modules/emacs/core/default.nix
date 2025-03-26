@@ -18,6 +18,15 @@ let
       ${pkgs.systemd}/bin/systemctl --user restart emacs.service
     '';
   };
+  drop-bookmarks = pkgs.writeShellApplication {
+    name = "drop-bookmarks";
+    text = ''
+      ${pkgs.systemd}/bin/systemctl --user stop emacs.service
+      sleep 2
+      rm -f ${cfg.varDir}/bookmark-default.el
+      ${pkgs.systemd}/bin/systemctl --user restart emacs.service
+    '';
+  };
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   genCustomPackages = customPackages:
     ''
@@ -374,7 +383,7 @@ in
         (fixmep "FIXME(${user}): ")
       '';
       home-manager.users."${user}" = {
-        home.packages = (with pkgs; [ drop-corrupted ispell nurpkgs.my_cookies ])
+        home.packages = (with pkgs; [ drop-bookmarks drop-corrupted ispell nurpkgs.my_cookies ])
           ++ [ emacsWithPkgs ]
           ++ optionals (cfg.emacsEverywhere.enable) (with pkgs; [
           xclip
