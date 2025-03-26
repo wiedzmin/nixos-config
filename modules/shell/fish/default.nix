@@ -171,8 +171,8 @@ in
             }
           ];
           shellInitLast = ''
-            bind "[1;5P" fzm
-            bind "[1;5Q" cpwd
+            bind "ctrl-f1" fzm
+            bind "ctrl-f2" cpwd
           '';
         };
       };
