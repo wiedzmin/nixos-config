@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -51,7 +51,7 @@ in
         epkgs.expreg
       ];
       ide.emacs.core.config =
-        builtins.readFile ./elisp/edit.el +
+        readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/edit.el ] +
         optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/non-ts.el) +
         optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/ts.el);
       ide.emacs.core.customKeymaps = {
