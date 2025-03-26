@@ -616,7 +616,9 @@
   ("C-M-;" . isearch-forward-thing-at-point)
   ("C-M-'" . isearch-backward-thing-at-point)
   :custom
-  (lazy-count-suffix-format "   (%s/%s)"))
+  (lazy-count-suffix-format "   (%s/%s)")
+  (isearch-allow-motion t)
+  (isearch-motion-changes-direction t))
 
 (use-package project-headerline
   :load-path "@emacsProjectHeaderlinePath@"
