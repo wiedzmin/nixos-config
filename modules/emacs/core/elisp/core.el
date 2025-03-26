@@ -90,6 +90,8 @@
   (text-mode-ispell-word-completion nil) ;; NOTE: Emacs 30 and newer: Disable Ispell completion function.
   (split-width-threshold nil)
   (split-height-threshold nil)
+  (scroll-conservatively 10)
+  (scroll-margin 15)
   (scroll-preserve-screen-position 'always)
   (cursor-type 'bar)
   (completion-cycle-threshold 3)
