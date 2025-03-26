@@ -117,6 +117,22 @@
         "type": "github"
       }
     },
+    "emacs-float-narrow-indirect": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1741872676,
+        "narHash": "sha256-7SH2cn0f6BNHz8ovA6xdfsBwTD+7TIDLLn8je883YNI=",
+        "owner": "yibie",
+        "repo": "float-narrow-indirect",
+        "rev": "8163f69cec772cfa95b4c22607cdbffd61dfc5f9",
+        "type": "github"
+      },
+      "original": {
+        "owner": "yibie",
+        "repo": "float-narrow-indirect",
+        "type": "github"
+      }
+    },
     "emacs-git-msg-prefix": {
       "flake": false,
       "locked": {
@@ -676,6 +692,7 @@
         "emacs-combobulate": "emacs-combobulate",
         "emacs-consult-org-clock": "emacs-consult-org-clock",
         "emacs-epithet": "emacs-epithet",
+        "emacs-float-narrow-indirect": "emacs-float-narrow-indirect",
         "emacs-git-msg-prefix": "emacs-git-msg-prefix",
         "emacs-highlight-sexp": "emacs-highlight-sexp",
         "emacs-jira-el": "emacs-jira-el",
