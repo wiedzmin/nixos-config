@@ -411,7 +411,7 @@ rec {
   windowRulesFromBookmarks = bookmarks:
     lib.foldl (a: b: a ++ b) [ ]
       (lib.mapAttrsToList (_: meta: meta.windowRules)
-        (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "windowRules" ] meta) bookmarks));
+        (lib.filterAttrs (_: meta: lib.hasAttrByPath [ "windowRules" ] meta && trueValueByPath meta [ "enable" ]) bookmarks));
   prepareWindowRule = rule:
     rule // (lib.mapAttrs
       (k: v: builtins.replaceStrings [ "@" ]
@@ -533,7 +533,7 @@ rec {
         }
       '';
   genPlacementRulesI3 = rules: wsdata:
-    lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: builtins.hasAttr "desktop" r) rules) (r:
+    lib.concatStringsSep "\n" (lib.forEach (builtins.filter (r: trueValueByPath r [ "enable" ] && builtins.hasAttr "desktop" r) rules) (r:
       "for_window ${mkWindowRuleI3 r} move to workspace ${getWorkspaceByNameI3 wsdata r.desktop}${
         if (builtins.hasAttr "activate" r && r.activate) then
           "; workspace ${getWorkspaceByNameI3 wsdata r.desktop}"
