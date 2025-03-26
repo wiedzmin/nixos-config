@@ -146,6 +146,16 @@ in
         default = true;
         description = "Does mouse cursor follow window focus?";
       };
+      mouseFocus.fracX = mkOption {
+        type = types.float;
+        default = 0.5;
+        description = "X fraction for cursor placement between 0 and 1, 0.5 denotes window center";
+      };
+      mouseFocus.fracY = mkOption {
+        type = types.float;
+        default = 0.5;
+        description = "Y fraction for cursor placement between 0 and 1, 0.5 denotes window center";
+      };
       statusbar.impl = mkOption {
         type = types.enum [ "py3" "i3-rs" ];
         default = "py3";
@@ -791,7 +801,7 @@ in
         path = [ pkgs.i3 pkgs.bash ];
         serviceConfig = {
           Type = "simple";
-          ExecStart = "${nurpkgs.wmtools}/bin/i3-mousewarp";
+          ExecStart = "${nurpkgs.wmtools}/bin/i3-mousewarp -x ${builtins.toString cfg.mouseFocus.fracX} -y ${builtins.toString cfg.mouseFocus.fracY}";
           Restart = "always";
           StandardOutput = "journal";
           StandardError = "journal";
