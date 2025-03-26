@@ -237,6 +237,20 @@
   (:map mode-specific-map
         ("i" . edit-indirect-region)))
 
+(use-package float-narrow-indirect
+  :load-path "@emacsFloatNarrowIndirectPath@"
+  :bind
+  (:map misc-editing-map
+        ("n c" . fni-narrow-to-region-floating)
+        ("n TAB" . fni-toggle-focus)
+        ("n k" . fni-clear-aggregation))
+  :custom
+  (ni-floating-window-size '(0.3 . 0.5)) ; Size of floating windows (width . height) as ratio of parent frame
+  (ni-floating-frame-border-color "gray50")
+  (ni-floating-frame-transparency '(95 . 90)) ; Transparency for floating frames (active . inactive)
+  (ni-buf-name-prefix "NI-")
+  (ni-buf-name-separator "::"))
+
 (use-package minibuffer-edit
   :bind
   (:map minibuffer-local-map

@@ -75,6 +75,10 @@
       url = "github:unmonoqueteclea/jira.el";
       flake = false;
     };
+    emacs-float-narrow-indirect = {
+      url = "github:yibie/float-narrow-indirect";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {
