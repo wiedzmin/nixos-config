@@ -414,7 +414,7 @@ in
         "temp-dir" = {
           desc = "System-wide user's temporary directory";
           tags = [ "content" "misc" "temp" ];
-          local.path = homePrefix user "temp";
+          local.path = homePrefix user "workspace/temp";
         };
       };
     })
