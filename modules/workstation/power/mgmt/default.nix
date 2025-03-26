@@ -1,10 +1,17 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
 let
   cfg = config.workstation.power.mgmt;
   user = config.attributes.mainUser.name;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -55,8 +62,9 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.laptop.enable) {
-      services = {
-        auto-cpufreq.enable = true;
+      workstation.power.auto-cpufreq = {
+        enable = true;
+        package = nixpkgs-last-unbroken.auto-cpufreq;
       };
     })
     (mkIf (cfg.enable && cfg.laptop.enable && hasInfix "ThinkPad" config.attributes.hardware.dmiSystemVersion) {
