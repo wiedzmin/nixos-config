@@ -100,6 +100,7 @@
     ./workstation/input/keyboard
     ./workstation/lockscreen
     ./workstation/performance
+    ./workstation/power/auto-cpufreq
     ./workstation/power/battery
     ./workstation/power/mgmt
     ./workstation/randr
