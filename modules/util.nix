@@ -176,10 +176,14 @@ rec {
   maybeAttrIsBool = name: set: (builtins.hasAttr name set) && set."${name}"; # FIXME: enforce type safety
   maybeAttrString = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else ph;
   maybeAttrList = name: set: ph: if (builtins.hasAttr name set) then set."${name}" else [ ph ];
-  mustAttrString = name: set: if (builtins.hasAttr name set) then set."${name}" else
-    builtins.trace "`${name}` attribute not found in `${set}`";
-  mustAttrList = name: set: if (builtins.hasAttr name set) then set."${name}" else
-    builtins.trace "`${name}` list attribute not found in `${set}`";
+  mustAttrString = name: set:
+    if (builtins.hasAttr name set)
+    then set."${name}"
+    else builtins.trace "`${name}` attribute not found in `${set}`";
+  mustAttrList = name: set:
+    if (builtins.hasAttr name set)
+    then set."${name}"
+    else builtins.trace "`${name}` list attribute not found in `${set}`";
   emacsBoolToString = v: if v then "t" else "nil";
   emptyValueByPath = meta: path: (lib.attrByPath path "" meta) == "";
   nonEmptyValueByPath = meta: path: !(emptyValueByPath meta path);
@@ -207,34 +211,55 @@ rec {
       };
     };
   };
-  checkedBookmarks = bookmarks: checkPath:
+  approvedBookmarks = bookmarks: checkPath:
     (lib.filterAttrs
       (_: meta:
         trueValueByPath meta [ "enable" ] &&
         nonEmptyValueByPath meta checkPath)
       bookmarks);
-  localFiles = type: bookmarks:
-    lib.mapAttrsToList (_: meta: meta.local.path) (lib.filterAttrs
-      (_: meta: trueValueByPathStrict meta [ "local" type ])
-      (checkedBookmarks bookmarks [ "local" "path" ]));
-  localBookmarksEmacs = bookmarks:
-    lib.mapAttrsToList (_: meta: meta.local.path) (checkedBookmarks bookmarks [ "local" "path" ]);
+  approvedBookmarksLocal = bookmarks: approvedBookmarks bookmarks [ "local" "path" ];
+  localPathsByType = type: bookmarks:
+    lib.mapAttrsToList (_: meta: meta.local.path)
+      (lib.filterAttrs (_: meta: trueValueByPathStrict meta [ "local" type ])
+        (approvedBookmarksLocal bookmarks));
   localBookmarksKeyMeta = bookmarks: sep: tagSep:
     lib.mapAttrs'
-      (key: meta: lib.nameValuePair (mkLocalBookmarkName (meta // { inherit key; }) sep tagSep)
+      (key: meta: lib.nameValuePair
+        (mkLocalBookmarkName (meta // { inherit key; }) sep tagSep)
         (mkLocalBookmarkDest meta.local))
-      (checkedBookmarks bookmarks [ "local" "path" ]);
+      (approvedBookmarksLocal bookmarks);
   localBookmarksKVText = bookmarks:
-    lib.concatStringsSep "\n" (lib.mapAttrsToList (id: meta: id + " : " + meta.local.path) (checkedBookmarks bookmarks [ "local" "path" ]));
+    lib.concatStringsSep "\n"
+      (lib.mapAttrsToList (id: meta: id + " : " + meta.local.path)
+        (approvedBookmarksLocal bookmarks));
   mkLocalBookmarkName = meta: sep: tagSep:
-    lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.key ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
-      ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
+    lib.concatStringsSep sep
+      (builtins.filter (e: e != "")
+        ([
+          meta.key
+        ] ++ [
+          (lib.attrByPath [ "desc" ] "" meta)
+        ] ++ [
+          (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta))
+        ]));
   mkLocalBookmarkDest = meta:
-    { inherit (meta) path; } // lib.optionalAttrs (lib.hasAttrByPath [ "shell" ] meta) { inherit (meta) shell; }
-    // lib.optionalAttrs (lib.hasAttrByPath [ "tmux" ] meta) { inherit (meta) tmux; };
+    {
+      inherit (meta) path;
+    } // lib.optionalAttrs (lib.hasAttrByPath [ "shell" ] meta) {
+      inherit (meta) shell;
+    } // lib.optionalAttrs (lib.hasAttrByPath [ "tmux" ] meta) {
+      inherit (meta) tmux;
+    };
   mkRemoteBookmarkName = meta: sep: tagSep:
-    lib.concatStringsSep sep (builtins.filter (e: e != "") ([ meta.remote.url ] ++ [ (lib.attrByPath [ "desc" ] "" meta) ]
-      ++ [ (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta)) ]));
+    lib.concatStringsSep sep
+      (builtins.filter (e: e != "")
+        ([
+          meta.remote.url
+        ] ++ [
+          (lib.attrByPath [ "desc" ] "" meta)
+        ] ++ [
+          (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta))
+        ]));
   mkBookmarkWebjumpDest = meta:
     { inherit (meta.remote) url; } // mkBookmarkRemoteDest meta;
   mkBookmarkSearchengineDest = meta:
@@ -246,15 +271,21 @@ rec {
     lib.optionalAttrs (lib.hasAttrByPath [ "remote" "browser" ] meta) { inherit (meta.remote) browser; } //
     lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; };
   webjumpsMeta = remotes: sep: tagSep:
-    lib.mapAttrs' (_: meta: lib.nameValuePair (mkRemoteBookmarkName meta sep tagSep) (mkBookmarkWebjumpDest meta))
+    lib.mapAttrs'
+      (_: meta: lib.nameValuePair
+        (mkRemoteBookmarkName meta sep tagSep)
+        (mkBookmarkWebjumpDest meta))
       (lib.filterAttrs
         (_: meta: (trueValueByPath meta [ "remote" "jump" ] || falseValueByPath meta [ "remote" "searchSuffix" ]))
-        (checkedBookmarks remotes [ "remote" "url" ]));
+        (approvedBookmarks remotes [ "remote" "url" ]));
   searchenginesMeta = remotes: sep: tagSep:
-    lib.mapAttrs' (_: meta: lib.nameValuePair (mkRemoteBookmarkName meta sep tagSep) (mkBookmarkSearchengineDest meta))
+    lib.mapAttrs'
+      (_: meta: lib.nameValuePair
+        (mkRemoteBookmarkName meta sep tagSep)
+        (mkBookmarkSearchengineDest meta))
       (lib.filterAttrs
         (_: meta: lib.hasAttrByPath [ "remote" "searchSuffix" ] meta)
-        (checkedBookmarks remotes [ "remote" "url" ]));
+        (approvedBookmarks remotes [ "remote" "url" ]));
   maybeDefaultBrowserCmd = browserDefault: browserFallback:
     if builtins.elem (appWindowClass browserDefault.traits) approvedDefaultBrowsersWC then
       appCmdFull browserDefault.traits
