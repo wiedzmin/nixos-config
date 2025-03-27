@@ -298,7 +298,7 @@ in
       };
     })
     (mkIf cfg.docflow.enable {
-      systemd.user.services = builtins.listToAttrs (forEach (localFiles "docs" config.navigation.bookmarks.entries) (root:
+      systemd.user.services = builtins.listToAttrs (forEach (localPathsByType "docs" config.navigation.bookmarks.entries) (root:
         let
           token = concatStringsSep "-" (takeLast 2 (splitString "/" root));
         in
