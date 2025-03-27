@@ -265,6 +265,11 @@ in
             };
             colors = {
               statusbar.url.success.https.fg = "white";
+              hints = {
+                fg = "black";
+                bg = "gold";
+                match.fg = "red";
+              };
               tabs = rec {
                 even.bg = "silver";
                 even.fg = "#666666";
