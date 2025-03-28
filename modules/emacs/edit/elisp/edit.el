@@ -256,3 +256,13 @@
   (:map minibuffer-local-map
       ("M-<backspace>" . minibuffer-edit-smart-delete-backwards)
       ("C-<backspace>" . minibuffer-edit-smart-delete-backwards)))
+
+(use-package symbol-overlay
+  :bind
+  (:map misc-editing-map
+        (">" . symbol-overlay-put)))
+
+(use-package symbol-overlay-mc
+  :bind
+  (:map misc-editing-map
+        ("a" . symbol-overlay-mc-mark-all)))

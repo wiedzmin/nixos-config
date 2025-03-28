@@ -41,6 +41,8 @@ in
         epkgs.region-bindings-mode
         epkgs.shift-number
         epkgs.string-inflection
+        epkgs.symbol-overlay
+        epkgs.symbol-overlay-mc
         epkgs.undo-tree
         epkgs.wgrep
         epkgs.whole-line-or-region
