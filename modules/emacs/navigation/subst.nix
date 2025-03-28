@@ -7,7 +7,7 @@ in
 {
   python3Binary = "${pkgs.python3}/bin/python3";
   websearchBinary = "${nurpkgs.toolbox}/bin/websearch";
-  projectsRootMarkersEmacs = builtins.concatStringsSep " " (lib.forEach config.dev.navigation.projects.rootMarkers (marker: ''"${marker}"''));
+  projectsRootMarkersEmacs = builtins.concatStringsSep " " (lib.forEach config.dev.navigation.projects.markers.root (marker: ''"${marker}"''));
   autorevertEnable = if edit.autorevert.enable then ":hook (dired-mode-hook . auto-revert-mode)" else "";
   projectRootSexp = lib.optionalString (navigation.projects.backend == "project") "(project-root (project-current))" +
     lib.optionalString (navigation.projects.backend == "projectile") "(projectile-project-root)";

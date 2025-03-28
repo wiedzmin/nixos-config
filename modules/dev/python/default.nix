@@ -39,7 +39,7 @@ in
         default = [ ];
         description = "List of paths to search for Python packages, which will be fed to Python Language Server.";
       };
-      rootMarkers.enable = mkOption {
+      markers.root.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to use additional project root' marker files";
@@ -77,8 +77,8 @@ in
       dev.misc.timeTracking.extensions.dev = { "py" = "coding:python"; };
       completion.tabnine.config = { language.python = { command = "python-lsp-server"; }; };
     })
-    (mkIf (cfg.enable && cfg.rootMarkers.enable) {
-      dev.navigation.projects.rootMarkers =
+    (mkIf (cfg.enable && cfg.markers.root.enable) {
+      dev.navigation.projects.markers.root =
         [ "Pipfile" "manage.py" "poetry.lock" "requirements.txt" "requirements.pip" "setup.py" "tox.ini" ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
