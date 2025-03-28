@@ -15,7 +15,7 @@ in
         default = false;
         description = "Whether to enable C/C++ dev infrastructure.";
       };
-      rootMarkers.enable = mkOption {
+      markers.root.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to use additional project root' marker files";
@@ -48,8 +48,8 @@ in
         "hpp" = "coding:cpp";
       };
     })
-    (mkIf (cfg.enable && cfg.rootMarkers.enable) {
-      dev.navigation.projects.rootMarkers = [ "CMakeLists.txt" "Makefile" ];
+    (mkIf (cfg.enable && cfg.markers.root.enable) {
+      dev.navigation.projects.markers.root = [ "CMakeLists.txt" "Makefile" ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [

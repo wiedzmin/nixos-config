@@ -37,7 +37,7 @@ in
         default = 4;
         description = "Search depth.";
       };
-      rootMarkers = mkOption {
+      markers.root = mkOption {
         type = types.listOf types.str;
         default = [ ] ++ lib.optionals (config.ide.emacs.navigation.projects.backend == "projectile") [ ".projectile" ];
         description = "Filenames that could be used to denote project root";

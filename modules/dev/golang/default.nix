@@ -30,7 +30,7 @@ in
         default = false;
         description = "Whether to enable miscelanneous tools.";
       };
-      rootMarkers.enable = mkOption {
+      markers.root.enable = mkOption {
         type = types.bool;
         default = false;
         description = "Whether to use additional project root' marker files";
@@ -83,7 +83,7 @@ in
       };
       home-manager.users."${user}" = { home.packages = with pkgs; [ go-install-wrapper gore gotools impl ]; };
     })
-    (mkIf (cfg.enable && cfg.rootMarkers.enable) { dev.navigation.projects.rootMarkers = [ "go.mod" ]; })
+    (mkIf (cfg.enable && cfg.markers.root.enable) { dev.navigation.projects.markers.root = [ "go.mod" ]; })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.flycheck-golangci-lint
