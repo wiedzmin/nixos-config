@@ -348,7 +348,7 @@ in
           epkgs.f
           epkgs.no-littering
           epkgs.reverse-im
-        ] ++ lib.optionals cfg.treesitter.enable [ epkgs.treesit-auto epkgs.treesit-fold ]
+        ] ++ lib.optionals cfg.treesitter.enable [ epkgs.treesit-auto ]
         ++ lib.optionals cfg.emacsEverywhere.enable [ epkgs.emacs-everywhere ]
         ++ lib.optionals cfg.debug.benchmark [ epkgs.benchmark-init ];
       ide.emacs.core.config = lib.optionalString config.wm.i3.enable ''
