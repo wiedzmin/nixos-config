@@ -1,0 +1,10 @@
+(defun custom/open-project-todos ()
+  (interactive)
+  (let ((todofile (cl-loop for f in (mapcar
+                                     (lambda (f) (expand-file-name f (projectile-project-root)))
+                                     '(@todoMarkers@))
+                           until (file-exists-p f)
+                           finally return f)))
+    (if (file-exists-p todofile)
+        (find-file todofile)
+      (message "Cannot find any project TODO files"))))
