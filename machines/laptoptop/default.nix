@@ -651,6 +651,7 @@ in
   };
 
   ext.virtualization.core.enable = true;
+  ext.virtualization.virtualbox.enable = true;
 
   dbms = {
     misc = {
