@@ -42,6 +42,16 @@ in
         default = [ ] ++ lib.optionals (config.ide.emacs.navigation.projects.backend == "projectile") [ ".projectile" ];
         description = "Filenames that could be used to denote project root";
       };
+      markers.todo = mkOption {
+        type = types.listOf types.str;
+        default = [ "todo.org" "project.org" "agenda.org" "TODO.org" ];
+        description = "Filenames that could be used to denote project TODOs";
+      };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable projects infra for Emacs.";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -60,6 +70,15 @@ in
           };
         };
       };
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.org-project-capture
+      ];
+      ide.emacs.core.customPackages = {
+        "projects-misc" = { text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/misc.el ]; };
+      };
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/projects.el ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = lib.optionals cfg.fuzzySearch.enable [

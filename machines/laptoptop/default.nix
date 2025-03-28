@@ -314,6 +314,7 @@ in
       enable = true;
       bookmarks.enable = true;
       fuzzySearch.enable = true;
+      emacs.enable = true;
       wm.enable = true;
     };
     misc = {
