@@ -49,6 +49,7 @@ in
         epkgs.expand-region
       ] ++ optionals (config.ide.emacs.core.treesitter.enable) [
         epkgs.expreg
+        epkgs.treesit-fold
       ];
       ide.emacs.core.config =
         readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/edit.el ] +
