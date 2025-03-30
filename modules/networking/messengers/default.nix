@@ -116,6 +116,14 @@ in
           desc = "Telegram service status";
           remote.url = "https://downdetector.com/status/telegram/";
         };
+        "telegram/api/reference/links" = {
+          desc = "telegram API reference / links";
+          remote.url = "https://core.telegram.org/api/links";
+        };
+        "telegram/api/reference/usernames" = {
+          desc = "telegram API reference / usernames";
+          remote.url = "https://core.telegram.org/api/invites#public-usernames";
+        };
       };
     })
   ];
