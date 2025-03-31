@@ -75,7 +75,7 @@ in
     };
     initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
     tmp.useTmpfs = false;
-    kernelPackages = pkgs.linuxPackages_6_6;
+    kernelPackages = pkgs.linuxPackages_6_13;
     supportedFilesystems = [ "ntfs" ];
   };
 
