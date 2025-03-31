@@ -42,7 +42,6 @@ in
           miller
           moreutils # NOTE: see https://joeyh.name/code/moreutils/ for reference
           pipe-rename
-          ripgrep-all
           sad # TODO: consider creating shell aliases
           sd # TODO: play with it in streaming use-cases
           up
@@ -50,6 +49,9 @@ in
           pup
         ];
         programs = {
+          ripgrep-all = {
+            enable = true;
+          };
           lsd = {
             enable = true;
             enableAliases = true;
