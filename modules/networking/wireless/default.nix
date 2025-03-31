@@ -92,6 +92,7 @@ in
     (mkIf (cfg.enable && cfg.backend == "iwd") {
       networking.wireless.iwd.enable = true;
       networking.networkmanager.wifi.backend = "iwd";
+      home-manager.users."${user}" = { home.packages = with pkgs; [ iwgtk ]; };
     })
     (mkIf (cfg.enable && cfg.backend == "wireless") {
       networking.wireless = {
@@ -166,7 +167,11 @@ in
           mode = "network";
           cmd = "${pkgs.bluez}/bin/bluetoothctl disconnect ${with cfg.bluetooth; devices.${defaultHeadset}}";
         }
-      ];
+      ] ++ optionals cfg.bluetooth.enable [{
+        key = [ "i" ];
+        mode = "network";
+        cmd = "${pkgs.iwgtk}/bin/iwgtk";
+      }];
     })
     (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ wifi-status ]; };
