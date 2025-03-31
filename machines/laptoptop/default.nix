@@ -459,8 +459,9 @@ in
       emacs.enable = true;
       treesitter.enable = false;
       permittedInsecurePackages = [
-        "electron-27.3.11"
         "archiver-3.5.1"
+        "beekeeper-studio-5.1.5"
+        "electron-27.3.11"
       ];
     };
     cachix = {
