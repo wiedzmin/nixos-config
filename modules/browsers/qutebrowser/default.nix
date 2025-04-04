@@ -469,6 +469,7 @@ in
                 "gj" = "tab-move +";
                 "gk" = "tab-move -";
                 "go" = "spawn ${appCmdFull config.attributes.browser.fallback.traits} {url}";
+                "gw" = ''spawn emacsclient --eval '(eww "{url}")' '';
                 "ge" = "cmd-set-text :open {url}";
                 "gl" = "open {url:scheme}://${config.controlcenter.substitutions."lists.gnu.org"}{url:path}";
                 "gs" = "view-source";
