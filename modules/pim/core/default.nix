@@ -15,11 +15,9 @@ in
         description = "Whether to enable core PIM setup";
       };
       emacs.automation.enable = mkOption {
-        # TODO: check if EEV and Hyperbole are mutually exclusive in any way
-        # TODO: think if we should have separate options for them
         type = types.bool;
         default = false;
-        description = "Whether to enable Emacs packages like EEV and Hyperbole";
+        description = "Whether to enable Emacs packages like Hyperbole/EEV/ifany";
       };
       wm.enable = mkOption {
         type = types.bool;
@@ -31,8 +29,8 @@ in
 
   config = mkMerge [
     (mkIf (cfg.enable && cfg.emacs.automation.enable) {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.eev ];
-      ide.emacs.core.config = builtins.readFile ./elisp/eev.el;
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.hyperbole ];
+      ide.emacs.core.config = builtins.readFile ./elisp/pim.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = lib.optionals config.navigation.bookmarks.enable [
@@ -42,6 +40,18 @@ in
           mode = "dev";
         })
       ];
+    })
+    (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
+      navigation.bookmarks.entries = {
+        "hyperbole-site" = {
+          desc = "GNU Hyperbole site";
+          remote.url = "https://www.gnu.org/software/hyperbole/";
+        };
+        "hyperbole-man" = {
+          desc = "GNU Hyperbole manual";
+          remote.url = "https://www.gnu.org/software/hyperbole/man/hyperbole.html";
+        };
+      };
     })
   ];
 }
