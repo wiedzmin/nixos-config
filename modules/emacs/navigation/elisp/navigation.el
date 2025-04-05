@@ -571,6 +571,10 @@
     (auto-directory)
     (auto-mode)))
 
+(use-package ibuffer
+  :bind
+  ("C-<f12>" . ibuffer))
+
 (use-package window
   :bind
   ("C-l" . recenter-top-bottom)
