@@ -30,7 +30,7 @@ in
   config = mkMerge [
     (mkIf (cfg.enable && cfg.emacs.automation.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.hyperbole ];
-      ide.emacs.core.config = builtins.readFile ./elisp/pim.el;
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/pim.el ];
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = lib.optionals config.navigation.bookmarks.enable [
