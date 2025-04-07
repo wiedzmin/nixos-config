@@ -367,6 +367,7 @@ in
         epkgs.elfeed-goodies
         epkgs.elfeed-org
         epkgs.elfeed-score
+        epkgs.feed-discovery
       ];
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/content.el ];
       home-manager.users."${user}" = {

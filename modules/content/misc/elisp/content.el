@@ -97,3 +97,5 @@ Select a default filter and update elfeed.
   (elfeed-goodies/setup)
   (elfeed-org)
   (elfeed-score-enable))
+
+(use-package feed-discovery)
