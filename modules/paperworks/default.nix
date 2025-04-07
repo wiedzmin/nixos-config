@@ -195,7 +195,7 @@ in
       };
 
       environment.systemPackages = with pkgs;
-        [ deskew scantailor-advanced ] ++ lib.optionals (cfg.scanning.frontend == "skanlite") [ skanlite ]
+        [ deskew scantailor-advanced naps2 ] ++ lib.optionals (cfg.scanning.frontend == "skanlite") [ skanlite ]
         ++ lib.optionals (cfg.scanning.frontend == "gscan2pdf") [ gscan2pdf ]
         ++ lib.optionals (cfg.scanning.frontend == "simple-scan") [ simple-scan ]
         ++ lib.optionals (cfg.scanning.frontend == "xsane") [ xsane ];
