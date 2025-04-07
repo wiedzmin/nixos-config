@@ -107,6 +107,16 @@ in
       tags = [ "tools" "online" ];
       remote.url = "https://www.online-decoder.com/ru";
     };
+    "Ricktube" = {
+      desc = "Ricktube";
+      tags = [ "media" "video" "russian" ];
+      remote = {
+        url = "https://ricktube.ru/";
+        jump = true;
+        searchSuffix = "video?q=";
+        browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
+      };
+    };
     "youtube" = {
       desc = "Youtube";
       tags = [ "media" "video" ];
