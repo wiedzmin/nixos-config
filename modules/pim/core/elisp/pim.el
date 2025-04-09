@@ -14,7 +14,7 @@
   (with-eval-after-load 'hyperbole
     (defib custom/hypb/open-ghq-repo-maybe-commit-tap-magit ()
       "Open `magit-status' or a commit (if given) for a repo under `ghq' root"
-      (when-let ((regex "ghq#\\([a-z0-9\\:\\/\\.\\-]+\\)")
+      (when-let ((regex "ghq#\\([a-z0-9\-\:\/\.\_]+\\)")
                  (path (save-excursion
                          (skip-chars-backward "a-z0-9-")
                          (looking-at regex)
