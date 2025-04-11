@@ -80,7 +80,12 @@ in
       ];
 
       ide.emacs.core.extraPackages = epkgs: [ epkgs.consult-ghq ];
-      ide.emacs.core.config = optionalString (config.ide.emacs.navigation.collections.backend == "consult") (builtins.readFile ./elisp/consult.el);
+      ide.emacs.core.customPackages = {
+        "vcs-tap" = { text = builtins.readFile ./elisp/custom/vcs-tap.el; };
+      };
+      ide.emacs.core.config = ''
+        (use-package vcs-tap)
+      '' + optionalString (config.ide.emacs.navigation.collections.backend == "consult") (builtins.readFile ./elisp/consult.el);
     })
   ];
 }
