@@ -1,4 +1,5 @@
 (use-package consult-ghq
+  :after consult
   :bind
   (:map custom-search-map
         ("C-f" . consult-ghq-find)
