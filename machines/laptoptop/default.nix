@@ -474,7 +474,10 @@ in
       enable = true;
       scripts.enable = true;
     };
-    navigation.enable = true;
+    navigation = {
+      enable = true;
+      emacs.enable = true;
+    };
   };
 
   paperworks = {

@@ -14,6 +14,11 @@ in
         default = false;
         description = "Whether to enable packaging infra.";
       };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Nix navigation infra for Emacs.";
+      };
     };
   };
 
@@ -33,6 +38,14 @@ in
       };
       systemd.user.timers."nix-update-index" =
         renderTimer "Update nix packages metadata index" "" "" "*-*-* 6:00:00" false "";
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      ide.emacs.core.customPackages = {
+        "nix-tap" = { text = builtins.readFile ./elisp/custom/nix-tap.el; };
+        "nix-entities" = { text = builtins.readFile ./elisp/custom/entities.el; };
+      };
+
+      ide.emacs.core.config = builtins.readFile ./elisp/navigation.el;
     })
   ];
 }
