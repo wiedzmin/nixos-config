@@ -277,6 +277,7 @@ in
     vcs = {
       enable = true;
       batch.enable = true;
+      ghq.enable = true;
       emacs.enable = true;
     };
     git = {
@@ -307,7 +308,6 @@ in
       navigation = {
         enable = true;
         emacs.enable = true;
-        ghq.enable = true;
       };
     };
     navigation.projects = {

@@ -23,6 +23,7 @@ let
     [${path}]
     ${formatMyreposCommands meta 2}
   '';
+  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -56,6 +57,11 @@ in
         internal = true;
         description = "Configuration data.";
       };
+      ghq.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable ghq tooling.";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -65,16 +71,51 @@ in
   };
 
   config = mkMerge [
-    (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.diff-hl ];
-      ide.emacs.core.customKeymaps = { "custom-vc-map" = "C-;"; };
-      ide.emacs.core.config = builtins.readFile ./elisp/misc.el;
-    })
     (mkIf (cfg.enable && cfg.batch.enable) {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ mr ];
         home.file = { ".mrconfig".text = cfg.batch.configContent; };
       };
+    })
+    (mkIf (cfg.enable && cfg.ghq.enable) {
+      environment.systemPackages = with pkgs; [ gitAndTools.ghq ];
+
+      home-manager.users."${user}" = {
+        programs.git.extraConfig = optionalAttrs config.navigation.bookmarks.enable {
+          "ghq" = { root = config.navigation.bookmarks.workspaces.globalRoot; };
+        };
+        programs.zsh.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
+        programs.fish.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
+
+        xdg.configFile = optionalAttrs (config.shell.core.queueing.enable && config.completion.expansions.enable) {
+          "espanso/match/git_navigation.yml".source = yaml.generate "espanso-git_navigation.yml" {
+            matches = [
+              {
+                trigger = ":pgg";
+                replace = "pueue add 'ghq get $|$'";
+              }
+            ];
+          };
+        };
+      };
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      assertions = [{
+        assertion = config.ide.emacs.navigation.enable;
+        message = "dev/vcs/emacs: ide/emacs/navigation must be enabled.";
+      }];
+
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.diff-hl ]
+        ++ optionals (config.ide.emacs.navigation.collections.backend == "consult" && cfg.ghq.enable) [ epkgs.consult-ghq ];
+      ide.emacs.core.customPackages = optionalAttrs (cfg.ghq.enable) {
+        "ghq-tap" = { text = builtins.readFile ./elisp/custom/ghq-tap.el; };
+      };
+      ide.emacs.core.customKeymaps = { "custom-vc-map" = "C-;"; };
+      ide.emacs.core.config = builtins.readFile ./elisp/misc.el
+        + optionalString (config.ide.emacs.navigation.collections.backend == "consult" && cfg.ghq.enable) (builtins.readFile ./elisp/consult.el)
+        + optionalString (cfg.ghq.enable) ''
+          (use-package ghq-tap)
+        '';
     })
   ];
 }
