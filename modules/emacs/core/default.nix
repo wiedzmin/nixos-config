@@ -28,25 +28,6 @@ let
     '';
   };
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  genCustomPackages = customPackages:
-    ''
-      ${builtins.concatStringsSep "\n"
-        (lib.mapAttrsToList (feature: meta:
-          let
-            def = pkgs.writeTextFile {
-              name = "${feature}";
-              text = ''
-                ${meta.text}
-                ${lib.optionalString (!maybeAttrIsBool "provided" meta) "(provide '${feature})"}
-              '';
-              destination = "/${feature}.el";
-            };
-          in
-            ''
-              (add-to-list 'load-path "${def}")
-            ''
-        ) customPackages)}
-    '';
   debugTracePatch = ''
     (let ((context (lambda () (format "\nload-file-name: %s" load-file-name))))
       (trace-function #'load nil context)

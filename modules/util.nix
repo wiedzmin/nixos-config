@@ -294,6 +294,25 @@ rec {
   # }}}
   # {{{ Emacs
   # TODO: create function for ensuring non-prefix keys absence
+  genCustomPackages = customPackages:
+    ''
+      ${builtins.concatStringsSep "\n"
+        (lib.mapAttrsToList (feature: meta:
+          let
+            def = pkgs.writeTextFile {
+              name = "${feature}";
+              text = ''
+                ${meta.text}
+                ${lib.optionalString (!maybeAttrIsBool "provided" meta) "(provide '${feature})"}
+              '';
+              destination = "/${feature}.el";
+            };
+          in
+            ''
+              (add-to-list 'load-path "${def}")
+            ''
+        ) customPackages)}
+    '';
   mkEmacsCustomKeymap = name: binding: ''
     (keymap-global-set "${binding}" (define-keymap :prefix '${name}))
   '';
