@@ -61,6 +61,15 @@ in
         }
       ];
     };
+    "timeshitting" = mkGithubBookmarkWithMyrepos "wiedzmin" "timeshitting" roots // {
+      windowRules = [
+        {
+          class = "Emacs";
+          title = "timeshitting";
+          desktop = "main"; # [ref:desktop_main]
+        }
+      ];
+    };
     "wmtools" = mkGithubBookmarkWithMyrepos "wiedzmin" "wmtools" roots // {
       windowRules = [
         {
