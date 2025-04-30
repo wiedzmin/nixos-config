@@ -104,6 +104,7 @@ in
               strings = "1;96";
               arrays = "1;94";
               objects = "1;33";
+              objectKeys = "1;34";
             };
           };
         };
