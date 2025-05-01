@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.shell.tools;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
   options = {
@@ -31,7 +30,6 @@ in
           broot
           each
           gron
-          nurpkgs.groupby
           htmlq
           jc
           jj
@@ -45,7 +43,6 @@ in
           sad # TODO: consider creating shell aliases
           sd # TODO: play with it in streaming use-cases
           up
-          nurpkgs.uq
           pup
         ];
         programs = {

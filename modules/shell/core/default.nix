@@ -6,7 +6,6 @@ with lib;
 let
   cfg = config.shell.core;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   serviceAttrsNames = [ "global" "emacs" ]; # FIXME: clarify th semantics of "global", see implementation below
   envVars = filterAttrs (name: _: !builtins.elem name serviceAttrsNames);
 in
@@ -86,7 +85,6 @@ in
           dtach
           ets
           gdu
-          nurpkgs.rargs
           rtss
           wmctrl
           xdotool
