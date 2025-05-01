@@ -642,6 +642,10 @@ in
         searchSuffix = "";
       };
     };
+    "likeedownloader" = {
+      tags = [ "download" "likee" ];
+      remote = { url = "https://likeedownloader.com/en"; };
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
