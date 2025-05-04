@@ -102,7 +102,7 @@ in
         before = [ "sleep.target" "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
         wantedBy = [ "sleep.target" "suspend.target" "hibernate.target" "hybrid-sleep.target" ];
       };
-
+      security.pam.services.i3lock.enable = true;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = [{
