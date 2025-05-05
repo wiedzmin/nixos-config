@@ -328,7 +328,7 @@ in
             }
             {
               trigger = ":mli";
-              replace = "fd -e iso | fzf | tee /dev/tty | rargs sudo mount -o loop ./{1} ${cfg.mount.iso}";
+              replace = "fd -e iso | fzf | tee /dev/tty | xargs -I '{}' sudo mount -o loop ./{} ${cfg.mount.iso}";
             }
             {
               trigger = ":uli";
@@ -336,7 +336,7 @@ in
             }
             {
               trigger = ":mde";
-              replace = "fd sd -p /dev -d 1 | fzf | tee /dev/tty | rargs sudo mount {1} ${cfg.mount.external}";
+              replace = "fd sd -p /dev -d 1 | fzf | tee /dev/tty | xargs -I '{}' sudo mount {} ${cfg.mount.external}";
             }
             {
               trigger = ":ule";
