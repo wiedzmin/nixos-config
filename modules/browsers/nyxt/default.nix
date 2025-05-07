@@ -110,19 +110,19 @@ in
           xurls
         ];
         xdg.configFile."nyxt/init.lisp" = {
-          text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./config/init.lisp ];
+          text = builtins.readFile ./config/init.lisp;
           force = true;
         };
         xdg.configFile."nyxt/external.lisp" = {
-          text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./config/external.lisp ];
+          text = readSubstituted config inputs pkgs [ ./subst/external.nix ] [ ./config/external.lisp ];
           force = true;
         };
         xdg.configFile."nyxt/appearance.lisp" = {
-          text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./config/appearance.lisp ];
+          text = builtins.readFile ./config/appearance.lisp;
           force = true;
         };
         xdg.configFile."nyxt/auto-config.lisp" = {
-          text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./config/auto-config.lisp ];
+          text = builtins.readFile ./config/auto-config.lisp;
           force = true;
         };
       };

@@ -39,7 +39,7 @@ in
       ] ++ optionals (config.ide.emacs.completion.snippets.backend == "yasnippet") [
         epkgs.common-lisp-snippets
       ];
-      ide.emacs.core.config = builtins.readFile ./elisp/cl.el +
+      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst/cl.nix ] [ ./elisp/cl.el ]) +
         lib.optionalString cfg.emacs.orgmode.enable ''
           (use-package ob-lisp
             :commands (org-babel-execute:lisp
@@ -67,7 +67,7 @@ in
         epkgs.ipretty
         epkgs.suggest
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/elisp.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst/elisp.nix ] [ ./elisp/elisp.el ];
       ide.emacs.core.treesitter.grammars = {
         elisp = "https://github.com/Wilfred/tree-sitter-elisp";
       };

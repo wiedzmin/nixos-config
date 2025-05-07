@@ -215,16 +215,16 @@ in
         epkgs.just-mode
         epkgs.lua-mode
       ];
-      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/non-ts.el ]) +
-        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]) +
-        (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/misc.el ]) +
+      ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst/non-ts.nix ] [ ./elisp/non-ts.el ]) +
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst/ts.nix ] [ ./elisp/ts.el ]) +
+        (readSubstituted config inputs pkgs [ ./subst/misc.nix ] [ ./elisp/misc.el ]) +
         lib.optionalString cfg.emacs.orgmode.enable ''
           (use-package ob-restclient
             :after ob restclient
             :commands (org-babel-execute:restclient))
         '' +
-        lib.optionalString cfg.diagrams.enable (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/diagrams.el ]) +
-        lib.optionalString (cfg.emacs.orgmode.enable && cfg.diagrams.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/orgmode-diagrams.el ]);
+        lib.optionalString cfg.diagrams.enable (readSubstituted config inputs pkgs [ ./subst/diagrams.nix ] [ ./elisp/diagrams.el ]) +
+        lib.optionalString (cfg.emacs.orgmode.enable && cfg.diagrams.enable) (readSubstituted config inputs pkgs [ ./subst/orgmode-diagrams.nix ] [ ./elisp/orgmode-diagrams.el ]);
       ide.emacs.core.treesitter.grammars = {
         just = "https://github.com/IndianBoy42/tree-sitter-just";
       };
@@ -270,8 +270,8 @@ in
       ] ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [
         epkgs.consult-lsp
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
-        ([ ./elisp/lsp-mode.el ] ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ ./elisp/consult.el ]);
+      ide.emacs.core.config = builtins.readFile ./elisp/lsp-mode.el +
+        (optionalString (config.ide.emacs.navigation.collections.backend == "consult") (builtins.readFile ./elisp/consult.el));
       home-manager.users."${user}" = {
         home.activation.ensureLspSessionDir = {
           # lsp-deferred fails otherwise
@@ -295,8 +295,8 @@ in
         epkgs.consult-eglot
         epkgs.consult-eglot-embark
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
-        ([ ./elisp/eglot.el ] ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ ./elisp/consult-eglot.el ]);
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst/eglot.nix ] [ ./elisp/eglot.el ] +
+        (optionalString (config.ide.emacs.navigation.collections.backend == "consult") (readSubstituted config inputs pkgs [ ./subst/consult-eglot.nix ] [ ./elisp/consult-eglot.el ]));
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       completion.expansions.espanso.matches = {

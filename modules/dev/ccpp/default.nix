@@ -59,9 +59,9 @@ in
       ] ++ optionals (!config.ide.emacs.core.treesitter.enable) [
         epkgs.ccls
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/common.el ] +
-        optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/non-ts.el ]) +
-        optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/ts.el ]);
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst/common.nix ] [ ./elisp/common.el ] +
+        optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst/non-ts.nix ] [ ./elisp/non-ts.el ]) +
+        optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst/ts.nix ] [ ./elisp/ts.el ]);
       ide.emacs.completion.tempel.snippets = ''
         c-mode
 

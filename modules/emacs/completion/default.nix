@@ -68,13 +68,16 @@ in
         epkgs.tempel
         epkgs.tempel-collection
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
-        ([ ./elisp/completion.el ] ++ optionals (cfg.backend == "company") [ ./elisp/company.el ]
-          ++ optionals (cfg.backend == "corfu") [ ./elisp/corfu.el ]
-          ++ optionals (cfg.backend == "corfu" && config.history.emacs.enable) [ ./elisp/corfu-history.el ]
-          ++ optionals (cfg.snippets.backend == "yasnippet") [ ./elisp/yasnippet.el ]
-          ++ optionals (cfg.snippets.backend == "yasnippet" && config.ide.emacs.navigation.collections.backend == "consult") [ ./elisp/consult-yasnippet.el ]
-          ++ optionals (cfg.snippets.backend == "tempel") [ ./elisp/tempel.el ]);
+      ide.emacs.core.config = builtins.readFile ./elisp/completion.el +
+        (optionalString (cfg.backend == "company") (builtins.readFile ./elisp/company.el)) +
+        (optionalString (cfg.backend == "corfu") (builtins.readFile ./elisp/corfu.el)) +
+        (optionalString (cfg.backend == "corfu" && config.history.emacs.enable) (builtins.readFile ./elisp/corfu-history.el)) +
+        (optionalString (cfg.snippets.backend == "yasnippet")
+          (readSubstituted config inputs pkgs [ ./subst/yasnippet.nix ] [ ./elisp/yasnippet.el ])) +
+        (optionalString (cfg.snippets.backend == "yasnippet" && config.ide.emacs.navigation.collections.backend == "consult")
+          (builtins.readFile ./elisp/consult-yasnippet.el)) +
+        (optionalString (cfg.snippets.backend == "tempel")
+          (readSubstituted config inputs pkgs [ ./subst/tempel.nix ] [ ./elisp/tempel.el ]));
       home-manager.users."${user}" = {
         home.file = optionalAttrs (cfg.snippets.backend == "tempel")
           {

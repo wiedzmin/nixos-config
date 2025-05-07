@@ -68,8 +68,8 @@ in
         epkgs.tabnine
       ];
       ide.emacs.core.config =
-        optionalString (cfg.emacs.package == "company-tabnine") (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/company-tabnine.el ]) +
-        optionalString (cfg.emacs.package == "tabnine") (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/tabnine.el ]);
+        optionalString (cfg.emacs.package == "company-tabnine") (readSubstituted config inputs pkgs [ ./subst/company-tabnine.nix ] [ ./elisp/company-tabnine.el ]) +
+        optionalString (cfg.emacs.package == "tabnine") (builtins.readFile ./elisp/tabnine.el);
     })
   ];
 }

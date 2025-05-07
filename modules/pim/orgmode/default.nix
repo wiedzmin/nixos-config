@@ -129,8 +129,8 @@ in
         epkgs.russian-holidays
       ] ++ optionals cfg.cliplink.enable [ epkgs.org-cliplink ]
       ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ epkgs.consult-org-roam ];
-      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/orgmode.el ])
-        + (optionalString (config.ide.emacs.navigation.collections.backend == "consult") readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/consult.el ])
+      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst/orgmode.nix ] [ ./elisp/orgmode.el ])
+        + (optionalString (config.ide.emacs.navigation.collections.backend == "consult") readSubstituted config inputs pkgs [ ./subst/consult.nix ] [ ./elisp/consult.el ])
         + lib.optionalString cfg.cliplink.enable ''
         (use-package org-cliplink
           :after (org)
@@ -174,7 +174,7 @@ in
         epkgs.org-roam
         epkgs.org-roam-ui
       ];
-      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/org-roam.el ]);
+      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst/org-roam.nix ] [ ./elisp/org-roam.el ]);
       ide.emacs.core.customKeymaps = {
         "org-roam-map" = "<f7> r";
       };
@@ -183,7 +183,7 @@ in
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.org-bullets
       ];
-      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/blings.el ]);
+      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst/blings.nix ] [ ./elisp/blings.el ]);
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       navigation.bookmarks.entries = {

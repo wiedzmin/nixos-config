@@ -1,15 +1,6 @@
 { config, ... }:
 
 {
-  # FIXME: provide actual values (was lost)
-  defaultBrowser = "";
-  defaultEbookReader = "";
-  defaultPager = "";
-  defaultSpreadsheetEditor = "";
-  defaultTerminal = "";
-  defaultTextProcessor = "";
-  gmrunHistorySize = "";
-  gmrunTerminalApps = "";
   deaddFontFamily = config.wmCommon.fonts.deaddFamily;
   deaddForegroundNormal = config.controlcenter.lnc.theme.foregroundNormal;
   deaddForegroundCritical = config.controlcenter.lnc.theme.foregroundCritical;

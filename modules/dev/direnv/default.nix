@@ -63,7 +63,7 @@ in
       ide.emacs.core.extraPackages = epkgs:
         lib.optionals (cfg.emacs.granularity == "project") [ epkgs.direnv ]
         ++ lib.optionals (cfg.emacs.granularity == "file") [ epkgs.nix-buffer epkgs.envrc ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/direnv.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst/direnv.nix ] [ ./elisp/direnv.el ];
     })
   ];
 }

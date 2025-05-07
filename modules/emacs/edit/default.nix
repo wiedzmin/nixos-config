@@ -54,7 +54,7 @@ in
         epkgs.treesit-fold
       ];
       ide.emacs.core.config =
-        readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/edit.el ] +
+        readSubstituted config inputs pkgs [ ./subst/edit.nix ] [ ./elisp/edit.el ] +
         optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/non-ts.el) +
         optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/ts.el);
       ide.emacs.core.customKeymaps = {
