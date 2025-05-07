@@ -235,7 +235,7 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ deadd-notification-center ];
         # FIXME: parameterize font sizes and style/weight
-        xdg.configFile."deadd/deadd.css".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/deadd.css ];
+        xdg.configFile."deadd/deadd.css".text = readSubstituted config inputs pkgs [ ./subst/deadd.nix ] [ ./assets/deadd.css ];
         xdg.configFile."deadd/deadd.yml".source = yaml.generate "deadd.yml" {
           notification-center = {
             margin-top = 0;
@@ -319,7 +319,7 @@ in
     (mkIf (cfg.enable && cfg.launcher == "gmrun") {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ gmrun ];
-        home.file = { ".gmrunrc".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./assets/gmrunrc ]; };
+        home.file = { ".gmrunrc".text = readSubstituted config inputs pkgs [ ./subst/gmrun.nix ] [ ./assets/gmrunrc ]; };
       };
     })
     (mkIf (cfg.enable && cfg.clipboard.enable) {

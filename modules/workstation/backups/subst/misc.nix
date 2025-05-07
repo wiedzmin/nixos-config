@@ -1,4 +1,4 @@
-{ config, inputs, ... }:
+{ config, ... }:
 
 {
   backupsRoot = config.workstation.backups.rootDir;

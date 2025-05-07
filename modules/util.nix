@@ -109,8 +109,8 @@ rec {
   };
   readSubstituted = config: inputs: pkgs: substs: entries:
     lib.concatStringsSep "\n" (lib.forEach entries
-      (e: builtins.readFile (pkgs.substituteAll
-        (lib.foldl (collector: subst: collector // ((import subst { inherit config inputs lib pkgs; }) // { src = e; }))
+      (e: builtins.readFile (pkgs.replaceVars e
+        (lib.foldl (collector: subst: collector // (import subst { inherit config inputs lib pkgs; }))
           { }
           substs))));
   # }}}

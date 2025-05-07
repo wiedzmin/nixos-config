@@ -92,17 +92,17 @@ in
       ];
       ide.emacs.core.customPackages = {
         "orderless-dispatchers" = { text = builtins.readFile ./elisp/custom/orderless-dispatchers.el; };
-        "navigation-misc" = { text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/misc.el ]; };
+        "navigation-misc" = { text = builtins.readFile ./elisp/custom/misc.el; };
       } // optionalAttrs (cfg.collections.backend == "consult") {
-        "consult-utils" = { text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/consult-utils.el ]; };
+        "consult-utils" = { text = readSubstituted config inputs pkgs [ ./subst/consult-utils.nix ] [ ./elisp/custom/consult-utils.el ]; };
       };
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ]
-        ([ ./elisp/navigation.el ] ++ optionals (cfg.selection.backend == "vertico") [ ./elisp/vertico.el ]
-          ++ optionals (cfg.collections.backend == "consult") [ ./elisp/consult.el ]
-          ++ optionals (cfg.projects.backend == "project") [ ./elisp/project.el ]
-          ++ optionals (cfg.projects.backend == "project" && cfg.collections.backend == "consult") [ ./elisp/consult-project.el ]
-          ++ optionals (cfg.projects.backend == "projectile") [ ./elisp/projectile.el ]
-          ++ optionals (cfg.projects.backend == "projectile" && cfg.collections.backend == "consult") [ ./elisp/consult-projectile.el ]);
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst/navigation.nix ] [ ./elisp/navigation.el ] +
+        (optionalString (cfg.selection.backend == "vertico") (readSubstituted config inputs pkgs [ ./subst/vertico.nix ] [ ./elisp/vertico.el ])) +
+        (optionalString (cfg.collections.backend == "consult") (readSubstituted config inputs pkgs [ ./subst/consult.nix ] [ ./elisp/consult.el ])) +
+        (optionalString (cfg.projects.backend == "project") (readSubstituted config inputs pkgs [ ./subst/project.nix ] [ ./elisp/project.el ])) +
+        (optionalString (cfg.projects.backend == "project" && cfg.collections.backend == "consult") (readSubstituted config inputs pkgs [ ./subst/consult-project.nix ] [ ./elisp/consult-project.el ])) +
+        (optionalString (cfg.projects.backend == "projectile") (readSubstituted config inputs pkgs [ ./subst/projectile.nix ] [ ./elisp/projectile.el ])) +
+        (optionalString (cfg.projects.backend == "projectile" && cfg.collections.backend == "consult") (builtins.readFile ./elisp/consult-projectile.el));
 
       ide.emacs.core.customKeymaps = {
         "custom-help-map" = "<f1>";

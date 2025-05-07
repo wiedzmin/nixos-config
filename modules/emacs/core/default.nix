@@ -271,7 +271,7 @@ in
           ${lib.optionalString (cfg.debug.benchmark) debugBenchmarkPatch}
           ${lib.optionalString (cfg.debug.benchmark) ''(benchmark-init/activate)''}
 
-          ${readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/core.el ]}
+          ${readSubstituted config inputs pkgs [ ./subst/core.nix ] [ ./elisp/core.el ]}
 
           ${cfg.config}
 
@@ -339,7 +339,7 @@ in
           :config
           (reverse-im-mode t))
       '' + lib.optionalString cfg.treesitter.enable
-        (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/treesit.el ])
+        (readSubstituted config inputs pkgs [ ./subst/treesit.nix ] [ ./elisp/treesit.el ])
       + lib.optionalString cfg.emacsEverywhere.enable ''
         (use-package emacs-everywhere)
       '';

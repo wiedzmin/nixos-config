@@ -34,9 +34,9 @@ in
         epkgs.backup-each-save
       ];
       ide.emacs.core.customPackages = {
-        "backups-misc" = { text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/misc.el ]; };
+        "backups-misc" = { text = readSubstituted config inputs pkgs [ ./subst/misc.nix ] [ ./elisp/custom/misc.el ]; };
       };
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/backups.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst/misc.nix ] [ ./elisp/backups.el ];
     })
     (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
       navigation.bookmarks.entries = {

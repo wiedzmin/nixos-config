@@ -76,9 +76,9 @@ in
         epkgs.org-project-capture
       ];
       ide.emacs.core.customPackages = {
-        "projects-misc" = { text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/custom/misc.el ]; };
+        "projects-misc" = { text = readSubstituted config inputs pkgs [ ./subst/misc.nix ] [ ./elisp/custom/misc.el ]; };
       };
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/projects.el ];
+      ide.emacs.core.config = builtins.readFile ./elisp/projects.el;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = lib.optionals cfg.fuzzySearch.enable [

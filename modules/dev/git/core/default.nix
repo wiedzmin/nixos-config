@@ -164,7 +164,7 @@ in
         epkgs.magit-filenotify
         epkgs.magit-popup # *
       ] ++ optionals cfg.emacs.delta.enable epkgs.magit-delta;
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/core.el ]
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst/core.nix ] [ ./elisp/core.el ]
         + optionalString cfg.emacs.delta.enable ''
         (use-package magit-delta
           :disabled

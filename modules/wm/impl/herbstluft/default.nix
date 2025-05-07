@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -38,7 +38,7 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ debug-herbstluft ];
         xdg.configFile = {
-          "herbstluftwm/autostart".text = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./autostart ];
+          "herbstluftwm/autostart".text = builtins.readFile ./autostart;
         };
       };
     })

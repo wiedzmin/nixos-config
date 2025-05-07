@@ -369,7 +369,7 @@ in
         epkgs.elfeed-score
         epkgs.feed-discovery
       ];
-      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/content.el ];
+      ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst/content.nix ] [ ./elisp/content.el ];
       home-manager.users."${user}" = {
         home.file = {
           ".emacs.d/etc/elfeed/score/score.el".text = builtins.readFile ./assets/score.el;
