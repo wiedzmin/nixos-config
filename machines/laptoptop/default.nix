@@ -625,7 +625,7 @@ in
 
   ext.security = {
     enable = true;
-    pinentryPackage = pkgs.pinentry-qt;
+    pinentry.package = pkgs.pinentry-qt;
     polkit.silentAuth = true;
     emacs.enable = true;
     wm.enable = true;
