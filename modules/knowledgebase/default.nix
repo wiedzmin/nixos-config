@@ -1,10 +1,17 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
 let
   cfg = config.knowledgebase;
   user = config.attributes.mainUser.name;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -80,7 +87,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.secondBrain.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ devdocs-desktop freeplane ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ devdocs-desktop nixpkgs-last-unbroken.freeplane ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.helpful ];
