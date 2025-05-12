@@ -34,7 +34,7 @@
     package = pkgs.python311;
   };
 
-  pre-commit.hooks = {
+  git-hooks.hooks = {
     deadnix.enable = true;
     nixpkgs-fmt.enable = true;
     shfmt.enable = true;
