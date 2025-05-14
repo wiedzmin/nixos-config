@@ -153,6 +153,10 @@ in
         readOnly = true;
         description = "xkeysnail final config.py contents";
       };
+      # FIXME: Recently, modes were added to modmap, which makes recent `xremap` versions work
+      # weird/unpredictably with current config. It should be fixed in some way to be able to
+      # bump version further.
+      # See https://github.com/xremap/xremap/commit/6e7314b48d4f070fd345dcd1bf86a832fa2d5fe8 for details.
       xremap.package = mkOption {
         type = types.package;
         default = nurpkgs.xremap;
