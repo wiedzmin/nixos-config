@@ -25,6 +25,11 @@ in
         default = [ "mobi" "fb2" ];
         description = "Auxiliary ebook file extensions, mostly for timetracking at the moment.";
       };
+      emacs.pdf-tools.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable `pdf-tools` emacs-native reader";
+      };
       wm.enable = mkOption {
         type = types.bool;
         default = false;
@@ -80,6 +85,14 @@ in
       attributes.ebookreader.default.cmd = "${pkgs.zathura}/bin/zathura";
       attributes.ebookreader.default.windowClass = [ "Zathura" ];
       shell.core.variables = [{ TB_EBOOKS_READER_COMMAND = config.attributes.ebookreader.default.cmd; global = true; }];
+    })
+    (mkIf (cfg.enable && cfg.emacs.pdf-tools.enable) {
+      ide.emacs.core.extraPackages = epkgs: [ epkgs.pdf-tools ];
+      ide.emacs.core.config = ''
+        (use-package pdf-tools
+          :config
+          (pdf-loader-install))
+      '';
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = [{
