@@ -204,6 +204,7 @@ in
     images.enable = true;
     ebooks = {
       enable = true;
+      emacs.pdf-tools.enable = true;
       wm.enable = true;
     };
     media = {
