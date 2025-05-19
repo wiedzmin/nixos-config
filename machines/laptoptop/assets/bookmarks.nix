@@ -21,6 +21,11 @@ in
           title = "nixos";
           desktop = "main"; # [ref:desktop_main]
         }
+        {
+          class = "kitty";
+          title = "nixos";
+          desktop = "main"; # [ref:desktop_main]
+        }
       ];
     };
     git-hooks = {
