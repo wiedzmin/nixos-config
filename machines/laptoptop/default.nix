@@ -766,6 +766,13 @@ in
       transient = false;
       type = "tertiary";
     }
+    {
+      # [tag:desktop_sandbox]
+      name = "sandbox";
+      key = [ "8" ];
+      transient = false;
+      type = "primary";
+    }
   ];
 
   wmCommon = {
