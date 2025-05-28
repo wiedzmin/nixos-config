@@ -64,7 +64,12 @@ in
           ACTION=="add|change", KERNEL=="sd[ab][!0-9]", ATTR{queue/scheduler}="kyber"
         '';
         irqbalance.enable = true;
-        earlyoom.enable = cfg.oom.enable;
+        systembus-notify.enable = lib.mkForce true;
+        earlyoom = {
+          enable = cfg.oom.enable;
+          freeMemThreshold = 5;
+          enableNotifications = true;
+        };
       };
 
       home-manager.users."${user}" = {
