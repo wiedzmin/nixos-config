@@ -96,6 +96,11 @@ in
         default = "";
         description = "System-wide XLFD font representation, large version for OSD use";
       };
+      fonts.commonFamily = mkOption {
+        type = types.str;
+        default = "";
+        description = "System-wide font common family";
+      };
       fonts.deaddFamily = mkOption {
         type = types.str;
         default = "";
