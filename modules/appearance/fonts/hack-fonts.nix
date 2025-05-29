@@ -34,6 +34,7 @@ in
     wmCommon.fonts.statusbar = makeFontStrPango fontBeautified;
     wmCommon.fonts.xlfd.large = makeXLFDStrIso10646 (fontBeautified // { size = sizeXLFDLarge; });
     wmCommon.fonts.familySize.large = makeFamilySizeStr (fontBeautified // { size = sizeFamilySizeLarge; });
+    wmCommon.fonts.commonFamily = fontBeautified.family;
     wmCommon.fonts.deaddFamily = fontBeautified.family;
 
     shell.core.variables = [{ TB_SELECTOR_FONT = makeFontStrColons fontDec1; global = true; }];
