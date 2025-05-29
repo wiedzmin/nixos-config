@@ -60,7 +60,7 @@ in
         ];
         xdg.configFile = {
           "warpd/config".text = ''
-            hint_font: Iosevka
+            hint_font: ${config.wmCommon.fonts.family.common}
 
             left: Left
             down: Down
