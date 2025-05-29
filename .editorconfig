@@ -26,3 +26,6 @@ indent_size = 2
 # Match diffs, avoid to trim trailing whitespace
 [*.{diff,patch}]
 trim_trailing_whitespace = false
+
+[**/snippets/**]
+insert_final_newline = false
