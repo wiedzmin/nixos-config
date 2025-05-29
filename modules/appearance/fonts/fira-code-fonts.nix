@@ -33,9 +33,9 @@ in
     wmCommon.fonts.dmenu = makeFontStrColons fontDec1;
     wmCommon.fonts.statusbar = makeFontStrPango fontBeautified;
     wmCommon.fonts.xlfd.large = makeXLFDStrIso10646 (fontBeautified // { size = sizeXLFDLarge; });
-    wmCommon.fonts.familySize.large = makeFamilySizeStr (fontBeautified // { size = sizeFamilySizeLarge; });
-    wmCommon.fonts.commonFamily = fontBeautified.family;
-    wmCommon.fonts.deaddFamily = fontBeautified.family;
+    wmCommon.fonts.family.size.large = makeFamilySizeStr (fontBeautified // { size = sizeFamilySizeLarge; });
+    wmCommon.fonts.family.common = fontBeautified.family;
+    wmCommon.fonts.family.deadd = fontBeautified.family;
 
     wm.i3.statusbar.i3-rs.iconPadding = " ";
 
