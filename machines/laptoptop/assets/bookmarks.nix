@@ -651,6 +651,11 @@ in
       tags = [ "download" "likee" ];
       remote = { url = "https://likeedownloader.com/en"; };
     };
+    "koshkin-dom" = {
+      tags = [ "masha" ];
+      remote = { url = "https://mishka-knizhka.ru/skazki-dlay-detey/russkie-skazochniki/skazki-marshaka/koshkin-dom/"; };
+      browser = appCmdFull config.attributes.browser.fallback.traits;
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
