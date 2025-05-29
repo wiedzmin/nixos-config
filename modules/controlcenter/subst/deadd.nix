@@ -1,7 +1,7 @@
 { config, ... }:
 
 {
-  deaddFontFamily = config.wmCommon.fonts.deaddFamily;
+  deaddFontFamily = config.wmCommon.fonts.family.deadd;
   deaddForegroundNormal = config.controlcenter.lnc.theme.foregroundNormal;
   deaddForegroundCritical = config.controlcenter.lnc.theme.foregroundCritical;
   deaddBackgroundNormal = config.controlcenter.lnc.theme.backgroundNormal;
