@@ -250,6 +250,11 @@ in
           change it globally with this option.
         '';
       };
+      collapseMinorModes = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to squash minor modes lighters in modeline";
+      };
       initElContent = mkOption {
         type = types.lines;
         default = ''
@@ -342,6 +347,8 @@ in
         (readSubstituted config inputs pkgs [ ./subst/treesit.nix ] [ ./elisp/treesit.el ])
       + lib.optionalString cfg.emacsEverywhere.enable ''
         (use-package emacs-everywhere)
+      '' + lib.optionalString cfg.collapseMinorModes ''
+        (setq mode-line-collapse-minor-modes t)
       '';
       ide.emacs.core.customPackages = lib.optionalAttrs cfg.treesitter.enable {
         "treesit-util" = { text = builtins.readFile ./elisp/custom/treesit-util.el; };
