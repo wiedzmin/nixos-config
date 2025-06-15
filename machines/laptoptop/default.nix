@@ -115,7 +115,6 @@ in
           user = user;
         };
       };
-      gdm.enable = false;
     };
     autoRepeatDelay = 200;
     autoRepeatInterval = 40;

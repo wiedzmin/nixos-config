@@ -148,7 +148,6 @@ in
         autorun = true;
         desktopManager = {
           xterm.enable = false;
-          gnome.enable = false;
         };
         displayManager.sessionCommands = ''
           export _JAVA_AWT_WM_NONREPARENTING=1
