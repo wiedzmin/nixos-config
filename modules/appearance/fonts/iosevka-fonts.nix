@@ -98,6 +98,13 @@ in
       };
     };
     ide.emacs.core.config = ''
+      (use-package emacs
+        :custom-face
+        (variable-pitch    ((t :family "${baseFont.family}")))
+        (fixed-pitch-serif ((t :family "${baseFont.family}")))
+        (fixed-pitch       ((t :family "${baseFont.family}")))
+        (default           ((t :family "${baseFont.family}"))))
+
       (defun custom/set-font (frame)
         "Configure faces on frame creation"
         (select-frame frame)
