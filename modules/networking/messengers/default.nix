@@ -72,7 +72,7 @@ in
             K("C-y"): K("C-v"),
         }, "Slack")
       '';
-      wmCommon.autostart.entries = optionals cfg.telegram.autostart [{ cmd = "${pkgs.tdesktop}/bin/telegram-desktop"; }];
+      wmCommon.autostart.entries = optionals cfg.telegram.autostart [{ cmd = "${pkgs.telegram-desktop}/bin/Telegram"; }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       completion.expansions.espanso.matches = {
