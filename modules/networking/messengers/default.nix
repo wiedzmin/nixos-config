@@ -41,7 +41,7 @@ in
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
         # TODO: review `tdl` docs at https://docs.iyear.me/tdl/
-        home.packages = with pkgs; [ tdesktop ] ++ optionals (cfg.zoom.enable) [ zoom-us tdl ] ++ optionals (cfg.webex.enable) [ webex ];
+        home.packages = with pkgs; [ tdesktop tdl ] ++ optionals (cfg.zoom.enable) [ zoom-us ] ++ optionals (cfg.webex.enable) [ webex ];
       };
       workstation.input.keyboard.xremap.config = {
         keymap = [
