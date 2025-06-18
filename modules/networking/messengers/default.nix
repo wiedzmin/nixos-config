@@ -24,6 +24,11 @@ in
         default = false;
         description = "Whether to enable Zoom";
       };
+      webex.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable WebEx";
+      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -36,7 +41,7 @@ in
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
         # TODO: review `tdl` docs at https://docs.iyear.me/tdl/
-        home.packages = with pkgs; [ tdesktop ] ++ optionals (cfg.zoom.enable) [ zoom-us tdl ];
+        home.packages = with pkgs; [ tdesktop ] ++ optionals (cfg.zoom.enable) [ zoom-us tdl ] ++ optionals (cfg.webex.enable) [ webex ];
       };
       workstation.input.keyboard.xremap.config = {
         keymap = [
