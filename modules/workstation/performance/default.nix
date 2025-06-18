@@ -67,7 +67,7 @@ in
         systembus-notify.enable = lib.mkForce true;
         earlyoom = {
           enable = cfg.oom.enable;
-          freeMemThreshold = 5;
+          freeMemThreshold = 10;
           enableNotifications = true;
         };
       };
