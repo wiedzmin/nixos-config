@@ -57,8 +57,21 @@
     (if (window-minibuffer-p (selected-window))
         (select-window (minibuffer-selected-window))
       (select-window (active-minibuffer-window))))
+  (defun custom/keyboard-quit ()
+    "Smater version of the built-in `keyboard-quit'.
+
+The generic `keyboard-quit' does not do the expected thing when
+the minibuffer is open.  Whereas we want it to close the
+minibuffer, even without explicitly focusing it."
+    (interactive)
+    (if (active-minibuffer-window)
+        (if (minibufferp)
+            (minibuffer-keyboard-quit)
+          (abort-recursive-edit))
+      (keyboard-quit)))
   :bind
   ("M-\"" . eval-region)
+  ([remap keyboard-quit] . custom/keyboard-quit)
   (:map ctl-x-map
         ("k" . custom/kill-buffer)
         ("K" . kill-matching-buffers-no-ask)
