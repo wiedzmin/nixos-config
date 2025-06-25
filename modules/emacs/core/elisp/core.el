@@ -118,7 +118,7 @@ minibuffer, even without explicitly focusing it."
   (when (version<= "28.0.50" emacs-version)
     (setq read-extended-command-predicate #'command-completion-default-include-p))
   (setq-default tab-width 4)
-  (setq-default fill-column 200)
+  (setq-default fill-column @emacsMonospacedFillColumn@)
   (setq-default indicate-empty-lines t)
   (setq-default truncate-lines t))
 

@@ -277,5 +277,9 @@ with lib;
       type = types.str;
       default = "workspace/assets";
     };
+    fonts.monospaced.fillColumn = mkOption {
+      description = "Column number to fill paragraph/region after, when using monospaced font";
+      type = types.int;
+    };
   };
 }

@@ -39,4 +39,5 @@
       "/dev/input/event18"
     ];
   };
+  attributes.fonts.monospaced.fillColumn = 190;
 }

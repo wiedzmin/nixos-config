@@ -161,13 +161,14 @@ rec {
   # {{{ Misc
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
   wsRoot = roots: key: lib.getAttrFromPath [ key ] roots;
+  goBinLocalPath = cfg: cmd: goBinPrefix cfg.dev.golang.goPath cmd;
   goLocalDebugKeybinding = cfg: meta: {
     key = meta.key;
     keycode = maybeAttrIsBool "keycode" meta;
     mode = meta.mode;
     cmd =
       if cfg.attributes.debug.useLocalGoBinaries
-      then ''${goBinPrefix cfg.dev.golang.goPath (builtins.head meta.cmd)} ${lib.concatStringsSep " " (lib.tail meta.cmd)}''
+      then ''${goBinLocalPath cfg (builtins.head meta.cmd)} ${lib.concatStringsSep " " (lib.tail meta.cmd)}''
       else ''${nurpkgs.toolbox}/bin/${builtins.head meta.cmd} ${lib.concatStringsSep " " (lib.tail meta.cmd)}'';
     debug = cfg.attributes.debug.useLocalGoBinaries || (builtins.hasAttr "debug" meta) && meta.debug;
   };

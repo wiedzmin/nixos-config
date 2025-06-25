@@ -25,4 +25,5 @@
       internalHead.resolutionXephyr = "1200x600";
     };
   };
+  attributes.fonts.monospaced.fillColumn = 190;
 }
