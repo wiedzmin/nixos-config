@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -8,6 +8,13 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   standardDesktopID = "org.qutebrowser.qutebrowser";
   windowedDesktopID = "org.custom.qutebrowser.windowed";
+  nixpkgs-qutebrowser-pinned = import inputs.nixpkgs-qutebrowser-pinned {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -252,7 +259,7 @@ in
         };
         programs.qutebrowser = {
           enable = true;
-          package = pkgs.qutebrowser;
+          package = nixpkgs-qutebrowser-pinned.qutebrowser;
           loadAutoconfig = false;
           aliases = {
             jsd = "set content.javascript.enabled false";
