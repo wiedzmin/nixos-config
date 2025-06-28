@@ -87,7 +87,7 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.secondBrain.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ devdocs-desktop nixpkgs-last-unbroken.freeplane ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ nixpkgs-last-unbroken.freeplane ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.helpful ];
