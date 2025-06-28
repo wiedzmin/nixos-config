@@ -463,6 +463,7 @@ in
         "beekeeper-studio-5.2.9"
         "electron-27.3.11"
         "dotnet-sdk-6.0.428"
+        "beekeeper-studio-5.2.12"
       ];
     };
     cachix = {
