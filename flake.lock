@@ -578,6 +578,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-qutebrowser-pinned": {
+      "locked": {
+        "lastModified": 1749794982,
+        "narHash": "sha256-Kh9K4taXbVuaLC0IL+9HcfvxsSUx8dPB5s5weJcc9pc=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ee930f9755f58096ac6e8ca94a1887e0534e2d81",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "ee930f9755f58096ac6e8ca94a1887e0534e2d81",
+        "type": "github"
+      }
+    },
     "nixpkgs-stable": {
       "locked": {
         "lastModified": 1750646418,
@@ -700,6 +716,7 @@
         "nixpkgs-idafree-pinned": "nixpkgs-idafree-pinned",
         "nixpkgs-last-unbroken": "nixpkgs-last-unbroken",
         "nixpkgs-libreoffice": "nixpkgs-libreoffice",
+        "nixpkgs-qutebrowser-pinned": "nixpkgs-qutebrowser-pinned",
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",
         "unstable": "unstable",
