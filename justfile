@@ -22,11 +22,11 @@ build-no-net host=host_name:
 
 # Build + switch configuration flake for current host
 switch host=host_name:
-    mkdir -p /tmp/buildroot/ && nixos-rebuild switch{{ if env_var_or_default("VERBOSE", "false") == "true" { " -v" } else { "" } }} -j 4 --use-remote-sudo --flake ".#{{host}}"
+    mkdir -p /tmp/buildroot/ && nixos-rebuild switch{{ if env_var_or_default("VERBOSE", "false") == "true" { " -v" } else { "" } }} -j 4 --sudo --flake ".#{{host}}"
 
 # Build + switch configuration flake for current host without network access
 switch-no-net host=host_name:
-    mkdir -p /tmp/buildroot/ && nixos-rebuild switch{{ if env_var_or_default("VERBOSE", "false") == "true" { " -v" } else { "" } }} --use-remote-sudo --flake ".#{{host}}" --option binary-caches ''
+    mkdir -p /tmp/buildroot/ && nixos-rebuild switch{{ if env_var_or_default("VERBOSE", "false") == "true" { " -v" } else { "" } }} --sudo --flake ".#{{host}}" --option binary-caches ''
 
 # Remove system build local output
 clean:
