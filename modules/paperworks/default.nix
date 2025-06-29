@@ -184,6 +184,7 @@ in
         defaultShared = true;
         webInterface = true;
         inherit (cfg.printing) drivers;
+        cups-pdf.enable = true;
       };
       environment.systemPackages = with pkgs; [ system-config-printer gtklp ];
       users.users."${user}".extraGroups = [ "lp" ];
