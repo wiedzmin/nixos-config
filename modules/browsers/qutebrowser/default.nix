@@ -42,7 +42,7 @@ in
         type = types.bool;
         default = true;
         description = ''
-          Whether to use proxy `qbopen` binary.
+          Whether to use proxy `qbcli` binary.
 
           It could be used either in QB custom desktop item or standalone.
 
@@ -146,8 +146,8 @@ in
         command = optionalAttrs (!cfg.useProxyBinary) {
           binary = "${pkgs.qutebrowser}/bin/qutebrowser";
         } // optionalAttrs cfg.useProxyBinary {
-          binary = goBinPrefix config.dev.golang.goPath "qbopen";
-          parameters = [ "-url" ];
+          binary = goBinPrefix config.dev.golang.goPath "qbcli";
+          parameters = [ "open" "-url" ];
         };
         wmClass = [ "qutebrowser" "qutebrowser" ];
         suspensionRule = {
