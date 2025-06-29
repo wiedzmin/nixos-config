@@ -731,10 +731,11 @@ in
       };
       systemd.user.services."backup-current-session-qutebrowser" = {
         description = "Backup current qutebrowser session (tabs)";
+        path = [ pkgs.xkb-switch ]; # NOTE: temp
         serviceConfig = {
           Type = "oneshot";
           Environment = [ "TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES=${builtins.toString cfg.sessions.keepMinutes}" ];
-          ExecStart = "${nurpkgs.toolbox}/bin/qbsessions -save";
+          ExecStart = "${goBinLocalPath config "qbcli"} save-session";
           ExecStopPost = "${nurpkgs.toolbox}/bin/qbsessions -rotate";
           StandardOutput = "journal";
           StandardError = "journal";
