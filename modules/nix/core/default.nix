@@ -55,7 +55,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      boot.readOnlyNixStore = true; # TODO: should it be moved to host/machines level?
       nix = {
         nixPath = lib.mkForce [ "nixpkgs=/etc/nixpkgs" ];
         settings = {
