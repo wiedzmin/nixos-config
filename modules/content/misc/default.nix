@@ -122,6 +122,7 @@ in
           yg = "${pkgs.you-get}/bin/you-get";
         };
       };
+      users.users."${user}".extraGroups = [ "cdrom" ];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       completion.expansions.espanso.matches = {
