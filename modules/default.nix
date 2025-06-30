@@ -1,4 +1,4 @@
-{ config, _class, inputs, lib, modulesPath, options, specialArgs }: {
+{ config, _class, inputs, lib, modulesPath, options, _prefix, specialArgs }: {
   imports = [
     ./attributes.nix
 
