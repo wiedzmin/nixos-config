@@ -167,7 +167,7 @@ in
           mode = "network";
           cmd = "${pkgs.bluez}/bin/bluetoothctl disconnect ${with cfg.bluetooth; devices.${defaultHeadset}}";
         }
-      ] ++ optionals cfg.bluetooth.enable [{
+      ] ++ optionals (cfg.backend == "iwd") [{
         key = [ "i" ];
         mode = "network";
         cmd = "${pkgs.iwgtk}/bin/iwgtk";
