@@ -92,7 +92,7 @@ in
     (mkIf (cfg.enable && cfg.backend == "iwd") {
       networking.wireless.iwd.enable = true;
       networking.networkmanager.wifi.backend = "iwd";
-      home-manager.users."${user}" = { home.packages = with pkgs; [ iwgtk ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ iwgtk iwmenu ]; };
     })
     (mkIf (cfg.enable && cfg.backend == "wireless") {
       networking.wireless = {
@@ -167,11 +167,18 @@ in
           mode = "network";
           cmd = "${pkgs.bluez}/bin/bluetoothctl disconnect ${with cfg.bluetooth; devices.${defaultHeadset}}";
         }
-      ] ++ optionals (cfg.backend == "iwd") [{
-        key = [ "i" ];
-        mode = "network";
-        cmd = "${pkgs.iwgtk}/bin/iwgtk";
-      }];
+      ] ++ optionals (cfg.backend == "iwd") [
+        {
+          key = [ "i" ];
+          mode = "network";
+          cmd = "${pkgs.iwgtk}/bin/iwgtk";
+        }
+        {
+          key = [ "w" ];
+          mode = "network";
+          cmd = "${pkgs.iwmenu}/bin/iwmenu --launcher rofi"; #  FIXME: parameterize launcher somehow
+        }
+      ];
     })
     (mkIf (cfg.enable && config.attributes.debug.exposeScripts) {
       home-manager.users."${user}" = { home.packages = with pkgs; [ wifi-status ]; };
