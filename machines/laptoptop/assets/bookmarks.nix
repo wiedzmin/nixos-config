@@ -656,6 +656,21 @@ in
       remote = { url = "https://mishka-knizhka.ru/skazki-dlay-detey/russkie-skazochniki/skazki-marshaka/koshkin-dom/"; };
       browser = appCmdFull config.attributes.browser.fallback.traits;
     };
+    "strana-delfiniya" = {
+      tags = [ "masha" ];
+      remote = { url = "https://rustih.ru/novella-matveeva-strana-delfiniya/"; };
+      browser = appCmdFull config.attributes.browser.fallback.traits;
+    };
+    "stihi-mihalkova" = {
+      tags = [ "masha" ];
+      remote = { url = "https://mishka-knizhka.ru/stihi-mihalkova/"; };
+      browser = appCmdFull config.attributes.browser.fallback.traits;
+    };
+    "prostokvashino-uspenskiy" = {
+      tags = [ "masha" ];
+      remote = { url = "https://mishka-knizhka.ru/skazki-dlay-detey/russkie-skazochniki/skazki-uspenskogo/djadja-fedor-uspenskij-je-n/"; };
+      browser = appCmdFull config.attributes.browser.fallback.traits;
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
