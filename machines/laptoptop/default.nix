@@ -98,6 +98,7 @@ in
     thermald.enable = true;
     acpid.enable = true;
     timesyncd.enable = true;
+    locate.enable = true;
   };
 
   systemd.services.acme-localhost.enable = false;
