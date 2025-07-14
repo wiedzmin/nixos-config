@@ -1,6 +1,8 @@
 { config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
+# <[editorconfig setup reference]> - <rg "editorconfig" "everything" "/home/alex3rd/workspace/repos/github.com/wiedzmin/nixos-config/">
+
 let
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
