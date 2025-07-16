@@ -40,6 +40,8 @@ in
           shellInit = ''
             fish_default_key_bindings
             bind \cH backward-kill-word
+            bind \cb backward-word
+            bind \cf forward-word
           '';
           functions = {
             __fish_command_not_found_handler = {
