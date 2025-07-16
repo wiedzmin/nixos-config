@@ -124,13 +124,16 @@ in
         epkgs.org-randomnote
         epkgs.org-recent-headings
         epkgs.org-rich-yank
-        epkgs.orgit
-        epkgs.orglink
         epkgs.russian-holidays
       ] ++ optionals cfg.cliplink.enable [ epkgs.org-cliplink ]
-      ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ epkgs.consult-org-roam ];
+      ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ epkgs.consult-org-roam ]
+      ++ optionals (!config.pim.core.enable) [
+        epkgs.orgit
+        epkgs.orglink
+      ];
       ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst/orgmode.nix ] [ ./elisp/orgmode.el ])
         + (optionalString (config.ide.emacs.navigation.collections.backend == "consult") readSubstituted config inputs pkgs [ ./subst/consult.nix ] [ ./elisp/consult.el ])
+        + (optionalString (!config.pim.core.enable) (builtins.readFile ./elisp/org-ext.el))
         + lib.optionalString cfg.cliplink.enable ''
         (use-package org-cliplink
           :after (org)

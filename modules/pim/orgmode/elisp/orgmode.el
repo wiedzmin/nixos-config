@@ -352,14 +352,6 @@
   (:map org-mode-map
         ("C-M-y" . org-rich-yank)))
 
-(use-package orgit
-  :after org
-  :bind
-  (:map custom-org-map
-        ("q" . orgit-store-link))
-  :custom
-  (orgit-store-reference t))
-
 (use-package ox-html
   :commands (org-html-convert-region-to-html
              org-html-export-as-html
@@ -372,18 +364,6 @@
   (org-appear-autolinks t))
 
 ;; TODO: https://github.com/nobiot/org-transclusion
-
-(use-package orglink
-  :delight " *>"
-  :bind
-  (:map mode-specific-map
-        ("l" . orglink-mode))
-  :hook
-  (emacs-lisp-mode-hook . orglink-mode)
-  (nix-mode-hook . orglink-mode)
-  (go-mode-hook . orglink-mode)
-  :custom
-  (orglink-match-anywhere t))
 
 (use-package org-edit-indirect
   :hook
