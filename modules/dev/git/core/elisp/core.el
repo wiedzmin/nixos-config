@@ -159,6 +159,7 @@
   (git-msg-prefix-input-method 'completing-read))
 
 (with-eval-after-load 'hyperbole
+  ;; TODO: consider implementing button for revision-bound file paths, in form of <repo path>:<rev>:<file subpath>
   (defib ghq-path-tap ()
     "Create implicit button for working with repos under `ghq' root dir.
 
