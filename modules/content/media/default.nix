@@ -2,6 +2,8 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# npkg#mpv
+
 let
   cfg = config.content.media;
   user = config.attributes.mainUser.name;

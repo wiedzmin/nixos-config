@@ -1,6 +1,8 @@
 { config, lib, pkgs, ... }:
 with lib;
 
+# npkg#somo
+
 let
   cfg = config.ext.networking.core;
   user = config.attributes.mainUser.name;

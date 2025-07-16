@@ -2,6 +2,8 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# npkg#ulauncher
+
 let
   cfg = config.controlcenter;
   user = config.attributes.mainUser.name;

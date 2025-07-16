@@ -2,6 +2,9 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# npkg#clapgrep
+# npkg#pipet
+
 let
   cfg = config.content.misc;
   user = config.attributes.mainUser.name;

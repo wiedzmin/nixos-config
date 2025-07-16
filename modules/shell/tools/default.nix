@@ -2,6 +2,10 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# <[cli json]> - <consult-ripgrep "/home/alex3rd/workspace/repos/github.com/NixOS/nixpkgs/" "CLI JSON description">
+# <[ssh shell]> - <consult-ripgrep "/home/alex3rd/workspace/repos/github.com/NixOS/nixpkgs/" "ssh shell description">
+# npkg#x4
+
 let
   cfg = config.shell.tools;
   user = config.attributes.mainUser.name;

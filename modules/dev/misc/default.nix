@@ -3,6 +3,8 @@ with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
 
+# <[debug linux]> - <consult-ripgrep "/home/alex3rd/workspace/repos/github.com/NixOS/nixpkgs/" "debug linux description">
+
 let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;

@@ -2,6 +2,8 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# <[github backup]> - <consult-ripgrep "/home/alex3rd/workspace/repos/github.com/NixOS/nixpkgs/" "github backup description">
+
 let
   cfg = config.dev.git.misc;
   user = config.attributes.mainUser.name;
