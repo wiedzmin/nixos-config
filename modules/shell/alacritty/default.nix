@@ -42,7 +42,7 @@ in
         wmClass = [ "Alacritty" "Alacritty" ];
       };
 
-      fonts = { fonts = with pkgs; [ powerline-fonts ]; };
+      fonts = { packages = with pkgs; [ powerline-fonts ]; };
 
       pim.timetracking.rules = mkArbttProgramTitleRule [ (appWindowClass cfg.traits) ]
         [ "(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/" ] "project:$1-$2-$3";
