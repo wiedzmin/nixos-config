@@ -47,6 +47,7 @@
   (:map custom-git-map
         ("i" . magit-init)
         ("s" . magit-status)
+        ("h" . magit-status-here)
         ("." . magit-dispatch)
         ("," . magit-file-dispatch)
         ("r" . magit-reflog-current)
