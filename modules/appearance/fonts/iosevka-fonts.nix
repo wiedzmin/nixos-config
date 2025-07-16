@@ -11,7 +11,7 @@ let
   baseFont = {
     family = if !cfg.aporetic.enable then "Iosevka" else "Aporetic";
     style = "Bold";
-    size = 8;
+    size = 9;
   };
   fontBeautified = baseFont // optionalAttrs (cfg.aporetic.enable) {
     family = "Aporetic ${if beautify then "Nerd Font" else ""}";
