@@ -9,11 +9,15 @@ let
   user = config.attributes.mainUser.name;
   inherit (config.appearance.fonts) beautify;
   baseFont = {
-    family = "Iosevka";
+    family = if !cfg.aporetic.enable then "Iosevka" else "Aporetic";
     style = "Bold";
     size = 8;
   };
-  fontBeautified = baseFont // { family = "Iosevka ${if beautify then "Nerd Font" else ""}"; };
+  fontBeautified = baseFont // optionalAttrs (cfg.aporetic.enable) {
+    family = "Aporetic ${if beautify then "Nerd Font" else ""}";
+  } // optionalAttrs (!cfg.aporetic.enable) {
+    family = "Iosevka ${if beautify then "Nerd Font" else ""}";
+  };
   fontRofi = baseFont // { size = 10; };
   fontDunst = baseFont // { size = 9; };
   fontXresources = baseFont // { size = 12; };
@@ -30,12 +34,23 @@ in
         default = false;
         description = "Whether to enable Iosevka font";
       };
+      aporetic.enable = mkOption {
+        #  FIXME: currently broken (emacs client fails to start, weirdly looking programs, etc.)
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Iosevka's Aporetic flavor by Prot";
+      };
     };
   };
 
   config = mkIf cfg.enable {
+    assertions = [{
+      assertion = !cfg.aporetic.enable;
+      message = "appearance/fonts/iosevka: currently broken, see comment for details.";
+    }];
+
     fonts = {
-      packages = with pkgs; iosevka;
+      packages = with pkgs; if !cfg.aporetic.enable then [ iosevka ] else [ aporetic-bin ];
       fontconfig = { defaultFonts = { monospace = [ baseFont.family ]; }; };
     };
     wmCommon.fonts.default = makeFontStrPango fontBeautified;
