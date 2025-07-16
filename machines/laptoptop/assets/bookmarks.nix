@@ -671,6 +671,15 @@ in
       remote = { url = "https://mishka-knizhka.ru/skazki-dlay-detey/russkie-skazochniki/skazki-uspenskogo/djadja-fedor-uspenskij-je-n/"; };
       browser = appCmdFull config.attributes.browser.fallback.traits;
     };
+    "kotyata" = {
+      tags = [ "masha" ];
+      remote = { url = "https://www.culture.ru/poems/45343/kotyata"; };
+      browser = appCmdFull config.attributes.browser.fallback.traits;
+    };
+    "reestrd-dover" = {
+      remote = { url = "https://reestrd-dover.ru/"; };
+      browser = appCmdFull config.attributes.browser.fallback.traits;
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
