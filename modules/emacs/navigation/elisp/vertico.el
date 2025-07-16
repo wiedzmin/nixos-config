@@ -1,6 +1,13 @@
 (use-package vertico
   :init
   @currentLineHighlightFaceVerticoPatch@
+  :bind
+  (:map vertico-map
+        ("?" . minibuffer-completion-help)
+        ("M-RET" . minibuffer-force-complete-and-exit)
+        ("M-TAB" . minibuffer-complete)
+        ("C-n" . vertico-next)
+        ("C-p" . vertico-previous))
   :custom
   (vertico-scroll-margin 0)
   (vertico-count @selectionCandidatesCount@)
