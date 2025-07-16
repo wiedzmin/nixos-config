@@ -38,6 +38,7 @@
   (:map minibuffer-local-map
         ("<next>" . scroll-up-command)
         ("<prior>" . scroll-down-command))
+  :hook (completion-list-mode-hook . consult-preview-at-point-mode)
   :custom
   (completion-in-region-function #'consult-completion-in-region)
   (consult-async-input-debounce 0.1)
