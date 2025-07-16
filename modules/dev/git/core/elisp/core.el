@@ -160,7 +160,7 @@
 
 (with-eval-after-load 'hyperbole
   (defib ghq-path-tap ()
-    "Create implicit button for opening repo path under `ghq' root dir.
+    "Create implicit button for working with repos under `ghq' root dir.
 
 It either opens `magit-status' or a [raw] git commit (if given), in case of git repo. Otherwise, it opens
 `vc-dir' buffer for it."
