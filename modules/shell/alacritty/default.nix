@@ -68,18 +68,18 @@ in
               decorations = "full";
               dynamic_title = true;
             };
-            draw_bold_text_with_bright_colors = true;
+            colors.draw_bold_text_with_bright_colors = true;
             bell = {
               animation = "EaseOutExpo";
               duration = 0;
             };
-            mouse_bindings = [{
+            mouse.bindings = [{
               mouse = "Middle";
               action = "PasteSelection";
             }];
             selection = { semantic_escape_chars = '',│`|:"' ()[]{}<>''; };
             cursor = { style = "Beam"; };
-            live_config_reload = true;
+            general.live_config_reload = true;
           };
         };
       };
