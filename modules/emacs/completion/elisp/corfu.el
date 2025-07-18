@@ -79,6 +79,7 @@
 (use-package kind-icon
   :after corfu
   :custom
+  (kind-icon-blend-background t)
   (kind-icon-default-face 'corfu-default) ; to compute blended backgrounds correctly
   (kind-icon-default-style '(:padding -1 :stroke 0 :margin 0 :radius 0 :height 0.5 :scale 1))
   :config
