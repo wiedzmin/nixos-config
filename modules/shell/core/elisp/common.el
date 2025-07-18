@@ -11,7 +11,9 @@
          ;; Replace built in completion of sessions with `consult'
          ([remap detached-open-session] . detached-consult-session))
   :custom ((detached-show-output-on-attach t)
-           (detached-terminal-data-command system-type)))
+           (detached-terminal-data-command system-type))
+  :config
+  (add-to-list 'display-buffer-alist (cons "\\*Detached Shell Command\\*" (cons #'display-buffer-no-window nil))))
 
 (use-package flycheck-checkbashisms
   :hook (flycheck-mode-hook . flycheck-checkbashisms-setup))
