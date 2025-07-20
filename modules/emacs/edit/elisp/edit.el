@@ -107,6 +107,11 @@
         ("." . custom/string-inflection-dotted-gnocchi)
         (">" . custom/string-inflection-dotted-gnocchi-capitalized)))
 
+(with-eval-after-load 'embark
+  (with-eval-after-load 'string-inflection
+    (define-key embark-identifier-map "-" #'string-inflection-cycle)
+    (add-to-list 'embark-repeat-actions #'string-inflection-cycle)))
+
 (use-package wgrep
   :commands wgrep-change-to-wgrep-mode
   :bind
