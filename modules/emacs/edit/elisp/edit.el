@@ -286,7 +286,8 @@
 (use-package symbol-overlay
   :bind
   (:map misc-editing-map
-        (">" . symbol-overlay-put)))
+        (">" . symbol-overlay-put)
+        ("!" . symbol-overlay-remove-all)))
 
 (use-package symbol-overlay-mc
   :bind
