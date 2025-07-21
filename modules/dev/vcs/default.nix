@@ -117,5 +117,21 @@ in
           (use-package ghq-tap)
         '';
     })
+    (mkIf (cfg.enable && config.completion.expansions.enable && config.pim.core.enable) {
+      completion.expansions.espanso.matches = {
+        pim_core = {
+          matches = [
+            {
+              trigger = ":gh";
+              replace = "ghq#";
+            }
+            {
+              trigger = ":np";
+              replace = "npkg#";
+            }
+          ];
+        };
+      };
+    })
   ];
 }
