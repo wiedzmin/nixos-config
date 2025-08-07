@@ -151,6 +151,16 @@ in
               trigger = ":gitB";
               replace = "git branch -a | fzf | tr -d \"[:blank:]\" | tr -d '\\n' | xsel -ib";
             }
+            {
+              trigger = ":gs";
+              replace = "git show {{sha}}";
+              vars = [
+                {
+                  name = "sha";
+                  type = "clipboard";
+                }
+              ];
+            }
           ];
         };
       };
