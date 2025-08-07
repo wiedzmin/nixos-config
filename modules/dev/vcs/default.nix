@@ -84,8 +84,14 @@ in
         programs.git.extraConfig = optionalAttrs config.navigation.bookmarks.enable {
           "ghq" = { root = config.navigation.bookmarks.workspaces.globalRoot; };
         };
-        programs.zsh.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
-        programs.fish.shellAliases = { gg = "${pkgs.gitAndTools.ghq}/bin/ghq get"; };
+        programs.zsh.shellAliases = {
+          gg = "${pkgs.gitAndTools.ghq}/bin/ghq get";
+          gfg = "${pkgs.gitAndTools.ghq}/bin/ghq get --vcs fossil";
+        };
+        programs.fish.shellAliases = {
+          gg = "${pkgs.gitAndTools.ghq}/bin/ghq get";
+          gfg = "${pkgs.gitAndTools.ghq}/bin/ghq get --vcs fossil";
+        };
 
         xdg.configFile = optionalAttrs (config.shell.core.queueing.enable && config.completion.expansions.enable) {
           "espanso/match/git_navigation.yml".source = yaml.generate "espanso-git_navigation.yml" {
