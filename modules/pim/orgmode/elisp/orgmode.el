@@ -118,6 +118,7 @@
         ("C-c [" . nil)
         ("C-c ]" . nil)
         ("C-c C-o" . nil)
+        ("M-," . org-mark-ring-goto)
         ("s-j" . org-babel-next-src-block)
         ("s-k" . org-babel-previous-src-block)
         ("s-l" . org-edit-src-code)
