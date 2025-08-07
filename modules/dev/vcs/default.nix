@@ -73,7 +73,7 @@ in
   config = mkMerge [
     (mkIf (cfg.enable && cfg.batch.enable) {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ mr ];
+        home.packages = with pkgs; [ mr fossil ];
         home.file = { ".mrconfig".text = cfg.batch.configContent; };
       };
     })
