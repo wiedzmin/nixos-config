@@ -42,7 +42,7 @@ in
       systemd.services.redis-default.postStart = cfg.instructions;
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release tiny-rdm ];
+        home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release tiny-rdm ] ++ config.attributes.transientPackages;
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {

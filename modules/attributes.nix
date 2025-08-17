@@ -281,5 +281,15 @@ with lib;
       description = "Column number to fill paragraph/region after, when using monospaced font";
       type = types.int;
     };
+    transientPackages = mkOption {
+      type = types.listOf types.package;
+      default = [ ];
+      example = literalExpression ''
+        with pkgs; [
+          hello
+        ]
+      '';
+      description = "SPOT for packages that are mostly added either temporarily or for some testing purposes";
+    };
   };
 }
