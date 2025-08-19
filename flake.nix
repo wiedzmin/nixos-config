@@ -168,6 +168,13 @@
                       cat moar.go
                     '';
                   });
+                  kitty-themes = old.kitty-themes.overrideAttrs (_: {
+                    postPatch = ''
+                      sed -i "s,^background                      #404040,background                      #313131,g" themes/zenburned.conf
+                      sed -i "s,^color0 #404040,color0 #313131,g" themes/zenburned.conf
+                      cat themes/zenburned.conf
+                    '';
+                  });
                   vaapiIntel = old.vaapiIntel.override { enableHybridCodec = true; };
                   nyxt =
                     let
