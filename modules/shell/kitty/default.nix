@@ -278,7 +278,7 @@ in
             # kitty_mod = "ctrl+shift"; # TODO: play with this
             allow_hyperlinks = "yes";
             allow_remote_control = "yes";
-            listen_on = "tcp:localhost:12345";
+            listen_on = remoteConnString;
             detect_urls = "yes";
             select_by_word_characters = ":@-./_~?&=%+#";
             strip_trailing_spaces = "smart";
