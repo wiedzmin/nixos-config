@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -10,6 +10,13 @@ let
   ID = config.attributes.mainUser.ID;
   inherit (config.wmCommon) prefix prefixAlt;
   yaml = pkgs.formats.yaml { };
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -84,7 +91,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [ clipgrab freetube moc ncmpcpp ytfzf ];
+      environment.systemPackages = with pkgs; [ clipgrab freetube nixpkgs-last-unbroken.moc ncmpcpp ytfzf ];
 
       home-manager.users."${user}" = {
         programs.mpv = {
