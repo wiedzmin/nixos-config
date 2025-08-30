@@ -160,7 +160,7 @@ in
     fonts = {
       enable = true;
       antialias = true; # NOTE: use `nix-index consolefonts` to search values for `console.font`
-      iosevka.enable = true;
+      fira-code.enable = true;
     };
     wallpaper = {
       enable = true;
