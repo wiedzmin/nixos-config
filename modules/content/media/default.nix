@@ -237,7 +237,7 @@ in
         cfg.mpd.collections;
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ ario sonata cantata ];
+        home.packages = with pkgs; [ sonata cantata ];
         programs.qutebrowser = {
           keyBindings = {
             normal = {
