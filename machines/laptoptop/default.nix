@@ -93,7 +93,7 @@ in
       enable = true;
       notifications = { x11.enable = true; };
     };
-    logind.lidSwitchDocked = "suspend";
+    logind.settings.Login.HandleLidSwitchDocked = "suspend";
     journald.extraConfig = ''
       MaxRetentionSec=7day
     '';
