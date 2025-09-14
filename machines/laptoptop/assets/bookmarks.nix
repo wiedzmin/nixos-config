@@ -680,6 +680,17 @@ in
       remote = { url = "https://reestrd-dover.ru/"; };
       browser = appCmdFull config.attributes.browser.fallback.traits;
     };
+    "gitflic" = {
+      remote = { url = "https://gitflic.ru/project"; };
+    };
+    "school.mos.ru/homeworks" = {
+      remote = { url = "https://school.mos.ru/diary/homeworks/homeworks/"; };
+      browser = appCmdFull config.attributes.browser.fallback.traits;
+    };
+    "school.mos.ru/profile" = {
+      remote = { url = "https://school.mos.ru/diary/account/profile/"; };
+      browser = appCmdFull config.attributes.browser.fallback.traits;
+    };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
