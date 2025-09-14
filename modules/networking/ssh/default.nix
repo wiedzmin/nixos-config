@@ -5,7 +5,6 @@ with lib;
 let
   cfg = config.ext.networking.ssh;
   user = config.attributes.mainUser.name;
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   sshModule = types.submodule {
     options = {
       private = mkOption {
@@ -59,24 +58,31 @@ in
       home-manager.users."${user}" = {
         programs.ssh = {
           enable = true;
-          forwardAgent = true;
-          userKnownHostsFile = "~/.ssh/known_hosts";
-          controlMaster = "auto";
-          controlPath = "~/.ssh/sockets/%r@%h:%p";
-          controlPersist = "4h";
-          serverAliveInterval = 10;
+          enableDefaultConfig = false;
           matchBlocks = {
             "localhost" = {
               extraOptions = {
                 Compression = "no";
                 ControlMaster = "no";
               };
+              forwardAgent = true;
+              userKnownHostsFile = "~/.ssh/known_hosts";
+              controlMaster = "auto";
+              controlPath = "~/.ssh/sockets/%r@%h:%p";
+              controlPersist = "4h";
+              serverAliveInterval = 10;
             };
             "* !localhost" = {
               extraOptions = {
                 ControlMaster = "auto";
                 ControlPersist = "2h";
               };
+              forwardAgent = true;
+              userKnownHostsFile = "~/.ssh/known_hosts";
+              controlMaster = "auto";
+              controlPath = "~/.ssh/sockets/%r@%h:%p";
+              controlPersist = "4h";
+              serverAliveInterval = 10;
             };
             "*" = {
               identityFile = toString (pkgs.writeTextFile {
@@ -88,6 +94,12 @@ in
                 TCPKeepAlive = "yes";
                 ServerAliveCountMax = "10";
               };
+              forwardAgent = true;
+              userKnownHostsFile = "~/.ssh/known_hosts";
+              controlMaster = "auto";
+              controlPath = "~/.ssh/sockets/%r@%h:%p";
+              controlPersist = "4h";
+              serverAliveInterval = 10;
             };
           };
           extraConfig = ''
