@@ -386,13 +386,6 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.entries = [
-        {
-          key = [ "i" ];
-          cmd = "${pkgs.index-fm}/bin/index";
-          mode = "run";
-        }
-      ];
       wmCommon.wsMapping.rules = [{
         class = "index";
         desktop = "tools"; # [ref:desktop_tools]
