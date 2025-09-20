@@ -209,6 +209,19 @@
     (if (eq embark-prompter 'embark-completing-read-prompter)
         (setq embark-prompter 'embark-keymap-prompter)
       (setq embark-prompter 'embark-completing-read-prompter)))
+  ;; https://stackoverflow.com/questions/95631/open-a-file-with-su-sudo-inside-emacs
+  (defun custom/embark-sudo-edit () ;; Simpler sudo edit which doesn't cover all the edge cases
+    (interactive)
+    (find-file (concat "/sudo:root@localhost:"
+                       (expand-file-name (read-file-name "Find file as root: ")))))
+  ;; Use Embark like a leader-key
+  ;; You can use embark-act as a leader key to perform actions on the current buffer or file:
+  (defun embark-target-this-buffer-file ()
+    (cons 'this-buffer-file (or (buffer-file-name) (buffer-name))))
+  (defun embark-act-on-buffer-file (&optional arg)
+    (interactive "P")
+    (let ((embark-target-finders '(embark-target-this-buffer-file)))
+      (embark-act arg)))
   :bind
   ("C-S-a" . embark-act)
   ("C-*" . embark-act-all)
@@ -217,9 +230,14 @@
   ("C-&" . custom/embark-toggle-prompter)
   (:map embark-general-map
         ("C-." . embark-cycle))
+  (:map embark-file-map
+        ("s" . custom/embark-sudo-edit))
+  (:map embark-identifier-map
+        ("y" . symbol-overlay-put))
   (:map mode-specific-map
         ("C-." . embark-act)
-        ("C-," . embark-dwim))
+        ("C-," . embark-dwim)
+        ("C-o". 'embark-act-on-buffer-file))
   (:map help-map
         ("B" . embark-bindings))
   (:map minibuffer-local-map
@@ -235,7 +253,26 @@
   :custom
   (embark-allow-edit-default t)
   (embark-indicators '(embark-minimal-indicator embark-highlight-indicator))
-  (prefix-help-command 'embark-prefix-help-command))
+  (prefix-help-command 'embark-prefix-help-command)
+  :config
+  (defvar-keymap this-buffer-file-map
+    :doc "Commands to act on current file or buffer."
+    :parent embark-general-map
+    "l" #'load-file
+    "b" #'byte-compile-file
+    "S" #'custom/embark-sudo-edit
+    "r" #'rename-file-and-buffer
+    "d" #'diff-buffer-with-file
+    "!" #'shell-command
+    "&" #'async-shell-command
+    "x" #'embark-open-externally
+    "c" #'copy-file
+    "k" #'kill-buffer
+    "z" #'bury-buffer
+    "|" #'embark-shell-command-on-buffer
+    "g" #'revert-buffer)
+  (add-to-list 'embark-target-finders #'embark-target-this-buffer-file 'append)
+  (add-to-list 'embark-keymap-alist '(this-buffer-file . this-buffer-file-map)))
 
 (use-package marginalia
   :demand t
