@@ -376,5 +376,5 @@
   (use-package avy
     :bind
     (:map custom-org-map
-          ("h" . avy-org-goto-heading-timer)
+          ("T" . avy-org-goto-heading-timer)
           ("^" . avy-org-refile-as-child))))
