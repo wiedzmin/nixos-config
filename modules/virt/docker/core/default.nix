@@ -138,19 +138,15 @@ in
       navigation.bookmarks.entries = {
         "dockr" = {
           desc = "docker + ";
-          remote = {
-            url = "https://www.google.ru/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            searchSuffix = "?q=docker+";
-          };
+          url = "https://www.google.ru/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          searchSuffix = "?q=docker+";
         };
         "dockerhub" = {
           desc = "Docker Hub";
-          remote = {
-            url = "https://hub.docker.com/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            searchSuffix = "search/?q=";
-          };
+          url = "https://hub.docker.com/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          searchSuffix = "search/?q=";
         };
       };
     })

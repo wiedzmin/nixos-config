@@ -478,7 +478,7 @@ in
       workstation.performance.warmup.paths = [ (homePrefix user ".mozilla") ];
 
       navigation.bookmarks.entries = {
-        "firefox/sessions/exported" = { local.path = homePrefix user "docs/org/browser-sessions/firefox"; };
+        "firefox/sessions/exported" = { path = homePrefix user "docs/org/browser-sessions/firefox"; };
       };
     })
     (mkIf (cfg.enable && cfg.isFallback) {
@@ -546,26 +546,20 @@ in
       navigation.bookmarks.entries = {
         "addons/firefox" = {
           desc = "Firefox addons";
-          remote = {
-            url = "https://addons.mozilla.org/en-US/firefox/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            searchSuffix = "search/?cat=all&x=0&y=0&q=";
-          };
+          url = "https://addons.mozilla.org/en-US/firefox/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          searchSuffix = "search/?cat=all&x=0&y=0&q=";
         };
       } // optionalString (cfg.isDefault) {
         "about/config" = {
           desc = "Firefox configuration options";
-          remote = {
-            url = "about:config";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "about:config";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "about/memory" = {
           desc = "Firefox addons reference";
-          remote = {
-            url = "about:memory";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "about:memory";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
       };
     })

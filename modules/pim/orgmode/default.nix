@@ -192,52 +192,38 @@ in
       navigation.bookmarks.entries = {
         "discourse/org-roam" = {
           desc = "Org-roam Discourse";
-          remote = {
-            url = "https://org-roam.discourse.group/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://org-roam.discourse.group/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "orgupd" = {
           desc = "Orgmode updates";
-          remote = {
-            url = "https://updates.orgmode.org/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://updates.orgmode.org/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "orui" = {
           desc = "Org-roam UI";
-          remote = {
-            url = "http://127.0.0.1:35901/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "http://127.0.0.1:35901/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "jethrokuan/braindump/src" = {
           desc = "Jethrokuan's braindump src";
-          remote = {
-            url = "https://github.com/jethrokuan/braindump/tree/master/org";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/jethrokuan/braindump/tree/master/org";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "jethrokuan/braindump" = {
           desc = "Jethrokuan's braindump";
-          remote = {
-            url = "https://braindump.jethro.dev/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://braindump.jethro.dev/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "org-roam/proto" = {
           desc = "org-protocol docs for org-roam";
-          remote = {
-            url = "https://www.orgroam.com/manual.html#The-roam_002dnode-protocol";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://www.orgroam.com/manual.html#The-roam_002dnode-protocol";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "worg" = {
           desc = "Hello Worg, the Org-Mode Community!";
-          remote = {
-            url = "https://orgmode.org/worg/index.html";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://orgmode.org/worg/index.html";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
       };
     })

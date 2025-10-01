@@ -416,7 +416,7 @@ in
       navigation.bookmarks.entries = {
         "scanning-work-directory" = {
           tags = [ "scanning" "work" ];
-          local.path = homePrefix user "docs/paperless/raw";
+          path = homePrefix user "docs/paperless/raw";
         };
       };
     })

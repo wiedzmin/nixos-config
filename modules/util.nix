@@ -200,12 +200,12 @@ rec {
   # {{{ Bookmarks
   # TODO: filter out bookmarks under any VPN that is disabled (check/provide some mechanism for this)
   mkGithubBookmark = user: repo: roots: {
-    local.path = "${wsRoot roots "github"}/${user}/${repo}";
-    remote.url = "https://github.com/${user}/${repo}";
+    path = "${wsRoot roots "github"}/${user}/${repo}";
+    url = "https://github.com/${user}/${repo}";
   };
   mkGithubBookmarkWithMyrepos = user: repo: roots: {
-    local.path = "${wsRoot roots "github"}/${user}/${repo}";
-    remote.url = "https://github.com/${user}/${repo}";
+    path = "${wsRoot roots "github"}/${user}/${repo}";
+    url = "https://github.com/${user}/${repo}";
     batchvcs = {
       "${wsRoot roots "github"}/${user}/${repo}" = {
         checkout = [ "git clone 'https://github.com/${user}/${repo}.git' '${repo}'" ];
@@ -218,20 +218,20 @@ rec {
         trueValueByPath meta [ "enable" ] &&
         nonEmptyValueByPath meta checkPath)
       bookmarks);
-  approvedBookmarksLocal = bookmarks: approvedBookmarks bookmarks [ "local" "path" ];
+  approvedBookmarksLocal = bookmarks: approvedBookmarks bookmarks [ "path" ];
   localPathsByType = type: bookmarks:
-    lib.mapAttrsToList (_: meta: meta.local.path)
-      (lib.filterAttrs (_: meta: trueValueByPathStrict meta [ "local" type ])
+    lib.mapAttrsToList (_: meta: meta.path)
+      (lib.filterAttrs (_: meta: trueValueByPathStrict meta [ type ])
         (approvedBookmarksLocal bookmarks));
   localBookmarksKeyMeta = bookmarks: sep: tagSep:
     lib.mapAttrs'
       (key: meta: lib.nameValuePair
         (mkLocalBookmarkName (meta // { inherit key; }) sep tagSep)
-        (mkLocalBookmarkDest meta.local))
+        (mkLocalBookmarkDest meta))
       (approvedBookmarksLocal bookmarks);
   localBookmarksKVText = bookmarks:
     lib.concatStringsSep "\n"
-      (lib.mapAttrsToList (id: meta: id + " : " + meta.local.path)
+      (lib.mapAttrsToList (id: meta: id + " : " + meta.path)
         (approvedBookmarksLocal bookmarks));
   mkLocalBookmarkName = meta: sep: tagSep:
     lib.concatStringsSep sep
@@ -255,21 +255,21 @@ rec {
     lib.concatStringsSep sep
       (builtins.filter (e: e != "")
         ([
-          meta.remote.url
+          meta.url
         ] ++ [
           (lib.attrByPath [ "desc" ] "" meta)
         ] ++ [
           (lib.concatStringsSep tagSep (lib.attrByPath [ "tags" ] [ ] meta))
         ]));
   mkBookmarkWebjumpDest = meta:
-    { inherit (meta.remote) url; } // mkBookmarkRemoteDest meta;
+    { inherit (meta) url; } // mkBookmarkRemoteDest meta;
   mkBookmarkSearchengineDest = meta:
     {
-      url = meta.remote.url + lib.optionalString (lib.hasAttrByPath [ "remote" "searchSuffix" ] meta) meta.remote.searchSuffix;
+      url = meta.url + lib.optionalString (lib.hasAttrByPath [ "searchSuffix" ] meta) meta.searchSuffix;
     } // mkBookmarkRemoteDest meta;
   mkBookmarkRemoteDest = meta:
-    lib.optionalAttrs (lib.hasAttrByPath [ "remote" "vpn" ] meta) { inherit (meta.remote) vpn; } //
-    lib.optionalAttrs (lib.hasAttrByPath [ "remote" "browser" ] meta) { inherit (meta.remote) browser; } //
+    lib.optionalAttrs (lib.hasAttrByPath [ "vpn" ] meta) { inherit (meta) vpn; } //
+    lib.optionalAttrs (lib.hasAttrByPath [ "browseWith" ] meta) { inherit (meta) browseWith; } //
     lib.optionalAttrs (lib.hasAttrByPath [ "tags" ] meta) { inherit (meta) tags; };
   webjumpsMeta = remotes: sep: tagSep:
     lib.mapAttrs'
@@ -277,16 +277,16 @@ rec {
         (mkRemoteBookmarkName meta sep tagSep)
         (mkBookmarkWebjumpDest meta))
       (lib.filterAttrs
-        (_: meta: (trueValueByPath meta [ "remote" "jump" ] || falseValueByPath meta [ "remote" "searchSuffix" ]))
-        (approvedBookmarks remotes [ "remote" "url" ]));
+        (_: meta: (trueValueByPath meta [ "jump" ] || falseValueByPath meta [ "searchSuffix" ]))
+        (approvedBookmarks remotes [ "url" ]));
   searchenginesMeta = remotes: sep: tagSep:
     lib.mapAttrs'
       (_: meta: lib.nameValuePair
         (mkRemoteBookmarkName meta sep tagSep)
         (mkBookmarkSearchengineDest meta))
       (lib.filterAttrs
-        (_: meta: lib.hasAttrByPath [ "remote" "searchSuffix" ] meta)
-        (approvedBookmarks remotes [ "remote" "url" ]));
+        (_: meta: lib.hasAttrByPath [ "searchSuffix" ] meta)
+        (approvedBookmarks remotes [ "url" ]));
   maybeDefaultBrowserCmd = browserDefault: browserFallback:
     if builtins.elem (appWindowClass browserDefault.traits) approvedDefaultBrowsersWC then
       appCmdFull browserDefault.traits

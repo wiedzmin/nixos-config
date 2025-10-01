@@ -106,20 +106,16 @@ in
         "goopy" = {
           desc = "python + ";
           tags = [ "dev" ];
-          remote = {
-            url = "https://www.google.ru/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            searchSuffix = "?q=python+";
-          };
+          url = "https://www.google.ru/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          searchSuffix = "?q=python+";
         };
         "pypi" = {
           desc = "PyPI";
           tags = [ "dev" "python" ];
-          remote = {
-            url = "https://pypi.org";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            searchSuffix = "/search/?q=";
-          };
+          url = "https://pypi.org";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          searchSuffix = "/search/?q=";
         };
       };
     })

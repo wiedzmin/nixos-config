@@ -180,10 +180,8 @@ in
       navigation.bookmarks.entries = {
         plantuml-server = {
           desc = "PlantUML server instance";
-          remote = {
-            url = "http://localhost:${builtins.toString cfg.diagrams.plantuml.server.port}/plantuml";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "http://localhost:${builtins.toString cfg.diagrams.plantuml.server.port}/plantuml";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
       };
     })
@@ -382,7 +380,7 @@ in
     (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
       navigation.bookmarks.entries = {
         linux_kernel_sources_2_6 = {
-          local.path = "${config.navigation.bookmarks.workspaces.globalRoot}/git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux";
+          path = "${config.navigation.bookmarks.workspaces.globalRoot}/git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux";
         };
       };
     })

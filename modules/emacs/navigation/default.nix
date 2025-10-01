@@ -142,73 +142,53 @@ in
       navigation.bookmarks.entries = {
         "emacs/vocem/consult" = {
           desc = "VOCEM consult repo";
-          remote = {
-            url = "https://github.com/minad/consult";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/minad/consult";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "emacs/vocem/consult/wiki" = {
           desc = "VOCEM consult wiki";
-          remote = {
-            url = "https://github.com/minad/consult/wiki";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/minad/consult/wiki";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "emacs/vocem/vertico" = {
           desc = "VOCEM vertico repo";
-          remote = {
-            url = "https://github.com/minad/vertico";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/minad/vertico";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "emacs/vocem/vertico/wiki" = {
           desc = "VOCEM vertico wiki";
-          remote = {
-            url = "https://github.com/minad/vertico/wiki";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/minad/vertico/wiki";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "emacs/vocem/embark" = {
           desc = "VOCEM embark repo";
-          remote = {
-            url = "https://github.com/oantolin/embark";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/oantolin/embark";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "emacs/vocem/embark/wiki" = {
           desc = "VOCEM embark wiki";
-          remote = {
-            url = "https://github.com/oantolin/embark/wiki";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/oantolin/embark/wiki";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "emacs/vocem/orderless" = {
           desc = "VOCEM orderless repo";
-          remote = {
-            url = "https://github.com/oantolin/orderless";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/oantolin/orderless";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "emacs/corfu" = {
           desc = "corfu repo";
-          remote = {
-            url = "https://github.com/minad/corfu";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/minad/corfu";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "emacs/corfu/wiki" = {
           desc = "corfu/wiki";
-          remote = {
-            url = "https://github.com/minad/corfu/wiki";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/minad/corfu/wiki";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "emacs/cape" = {
           desc = "cape repo (corfu extension)";
-          remote = {
-            url = "https://github.com/minad/cape";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/minad/cape";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
       };
     })

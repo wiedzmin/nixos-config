@@ -82,17 +82,13 @@ in
       navigation.bookmarks.entries = {
         "devfonts" = {
           desc = "JS fonts theming and comparison";
-          remote = {
-            url = "https://devfonts.gafi.dev/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://devfonts.gafi.dev/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "coding-fonts-css-tricks" = {
           desc = "CSS fonts tricks";
-          remote = {
-            url = "https://coding-fonts.css-tricks.com/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://coding-fonts.css-tricks.com/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
       };
     })

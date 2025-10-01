@@ -678,43 +678,33 @@ in
       browsers.ext.emacs.browseUrlSetup = cfg.emacs.browseUrlSetup;
 
       navigation.bookmarks.entries = {
-        "qutebrowser/sessions/raw" = { local.path = homePrefix user ".local/share/qutebrowser/sessions"; };
-        "qutebrowser/sessions/exported" = { local.path = homePrefix user "docs/org/browser-sessions/qutebrowser"; };
+        "qutebrowser/sessions/raw" = { path = homePrefix user ".local/share/qutebrowser/sessions"; };
+        "qutebrowser/sessions/exported" = { path = homePrefix user "docs/org/browser-sessions/qutebrowser"; };
         "qutebrowser_plus" = {
           desc = "qutebrowser + ";
-          remote = {
-            url = "https://www.google.ru/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            searchSuffix = "?q=qutebrowser+";
-          };
+          url = "https://www.google.ru/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          searchSuffix = "?q=qutebrowser+";
         };
         "qutebrowser_help_index" = {
           desc = "qutebrowser help index";
-          remote = {
-            url = "https://qutebrowser.org/doc/help/index.html";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://qutebrowser.org/doc/help/index.html";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "qutebrowser_help_commands" = {
           desc = "qutebrowser commands reference";
-          remote = {
-            url = "https://qutebrowser.org/doc/help/commands.html";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://qutebrowser.org/doc/help/commands.html";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "qutebrowser_help_settings" = {
           desc = "qutebrowser settings reference";
-          remote = {
-            url = "https://qutebrowser.org/doc/help/settings.html";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://qutebrowser.org/doc/help/settings.html";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "qutebrowser_help_configuring" = {
           desc = "qutebrowser configuration overview";
-          remote = {
-            url = "https://qutebrowser.org/doc/help/configuring.html";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://qutebrowser.org/doc/help/configuring.html";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
       };
     })

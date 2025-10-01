@@ -501,21 +501,17 @@ in
       navigation.bookmarks.entries = {
         i3-userguide = {
           desc = "i3 userguide";
-          remote = {
-            url = "https://i3wm.org/docs/userguide.html";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://i3wm.org/docs/userguide.html";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         i3-debugging = {
           desc = "i3 userguide";
-          remote = {
-            url = "https://i3wm.org/docs/debugging.html";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://i3wm.org/docs/debugging.html";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         i3-configuration = {
           desc = "i3 configuration";
-          local.path = homePrefix user ".config/i3/config";
+          path = homePrefix user ".config/i3/config";
         };
       };
 

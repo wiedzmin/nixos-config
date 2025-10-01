@@ -397,27 +397,27 @@ in
         "iso-working-directory" = {
           desc = "ISO working directory";
           tags = [ "content" "misc" "iso" ];
-          local.path = cfg.iso.workdir;
+          path = cfg.iso.workdir;
         };
         "mnt-iso" = {
           desc = "ISO well-known mount point";
           tags = [ "content" "misc" "iso" ];
-          local.path = cfg.mount.iso;
+          path = cfg.mount.iso;
         };
         "mnt-external" = {
           desc = "External HDD well-known mount point";
           tags = [ "content" "misc" "ext" ];
-          local.path = cfg.mount.external;
+          path = cfg.mount.external;
         };
         "mnt-external-fhs" = {
           desc = "External HDD well-known mount point";
           tags = [ "content" "misc" "ext" "fhs" ];
-          local.path = "/run/media/${user}";
+          path = "/run/media/${user}";
         };
         "temp-dir" = {
           desc = "System-wide user's temporary directory";
           tags = [ "content" "misc" "temp" ];
-          local.path = homePrefix user "workspace/temp";
+          path = homePrefix user "workspace/temp";
         };
       };
     })

@@ -546,49 +546,37 @@ in
       navigation.bookmarks.entries = {
         emacs-overlay = {
           desc = "nix emacs overlay";
-          local.path = "${wsRoot roots "github"}/nix-community/emacs-overlay";
-          remote = {
-            url = "https://github.com/nix-community/emacs-overlay/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            jump = true;
-            searchSuffix = "search?q=";
-          };
+          path = "${wsRoot roots "github"}/nix-community/emacs-overlay";
+          url = "https://github.com/nix-community/emacs-overlay/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          jump = true;
+          searchSuffix = "search?q=";
         };
         melpa = {
           desc = "MELPA";
-          remote = {
-            url = "https://melpa.org/#/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            jump = true;
-            searchSuffix = "?q=";
-          };
+          url = "https://melpa.org/#/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          jump = true;
+          searchSuffix = "?q=";
         };
         elpa-gnu = {
           desc = "GNU ELPA";
-          remote = {
-            url = "https://elpa.gnu.org/packages/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://elpa.gnu.org/packages/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         elpa-nongnu = {
           desc = "NonGNU ELPA";
-          remote = {
-            url = "https://elpa.nongnu.org/nongnu/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://elpa.nongnu.org/nongnu/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         use-package = {
-          remote = {
-            url = "https://github.com/jwiegley/use-package";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://github.com/jwiegley/use-package";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "emacs-news" = {
-          desc = "Emacs news";
-          remote = {
-            url = "https://sachachua.com/blog/category/emacs-news/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          description = "Emacs news";
+          url = "https://sachachua.com/blog/category/emacs-news/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
           windowRules = [
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -599,25 +587,19 @@ in
         };
         "libhunt/elisp" = {
           tags = [ "search" "libraries" "emacs" "elisp" ];
-          remote = {
-            url = "https://www.libhunt.com/l/emacs-lisp";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://www.libhunt.com/l/emacs-lisp";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "gooem" = {
           desc = "emacs + ";
-          remote = {
-            url = "https://www.google.ru/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            searchSuffix = "?q=emacs+";
-          };
+          url = "https://www.google.ru/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          searchSuffix = "?q=emacs+";
         };
         "yhetil-emacs-devel" = {
           desc = "emacs-devel search engine";
-          remote = {
-            url = "https://yhetil.org/emacs-devel/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://yhetil.org/emacs-devel/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
       };
     })

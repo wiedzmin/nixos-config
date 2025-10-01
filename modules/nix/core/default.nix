@@ -423,70 +423,54 @@ in
       navigation.bookmarks.entries = {
         home-manager = {
           desc = "home-manager upstream repo";
-          local.path = "${wsRoot roots "github"}/rycee/home-manager";
-          remote = {
-            url = "https://github.com/rycee/home-manager/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            jump = true;
-            searchSuffix = "search?q=";
-          };
+          path = "${wsRoot roots "github"}/rycee/home-manager";
+          url = "https://github.com/rycee/home-manager/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          jump = true;
+          searchSuffix = "search?q=";
         };
         nixpkgs = {
           desc = "Nixpkgs upstream repo";
-          local.path = "${wsRoot roots "github"}/NixOS/nixpkgs";
-          remote = {
-            url = "https://github.com/NixOS/nixpkgs/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            jump = true;
-            searchSuffix = "search?q=";
-          };
+          path = "${wsRoot roots "github"}/NixOS/nixpkgs";
+          url = "https://github.com/NixOS/nixpkgs/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          jump = true;
+          searchSuffix = "search?q=";
         };
         nix-versions = {
           desc = "Mapping packages version to Nixpkgs repo git history";
-          remote = {
-            url = "https://lazamar.co.uk/nix-versions/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            jump = true;
-            searchSuffix = "?channel=nixos-unstable&package=";
-          };
+          url = "https://lazamar.co.uk/nix-versions/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          jump = true;
+          searchSuffix = "?channel=nixos-unstable&package=";
         };
         nixos-search = {
           desc = "Search NixOS packages";
-          remote = {
-            url = "https://search.nixos.org/packages";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            jump = true;
-            searchSuffix = "?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=";
-          };
+          url = "https://search.nixos.org/packages";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          jump = true;
+          searchSuffix = "?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=";
         };
         nix-versions-blogpost = {
           desc = "Descriptive blog post for `nix-versions` (see alongside)";
-          remote = {
-            url = "https://lazamar.github.io/download-specific-package-version-with-nix/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://lazamar.github.io/download-specific-package-version-with-nix/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         nixos-hardware = {
           desc = "NixOS hardware presets";
-          local.path = "${wsRoot roots "github"}/NixOS/nixos-hardware";
-          remote = {
-            url = "https://github.com/NixOS/nixos-hardware";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          path = "${wsRoot roots "github"}/NixOS/nixos-hardware";
+          url = "https://github.com/NixOS/nixos-hardware";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "nixospkg" = {
           desc = "NixOS packages";
-          remote = {
-            url = "https://nixos.org/nixos/packages.html";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://nixos.org/nixos/packages.html";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "nixos-status" = {
           desc = "NixOS status page";
-          remote = {
-            url = "https://status.nixos.org/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://status.nixos.org/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
           windowRules = [
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -498,119 +482,89 @@ in
         "nix" = {
           desc = "it/nix";
           tags = [ "media" "video" ];
-          remote = {
-            url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZiPdYVvHZY8Day5RC934CE";
-            browser = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
-          };
+          url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZiPdYVvHZY8Day5RC934CE";
+          browseWith = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
         };
         "nixos-news" = {
           desc = "NixOS weekly news";
-          remote = {
-            url = "https://weekly.nixos.org/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://weekly.nixos.org/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "nixos/packages" = {
           desc = "Nixpkgs/unstable";
-          remote = {
-            url = "https://nixos.org/nixos/packages/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            searchSuffix = "?channel=nixpkgs-unstable&query=";
-          };
+          url = "https://nixos.org/nixos/packages/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          searchSuffix = "?channel=nixpkgs-unstable&query=";
         };
         "nix/pm/repo" = mkGithubBookmark "NixOS" "nix" roots // {
           desc = "nix package manager repo";
-          remote.browser = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "ghnix" = {
           desc = "github/lang:nix";
           tags = [ "forge" ];
-          remote = {
-            url = "https://github.com/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            jump = false;
-            searchSuffix = "search?q=language%3Anix+";
-          };
+          url = "https://github.com/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          jump = false;
+          searchSuffix = "search?q=language%3Anix+";
         };
         "nixosr" = {
           desc = "NixOS + ";
-          remote = {
-            url = "";
-            searchSuffix = "https://www.google.ru/?q=nixos+";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          searchSuffix = "https://www.google.ru/?q=nixos+"; # FIXME: ???
         };
         "nixosopt" = {
           desc = "NixOS/options";
-          remote = {
-            url = "https://nixos.org/nixos/options.html#";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            searchSuffix = "";
-          };
+          url = "https://nixos.org/nixos/options.html#";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          searchSuffix = "";
         };
         "nixhydra" = {
           desc = "Nixpkgs from Hydra";
-          remote = {
-            url = "https://hydra.nixos.org/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            searchSuffix = "search?query=";
-          };
+          url = "https://hydra.nixos.org/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          searchSuffix = "search?query=";
         };
         "discourse/nixos" = {
           desc = "NixOS Discourse";
-          remote = {
-            url = "https://discourse.nixos.org/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://discourse.nixos.org/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "HM/documentation" = {
           desc = "Home Manager documentation";
-          remote = {
-            url = "https://nix-community.github.io/home-manager/index.html";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://nix-community.github.io/home-manager/index.html";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "nix-lib" = {
           desc = "Nix library reference";
-          remote = {
-            url = "https://teu5us.github.io/nix-lib.html";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://teu5us.github.io/nix-lib.html";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "mynixos" = {
           desc = "Build and share reproducible software environments with Nix and NixOS";
-          remote = {
-            url = "https://mynixos.com";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://mynixos.com";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "nix.dev" = {
           desc = "An opinionated guide for developers getting things done using the Nix ecosystem.";
-          remote = {
-            url = "https://nix.dev";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://nix.dev";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "nixlang.wiki" = {
           desc = "An unofficial, maintained wiki for NixOS";
-          remote = {
-            url = "https://nixlang.wiki/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://nixlang.wiki/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "nixpkgs-ref-custom" = {
           desc = "Nixpkgs overview and reference by RyanTM";
-          remote = {
-            url = "https://ryantm.github.io/nixpkgs";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://ryantm.github.io/nixpkgs";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
         "flakes-inputs-syntax" = {
           desc = "Flakes inputs syntax reference";
-          remote = {
-            url = "https://nixos-and-flakes.thiscute.world/other-usage-of-flakes/inputs";
-            browser = appCmdFull config.attributes.browser.default.traits;
-          };
+          url = "https://nixos-and-flakes.thiscute.world/other-usage-of-flakes/inputs";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
       };
     })

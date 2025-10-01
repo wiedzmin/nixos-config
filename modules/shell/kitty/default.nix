@@ -94,12 +94,10 @@ in
       navigation.bookmarks.entries = {
         kitty-docs = {
           desc = "Kitty VT documentation";
-          remote = {
-            url = "https://sw.kovidgoyal.net/kitty/";
-            browser = appCmdFull config.attributes.browser.default.traits;
-            jump = true;
-            searchSuffix = "search/?q=";
-          };
+          url = "https://sw.kovidgoyal.net/kitty/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+          jump = true;
+          searchSuffix = "search/?q=";
         };
       };
 
