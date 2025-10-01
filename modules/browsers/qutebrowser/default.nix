@@ -684,24 +684,37 @@ in
           desc = "qutebrowser + ";
           remote = {
             url = "https://www.google.ru/";
+            browser = appCmdFull config.attributes.browser.default.traits;
             searchSuffix = "?q=qutebrowser+";
           };
         };
         "qutebrowser_help_index" = {
           desc = "qutebrowser help index";
-          remote.url = "https://qutebrowser.org/doc/help/index.html";
+          remote = {
+            url = "https://qutebrowser.org/doc/help/index.html";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "qutebrowser_help_commands" = {
           desc = "qutebrowser commands reference";
-          remote.url = "https://qutebrowser.org/doc/help/commands.html";
+          remote = {
+            url = "https://qutebrowser.org/doc/help/commands.html";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "qutebrowser_help_settings" = {
           desc = "qutebrowser settings reference";
-          remote.url = "https://qutebrowser.org/doc/help/settings.html";
+          remote = {
+            url = "https://qutebrowser.org/doc/help/settings.html";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "qutebrowser_help_configuring" = {
           desc = "qutebrowser configuration overview";
-          remote.url = "https://qutebrowser.org/doc/help/configuring.html";
+          remote = {
+            url = "https://qutebrowser.org/doc/help/configuring.html";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
       };
     })

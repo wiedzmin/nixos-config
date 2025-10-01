@@ -12,6 +12,7 @@ in
       local.path = "${wsRoot roots "github"}/wiedzmin/nixos-config";
       remote = {
         url = "https://github.com/wiedzmin/nixos-config/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         jump = true;
         searchSuffix = "search?q=";
       };
@@ -33,6 +34,7 @@ in
       local.path = "${wsRoot roots "github"}/wiedzmin/git-hooks";
       remote = {
         url = "https://github.com/wiedzmin/git-hooks";
+        browser = appCmdFull config.attributes.browser.default.traits;
         jump = true;
         searchSuffix = "search?q=";
       };
@@ -47,17 +49,27 @@ in
     "staging/sandbox" = { local.path = homePrefix user "workspace/sandbox/newpkgs"; };
     jwt-io = {
       desc = "JWT online debugger and libraries reference";
-      remote.url = "https://jwt.io/";
+      remote = {
+        url = "https://jwt.io/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "mastering/vlan" = {
       desc = "VLAN article";
-      remote.url = "http://xgu.ru/wiki/VLAN";
+      remote = {
+        url = "http://xgu.ru/wiki/VLAN";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "mastering/networking" = {
       desc = "Networking beginner book (online)";
-      remote.url = "https://linkmeup.gitbook.io/sdsm/0.-planirovanie";
+      remote = {
+        url = "https://linkmeup.gitbook.io/sdsm/0.-planirovanie";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "toolbox" = mkGithubBookmarkWithMyrepos "wiedzmin" "toolbox" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
       windowRules = [
         {
           class = "Emacs";
@@ -67,6 +79,7 @@ in
       ];
     };
     "timeshitting" = mkGithubBookmarkWithMyrepos "wiedzmin" "timeshitting" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
       windowRules = [
         {
           class = "Emacs";
@@ -76,6 +89,7 @@ in
       ];
     };
     "wmtools" = mkGithubBookmarkWithMyrepos "wiedzmin" "wmtools" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
       windowRules = [
         {
           class = "Emacs";
@@ -86,40 +100,59 @@ in
     };
     "lumosity" = {
       desc = "Lumosity";
-      remote.url = "https://lumosity.com/";
+      remote = {
+        url = "https://lumosity.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "relax-fm" = {
       desc = "Relax FM radio";
       tags = [ "media" "fm" "radio" ];
-      remote.url = "https://relax-fm.ru";
+      remote = {
+        url = "https://relax-fm.ru";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "lightnings" = {
       desc = "Lightning map";
       tags = [ "map" "weather" ];
-      remote.url = "https://ru.blitzortung.org/live_dynamic_maps.php";
+      remote = {
+        url = "https://ru.blitzortung.org/live_dynamic_maps.php";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "marinetraffic" = {
       desc = "Marine vessels map";
       tags = [ "map" "weather" ];
-      remote.url = "https://www.marinetraffic.com";
+      remote = {
+        url = "https://www.marinetraffic.com";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "chillout" = {
       desc = "Music streams"; # note /chillout
       tags = [ "media" "fm" ];
       remote = {
         url = "https://www.di.fm/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "search?q=";
       };
     };
     "lightnings2" = {
       desc = "Lightning map";
       tags = [ "map" "weather" ];
-      remote.url = "https://www.lightningmaps.org/";
+      remote = {
+        url = "https://www.lightningmaps.org/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "encodings" = {
       desc = "Encodings translation";
       tags = [ "tools" "online" ];
-      remote.url = "https://www.online-decoder.com/ru";
+      remote = {
+        url = "https://www.online-decoder.com/ru";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "Ricktube" = {
       desc = "Ricktube";
@@ -144,27 +177,42 @@ in
     "google-photos" = {
       desc = "Google Photos";
       tags = [ "media" "photo" ];
-      remote.url = "https://photos.google.com/";
+      remote = {
+        url = "https://photos.google.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "bitbucket" = {
       desc = "Bitbucket code hosting";
       tags = [ "forge" ];
-      remote.url = "https://bitbucket.org";
+      remote = {
+        url = "https://bitbucket.org";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "digitalocean" = {
       desc = "DigitalOcean account";
       tags = [ "servers" ];
-      remote.url = "https://cloud.digitalocean.com/projects/";
+      remote = {
+        url = "https://cloud.digitalocean.com/projects/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "linode" = {
       desc = "Linode account";
       tags = [ "servers" ];
-      remote.url = "https://cloud.linode.com/linodes";
+      remote = {
+        url = "https://cloud.linode.com/linodes";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "crontabs" = {
       desc = "Crontab format helpers";
       tags = [ "tools" "online" ];
-      remote.url = "https://crontab.guru/";
+      remote = {
+        url = "https://crontab.guru/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "gdocs" = {
       remote = {
@@ -183,6 +231,7 @@ in
       tags = [ "forge" ];
       remote = {
         url = "https://github.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "search?&type=code&q=";
       };
     };
@@ -191,6 +240,7 @@ in
       tags = [ "forge" ];
       remote = {
         url = "https://github.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "search?type=code&q=in%3Apath+";
       };
     };
@@ -199,6 +249,7 @@ in
       tags = [ "forge" ];
       remote = {
         url = "https://github.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "search?q=filename%3Aflake.nix+";
       };
     };
@@ -207,28 +258,38 @@ in
       tags = [ "forge" ];
       remote = {
         url = "https://github.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "search?q=in%3Apath+";
       };
     };
     "ghw" = {
       desc = "Github personal account";
       tags = [ "forge" ];
-      remote.url = "https://github.com/wiedzmin";
+      remote = {
+        url = "https://github.com/wiedzmin";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "cba" = {
       desc = "Codeberg personal account";
       tags = [ "forge" ];
-      remote.url = "https://codeberg.org/alex3rd";
+      meta = {
+        url = "https://codeberg.org/alex3rd";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "gmail" = {
       desc = "GMail account";
-      remote.url = "https://mail.google.com/mail/u/0/";
-      remote.browser = appCmdFull config.attributes.browser.fallback.traits;
+      remote = {
+        url = "https://mail.google.com/mail/u/0/";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
     };
     "repology/projects" = {
       desc = "Repology";
       remote = {
         url = "https://repology.org/projects/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "?search=";
       };
     };
@@ -236,25 +297,38 @@ in
       desc = "Repology maintainers";
       remote = {
         url = "https://repology.org/maintainers/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "?search=";
       };
     };
     "repology/repos" = {
       desc = "Repology repositories";
-      remote.url = "https://repology.org/repositories";
+      remote = {
+        url = "https://repology.org/repositories";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "torrefacto" = {
       desc = "Torrefacto shop";
-      remote.url = "https://torrefacto.ru/";
+      remote = {
+        url = "https://torrefacto.ru/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "gtrans" = {
       desc = "Google translate service";
       tags = [ "dictionary" ];
-      remote.url = "https://translate.google.com/";
+      remote = {
+        url = "https://translate.google.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "teleweb" = {
       desc = "Telegram web interface";
-      remote.url = "https://web.telegram.org/";
+      remote = {
+        url = "https://web.telegram.org/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "fb" = {
       enable = false;
@@ -294,13 +368,17 @@ in
       tags = [ "dictionary" ];
       remote = {
         url = "https://www.multitran.com/m.exe?l1=1&l2=2";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "&s=";
       };
     };
     "ventusky" = {
       desc = "Weather map / temperature";
       tags = [ "map" "weather" ];
-      remote.url = "https://www.ventusky.com/?l=temperature";
+      remote = {
+        url = "https://www.ventusky.com/?l=temperature";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "rust" = {
       desc = "it/rust";
@@ -402,6 +480,7 @@ in
       desc = "Yandex";
       remote = {
         url = "https://yandex.ru/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         jump = true;
         searchSuffix = "search/?text=";
       };
@@ -409,25 +488,38 @@ in
     "ml24" = {
       enable = false;
       tags = [ "shop" ];
-      remote.url = "https://market-land24.ru/";
+      remote = {
+        url = "https://market-land24.ru/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "mealty" = {
       tags = [ "shop" ];
-      remote.url = "https://mealty.ru/catalog/";
+      remote = {
+        url = "https://mealty.ru/catalog/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "khuur" = {
       tags = [ "music" "culture" ];
-      remote.url = "https://stevemorel.info/sharing/morin-huur/";
+      remote = {
+        url = "https://stevemorel.info/sharing/morin-huur/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "connsp" = {
       desc = "Internet connection speed";
       tags = [ "networking" "internet" "speed" ];
-      remote.url = "https://speedtest24net.ru/";
+      remote = {
+        url = "https://speedtest24net.ru/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "dict" = {
       desc = "Dictionary";
       remote = {
         url = "https://dictionary.reference.com/browse/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "";
       };
     };
@@ -436,6 +528,7 @@ in
       tags = [ "forge" ];
       remote = {
         url = "https://github.com/search?type=Everything&q=";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "";
       };
     };
@@ -444,6 +537,7 @@ in
       tags = [ "map" ];
       remote = {
         url = "https://maps.google.com/maps?q=";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "";
       };
     };
@@ -451,6 +545,7 @@ in
       desc = "Google";
       remote = {
         url = "https://www.google.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "search?num=100&q=";
       };
     };
@@ -459,6 +554,7 @@ in
       tags = [ "dictionary" ];
       remote = {
         url = "https://lingvopro.abbyyonline.com/ru/Search/en-ru/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "";
       };
     };
@@ -466,6 +562,7 @@ in
       desc = "My Delicious";
       remote = {
         url = "https://www.delicious.com/__ronin__/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "";
       };
     };
@@ -474,6 +571,7 @@ in
       tags = [ "dev" ];
       remote = {
         url = "https://searchcode.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "?q=";
       };
     };
@@ -482,57 +580,104 @@ in
       tags = [ "history" ];
       remote = {
         url = "https://web.archive.org/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "web/*/";
       };
     };
     "codeforces" = {
       tags = [ "contest" "code" ];
-      remote.url = "https://codeforces.com/";
+      remote = {
+        url = "https://codeforces.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "projecteuler" = {
       tags = [ "contest" "code" ];
-      remote.url = "https://projecteuler.net/";
+      remote = {
+        url = "https://projecteuler.net/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "hackerrank" = {
       tags = [ "contest" "code" ];
-      remote.url = "https://www.hackerrank.com/";
+      remote = {
+        url = "https://www.hackerrank.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "exercism" = {
       tags = [ "contest" "code" ];
-      remote.url = "https://exercism.io/";
+      remote = {
+        url = "https://exercism.io/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "leetcode" = {
       tags = [ "contest" "code" ];
-      remote.url = "https://leetcode.com/";
+      remote = {
+        url = "https://leetcode.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "codewars" = {
       tags = [ "contest" "code" ];
-      remote.url = "https://www.codewars.com/";
+      remote = {
+        url = "https://www.codewars.com/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
-    "projects/loggerhead" = mkGithubBookmark "wiedzmin" "loggerhead" roots; # arbtt analog
-    "projects/gourmet" = mkGithubBookmarkWithMyrepos "wiedzmin" "gourmet" roots;
-    "mastering/wiedzmin/cl-study" = mkGithubBookmarkWithMyrepos "wiedzmin" "cl-study" roots;
-    "mastering/wiedzmin/lisp-koans" = mkGithubBookmarkWithMyrepos "wiedzmin" "lisp-koans" roots;
-    "projects/reference/go-org" = mkGithubBookmark "niklasfasching" "go-org" roots;
-    "projects/reference/xgb" = mkGithubBookmark "BurntSushi" "xgb" roots;
-    "projects/reference/xgbutil" = mkGithubBookmark "BurntSushi" "xgbutil" roots;
-    "projects/reference/arbtt" = mkGithubBookmark "nomeata" "arbtt" roots;
+    "projects/loggerhead" = mkGithubBookmark "wiedzmin" "loggerhead" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
+    }; # arbtt analog
+    "projects/gourmet" = mkGithubBookmarkWithMyrepos "wiedzmin" "gourmet" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
+    };
+    "mastering/wiedzmin/cl-study" = mkGithubBookmarkWithMyrepos "wiedzmin" "cl-study" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
+    };
+    "mastering/wiedzmin/lisp-koans" = mkGithubBookmarkWithMyrepos "wiedzmin" "lisp-koans" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
+    };
+    "projects/reference/go-org" = mkGithubBookmark "niklasfasching" "go-org" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
+    };
+    "projects/reference/xgb" = mkGithubBookmark "BurntSushi" "xgb" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
+    };
+    "projects/reference/xgbutil" = mkGithubBookmark "BurntSushi" "xgbutil" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
+    };
+    "projects/reference/arbtt" = mkGithubBookmark "nomeata" "arbtt" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
+    };
     "projects/reference/code-maat" = mkGithubBookmark "adamtornhill" "code-maat" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
       transient = true;
     };
     "ft-clojure-nix" = {
       tags = [ "java" "clojure" "packaging" "nix" ];
-      remote.url = "https://grahamenos.com/ft-clojure-nix.html";
+      remote = {
+        url = "https://grahamenos.com/ft-clojure-nix.html";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
-    "rofi" = mkGithubBookmark "davatorium" "rofi" roots // { transient = true; };
+    "rofi" = mkGithubBookmark "davatorium" "rofi" roots // {
+      remote.browser = appCmdFull config.attributes.browser.default.traits;
+      transient = true;
+    };
     "cppreference" = {
       tags = [ "c++" "cpp" "reference" ];
-      remote = { url = "https://en.cppreference.com/w/"; };
+      remote = {
+        url = "https://en.cppreference.com/w/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "paintings" = {
       tags = [ "paint" "play" ];
-      browser = appCmdFull config.attributes.browser.fallback.traits;
-      remote = { url = "https://yandex.ru/search/?lr=213&text=раскраски"; };
+      remote = {
+        url = "https://yandex.ru/search/?lr=213&text=раскраски";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
     };
     "real mongolia" = {
       tags = [ "mongol" "video" "youtube" ];
@@ -545,21 +690,29 @@ in
       tags = [ "mongol" "dictionary" "reference" ];
       remote = {
         url = "https://mongoltoli.mn";
+        browser = appCmdFull config.attributes.browser.default.traits;
       };
     };
     "cider/discord" = {
       tags = [ "emacs" "clojure" "cider" "discord" ];
-      remote = { url = "https://discord.com/channels/797747718385696768/797750325179973672"; };
+      remote = {
+        url = "https://discord.com/channels/797747718385696768/797750325179973672";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "ddg/bangs" = {
       tags = [ "duckduckgo" "bangs" ];
-      remote = { url = "https://duckduckgo.com/bang"; };
+      remote = {
+        url = "https://duckduckgo.com/bang";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     papers-i-love = {
       desc = "Computer science and computer-adjacent papers";
       local.path = "${wsRoot roots "github"}/fogus/papers-i-love";
       remote = {
         url = "https://github.com/fogus/papers-i-love";
+        browser = appCmdFull config.attributes.browser.default.traits;
         jump = true;
         searchSuffix = "search?q=";
       };
@@ -598,45 +751,72 @@ in
     };
     "shops/ozon" = {
       tags = [ "shop" "ozon" "orders" ];
-      remote = { url = "https://www.ozon.ru/my/orderlist"; };
+      remote = {
+        url = "https://www.ozon.ru/my/orderlist";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "mongol.su/calendar" = {
       tags = [ "mongol" "reference" "calendar" ];
-      remote = { url = "http://mongol.su/календарь/"; };
+      remote = {
+        url = "http://mongol.su/календарь/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "shops/wildberries" = {
       tags = [ "shop" "wildberries" "orders" ];
-      remote = { url = "https://www.wildberries.ru/lk/myorders/delivery"; };
+      remote = {
+        url = "https://www.wildberries.ru/lk/myorders/delivery";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "russia1_hd" = {
       tags = [ "media" "tv" ];
-      browser = appCmdFull config.attributes.browser.fallback.traits;
-      remote = { url = "https://more.tv/online/russia1_hd"; };
+      remote = {
+        url = "https://more.tv/online/russia1_hd";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
     };
     "good-wheels_ru" = {
       tags = [ "shop" "car" ];
-      remote = { url = "https://good-wheels.ru"; };
+      remote = {
+        url = "https://good-wheels.ru";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "best-tyres_ru" = {
       tags = [ "shop" "car" ];
-      remote = { url = "https://www.best-tyres.ru"; };
+      remote = {
+        url = "https://www.best-tyres.ru";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "thinkpad/reddit" = {
       tags = [ "laptop" "thinkpad" "reddit" ];
-      remote = { url = "https://www.reddit.com/r/Thinkpad"; };
+      remote = {
+        url = "https://www.reddit.com/r/Thinkpad";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "musicforprogramming" = {
       tags = [ "music" "programming" ];
-      remote = { url = "https://musicforprogramming.net/latest/"; };
+      remote = {
+        url = "https://musicforprogramming.net/latest/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "crackmes" = {
       tags = [ "reveng" "crackme" "contest" ];
-      remote = { url = "https://crackmes.one/"; };
+      remote = {
+        url = "https://crackmes.one/";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "torrent_files_search" = {
       desc = "torrent + ";
       remote = {
         url = "https://www.yandex.ru/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "?q=torrent+";
       };
     };
@@ -644,52 +824,75 @@ in
       desc = "MN - RU dict";
       remote = {
         url = "https://glosbe.com/ru/mn/";
+        browser = appCmdFull config.attributes.browser.default.traits;
         searchSuffix = "";
       };
     };
     "likeedownloader" = {
       tags = [ "download" "likee" ];
-      remote = { url = "https://likeedownloader.com/en"; };
+      remote = {
+        url = "https://likeedownloader.com/en";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "koshkin-dom" = {
       tags = [ "masha" ];
-      remote = { url = "https://mishka-knizhka.ru/skazki-dlay-detey/russkie-skazochniki/skazki-marshaka/koshkin-dom/"; };
-      browser = appCmdFull config.attributes.browser.fallback.traits;
+      remote = {
+        url = "https://mishka-knizhka.ru/skazki-dlay-detey/russkie-skazochniki/skazki-marshaka/koshkin-dom/";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
     };
     "strana-delfiniya" = {
       tags = [ "masha" ];
-      remote = { url = "https://rustih.ru/novella-matveeva-strana-delfiniya/"; };
-      browser = appCmdFull config.attributes.browser.fallback.traits;
+      remote = {
+        url = "https://rustih.ru/novella-matveeva-strana-delfiniya/";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
     };
     "stihi-mihalkova" = {
       tags = [ "masha" ];
-      remote = { url = "https://mishka-knizhka.ru/stihi-mihalkova/"; };
-      browser = appCmdFull config.attributes.browser.fallback.traits;
+      remote = {
+        url = "https://mishka-knizhka.ru/stihi-mihalkova/";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
     };
     "prostokvashino-uspenskiy" = {
       tags = [ "masha" ];
-      remote = { url = "https://mishka-knizhka.ru/skazki-dlay-detey/russkie-skazochniki/skazki-uspenskogo/djadja-fedor-uspenskij-je-n/"; };
-      browser = appCmdFull config.attributes.browser.fallback.traits;
+      remote = {
+        url = "https://mishka-knizhka.ru/skazki-dlay-detey/russkie-skazochniki/skazki-uspenskogo/djadja-fedor-uspenskij-je-n/";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
     };
     "kotyata" = {
       tags = [ "masha" ];
-      remote = { url = "https://www.culture.ru/poems/45343/kotyata"; };
-      browser = appCmdFull config.attributes.browser.fallback.traits;
+      remote = {
+        url = "https://www.culture.ru/poems/45343/kotyata";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
     };
     "reestrd-dover" = {
-      remote = { url = "https://reestrd-dover.ru/"; };
-      browser = appCmdFull config.attributes.browser.fallback.traits;
+      remote = {
+        url = "https://reestrd-dover.ru/";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
     };
     "gitflic" = {
-      remote = { url = "https://gitflic.ru/project"; };
+      remote = {
+        url = "https://gitflic.ru/project";
+        browser = appCmdFull config.attributes.browser.default.traits;
+      };
     };
     "school.mos.ru/homeworks" = {
-      remote = { url = "https://school.mos.ru/diary/homeworks/homeworks/"; };
-      browser = appCmdFull config.attributes.browser.fallback.traits;
+      remote = {
+        url = "https://school.mos.ru/diary/homeworks/homeworks/";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
     };
     "school.mos.ru/profile" = {
-      remote = { url = "https://school.mos.ru/diary/account/profile/"; };
-      browser = appCmdFull config.attributes.browser.fallback.traits;
+      remote = {
+        url = "https://school.mos.ru/diary/account/profile/";
+        browser = appCmdFull config.attributes.browser.fallback.traits;
+      };
     };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;

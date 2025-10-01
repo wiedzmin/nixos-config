@@ -1,4 +1,5 @@
 { config, lib, pkgs, ... }:
+with pkgs.unstable.commonutils;
 with lib;
 
 let
@@ -81,11 +82,17 @@ in
       navigation.bookmarks.entries = {
         "devfonts" = {
           desc = "JS fonts theming and comparison";
-          remote.url = "https://devfonts.gafi.dev/";
+          remote = {
+            url = "https://devfonts.gafi.dev/";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "coding-fonts-css-tricks" = {
           desc = "CSS fonts tricks";
-          remote.url = "https://coding-fonts.css-tricks.com/";
+          remote = {
+            url = "https://coding-fonts.css-tricks.com/";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
       };
     })

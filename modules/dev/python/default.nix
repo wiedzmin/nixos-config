@@ -108,6 +108,7 @@ in
           tags = [ "dev" ];
           remote = {
             url = "https://www.google.ru/";
+            browser = appCmdFull config.attributes.browser.default.traits;
             searchSuffix = "?q=python+";
           };
         };
@@ -116,6 +117,7 @@ in
           tags = [ "dev" "python" ];
           remote = {
             url = "https://pypi.org";
+            browser = appCmdFull config.attributes.browser.default.traits;
             searchSuffix = "/search/?q=";
           };
         };

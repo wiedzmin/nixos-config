@@ -123,19 +123,31 @@ in
       navigation.bookmarks.entries = {
         "telega/manual" = {
           desc = "Telega.el manual";
-          remote.url = "https://zevlg.github.io/telega.el/";
+          remote = {
+            url = "https://zevlg.github.io/telega.el/";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "telegram/service/status" = {
           desc = "Telegram service status";
-          remote.url = "https://downdetector.com/status/telegram/";
+          remote = {
+            url = "https://downdetector.com/status/telegram/";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "telegram/api/reference/links" = {
           desc = "telegram API reference / links";
-          remote.url = "https://core.telegram.org/api/links";
+          remote = {
+            url = "https://core.telegram.org/api/links";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "telegram/api/reference/usernames" = {
           desc = "telegram API reference / usernames";
-          remote.url = "https://core.telegram.org/api/invites#public-usernames";
+          remote = {
+            url = "https://core.telegram.org/api/invites#public-usernames";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
       };
     })

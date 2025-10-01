@@ -45,11 +45,17 @@ in
       navigation.bookmarks.entries = {
         "hyperbole-site" = {
           desc = "GNU Hyperbole site";
-          remote.url = "https://www.gnu.org/software/hyperbole/";
+          remote = {
+            url = "https://www.gnu.org/software/hyperbole/";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "hyperbole-man" = {
           desc = "GNU Hyperbole manual";
-          remote.url = "https://www.gnu.org/software/hyperbole/man/hyperbole.html";
+          remote = {
+            url = "https://www.gnu.org/software/hyperbole/man/hyperbole.html";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
       };
     })

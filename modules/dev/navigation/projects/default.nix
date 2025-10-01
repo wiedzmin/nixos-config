@@ -128,15 +128,24 @@ in
       navigation.bookmarks.entries = {
         "cachix/devenv/options" = {
           desc = "cachix/devenv options";
-          remote.url = "https://devenv.sh/reference/options/";
+          remote = {
+            url = "https://devenv.sh/reference/options/";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "projectile/docs" = {
           desc = "Projectile docs";
-          remote.url = "https://docs.projectile.mx/projectile/index.html";
+          remote = {
+            url = "https://docs.projectile.mx/projectile/index.html";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "cachix/devenv/releases" = {
           desc = "cachix/devenv releases";
-          remote.url = "https://github.com/cachix/devenv/releases";
+          remote = {
+            url = "https://github.com/cachix/devenv/releases";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
       };
     })

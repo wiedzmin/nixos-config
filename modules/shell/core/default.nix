@@ -114,11 +114,17 @@ in
       navigation.bookmarks.entries = {
         pueue-wiki = {
           desc = "Pueue github project wiki";
-          remote.url = "https://github.com/Nukesor/pueue/wiki";
+          remote = {
+            url = "https://github.com/Nukesor/pueue/wiki";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         emacs-pueue-repo = {
           desc = "Pueue emacs frontend project repo";
-          remote.url = "https://github.com/xFA25E/pueue";
+          remote = {
+            url = "https://github.com/xFA25E/pueue";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
       };
     })

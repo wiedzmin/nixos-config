@@ -180,7 +180,10 @@ in
       navigation.bookmarks.entries = {
         plantuml-server = {
           desc = "PlantUML server instance";
-          remote.url = "http://localhost:${builtins.toString cfg.diagrams.plantuml.server.port}/plantuml";
+          remote = {
+            url = "http://localhost:${builtins.toString cfg.diagrams.plantuml.server.port}/plantuml";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
       };
     })

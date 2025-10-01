@@ -48,7 +48,10 @@ in
       navigation.bookmarks.entries = {
         "ocaml-file-extensions" = {
           tags = [ "ocaml" "reference" ];
-          remote.url = "https://blog.waleedkhan.name/ocaml-file-extensions/";
+          remote = {
+            url = "https://blog.waleedkhan.name/ocaml-file-extensions/";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
           windowRules = [
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -59,7 +62,10 @@ in
         };
         "parsing-ocamllex-menhir" = {
           tags = [ "ocaml" "reference" "blogpost" ];
-          remote.url = "https://mukulrathi.com/create-your-own-programming-language/parsing-ocamllex-menhir/";
+          remote = {
+            url = "https://mukulrathi.com/create-your-own-programming-language/parsing-ocamllex-menhir/";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
           windowRules = [
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -72,6 +78,7 @@ in
           desc = "ocaml + ";
           remote = {
             url = "https://www.google.ru/";
+            browser = appCmdFull config.attributes.browser.default.traits;
             searchSuffix = "?q=ocaml+";
           };
         };

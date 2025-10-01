@@ -98,17 +98,24 @@ in
             local.path = "${wsRoot roots "github"}/wiedzmin/yasnippet-snippets";
             remote = {
               url = "https://github.com/wiedzmin/yasnippet-snippets/";
+              browser = appCmdFull config.attributes.browser.default.traits;
               jump = true;
               searchSuffix = "search?q=";
             };
           };
           "yasnippet/snippet-reference" = {
             desc = "Yasnippet documentation / snippets reference";
-            remote.url = "http://joaotavora.github.io/yasnippet/snippet-reference.html";
+            remote = {
+              url = "http://joaotavora.github.io/yasnippet/snippet-reference.html";
+              browser = appCmdFull config.attributes.browser.default.traits;
+            };
           };
           "yasnippet/snippet-development" = {
             desc = "Yasnippet documentation / snippets development";
-            remote.url = "http://joaotavora.github.io/yasnippet/snippet-development.html";
+            remote = {
+              url = "http://joaotavora.github.io/yasnippet/snippet-development.html";
+              browser = appCmdFull config.attributes.browser.default.traits;
+            };
           };
         } // optionalAttrs (cfg.snippets.backend == "tempel") {
         tempel = {
@@ -116,6 +123,7 @@ in
           local.path = "${wsRoot roots "github"}/wiedzmin/minad/tempel";
           remote = {
             url = "https://github.com/minad/tempel";
+            browser = appCmdFull config.attributes.browser.default.traits;
             jump = true;
             searchSuffix = "search?q=";
           };

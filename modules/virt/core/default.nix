@@ -95,15 +95,24 @@ in
         };
         "quickemu" = {
           desc = "Quickemu Github repo";
-          remote.url = "https://github.com/quickemu-project/quickemu";
+          remote = {
+            url = "https://github.com/quickemu-project/quickemu";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "quickemu/wiki/references" = {
           desc = "Quickemu Github wiki, references page";
-          remote.url = homePrefix user "https://github.com/quickemu-project/quickemu/wiki/08-References";
+          remote = {
+            url = homePrefix user "https://github.com/quickemu-project/quickemu/wiki/08-References";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "quickemu/wiki/advanced-config" = {
           desc = "Quickemu Github wiki, advanced configuration page";
-          remote.url = "https://github.com/quickemu-project/quickemu/wiki/05-Advanced-quickemu-configuration";
+          remote = {
+            url = "https://github.com/quickemu-project/quickemu/wiki/05-Advanced-quickemu-configuration";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
       };
     })

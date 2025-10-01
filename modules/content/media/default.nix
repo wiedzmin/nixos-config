@@ -337,7 +337,10 @@ in
       navigation.bookmarks.entries = {
         "mpv-keys" = {
           desc = "mpv default keybindings reference";
-          remote.url = "https://github.com/mpv-player/mpv/blob/master/etc/input.conf";
+          remote = {
+            url = "https://github.com/mpv-player/mpv/blob/master/etc/input.conf";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
           windowRules = [
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -348,7 +351,10 @@ in
         };
         "mpv-manual" = {
           desc = "mpv manual";
-          remote.url = "https://mpv.io/manual/";
+          remote = {
+            url = "https://mpv.io/manual/";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
           windowRules = [
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -361,6 +367,7 @@ in
           desc = "pdf + ";
           remote = {
             url = "https://www.google.ru/";
+            browser = appCmdFull config.attributes.browser.default.traits;
             searchSuffix = "?q=pdf+";
           };
         };

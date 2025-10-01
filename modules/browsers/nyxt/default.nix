@@ -170,11 +170,15 @@ in
       navigation.bookmarks.entries = {
         "nyxt" = mkGithubBookmark "atlas-engineer" "nyxt" roots // {
           tags = [ "nyxt" "repo" ];
+          remote.browser = appCmdFull config.attributes.browser.default.traits;
           transient = true;
         };
         "nyxt/discourse" = {
           tags = [ "nyxt" "forum" ];
-          remote = { url = "https://discourse.atlas.engineer/"; };
+          remote = {
+            url = "https://discourse.atlas.engineer/";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
       };
     })

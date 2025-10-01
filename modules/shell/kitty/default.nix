@@ -96,6 +96,7 @@ in
           desc = "Kitty VT documentation";
           remote = {
             url = "https://sw.kovidgoyal.net/kitty/";
+            browser = appCmdFull config.attributes.browser.default.traits;
             jump = true;
             searchSuffix = "search/?q=";
           };

@@ -140,6 +140,7 @@ in
           desc = "docker + ";
           remote = {
             url = "https://www.google.ru/";
+            browser = appCmdFull config.attributes.browser.default.traits;
             searchSuffix = "?q=docker+";
           };
         };
@@ -147,6 +148,7 @@ in
           desc = "Docker Hub";
           remote = {
             url = "https://hub.docker.com/";
+            browser = appCmdFull config.attributes.browser.default.traits;
             searchSuffix = "search/?q=";
           };
         };

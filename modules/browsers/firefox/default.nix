@@ -548,16 +548,24 @@ in
           desc = "Firefox addons";
           remote = {
             url = "https://addons.mozilla.org/en-US/firefox/";
+            browser = appCmdFull config.attributes.browser.default.traits;
             searchSuffix = "search/?cat=all&x=0&y=0&q=";
           };
         };
+      } // optionalString (cfg.isDefault) {
         "about/config" = {
           desc = "Firefox configuration options";
-          remote.url = "about:config";
+          remote = {
+            url = "about:config";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
         "about/memory" = {
           desc = "Firefox addons reference";
-          remote.url = "about:memory";
+          remote = {
+            url = "about:memory";
+            browser = appCmdFull config.attributes.browser.default.traits;
+          };
         };
       };
     })
