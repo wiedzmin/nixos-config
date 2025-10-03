@@ -10,4 +10,5 @@
   (setq hbmap:dir-user "~/.hyperb")
   (remove-hook 'hyrolo-edit-hook #'hyrolo-set-date)
   (remove-hook 'hyrolo-add-hook #'hyrolo-set-date)
+  (hkey-ace-window-setup)
   (hyperbole-mode 1))
