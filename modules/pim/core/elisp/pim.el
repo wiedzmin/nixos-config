@@ -1,6 +1,7 @@
 (use-package hyperbole
   :demand t
   :bind
+  ("M-o" . hkey-operate)
   (:map custom-org-map
         ("h g" . hyrolo-grep))
   :custom
