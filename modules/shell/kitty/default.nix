@@ -99,6 +99,11 @@ in
           jump = true;
           searchSuffix = "search/?q=";
         };
+        kitty-keyboard-protocol = {
+          desc = "Kitty keyboard protocal article";
+          url = "https://sw.kovidgoyal.net/kitty/keyboard-protocol/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+        };
       };
 
       home-manager.users."${user}" = {
