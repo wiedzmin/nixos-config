@@ -602,8 +602,7 @@ in
       };
       keyboard = {
         enable = true;
-        remappingTool = "xremap";
-        xremap.watch = true;
+        remappingTool = "xkeysnail";
       };
       mouse = {
         enable = true;
