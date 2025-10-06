@@ -1,10 +1,17 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
 let
   cfg = config.ext.networking.messengers;
   user = config.attributes.mainUser.name;
+  nixpkgs-qtwebengine-bin = import inputs.nixpkgs-qtwebengine-bin {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -47,7 +54,7 @@ in
       home-manager.users."${user}" = {
         # TODO: review `tdl` docs at https://docs.iyear.me/tdl/
         home.packages = with pkgs; [ tdesktop tdl ] ++
-          optionals (cfg.whatsapp.enable) [ whatsie ] ++
+          optionals (cfg.whatsapp.enable) [ nixpkgs-qtwebengine-bin.whatsie ] ++
           optionals (cfg.zoom.enable) [ zoom-us ] ++
           optionals (cfg.webex.enable) [ webex ];
       };

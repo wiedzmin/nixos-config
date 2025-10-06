@@ -117,6 +117,7 @@
     nixpkgs-last-unbroken.url = "github:nixos/nixpkgs/30e2e2857ba47844aa71991daa6ed1fc678bcbb7";
     nixpkgs-idafree-pinned.url = "github:nixos/nixpkgs/0196c0175e9191c474c26ab5548db27ef5d34b05";
     nixpkgs-qutebrowser-pinned.url = "github:nixos/nixpkgs/ee930f9755f58096ac6e8ca94a1887e0534e2d81";
+    nixpkgs-qtwebengine-bin.url = "github:nixos/nixpkgs/b599843bad24621dcaa5ab60dac98f9b0eb1cabe"; #  NOTE: to prevent recent qtwebengine local rebuilding
   };
 
   outputs = { self, unstable, ... }@inputs:

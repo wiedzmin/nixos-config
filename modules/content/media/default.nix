@@ -17,6 +17,13 @@ let
     };
     localSystem = { system = "x86_64-linux"; };
   };
+  nixpkgs-qtwebengine-bin = import inputs.nixpkgs-qtwebengine-bin {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -91,7 +98,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [ clipgrab freetube nixpkgs-last-unbroken.moc ncmpcpp ytfzf ];
+      environment.systemPackages = with pkgs; [ nixpkgs-qtwebengine-bin.clipgrab freetube nixpkgs-last-unbroken.moc ncmpcpp ytfzf ];
 
       home-manager.users."${user}" = {
         programs.mpv = {

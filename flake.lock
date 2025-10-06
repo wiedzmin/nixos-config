@@ -586,6 +586,22 @@
         "type": "github"
       }
     },
+    "nixpkgs-qtwebengine-bin": {
+      "locked": {
+        "lastModified": 1757347588,
+        "narHash": "sha256-tLdkkC6XnsY9EOZW9TlpesTclELy8W7lL2ClL+nma8o=",
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "b599843bad24621dcaa5ab60dac98f9b0eb1cabe",
+        "type": "github"
+      },
+      "original": {
+        "owner": "nixos",
+        "repo": "nixpkgs",
+        "rev": "b599843bad24621dcaa5ab60dac98f9b0eb1cabe",
+        "type": "github"
+      }
+    },
     "nixpkgs-qutebrowser-pinned": {
       "locked": {
         "lastModified": 1749794982,
@@ -708,6 +724,7 @@
         "nixpkgs-idafree-pinned": "nixpkgs-idafree-pinned",
         "nixpkgs-last-unbroken": "nixpkgs-last-unbroken",
         "nixpkgs-libreoffice": "nixpkgs-libreoffice",
+        "nixpkgs-qtwebengine-bin": "nixpkgs-qtwebengine-bin",
         "nixpkgs-qutebrowser-pinned": "nixpkgs-qutebrowser-pinned",
         "nur": "nur",
         "pass-zsh-completion": "pass-zsh-completion",
