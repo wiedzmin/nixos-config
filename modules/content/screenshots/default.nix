@@ -46,9 +46,11 @@ in
         message = "Must provide path to screenshots dir.";
       }];
 
-      home-manager.users."${user}" =
-        let
-          flameshot_config_text = lib.generators.toINI { } {
+      home-manager.users."${user}" = {
+        home.packages = with pkgs; [ ksnip shutter ];
+        services.flameshot = {
+          enable = true;
+          settings = {
             General = {
               disabledTrayIcon = true;
               drawColor = "#ff0000";
@@ -57,12 +59,6 @@ in
               savePath = cfg.baseDir;
             };
           };
-        in
-        {
-          services.flameshot.enable = true;
-          xdg.configFile."flameshot.ini".text = flameshot_config_text;
-          xdg.configFile."flameshot/flameshot.ini".text = flameshot_config_text;
-          home.packages = with pkgs; [ ksnip shutter ];
         };
       wmCommon.autostart.entries = [{ cmd = "flameshot"; }];
     })
