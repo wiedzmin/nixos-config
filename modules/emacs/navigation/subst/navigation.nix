@@ -10,4 +10,5 @@ in
   orgRoamRoot = config.pim.orgmode.org-roam.rootDir;
   emacsEpithetPath = inputs.emacs-epithet;
   emacsProjectHeaderlinePath = inputs.emacs-project-headerline;
+  emacsContextNavigatorPath = inputs.emacs-context-navigator;
 }

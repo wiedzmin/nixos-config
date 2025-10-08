@@ -106,6 +106,22 @@
         "type": "github"
       }
     },
+    "emacs-context-navigator": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1759947571,
+        "narHash": "sha256-WkHHZqA0SZ86GOonK90WXwwbwHQSGOr2AsDA/+DuGh8=",
+        "owner": "11111000000",
+        "repo": "context-navigator",
+        "rev": "0bc3828d41c2c6aa91b30baee78c34dcc7f434c0",
+        "type": "github"
+      },
+      "original": {
+        "owner": "11111000000",
+        "repo": "context-navigator",
+        "type": "github"
+      }
+    },
     "emacs-epithet": {
       "flake": false,
       "locked": {
@@ -703,6 +719,7 @@
         "emacs": "emacs",
         "emacs-combobulate": "emacs-combobulate",
         "emacs-consult-org-clock": "emacs-consult-org-clock",
+        "emacs-context-navigator": "emacs-context-navigator",
         "emacs-epithet": "emacs-epithet",
         "emacs-float-narrow-indirect": "emacs-float-narrow-indirect",
         "emacs-git-msg-prefix": "emacs-git-msg-prefix",
