@@ -53,6 +53,11 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ ripgrep ];
       };
+
+      dev.git.core.gitignore = ''
+        .context
+      '';
+
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.avy
         epkgs.ace-window

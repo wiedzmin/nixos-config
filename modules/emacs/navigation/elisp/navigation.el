@@ -145,6 +145,15 @@
         (alist-get ?\C-l avy-dispatch-alist) 'avy-action-clone-line)
   (avy-setup-default))
 
+(use-package context-navigator
+  :load-path "@emacsContextNavigatorPath@/lisp"
+  :custom
+  (context-navigator-global-key "C-c n")
+  (context-navigator-autoload t)
+  (context-navigator-autosave t)
+  :config
+  (context-navigator-mode 1))
+
 (use-package goto-addr
  :hook ((compilation-mode-hook . goto-address-mode)
         (prog-mode-hook . goto-address-prog-mode))

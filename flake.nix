@@ -79,6 +79,10 @@
       url = "github:yibie/float-narrow-indirect";
       flake = false;
     };
+    emacs-context-navigator = {
+      url = "github:11111000000/context-navigator";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {
