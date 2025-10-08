@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -6,6 +6,13 @@ let
   cfg = config.content.screenshots;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
   inherit (config.wmCommon) prefix;
 in
 {
@@ -50,6 +57,7 @@ in
         home.packages = with pkgs; [ ksnip shutter ];
         services.flameshot = {
           enable = true;
+          package = nixpkgs-last-unbroken.flameshot;
           settings = {
             General = {
               disabledTrayIcon = true;
@@ -85,12 +93,12 @@ in
         }
         {
           key = [ "Control" "Print" ];
-          cmd = "${pkgs.flameshot}/bin/flameshot full --path ${cfg.baseDir}";
+          cmd = "${nixpkgs-last-unbroken.flameshot}/bin/flameshot full --path ${cfg.baseDir}";
           mode = "root";
         }
         {
           key = [ prefix "Print" ];
-          cmd = "${pkgs.flameshot}/bin/flameshot gui";
+          cmd = "${nixpkgs-last-unbroken.flameshot}/bin/flameshot gui";
           mode = "root";
         }
       ];
