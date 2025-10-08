@@ -197,8 +197,8 @@ in
       };
     };
   };
-  attributes.downloadPath.browser = homePrefix user "Downloads";
-  attributes.downloadPath.telegram = "${config.attributes.downloadPath.browser}/Telegram Desktop";
+  attributes.download.path.browser = homePrefix user "Downloads";
+  attributes.download.path.telegram = "${config.attributes.download.path.browser}/Telegram Desktop";
   attributes.debug.useLocalGoBinaries = true;
 
   content = {

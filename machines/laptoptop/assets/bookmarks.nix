@@ -580,7 +580,7 @@ in
     "telegram/downloads" = {
       desc = "Telegram donloads path";
       tags = [ "telegram" ];
-      path = config.attributes.downloadPath.telegram;
+      path = config.attributes.download.path.telegram;
     };
     goodies = {
       path = homePrefix user "docs/org/roam/current_goodies.org";
