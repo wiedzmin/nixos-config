@@ -68,6 +68,27 @@ in
             };
           };
         };
+        xdg.configFile."toolbox/screenshots.json".text = builtins.toJSON {
+          title = "screenshots";
+          from = cfg.baseDir;
+          to = "";
+          unmatched = {
+            subdir = "";
+            skip = false;
+          };
+          rules = {
+            "screenshot-(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})_[0-9]{2}:[0-9]{2}:[0-9]{2}\\.png" = "{{.year}}/{{.month}}/{{.day}}";
+            "screenshot-(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})_[0-9]{2}-[0-9]{2}-[0-9]{2}\\.png" = "{{.year}}/{{.month}}/{{.day}}";
+            "screenshot-(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})_[0-9]{2}-[0-9]{2}-[0-9]{2}_[0-9]{1,3}\\.png" = "{{.year}}/{{.month}}/{{.day}}";
+            "(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})_[0-9]{2}:[0-9]{2}:[0-9]{2}_[0-9]+x[0-9]+_scrot\\.png" = "{{.year}}/{{.month}}/{{.day}}";
+            "(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})-[0-9]{6}_[0-9]+x[0-9]+_scrot\\.png" = "{{.year}}/{{.month}}/{{.day}}";
+            "(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})_[0-9]{2}-[0-9]{2}\\.png" = "{{.year}}/{{.month}}/{{.day}}";
+            "screenshot-(?P<day>[0-9]{2})-(?P<month>[0-9]{2})-(?P<year>[0-9]{4})-[0-9]{2}:[0-9]{2}:[0-9]{2}\\.png" = "{{.year}}/{{.month}}/{{.day}}";
+            "screenshot-[0-9]{2}:[0-9]{2}:[0-9]{2} (?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})\\.png" = "{{.year}}/{{.month}}/{{.day}}";
+            "screenshot-[0-9]{2}:[0-9]{2}:[0-9]{2}_(?P<year>[0-9]{4})-(?P<month>[0-9]{2})-(?P<day>[0-9]{2})\\.png" = "{{.year}}/{{.month}}/{{.day}}";
+          };
+        };
+      };
       wmCommon.autostart.entries = [{ cmd = "flameshot"; }];
     })
     (mkIf (cfg.enable && cfg.ordering.enable) {
@@ -77,7 +98,7 @@ in
         partOf = [ "graphical.target" ];
         serviceConfig = {
           Type = "oneshot";
-          ExecStart = "${nurpkgs.toolbox}/bin/screenshots --root ${cfg.baseDir}";
+          ExecStart = "${nurpkgs.toolbox}/bin/orderfiles --config ${xdgConfig user "/toolbox/screenshots.json"}";
           StandardOutput = "journal";
           StandardError = "journal";
         };
