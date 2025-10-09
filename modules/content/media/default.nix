@@ -10,6 +10,7 @@ let
   ID = config.attributes.mainUser.ID;
   inherit (config.wmCommon) prefix prefixAlt;
   yaml = pkgs.formats.yaml { };
+  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
     config = config.nixpkgs.config // {
       allowUnfree = true;
@@ -93,6 +94,16 @@ in
         default = true;
         description = "Whether to enable media-related bookmarks";
       };
+      downloads.ordering.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable sorting of downloaded content";
+      };
+      downloads.ordering.timespec = mkOption {
+        type = types.str;
+        default = "";
+        description = "Timestamp of service activation (in systemd format).";
+      };
     };
   };
 
@@ -148,6 +159,100 @@ in
         xdg.mimeApps.defaultApplications = mapMimesToApp config.attributes.mimetypes.video "mpv.desktop";
         programs.zsh.shellAliases = { yg = "${pkgs.you-get}/bin/you-get"; };
       };
+    })
+    (mkIf (cfg.enable && cfg.downloads.ordering.enable) {
+      attributes.download.sortingRules = {
+        "(?P<basename>.*)\\.HEIC" = "pics";
+        "(?P<basename>.*)\\.MOV" = "video";
+        "(?P<basename>.*)\\.MP4" = "video";
+        "(?P<basename>.*)\\.PDF" = "pdf";
+        "(?P<basename>.*)\\.cer" = "creds";
+        "(?P<basename>.*)\\.csv" = "csv";
+        "(?P<basename>.*)\\.doc" = "docs";
+        "(?P<basename>.*)\\.docx" = "docs";
+        "(?P<basename>.*)\\.epub" = "books";
+        "(?P<basename>.*)\\.gz" = "archives";
+        "(?P<basename>.*)\\.html" = "markup";
+        "(?P<basename>.*)\\.ics" = "cal";
+        "(?P<basename>.*)\\.jpeg" = "pics";
+        "(?P<basename>.*)\\.jpg" = "pics";
+        "(?P<basename>.*)\\.json" = "markup";
+        "(?P<basename>.*)\\.m4a" = "voice";
+        "(?P<basename>.*)\\.mov" = "video";
+        "(?P<basename>.*)\\.mp3" = "audio";
+        "(?P<basename>.*)\\.mp4" = "video";
+        "(?P<basename>.*)\\.odt" = "docs";
+        "(?P<basename>.*)\\.org" = "org";
+        "(?P<basename>.*)\\.pdf" = "pdf";
+        "(?P<basename>.*)\\.png" = "pics";
+        "(?P<basename>.*)\\.rtf" = "docs";
+        "(?P<basename>.*)\\.tar" = "archives";
+        "(?P<basename>.*)\\.tgz" = "archives";
+        "(?P<basename>.*)\\.torrent" = "torrent";
+        "(?P<basename>.*)\\.txt" = "texts";
+        "(?P<basename>.*)\\.webm" = "video";
+        "(?P<basename>.*)\\.webp" = "pics";
+        "(?P<basename>.*)\\.xlsx" = "docs";
+        "(?P<basename>.*)\\.xml" = "markup";
+        "(?P<basename>.*)\\.yaml" = "markup";
+        "(?P<basename>.*)\\.yml" = "markup";
+        "(?P<basename>.*)\\.zip" = "archives";
+        ".*cert.*" = "creds";
+        ".*org\\.chromium.*" = "chromium";
+        ".*record.*\\.wav" = "voice";
+        ".*royallib.*" = "books";
+      };
+      home-manager.users."${user}" =
+        let
+          downloadsBaseSettings = {
+            to = "";
+            unmatched = {
+              subdir = "unsorted";
+              skip = false;
+            };
+            rules = config.attributes.download.sortingRules;
+          };
+        in
+        {
+          xdg.configFile = {
+            "toolbox/downloads.json".text = builtins.toJSON (downloadsBaseSettings // {
+              title = "downloads";
+              from = config.attributes.download.path.browser;
+            });
+            "toolbox/telegram_downloads.json".text = builtins.toJSON (downloadsBaseSettings // {
+              title = "telegram downloads";
+              from = config.attributes.download.path.telegram;
+            });
+          };
+        };
+      systemd.user.services = builtins.listToAttrs (forEach [ "downloads" "telegram downloads" ] (title:
+        let
+          token = concatStringsSep "-" (splitString " " title);
+          confName = concatStringsSep "_" (splitString " " title);
+        in
+        {
+          name = "order-${token}";
+          value = {
+            description = "${lib.toSentenceCase title} ordering";
+            wantedBy = [ "graphical.target" ];
+            partOf = [ "graphical.target" ];
+            serviceConfig = {
+              Type = "oneshot";
+              Environment = [ "DEBUG_MODE=1" ];
+              ExecStart = "${nurpkgs.toolbox}/bin/orderfiles --config ${xdgConfig user "/toolbox/${confName}.json"}";
+              StandardOutput = "journal";
+              StandardError = "journal";
+            };
+          };
+        }));
+      systemd.user.timers = builtins.listToAttrs (forEach [ "downloads" "telegram downloads" ] (title:
+        let
+          token = concatStringsSep "-" (splitString " " title);
+        in
+        {
+          name = "order-${token}";
+          value = renderTimer "${lib.toSentenceCase title} ordering" "" "" cfg.downloads.ordering.timespec false "";
+        }));
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {

@@ -217,6 +217,10 @@ in
       };
       mpv.osc.enable = true;
       wm.enable = true;
+      downloads.ordering = {
+        enable = true;
+        timespec = "*-*-* 00:10:00";
+      };
     };
     misc = {
       enable = true;

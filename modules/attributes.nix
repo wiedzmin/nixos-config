@@ -70,6 +70,11 @@ with lib;
       default = "";
       description = "Downloads path";
     };
+    download.sortingRules = mkOption {
+      type = types.attrs;
+      default = { };
+      description = "Rules for sorting downloaded content";
+    };
     ebookreader.default.cmd = mkOption {
       description = "Default ebook reader command";
       type = types.str;
