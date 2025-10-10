@@ -112,6 +112,8 @@ in
       environment.systemPackages = with pkgs; [ nixpkgs-qtwebengine-bin.clipgrab freetube nixpkgs-last-unbroken.moc ncmpcpp ytfzf ];
 
       home-manager.users."${user}" = {
+        home.packages = with pkgs; [ cmus ];
+
         programs.mpv = {
           enable = true;
           scripts = with pkgs.mpvScripts; [ quality-menu ] ++ lib.optionals cfg.mpris.enable [ mpris ];
@@ -418,29 +420,31 @@ in
             "${pkgs.playerctl}/bin/playerctl --all-players position ${builtins.toString cfg.playback.deltaSeconds}-";
           mode = "root";
         }
+        # FIXME: split module in some way, primarily cmus and MPD (and maybe others in the future, if added)
+        # FIXME: actualize MPD setup
         {
           key = [ prefix "Control" "z" ];
-          cmd = "${pkgs.mpc_cli}/bin/mpc prev";
+          cmd = "${pkgs.cmus}/bin/cmus-remote --prev"; # was: "${pkgs.mpc_cli}/bin/mpc prev"
           mode = "root";
         }
         {
           key = [ prefix "Control" "x" ];
-          cmd = "${pkgs.mpc_cli}/bin/mpc play";
+          cmd = "${pkgs.cmus}/bin/cmus-remote --play"; # was: "${pkgs.mpc_cli}/bin/mpc play"
           mode = "root";
         }
         {
           key = [ prefix "Control" "c" ];
-          cmd = "${pkgs.mpc_cli}/bin/mpc toggle";
+          cmd = "${pkgs.cmus}/bin/cmus-remote --pause"; # was: "${pkgs.mpc_cli}/bin/mpc toggle"
           mode = "root";
         }
         {
           key = [ prefix "Control" "v" ];
-          cmd = "${pkgs.mpc_cli}/bin/mpc stop";
+          cmd = "${pkgs.cmus}/bin/cmus-remote --stop"; # was: "${pkgs.mpc_cli}/bin/mpc stop"
           mode = "root";
         }
         {
           key = [ prefix "Control" "b" ];
-          cmd = "${pkgs.mpc_cli}/bin/mpc next";
+          cmd = "${pkgs.cmus}/bin/cmus-remote --next"; # was: "${pkgs.mpc_cli}/bin/mpc next"
           mode = "root";
         }
       ];
@@ -480,6 +484,16 @@ in
         "camdata" = {
           desc = "Camera content workdir";
           path = homePrefix user "blobs/work/camdata";
+        };
+        "cmus-site" = {
+          desc = "cmus.github.io";
+          url = "https://cmus.github.io/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+        };
+        "cmus-wiki" = {
+          desc = "cmus github wiki";
+          url = "https://github.com/cmus/cmus/wiki/";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
         };
       };
     })
