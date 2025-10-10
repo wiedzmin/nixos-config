@@ -23,3 +23,9 @@
   "Show search results for token in question among all packages in `nixpkgs' local repo."
   (rg token "nix" nixpkgs-repo-root)
   (other-window 1))
+
+(defun nix/open-vt-nix-shell (token)
+  "Make `nix shell' command from delimited list of packages and open VT for it."
+  (let* ((packages (split-string token "|" t " "))
+         (clauses (mapconcat (lambda (s) (format "\"nixpkgs#%s\"" s)) packages " ")))
+    (open-vt (format "nix shell %s" clauses))))

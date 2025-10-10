@@ -47,3 +47,15 @@
 
 (put 'npkg-all-search 'bounds-of-thing-at-point
      'nixpkgs-all-search-thing-at-point)
+
+(defun nixpkgs-nix-shell-thing-at-point ()
+  "`thing-at-point' entity for opening terminal with requested packages provided by `nix shell'."
+  (save-excursion
+    (skip-chars-forward "[:alnum:]-:_/.#>|")
+    (skip-chars-backward "[:alnum:]-:_/.#>|")
+    (if (looking-at "nsp>\\([a-z0-9\-\:\/\.\_\|]+\\)")
+        (cons (+ (point) 4) (match-end 0))
+      nil)))
+
+(put 'npkg-nix-shell 'bounds-of-thing-at-point
+     'nixpkgs-nix-shell-thing-at-point)

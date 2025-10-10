@@ -22,4 +22,11 @@
       (let ((package (thing-at-point 'npkg-all)))
         (when package
           (ibut:label-set package)
-          (hact 'nix/list-all-packages package))))))
+          (hact 'nix/list-all-packages package))))
+
+    (defib custom/hypb/nix/nix-shell-terminal ()
+      "Opens terminal window, allowing to paste `nix shell' clause with desired package list."
+      (let ((packages (thing-at-point 'npkg-nix-shell)))
+        (when packages
+          (ibut:label-set packages)
+          (hact 'nix/open-vt-nix-shell packages))))))
