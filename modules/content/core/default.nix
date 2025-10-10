@@ -2,6 +2,13 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>archivemount|pbzip2|pigz|rar|unzrip
+# nsp>archivemount npkg#archivemount
+# nsp>pbzip2 npkg#pbzip2
+# nsp>pigz npkg#pigz
+# nsp>rar npkg#rar
+# nsp>unzrip npkg#unzrip
+
 let
   cfg = config.content.core;
   which-mime = pkgs.writeShellApplication {
@@ -34,7 +41,7 @@ in
       };
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ archivemount pbzip2 pigz rar unzrip which-mime ];
+        home.packages = with pkgs; [ which-mime ];
         home.activation.ensureMimeappsList = {
           after = [ ];
           before = [ "checkLinkTargets" ];

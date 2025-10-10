@@ -3,6 +3,11 @@ with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
 
+# nsp>bashate|gdu|shellcheck
+# nsp>gdu npkg#gdu
+# nsp>bashate npkg#bashate # linter
+# nsp>shellcheck npkg#shellcheck
+
 let
   cfg = config.shell.core;
   user = config.attributes.mainUser.name;
@@ -24,11 +29,6 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable shell commands queueing, using `pueue` machinery";
-      };
-      dev.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable shell-related development infra";
       };
       emacs.enable = mkOption {
         type = types.bool;
@@ -67,22 +67,11 @@ in
           enable = true;
           dbPath = configPrefix roots "modules/shell/core/assets/programs.sqlite";
         };
-        # NOTE: play with ydotool client/server arch and respective permissions
         home.packages = with pkgs; [
           perl # for plugins
-          bashate # linter
           dtach
-          ets
-          gdu
-          rtss
-          wmctrl
-          xdotool
-          ydotool
         ];
       };
-    })
-    (mkIf (cfg.enable && cfg.dev.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ checkbashisms shellcheck ]; };
     })
     (mkIf (cfg.enable && cfg.queueing.enable) {
       home-manager.users."${user}" = {
@@ -148,18 +137,22 @@ in
           matches = [
             {
               trigger = ":ptim";
-              replace = "ps -ef | fzf --header-lines=1 | tr -s ' ' | cut -d' ' -f2 | xargs ps -o pid,lstart,start,etime,etimes -p";
+              replace = "ps -ef | fzf --header-lines=1 | tr -s ' ' | cut -d' ' -f2 | xargs ps -o pid,lstart,start,etime,etimes -p"; # nsp>fzf
             }
             {
               trigger = ":ts";
-              replace = "$|$ | rtss";
+              replace = "$|$ | rtss"; # nsp>rtss npkg#rtss
+            }
+            {
+              trigger = ":ets";
+              replace = "ets '$|$'"; # nsp>ets npkg#ets
             }
           ];
         };
       };
     })
-    (mkIf (cfg.enable && cfg.dev.enable && cfg.emacs.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.bash-language-server ]; };
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.bash-language-server checkbashisms ]; };
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.detached
         epkgs.flycheck-checkbashisms

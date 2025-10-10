@@ -174,7 +174,7 @@ in
           matches = [
             {
               trigger = ":wdop";
-              replace = "warpd --list-options | xsel -ib";
+              replace = "warpd --list-options | xsel -ib"; # nsp>xsel
             }
           ];
         };

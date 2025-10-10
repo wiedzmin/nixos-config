@@ -2,6 +2,15 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>enca|ocamlPackages.cpdf|pdfchain|pdfcpu|pdfslicer|pdftk|unipicker
+# nsp>enca npkg#enca
+# nsp>ocamlPackages.cpdf npkg#ocamlPackages.cpdf
+# nsp>pdfchain npkg#pdfchain
+# nsp>pdfcpu npkg#pdfcpu
+# nsp>pdfslicer npkg#pdfslicer
+# nsp>pdftk npkg#pdftk
+# nsp>unipicker npkg#unipicker
+
 let
   cfg = config.paperworks;
   user = config.attributes.mainUser.name;
@@ -334,7 +343,6 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           cfg.docflow.libreoffice.package
-          unipicker
         ];
         xdg.mimeApps.defaultApplications =
           (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop")
@@ -365,13 +373,12 @@ in
     })
     (mkIf cfg.processors.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ enca imagemagick img2pdf ocamlPackages.cpdf pandoc pdfchain pdfcpu pdfslicer pdftk ];
         xdg.configFile = optionalAttrs (config.completion.expansions.enable) {
           "espanso/match/paperworks_processors.yml".source = yaml.generate "espanso-paperworks_processors.yml" {
             matches = [
               {
                 trigger = ":pmdpdf";
-                replace = "pandoc --self-contained -o {{namesansext}}.pdf {{inputfile.value}}.md";
+                replace = "pandoc --self-contained -o {{namesansext}}.pdf {{inputfile.value}}.md"; # nsp>pandoc npkg#pandoc
                 vars = [
                   {
                     name = "inputfile";
@@ -387,7 +394,7 @@ in
               }
               {
                 trigger = ":imp";
-                replace = "convert *{{wildcard.value}}* -auto-orient result.pdf";
+                replace = "convert *{{wildcard.value}}* -auto-orient result.pdf"; # nsp>imagemagick npkg#imagemagick
                 vars = [
                   {
                     name = "wildcard";
@@ -398,7 +405,7 @@ in
               }
               {
                 trigger = ":im2d";
-                replace = "img2pdf *{{wildcard.value}}* --output result.pdf";
+                replace = "img2pdf *{{wildcard.value}}* --output result.pdf"; # nsp>img2pdf npkg#img2pdf
                 vars = [
                   {
                     name = "wildcard";

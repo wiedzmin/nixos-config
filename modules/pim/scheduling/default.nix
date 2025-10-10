@@ -2,6 +2,10 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>davfs2|gcalcli
+# nsp>gcalcli npkg#gcalcli
+# nsp>davfs2 npkg#davfs2
+
 let
   cfg = config.pim.scheduling;
   user = config.attributes.mainUser.name;
@@ -47,11 +51,6 @@ in
   };
 
   config = mkMerge [
-    (mkIf cfg.enable {
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [ davfs2 gcalcli ];
-      };
-    })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.config = builtins.readFile ./elisp/scheduling.el;
     })

@@ -2,6 +2,15 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>gpg-tui|mkpasswd|paperkey|passphrase2pgp|senv|ssh-to-pgp
+# nsp>gpg-tui npkg#gpg-tui
+# nsp>mkpasswd npkg#mkpasswd
+# nsp>paperkey npkg#paperkey
+
+# nsp>passphrase2pgp npkg#passphrase2pgp
+# nsp>senv npkg#senv
+# nsp>ssh-to-pgp npkg#ssh-to-pgp
+
 let
   cfg = config.ext.security;
   user = config.attributes.mainUser.name;
@@ -57,7 +66,6 @@ in
       };
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ gpg-tui mkpasswd paperkey passphrase2pgp senv ssh-to-pgp ];
         programs.password-store = {
           enable = true;
           package = with pkgs; pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
@@ -142,16 +150,16 @@ in
           matches = [
             {
               trigger = ":gpk";
-              replace = "gpgconf --kill gpg-agent";
+              replace = "gpgconf --kill gpg-agent"; # nsp>gnupg
             }
             {
               trigger = ":gprec";
-              replace = "gpg --list-only --no-default-keyring --secret-keyring /dev/null";
+              replace = "gpg --list-only --no-default-keyring --secret-keyring /dev/null"; # nsp>gnupg
             }
             # TODO: play with "gpgconf --kill gpg-agent; # echo \"UPDATESTARTUPTTY\" | gpg-connect-agent > /dev/null 2>&1"
             {
               trigger = ":sslct";
-              replace = "openssl s_client -showcerts -servername {{server.value}} -connect {{server.value}}:443 </dev/null | openssl x509 -inform pem -noout -text";
+              replace = "openssl s_client -showcerts -servername {{server.value}} -connect {{server.value}}:443 </dev/null | openssl x509 -inform pem -noout -text"; # nsp>openssl
               vars = [
                 {
                   name = "server";
@@ -162,7 +170,7 @@ in
             }
             {
               trigger = ":sslcd";
-              replace = "openssl s_client -connect {{server.value}}:443 2>/dev/null | openssl x509 -dates -noout";
+              replace = "openssl s_client -connect {{server.value}}:443 2>/dev/null | openssl x509 -dates -noout"; # nsp>openssl
               vars = [
                 {
                   name = "server";
@@ -173,12 +181,6 @@ in
             }
           ];
         };
-      };
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          # NOTE: expansions deps
-          openssl
-        ];
       };
     })
   ];

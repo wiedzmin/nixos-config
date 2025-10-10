@@ -2,6 +2,17 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>ctop|dive|lazydocker|libcgroup
+# nsp>ctop npkg#ctop
+# nsp>dive npkg#dive
+# nsp>lazydocker npkg#lazydocker
+# nsp>libcgroup npkg#libcgroup
+# nsp>docker-slim|dockfmt|nsjail|skopeo
+# nsp>docker-slim npkg#docker-slim
+# nsp>dockfmt npkg#dockfmt
+# nsp>nsjail npkg#nsjail
+# nsp>skopeo npkg#skopeo
+
 let
   cfg = config.ext.virtualization.docker.core;
   user = config.attributes.mainUser.name;
@@ -14,11 +25,6 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable Docker core setup";
-      };
-      aux.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable Docker auxiliary packages";
       };
       storageDriver = mkOption {
         type = types.str;
@@ -72,13 +78,8 @@ in
       home-manager.users."${user}" = {
         # TODO: consider adding also `docker-compose-language-service` for compose
         home.packages = with pkgs; [
-          ctop
-          dive
           dlint
-          docker-compose
           hadolintd
-          lazydocker
-          libcgroup
           nodePackages.dockerfile-language-server-nodejs
         ];
         xdg.configFile."hadolint.yaml".text = builtins.toJSON {
@@ -94,20 +95,10 @@ in
           matches = [
             {
               trigger = ":dcr";
-              replace = "docker-compose up --detach --build && docker-compose restart $|$";
+              replace = "docker-compose up --detach --build && docker-compose restart $|$"; # nsp>docker-compose npkg#docker-compose
             }
           ];
         };
-      };
-    })
-    (mkIf (cfg.enable && cfg.aux.enable) {
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          docker-slim
-          dockfmt
-          nsjail
-          skopeo
-        ];
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

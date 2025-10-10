@@ -2,6 +2,11 @@
 { config, lib, pkgs, ... }:
 with lib;
 
+# TODO: integrate gmailctl into build/activation
+# nsp>gmvault|gmailctl
+# nsp>gmvault npkg#gmvault
+# nsp>gmailctl npkg#gmailctl
+
 let
   cfg = config.email;
   user = config.attributes.mainUser.name;
@@ -190,7 +195,6 @@ in
       }];
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ gmvault gmailctl ]; # TODO: integrate gmailctl into build/activation
         accounts.email = {
           accounts."${cfg.defaultAccountName}" = {
             inherit (cfg) realName;

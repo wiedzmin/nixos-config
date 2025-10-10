@@ -3,6 +3,10 @@ with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
 
+# nsp>gore|impl
+# nsp>gore npkg#gore
+# nsp>impl npkg#impl
+
 let
   cfg = config.dev.golang;
   user = config.attributes.mainUser.name;
@@ -66,7 +70,7 @@ in
         })
       ];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ delve nixpkgs-last-unbroken.gomacro gopls go ];
+        home.packages = with pkgs; [ delve go nixpkgs-last-unbroken.gomacro gopls gotools ];
         home.sessionPath = [ "${cfg.goPath}/bin" ];
       };
       dev.editorconfig.rules = {
@@ -79,16 +83,6 @@ in
       dev.misc.timeTracking.extensions.dev = { "go" = "coding:go"; };
 
       shell.prompts.starship.modulesConfiguration = { golang = { format = "[🐹 $version](bold cyan) "; }; };
-    })
-    (mkIf (cfg.enable && cfg.misc.enable) {
-      nixpkgs.config.packageOverrides = _: {
-        go-install-wrapper = pkgs.writeShellApplication {
-          name = "go-install-wrapper";
-          runtimeInputs = [ ];
-          text = "go install ./...";
-        };
-      };
-      home-manager.users."${user}" = { home.packages = with pkgs; [ go-install-wrapper gore gotools impl ]; };
     })
     (mkIf (cfg.enable && cfg.markers.root.enable) { dev.navigation.projects.markers.root = [ "go.mod" ]; })
     (mkIf (cfg.enable && cfg.emacs.enable) {

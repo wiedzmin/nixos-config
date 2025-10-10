@@ -2,6 +2,10 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# TODO: automate, refer to https://github.com/benjojo/ssh-key-confirmer
+# TODO: also add nix/redis-level registry of used keypairs and marry them to extraHosts infrastructure
+# nsp>ssh-key-confirmer npkg#ssh-key-confirmer
+
 let
   cfg = config.ext.networking.ssh;
   user = config.attributes.mainUser.name;
@@ -107,9 +111,6 @@ in
           '';
         };
         home.file = { ".ssh/id_rsa.pub".text = cfg.keypair.public; };
-        home.packages = with pkgs; [ ssh-key-confirmer ];
-        # TODO: automate, refer to https://github.com/benjojo/ssh-key-confirmer
-        # TODO: also add nix/redis-level registry of used keypairs and marry them to extraHosts infrastructure
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {

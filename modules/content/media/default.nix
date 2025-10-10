@@ -258,30 +258,25 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          android-file-transfer
-          ffmpeg-full
-          yt-dlp
-        ];
         xdg.configFile = {
           "espanso/match/content.yml".source = yaml.generate "espanso-content.yml"
             {
               matches = [
                 {
                   trigger = ":yt";
-                  replace = "yt-dlp \"$|$\"";
+                  replace = "yt-dlp \"$|$\""; # nsp>yt-dlp npkg#yt-dlp
                 }
                 {
                   trigger = ":4yt";
-                  replace = "yt-dlp \"$|$\" --merge-output-format mp4";
+                  replace = "yt-dlp \"$|$\" --merge-output-format mp4"; # nsp>yt-dlp npkg#yt-dlp
                 }
                 {
                   trigger = ":aft";
-                  replace = "android-file-transfer";
+                  replace = "android-file-transfer"; # nsp>android-file-transfer npkg#android-file-transfer
                 }
                 {
                   trigger = ":ffmc";
-                  replace = "cd ${cfg.ffmpeg.workdir} && ffmpeg -i {{inputfile.value}} -c:v copy -c:a copy -f mp4 {{namesansext.value}}.mp4 && mv {{inputfile.value}} ${cfg.ffmpeg.workdir}/done && echo \"file '${cfg.ffmpeg.workdir}/{{namesansext.value}}.mp4'\">> ${cfg.ffmpeg.workdir}/files.list";
+                  replace = "cd ${cfg.ffmpeg.workdir} && ffmpeg -i {{inputfile.value}} -c:v copy -c:a copy -f mp4 {{namesansext.value}}.mp4 && mv {{inputfile.value}} ${cfg.ffmpeg.workdir}/done && echo \"file '${cfg.ffmpeg.workdir}/{{namesansext.value}}.mp4'\">> ${cfg.ffmpeg.workdir}/files.list"; # nsp>ffmpeg-full npkg#ffmpeg-full
                   vars = [
                     {
                       name = "mtsfiles";
@@ -302,7 +297,8 @@ in
                 }
                 {
                   trigger = ":ffmg";
-                  replace = "cd ${cfg.ffmpeg.workdir} && ffmpeg -f concat -safe 0 -i files.list -c copy result.mp4"; # FIXME: consider parameterizing output filename in some way
+                  # FIXME: consider parameterizing output filename in some way
+                  replace = "cd ${cfg.ffmpeg.workdir} && ffmpeg -f concat -safe 0 -i files.list -c copy result.mp4"; # nsp>ffmpeg-full npkg#ffmpeg-full
                 }
               ];
             };

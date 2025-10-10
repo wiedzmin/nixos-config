@@ -2,6 +2,13 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>dupd|jdupes|rmlint|fpart|czkawka
+# nsp>dupd npkg#dupd
+# nsp>jdupes npkg#jdupes
+# nsp>rmlint npkg#rmlint
+# nsp>fpart npkg#fpart
+# nsp>czkawka npkg#czkawka
+
 let
   cfg = config.gc;
   user = config.attributes.mainUser.name;
@@ -38,11 +45,6 @@ in
         type = types.str;
         default = "";
         description = "Timestamp of service activation (in systemd format).";
-      };
-      fsDeduplication.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable FS deduplication tools.";
       };
     };
   };
@@ -88,9 +90,6 @@ in
       };
       systemd.user.timers."purge-temp-files" =
         renderTimer "Purge temporary files" "" "" cfg.expired.calendarTimespec false "";
-    })
-    (mkIf cfg.fsDeduplication.enable {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ dupd jdupes rmlint fpart czkawka ]; };
     })
   ];
 }

@@ -3,6 +3,12 @@ with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
 
+# nsp>nix-init|statix|nix-melt|flake-checker
+# nsp>nix-init npkg#nix-init
+# nsp>statix npkg#statix
+# nsp>nix-melt npkg#nix-melt
+# nsp>flake-checker npkg#flake-checker
+
 let
   cfg = config.ext.nix.core;
   user = config.attributes.mainUser.name;
@@ -144,13 +150,9 @@ in
         home.packages = with pkgs; [
           cargo /*for unpackaged Rust tools*/
           git-crypt /*is needed but not accessible under devenv for some reason*/
-          nix-doc-lookup
           nix-build-offline
-          nix-init
-          nix-melt
+          nix-doc-lookup
           rollback
-          statix
-          flake-checker
         ];
         home.sessionPath = [ ''''${XDG_DATA_HOME}/cargo/bin'' ];
       };
@@ -190,7 +192,7 @@ in
             }
             {
               trigger = ":npnew";
-              replace = "git log --pretty=oneline ORIG_HEAD..FETCH_HEAD | grep init | grep -v Merge";
+              replace = "git log --pretty=oneline ORIG_HEAD..FETCH_HEAD | grep init | grep -v Merge"; # nspr>git|gnugrep
             }
             {
               trigger = ":nscptree";
@@ -238,7 +240,7 @@ in
             }
             {
               trigger = ":nsfd";
-              replace = "fd $|$ /nix/store";
+              replace = "fd $|$ /nix/store"; # nsp>fd npkg#fd
             }
             {
               trigger = ":llv";
@@ -246,7 +248,7 @@ in
             }
             {
               trigger = ":slv";
-              replace = "grep -e '^  linuxPackages' /etc/nixpkgs/pkgs/top-level/all-packages.nix";
+              replace = "grep -e '^  linuxPackages' /etc/nixpkgs/pkgs/top-level/all-packages.nix"; # nsp>gnugrep npkg#gnugrep
             }
             {
               trigger = ":nwda";
@@ -266,19 +268,19 @@ in
             }
             {
               trigger = ":nwtt";
-              replace = "tree /nix/var/nix/{gcroots,profiles}";
+              replace = "tree /nix/var/nix/{gcroots,profiles}"; # nsp>tree npkg#tree
             }
             {
               trigger = ":nnd";
-              replace = "find . -name \"*.nix\" -exec nil diagnostics {} \\;";
+              replace = "find . -name \"*.nix\" -exec nil diagnostics {} \\;"; # nspr>findutils|nil
             }
             {
               trigger = ":nvdln";
-              replace = "nvd --color always list /run/booted-system /run/current-system";
+              replace = "nvd --color always list /run/booted-system /run/current-system"; # nsp>nvd npkg#nvd
             }
             {
               trigger = ":nvdlcu";
-              replace = "nvd --color always list {{profile1.value}} {{profile2.value}}";
+              replace = "nvd --color always list {{profile1.value}} {{profile2.value}}"; # nsp>nvd npkg#nvd
               vars = [
                 {
                   name = "profiles";
@@ -299,7 +301,7 @@ in
             }
             {
               trigger = ":nvdlcs";
-              replace = "nvd --color always list {{profile1.value}} {{profile2.value}}";
+              replace = "nvd --color always list {{profile1.value}} {{profile2.value}}"; # nsp>nvd npkg#nvd
               vars = [
                 {
                   name = "profiles";
@@ -320,11 +322,11 @@ in
             }
             {
               trigger = ":nvddn";
-              replace = "nvd --color always diff /run/booted-system /run/current-system";
+              replace = "nvd --color always diff /run/booted-system /run/current-system"; # nsp>nvd npkg#nvd
             }
             {
               trigger = ":nvddcu";
-              replace = "nvd --color always diff {{profile1.value}} {{profile2.value}}";
+              replace = "nvd --color always diff {{profile1.value}} {{profile2.value}}"; # nsp>nvd npkg#nvd
               vars = [
                 {
                   name = "profiles";
@@ -345,7 +347,7 @@ in
             }
             {
               trigger = ":nvddcs";
-              replace = "nvd --color always diff {{profile1.value}} {{profile2.value}}";
+              replace = "nvd --color always diff {{profile1.value}} {{profile2.value}}"; # nsp>nvd npkg#nvd
               vars = [
                 {
                   name = "profiles";
@@ -366,18 +368,6 @@ in
             }
           ];
         };
-      };
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          # NOTE: expansions deps
-          fd
-          findutils
-          git
-          nil
-          nix-prefetch-github
-          nvd
-          tree
-        ];
       };
     })
     (mkIf (cfg.enable && cfg.shell.enable) {

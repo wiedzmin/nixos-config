@@ -2,6 +2,10 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>cicero-tui|fontfor
+# nsp>cicero-tui npkg#cicero-tui
+# nsp>fontfor npkg#fontfor
+
 let
   cfg = config.appearance.fonts;
   user = config.attributes.mainUser.name;
@@ -76,7 +80,6 @@ in
         useXkbConfig = true;
       };
       i18n = { defaultLocale = cfg.locale; };
-      home-manager.users."${user}" = { home.packages = with pkgs; [ cicero-tui fontfor ]; };
     })
     (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
       navigation.bookmarks.entries = {

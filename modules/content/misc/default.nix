@@ -5,6 +5,13 @@ with lib;
 # npkg#clapgrep
 # npkg#pipet
 
+# nsp>recode|rep-grep|ren-find|mmv-go|ugrep
+# nsp>recode npkg#recode
+# nsp>rep-grep npkg#rep-grep
+# nsp>ren-find npkg#ren-find
+# nsp>mmv-go npkg#mmv-go
+# nsp>ugrep npkg#ugrep
+
 let
   cfg = config.content.misc;
   user = config.attributes.mainUser.name;
@@ -114,7 +121,6 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ recode rep-grep ren-find ]; # TODO: consider making some expansions/templates/whatever
         programs.aria2 = {
           enable = true;
           settings = {
@@ -133,7 +139,7 @@ in
           matches = [
             {
               trigger = ":fdelta";
-              replace = "fd -e {{fdregex.value}} | sad {{changefrom.value}} {{changeto.value}} | ${config.attributes.gitPager.cmd}";
+              replace = "fd -e {{fdregex.value}} | sad {{changefrom.value}} {{changeto.value}} | ${config.attributes.gitPager.cmd}"; # nsp>fd|sad
               vars = [
                 {
                   name = "fdregex";
@@ -154,7 +160,7 @@ in
             }
             {
               trigger = ":colinks";
-              replace = "xidel {{sourcefile.value}} --extract '//a/@href' --output-format {{outputformat.value}} > links.log";
+              replace = "xidel {{sourcefile.value}} --extract '//a/@href' --output-format {{outputformat.value}} > links.log"; # nsp>xidel
               vars = [
                 {
                   name = "sourcefile";
@@ -170,7 +176,7 @@ in
             }
             {
               trigger = ":ggr";
-              replace = "cat `rg --files | grep -e \"\\.json\" | fzf` | gron | grep {{searchterm.value}} | gron --ungron";
+              replace = "cat `rg --files | grep -e \"\\.json\" | fzf` | gron | grep {{searchterm.value}} | gron --ungron"; # nspr>gnugrep|gron|fzf|ripgrep
               vars = [
                 {
                   name = "searchterm";
@@ -181,7 +187,7 @@ in
             }
             {
               trigger = ":fsame";
-              replace = "find -L {{searchroot.value}} -samefile {{comparewith.value}}";
+              replace = "find -L {{searchroot.value}} -samefile {{comparewith.value}}"; # nsp>findutils
               vars = [
                 {
                   name = "searchroot";
@@ -197,7 +203,7 @@ in
             }
             {
               trigger = ":fdnew";
-              replace = "fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | fzf";
+              replace = "fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | fzf"; # nsp>fd|ripgrep|fzf
               vars = [
                 {
                   name = "changenewerthan";
@@ -208,7 +214,7 @@ in
             }
             {
               trigger = ":fdold";
-              replace = "fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | fzf";
+              replace = "fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | fzf"; # nsp>fd|ripgrep|fzf
               vars = [
                 {
                   name = "changeolderthan";
@@ -306,7 +312,7 @@ in
             }
             {
               trigger = ":mt";
-              replace = "monolith --isolate --base-url {{baseurl.value}} --output $|$";
+              replace = "monolith --isolate --base-url {{baseurl.value}} --output $|$"; # nsp>monolith
               vars = [
                 {
                   name = "baseurl";
@@ -317,7 +323,7 @@ in
             }
             {
               trigger = ":gp";
-              replace = "gpick";
+              replace = "gpick"; # nsp>gpick
             }
             {
               trigger = ":cdd";
@@ -332,7 +338,7 @@ in
             }
             {
               trigger = ":mli";
-              replace = "fd -e iso | fzf | tee /dev/tty | xargs -I '{}' sudo mount -o loop ./{} ${cfg.mount.iso}";
+              replace = "fd -e iso | fzf | tee /dev/tty | xargs -I '{}' sudo mount -o loop ./{} ${cfg.mount.iso}"; # nsp>fd|fzf
             }
             {
               trigger = ":uli";
@@ -340,7 +346,7 @@ in
             }
             {
               trigger = ":mde";
-              replace = "fd sd -p /dev -d 1 | fzf | tee /dev/tty | xargs -I '{}' sudo mount {} ${cfg.mount.external}";
+              replace = "fd sd -p /dev -d 1 | fzf | tee /dev/tty | xargs -I '{}' sudo mount {} ${cfg.mount.external}"; # nsp>fd|fzf
             }
             {
               trigger = ":ule";
@@ -348,21 +354,6 @@ in
             }
           ];
         };
-      };
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          # NOTE: expansions deps
-          fd
-          fzf
-          gnugrep
-          gpick
-          gron
-          monolith
-          ripgrep
-          sad
-          ugrep
-          xidel
-        ];
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

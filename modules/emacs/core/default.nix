@@ -371,7 +371,7 @@ in
         (fixmep "FIXME(${user}): ")
       '';
       home-manager.users."${user}" = {
-        home.packages = (with pkgs; [ drop-bookmarks drop-corrupted ispell nurpkgs.my_cookies ])
+        home.packages = (with pkgs; [ drop-bookmarks drop-corrupted ispell ])
           ++ [ emacsWithPkgs ]
           ++ optionals (cfg.emacsEverywhere.enable) (with pkgs; [
           xclip

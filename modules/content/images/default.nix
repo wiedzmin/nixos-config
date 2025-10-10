@@ -2,6 +2,10 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>exiv2|mediainfo|imagemagick
+# nsp>exiv2 npkg#exiv2
+# nsp>mediainfo npkg#mediainfo
+
 let
   cfg = config.content.images;
   user = config.attributes.mainUser.name;
@@ -31,12 +35,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          exiv2
-          mediainfo
-          imagemagick
-          vimiv-qt
-        ];
+        home.packages = with pkgs; [ vimiv-qt ];
         xdg.configFile."vimiv/keys.conf".text = toINIColon {
           GLOBAL = {
             "<colon>" = "command";
@@ -311,7 +310,7 @@ in
           matches = [
             {
               trigger = ":idim";
-              replace = "identify -verbose $|$";
+              replace = "identify -verbose $|$"; # nsp>imagemagick npkg#imagemagick
             }
           ];
         };

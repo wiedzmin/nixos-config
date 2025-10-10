@@ -2,6 +2,11 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>sq|sqlite|usql
+# nsp>sq npkg#sq
+# nsp>sqlite npkg#sqlite
+# nsp>usql npkg#usql
+
 let
   cfg = config.dbms.misc;
   user = config.attributes.mainUser.name;
@@ -9,11 +14,6 @@ in
 {
   options = {
     dbms.misc = {
-      enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable misc helper DBMS tools.";
-      };
       controlCenter.enable = mkOption {
         type = types.bool;
         default = false;
@@ -33,10 +33,7 @@ in
   };
 
   config = mkMerge [
-    (mkIf cfg.enable {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ sq sqlite usql ]; };
-    })
-    (mkIf (cfg.enable && cfg.controlCenter.enable) {
+    (mkIf (cfg.controlCenter.enable) {
       assertions = [
         {
           assertion = config.workstation.systemtraits.enable;

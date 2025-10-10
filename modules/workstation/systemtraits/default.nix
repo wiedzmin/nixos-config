@@ -2,6 +2,10 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>usbview|lsb-release
+# nsp>usbview npkg#usbview
+# nsp>lsb-release npkg#lsb-release
+
 let
   cfg = config.workstation.systemtraits;
   user = config.attributes.mainUser.name;
@@ -49,7 +53,7 @@ in
       systemd.services.redis-default.postStart = cfg.instructions;
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ nurpkgs.redis-tui usbview lsb-release nixpkgs-last-unbroken.tiny-rdm ] ++ config.attributes.transientPackages;
+        home.packages = with pkgs; [ nurpkgs.redis-tui nixpkgs-last-unbroken.tiny-rdm ] ++ config.attributes.transientPackages;
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {

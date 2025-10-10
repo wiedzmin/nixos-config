@@ -3,6 +3,11 @@ with lib;
 
 # npkg#somo
 
+# nsp>anydesk|ipinfo|socat
+# nsp>anydesk npkg#anydesk
+# nsp>ipinfo npkg#ipinfo
+# nsp>socat npkg#socat
+
 let
   cfg = config.ext.networking.core;
   user = config.attributes.mainUser.name;
@@ -63,9 +68,6 @@ in
         inherit (cfg) hostId nameservers;
       };
       users.users."${user}".extraGroups = [ "networkmanager" ];
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [ anydesk ipinfo socat ];
-      };
       wmCommon.modeBindings = {
         "network" = [ prefix "n" ];
       };

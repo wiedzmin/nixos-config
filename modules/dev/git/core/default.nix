@@ -149,11 +149,11 @@ in
           matches = [
             {
               trigger = ":gitB";
-              replace = "git branch -a | fzf | tr -d \"[:blank:]\" | tr -d '\\n' | xsel -ib";
+              replace = "git branch -a | fzf | tr -d \"[:blank:]\" | tr -d '\\n' | xsel -ib"; # nsp>git|fzf|xsel
             }
             {
               trigger = ":gs";
-              replace = "git show {{sha}}";
+              replace = "git show {{sha}}"; # nsp>git
               vars = [
                 {
                   name = "sha";

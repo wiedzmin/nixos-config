@@ -5,6 +5,21 @@ with lib;
 
 # <[debug linux]> - <consult-ripgrep "/home/alex3rd/workspace/repos/github.com/NixOS/nixpkgs/" "debug linux description">
 
+# nsp>jnettop|diffoscope|icdiff|patchutils|wiggle|xmldiff|pikchr|dfmt|fastmod|lnav|tagref|xh
+# nsp>jnettop npkg#jnettop
+# nsp>diffoscope npkg#diffoscope
+# nsp>icdiff npkg#icdiff
+# nsp>patchutils npkg#patchutils
+# nsp>wiggle npkg#wiggle
+# nsp>xmldiff npkg#xmldiff
+# nsp>pikchr npkg#pikchr
+# nsp>dfmt npkg#dfmt
+# nsp>fastmod npkg#fastmod
+# nsp>lnav npkg#lnav
+# nsp>tagref npkg#tagref
+# nsp>xh npkg#xh
+# nsp>just npkg#just
+
 let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
@@ -53,11 +68,6 @@ in
           "stackoverflow" = "site:stackoverflow";
         };
         description = "URL regexps to be considered dev-related";
-      };
-      patching.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable patching helper tools.";
       };
       diagrams.enable = mkOption {
         type = types.bool;
@@ -151,7 +161,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ JUST_CHOOSER = cfg.just.chooserCmd; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ code-maat nixpkgs-last-unbroken.comby dfmt fastmod nixpkgs-idafree-pinned.ida-free just lnav tagref xh ];
+        home.packages = with pkgs; [ code-maat nixpkgs-last-unbroken.comby nixpkgs-idafree-pinned.ida-free ];
       };
       pim.timetracking.rules =
         mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.traits.wmClass fallback.traits.wmClass ])
@@ -168,11 +178,8 @@ in
         "*.md" = { trim_trailing_whitespace = false; };
       };
     })
-    (mkIf (cfg.enable && cfg.patching.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ diffoscope icdiff patchutils wiggle xmldiff ]; };
-    })
     (mkIf (cfg.enable && cfg.diagrams.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ dot-language-server pikchr plantuml ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ dot-language-server plantuml ]; };
       services.plantuml-server = {
         inherit (cfg.diagrams.plantuml.server) enable;
         listenPort = cfg.diagrams.plantuml.server.port;
@@ -193,7 +200,6 @@ in
           package = pkgs.wireshark-qt;
         };
       };
-      home-manager.users."${user}" = { home.packages = with pkgs; [ jnettop ]; };
       users.extraUsers."${user}".extraGroups = [ "wireshark" ];
     })
     (mkIf (cfg.enable && cfg.tools.xserver.enable) {
@@ -333,7 +339,7 @@ in
             {
               # FIXME: investigate/debug relative paths usage (see below)
               trigger = ":sjar";
-              replace = "jar tf {{jarfilename.value}}";
+              replace = "jar tf {{jarfilename.value}}"; # nsp>temurin-bin npkg#temurin-bin
               vars = [
                 {
                   name = "files";
@@ -349,7 +355,7 @@ in
             }
             {
               trigger = ":gma";
-              replace = "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log";
+              replace = "git log --all --numstat --date=short --pretty=format:'--%h--%ad--%aN' --no-renames > maat.log"; # nsp>git npkg#git
             }
             {
               trigger = ":gdeb";
@@ -368,13 +374,6 @@ in
             }
           ];
         };
-      };
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          # NOTE: expansions deps
-          temurin-bin # error: adoptopenjdk has been removed as the upstream project is deprecated. Consider using `temurin-bin`
-          git
-        ];
       };
     })
     (mkIf (cfg.enable && config.navigation.bookmarks.enable) {

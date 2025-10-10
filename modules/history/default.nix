@@ -67,7 +67,6 @@ in
   config = mkMerge [
     (mkIf (cfg.shell.enable) {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ mmv-go ];
         programs.mcfly = optionalAttrs (cfg.shell.backend == "mcfly") {
           enable = true;
           enableZshIntegration = true;

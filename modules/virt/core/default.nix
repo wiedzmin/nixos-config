@@ -74,7 +74,7 @@ in
           matches = [
             {
               trigger = ":vdq";
-              replace = "qemu-img convert -f vdi -O qcow2 {{image_basename.value}}.vdi {{image_basename.value}}.qcow2";
+              replace = "qemu-img convert -f vdi -O qcow2 {{image_basename.value}}.vdi {{image_basename.value}}.qcow2"; # nsp>qemu npkg#qemu
               vars = [
                 {
                   name = "image_basename";

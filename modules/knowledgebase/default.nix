@@ -2,6 +2,8 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>freeplane npkg#freeplane
+
 let
   cfg = config.knowledgebase;
   user = config.attributes.mainUser.name;
@@ -20,14 +22,6 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable knowledge base facilities.";
-      };
-      secondBrain.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = ''
-          Whether to enable "second brain" functionality, such as various
-          information organizing tools, mindmaps implementations, etc.
-        '';
       };
       man.enable = mkOption {
         type = types.bool;
@@ -85,9 +79,6 @@ in
           man-pages
         ];
       };
-    })
-    (mkIf (cfg.enable && cfg.secondBrain.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ nixpkgs-last-unbroken.freeplane ]; };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [ epkgs.helpful ];
