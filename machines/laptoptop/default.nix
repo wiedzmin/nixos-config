@@ -1,6 +1,8 @@
 { config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
+# <[all nix shells]> - <rg "# nsp" "everything" "/home/alex3rd/workspace/repos/github.com/wiedzmin/nixos-config/">
+
 # <[editorconfig setup reference]> - <rg "editorconfig" "everything" "/home/alex3rd/workspace/repos/github.com/wiedzmin/nixos-config/">
 
 let
@@ -326,7 +328,6 @@ in
     };
     misc = {
       enable = true;
-      patching.enable = true;
       diagrams.enable = true;
       tools.xserver.enable = true;
       tools.misc.enable = true;
@@ -365,7 +366,6 @@ in
       enable = true;
       calendarTimespec = "*-*-* 23:30:00";
     };
-    fsDeduplication.enable = true;
   };
 
   ide.emacs = {
@@ -640,7 +640,6 @@ in
     bookmarks.enable = true;
     core = {
       enable = true;
-      dev.enable = true;
       queueing.enable = true;
       emacs.enable = true;
     };
@@ -666,7 +665,6 @@ in
 
   dbms = {
     misc = {
-      enable = true;
       controlCenter.enable = true;
     };
     mysql.enable = true;

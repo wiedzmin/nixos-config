@@ -4,6 +4,12 @@ with lib;
 
 # <[github backup]> - <consult-ripgrep "/home/alex3rd/workspace/repos/github.com/NixOS/nixpkgs/" "github backup description">
 
+# nsp>gitleaks|gitnuro|mgitstatus|sourcegit
+# nsp>gitleaks
+# nsp>gitnuro
+# nsp>mgitstatus
+# nsp>sourcegit
+
 let
   cfg = config.dev.git.misc;
   user = config.attributes.mainUser.name;
@@ -34,7 +40,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ gitleaks gitnuro mgitstatus difftastic unstable-future.sourcegit ];
+        home.packages = with pkgs; [ difftastic ];
       };
 
       dev.vcs.batch.commands = {

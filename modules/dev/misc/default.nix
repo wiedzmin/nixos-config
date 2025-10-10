@@ -5,6 +5,20 @@ with lib;
 
 # <[debug linux]> - <consult-ripgrep "/home/alex3rd/workspace/repos/github.com/NixOS/nixpkgs/" "debug linux description">
 
+# nsp>jnettop|diffoscope|icdiff|patchutils|wiggle|xmldiff|pikchr|dfmt|fastmod|lnav|tagref|xh
+# nsp>jnettop
+# nsp>diffoscope
+# nsp>icdiff
+# nsp>patchutils
+# nsp>wiggle
+# nsp>xmldiff
+# nsp>pikchr
+# nsp>dfmt
+# nsp>fastmod
+# nsp>lnav
+# nsp>tagref
+# nsp>xh
+
 let
   cfg = config.dev.misc;
   user = config.attributes.mainUser.name;
@@ -53,11 +67,6 @@ in
           "stackoverflow" = "site:stackoverflow";
         };
         description = "URL regexps to be considered dev-related";
-      };
-      patching.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable patching helper tools.";
       };
       diagrams.enable = mkOption {
         type = types.bool;
@@ -151,7 +160,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ JUST_CHOOSER = cfg.just.chooserCmd; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ code-maat nixpkgs-last-unbroken.comby dfmt fastmod nixpkgs-idafree-pinned.ida-free just lnav tagref xh ];
+        home.packages = with pkgs; [ code-maat nixpkgs-last-unbroken.comby nixpkgs-idafree-pinned.ida-free ];
       };
       pim.timetracking.rules =
         mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.traits.wmClass fallback.traits.wmClass ])
@@ -168,11 +177,8 @@ in
         "*.md" = { trim_trailing_whitespace = false; };
       };
     })
-    (mkIf (cfg.enable && cfg.patching.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ diffoscope icdiff patchutils wiggle xmldiff ]; };
-    })
     (mkIf (cfg.enable && cfg.diagrams.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ dot-language-server pikchr plantuml ]; };
+      home-manager.users."${user}" = { home.packages = with pkgs; [ dot-language-server plantuml ]; };
       services.plantuml-server = {
         inherit (cfg.diagrams.plantuml.server) enable;
         listenPort = cfg.diagrams.plantuml.server.port;
@@ -193,7 +199,6 @@ in
           package = pkgs.wireshark-qt;
         };
       };
-      home-manager.users."${user}" = { home.packages = with pkgs; [ jnettop ]; };
       users.extraUsers."${user}".extraGroups = [ "wireshark" ];
     })
     (mkIf (cfg.enable && cfg.tools.xserver.enable) {

@@ -54,7 +54,6 @@ in
       }];
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ ksnip shutter ];
         services.flameshot = {
           enable = true;
           package = nixpkgs-last-unbroken.flameshot;

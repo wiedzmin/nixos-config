@@ -2,6 +2,18 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>ctop|dive|docker-compose|lazydocker|libcgroup
+# nsp>ctop
+# nsp>dive
+# nsp>docker-compose
+# nsp>lazydocker
+# nsp>libcgroup
+# nsp>docker-slim|dockfmt|nsjail|skopeo
+# nsp>docker-slim
+# nsp>dockfmt
+# nsp>nsjail
+# nsp>skopeo
+
 let
   cfg = config.ext.virtualization.docker.core;
   user = config.attributes.mainUser.name;
@@ -14,11 +26,6 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable Docker core setup";
-      };
-      aux.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable Docker auxiliary packages";
       };
       storageDriver = mkOption {
         type = types.str;
@@ -72,13 +79,8 @@ in
       home-manager.users."${user}" = {
         # TODO: consider adding also `docker-compose-language-service` for compose
         home.packages = with pkgs; [
-          ctop
-          dive
           dlint
-          docker-compose
           hadolintd
-          lazydocker
-          libcgroup
           nodePackages.dockerfile-language-server-nodejs
         ];
         xdg.configFile."hadolint.yaml".text = builtins.toJSON {
@@ -98,16 +100,6 @@ in
             }
           ];
         };
-      };
-    })
-    (mkIf (cfg.enable && cfg.aux.enable) {
-      home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          docker-slim
-          dockfmt
-          nsjail
-          skopeo
-        ];
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {

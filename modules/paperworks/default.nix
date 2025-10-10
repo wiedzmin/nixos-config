@@ -2,6 +2,17 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>enca|img2pdf|ocamlPackages.cpdf|pandoc|pdfchain|pdfcpu|pdfslicer|pdftk|unipicker
+# nsp>enca
+# nsp>img2pdf
+# nsp>ocamlPackages.cpdf
+# nsp>pandoc
+# nsp>pdfchain
+# nsp>pdfcpu
+# nsp>pdfslicer
+# nsp>pdftk
+# nsp>unipicker
+
 let
   cfg = config.paperworks;
   user = config.attributes.mainUser.name;
@@ -334,7 +345,6 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
           cfg.docflow.libreoffice.package
-          unipicker
         ];
         xdg.mimeApps.defaultApplications =
           (mapMimesToApp config.attributes.mimetypes.office.docs "writer.desktop")
@@ -365,7 +375,6 @@ in
     })
     (mkIf cfg.processors.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ enca imagemagick img2pdf ocamlPackages.cpdf pandoc pdfchain pdfcpu pdfslicer pdftk ];
         xdg.configFile = optionalAttrs (config.completion.expansions.enable) {
           "espanso/match/paperworks_processors.yml".source = yaml.generate "espanso-paperworks_processors.yml" {
             matches = [

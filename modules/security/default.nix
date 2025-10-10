@@ -2,6 +2,14 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>gpg-tui|mkpasswd|paperkey|passphrase2pgp|senv|ssh-to-pgp
+# nsp>gpg-tui
+# nsp>mkpasswd
+# nsp>paperkey
+# nsp>passphrase2pgp
+# nsp>senv
+# nsp>ssh-to-pgp
+
 let
   cfg = config.ext.security;
   user = config.attributes.mainUser.name;
@@ -57,7 +65,6 @@ in
       };
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ gpg-tui mkpasswd paperkey passphrase2pgp senv ssh-to-pgp ];
         programs.password-store = {
           enable = true;
           package = with pkgs; pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);

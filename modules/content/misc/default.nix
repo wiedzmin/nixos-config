@@ -5,6 +5,15 @@ with lib;
 # npkg#clapgrep
 # npkg#pipet
 
+# nsp>recode|rep-grep|ren-find|mmv-go|gpick|monolith|xidel
+# nsp>recode
+# nsp>rep-grep
+# nsp>ren-find
+# nsp>mmv-go
+# nsp>gpick
+# nsp>monolith
+# nsp>xidel
+
 let
   cfg = config.content.misc;
   user = config.attributes.mainUser.name;
@@ -114,7 +123,6 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ recode rep-grep ren-find ]; # TODO: consider making some expansions/templates/whatever
         programs.aria2 = {
           enable = true;
           settings = {
@@ -355,13 +363,10 @@ in
           fd
           fzf
           gnugrep
-          gpick
           gron
-          monolith
           ripgrep
           sad
           ugrep
-          xidel
         ];
       };
     })

@@ -3,6 +3,12 @@ with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
 
+# nsp>nix-init|statix|nix-melt|flake-checker
+# nsp>nix-init
+# nsp>statix
+# nsp>nix-melt
+# nsp>flake-checker
+
 let
   cfg = config.ext.nix.core;
   user = config.attributes.mainUser.name;
@@ -144,13 +150,9 @@ in
         home.packages = with pkgs; [
           cargo /*for unpackaged Rust tools*/
           git-crypt /*is needed but not accessible under devenv for some reason*/
-          nix-doc-lookup
           nix-build-offline
-          nix-init
-          nix-melt
+          nix-doc-lookup
           rollback
-          statix
-          flake-checker
         ];
         home.sessionPath = [ ''''${XDG_DATA_HOME}/cargo/bin'' ];
       };

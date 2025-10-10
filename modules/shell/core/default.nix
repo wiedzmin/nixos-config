@@ -3,6 +3,13 @@ with pkgs.unstable.commonutils;
 with config.navigation.bookmarks.workspaces;
 with lib;
 
+# nsp>bashate|ets|gdu|rtss|shellcheck
+# nsp>ets
+# nsp>gdu
+# nsp>rtss
+# nsp>bashate # linter
+# nsp>shellcheck
+
 let
   cfg = config.shell.core;
   user = config.attributes.mainUser.name;
@@ -24,11 +31,6 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable shell commands queueing, using `pueue` machinery";
-      };
-      dev.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable shell-related development infra";
       };
       emacs.enable = mkOption {
         type = types.bool;
@@ -67,22 +69,11 @@ in
           enable = true;
           dbPath = configPrefix roots "modules/shell/core/assets/programs.sqlite";
         };
-        # NOTE: play with ydotool client/server arch and respective permissions
         home.packages = with pkgs; [
           perl # for plugins
-          bashate # linter
           dtach
-          ets
-          gdu
-          rtss
-          wmctrl
-          xdotool
-          ydotool
         ];
       };
-    })
-    (mkIf (cfg.enable && cfg.dev.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ checkbashisms shellcheck ]; };
     })
     (mkIf (cfg.enable && cfg.queueing.enable) {
       home-manager.users."${user}" = {
@@ -158,8 +149,8 @@ in
         };
       };
     })
-    (mkIf (cfg.enable && cfg.dev.enable && cfg.emacs.enable) {
-      home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.bash-language-server ]; };
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      home-manager.users."${user}" = { home.packages = with pkgs; [ nodePackages.bash-language-server checkbashisms ]; };
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.detached
         epkgs.flycheck-checkbashisms

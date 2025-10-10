@@ -2,6 +2,12 @@
 with pkgs.unstable.commonutils;
 with lib;
 
+# nsp>btop|fastfetch|inotify-info|sysz
+# nsp>btop
+# nsp>fastfetch
+# nsp>inotify-info
+# nsp>sysz
+
 # npkg#ulauncher
 
 let
@@ -126,7 +132,6 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ btop fastfetch inotify-info sysz ];
         services.udiskie = {
           enable = true;
           automount = true;

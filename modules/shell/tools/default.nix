@@ -6,6 +6,25 @@ with lib;
 # <[ssh shell]> - <consult-ripgrep "/home/alex3rd/workspace/repos/github.com/NixOS/nixpkgs/" "ssh shell description">
 # npkg#x4
 
+# nsp>broot|each|gron|htmlq|jc|jj|jp|jless|jqp|lfs|miller|moreutils|pipe-rename|sad|sd|up|pup
+# nsp>broot
+# nsp>each
+# nsp>gron
+# nsp>htmlq
+# nsp>jc
+# nsp>jj
+# nsp>jp
+# nsp>jless
+# nsp>jqp
+# nsp>lfs
+# nsp>miller
+# nsp>moreutils # NOTE: see https://joeyh.name/code/moreutils/ for reference
+# nsp>pipe-rename
+# nsp>sad # TODO: consider creating shell aliases
+# nsp>sd # TODO: play with it in streaming use-cases
+# nsp>up
+# nsp>pup
+
 let
   cfg = config.shell.tools;
   user = config.attributes.mainUser.name;
@@ -29,26 +48,6 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        # TODO: play with automation around these tools
-        home.packages = with pkgs; [
-          broot
-          each
-          gron
-          htmlq
-          jc
-          jj
-          jp
-          jless
-          jqp
-          lfs
-          miller
-          moreutils # NOTE: see https://joeyh.name/code/moreutils/ for reference
-          pipe-rename
-          sad # TODO: consider creating shell aliases
-          sd # TODO: play with it in streaming use-cases
-          up
-          pup
-        ];
         programs = {
           ripgrep-all = {
             enable = true;

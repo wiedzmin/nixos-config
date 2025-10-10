@@ -4,6 +4,11 @@ with lib;
 
 # npkg#mpv
 
+# nsp>android-file-transfer|ffmpeg-full|yt-dlp
+# nsp>android-file-transfer
+# nsp>ffmpeg-full
+# nsp>yt-dlp
+
 let
   cfg = config.content.media;
   user = config.attributes.mainUser.name;
@@ -258,11 +263,6 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [
-          android-file-transfer
-          ffmpeg-full
-          yt-dlp
-        ];
         xdg.configFile = {
           "espanso/match/content.yml".source = yaml.generate "espanso-content.yml"
             {
