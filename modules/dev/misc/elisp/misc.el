@@ -49,6 +49,12 @@
         ((f-directory? (format "%s/%s" path ".hg")) (vc-dir path))
         (t (dired path))))
 
+; FIXME: unwire from `kitty'
+(defun open-vt (cmd &optional path)
+  (kill-new (format "%s" cmd))
+  (let ((cwd (if path path "~")))
+    (apply #'start-process "kitty" nil (list "kitty" "-1" "--listen-on" "tcp:localhost:12345" "--working-directory" cwd))))
+
 (use-package 0x0
   :bind
   (:map custom-webpaste-map
