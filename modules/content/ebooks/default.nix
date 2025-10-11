@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -29,6 +29,11 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable `pdf-tools` emacs-native reader";
+      };
+      emacs.org-noter.searchPath = mkOption {
+        type = types.str;
+        default = "${config.pim.orgmode.rootDir}/annot";
+        description = "Annotation data search path for `org-noter`";
       };
       wm.enable = mkOption {
         type = types.bool;
@@ -87,12 +92,14 @@ in
       shell.core.variables = [{ TB_EBOOKS_READER_COMMAND = config.attributes.ebookreader.default.cmd; global = true; }];
     })
     (mkIf (cfg.enable && cfg.emacs.pdf-tools.enable) {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.pdf-tools ];
-      ide.emacs.core.config = ''
-        (use-package pdf-tools
-          :config
-          (pdf-loader-install))
-      '';
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.pdf-tools
+        epkgs.nov
+        epkgs.org-noter
+        epkgs.org-pdftools
+        epkgs.org-noter-pdftools
+      ];
+      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst/ebooks.nix ] [ ./elisp/ebooks.el ]);
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = [{
