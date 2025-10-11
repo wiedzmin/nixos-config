@@ -362,7 +362,7 @@ in
       # TODO: try https://github.com/trizen/youtube-viewer
       home-manager.users."${user}" = {
         # NOTE: default quotas seems inappropriate to use them freely
-        home.packages = with pkgs; [ mps-youtube minitube smtube youtube-dl ];
+        home.packages = with pkgs; [ yewtube minitube smtube youtube-dl ];
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {

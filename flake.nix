@@ -158,8 +158,6 @@
                     };
                     patches = [ ./modules/workstation/lockscreen/patches/i3lock-color-pass-layout-switching.patch ];
                   });
-                  mps-youtube = old.mps-youtube.overrideAttrs
-                    (_: { patches = [ ./modules/content/media/patches/0001-fix-1134.patch ]; });
                   tabnine = old.tabnine.overrideAttrs (_: {
                     installPhase = ''
                       mkdir -p $out/bin
