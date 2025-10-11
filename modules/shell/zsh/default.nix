@@ -126,7 +126,9 @@ in
             # NOTE: zsh-specific, keep, do not bind to custom module(s)
             HISTFILE = "${dataHome}/.histfile";
             LESSHISTFILE = "${dataHome}/.lesshst";
-          };
+            YSU_IGNORED_ALIASES = [ "g" "ll" ];
+            YSU_MODE = "ALL";
+          } // (foldl (a: b: a // (envVars b)) { } config.shell.core.variables);
           shellAliases = {
             cat = "${pkgs.bat}/bin/bat"; # use --plain in case of emergency
             catb = "${pkgs.bat}/bin/bat -A";
@@ -181,6 +183,7 @@ in
             }
           ];
         };
+        programs.fzf.enableZshIntegration = true;
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {

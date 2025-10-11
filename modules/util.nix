@@ -172,6 +172,8 @@ rec {
       else ''${nurpkgs.toolbox}/bin/${builtins.head meta.cmd} ${lib.concatStringsSep " " (lib.tail meta.cmd)}'';
     debug = cfg.attributes.debug.useLocalGoBinaries || (builtins.hasAttr "debug" meta) && meta.debug;
   };
+  # FIXME: clarify th semantics of "global", see implementation below
+  envVars = lib.filterAttrs (name: _: !builtins.elem name [ "global" "emacs" ]);
   # }}}
   # {{{ Data.Attributes
   maybeAttrIsBool = name: set: (builtins.hasAttr name set) && set."${name}"; # FIXME: enforce type safety

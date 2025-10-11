@@ -6,8 +6,6 @@ with lib;
 let
   cfg = config.shell.core;
   user = config.attributes.mainUser.name;
-  serviceAttrsNames = [ "global" "emacs" ]; # FIXME: clarify th semantics of "global", see implementation below
-  envVars = filterAttrs (name: _: !builtins.elem name serviceAttrsNames);
 in
 {
   options = {
@@ -64,16 +62,7 @@ in
           '';
         };
         home.sessionVariables = foldl (a: b: a // (envVars b)) { } cfg.variables;
-        programs.zsh.sessionVariables = {
-          YSU_IGNORED_ALIASES = [ "g" "ll" ];
-          YSU_MODE = "ALL";
-        } // (foldl (a: b: a // (envVars b)) { } cfg.variables);
-        programs.bash.sessionVariables = foldl (a: b: a // (envVars b)) { } cfg.variables;
-        programs.fzf = {
-          enable = true;
-          enableZshIntegration = true;
-          enableFishIntegration = true;
-        };
+        programs.fzf.enable = true;
         programs.command-not-found = {
           enable = true;
           dbPath = configPrefix roots "modules/shell/core/assets/programs.sqlite";
