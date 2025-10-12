@@ -1,8 +1,3 @@
-(use-package expreg
-  :bind
-  ("C-," . expreg-expand)
-  ("C-." . expreg-contract))
-
 (use-package treesit-fold
   :bind
   (:map mode-specific-map

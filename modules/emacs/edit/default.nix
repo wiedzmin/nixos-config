@@ -47,16 +47,32 @@ in
         epkgs.wgrep
         epkgs.whole-line-or-region
         epkgs.ws-butler
-      ] ++ optionals (!config.ide.emacs.core.treesitter.enable) [
+      ] ++ optionals (!config.ide.emacs.core.treesitter.enable && !config.pim.core.emacs.automation.enable) [
         epkgs.expand-region
-      ] ++ optionals (config.ide.emacs.core.treesitter.enable) [
+      ] ++ optionals (config.ide.emacs.core.treesitter.enable && !config.pim.core.emacs.automation.enable) [
         epkgs.expreg
+      ] ++ optionals (config.ide.emacs.core.treesitter.enable) [
         epkgs.treesit-fold
       ];
       ide.emacs.core.config =
         readSubstituted config inputs pkgs [ ./subst/edit.nix ] [ ./elisp/edit.el ] +
         optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/non-ts.el) +
-        optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/ts.el);
+        optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/ts.el) +
+        optionalString (!config.ide.emacs.core.treesitter.enable && !config.pim.core.emacs.automation.enable) ''
+          (use-package expand-region
+            :bind
+            ("C-," . er/expand-region)
+            ("C-." . er/contract-region)
+            :config
+            (add-to-list 'expand-region-exclude-text-mode-expansions 'org-mode)
+            (add-to-list 'expand-region-exclude-text-mode-expansions 'LaTeX-mode))
+        '' +
+        optionalString (config.ide.emacs.core.treesitter.enable && !config.pim.core.emacs.automation.enable) ''
+          (use-package expreg
+            :bind
+            ("C-," . expreg-expand)
+            ("C-." . expreg-contract))
+        '';
       ide.emacs.core.customKeymaps = {
         "misc-editing-map" = "<f5>";
         "token-editing-map" = "C-z";
