@@ -24,8 +24,18 @@
   (rg token "nix" nixpkgs-repo-root)
   (other-window 1))
 
-(defun nix/open-vt-nix-shell (token)
-  "Make `nix shell' command from delimited list of packages and open VT for it."
-  (let* ((packages (split-string token "|" t " "))
+(defun nix/open-vt-nix-shell (token &optional use-cwd repo-root)
+  "Make `nix shell' command from delimited list of packages and open VT for it, with
+optional working directory setting."
+  (let* ((tokens (split-string token "/" t " "))
+         (packages (split-string (car tokens) "|" t " "))
+         (path-parts (cadr tokens))
+         (path (cond (use-cwd default-directory)
+                     (repo-root (custom/vcs-root-current))
+                     (path-parts
+                      (format "/%s"
+                              (mapconcat 'identity
+                                         (cdr (split-string test-nsp-val-path "/" t " ")) "/")))
+                     (t (getenv "HOME"))))
          (clauses (mapconcat (lambda (s) (format "\"nixpkgs#%s\"" s)) packages " ")))
-    (open-vt (format "nix shell %s" clauses))))
+    (open-vt (format "nix shell %s" clauses) path)))

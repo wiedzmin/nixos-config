@@ -59,3 +59,27 @@
 
 (put 'npkg-nix-shell 'bounds-of-thing-at-point
      'nixpkgs-nix-shell-thing-at-point)
+
+(defun nixpkgs-nix-shell-cwd-thing-at-point ()
+  "`thing-at-point' entity for opening terminal with requested packages provided by `nix shell', using current directory."
+  (save-excursion
+    (skip-chars-forward "[:alnum:]-:_/.#>|")
+    (skip-chars-backward "[:alnum:]-:_/.#>|")
+    (if (looking-at "nspc>\\([a-z0-9\-\:\/\.\_\|]+\\)")
+        (cons (+ (point) 5) (match-end 0))
+      nil)))
+
+(put 'npkg-nix-shell-cwd 'bounds-of-thing-at-point
+     'nixpkgs-nix-shell-cwd-thing-at-point)
+
+(defun nixpkgs-nix-shell-repo-thing-at-point ()
+  "`thing-at-point' entity for opening terminal with requested packages provided by `nix shell', using repo root."
+  (save-excursion
+    (skip-chars-forward "[:alnum:]-:_/.#>|")
+    (skip-chars-backward "[:alnum:]-:_/.#>|")
+    (if (looking-at "nspr>\\([a-z0-9\-\:\/\.\_\|]+\\)")
+        (cons (+ (point) 5) (match-end 0))
+      nil)))
+
+(put 'npkg-nix-shell-repo 'bounds-of-thing-at-point
+     'nixpkgs-nix-shell-repo-thing-at-point)

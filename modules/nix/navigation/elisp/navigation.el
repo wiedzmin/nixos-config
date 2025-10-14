@@ -29,4 +29,18 @@
       (let ((packages (thing-at-point 'npkg-nix-shell)))
         (when packages
           (ibut:label-set packages)
-          (hact 'nix/open-vt-nix-shell packages))))))
+          (hact 'nix/open-vt-nix-shell packages))))
+
+    (defib custom/hypb/nix/nix-shell-cwd-terminal ()
+      "Opens terminal window, allowing to paste `nix shell' clause with desired package list, using current directory."
+      (let ((packages (thing-at-point 'npkg-nix-shell-cwd)))
+        (when packages
+          (ibut:label-set packages)
+          (hact 'nix/open-vt-nix-shell packages t))))
+
+    (defib custom/hypb/nix/nix-shell-repo-terminal ()
+      "Opens terminal window, allowing to paste `nix shell' clause with desired package list, using repo root path."
+      (let ((packages (thing-at-point 'npkg-nix-shell-repo)))
+        (when packages
+          (ibut:label-set packages)
+          (hact 'nix/open-vt-nix-shell packages nil t))))))
