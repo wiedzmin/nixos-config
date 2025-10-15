@@ -2,13 +2,16 @@
 (require 'vc)
 (require 's)
 
+(defun custom/vcs-root-current ()
+  (let ((current-file (buffer-file-name)))
+    (expand-file-name (vc-call-backend (vc-responsible-backend current-file) 'root current-file))))
+
 (defun custom/kill-vc-current-buffer-file-path (&optional absolute)
   (interactive "P")
-  (let* ((current-file (buffer-file-name))
-         (vcs-root (expand-file-name (vc-call-backend (vc-responsible-backend current-file) 'root current-file))))
+  (let ((current-file (buffer-file-name)))
     (kill-new (if absolute
                   current-file
-                (s-chop-prefix vcs-root current-file)))))
+                (s-chop-prefix (custom/vcs-root-current) current-file)))))
 
 (defun custom/dired-open-in-eww ()
   (interactive)
