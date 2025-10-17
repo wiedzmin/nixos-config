@@ -40,6 +40,11 @@ in
         description = "Tempel templates contents file path";
         default = homePrefix user ".config/emacs/templates"; # TODO: search/use more specialized solution(s)
       };
+      yasnippet.snippetsPaths = mkOption {
+        type = types.listOf types.str;
+        description = "Yasnippet snippets directories";
+        default = [ ];
+      };
     };
   };
 
@@ -89,6 +94,9 @@ in
           };
         };
       };
+      ide.emacs.completion.yasnippet.snippetsPaths = [
+        "${inputs.yasnippet-snippets}/snippets"
+      ];
     })
     (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
       navigation.bookmarks.entries = optionalAttrs (cfg.snippets.backend == "yasnippet")

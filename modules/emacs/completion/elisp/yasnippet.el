@@ -11,7 +11,7 @@
                           yas-x-prompt
                           yas-no-prompt))
   (yas-wrap-around-region t)
-  (yas-snippet-dirs '("@emacsYasnippetSnippets@/snippets" "@emacsEtcDir@/yasnippet/snippets")))
+  (yas-snippet-dirs '(@emacsYasnippetSnippetsPaths@)))
 
 (with-eval-after-load 'yasnippet
   (with-eval-after-load 'consult

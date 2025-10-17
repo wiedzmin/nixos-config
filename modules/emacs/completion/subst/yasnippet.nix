@@ -1,6 +1,8 @@
-{ config, inputs, ... }:
+{ config, inputs, pkgs, ... }:
+with pkgs.unstable.commonutils;
 
 {
-  emacsEtcDir = config.ide.emacs.core.etcDir;
   emacsYasnippetSnippets = inputs.yasnippet-snippets;
+  emacsYasnippetSnippetsPaths = concatStringListsQuoted " "
+    config.ide.emacs.completion.yasnippet.snippetsPaths;
 }
