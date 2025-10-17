@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: github-code
+# key: ghcode
+# contributor : Alex Ermolov <aaermolov@gmail.com>
+# --
+{ghc>${1:token}<ghc}

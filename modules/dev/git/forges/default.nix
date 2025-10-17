@@ -234,6 +234,12 @@ in
           message = "git/forges/emacs: core configuration must be enabled.";
         }];
 
+        home-manager.users."${user}" = {
+          home.file = {
+            "${config.ide.emacs.core.etcDir}/yasnippet/snippets/git-forges" = { source = ./snippets; recursive = true; };
+          };
+        };
+
         ide.emacs.core.extraPackages = epkgs: [
           epkgs.browse-at-remote
           epkgs.forge
@@ -243,6 +249,9 @@ in
           builtins.readFile ./elisp/forges.el +
           optionalString (length (attrValues BARmapping) > 0) (genBrowseAtRemoteTypesPatch BARmapping) +
           optionalString (length (attrValues GLmapping) > 0) (genGitlinkTypesPatch GLmapping);
+        ide.emacs.completion.yasnippet.snippetsPaths = [
+          "${config.ide.emacs.core.etcDir}/yasnippet/snippets/git-forges"
+        ];
       }
     ))
   ];

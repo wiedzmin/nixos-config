@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: github-users
+# key: ghusers
+# contributor : Alex Ermolov <aaermolov@gmail.com>
+# --
+{ghu>${1:token}<ghu}

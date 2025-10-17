@@ -1,0 +1,6 @@
+# -*- mode: snippet -*-
+# name: github-repos
+# key: ghrepos
+# contributor : Alex Ermolov <aaermolov@gmail.com>
+# --
+{ghr>${1:token}<ghr}
