@@ -74,7 +74,7 @@
 
     # NOTE: Kitty's kittens
     kitty-grab = {
-      url = "github:yurikhan/kitty_grab";
+      url = "github:yurikhan/kitty_grab/afec101c347940b4ce28a21e586e7a4f738ef020"; #  NOTE: master is currently broken
       flake = false;
     };
     kitty-search = {
