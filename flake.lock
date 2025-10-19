@@ -203,22 +203,6 @@
         "type": "github"
       }
     },
-    "emacs-just-ts-mode": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1756405448,
-        "narHash": "sha256-iyLb3XnAhznMl4p8T2DUWTqf4sopvDLFd7xyxuc1t9Y=",
-        "owner": "leon-barrett",
-        "repo": "just-ts-mode.el",
-        "rev": "f4fb841f93222fcefccabd641281553b4c8d9d6e",
-        "type": "github"
-      },
-      "original": {
-        "owner": "leon-barrett",
-        "repo": "just-ts-mode.el",
-        "type": "github"
-      }
-    },
     "emacs-org-bars": {
       "flake": false,
       "locked": {
@@ -232,38 +216,6 @@
       "original": {
         "owner": "tonyaldon",
         "repo": "org-bars",
-        "type": "github"
-      }
-    },
-    "emacs-password-menu": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1749425706,
-        "narHash": "sha256-mTBJScPbKAlfWX5MdhLIZAN4uVKMNfFGKZHVRSgVVyw=",
-        "owner": "rnadler",
-        "repo": "password-menu",
-        "rev": "071f4b2fc596946f5284689da15263f8bd33957a",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rnadler",
-        "repo": "password-menu",
-        "type": "github"
-      }
-    },
-    "emacs-password-store-menu": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1751828310,
-        "narHash": "sha256-FN4HF0tCFvc0rK9gPEZooCX0orCWTvBtwgVbJSDI6Ms=",
-        "owner": "rjekker",
-        "repo": "password-store-menu",
-        "rev": "31b0884d1cdc80ad4ee7d84680c11653e659bb18",
-        "type": "github"
-      },
-      "original": {
-        "owner": "rjekker",
-        "repo": "password-store-menu",
         "type": "github"
       }
     },
@@ -725,10 +677,7 @@
         "emacs-git-msg-prefix": "emacs-git-msg-prefix",
         "emacs-highlight-sexp": "emacs-highlight-sexp",
         "emacs-jira-el": "emacs-jira-el",
-        "emacs-just-ts-mode": "emacs-just-ts-mode",
         "emacs-org-bars": "emacs-org-bars",
-        "emacs-password-menu": "emacs-password-menu",
-        "emacs-password-store-menu": "emacs-password-store-menu",
         "emacs-project-headerline": "emacs-project-headerline",
         "emacs-treesit-jump": "emacs-treesit-jump",
         "emacs-vue-ts-mode": "emacs-vue-ts-mode",

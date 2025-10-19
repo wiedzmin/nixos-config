@@ -42,20 +42,8 @@
       url = "github:daimrod/highlight-sexp";
       flake = false;
     };
-    emacs-just-ts-mode = {
-      url = "github:leon-barrett/just-ts-mode.el";
-      flake = false;
-    };
     emacs-org-bars = {
       url = "github:tonyaldon/org-bars";
-      flake = false;
-    };
-    emacs-password-menu = {
-      url = "github:rnadler/password-menu";
-      flake = false;
-    };
-    emacs-password-store-menu = {
-      url = "github:rjekker/password-store-menu";
       flake = false;
     };
     emacs-project-headerline = {

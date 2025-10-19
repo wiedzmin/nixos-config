@@ -120,9 +120,12 @@ in
       }];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [ epkgs.pass ];
+      ide.emacs.core.extraPackages = epkgs: [
+        epkgs.pass
+        epkgs.password-store-menu
+      ];
       ide.emacs.core.customKeymaps = { "custom-pass-map" = "<f6>"; };
-      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst.nix ] [ ./elisp/security.el ]);
+      ide.emacs.core.config = (builtins.readFile ./elisp/security.el);
     })
     (mkIf cfg.polkit.silentAuth {
       security.polkit.extraConfig = ''

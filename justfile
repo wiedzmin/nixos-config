@@ -115,10 +115,7 @@ flake-update-inputs-emacs-unpackaged:
     nix flake update emacs-epithet
     nix flake update emacs-git-msg-prefix
     nix flake update emacs-highlight-sexp
-    nix flake update emacs-just-ts-mode
     nix flake update emacs-org-bars
-    nix flake update emacs-password-menu
-    nix flake update emacs-password-store-menu
     nix flake update emacs-project-headerline
     nix flake update emacs-treesit-jump
     nix flake update emacs-vue-ts-mode

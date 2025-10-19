@@ -333,6 +333,7 @@ in
           epkgs.delight
           epkgs.f
           epkgs.no-littering
+          epkgs.password-menu
           epkgs.reverse-im
         ] ++ lib.optionals cfg.treesitter.enable [ epkgs.treesit-auto ]
         ++ lib.optionals cfg.emacsEverywhere.enable [ epkgs.emacs-everywhere ]

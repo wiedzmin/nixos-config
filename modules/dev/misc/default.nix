@@ -234,6 +234,7 @@ in
         epkgs.plantuml-mode
       ] ++ lib.optionals (cfg.diagrams.enable && cfg.emacs.orgmode.enable) [
         epkgs.ob-blockdiag
+        epkgs.just-ts-mode
       ] ++ lib.optionals (!config.ide.emacs.core.treesitter.enable) [
         epkgs.just-mode
         epkgs.lua-mode

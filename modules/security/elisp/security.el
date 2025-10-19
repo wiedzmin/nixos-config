@@ -22,7 +22,6 @@
   (pass-username-field "login"))
 
 (use-package password-store-menu
-  :load-path "@emacsPasswordStoreMenuPath@"
   :bind
   (:map custom-pass-map
         ("!" . password-store-menu)))
