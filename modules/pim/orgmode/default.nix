@@ -126,8 +126,10 @@ in
         epkgs.org-rich-yank
         epkgs.russian-holidays
       ] ++ optionals cfg.cliplink.enable [ epkgs.org-cliplink ]
-      ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [ epkgs.consult-org-roam ]
-      ++ optionals (!config.pim.core.enable) [
+      ++ optionals (config.ide.emacs.navigation.collections.backend == "consult") [
+        epkgs.consult-org-roam
+        epkgs.consult-notes
+      ] ++ optionals (!config.pim.core.enable) [
         epkgs.orgit
         epkgs.orglink
       ];

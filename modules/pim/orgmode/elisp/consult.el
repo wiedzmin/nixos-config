@@ -12,6 +12,17 @@
       (consult-ripgrep "@orgRoot@"))
     (keymap-set custom-org-map "g" 'custom/consult-ripgrep-org)))
 
+(use-package consult-notes
+  :commands (consult-notes
+             consult-notes-search-in-all-notes
+             consult-notes-org-roam-find-node
+             consult-notes-org-roam-find-node-relation)
+  :custom
+  (consult-notes-org-headings-files '("@orgRoamRoot@"))
+  (consult-notes-file-dir-sources '(("Roam" ?r "@orgRoamRoot@")))
+  :config
+  (consult-notes-org-roam-mode))
+
 (use-package consult-org-roam
   :after org-roam
   :preface
