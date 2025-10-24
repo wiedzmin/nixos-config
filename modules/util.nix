@@ -434,7 +434,7 @@ rec {
     in
     [
       ((lib.optionalString debugEnabled "DEBUG_MODE=1 ") + meta.cmd + lib.optionalString debugEnabled
-        " > ${mkCmdDebugAbsFilename logsroot meta.cmd} 2>&1")
+        "> ${mkCmdDebugAbsFilename logsroot meta.cmd} 2>&1")
     ];
   # }}}
   # {{{ WM.Common.Keybindings
