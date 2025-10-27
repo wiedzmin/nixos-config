@@ -696,6 +696,12 @@ in
       url = "https://school.mos.ru/diary/account/profile/";
       browseWith = appCmdFull config.attributes.browser.fallback.traits;
     };
+    "old-games-nostalgie" = {
+      url = "https://dos.zone/";
+      tags = [ "games" ];
+      browseWith = appCmdFull config.attributes.browser.fallback.traits;
+    };
+    xdg-config-path = { path = homePrefix user ".config"; };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }
