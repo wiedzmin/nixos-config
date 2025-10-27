@@ -236,7 +236,7 @@ in
           block = "custom";
           command = "qbtarget -c -fg red";
           watch_files = [ "/tmp/qbtarget" ];
-          format = "$text.pango-str()";
+          format = " $text.pango-str() ";
           interval = "once";
         }
       ];
