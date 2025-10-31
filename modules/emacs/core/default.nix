@@ -531,14 +531,14 @@ in
           mode = "run";
         }
       ] ++ lib.optionals config.navigation.bookmarks.enable [
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "i" ];
-          cmd = [ "projects" "open" "--path" "${homePrefix user ".emacs.d/init.el"}" ];
+          cmd = "go#projects open --path ${homePrefix user ".emacs.d/init.el"}";
           mode = "dev";
         })
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "Shift" "i" ];
-          cmd = [ "projects" "open" "--path" "${homePrefix user ".emacs.d/early-init.el"}" ];
+          cmd = "go#projects open --path ${homePrefix user ".emacs.d/early-init.el"}";
           mode = "dev";
         })
       ];

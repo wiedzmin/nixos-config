@@ -34,9 +34,9 @@ in
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = lib.optionals config.navigation.bookmarks.enable [
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "e" ];
-          cmd = [ "projects" "open" "--path" "${wsRoot roots "github"}/edrx/eev" ];
+          cmd = "go#projects open --path ${wsRoot roots "github"}/edrx/eev";
           mode = "dev";
         })
       ];

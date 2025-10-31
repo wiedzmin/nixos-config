@@ -211,19 +211,19 @@ in
       workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
 
       wmCommon.keybindings.entries = [
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "t" ];
-          cmd = [ "qbtarget --target tab" ];
+          cmd = "go#qbtarget --target tab";
           mode = "browser";
         })
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "w" ];
-          cmd = [ "qbtarget --target window" ];
+          cmd = "go#qbtarget --target window";
           mode = "browser";
         })
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "." ];
-          cmd = [ "qbtarget --notify-status" ];
+          cmd = "go#qbtarget --notify-status";
           mode = "browser";
         })
       ];
@@ -738,7 +738,7 @@ in
         serviceConfig = {
           Type = "oneshot";
           Environment = [ "TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES=${builtins.toString cfg.sessions.keepMinutes}" ];
-          ExecStart = "${goBinLocalPath config "qbcli"} save-session";
+          ExecStart = "${goBinPrefix config.dev.golang.goPath "qbcli"} save-session";
           ExecStopPost = "${nurpkgs.toolbox}/bin/qbsessions -rotate";
           StandardOutput = "journal";
           StandardError = "journal";

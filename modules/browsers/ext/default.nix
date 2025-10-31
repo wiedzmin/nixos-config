@@ -103,19 +103,19 @@ in
           mode = "root";
           leaveFullscreen = true;
         }
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ prefix "j" ];
-          cmd = [ "webjumps" ];
+          cmd = "go#webjumps";
           mode = "root";
         })
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ prefix "Shift" "j" ];
-          cmd = [ "webjumps" "-use-fallback" ];
+          cmd = "go#webjumps -use-fallback";
           mode = "root";
         })
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ prefix "Control" "j" ];
-          cmd = [ "webjumps" "-copy" ];
+          cmd = "go#webjumps -copy";
           mode = "root";
         })
         {

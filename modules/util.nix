@@ -161,16 +161,21 @@ rec {
   # {{{ Misc
   mapMimesToApp = mimes: app: lib.genAttrs mimes (_: [ app ]);
   wsRoot = roots: key: lib.getAttrFromPath [ key ] roots;
-  goBinLocalPath = cfg: cmd: goBinPrefix cfg.dev.golang.goPath cmd;
-  goLocalDebugKeybinding = cfg: meta: {
+  goDebugToken = "go#";
+  goLocalDebugKeybinding = goPath: useLocalGoBinaries: meta: {
     key = meta.key;
     keycode = maybeAttrIsBool "keycode" meta;
     mode = meta.mode;
     cmd =
-      if cfg.attributes.debug.useLocalGoBinaries
-      then ''${goBinLocalPath cfg (builtins.head meta.cmd)} ${lib.concatStringsSep " " (lib.tail meta.cmd)}''
-      else ''${nurpkgs.toolbox}/bin/${builtins.head meta.cmd} ${lib.concatStringsSep " " (lib.tail meta.cmd)}'';
-    debug = cfg.attributes.debug.useLocalGoBinaries || (builtins.hasAttr "debug" meta) && meta.debug;
+      let
+        targetPrefix = if useLocalGoBinaries
+                       then "${goPath}/bin/" else "${nurpkgs.toolbox}/bin/";
+        cmds = ensureList meta.cmd;
+      in
+        lib.forEach cmds (c: if lib.hasPrefix goDebugToken c
+                         then lib.concatStrings [targetPrefix (lib.removePrefix goDebugToken c)]
+                         else c);
+    debug = useLocalGoBinaries || (builtins.hasAttr "debug" meta) && meta.debug;
   };
   # FIXME: clarify th semantics of "global", see implementation below
   envVars = lib.filterAttrs (name: _: !builtins.elem name [ "global" "emacs" ]);
@@ -198,6 +203,7 @@ rec {
   concatStringListsQuoted = sep: ll: lib.concatStringsSep sep (lib.forEach (lib.flatten ll) (x: ''"'' + x + ''"''));
   concatStringListsRaw = sep: ll: lib.concatStringsSep sep (lib.flatten ll);
   takeLast = n: l: with lib; reverseList (take n (reverseList l));
+  ensureList = data: if (builtins.isList data) then data else [ data ];
   # }}}
   # {{{ Bookmarks
   # TODO: filter out bookmarks under any VPN that is disabled (check/provide some mechanism for this)
@@ -493,22 +499,35 @@ rec {
       "workspace --no-auto-back-and-forth ${
         builtins.toString ws.fst
       }: ${ws.snd.name}; layout ${layout}; "))}";
-  mkKeybindingI3 = meta: desktops: logsroot:
-    let
-      debugEnabled = maybeAttrIsBool "debug" meta && !maybeAttrIsBool "raw" meta;
-    in
-    builtins.concatStringsSep " " (lib.optionals (!maybeAttrIsBool "keycode" meta) [ "bindsym" (mkKeysymI3 meta.key) ]
-      ++ lib.optionals (maybeAttrIsBool "keycode" meta) [ "bindcode" (builtins.head meta.key) ]
-      ++ lib.optionals (maybeAttrIsBool "leaveFullscreen" meta) [ "fullscreen disable;" ]
-      ++ lib.optionals (!maybeAttrIsBool "raw" meta) [ "exec" ]
-      ++ lib.optionals (maybeAttrIsBool "transient" meta) [ "--no-startup-id" ] ++ [
-      (builtins.concatStringsSep "; " (lib.optionals (builtins.hasAttr "cmd" meta) [
-        ((lib.optionalString debugEnabled "DEBUG_MODE=1 ") + meta.cmd + lib.optionalString debugEnabled
-          "> ${mkCmdDebugAbsFilename logsroot meta.cmd} 2>&1")
-      ] ++ lib.optionals (builtins.hasAttr "desktop" meta)
-        [ "workspace ${getWorkspaceByNameI3 desktops meta.desktop}" ]
-      ++ lib.optionals (!maybeAttrIsBool "sticky" meta && meta.mode != "root") [ ''mode "default"'' ]))
-    ]);
+  mkKeybindingI3 = meta: desktops: logsroot: exitBindings:
+    if (!builtins.hasAttr "cmd" meta && !builtins.elem meta.key exitBindings) then
+      throw "`cmd` attribute is missing for keybinding: ${lib.concatStringsSep "+" meta.key}, mode: ${meta.mode}"
+    else
+      let
+        debugEnabled = maybeAttrIsBool "debug" meta && !maybeAttrIsBool "raw" meta;
+      in
+      builtins.concatStringsSep " " (
+        lib.optionals (!maybeAttrIsBool "keycode" meta) [ "bindsym" (mkKeysymI3 meta.key) ]
+        ++ lib.optionals (maybeAttrIsBool "keycode" meta) [ "bindcode" (builtins.head meta.key) ]
+        ++ lib.optionals (maybeAttrIsBool "leaveFullscreen" meta) [ "fullscreen disable;" ]
+        ++ lib.optionals (maybeAttrIsBool "raw" meta && builtins.hasAttr "cmd" meta)
+          [ (builtins.concatStringsSep "; " (ensureList meta.cmd)) ]
+        ++ lib.optionals (!maybeAttrIsBool "raw" meta) [
+          (
+            lib.concatStringsSep " "
+              (lib.forEach (ensureList meta.cmd)
+                (cmd: lib.concatStringsSep " "
+                  ([ "exec" ]
+                  ++ lib.optionals (maybeAttrIsBool "transient" meta) [ "--no-startup-id" ]
+                  ++ [
+                    ((lib.optionalString debugEnabled "DEBUG_MODE=1 ") +
+                    cmd +
+                    (lib.optionalString debugEnabled " > ${mkCmdDebugAbsFilename logsroot cmd} 2>&1") + ";")
+                  ])))
+          )
+        ] ++ lib.optionals (builtins.hasAttr "desktop" meta) [ "workspace ${getWorkspaceByNameI3 desktops meta.desktop};" ]
+        ++ lib.optionals (!maybeAttrIsBool "sticky" meta && meta.mode != "root") [ ''mode "default"'' ]
+      );
   bindkeysI3 = keys: modeBindings: exitBindings: desktops: logsroot:
     ''
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (mode: bindings: ''
@@ -519,11 +538,11 @@ rec {
                 key = b;
                 mode = "${mode}";
                 raw = true;
-              }) exitBindings)) (x: mkKeybindingI3 x desktops logsroot))
+              }) exitBindings)) (x: mkKeybindingI3 x desktops logsroot exitBindings))
           }
         }
       '') (prefixedModesMeta keys "i3"))}
-      ${lib.concatStringsSep "\n" (lib.forEach (rootModeBindings keys "i3") (x: mkKeybindingI3 x desktops logsroot))}
+      ${lib.concatStringsSep "\n" (lib.forEach (rootModeBindings keys "i3") (x: mkKeybindingI3 x desktops logsroot exitBindings))}
 
       ${lib.concatStringsSep "\n"
       (lib.mapAttrsToList (mode: key: ''bindsym ${mkKeysymI3 key} mode "${mode}"'') modeBindings)}
@@ -571,14 +590,14 @@ rec {
               mode = "${scratchpadModeToken}";
               cmd = "${mkWindowRuleI3 r} scratchpad show";
               raw = true;
-            }) scratchpadRules) (x: mkKeybindingI3 x desktops logsroot))
+            }) scratchpadRules) (x: mkKeybindingI3 x desktops logsroot exitBindings))
           }
           ${lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach
             (scratchpadBindings ++ (map (b: {
               key = b;
               mode = "${scratchpadModeToken}";
               raw = true;
-            }) exitBindings)) (x: mkKeybindingI3 x desktops logsroot))
+            }) exitBindings)) (x: mkKeybindingI3 x desktops logsroot exitBindings))
           }
         }
       '';

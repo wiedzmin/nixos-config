@@ -333,9 +333,9 @@ in
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = [
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "j" ];
-          cmd = [ "services" "--flat" ];
+          cmd = "go#services --flat";
           mode = "services";
           debug = true;
         })

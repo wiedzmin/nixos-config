@@ -201,9 +201,9 @@ in
           cmd = "${nurpkgs.toolbox}/bin/wmkb modes --fuzzy";
           mode = "root";
         }
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ cfg.prefix "t" ];
-          cmd = [ "wmkb" "workspaces" "--fuzzy" ];
+          cmd = "go#wmkb workspaces --fuzzy";
           mode = "root";
         })
       ];

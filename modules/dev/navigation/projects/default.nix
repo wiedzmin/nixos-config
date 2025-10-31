@@ -88,38 +88,38 @@ in
             "${nurpkgs.toolbox}/bin/projects search --root ${root} --depth ${builtins.toString depth}";
           mode = "dev";
         }
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "Shift" "s" ];
           cmd = with config.dev.navigation.projects.fuzzySearch;
-            [ "projects" "search" "--shell" "--root" "${root}" "--depth" "${builtins.toString depth}" ];
+            "go#projects search --shell --root ${root} --depth ${builtins.toString depth}";
           mode = "dev";
         })
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "Shift" "c" ];
           cmd = with config.dev.navigation.projects.fuzzySearch;
-            [ "projects" "search" "--copy-local" "--root" "${root}" "--depth" "${builtins.toString depth}" ];
+            "go#projects search --copy-local --root ${root} --depth ${builtins.toString depth}";
           mode = "dev";
         })
       ] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable) [
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "p" ];
-          cmd = [ "projects" "open" ];
+          cmd = "go#projects open";
           mode = "dev";
         })
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "s" ];
-          cmd = [ "projects" "open" "--shell" ];
+          cmd = "go#projects open --shell";
           mode = "dev";
         })
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "c" ];
-          cmd = [ "projects" "open" "--copy-local" ];
+          cmd = "go#projects open --copy-local";
           mode = "dev";
         })
       ] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable && config.pim.orgmode.enable) [
-        (goLocalDebugKeybinding config {
+        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "a" ];
-          cmd = [ "projects" "open" "--path" "${config.pim.orgmode.org-roam.rootDir}/agenda.org" ];
+          cmd = "go#projects open --path ${config.pim.orgmode.org-roam.rootDir}/agenda.org";
           mode = "dev";
         })
       ];
