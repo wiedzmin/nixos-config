@@ -118,7 +118,7 @@ in
     (mkIf cfg.enable {
       browsers.firefox.traits = rec {
         command = {
-          binary = "${pkgs.firefox-unwrapped}/bin/firefox";
+          binary = "${config.home-manager.users."${user}".programs.firefox.finalPackage}/bin/firefox";
           parameters = [ "--new-window" ];
         };
         wmClass = [ "Navigator" "firefox" ];
@@ -190,6 +190,7 @@ in
           ];
         programs.firefox = {
           enable = true;
+          policies.DontCheckDefaultBrowser = true;
           profiles = {
             default = {
               name = "profile.default";
@@ -197,7 +198,7 @@ in
               settings = {
                 "browser.ctrlTab.recentlyUsedOrder" = false;
                 "browser.download.dir" = config.attributes.download.path.browser;
-                "browser.link.open_newwindow" = 2;
+                "browser.link.open_newwindow" = 3;
                 "browser.sessionstore.restore_on_demand" = true;
                 "browser.sessionstore.restore_tabs_lazily" = true;
                 "browser.shell.checkDefaultBrowser" = true;
@@ -275,13 +276,12 @@ in
                 "security.sandbox.content.level" = 2;
                 "urlclassifier.trackingTable" = ""; # because 2md layer list blocks google captcha, use 1st layer
               };
-              extensions = with nurpkgs.rycee.firefox-addons;
+              extensions.packages = with nurpkgs.rycee.firefox-addons;
                 [
                   browserpass
                   clearurls
                   greasemonkey
-
-                  # nurpkgs.wiedzmin.firefox-addons.url-in-title # NOTE: derivation is temporarily broken at nur-packages
+                  keepass-helper
                 ] ++ optionals cfg.keyboardCentric [ tridactyl ];
               userChrome = ''
                 #TabsToolbar { visibility: collapse !important; }
@@ -547,19 +547,18 @@ in
         "addons/firefox" = {
           desc = "Firefox addons";
           url = "https://addons.mozilla.org/en-US/firefox/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appCmdFull cfg.traits;
           searchSuffix = "search/?cat=all&x=0&y=0&q=";
         };
-      } // optionalString (cfg.isDefault) {
         "about/config" = {
           desc = "Firefox configuration options";
           url = "about:config";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appCmdFull cfg.traits;
         };
         "about/memory" = {
           desc = "Firefox addons reference";
           url = "about:memory";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appCmdFull cfg.traits;
         };
       };
     })
