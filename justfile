@@ -16,6 +16,14 @@ build-vm host=host_name:
 build-debug host=host_name:
     mkdir -p /tmp/buildroot/ && nixos-rebuild build --flake ".#{{host}}" --show-trace
 
+# select and copy to clipboard stacktrace frame's path, if any
+build-debug-path host=host_name:
+    mkdir -p /tmp/buildroot/ && nixos-rebuild build --flake ".#{{host}}" --show-trace 2>&1 | grep "at /nix/store" | fzf | cut -d" " -f11 | cut -d":" -f1-3 | xsel -ib
+
+# select and copy to clipboard stacktrace frame's path, if any (for warnings)
+build-debug-warns-path host=host_name:
+    mkdir -p /tmp/buildroot/ && NIX_ABORT_ON_WARN=1 nixos-rebuild build --flake ".#{{host}}" --show-trace 2>&1 | grep "at /nix/store" | fzf | cut -d" " -f11 | cut -d":" -f1-3 | xsel -ib
+
 # Build configuration flake for current host without network access
 build-no-net host=host_name:
     mkdir -p /tmp/buildroot/ && nixos-rebuild build --flake ".#{{host}}" --option binary-caches ''
