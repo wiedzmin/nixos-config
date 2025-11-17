@@ -62,6 +62,10 @@ devenv-cleanup:
     rm -f ${PWD}/devenv.lock ${PWD}/.devenv.flake.nix ${PWD}/.pre-commit-config.yaml
     touch .envrc
 
+# prevent direnv from rebuilding
+direnv-inhibit-update:
+    touch -r devenv.lock devenv.nix
+
 # cleanup and GC current devenv
 devenv-cleanup-and-gc:
     rm -rf ${PWD}/.devenv ${PWD}/.direnv
