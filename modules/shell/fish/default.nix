@@ -32,7 +32,7 @@ in
             j = "br -s";
 
             df = "${pkgs.duf}/bin/duf";
-            du = "${pkgs.du-dust}/bin/dust";
+            du = "${pkgs.dust}/bin/dust";
 
             rm = "rm -r";
           };
