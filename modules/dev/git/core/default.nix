@@ -58,32 +58,7 @@ in
         programs = {
           git = {
             enable = true;
-            delta = {
-              enable = (cfg.pager == "delta");
-              options = {
-                dark = true;
-                diff-so-fancy = true; # NOTE: emulation mode
-                features = "decorations";
-                highlight-removed = true;
-                hyperlinks = true;
-                hyperlinks-file-link-format = "file://{path}:{line}";
-                line-numbers = true;
-                minus-color = "#ad3436";
-                navigate = true;
-                plus-color = "#34ad3a";
-                side-by-side = true;
-                theme = "zenburn";
-                whitespace-error-style = "22 reverse";
-                decorations = {
-                  commit-decoration-style = "bold yellow box ul";
-                  file-style = "bold yellow ul";
-                  file-decoration-style = "none";
-                };
-              };
-            };
-            diff-so-fancy.enable = (cfg.pager == "diff-so-fancy");
-            riff.enable = (cfg.pager == "riff");
-            extraConfig = {
+            settings = {
               "core" = {
                 compression = 0;
               };
@@ -102,7 +77,7 @@ in
                 quotepath = false;
                 askPass = "";
               };
-              "credential" = { helper = "${pkgs.gitAndTools.pass-git-helper}/bin/pass-git-helper"; };
+              "credential" = { helper = "${pkgs.pass-git-helper}/bin/pass-git-helper"; };
               "diff" = {
                 algorithm = "patience";
                 gpg = { textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt"; };
@@ -111,6 +86,34 @@ in
               "absorb" = { maxstack = 75; }; # TODO: package https://github.com/torbiak/git-autofixup
               "pack" = { window = 1; };
             };
+          };
+          delta = {
+            enable = (cfg.pager == "delta");
+            options = {
+              dark = true;
+              diff-so-fancy = true; # NOTE: emulation mode
+              features = "decorations";
+              highlight-removed = true;
+              hyperlinks = true;
+              hyperlinks-file-link-format = "file://{path}:{line}";
+              line-numbers = true;
+              minus-color = "#ad3436";
+              navigate = true;
+              plus-color = "#34ad3a";
+              side-by-side = true;
+              theme = "zenburn";
+              whitespace-error-style = "22 reverse";
+              decorations = {
+                commit-decoration-style = "bold yellow box ul";
+                file-style = "bold yellow ul";
+                file-decoration-style = "none";
+              };
+            };
+          };
+          diff-so-fancy.enable = (cfg.pager == "diff-so-fancy");
+          riff = {
+            enable = (cfg.pager == "riff");
+            enableGitIntegration = true;
           };
           mergiraf.enable = true;
         };

@@ -14,7 +14,7 @@
   packages = with pkgs; with config.nur.repos; with inputs.nixpkgs-future.legacyPackages."x86_64-linux"; [
     cloc
     gitFull
-    gitAndTools.git-crypt
+    git-crypt
     just
     tagref
     vim

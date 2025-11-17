@@ -65,7 +65,7 @@ in
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ onefetch inputs.devenv-src.packages.${pkgs.system}.devenv ];
         programs.git = {
-          aliases = {
+          settings.alias = {
             psum = "!which onefetch && onefetch";
           };
         };

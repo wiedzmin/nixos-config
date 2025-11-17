@@ -44,7 +44,7 @@ in
       };
 
       dev.vcs.batch.commands = {
-        trim = [ "${pkgs.gitAndTools.git-trim}/bin/git-trim --delete=merged-local" ];
+        trim = [ "${pkgs.git-trim}/bin/git-trim --delete=merged-local" ];
       };
 
       ide.emacs.core.extraPackages = epkgs: [

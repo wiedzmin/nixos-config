@@ -78,19 +78,19 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.ghq.enable) {
-      environment.systemPackages = with pkgs; [ gitAndTools.ghq ];
+      environment.systemPackages = with pkgs; [ ghq ];
 
       home-manager.users."${user}" = {
-        programs.git.extraConfig = optionalAttrs config.navigation.bookmarks.enable {
+        programs.git.settings = optionalAttrs config.navigation.bookmarks.enable {
           "ghq" = { root = config.navigation.bookmarks.workspaces.globalRoot; };
         };
         programs.zsh.shellAliases = {
-          gg = "${pkgs.gitAndTools.ghq}/bin/ghq get";
-          gfg = "${pkgs.gitAndTools.ghq}/bin/ghq get --vcs fossil";
+          gg = "${pkgs.ghq}/bin/ghq get";
+          gfg = "${pkgs.ghq}/bin/ghq get --vcs fossil";
         };
         programs.fish.shellAliases = {
-          gg = "${pkgs.gitAndTools.ghq}/bin/ghq get";
-          gfg = "${pkgs.gitAndTools.ghq}/bin/ghq get --vcs fossil";
+          gg = "${pkgs.ghq}/bin/ghq get";
+          gfg = "${pkgs.ghq}/bin/ghq get --vcs fossil";
         };
 
         xdg.configFile = optionalAttrs (config.shell.core.queueing.enable && config.completion.expansions.enable) {

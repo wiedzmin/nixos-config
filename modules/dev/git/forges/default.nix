@@ -213,7 +213,7 @@ in
             generators.toINI { } credentials;
           programs.ssh.matchBlocks =
             optionalAttrs (matchBlocks != { }) matchBlocks;
-          programs.git.extraConfig =
+          programs.git.settings =
             optionalAttrs (extraConfig != { }) extraConfig;
         };
         navigation.bookmarks.workspaces.roots = workspaceRoots;
