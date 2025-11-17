@@ -660,7 +660,7 @@ in
     fish.enable = true;
   };
 
-  ext.virtualization.core.enable = true;
+  ext.virtualization.core.enable = false;
   ext.virtualization.virtualbox.enable = false;
 
   dbms = {
