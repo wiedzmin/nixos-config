@@ -53,7 +53,7 @@ in
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
         # TODO: review `tdl` docs at https://docs.iyear.me/tdl/
-        home.packages = with pkgs; [ tdesktop tdl ] ++
+        home.packages = with pkgs; [ telegram-desktop tdl ] ++
           optionals (cfg.whatsapp.enable) [ nixpkgs-qtwebengine-bin.whatsie ] ++
           optionals (cfg.zoom.enable) [ zoom-us ] ++
           optionals (cfg.webex.enable) [ webex ];
