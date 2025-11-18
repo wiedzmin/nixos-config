@@ -8,6 +8,7 @@ with lib;
 # nsp>statix npkg#statix
 # nsp>nix-melt npkg#nix-melt
 # nsp>flake-checker npkg#flake-checker
+# {ghr>nixpkgs-check<ghr} {ghc>nixpkgs-check<ghc}
 
 let
   cfg = config.ext.nix.core;
