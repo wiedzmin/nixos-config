@@ -228,6 +228,13 @@ in
       desc = "GMail account";
       url = "https://mail.google.com/mail/u/0/";
       browseWith = appCmdFull config.attributes.browser.fallback.traits;
+      windowRules = [
+        {
+          class = mkWSMappingBrowsersRegexp config.attributes.browser;
+          title = "mail google";
+          desktop = "main"; # [ref:desktop_main]
+        }
+      ];
     };
     "repology/projects" = {
       desc = "Repology";
