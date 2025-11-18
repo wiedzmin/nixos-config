@@ -25,7 +25,7 @@ in
         default = {
           add_newline = false;
           scan_timeout = 50;
-          command_timeout = 2000;
+          command_timeout = 5000;
           character = {
             success_symbol = "[➜](bold green) ";
             error_symbol = "[➜](bold red) ";
