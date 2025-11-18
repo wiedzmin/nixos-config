@@ -351,8 +351,8 @@ in
         programs.qutebrowser = {
           keyBindings = {
             normal = {
-              "ym" = "spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}";
-              "нь" = "spawn ${pkgs.mpc_cli}/bin/mpc add yt:{url}";
+              "ym" = "spawn ${pkgs.mpc}/bin/mpc add yt:{url}";
+              "нь" = "spawn ${pkgs.mpc}/bin/mpc add yt:{url}";
             };
           };
         };
@@ -420,27 +420,27 @@ in
         # FIXME: actualize MPD setup
         {
           key = [ prefix "Control" "z" ];
-          cmd = "${pkgs.cmus}/bin/cmus-remote --prev"; # was: "${pkgs.mpc_cli}/bin/mpc prev"
+          cmd = "${nixpkgs-last-unbroken.cmus}/bin/cmus-remote --prev"; # was: "${pkgs.mpc_cli}/bin/mpc prev"
           mode = "root";
         }
         {
           key = [ prefix "Control" "x" ];
-          cmd = "${pkgs.cmus}/bin/cmus-remote --play"; # was: "${pkgs.mpc_cli}/bin/mpc play"
+          cmd = "${nixpkgs-last-unbroken.cmus}/bin/cmus-remote --play"; # was: "${pkgs.mpc_cli}/bin/mpc play"
           mode = "root";
         }
         {
           key = [ prefix "Control" "c" ];
-          cmd = "${pkgs.cmus}/bin/cmus-remote --pause"; # was: "${pkgs.mpc_cli}/bin/mpc toggle"
+          cmd = "${nixpkgs-last-unbroken.cmus}/bin/cmus-remote --pause"; # was: "${pkgs.mpc_cli}/bin/mpc toggle"
           mode = "root";
         }
         {
           key = [ prefix "Control" "v" ];
-          cmd = "${pkgs.cmus}/bin/cmus-remote --stop"; # was: "${pkgs.mpc_cli}/bin/mpc stop"
+          cmd = "${nixpkgs-last-unbroken.cmus}/bin/cmus-remote --stop"; # was: "${pkgs.mpc_cli}/bin/mpc stop"
           mode = "root";
         }
         {
           key = [ prefix "Control" "b" ];
-          cmd = "${pkgs.cmus}/bin/cmus-remote --next"; # was: "${pkgs.mpc_cli}/bin/mpc next"
+          cmd = "${nixpkgs-last-unbroken.cmus}/bin/cmus-remote --next"; # was: "${pkgs.mpc_cli}/bin/mpc next"
           mode = "root";
         }
       ];
