@@ -112,7 +112,7 @@ in
       environment.systemPackages = with pkgs; [ nixpkgs-qtwebengine-bin.clipgrab freetube nixpkgs-last-unbroken.moc ncmpcpp ytfzf ];
 
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ cmus ];
+        home.packages = with pkgs; [ nixpkgs-last-unbroken.cmus ];
 
         programs.mpv = {
           enable = true;
