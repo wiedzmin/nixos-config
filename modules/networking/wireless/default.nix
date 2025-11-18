@@ -86,7 +86,9 @@ in
         options iwlwifi 11n_disable=1 power_save=1 power_level=2
       '';
 
-      networking.wlanInterfaces = optionalAttrs (cfg.ifacesMap != { }) cfg.ifacesMap;
+      # FIXME: udev rule(s) against `networking.wlanInterfaces` are failing for some reason, see button below
+      # "~/workspace/repos/github.com/NixOS/nixpkgs/nixos/modules/tasks/network-interfaces.nix:L1943:C75"
+      # networking.wlanInterfaces = optionalAttrs (cfg.ifacesMap != { }) cfg.ifacesMap;
       networking.networkmanager.wifi.macAddress = optionalString (cfg.macAddress != "") cfg.macAddress;
     })
     (mkIf (cfg.enable && cfg.backend == "iwd") {
