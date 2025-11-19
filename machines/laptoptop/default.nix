@@ -104,6 +104,7 @@ in
     acpid.enable = true;
     timesyncd.enable = true;
     locate.enable = true;
+    speechd.enable = false;
   };
 
   systemd.services.acme-localhost.enable = false;
