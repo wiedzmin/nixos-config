@@ -183,7 +183,7 @@ in
       emacs.enable = true;
       wm.enable = true;
     };
-    chromium = {
+    firefox = {
       enable = true;
       suspendInactive = false;
       isDefault = false;
