@@ -31,7 +31,7 @@
 
 (use-package fringe
   :hook
-  (server-after-make-frame-hook . (lambda () (set-fringe-style '(3 . 0)))))
+  (server-after-make-frame-hook . (lambda () (set-fringe-style '(6 . 0)))))
 
 (use-package time
   :config
