@@ -176,7 +176,7 @@ in
             }
             {
               trigger = ":ggr";
-              replace = "cat `rg --files | grep -e \"\\.json\" | fzf` | gron | grep {{searchterm.value}} | gron --ungron"; # nspr>gnugrep|gron|fzf|ripgrep
+              replace = "cat `rg --files | grep -e \"\\.json\" | fzf` | gron | grep {{searchterm.value}} | gron --ungron"; # nspr>gnugrep|gron|fzf|ripgrep|hgrep
               vars = [
                 {
                   name = "searchterm";
@@ -203,7 +203,7 @@ in
             }
             {
               trigger = ":fdnew";
-              replace = "fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | fzf"; # nsp>fd|ripgrep|fzf
+              replace = "fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | fzf"; # nsp>fd|ripgrep|fzf|hgrep
               vars = [
                 {
                   name = "changenewerthan";
@@ -214,7 +214,7 @@ in
             }
             {
               trigger = ":fdold";
-              replace = "fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | fzf"; # nsp>fd|ripgrep|fzf
+              replace = "fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | fzf"; # nsp>fd|ripgrep|fzf|hgrep
               vars = [
                 {
                   name = "changeolderthan";
