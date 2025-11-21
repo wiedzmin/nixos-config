@@ -25,8 +25,6 @@
     hello
   '';
 
-  difftastic.enable = true;
-
   languages.lua.enable = true;
   languages.nix.enable = true;
   languages.python = {
