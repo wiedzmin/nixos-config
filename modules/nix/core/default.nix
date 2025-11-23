@@ -65,6 +65,7 @@ in
       nix = {
         nixPath = lib.mkForce [ "nixpkgs=/etc/nixpkgs" ];
         settings = {
+          auto-optimise-store = true;
           cores = lib.mkDefault config.attributes.hardware.cores;
           max-jobs = lib.mkDefault config.attributes.nix.jobs;
           require-sigs = true;
@@ -75,7 +76,6 @@ in
         };
         package = pkgs.nixVersions.nix_2_29;
         extraOptions = ''
-          auto-optimise-store = true
           keep-outputs = true
           keep-derivations = true
           http-connections = 10
