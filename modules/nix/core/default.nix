@@ -63,7 +63,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       nix = {
-        nixPath = lib.mkForce [ "nixpkgs=/etc/nixpkgs" ];
+        channel.enable = false;
         settings = {
           auto-optimise-store = true;
           cores = lib.mkDefault config.attributes.hardware.cores;
@@ -110,7 +110,6 @@ in
         };
       };
 
-      environment.etc.nixpkgs.source = inputs.unstable;
       nixpkgs.config = {
         allowUnfree = true;
         allowUnfreeRedistributable = true;
@@ -254,10 +253,6 @@ in
               replace = "inputs.unstable.legacyPackages.x86_64-linux.linuxPackages.";
             }
             {
-              trigger = ":slv";
-              replace = "grep -e '^  linuxPackages' /etc/nixpkgs/pkgs/top-level/all-packages.nix"; # nsp>gnugrep npkg#gnugrep
-            }
-            {
               trigger = ":nwda";
               replace = "nix why-depends --all \"nixpkgs#$|$\" \"nixpkgs#\"";
             }
@@ -286,27 +281,6 @@ in
               replace = "nvd --color always list /run/booted-system /run/current-system"; # nsp>nvd npkg#nvd
             }
             {
-              trigger = ":nvdlcu";
-              replace = "nvd --color always list {{profile1.value}} {{profile2.value}}"; # nsp>nvd npkg#nvd
-              vars = [
-                {
-                  name = "profiles";
-                  type = "shell";
-                  params = { cmd = "find /nix/var/nix/profiles/per-user/${user} -name '*link' | grep -v channels"; };
-                }
-                {
-                  name = "profile1";
-                  type = "choice";
-                  params = { values = "{{profiles}}"; };
-                }
-                {
-                  name = "profile2";
-                  type = "choice";
-                  params = { values = "{{profiles}}"; };
-                }
-              ];
-            }
-            {
               trigger = ":nvdlcs";
               replace = "nvd --color always list {{profile1.value}} {{profile2.value}}"; # nsp>nvd npkg#nvd
               vars = [
@@ -330,27 +304,6 @@ in
             {
               trigger = ":nvddn";
               replace = "nvd --color always diff /run/booted-system /run/current-system"; # nsp>nvd npkg#nvd
-            }
-            {
-              trigger = ":nvddcu";
-              replace = "nvd --color always diff {{profile1.value}} {{profile2.value}}"; # nsp>nvd npkg#nvd
-              vars = [
-                {
-                  name = "profiles";
-                  type = "shell";
-                  params = { cmd = "find /nix/var/nix/profiles/per-user/${user} -name '*link' | grep -v channels"; };
-                }
-                {
-                  name = "profile1";
-                  type = "choice";
-                  params = { values = "{{profiles}}"; };
-                }
-                {
-                  name = "profile2";
-                  type = "choice";
-                  params = { values = "{{profiles}}"; };
-                }
-              ];
             }
             {
               trigger = ":nvddcs";
