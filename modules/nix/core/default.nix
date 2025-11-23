@@ -84,7 +84,13 @@ in
         '';
         registry = {
           config.flake = inputs.self;
+          devenv-src.flake = inputs.devenv-src;
           emacs.flake = inputs.emacs;
+          home-manager.flake = inputs.home-manager;
+          nixos-hardware.flake = inputs.nixos-hardware;
+          nixpkgs-last-unbroken.flake = inputs.nixpkgs-last-unbroken;
+          nur.flake = inputs.nur;
+          unstable-future.flake = inputs.unstable-future;
           unstable.flake = inputs.unstable;
         };
 
