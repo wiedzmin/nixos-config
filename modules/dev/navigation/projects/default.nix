@@ -153,5 +153,17 @@ in
         };
       };
     })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      completion.expansions.espanso.matches = {
+        navigation_projects = {
+          matches = [
+            {
+              trigger = ":dcf";
+              replace = "devenv $|$ -n fallback=true"; # NOTE: when experiencing any network issues
+            }
+          ];
+        };
+      };
+    })
   ];
 }
