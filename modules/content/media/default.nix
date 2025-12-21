@@ -324,13 +324,15 @@ in
       services.mpd = {
         enable = true;
         startWhenNeeded = true;
-        extraConfig = ''
-          audio_output {
-            type     "pipewire"
-            name     "Pipewire"
-            server   "127.0.0.1"
-          }
-        '';
+        settings = {
+          audio_output = [
+            {
+              type = "pipewire";
+              name = "Pipewire";
+              server = "127.0.0.1";
+            }
+          ];
+        };
         user = user;
       };
       systemd.services.mpd.environment = {
