@@ -29,6 +29,7 @@ in
 
   config = mkMerge [
     (mkIf (cfg.enable && cfg.emacs.automation.enable) {
+      attributes.transientPackages = with pkgs; [ obsidian ];
       ide.emacs.core.extraPackages = epkgs: [ epkgs.hyperbole ];
       ide.emacs.core.config = builtins.readFile ./elisp/pim.el;
     })
