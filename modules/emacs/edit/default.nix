@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.ide.emacs.edit;
-  yaml = pkgs.formats.yaml { };
 in
 {
   options = {
@@ -46,7 +45,6 @@ in
         epkgs.undo-tree
         epkgs.wgrep
         epkgs.whole-line-or-region
-        epkgs.ws-butler
       ] ++ optionals (!config.ide.emacs.core.treesitter.enable && !config.pim.core.emacs.automation.enable) [
         epkgs.expand-region
       ] ++ optionals (config.ide.emacs.core.treesitter.enable && !config.pim.core.emacs.automation.enable) [

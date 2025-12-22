@@ -269,6 +269,22 @@
         "type": "github"
       }
     },
+    "emacs-ws-butler": {
+      "flake": false,
+      "locked": {
+        "lastModified": 1749778858,
+        "narHash": "sha256-maOhnDkG3GibrbI1EuPRY+Ej4AZJgbFheu6lC72vZ4w=",
+        "owner": "lewang",
+        "repo": "ws-butler",
+        "rev": "67c49cfdf5a5a9f28792c500c8eb0017cfe74a3a",
+        "type": "github"
+      },
+      "original": {
+        "owner": "lewang",
+        "repo": "ws-butler",
+        "type": "github"
+      }
+    },
     "flake-compat": {
       "flake": false,
       "locked": {
@@ -683,6 +699,7 @@
         "emacs-project-headerline": "emacs-project-headerline",
         "emacs-treesit-jump": "emacs-treesit-jump",
         "emacs-vue-ts-mode": "emacs-vue-ts-mode",
+        "emacs-ws-butler": "emacs-ws-butler",
         "git-extra-commands": "git-extra-commands",
         "home-manager": "home-manager",
         "kitty-grab": "kitty-grab",

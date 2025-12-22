@@ -141,6 +141,7 @@
                       tabs)))
 
 (use-package ws-butler
+  :load-path "@emacsEmacsWsButlerPath@"
   :after whitespace
   :bind
   (:map custom-formatting-map

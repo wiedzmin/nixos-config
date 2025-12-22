@@ -71,6 +71,10 @@
       url = "github:11111000000/context-navigator";
       flake = false;
     };
+    emacs-ws-butler = {
+      url = "github:lewang/ws-butler";
+      flake = false;
+    };
 
     # NOTE: Kitty's kittens
     kitty-grab = {
