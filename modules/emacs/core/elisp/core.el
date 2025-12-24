@@ -111,6 +111,7 @@ minibuffer, even without explicitly focusing it."
   (completion-ignored-extensions nil)
   (window-combination-resize t)
   (y-or-n-p-use-read-key t)
+  (ring-bell-function 'ignore)
   :config
   (fset 'yes-or-no-p 'y-or-n-p)
   (set-charset-priority 'unicode)
