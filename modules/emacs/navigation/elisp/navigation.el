@@ -155,6 +155,7 @@
   (context-navigator-mode 1))
 
 (use-package goto-addr
+  :if (not (featurep 'hyperbole))
  :hook ((compilation-mode-hook . goto-address-mode)
         (prog-mode-hook . goto-address-prog-mode))
  :bind (:map goto-address-highlight-keymap
