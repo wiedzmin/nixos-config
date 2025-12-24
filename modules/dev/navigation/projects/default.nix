@@ -63,7 +63,7 @@ in
   config = mkMerge [
     (mkIf (cfg.enable) {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ onefetch inputs.devenv-src.packages.${pkgs.system}.devenv ];
+        home.packages = with pkgs; [ onefetch inputs.devenv-src.packages.${pkgs.stdenv.hostPlatform.system}.devenv ];
         programs.git = {
           settings.alias = {
             psum = "!which onefetch && onefetch";
