@@ -27,7 +27,6 @@ let
       ${pkgs.systemd}/bin/systemctl --user restart emacs.service
     '';
   };
-  nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   debugTracePatch = ''
     (let ((context (lambda () (format "\nload-file-name: %s" load-file-name))))
       (trace-function #'load nil context)
@@ -258,6 +257,7 @@ in
       initElContent = mkOption {
         type = types.lines;
         default = ''
+          ${lib.optionalString (cfg.globalLexicalBinding.enable) ";;; -*- lexical-binding: t; -*-"}
           ${lib.optionalString (cfg.globalLexicalBinding.enable) "(set-default-toplevel-value 'lexical-binding t)"}
           (setq debug-on-error t)
           (setq debug-on-quit t)
@@ -382,6 +382,7 @@ in
         ] ++ lib.optionals cfg.treesitter.enable [ gcc ] /* for building tree-sitter grammars, if needed */);
         home.file = {
           "${cfg.initDir}/early-init.el".text = ''
+            ${lib.optionalString (cfg.globalLexicalBinding.enable) ";;; -*- lexical-binding: t; -*-"}
             ${lib.optionalString (cfg.daemon.enable) ''
               (setenv "EDITOR" "${emacsWithPkgs}/bin/emacsclient -c -s ${cfg.serverSocket}")
             ''}
