@@ -4,6 +4,8 @@ with pkgs.unstable.commonutils;
 # <[all nix shells]> - <rg "# nsp" "everything" "/home/alex3rd/workspace/repos/github.com/wiedzmin/nixos-config/">
 # <[all github searches]> - <rg "\\{gh" "everything" "/home/alex3rd/workspace/repos/github.com/wiedzmin/nixos-config/">
 
+# <[all TODOs]> - <rg "TODO" "everything" "/home/alex3rd/workspace/repos/github.com/wiedzmin/nixos-config/">
+# <[all FIXMEs]> - <rg "FIXME" "everything" "/home/alex3rd/workspace/repos/github.com/wiedzmin/nixos-config/">
 # <[editorconfig setup reference]> - <rg "editorconfig" "everything" "/home/alex3rd/workspace/repos/github.com/wiedzmin/nixos-config/">
 
 let
