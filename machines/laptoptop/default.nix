@@ -421,6 +421,7 @@ in
       enable = true;
       telegram.autostart = true;
       whatsapp.enable = true;
+      zoom.enable = true;
       emacs.enable = true;
     };
     hosts.enable = true;
