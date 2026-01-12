@@ -381,6 +381,7 @@ in
       emacsEverywhere.enable = true;
       remapEverywhere.enable = true;
       extraConfigureFlags = [ "--disable-gc-mark-trace" ];
+      globalLexicalBinding.enable = true;
     };
     edit.enable = true;
     navigation = {
