@@ -652,7 +652,7 @@ in
     prompts.starship.enable = true;
     tools = {
       enable = true;
-      pager = "moar";
+      pager = "moor";
     };
     vt.kitty = {
       enable = true;

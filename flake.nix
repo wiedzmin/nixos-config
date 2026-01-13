@@ -157,10 +157,10 @@
                       chmod a+x $out/bin/TabNine
                     '';
                   });
-                  moar = old.moar.overrideAttrs (_: {
+                  moor = old.moor.overrideAttrs (_: {
                     postPatch = ''
-                      sed -i "s,^\trussiaNotSupported(),,g" moar.go
-                      cat moar.go
+                      sed -i "s,^\trussiaNotSupported(),,g" cmd/moor/moor.go
+                      cat cmd/moor/moor.go
                     '';
                   });
                   kitty-themes = old.kitty-themes.overrideAttrs (_: {

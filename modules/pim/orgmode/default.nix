@@ -235,11 +235,11 @@ in
           matches = [
             {
               trigger = ":orc";
-              replace = "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k2 | ${pkgs.moar}/bin/moar";
+              replace = "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k2 | ${pkgs.moor}/bin/moor";
             }
             {
               trigger = ":sorc";
-              replace = "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k1n | ${pkgs.moar}/bin/moar";
+              replace = "cd ${cfg.org-roam.rootDir} && find . -name \"*.org\" | xargs wc -l | sort -k1n | ${pkgs.moor}/bin/moor";
             }
             {
               trigger = ":sforc";
