@@ -5,6 +5,7 @@ with lib;
 
 let
   cfg = config.pim.core;
+  user = config.attributes.mainUser.name;
 in
 {
   options = {
@@ -24,6 +25,65 @@ in
         default = false;
         description = "Whether to enable WM keybindings.";
       };
+      wsMapping.rules = mkOption {
+        type = types.listOf types.attrs;
+        default = [
+          {
+            class = "obsidian";
+            title = "Archive Obsidian";
+            desktop = "sandbox";
+            activate = true;
+          }
+          {
+            class = "obsidian";
+            title = "Common Obsidian";
+            desktop = "sandbox";
+            activate = true;
+          }
+          {
+            class = "obsidian";
+            title = "Culture Obsidian";
+            desktop = "var";
+            activate = true;
+          }
+          {
+            class = "obsidian";
+            title = "Emacs Obsidian";
+            desktop = "main";
+            activate = true;
+          }
+          {
+            class = "obsidian";
+            title = "Housekeeping Obsidian";
+            desktop = "main";
+            activate = true;
+          }
+          {
+            class = "obsidian";
+            title = "NixOS Obsidian";
+            desktop = "main";
+            activate = true;
+          }
+          {
+            class = "obsidian";
+            title = "Problems Obsidian";
+            desktop = "sandbox";
+            activate = true;
+          }
+          {
+            class = "obsidian";
+            title = "Tech Obsidian";
+            desktop = "main";
+            activate = true;
+          }
+          {
+            class = "obsidian";
+            title = "WorkEnv Obsidian";
+            desktop = "main";
+            activate = true;
+          }
+        ];
+      };
     };
   };
 
@@ -32,6 +92,7 @@ in
       attributes.transientPackages = with pkgs; [ obsidian rofi-obsidian ];
       ide.emacs.core.extraPackages = epkgs: [ epkgs.melpaStablePackages.hyperbole ];
       ide.emacs.core.config = builtins.readFile ./elisp/pim.el;
+      wmCommon.wsMapping.rules = cfg.wsMapping.rules;
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = lib.optionals config.navigation.bookmarks.enable [
