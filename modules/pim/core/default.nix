@@ -29,7 +29,7 @@ in
 
   config = mkMerge [
     (mkIf (cfg.enable && cfg.emacs.automation.enable) {
-      attributes.transientPackages = with pkgs; [ obsidian ];
+      attributes.transientPackages = with pkgs; [ obsidian rofi-obsidian ];
       ide.emacs.core.extraPackages = epkgs: [ epkgs.melpaStablePackages.hyperbole ];
       ide.emacs.core.config = builtins.readFile ./elisp/pim.el;
     })
@@ -40,6 +40,11 @@ in
           cmd = "go#projects open --path ${wsRoot roots "github"}/edrx/eev";
           mode = "dev";
         })
+        {
+          key = [ "o" ];
+          cmd = "${pkgs.rofi}/bin/rofi -modi obsidian:rofi-obsidian -show obsidian -combi-modi obsidian";
+          mode = "run";
+        }
       ];
     })
     (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
