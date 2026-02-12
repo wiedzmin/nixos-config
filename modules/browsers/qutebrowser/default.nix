@@ -259,7 +259,6 @@ in
         };
         programs.qutebrowser = {
           enable = true;
-          package = nixpkgs-qutebrowser-pinned.qutebrowser;
           loadAutoconfig = false;
           aliases = {
             jsd = "set content.javascript.enabled false";
