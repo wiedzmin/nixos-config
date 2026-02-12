@@ -95,6 +95,7 @@
     ./wm/impl/i3
     ./wm/impl/qtile
     ./workstation/backups
+    ./workstation/backups/secrets/bookmarks.nix
     ./workstation/input/core
     ./workstation/input/mouse
     ./workstation/input/keyboard

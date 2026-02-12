@@ -28,7 +28,13 @@ in
   };
 
   config = mkMerge [
-    (mkIf cfg.enable { })
+    (mkIf cfg.enable {
+      home-manager.users."${user}" = {
+        services.syncthing = {
+          enable = true;
+        };
+      };
+    })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.backup-each-save
