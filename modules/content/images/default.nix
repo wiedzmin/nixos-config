@@ -312,6 +312,30 @@ in
               trigger = ":idim";
               replace = "identify -verbose $|$"; # nsp>imagemagick npkg#imagemagick
             }
+            {
+              trigger = ":mri";
+              replace = "mogrify -rotate {{angle}} {{filename}}"; # nsp>imagemagick npkg#imagemagick
+              vars = [
+                {
+                  name = "angle";
+                  type = "choice";
+                  params = {
+                    values = [
+                      "90"
+                      "180"
+                      "270"
+                      "-90"
+                      "-180"
+                      "-270"
+                    ];
+                  };
+                }
+                {
+                  name = "filename";
+                  type = "clipboard";
+                }
+              ];
+            }
           ];
         };
       };
