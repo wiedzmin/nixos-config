@@ -93,6 +93,7 @@ in
       ide.emacs.core.extraPackages = epkgs: [ epkgs.melpaStablePackages.hyperbole ];
       ide.emacs.core.config = builtins.readFile ./elisp/pim.el;
       wmCommon.wsMapping.rules = cfg.wsMapping.rules;
+      content.core.documents.path = homePrefix user "docs/obsidian";
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       wmCommon.keybindings.entries = lib.optionals config.navigation.bookmarks.enable [
