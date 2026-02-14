@@ -29,6 +29,11 @@ in
         default = false;
         description = "Whether to enable core content setup.";
       };
+      documents.path = mkOption {
+        type = types.str;
+        description = "XDG dir setting for documents";
+        default = homePrefix user "docs/inbox";
+      };
     };
   };
 
@@ -53,7 +58,7 @@ in
           userDirs = {
             enable = true;
             desktop = homePrefix user "Desktop";
-            documents = homePrefix user "docs/inbox";
+            documents = cfg.documents.path;
             download = homePrefix user "Downloads";
             music = homePrefix user "blobs/music";
             pictures = homePrefix user "blobs/pics";
