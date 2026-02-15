@@ -170,6 +170,16 @@ in
           cmd = "${pkgs.bluez}/bin/bluetoothctl disconnect ${with cfg.bluetooth; devices.${defaultHeadset}}";
         }
         {
+          key = [ "," ];
+          mode = "network";
+          cmd = "${pkgs.bluez}/bin/bluetoothctl power off";
+        }
+        {
+          key = [ "." ];
+          mode = "network";
+          cmd = "${pkgs.bluez}/bin/bluetoothctl power on";
+        }
+        {
           key = [ "Shift" "1" ];
           mode = "network";
           cmd = "${pkgs.bzmenu}/bin/bzmenu --launcher rofi"; #  FIXME: parameterize launcher somehow
