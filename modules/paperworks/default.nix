@@ -10,6 +10,8 @@ with lib;
 # nsp>pdfslicer npkg#pdfslicer
 # nsp>pdftk npkg#pdftk
 # nsp>unipicker npkg#unipicker
+# nsp>htmldoc npkg#htmldoc
+# nsp>wkhtmltopdf npkg#wkhtmltopdf
 
 let
   cfg = config.paperworks;
