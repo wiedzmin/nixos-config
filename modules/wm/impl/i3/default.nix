@@ -221,7 +221,7 @@ in
       wmCommon = {
         modeBindings = {
           "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
-          "scratchpad" = [ prefix "grave" ];
+          "scratchpad" = [ prefix "F8" ];
         };
         keybindings.entries = (forEach [
           {
@@ -321,7 +321,7 @@ in
             raw = true;
           }
           {
-            key = [ prefix "l" ];
+            key = [ prefix "grave" ];
             cmd = "focus mode_toggle";
             mode = "root";
             raw = true;

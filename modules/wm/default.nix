@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.wmCommon;
-  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
 in
 {
@@ -172,7 +171,7 @@ in
 
       wmCommon.modeBindings = {
         "dev" = [ cfg.prefix "d" ];
-        "layout" = [ cfg.prefix "<" ];
+        "layout" = [ cfg.prefix "l" ];
         "resize" = [ cfg.prefix "=" ];
         "run" = [ cfg.prefix "r" ];
         "select" = [ cfg.prefix "." ];
