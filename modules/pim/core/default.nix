@@ -36,31 +36,13 @@ in
           }
           {
             class = "obsidian";
-            title = "Common Obsidian";
-            desktop = "sandbox";
-            activate = true;
-          }
-          {
-            class = "obsidian";
             title = "Culture Obsidian";
             desktop = "var";
             activate = true;
           }
           {
             class = "obsidian";
-            title = "Emacs Obsidian";
-            desktop = "main";
-            activate = true;
-          }
-          {
-            class = "obsidian";
             title = "Housekeeping Obsidian";
-            desktop = "main";
-            activate = true;
-          }
-          {
-            class = "obsidian";
-            title = "NixOS Obsidian";
             desktop = "main";
             activate = true;
           }
@@ -133,18 +115,6 @@ in
             }
           ];
         };
-        obsidian-vaults-Common = {
-          tags = [ "obsidian" "common" ];
-          path = homePrefix user "docs/obsidian/Common";
-          windowRules = [
-            {
-              class = "Emacs";
-              title = "Common obsidian";
-              desktop = "sandbox";
-              activate = true;
-            }
-          ];
-        };
         obsidian-vaults-Culture = {
           tags = [ "obsidian" "culture" ];
           path = homePrefix user "docs/obsidian/Culture";
@@ -157,18 +127,6 @@ in
             }
           ];
         };
-        obsidian-vaults-Emacs = {
-          tags = [ "obsidian" "emacs" ];
-          path = homePrefix user "docs/obsidian/Emacs";
-          windowRules = [
-            {
-              class = "Emacs";
-              title = "Emacs obsidian";
-              desktop = "main";
-              activate = true;
-            }
-          ];
-        };
         obsidian-vaults-Housekeeping = {
           tags = [ "obsidian" "housekeeping" ];
           path = homePrefix user "docs/obsidian/Housekeeping";
@@ -176,18 +134,6 @@ in
             {
               class = "Emacs";
               title = "Housekeeping obsidian";
-              desktop = "main";
-              activate = true;
-            }
-          ];
-        };
-        obsidian-vaults-NixOS = {
-          tags = [ "obsidian" "nixos" ];
-          path = homePrefix user "docs/obsidian/NixOS";
-          windowRules = [
-            {
-              class = "Emacs";
-              title = "NixOS obsidian";
               desktop = "main";
               activate = true;
             }
