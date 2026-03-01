@@ -1,0 +1,53 @@
+From 6b6e95d481fc385336eda96c18ee824725b0fb59 Mon Sep 17 00:00:00 2001
+From: Alex Ermolov <aaermolov@gmail.com>
+Date: Sun, 1 Mar 2026 20:00:53 +0300
+Subject: [PATCH] xkb: pass some `dunst` keybindings through
+
+---
+ i3lock.c | 17 +++++++++++++++++
+ 1 file changed, 17 insertions(+)
+
+diff --git a/i3lock.c b/i3lock.c
+index a8ae54b..6eb77be 100644
+--- a/i3lock.c
++++ b/i3lock.c
+@@ -613,12 +613,14 @@ static void handle_key_press(xcb_key_press_event_t *event) {
+     char buffer[128];
+     int n;
+     bool ctrl;
++    bool shift;
+ #if XKBCOMPOSE == 1
+     bool composed = false;
+ #endif
+ 
+     ksym = xkb_state_key_get_one_sym(xkb_state, event->detail);
+     ctrl = xkb_state_mod_name_is_active(xkb_state, XKB_MOD_NAME_CTRL, XKB_STATE_MODS_DEPRESSED);
++    shift = xkb_state_mod_name_is_active(xkb_state, XKB_MOD_NAME_SHIFT, XKB_STATE_MODS_DEPRESSED);
+ 
+     /* The buffer will be null-terminated, so n >= 2 for 1 actual character. */
+     memset(buffer, '\0', sizeof(buffer));
+@@ -755,6 +757,21 @@ static void handle_key_press(xcb_key_press_event_t *event) {
+             return;
+     }
+ 
++    switch(ksym) {
++        case XKB_KEY_space:
++            if (ctrl && shift) {
++                xcb_send_event(conn, true, screen->root, XCB_EVENT_MASK_BUTTON_PRESS, (char *)event);
++                return;
++            }
++    }
++    switch(ksym) {
++        case XKB_KEY_grave:
++            if (ctrl) {
++                xcb_send_event(conn, true, screen->root, XCB_EVENT_MASK_BUTTON_PRESS, (char *)event);
++                return;
++            }
++    }
++
+     if ((input_position + 8) >= (int)sizeof(password))
+         return;
+ 
+-- 
+2.51.2
+

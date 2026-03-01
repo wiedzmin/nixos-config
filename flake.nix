@@ -147,7 +147,10 @@
                       rev = version;
                       sha256 = "sha256-bbjkvgSKD57sdOtPYGLAKpQoIsJnF6s6ySq4dTWC3tI=";
                     };
-                    patches = [ ./modules/workstation/lockscreen/patches/i3lock-color-pass-layout-switching.patch ];
+                    patches = [
+                      ./modules/workstation/lockscreen/patches/i3lock-color-pass-layout-switching.patch
+                      ./modules/workstation/lockscreen/patches/i3lock-color-pass-some-dunst-keybindings-through.patch
+                    ];
                   });
                   tabnine = old.tabnine.overrideAttrs (_: {
                     installPhase = ''
