@@ -36,11 +36,6 @@ in
         default = true;
         description = "Suspend when inactive (using xsuspender)";
       };
-      keyboardCentric = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Enable keyboard-centric controls (tridactyl, etc.)";
-      };
       desktopID = mkOption {
         type = types.enum [ standardDesktopID windowedDesktopID ];
         default = windowedDesktopID;
@@ -278,11 +273,10 @@ in
               };
               extensions.packages = with nurpkgs.rycee.firefox-addons;
                 [
-                  browserpass
                   clearurls
                   greasemonkey
                   keepass-helper
-                ] ++ optionals cfg.keyboardCentric [ tridactyl ];
+                ];
               userChrome = ''
                 #TabsToolbar { visibility: collapse !important; }
                 #titlebar { visibility: collapse !important; }
@@ -290,133 +284,6 @@ in
             };
           };
         };
-        xdg.configFile."tridactyl/tridactylrc".text = ''
-          set storageloc local
-
-          set historyresults 100
-
-          colorscheme dark
-
-          " Comment toggler for Reddit and Hacker News
-          bind ;c hint -c [class*="expand"],[class="togg"]
-
-          bind qnt composite js javascript:location.href="org-protocol:///capture?template=nt&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
-          bind qnc composite js javascript:location.href="org-protocol:///capture?template=nc&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
-          bind qet composite js javascript:location.href="org-protocol:///capture?template=et&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
-          bind qec composite js javascript:location.href="org-protocol:///capture?template=ec&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
-          bind qxt composite js javascript:location.href="org-protocol:///capture?template=xt&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
-          bind qxc composite js javascript:location.href="org-protocol:///capture?template=xc&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
-          bind qd composite js javascript:location.href="org-protocol:///capture?template=d&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
-          bind qjt composite js javascript:location.href="org-protocol:///capture?template=jt&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
-          bind qjc composite js javascript:location.href="org-protocol:///capture?template=jc&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
-          bind qjr composite js javascript:location.href="org-protocol:///capture?template=jr&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
-          bind qm composite js javascript:location.href="org-protocol:///capture?template=m&url=" + encodeURIComponent(location.href) + "&title=" + encodeURIComponent(document.title) + "&body=" + encodeURIComponent(window.getSelection())
-
-          bind <A-y> clipboard yank
-
-          "
-          " Misc settings
-          "
-
-          " set editorcmd to emacsclient, or use the defaults on other platforms
-          js tri.browserBg.runtime.getPlatformInfo().then(os=>{const editorcmd = os.os=="linux" ? "emacsclient" : "auto"; tri.config.set("editorcmd", editorcmd)})
-
-          " Sane hinting mode
-          set hintfiltermode vimperator-reflow
-          set hintchars ${config.workstation.input.core.hints.alphabet}
-          set hintuppercase false
-          set hintnames uniform
-
-          set tabopenpos last
-
-          set yankto both
-          set putfrom clipboard
-
-          " Make Tridactyl work on more sites at the expense of some security
-
-          " Make quickmarks for the sane Tridactyl issue view
-          quickmark T https://github.com/cmcaine/tridactyl/issues?utf8=%E2%9C%93&q=sort%3Aupdated-desc+
-          quickmark t https://github.com/tridactyl/tridactyl
-
-          " Map keys between layouts
-          keymap ё `
-          keymap й q
-          keymap ц w
-          keymap у e
-          keymap к r
-          keymap е t
-          keymap н y
-          keymap г u
-          keymap ш i
-          keymap щ o
-          keymap з p
-          keymap х [
-          keymap ъ ]
-          keymap ф a
-          keymap ы s
-          keymap в d
-          keymap а f
-          keymap п g
-          keymap р h
-          keymap о j
-          keymap л k
-          keymap д l
-          keymap ж ;
-          keymap э '
-          keymap я z
-          keymap ч x
-          keymap с c
-          keymap м v
-          keymap и b
-          keymap т n
-          keymap ь m
-          keymap б ,
-          keymap ю .
-          keymap Ё ~
-          keymap Й Q
-          keymap Ц W
-          keymap У E
-          keymap К R
-          keymap Е T
-          keymap Н Y
-          keymap Г U
-          keymap Ш I
-          keymap Щ O
-          keymap З P
-          keymap Х {
-          keymap Ъ }
-          keymap Ф A
-          keymap Ы S
-          keymap В D
-          keymap А F
-          keymap П G
-          keymap Р H
-          keymap О J
-          keymap Л K
-          keymap Д L
-          keymap Ж :
-          keymap Э "
-          keymap Я Z
-          keymap Ч X
-          keymap С C
-          keymap М V
-          keymap И B
-          keymap Т N
-          keymap Ь M
-          keymap Б <
-          keymap Ю >
-
-          keymap <C-х> <C-[>
-          keymap пш gi
-          keymap пп gg
-          keymap нн yy
-          keymap нс yc
-
-          keymap . /
-
-          set keytranslatemodes.ignoremaps true
-          set keytranslatemodes.hintmaps true
-        '';
         home.file = {
           ".mozilla/firefox/profile.default/browser-extension-data/{d47d18bc-d6ba-4f96-a144-b3016175f3a7}/storage.js".text =
             builtins.toJSON {
@@ -424,24 +291,6 @@ in
               path = true;
               delimiter = " // ";
             };
-          ".mozilla/native-messaging-hosts/passff.json".text = builtins.toJSON {
-            name = "passff";
-            description = "Host for communicating with zx2c4 pass";
-            path = "${pkgs.passff-host}/share/passff-host/passff.py";
-            type = "stdio";
-            allowed_extensions = [ "passff@invicem.pro" ];
-          };
-          ".mozilla/native-messaging-hosts/tridactyl.json".text = builtins.toJSON {
-            name = "tridactyl";
-            description = "Tridactyl native command handler";
-            path = "${pkgs.tridactyl-native}/bin/native_main";
-            type = "stdio";
-            allowed_extensions = [
-              "tridactyl.vim@cmcaine.co.uk"
-              "tridactyl.vim.betas@cmcaine.co.uk"
-              "tridactyl.vim.betas.nonewtab@cmcaine.co.uk"
-            ];
-          };
         };
       };
     })
