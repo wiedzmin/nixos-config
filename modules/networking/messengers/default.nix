@@ -101,6 +101,26 @@ in
               trigger = ":stt";
               replace = "~~$|$~~";
             }
+            {
+              trigger = ":tgu";
+              replace = "tg://resolve?domain=@{{username}}";
+              vars = [
+                {
+                  name = "username";
+                  type = "clipboard";
+                }
+              ];
+            }
+            {
+              trigger = ":tgi";
+              replace = "tg://join?invite={{invite}}";
+              vars = [
+                {
+                  name = "invite";
+                  type = "clipboard";
+                }
+              ];
+            }
           ];
         };
       };
