@@ -42,7 +42,7 @@ in
         home.activation.xrdb = {
           after = [ "linkGeneration" ];
           before = [ ];
-          data = "DISPLAY=:0 ${pkgs.xorg.xrdb}/bin/xrdb ${homePrefix user ".Xresources"} || exit 0";
+          data = "DISPLAY=:0 ${pkgs.xrdb}/bin/xrdb ${homePrefix user ".Xresources"} || exit 0";
         };
       };
     })
@@ -50,7 +50,7 @@ in
       wmCommon.keybindings.entries = [
         {
           key = [ "Shift" "r" ];
-          cmd = "${pkgs.xorg.xrdb}/bin/xrdb $HOME/.Xresources";
+          cmd = "${pkgs.xrdb}/bin/xrdb $HOME/.Xresources";
           mode = "xserver";
         }
       ];

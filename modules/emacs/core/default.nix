@@ -377,8 +377,8 @@ in
           ++ optionals (cfg.emacsEverywhere.enable) (with pkgs; [
           xclip
           xdotool
-          xorg.xprop
-          xorg.xwininfo
+          xprop
+          xwininfo
         ] ++ lib.optionals cfg.treesitter.enable [ gcc ] /* for building tree-sitter grammars, if needed */);
         home.file = {
           "${cfg.initDir}/early-init.el".text = ''

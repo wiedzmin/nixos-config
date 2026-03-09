@@ -89,8 +89,8 @@ in
         let xmodmaprc = pkgs.writeText "xmodmaprc" cfg.xmodmap.rc;
         in
         ''
-          ${pkgs.xorg.xmodmap}/bin/xmodmap ${xmodmaprc}
-          ${pkgs.xorg.xmodmap}/bin/xmodmap -e "clear Lock"
+          ${pkgs.xmodmap}/bin/xmodmap ${xmodmaprc}
+          ${pkgs.xmodmap}/bin/xmodmap -e "clear Lock"
         '';
     })
     (mkIf (cfg.enable && cfg.xcompose.enable) {
@@ -98,7 +98,7 @@ in
       home-manager.users."${user}" = {
         home.file = {
           ".XCompose".text = ''
-            include "${pkgs.xorg.libX11}/share/X11/locale/en_US.UTF-8/Compose"
+            include "${pkgs.libx11}/share/X11/locale/en_US.UTF-8/Compose"
 
             ${cfg.xcompose.mappings}
           '';

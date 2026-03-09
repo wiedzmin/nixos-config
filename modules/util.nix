@@ -413,8 +413,8 @@ rec {
       runtimeInputs = with nixpkgs; [
         coreutils
         gnugrep
-        xorg.xorgserver.out
-        xorg.xrandr
+        xorgserver.out
+        xrandr
       ] ++ [ wmpkg ] ++ pkgsAux;
       text = ''
         XDISPLAY=''${XDISPLAY:-:1}
