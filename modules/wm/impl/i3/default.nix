@@ -1,4 +1,4 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -6,6 +6,13 @@ let
   cfg = config.wm.i3;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
   statusBarImplToCmd = {
     "py3" = "py3status";
     "i3-rs" = "i3status-rs";
@@ -182,7 +189,7 @@ in
       };
       statusbar.deps = mkOption {
         type = types.listOf types.package;
-        default = with pkgs; [ dbus dunst gawk iproute2 iw kbdd openvpn perl xdotool yad ];
+        default = with pkgs; [ dbus dunst gawk iproute2 iw nixpkgs-last-unbroken.kbdd openvpn perl xdotool yad ];
         visible = false;
         readOnly = true;
         internal = true;

@@ -1,10 +1,17 @@
-{ config, lib, pkgs, ... }:
+{ config, inputs, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
 let
   cfg = config.wmCommon;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
+  nixpkgs-last-unbroken = import inputs.nixpkgs-last-unbroken {
+    config = config.nixpkgs.config // {
+      allowUnfree = true;
+      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
+    };
+    localSystem = { system = "x86_64-linux"; };
+  };
 in
 {
   options = {
@@ -163,7 +170,7 @@ in
         serviceConfig = {
           Type = "dbus";
           BusName = "ru.gentoo.KbddService";
-          ExecStart = "${pkgs.kbdd}/bin/kbdd -n";
+          ExecStart = "${nixpkgs-last-unbroken.kbdd}/bin/kbdd -n";
           StandardOutput = "journal";
           StandardError = "journal";
         };
