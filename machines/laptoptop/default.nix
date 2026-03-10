@@ -472,7 +472,7 @@ in
       emacs.enable = true;
       treesitter.enable = false;
       permittedInsecurePackages = [
-        "beekeeper-studio-5.3.4"
+        "beekeeper-studio-5.5.7"
         "qtwebengine-5.15.19"
       ];
     };
