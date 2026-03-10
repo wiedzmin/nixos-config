@@ -70,7 +70,7 @@ in
       }];
 
       users.users."${user}".extraGroups = [ "video" ];
-      programs.light.enable = true;
+      hardware.acpilight.enable = true;
       hardware.brillo.enable = true;
 
       home-manager.users."${user}" = {
@@ -98,22 +98,22 @@ in
       wmCommon.keybindings.entries = [
         {
           key = [ "XF86MonBrightnessDown" ];
-          cmd = "${pkgs.light}/bin/light -U ${toString cfg.delta}";
+          cmd = "${pkgs.acpilight}/bin/xbacklight -dec ${toString cfg.delta}";
           mode = "root";
         }
         {
           key = [ "XF86MonBrightnessUp" ];
-          cmd = "${pkgs.light}/bin/light -A ${toString cfg.delta}";
+          cmd = "${pkgs.acpilight}/bin/xbacklight -inc ${toString cfg.delta}";
           mode = "root";
         }
         {
           key = [ "Control" "XF86MonBrightnessDown" ];
-          cmd = "${pkgs.light}/bin/light -S 20";
+          cmd = "${pkgs.acpilight}/bin/xbacklight -set 20";
           mode = "root";
         }
         {
           key = [ "Control" "XF86MonBrightnessUp" ];
-          cmd = "${pkgs.light}/bin/light -S 100";
+          cmd = "${pkgs.acpilight}/bin/xbacklight -set 100";
           mode = "root";
         }
         {
