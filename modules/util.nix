@@ -148,6 +148,7 @@ rec {
   # }}}
   # {{{ Strings.Paths
   homePrefix = user: suffix: "/home/${user}/" + suffix;
+  docsPrefix = user: suffix: (homePrefix user "docs") + suffix;
   goBinPrefix = goPath: suffix: "${goPath}/bin/" + suffix;
   xdgConfig = user: suffix: (homePrefix user ".config") + suffix; # FIXME: deal with slashes seamlessly
   emacsConfigPrefix = user: suffix: (homePrefix user ".emacs.d") + suffix;
