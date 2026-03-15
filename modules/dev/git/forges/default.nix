@@ -25,8 +25,6 @@ let
   collectWorkspaceRoots = forges:
     mapAttrs' (key: meta: nameValuePair "${key}" meta.workspaceRoot)
       (filterAttrs (_: meta: lib.hasAttr "workspaceRoot" meta) forges);
-  collectPassCredentials = forges:
-    (foldAttrs (n: a: n // a) { } (collect (f: f ? passCredentialsMap) forges))."passCredentialsMap";
   mkMatchBlock = meta: {
     inherit (meta.ssh.matchBlock) hostname user serverAliveInterval identitiesOnly extraOptions;
   } // optionalAttrs (meta.ssh.matchBlock.identityFile != null) {
@@ -117,20 +115,6 @@ let
       };
     };
   };
-  userModule = types.submodule {
-    options = {
-      login = mkOption {
-        type = types.str;
-        default = "";
-        description = "Forge login.";
-      };
-      password = mkOption {
-        type = types.str;
-        default = "";
-        description = "Forge password.";
-      };
-    };
-  };
   forgeModule = types.submodule {
     options = {
       type = mkOption {
@@ -142,10 +126,6 @@ let
         type = types.str;
         default = "";
         description = "Local workspace root for this forge.";
-      };
-      credentials = mkOption {
-        type = userModule;
-        description = "Forge login/password.";
       };
       appToken = mkOption {
         type = types.str;
@@ -159,11 +139,6 @@ let
       ssh.matchBlock = mkOption {
         type = matchBlockModule;
         description = "SSH match block.";
-      };
-      passCredentialsMap = mkOption {
-        type = types.attrsOf types.attrs;
-        default = { };
-        description = "Pass credentials map.";
       };
       extraConfig = mkOption {
         type = types.attrsOf types.attrs;
@@ -197,7 +172,6 @@ in
   config = mkMerge [
     (mkIf cfg.enable (
       let
-        credentials = collectPassCredentials cfg.forges;
         matchBlocks = collectMatchBlocks cfg.forges;
         extraConfig = collectExtraConfig cfg.forges;
         workspaceRoots = collectWorkspaceRoots cfg.forges;
@@ -209,18 +183,12 @@ in
         }];
 
         home-manager.users."${user}" = {
-          xdg.configFile."pass-git-helper/git-pass-mapping.ini".text =
-            generators.toINI { } credentials;
           programs.ssh.matchBlocks =
             optionalAttrs (matchBlocks != { }) matchBlocks;
           programs.git.settings =
             optionalAttrs (extraConfig != { }) extraConfig;
         };
         navigation.bookmarks.workspaces.roots = workspaceRoots;
-        workstation.systemtraits.instructions =
-          optionalString (credentials != { }) ''
-            ${pkgs.redis}/bin/redis-cli set git/credentials_mapping ${mkRedisJSON credentials}
-          '';
       }
     ))
     (mkIf (cfg.enable && cfg.emacs.enable) (

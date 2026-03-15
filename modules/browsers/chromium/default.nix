@@ -95,7 +95,6 @@ in
           enable = true;
           extensions = [
             "ignpacbgnbnkaiooknalneoeladjnfgb" # Url in title
-            "naepdomgkenhinolocfifgehidddafch" # Browserpass
             "poahndpaaanbpbeafbkploiobpiiieko" # Display anchors
             # "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
             # "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere

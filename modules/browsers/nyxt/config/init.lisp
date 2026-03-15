@@ -11,9 +11,6 @@
      (download-engine :renderer)
      (conservative-word-move t)))
 
-(define-configuration (buffer)
-    ((password-interface (make-instance 'password:user-password-store-interface))))
-
 (define-configuration (web-buffer)
     ((conservative-word-move t)
      (default-modes `(auto-mode
@@ -40,4 +37,3 @@
 
 (define-configuration nyxt/auto-mode:auto-mode
     ((nyxt/auto-mode:prompt-on-mode-toggle t)))
-

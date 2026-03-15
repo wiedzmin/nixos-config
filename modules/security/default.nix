@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -23,6 +23,17 @@ in
         default = false;
         description = "Whether to enable security tools.";
       };
+      keepassxc.autostart = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to start KeePassXC instance automatically with X session";
+      };
+      keepassxc.package = mkOption {
+        type = types.nullOr types.package;
+        example = "pkgs.keepassxc";
+        default = pkgs.keepassxc;
+        description = "KeePassXC package to use.";
+      };
       pinentry.package = mkOption {
         type = types.nullOr types.package;
         example = "pkgs.pinentry-gnome3";
@@ -32,11 +43,6 @@ in
         type = types.bool;
         default = false;
         description = "Whether to allow special users to do some things without authentication.";
-      };
-      passwordStorePath = mkOption {
-        description = "Default path to Pass password store";
-        type = types.str;
-        default = homePrefix user ".password-store";
       };
       emacs.enable = mkOption {
         type = types.bool;
@@ -66,14 +72,34 @@ in
       };
 
       home-manager.users."${user}" = {
-        programs.password-store = {
+        programs.keepassxc = {
           enable = true;
-          package = with pkgs; pass.withExtensions (ext: with ext; [ pass-audit pass-checkup pass-import pass-update ]);
+          package = cfg.keepassxc.package;
           settings = {
-            PASSWORD_STORE_CLIP_TIME = "60";
-            PASSWORD_STORE_DIR = cfg.passwordStorePath;
+            Browser.Enabled = true;
+            Browser.UnlockDatabase = true;
+            FdoSecrets.Enabled = true; # Enable Secret Service Integration
+            GUI = {
+              AdvancedSettings = true;
+              ApplicationTheme = "dark";
+              CompactMode = true;
+              GUI_AlwaysOnTop = true;
+              HidePasswords = true;
+              MinimizeOnClose = true;
+              MinimizeOnStartup = true;
+              MinimizeToTray = true;
+              ShowTrayIcon = true;
+            };
+            SSHAgent.Enabled = true;
           };
         };
+        programs.git-credential-keepassxc = {
+          enable = true;
+          groups = [
+            "dev.forges" #  FIXME: consider extracting to parameters/attributes
+          ];
+        };
+        xdg.configFile."git-credential-keepassxc".text = builtins.toJSON config.attributes.keepassxc.gitCredentialsHelper.meta;
         programs.gpg = {
           enable = true;
           settings = {
@@ -82,15 +108,6 @@ in
             require-cross-certification = true;
             use-agent = true;
           };
-        };
-        programs.zsh = {
-          plugins = [
-            {
-              name = "pass-zsh-completion";
-              file = "pass-zsh-completion.plugin.zsh";
-              src = inputs.pass-zsh-completion;
-            }
-          ];
         };
         home.activation = {
           killGpgAgent = {
@@ -113,6 +130,7 @@ in
           pinentry.package = cfg.pinentry.package;
         };
       };
+      wmCommon.autostart.entries = optionals cfg.keepassxc.autostart [{ cmd = "${pkgs.keepassxc}/bin/keepassxc"; }];
       # TODO: generalize for multiple WMs
       wmCommon.wsMapping.rules = optionals (config.wm.i3.popupDuringFullscreen != "leave_fullscreen") [{
         class = ".*pinentry.*";
@@ -120,11 +138,6 @@ in
       }];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [
-        epkgs.pass
-        epkgs.password-store-menu
-      ];
-      ide.emacs.core.customKeymaps = { "custom-pass-map" = "<f6>"; };
       ide.emacs.core.config = (builtins.readFile ./elisp/security.el);
     })
     (mkIf cfg.polkit.silentAuth {

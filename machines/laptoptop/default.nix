@@ -49,6 +49,10 @@ in
     email = config.identity.secrets.email;
     gpgKeyID = config.identity.secrets.gpgKeyID;
   };
+  attributes.keepassxc = {
+    meta = config.identity.secrets.keepassxc.meta;
+    gitCredentialsHelper.meta = config.identity.secrets.keepassxc.gitCredentialsHelper.meta;
+  };
 
   users.extraUsers."${user}" = {
     isNormalUser = true;
@@ -635,6 +639,7 @@ in
 
   ext.security = {
     enable = true;
+    keepassxc.autostart = true;
     pinentry.package = pkgs.pinentry-qt;
     polkit.silentAuth = true;
     emacs.enable = true;

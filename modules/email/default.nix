@@ -11,9 +11,6 @@ let
   cfg = config.email;
   user = config.attributes.mainUser.name;
   hm = config.home-manager.users."${user}";
-  pass_imap_helper = pkgs.writeShellScriptBin "pass_imap_helper" ''
-    echo $(${pkgs.pass}/bin/pass $1 | ${pkgs.coreutils}/bin/head -n 1)
-  '';
   inherit (hm.xdg) dataHome;
 in
 {
@@ -28,11 +25,6 @@ in
         type = types.str;
         default = "";
         description = "Email address to use.";
-      };
-      passwordPath = mkOption {
-        type = types.str;
-        default = "";
-        description = "Path to email account password, in terms of `pass` tool.";
       };
       realName = mkOption {
         type = types.str;
@@ -172,6 +164,7 @@ in
         default = [ ];
         description = "Rules to delete mail by matching message's `From` field.";
       };
+      broken = mkOption { type = types.bool; default = true; readOnly = true; internal = true; };
     };
   };
 
@@ -181,10 +174,6 @@ in
         {
           assertion = cfg.emailAddress != "";
           message = "email: Must provide email address.";
-        }
-        {
-          assertion = cfg.passwordPath != "";
-          message = "email: Must provide Pass path to password.";
         }
       ] ++ lib.optionals cfg.gpg.sign [{
         assertion = cfg.gpg.keyID != "";
@@ -202,7 +191,6 @@ in
             flavor = cfg.defaultAccountFlavor;
             primary = true;
             userName = cfg.emailAddress;
-            passwordCommand = "${pass_imap_helper}/bin/pass_imap_helper ${cfg.passwordPath}";
             signature = {
               showSignature = cfg.signature.show;
               inherit (cfg.signature) text;
@@ -234,7 +222,6 @@ in
         account_personal = IMAP {
             server = '${cfg.imapfilter.server}',
             username = '${cfg.emailAddress}',
-            password = io.popen('${pass_imap_helper}/bin/pass_imap_helper ${cfg.passwordPath}', 'r'):read("*a"),
             ssl = '${cfg.imapfilter.ssl}'
         }
 

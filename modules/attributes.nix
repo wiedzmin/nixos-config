@@ -296,5 +296,15 @@ with lib;
       '';
       description = "SPOT for packages that are mostly added either temporarily or for some testing purposes";
     };
+    keepassxc.meta = mkOption {
+      type = types.attrs;
+      description = "Metadata for various KeePassXC databases";
+      default = { };
+    };
+    keepassxc.gitCredentialsHelper.meta = mkOption {
+      type = types.attrs;
+      description = "`git-credentials-keepassxc` metadata";
+      default = { };
+    };
   };
 }

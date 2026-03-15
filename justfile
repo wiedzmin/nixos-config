@@ -140,7 +140,6 @@ flake-update-inputs-kitty-unpackaged:
 # Update flake inputs for unpackaged shell extensions
 flake-update-inputs-shell-unpackaged:
     nix flake update git-extra-commands
-    nix flake update pass-zsh-completion
     nix flake update zsh-async
     nix flake update zsh-fuzzy-search-and-edit
     nix flake update zsh-reentry-hook

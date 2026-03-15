@@ -47,7 +47,6 @@ let
       ({
         Host = imap.host;
         User = userName;
-        PassCmd = toString passwordCommand;
       } // genTlsConfig imap.tls // optionalAttrs (imap.port != null) { Port = toString imap.port; }
       // mbsync.extraConfig.account) + "\n"
     + genSection "IMAPStore ${name}-remote" ({ Account = name; } // mbsync.extraConfig.remote) + "\n"
@@ -93,6 +92,7 @@ in
         '';
       };
     };
+    broken = mkOption { type = types.bool; default = true; readOnly = true; internal = true; };
   };
 
   config = mkIf cfg.enable {
@@ -108,7 +108,6 @@ in
       [
         (checkAccounts (a: a.maildir == null) "Missing maildir configuration")
         (checkAccounts (a: a.imap == null) "Missing IMAP configuration")
-        (checkAccounts (a: a.passwordCommand == null) "Missing passwordCommand")
         (checkAccounts (a: a.userName == null) "Missing username")
       ];
 

@@ -446,9 +446,6 @@ in
             };
           };
           keyBindings =
-            let
-              qutePassCommonArgs = ''--no-insert-mode --dmenu-invocation dmenu --username-pattern "((?<=^user: ).*|(?<=login: ).*)" --username-target secret'';
-            in
             {
               normal = {
                 "<Alt-,>" = "back";
@@ -508,10 +505,7 @@ in
                 "ad" = "download-cancel";
                 "cd" = "download-clear";
                 "gd" = "download";
-                # TODO: fork qute-pass userscript, namely for altering domain search logic, docs - https://qutebrowser.org/doc/help/commands.html#spawn
-                "za" = "spawn --userscript qute-pass ${qutePassCommonArgs}";
-                "zul" = "spawn --userscript qute-pass ${qutePassCommonArgs} --username-only";
-                "zup" = "spawn --userscript qute-pass ${qutePassCommonArgs} --password-only";
+                "xp" = "spawn --userscript qute-keepassxc --key ${config.attributes.mainUser.gpgKeyID}";
                 "@" = "macro-run";
                 "\\\"" = "macro-run";
                 "AD" = "adblock-update";
@@ -553,6 +547,7 @@ in
                 "<Ctrl-e>" = "edit-text";
                 "<Ctrl-y>" = "insert-text -- {clipboard}";
                 "<Shift-y>" = "insert-text -- {primary}";
+                "<Ctrl-Shift-k>" = "spawn --userscript qute-keepassxc --key ${config.attributes.mainUser.gpgKeyID}";
               };
               command = optionalAttrs (cfg.emacsKeys.enable) {
                 "<Ctrl-s>" = "search-next";

@@ -714,22 +714,6 @@
         "type": "github"
       }
     },
-    "pass-zsh-completion": {
-      "flake": false,
-      "locked": {
-        "lastModified": 1504488473,
-        "narHash": "sha256-KfZJ9XxZ8cBePcJPOAPQZ+f5kVUgLExDw/5QSduDA/0=",
-        "owner": "ninrod",
-        "repo": "pass-zsh-completion",
-        "rev": "e4d8d2c27d8999307e8f34bf81b2e15df4b76177",
-        "type": "github"
-      },
-      "original": {
-        "owner": "ninrod",
-        "repo": "pass-zsh-completion",
-        "type": "github"
-      }
-    },
     "root": {
       "inputs": {
         "devenv-src": "devenv-src",
@@ -758,7 +742,6 @@
         "nixpkgs-libreoffice": "nixpkgs-libreoffice",
         "nixpkgs-qtwebengine-bin": "nixpkgs-qtwebengine-bin",
         "nur": "nur",
-        "pass-zsh-completion": "pass-zsh-completion",
         "unstable": "unstable",
         "unstable-future": "unstable-future",
         "yasnippet-snippets": "yasnippet-snippets",

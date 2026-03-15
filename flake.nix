@@ -90,10 +90,6 @@
       url = "github:unixorn/git-extra-commands";
       flake = false;
     };
-    pass-zsh-completion = {
-      url = "github:ninrod/pass-zsh-completion";
-      flake = false;
-    };
     zsh-async = {
       url = "github:mafredri/zsh-async";
       flake = false;

@@ -77,7 +77,6 @@ in
                 quotepath = false;
                 askPass = "";
               };
-              "credential" = { helper = "${pkgs.pass-git-helper}/bin/pass-git-helper"; };
               "diff" = {
                 algorithm = "patience";
                 gpg = { textconv = "${pkgs.gnupg}/bin/gpg2 --no-tty --decrypt"; };

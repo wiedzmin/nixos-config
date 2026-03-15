@@ -66,8 +66,6 @@ in
         + "\n" + mkArbttBrowserTitleRule [ "Gmail" ] "web:email" config.attributes.browser + "\n"
         + mkArbttBrowserTitleRule [ "Google" "DuckDuckGo" ] "web:search" config.attributes.browser + "\n"
         + mkArbttBrowserTitleRule [ "wikipedia" ] "site:wikipedia" config.attributes.browser;
-
-      programs.browserpass.enable = config.browsers.firefox.enable || config.browsers.chromium.enable;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.config =
