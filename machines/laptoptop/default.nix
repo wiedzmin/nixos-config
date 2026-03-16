@@ -431,7 +431,6 @@ in
     hosts.enable = true;
     secrets = {
       enable = true;
-      vpn.enable = false;
       wifi.enable = true;
     };
     nmconnections.enable = true;
