@@ -226,6 +226,11 @@ in
         class = "Xsane";
         desktop = "scan"; # [ref:desktop_scan]
         float = false;
+        activate = true;
+      }] ++ lib.optionals (cfg.scanning.frontend == "xsane") [{
+        class = "scantailor-advanced";
+        desktop = "scan"; # [ref:desktop_scan]
+        activate = true;
       }];
     })
     (mkIf (cfg.scanning.enable && cfg.scanning.snapscan.enable) {
