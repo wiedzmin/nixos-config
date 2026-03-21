@@ -62,6 +62,7 @@
     ./networking/nmconnections
     ./networking/ssh
     ./networking/vpn
+    ./networking/vpn/openvpn.nix
     ./networking/wireless
     ./nix/cachix
     ./nix/core
