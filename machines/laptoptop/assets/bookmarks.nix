@@ -709,7 +709,6 @@ in
       browseWith = appCmdFull config.attributes.browser.fallback.traits;
     };
     xdg-config-path = { path = homePrefix user ".config"; };
-    obsidian-vaults-root = { path = homePrefix user "docs/obsidian"; };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
 }

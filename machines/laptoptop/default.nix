@@ -526,6 +526,10 @@ in
       emacs.automation.enable = true;
       wm.enable = true;
     };
+    obsidian = {
+      enable = true;
+      wm.enable = true;
+    };
     orgmode.enable = true;
     scheduling = {
       enable = true;
