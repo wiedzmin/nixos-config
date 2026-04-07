@@ -51,14 +51,51 @@ in
                                      -u ${cfg.notification.urgency} 'Locking in ${builtins.toString cfg.timers.lock} seconds' '';
         description = "Command to use for notification display";
       };
+      command.lock.bg = mkOption {
+        type = types.str;
+        default = "232729";
+        description = "`rrggbbaa` for i3lock background";
+      };
+      command.lock.textColor = mkOption {
+        type = types.str;
+        default = "ffffff";
+        description = "`rrggbbaa` for i3lock text";
+      };
+      command.lock.wallpaper = mkOption {
+        type = types.str;
+        default = optionalString
+          (config.appearance.wallpaper.current != "")
+          (with config.appearance.wallpaper; "${rootDir}/${current}");
+        description = "Wallpaper image for i3lock";
+      };
       command.lock.manual = mkOption {
         type = types.str;
-        default = "${pkgs.i3lock-color}/bin/i3lock-color --keylayout 2 -c 232729 --pass-media-keys && ${pkgs.xset}/bin/xset dpms force off";
+        default = ''${pkgs.i3lock-color}/bin/i3lock-color --keylayout 2 -c ${cfg.command.lock.bg} ${
+          optionalString (cfg.command.lock.wallpaper != "") "-i ${cfg.command.lock.wallpaper} -F"
+        } --layout-color=${
+          cfg.command.lock.textColor
+        } --time-color=${
+          cfg.command.lock.textColor
+        } --date-color=${
+          cfg.command.lock.textColor
+        } --greeter-color=${
+          cfg.command.lock.textColor
+        } --pass-media-keys --date-str="%Y/%m/%d %a" && ${pkgs.xset}/bin/xset dpms force off'';
         description = "Command for locking screen manually";
       };
       command.lock.lid = mkOption {
         type = types.str;
-        default = "${pkgs.i3lock-color}/bin/i3lock-color --nofork --keylayout 2 -c 232729 --pass-media-keys";
+        default = ''${pkgs.i3lock-color}/bin/i3lock-color --nofork --keylayout 2 -c ${cfg.command.lock.bg} ${
+          optionalString (cfg.command.lock.wallpaper != "") "-i ${cfg.command.lock.wallpaper} -F"
+        } --layout-color=${
+          cfg.command.lock.textColor
+        } --time-color=${
+          cfg.command.lock.textColor
+        } --date-color=${
+          cfg.command.lock.textColor
+        } --greeter-color=${
+          cfg.command.lock.textColor
+        } --pass-media-keys --date-str="%Y/%m/%d %a"'';
         description = "Command for locking screen on lid close";
       };
       wm.enable = mkOption {
