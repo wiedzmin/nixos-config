@@ -56,5 +56,24 @@ in
         };
       };
     })
+    (mkIf (cfg.enable && config.completion.expansions.enable) {
+      completion.expansions.espanso.matches = {
+        pim_core = {
+          matches = [
+            {
+              trigger = ":dt";
+              replace = "{{curdate}}";
+              vars = [
+                {
+                  name = "curdate";
+                  type = "date";
+                  params = { format = "%F"; };
+                }
+              ];
+            }
+          ];
+        };
+      };
+    })
   ];
 }
