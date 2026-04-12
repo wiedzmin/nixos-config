@@ -568,8 +568,8 @@ in
     lockscreen = {
       enable = true;
       notification.timeout = 5000;
-      timers.alert = 210;
-      timers.lock = 60;
+      timers.alert = 300;
+      timers.lock = 120;
       wm.enable = true;
     };
     sound = {
