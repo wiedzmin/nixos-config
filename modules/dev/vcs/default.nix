@@ -125,7 +125,7 @@ in
     })
     (mkIf (cfg.enable && config.completion.expansions.enable && config.pim.core.enable) {
       completion.expansions.espanso.matches = {
-        pim_core = {
+        dev_vcs = {
           matches = [
             {
               trigger = ":gh";
