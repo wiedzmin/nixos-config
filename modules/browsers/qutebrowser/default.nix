@@ -542,6 +542,8 @@ in
                 "<Alt-Shift-.>" = "scroll-to-perc";
                 "<Ctrl-x><Ctrl-c>" = "quit";
                 "<Ctrl-x>e" = "cmd-set-text \/rror loading http"; # NOTE: for searching url parts in windows, where renderer process was killed
+                "<Alt-s>" = "hint all";
+                "<Ctrl-u><Alt-s>" = "hint all tab-bg";
               };
               insert = optionalAttrs (cfg.emacsKeys.enable) {
                 "<Ctrl-e>" = "edit-text";
