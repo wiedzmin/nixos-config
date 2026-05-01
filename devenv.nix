@@ -19,6 +19,7 @@
     tagref
     vim
     wiedzmin.pystdlib
+    prek
   ];
 
   enterShell = ''
