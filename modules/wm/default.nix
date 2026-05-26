@@ -178,12 +178,12 @@ in
 
       wmCommon.modeBindings = {
         "dev" = [ cfg.prefix "d" ];
-        "layout" = [ cfg.prefix "l" ];
+        "layout" = [ cfg.prefix "F11" ];
         "resize" = [ cfg.prefix "=" ];
         "run" = [ cfg.prefix "r" ];
         "select" = [ cfg.prefix "." ];
-        "services" = [ cfg.prefix "s" ];
-        "xserver" = [ cfg.prefix "x" ];
+        "services" = [ cfg.prefix "F9" ];
+        "xserver" = [ cfg.prefix "Shift" "F12" ];
       };
       wmCommon.keybindings.entries = optionals (!cfg.focus.list.useWMSpecific) [
         {

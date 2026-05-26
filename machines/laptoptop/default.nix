@@ -732,14 +732,14 @@ in
     {
       # [tag:desktop_main]
       name = "main";
-      key = [ "F2" ];
+      key = [ "1" ];
       transient = false;
       type = "primary";
     }
     {
       # [tag:desktop_tools]
       name = "tools";
-      key = [ "F9" ];
+      key = [ "4" ];
       transient = false;
       type = "primary";
     }
@@ -760,28 +760,28 @@ in
     {
       # [tag:desktop_read]
       name = "read";
-      key = [ "F7" ];
+      key = [ "a" ];
       transient = false;
       type = "secondary";
     }
     {
       # [tag:desktop_im]
       name = "im";
-      key = [ "c" ];
+      key = [ "2" ];
       transient = false;
       type = "secondary";
     }
     {
       # [tag:desktop_scratch]
       name = "scratch";
-      key = [ "h" ];
+      key = [ "z" ];
       transient = false;
       type = "tertiary";
     }
     {
       # [tag:desktop_sandbox]
       name = "sandbox";
-      key = [ "8" ];
+      key = [ "q" ];
       transient = false;
       type = "primary";
     }

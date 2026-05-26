@@ -227,16 +227,10 @@ in
     (mkIf cfg.enable {
       wmCommon = {
         modeBindings = {
-          "Passthrough Mode - Press M+F11 to exit" = [ prefix "F11" ];
+          "Passthrough Mode - Press M+S+F11 to exit" = [ prefix "Shift" "F11" ];
           "scratchpad" = [ prefix "F8" ];
         };
         keybindings.entries = (forEach [
-          {
-            key = [ prefix "Shift" "q" ];
-            cmd = ''exec "i3-msg reload"'';
-            mode = "root";
-            raw = true;
-          }
           {
             key = [ prefix "Shift" "backspace" ];
             cmd = "restart";
@@ -406,13 +400,13 @@ in
             raw = true;
           }
           {
-            key = [ prefix "w" ];
+            key = [ prefix "," ];
             cmd = "layout toggle split";
             mode = "root";
             raw = true;
           }
           {
-            key = [ prefix "Shift" "w" ];
+            key = [ prefix "Shift" "," ];
             cmd = "layout toggle stacking tabbed";
             mode = "root";
             raw = true;
@@ -452,9 +446,9 @@ in
             sticky = true;
           }
           {
-            key = [ prefix "F11" ];
+            key = [ prefix "Shift" "F11" ];
             cmd = ''mode "default"'';
-            mode = "Passthrough Mode - Press M+F11 to exit";
+            mode = "Passthrough Mode - Press M+S+F11 to exit";
             raw = true;
           }
           {
