@@ -63,12 +63,10 @@ in
         programs.ssh = {
           enable = true;
           enableDefaultConfig = false;
-          matchBlocks = {
+          settings = {
             "localhost" = {
-              extraOptions = {
-                Compression = "no";
-                ControlMaster = "no";
-              };
+              Compression = "no";
+              ControlMaster = "no";
               forwardAgent = true;
               userKnownHostsFile = "~/.ssh/known_hosts";
               controlMaster = "auto";
@@ -77,10 +75,8 @@ in
               serverAliveInterval = 10;
             };
             "* !localhost" = {
-              extraOptions = {
-                ControlMaster = "auto";
-                ControlPersist = "2h";
-              };
+              ControlMaster = "auto";
+              ControlPersist = "2h";
               forwardAgent = true;
               userKnownHostsFile = "~/.ssh/known_hosts";
               controlMaster = "auto";
@@ -94,10 +90,8 @@ in
                 text = cfg.keypair.private;
               });
               compression = true;
-              extraOptions = {
-                TCPKeepAlive = "yes";
-                ServerAliveCountMax = "10";
-              };
+              TCPKeepAlive = "yes";
+              ServerAliveCountMax = "10";
               forwardAgent = true;
               userKnownHostsFile = "~/.ssh/known_hosts";
               controlMaster = "auto";

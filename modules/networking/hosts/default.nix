@@ -46,7 +46,7 @@ in
         ${renderHosts cfg.entries}
       '';
 
-      home-manager.users."${user}".programs.ssh.matchBlocks = mapAttrs'
+      home-manager.users."${user}".programs.ssh.settings = mapAttrs'
         (hostname: meta:
           nameValuePair hostname {
             inherit hostname;

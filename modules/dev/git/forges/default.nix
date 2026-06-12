@@ -26,7 +26,7 @@ let
     mapAttrs' (key: meta: nameValuePair "${key}" meta.workspaceRoot)
       (filterAttrs (_: meta: lib.hasAttr "workspaceRoot" meta) forges);
   mkMatchBlock = meta: {
-    inherit (meta.ssh.matchBlock) hostname user serverAliveInterval identitiesOnly extraOptions;
+    inherit (meta.ssh.matchBlock) hostname user serverAliveInterval identitiesOnly;
   } // optionalAttrs (meta.ssh.matchBlock.identityFile != null) {
     inherit (meta.ssh.matchBlock) identityFile;
   } // optionalAttrs (meta.ssh.matchBlock.identityFile == null) {
@@ -35,7 +35,7 @@ let
       text = meta.ssh.keypair.private;
     });
   };
-  collectMatchBlocks = forges:
+  collectSSHSettings = forges:
     mapAttrs' (_: meta: nameValuePair meta.ssh.matchBlock.hostname (mkMatchBlock meta)) forges;
   collectExtraConfig = forges:
     (foldAttrs (n: a: n // a) { } (collect (f: f ? extraConfig) forges))."extraConfig";
@@ -104,15 +104,6 @@ let
         default = true;
         description = "Use only explicitly defined identities.";
       };
-      extraOptions = mkOption {
-        type = types.attrsOf types.str;
-        default = {
-          ControlMaster = "auto";
-          ControlPersist = "yes";
-          preferredAuthentications = "publickey";
-        };
-        description = "Extra SSH options.";
-      };
     };
   };
   forgeModule = types.submodule {
@@ -172,7 +163,7 @@ in
   config = mkMerge [
     (mkIf cfg.enable (
       let
-        matchBlocks = collectMatchBlocks cfg.forges;
+        sshSettings = collectSSHSettings cfg.forges;
         extraConfig = collectExtraConfig cfg.forges;
         workspaceRoots = collectWorkspaceRoots cfg.forges;
       in
@@ -183,8 +174,8 @@ in
         }];
 
         home-manager.users."${user}" = {
-          programs.ssh.matchBlocks =
-            optionalAttrs (matchBlocks != { }) matchBlocks;
+          programs.ssh.settings =
+            optionalAttrs (sshSettings != { }) sshSettings;
           programs.git.settings =
             optionalAttrs (extraConfig != { }) extraConfig;
         };
