@@ -185,6 +185,7 @@ in
           ];
         programs.firefox = {
           enable = true;
+          configPath = xdgConfig user "/mozilla/firefox";
           policies.DontCheckDefaultBrowser = true;
           profiles = {
             default = {

@@ -57,6 +57,7 @@ in
           dataHome = homePrefix user ".local/share";
           userDirs = {
             enable = true;
+            setSessionVariables = true; # FIXME: legacy value, try setting to `false` after actualizing `home.stateVersion`
             desktop = homePrefix user "Desktop";
             documents = cfg.documents.path;
             download = homePrefix user "Downloads";

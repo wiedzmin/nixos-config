@@ -114,7 +114,10 @@ in
             enable = (cfg.pager == "riff");
             enableGitIntegration = true;
           };
-          mergiraf.enable = true;
+          mergiraf = {
+            enable = true;
+            enableGitIntegration = true;
+          };
         };
       };
 
