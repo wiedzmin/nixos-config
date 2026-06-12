@@ -55,9 +55,11 @@
   (emacs-lisp-mode . flycheck-package-setup))
 
 (use-package elsa
+  :disabled
   :defer t)
 
 (use-package flycheck-elsa
+  :disabled
   :hook
   (emacs-lisp-mode . flycheck-elsa-setup))
 

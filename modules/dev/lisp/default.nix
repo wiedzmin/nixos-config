@@ -57,16 +57,20 @@ in
         (deb "(progn (print \">>> " (s text) "\") (prin1 " text " t))" q)
       '';
       ide.emacs.core.extraPackages = epkgs: [
-        epkgs.elsa
         epkgs.erefactor
         epkgs.eros
-        epkgs.flycheck-elsa
         epkgs.flycheck-package
         epkgs.highlight-defined
         epkgs.highlight-quoted
         epkgs.ipretty
         epkgs.suggest
       ];
+      # broken packages
+      # ++ [
+      #   epkgs.elsa
+      #   epkgs.flycheck-elsa
+      # ];
+      # TODO: elaborate some config-wide infra for such cases
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst/elisp.nix ] [ ./elisp/elisp.el ];
       ide.emacs.core.treesitter.grammars = {
         elisp = "https://github.com/Wilfred/tree-sitter-elisp";
