@@ -80,7 +80,7 @@ in
         home.packages = with pkgs; [
           dlint
           hadolintd
-          nodePackages.dockerfile-language-server-nodejs
+          dockerfile-language-server-nodejs
         ];
         xdg.configFile."hadolint.yaml".text = builtins.toJSON {
           ignored = [ "DL3007" ];

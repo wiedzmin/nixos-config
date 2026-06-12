@@ -37,7 +37,7 @@ in
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [
-          nodePackages.vue-language-server
+          vue-language-server
           vscode-langservers-extracted
           typescript-language-server
         ];
