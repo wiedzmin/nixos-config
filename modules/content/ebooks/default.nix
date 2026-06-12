@@ -47,6 +47,7 @@ in
     (mkIf cfg.enable {
       fileSystems."${config.services.syncthing.dataDir}/bookshelf" = {
         device = homePrefix user "bookshelf";
+        fsType = "none";
         options = [ "bind" ];
       };
       systemd.user.services = builtins.listToAttrs (forEach (localPathsByType "ebooks" config.navigation.bookmarks.entries) (root:

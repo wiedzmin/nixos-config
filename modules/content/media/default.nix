@@ -344,6 +344,7 @@ in
         (token: srcPath:
           nameValuePair "${config.services.mpd.dataDir}/music/${token}" {
             device = srcPath;
+            fsType = "none";
             options = [ "bind" ];
           })
         cfg.mpd.collections;
