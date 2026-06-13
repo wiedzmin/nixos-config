@@ -76,7 +76,7 @@ in
       };
       diagrams.plantuml.server.enable = mkOption {
         type = types.bool;
-        default = true;
+        default = false;
         description = "Whether to enable PlantUML server";
       };
       diagrams.plantuml.server.port = mkOption {
