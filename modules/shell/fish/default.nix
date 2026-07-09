@@ -177,7 +177,10 @@ in
             bind "ctrl-f2" cpwd
           '';
         };
-        programs.fzf.enableFishIntegration = true;
+        programs.fzf = {
+          enableFishIntegration = true;
+          historyWidget.fish.command = "";
+        };
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
