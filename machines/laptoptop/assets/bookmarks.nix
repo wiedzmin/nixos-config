@@ -708,6 +708,11 @@ in
       tags = [ "games" ];
       browseWith = appCmdFull config.attributes.browser.fallback.traits;
     };
+    "Max messenger" = {
+      url = "https://web.max.ru/";
+      tags = [ "messengers" ];
+      browseWith = appCmdFull config.attributes.browser.fallback.traits;
+    };
     xdg-config-path = { path = homePrefix user ".config"; };
   };
   pim.timetracking.rules = mkArbttBrowserTitleRule [ "Facebook" ] "site:facebook" config.attributes.browser;
