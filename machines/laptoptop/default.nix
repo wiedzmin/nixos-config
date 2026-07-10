@@ -479,11 +479,7 @@ in
         "qtwebengine-5.15.19"
       ];
     };
-    cachix = {
-      enable = true;
-      username = user;
-      configuration = builtins.readFile ./secrets/cachix.dhall;
-    };
+    cachix.enable = false;
     dev = {
       enable = true;
       scripts.enable = true;
