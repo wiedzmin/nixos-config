@@ -498,7 +498,6 @@ in
     scanning = {
       enable = true;
       frontend = "xsane";
-      extraBackends = [ pkgs.epkowa ];
       snapscan = {
         enable = true;
         firmware = ../../modules/paperworks/assets/Esfw52.bin;
