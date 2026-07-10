@@ -197,7 +197,7 @@ in
         inherit (cfg.printing) drivers;
         cups-pdf.enable = true;
       };
-      environment.systemPackages = with pkgs; [ system-config-printer gtklp ];
+      environment.systemPackages = with pkgs; [ system-config-printer ];
       users.users."${user}".extraGroups = [ "lp" ];
     })
     (mkIf cfg.scanning.enable {
