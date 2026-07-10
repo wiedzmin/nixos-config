@@ -70,6 +70,12 @@ in
           };
         };
       };
+      shell.core.variables = [
+        { DEVENV_CORES = config.attributes.hardware.cores; }
+        { DEVENV_MAX_JOBS = builtins.toString config.attributes.hardware.cores; }
+      ];
+    })
+    (mkIf (cfg.enable && config.ext.nix.cachix.enable) {
       nix = {
         settings = {
           substituters = [
@@ -80,10 +86,6 @@ in
           ];
         };
       };
-      shell.core.variables = [
-        { DEVENV_CORES = config.attributes.hardware.cores; }
-        { DEVENV_MAX_JOBS = builtins.toString config.attributes.hardware.cores; }
-      ];
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: [
