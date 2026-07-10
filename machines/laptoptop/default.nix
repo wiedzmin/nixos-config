@@ -86,7 +86,7 @@ in
     };
     initrd.availableKernelModules = [ "ahci" "ehci_pci" "sdhci_pci" "usb_storage" "xhci_pci" ];
     tmp.useTmpfs = false;
-    kernelPackages = pkgs.linuxPackages_6_18; # "~/workspace/repos/github.com/NixOS/nixpkgs/pkgs/top-level/linux-kernels.nix:L82"
+    kernelPackages = pkgs.linuxPackages_6_6; # "~/workspace/repos/github.com/NixOS/nixpkgs/pkgs/top-level/linux-kernels.nix:L82"
     supportedFilesystems = [ "ntfs" ];
   };
 
