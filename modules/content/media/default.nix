@@ -207,7 +207,7 @@ in
       home-manager.users."${user}" =
         let
           downloadsBaseSettings = {
-            to = "";
+            to = homePrefix user "inbox";
             unmatched = {
               subdir = "unsorted";
               skip = false;
