@@ -121,6 +121,10 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
+        home.packages = with pkgs; [
+          unrar
+          unzip
+        ];
         programs.aria2 = {
           enable = true;
           settings = {

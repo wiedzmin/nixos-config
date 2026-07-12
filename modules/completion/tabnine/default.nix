@@ -43,9 +43,6 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
-        home.packages = with pkgs; optionals (!cfg.useNixpkgsVersion) [
-          unzip # NOTE: for in-band tabnine binaries installation
-        ];
         xdg.configFile."TabNine/TabNine.toml".source = toml.generate "TabNine.toml" cfg.config;
       };
     })
