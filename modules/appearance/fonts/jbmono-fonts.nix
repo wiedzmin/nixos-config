@@ -16,7 +16,7 @@ let
   fontRofi = baseFont // { size = 9; };
   fontXresources = baseFont // { size = 12; };
   sizeAlacritty = 9.0;
-  sizeKitty = 8.0;
+  sizeKitty = 7.0;
   sizeXLFDLarge = 20;
   sizeFamilySizeLarge = 40;
 in
