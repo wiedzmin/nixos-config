@@ -270,7 +270,7 @@ in
                 "privacy.trackingprotection.enabled" = true;
                 "privacy.trackingprotection.fingerprinting.enabled" = true;
                 "security.sandbox.content.level" = 2;
-                "urlclassifier.trackingTable" = ""; # because 2md layer list blocks google captcha, use 1st layer
+                "urlclassifier.trackingTable" = ""; # because 2nd layer list blocks google captcha, use 1st layer
               };
               extensions.packages = with nurpkgs.rycee.firefox-addons;
                 [
