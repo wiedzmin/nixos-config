@@ -276,7 +276,7 @@ in
                 [
                   clearurls
                   greasemonkey
-                  keepass-helper
+                  keepassxc-browser
                 ];
               userChrome = ''
                 #TabsToolbar { visibility: collapse !important; }
