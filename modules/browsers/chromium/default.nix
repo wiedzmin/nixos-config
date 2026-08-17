@@ -99,6 +99,8 @@ in
             # "cjpalhdlnbpafiamejdnhcphjbkeiagm" # uBlock Origin
             # "gcbommkclmclpchllfjekcdonpmejbdp" # HTTPS Everywhere
             # "ogfcmafjalglgifnmanfmnieipoejdcf" # uMatrix
+            "oboonakemofpalcgghocfoadofidjkkk" # KeePassXC-Browser
+            # "fngmhnnpilhplaeedifhccceomclgfbg" # EditThisCookie
           ] ++ optionals cfg.keyboardCentric [
             "dbepggeogbaibhgnhhndojpepiihcmeb" # Vimium
             # "gfbliohnnapiefjpjlpjnehglfpaknnc" # Surfingkeys
