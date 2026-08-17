@@ -180,6 +180,7 @@ in
         epkgs.magit-popup # *
       ] ++ optionals cfg.emacs.delta.enable epkgs.magit-delta;
       ide.emacs.core.config = readSubstituted config inputs pkgs [ ./subst/core.nix ] [ ./elisp/core.el ]
+        + readSubstituted config inputs pkgs [ ./subst/core.nix ] [ ./elisp/navigation.el ]
         + optionalString cfg.emacs.delta.enable ''
         (use-package magit-delta
           :disabled
