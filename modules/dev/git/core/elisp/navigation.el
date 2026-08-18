@@ -27,4 +27,17 @@ It either opens `magit-status' or a [raw] git commit (if given), in case of git 
     (let ((path (thing-at-point 'ghq-path)))
       (when path
         (ibut:label-set path)
-        (hact 'custom/hypb/open-ghq-path-tap path)))))
+        (hact 'custom/hypb/open-ghq-path-tap path))))
+
+  (defun custom/hypb/ghq-search-repos (token)
+    "Find and list all relevant repos."
+    (find-dired-with-command
+     "@ghqRoot@"
+     (format "find . -mindepth 3 -maxdepth 3 -type d -ls | sort | grep -v svnroot | grep -v emias | grep -v meganet | grep \\/%s" token)))
+
+  (defib ghq-search-repos ()
+    "Finds and lists all relevant repos for token in question."
+    (let ((token (thing-at-point 'ghq-search)))
+      (when token
+        (ibut:label-set token)
+        (hact 'custom/hypb/ghq-search-repos token)))))
