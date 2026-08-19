@@ -516,6 +516,7 @@ in
     };
     obsidian = {
       enable = true;
+      emacs.enable = true;
       wm.enable = true;
     };
     orgmode.enable = true;

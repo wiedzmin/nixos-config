@@ -25,6 +25,11 @@ in
         default = false;
         description = "Whether to enable WM keybindings.";
       };
+      emacs.enable = mkOption {
+        type = types.bool;
+        default = false;
+        description = "Whether to enable Obsidian navigation infra for Emacs.";
+      };
       wsMapping.rules = mkOption {
         type = types.listOf types.attrs;
         default = [
@@ -88,6 +93,12 @@ in
           mode = "run";
         }
       ];
+    })
+    (mkIf (cfg.enable && cfg.emacs.enable) {
+      ide.emacs.core.customPackages = {
+        "obsidian-tap" = { text = builtins.readFile ./elisp/custom/obsidian-tap.el; };
+      };
+      ide.emacs.core.config = (readSubstituted config inputs pkgs [ ./subst/navigation.nix ] [ ./elisp/navigation.el ]);
     })
     (mkIf (cfg.enable && config.navigation.bookmarks.enable) {
       navigation.bookmarks.entries = {
