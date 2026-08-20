@@ -161,7 +161,7 @@ in
     (mkIf cfg.enable {
       shell.core.variables = [{ JUST_CHOOSER = cfg.just.chooserCmd; }];
       home-manager.users."${user}" = {
-        home.packages = with pkgs; [ code-maat nixpkgs-last-unbroken.comby nixpkgs-idafree-pinned.ida-free ];
+        home.packages = with pkgs; [ code-maat nixpkgs-last-unbroken.comby diffoscope nixpkgs-idafree-pinned.ida-free ];
       };
       pim.timetracking.rules =
         mkArbttProgramMapTitleRule (with config.attributes.browser; [ default.traits.wmClass fallback.traits.wmClass ])
