@@ -15,7 +15,7 @@
       "${config.attributes.hardware.monitors.externalSecondaryHead.name}" = {
         enable = true;
         position = "1366x1080";
-        mode = "1920x1200";
+        mode = "1920x1080";
         gamma = config.workstation.randr.defaults.gamma;
         rate = config.workstation.randr.defaults.rate;
       } // lib.optionalAttrs (config.workstation.randr.heads.orientation.secondary != "normal") {
