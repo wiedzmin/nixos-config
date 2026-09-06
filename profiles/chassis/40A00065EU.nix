@@ -1,9 +1,9 @@
-{ ... }:
+{ lib, ... }:
 
 {
   attributes.hardware = {
     monitors = {
-      externalPrimaryHead.name = "DP-2";
+      externalPrimaryHead.name = lib.mkDefault "DP-2";
       count = 2;
     };
   };
