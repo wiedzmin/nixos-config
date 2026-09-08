@@ -6,20 +6,6 @@ let
   cfg = config.workstation.randr;
   user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
-  headsOrientationModule = types.submodule {
-    options = {
-      primary = mkOption {
-        type = types.enum [ "normal" "left" "right" "inverted" ];
-        default = "normal";
-        description = "Primary head orientation";
-      };
-      secondary = mkOption {
-        type = types.enum [ "normal" "left" "right" "inverted" ];
-        default = "normal";
-        description = "Secondary head orientation";
-      };
-    };
-  };
 in
 {
   options = {
@@ -39,9 +25,10 @@ in
         default = "1.0:0.909:0.833";
         description = "XRandR default gamma settings";
       };
-      heads.orientation = mkOption {
-        type = headsOrientationModule; # TODO: investigate how to keep defaults in module options
-        description = "external head orientation";
+      defaults.autorandr.roaming = mkOption {
+        type = types.str;
+        default = "mobile";
+        description = "Autorandr roaming (without external heads) profile name";
       };
       hooks = mkOption {
         type = types.attrs;
@@ -82,7 +69,7 @@ in
       wmCommon.keybindings.entries = [
         {
           key = [ "m" ];
-          cmd = "${pkgs.autorandr}/bin/autorandr --load mobile";
+          cmd = "${pkgs.autorandr}/bin/autorandr --load ${cfg.defaults.autorandr.roaming}";
           mode = "xserver";
         }
         {

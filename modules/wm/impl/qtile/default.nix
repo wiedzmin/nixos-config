@@ -31,7 +31,7 @@ in
           pkgs "debug-qtile"
           pkgs.qtile-unwrapped
           [ ]
-          config.attributes.hardware.monitors.internalHead
+          config.attributes.hardware.monitors.internalHead.mode
           ''qtile start -c "$XDG_CONFIG_HOME/qtile/config.py"'';
       };
 

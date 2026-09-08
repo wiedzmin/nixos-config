@@ -19,11 +19,6 @@
 
   attributes.hardware = {
     dmiSystemVersion = "ThinkPad X230";
-    monitors = {
-      internalHead.name = "LVDS-1";
-      internalHead.resolution = "1366x768";
-      internalHead.resolutionXephyr = "1200x600";
-    };
   };
   attributes.fonts.monospaced.fillColumn = 190;
 }

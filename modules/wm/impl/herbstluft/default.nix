@@ -31,7 +31,7 @@ in
           pkgs "debug-herbstluft"
           pkgs.herbstluftwm
           [ pkgs.dzen2 ]
-          config.attributes.hardware.monitors.internalHead
+          config.attributes.hardware.monitors.internalHead.mode
           ''herbstluftwm -c "$XDG_CONFIG_HOME/herbstluftwm/autostart"'';
       };
 

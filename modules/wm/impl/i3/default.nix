@@ -383,22 +383,30 @@ in
           }
           {
             key = [ prefix "Shift" "bracketleft" ];
-            cmd = ''move workspace to output ${config.attributes.hardware.monitors.externalPrimaryHead.name}'';
+            cmd = ''move workspace to output left'';
             mode = "root";
             raw = true;
           }
           {
             key = [ prefix "Shift" "bracketright" ];
-            cmd = ''move workspace to output ${config.attributes.hardware.monitors.externalSecondaryHead.name}'';
+            cmd = ''move workspace to output down'';
             mode = "root";
             raw = true;
           }
           {
             key = [ prefix "Shift" "backslash" ];
-            cmd = ''move workspace to output ${config.attributes.hardware.monitors.internalHead.name}'';
+            cmd = ''move workspace to output right'';
             mode = "root";
             raw = true;
           }
+
+          {
+            key = [ prefix "Shift" "equal" ];
+            cmd = ''move workspace to output up'';
+            mode = "root";
+            raw = true;
+          }
+
           {
             key = [ prefix "," ];
             cmd = "layout toggle split";
@@ -533,7 +541,7 @@ in
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; optionals (config.wmCommon.focus.list.useWMSpecific) [ list-windows-i3 ];
-        xdg.configFile = {
+        xdg.configFile = { #  FIXME: try parameterizing indents
           "i3/config".text = ''
             # i3 config file (v4)
 
@@ -571,8 +579,13 @@ in
 
             bar {
                 position top
-                tray_output ${config.attributes.hardware.monitors.externalPrimaryHead.name}
-                tray_output ${config.attributes.hardware.monitors.internalHead.name}
+                ${lib.concatStringsSep "\n${mkIndent 4}"
+                  (lib.forEach
+                    (lib.reverseList
+                      (lib.sortOn
+                        builtins.stringLength
+                        (lib.uniqueStrings config.wmCommon.statusbar.outputs)))
+                    (o: "tray_output ${o}"))}
                 mode dock
                 modifier ${prefix}
                 workspace_buttons yes

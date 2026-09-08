@@ -176,54 +176,35 @@ with lib;
     };
     hardware.monitors = {
       internalHead = {
-        name = mkOption {
+        output = mkOption {
           type = types.str;
           default = "";
           description = "Internal laptop head name";
         };
-        edid = mkOption {
-          type = types.str;
-          default = "";
-          description = "Internal laptop head EDID value";
-        };
-        resolution = mkOption {
+        mode.hardware = mkOption {
           type = types.str;
           default = "";
           description = "Internal laptop head resolution";
         };
-        resolutionXephyr = mkOption {
+        mode.Xephyr = mkOption {
           type = types.str;
           default = "";
           description = "Internal laptop head resolution when running Xephyr with no external head attached";
         };
       };
       externalPrimaryHead = {
-        name = mkOption {
+        output = mkOption {
           type = types.str;
           default = "";
-          description = "External primary head name";
+          description = "External primary head output";
         };
       };
       externalSecondaryHead = {
-        name = mkOption {
+        output = mkOption {
           type = types.str;
           default = "";
-          description = "External secondary head name";
+          description = "External secondary head output";
         };
-      };
-      count = mkOption {
-        type = types.int;
-        default = 1;
-        description = ''
-          Overall available monitors count, including internal one.
-
-          Dock stations should update this according to their video outputs.
-        '';
-      };
-      layouts = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "Collection of all xrandr heads spatial layouts";
       };
     };
     dateFormats = mkOption {

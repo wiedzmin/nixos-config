@@ -9,8 +9,7 @@ in
   imports = [
     "${inputs.nixos-hardware}/common/pc/ssd"
     ../../modules
-    ../../profiles/chassis/thinkpad-x270.nix
-    ../../profiles/chassis/40A10090EU.nix
+    ../../hardware/chassis/thinkpad-x270.nix
     ./assets
     ./secrets
   ];
@@ -58,12 +57,6 @@ in
   users.users = {
     alex3rd.hashedPassword = "$6$HLpUj6dqqC6w$k5k1Pwl9Iwj/vrDmETBFHJWc0pGIL4fkMn7R2PU/ao4ydByo0yBVcJw84J2fb9ha.P0Dk2ccN5MRnDjFDY1FG.";
     root.hashedPassword = "$6$JdtKiDVrmuxSR$FYDY.JTLsNr73O0XSjBSs3YY/4FdtqizTig1RELdm1NQSwqwN7nYpLNNXmPaVcGL265uKVCrN71S/9gOIAA6C.";
-  };
-
-  attributes.hardware.monitors = {
-    internalHead.edid =
-      "00ffffffffffff0026cfe5040000000000180104951c10780a123091565392281e505400000001010101010101010101010101010101201c56865000203008088800149b10000019801656865000203008088800149b10000019000000fe00496e666f566973696f6e0a2020000000fe004d3132354e575233205230200a00f1";
-    externalSecondaryHead.name = "DP-2-1";
   };
 
   boot = {
@@ -570,8 +563,6 @@ in
     };
     randr = {
       enable = true;
-      heads.orientation.primary = "normal";
-      heads.orientation.secondary = "normal";
       wm.enable = true;
     };
     input = {
@@ -747,7 +738,7 @@ in
       name = "var";
       key = [ "Escape" ];
       transient = false;
-      type = dockableSecondaryWS config.attributes.hardware.monitors.count;
+      type = "secondary";
     }
     {
       # [tag:desktop_read]

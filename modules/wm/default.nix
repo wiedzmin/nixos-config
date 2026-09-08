@@ -26,6 +26,15 @@ in
         default = [ ];
         description = "Workspaces metadata.";
       };
+      statusbar.outputs = mkOption {
+        type = types.listOf types.str;
+        default = [ ];
+        description = ''
+          XRandR outputs to place statusbar on.
+
+          For `i3wm`, see `https://i3wm.org/docs/userguide.html#_tray_output` for details.
+        '';
+      };
       prefix = mkOption {
         type = types.str;
         default = "Mod4";

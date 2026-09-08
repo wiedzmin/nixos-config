@@ -408,7 +408,7 @@ rec {
   # }}}
   # TODO: review floating property for window rules, regardless of WM being used
   # {{{ WM.Common
-  mkWMDebugScript = nixpkgs: name: wmpkg: pkgsAux: internalHead: wmcmd:
+  mkWMDebugScript = nixpkgs: name: wmpkg: pkgsAux: mode: wmcmd:
     nixpkgs.writeShellApplication {
       inherit name;
       runtimeInputs = with nixpkgs; [
@@ -420,10 +420,10 @@ rec {
       text = ''
         XDISPLAY=''${XDISPLAY:-:1}
         if [ "$(xrandr | grep connected | grep -c dis)" = "1" ]; then
-          resolution=${internalHead.resolutionXephyr}
+          resolution=${mode.Xephyr}
           echo "LVDS-only, using $resolution"
         else
-          resolution=${internalHead.resolution}
+          resolution=${mode.hardware}
           echo "dock-station, using $resolution"
         fi
         Xephyr -ac -br -noreset +extension RANDR -screen "''${SCREEN_SIZE:-$resolution}" "''${XDISPLAY}" &
@@ -435,6 +435,55 @@ rec {
     "${root}/${
       lib.last (lib.splitString "/"
         (builtins.head (lib.splitString " " cmd)))}-$(date +%Y-%m-%d-%H-%M-%S | tr -d '[:cntrl:]').log";
+  mkAutorandrProfile = profileName: heads: layout: i3Enabled: { # FIXME: Unhardcode 1-or-3 heads dilemma
+    "${profileName}" = {
+      fingerprint = if builtins.length (builtins.attrNames heads) == 1 then {
+        "${heads."primary".output}" = heads."primary".EDID;
+      } else {
+        "${heads."primary".output}" = heads."primary".EDID;
+        "${heads."secondary".output}" = heads."secondary".EDID;
+        "${heads."tertiary".output}" = heads."tertiary".EDID;
+      };
+      config = if builtins.length (builtins.attrNames heads) == 1 then {
+        "${heads."primary".output}" = {
+          enable = true;
+          position = layout."${heads."primary".output}".position;
+          mode = heads."primary".mode.hardware;
+          gamma = heads."primary".gamma;
+          rate = heads."primary".rate;
+          rotate = layout."${heads."primary".output}".orientation;
+        };
+      } else {
+        "${heads."primary".output}" = {
+          enable = true;
+          position = layout."${heads."primary".output}".position;
+          mode = heads."primary".mode;
+          gamma = heads."primary".gamma;
+          rate = heads."primary".rate;
+          rotate = layout."${heads."primary".output}".orientation;
+        };
+        "${heads."secondary".output}" = {
+          enable = true;
+          position = layout."${heads."secondary".output}".position;
+          mode = heads."secondary".mode;
+          gamma = heads."secondary".gamma;
+          rate = heads."secondary".rate;
+          rotate = layout."${heads."secondary".output}".orientation;
+        };
+        "${heads."tertiary".output}" = {
+          enable = true;
+          primary = true;
+          position = layout."${heads."tertiary".output}".position;
+          mode = heads."tertiary".mode.hardware;
+          gamma = heads."tertiary".gamma;
+          rate = heads."tertiary".rate;
+          rotate = layout."${heads."tertiary".output}".orientation;
+        };
+      };
+      # FIXME: unwire i3wm
+      hooks.postswitch = lib.optionalString (i3Enabled) "rescreen-${profileName}-i3";
+    };
+  };
   # }}}
   # {{{ WM.Common.Keybindings
   wmKeys = keys: wm:
@@ -446,7 +495,6 @@ rec {
     (lib.filterAttrs (k: _: k == "root") (lib.groupBy (x: x.mode) (wmKeys keys wm))).root;
   # }}}
   # {{{ WM.Common.Workspaces
-  dockableSecondaryWS = headscount: if headscount > 2 then "secondary" else "primary";
   enumerateWorkspaces = wsdata:
     let
       sortedWSData = lib.sort (p: q: p.name < q.name) wsdata;
@@ -610,6 +658,19 @@ rec {
         else
           ""
       }"));
+  mkRescreenScriptI3 = workspaces: heads: # FIXME: Unhardcode 1-or-3 heads dilemma
+    if builtins.length (builtins.attrNames heads) == 1 then ''
+      i3-msg --quiet "${
+        mvWorkspacesCmdI3 workspaces "primary" heads."primary".output}${
+        mvWorkspacesCmdI3 workspaces "secondary" heads."primary".output
+        }${mvWorkspacesCmdI3 workspaces "tertiary" heads."primary".output}"
+    ''
+    else ''
+      i3-msg --quiet "${
+        mvWorkspacesCmdI3 workspaces "primary" heads."primary".output}${
+        mvWorkspacesCmdI3 workspaces "secondary" heads."secondary".output
+        }${mvWorkspacesCmdI3 workspaces "tertiary" heads."tertiary".output}"
+    '';
   # }}}
   # {{{ WM.Awesome
   mkWindowRuleAwesome = rule: width: ''

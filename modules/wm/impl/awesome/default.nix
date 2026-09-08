@@ -269,7 +269,7 @@ in
           pkgs "debug-awesome"
           pkgs.awesome
           [ ]
-          config.attributes.hardware.monitors.internalHead
+          config.attributes.hardware.monitors.internalHead.mode # FIXME: follow the refactoring
           ''awesome -c "$XDG_CONFIG_HOME/awesome/rc.lua" ${makeSearchPath cfg.luaModules}'';
       };
 
