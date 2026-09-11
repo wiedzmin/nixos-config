@@ -171,8 +171,8 @@ in
     wallpaper = {
       enable = true;
       boot.splashImage = "${inputs.nixos-artwork}/wallpapers/nix-wallpaper-mosaic-blue.png";
-      rootDir = homePrefix user "blobs/wallpaper";
-      current = "more.jpg";
+      rootDir = homePrefix user "blobs/wallpaper/mongol/autumn";
+      current = "Mongolia_PNAltai_Tavanbogd_500px.jpg";
       wm.enable = true;
     };
     xresources = {
