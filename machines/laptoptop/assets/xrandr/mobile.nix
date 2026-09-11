@@ -40,7 +40,6 @@ in
           };
           hooks.postswitch = lib.optionalString (config.wm.i3.enable) ''
             rescreen-${profileName}-i3
-            ${pkgs.i3}/bin/i3-msg --quiet "workspace back_and_forth"
           '';
         };
       };
