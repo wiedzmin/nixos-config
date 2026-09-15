@@ -92,9 +92,6 @@ in
       notifications = { x11.enable = true; };
     };
     logind.settings.Login.HandleLidSwitchDocked = "suspend";
-    journald.extraConfig = ''
-      MaxRetentionSec=7day
-    '';
     thermald.enable = true;
     acpid.enable = true;
     timesyncd.enable = true;
@@ -464,7 +461,7 @@ in
       emacs.enable = true;
       treesitter.enable = false;
       permittedInsecurePackages = [
-        "beekeeper-studio-5.5.7"
+        "beekeeper-studio-6.0.5"
         "qtwebengine-5.15.19"
       ];
     };
