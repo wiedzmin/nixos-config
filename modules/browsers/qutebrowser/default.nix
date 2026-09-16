@@ -143,9 +143,10 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       browsers.qutebrowser.traits = rec {
-        command = optionalAttrs (!cfg.useProxyBinary) {
-          binary = "${pkgs.qutebrowser}/bin/qutebrowser";
-        } // optionalAttrs cfg.useProxyBinary {
+        command = optionalAttrs (!cfg.useProxyBinary)
+          {
+            binary = "${pkgs.qutebrowser}/bin/qutebrowser";
+          } // optionalAttrs cfg.useProxyBinary {
           binary = goBinPrefix config.dev.golang.goPath "qbcli";
           parameters = [ "open" "-url" ];
         };
