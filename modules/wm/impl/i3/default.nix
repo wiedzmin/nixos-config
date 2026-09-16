@@ -586,8 +586,9 @@ in
                         builtins.stringLength
                         (lib.uniqueStrings config.wmCommon.statusbar.outputs)))
                     (o: "tray_output ${o}"))}
-                mode dock
-                modifier ${prefix}
+                mode hide
+                hidden_state hide
+                modifier Mod1
                 workspace_buttons yes
                 strip_workspace_numbers yes
                 font ${config.wmCommon.fonts.statusbar}
