@@ -1,4 +1,5 @@
 (use-package hyperbole
+  :load-path "@hyperboleLoadPath@"
   :demand t
   :bind
   (:map custom-org-map
