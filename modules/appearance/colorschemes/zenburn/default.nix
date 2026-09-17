@@ -1,5 +1,5 @@
-{ config, lib, ... }:
-
+{ config, lib, pkgs, ... }:
+with pkgs.unstable.commonutils;
 with lib;
 
 let
@@ -72,15 +72,15 @@ in
         client.unfocused        #333333 #010101 #85753A
         client.urgent           #856E23 #900000 #F5DEB3
       '';
-      bar = ''
-        background #0F0F0F
-        statusline #F5DEB3
-
-        focused_workspace  #F5DEB3 #666666
-        active_workspace   #F5DEB3 #0F0F0F
-        inactive_workspace #F5DEB3 #1E1E1E
-        urgent_workspace   #ffffff #900000
-      '';
+      bar = "${mkIndent 8}" + (builtins.concatStringsSep "\n${mkIndent 8}" [
+        "background #0F0F0F"
+        "statusline #F5DEB3"
+        ""
+        "focused_workspace  #F5DEB3 #666666"
+        "active_workspace   #F5DEB3 #0F0F0F"
+        "inactive_workspace #F5DEB3 #1E1E1E"
+        "urgent_workspace   #ffffff #900000"
+      ]);
       i3status-rs = {
         theme = "gruvbox-dark";
         overrides = {

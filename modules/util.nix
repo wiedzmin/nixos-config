@@ -581,14 +581,14 @@ rec {
     ''
       ${lib.concatStringsSep "\n" (lib.mapAttrsToList (mode: bindings: ''
         mode "${mode}" {
-          ${
-            lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach (bindings
-              ++ lib.optionals (!lib.hasPrefix "Passthrough" mode) (map (b: {
-                key = b;
-                mode = "${mode}";
-                raw = true;
-              }) exitBindings)) (x: mkKeybindingI3 x desktops logsroot exitBindings))
-          }
+            ${
+              lib.concatStringsSep (mkNewlineAndIndent 4) (lib.forEach (bindings
+                ++ lib.optionals (!lib.hasPrefix "Passthrough" mode) (map (b: {
+                  key = b;
+                  mode = "${mode}";
+                  raw = true;
+                }) exitBindings)) (x: mkKeybindingI3 x desktops logsroot exitBindings))
+            }
         }
       '') (prefixedModesMeta keys "i3"))}
       ${lib.concatStringsSep "\n" (lib.forEach (rootModeBindings keys "i3") (x: mkKeybindingI3 x desktops logsroot exitBindings))}
@@ -633,21 +633,21 @@ rec {
 
 
         mode "${scratchpadModeToken}" {
-          ${lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach
-            (map (r: {
-              inherit (r) key;
-              mode = "${scratchpadModeToken}";
-              cmd = "${mkWindowRuleI3 r} scratchpad show";
-              raw = true;
-            }) scratchpadRules) (x: mkKeybindingI3 x desktops logsroot exitBindings))
-          }
-          ${lib.concatStringsSep (mkNewlineAndIndent 2) (lib.forEach
-            (scratchpadBindings ++ (map (b: {
-              key = b;
-              mode = "${scratchpadModeToken}";
-              raw = true;
-            }) exitBindings)) (x: mkKeybindingI3 x desktops logsroot exitBindings))
-          }
+            ${lib.concatStringsSep (mkNewlineAndIndent 4) (lib.forEach
+              (map (r: {
+                inherit (r) key;
+                mode = "${scratchpadModeToken}";
+                cmd = "${mkWindowRuleI3 r} scratchpad show";
+                raw = true;
+              }) scratchpadRules) (x: mkKeybindingI3 x desktops logsroot exitBindings))
+             }
+             ${lib.concatStringsSep (mkNewlineAndIndent 4) (lib.forEach
+               (scratchpadBindings ++ (map (b: {
+                 key = b;
+                 mode = "${scratchpadModeToken}";
+                 raw = true;
+               }) exitBindings)) (x: mkKeybindingI3 x desktops logsroot exitBindings))
+              }
         }
       '';
   genPlacementRulesI3 = rules: wsdata:

@@ -596,8 +596,7 @@ in
                 ${optionalString (cfg.theme.bar != "") ''
                 colors {
                 ${cfg.theme.bar}
-                }
-                ''}
+                ${mkIndent 4}}''}
                 bindsym button4 nop
                 bindsym button5 nop
             }
