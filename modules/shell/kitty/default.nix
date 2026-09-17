@@ -438,11 +438,19 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
-      wmCommon.keybindings.entries = [{
-        key = [ prefix "Shift" "Return" ];
-        cmd = appCmdFull cfg.traits;
-        mode = "root";
-      }];
+      wmCommon.keybindings.entries = [
+        {
+          key = [ prefix "Shift" "Return" ];
+          cmd = appCmdFull cfg.traits;
+          mode = "root";
+        }
+        {
+          key = [ "k" ];
+          cmd = ''[class="^kitty$"] scratchpad show'';
+          mode = "scratchpad";
+          raw = true;
+        }
+      ];
     })
   ];
 }
