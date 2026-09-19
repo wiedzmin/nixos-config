@@ -249,6 +249,7 @@ in
           change it globally with this option.
         '';
       };
+      # TODO: try fine-grained collapsing, see @elisp{mode-line-collapse-minor-modes} for details
       collapseMinorModes = mkOption {
         type = types.bool;
         default = true;
