@@ -372,6 +372,7 @@ in
       remapEverywhere.enable = true;
       extraConfigureFlags = [ "--disable-gc-mark-trace" ];
       globalLexicalBinding.enable = true;
+      collapseMinorModes = false;
     };
     edit.enable = true;
     navigation = {
