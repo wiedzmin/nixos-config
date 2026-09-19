@@ -68,7 +68,7 @@ in
       client = ''
         #                       border  bground text
         client.focused          #dbdbdb #F5DEB3 #1E1E1E
-        client.focused_inactive #333333 #0F0F0F #E3CCA1
+        client.focused_inactive #333333 #708090 #FFFFFF
         client.unfocused        #333333 #010101 #85753A
         client.urgent           #856E23 #900000 #F5DEB3
       '';
