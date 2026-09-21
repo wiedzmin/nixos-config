@@ -98,6 +98,7 @@ in
       ide.emacs.core.customPackages = {
         "orderless-dispatchers" = { text = builtins.readFile ./elisp/custom/orderless-dispatchers.el; };
         "navigation-misc" = { text = builtins.readFile ./elisp/custom/misc.el; };
+        "navigation-tap" = { text = builtins.readFile ./elisp/custom/navigation-tap.el; };
       } // optionalAttrs (cfg.collections.backend == "consult") {
         "consult-utils" = { text = readSubstituted config inputs pkgs [ ./subst/consult-utils.nix ] [ ./elisp/custom/consult-utils.el ]; };
       };
