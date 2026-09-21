@@ -684,3 +684,13 @@
         ("e" . custom/dired-open-in-eww))
   (:map custom-projects-map
         ("b" . custom/kill-vc-current-buffer-file-path)))
+
+(with-eval-after-load 'hyperbole
+  (use-package navigation-tap)
+
+  (defib custom/hypb/elisp/symbol-doc ()
+    "Open *Help* for elisp symbol at point"
+    (let ((symbol (thing-at-point 'elisp-symbol)))
+      (when symbol
+        (ibut:label-set symbol)
+        (hact 'link-to-elisp-doc (intern-soft symbol))))))
