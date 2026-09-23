@@ -37,6 +37,23 @@
     deadnix.enable = true;
     nixpkgs-fmt.enable = true;
     shfmt.enable = true;
-    typos.enable = true;
+    typos = {
+      enable = true;
+      settings = {
+        write = true;
+        ignored-words = [
+          "pn"
+          "ND"
+          "paperworks"
+          "rror"
+          "codo"
+        ];
+        exclude = [
+          "*.ovpn"
+          "*_id*"
+          "*.ppk"
+        ];
+      };
+    };
   };
 }
