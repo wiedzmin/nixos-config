@@ -46,7 +46,7 @@ imageBg: cBlack; // ???
 imageBgTransparent: cWhite; // ???
 activeButtonBg: pComment; // Raised Button bg
 activeButtonBgOver: pPurple;  // Raised Button hover bg
-activeButtonBgRipple: rippleBgHeavy; // Raised Button ripple color (and slected chat contact ripple?)
+activeButtonBgRipple: rippleBgHeavy; // Raised Button ripple color (and selected chat contact ripple?)
 activeButtonFg: windowBg; // Raised Button text color
 activeButtonFgOver: activeButtonFg; // Raised Button hover text color
 activeButtonSecondaryFg: pFg; // Numbers (badges) text color on raised buttons
