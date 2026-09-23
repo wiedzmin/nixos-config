@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, inputs, pkgs, ... }:
 with pkgs.unstable.commonutils;
 
 let
@@ -127,10 +127,7 @@ in
     logToJournal = true;
   };
 
-  job = {
-    "52604ab078".secrets.enable = true;
-    "8286b572a1".secrets.enable = false;
-  };
+  job."52604ab078".secrets.enable = true;
   dev.secrets.enable = true;
 
   controlcenter = {
