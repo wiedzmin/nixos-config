@@ -695,14 +695,6 @@ in
       url = "https://gitflic.ru/project";
       browseWith = appCmdFull config.attributes.browser.default.traits;
     };
-    "school.mos.ru/homeworks" = {
-      url = "https://school.mos.ru/diary/homeworks/homeworks/";
-      browseWith = appCmdFull config.attributes.browser.fallback.traits;
-    };
-    "school.mos.ru/profile" = {
-      url = "https://school.mos.ru/diary/account/profile/";
-      browseWith = appCmdFull config.attributes.browser.fallback.traits;
-    };
     "old-games-nostalgie" = {
       url = "https://dos.zone/";
       tags = [ "games" ];
