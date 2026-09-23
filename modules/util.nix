@@ -169,13 +169,15 @@ rec {
     mode = meta.mode;
     cmd =
       let
-        targetPrefix = if useLocalGoBinaries
-                       then "${goPath}/bin/" else "${nurpkgs.toolbox}/bin/";
+        targetPrefix =
+          if useLocalGoBinaries
+          then "${goPath}/bin/" else "${nurpkgs.toolbox}/bin/";
         cmds = ensureList meta.cmd;
       in
-        lib.forEach cmds (c: if lib.hasPrefix goDebugToken c
-                         then lib.concatStrings [targetPrefix (lib.removePrefix goDebugToken c)]
-                         else c);
+      lib.forEach cmds (c:
+        if lib.hasPrefix goDebugToken c
+        then lib.concatStrings [ targetPrefix (lib.removePrefix goDebugToken c) ]
+        else c);
     debug = useLocalGoBinaries || (builtins.hasAttr "debug" meta) && meta.debug;
   };
   # FIXME: clarify th semantics of "global", see implementation below
@@ -435,51 +437,54 @@ rec {
     "${root}/${
       lib.last (lib.splitString "/"
         (builtins.head (lib.splitString " " cmd)))}-$(date +%Y-%m-%d-%H-%M-%S | tr -d '[:cntrl:]').log";
-  mkAutorandrProfile = profileName: heads: layout: i3Enabled: { # FIXME: Unhardcode 1-or-3 heads dilemma
+  mkAutorandrProfile = profileName: heads: layout: i3Enabled: {
+    # FIXME: Unhardcode 1-or-3 heads dilemma
     "${profileName}" = {
-      fingerprint = if builtins.length (builtins.attrNames heads) == 1 then {
-        "${heads."primary".output}" = heads."primary".EDID;
-      } else {
-        "${heads."primary".output}" = heads."primary".EDID;
-        "${heads."secondary".output}" = heads."secondary".EDID;
-        "${heads."tertiary".output}" = heads."tertiary".EDID;
-      };
-      config = if builtins.length (builtins.attrNames heads) == 1 then {
-        "${heads."primary".output}" = {
-          enable = true;
-          position = layout."${heads."primary".output}".position;
-          mode = heads."primary".mode.hardware;
-          gamma = heads."primary".gamma;
-          rate = heads."primary".rate;
-          rotate = layout."${heads."primary".output}".orientation;
+      fingerprint =
+        if builtins.length (builtins.attrNames heads) == 1 then {
+          "${heads."primary".output}" = heads."primary".EDID;
+        } else {
+          "${heads."primary".output}" = heads."primary".EDID;
+          "${heads."secondary".output}" = heads."secondary".EDID;
+          "${heads."tertiary".output}" = heads."tertiary".EDID;
         };
-      } else {
-        "${heads."primary".output}" = {
-          enable = true;
-          position = layout."${heads."primary".output}".position;
-          mode = heads."primary".mode;
-          gamma = heads."primary".gamma;
-          rate = heads."primary".rate;
-          rotate = layout."${heads."primary".output}".orientation;
+      config =
+        if builtins.length (builtins.attrNames heads) == 1 then {
+          "${heads."primary".output}" = {
+            enable = true;
+            position = layout."${heads."primary".output}".position;
+            mode = heads."primary".mode.hardware;
+            gamma = heads."primary".gamma;
+            rate = heads."primary".rate;
+            rotate = layout."${heads."primary".output}".orientation;
+          };
+        } else {
+          "${heads."primary".output}" = {
+            enable = true;
+            position = layout."${heads."primary".output}".position;
+            mode = heads."primary".mode;
+            gamma = heads."primary".gamma;
+            rate = heads."primary".rate;
+            rotate = layout."${heads."primary".output}".orientation;
+          };
+          "${heads."secondary".output}" = {
+            enable = true;
+            position = layout."${heads."secondary".output}".position;
+            mode = heads."secondary".mode;
+            gamma = heads."secondary".gamma;
+            rate = heads."secondary".rate;
+            rotate = layout."${heads."secondary".output}".orientation;
+          };
+          "${heads."tertiary".output}" = {
+            enable = true;
+            primary = true;
+            position = layout."${heads."tertiary".output}".position;
+            mode = heads."tertiary".mode.hardware;
+            gamma = heads."tertiary".gamma;
+            rate = heads."tertiary".rate;
+            rotate = layout."${heads."tertiary".output}".orientation;
+          };
         };
-        "${heads."secondary".output}" = {
-          enable = true;
-          position = layout."${heads."secondary".output}".position;
-          mode = heads."secondary".mode;
-          gamma = heads."secondary".gamma;
-          rate = heads."secondary".rate;
-          rotate = layout."${heads."secondary".output}".orientation;
-        };
-        "${heads."tertiary".output}" = {
-          enable = true;
-          primary = true;
-          position = layout."${heads."tertiary".output}".position;
-          mode = heads."tertiary".mode.hardware;
-          gamma = heads."tertiary".gamma;
-          rate = heads."tertiary".rate;
-          rotate = layout."${heads."tertiary".output}".orientation;
-        };
-      };
       # FIXME: unwire i3wm
       hooks.postswitch = lib.optionalString (i3Enabled) "rescreen-${profileName}-i3";
     };

@@ -1,6 +1,6 @@
 if [ -z "$1" ]; then
-  echo "Dockerfile missing"
-  exit 1
+	echo "Dockerfile missing"
+	exit 1
 fi
 
 real_path=$(realpath "$1")

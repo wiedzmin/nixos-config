@@ -541,7 +541,8 @@ in
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; optionals (config.wmCommon.focus.list.useWMSpecific) [ list-windows-i3 ];
-        xdg.configFile = { #  FIXME: try parameterizing indents
+        xdg.configFile = {
+          #  FIXME: try parameterizing indents
           "i3/config".text = ''
             # i3 config file (v4)
 

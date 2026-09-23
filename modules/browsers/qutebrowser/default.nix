@@ -1,4 +1,4 @@
-{ config, inputs, lib, pkgs, ... }:
+{ config, lib, pkgs, ... }:
 with pkgs.unstable.commonutils;
 with lib;
 
@@ -8,13 +8,6 @@ let
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   standardDesktopID = "org.qutebrowser.qutebrowser";
   windowedDesktopID = "org.custom.qutebrowser.windowed";
-  nixpkgs-qutebrowser-pinned = import inputs.nixpkgs-qutebrowser-pinned {
-    config = config.nixpkgs.config // {
-      allowUnfree = true;
-      permittedInsecurePackages = config.ext.nix.core.permittedInsecurePackages;
-    };
-    localSystem = { system = "x86_64-linux"; };
-  };
 in
 {
   options = {
@@ -143,9 +136,10 @@ in
   config = mkMerge [
     (mkIf cfg.enable {
       browsers.qutebrowser.traits = rec {
-        command = optionalAttrs (!cfg.useProxyBinary) {
-          binary = "${pkgs.qutebrowser}/bin/qutebrowser";
-        } // optionalAttrs cfg.useProxyBinary {
+        command = optionalAttrs (!cfg.useProxyBinary)
+          {
+            binary = "${pkgs.qutebrowser}/bin/qutebrowser";
+          } // optionalAttrs cfg.useProxyBinary {
           binary = goBinPrefix config.dev.golang.goPath "qbcli";
           parameters = [ "open" "-url" ];
         };

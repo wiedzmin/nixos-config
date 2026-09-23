@@ -3,7 +3,8 @@ with lib;
 
 {
   options = {
-    hardware.heads.internal-x270-SL10M37887 = { # Identification (P/N) number of the laptop frame
+    hardware.heads.internal-x270-SL10M37887 = {
+      # Identification (P/N) number of the laptop frame
       EDID = mkOption {
         type = types.str;
         default =

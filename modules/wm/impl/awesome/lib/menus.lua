@@ -4,7 +4,7 @@ local awful = require("awful")
 local beautiful = require("beautiful")
 local menubar = require("menubar")
 
--- Create a laucher widget and a main menu
+-- Create a launcher widget and a main menu
 myawesomemenu = {
    { "manual", "@defaultVTExecCmd@ -e man awesome" },
    { "restart", awesome.restart },

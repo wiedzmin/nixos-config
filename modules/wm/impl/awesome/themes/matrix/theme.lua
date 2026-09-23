@@ -47,7 +47,7 @@ theme.bg_focus      = "#171717"
 theme.bg_urgent     = "#171717"
 theme.bg_minimize   = "#171717"
 
-theme.hilight       = "#ffcc44"
+theme.highlight       = "#ffcc44"
 
 theme.fg_normal     = "#449900"
 theme.fg_focus      = "#66FF00"

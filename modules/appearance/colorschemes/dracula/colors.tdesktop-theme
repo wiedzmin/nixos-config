@@ -4,7 +4,7 @@
 // Initial Author: Neil Smith
 // Initial Repository: https://github.com/nmsmith22389/dracula-telegram
 
-// Color Pallete
+// Color Palette
 pBg: #282a36;
 pSelection: #44475a;
 pFg: #f8f8f2;
@@ -46,7 +46,7 @@ imageBg: cBlack; // ???
 imageBgTransparent: cWhite; // ???
 activeButtonBg: pComment; // Raised Button bg
 activeButtonBgOver: pPurple;  // Raised Button hover bg
-activeButtonBgRipple: rippleBgHeavy; // Raised Button ripple color (and slected chat contact ripple?)
+activeButtonBgRipple: rippleBgHeavy; // Raised Button ripple color (and selected chat contact ripple?)
 activeButtonFg: windowBg; // Raised Button text color
 activeButtonFgOver: activeButtonFg; // Raised Button hover text color
 activeButtonSecondaryFg: pFg; // Numbers (badges) text color on raised buttons
@@ -86,7 +86,7 @@ radialFg: pPink; // ??? [te]
 radialBg: pSelection; // ??? [te]
 placeholderFg: pSelection; //windowSubTextFg; [te]
 placeholderFgActive: pComment;
-inputBorderFg: pComment; // Input text field undeline when not active
+inputBorderFg: pComment; // Input text field underline when not active
 filterInputBorderFg: pComment; // Search box active border
 checkboxFg: pComment; // checkbox inactive border [te]
 sliderBgInactive: pSelection; // windowBgActive;
@@ -254,7 +254,7 @@ msgInShadow: cTransparent;
 msgInShadowSelected: cTransparent;
 msgOutShadow: cTransparent;
 msgOutShadowSelected: cTransparent;
-msgInDateFg: #8beafdcc; // Date in IN msg (text color) [ie time recieved] [te]
+msgInDateFg: #8beafdcc; // Date in IN msg (text color) [ie time received] [te]
 msgInDateFgSelected: #282a3690; // msgInDateFG but when msg is selected [te]
 msgOutDateFg: #8beafdcc; // Date in OUT msg (text color) [ie time sent] [te]
 msgOutDateFgSelected: #282a3690; // msgOutDateFG but when msg is selected [te]

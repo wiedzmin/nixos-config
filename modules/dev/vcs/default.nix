@@ -120,8 +120,8 @@ in
       ide.emacs.core.config = builtins.readFile ./elisp/misc.el
         + optionalString (config.ide.emacs.navigation.collections.backend == "consult" && cfg.ghq.enable) (builtins.readFile ./elisp/consult.el)
         + optionalString (cfg.ghq.enable) ''
-          (use-package ghq-tap)
-        '';
+        (use-package ghq-tap)
+      '';
     })
     (mkIf (cfg.enable && config.completion.expansions.enable && config.pim.core.enable) {
       completion.expansions.espanso.matches = {
