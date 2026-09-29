@@ -315,12 +315,6 @@ in
       url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZGJn6Q7c6G7NAaiWD5J__z";
       browseWith = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
     };
-    "orgmode" = {
-      desc = "emacs/orgmode";
-      tags = [ "media" "video" ];
-      url = "https://www.youtube.com/playlist?list=PLdEMId_A5XGZJBJT4i3KvMbAuIicqwSau";
-      browseWith = with config.attributes.browser; maybeDefaultBrowserCmd default fallback;
-    };
     "emacs" = {
       desc = "emacs";
       tags = [ "media" "video" ];

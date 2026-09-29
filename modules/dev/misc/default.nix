@@ -149,11 +149,6 @@ in
         default = if cfg.emacs.lsp.impl == "lsp-mode" then "lsp-deferred" else "eglot-ensure";
         description = "Elisp function to use in major mode hooks for LSP client start";
       };
-      emacs.orgmode.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable Emacs org-mode helper packages for org-babel and such";
-      };
     };
   };
 
@@ -227,14 +222,12 @@ in
         epkgs.webpaste
         epkgs.yaml-pro
         epkgs.yaml-mode
+        epkgs.just-ts-mode
       ] ++ lib.optionals (cfg.diagrams.enable) [
         epkgs.blockdiag-mode
         epkgs.graphviz-dot-mode
         epkgs.pikchr-mode
         epkgs.plantuml-mode
-      ] ++ lib.optionals (cfg.diagrams.enable && cfg.emacs.orgmode.enable) [
-        epkgs.ob-blockdiag
-        epkgs.just-ts-mode
       ] ++ lib.optionals (!config.ide.emacs.core.treesitter.enable) [
         epkgs.just-mode
         epkgs.lua-mode
@@ -242,13 +235,7 @@ in
       ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst/non-ts.nix ] [ ./elisp/non-ts.el ]) +
         lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst/ts.nix ] [ ./elisp/ts.el ]) +
         (readSubstituted config inputs pkgs [ ./subst/misc.nix ] [ ./elisp/misc.el ]) +
-        lib.optionalString cfg.emacs.orgmode.enable ''
-          (use-package ob-restclient
-            :after ob restclient
-            :commands (org-babel-execute:restclient))
-        '' +
-        lib.optionalString cfg.diagrams.enable (readSubstituted config inputs pkgs [ ./subst/diagrams.nix ] [ ./elisp/diagrams.el ]) +
-        lib.optionalString (cfg.emacs.orgmode.enable && cfg.diagrams.enable) (readSubstituted config inputs pkgs [ ./subst/orgmode-diagrams.nix ] [ ./elisp/orgmode-diagrams.el ]);
+        lib.optionalString cfg.diagrams.enable (readSubstituted config inputs pkgs [ ./subst/diagrams.nix ] [ ./elisp/diagrams.el ]);
       ide.emacs.core.treesitter.grammars = {
         just = "https://github.com/IndianBoy42/tree-sitter-just";
       };

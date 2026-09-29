@@ -49,11 +49,6 @@ in
         default = false;
         description = "Whether to enable Emacs Python setup.";
       };
-      emacs.orgmode.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable Emacs org-mode helper packages for org-babel and such";
-      };
       bookmarks.enable = mkOption {
         type = types.bool;
         default = true;
@@ -89,11 +84,7 @@ in
       ide.emacs.core.extraPackages = epkgs: [ epkgs.pip-requirements epkgs.flycheck-prospector ];
       ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst/non-ts.nix ] [ ./elisp/non-ts.el ]) +
         lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst/ts.nix ] [ ./elisp/ts.el ]) +
-        (builtins.readFile ./elisp/common.el) +
-        lib.optionalString cfg.emacs.orgmode.enable ''
-          (use-package ob-python
-            :commands (org-babel-execute:python))
-        '';
+        (builtins.readFile ./elisp/common.el);
       ide.emacs.core.treesitter.grammars = {
         python = "https://github.com/tree-sitter/tree-sitter-python";
       };

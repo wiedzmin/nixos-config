@@ -510,7 +510,6 @@ in
       emacs.enable = true;
       wm.enable = true;
     };
-    orgmode.enable = true;
     scheduling = {
       enable = true;
       factoryCal.updateTimespec = "*-*-* 06:00:00";

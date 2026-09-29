@@ -70,7 +70,6 @@ Select a default filter and update elfeed.
     (elfeed-search-update--force))
   :init
   (use-package elfeed-goodies)
-  (use-package elfeed-org)
   (use-package elfeed-score)
   :bind
   (:map elfeed-search-mode-map
@@ -86,16 +85,12 @@ Select a default filter and update elfeed.
   (elfeed-curl-timeout 90)
   (elfeed-user-agent url-user-agent)
   (elfeed-db-directory "@emacsVarDir@/elfeed/db/")
-  (rmh-elfeed-org-tree-id "elfeed")
-  (rmh-elfeed-org-ignore-tag "ignore")
-  (rmh-elfeed-org-files '("@orgRoamRoot@/feeds.org"))
   (elfeed-score-serde-score-file "@emacsEtcDir@/elfeed/score/score.el")
   (elfeed-search-print-entry-function #'elfeed-score-print-entry)
   (elfeed-search-sort-function #'elfeed-score-sort)
   :config
   (define-key elfeed-search-mode-map "=" elfeed-score-map) ; NOTE: because keymap is not function
   (elfeed-goodies/setup)
-  (elfeed-org)
   (elfeed-score-enable))
 
 (use-package feed-discovery)
