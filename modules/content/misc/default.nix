@@ -364,7 +364,6 @@ in
       ide.emacs.core.extraPackages = epkgs: [
         epkgs.elfeed
         epkgs.elfeed-goodies
-        epkgs.elfeed-org
         epkgs.elfeed-score
         epkgs.feed-discovery
       ];

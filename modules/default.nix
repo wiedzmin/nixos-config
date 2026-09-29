@@ -71,7 +71,6 @@
     ./paperworks
     ./pim/core
     ./pim/obsidian
-    ./pim/orgmode
     ./pim/scheduling
     ./pim/timetracking
     ./security

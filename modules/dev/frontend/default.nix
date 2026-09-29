@@ -25,11 +25,6 @@ in
         default = false;
         description = "Whether to enable development infra for Emacs.";
       };
-      emacs.orgmode.enable = mkOption {
-        type = types.bool;
-        default = false;
-        description = "Whether to enable Emacs org-mode helper packages for org-babel and such";
-      };
     };
   };
 
@@ -53,17 +48,7 @@ in
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.extraPackages = epkgs: optionals (!config.ide.emacs.core.treesitter.enable) [ epkgs.vue-mode ];
       ide.emacs.core.config = lib.optionalString (!config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst/non-ts.nix ] [ ./elisp/non-ts.el ]) +
-        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst/ts.nix ] [ ./elisp/ts.el ]) +
-        lib.optionalString cfg.emacs.orgmode.enable ''
-          (use-package ob-css
-            :commands (org-babel-execute:css
-                       org-babel-prep-session:css))
-
-          (use-package ob-js
-            :commands (org-babel-execute:js
-                       org-babel-prep-session:js
-                       org-babel-variable-assignments:js))
-        '';
+        lib.optionalString (config.ide.emacs.core.treesitter.enable) (readSubstituted config inputs pkgs [ ./subst/ts.nix ] [ ./elisp/ts.el ]);
       ide.emacs.core.treesitter.grammars = {
         css = "https://github.com/tree-sitter/tree-sitter-css";
         html = "https://github.com/tree-sitter/tree-sitter-html";

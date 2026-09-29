@@ -88,9 +88,6 @@ in
       };
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
-      ide.emacs.core.extraPackages = epkgs: [
-        epkgs.org-project-capture
-      ];
       ide.emacs.core.customPackages = {
         "projects-misc" = { text = readSubstituted config inputs pkgs [ ./subst/misc.nix ] [ ./elisp/custom/misc.el ]; };
       };
@@ -130,12 +127,6 @@ in
         (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
           key = [ "c" ];
           cmd = "go#projects open --copy-local";
-          mode = "dev";
-        })
-      ] ++ lib.optionals (cfg.bookmarks.enable && config.navigation.bookmarks.enable && config.pim.orgmode.enable) [
-        (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
-          key = [ "a" ];
-          cmd = "go#projects open --path ${config.pim.orgmode.org-roam.rootDir}/agenda.org";
           mode = "dev";
         })
       ];
