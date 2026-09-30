@@ -109,7 +109,7 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      environment.systemPackages = with pkgs; [ nixpkgs-qtwebengine-bin.clipgrab freetube nixpkgs-last-unbroken.moc ncmpcpp ytfzf ];
+      environment.systemPackages = with pkgs; [ nixpkgs-qtwebengine-bin.clipgrab freetube nixpkgs-last-unbroken.moc ncmpcpp ];
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ nixpkgs-last-unbroken.cmus ];

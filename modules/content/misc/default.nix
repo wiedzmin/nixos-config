@@ -180,7 +180,8 @@ in
             }
             {
               trigger = ":ggr";
-              replace = "cat `rg --files | grep -e \"\\.json\" | fzf` | gron | grep {{searchterm.value}} | gron --ungron"; # nspr>gnugrep|gron|fzf|ripgrep|hgrep
+              # FIXME: unwire `bat`
+              replace = "cat --paging=never (rg --files | grep -e \"\\.json\" | tv) | gron | grep {{searchterm.value}} | gron --ungron"; # nspr>gnugrep|gron|television|ripgrep|hgrep
               vars = [
                 {
                   name = "searchterm";
@@ -207,7 +208,7 @@ in
             }
             {
               trigger = ":fdnew";
-              replace = "fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | fzf"; # nsp>fd|ripgrep|fzf|hgrep
+              replace = "fd --change-newer-than {{changenewerthan.value}} -x rg -l \"\" '{}' | tv"; # nsp>fd|ripgrep|television|hgrep
               vars = [
                 {
                   name = "changenewerthan";
@@ -218,7 +219,7 @@ in
             }
             {
               trigger = ":fdold";
-              replace = "fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | fzf"; # nsp>fd|ripgrep|fzf|hgrep
+              replace = "fd --change-older-than {{changeolderthan.value}} -x rg -l \"\" '{}' | tv"; # nsp>fd|ripgrep|television|hgrep
               vars = [
                 {
                   name = "changeolderthan";
@@ -342,7 +343,7 @@ in
             }
             {
               trigger = ":mli";
-              replace = "fd -e iso | fzf | tee /dev/tty | xargs -I '{}' sudo mount -o loop ./{} ${cfg.mount.iso}"; # nsp>fd|fzf
+              replace = "fd -e iso | tv | tee /dev/tty | xargs -I '{}' sudo mount -o loop ./{} ${cfg.mount.iso}"; # nsp>fd|television
             }
             {
               trigger = ":uli";
@@ -350,7 +351,7 @@ in
             }
             {
               trigger = ":mde";
-              replace = "fd sd -p /dev -d 1 | fzf | tee /dev/tty | xargs -I '{}' sudo mount {} ${cfg.mount.external}"; # nsp>fd|fzf
+              replace = "fd sd -p /dev -d 1 | tv | tee /dev/tty | xargs -I '{}' sudo mount {} ${cfg.mount.external}"; # nsp>fd|television
             }
             {
               trigger = ":ule";

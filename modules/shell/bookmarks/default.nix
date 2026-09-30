@@ -29,13 +29,6 @@ in
 
   config = mkMerge [
     (mkIf cfg.enable {
-      shell.core.variables = [
-        ({
-          FZF_MARKS_FILE = "$HOME/${cfg.path}";
-        } // lib.optionalAttrs (!config.shell.fish.enable) { FZF_MARKS_JUMP = "^[[1;5P"; }
-        // lib.optionalAttrs cfg.order { FZF_MARKS_KEEP_ORDER = "1"; })
-      ];
-
       home-manager.users."${user}" = {
         home.activation = {
           populateShellBookmarks = {
@@ -46,18 +39,6 @@ in
                 homePrefix user cfg.path
               }'';
           };
-        };
-        programs.zsh = {
-          plugins = [{
-            name = "fzf-marks";
-            file = "fzf-marks.plugin.zsh";
-            src = pkgs.fetchFromGitHub {
-              owner = "urbainvaes";
-              repo = "fzf-marks";
-              rev = "f2e8844ce813f8ad35a1903eb8c680c4492e153b";
-              sha256 = "0a8jlwc12m0xid2v4d7rxzci91w8qrc4x91jq4lv0lm62v2w4n1j";
-            };
-          }];
         };
       };
     })

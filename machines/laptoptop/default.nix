@@ -322,7 +322,7 @@ in
       diagrams.enable = true;
       tools.xserver.enable = true;
       tools.misc.enable = true;
-      just.chooserCmd = "fzf";
+      just.chooserCmd = "tv";
       emacs.enable = true;
       emacs.lsp.impl = "lsp-mode";
     };

@@ -154,7 +154,7 @@ in
           matches = [
             {
               trigger = ":gitB";
-              replace = "git branch -a | fzf | tr -d \"[:blank:]\" | tr -d '\\n' | xsel -ib"; # nsp>git|fzf|xsel
+              replace = "git branch -a | tv | tr -d \"[:blank:]\" | tr -d '\\n' | xsel -ib"; # nsp>git|television|xsel
             }
             {
               trigger = ":gs";
