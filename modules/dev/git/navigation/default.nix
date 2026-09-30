@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.dev.git.navigation;
-  user = config.attributes.mainUser.name;
 in
 {
   options = {

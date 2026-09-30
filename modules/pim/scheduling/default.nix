@@ -8,7 +8,6 @@ with lib;
 
 let
   cfg = config.pim.scheduling;
-  user = config.attributes.mainUser.name;
 in
 {
   options = {

@@ -5,7 +5,6 @@ with lib;
 
 let
   cfg = config.pim.core;
-  user = config.attributes.mainUser.name;
 in
 {
   options = {

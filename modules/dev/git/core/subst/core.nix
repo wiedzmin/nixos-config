@@ -1,4 +1,4 @@
-{ config, inputs, ... }:
+{ inputs, ... }:
 
 {
   emacsGitMsgPrefixPath = inputs.emacs-git-msg-prefix;
