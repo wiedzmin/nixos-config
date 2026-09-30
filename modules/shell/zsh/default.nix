@@ -105,9 +105,6 @@ in
 
             ${pkgs.any-nix-shell}/bin/any-nix-shell zsh --info-right | source /dev/stdin
 
-            # review https://github.com/Aloxaf/fzf-tab/wiki/Configuration
-            source ${pkgs.zsh-fzf-tab}/share/fzf-tab/fzf-tab.plugin.zsh
-
             bindkey '\e[3~' delete-char # appropriate action for `delete` key
 
             ${optionalString (pluginEnabled "zsh-fuzzy-search-and-edit") "bindkey '^P' fuzzy-search-and-edit"}
@@ -183,7 +180,6 @@ in
             }
           ];
         };
-        programs.fzf.enableZshIntegration = true;
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {

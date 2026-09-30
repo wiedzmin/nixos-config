@@ -47,6 +47,29 @@ in
 
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ nurpkgs.redis-tui bluemail ] ++ config.attributes.transientPackages;
+        programs.television = {
+          settings.shell_integration.channel_triggers = {
+            "redis-keys" = [
+              "redis-cli"
+            ];
+          };
+          channels = {
+            redis-keys = {
+              metadata = {
+                name = "redis-keys";
+                description = "A channel to select keys from Redis";
+                requirements = [ "redis" "jq" ];
+              };
+              source = {
+                command = "redis-cli keys '*'";
+                output = "{split: :1|trim:\"}";
+              };
+              preview = {
+                command = "redis-cli get {split: :1|trim:\"}";
+              };
+            };
+          };
+        };
       };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
@@ -62,12 +85,8 @@ in
               replace = "ps -o pid,user,%mem,command ax | sort -b -k3 -r";
             }
             {
-              trigger = ":redkj";
-              replace = "redis-cli keys '*' | cut -d\\  -f2 | fzf | xargs redis-cli get | jq .";
-            }
-            {
-              trigger = ":redkr";
-              replace = "redis-cli keys '*' | cut -d\\  -f2 | fzf | xargs redis-cli get";
+              trigger = ":rcg";
+              replace = "redis-cli $|$";
             }
           ];
         };

@@ -34,6 +34,54 @@ in
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ difftastic ];
+        programs.television = {
+          settings.shell_integration.channel_triggers = {
+            "git-branches" = [
+              "git checkout"
+            ];
+          };
+          channels = {
+            git-branches = {
+              metadata = {
+                name = "git-branches";
+                description = "A channel to select branch in current git repo";
+                requirements = [ "git" ];
+              };
+              source = {
+                command = "git branch --format='%(refname:short)'";
+              };
+            };
+            git-stashes = {
+              metadata = {
+                name = "git-stashes";
+                description = "A channel to select stash entry in current git repo";
+                requirements = [ "git" ];
+              };
+              source = {
+                command = "git stash list --format='%gd %h %f'";
+                output = "{split: :0}";
+              };
+              preview = {
+                command = "git stash show -p {split: :0}";
+              };
+              ui = {
+                preview_panel = {
+                  header = "{split: :2}";
+                  footer = "{split: :1}";
+                };
+              };
+              keybindings = {
+                "ctrl-alt-e" = "actions:export";
+              };
+              actions = {
+                "export" = {
+                  description = "Export stash to .patch";
+                  command = "git stash show -p {split: :0} > {split: :1}-{split: :2}.patch";
+                };
+              };
+            };
+          };
+        };
       };
 
       dev.vcs.batch.commands = {
@@ -69,23 +117,12 @@ in
               replace = "mr trim"; # nsp>mr npkg#mr
             }
             {
-              trigger = ":gcob";
-              replace = "git checkout `git branch --format='%(refname:short)' | fzf`"; # nsp>git|fzf
+              trigger = ":gco";
+              replace = "git checkout $|$";
             }
             {
-              trigger = ":gstexp";
-              replace = "git stash show -p `git stash list | fzf | cut -d: -f1` > {{exportbasename.value}}.patch"; # nsp>git|fzf
-              vars = [
-                {
-                  name = "exportbasename";
-                  type = "form";
-                  params = { layout = "export to: [[value]]"; };
-                }
-              ];
-            }
-            {
-              trigger = ":gstsh";
-              replace = "git stash show -p `git stash list | fzf | cut -d: -f1`"; # nsp>git|fzf
+              trigger = ":gst";
+              replace = "git stash show -p $|$";
             }
             {
               trigger = ":precall";

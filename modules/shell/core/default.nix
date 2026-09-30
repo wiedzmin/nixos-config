@@ -57,7 +57,151 @@ in
           '';
         };
         home.sessionVariables = foldl (a: b: a // (envVars b)) { } cfg.variables;
-        programs.fzf.enable = true;
+        programs.television = {
+          enable = true;
+          settings = {
+            tick_rate = 50;
+            default_channel = "files";
+            history_size = 200;
+            global_history = false;
+            ui = {
+              ui_scale = 100;
+              orientation = "landscape";
+              theme = "default";
+              input_bar = {
+                position = "top";
+                prompt = ">";
+                border_type = "rounded";
+              };
+              status_bar = {
+                separator_open = "";
+                separator_close = "";
+                hidden = false;
+              };
+              results_panel = {
+                border_type = "rounded";
+              };
+              preview_panel = {
+                size = 50;
+                scrollbar = true;
+                border_type = "rounded";
+                hidden = false;
+              };
+              help_panel = {
+                show_categories = true;
+                hidden = true;
+              };
+              remote_control = {
+                show_channel_descriptions = true;
+                sort_alphabetically = true;
+              };
+            };
+            keybindings = {
+              "esc" = "quit";
+              "ctrl-c" = "quit";
+              "down" = "select_next_entry";
+              "ctrl-n" = "select_next_entry";
+              "ctrl-j" = "select_next_entry";
+              "up" = "select_prev_entry";
+              "ctrl-p" = "select_prev_entry";
+              "ctrl-k" = "select_prev_entry";
+              "ctrl-up" = "select_prev_history";
+              "ctrl-down" = "select_next_history";
+              "tab" = "toggle_selection_down";
+              "backtab" = "toggle_selection_up";
+              "enter" = "confirm_selection";
+              "pagedown" = "scroll_preview_half_page_down";
+              "pageup" = "scroll_preview_half_page_up";
+              "ctrl-y" = "copy_entry_to_clipboard";
+              "ctrl-r" = "reload_source";
+              "ctrl-s" = "cycle_sources";
+              "ctrl-t" = "toggle_remote_control";
+              "ctrl-o" = "toggle_preview";
+              "ctrl-h" = "toggle_help";
+              "f12" = "toggle_status_bar";
+              "backspace" = "delete_prev_char";
+              "ctrl-w" = "delete_prev_word";
+              "ctrl-u" = "delete_line";
+              "delete" = "delete_next_char";
+              "left" = "go_to_prev_char";
+              "right" = "go_to_next_char";
+              "home" = "go_to_input_start";
+              "ctrl-a" = "go_to_input_start";
+              "end" = "go_to_input_end";
+              "ctrl-e" = "go_to_input_end";
+            };
+            events = {
+              "mouse-scroll-up" = "scroll_preview_up";
+              "mouse-scroll-down" = "scroll_preview_down";
+            };
+            shell_integration = {
+              fallback_channel = "files";
+              channel_triggers = {
+                "alias" = [
+                  "alias"
+                  "unalias"
+                ];
+                "env" = [
+                  "export"
+                  "unset"
+                ];
+                "dirs" = [
+                  "cd"
+                  "ls"
+                  "rmdir"
+                ];
+                "files" = [
+                  "cat"
+                  "less"
+                  "head"
+                  "tail"
+                  "vim"
+                  "nano"
+                  "bat"
+                  "cp"
+                  "mv"
+                  "rm"
+                  "touch"
+                  "chmod"
+                  "chown"
+                  "ln"
+                  "tar"
+                  "zip"
+                  "unzip"
+                  "gzip"
+                  "gunzip"
+                  "xz"
+                ];
+                "git-diff" = [
+                  "git add"
+                  "git restore"
+                ];
+                "git-branch" = [
+                  "git checkout"
+                  "git branch"
+                  "git merge"
+                  "git rebase"
+                  "git pull"
+                  "git push"
+                ];
+                "git-log" = [
+                  "git log"
+                  "git show"
+                ];
+                "git-repos" = [
+                  "nvim"
+                  "code"
+                  "hx"
+                  "git clone"
+                ];
+              };
+              keybindings = {
+                "smart_autocomplete" = "ctrl-t";
+                "command_history" = "ctrl-r";
+              };
+            };
+          };
+        };
         programs.command-not-found = {
           enable = true;
           dbPath = configPrefix roots "modules/shell/core/assets/programs.sqlite";
@@ -95,11 +239,65 @@ in
           url = "https://github.com/xFA25E/pueue";
           browseWith = appCmdFull config.attributes.browser.default.traits;
         };
+        television-homepage = {
+          desc = "Television homepage";
+          url = "https://alexpasmantier.github.io/television";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+        };
+        television-templates-reference = {
+          desc = "Television template system reference";
+          url = "https://alexpasmantier.github.io/television/advanced/template-system";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+        };
+        television-string-pipeline = {
+          desc = "Docs for Rust crate used to refine Television output";
+          url = "https://docs.rs/string_pipeline/latest/string_pipeline";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+        };
+
+        television-reference-actions = {
+          desc = "Television actions reference";
+          url = "https://alexpasmantier.github.io/television/reference/actions";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+        };
+        television-channel-spec = {
+          desc = "Television channel specification";
+          url = "https://alexpasmantier.github.io/television/reference/channel-spec";
+          browseWith = appCmdFull config.attributes.browser.default.traits;
+        };
       };
     })
     (mkIf (cfg.enable && cfg.queueing.enable && config.completion.expansions.enable) {
+      home-manager.users."${user}" = {
+        xdg.configFile = {
+          "pueue/status-output.jq".text = ''
+            .tasks | to_entries | sort_by(.key) | .[] | "\(.value.id) | \(.value.status.Done.result) | \(.value.command) | \(.value.path) | \(.value.status.Done.start | split(".")[0] | strptime("%Y-%m-%dT%H:%M:%S") | strftime("%Y-%m-%d %H:%M:%S")) | \(.value.status.Done.end | split(".")[0] | strptime("%Y-%m-%dT%H:%M:%S") | strftime("%Y-%m-%d %H:%M:%S"))"
+          '';
+        };
+        programs.television = {
+          settings.shell_integration.channel_triggers = {
+            "pueue-tasks" = [
+              "pueue status"
+            ];
+          };
+          channels = {
+            pueue-tasks = {
+              metadata = {
+                name = "pueue-tasks";
+                description = "A channel to select Pueue tasks";
+                requirements = [ "pueue" "jq" ];
+              };
+              source = {
+                command = "pueue status --json | jq -r -f ${xdgConfig user "/pueue/status-output.jq"}";
+              };
+              preview = {
+                command = "pueue log {split: \| :0}";
+              };
+            };
+          };
+        };
+      };
       completion.expansions.espanso.matches = {
-        # TODO: some fzf-based tasks listing automation
         shell_core_queueing = {
           matches = [
             {
@@ -132,7 +330,7 @@ in
           matches = [
             {
               trigger = ":ptim";
-              replace = "ps -ef | fzf --header-lines=1 | tr -s ' ' | cut -d' ' -f2 | xargs ps -o pid,lstart,start,etime,etimes -p"; # nsp>fzf
+              replace = "ps -ef | tv | tr -s ' ' | cut -d' ' -f2 | xargs ps -o pid,lstart,etime -p"; # nsp>television
             }
             {
               trigger = ":ts";

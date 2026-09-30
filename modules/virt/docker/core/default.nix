@@ -86,6 +86,13 @@ in
           ignored = [ "DL3007" ];
           trustedRegistries = [ "docker.io" ];
         };
+        programs.television.settings = {
+          shell_integration.channel_triggers = {
+            "docker-images" = [
+              "docker run"
+            ];
+          };
+        };
       };
       shell.prompts.starship.modulesConfiguration = { docker_context = { format = "via [🐋 $context](blue bold)"; }; };
     })

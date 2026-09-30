@@ -16,7 +16,7 @@ in
         description = "Whether to enable shell history helpers";
       };
       shell.backend = mkOption {
-        type = types.enum [ "atuin" "mcfly" "fzf" ];
+        type = types.enum [ "atuin" "mcfly" "tv" ];
         default = "mcfly";
         description = "Which tool to use to navigate recent commands history";
       };
@@ -51,11 +51,6 @@ in
         default = "RANK";
         description = "Sorting options of shown results";
       };
-      shell.mcfly.fzfIntegration.enable = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Whether to enable fzf integration";
-      };
       emacs.enable = mkOption {
         type = types.bool;
         default = false;
@@ -72,7 +67,6 @@ in
           enableZshIntegration = true;
           enableFishIntegration = true;
           fuzzySearchFactor = cfg.shell.mcfly.fuzzySearch;
-          fzf.enable = cfg.shell.mcfly.fzfIntegration.enable;
         };
         programs.atuin = optionalAttrs (cfg.shell.backend == "atuin") {
           enable = true;

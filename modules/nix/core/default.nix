@@ -120,19 +120,19 @@ in
 
         packageOverrides = _: {
           # TODO: try https://github.com/lf-/nix-doc
-          rollback = mkShellScriptWithDeps "rollback" (with pkgs; [ fzf ]) ''
-            GENERATION=$(pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | fzf --tac)
+          rollback = mkShellScriptWithDeps "rollback" (with pkgs; [ television ]) ''
+            GENERATION=$(tv nixos-configurations-recent)
             if [ -n "$GENERATION" ]; then
-              GENERATION_PATH=/nix/var/nix/profiles/system-$(echo $GENERATION | cut -d\  -f1)-link
+              GENERATION_PATH=/nix/var/nix/profiles/system-$GENERATION-link
               pkexec nix-env --profile /nix/var/nix/profiles/system --set $GENERATION_PATH && pkexec $GENERATION_PATH/bin/switch-to-configuration switch
             fi
           '';
 
           nix-doc-lookup = pkgs.writeShellApplication {
             name = "nix-doc-lookup";
-            runtimeInputs = with pkgs; [ fzf gnused manix ];
+            runtimeInputs = with pkgs; [ television gnused manix ];
             text = ''
-              manix "$1" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
+              manix "$1" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | tv | xargs manix
             '';
           };
           # FIXME: parameterize "nixpkgs#" below
@@ -161,6 +161,32 @@ in
           rollback
         ];
         home.sessionPath = [ ''''${XDG_DATA_HOME}/cargo/bin'' ];
+        programs.television = {
+          channels = {
+            nixos-configurations = {
+              metadata = {
+                name = "nixos-configurations";
+                description = "A channel to select from recently build system configurations";
+                requirements = [ "pkexec" "nix-env" ];
+              };
+              source = {
+                command = "pkexec nix-env -p /nix/var/nix/profiles/system --list-generations";
+                output = "{split: :0}";
+              };
+            };
+            nixos-configurations-recent = {
+              metadata = {
+                name = "nixos-configurations-recent";
+                description = "A channel to select from recently build system configurations";
+                requirements = [ "pkexec" "nix-env" ];
+              };
+              source = {
+                command = "pkexec nix-env -p /nix/var/nix/profiles/system --list-generations | sort -r";
+                output = "{split: :0}";
+              };
+            };
+          };
+        };
       };
       shell.core.variables = [{
         CARGO_HOME = ''''${XDG_DATA_HOME}/cargo'';

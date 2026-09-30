@@ -64,15 +64,6 @@ in
           };
           plugins = [
             {
-              name = "fzf-marks";
-              src = pkgs.fetchFromGitHub {
-                owner = "urbainvaes";
-                repo = "fzf-marks";
-                rev = "f2e8844ce813f8ad35a1903eb8c680c4492e153b";
-                sha256 = "0a8jlwc12m0xid2v4d7rxzci91w8qrc4x91jq4lv0lm62v2w4n1j";
-              };
-            }
-            {
               name = "pisces"; # TODO: play and compare with https://github.com/jorgebucaran/autopair.fish
               src = pkgs.fetchFromGitHub {
                 owner = "laughedelic";
@@ -97,15 +88,6 @@ in
                 repo = "fifc";
                 rev = "e953fcd521f34651d4eabedcc08cfdef7945b31d";
                 sha256 = "0w05qlc0s926k0zdf10sk1qym9n3dwmnlbyzmzcv7zpr0mbrarsn";
-              };
-            }
-            {
-              name = "fzf"; # TODO: play and compare with https://github.com/PatrickF1/fzf.fish
-              src = pkgs.fetchFromGitHub {
-                owner = "jethrokuan";
-                repo = "fzf";
-                rev = "479fa67d7439b23095e01b64987ae79a91a4e283";
-                sha256 = "0k6l21j192hrhy95092dm8029p52aakvzis7jiw48wnbckyidi6v";
               };
             }
             {
@@ -173,13 +155,8 @@ in
             }
           ];
           shellInitLast = ''
-            bind "ctrl-f1" fzm
             bind "ctrl-f2" cpwd
           '';
-        };
-        programs.fzf = {
-          enableFishIntegration = true;
-          historyWidget.fish.command = "";
         };
       };
     })
