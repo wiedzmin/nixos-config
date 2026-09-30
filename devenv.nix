@@ -34,7 +34,13 @@
   };
 
   git-hooks.hooks = {
-    deadnix.enable = true;
+    deadnix = {
+      enable = true;
+      excludes = [
+        "modules/default.nix"
+        "modules/pim/obsidian/default.nix" # temp
+      ];
+    };
     nixpkgs-fmt.enable = true;
     shfmt.enable = true;
     typos = {
@@ -47,6 +53,7 @@
           "paperworks"
           "rror"
           "codo"
+          "BA"
         ];
         exclude = [
           "*.ovpn"
