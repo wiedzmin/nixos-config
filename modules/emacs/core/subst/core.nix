@@ -1,4 +1,4 @@
-{ config, inputs, ... }:
+{ config, ... }:
 
 {
   emacsDatadir = config.ide.emacs.core.dataDir;

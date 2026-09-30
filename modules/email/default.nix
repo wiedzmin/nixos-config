@@ -1,5 +1,5 @@
 # TODO: do not extract custom sources rethink whole setup first
-{ config, lib, pkgs, ... }:
+{ config, lib, ... }:
 with lib;
 
 # TODO: integrate gmailctl into build/activation

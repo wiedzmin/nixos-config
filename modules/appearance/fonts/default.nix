@@ -8,7 +8,6 @@ with lib;
 
 let
   cfg = config.appearance.fonts;
-  user = config.attributes.mainUser.name;
 in
 {
   imports = [
