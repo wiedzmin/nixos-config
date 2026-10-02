@@ -69,6 +69,7 @@ in
         allowUserNamespaces = true;
         allowSimultaneousMultithreading = true;
         lockKernelModules = false;
+        polkit.enablePkexecWrapper = true;
       };
 
       home-manager.users."${user}" = {
