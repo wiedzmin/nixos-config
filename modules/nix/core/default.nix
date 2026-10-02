@@ -132,7 +132,7 @@ in
             name = "nix-doc-lookup";
             runtimeInputs = with pkgs; [ fzf gnused manix ];
             text = ''
-              manix "" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
+              manix "$1" | grep '^# ' | sed 's/^# \(.*\) (.*/\1/;s/ (.*//;s/^# //' | fzf --preview="manix '{}'" | xargs manix
             '';
           };
           # FIXME: parameterize "nixpkgs#" below
