@@ -27,6 +27,11 @@ in
         default = "upstream";
         description = "Name of upstream repo remote.";
       };
+      worktreesRoot = mkOption {
+        type = types.str;
+        default = homePrefix user "workspace/worktrees";
+        description = "Path to wotktrees root";
+      };
     };
   };
 
@@ -34,6 +39,24 @@ in
     (mkIf cfg.enable {
       home-manager.users."${user}" = {
         home.packages = with pkgs; [ difftastic ];
+        programs.lazyworktree = {
+          enable = true;
+          settings = {
+            worktree_dir = cfg.worktreesRoot;
+            sort_mode = "switched";
+            layout = "default";
+            auto_refresh = true;
+            ci_auto_refresh = false;
+            refresh_interval = 10;
+            disable_pr = false;
+            icon_set = "nerd-font-v3";
+            search_auto_select = false;
+            fuzzy_finder_input = false;
+            palette_mru = true;
+            palette_mru_limit = 5;
+          };
+          shellWrapperName = "wt";
+        };
         programs.television = {
           settings.shell_integration.channel_triggers = {
             "git-branches" = [
@@ -82,6 +105,11 @@ in
             };
           };
         };
+        home.activation.ensureWorktreesRoot = {
+          after = [ ];
+          before = [ "linkGeneration" ];
+          data = "mkdir -p ${cfg.worktreesRoot}";
+        };
       };
 
       dev.vcs.batch.commands = {
@@ -103,6 +131,12 @@ in
                [("D" "Difftastic diff (dwim)" difftastic-magit-diff)
                 ("S" "Difftastic show" difftastic-magit-show)])))
       '';
+      navigation.bookmarks.entries = {
+        worktrees-root = {
+          desc = "Git worktrees global root";
+          path = cfg.worktreesRoot;
+        };
+      };
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       completion.expansions.espanso.matches = {
