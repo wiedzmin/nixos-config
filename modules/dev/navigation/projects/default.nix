@@ -75,18 +75,6 @@ in
         { DEVENV_MAX_JOBS = builtins.toString config.attributes.hardware.cores; }
       ];
     })
-    (mkIf (cfg.enable && config.ext.nix.cachix.enable) {
-      nix = {
-        settings = {
-          substituters = [
-            "https://devenv.cachix.org"
-          ];
-          trusted-public-keys = [
-            "devenv.cachix.org-1:w1cLUi8dv3hnoSPGAuibQv+f9TZLr6cv/Hm9XgU50cw="
-          ];
-        };
-      };
-    })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.customPackages = {
         "projects-misc" = { text = readSubstituted config inputs pkgs [ ./subst/misc.nix ] [ ./elisp/custom/misc.el ]; };

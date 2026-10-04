@@ -463,7 +463,6 @@ in
         "qtwebengine-5.15.19"
       ];
     };
-    cachix.enable = false;
     dev = {
       enable = true;
       scripts.enable = true;
