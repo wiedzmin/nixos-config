@@ -64,7 +64,6 @@
     ./networking/vpn
     ./networking/vpn/openvpn.nix
     ./networking/wireless
-    ./nix/cachix
     ./nix/core
     ./nix/dev
     ./nix/navigation
