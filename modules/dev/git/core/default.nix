@@ -88,6 +88,7 @@ in
           };
           delta = {
             enable = (cfg.pager == "delta");
+            enableGitIntegration = true;
             options = {
               dark = true;
               diff-so-fancy = true; # NOTE: emulation mode
