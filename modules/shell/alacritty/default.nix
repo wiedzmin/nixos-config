@@ -6,7 +6,6 @@ let
   cfg = config.shell.vt.alacritty;
   user = config.attributes.mainUser.name;
   inherit (config.wmCommon) prefix;
-  package = if cfg.graphics.enable then pkgs.alacritty-graphics else pkgs.alacritty;
 in
 {
   options = {
@@ -20,6 +19,10 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable Alacritty with sixel graphics.";
+      };
+      package = mkOption {
+        type = types.package;
+        default = if cfg.graphics.enable then pkgs.alacritty-graphics else pkgs.alacritty;
       };
       socket = mkOption {
         type = types.str;
@@ -47,7 +50,7 @@ in
     (mkIf cfg.enable {
       shell.vt.alacritty.traits = rec {
         command = {
-          binary = "${package}/bin/alacritty";
+          binary = "${cfg.package}/bin/alacritty";
           parameters = [ "-e" ];
         };
         wmClass = [ "Alacritty" "Alacritty" ];
