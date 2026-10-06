@@ -21,6 +21,11 @@ in
         default = false;
         description = "Whether to enable Alacritty with sixel graphics.";
       };
+      socket = mkOption {
+        type = types.str;
+        default = "$XDG_RUNTIME_DIR/alacritty.sock";
+        description = "IPC socket path";
+      };
       traits = mkOption {
         type = types.submodule (import ../../workstation/systemtraits/xapp-traits.nix);
         description = "Alacritty application traits";
