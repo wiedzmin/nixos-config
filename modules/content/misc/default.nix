@@ -409,10 +409,10 @@ in
           tags = [ "content" "misc" "ext" "fhs" ];
           path = "/run/media/${user}";
         };
-        "temp-dir" = {
-          desc = "System-wide user's temporary directory";
+        "sandbox-dir" = {
+          desc = "System-wide user's datastore for various activities";
           tags = [ "content" "misc" "temp" ];
-          path = homePrefix user "workspace/temp";
+          path = homePrefix user "workspace/sandbox";
         };
       };
     })
