@@ -78,6 +78,16 @@ in
         wmClass = [ "kitty" "kitty" ];
       };
 
+      nixpkgs.config.packageOverrides = _: {
+        kitty_exec = pkgs.writeShellApplication {
+          name = "kitty_exec";
+          runtimeInputs = with pkgs; [ kitty ];
+          text = ''
+            kitty @ --to ${remoteConnString} launch --type os-window --title "$1" sh -c "$2"
+          '';
+        };
+      };
+
       fonts.packages = with pkgs; [ powerline-fonts ];
 
       pim.timetracking.rules = mkArbttProgramTitleRule [ (appWindowClass cfg.traits) ]
