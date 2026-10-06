@@ -39,6 +39,14 @@ in
     })
     (mkIf (cfg.enable && cfg.wm.enable) {
       # TODO: find a handy balance between PW and mpris (taking respective keybindings into account)
+      wmCommon.wsMapping.rules = [
+        {
+          class = "kitty";
+          title = "wiremix";
+          float = true;
+          activate = true;
+        }
+      ];
       wmCommon.keybindings.entries = [
         {
           key = [ "XF86AudioMute" ];
@@ -52,7 +60,7 @@ in
         }
         {
           key = [ prefix "p" ];
-          cmd = "${pkgs.lxqt.pavucontrol-qt}/bin/pavucontrol-qt";
+          cmd = "${pkgs.kitty_exec}/bin/kitty_exec wiremix ${pkgs.wiremix}/bin/wiremix";
           mode = "root";
         }
       ];
