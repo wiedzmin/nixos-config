@@ -42,7 +42,6 @@ in
     };
     nur-packages = { path = "${wsRoot roots "github"}/wiedzmin/nur-packages"; };
     postgres = { path = "${wsRoot roots "github"}/postgres/postgres"; };
-    "staging/sandbox" = { path = homePrefix user "workspace/sandbox/newpkgs"; };
     jwt-io = {
       desc = "JWT online debugger and libraries reference";
       url = "https://jwt.io/";
