@@ -511,12 +511,12 @@ in
         i3-userguide = {
           desc = "i3 userguide";
           url = "https://i3wm.org/docs/userguide.html";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         i3-debugging = {
           desc = "i3 userguide";
           url = "https://i3wm.org/docs/debugging.html";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         i3-configuration = {
           desc = "i3 configuration";

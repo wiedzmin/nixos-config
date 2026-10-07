@@ -71,19 +71,11 @@ in
       shell.vt.kitty.traits = rec {
         command = {
           binary = "${pkgs.kitty}/bin/kitty";
-          parameters = [ "-1" "--listen-on ${remoteConnString}" ];
+          type = "terminal";
         };
+        terminal.wrapper.template = "${command.binary} --title $title sh -c $command";
+        terminal.bare.template = "${command.binary} -1 --listen-on ${remoteConnString}";
         wmClass = [ "kitty" "kitty" ];
-      };
-
-      nixpkgs.config.packageOverrides = _: {
-        kitty_exec = pkgs.writeShellApplication {
-          name = "kitty_exec";
-          runtimeInputs = with pkgs; [ kitty ];
-          text = ''
-            kitty @ --to ${remoteConnString} launch --type os-window --title "$1" sh -c "$2"
-          '';
-        };
       };
 
       fonts.packages = with pkgs; [ powerline-fonts ];
@@ -103,14 +95,14 @@ in
         kitty-docs = {
           desc = "Kitty VT documentation";
           url = "https://sw.kovidgoyal.net/kitty/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           jump = true;
           searchSuffix = "search/?q=";
         };
         kitty-keyboard-protocol = {
           desc = "Kitty keyboard protocol article";
           url = "https://sw.kovidgoyal.net/kitty/keyboard-protocol/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
 
@@ -416,7 +408,7 @@ in
             K("M-Shift-dot"): K("M-Shift-RIGHT_BRACE"),
         }, "${appName cfg.traits}")
       ''; # NOTE: workarounds for some unexpectedly non-working prefixes
-      wmCommon.autostart.entries = optionals cfg.autostart [{ cmd = appCmdFull cfg.traits; }];
+      wmCommon.autostart.entries = optionals cfg.autostart [{ cmd = appBareTerminalCmd cfg.traits; }];
     })
     (mkIf (cfg.enable && config.completion.expansions.enable) {
       home-manager.users."${user}" = {
@@ -449,7 +441,7 @@ in
       wmCommon.keybindings.entries = [
         {
           key = [ prefix "Shift" "Return" ];
-          cmd = appCmdFull cfg.traits;
+          cmd = appBareTerminalCmd cfg.traits;
           mode = "root";
         }
         {

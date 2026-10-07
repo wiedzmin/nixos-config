@@ -453,7 +453,7 @@ in
         "mpv-keys" = {
           desc = "mpv default keybindings reference";
           url = "https://github.com/mpv-player/mpv/blob/master/etc/input.conf";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           windowRules = [
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -465,7 +465,7 @@ in
         "mpv-manual" = {
           desc = "mpv manual";
           url = "https://mpv.io/manual/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           windowRules = [
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -477,7 +477,7 @@ in
         "pdf-searching" = {
           desc = "pdf + ";
           url = "https://www.google.ru/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           searchSuffix = "?q=pdf+";
         };
         "camdata" = {
@@ -487,12 +487,12 @@ in
         "cmus-site" = {
           desc = "cmus.github.io";
           url = "https://cmus.github.io/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "cmus-wiki" = {
           desc = "cmus github wiki";
           url = "https://github.com/cmus/cmus/wiki/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })

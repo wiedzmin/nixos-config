@@ -138,22 +138,22 @@ in
         "telega/manual" = {
           desc = "Telega.el manual";
           url = "https://zevlg.github.io/telega.el/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "telegram/service/status" = {
           desc = "Telegram service status";
           url = "https://downdetector.com/status/telegram/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "telegram/api/reference/links" = {
           desc = "telegram API reference / links";
           url = "https://core.telegram.org/api/links";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "telegram/api/reference/usernames" = {
           desc = "telegram API reference / usernames";
           url = "https://core.telegram.org/api/invites#public-usernames";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })

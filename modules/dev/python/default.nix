@@ -98,14 +98,14 @@ in
           desc = "python + ";
           tags = [ "dev" ];
           url = "https://www.google.ru/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           searchSuffix = "?q=python+";
         };
         "pypi" = {
           desc = "PyPI";
           tags = [ "dev" "python" ];
           url = "https://pypi.org";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           searchSuffix = "/search/?q=";
         };
       };

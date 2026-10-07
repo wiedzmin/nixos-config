@@ -45,12 +45,12 @@ in
         "hyperbole-site" = {
           desc = "GNU Hyperbole site";
           url = "https://www.gnu.org/software/hyperbole/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "hyperbole-man" = {
           desc = "GNU Hyperbole manual";
           url = "https://www.gnu.org/software/hyperbole/man/hyperbole.html";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })

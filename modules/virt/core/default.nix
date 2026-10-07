@@ -96,17 +96,17 @@ in
         "quickemu" = {
           desc = "Quickemu Github repo";
           url = "https://github.com/quickemu-project/quickemu";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "quickemu/wiki/references" = {
           desc = "Quickemu Github wiki, references page";
           url = homePrefix user "https://github.com/quickemu-project/quickemu/wiki/08-References";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "quickemu/wiki/advanced-config" = {
           desc = "Quickemu Github wiki, advanced configuration page";
           url = "https://github.com/quickemu-project/quickemu/wiki/05-Advanced-quickemu-configuration";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })

@@ -121,6 +121,7 @@ in
       browsers.firefox.traits = rec {
         command = {
           binary = "${config.home-manager.users."${user}".programs.firefox.finalPackage}/bin/firefox";
+          type = "browser";
           parameters = [ "--new-window" ];
         };
         wmClass = [ "Navigator" "firefox" ];
@@ -128,7 +129,7 @@ in
           Firefox = {
             suspendDelay = 10;
             matchWmClassContains = lib.last wmClass;
-            suspendSubtreePattern = binaryFromCmd (appCmdFull cfg.traits);
+            suspendSubtreePattern = binaryFromCmd (appBrowserCmd cfg.traits);
           };
         };
       };
@@ -184,7 +185,7 @@ in
             (makeDesktopItem {
               name = windowedDesktopID;
               type = "Application";
-              exec = "${appCmdFull cfg.traits} %U";
+              exec = "${appBrowserCmd cfg.traits} %U";
               comment = "Firefox that opens links preferably in new windows";
               desktopName = "Firefox";
               categories = [ "Network" "WebBrowser" ];
@@ -327,7 +328,7 @@ in
       browsers.ext.emacs.browseUrlSetup = cfg.emacs.browseUrlSetup;
 
       shell.core.variables = [{
-        TB_DEFAULT_BROWSER = appCmdFull cfg.traits;
+        TB_DEFAULT_BROWSER = appBrowserCmd cfg.traits;
         TB_DEFAULT_BROWSER_SESSIONS_STORE = cfg.sessions.path;
         TB_FIREFOX_SESSIONS_KEEP_MINUTES = builtins.toString cfg.sessions.keepMinutes;
         global = true;
@@ -353,7 +354,7 @@ in
       ];
       attributes.browser.fallback.traits = cfg.traits;
 
-      shell.core.variables = [{ TB_FALLBACK_BROWSER = appCmdFull cfg.traits; global = true; }];
+      shell.core.variables = [{ TB_FALLBACK_BROWSER = appBrowserCmd cfg.traits; global = true; }];
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
       home-manager.users."${user}" = {
@@ -405,18 +406,18 @@ in
         "addons/firefox" = {
           desc = "Firefox addons";
           url = "https://addons.mozilla.org/en-US/firefox/";
-          browseWith = appCmdFull cfg.traits;
+          browseWith = appBrowserCmd cfg.traits;
           searchSuffix = "search/?cat=all&x=0&y=0&q=";
         };
         "about/config" = {
           desc = "Firefox configuration options";
           url = "about:config";
-          browseWith = appCmdFull cfg.traits;
+          browseWith = appBrowserCmd cfg.traits;
         };
         "about/memory" = {
           desc = "Firefox addons reference";
           url = "about:memory";
-          browseWith = appCmdFull cfg.traits;
+          browseWith = appBrowserCmd cfg.traits;
         };
       };
     })

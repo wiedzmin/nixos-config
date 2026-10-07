@@ -551,35 +551,35 @@ in
           desc = "nix emacs overlay";
           path = "${wsRoot roots "github"}/nix-community/emacs-overlay";
           url = "https://github.com/nix-community/emacs-overlay/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           jump = true;
           searchSuffix = "search?q=";
         };
         melpa = {
           desc = "MELPA";
           url = "https://melpa.org/#/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           jump = true;
           searchSuffix = "?q=";
         };
         elpa-gnu = {
           desc = "GNU ELPA";
           url = "https://elpa.gnu.org/packages/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         elpa-nongnu = {
           desc = "NonGNU ELPA";
           url = "https://elpa.nongnu.org/nongnu/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         use-package = {
           url = "https://github.com/jwiegley/use-package";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "emacs-news" = {
           description = "Emacs news";
           url = "https://sachachua.com/blog/category/emacs-news/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           windowRules = [
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -591,18 +591,18 @@ in
         "libhunt/elisp" = {
           tags = [ "search" "libraries" "emacs" "elisp" ];
           url = "https://www.libhunt.com/l/emacs-lisp";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "gooem" = {
           desc = "emacs + ";
           url = "https://www.google.ru/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           searchSuffix = "?q=emacs+";
         };
         "yhetil-emacs-devel" = {
           desc = "emacs-devel search engine";
           url = "https://yhetil.org/emacs-devel/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })

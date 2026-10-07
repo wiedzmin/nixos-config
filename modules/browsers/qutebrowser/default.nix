@@ -146,6 +146,7 @@ in
         command = optionalAttrs (!cfg.useProxyBinary)
           {
             binary = "${pkgs.qutebrowser}/bin/qutebrowser";
+            type = "browser";
           } // optionalAttrs cfg.useProxyBinary {
           binary = goBinPrefix config.dev.golang.goPath "qbcli";
           parameters = [ "open" "-url" ];
@@ -249,7 +250,7 @@ in
           (makeDesktopItem {
             name = windowedDesktopID;
             type = "Application";
-            exec = "${appCmdFull cfg.traits} %U";
+            exec = "${appBrowserCmd cfg.traits} %U";
             comment = "Qutebrowser that opens links preferably in new windows";
             desktopName = "Qutebrowser";
             categories = [ "Network" "WebBrowser" ];
@@ -473,7 +474,7 @@ in
                 "gc" = "tab-clone";
                 "gj" = "tab-move +";
                 "gk" = "tab-move -";
-                "go" = "spawn ${appCmdFull config.attributes.browser.fallback.traits} {url}";
+                "go" = "spawn ${appBrowserCmd config.attributes.browser.fallback.traits} {url}";
                 "gw" = ''spawn emacsclient --eval '(eww "{url}")' '';
                 "ge" = "cmd-set-text :open {url}";
                 "gl" = "open {url:scheme}://${config.controlcenter.substitutions."lists.gnu.org"}{url:path}";
@@ -665,7 +666,7 @@ in
         ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser ${cfg.desktopID}.desktop
       '';
       shell.core.variables = [{
-        TB_DEFAULT_BROWSER = appCmdFull cfg.traits;
+        TB_DEFAULT_BROWSER = appBrowserCmd cfg.traits;
         TB_DEFAULT_BROWSER_SESSIONS_STORE = cfg.sessions.path;
         TB_QUTEBROWSER_SESSIONS_KEEP_MINUTES = builtins.toString cfg.sessions.keepMinutes;
         global = true;
@@ -681,28 +682,28 @@ in
         "qutebrowser_plus" = {
           desc = "qutebrowser + ";
           url = "https://www.google.ru/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           searchSuffix = "?q=qutebrowser+";
         };
         "qutebrowser_help_index" = {
           desc = "qutebrowser help index";
           url = "https://qutebrowser.org/doc/help/index.html";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "qutebrowser_help_commands" = {
           desc = "qutebrowser commands reference";
           url = "https://qutebrowser.org/doc/help/commands.html";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "qutebrowser_help_settings" = {
           desc = "qutebrowser settings reference";
           url = "https://qutebrowser.org/doc/help/settings.html";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "qutebrowser_help_configuring" = {
           desc = "qutebrowser configuration overview";
           url = "https://qutebrowser.org/doc/help/configuring.html";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })
@@ -720,7 +721,7 @@ in
       ];
       attributes.browser.fallback.traits = cfg.traits;
 
-      shell.core.variables = [{ TB_FALLBACK_BROWSER = appCmdFull cfg.traits; global = true; }];
+      shell.core.variables = [{ TB_FALLBACK_BROWSER = appBrowserCmd cfg.traits; global = true; }];
     })
     (mkIf (cfg.enable && cfg.sessions.backup.enable) {
       home-manager.users."${user}" = {

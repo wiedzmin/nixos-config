@@ -401,7 +401,7 @@ in
           desc = "home-manager upstream repo";
           path = "${wsRoot roots "github"}/rycee/home-manager";
           url = "https://github.com/rycee/home-manager/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           jump = true;
           searchSuffix = "search?q=";
         };
@@ -409,44 +409,44 @@ in
           desc = "Nixpkgs upstream repo";
           path = "${wsRoot roots "github"}/NixOS/nixpkgs";
           url = "https://github.com/NixOS/nixpkgs/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           jump = true;
           searchSuffix = "search?q=";
         };
         nix-versions = {
           desc = "Mapping packages version to Nixpkgs repo git history";
           url = "https://lazamar.co.uk/nix-versions/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           jump = true;
           searchSuffix = "?channel=nixos-unstable&package=";
         };
         nixos-search = {
           desc = "Search NixOS packages";
           url = "https://search.nixos.org/packages";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           jump = true;
           searchSuffix = "?channel=unstable&from=0&size=50&sort=relevance&type=packages&query=";
         };
         nix-versions-blogpost = {
           desc = "Descriptive blog post for `nix-versions` (see alongside)";
           url = "https://lazamar.github.io/download-specific-package-version-with-nix/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         nixos-hardware = {
           desc = "NixOS hardware presets";
           path = "${wsRoot roots "github"}/NixOS/nixos-hardware";
           url = "https://github.com/NixOS/nixos-hardware";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "nixospkg" = {
           desc = "NixOS packages";
           url = "https://nixos.org/nixos/packages.html";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "nixos-status" = {
           desc = "NixOS status page";
           url = "https://status.nixos.org/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           windowRules = [
             {
               class = mkWSMappingBrowsersRegexp config.attributes.browser;
@@ -464,83 +464,83 @@ in
         "nixos-news" = {
           desc = "NixOS weekly news";
           url = "https://weekly.nixos.org/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "nixos/packages" = {
           desc = "Nixpkgs/unstable";
           url = "https://nixos.org/nixos/packages/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           searchSuffix = "?channel=nixpkgs-unstable&query=";
         };
         "nix/pm/repo" = mkGithubBookmark "NixOS" "nix" roots // {
           desc = "nix package manager repo";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "ghnix" = {
           desc = "github/lang:nix";
           tags = [ "forge" ];
           url = "https://github.com/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           jump = false;
           searchSuffix = "search?q=language%3Anix+";
         };
         "nixosr" = {
           desc = "NixOS + ";
           url = "";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           searchSuffix = "https://www.google.ru/?q=nixos+"; # FIXME: ???
         };
         "nixosopt" = {
           desc = "NixOS/options";
           url = "https://nixos.org/nixos/options.html#";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           searchSuffix = "";
         };
         "nixhydra" = {
           desc = "Nixpkgs from Hydra";
           url = "https://hydra.nixos.org/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           searchSuffix = "search?query=";
         };
         "discourse/nixos" = {
           desc = "NixOS Discourse";
           url = "https://discourse.nixos.org/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "HM/documentation" = {
           desc = "Home Manager documentation";
           url = "https://nix-community.github.io/home-manager/index.html";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "nix-lib" = {
           desc = "Nix library reference";
           url = "https://teu5us.github.io/nix-lib.html";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "mynixos" = {
           desc = "Build and share reproducible software environments with Nix and NixOS";
           url = "https://mynixos.com";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "nix.dev" = {
           desc = "An opinionated guide for developers getting things done using the Nix ecosystem.";
           url = "https://nix.dev";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "nixlang.wiki" = {
           desc = "An unofficial, maintained wiki for NixOS";
           url = "https://nixlang.wiki/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "nixpkgs-ref-custom" = {
           desc = "Nixpkgs overview and reference by RyanTM";
           url = "https://ryantm.github.io/nixpkgs";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "flakes-inputs-syntax" = {
           desc = "Flakes inputs syntax reference";
           url = "https://nixos-and-flakes.thiscute.world/other-usage-of-flakes/inputs";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })

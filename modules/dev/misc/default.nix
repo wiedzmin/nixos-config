@@ -184,7 +184,7 @@ in
         plantuml-server = {
           desc = "PlantUML server instance";
           url = "http://localhost:${builtins.toString cfg.diagrams.plantuml.server.port}/plantuml";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })
