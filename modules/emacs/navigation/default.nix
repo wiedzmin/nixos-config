@@ -149,52 +149,52 @@ in
         "emacs/vocem/consult" = {
           desc = "VOCEM consult repo";
           url = "https://github.com/minad/consult";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "emacs/vocem/consult/wiki" = {
           desc = "VOCEM consult wiki";
           url = "https://github.com/minad/consult/wiki";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "emacs/vocem/vertico" = {
           desc = "VOCEM vertico repo";
           url = "https://github.com/minad/vertico";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "emacs/vocem/vertico/wiki" = {
           desc = "VOCEM vertico wiki";
           url = "https://github.com/minad/vertico/wiki";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "emacs/vocem/embark" = {
           desc = "VOCEM embark repo";
           url = "https://github.com/oantolin/embark";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "emacs/vocem/embark/wiki" = {
           desc = "VOCEM embark wiki";
           url = "https://github.com/oantolin/embark/wiki";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "emacs/vocem/orderless" = {
           desc = "VOCEM orderless repo";
           url = "https://github.com/oantolin/orderless";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "emacs/corfu" = {
           desc = "corfu repo";
           url = "https://github.com/minad/corfu";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "emacs/corfu/wiki" = {
           desc = "corfu/wiki";
           url = "https://github.com/minad/corfu/wiki";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "emacs/cape" = {
           desc = "cape repo (corfu extension)";
           url = "https://github.com/minad/cape";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })

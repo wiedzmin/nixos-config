@@ -300,9 +300,9 @@ rec {
         (approvedBookmarks remotes [ "url" ]));
   maybeDefaultBrowserCmd = browserDefault: browserFallback:
     if builtins.elem (appWindowClass browserDefault.traits) approvedDefaultBrowsersWC then
-      appCmdFull browserDefault.traits
+      appBrowserCmd browserDefault.traits
     else
-      appCmdFull browserFallback.traits;
+      appBrowserCmd browserFallback.traits;
   # }}}
   # {{{ Emacs
   # TODO: create function for ensuring non-prefix keys absence
@@ -715,9 +715,14 @@ rec {
   # {{{ XApps
   appWindowClass = traits: lib.last traits.wmClass;
   appName = traits: builtins.head traits.wmClass;
-  appCmdFull = traits: with traits.command;
-    lib.concatStringsSep " " ([ binary ] ++ parameters);
   appCmdParametersQuotedSpaced = traits: lib.concatStringsSep " "
     (lib.forEach traits.command.parameters (s: "\"" + s + "\""));
+  appBrowserCmd = traits: with traits.command;
+    lib.concatStringsSep " " ([ binary ] ++ parameters);
+  appBareTerminalCmd = traits: with traits.command;
+    lib.concatStringsSep " " ([ binary ] ++ parameters);
+  appTUICmd = title: command: template:
+    (lib.replaceString "$title" title
+      (lib.replaceString "$command" command template));
   # }}}
 }

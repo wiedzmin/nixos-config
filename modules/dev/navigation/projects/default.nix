@@ -124,17 +124,17 @@ in
         "cachix/devenv/options" = {
           desc = "cachix/devenv options";
           url = "https://devenv.sh/reference/options/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "projectile/docs" = {
           desc = "Projectile docs";
           url = "https://docs.projectile.mx/projectile/index.html";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "cachix/devenv/releases" = {
           desc = "cachix/devenv releases";
           url = "https://github.com/cachix/devenv/releases";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })

@@ -137,13 +137,13 @@ in
         "dockr" = {
           desc = "docker + ";
           url = "https://www.google.ru/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           searchSuffix = "?q=docker+";
         };
         "dockerhub" = {
           desc = "Docker Hub";
           url = "https://hub.docker.com/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           searchSuffix = "search/?q=";
         };
       };

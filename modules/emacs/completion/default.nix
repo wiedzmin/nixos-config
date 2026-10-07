@@ -105,26 +105,26 @@ in
             desc = "Yasnippet snippets collection";
             path = "${wsRoot roots "github"}/wiedzmin/yasnippet-snippets";
             url = "https://github.com/wiedzmin/yasnippet-snippets/";
-            browseWith = appCmdFull config.attributes.browser.default.traits;
+            browseWith = appBrowserCmd config.attributes.browser.default.traits;
             jump = true;
             searchSuffix = "search?q=";
           };
           "yasnippet/snippet-reference" = {
             desc = "Yasnippet documentation / snippets reference";
             url = "http://joaotavora.github.io/yasnippet/snippet-reference.html";
-            browseWith = appCmdFull config.attributes.browser.default.traits;
+            browseWith = appBrowserCmd config.attributes.browser.default.traits;
           };
           "yasnippet/snippet-development" = {
             desc = "Yasnippet documentation / snippets development";
             url = "http://joaotavora.github.io/yasnippet/snippet-development.html";
-            browseWith = appCmdFull config.attributes.browser.default.traits;
+            browseWith = appBrowserCmd config.attributes.browser.default.traits;
           };
         } // optionalAttrs (cfg.snippets.backend == "tempel") {
         tempel = {
           desc = "Tempel repo";
           path = "${wsRoot roots "github"}/wiedzmin/minad/tempel";
           url = "https://github.com/minad/tempel";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           jump = true;
           searchSuffix = "search?q=";
         };

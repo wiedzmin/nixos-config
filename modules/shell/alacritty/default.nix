@@ -51,12 +51,24 @@ in
       shell.vt.alacritty.traits = rec {
         command = {
           binary = "${cfg.package}/bin/alacritty";
-          parameters = [ "-e" ];
+          type = "terminal";
         };
+        terminal.wrapper.template = "${command.binary} --title $title -e sh -c $command";
+        terminal.bare.template = "${command.binary}";
         wmClass = [ "Alacritty" "Alacritty" ];
       };
 
       fonts = { packages = with pkgs; [ powerline-fonts ]; };
+
+      nixpkgs.config.packageOverrides = _: {
+        alacritty_exec = pkgs.writeShellApplication {
+          name = "alacritty_exec";
+          runtimeInputs = with pkgs; [ cfg.package ];
+          text = ''
+            alacritty --title "$1" --command "$2"
+          '';
+        };
+      };
 
       pim.timetracking.rules = mkArbttProgramTitleRule [ (appWindowClass cfg.traits) ]
         [ "(?:~|home/${user})/workspace/repos/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/([a-zA-Z0-9]*)/" ] "project:$1-$2-$3";

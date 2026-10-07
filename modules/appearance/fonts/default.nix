@@ -85,12 +85,12 @@ in
         "devfonts" = {
           desc = "JS fonts theming and comparison";
           url = "https://devfonts.gafi.dev/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         "coding-fonts-css-tricks" = {
           desc = "CSS fonts tricks";
           url = "https://coding-fonts.css-tricks.com/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })

@@ -232,38 +232,38 @@ in
         pueue-wiki = {
           desc = "Pueue github project wiki";
           url = "https://github.com/Nukesor/pueue/wiki";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         emacs-pueue-repo = {
           desc = "Pueue emacs frontend project repo";
           url = "https://github.com/xFA25E/pueue";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         television-homepage = {
           desc = "Television homepage";
           url = "https://alexpasmantier.github.io/television";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         television-templates-reference = {
           desc = "Television template system reference";
           url = "https://alexpasmantier.github.io/television/advanced/template-system";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         television-string-pipeline = {
           desc = "Docs for Rust crate used to refine Television output";
           url = "https://docs.rs/string_pipeline/latest/string_pipeline";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
 
         television-reference-actions = {
           desc = "Television actions reference";
           url = "https://alexpasmantier.github.io/television/reference/actions";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
         television-channel-spec = {
           desc = "Television channel specification";
           url = "https://alexpasmantier.github.io/television/reference/channel-spec";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })

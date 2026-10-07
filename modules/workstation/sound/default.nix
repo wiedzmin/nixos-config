@@ -59,8 +59,10 @@ in
         }
         {
           key = [ prefix "p" ];
-          cmd = "${pkgs.kitty_exec}/bin/kitty_exec wiremix ${pkgs.wiremix}/bin/wiremix";
+          cmd = appTUICmd "wiremix" "${pkgs.wiremix}/bin/wiremix" config.attributes.vt.default.traits.terminal.wrapper.template;
           mode = "root";
+          activate = true;
+          float = true;
         }
       ];
     })

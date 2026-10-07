@@ -147,8 +147,10 @@ in
           key = [ "Shift" "w" ];
           mode = "network";
         } // optionalAttrs (cfg.backend == "networkmanager") {
-          cmd = "${appCmdFull config.attributes.vt.default.traits} ${pkgs.networkmanager}/bin/nmtui";
-        } // optionalAttrs (cfg.backend == "wireless") { cmd = "${appCmdFull config.attributes.vt.default.traits} ${pkgs.wpa_supplicant}/bin/wpa_cli"; })
+          cmd = appTUICmd "nmtui" "${pkgs.networkmanager}/bin/nmtui" config.attributes.vt.default.traits.terminal.wrapper.template;
+        } // optionalAttrs (cfg.backend == "wireless") {
+          cmd = appTUICmd "wpa_cli" "${pkgs.wpa_supplicant}/bin/wpa_cli" config.attributes.vt.default.traits.terminal.wrapper.template;
+        })
       ] ++ optionals (cfg.backend == "networkmanager" && cfg.wm.dmenu.enable) [{
         key = [ "w" ];
         cmd = ''${pkgs.runtimeShell} -l -c "exec ${pkgs.networkmanager_dmenu}/bin/networkmanager_dmenu"'';

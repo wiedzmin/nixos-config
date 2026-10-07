@@ -85,6 +85,7 @@ in
       browsers.chromium.traits = rec {
         command = {
           binary = "${pkgs.chromium}/bin/chromium";
+          type = "browser";
           parameters = [ "--new-window" ];
         };
         wmClass = [ "chromium-browser" "Chromium-browser" ];
@@ -92,7 +93,7 @@ in
           Chromium = {
             suspendDelay = 10;
             matchWmClassContains = lib.last wmClass;
-            suspendSubtreePattern = binaryFromCmd (appCmdFull cfg.traits);
+            suspendSubtreePattern = binaryFromCmd (appBrowserCmd cfg.traits);
           };
         };
       };
@@ -124,7 +125,7 @@ in
           (makeDesktopItem {
             name = windowedDesktopID;
             type = "Application";
-            exec = "${appCmdFull cfg.traits} %U";
+            exec = "${appBrowserCmd cfg.traits} %U";
             comment = "Chromium that opens links preferably in new windows";
             desktopName = "Chromium";
             categories = [ "Network" "WebBrowser" ];
@@ -171,7 +172,7 @@ in
       services.xserver.displayManager.sessionCommands = ''
         ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser ${cfg.desktopID}.desktop
       '';
-      shell.core.variables = [{ TB_DEFAULT_BROWSER = appCmdFull cfg.traits; global = true; }];
+      shell.core.variables = [{ TB_DEFAULT_BROWSER = appBrowserCmd cfg.traits; global = true; }];
 
       attributes.browser.default.traits = cfg.traits;
 
@@ -186,7 +187,7 @@ in
         }
       ];
       attributes.browser.fallback.traits = cfg.traits;
-      shell.core.variables = [{ TB_FALLBACK_BROWSER = appCmdFull cfg.traits; global = true; }];
+      shell.core.variables = [{ TB_FALLBACK_BROWSER = appBrowserCmd cfg.traits; global = true; }];
     })
   ];
 }

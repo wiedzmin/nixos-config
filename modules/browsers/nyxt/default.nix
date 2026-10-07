@@ -92,6 +92,7 @@ in
       browsers.nyxt.traits = rec {
         command = {
           binary = "${pkgs.nyxt}/bin/nyxt";
+          type = "browser";
         };
         wmClass = [ "nyxt" "Nyxt" ];
       };
@@ -101,7 +102,7 @@ in
           (makeDesktopItem {
             name = customDesktopID;
             type = "Application";
-            exec = "${appCmdFull cfg.traits} %U";
+            exec = "${appBrowserCmd cfg.traits} %U";
             comment = "Custom Nyxt desktop item, customizations pending after more close usage";
             desktopName = "Nyxt";
             categories = [ "Network" "WebBrowser" ];
@@ -145,7 +146,7 @@ in
       services.xserver.displayManager.sessionCommands = ''
         ${pkgs.xdg-utils}/bin/xdg-settings set default-web-browser ${cfg.desktopID}.desktop
       '';
-      shell.core.variables = [{ TB_DEFAULT_BROWSER = appCmdFull cfg.traits; global = true; }];
+      shell.core.variables = [{ TB_DEFAULT_BROWSER = appBrowserCmd cfg.traits; global = true; }];
 
       attributes.browser.default.traits = cfg.traits;
 
@@ -164,19 +165,19 @@ in
         }
       ];
       attributes.browser.fallback.traits = cfg.traits;
-      shell.core.variables = [{ TB_FALLBACK_BROWSER = appCmdFull cfg.traits; global = true; }];
+      shell.core.variables = [{ TB_FALLBACK_BROWSER = appBrowserCmd cfg.traits; global = true; }];
     })
     (mkIf (cfg.enable && cfg.bookmarks.enable) {
       navigation.bookmarks.entries = {
         "nyxt" = mkGithubBookmark "atlas-engineer" "nyxt" roots // {
           tags = [ "nyxt" "repo" ];
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
           transient = true;
         };
         "nyxt/discourse" = {
           tags = [ "nyxt" "forum" ];
           url = "https://discourse.atlas.engineer/";
-          browseWith = appCmdFull config.attributes.browser.default.traits;
+          browseWith = appBrowserCmd config.attributes.browser.default.traits;
         };
       };
     })
