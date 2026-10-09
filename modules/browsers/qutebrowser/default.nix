@@ -31,6 +31,13 @@ in
         default = false;
         description = "Set qutebrowser as fallback browser.";
       };
+      psdToken = mkOption {
+        type = types.str;
+        default = "qutebrowser";
+        visible = false;
+        internal = true;
+        description = "Browser ID for `profile-sync-daemon` configuration";
+      };
       useProxyBinary = mkOption {
         type = types.bool;
         default = true;
@@ -251,6 +258,7 @@ in
         xdg.configFile = {
           "qutebrowser/hint-words".text = builtins.readFile ./assets/hint-words;
         };
+        services.psd.browsers = [ cfg.psdToken ];
         programs.qutebrowser = {
           enable = true;
           loadAutoconfig = false;

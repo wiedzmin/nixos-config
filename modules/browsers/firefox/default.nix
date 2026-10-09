@@ -31,6 +31,13 @@ in
         default = false;
         description = "Set firefox as fallback browser.";
       };
+      psdToken = mkOption {
+        type = types.str;
+        default = "firefox";
+        visible = false;
+        internal = true;
+        description = "Browser ID for `profile-sync-daemon` configuration";
+      };
       suspendInactive = mkOption {
         type = types.bool;
         default = true;
@@ -183,6 +190,7 @@ in
               categories = [ "Network" "WebBrowser" ];
             })
           ];
+        services.psd.browsers = [ cfg.psdToken ];
         programs.firefox = {
           enable = true;
           configPath = xdgConfig user "/mozilla/firefox";

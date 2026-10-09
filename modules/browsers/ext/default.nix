@@ -4,6 +4,7 @@ with lib;
 
 let
   cfg = config.browsers.ext;
+  user = config.attributes.mainUser.name;
   nurpkgs = pkgs.unstable.nur.repos.wiedzmin;
   inherit (config.wmCommon) prefix;
 in
@@ -36,6 +37,11 @@ in
         default = false;
         description = "Whether to enable WM keybindings.";
       };
+      psd.enable = mkOption {
+        type = types.bool;
+        default = true;
+        description = "Whether to enable `profile-sync-daemon`";
+      };
     };
   };
 
@@ -66,6 +72,8 @@ in
         + "\n" + mkArbttBrowserTitleRule [ "Gmail" ] "web:email" config.attributes.browser + "\n"
         + mkArbttBrowserTitleRule [ "Google" "DuckDuckGo" ] "web:search" config.attributes.browser + "\n"
         + mkArbttBrowserTitleRule [ "wikipedia" ] "site:wikipedia" config.attributes.browser;
+
+      home-manager.users."${user}".services.psd.enable = cfg.psd.enable;
     })
     (mkIf (cfg.enable && cfg.emacs.enable) {
       ide.emacs.core.config =
