@@ -37,6 +37,13 @@ in
           Chromium should be fallback browser.
         '';
       };
+      psdToken = mkOption {
+        type = types.str;
+        default = "chromium";
+        visible = false;
+        internal = true;
+        description = "Browser ID for `profile-sync-daemon` configuration";
+      };
       keyboardCentric = mkOption {
         type = types.bool;
         default = true;
@@ -106,6 +113,7 @@ in
             # "gfbliohnnapiefjpjlpjnehglfpaknnc" # Surfingkeys
           ];
         };
+        services.psd.browsers = [ cfg.psdToken ];
         xdg.configFile = {
           "espanso/config/chromium.yml".source = yaml.generate "espanso-config-chromium.yml" {
             filter_class = appWindowClass cfg.traits;
