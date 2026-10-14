@@ -41,15 +41,9 @@ in
       ide.emacs.core.customKeymaps = {
         "custom-formatting-map" = "C-c f";
       };
-      ide.emacs.core.config =
-        builtins.readFile ./elisp/misc.el +
-        optionalString (!config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/non-ts.el) +
-        optionalString (config.ide.emacs.core.treesitter.enable) (builtins.readFile ./elisp/ts.el);
+      ide.emacs.core.config = builtins.readFile ./elisp/misc.el + (builtins.readFile ./elisp/non-ts.el);
       ide.emacs.core.treesitter.grammars = {
         markdown = "https://github.com/ikatyang/tree-sitter-markdown";
-      };
-      ide.emacs.core.treesitter.modeRemappings = {
-        markdown-mode = "markdown-ts-mode";
       };
     })
   ];
