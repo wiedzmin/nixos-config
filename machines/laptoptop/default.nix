@@ -653,7 +653,6 @@ in
     misc = {
       controlCenter.enable = true;
     };
-    mysql.enable = true;
     pgsql.enable = true;
   };
 

@@ -25,7 +25,6 @@
     ./controlcenter
     ./dev/ccpp
     ./dev/dbms/misc
-    ./dev/dbms/mysql
     ./dev/dbms/pgsql
     ./dev/direnv
     ./dev/editorconfig
