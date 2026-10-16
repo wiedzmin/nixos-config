@@ -45,7 +45,7 @@ in
         default = 100000;
         description = "Scrollback buffer size";
       };
-      # TODO: consider ""nix-optionalizing"" remote control feature
+      # TODO: consider "nix-optionalizing" remote control feature
       remote.port = mkOption {
         type = types.int;
         default = 12345;
