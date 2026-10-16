@@ -2,8 +2,6 @@
 with pkgs.unstable.commonutils;
 with lib;
 
-# [[file:todo.org::*get opts/mappings list from https://sw.kovidgoyal.net/kitty/][get opts/mappings list from https://sw.kovidgoyal.net/kitty/]]
-
 # some hex ctrl-prefixed keycodes:
 # \x09 --> tab
 # \x15 --> ^U
