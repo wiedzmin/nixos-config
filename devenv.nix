@@ -54,6 +54,7 @@
           "rror"
           "codo"
           "BA"
+          "hpe"
         ];
         exclude = [
           "*.ovpn"
