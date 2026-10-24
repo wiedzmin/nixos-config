@@ -764,7 +764,7 @@ in
 
   wmCommon = {
     focus.show = false;
-    focus.list.useWMSpecific = true;
+    focus.list.useWMSpecific = false;
   };
 
   home-manager = {
