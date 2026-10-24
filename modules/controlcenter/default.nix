@@ -167,6 +167,7 @@ in
           extraConfig = {
             monitor = "-4";
             matching = "normal";
+            normal-window = true;
             tokenize = true;
             disable-history = false;
             threads = 0;
