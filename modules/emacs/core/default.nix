@@ -396,6 +396,43 @@ in
           '';
           "${cfg.initDir}/init.el".text = cfg.initElContent;
         };
+        programs.television = {
+          channels = {
+            open-in-emacs = {
+              metadata = {
+                name = "open-in-emacs";
+                description = "A channel to find and select text from files";
+                requirements = [ "rg" "bat" "emacsclient" ];
+              };
+              source = {
+                command = [
+                  { name = "Default"; run = "rg . --no-heading --line-number --colors 'match:fg:white' --colors 'path:fg:blue' --color=always"; }
+                  { name = "Hidden"; run = "rg . --no-heading --line-number --hidden --colors 'match:fg:white' --colors 'path:fg:blue' --color=always"; }
+                ];
+                ansi = true;
+                output = "{strip_ansi|split:\\::..2}";
+              };
+              preview = {
+                command = "bat -n --color=always '{strip_ansi|split:\\::0}'";
+                env = { BAT_THEME = "ansi"; };
+                offset = "{strip_ansi|split:\::1}";
+              };
+              ui = {
+                preview_panel = { header = "{strip_ansi|split:\::..2}"; };
+              };
+              keybindings = {
+                "shift-enter" = "actions:edit";
+              };
+              actions = {
+                edit = {
+                  description = "Open file at line in Emacs";
+                  command = "emacsclient -c -s ${cfg.serverSocket} +{strip_ansi|split:\\::1} {strip_ansi|split:\\::0}";
+                  mode = "fork";
+                };
+              };
+            };
+          };
+        };
         home.activation = {
           ensureEmacsConfigValid = {
             after = [ "linkGeneration" ];
