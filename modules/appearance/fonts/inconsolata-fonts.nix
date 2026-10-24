@@ -35,7 +35,7 @@ in
 
   config = mkIf cfg.enable {
     fonts = {
-      packages = with pkgs; [ inconsolata inconsolata-nerdfont ];
+      packages = with pkgs; [ inconsolata nerd-fonts.inconsolata ];
       fontconfig = { defaultFonts = { monospace = [ baseFont.family ]; }; };
     };
     wmCommon.fonts.default = makeFontStrPango fontBeautified;
