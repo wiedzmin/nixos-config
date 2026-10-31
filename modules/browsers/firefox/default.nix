@@ -176,7 +176,7 @@ in
         }, "${appName cfg.traits}")
       '';
 
-      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive suspensionRule;
+      workstation.performance.appsSuspension.settings = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
 
       home-manager.users."${user}" = {
         home.packages = with pkgs;

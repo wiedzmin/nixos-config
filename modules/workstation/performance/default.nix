@@ -14,10 +14,10 @@ in
         default = false;
         description = "Whether to enable performance customizations.";
       };
-      appsSuspension.rules = mkOption {
+      appsSuspension.settings = mkOption {
         type = types.attrs;
         default = { };
-        description = "Apps suspending rules.";
+        description = "Apps suspending settings";
       };
       warmup.paths = mkOption {
         type = types.listOf types.str;
@@ -73,14 +73,15 @@ in
       };
 
       home-manager.users."${user}" = {
-        services.xsuspender = optionalAttrs (cfg.appsSuspension.rules != { })
+        services.xsuspender = optionalAttrs (cfg.appsSuspension.settings != { })
           {
             enable = true;
-            defaults = {
-              suspendDelay = 10;
-              onlyOnBattery = false;
+            settings = cfg.appsSuspension.settings // {
+              Default = {
+                suspendDelay = 10;
+                onlyOnBattery = false;
+              };
             };
-            inherit (cfg.appsSuspension) rules;
           };
       };
       systemd.user.services = optionalAttrs (cfg.warmup.paths != [ ]) {
@@ -98,7 +99,7 @@ in
         };
       };
     })
-    (mkIf (cfg.enable && cfg.wm.enable && cfg.appsSuspension.rules != { }) {
+    (mkIf (cfg.enable && cfg.wm.enable && cfg.appsSuspension.settings != { }) {
       wmCommon.keybindings.entries = [
         {
           key = [ "x" ];
