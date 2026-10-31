@@ -156,7 +156,7 @@ in
       # chrome://flags/#enable-quic - Enabled
       # chrome://flags/#enable-tls13-kyber - Disabled
 
-      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
+      workstation.performance.appsSuspension.settings = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       assertions = [

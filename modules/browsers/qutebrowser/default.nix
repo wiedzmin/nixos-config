@@ -210,7 +210,7 @@ in
         }, "${appName cfg.traits}")
       '';
 
-      workstation.performance.appsSuspension.rules = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
+      workstation.performance.appsSuspension.settings = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
 
       wmCommon.keybindings.entries = [
         (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
