@@ -38,11 +38,6 @@ in
         internal = true;
         description = "Browser ID for `profile-sync-daemon` configuration";
       };
-      suspendInactive = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Suspend when inactive (using xsuspender)";
-      };
       desktopID = mkOption {
         type = types.enum [ standardDesktopID windowedDesktopID ];
         default = windowedDesktopID;
@@ -125,13 +120,6 @@ in
           parameters = [ "--new-window" ];
         };
         wmClass = [ "Navigator" "firefox" ];
-        suspensionRule = {
-          Firefox = {
-            suspendDelay = 10;
-            matchWmClassContains = lib.last wmClass;
-            suspendSubtreePattern = binaryFromCmd (appBrowserCmd cfg.traits);
-          };
-        };
       };
       workstation.input.keyboard.xremap.config = {
         keymap = [
@@ -175,8 +163,6 @@ in
             },
         }, "${appName cfg.traits}")
       '';
-
-      workstation.performance.appsSuspension.settings = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
 
       home-manager.users."${user}" = {
         home.packages = with pkgs;

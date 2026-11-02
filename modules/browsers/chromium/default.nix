@@ -49,11 +49,6 @@ in
         default = true;
         description = "Enable keyboard-centric controls (vimium, etc.)";
       };
-      suspendInactive = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Suspend when inactive (using xsuspender)";
-      };
       videoconferencing.enable = mkOption {
         type = types.bool;
         default = true;
@@ -89,13 +84,6 @@ in
           parameters = [ "--new-window" ];
         };
         wmClass = [ "chromium-browser" "Chromium-browser" ];
-        suspensionRule = {
-          Chromium = {
-            suspendDelay = 10;
-            matchWmClassContains = lib.last wmClass;
-            suspendSubtreePattern = binaryFromCmd (appBrowserCmd cfg.traits);
-          };
-        };
       };
       home-manager.users."${user}" = {
         # chrome-export
@@ -155,8 +143,6 @@ in
       # NOTE: use settings below to overcome Youtube slowdown
       # chrome://flags/#enable-quic - Enabled
       # chrome://flags/#enable-tls13-kyber - Disabled
-
-      workstation.performance.appsSuspension.settings = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
     })
     (mkIf (cfg.enable && cfg.isDefault) {
       assertions = [

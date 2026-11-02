@@ -4,7 +4,6 @@ with lib;
 
 let
   cfg = config.workstation.performance;
-  user = config.attributes.mainUser.name;
 in
 {
   options = {
@@ -13,11 +12,6 @@ in
         type = types.bool;
         default = false;
         description = "Whether to enable performance customizations.";
-      };
-      appsSuspension.settings = mkOption {
-        type = types.attrs;
-        default = { };
-        description = "Apps suspending settings";
       };
       warmup.paths = mkOption {
         type = types.listOf types.str;
@@ -72,18 +66,6 @@ in
         };
       };
 
-      home-manager.users."${user}" = {
-        services.xsuspender = optionalAttrs (cfg.appsSuspension.settings != { })
-          {
-            enable = true;
-            settings = cfg.appsSuspension.settings // {
-              Default = {
-                suspendDelay = 10;
-                onlyOnBattery = false;
-              };
-            };
-          };
-      };
       systemd.user.services = optionalAttrs (cfg.warmup.paths != [ ]) {
         "warmup" = {
           description = "Warm up paths";
@@ -98,20 +80,6 @@ in
           wantedBy = [ "graphical-session.target" ];
         };
       };
-    })
-    (mkIf (cfg.enable && cfg.wm.enable && cfg.appsSuspension.settings != { }) {
-      wmCommon.keybindings.entries = [
-        {
-          key = [ "x" ];
-          cmd = "${pkgs.systemd}/bin/systemctl --user restart xsuspender.service";
-          mode = "services";
-        }
-        {
-          key = [ "Shift" "x" ];
-          cmd = "${pkgs.systemd}/bin/systemctl --user stop xsuspender.service";
-          mode = "services";
-        }
-      ];
     })
   ];
 }

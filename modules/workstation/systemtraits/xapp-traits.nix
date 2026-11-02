@@ -33,11 +33,6 @@ in
       default = [ ];
       description = "X window class, as stated by WM_CLASS property";
     };
-    suspensionRule = mkOption {
-      type = types.attrs;
-      default = { };
-      description = "Rule for XSuspender, mostly for resource hogs";
-    };
     runtimeInputs = mkOption {
       type = types.listOf types.package;
       default = [ ];

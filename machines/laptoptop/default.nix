@@ -176,7 +176,6 @@ in
     };
     firefox = {
       enable = true;
-      suspendInactive = false;
       isDefault = false;
       isFallback = true;
     };
@@ -184,7 +183,6 @@ in
       enable = true;
       emacsKeys.enable = true;
       isDefault = true;
-      suspendInactive = false;
       sessions = {
         backup.enable = true;
       };
