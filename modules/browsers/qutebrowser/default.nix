@@ -56,11 +56,6 @@ in
             either with setting it directly, or using `qbtarget` utility.
         '';
       };
-      suspendInactive = mkOption {
-        type = types.bool;
-        default = true;
-        description = "Suspend when inactive (using xsuspender)";
-      };
       desktopID = mkOption {
         type = types.enum [ standardDesktopID windowedDesktopID ];
         default = windowedDesktopID;
@@ -152,17 +147,6 @@ in
           parameters = [ "open" "-url" ];
         };
         wmClass = [ "qutebrowser" "qutebrowser" ];
-        suspensionRule = {
-          qutebrowser = {
-            suspendDelay = 15;
-            matchWmClassContains = lib.last wmClass;
-            suspendSubtreePattern = "qtwebengine";
-            downclockOnBattery = 0;
-            resumeEvery = 60;
-            resumeFor = 3;
-            sendSignals = true;
-          };
-        };
       };
       nixpkgs.config.packageOverrides = _: {
         yank-image = pkgs.writeShellApplication {
@@ -209,8 +193,6 @@ in
             },
         }, "${appName cfg.traits}")
       '';
-
-      workstation.performance.appsSuspension.settings = optionalAttrs cfg.suspendInactive cfg.traits.suspensionRule;
 
       wmCommon.keybindings.entries = [
         (goLocalDebugKeybinding config.dev.golang.goPath config.attributes.debug.useLocalGoBinaries {
