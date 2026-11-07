@@ -357,6 +357,17 @@ in
               trigger = ":ule";
               replace = "sudo umount ${cfg.mount.external}";
             }
+            {
+              trigger = ":fro";
+              replace = "find . -name '*{{filename.value}}*'"; # nsp>findutils
+              vars = [
+                {
+                  name = "filename";
+                  type = "clipboard";
+                }
+              ];
+            }
+
           ];
         };
       };
