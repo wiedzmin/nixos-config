@@ -81,6 +81,8 @@ minibuffer, even without explicitly focusing it."
   (:map custom-goto-map
         ("TAB" . move-to-column)
         ("c" . goto-char))
+  (:map custom-buffer-map
+        ("r" . revert-buffer))
   :hook
   (minibuffer-setup-hook . custom/minibuffer-setup-hook)
   (minibuffer-exit-hook . (lambda () (setq gc-cons-threshold 800000)))
