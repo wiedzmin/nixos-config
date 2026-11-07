@@ -357,6 +357,7 @@ in
       };
       ide.emacs.core.customKeymaps = {
         "custom-goto-map" = "M-s";
+        "custom-buffer-map" = "M-3";
       };
       shell.core.variables = lib.optionals cfg.daemon.enable [{
         EDITOR = "${emacsWithPkgs}/bin/emacsclient -c -s ${cfg.serverSocket}";
