@@ -483,6 +483,12 @@ in
             mode = "root";
             raw = true;
           }
+          {
+            key = [ prefix "3" ];
+            cmd = "bar mode toggle";
+            mode = "root";
+            raw = true;
+          }
         ]
           (e: e // { wm = "i3"; })) ++ optionals (cfg.windowFocus.impl == "wmfocus") [
           {
@@ -589,7 +595,7 @@ in
                     (o: "tray_output ${o}"))}
                 mode hide
                 hidden_state hide
-                modifier Mod1
+                modifier none
                 workspace_buttons yes
                 strip_workspace_numbers yes
                 font ${config.wmCommon.fonts.statusbar}
