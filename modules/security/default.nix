@@ -77,9 +77,17 @@ in
           enable = true;
           package = cfg.keepassxc.package;
           settings = {
-            Browser.Enabled = true;
-            Browser.UnlockDatabase = true;
-            FdoSecrets.Enabled = true; # Enable Secret Service Integration
+            # ref.: https://github.com/keepassxreboot/keepassxc/blob/647272e9c5542297d3fcf6502e6173c96f12a9a0/src/core/Config.cpp#L49-L223
+            General = {
+              AutoGeneratePasswordForNewEntries = false;
+              ConfigVersion = 2;
+              MinimizeAfterUnlock = false;
+            };
+            Browser = {
+              Enabled = true;
+              UnlockDatabase = true;
+              UpdateBinaryPath = false;
+            };
             GUI = {
               AdvancedSettings = true;
               ApplicationTheme = "dark";
@@ -90,8 +98,24 @@ in
               MinimizeOnStartup = true;
               MinimizeToTray = true;
               ShowTrayIcon = true;
+              TrayIconAppearance = "dark";
             };
-            SSHAgent.Enabled = true;
+            PasswordGenerator = {
+              Length = 16;
+              LowerCase = true;
+              UpperCase = true;
+              Numbers = true;
+              SpecialChars = false;
+            };
+            Security = {
+              ClearClipboard = false;
+              IconDownloadFallback = true;
+              LockDatabaseIdle = false;
+            };
+            SSHAgent = {
+              Enabled = true;
+              UseOpenSSH = true;
+            };
           };
         };
         programs.git-credential-keepassxc = {
